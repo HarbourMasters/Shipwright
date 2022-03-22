@@ -420,49 +420,51 @@ namespace SohImGui {
         const float scale = Game::Settings.controller.input_scale;
         ImVec2 BtnPos = ImVec2(160 * scale, 85 * scale);
 
-        ImGui::SetNextWindowSize(BtnPos);
-        ImGui::SetNextWindowPos(ImVec2(main_pos.x + size.x - BtnPos.x - 20, main_pos.y + size.y - BtnPos.y - 20));
+        if(Game::Settings.controller.input_enabled) {
+            ImGui::SetNextWindowSize(BtnPos);
+            ImGui::SetNextWindowPos(ImVec2(main_pos.x + size.x - BtnPos.x - 20, main_pos.y + size.y - BtnPos.y - 20));
 
-        if (Game::Settings.controller.input_enabled && pads != nullptr && ImGui::Begin("Game Buttons", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground)) {
-            ImGui::SetCursorPosY(32 * scale);
+            if (pads != nullptr && ImGui::Begin("Game Buttons", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoBackground)) {
+                ImGui::SetCursorPosY(32 * scale);
 
-            ImGui::BeginGroup();
-            const ImVec2 cPos = ImGui::GetCursorPos();
-            ImGui::SetCursorPos(ImVec2(cPos.x + 10 * scale, cPos.y - 20 * scale));
-            BindButton("L-Btn", pads[0].button & BTN_L);
-            ImGui::SetCursorPos(ImVec2(cPos.x + 16 * scale, cPos.y));
-            BindButton("C-Up", pads[0].button & BTN_CUP);
-            ImGui::SetCursorPos(ImVec2(cPos.x, cPos.y + 16 * scale));
-            BindButton("C-Left", pads[0].button & BTN_CLEFT);
-            ImGui::SetCursorPos(ImVec2(cPos.x + 32 * scale, cPos.y + 16 * scale));
-            BindButton("C-Right", pads[0].button & BTN_CRIGHT);
-            ImGui::SetCursorPos(ImVec2(cPos.x + 16 * scale, cPos.y + 32 * scale));
-            BindButton("C-Down", pads[0].button & BTN_CDOWN);
-            ImGui::EndGroup();
+                ImGui::BeginGroup();
+                const ImVec2 cPos = ImGui::GetCursorPos();
+                ImGui::SetCursorPos(ImVec2(cPos.x + 10 * scale, cPos.y - 20 * scale));
+                BindButton("L-Btn", pads[0].button & BTN_L);
+                ImGui::SetCursorPos(ImVec2(cPos.x + 16 * scale, cPos.y));
+                BindButton("C-Up", pads[0].button & BTN_CUP);
+                ImGui::SetCursorPos(ImVec2(cPos.x, cPos.y + 16 * scale));
+                BindButton("C-Left", pads[0].button & BTN_CLEFT);
+                ImGui::SetCursorPos(ImVec2(cPos.x + 32 * scale, cPos.y + 16 * scale));
+                BindButton("C-Right", pads[0].button & BTN_CRIGHT);
+                ImGui::SetCursorPos(ImVec2(cPos.x + 16 * scale, cPos.y + 32 * scale));
+                BindButton("C-Down", pads[0].button & BTN_CDOWN);
+                ImGui::EndGroup();
 
-            ImGui::SameLine();
+                ImGui::SameLine();
 
-            ImGui::BeginGroup();
-            const ImVec2 sPos = ImGui::GetCursorPos();
-            ImGui::SetCursorPos(ImVec2(sPos.x + 21, sPos.y - 20 * scale));
-            BindButton("Z-Btn", pads[0].button & BTN_Z);
-            ImGui::SetCursorPos(ImVec2(sPos.x + 22, sPos.y + 16 * scale));
-            BindButton("Start-Btn", pads[0].button & BTN_START);
-            ImGui::EndGroup();
+                ImGui::BeginGroup();
+                const ImVec2 sPos = ImGui::GetCursorPos();
+                ImGui::SetCursorPos(ImVec2(sPos.x + 21, sPos.y - 20 * scale));
+                BindButton("Z-Btn", pads[0].button & BTN_Z);
+                ImGui::SetCursorPos(ImVec2(sPos.x + 22, sPos.y + 16 * scale));
+                BindButton("Start-Btn", pads[0].button & BTN_START);
+                ImGui::EndGroup();
 
-            ImGui::SameLine();
+                ImGui::SameLine();
 
-            ImGui::BeginGroup();
-            const ImVec2 bPos = ImGui::GetCursorPos();
-            ImGui::SetCursorPos(ImVec2(bPos.x + 20 * scale, bPos.y - 20 * scale));
-            BindButton("R-Btn", pads[0].button & BTN_R);
-            ImGui::SetCursorPos(ImVec2(bPos.x + 12 * scale, bPos.y + 8 * scale));
-            BindButton("B-Btn", pads[0].button & BTN_B);
-            ImGui::SetCursorPos(ImVec2(bPos.x + 28 * scale, bPos.y + 24 * scale));
-            BindButton("A-Btn", pads[0].button & BTN_A);
-            ImGui::EndGroup();
+                ImGui::BeginGroup();
+                const ImVec2 bPos = ImGui::GetCursorPos();
+                ImGui::SetCursorPos(ImVec2(bPos.x + 20 * scale, bPos.y - 20 * scale));
+                BindButton("R-Btn", pads[0].button & BTN_R);
+                ImGui::SetCursorPos(ImVec2(bPos.x + 12 * scale, bPos.y + 8 * scale));
+                BindButton("B-Btn", pads[0].button & BTN_B);
+                ImGui::SetCursorPos(ImVec2(bPos.x + 28 * scale, bPos.y + 24 * scale));
+                BindButton("A-Btn", pads[0].button & BTN_A);
+                ImGui::EndGroup();
 
-            ImGui::End();
+                ImGui::End();
+            }
         }
 
         console->Draw();
