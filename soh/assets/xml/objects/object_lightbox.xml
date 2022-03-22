@@ -1,0 +1,15 @@
+<Root>
+    <File Name="object_lightbox" Segment="6">
+        <Blob Name="object_lightbox_Blob_000000" Size="0x8" Offset="0x0"/>
+        <DList Name="object_lightbox_DL_000008" Offset="0x8"/>
+        <Blob Name="object_lightbox_Blob_0002A0" Size="0x130" Offset="0x2A0"/>
+        <DList Name="object_lightbox_DL_0003D0" Offset="0x3D0"/>
+        <Blob Name="object_lightbox_Blob_000670" Size="0x130" Offset="0x670"/>
+        <DList Name="object_lightbox_DL_0007A0" Offset="0x7A0"/>
+        <Blob Name="object_lightbox_Blob_000A40" Size="0x130" Offset="0xA40"/>
+        <DList Name="object_lightbox_DL_000B70" Offset="0xB70"/>
+        <Texture Name="object_lightbox_Tex_000E10" OutName="tex_00000E10" Format="rgba16" Width="32" Height="32" Offset="0xE10"/>
+        <Texture Name="object_lightbox_Tex_001610" OutName="tex_00001610" Format="rgba16" Width="32" Height="32" Offset="0x1610"/>
+        <Collision Name="object_lightbox_Col_001F10" Offset="0x1F10"/>
+    </File>
+</Root>

@@ -1,0 +1,5 @@
+Checks: '-*,readability-braces-around-statements'
+WarningsAsErrors: ''
+HeaderFilterRegex: '(src|include)\/.*\.h$'
+FormatStyle: 'file'
+CheckOptions:

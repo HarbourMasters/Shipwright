@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/HarbourMasters/soh.git
+	branch = master
+	commit = ba904bbd0d724784f8f37ff4bea378f6fe26151b
+	parent = 0bb0e7b53bd80bdc7f78e08c441691737e039b2b
+	method = rebase
+	cmdver = 0.4.1

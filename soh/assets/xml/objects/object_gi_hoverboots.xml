@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_hoverboots" Segment="6">
+        <DList Name="gGiHoverBootsDL" Offset="0x1850"/>
+    </File>
+</Root>

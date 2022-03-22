@@ -1,0 +1,72 @@
+<Root>
+    <File Name="object_ta" Segment="6">
+        <Skeleton Name="gTalonSkel" Type="Flex" LimbType="Standard" Offset="0xB7B8"/>
+        <Limb Name="gTalonRootLimb" LimbType="Standard" Offset="0xB6B8"/>
+        <Limb Name="gTalonLeftThighLimb" LimbType="Standard" Offset="0xB6C4"/>
+        <Limb Name="gTalonLeftLegLimb" LimbType="Standard" Offset="0xB6D0"/>
+        <Limb Name="gTalonLeftFootLimb" LimbType="Standard" Offset="0xB6DC"/>
+        <Limb Name="gTalonRightThighLimb" LimbType="Standard" Offset="0xB6E8"/>
+        <Limb Name="gTalonRightLegLimb" LimbType="Standard" Offset="0xB6F4"/>
+        <Limb Name="gTalonRightFootLimb" LimbType="Standard" Offset="0xB700"/>
+        <Limb Name="gTalonChestLimb" LimbType="Standard" Offset="0xB70C"/>
+        <Limb Name="gTalonLeftShoulderLimb" LimbType="Standard" Offset="0xB718"/>
+        <Limb Name="gTalonLeftArmLimb" LimbType="Standard" Offset="0xB724"/>
+        <Limb Name="gTalonLeftHandLimb" LimbType="Standard" Offset="0xB730"/>
+        <Limb Name="gTalonRightShoulderLimb" LimbType="Standard" Offset="0xB73C"/>
+        <Limb Name="gTalonRightArmLimb" LimbType="Standard" Offset="0xB748"/>
+        <Limb Name="gTalonRightHandLimb" LimbType="Standard" Offset="0xB754"/>
+        <Limb Name="gTalonHeadLimb" LimbType="Standard" Offset="0xB760"/>
+        <Limb Name="gTalonTorsoLimb" LimbType="Standard" Offset="0xB76C"/>
+        <Animation Name="gTalonSitSleepingAnim" Offset="0x17E8"/>
+        <Animation Name="gTalonStandAnim" Offset="0x1C94"/>
+        <Animation Name="gTalonSitHandsUpAnim" Offset="0xBF38"/>
+        <Animation Name="gTalonSitWakeUpAnim" Offset="0xC48C"/>
+        <Animation Name="gTalonRunAnim" Offset="0xC858"/>
+        <Animation Name="gTalonSleepAnim" Offset="0xCD50"/>
+        <Animation Name="gTalonRunTransitionAnim" Offset="0xCF28"/>
+        <Animation Name="gTalonWakeUpAnim" Offset="0xE3D8"/>
+        <DList Name="gTalonTorsoDL" Offset="0x3F70"/>
+        <DList Name="gTalonChestDL" Offset="0x4288"/>
+        <DList Name="gTalonRightShoulderDL" Offset="0x4918"/>
+        <DList Name="gTalonRightArmDL" Offset="0x4B40"/>
+        <DList Name="gTalonRightHandDL" Offset="0x4DF0"/>
+        <DList Name="gTalonLeftShoulderDL" Offset="0x5298"/>
+        <DList Name="gTalonLeftArmDL" Offset="0x54C0"/>
+        <DList Name="gTalonLeftHandDL" Offset="0x5770"/>
+        <DList Name="gTalonRightThighDL" Offset="0x5B98"/>
+        <DList Name="gTalonRightLegDL" Offset="0x5FD8"/>
+        <DList Name="gTalonLeftThighDL" Offset="0x6330"/>
+        <DList Name="gTalonLeftLegDL" Offset="0x6770"/>
+        <DList Name="gTalonHeadDL" Offset="0x96D0"/>
+        <DList Name="gTalonRightFootDL" Offset="0xA2F8"/>
+        <DList Name="gTalonLeftFootDL" Offset="0xA498"/>
+        <Texture Name="gTalon2TLUT" OutName="tlut_2" Format="rgba16" Width="132" Height="1" Offset="0x6AC0"/>
+        <Texture Name="gTalonEyeTLUT" OutName="eye_tlut" Format="rgba16" Width="63" Height="4" Offset="0x6BC8"/>
+        <Texture Name="gTalonHeadSkinTex" OutName="head_skin" Format="ci8" Width="8" Height="8" Offset="0x6DC0" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonEarTex" OutName="ear" Format="ci8" Width="8" Height="8" Offset="0x6E00" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonFaceHairTex" OutName="face_hair" Format="ci8" Width="8" Height="16" Offset="0x6E40" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonRedTex" OutName="red" Format="ci8" Width="8" Height="8" Offset="0x7AC0" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonHeadHairTex" OutName="head_hair" Format="ci8" Width="16" Height="32" Offset="0x7B00" TlutOffset="0x6AC0"/> <!-- Not clear where this is used -->
+        <Texture Name="gTalonBootSideTex" OutName="boot_side" Format="ci8" Width="16" Height="16" Offset="0x7D00" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonBootTopTex" OutName="boot_top" Format="ci8" Width="16" Height="16" Offset="0x7E00" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonHeadHairTopTex" OutName="head_hair_top" Format="ci8" Width="8" Height="16" Offset="0x7F00" TlutOffset="0x6AC0"/>
+        <Texture Name="gTalonEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x7F80" TlutOffset="0x6BC8"/>
+        <Texture Name="gTalonEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x6EC0" TlutOffset="0x6BC8"/>
+        <Texture Name="gTalonEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x72C0" TlutOffset="0x6BC8"/>
+        <Texture Name="gTalonEyeClosed2Tex" OutName="eye_closed_2" Format="ci8" Width="32" Height="32" Offset="0x76C0" TlutOffset="0x6BC8"/>
+        <Texture Name="gTalonSkinAndClothesTLUT" OutName="skin_and_clothes_tlut" Format="rgba16" Width="16" Height="16" Offset="0xA638"/>
+        <Texture Name="gTalonGradient2Tex" OutName="gradient" Format="rgba16" Width="8" Height="8" Offset="0xA838"/>
+        <Texture Name="gTalonSkinTex" OutName="skin" Format="ci8" Width="8" Height="8" Offset="0xA8B8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonFingersTex" OutName="fingers" Format="ci8" Width="16" Height="16" Offset="0xA8F8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonArmHairTex" OutName="arm_hair" Format="ci8" Width="16" Height="32" Offset="0xA9F8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonSleeveTex" OutName="sleeve" Format="ci8" Width="8" Height="8" Offset="0xABF8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonBlueTex" OutName="blue_square" Format="ci8" Width="8" Height="8" Offset="0xAC38" TlutOffset="0xA638"/>
+        <Texture Name="gTalonBluePatternTex" OutName="blue_pattern" Format="ci8" Width="8" Height="8" Offset="0xAC78" TlutOffset="0xA638"/>
+        <Texture Name="gTalonBrownBlueOutlineTex" OutName="brown_blue_outline" Format="ci8" Width="16" Height="16" Offset="0xACB8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonNecklaceStringUpperTex" OutName="necklace_string_upper" Format="ci8" Width="16" Height="32" Offset="0xADB8" TlutOffset="0xA638"/>
+        <Texture Name="gTalonBowserTex" OutName="bowser" Format="rgba16" Width="16" Height="32" Offset="0xAFB8"/>
+        <Texture Name="gTalonNecklaceLowerStringsTex" OutName="necklace_string_lower" Format="rgba16" Width="8" Height="16" Offset="0xB3B8"/>
+
+        <Blob Name="object_ta_Blob_00B4B8" Size="0x200" Offset="0xB4B8"/>
+    </File>
+</Root>

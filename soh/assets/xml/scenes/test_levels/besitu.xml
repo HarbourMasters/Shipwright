@@ -1,0 +1,8 @@
+<Root>
+    <File Name="besitu_scene" Segment="2">
+        <Scene Name="besitu_scene" Offset="0x0"/>
+    </File>
+    <File Name="besitu_room_0" Segment="3">
+        <Room Name="besitu_room_0" Offset="0x0"/>
+    </File>
+</Root>
