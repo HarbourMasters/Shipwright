@@ -38,7 +38,7 @@ If you still cannot get the tool to work, join our [Discord Server](https://disc
 
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
 
-Currently, DirectX 11 and OpenGL is supported on Windows and Linux. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
+Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?
