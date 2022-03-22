@@ -6,21 +6,22 @@ The Ship does not include assets and as such requires a prior copy of the game t
 
 ## Quick Start
 
-- The Ship of Harkinian: ([Available here](https://github.com/HarbourMasters/Shipwright/releases/latest))
-- A ZRET OoT Debug ROM.
-
+1) Get The Ship of Harkinian: ([Available here](https://github.com/HarbourMasters/Shipwright/releases/latest))
+2) Get a ZRET OoT Debug ROM
+```
 Build date: `zelda@srd022j 03-02-21 00:49:18`
+sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
+```
+3) Use the OTRGui to generate an `oot.otr` archive file.
+4) Place the archive beside `soh.exe`
 
-sha1: `cee6bc3c2a634b41728f2af8da54d9bf8cc14099`
+Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
+
+## Additional setup information
 
 The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film name followed by a phonetic alphabet code word. The motion-picture name represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, starwars.alpha.
 
-#### Unzip The Ship
-
-* Unzip the packed `.zip` file. Desktop, Documents, Downloads etc.
-* Run the OTRGui tool to generate the `oot.otr` archive file from your legitimate copy of the game.
-
-#### Using the extraction tool
+### Using the extraction tool
 
 * Choose the rom
 * If a second button to choose The Ships folder exists, choose a directory that differs from `OTRGui.exe`
@@ -33,11 +34,11 @@ If you get another message, then you might have selected a wrong ROM. Make sure 
 
 If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
 
-#### Running the Ship of Harkinian
+### Running the Ship of Harkinian
 
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
 
-Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
+Currently, DirectX 11 and OpenGL is supported on Windows and Linux. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
 ## Take the Survey
 Want to use cartridge readers in tandem with the OTRGui?
