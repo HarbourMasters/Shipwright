@@ -1,0 +1,8 @@
+<Root>
+    <SymbolMap File="SymbolMap_OoTMqDbg.txt"/>
+    <ActorList File="ActorList_OoTMqDbg.txt"/>
+    <ObjectList File="ObjectList_OoTMqDbg.txt"/>
+    <ExternalXMLFolder Path="../soh/assets/xml/"/>
+	<TexturePool File="TexturePool.xml"/>
+    <ExternalFile XmlPath="objects/gameplay_keep.xml" OutPath="objects/gameplay_keep/"/>
+</Root>
