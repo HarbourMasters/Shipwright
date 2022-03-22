@@ -1,0 +1,106 @@
+# Ignore generated files
+# ...
+
+# Ignore VIM's backup generated files
+*.swp
+*.swo
+*~
+
+# Ignore thumbnails created by windows
+Thumbs.db
+
+# Ignore files build by Visual Studio
+# *.obj --> Can be confused with 3d model!
+*.pdb
+*.aps
+*.user
+# *.vcproj
+# *.vcxproj*
+# *.sln
+*.vspscc
+*_i.c
+*.i
+*.icf
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+.vs
+
+[Bb]in
+[Dd]ebug/
+*.sbr
+*.sdf
+obj/
+[R]elease/
+_ReSharper*/
+[Tt]est[Rr]esult*
+ipch/
+*.opensdf
+*.db
+*.opendb
+packages/
+!examples/models/resources/models/obj/
+
+# Ignore compiled binaries
+*.o
+*.exe
+*.a
+*.bc
+*.so
+*.so.*
+
+# Ignore wasm data in examples/
+examples/**/*.wasm
+examples/**/*.data
+examples/**/*.js
+examples/**/*.html
+
+# Ignore files build by xcode
+*.mode*v*
+*.pbxuser
+*.xcbkptlist
+*.xcscheme
+*.xcworkspacedata
+*.xcuserstate
+*.xccheckout
+xcschememanagement.plist
+.DS_Store
+._.*
+xcuserdata/
+DerivedData/
+
+# Jetbrains project
+.idea/
+cmake-build-*/
+
+# CMake stuff
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+build
+
+# Ignore GNU global tags
+GPATH
+GRTAGS
+GTAGS
+
+# Zig programming language
+zig-cache/
+zig-out/
+build/
+build-*/
+docgen_tmp/
+
+# Parser stuff
+parser/raylib_parser
