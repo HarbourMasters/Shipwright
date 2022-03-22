@@ -23,11 +23,11 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 
 ### Using the extraction tool
 
-* Open a rom
-* If a second button exists, use it to choose the game directory. This directory should differ from `OTRGui.exe`
+* Open a rom to initiate generating the `oot.otr` archive file.
+* If a second button exists then `oot.otr` already exists. To prevent overwriting the old otr use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
-The archival process can take up to **5 minutes**.
+This packaging process can take up to **5 minutes**.
 
 Close the OTRGui when the `Done!` message appears.
 If you get another message, then you might have selected a wrong ROM. Make sure to use a rom consistent with the above checksum.
@@ -42,8 +42,7 @@ Currently, DirectX 11 and OpenGL is supported on Windows and Linux. Change the r
 
 ## Take the Survey
 Want to use cartridge readers in tandem with the OTRGui?
-Take this survey to increase chances of it becoming reality.
-https://retroarchopenhardware.com/survey.php
+Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
 
 ## Discord
 
