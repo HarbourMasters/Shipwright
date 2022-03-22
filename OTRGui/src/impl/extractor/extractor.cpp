@@ -3,6 +3,7 @@
 
 #include "impl.h"
 #include "utils/mutils.h"
+#include "ctpl/ctpl_stl.h"
 #include <thread>
 
 #ifdef _WIN32
@@ -68,6 +69,9 @@ void startWorker() {
 	std::vector<std::string> files;
 	Util::dirscan(path, files);
 	std::vector<std::string> xmlFiles;
+
+	const int num_threads = std::thread::hardware_concurrency();
+	ctpl::thread_pool pool(num_threads / 2);
 	for(auto &file : files) {
 		if (file.find(".xml") != std::string::npos) xmlFiles.push_back(file);
 	}
@@ -76,8 +80,9 @@ void startWorker() {
 		if(single_thread) {
 			ExtractFunc(file);
 		} else {
-			std::thread thread_object(ExtractFunc, file);
-			thread_object.detach();
+			pool.push([file](int) {
+				ExtractFunc(file);
+			});
 		}
 	}
 
