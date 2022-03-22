@@ -21,9 +21,17 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 
 The Ship of Harkinian is packed in a `.zip` file. It is ***paramount*** that you extract that `.zip` file. We recommend extracting its contents somewhere safe, like in a folder on your Desktop.
 
-Once that is done, we are going to run the OTRGUI tool, which will allow us to extract the needed assets from an OoT ROM. Doing this will allow us to play the Ship of Harkinian.
+To extract assets we have a commandline extracter. In the future, a GUI tool will be available.
 
-## Using the extraction tool
+## Commandline extraction instructions
+
+ 1. Put your 2020 OoT Debug ROM in the `soh` folder.
+ 2. Launch `soh/fixbaserom.py`.
+ 3. Launch `soh/extract_baserom.py`.
+ 4. Copy the `baserom` folder from the `soh` folder into the `OTRExporter` folder.
+ 5. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
+
+## Extracting using GUI tool (not ready yet)
 
 Launch `OTRGui.exe` by double-clicking it. Once the OTRGUI tool has launched, you will be met with a classy, yet easy-to-use interface.
 There will be 2 buttons:
@@ -39,10 +47,10 @@ After that, a command-line window should open. Don't worry, this is perfectly no
 
 The whole process can take up to **5 minutes**. Depending on your PC specs, this process may be shorter.
 
-After that, a `Done!` message should show up. At that point, simply press on the `X` of the OTRGUI tool at the top-right.
+After that, a `Done!` message should show up. Close the OTRGUI tool using the `X` button.
 If you get another message, then you might have selected a wrong ROM. Simply retry again with another ROM.
 
-If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep in mind that we do not condome piracy in any way.
+If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep in mind that we do not condone piracy in any way.
 
 ## Running the Ship of Harkinian
 
