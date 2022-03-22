@@ -17,11 +17,11 @@ sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
-## Additional setup information
+## Additional Setup Information
 
 The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film name followed by a phonetic alphabet code word. The motion-picture name represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, starwars.alpha.
 
-### Using the extraction tool
+### The Extraction Tool
 
 * Open a rom to initiate generating the `oot.otr` archive file.
 * If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
@@ -34,13 +34,13 @@ If you get another message, then you might have selected the wrong rom. Make sur
 
 If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
 
-### Running the Ship of Harkinian
+### Running The Ship of Harkinian
 
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
 
 Currently, DirectX 11 and OpenGL is supported on Windows and Linux. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
-## Take the Survey
+## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?
 Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
 
@@ -48,7 +48,7 @@ Take [this survey](https://retroarchopenhardware.com/survey.php) to increase cha
 
 Official Discord: https://discord.com/invite/BtBmd55HVH
 
-## Building the Ship of Harkinian
+## Building The Ship of Harkinian
 
  1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
@@ -69,7 +69,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  17. Launch `soh.exe`.
 
 ## Troubleshooting the exporter
-- Affirm that you have an `/assets` folder filled with XMLs in the same directory as otrgui.exe
+- Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 
