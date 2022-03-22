@@ -19,7 +19,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
 ## Additional Setup Information
 
-The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film name followed by a phonetic alphabet code word. The motion-picture name represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, `DECKARD ALFA`.
+The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film character followed by a phonetic alphabet code word. The film character represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, `DECKARD ALFA`.
 
 ### The Extraction Tool
 
