@@ -39,10 +39,10 @@ After that, a command-line window should open. Don't worry, this is perfectly no
 
 The whole process can take up to **5 minutes**. Depending on your PC specs, this process may be shorter.
 
-After that, a `Done!` message should show up. At that point, simply press on the `X` of the OTRGUI tool at the top-right.
+After that, a `Done!` message should show up. Close the OTRGUI tool using the `X` button.
 If you get another message, then you might have selected a wrong ROM. Simply retry again with another ROM.
 
-If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep in mind that we do not condome piracy in any way.
+If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep in mind that we do not condone piracy in any way.
 
 ## Running the Ship of Harkinian
 
