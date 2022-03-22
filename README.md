@@ -30,7 +30,7 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 This packaging process can take up to **5 minutes**.
 
 Close the OTRGui when the `Done!` message appears.
-If you get another message, then you might have selected a wrong ROM. Make sure to use a rom consistent with the above checksum.
+If you get another message, then you might have selected the wrong rom. Make sure to use a rom consistent with the above checksum.
 
 If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
 
@@ -54,7 +54,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
- 5. Put your 2020 OoT Debug ROM in the `soh` folder.
+ 5. Put your 2020 OoT debug rom in the `soh` folder.
  6. Launch `soh/fixbaserom.py`.
  7. Launch `soh/extract_baserom.py`.
  8. Copy the `baserom` folder from the `soh` folder into the `OTRExporter` folder.
