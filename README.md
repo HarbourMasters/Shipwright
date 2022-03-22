@@ -23,9 +23,9 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 
 ### Using the extraction tool
 
-* Choose the rom
-* If a second button to choose The Ships folder exists, choose a directory that differs from `OTRGui.exe`
-* Place `oot.otr` beside `soh.exe`
+* Open a rom
+* If a second button exists, use it to choose the game directory. This directory should differ from `OTRGui.exe`
+* When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
 The archival process can take up to **5 minutes**.
 
