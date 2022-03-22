@@ -4,6 +4,7 @@ project(OTRGui)
 set(PLATFORM "Desktop")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/build)
+set(APP_ICON_RESOURCE_WINDOWS ${CMAKE_CURRENT_SOURCE_DIR}/appicon.rc)
 
 add_subdirectory(libs/raylib)
 
@@ -20,7 +21,7 @@ file(GLOB_RECURSE HEADERS src/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE C_SOURCES src/*.c)
 
-add_executable(${PROJECT_NAME} ${SOURCES} ${C_SOURCES} ${HEADERS})
+add_executable(${PROJECT_NAME} ${SOURCES} ${C_SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/../OTRExporter/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/game" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_SOURCE_DIR}/../soh/assets/xml" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/extractor/xmls" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
