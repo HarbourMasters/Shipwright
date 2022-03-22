@@ -4,11 +4,11 @@ A PC port of OoT allowing you to enjoy the game with modern controls, enhanced r
 
 # Requirements
 
-The Ship of Harkinian cannot be played by itself. It needs assets from an OoT ROM to be able to run. To get the needed assets, we are going to use a tool that does all the work for you. To use it, you will need a few things.
+The Ship of Harkinian cannot be played by itself. It needs assets from an OoT ROM to run. We have a special tool that extracts these assets for you. To use it, you will need a few things.
 
 ### Here's what's needed to run the Ship of Harkinian:
 
-- The latest version of the Ship of Harkinian: ([Available here](https://github.com/HarbourMasters/Shipwright/releases/latest))
+- The Ship of Harkinian: ([Available here](https://github.com/HarbourMasters/Shipwright/releases/latest))
 - A ZRET OoT Debug ROM.
 
 Build date: `zelda@srd022j 03-02-21 00:49:18`
@@ -19,7 +19,7 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 
 ## Extracting the Ship of Harkinian
 
-The Ship of Harkinian tool will be packed in a `.zip` file. It is ***paramount*** that you extract that `.zip` file. We recommend extracting its contents somewhere safe, like in a folder on your Desktop.
+The Ship of Harkinian is packed in a `.zip` file. It is ***paramount*** that you extract that `.zip` file. We recommend extracting its contents somewhere safe, like in a folder on your Desktop.
 
 Once that is done, we are going to run the OTRGUI tool, which will allow us to extract the needed assets from an OoT ROM. Doing this will allow us to play the Ship of Harkinian.
 
@@ -31,13 +31,13 @@ There will be 2 buttons:
  - Open OoT Rom
  - Open Ship Folder
 
-We will start by clicking on `Open OoT Rom`. After doing that, a window should open, asking you to open an OoT ROM. Simply navigate through your folders and find your ZRET OoT Debug ROM that you have obtained legitimately. Simply double-click on the file, and the prompt should close.
+Start by clicking on `Open OoT Rom`. After doing that, a window should open, asking you to open an OoT ROM. Simply navigate through your folders and find your ZRET OoT Debug ROM that you have obtained legitimately. Simply double-click on the file, and the prompt should close.
 
 After that, click on `Open Ship Folder`. Another window will open, but this time, it will ask you to select a folder. Simply select the folder that you extracted from the Ship of Harkinian `.zip` file.
 
 After that, a command-line window should open. Don't worry, this is perfectly normal. The tool will proceed to extract the assets from the ROM and compile them into a format the Ship of Harkinian can understand. 
 
-The whole process can take up to **5 minutes**. Depending on your PC specs, this process might be shorter.
+The whole process can take up to **5 minutes**. Depending on your PC specs, this process may be shorter.
 
 After that, a `Done!` message should show up. At that point, simply press on the `X` of the OTRGUI tool at the top-right.
 If you get another message, then you might have selected a wrong ROM. Simply retry again with another ROM.
@@ -51,8 +51,6 @@ Simply double-click on `soh.exe` to launch the game. If the window immediately c
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
 # Building the Ship of Harkinian
-
-Please only follow those steps if you are a developer planning on helping with the project.
 
  1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
