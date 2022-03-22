@@ -6,7 +6,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 
 ## Quick Start
 
-1) Download [The Ship of Harkinian](https://github.com/HarbourMasters/Shipwright/releases/latest)) from releases.
+1) Download [The Ship of Harkinian](https://github.com/HarbourMasters/Shipwright/releases/latest) from releases.
 2) Get a ZRET OoT Debug ROM
 ```
 Build date: `zelda@srd022j 03-02-21 00:49:18`
