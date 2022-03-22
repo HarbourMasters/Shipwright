@@ -68,12 +68,12 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  16. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  17. Launch `soh.exe`.
 
-## Troubleshooting the exporter
+## Troubleshooting The Exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 
-## The harbour masters are...
+## The Harbour Masters Are...
 
     Kenix 			| Lead Developer/Public Relations - Resource Management Programmer, Audio System Programmer, and General Programmer
     Jack Walker 		| Lead Developer - OTR Format Programmer, Resource Load Programmer, and General Programmer
