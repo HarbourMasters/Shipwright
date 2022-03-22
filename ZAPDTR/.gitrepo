@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = https://github.com/HarbourMasters/ZAPDTR.git
+	branch = master
+	commit = a53a53ea4216b926253dde2c942ae0ca6e2f2ccd
+	parent = f52a2a6406eb1bbd2b631c65923d879a83983ccb
+	method = rebase
+	cmdver = 0.4.1
