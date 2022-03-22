@@ -34,32 +34,20 @@ public:
 
 	static void CreateDirectory(const std::string& path)
 	{
-
-#ifdef _MSC_VER
-		std::string splitChar = "\\";
-#else
-		std::string splitChar = "/";
-#endif
-
-		std::string curPath;
-		std::vector<std::string> split = StringHelper::Split(path, splitChar);
-
-		for (std::string s : split)
+		try
 		{
-			curPath += s + splitChar;
-
-			if (!Exists(curPath))
-				fs::create_directory(curPath);
+			fs::create_directories(path);
 		}
-
-		// fs::create_directory(path);
+		catch (...)
+		{
+		}
 	}
 
 	static std::vector<std::string> ListFiles(const std::string& dir)
 	{
 		std::vector<std::string> lst;
 
-		if (Directory::Exists(dir))
+		if (Exists(dir))
 		{
 			for (auto& p : fs::recursive_directory_iterator(dir))
 			{

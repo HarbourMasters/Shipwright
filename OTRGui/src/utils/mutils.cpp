@@ -148,8 +148,12 @@ namespace MoonUtils {
         if(!fs::is_directory(path)) return;
         for (auto& p : fs::directory_iterator(path)){
             string fpath = p.path().string();
-            files.push_back(normalize(fpath));
-            dirscan(fpath, files);
+            if(fs::is_directory(fpath))
+            {
+                dirscan(fpath, files);
+            } else {
+                files.push_back(normalize(fpath));
+            }
         }
     }
 
