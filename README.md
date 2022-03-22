@@ -1,6 +1,6 @@
 # Welcome to the Ship of Harkinian!
 
-A PC port of OoT allowing you to enjoy the game with modern controls, widescreen, high-resolution, gyroscopy and a other great features! Setup is simple, let's get started!
+A PC port of OoT allowing you to enjoy the game with modern controls, widescreen, high-resolution, gyroscopy and other great features! Setup is simple, let's get started!
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
