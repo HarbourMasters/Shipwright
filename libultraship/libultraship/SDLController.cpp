@@ -63,38 +63,9 @@ namespace Ship {
                 if (Conf[ConfSection]["GUID"].compare("") == 0 || Conf[ConfSection]["GUID"].compare(INVALID_SDL_CONTROLLER_GUID) == 0 || Conf[ConfSection]["GUID"].compare(NewGuid) == 0) {
                     auto NewCont = SDL_GameControllerOpen(i);
 
-                    if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO)){
-                        float gyroData[3];
-                        SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
-
-                        const char* contName = SDL_GameControllerName(Cont);
-                        const int isSpecialController = strcmp("PS5 Controller", contName);
-                        const float gyroSensitivity = Game::Settings.controller.gyro_sensitivity;
-
-                        if (gyroDriftX == 0) {
-                            if (isSpecialController == 0) {
-                                gyroDriftX = gyroData[2];
-                            }
-                            else {
-                                gyroDriftX = gyroData[0];
-                            }
-                        }
-
-                        if (gyroDriftY == 0) {
-                            gyroDriftY = gyroData[1];
-                        }
-
-                        if (isSpecialController == 0) {
-                            wGyroX = gyroData[2] - gyroDriftX;
-                        }
-                        else {
-                            wGyroX = gyroData[0] - gyroDriftX;
-                        }
-
-                        wGyroY = gyroData[1] - gyroDriftY;
-
-                        wGyroX *= gyroSensitivity;
-                        wGyroY *= gyroSensitivity;
+                    if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO))
+                    {
+                        SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
                     }
 
                     // We failed to load the controller. Go to next.
@@ -216,6 +187,7 @@ namespace Ship {
 
             const char* contName = SDL_GameControllerName(Cont);
             const int isSpecialController = strcmp("PS5 Controller", contName);
+            const float gyroSensitivity = Game::Settings.controller.gyro_sensitivity;
 
             if (gyroDriftX == 0) {
                 if (isSpecialController == 0) {
@@ -238,6 +210,9 @@ namespace Ship {
             }
 
             wGyroY = gyroData[1] - gyroDriftY;
+
+            wGyroX *= gyroSensitivity;
+            wGyroY *= gyroSensitivity;
         }
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
