@@ -1,56 +1,54 @@
 # Welcome to the Ship of Harkinian!
 
-A PC port of OoT allowing you to enjoy the game with modern controls, enhanced resolution, and a bunch of new features! Setup is simple, let's get started!
+A PC port of OoT allowing you to enjoy the game with modern controls, widescreen, high-resolution, gyroscopy and a other great features! Setup is simple, let's get started!
 
-# Requirements
+The Ship does not include assets and as such requires a prior copy of the game to play.
 
-The Ship of Harkinian cannot be played by itself. It needs assets from an OoT ROM to run. We have a special tool that extracts these assets for you. To use it, you will need a few things.
-
-### Here's what's needed to run the Ship of Harkinian:
+## Quick Start
 
 - The Ship of Harkinian: ([Available here](https://github.com/HarbourMasters/Shipwright/releases/latest))
 - A ZRET OoT Debug ROM.
 
 Build date: `zelda@srd022j 03-02-21 00:49:18`
 
-sha1: `CEE6BC3C2A634B41728F2AF8DA54D9BF8CC14099`
+sha1: `cee6bc3c2a634b41728f2af8da54d9bf8cc14099`
 
-The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film name and a color. The motion-picture name represents a **Major** release version which increments with the addition of many new features and bug fixes. The color represents a **Minor** release version which increments with small updates mainly comprised of bug fixes.
+The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film name followed by a phonetic alphabet code word. The motion-picture name represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, starwars.alpha.
 
-## Extracting the Ship of Harkinian
+#### Unzip The Ship
 
-The Ship of Harkinian is packed in a `.zip` file. It is ***paramount*** that you extract that `.zip` file. We recommend extracting its contents somewhere safe, like in a folder on your Desktop.
+* Unzip the packed `.zip` file. Desktop, Documents, Downloads etc.
+* Run the OTRGui tool to generate the `oot.otr` archive file from your legitimate copy of the game.
 
-Once that is done, we are going to run the OTRGUI tool, which will allow us to extract the needed assets from an OoT ROM. Doing this will allow us to play the Ship of Harkinian.
+#### Using the extraction tool
 
-## Using the extraction tool
+* Choose the rom
+* If a second button to choose The Ships folder exists, choose a directory that differs from `OTRGui.exe`
+* Place `oot.otr` beside `soh.exe`
 
-Launch `OTRGui.exe` by double-clicking it. Once the OTRGUI tool has launched, you will be met with a classy, yet easy-to-use interface.
-There will be 2 buttons:
+The archival process can take up to **5 minutes**.
 
- - Open OoT Rom
- - Open Ship Folder
+Close the OTRGui when the `Done!` message appears.
+If you get another message, then you might have selected a wrong ROM. Make sure to use a rom consistent with the above checksum.
 
-Start by clicking on `Open OoT Rom`. After doing that, a window should open, asking you to open an OoT ROM. Simply navigate through your folders and find your ZRET OoT Debug ROM that you have obtained legitimately. Simply double-click on the file, and the prompt should close.
+If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
 
-After that, click on `Open Ship Folder`. Another window will open, but this time, it will ask you to select a folder. Simply select the folder that you extracted from the Ship of Harkinian `.zip` file.
+#### Running the Ship of Harkinian
 
-After that, a command-line window should open. Don't worry, this is perfectly normal. The tool will proceed to extract the assets from the ROM and compile them into a format the Ship of Harkinian can understand. 
-
-The whole process can take up to **5 minutes**. Depending on your PC specs, this process may be shorter.
-
-After that, a `Done!` message should show up. Close the OTRGUI tool using the `X` button.
-If you get another message, then you might have selected a wrong ROM. Simply retry again with another ROM.
-
-If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep in mind that we do not condone piracy in any way.
-
-## Running the Ship of Harkinian
-
-Simply double-click on `soh.exe` to launch the game. If the window immediately closes, or if there are visual artifacts, you might have selected a wrong ROM in the OTRGUI tool. Simply retry again with another ROM. 
+Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
-# Building the Ship of Harkinian
+## Take the Survey
+Want to use cartridge readers in tandem with the OTRGui?
+Take this survey to increase chances of it becoming reality.
+https://retroarchopenhardware.com/survey.php
+
+## Discord
+
+Official Discord: https://discord.com/invite/BtBmd55HVH
+
+## Building the Ship of Harkinian
 
  1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
@@ -70,12 +68,12 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
  16. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  17. Launch `soh.exe`.
 
-# Troubleshooting the exporter
+## Troubleshooting the exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as otrgui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 
-# The harbour masters are...
+## The harbour masters are...
 
     Kenix 			| Lead Developer/Public Relations - Resource Management Programmer, Audio System Programmer, and General Programmer
     Jack Walker 		| Lead Developer - OTR Format Programmer, Resource Load Programmer, and General Programmer
@@ -89,7 +87,7 @@ Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
     Theo3 			| Developer - General Programmer
 	Random06457  		| Developer - Linux Build
 
-# Special Thanks
+## Special Thanks
 
     Decomp & ZAPD 		| Made this project even possible in the first place!
     MNGoldenEagle 		| Patiently explained audio data formats, encouragement, and founding ZSO which was the first source of the game's code and resource format documentation.
