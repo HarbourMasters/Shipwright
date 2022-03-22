@@ -13,7 +13,7 @@ Build date: `zelda@srd022j 03-02-21 00:49:18`
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
 3) Use the OTRGui to generate an `oot.otr` archive file.
-4) If the archive is beside `soh.exe` then you are good to go!
+4) Launch `soh.exe`
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
