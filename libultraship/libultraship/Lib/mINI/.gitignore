@@ -1,0 +1,7 @@
+*~
+*.swp
+*.swo
+*.vim
+/tests/*.ini
+/tests/*.test
+/tests/*.exe

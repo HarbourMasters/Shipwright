@@ -1,0 +1,25 @@
+To build a test, use:
+
+  build [testname]
+
+Examples:
+
+  build testread
+  build testwrite
+
+------------------------------------------------------------
+
+To run a test, use:
+
+  run [testname]
+
+Examples:
+
+  run testread
+  run testwrite
+
+------------------------------------------------------------
+
+To cleanup all test files:
+
+  clean
