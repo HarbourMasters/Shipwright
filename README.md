@@ -24,7 +24,7 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 ### Using the extraction tool
 
 * Open a rom to initiate generating the `oot.otr` archive file.
-* If a second button exists then `oot.otr` already exists. To prevent overwriting the old otr use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
+* If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
 This packaging process can take up to **5 minutes**.
