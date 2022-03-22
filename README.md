@@ -91,7 +91,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 
     Decomp & ZAPD 		| Made this project even possible in the first place!
     MNGoldenEagle 		| Patiently explained audio data formats, encouragement, and founding ZSO which was the first source of the game's code and resource format documentation.
-    Rrrrry123 		| Speedbunner, encouragement, and community moderation
+    Rrrrry123 		| Speedrunner, encouragement, and community moderation
     Fierce deity 		| Encouragement and community moderation
     mzxrules		| For his contributions to decomp
     Aloxado 		| Developer - General Programmer
