@@ -7,9 +7,10 @@ The Ship does not include assets and as such requires a prior copy of the game t
 ## Quick Start
 
 1) Download The Ship of Harkinian from Discord.
-2) Get a ZRET OoT Debug ROM
+2) Requires an `oot debug` rom (not Master Quest).
 ```
-Build date: `zelda@srd022j 03-02-21 00:49:18`
+Build team: `zelda@srd022j`
+Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
 3) Use the OTRGui to generate an `oot.otr` archive file.
