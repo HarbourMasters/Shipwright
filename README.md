@@ -36,7 +36,7 @@ If you still cannot get the tool to work, join our [Discord Server](https://disc
 
 ### Running The Ship of Harkinian
 
-Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
+Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool.
 
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
@@ -50,6 +50,8 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 
 ## Building The Ship of Harkinian
 
+### Windows
+
  1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
@@ -60,13 +62,42 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  8. Copy the `baserom` folder from the `soh` folder into the `OTRExporter` folder.
  9. Run `OTRExporter/OTRExporter.sln`.
  10. Switch the solution to `Release x64`.
- 11. Build the solution. 
+ 11. Build the solution.
  12. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
  13. Run `soh/soh.sln`
  14. Switch the solution to `Release x86`.
  15. Build the solution.
  16. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  17. Launch `soh.exe`.
+
+### Linux
+
+```bash
+# Clone the repo
+git clone git@github.com:HarbourMasters/ShipWright.git
+cd ShipWright
+# Copy the baserom to the soh folder
+cp .../baserom_non_mq.z64 soh
+# Build the docker image
+sudo docker build . -t soh
+# Run the docker image with the working directory mounted to /soh
+sudo docker run --rm -it -v $(pwd):/soh soh /bin/bash
+```
+Inside the Docker container:
+```bash
+# Clone and build StormLib
+git clone https://github.com/ladislav-zezula/StormLib external/StormLib
+cmake -B external/StormLib/build -S external/StormLib
+cmake --build external/StormLib/build
+cp external/StormLib/build/libstorm.a external
+cp /usr/local/lib/libGLEW.a external
+
+cd soh
+# Extract the assets/Compile the exporter/Run the exporter
+make setup -j$(nproc)
+# Compile the code
+make -j $(nproc)
+```
 
 ## Troubleshooting The Exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
