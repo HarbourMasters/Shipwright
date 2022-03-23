@@ -14,7 +14,7 @@ extern "C"
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
-#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, __VA_ARGS__)
+#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
 
 f32 fabsf(f32 f);
@@ -382,7 +382,7 @@ s32 Flags_GetCollectible(GlobalContext* globalCtx, s32 flag);
 void Flags_SetCollectible(GlobalContext* globalCtx, s32 flag);
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height);
-void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
+void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay);
 s32 func_8002D53C(GlobalContext* globalCtx, TitleCardContext* titleCtx);
 void Actor_Kill(Actor* actor);

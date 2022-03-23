@@ -45,8 +45,8 @@ protected:
         }
         formatted.push_back('\0');
         const char *msg_output = formatted.data();
-        if (Game::Settings.debug.soh_sink && SohImGui::console->opened) 
-            SohImGui::console->Append("SoH Logging", priority, msg_output);
+        if (Game::Settings.debug.soh_sink && SohImGui::console->opened)
+            SohImGui::console->Append("SoH Logging", priority, "%s", msg_output);
     }
 
     void flush_() override {}
@@ -66,6 +66,8 @@ private:
                 return Priority::ERROR_LVL;
             case spdlog::level::critical:
                 return Priority::ERROR_LVL;
+            default:
+                break;
         }
         return Priority::LOG_LVL;
     }

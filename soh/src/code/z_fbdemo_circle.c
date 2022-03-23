@@ -19,9 +19,9 @@ Gfx __sCircleDList[] = {
                      G_AC_NONE | G_ZS_PIXEL | G_RM_XLU_SURF | G_RM_XLU_SURF2),                                      // 4
     gsDPSetCombineMode(G_CC_BLENDPEDECALA, G_CC_BLENDPEDECALA),                                                     // 5
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),                                                          // 6
-    gsDPLoadTextureBlock(0xF8000000, G_IM_FMT_I, G_IM_SIZ_8b, 16, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,                 // 7
+    gsDPLoadTextureBlock(0x08000001, G_IM_FMT_I, G_IM_SIZ_8b, 16, 64, 0, G_TX_NOMIRROR | G_TX_WRAP,                 // 7
                          G_TX_NOMIRROR | G_TX_CLAMP, 4, 6, G_TX_NOLOD, G_TX_NOLOD),
-    gsSPDisplayList(0xF9000000),                                                                                    // 8
+    gsSPDisplayList(0x09000001),                                                                                    // 8
     gsSPVertex(sCircleWipeVtx, 32, 0),                                                                              // 9
     gsSP2Triangles(0, 1, 2, 0, 1, 3, 4, 0),                                                                         // 10
     gsSP2Triangles(3, 5, 6, 0, 5, 7, 8, 0),                                                                         // 11

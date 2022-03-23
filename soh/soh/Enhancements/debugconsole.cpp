@@ -18,7 +18,7 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-#include "cvar.h"
+#include "Cvar.h"
 
 #define CMD_REGISTER SohImGui::BindCmd
 

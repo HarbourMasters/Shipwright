@@ -7,13 +7,13 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
 #include "textures/place_title_cards/g_pn_01.h"
 #include "textures/place_title_cards/g_pn_02.h"

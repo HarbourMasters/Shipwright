@@ -56,8 +56,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_Init(impl.dx11.window);
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -67,8 +71,13 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_Init("#version 120");
             break;
+
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_Init(static_cast<ID3D11Device*>(impl.dx11.device), static_cast<ID3D11DeviceContext*>(impl.dx11.device_context));
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -78,8 +87,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_WndProcHandler(static_cast<HWND>(event.win32.handle), event.win32.msg, event.win32.wparam, event.win32.lparam);
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -89,8 +102,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(impl.sdl.window));
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_NewFrame();
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -100,8 +117,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_NewFrame();
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_NewFrame();
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -111,8 +132,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_RenderDrawData(data);
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_RenderDrawData(data);
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -121,19 +146,21 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::SDL:
             return true;
+        default:
+            return false;
         }
-        return false;
     }
 
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
             return true;
+        default:
+            return false;
         }
-        return false;
     }
 
-    void SohImGui::ShowCursor(bool hide, Dialogues d) {
+    void ShowCursor(bool hide, Dialogues d) {
         if (d == Dialogues::dLoadSettings) {
             GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(hide);
             return;
@@ -219,8 +246,11 @@ namespace SohImGui {
         ImGuiProcessEvent(event);
     }
 
+#ifdef ENABLE_DX11
 #define BindButton(btn, status) ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets[btn]->textureId) : (ImTextureID)(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
-
+#else
+#define BindButton(btn, status) ImGui::Image((ImTextureID)(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
+#endif
     void BindAudioSlider(const char* name, const char* key, float* value, SeqPlayers playerId) {
         ImGui::Text(name, static_cast<int>(100 * *(value)));
         if (ImGui::SliderFloat((std::string("##") + key).c_str(), value, 0.0f, 1.0f, "")) {
@@ -278,7 +308,11 @@ namespace SohImGui {
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
+#ifdef ENABLE_DX11
                 ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets["Game_Icon"]->textureId) : reinterpret_cast<ImTextureID>(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+#else
+                ImGui::Image(reinterpret_cast<ImTextureID>(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+#endif
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -407,7 +441,11 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
 
+#ifdef _MSC_VER
             ImGui::Text("Platform: Windows");
+#else
+            ImGui::Text("Platform: Linux");
+#endif
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
             if (UseInternalRes()) {
                 ImGui::Text("Internal Resolution:");

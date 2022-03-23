@@ -46,6 +46,7 @@ namespace Ship
 
 	private:
 		std::weak_ptr<GlobalCtx2> Context;
+		volatile bool bIsRunning;
 		std::map<std::string, std::shared_ptr<File>> FileCache;
 		std::map<std::string, std::shared_ptr<Resource>> ResourceCache;
 		std::queue<std::shared_ptr<File>> FileLoadQueue;
@@ -57,6 +58,5 @@ namespace Ship
 		std::mutex ResourceLoadMutex;
 		std::condition_variable FileLoadNotifier;
 		std::condition_variable ResourceLoadNotifier;
-		volatile bool bIsRunning;
 	};
 }

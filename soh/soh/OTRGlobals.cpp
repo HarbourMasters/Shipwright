@@ -10,10 +10,14 @@
 #include "Window.h"
 #include "z64animation.h"
 #include "z64bgcheck.h"
-#include "../soh/enhancements/gameconsole.h"
+#include "Enhancements/gameconsole.h"
 #include <ultra64/gbi.h>
 #include <Animation.h>
+#ifdef _MSC_VER
 #include <Windows.h>
+#else
+#include <time.h>
+#endif
 #include <Vertex.h>
 #include <CollisionHeader.h>
 #include <Array.h>
@@ -21,7 +25,8 @@
 #include <Texture.h>
 #include "Lib/stb/stb_image.h"
 #include "AudioPlayer.h"
-#include "../soh/Enhancements/debugconsole.h"
+#include "Enhancements/debugconsole.h"
+#include "macros.h"
 
 OTRGlobals* OTRGlobals::Instance;
 
@@ -46,6 +51,7 @@ extern "C" void InitOTR() {
     DebugConsole_Init();
 }
 
+#ifdef _MSC_VER
 extern "C" uint64_t GetFrequency() {
     LARGE_INTEGER nFreq;
 
@@ -60,6 +66,21 @@ extern "C" uint64_t GetPerfCounter() {
 
     return ticks.QuadPart;
 }
+#else
+extern "C" uint64_t GetFrequency() {
+    return 1000; // sec -> ms
+}
+
+extern "C" uint64_t GetPerfCounter() {
+    struct timespec monotime;
+    clock_gettime(CLOCK_MONOTONIC, &monotime);
+
+    uint64_t remainingMs = (monotime.tv_nsec / 1000000);
+
+    // in milliseconds
+    return monotime.tv_sec * 1000 + remainingMs;
+}
+#endif
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
@@ -208,7 +229,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(char* path) {
 
     if (res->cachedGameAsset != nullptr)
         return (char*)res->cachedGameAsset;
-    else 
+    else
     {
         Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
 
@@ -328,7 +349,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
 	uintptr_t i = (uintptr_t)(imgData);
 
-    if (i == 0xD9000000 || i == 0xE7000000 || (i & 0xF0000000) == 0xF0000000)
+    if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
         return 0;
 
     if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
@@ -722,24 +743,24 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)_byteswap_ulong((u32)swappable->sample);
-    swappable->tuningAsU32 = _byteswap_ulong((u32)swappable->tuningAsU32);
+    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)swappable->sample);
+    swappable->tuningAsU32 = BOMSWAP32((u32)swappable->tuningAsU32);
 }
 
 extern "C" void bswapDrum(Drum* swappable) {
     bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)_byteswap_ulong((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
 }
 
 extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)_byteswap_ulong((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
     bswapSoundFontSound(&swappable->lowNotesSound);
     bswapSoundFontSound(&swappable->normalNotesSound);
     bswapSoundFontSound(&swappable->highNotesSound);
 }
 
 extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
-    u32 origBitfield = _byteswap_ulong(swappable->asU32);
+    u32 origBitfield = BOMSWAP32(swappable->asU32);
 
     swappable->codec = (origBitfield >> 28) & 0x0F;
     swappable->medium = (origBitfield >> 24) & 0x03;
@@ -747,29 +768,29 @@ extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
     swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
     swappable->size = (origBitfield) & 0x00FFFFFF;
 
-    swappable->sampleAddr = (u8*)_byteswap_ulong((u32)swappable->sampleAddr);
-    swappable->loop = (AdpcmLoop*)_byteswap_ulong((u32)swappable->loop);
-    swappable->book = (AdpcmBook*)_byteswap_ulong((u32)swappable->book);
+    swappable->sampleAddr = (u8*)BOMSWAP32((u32)swappable->sampleAddr);
+    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)swappable->loop);
+    swappable->book = (AdpcmBook*)BOMSWAP32((u32)swappable->book);
 }
 
 extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
-    swappable->start = (u32)_byteswap_ulong((u32)swappable->start);
-    swappable->end = (u32)_byteswap_ulong((u32)swappable->end);
-    swappable->count = (u32)_byteswap_ulong((u32)swappable->count);
+    swappable->start = (u32)BOMSWAP32((u32)swappable->start);
+    swappable->end = (u32)BOMSWAP32((u32)swappable->end);
+    swappable->count = (u32)BOMSWAP32((u32)swappable->count);
 
     if (swappable->count != 0) {
         for (int i = 0; i < 16; i++) {
-            swappable->state[i] = (s16)_byteswap_ushort(swappable->state[i]);
+            swappable->state[i] = (s16)BOMSWAP16(swappable->state[i]);
         }
     }
 }
 
 extern "C" void bswapAdpcmBook(AdpcmBook* swappable) {
-    swappable->order = (u32)_byteswap_ulong((u32)swappable->order);
-    swappable->npredictors = (u32)_byteswap_ulong((u32)swappable->npredictors);
+    swappable->order = (u32)BOMSWAP32((u32)swappable->order);
+    swappable->npredictors = (u32)BOMSWAP32((u32)swappable->npredictors);
 
     for (int i = 0; i < swappable->npredictors * swappable->order * sizeof(s16) * 4; i++)
-        swappable->book[i] = (s16)_byteswap_ushort(swappable->book[i]);
+        swappable->book[i] = (s16)BOMSWAP16(swappable->book[i]);
 }
 
 extern "C" bool AudioPlayer_Init(void) {

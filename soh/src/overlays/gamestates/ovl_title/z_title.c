@@ -29,7 +29,7 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
 #ifdef _MSC_VER
     GfxPrint_Printf(&printer, "MSVC SHIP");
 #else
-    GfxPrint_Printf(printer, "GCC SHIP");
+    GfxPrint_Printf(&printer, "GCC SHIP");
 #endif
 
     GfxPrint_SetColor(&printer, 255, 255, 255, 255);

@@ -3,7 +3,9 @@
 
 //#include <string.h>
 
+#ifdef _MSC_VER
 extern void* __cdecl memset(_Out_writes_bytes_all_(_Size) void* _Dst, _In_ int _Val, _In_ size_t _Size);
+#endif
 
 s32 D_8012D280 = 1;
 

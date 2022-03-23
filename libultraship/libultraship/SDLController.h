@@ -24,8 +24,8 @@ namespace Ship {
 			static bool IsGuidInUse(const std::string& guid);
 
 		private:
-			std::string guid;
 			SDL_GameController* Cont;
+			std::string guid;
 			std::map<int32_t, int16_t> ThresholdMapping;
 
 			void LoadAxisThresholds();

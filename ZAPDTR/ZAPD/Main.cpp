@@ -27,6 +27,21 @@
 //extern const char gBuildHash[];
 const char gBuildHash[] = "";
 
+// linux todo: remove, those are because of soh <-> lus dependency problems
+float divisor_num = 0.0f;
+
+extern "C" void Audio_SetGameVolume(int player_id, float volume)
+{
+
+}
+
+
+extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
+{
+
+}
+
+
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode);
 

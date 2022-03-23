@@ -21,7 +21,7 @@ void ZText::ParseRawData()
 	const auto& rawData = parent->GetRawData();
 	uint32_t currentPtr = StringHelper::StrToL(registeredAttributes.at("CodeOffset").value, 16);
 
-	std::vector<uint8_t> codeData = File::ReadAllBytes(Globals::Instance->baseRomPath.string() + "\\code");
+	std::vector<uint8_t> codeData = File::ReadAllBytes((Globals::Instance->baseRomPath / "code").string());
 
 	// In some cases with the multi-process extractor it seems that it fails to read the code file if something else is reading from it at the same time.
 	while (codeData.size() == 0)

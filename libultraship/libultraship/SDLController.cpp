@@ -333,11 +333,12 @@ namespace Ship {
 
     void SDLController::WriteToSource(ControllerCallback* controller)
     {
-        if (SDL_GameControllerHasRumble(Cont)) {
-            if (controller->rumble > 0) {
-                SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 1);
-            }
-        }
+        // MERGETODO
+        // if (SDL_GameControllerHasRumble(Cont)) {
+        //     if (controller->rumble > 0) {
+        //         SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 1);
+        //     }
+        // }
 
         if (SDL_GameControllerHasLED(Cont)) {
             if (controller->ledColor == 1) {

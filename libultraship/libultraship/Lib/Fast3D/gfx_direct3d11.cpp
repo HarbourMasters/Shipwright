@@ -86,12 +86,12 @@ struct ShaderProgramD3D11 {
 static struct {
     HMODULE d3d11_module;
     PFN_D3D11_CREATE_DEVICE D3D11CreateDevice;
-    
+
     HMODULE d3dcompiler_module;
     pD3DCompile D3DCompile;
-    
+
     D3D_FEATURE_LEVEL feature_level;
-    
+
     ComPtr<ID3D11Device> device;
     ComPtr<IDXGISwapChain1> swap_chain;
     ComPtr<ID3D11DeviceContext> context;

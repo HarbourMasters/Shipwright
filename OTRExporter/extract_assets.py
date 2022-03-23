@@ -10,13 +10,13 @@ def SignalHandler(sig, frame):
     # Don't exit immediately to update the extracted assets file.
 
 def BuildOTR():
-    shutil.copyfile("baserom/Audiobank", "Extract/Audiobank")
-    shutil.copyfile("baserom/Audioseq", "Extract/Audioseq")
-    shutil.copyfile("baserom/Audiotable", "Extract/Audiotable")
+    shutil.copyfile("../soh/baserom/Audiobank", "Extract/Audiobank")
+    shutil.copyfile("../soh/baserom/Audioseq", "Extract/Audioseq")
+    shutil.copyfile("../soh/baserom/Audiotable", "Extract/Audiotable")
 
     shutil.copytree("assets", "Extract/assets")
 
-    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPD/ZAPD.out"
+    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
 
     execStr += " botr -se OTR"
 
@@ -29,8 +29,8 @@ def BuildOTR():
         print("\n")
 
 def ExtractFile(xmlPath, outputPath, outputSourcePath):
-    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPD/ZAPD.out"
-    execStr += " e -eh -i %s -b baserom/ -o %s -osf %s -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, outputPath, outputSourcePath)
+    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
+    execStr += " e -eh -i %s -b ../soh/baserom/ -o %s -osf %s -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, outputPath, outputSourcePath)
 
     if "overlays" in xmlPath:
         execStr += " --static"
@@ -48,7 +48,7 @@ def ExtractFunc(fullPath):
     *pathList, xmlName = fullPath.split(os.sep)
     objectName = os.path.splitext(xmlName)[0]
 
-    outPath = os.path.join("..\\soh\\assets\\", *pathList[4:], objectName)
+    outPath = os.path.join("../soh/assets/", *pathList[4:], objectName)
     os.makedirs(outPath, exist_ok=True)
     outSourcePath = outPath
 
@@ -75,7 +75,7 @@ def main():
 
     asset_path = args.single
     if asset_path is not None:
-        fullPath = os.path.join("..\\soh\\assets", "xml", asset_path + ".xml")
+        fullPath = os.path.join("../soh/assets", "xml", asset_path + ".xml")
         if not os.path.exists(fullPath):
             print(f"Error. File {fullPath} doesn't exists.", file=os.sys.stderr)
             exit(1)
@@ -90,7 +90,7 @@ def main():
             extract_staff_text_path = None
 
         xmlFiles = []
-        for currentPath, _, files in os.walk(os.path.join("..\\soh\\assets", "xml")):
+        for currentPath, _, files in os.walk(os.path.join("../soh/assets", "xml")):
             for file in files:
                 fullPath = os.path.join(currentPath, file)
                 if file.endswith(".xml"):

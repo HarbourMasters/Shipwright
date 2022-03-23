@@ -25,6 +25,10 @@ docs/doxygen/
 *.map
 *.dump
 out.txt
+shipofharkinian.ini
+imgui.ini
+oot.otr
+oot_save.sav
 
 # Tool artifacts
 tools/mipspro7.2_compiler/

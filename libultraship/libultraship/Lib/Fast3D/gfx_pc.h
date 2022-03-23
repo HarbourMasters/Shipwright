@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unordered_map>
+#include <list>
 
 struct GfxRenderingAPI;
 struct GfxWindowManagerAPI;
