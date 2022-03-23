@@ -37,7 +37,7 @@ void BuildOTR(const std::string output) {
 	}
 	setCurrentStep("Done!");
 
-	if (output == ".") return;
+	if (output == "MAIN" || Util::normalize(output) == Util::normalize(fs::current_path().string())) return;
 	const std::string outputPath = MoonUtils::join(output, "oot.otr");
 	if(MoonUtils::exists(outputPath)) MoonUtils::rm(outputPath);
 
@@ -73,7 +73,7 @@ void startWorker() {
 	const int num_threads = std::thread::hardware_concurrency();
 	ctpl::thread_pool pool(num_threads / 2);
 	for(auto &file : files) {
-		if (file.find(".xml") != std::string::npos) xmlFiles.push_back(file);
+		if (MoonUtils::endsWith(file, ".xml")) xmlFiles.push_back(file);
 	}
 
 	for (auto& file : xmlFiles) {
