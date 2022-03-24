@@ -147,8 +147,8 @@ namespace Ship {
         //bound diagonals to an octagonal range {-68 ... +68}
         if (ax != 0.0 && ay != 0.0) {
             auto slope = ay / ax;
-            auto edgex = copysign(85.0 / (abs(slope) + wAxisThreshold / 69.0), ax);
-            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + wAxisThreshold / 69.0)), ay);
+            auto edgex = copysign(85.0 / (abs(slope) + 16.0 / 69.0), ax);
+            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + 16.0 / 69.0)), ay);
             edgex = edgey / slope;
 
             auto scale = sqrt(edgex * edgex + edgey * edgey) / 85.0;
