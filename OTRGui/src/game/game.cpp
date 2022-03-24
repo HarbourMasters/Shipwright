@@ -116,7 +116,7 @@ void OTRGame::draw() {
 		DrawTexture(titleTex, windowSize.x / 2 - titleTex.width / 2, titlebar.height / 2 - titleTex.height / 2, WHITE);
 
 		if (UIUtils::GuiIcon("Exit", windowSize.x - 36, titlebar.height / 2 - 10) && (extracting && currentStep.find("Done") != std::string::npos || !extracting)) {
-			CloseWindow();
+			closeRequested = true;
 		}
 
 		BeginMode3D(camera);
@@ -157,7 +157,7 @@ void OTRGame::draw() {
 			UIUtils::GuiShadowText(currentStep.c_str(), 0, windowSize.y / 2, 10, WHITE, BLACK, windowSize.x, true);
 		}
 
-    EndDrawing();
+	EndDrawing();
 }
 
 void setCurrentStep(const std::string& step) {
