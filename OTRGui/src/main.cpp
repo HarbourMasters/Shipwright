@@ -18,7 +18,7 @@ void UpdateDrawFrame(void) {
 
 int main() {
 	constexpr Vector2 windowSize = Vector2(400, 200);
-    SetTargetFPS(144);
+    SetConfigFlags(FLAG_VSYNC_HINT);
     SetConfigFlags(FLAG_WINDOW_HIGHDPI);
     SetConfigFlags(FLAG_WINDOW_UNDECORATED);
     SetConfigFlags(FLAG_MSAA_4X_HINT);
