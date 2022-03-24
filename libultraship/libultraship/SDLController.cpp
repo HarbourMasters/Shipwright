@@ -336,11 +336,19 @@ namespace Ship {
         }
 
         if (SDL_GameControllerHasLED(Cont)) {
-            if (controller->ledColor == 1) {
+            switch (controller->ledColor) {
+            case 0:
                 SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 255, 0, 0);
-            }
-            else {
-                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0, 255, 0);
+                break;
+            case 1:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x00, 0x3C, 0x64);
+                break;
             }
         }
     }
