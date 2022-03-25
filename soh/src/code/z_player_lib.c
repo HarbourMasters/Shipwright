@@ -1590,7 +1590,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     sp12C[0] = sword;
     sp12C[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVar_GetS32("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVar_GetS32("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
