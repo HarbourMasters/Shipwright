@@ -129,8 +129,8 @@ void Message_ResetOcarinaNoteState(void) {
         sOcarinaNotesAlphaValues[3] = sOcarinaNotesAlphaValues[4] = sOcarinaNotesAlphaValues[5] =
             sOcarinaNotesAlphaValues[6] = sOcarinaNotesAlphaValues[7] = sOcarinaNotesAlphaValues[8] = 0;
     sOcarinaNoteAPrimR = 80;
-    sOcarinaNoteAPrimG = 255;
-    sOcarinaNoteAPrimB = 150;
+    sOcarinaNoteAPrimG = 150;
+    sOcarinaNoteAPrimB = 255;
     sOcarinaNoteAEnvR = 10;
     sOcarinaNoteAEnvG = 10;
     sOcarinaNoteAEnvB = 10;
@@ -491,12 +491,12 @@ void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
 
 void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconPrimColors[][3] = {
-        { 0, 200, 80 },
-        { 50, 255, 130 },
+        { 0, 80, 200 },
+        { 50, 130, 255 },
     };
     static s16 sIconEnvColors[][3] = {
         { 0, 0, 0 },
-        { 0, 255, 130 },
+        { 0, 130, 255 },
     };
     static s16 sIconPrimR = 0;
     static s16 sIconPrimG = 200;
@@ -1971,12 +1971,12 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
     };
     static s16 sOcarinaNoteAPrimColors[][3] = {
-        { 80, 255, 150 },
-        { 100, 255, 200 },
+        { 80, 150, 255 },
+        { 100, 200, 255 },
     };
     static s16 sOcarinaNoteAEnvColors[][3] = {
         { 10, 10, 10 },
-        { 50, 255, 50 },
+        { 50, 50, 255 },
     };
     static s16 sOcarinaNoteCPrimColors[][3] = {
         { 255, 255, 50 },
