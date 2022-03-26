@@ -743,8 +743,27 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
-  
-    color = &sTunicColors[tunic];
+    if (tunic == PLAYER_TUNIC_KOKIRI) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", &sTunicColors[PLAYER_TUNIC_KOKIRI].r),
+                             CVar_GetS32("gTunic_Kokiri_Green", &sTunicColors[PLAYER_TUNIC_KOKIRI].g),
+                             CVar_GetS32("gTunic_Kokiri_Blue", &sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_GORON) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Goron_Red", &sTunicColors[PLAYER_TUNIC_GORON].r),
+                             CVar_GetS32("gTunic_Goron_Green", &sTunicColors[PLAYER_TUNIC_GORON].g),
+                             CVar_GetS32("gTunic_Goron_Blue", &sTunicColors[PLAYER_TUNIC_GORON].b) };
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_ZORA) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Zora_Red", &sTunicColors[PLAYER_TUNIC_ZORA].r),
+                             CVar_GetS32("gTunic_Zora_Green", &sTunicColors[PLAYER_TUNIC_ZORA].g),
+                             CVar_GetS32("gTunic_Zora_Blue", &sTunicColors[PLAYER_TUNIC_ZORA].b) };
+        color = &sTemp;
+    } else {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", &sTunicColors[PLAYER_TUNIC_KOKIRI].r),
+                             CVar_GetS32("gTunic_Kokiri_Green", &sTunicColors[PLAYER_TUNIC_KOKIRI].g),
+                             CVar_GetS32("gTunic_Kokiri_Blue", &sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
+        color = &sTemp;
+    }
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
     sDListsLodOffset = lod * 2;
