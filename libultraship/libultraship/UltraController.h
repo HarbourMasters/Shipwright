@@ -120,6 +120,8 @@ typedef struct {
     /* 0x04 */ uint8_t err_no;
     /* 0x05 */ float gyro_x;
     /* 0x09 */ float gyro_y;
+    /* 0x0D */ float cam_x;
+    /* 0x11 */ float cam_y;
 } OSContPad; // size = 0x0D
 
 typedef struct {

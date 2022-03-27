@@ -44,6 +44,9 @@ namespace Ship {
 
 		pad->gyro_x = wGyroX;
 		pad->gyro_y = wGyroY;
+
+		pad->cam_x = wCamX;
+		pad->cam_y = wCamY;
 	}
 
 	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
