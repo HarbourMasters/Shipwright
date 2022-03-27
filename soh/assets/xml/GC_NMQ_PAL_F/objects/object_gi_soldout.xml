@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_soldout" Segment="6">
+        <DList Name="gGiSoldOutDL" Offset="0x0440"/>
+    </File>
+</Root>

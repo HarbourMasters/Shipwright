@@ -1,0 +1,8 @@
+<Root>
+    <File Name="ovl_En_Holl" BaseAddress="0x80A58C10" RangeStart="0xE78" RangeEnd="0xEE0">
+        <Array Name="sPlaneVtx" Count="4" Offset="0xE78">
+            <Vtx/>
+        </Array>
+        <DList Name="sPlaneDL" Offset="0xEB8"/>
+    </File>
+</Root>

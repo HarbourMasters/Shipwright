@@ -1,0 +1,52 @@
+<Root>
+    <File Name="ovl_Boss_Ganon" BaseAddress="0x808D6870" RangeStart="0xE6B8" RangeEnd="0x211D8">
+        <Texture Name="gDorfLightning1Tex" OutName="lightning_1" Format="i8" Width="32" Height="96" Offset="0x11600" Static="Off"/>
+        <Texture Name="gDorfLightning2Tex" OutName="lightning_2" Format="i8" Width="32" Height="96" Offset="0x12200" Static="Off"/>
+        <Texture Name="gDorfLightning3Tex" OutName="lightning_3" Format="i8" Width="32" Height="96" Offset="0x12E00" Static="Off"/>
+        <Texture Name="gDorfLightning4Tex" OutName="lightning_4" Format="i8" Width="32" Height="96" Offset="0x13A00" Static="Off"/>
+        <Texture Name="gDorfLightning5Tex" OutName="lightning_5" Format="i8" Width="32" Height="96" Offset="0x14600" Static="Off"/>
+        <Texture Name="gDorfLightning6Tex" OutName="lightning_6" Format="i8" Width="32" Height="96" Offset="0x15200" Static="Off"/>
+        <Texture Name="gDorfLightning7Tex" OutName="lightning_7" Format="i8" Width="32" Height="96" Offset="0x15E00" Static="Off"/>
+        <Texture Name="gDorfLightning8Tex" OutName="lightning_8" Format="i8" Width="32" Height="96" Offset="0x16A00" Static="Off"/>
+        <Texture Name="gDorfLightning9Tex" OutName="lightning_9" Format="i8" Width="32" Height="96" Offset="0x17600" Static="Off"/>
+        <Texture Name="gDorfLightning10Tex" OutName="lightning_10" Format="i8" Width="32" Height="96" Offset="0x18200" Static="Off"/>
+        <Texture Name="gDorfLightning11Tex" OutName="lightning_11" Format="i8" Width="32" Height="96" Offset="0x18E00" Static="Off"/>
+        <Texture Name="gDorfLightning12Tex" OutName="lightning_12" Format="i8" Width="32" Height="96" Offset="0x19A00" Static="Off"/>
+        
+        <Texture Name="gDorfWindowShatterTemplateTex" OutName="window_shatter_template" Format="ci8" Width="32" Height="64" Offset="0xFD38" Static="Off"/>
+
+        <DList Name="gDorfLightStreak1DL" Offset="0x1FCF0" Static="Off"/>
+        <DList Name="gDorfLightStreak2DL" Offset="0x1FD28" Static="Off"/>
+        <DList Name="gDorfLightStreak3DL" Offset="0x1FD60" Static="Off"/>
+        <DList Name="gDorfLightStreak4DL" Offset="0x1FD98" Static="Off"/>
+        <DList Name="gDorfLightStreak5DL" Offset="0x1FDD0" Static="Off"/>
+        <DList Name="gDorfLightStreak6DL" Offset="0x1FE08" Static="Off"/>
+        <DList Name="gDorfLightStreak7DL" Offset="0x1FE40" Static="Off"/>
+        <DList Name="gDorfLightStreak8DL" Offset="0x1FE78" Static="Off"/>
+        <DList Name="gDorfLightStreak9DL" Offset="0x1FEB0" Static="Off"/>
+        <DList Name="gDorfLightStreak10DL" Offset="0x1FEE8" Static="Off"/>
+        <DList Name="gDorfLightStreak11DL" Offset="0x1FF20" Static="Off"/>
+        <DList Name="gDorfLightStreak12DL" Offset="0x1FF58" Static="Off"/>
+
+        <DList Name="gDorfShadowSetupDL" Offset="0xE6F8" Static="Off"/>
+        <DList Name="gDorfShadowModelDL" Offset="0xE718" Static="Off"/>
+        <DList Name="gDorfTriforceDL" Offset="0xF788" Static="Off"/>
+        <DList Name="gDorfWindowShardMaterialDL" Offset="0xFC78" Static="Off"/>
+        <DList Name="gDorfWindowShardModelDL" Offset="0xFD20" Static="Off"/>
+        <DList Name="gDorfLightBallMaterialDL" Offset="0x11578" Static="Off"/>
+        <DList Name="gDorfSquareDL" Offset="0x115E8" Static="Off"/>
+        <DList Name="gDorfLightningDL" Offset="0x1A640" Static="Off"/>
+        <DList Name="gDorfUnusedDL" Offset="0x1A6F0" Static="Off"/>
+        <DList Name="gDorfLightRayTriDL" Offset="0x1A768" Static="Off"/>
+        <DList Name="gDorfLightFlecksDL" Offset="0x1C1C0" Static="Off"/>
+        <DList Name="gDorfBigMagicBGCircleDL" Offset="0x1C2B0" Static="Off"/>
+        <DList Name="gDorfDotDL" Offset="0x1C358" Static="Off"/>
+        <DList Name="gDorfShockwaveDL" Offset="0x1CDC0" Static="Off"/>
+        <DList Name="gDorfImpactDarkDL" Offset="0x1DC58" Static="Off"/>
+        <DList Name="gDorfImpactLightDL" Offset="0x1DD70" Static="Off"/>
+        <DList Name="gDorfShockGlowDL" Offset="0x1EEC8" Static="Off"/>
+        <DList Name="gDorfLightCoreDL" Offset="0x20228" Static="Off"/>
+        <DList Name="gDorfShockDL" Offset="0x202F0" Static="Off"/>
+        <DList Name="gDorfVortexDL" Offset="0x210D0" Static="Off"/>
+    </File>
+</Root>

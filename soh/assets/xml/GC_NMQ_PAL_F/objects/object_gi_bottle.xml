@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_bottle" Segment="6">
+        <DList Name="gGiBottleStopperDL" Offset="0x0670"/>
+        <DList Name="gGiBottleDL" Offset="0x0750"/>
+    </File>
+</Root>

@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_goroiwa" Segment="6">
+        <Texture Name="gRollingRockTex" OutName="rolling_rock" Format="rgba16" Width="32" Height="64" Offset="0x8A0"/>
+        <DList Name="gRollingRockDL" Offset="0x6B0"/>
+    </File>
+</Root>

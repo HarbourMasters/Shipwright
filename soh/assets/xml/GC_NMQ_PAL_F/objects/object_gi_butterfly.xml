@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_butterfly" Segment="6">
+        <DList Name="gGiButterflyContainerDL" Offset="0x0830"/>
+        <DList Name="gGiButterflyGlassDL" Offset="0x0A70"/>
+    </File>
+</Root>

@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_jya_iron" Segment="6">
+        <DList Name="gPillarDL" Offset="0x0240"/>
+        <DList Name="gObjectJyaIronDL_000600" Offset="0x0600"/>
+        <DList Name="gObjectJyaIronDL_000880" Offset="0x0880"/>
+        <DList Name="gObjectJyaIronDL_000AE0" Offset="0x0AE0"/>
+        <Collision Name="gPillarCol" Offset="0x0D48"/>
+        <DList Name="gThroneDL" Offset="0x1050"/>
+        <Collision Name="gThroneCol" Offset="0x1430"/>
+        <Texture Name="gPillarSideTex" OutName="pillar_side" Format="rgba16" Width="16" Height="128" Offset="0x1460"/>
+        <Texture Name="gPillarTopTex" OutName="pillar_top" Format="rgba16" Width="16" Height="16" Offset="0x2460"/>
+    </File>
+</Root>

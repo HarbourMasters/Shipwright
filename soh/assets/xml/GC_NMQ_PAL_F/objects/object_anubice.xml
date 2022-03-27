@@ -1,0 +1,20 @@
+<Root>
+    <File Name="object_anubice" Segment="6">
+        <Skeleton Name="gAnubiceSkel" Type="Normal" LimbType="Standard" Offset="0x3990"/>
+
+        <Animation Name="gAnubiceFallDownAnim" Offset="0x348"/>
+        <Animation Name="gAnubiceAttackingAnim" Offset="0x78C"/>
+        <Animation Name="gAnubiceIdleAnim" Offset="0xF74"/>
+        <DList Name="gAnubiceEyesDL" Offset="0x3468"/>
+        <DList Name="gAnubiceFireAttackDL" Offset="0x3510"/>
+
+        <!-- The following are unused -->
+        <Animation Name="gAnubiceLaughingAnim" Offset="0x144"/>
+        <Animation Name="gAnubiceStandUpAnim" Offset="0x930"/>
+        <DList Name="gAnubiceUnusedParticleMaterialDL" Offset="0x3610"/>
+        <DList Name="gAnubiceUnusedParticleModelDL" Offset="0x3688"/>
+        <!-- I think those might be for taking damage or something -->
+        <Animation Name="gAnubiceAnim_000A48" Offset="0xA48"/>
+        <Animation Name="gAnubiceAnim_000BAC" Offset="0xBAC"/>
+    </File>
+</Root>

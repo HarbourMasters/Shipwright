@@ -1,0 +1,30 @@
+<Root>
+    <File Name="object_bird" Segment="6">
+        <Animation Name="gBirdFlyAnim" Offset="0x6C"/>
+        <DList Name="gBirdLeftWingDL" Offset="0x80"/>
+        <DList Name="gBirdLeftWingWrapper1DL" Offset="0x120"/>
+        <DList Name="gBirdLeftWingWrapper2DL" Offset="0x130"/>
+
+        <DList Name="gBirdRightWingDL" Offset="0x180"/>
+        <DList Name="gBirdRightWingWrapper1DL" Offset="0x220"/>
+        <DList Name="gBirdRightWingWrapper2DL" Offset="0x230"/>
+        
+        <DList Name="gBirdBodyDL" Offset="0x280"/>
+        <DList Name="gBirdBodyWrapper1DL" Offset="0x3D0"/>
+        <DList Name="gBirdBodyWrapper2DL" Offset="0x3E0"/>
+
+        <Texture Name="gBirdFaceTex" OutName="face" Format="rgba16" Width="32" Height="32" Offset="0x500"/>
+        <Texture Name="gBirdTailTex" OutName="tail" Format="rgba16" Width="16" Height="32" Offset="0xD00"/>
+        <Texture Name="gBirdWingTex" OutName="wing" Format="rgba16" Width="64" Height="32" Offset="0x1100"/>
+        <Limb Name="gBirdLimb_002100" LimbType="Standard" Offset="0x2100"/>
+        <Limb Name="gBirdLimb_00210C" LimbType="Standard" Offset="0x210C"/>
+        <Limb Name="gBirdLimb_002118" LimbType="Standard" Offset="0x2118"/>
+        <Limb Name="gBirdLimb_002124" LimbType="Standard" Offset="0x2124"/>
+        <Limb Name="gBirdLeftWingLimb" LimbType="Standard" Offset="0x2130"/>
+        <Limb Name="gBirdLimb_00213C" LimbType="Standard" Offset="0x213C"/>
+        <Limb Name="gBirdLimb_002148" LimbType="Standard" Offset="0x2148"/>
+        <Limb Name="gBirdRightWingLimb" LimbType="Standard" Offset="0x2154"/>
+        <Limb Name="gBirdBodyLimb" LimbType="Standard" Offset="0x2160"/>
+        <Skeleton Name="gBirdSkel" Type="Normal" LimbType="Standard" Offset="0x2190"/>
+    </File>
+</Root>
