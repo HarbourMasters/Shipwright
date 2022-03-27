@@ -58,6 +58,9 @@ namespace Game {
         Settings.enhancements.animated_pause_menu = stob(Conf[EnhancementSection]["animated_pause_menu"]);
         CVar_SetS32(const_cast<char*>("gPauseLiveLink"), Settings.enhancements.animated_pause_menu);
 
+        Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
+        CVar_SetS32(const_cast<char*>("gMinimalUI"), Settings.enhancements.minimal_ui);
+
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
         CVar_SetFloat(const_cast<char*>("gGameMasterVolume"), Settings.audio.master);
@@ -139,7 +142,7 @@ namespace Game {
         Conf[EnhancementSection]["fast_text"] = std::to_string(Settings.enhancements.fast_text);
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
-        
+        Conf[EnhancementSection]["minimal_ui"] = std::to_string(Settings.enhancements.minimal_ui);
 
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
