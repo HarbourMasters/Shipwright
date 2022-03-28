@@ -1,14 +1,14 @@
 <Root>
-    <File Name="ovl_En_Clear_Tag" BaseAddress="0x809D35B0" RangeStart="0x26F0" RangeEnd="0x89F0">
-        <DList Name="gArwingDL" Offset="0x26F0"/>
-        <DList Name="gArwingLaserDL" Offset="0x6388"/>
-        <DList Name="gArwingBackfireDL" Offset="0x6688"/>
-        <DList Name="gArwingDebrisEffectMaterialDL" Offset="0x6A38"/>
-        <DList Name="gArwingDebrisEffectDL" Offset="0x6AB8"/>
-        <DList Name="gArwingFireEffectMaterialDL" Offset="0x7100"/>
-        <DList Name="gArwingFireEffectDL" Offset="0x71A8"/>
-        <DList Name="gArwingFlashEffectDL" Offset="0x8208"/>
-        <DList Name="gArwingFlashEffectGroundDL" Offset="0x84B8"/>
-        <DList Name="gArwingShadowDL" Offset="0x8970"/>
+    <File Name="ovl_En_Clear_Tag" BaseAddress="0x809BF430" RangeStart="0x2600" RangeEnd="0x89F0">
+        <DList Name="gArwingDL" Offset="0x2600"/>
+        <DList Name="gArwingLaserDL" Offset="0x6298"/>
+        <DList Name="gArwingBackfireDL" Offset="0x6598"/>
+        <DList Name="gArwingDebrisEffectMaterialDL" Offset="0x6948"/>
+        <DList Name="gArwingDebrisEffectDL" Offset="0x69C8"/>
+        <DList Name="gArwingFireEffectMaterialDL" Offset="0x7010"/>
+        <DList Name="gArwingFireEffectDL" Offset="0x70B8"/>
+        <DList Name="gArwingFlashEffectDL" Offset="0x8118"/>
+        <DList Name="gArwingFlashEffectGroundDL" Offset="0x83C8"/>
+        <DList Name="gArwingShadowDL" Offset="0x8880"/>
     </File>
 </Root>

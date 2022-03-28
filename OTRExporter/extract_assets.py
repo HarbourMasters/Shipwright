@@ -48,7 +48,7 @@ def ExtractFunc(fullPath):
     *pathList, xmlName = fullPath.split(os.sep)
     objectName = os.path.splitext(xmlName)[0]
 
-    outPath = os.path.join("..\\soh\\assets\\", *pathList[4:], objectName)
+    outPath = os.path.join("..\\soh\\assets\\", *pathList[5:], objectName)
     os.makedirs(outPath, exist_ok=True)
     outSourcePath = outPath
 
@@ -90,7 +90,7 @@ def main():
             extract_staff_text_path = None
 
         xmlFiles = []
-        for currentPath, _, files in os.walk(os.path.join("..\\soh\\assets", "xml")):
+        for currentPath, _, files in os.walk(os.path.join("..\\soh\\assets\\", "xml\\GC_NMQ_PAL_F")):
             for file in files:
                 fullPath = os.path.join(currentPath, file)
                 if file.endswith(".xml"):

@@ -1,5 +1,5 @@
 <Root>
-    <File Name="ovl_Elf_Msg" BaseAddress="0x809ACB20" RangeStart="0x758" RangeEnd="0x9D8">
+    <File Name="ovl_Elf_Msg" BaseAddress="0x8099AB00" RangeStart="0x758" RangeEnd="0x9D8">
 
         <DList Name="D_809AD278" Offset="0x758"/>
 
