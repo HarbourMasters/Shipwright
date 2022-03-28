@@ -2321,10 +2321,10 @@ s32 func_8083501C(Player* this, GlobalContext* globalCtx) {
     if ((!Player_HoldsHookshot(this) || func_80834FBC(this)) && !func_80834758(globalCtx, this) &&
         !func_80834F2C(this, globalCtx)) {
         return 0;
-    }
-    else
-    {
-        this->unk_6AD = 2;  // OTRTODO: THIS IS A BAD IDEA BUT IT FIXES THE HORSE FIRST PERSON?
+    } else {
+        if (this->rideActor != NULL) {
+            this->unk_6AD = 2;  // OTRTODO: THIS IS A BAD IDEA BUT IT FIXES THE HORSE FIRST PERSON?
+        }
     }
 
     return 1;
