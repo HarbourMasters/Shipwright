@@ -487,6 +487,9 @@ static s16 D_80853610 = 0;
 static s32 D_80853614 = 0;
 static s32 D_80853618 = 0;
 
+static s32 sNoClip = false;
+static s32 sLastNoClip = false;
+
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
     NA_SE_VO_LI_SNEEZE,
@@ -13129,10 +13132,18 @@ void func_8084FBF4(Player* this, GlobalContext* globalCtx) {
 s32 func_8084FCAC(Player* this, GlobalContext* globalCtx) {
     sControlInput = &globalCtx->state.input[0];
 
-    if (CVar_GetS32("gDebugEnabled", 0) && ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
+    
+    s32 clip = CVar_GetS32("SV_NOCLIP", 1);
+
+    if (clip != sLastNoClip) {
+        sLastNoClip = clip;
+        sNoClip = true;
+    }        
+    
+    if ((CVar_GetS32("gDebugEnabled", 0) &&  (sNoClip))) || ((CHECK_BTN_ALL(sControlInput->cur.button, BTN_A | BTN_L | BTN_R) &&
         CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) ||
         (CHECK_BTN_ALL(sControlInput->cur.button, BTN_L) && CHECK_BTN_ALL(sControlInput->press.button, BTN_DRIGHT)))) {
-
+        sNoClip = false;
         D_808535D0 ^= 1;
 
         if (D_808535D0) {
