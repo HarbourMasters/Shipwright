@@ -72,7 +72,11 @@ namespace MoonUtils {
         vector<string> result;
         stringstream ss (s);
         string item;
-        while (getline(ss, item, delim)) {
+        while (getline(ss, item, delim)) 
+        {
+            if (item.at(item.size() - 1) == '\r')
+                item = item.substr(0, item.size() - 1);
+
             result.push_back (item);
         }
         return result;

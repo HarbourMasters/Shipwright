@@ -74,15 +74,29 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)ZAPD\lib\tinyxml2;$(SolutionDir)ZAPD\lib\libgfxd;$(SolutionDir)ZAPD\lib\elfio;$(SolutionDir)ZAPD\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)ZAPD\lib\libgfxd;$(SolutionDir)x64\Debug;$(SolutionDir)packages\libpng.1.6.28.1\build\native\lib\x64\v140\dynamic\Debug;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -333,6 +347,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
+      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
