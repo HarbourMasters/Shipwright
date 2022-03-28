@@ -27,6 +27,7 @@ namespace Game {
     const std::string AudioSection = AUDIO_SECTION;
     const std::string ControllerSection = CONTROLLER_SECTION;
     const std::string EnhancementSection = ENHANCEMENTS_SECTION;
+    const std::string CheatSection = CHEATS_SECTION;
 
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, Settings.audio.music_main);
@@ -57,9 +58,7 @@ namespace Game {
         Settings.enhancements.animated_pause_menu = stob(Conf[EnhancementSection]["animated_pause_menu"]);
         CVar_SetS32(const_cast<char*>("gPauseLiveLink"), Settings.enhancements.animated_pause_menu);
 
-        Settings.enhancements.debug_mode = stob(Conf[EnhancementSection]["debug_mode"]);
-        CVar_SetS32(const_cast<char*>("gDebugEnabled"), Settings.enhancements.debug_mode);
-
+        // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
         CVar_SetFloat(const_cast<char*>("gGameMasterVolume"), Settings.audio.master);
 
@@ -75,6 +74,7 @@ namespace Game {
         Settings.audio.fanfare = Ship::stof(Conf[AudioSection]["fanfare"]);
         CVar_SetFloat(const_cast<char*>("gFanfareVolume"), Settings.audio.fanfare);
 
+        // Controllers
         Settings.controller.gyro_sensitivity = Ship::stof(Conf[ControllerSection]["gyro_sensitivity"]);
         CVar_SetFloat(const_cast<char*>("gGyroSensitivity"), Settings.controller.gyro_sensitivity);
 
@@ -86,6 +86,34 @@ namespace Game {
 
         Settings.controller.input_enabled = stob(Conf[ControllerSection]["input_enabled"]);
         CVar_SetS32(const_cast<char*>("gInputEnabled"), Settings.controller.input_enabled);
+        
+        // Cheats
+        Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
+        CVar_SetS32(const_cast<char*>("gDebugEnabled"), Settings.cheats.debug_mode);
+
+        Settings.cheats.infinite_money = stob(Conf[CheatSection]["infinite_money"]);
+        CVar_SetS32(const_cast<char*>("gInfiniteMoney"), Settings.cheats.infinite_money);
+
+        Settings.cheats.infinite_health = stob(Conf[CheatSection]["infinite_health"]);
+        CVar_SetS32(const_cast<char*>("gInfiniteHealth"), Settings.cheats.infinite_health);
+
+        Settings.cheats.infinite_ammo = stob(Conf[CheatSection]["infinite_ammo"]);
+        CVar_SetS32(const_cast<char*>("gInfiniteAmmo"), Settings.cheats.infinite_ammo);
+
+        Settings.cheats.infinite_magic = stob(Conf[CheatSection]["infinite_magic"]);
+        CVar_SetS32(const_cast<char*>("gInfiniteMagic"), Settings.cheats.infinite_magic);
+
+        Settings.cheats.no_clip = stob(Conf[CheatSection]["no_clip"]);
+        CVar_SetS32(const_cast<char*>("gNoClip"), Settings.cheats.no_clip);
+
+        Settings.cheats.climb_everything = stob(Conf[CheatSection]["climb_everything"]);
+        CVar_SetS32(const_cast<char*>("gClimbEverything"), Settings.cheats.climb_everything);
+
+        Settings.cheats.moon_jump_on_l = stob(Conf[CheatSection]["moon_jump_on_l"]);
+        CVar_SetS32(const_cast<char*>("gMoonJumpOnL"), Settings.cheats.moon_jump_on_l);
+
+        Settings.cheats.super_tunic = stob(Conf[CheatSection]["super_tunic"]);
+        CVar_SetS32(const_cast<char*>("gSuperTunic"), Settings.cheats.super_tunic);
 
         UpdateAudio();
     }
@@ -111,12 +139,24 @@ namespace Game {
         Conf[EnhancementSection]["fast_text"] = std::to_string(Settings.enhancements.fast_text);
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
-        Conf[EnhancementSection]["debug_mode"] = std::to_string(Settings.enhancements.debug_mode);
+        
 
+        // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
         Conf[ControllerSection]["rumble_strength"]  = std::to_string(Settings.controller.rumble_strength);
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
+
+        // Cheats
+        Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);
+        Conf[CheatSection]["infinite_money"] = std::to_string(Settings.cheats.infinite_money);
+        Conf[CheatSection]["infinite_health"] = std::to_string(Settings.cheats.infinite_health);
+        Conf[CheatSection]["infinite_ammo"] = std::to_string(Settings.cheats.infinite_ammo);
+        Conf[CheatSection]["infinite_magic"] = std::to_string(Settings.cheats.infinite_magic);
+        Conf[CheatSection]["no_clip"] = std::to_string(Settings.cheats.no_clip);
+        Conf[CheatSection]["climb_everything"] = std::to_string(Settings.cheats.climb_everything);
+        Conf[CheatSection]["moon_jump_on_l"] = std::to_string(Settings.cheats.moon_jump_on_l);
+        Conf[CheatSection]["super_tunic"] = std::to_string(Settings.cheats.super_tunic);
 
         Conf.Save();
     }
