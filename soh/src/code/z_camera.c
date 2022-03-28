@@ -1416,6 +1416,7 @@ s32 Camera_Free(Camera* camera) {
 
     f32 playerHeight = Player_GetHeight(camera->player);
     f32 sp94;
+    CamColChk bgChk;
 
     sCameraInterfaceFlags = norm1->interfaceFlags;
 
@@ -1464,7 +1465,14 @@ s32 Camera_Free(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eyeNext);
 
-    camera->dist = eyeAdjustment.r = 150;
+    if (Camera_BGCheck(camera, &camera->at, &camera->eye)) {
+        VecSph collSphere;
+        OLib_Vec3fDiffToVecSphGeo(&collSphere, &camera->at, &camera->eye);
+        float rad = collSphere.r;
+        camera->dist = eyeAdjustment.r = rad;
+    } else {
+        camera->dist = eyeAdjustment.r = 150;
+    }
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
