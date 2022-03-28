@@ -1464,7 +1464,7 @@ s32 Camera_Free(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eyeNext);
 
-    camera->dist = eyeAdjustment.r = 200;
+    camera->dist = eyeAdjustment.r = 150;
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
@@ -1494,7 +1494,7 @@ s32 Camera_Free(Camera* camera) {
 }
 
 s32 Camera_Normal1(Camera* camera) {
-    if (true) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
         Camera_Free(camera);
         return 1;
     }
@@ -1726,6 +1726,11 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1892,6 +1897,11 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2252,6 +2262,11 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2397,6 +2412,11 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2579,6 +2599,11 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3036,6 +3061,11 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4566,6 +4596,11 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0)) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
