@@ -23,6 +23,7 @@
 #include "SohHooks.h"
 #include "SohConsole.h"
 #include <iostream>
+#include <sapi51.h>
 
 extern "C" {
     struct OSMesgQueue;
@@ -232,6 +233,8 @@ extern "C" {
 extern "C" GfxWindowManagerAPI gfx_sdl;
 void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend);
 
+ISpVoice* pVoice = NULL;
+
 namespace Ship {
     std::map<size_t, std::vector<std::shared_ptr<Controller>>> Window::Controllers;
     int32_t Window::lastScancode;
@@ -262,9 +265,25 @@ namespace Ship {
         const std::string& gfx_backend = Conf["WINDOW"]["GFX BACKEND"];
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
 
+        //Initialize Text To Speech
+        HRESULT hr;
+        HRESULT a = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+        HRESULT CoInitializeEx(LPVOID pvReserved, DWORD dwCoInit);
+        hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void**)&pVoice);
+
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen);
         WmApi->set_fullscreen_changed_callback(Window::OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
+    }
+
+    void Window::ReadText(const char textToRead[])
+    {
+        wchar_t wtext[sizeof(textToRead)];
+
+        mbstowcs(wtext, textToRead, sizeof(textToRead));
+        const LPWSTR ptr = wtext;
+
+        pVoice->Speak(ptr, SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
     }
 
     void Window::RunCommands(Gfx* Commands) {

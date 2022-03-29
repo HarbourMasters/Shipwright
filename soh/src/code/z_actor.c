@@ -516,6 +516,44 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Gl
         targetCtx->arrowPointedActor = unkActor;
         targetCtx->activeCategory = actorCategory;
         targetCtx->unk_40 = 1.0f;
+
+        if (CVar_GetS32("gBlindMode", 0)) {
+            u16 targetSound;
+
+            if (targetCtx->arrowPointedActor != NULL) {
+                switch (targetCtx->activeCategory) {
+                    case ACTORCAT_PROP:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_EXPLOSIVE:
+                        targetSound = NA_SE_VO_NA_HELLO_3;
+                        break;
+                    case ACTORCAT_DOOR:
+                        targetSound = NA_SE_VO_NA_HELLO_2;
+                        break;
+                    case ACTORCAT_CHEST:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_SWITCH:
+                        targetSound = NA_SE_VO_NA_HELLO_1;
+                        break;
+                    case ACTORCAT_NPC:
+                        targetSound = NA_SE_VO_NA_HELLO_3;
+                        break;
+                    case ACTORCAT_ENEMY:
+                        targetSound = NA_SE_VO_NA_HELLO_0;
+                        break;
+                    case ACTORCAT_BOSS:
+                        targetSound = NA_SE_VO_NA_HELLO_0;
+                        break;
+                    default:
+                        targetSound = NA_SE_VO_NA_HELLO_2;
+                        break;
+                }
+
+                Audio_PlaySoundGeneral(targetSound, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
     }
 
     if (unkActor == NULL) {

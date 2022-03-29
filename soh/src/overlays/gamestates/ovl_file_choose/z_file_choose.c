@@ -166,6 +166,8 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
     }
 }
 
+uint16_t lastButtonIndex;
+
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
  * If an empty file is selected, enter the name entry config mode.
@@ -275,6 +277,29 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             }
         } else {
             this->warningLabel = FS_WARNING_NONE;
+        }
+
+        if (lastButtonIndex != this->buttonIndex) {
+            switch (this->buttonIndex) {
+                case FS_BTN_MAIN_FILE_1:
+                case FS_BTN_MAIN_FILE_2:
+                case FS_BTN_MAIN_FILE_3:
+                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_3, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    break;
+                case FS_BTN_MAIN_OPTIONS:
+                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    break;
+                case FS_BTN_MAIN_COPY:
+                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_2, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    break;
+                case FS_BTN_MAIN_ERASE:
+                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    break;
+                default:
+                    break;
+            }
+
+            lastButtonIndex = this->buttonIndex;
         }
     }
 }

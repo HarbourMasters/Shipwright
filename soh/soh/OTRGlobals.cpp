@@ -689,6 +689,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
     return OTRGlobals::Instance->context->GetWindow()->GetCurrentHeight();
 }
 
+extern "C" void OTRTextToSpeechCallback(char* text) {
+    OTRGlobals::Instance->context->GetWindow()->ReadText(text);
+}
+
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     auto controllers = OTRGlobals::Instance->context->GetWindow()->Controllers;
     for (int i = 0; i < controllers.size(); i++) {
