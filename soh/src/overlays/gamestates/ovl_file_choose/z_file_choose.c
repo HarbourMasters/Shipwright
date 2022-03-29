@@ -45,11 +45,8 @@ void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
     func_800AAA50(&this->view, 0x7F);
 }
 
-Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point) 
+Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point)
 {
-    if (ResourceMgr_OTRSigCheck(texture))
-        texture = ResourceMgr_LoadTexByName(texture);
-
     gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -1498,13 +1495,13 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.naviTimer = 0;
 
     // SWORDLESS LINK IS BACK BABY
-    if (CVar_GetS32("gSwordlessLink", 0) != 0) 
+    if (CVar_GetS32("gSwordlessLink", 0) != 0)
     {
         if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
-            
+
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
             swordEquipMask = _byteswap_ushort(gEquipMasks[EQUIP_SWORD]) & gSaveContext.equips.equipment;
             gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SWORD];

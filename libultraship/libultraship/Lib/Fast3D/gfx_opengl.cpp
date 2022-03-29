@@ -341,6 +341,11 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "texel.a *= floor(clamp(random(vec3(floor(gl_FragCoord.xy * (240.0 / float(window_height))), float(frame_count))) + texel.a, 0.0, 1.0));");
     }
 
+    if(cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "float light = (texel.r + texel.g + texel.b) / 7.0;");
+        append_line(fs_buf, &fs_len, "texel.rgb = vec3(light, light, light);");
+    }
+
     if (cc_features.opt_alpha) {
         if (cc_features.opt_alpha_threshold) {
             append_line(fs_buf, &fs_len, "if (texel.a < 8.0 / 256.0) discard;");
@@ -389,9 +394,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint max_length = 0;
         glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
-        //fprintf(stderr, "Fragment shader compilation failed\n");
+        fprintf(stderr, "Fragment shader compilation failed\n");
         glGetShaderInfoLog(fragment_shader, max_length, &max_length, &error_log[0]);
-        //fprintf(stderr, "%s\n", &error_log[0]);
+        fprintf(stderr, "%s\n", &error_log[0]);
         abort();
     }
 
@@ -671,7 +676,7 @@ static void gfx_opengl_resize_framebuffer(int fb, uint32_t width, uint32_t heigh
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 }
 
-void gfx_opengl_set_framebuffer(int fb) 
+void gfx_opengl_set_framebuffer(int fb)
 {
     glClipControl(GL_UPPER_LEFT, GL_NEGATIVE_ONE_TO_ONE); // Set origin to upper left corner, to match N64 and DX11
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, fb);
@@ -682,7 +687,7 @@ void gfx_opengl_set_framebuffer(int fb)
     glDepthMask(current_depth_mask ? GL_TRUE : GL_FALSE);
 }
 
-void gfx_opengl_reset_framebuffer(void) 
+void gfx_opengl_reset_framebuffer(void)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

@@ -155,6 +155,7 @@ static struct RDP {
 
     uint32_t other_mode_l, other_mode_h;
     uint64_t combine_mode;
+    uint32_t gfx_effect;
 
     uint8_t prim_lod_fraction;
     struct RGBA env_color, prim_color, fog_color, fill_color;
@@ -799,7 +800,7 @@ static void import_texture(int i, int tile) {
     uint8_t siz = rdp.texture_tile[tile].siz;
     uint32_t tmem_index = rdp.texture_tile[tile].tmem_index;
 
-    // OTRTODO: Move it to a function to be faster 
+    // OTRTODO: Move it to a function to be faster
     // ModInternal::bindHook(LOOKUP_TEXTURE);
     // ModInternal::initBindHook(8,
     //     HOOK_PARAMETER("gfx_api", gfx_get_current_rendering_api()),
@@ -1193,8 +1194,7 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
     }
 
     uint64_t cc_id = rdp.combine_mode;
-
-    //bool use_alpha = (rdp.other_mode_l & (3 << 18)) == G_BL_1MA || (rdp.other_mode_l & (3 << 16)) == G_BL_1MA;
+    
     bool use_alpha = (rdp.other_mode_l & (3 << 20)) == (G_BL_CLR_MEM << 20) && (rdp.other_mode_l & (3 << 16)) == (G_BL_1MA << 16);
     bool use_fog = (rdp.other_mode_l >> 30) == G_BL_CLR_FOG;
     bool texture_edge = (rdp.other_mode_l & CVG_X_ALPHA) == CVG_X_ALPHA;
@@ -1202,6 +1202,7 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
     bool use_2cyc = (rdp.other_mode_h & (3U << G_MDSFT_CYCLETYPE)) == G_CYC_2CYCLE;
     bool alpha_threshold = (rdp.other_mode_l & (3U << G_MDSFT_ALPHACOMPARE)) == G_AC_THRESHOLD;
     bool invisible = (rdp.other_mode_l & (3 << 24)) == (G_BL_0 << 24) && (rdp.other_mode_l & (3 << 20)) == (G_BL_CLR_MEM << 20);
+    bool use_grayscale = rdp.gfx_effect == GRAYOUT;
 
     if (texture_edge) {
         use_alpha = true;
@@ -1214,6 +1215,7 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
     if (use_2cyc) cc_id |= (uint64_t)SHADER_OPT_2CYC << CC_SHADER_OPT_POS;
     if (alpha_threshold) cc_id |= (uint64_t)SHADER_OPT_ALPHA_THRESHOLD << CC_SHADER_OPT_POS;
     if (invisible) cc_id |= (uint64_t)SHADER_OPT_INVISIBLE << CC_SHADER_OPT_POS;
+    if (use_grayscale) cc_id |= (uint64_t)SHADER_OPT_GRAYSCALE << CC_SHADER_OPT_POS;
 
     if (!use_alpha) {
         cc_id &= ~((0xfff << 16) | ((uint64_t)0xfff << 44));
@@ -2429,8 +2431,8 @@ static void gfx_run_dl(Gfx* cmd) {
                 fbActive = 1;
                 active_fb = framebuffers.find(cmd->words.w1);
                 gfx_rapi->set_framebuffer(active_fb->first);
-            }
                 break;
+            }
             case G_RESETFB:
             {
                 gfx_flush();
@@ -2438,7 +2440,6 @@ static void gfx_run_dl(Gfx* cmd) {
                 gfx_rapi->reset_framebuffer();
                 break;
             }
-            break;
             case G_SETTIMG_FB:
             {
                 gfx_flush();
@@ -2448,8 +2449,13 @@ static void gfx_run_dl(Gfx* cmd) {
 
                 //if (texPtr != NULL)
                     //gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), texPtr);
+                break;
             }
-            break;
+			case G_SET_GFX_EFFECT:
+            {
+                rdp.gfx_effect = cmd->words.w1;
+                break;
+            }
             case G_LOADBLOCK:
                 gfx_dp_load_block(C1(24, 3), C0(12, 12), C0(0, 12), C1(12, 12), C1(0, 12));
                 break;

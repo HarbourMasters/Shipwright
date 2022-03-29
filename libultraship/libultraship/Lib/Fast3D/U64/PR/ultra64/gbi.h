@@ -170,6 +170,17 @@
 #define G_TEXRECT_WIDE          0x37
 #define G_FILLWIDERECT          0x38
 
+/* GFX Effects */
+
+// RDP Cmd
+#define G_SET_GFX_EFFECT       0x39
+
+// Effects
+enum GFXEffects {
+    NONE, GRAYOUT, SEPIA
+};
+
+
 /*
  * The following commands are the "generated" RDP commands; the user
  * never sees them, the RSP microcode generates them.
@@ -2819,6 +2830,14 @@ _DW({                                   \
                                     \
     _g->words.w0 = _SHIFTL(G_RESETFB, 24, 8);             \
     _g->words.w1 = 0;                       \
+}
+
+#define gsSPSetGfxEffect(pkt, fb)                        \
+{                                   \
+    Gfx *_g = (Gfx *)(pkt);                     \
+                                    \
+    _g->words.w0 = _SHIFTL(G_SET_GFX_EFFECT, 24, 8);             \
+    _g->words.w1 = fb;                       \
 }
 
 #ifdef  F3DEX_GBI_2

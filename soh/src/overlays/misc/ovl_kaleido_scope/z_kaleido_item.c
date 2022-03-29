@@ -466,8 +466,13 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             }
 
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
-            KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[gSaveContext.inventory.items[i]], 32,
+            int itemId = gSaveContext.inventory.items[i];
+            bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            if (not_acquired)
+                gsSPSetGfxEffect(POLY_KAL_DISP++, GRAYOUT);
+            KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32,
                                                32, 0);
+            gsSPSetGfxEffect(POLY_KAL_DISP++, NONE);
         }
     }
 
