@@ -42,6 +42,8 @@ void OTRGame::preload() {
 }
 
 void cleanTempData() {
+	MoonUtils::rm("assets/extractor/xmls/output");
+	MoonUtils::rm("Extract/");
 	MoonUtils::rm("tmp/");
 	MoonUtils::mkdir("tmp/");
 }
@@ -68,7 +70,7 @@ void OTRGame::init(){
 
 	if(fs::exists("soh.exe") && !fs::exists("oot.otr")) {
 		hide_second_btn = true;
-		sohFolder = ".";
+		sohFolder = "MAIN";
 	}
 }
 

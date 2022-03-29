@@ -44,6 +44,7 @@ namespace MoonUtils {
     void writeFile(std::string path, std::string content);
     void dirscan(std::string path, std::vector<std::string> &files);
     std::string extname(std::string file);
+    bool endsWith(const std::string& str, const char* suffix);
     std::wstring wide(const std::string& str);
     std::string narrow(const std::wstring& str);
 

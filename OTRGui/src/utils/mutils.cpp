@@ -51,6 +51,11 @@ namespace MoonUtils {
         return path;
     }
 
+    bool endsWith(const std::string& str, const char* suffix) {
+        const int suffixLen = basic_string<char>::traits_type::length(suffix);
+        return str.size() >= suffixLen && 0 == str.compare(str.size() - suffixLen, suffixLen, suffix, suffixLen);
+    }
+
     string join(string base, string file){
         if( file == "/" ) return normalize(base + file);
         return normalize( (fs::path(base) / fs::path(file)).string() );
