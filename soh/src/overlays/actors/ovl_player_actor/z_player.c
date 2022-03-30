@@ -9555,6 +9555,8 @@ static f32 D_80854784[] = { 120.0f, 240.0f, 360.0f };
 static u8 sDiveDoActions[] = { DO_ACTION_1, DO_ACTION_2, DO_ACTION_3, DO_ACTION_4,
                                DO_ACTION_5, DO_ACTION_6, DO_ACTION_7, DO_ACTION_8 };
 
+int32_t lastAction;
+
 void func_808473D4(GlobalContext* globalCtx, Player* this) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE) && (this->actor.category == ACTORCAT_PLAYER)) {
         Actor* heldActor = this->heldActor;
@@ -9578,6 +9580,12 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     (!(this->stateFlags1 & PLAYER_STATE1_11) ||
                         ((heldActor != NULL) && (heldActor->id == ACTOR_EN_RU1)))) {
                     doAction = DO_ACTION_OPEN;
+
+                    if (lastAction != doAction) {
+                        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        lastAction = doAction;
+                    }
                 }
                 else if ((!(this->stateFlags1 & PLAYER_STATE1_11) || (heldActor == NULL)) &&
                     (interactRangeActor != NULL) &&
@@ -9585,6 +9593,11 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                         ((this->getItemId < 0) && !(this->stateFlags1 & PLAYER_STATE1_27)))) {
                     if (this->getItemId < 0) {
                         doAction = DO_ACTION_OPEN;
+                        if (lastAction != doAction) {
+                            Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                   &D_801333E8);
+                            lastAction = doAction;
+                        }
                     }
                     else if ((interactRangeActor->id == ACTOR_BG_TOKI_SWD) && LINK_IS_ADULT) {
                         doAction = DO_ACTION_DROP;
@@ -9605,6 +9618,11 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     if ((this->stateFlags2 & PLAYER_STATE2_1) && (this->targetActor != NULL)) {
                         if (this->targetActor->category == ACTORCAT_NPC) {
                             doAction = DO_ACTION_SPEAK;
+                            if (lastAction != doAction) {
+                                Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_0, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                       &D_801333E8);
+                                lastAction = doAction;
+                            }
                         }
                         else {
                             doAction = DO_ACTION_CHECK;
@@ -9628,6 +9646,11 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 }
                 else if (this->stateFlags2 & PLAYER_STATE2_16) {
                     doAction = DO_ACTION_ENTER;
+                    if (lastAction != doAction) {
+                        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                        lastAction = doAction;
+                    }
                 }
                 else if ((this->stateFlags1 & PLAYER_STATE1_11) && (this->getItemId == GI_NONE) &&
                     (heldActor != NULL)) {
@@ -9694,6 +9717,10 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
         }
         else {
             Interface_SetNaviCall(globalCtx, 0x1F);
+        }
+
+        if (doAction == DO_ACTION_NONE) {
+            lastAction = NULL;
         }
     }
 }

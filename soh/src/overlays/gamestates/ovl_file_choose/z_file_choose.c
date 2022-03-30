@@ -163,6 +163,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
+        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_3, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     }
 }
 
