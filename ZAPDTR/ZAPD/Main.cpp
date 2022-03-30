@@ -322,7 +322,7 @@ int main(int argc, char* argv[])
 					/*for (auto file : Globals::Instance->files)
 						delete file;*/
 
-					for (int i = Globals::Instance->cfg.externalFiles.size(); i < Globals::Instance->files.size(); i++)
+					for (int i = 0; i < Globals::Instance->files.size(); i++)
 					{
 						//if (!Globals::Instance->files[i]->isExternalFile)
 						{
