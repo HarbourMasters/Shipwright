@@ -449,6 +449,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
             temp4 *= 1 << 10;
             temp1 = 8.0f;
             temp1 *= 0.68f;
+
             gSPWideTextureRectangle(OVERLAY_DISP++, (s32)((temp2 - temp1) * 4), (s32)((temp3 - temp1) * 4),
                                 (s32)((temp2 + temp1) * 4), (s32)((temp3 + temp1) * 4), G_TX_RENDERTILE, 0, 0,
                                 (s32)temp4, (s32)temp4);
