@@ -181,7 +181,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 		}
 	}
 
-	if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile)
+	if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile || mode == ZFileMode::ExtractDirectory)
 	{
 		if (!File::Exists((basePath / name).string()))
 		{
@@ -260,7 +260,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 		{
 			ZResource* nRes = nodeMap[nodeName](this);
 
-			if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile)
+			if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile || mode == ZFileMode::ExtractDirectory)
 				nRes->ExtractFromXML(child, rawDataIndex);
 
 			switch (nRes->GetResourceType())
@@ -813,7 +813,8 @@ void ZFile::GenerateSourceHeaderFiles()
 	if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
 		printf("Writing H file: %s\n", headerFilename.c_str());
 
-	File::WriteAllText(headerFilename, formatter.GetOutput());
+	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+		File::WriteAllText(headerFilename, formatter.GetOutput());
 }
 
 std::string ZFile::GetHeaderInclude() const
@@ -1189,6 +1190,9 @@ void ZFile::HandleUnaccountedData()
 	uint32_t lastAddr = 0;
 	uint32_t lastSize = 0;
 	std::vector<offset_t> declsAddresses;
+
+	if (Globals::Instance->otrMode)
+		return;
 
 	for (const auto& item : declarations)
 	{

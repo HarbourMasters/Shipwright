@@ -16,6 +16,7 @@ enum class ZFileMode
 	BuildBackground,
 	Extract,
 	ExternalFile,
+	ExtractDirectory,
 	Invalid,
 	Custom = 1000,  // Used for exporter file modes
 };

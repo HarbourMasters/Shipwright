@@ -452,8 +452,11 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 			BinaryWriter csWriter = BinaryWriter(csStream);
 			OTRExporter_Cutscene cs;
 			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
-
-			File::WriteAllBytes("Extract\\" + fName, csStream->ToVector());
+			
+			if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+				File::WriteAllBytes("Extract\\" + fName, csStream->ToVector());
+			else
+				files[fName] = csStream->ToVector();
 
 			//std::string fName = OTRExporter_DisplayList::GetPathToRes(res, vtxDecl->varName);
 			//otrArchive->AddFile(fName, (uintptr_t)csStream->ToVector().data(), csWriter.GetBaseAddress());
@@ -477,7 +480,10 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 				OTRExporter_Path pathExp;
 				pathExp.Save(&cmdSetPathways->pathwayList, outPath, &pathWriter);
 
-				File::WriteAllBytes("Extract\\" + path, pathStream->ToVector());
+				if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+					File::WriteAllBytes("Extract\\" + path, pathStream->ToVector());
+				else
+					files[path] = pathStream->ToVector();
 
 				//otrArchive->AddFile(path, (uintptr_t)pathStream->ToVector().data(), pathWriter.GetBaseAddress());
 

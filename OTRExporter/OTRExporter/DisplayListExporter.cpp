@@ -370,7 +370,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 					std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-					if (!File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 					{
 						MemoryStream* dlStream = new MemoryStream();
 						BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -382,7 +382,10 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							//otrArchive->RemoveFile(fName);
 #endif
 
-						File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+							File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+						else
+							files[fName] = dlStream->ToVector();
 
 						//otrArchive->AddFile(fName, (uintptr_t)dlStream->ToVector().data(), dlWriter.GetBaseAddress());
 					}
@@ -464,14 +467,17 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 						std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-						if (!File::Exists("Extract\\" + fName))
+						if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 						{
 							MemoryStream* dlStream = new MemoryStream();
 							BinaryWriter dlWriter = BinaryWriter(dlStream);
 
 							Save(dList->otherDLists[i], outPath, &dlWriter);
 
-							File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+							if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+								File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+							else
+								files[fName] = dlStream->ToVector();
 						}
 					}
 					else
@@ -793,7 +799,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					addr -= dList->parent->baseAddress;
 
 				auto segOffset = GETSEGOFFSET(addr);
-				//uint32_t seg = data & 0xFFFFFFFF;
 				Declaration* vtxDecl = dList->parent->GetDeclarationRanged(segOffset);
 				//std::string vtxName = "";
 				//bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", vtxName);
@@ -822,7 +827,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					word0 = hash >> 32;
 					word1 = hash & 0xFFFFFFFF;
 
-					if (!File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 					{
 						//printf("Exporting VTX Data %s\n", fName.c_str());
 						// Write vertices to file
@@ -878,7 +883,10 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 								}
 							}
 
-							File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
+							if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+								File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
+							else
+								files[fName] = vtxStream->ToVector();
 
 							auto end = std::chrono::steady_clock::now();
 							size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();

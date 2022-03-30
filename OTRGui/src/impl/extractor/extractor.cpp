@@ -14,6 +14,7 @@
 #endif
 namespace Util = MoonUtils;
 
+static bool oldExtractMode = false;
 static int maxResources = 0;
 static int extractedResources = 0;
 bool buildingOtr = false;
@@ -36,19 +37,16 @@ std::string GetXMLVersion(RomVersion version)
 }
 
 void BuildOTR(const std::string output) {
-	Util::copy("tmp/baserom/Audiobank", "Extract/Audiobank");
-	Util::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
-	Util::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
-	Util::copy("tmp/baserom/version", "Extract/version");
-
-	Util::copy("assets/game/", "Extract/assets/");
-
-	std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out") + " botr -se OTR";
-	ProcessResult result = NativeFS->LaunchProcess(execStr);
-	if(result.exitCode != 0) {
-		std::cout << "\nError when building the OTR file with error code: " << result.exitCode << " !" << std::endl;
-		std::cout << "Aborting...\n" << std::endl;
+	if (oldExtractMode)
+	{
+		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out") + " botr -se OTR";
+		ProcessResult result = NativeFS->LaunchProcess(execStr);
+		if (result.exitCode != 0) {
+			std::cout << "\nError when building the OTR file with error code: " << result.exitCode << " !" << std::endl;
+			std::cout << "Aborting...\n" << std::endl;
+		}
 	}
+
 	setCurrentStep("Done!");
 
 	if (output == ".") return;
@@ -85,38 +83,62 @@ void startWorker(RomVersion version) {
 
 	Util::write("tmp/baserom/version", (char*)&version.crc, sizeof(version.crc));
 
-	std::vector<std::string> files;
-	Util::dirscan(path, files);
-	std::vector<std::string> xmlFiles;
 
-	const int num_threads = std::thread::hardware_concurrency();
-	ctpl::thread_pool pool(num_threads / 2);
-	for(auto &file : files) {
-		if (file.find(".xml") != std::string::npos) xmlFiles.push_back(file);
-	}
+	if (oldExtractMode)
+	{
+		std::vector<std::string> files;
+		Util::dirscan(path, files);
+		std::vector<std::string> xmlFiles;
 
-	for (auto& file : xmlFiles) {
-		if(single_thread) {
-			ExtractFunc(file, version);
-		} else {
-			pool.push([file, version](int) {
-				ExtractFunc(file, version);
-			});
+		const int num_threads = std::thread::hardware_concurrency();
+		ctpl::thread_pool pool(num_threads / 2);
+		for (auto& file : files) {
+			if (file.find(".xml") != std::string::npos) xmlFiles.push_back(file);
 		}
-	}
 
-	maxResources = xmlFiles.size();
+		for (auto& file : xmlFiles) {
+			if (single_thread) {
+				ExtractFunc(file, version);
+			}
+			else {
+				pool.push([file, version](int) {
+					ExtractFunc(file, version);
+					});
+			}
+		}
+
+		maxResources = xmlFiles.size();
+	}
+	else
+	{
+		std::string execStr = Util::format("assets/extractor/%s", isWindows() ? "ZAPD.exe" : "ZAPD.out");
+		std::string args = Util::format(" ed -eh -i %s -b tmp/baserom/ -o %s -osf %s -gsf 1 -rconf assets/extractor/Config_%s.xml -se OTR %s", path.c_str(), path + "../", path + "../", GetXMLVersion(version).c_str(), "");
+		ProcessResult result = NativeFS->LaunchProcess(execStr + args);
+
+		if (result.exitCode != 0) {
+			std::cout << "\nError when extracting the ROM with error code: " << result.exitCode << " !" << std::endl;
+			std::cout << "Aborting...\n" << std::endl;
+		}
+		else
+		{
+			printf("All done?\n");
+		}
+
+		maxResources = 1;
+	}
 }
 
 void updateWorker(const std::string& output) {
-	if (maxResources > 0 && !buildingOtr && extractedResources >= maxResources) {
+	if (maxResources > 0 && !buildingOtr && (extractedResources >= maxResources || !oldExtractMode)) 
+	{
 		setCurrentStep("Building OTR...");
 		if (skipFrames < 3) {
 			skipFrames++;
 			return;
 		}
 		buildingOtr = true;
-		if (single_thread){
+		
+		if (single_thread || !oldExtractMode){
 			BuildOTR(output);
 			return;
 		}

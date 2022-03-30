@@ -218,6 +218,9 @@ size_t ZLimb::GetRawDataSize() const
 
 std::string ZLimb::GetBodySourceCode() const
 {
+	if (Globals::Instance->otrMode)
+		return "";
+
 	std::string dListStr;
 	std::string dListStr2;
 	Globals::Instance->GetSegmentedArrayIndexedName(dListPtr, 8, parent, "Gfx", dListStr);

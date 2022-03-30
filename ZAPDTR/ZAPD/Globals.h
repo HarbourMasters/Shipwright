@@ -36,6 +36,7 @@ public:
 	ExporterSetFuncVoid3 beginXMLFunc = nullptr;
 	ExporterSetFuncVoid3 endXMLFunc = nullptr;
 	ExporterSetResSave resSaveFunc = nullptr;
+	ExporterSetFuncVoid3 endProgramFunc = nullptr;
 };
 
 class Globals

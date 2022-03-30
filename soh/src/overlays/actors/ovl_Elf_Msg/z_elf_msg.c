@@ -138,6 +138,10 @@ void ElfMsg_CallNaviCylinder(ElfMsg* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     EnElf* navi = (EnElf*)player->naviActor;
 
+    // This fixes a crash when using a grotto exit when you never properly entered
+    if (navi == NULL)
+        return;
+
     if (ElfMsg_WithinXZDistance(&player->actor.world.pos, &this->actor.world.pos, this->actor.scale.x * 100.0f) &&
         (this->actor.world.pos.y <= player->actor.world.pos.y) &&
         ((player->actor.world.pos.y - this->actor.world.pos.y) < (100.0f * this->actor.scale.y))) {

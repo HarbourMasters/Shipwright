@@ -76,6 +76,15 @@ void ExtractRom() {
 	if (result.error == NULLSTR) {
 		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
 		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");
+
+		MoonUtils::mkdir("Extract");
+		MoonUtils::copy("tmp/baserom/Audiobank", "Extract/Audiobank");
+		MoonUtils::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
+		MoonUtils::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
+		MoonUtils::copy("tmp/baserom/version", "Extract/version");
+
+		MoonUtils::copy("assets/game/", "Extract/assets/");
+
 		startWorker(version);
 		extracting = true;
 	}
