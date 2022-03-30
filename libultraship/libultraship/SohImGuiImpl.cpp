@@ -306,6 +306,14 @@ namespace SohImGui {
                 if (ImGui::SliderFloat("##GYROSCOPE", &Game::Settings.controller.gyro_sensitivity, 0.0f, 1.0f, "")) {
                     needs_save = true;
                 }
+
+                if (ImGui::Button("Recalibrate Gyro")) {
+                    Game::Settings.controller.gyroDriftX = 0;
+                    Game::Settings.controller.gyroDriftY = 0;
+                }
+
+                ImGui::Separator();
+
                 ImGui::Text("Rumble Strength: %d %%", static_cast<int>(100 * Game::Settings.controller.rumble_strength));
                 if (ImGui::SliderFloat("##RUMBLE", &Game::Settings.controller.rumble_strength, 0.0f, 1.0f, "")) {
                     needs_save = true;

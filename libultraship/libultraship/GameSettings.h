@@ -30,7 +30,9 @@ struct SoHConfigType {
         float gyro_sensitivity = 1.0f;
         float rumble_strength = 1.0f;
         float input_scale = 1.0f;
-        bool  input_enabled = false;
+        float gyroDriftX = 0.0f;
+        float gyroDriftY = 0.0f;
+        bool input_enabled = false;
     } controller;
 
     // Cheats
