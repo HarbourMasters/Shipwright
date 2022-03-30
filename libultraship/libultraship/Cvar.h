@@ -23,15 +23,15 @@ extern "C"
 //#include <ultra64.h>
 
 
-CVar* CVar_Get(char* name);
-s32 CVar_GetS32(char* name, s32 defaultValue);
-float CVar_GetFloat(char* name, float defaultValue);
-char* CVar_GetString(char* name, char* defaultValue);
-void CVar_SetS32(char* name, s32 value);
+CVar* CVar_Get(const char* name);
+s32 CVar_GetS32(const char* name, s32 defaultValue);
+float CVar_GetFloat(const char* name, float defaultValue);
+char* CVar_GetString(const char* name, char* defaultValue);
+void CVar_SetS32(const char* name, s32 value);
 
-void CVar_RegisterS32(char* name, s32 defaultValue);
-void CVar_RegisterFloat(char* name, float defaultValue);
-void CVar_RegisterString(char* name, char* defaultValue);
+void CVar_RegisterS32(const char* name, s32 defaultValue);
+void CVar_RegisterFloat(const char* name, float defaultValue);
+void CVar_RegisterString(const char* name, char* defaultValue);
 
 #ifdef __cplusplus
 };
@@ -42,8 +42,8 @@ void CVar_RegisterString(char* name, char* defaultValue);
 #include <string>
 
 extern std::map<std::string, CVar*> cvars;
-CVar* CVar_GetVar(char* name);
-void CVar_SetFloat(char* name, float value);
-void CVar_SetString(char* name, char* value);
+CVar* CVar_GetVar(const char* name);
+void CVar_SetFloat(const char* name, float value);
+void CVar_SetString(const char* name, char* value);
 #endif
 #endif
