@@ -154,6 +154,11 @@ namespace Ship {
 		(*this)["SDL CONTROLLER 3"]["GUID"] = "";
 		(*this)["SDL CONTROLLER 4"]["GUID"] = "";
 
+		(*this)["Joystick CONTROLLER 1"]["GUID"] = "";
+		(*this)["Joystick CONTROLLER 2"]["GUID"] = "";
+		(*this)["Joystick CONTROLLER 3"]["GUID"] = "";
+		(*this)["Joystick CONTROLLER 4"]["GUID"] = "";
+
 		return File.generate(Val);
 	}
 }

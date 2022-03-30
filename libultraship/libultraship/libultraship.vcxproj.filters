@@ -339,6 +339,12 @@
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
+    <ClCompile Include="SDLJoystickController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLGamepadController.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -625,6 +631,12 @@
     </ClInclude>
     <ClInclude Include="GameSettings.h">
       <Filter>Source Files\CustomImpl</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLGamepadController.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLJoystickController.h">
+      <Filter>Source Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

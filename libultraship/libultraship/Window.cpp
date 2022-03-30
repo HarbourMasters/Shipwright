@@ -1,7 +1,8 @@
 #include "Window.h"
 #include "spdlog/spdlog.h"
 #include "KeyboardController.h"
-#include "SDLController.h"
+#include "SDLGamepadController.h"
+#include "SDLJoystickController.h"
 #include "GlobalCtx2.h"
 #include "DisplayList.h"
 #include "Vertex.h"
@@ -39,12 +40,19 @@ extern "C" {
             exit(EXIT_FAILURE);
         }
 
+
+        if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
+            SPDLOG_ERROR("Failed to initialize HID game controllers ({})", SDL_GetError());
+            exit(EXIT_FAILURE);
+        }
+
         const char* controllerDb = "gamecontrollerdb.txt";
         int mappingsAdded = SDL_GameControllerAddMappingsFromFile(controllerDb);
         if (mappingsAdded >= 0) {
             SPDLOG_INFO("Added SDL game controllers from \"{}\" ({})", controllerDb, mappingsAdded);
         } else {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
+
         }
 
         // TODO: This for loop is debug. Burn it with fire.
@@ -66,11 +74,13 @@ extern "C" {
 
             if (ControllerType == "auto") {
                 Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
+                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLGamepadController>(i));
+                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLJoystickController>(i));
             } else if (ControllerType == "keyboard") {
                 Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
             } else if (ControllerType == "usb") {
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
+                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLGamepadController>(i));
+                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLJoystickController>(i));
             } else if (ControllerType == "unplugged") {
                 // Do nothing for unplugged controllers
             } else {
