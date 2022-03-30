@@ -3125,6 +3125,9 @@ void Interface_Draw(GlobalContext* globalCtx) {
     };
     static s16 rupeeDigitsFirst[] = { 1, 0, 0 };
     static s16 rupeeDigitsCount[] = { 2, 3, 3 };
+    static s16 rupeeIconGreen[] = { 200, 255, 100 };
+    static s16 rupeeIconBlue[] = { 100, 200, 255 };
+    static s16 rupeeIconRed[] = { 255, 100, 100 };
     static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
@@ -3163,7 +3166,30 @@ void Interface_Draw(GlobalContext* globalCtx) {
         func_80094520(globalCtx->state.gfxCtx);
 
         // Rupee Icon
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 255, 100, interfaceCtx->magicAlpha);
+        s16 rupeeR;
+        s16 rupeeG;
+        s16 rupeeB;
+        switch (CUR_UPG_VALUE(UPG_WALLET)) {
+            case 0:
+                rupeeR = rupeeIconGreen[0];
+                rupeeG = rupeeIconGreen[1];
+                rupeeB = rupeeIconGreen[2];
+                break;
+            case 1:
+                rupeeR = rupeeIconBlue[0];
+                rupeeG = rupeeIconBlue[1];
+                rupeeB = rupeeIconBlue[2];
+                break;
+            case 2:
+                rupeeR = rupeeIconRed[0];
+                rupeeG = rupeeIconRed[1];
+                rupeeB = rupeeIconRed[2];
+                break;
+            default:
+                break;
+        }
+
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeR, rupeeG, rupeeB, interfaceCtx->magicAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 80, 0, 255);
         OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26),
                                       206, 16, 16, 1 << 10, 1 << 10);
