@@ -344,6 +344,7 @@
     <ClInclude Include="Cvar.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="GameSettings.h" />
+    <ClInclude Include="GameVersions.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Lib\stb\stb_image_write.h" />

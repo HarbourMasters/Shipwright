@@ -75,6 +75,7 @@ void ExtractRom() {
 	const WriteResult result = ExtractBaserom(patched_rom);
 	if (result.error == NULLSTR) {
 		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
+		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");
 		startWorker(version);
 		extracting = true;
 	}

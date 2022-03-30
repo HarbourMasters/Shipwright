@@ -39,6 +39,7 @@ void BuildOTR(const std::string output) {
 	Util::copy("tmp/baserom/Audiobank", "Extract/Audiobank");
 	Util::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
 	Util::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
+	Util::copy("tmp/baserom/version", "Extract/version");
 
 	Util::copy("assets/game/", "Extract/assets/");
 
@@ -81,6 +82,8 @@ void startWorker(RomVersion version) {
 	std::string path = "assets/extractor/xmls/";
 
 	path += GetXMLVersion(version);
+
+	Util::write("tmp/baserom/version", (char*)&version.crc, sizeof(version.crc));
 
 	std::vector<std::string> files;
 	Util::dirscan(path, files);

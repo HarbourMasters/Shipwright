@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "File.h"
 #include "Archive.h"
+#include "GameVersions.h"
 #include <Utils/StringHelper.h>
 #include "Lib/StormLib/StormLib.h"
 
@@ -10,6 +11,8 @@ namespace Ship {
 
 	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, std::string MainPath, std::string PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
 		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
+
+		gameVersion = OOT_UNKNOWN;
 
 		if (OTR->IsMainMPQValid())
 			Start();
@@ -171,6 +174,16 @@ namespace Ship {
 		}
 
 		SPDLOG_INFO("Resource Manager LoadResourceThread ended");
+	}
+
+	uint32_t ResourceMgr::GetGameVersion()
+	{
+		return gameVersion;
+	}
+
+	void ResourceMgr::SetGameVersion(uint32_t newGameVersion)
+	{
+		gameVersion = newGameVersion;
 	}
 
 	std::shared_ptr<File> ResourceMgr::LoadFileAsync(std::string FilePath) {
