@@ -95,7 +95,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
     Rrrrry123 		| Speedbunner, encouragement, and community moderation
     Fierce deity 		| Encouragement and community moderation
     mzxrules		| For his contributions to decomp
-    zel.		| For his contributions to decomp
+    zel.		        | For his contributions to decomp
     Aloxado 		| Developer - General Programmer
     MegaMech 		| Developer - General Programmer
 	Revo 			| Tester - GCC support and General Testing
