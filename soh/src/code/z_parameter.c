@@ -3126,7 +3126,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
     static s16 rupeeDigitsFirst[] = { 1, 0, 0 };
     static s16 rupeeDigitsCount[] = { 2, 3, 3 };
     static s16 rupeeIconGreen[] = { 200, 255, 100 };
-    static s16 rupeeIconBlue[] = { 100, 100, 255 };
+    static s16 rupeeIconBlue[] = { 130, 130, 255 };
     static s16 rupeeIconRed[] = { 255, 100, 100 };
     static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
