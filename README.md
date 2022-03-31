@@ -55,7 +55,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
- 5. Put your 2020 OoT debug rom in the `soh` folder named `baserom_original_non_mq`.
+ 5. Place `oot debug` rom (not Master Quest) in the `soh` folder named `baserom_original_non_mq`.
  6. Launch `soh/fixbaserom.py`.
  7. Launch `soh/extract_baserom.py`.
  8. Copy the `baserom` folder from the `soh` folder into the `OTRExporter` folder.
