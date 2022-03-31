@@ -148,21 +148,6 @@ void OTRGame::draw() {
 			if (monitorPos.y + monitorSize.y > vsY2) vsY2 = monitorPos.y + monitorSize.y;
 		}
 
-
-/*
-		constexpr float text_y = 125.f;
-		UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
-		UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
-		UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
-		
-		if (oldExtractMode)
-			UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
-		
-		if(!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
-			const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);
-			sohFolder = path;
-		}
-*/
 		// Clamp the window to the borders of the monitors
 		if (wndPos.x < vsX1) wndPos.x = vsX1;
 		if (wndPos.x < vsX1) wndPos.x = vsX1;
@@ -193,7 +178,9 @@ void OTRGame::draw() {
 	UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
 	UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
 	UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
-	UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
+
+	if (oldExtractMode)
+		UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
 
 	if (!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
 		const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);
