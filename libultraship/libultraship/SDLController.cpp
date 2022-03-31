@@ -7,12 +7,8 @@
 #include "Window.h"
 
 extern "C" uint8_t __osMaxControllers;
-float gyroDriftX;
-float gyroDriftY;
 
 namespace Ship {
-
-
 	SDLController::SDLController(int32_t dwControllerNumber) : Controller(dwControllerNumber), Cont(nullptr), guid(INVALID_SDL_CONTROLLER_GUID) {
 
 	}
@@ -147,8 +143,8 @@ namespace Ship {
         //bound diagonals to an octagonal range {-68 ... +68}
         if (ax != 0.0 && ay != 0.0) {
             auto slope = ay / ax;
-            auto edgex = copysign(85.0 / (abs(slope) + wAxisThreshold / 69.0), ax);
-            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + wAxisThreshold / 69.0)), ay);
+            auto edgex = copysign(85.0 / (abs(slope) + 16.0 / 69.0), ax);
+            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + 16.0 / 69.0)), ay);
             edgex = edgey / slope;
 
             auto scale = sqrt(edgex * edgex + edgey * edgey) / 85.0;
@@ -186,30 +182,30 @@ namespace Ship {
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
             const char* contName = SDL_GameControllerName(Cont);
-            const int isSpecialController = strcmp("PS5 Controller", contName);
+            const int isSpecialController = !strcmp("PS5 Controller", contName);
             const float gyroSensitivity = Game::Settings.controller.gyro_sensitivity;
 
-            if (gyroDriftX == 0) {
-                if (isSpecialController == 0) {
-                    gyroDriftX = gyroData[2];
+            if (Game::Settings.controller.gyroDriftX == 0) {
+                Game::Settings.controller.gyroDriftX = gyroData[0];
+            }
+
+            if (Game::Settings.controller.gyroDriftY == 0) {
+                if (isSpecialController == 1) {
+                    Game::Settings.controller.gyroDriftY = gyroData[2];
                 }
                 else {
-                    gyroDriftX = gyroData[0];
+                    Game::Settings.controller.gyroDriftY = gyroData[1];
                 }
             }
 
-            if (gyroDriftY == 0) {
-                gyroDriftY = gyroData[1];
-            }
-
-            if (isSpecialController == 0) {
-                wGyroX = gyroData[2] - gyroDriftX;
+            if (isSpecialController == 1) {
+                wGyroX = gyroData[0] - Game::Settings.controller.gyroDriftX;
+                wGyroY = -gyroData[2] - Game::Settings.controller.gyroDriftY;
             }
             else {
-                wGyroX = gyroData[0] - gyroDriftX;
+                wGyroX = gyroData[0] - Game::Settings.controller.gyroDriftX;
+                wGyroY = gyroData[1] - Game::Settings.controller.gyroDriftY;
             }
-
-            wGyroY = gyroData[1] - gyroDriftY;
 
             wGyroX *= gyroSensitivity;
             wGyroY *= gyroSensitivity;
@@ -340,11 +336,19 @@ namespace Ship {
         }
 
         if (SDL_GameControllerHasLED(Cont)) {
-            if (controller->ledColor == 1) {
+            switch (controller->ledColor) {
+            case 0:
                 SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 255, 0, 0);
-            }
-            else {
-                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0, 255, 0);
+                break;
+            case 1:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x00, 0x3C, 0x64);
+                break;
             }
         }
     }
