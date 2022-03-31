@@ -9649,6 +9649,9 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                     if (lastAction != doAction) {
                         Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                &D_801333E8);
+
+
+
                         lastAction = doAction;
                     }
                 }

@@ -163,7 +163,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->controlsAlpha = 255;
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
-        Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_3, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        OTRTextToSpeechCallback("File 1");
     }
 }
 
@@ -283,18 +283,22 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         if (lastButtonIndex != this->buttonIndex) {
             switch (this->buttonIndex) {
                 case FS_BTN_MAIN_FILE_1:
+                    OTRTextToSpeechCallback("File 1");
+                    break;
                 case FS_BTN_MAIN_FILE_2:
+                    OTRTextToSpeechCallback("File 2");
+                    break;
                 case FS_BTN_MAIN_FILE_3:
-                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_3, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    OTRTextToSpeechCallback("File 3");
                     break;
                 case FS_BTN_MAIN_OPTIONS:
-                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_1, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    OTRTextToSpeechCallback("Options");
                     break;
                 case FS_BTN_MAIN_COPY:
-                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_2, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    OTRTextToSpeechCallback("Copy");
                     break;
                 case FS_BTN_MAIN_ERASE:
-                    Audio_PlaySoundGeneral(NA_SE_VO_NA_HELLO_0, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                    OTRTextToSpeechCallback("Erase");
                     break;
                 default:
                     break;
@@ -1341,6 +1345,9 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
  * Update the cursor and handle the option that the player picks for confirming the selected file.
  * Update function for `SM_CONFIRM_FILE`
  */
+
+int16_t lastConfirmButtonIndex = NULL;
+
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
@@ -1361,6 +1368,16 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     } else if (ABS(this->stickRelY) >= 30) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->confirmButtonIndex ^= 1;
+    }
+
+    if (lastConfirmButtonIndex != this->confirmButtonIndex) {
+        if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
+            OTRTextToSpeechCallback("Yes");
+        } else {
+            OTRTextToSpeechCallback("Quit");
+        }
+
+        lastConfirmButtonIndex = this->confirmButtonIndex;
     }
 }
 

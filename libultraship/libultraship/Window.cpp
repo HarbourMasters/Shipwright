@@ -23,7 +23,8 @@
 #include "SohHooks.h"
 #include "SohConsole.h"
 #include <iostream>
-#include <sapi51.h>
+#include <sapi.h>
+#include <thread>
 
 extern "C" {
     struct OSMesgQueue;
@@ -251,6 +252,8 @@ namespace Ship {
         SPDLOG_INFO("destruct window");
     }
 
+    ISpVoice* pVoice;
+
     void Window::Init() {
         std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
         ConfigFile& Conf = *pConf.get();
@@ -267,7 +270,7 @@ namespace Ship {
 
         //Initialize Text To Speech
         HRESULT hr;
-        HRESULT a = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+        HRESULT a = CoInitializeEx(NULL, COINIT_MULTITHREADED);
         HRESULT CoInitializeEx(LPVOID pvReserved, DWORD dwCoInit);
         hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void**)&pVoice);
 
@@ -276,14 +279,22 @@ namespace Ship {
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }
 
+    void task1(const char textToRead[])
+    {
+        const int w = 512;
+        int* wp = const_cast <int*> (&w);
+        *wp = strlen(textToRead);
+
+        wchar_t wtext[w];
+        mbstowcs(wtext, textToRead, strlen(textToRead) + 1);
+
+        pVoice->Speak(wtext, SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
+    }
+
     void Window::ReadText(const char textToRead[])
     {
-        wchar_t wtext[sizeof(textToRead)];
-
-        mbstowcs(wtext, textToRead, sizeof(textToRead));
-        const LPWSTR ptr = wtext;
-
-        pVoice->Speak(ptr, SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
+        std::thread t1(task1, textToRead);
+        t1.detach();
     }
 
     void Window::RunCommands(Gfx* Commands) {
