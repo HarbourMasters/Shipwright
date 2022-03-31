@@ -112,12 +112,15 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 	const uint8_t lineLength = 14;
 	const uint8_t offset = 0;
 
-	for (size_t i = 0; i < rotationValues.size(); i++)
+	if (!Globals::Instance->otrMode)
 	{
-		valuesStr += StringHelper::Sprintf("0x%04X, ", rotationValues[i]);
+		for (size_t i = 0; i < rotationValues.size(); i++)
+		{
+			valuesStr += StringHelper::Sprintf("0x%04X, ", rotationValues[i]);
 
-		if ((i - offset + 1) % lineLength == 0)
-			valuesStr += "\n    ";
+			if ((i - offset + 1) % lineLength == 0)
+				valuesStr += "\n    ";
+		}
 	}
 
 	parent->AddDeclarationArray(rotationValuesOffset, DeclarationAlignment::Align4,
@@ -125,13 +128,17 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 	                            StringHelper::Sprintf("%sFrameData", defaultPrefix.c_str()),
 	                            rotationValues.size(), valuesStr);
 
-	for (size_t i = 0; i < rotationIndices.size(); i++)
+	if (!Globals::Instance->otrMode)
 	{
-		indicesStr += StringHelper::Sprintf("    { 0x%04X, 0x%04X, 0x%04X },", rotationIndices[i].x,
-		                                    rotationIndices[i].y, rotationIndices[i].z);
+		for (size_t i = 0; i < rotationIndices.size(); i++)
+		{
+			indicesStr +=
+				StringHelper::Sprintf("    { 0x%04X, 0x%04X, 0x%04X },", rotationIndices[i].x,
+			                          rotationIndices[i].y, rotationIndices[i].z);
 
-		if (i != (rotationIndices.size() - 1))
-			indicesStr += "\n";
+			if (i != (rotationIndices.size() - 1))
+				indicesStr += "\n";
+		}
 	}
 
 	parent->AddDeclarationArray(rotationIndicesOffset, DeclarationAlignment::Align4,

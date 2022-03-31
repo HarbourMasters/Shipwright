@@ -253,6 +253,9 @@ int main(int argc, char* argv[])
 
 	Globals::Instance->fileMode = fileMode;
 
+	if (fileMode == ZFileMode::ExtractDirectory)
+		Globals::Instance->rom = new ZRom("baserom.z64");
+
 	// We've parsed through our commands once. If an exporter exists, it's been set by now.
 	// Now we'll parse through them again but pass them on to our exporter if one is available.
 
@@ -319,20 +322,13 @@ int main(int argc, char* argv[])
 					if (!parseSuccessful)
 						return 1;
 
-					/*for (auto file : Globals::Instance->files)
-						delete file;*/
-
 					for (int i = 0; i < Globals::Instance->files.size(); i++)
 					{
-						//if (!Globals::Instance->files[i]->isExternalFile)
-						{
-							delete Globals::Instance->files[i];
-							Globals::Instance->files.erase(Globals::Instance->files.begin() + i);
-							i--;
-						}
+						delete Globals::Instance->files[i];
+						Globals::Instance->files.erase(Globals::Instance->files.begin() + i);
+						i--;
 					}
 
-					//Globals::Instance->files.clear();
 					Globals::Instance->externalFiles.clear();
 					Globals::Instance->segments.clear();
 					Globals::Instance->cfg.segmentRefFiles.clear();
@@ -387,6 +383,7 @@ int main(int argc, char* argv[])
 	{
 		BuildAssetBlob(Globals::Instance->inputPath, Globals::Instance->outputPath);
 	}
+	/*
 	else if (fileMode == ZFileMode::BuildOverlay)
 	{
 		ZOverlay* overlay =
@@ -397,6 +394,7 @@ int main(int argc, char* argv[])
 			File::WriteAllText(Globals::Instance->outputPath.string(),
 			                   overlay->GetSourceOutputCode(""));
 	}
+	*/
 
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();

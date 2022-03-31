@@ -190,7 +190,8 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 			HANDLE_ERROR_PROCESS(WarningType::Always, errorHeader, "");
 		}
 
-		rawData = File::ReadAllBytes((basePath / name).string());
+		//rawData = File::ReadAllBytes((basePath / name).string());
+		rawData = Globals::Instance->GetBaseromFile((basePath / name).string());
 
 		if (reader->Attribute("RangeEnd") == nullptr)
 			rangeEnd = rawData.size();
@@ -1000,6 +1001,10 @@ std::string ZFile::ProcessDeclarations()
 							lastItem.second->size += curItem.second->size;
 							lastItem.second->arrayItemCnt += curItem.second->arrayItemCnt;
 							lastItem.second->text += "\n" + curItem.second->text;
+
+							for (auto vtx : curItem.second->vertexHack)
+								lastItem.second->vertexHack.push_back(vtx);
+
 							declarations.erase(curItem.first);
 							declarationKeys.erase(declarationKeys.begin() + i);
 							delete curItem.second;

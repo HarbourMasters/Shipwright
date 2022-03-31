@@ -756,42 +756,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				word1 = value.words.w1 | 0xF0000000;
 			}
 			else
-			//if (dList->vertices.size() > 0)
 			{
-				// Connect neighboring vertex arrays
-				std::vector<std::pair<uint32_t, std::vector<ZVtx>>> vertsKeys(dList->vertices.begin(),
-					dList->vertices.end());
-
-				if (vertsKeys.size() > 0)
-				{
-					auto lastItem = vertsKeys[0];
-
-					for (size_t i = 1; i < vertsKeys.size(); i++)
-					{
-						auto curItem = vertsKeys[i];
-
-						int32_t sizeDiff = curItem.first - (lastItem.first + (lastItem.second.size() * 16));
-
-						// Make sure there isn't an unaccounted inbetween these two
-						if (sizeDiff == 0)
-						{
-							for (auto v : curItem.second)
-							{
-								dList->vertices[lastItem.first].push_back(v);
-								lastItem.second.push_back(v);
-							}
-
-							dList->vertices.erase(curItem.first);
-							vertsKeys.erase(vertsKeys.begin() + i);
-
-							i--;
-							continue;
-						}
-
-						lastItem = curItem;
-					}
-				}
-
 				// Write CRC64 of vtx file name
 				uint32_t addr = data & 0xFFFFFFFF;
 
@@ -829,7 +794,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 					{
-						//printf("Exporting VTX Data %s\n", fName.c_str());
 						// Write vertices to file
 						MemoryStream* vtxStream = new MemoryStream();
 						BinaryWriter vtxWriter = BinaryWriter(vtxStream);
@@ -852,47 +816,40 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						vtxWriter.Write((uint32_t)ZResourceType::Vertex);
 						vtxWriter.Write((uint32_t)arrCnt);
 
-						size_t sz = dList->vertices[vtxDecl->address].size();
+						auto start = std::chrono::steady_clock::now();
 
-						//if (sz > 0)
+						// God dammit this is so dumb
+						for (size_t i = 0; i < split.size(); i++)
 						{
-							auto start = std::chrono::steady_clock::now();
+							std::string line = split[i];
 
-							// God dammit this is so dumb
-							for (size_t i = 0; i < split.size(); i++)
+							if (StringHelper::Contains(line, "VTX("))
 							{
-								std::string line = split[i];
+								auto split2 = StringHelper::Split(StringHelper::Split(StringHelper::Split(line, "VTX(")[1], ")")[0], ",");
 
-								if (StringHelper::Contains(line, "VTX("))
-								{
-									auto split2 = StringHelper::Split(StringHelper::Split(StringHelper::Split(line, "VTX(")[1], ")")[0], ",");
+								vtxWriter.Write((int16_t)std::stoi(split2[0], nullptr, 10)); // v.x
+								vtxWriter.Write((int16_t)std::stoi(split2[1], nullptr, 10)); // v.y
+								vtxWriter.Write((int16_t)std::stoi(split2[2], nullptr, 10)); // v.z
 
-									vtxWriter.Write((int16_t)std::stoi(split2[0], nullptr, 10)); // v.x
-									vtxWriter.Write((int16_t)std::stoi(split2[1], nullptr, 10)); // v.y
-									vtxWriter.Write((int16_t)std::stoi(split2[2], nullptr, 10)); // v.z
+								vtxWriter.Write((int16_t)0);								 // v.flag
 
-									vtxWriter.Write((int16_t)0);								 // v.flag
-									
-									vtxWriter.Write((int16_t)std::stoi(split2[3], nullptr, 10)); // v.s
-									vtxWriter.Write((int16_t)std::stoi(split2[4], nullptr, 10)); // v.t
-									
-									vtxWriter.Write((uint8_t)std::stoi(split2[5], nullptr, 10)); // v.r
-									vtxWriter.Write((uint8_t)std::stoi(split2[6], nullptr, 10)); // v.g
-									vtxWriter.Write((uint8_t)std::stoi(split2[7], nullptr, 10)); // v.b
-									vtxWriter.Write((uint8_t)std::stoi(split2[8], nullptr, 10)); // v.a
-								}
+								vtxWriter.Write((int16_t)std::stoi(split2[3], nullptr, 10)); // v.s
+								vtxWriter.Write((int16_t)std::stoi(split2[4], nullptr, 10)); // v.t
+
+								vtxWriter.Write((uint8_t)std::stoi(split2[5], nullptr, 10)); // v.r
+								vtxWriter.Write((uint8_t)std::stoi(split2[6], nullptr, 10)); // v.g
+								vtxWriter.Write((uint8_t)std::stoi(split2[7], nullptr, 10)); // v.b
+								vtxWriter.Write((uint8_t)std::stoi(split2[8], nullptr, 10)); // v.a
 							}
-
-							if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-								File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
-							else
-								files[fName] = vtxStream->ToVector();
-
-							auto end = std::chrono::steady_clock::now();
-							size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-							//printf("Exported VTX Array %s in %zums\n", fName.c_str(), diff);
 						}
+
+						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+							File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
+						else
+							files[fName] = vtxStream->ToVector();
+
+						auto end = std::chrono::steady_clock::now();
+						size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 					}
 				}
 				else
@@ -900,15 +857,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					spdlog::error("vtxDecl == nullptr!");
 				}
 			}
-			/*else
-			{
-				writer->Write(word0);
-				writer->Write(word1);
-				word0 = 0;
-				word1 = 0;
-
-				spdlog::error("dList->vertices.size() <= 0!");
-			}*/
 		}
 		break;
 		}

@@ -1647,7 +1647,9 @@ static int32_t GfxdCallback_Vtx(uint32_t seg, int32_t count)
 	}
 
 	self->references.push_back(seg);
-	gfxd_puts("@r");
+	
+	if (!Globals::Instance->otrMode)
+		gfxd_puts("@r");
 
 	return 1;
 }
@@ -1805,6 +1807,23 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 				curAddr, firstVtx.GetDeclarationAlignment(),
 				item.second.size() * firstVtx.GetRawDataSize(), firstVtx.GetSourceTypeName(),
 				firstVtx.GetDefaultName(name), item.second.size(), declaration);
+
+			/*for (auto vtx : item.second)
+			{
+				ZVtx* nVtx = new ZVtx(vtx.parent);
+				nVtx->x = vtx.x;
+				nVtx->y = vtx.y;
+				nVtx->z = vtx.z;
+				nVtx->flag = vtx.flag;
+				nVtx->s = vtx.s;
+				nVtx->t = vtx.t;
+				nVtx->r = vtx.r;
+				nVtx->g = vtx.g;
+				nVtx->b = vtx.b;
+				nVtx->a = vtx.a;
+				decl->vertexHack.push_back(nVtx);
+			}*/
+
 			decl->isExternal = true;
 		}
 	}
@@ -1850,15 +1869,15 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 		{
 			auto& item = vertices[vtxKeys[i]];
 
-			std::string declaration;
+			//std::string declaration;
 
-			for (auto& vtx : item)
-				declaration += StringHelper::Sprintf("\t%s,\n", vtx.GetBodySourceCode().c_str());
+			//for (auto& vtx : item)
+				//declaration += StringHelper::Sprintf("\t%s,\n", vtx.GetBodySourceCode().c_str());
 
 			// Ensure there's always a trailing line feed to prevent dumb warnings.
 			// Please don't remove this line, unless you somehow made a way to prevent
 			// that warning when building the OoT repo.
-			declaration += "\n";
+			//declaration += "\n";
 
 			if (parent != nullptr)
 			{
@@ -1869,12 +1888,6 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 					vtxName = vtxRes->GetName();
 				else
 					vtxName = StringHelper::Sprintf("%sVtx_%06X", prefix.c_str(), vtxKeys[i]);
-
-
-				if (StringHelper::Contains(vtxName, "4B18"))
-				{
-					int bp = 0;
-				}
 
 				auto filepath = Globals::Instance->outputPath / vtxName;
 				std::string incStr = StringHelper::Sprintf("%s.%s.inc", filepath.string().c_str(), "vtx");

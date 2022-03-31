@@ -108,12 +108,12 @@ public:
 	static void RegisterNode(std::string nodeName, ZResourceFactoryFunc* nodeFunc);
 
 protected:
-	std::vector<uint8_t> rawData;
 	std::string name;
 	fs::path outName = "";
 	fs::path basePath;
 	fs::path outputPath;
 	fs::path xmlFilePath;
+	std::vector<uint8_t> rawData;
 
 	// Keep track of every texture of this ZFile.
 	// The pointers declared here are "borrowed" (somebody else is the owner),

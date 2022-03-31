@@ -93,6 +93,14 @@ ExporterSet* Globals::GetExporterSet()
 		return nullptr;
 }
 
+std::vector<uint8_t> Globals::GetBaseromFile(std::string fileName)
+{
+	if (fileMode == ZFileMode::ExtractDirectory)
+		return rom->GetFile(StringHelper::Split(fileName, "baserom/")[1]);
+	else
+		return File::ReadAllBytes(fileName);
+}
+
 bool Globals::GetSegmentedPtrName(segptr_t segAddress, ZFile* currentFile,
                                   const std::string& expectedType, std::string& declName)
 {

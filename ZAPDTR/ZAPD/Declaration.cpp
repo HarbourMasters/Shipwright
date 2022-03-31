@@ -1,6 +1,7 @@
 #include "Declaration.h"
 
 #include "Globals.h"
+#include "ZVtx.h"
 #include "Utils/StringHelper.h"
 
 Declaration::Declaration(offset_t nAddress, DeclarationAlignment nAlignment, size_t nSize,
@@ -59,6 +60,12 @@ Declaration::Declaration(offset_t nAddress, const std::string& nIncludePath, siz
 	includePath = nIncludePath;
 	varType = nVarType;
 	varName = nVarName;
+}
+
+Declaration::~Declaration()
+{
+	//for (auto item : vertexHack)
+		//delete item;
 }
 
 bool Declaration::IsStatic() const

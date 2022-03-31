@@ -14,7 +14,7 @@
 #endif
 namespace Util = MoonUtils;
 
-static bool oldExtractMode = false;
+bool oldExtractMode = false;
 static int maxResources = 0;
 static int extractedResources = 0;
 bool buildingOtr = false;

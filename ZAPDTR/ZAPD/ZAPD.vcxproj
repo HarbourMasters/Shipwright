@@ -192,6 +192,7 @@
     <ClCompile Include="OutputFormatter.cpp" />
     <ClCompile Include="Overlays\ZOverlay.cpp" />
     <ClCompile Include="WarningHandler.cpp" />
+    <ClCompile Include="yaz0\yaz0.cpp" />
     <ClCompile Include="ZArray.cpp" />
     <ClCompile Include="ZBackground.cpp" />
     <ClCompile Include="ZCutsceneMM.cpp" />
@@ -199,6 +200,7 @@
     <ClCompile Include="ZMtx.cpp" />
     <ClCompile Include="ZPath.cpp" />
     <ClCompile Include="ZPlayerAnimationData.cpp" />
+    <ClCompile Include="ZRom.cpp" />
     <ClCompile Include="ZRoom\Commands\SetActorCutsceneList.cpp" />
     <ClCompile Include="ZRoom\Commands\SetAnimatedMaterialList.cpp" />
     <ClCompile Include="ZRoom\Commands\SetCsCamera.cpp" />
@@ -279,6 +281,8 @@
     <ClInclude Include="OutputFormatter.h" />
     <ClInclude Include="Overlays\ZOverlay.h" />
     <ClInclude Include="WarningHandler.h" />
+    <ClInclude Include="yaz0\readwrite.h" />
+    <ClInclude Include="yaz0\yaz0.h" />
     <ClInclude Include="ZAnimation.h" />
     <ClInclude Include="ZArray.h" />
     <ClInclude Include="ZBackground.h" />
@@ -292,6 +296,7 @@
     <ClInclude Include="ZMtx.h" />
     <ClInclude Include="ZPath.h" />
     <ClInclude Include="ZPlayerAnimationData.h" />
+    <ClInclude Include="ZRom.h" />
     <ClInclude Include="ZRoom\Commands\SetActorCutsceneList.h" />
     <ClInclude Include="ZRoom\Commands\SetAnimatedMaterialList.h" />
     <ClInclude Include="ZRoom\Commands\SetCsCamera.h" />

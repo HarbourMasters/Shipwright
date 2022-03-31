@@ -5,6 +5,7 @@
 #include <vector>
 #include "GameConfig.h"
 #include "ZFile.h"
+#include <ZRom.h>
 
 class ZRoom;
 
@@ -62,6 +63,7 @@ public:
 	bool forceUnaccountedStatic = false;
 	bool otrMode = true;
 
+	ZRom* rom;
 	std::vector<ZFile*> files;
 	std::vector<ZFile*> externalFiles;
 	std::vector<int32_t> segments;
@@ -79,6 +81,8 @@ public:
 
 	ZResourceExporter* GetExporter(ZResourceType resType);
 	ExporterSet* GetExporterSet();
+
+	std::vector<uint8_t> GetBaseromFile(std::string fileName);
 
 	/**
 	 * Search in every file (and the symbol map) for the `segAddress` passed as parameter.

@@ -97,12 +97,15 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 
 	if (waterBoxes.size() > 0)
 	{
-		for (size_t i = 0; i < waterBoxes.size(); i++)
+		if (!Globals::Instance->otrMode)
 		{
-			declaration +=
-				StringHelper::Sprintf("\t{ %s },", waterBoxes[i].GetBodySourceCode().c_str());
-			if (i + 1 < waterBoxes.size())
-				declaration += "\n";
+			for (size_t i = 0; i < waterBoxes.size(); i++)
+			{
+				declaration +=
+					StringHelper::Sprintf("\t{ %s },", waterBoxes[i].GetBodySourceCode().c_str());
+				if (i + 1 < waterBoxes.size())
+					declaration += "\n";
+			}
 		}
 
 		parent->AddDeclarationArray(
@@ -115,14 +118,17 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 	{
 		declaration.clear();
 
-		for (size_t i = 0; i < polygons.size(); i++)
+		if (!Globals::Instance->otrMode)
 		{
-			declaration += StringHelper::Sprintf(
-				"\t{ 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X },",
-				polygons[i].type, polygons[i].vtxA, polygons[i].vtxB, polygons[i].vtxC,
-				polygons[i].a, polygons[i].b, polygons[i].c, polygons[i].d);
-			if (i + 1 < polygons.size())
-				declaration += "\n";
+			for (size_t i = 0; i < polygons.size(); i++)
+			{
+				declaration += StringHelper::Sprintf(
+					"\t{ 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X, 0x%04X },",
+					polygons[i].type, polygons[i].vtxA, polygons[i].vtxB, polygons[i].vtxC,
+					polygons[i].a, polygons[i].b, polygons[i].c, polygons[i].d);
+				if (i + 1 < polygons.size())
+					declaration += "\n";
+			}
 		}
 
 		parent->AddDeclarationArray(
@@ -132,13 +138,16 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 	}
 
 	declaration.clear();
-	for (size_t i = 0; i < polygonTypes.size(); i++)
+	if (!Globals::Instance->otrMode)
 	{
-		declaration += StringHelper::Sprintf("\t{ 0x%08lX, 0x%08lX },", polygonTypes[i] >> 32,
-		                                     polygonTypes[i] & 0xFFFFFFFF);
+		for (size_t i = 0; i < polygonTypes.size(); i++)
+		{
+			declaration += StringHelper::Sprintf("\t{ 0x%08lX, 0x%08lX },", polygonTypes[i] >> 32,
+			                                     polygonTypes[i] & 0xFFFFFFFF);
 
-		if (i < polygonTypes.size() - 1)
-			declaration += "\n";
+			if (i < polygonTypes.size() - 1)
+				declaration += "\n";
+		}
 	}
 
 	if (polyTypeDefAddress != 0)
@@ -154,13 +163,16 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 	{
 		declaration.clear();
 
-		for (size_t i = 0; i < vertices.size(); i++)
+		if (!Globals::Instance->otrMode)
 		{
-			declaration +=
-				StringHelper::Sprintf("\t{ %s },", vertices[i].GetBodySourceCode().c_str());
+			for (size_t i = 0; i < vertices.size(); i++)
+			{
+				declaration +=
+					StringHelper::Sprintf("\t{ %s },", vertices[i].GetBodySourceCode().c_str());
 
-			if (i < vertices.size() - 1)
-				declaration += "\n";
+				if (i < vertices.size() - 1)
+					declaration += "\n";
+			}
 		}
 
 		const auto& first = vertices.front();
@@ -176,6 +188,9 @@ void ZCollisionHeader::DeclareReferences(const std::string& prefix)
 std::string ZCollisionHeader::GetBodySourceCode() const
 {
 	std::string declaration = "";
+
+	if (Globals::Instance->otrMode)
+		return declaration;
 
 	declaration += "\n";
 

@@ -25,6 +25,7 @@ bool single_thread = false;
 bool hide_second_btn = false;
 RomVersion version;
 const char* patched_rom = "tmp/rom.z64";
+extern bool oldExtractMode;
 
 static std::string currentStep = "None";
 
@@ -137,7 +138,9 @@ void OTRGame::draw() {
 		UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
 		UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
 		UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
-		UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
+		
+		if (oldExtractMode)
+			UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
 		
 		if(!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
 			const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);
