@@ -631,9 +631,9 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
         if (0) {}
 
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON)) ||
+            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA)))) {
+              (this->currentTunic != PLAYER_TUNIC_ZORA && CVar_GetS32("gSuperTunic", 0) == 0)))) {
             Message_StartTextbox(globalCtx, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
@@ -1590,7 +1590,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     sp12C[0] = sword;
     sp12C[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVar_GetS32("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVar_GetS32("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 

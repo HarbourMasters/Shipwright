@@ -306,6 +306,14 @@ namespace SohImGui {
                 if (ImGui::SliderFloat("##GYROSCOPE", &Game::Settings.controller.gyro_sensitivity, 0.0f, 1.0f, "")) {
                     needs_save = true;
                 }
+
+                if (ImGui::Button("Recalibrate Gyro")) {
+                    Game::Settings.controller.gyroDriftX = 0;
+                    Game::Settings.controller.gyroDriftY = 0;
+                }
+
+                ImGui::Separator();
+
                 ImGui::Text("Rumble Strength: %d %%", static_cast<int>(100 * Game::Settings.controller.rumble_strength));
                 if (ImGui::SliderFloat("##RUMBLE", &Game::Settings.controller.rumble_strength, 0.0f, 1.0f, "")) {
                     needs_save = true;
@@ -350,20 +358,65 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
-                ImGui::Text("Debugging");
-                ImGui::Separator();
-
-                if (ImGui::Checkbox("Debug Mode", &Game::Settings.enhancements.debug_mode)) {
-                    CVar_SetS32(const_cast<char*>("gDebugEnabled"), Game::Settings.enhancements.debug_mode);
-                    needs_save = true;
-                }
-
                 ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Developer Tools")) {
                 HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
                 HOOK(ImGui::MenuItem("Console", nullptr, &console->opened));
+                
+                ImGui::Text("Debug");
+                ImGui::Separator();
+                
+                if (ImGui::Checkbox("Debug Mode", &Game::Settings.cheats.debug_mode)) {
+                    CVar_SetS32(const_cast<char*>("gDebugEnabled"), Game::Settings.cheats.debug_mode);
+                    needs_save = true;
+                }
+
+                ImGui::EndMenu();
+            }
+            
+            if (ImGui::BeginMenu("Cheats")) {
+                if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
+                    CVar_SetS32(const_cast<char*>("gInfiniteMoney"), Game::Settings.cheats.infinite_money);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Infinite Health", &Game::Settings.cheats.infinite_health)) {
+                    CVar_SetS32(const_cast<char*>("gInfiniteHealth"), Game::Settings.cheats.infinite_health);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Infinite Ammo", &Game::Settings.cheats.infinite_ammo)) {
+                    CVar_SetS32(const_cast<char*>("gInfiniteAmmo"), Game::Settings.cheats.infinite_ammo);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Infinite Magic", &Game::Settings.cheats.infinite_magic)) {
+                    CVar_SetS32(const_cast<char*>("gInfiniteMagic"), Game::Settings.cheats.infinite_magic);
+                    needs_save = true;
+                }
+                
+                if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
+                    CVar_SetS32(const_cast<char*>("gNoClip"), Game::Settings.cheats.no_clip);
+                    needs_save = true;
+                }
+                
+                if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
+                    CVar_SetS32(const_cast<char*>("gClimbEverything"), Game::Settings.cheats.climb_everything);
+                    needs_save = true;
+                }
+                
+                if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
+                    CVar_SetS32(const_cast<char*>("gMoonJumpOnL"), Game::Settings.cheats.moon_jump_on_l);
+                    needs_save = true;
+                }
+                
+                if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
+                    CVar_SetS32(const_cast<char*>("gSuperTunic"), Game::Settings.cheats.super_tunic);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
