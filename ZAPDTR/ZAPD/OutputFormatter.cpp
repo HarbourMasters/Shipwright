@@ -3,7 +3,7 @@
 
 void OutputFormatter::Flush()
 {
-	//if (!Globals::Instance->otrMode)
+	//if (!Globals::Instance->otrMode) // OTRTODO: MULTITHREADING
 	{
 		if (col > lineLimit && !Globals::Instance->otrMode)
 		{
@@ -31,6 +31,10 @@ void OutputFormatter::Flush()
 
 int OutputFormatter::Write(const char* buf, int count)
 {
+	// OTRTODO
+	//if (!Globals::Instance->singleThreaded)
+		//return 0;
+
 	for (int i = 0; i < count; i++)
 	{
 		char c = buf[i];
@@ -92,7 +96,7 @@ int OutputFormatter::Write(const std::string& buf)
 	return Write(buf.data(), buf.size());
 }
 
-OutputFormatter* OutputFormatter::Instance;
+__declspec(thread) OutputFormatter* OutputFormatter::Instance;
 
 int OutputFormatter::WriteStatic(const char* buf, int count)
 {

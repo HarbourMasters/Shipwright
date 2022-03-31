@@ -23,7 +23,7 @@ void OTRExporter_Skeleton::Save(ZResource* res, const fs::path& outPath, BinaryW
 		Declaration* skelDecl = skel->parent->GetDeclarationRanged(GETSEGOFFSET(skel->limbsTable.limbsAddresses[i]));
 
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(skel->limbsTable.limbsAddresses[i], skel->parent, "", name);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(skel->limbsTable.limbsAddresses[i], skel->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')

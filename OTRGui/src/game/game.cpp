@@ -72,8 +72,15 @@ void OTRGame::init(){
 	}
 }
 
-void ExtractRom() {
-	const WriteResult result = ExtractBaserom(patched_rom);
+void ExtractRom() 
+{
+	WriteResult result;
+
+	if (oldExtractMode)
+		ExtractBaserom(patched_rom);
+	else
+		result.error = NULLSTR;
+
 	if (result.error == NULLSTR) {
 		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
 		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");

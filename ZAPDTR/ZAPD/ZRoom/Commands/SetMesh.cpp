@@ -78,7 +78,7 @@ std::string SetMesh::GenDListExterns(ZDisplayList* dList)
 std::string SetMesh::GetBodySourceCode() const
 {
 	std::string list;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "", list);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "", list, parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_MESH(%s)", list.c_str());
 }
 
@@ -129,8 +129,8 @@ std::string PolygonDlist::GetBodySourceCode() const
 	std::string bodyStr;
 	std::string opaStr;
 	std::string xluStr;
-	Globals::Instance->GetSegmentedPtrName(opa, parent, "Gfx", opaStr);
-	Globals::Instance->GetSegmentedPtrName(xlu, parent, "Gfx", xluStr);
+	Globals::Instance->GetSegmentedPtrName(opa, parent, "Gfx", opaStr, parent->workerID);
+	Globals::Instance->GetSegmentedPtrName(xlu, parent, "Gfx", xluStr, parent->workerID);
 
 	if (polyType == 2)
 	{
@@ -294,7 +294,7 @@ std::string BgImage::GetBodySourceCode() const
 	}
 
 	std::string backgroundName;
-	Globals::Instance->GetSegmentedPtrName(source, parent, "", backgroundName);
+	Globals::Instance->GetSegmentedPtrName(source, parent, "", backgroundName, parent->workerID);
 	bodyStr += StringHelper::Sprintf("%s, ", backgroundName.c_str());
 	bodyStr += "\n    ";
 	if (!isSubStruct)
@@ -493,7 +493,7 @@ std::string PolygonType1::GetBodySourceCode() const
 	bodyStr += StringHelper::Sprintf("%i, %i, ", type, format);
 
 	std::string dlistStr;
-	Globals::Instance->GetSegmentedPtrName(dlist, parent, "", dlistStr);
+	Globals::Instance->GetSegmentedPtrName(dlist, parent, "", dlistStr, parent->workerID);
 
 	bodyStr += StringHelper::Sprintf("%s, ", dlistStr.c_str());
 	bodyStr += "}, \n";
@@ -505,7 +505,7 @@ std::string PolygonType1::GetBodySourceCode() const
 		bodyStr += single.GetBodySourceCode();
 		break;
 	case 2:
-		Globals::Instance->GetSegmentedPtrName(list, parent, "BgImage", listStr);
+		Globals::Instance->GetSegmentedPtrName(list, parent, "BgImage", listStr, parent->workerID);
 		bodyStr += StringHelper::Sprintf("    %i, %s, \n", count, listStr.c_str());
 		break;
 
@@ -592,7 +592,7 @@ void PolygonType2::DeclareReferences(const std::string& prefix)
 std::string PolygonType2::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(start, parent, "", listName);
+	Globals::Instance->GetSegmentedPtrName(start, parent, "", listName, parent->workerID);
 
 	std::string body = StringHelper::Sprintf("\n    %i, %i,\n", type, polyDLists.size());
 	body += StringHelper::Sprintf("    %s,\n", listName.c_str());

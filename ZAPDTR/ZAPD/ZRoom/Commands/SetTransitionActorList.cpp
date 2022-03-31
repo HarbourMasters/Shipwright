@@ -52,7 +52,8 @@ void SetTransitionActorList::DeclareReferences(const std::string& prefix)
 std::string SetTransitionActorList::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "TransitionActorEntry", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "TransitionActorEntry", listName,
+	                                       parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_TRANSITION_ACTOR_LIST(%i, %s)", transitionActors.size(),
 	                             listName.c_str());
 }

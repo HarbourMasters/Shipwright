@@ -7,6 +7,7 @@
 #ifndef _MSC_VER
 #include <byteswap.h>
 #endif
+#include <Globals.h>
 
 namespace fs = std::filesystem;
 
@@ -157,7 +158,7 @@ ZRom::ZRom(std::string romPath)
 		break;
 	}
 
-	auto path = StringHelper::Sprintf("CFG/filelists/%s", version.listPath.c_str());
+	auto path = StringHelper::Sprintf("%s/%s", Globals::Instance->fileListPath.string().c_str(), version.listPath.c_str());
 	auto txt = File::ReadAllText(path);
 	std::vector<std::string> lines = StringHelper::Split(txt, "\n");
 

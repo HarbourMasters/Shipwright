@@ -6,6 +6,7 @@
 #include "GameConfig.h"
 #include "ZFile.h"
 #include <ZRom.h>
+#include <FileWorker.h>
 
 class ZRoom;
 
@@ -51,9 +52,10 @@ public:
 	bool outputCrc = false;
 	bool profile;  // Measure performance of certain operations
 	bool useLegacyZDList;
+	bool singleThreaded;
 	VerbosityLevel verbosity;  // ZAPD outputs additional information
 	ZFileMode fileMode;
-	fs::path baseRomPath, inputPath, outputPath, sourceOutputPath, cfgPath;
+	fs::path baseRomPath, inputPath, outputPath, sourceOutputPath, cfgPath, fileListPath;
 	TextureType texType;
 	ZGame game;
 	GameConfig cfg;
@@ -68,6 +70,8 @@ public:
 	std::vector<ZFile*> externalFiles;
 	std::vector<int32_t> segments;
 
+	std::map<int, FileWorker*> workerData;
+
 	std::string currentExporter;
 	static std::map<std::string, ExporterSet*>& GetExporterMap();
 	static void AddExporter(std::string exporterName, ExporterSet* exporterSet);
@@ -75,9 +79,12 @@ public:
 	Globals();
 	~Globals();
 
-	void AddSegment(int32_t segment, ZFile* file);
-	bool HasSegment(int32_t segment);
-	ZFile* GetSegment(int32_t segment);
+	void AddSegment(int32_t segment, ZFile* file, int workerID);
+	bool HasSegment(int32_t segment, int workerID);
+	ZFile* GetSegment(int32_t segment, int workerID);
+	std::map<int32_t, std::vector<ZFile*>> GetSegmentRefFiles(int workerID);
+	void AddFile(ZFile* file, int workerID);
+	void AddExternalFile(ZFile* file, int workerID);
 
 	ZResourceExporter* GetExporter(ZResourceType resType);
 	ExporterSet* GetExporterSet();
@@ -93,8 +100,8 @@ public:
 	 * in which case `declName` will be set to the address formatted as a pointer.
 	 */
 	bool GetSegmentedPtrName(segptr_t segAddress, ZFile* currentFile,
-	                         const std::string& expectedType, std::string& declName);
+	                         const std::string& expectedType, std::string& declName, int workerID);
 
 	bool GetSegmentedArrayIndexedName(segptr_t segAddress, size_t elementSize, ZFile* currentFile,
-	                                  const std::string& expectedType, std::string& declName);
+	                                  const std::string& expectedType, std::string& declName, int workerID);
 };

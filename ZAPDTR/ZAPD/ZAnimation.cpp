@@ -150,10 +150,11 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 std::string ZNormalAnimation::GetBodySourceCode() const
 {
 	std::string frameDataName;
-	Globals::Instance->GetSegmentedPtrName(rotationValuesSeg, parent, "s16", frameDataName);
+	Globals::Instance->GetSegmentedPtrName(rotationValuesSeg, parent, "s16", frameDataName,
+	                                       parent->workerID);
 	std::string jointIndicesName;
 	Globals::Instance->GetSegmentedPtrName(rotationIndicesSeg, parent, "JointIndex",
-	                                       jointIndicesName);
+	                                       jointIndicesName, parent->workerID);
 
 	std::string headerStr =
 		StringHelper::Sprintf("\n\t{ %i }, %s,\n", frameCount, frameDataName.c_str());
@@ -190,7 +191,7 @@ void ZLinkAnimation::ParseRawData()
 std::string ZLinkAnimation::GetBodySourceCode() const
 {
 	std::string segSymbol;
-	Globals::Instance->GetSegmentedPtrName(segmentAddress, parent, "", segSymbol);
+	Globals::Instance->GetSegmentedPtrName(segmentAddress, parent, "", segSymbol, parent->workerID);
 
 	return StringHelper::Sprintf("\n\t{ %i }, %s\n", frameCount, segSymbol.c_str());
 }
@@ -390,12 +391,13 @@ void ZCurveAnimation::DeclareReferences(const std::string& prefix)
 std::string ZCurveAnimation::GetBodySourceCode() const
 {
 	std::string refIndexStr;
-	Globals::Instance->GetSegmentedPtrName(refIndex, parent, "u8", refIndexStr);
+	Globals::Instance->GetSegmentedPtrName(refIndex, parent, "u8", refIndexStr, parent->workerID);
 	std::string transformDataStr;
 	Globals::Instance->GetSegmentedPtrName(transformData, parent, "TransformData",
-	                                       transformDataStr);
+	                                       transformDataStr, parent->workerID);
 	std::string copyValuesStr;
-	Globals::Instance->GetSegmentedPtrName(copyValues, parent, "s16", copyValuesStr);
+	Globals::Instance->GetSegmentedPtrName(copyValues, parent, "s16", copyValuesStr,
+	                                       parent->workerID);
 
 	return StringHelper::Sprintf("\n\t%s,\n\t%s,\n\t%s,\n\t%i, %i\n", refIndexStr.c_str(),
 	                             transformDataStr.c_str(), copyValuesStr.c_str(), unk_0C, unk_10);
@@ -517,8 +519,10 @@ std::string ZLegacyAnimation::GetBodySourceCode() const
 
 	std::string frameDataName;
 	std::string jointKeyName;
-	Globals::Instance->GetSegmentedPtrName(frameData, parent, "s16", frameDataName);
-	Globals::Instance->GetSegmentedPtrName(jointKey, parent, "JointKey", jointKeyName);
+	Globals::Instance->GetSegmentedPtrName(frameData, parent, "s16", frameDataName,
+	                                       parent->workerID);
+	Globals::Instance->GetSegmentedPtrName(jointKey, parent, "JointKey", jointKeyName,
+	                                       parent->workerID);
 
 	body += StringHelper::Sprintf("\t%i, %i,\n", frameCount, limbCount);
 	body += StringHelper::Sprintf("\t%s,\n", frameDataName.c_str());

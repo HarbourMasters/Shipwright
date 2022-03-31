@@ -294,6 +294,9 @@
     <ClCompile Include="yaz0\yaz0.cpp">
       <Filter>Source Files\Yaz0</Filter>
     </ClCompile>
+    <ClCompile Include="FileWorker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ZRoom\ZRoom.h">
@@ -559,6 +562,12 @@
     </ClInclude>
     <ClInclude Include="yaz0\yaz0.h">
       <Filter>Header Files\Yaz0</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWorker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ctpl_stl.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

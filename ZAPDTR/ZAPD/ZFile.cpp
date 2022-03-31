@@ -41,6 +41,7 @@ ZFile::ZFile()
 	baseAddress = 0;
 	rangeStart = 0x000000000;
 	rangeEnd = 0xFFFFFFFF;
+	workerID = 0;
 }
 
 ZFile::ZFile(const fs::path& nOutPath, const std::string& nName) : ZFile()
@@ -51,7 +52,7 @@ ZFile::ZFile(const fs::path& nOutPath, const std::string& nName) : ZFile()
 }
 
 ZFile::ZFile(ZFileMode nMode, tinyxml2::XMLElement* reader, const fs::path& nBasePath,
-             const fs::path& nOutPath, const std::string& filename, const fs::path& nXmlFilePath)
+             const fs::path& nOutPath, const std::string& filename, const fs::path& nXmlFilePath, int nWorkerID)
 	: ZFile()
 {
 	xmlFilePath = nXmlFilePath;
@@ -66,6 +67,7 @@ ZFile::ZFile(ZFileMode nMode, tinyxml2::XMLElement* reader, const fs::path& nBas
 		outputPath = nOutPath;
 
 	mode = nMode;
+	workerID = nWorkerID;
 
 	ParseXML(reader, filename);
 	if (mode != ZFileMode::ExternalFile)
@@ -167,7 +169,7 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 			}
 		}
 	}
-	Globals::Instance->AddSegment(segment, this);
+	Globals::Instance->AddSegment(segment, this, workerID);
 
 	if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
 	{
@@ -183,15 +185,20 @@ void ZFile::ParseXML(tinyxml2::XMLElement* reader, const std::string& filename)
 
 	if (mode == ZFileMode::Extract || mode == ZFileMode::ExternalFile || mode == ZFileMode::ExtractDirectory)
 	{
-		if (!File::Exists((basePath / name).string()))
+		if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
 		{
-			std::string errorHeader = StringHelper::Sprintf("binary file '%s' does not exist.",
-			                                                (basePath / name).c_str());
-			HANDLE_ERROR_PROCESS(WarningType::Always, errorHeader, "");
+			if (!File::Exists((basePath / name).string()))
+			{
+				std::string errorHeader = StringHelper::Sprintf("binary file '%s' does not exist.",
+				                                                (basePath / name).c_str());
+				HANDLE_ERROR_PROCESS(WarningType::Always, errorHeader, "");
+			}
 		}
 
-		//rawData = File::ReadAllBytes((basePath / name).string());
-		rawData = Globals::Instance->GetBaseromFile((basePath / name).string());
+		if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
+			rawData = Globals::Instance->GetBaseromFile(name);
+		else
+			rawData = Globals::Instance->GetBaseromFile((basePath / name).string());
 
 		if (reader->Attribute("RangeEnd") == nullptr)
 			rangeEnd = rawData.size();
@@ -1093,7 +1100,7 @@ void ZFile::ProcessDeclarationText(Declaration* decl)
 		{
 			std::string vtxName;
 			Globals::Instance->GetSegmentedArrayIndexedName(decl->references[refIndex], 0x10, this,
-			                                                "Vtx", vtxName);
+			                                                "Vtx", vtxName, workerID);
 			decl->text.replace(i, 2, vtxName);
 
 			refIndex++;

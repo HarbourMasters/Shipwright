@@ -209,7 +209,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		break;
 		case G_MTX:
 		{
-			if ((!Globals::Instance->HasSegment(GETSEGNUM(data))) || ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
+			if ((!Globals::Instance->HasSegment(GETSEGNUM(data), res->parent->workerID)) || ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
 			{
 				uint32_t pp = (data & 0x000000FF00000000) >> 32;
 				uint32_t mm = (data & 0x00000000FFFFFFFF);
@@ -404,7 +404,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		//case G_BRANCH_Z:
 		case G_DL:
 		{
-			if ((!Globals::Instance->HasSegment(GETSEGNUM(data)) && (int)opF3D != G_BRANCH_Z)
+			if ((!Globals::Instance->HasSegment(GETSEGNUM(data), res->parent->workerID) && (int)opF3D != G_BRANCH_Z)
 				|| ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
 			{
 				int32_t pp = (data & 0x00FF000000000000) >> 56;
@@ -681,7 +681,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			uint32_t seg = data & 0xFFFFFFFF;
 			int32_t texAddress = Seg2Filespace(data, dList->parent->baseAddress);
 
-			if (!Globals::Instance->HasSegment(GETSEGNUM(seg)))
+			if (!Globals::Instance->HasSegment(GETSEGNUM(seg), res->parent->workerID))
 			{
 				int32_t __ = (data & 0x00FF000000000000) >> 48;
 				int32_t www = (data & 0x00000FFF00000000) >> 32;
@@ -699,7 +699,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			else
 			{
 				std::string texName = "";
-				bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", texName);
+				bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", texName, res->parent->workerID);
 
 				int32_t __ = (data & 0x00FF000000000000) >> 48;
 				int32_t www = (data & 0x00000FFF00000000) >> 32;
@@ -718,7 +718,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				if (foundDecl)
 				{
-					ZFile* assocFile = Globals::Instance->GetSegment(GETSEGNUM(seg));
+					ZFile* assocFile = Globals::Instance->GetSegment(GETSEGNUM(seg), res->parent->workerID);
 					std::string assocFileName = assocFile->GetName();
 					std::string fName = "";
 					
@@ -765,8 +765,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				auto segOffset = GETSEGOFFSET(addr);
 				Declaration* vtxDecl = dList->parent->GetDeclarationRanged(segOffset);
-				//std::string vtxName = "";
-				//bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", vtxName);
 
 				int32_t aa = (data & 0x000000FF00000000ULL) >> 32;
 				int32_t nn = (data & 0x000FF00000000000ULL) >> 44;

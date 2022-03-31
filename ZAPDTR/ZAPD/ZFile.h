@@ -35,6 +35,8 @@ public:
 	std::string defines;
 	std::vector<ZResource*> resources;
 
+	int workerID;
+
 	// Default to using virtual addresses
 	uint32_t segment = 0x80;
 	uint32_t baseAddress, rangeStart, rangeEnd;
@@ -42,7 +44,7 @@ public:
 
 	ZFile(const fs::path& nOutPath, const std::string& nName);
 	ZFile(ZFileMode nMode, tinyxml2::XMLElement* reader, const fs::path& nBasePath,
-	      const fs::path& nOutPath, const std::string& filename, const fs::path& nXmlFilePath);
+	      const fs::path& nOutPath, const std::string& filename, const fs::path& nXmlFilePath, int nWorkerID);
 	~ZFile();
 
 	std::string GetName() const;

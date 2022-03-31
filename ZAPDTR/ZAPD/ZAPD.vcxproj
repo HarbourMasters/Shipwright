@@ -184,6 +184,7 @@
     <ClCompile Include="..\lib\libgfxd\uc_f3dex2.c" />
     <ClCompile Include="..\lib\libgfxd\uc_f3dexb.c" />
     <ClCompile Include="Declaration.cpp" />
+    <ClCompile Include="FileWorker.cpp" />
     <ClCompile Include="GameConfig.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ImageBackend.cpp" />
@@ -273,7 +274,9 @@
     <ClInclude Include="..\lib\stb\stb_image_write.h" />
     <ClInclude Include="..\lib\stb\tinyxml2.h" />
     <ClInclude Include="CRC32.h" />
+    <ClInclude Include="ctpl_stl.h" />
     <ClInclude Include="Declaration.h" />
+    <ClInclude Include="FileWorker.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImageBackend.h" />
