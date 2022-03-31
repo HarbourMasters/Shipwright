@@ -3169,24 +3169,33 @@ void Interface_Draw(GlobalContext* globalCtx) {
         s16 rupeeR;
         s16 rupeeG;
         s16 rupeeB;
-        switch (CUR_UPG_VALUE(UPG_WALLET)) {
-            case 0:
-                rupeeR = rupeeIconGreen[0];
-                rupeeG = rupeeIconGreen[1];
-                rupeeB = rupeeIconGreen[2];
-                break;
-            case 1:
-                rupeeR = rupeeIconBlue[0];
-                rupeeG = rupeeIconBlue[1];
-                rupeeB = rupeeIconBlue[2];
-                break;
-            case 2:
-                rupeeR = rupeeIconRed[0];
-                rupeeG = rupeeIconRed[1];
-                rupeeB = rupeeIconRed[2];
-                break;
-            default:
-                break;
+
+        if (CVar_GetS32("gDynamicWalletIcon", 0)) {
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                case 0:
+                    rupeeR = rupeeIconGreen[0];
+                    rupeeG = rupeeIconGreen[1];
+                    rupeeB = rupeeIconGreen[2];
+                    break;
+                case 1:
+                    rupeeR = rupeeIconBlue[0];
+                    rupeeG = rupeeIconBlue[1];
+                    rupeeB = rupeeIconBlue[2];
+                    break;
+                case 2:
+                    rupeeR = rupeeIconRed[0];
+                    rupeeG = rupeeIconRed[1];
+                    rupeeB = rupeeIconRed[2];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        else {
+            rupeeR = rupeeIconGreen[0];
+            rupeeG = rupeeIconGreen[1];
+            rupeeB = rupeeIconGreen[2];
         }
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeR, rupeeG, rupeeB, interfaceCtx->magicAlpha);
