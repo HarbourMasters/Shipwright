@@ -3127,7 +3127,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
     static s16 rupeeDigitsCount[] = { 2, 3, 3 };
 
     // courtesy of https://github.com/TestRunnerSRL/OoT-Randomizer/blob/Dev/ASM/c/hud_colors.c
-    static s16 rupeeWalletColors[4][3] = {
+    static s16 rupeeWalletColors[3][3] = {
         { 0xC8, 0xFF, 0x64 }, // Base Wallet (Green)
         { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
         { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
