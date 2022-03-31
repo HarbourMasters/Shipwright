@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_letter" Segment="6">
+        <DList Name="gGiLetterDL" Offset="0x0CC0"/>
+        <DList Name="gGiLetterWritingDL" Offset="0x0D60"/>
+    </File>
+</Root>

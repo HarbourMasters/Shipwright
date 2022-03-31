@@ -1,0 +1,11 @@
+<Root>
+    <File Name="object_gi_medal" Segment="6">
+        <DList Name="gGiForestMedallionFaceDL" Offset="0x0CB0"/>
+        <DList Name="gGiMedallionDL" Offset="0x0E18"/>
+        <DList Name="gGiFireMedallionFaceDL" Offset="0x1AF0"/>
+        <DList Name="gGiWaterMedallionFaceDL" Offset="0x2830"/>
+        <DList Name="gGiSpiritMedallionFaceDL" Offset="0x3610"/>
+        <DList Name="gGiShadowMedallionFaceDL" Offset="0x4330"/>
+        <DList Name="gGiLightMedallionFaceDL" Offset="0x5220"/>
+    </File>
+</Root>

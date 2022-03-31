@@ -1001,9 +1001,8 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
         LoadSkyboxPalette(globalCtx, skyboxCtx, 2, gBackAlleyHouseBg3Tlut, 16, 16);
         break;
     default:
-        skyboxCtx->staticSegments[0] = GameState_Alloc(&globalCtx->state, 0x10000 * 8, "../z_vr_box.c", 1226);
-        //skyboxCtx->staticSegments[1] = GameState_Alloc(&globalCtx->state, 0x10000 * 8, "../z_vr_box.c", 1226);
-        skyboxCtx->staticSegments[1] = malloc(0x10000 * 8); // OTRTODO
+        skyboxCtx->staticSegments[0] = GameState_Alloc(&globalCtx->state, 0x10000 * 4, "../z_vr_box.c", 1226);
+        skyboxCtx->staticSegments[1] = GameState_Alloc(&globalCtx->state, 0x10000 * 4, "../z_vr_box.c", 1226);
         skyboxCtx->palettes = GameState_Alloc(&globalCtx->state, 0x1000, "../z_vr_box.c", 1226);
         break;
     }

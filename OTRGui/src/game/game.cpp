@@ -26,6 +26,7 @@ bool single_thread = false;
 bool hide_second_btn = false;
 RomVersion version;
 const char* patched_rom = "tmp/rom.z64";
+extern bool oldExtractMode;
 
 static std::string currentStep = "None";
 
@@ -72,11 +73,28 @@ void OTRGame::init(){
 	}
 }
 
-void ExtractRom() {
-	const WriteResult result = ExtractBaserom(patched_rom);
+void ExtractRom() 
+{
+	WriteResult result;
+
+	if (oldExtractMode)
+		ExtractBaserom(patched_rom);
+	else
+		result.error = NULLSTR;
+
 	if (result.error == NULLSTR) {
 		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
-		startWorker();
+		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");
+
+		MoonUtils::mkdir("Extract");
+		MoonUtils::copy("tmp/baserom/Audiobank", "Extract/Audiobank");
+		MoonUtils::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
+		MoonUtils::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
+		MoonUtils::copy("tmp/baserom/version", "Extract/version");
+
+		MoonUtils::copy("assets/game/", "Extract/assets/");
+
+		startWorker(version);
 		extracting = true;
 	}
 }
@@ -131,7 +149,7 @@ void OTRGame::draw() {
 		}
 
 		// Clamp the window to the borders of the monitors
-
+		if (wndPos.x < vsX1) wndPos.x = vsX1;
 		if (wndPos.x < vsX1) wndPos.x = vsX1;
 		if (wndPos.y < vsY1) wndPos.y = vsY1;
 		if (wndPos.x + windowSize.x > vsX2) wndPos.x = vsX2 - windowSize.x;
@@ -160,7 +178,9 @@ void OTRGame::draw() {
 	UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
 	UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
 	UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
-	UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
+
+	if (oldExtractMode)
+		UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
 
 	if (!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
 		const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);

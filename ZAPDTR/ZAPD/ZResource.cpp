@@ -8,6 +8,7 @@
 #include "ZFile.h"
 #include <Globals.h>
 #include <ZDisplayList.h>
+#include <ZArray.h>
 
 ZResource::ZResource(ZFile* nParent)
 {
@@ -18,6 +19,7 @@ ZResource::ZResource(ZFile* nParent)
 	sourceOutput = "";
 	rawDataIndex = 0;
 	outputDeclaration = true;
+	hash = 0;
 
 	RegisterRequiredAttribute("Name");
 	RegisterOptionalAttribute("OutName");
@@ -119,14 +121,21 @@ void ZResource::ParseXML(tinyxml2::XMLElement* reader)
 
 		name = registeredAttributes.at("Name").value;
 
-		static std::regex r("[a-zA-Z_]+[a-zA-Z0-9_]*", std::regex::icase | std::regex::optimize);
 
-		if (!isInner || (isInner && name != ""))
+		// Disable this check for OTR file generation for now since it takes up a considerable amount of CPU time
+		if (!Globals::Instance->otrMode)
 		{
-			if (!std::regex_match(name, r))
+			static std::regex r("[a-zA-Z_]+[a-zA-Z0-9_]*",
+			                    std::regex::icase | std::regex::optimize);
+
+			if (!isInner || (isInner && name != ""))
 			{
-				HANDLE_ERROR_RESOURCE(WarningType::InvalidAttributeValue, parent, this,
-				                      rawDataIndex, "invalid value found for 'Name' attribute", "");
+				if (!std::regex_match(name, r))
+				{
+					HANDLE_ERROR_RESOURCE(WarningType::InvalidAttributeValue, parent, this,
+					                      rawDataIndex, "invalid value found for 'Name' attribute",
+					                      "");
+				}
 			}
 		}
 
@@ -272,6 +281,21 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 			decl = DeclareVar(prefix, bodyStr);
 		else
 			decl->text = bodyStr;
+
+		// OTRTODO: This is a hack and we need something more elegant in the future...
+		if (GetResourceType() == ZResourceType::Array)
+		{
+			ZArray* arr = (ZArray*)this;
+			if (arr->resList[0]->GetResourceType() == ZResourceType::Vertex)
+			{
+				for (int i = 0; i < arr->resList.size(); i++)
+				{
+					ZVtx* vtx = (ZVtx*)arr->resList[i];
+					decl->vertexHack.push_back(vtx);
+
+				}
+			}
+		}
 
 		if (decl != nullptr)
 			decl->staticConf = staticConf;

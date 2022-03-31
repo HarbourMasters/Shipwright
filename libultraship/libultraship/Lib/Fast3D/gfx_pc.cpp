@@ -2381,12 +2381,14 @@ static void gfx_run_dl(Gfx* cmd) {
                 cmd++;
                 uint64_t hash = ((uint64_t)cmd->words.w0 << 32) + (uint64_t)cmd->words.w1;
                 ResourceMgr_GetNameByCRC(hash, fileName);
+
+
+#if _DEBUG && 0
                 char* tex = ResourceMgr_LoadTexByCRC(hash);
-
-
-#if _DEBUG
-                //ResourceMgr_GetNameByCRC(hash, fileName);
-                //printf("G_SETTIMG_OTR: %s, %08X\n", fileName, hash);
+                ResourceMgr_GetNameByCRC(hash, fileName);
+                printf("G_SETTIMG_OTR: %s, %08X\n", fileName, hash);
+#else
+                char* tex = NULL;
 #endif
 
                 if (addr != NULL)

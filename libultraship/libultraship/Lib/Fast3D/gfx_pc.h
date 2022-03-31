@@ -21,7 +21,7 @@ struct TextureCacheKey {
     uint8_t palette_index;
 
     bool operator==(const TextureCacheKey&) const noexcept = default;
-
+     
     struct Hasher {
         size_t operator()(const TextureCacheKey& key) const noexcept {
             uintptr_t addr = (uintptr_t)key.texture_addr;

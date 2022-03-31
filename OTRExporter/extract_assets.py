@@ -48,7 +48,7 @@ def ExtractFunc(fullPath):
     *pathList, xmlName = fullPath.split(os.sep)
     objectName = os.path.splitext(xmlName)[0]
 
-    outPath = os.path.join("..\\soh\\assets\\", *pathList[4:], objectName)
+    outPath = os.path.join("..\\soh\\assets\\", *pathList[5:], objectName)
     os.makedirs(outPath, exist_ok=True)
     outSourcePath = outPath
 
@@ -64,6 +64,7 @@ def main():
     parser.add_argument("-s", "--single", help="asset path relative to assets/, e.g. objects/gameplay_keep")
     parser.add_argument("-f", "--force", help="Force the extraction of every xml instead of checking the touched ones.", action="store_true")
     parser.add_argument("-u", "--unaccounted", help="Enables ZAPD unaccounted detector warning system.", action="store_true")
+    parser.add_argument("-v", "--version", help="Sets game version.")
     args = parser.parse_args()
 
     global mainAbort
@@ -72,6 +73,13 @@ def main():
     signal.signal(signal.SIGINT, SignalHandler)
 
     extractedAssetsTracker = manager.dict()
+
+    xmlVer = "GC_NMQ_D"
+
+    if (args.version == "gc_pal_nmpq"):
+        xmlVer = "GC_NMQ_PAL_F"
+    elif (args.version == "dbg_mq"):
+        xmlVer = "GC_MQ_D"
 
     asset_path = args.single
     if asset_path is not None:
@@ -90,7 +98,7 @@ def main():
             extract_staff_text_path = None
 
         xmlFiles = []
-        for currentPath, _, files in os.walk(os.path.join("..\\soh\\assets", "xml")):
+        for currentPath, _, files in os.walk(os.path.join("..\\soh\\assets\\xml\\", xmlVer)):
             for file in files:
                 fullPath = os.path.join(currentPath, file)
                 if file.endswith(".xml"):

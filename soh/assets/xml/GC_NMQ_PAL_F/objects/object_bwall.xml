@@ -1,0 +1,7 @@
+<Root>
+    <File Name="object_bwall" Segment="6">
+        <DList Name="object_bwall_DL_000040" Offset="0x40"/>
+        <Collision Name="object_bwall_Col_000118" Offset="0x118"/>
+        <Texture Name="object_bwall_Tex_000150" OutName="tex_00000150" Format="rgba16" Width="32" Height="64" Offset="0x150"/>
+    </File>
+</Root>

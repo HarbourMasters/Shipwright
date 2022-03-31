@@ -1,0 +1,13 @@
+<Root>
+    <File Name="object_spot15_obj" Segment="6">
+        <!-- Lon Lon Milk Crate -->
+        <DList Name="gLonLonMilkCrateDL" Offset="0x180"/>
+        <Texture Name="gLonLonMilkCrateTex" OutName="milk_crate" Format="rgba16" Width="32" Height="64" Offset="0xD00"/>
+        <Collision Name="gLonLonMilkCrateCol" Offset="0x348"/>
+
+        <!-- Lon Lon Corral Fence -->
+        <DList Name="gLonLonCorralFenceDL" Offset="0x3C0"/>
+        <Texture Name="gLonLonCorralFenceTex" OutName="corral_fence" Format="i4" Width="32" Height="128" Offset="0x500"/>
+        <Collision Name="gLonLonCorralFenceCol" Offset="0x4D0"/>
+    </File>
+</Root>

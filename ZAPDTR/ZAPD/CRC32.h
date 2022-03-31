@@ -1,6 +1,6 @@
 #pragma once
 
-static uint32_t CRC32B(unsigned char* message, int32_t size)
+static uint32_t CRC32B(const unsigned char* message, int32_t size)
 {
 	int32_t byte, crc;
 	int32_t mask;

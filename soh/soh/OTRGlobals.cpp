@@ -22,6 +22,7 @@
 #include "Lib/stb/stb_image.h"
 #include "AudioPlayer.h"
 #include "../soh/Enhancements/debugconsole.h"
+#include "Utils/BitConverter.h"
 
 OTRGlobals* OTRGlobals::Instance;
 
@@ -41,6 +42,15 @@ extern "C" void OTRMessage_Init();
 // C->C++ Bridge
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
+
+    if (!t->bHasLoadError) 
+    {
+        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
+        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
+    }
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     DebugConsole_Init();
@@ -94,6 +104,11 @@ extern "C" int32_t OTRGetLastScancode()
 extern "C" void OTRResetScancode()
 {
     OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+}
+
+extern "C" uint32_t ResourceMgr_GetGameVersion() 
+{
+    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {

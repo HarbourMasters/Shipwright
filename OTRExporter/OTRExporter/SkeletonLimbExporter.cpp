@@ -86,7 +86,7 @@ void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, Bin
 	if (limb->childPtr != 0)
 	{
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->childPtr, limb->parent, "", name);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->childPtr, limb->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')
@@ -107,7 +107,7 @@ void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, Bin
 	if (limb->siblingPtr != 0)
 	{
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->siblingPtr, limb->parent, "", name);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->siblingPtr, limb->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')
@@ -128,7 +128,7 @@ void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, Bin
 	if (limb->dListPtr != 0)
 	{
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->dListPtr, limb->parent, "", name);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->dListPtr, limb->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')
@@ -149,7 +149,7 @@ void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, Bin
 	if (limb->dList2Ptr != 0)
 	{
 		std::string name;
-		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->dList2Ptr, limb->parent, "", name);
+		bool foundDecl = Globals::Instance->GetSegmentedPtrName(limb->dList2Ptr, limb->parent, "", name, res->parent->workerID);
 		if (foundDecl)
 		{
 			if (name.at(0) == '&')

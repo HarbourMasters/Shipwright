@@ -789,40 +789,10 @@ static PreRender sPlayerPreRender;
 static void* sPreRenderCvg;
 extern int fbTest;
 
-// OTRTODO: This function is no longer used. We could probably remove it.
-void KaleidoScope_SetupPlayerPreRender(GlobalContext* globalCtx) {
-    Gfx* gfx;
-    Gfx* gfxRef;
-    void* fbuf;
-    static Gfx testBuffer[2048];
-
-    //return;
-
-    fbuf = globalCtx->state.gfxCtx->curFrameBuffer;
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_scope_PAL.c", 496);
-
-    gfx = &testBuffer[0];
-
-    PreRender_SetValues(&sPlayerPreRender, 64, 112, fbuf, NULL);
-    func_800C1F20(&sPlayerPreRender, &gfx);
-    func_800C20B4(&sPlayerPreRender, &gfx);
-
-    gSPEndDisplayList(gfx++);
-    gSPDisplayList(POLY_KAL_DISP++, &testBuffer[0]);
-
-    SREG(33) |= 1;
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_scope_PAL.c", 509);
-}
-//OTRTODO - Player on pause
-#if 1
 void KaleidoScope_ProcessPlayerPreRender(void) {
-    //Sleep_Msec(50);
     PreRender_Calc(&sPlayerPreRender);
     PreRender_Destroy(&sPlayerPreRender);
 }
-#endif
 
 Gfx* KaleidoScope_QuadTextureIA4(Gfx* gfx, void* texture, s16 width, s16 height, u16 point) {
     gDPLoadTextureBlock_4b(gfx++, texture, G_IM_FMT_IA, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -4026,7 +3996,6 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             ResourceMgr_DirtyDirectory("textures/icon_item_24_static*");
             ResourceMgr_DirtyDirectory("textures/icon_item_static*");
             CVar_SetS32("gPauseTriforce", 0);
-            //ResourceMgr_InvalidateCache();
 
             func_800981B8(&globalCtx->objectCtx);
             func_800418D0(&globalCtx->colCtx, globalCtx);
