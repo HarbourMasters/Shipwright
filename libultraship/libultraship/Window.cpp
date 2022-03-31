@@ -110,10 +110,9 @@ extern "C" {
         }
 
         ModInternal::bindHook(CONTROLLER_READ);
-        ModInternal::initBindHook(1,
+        ModInternal::triggerHook(1,
             HookParameter({ .name = "cont_pad", .parameter = (void*)pad })
         );
-        ModInternal::callBindHook(0);
     }
 
     char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc) {
@@ -167,11 +166,10 @@ extern "C" {
             const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr).get());
 
             ModInternal::bindHook(LOAD_TEXTURE);
-            ModInternal::initBindHook(2,
+            ModInternal::triggerHook(2,
                 HookParameter({.name = "path", .parameter = (void*)hashStr.c_str() }),
                 HookParameter({.name = "texture", .parameter = static_cast<void*>(&res->imageData) })
             );
-            ModInternal::callBindHook(0);
 
             return reinterpret_cast<char*>(res->imageData);
         } else {
@@ -199,11 +197,10 @@ extern "C" {
     char* ResourceMgr_LoadTexByName(char* texPath) {
         const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
         ModInternal::bindHook(LOAD_TEXTURE);
-        ModInternal::initBindHook(2,
+        ModInternal::triggerHook(2,
             HookParameter({ .name = "path", .parameter = (void*)texPath }),
             HookParameter({ .name = "texture", .parameter = static_cast<void*>(&res->imageData) })
         );
-        ModInternal::callBindHook(0);
         return (char*)res->imageData;
     }
 

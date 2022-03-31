@@ -2643,8 +2643,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
     }
 
     ModInternal::bindHook(GFX_INIT);
-    ModInternal::initBindHook(0);
-    ModInternal::callBindHook(0);
+    ModInternal::triggerHook(0);
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {

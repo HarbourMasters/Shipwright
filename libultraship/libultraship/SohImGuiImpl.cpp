@@ -206,7 +206,7 @@ namespace SohImGui {
         } });
 
         ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
-            pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
+            pads = static_cast<OSContPad*>(ev->getArgument("cont_pad"));
         } });
         Game::InitSettings();
     }
