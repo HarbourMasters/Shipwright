@@ -341,6 +341,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Minimal UI", &Game::Settings.enhancements.minimal_ui)) {
+                    CVar_SetS32(const_cast<char*>("gMinimalUI"), Game::Settings.enhancements.minimal_ui);
+                    needs_save = true;
+                }
+
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
