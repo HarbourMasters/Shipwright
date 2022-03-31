@@ -3131,7 +3131,6 @@ void Interface_Draw(GlobalContext* globalCtx) {
         { 0xC8, 0xFF, 0x64 }, // Base Wallet (Green)
         { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
         { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
-        { 0xFF, 0x5A, 0xFF }, // Tycoon's Wallet (Purple)
     };
 
     static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
@@ -3176,7 +3175,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             // Rupee Icon
-            s16 *rColor;
+            s16* rColor;
 
             if (CVar_GetS32("gDynamicWalletIcon", 0)) {
                 rColor = &rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)];
