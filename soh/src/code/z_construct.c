@@ -462,7 +462,7 @@ void func_80111070(void) {
     WREG(28) = 0;
     R_OW_MINIMAP_X = 238;
     R_OW_MINIMAP_Y = 164;
-    R_MINIMAP_DISABLED = false;
+    R_MINIMAP_DISABLED = CVar_GetS32("gMinimalUI", 0);
     WREG(32) = 122;
     WREG(33) = 60;
     WREG(35) = 0;
