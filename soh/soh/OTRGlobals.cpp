@@ -343,6 +343,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
 	uintptr_t i = (uintptr_t)(imgData);
 
+
     if (i == 0xD9000000 || i == 0xE7000000 || (i & 0xF0000000) == 0xF0000000)
         return 0;
 
@@ -372,6 +373,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(char* path) {
 
         for (int i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
+
 
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
@@ -615,6 +617,27 @@ extern "C" s32* ResourceMgr_LoadCSByName(char* path)
 {
     auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (s32*)res->commands.data();
+}
+
+/* Remember to free after use of value */
+extern "C" char* Config_getValue(char* category, char* key)
+{
+	std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+	Ship::ConfigFile& Conf = *pConf.get();
+
+    std::string data = Conf.get(std::string(category)).get(std::string(key));
+    char* retval = (char*)malloc(data.length()+1);
+    strcpy(retval, data.c_str());
+
+    return retval;
+}
+
+extern "C" bool Config_setValue(char* category, char* key, char* value)
+{
+	std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+	Ship::ConfigFile& Conf = *pConf.get();
+    Conf[std::string(category)][std::string(key)] = std::string(value);
+    return Conf.Save();
 }
 
 std::wstring StringToU16(const std::string& s) {

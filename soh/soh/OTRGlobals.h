@@ -40,6 +40,8 @@ Gfx* ResourceMgr_LoadGfxByName(char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(char* path);
 CollisionHeader* ResourceMgr_LoadColByName(char* path);
+char* Config_getValue(char* category, char* key);
+bool Config_setValue(char* category, char* key, char* value);
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);

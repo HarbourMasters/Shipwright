@@ -2,7 +2,15 @@
 #include "global.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <string.h>
+
+#if defined(WIN32)
+#define DIR_SEPARATOR '\\'
+#else
+#define DIR_SEPARATOR '/'
+#endif
 
 #if 0
 typedef struct {
@@ -56,15 +64,71 @@ void SsSram_Dma(void* dramAddr, size_t size, s32 direction) {
 }
 #endif
 
+//https://stackoverflow.com/a/15019112
+void combineDirectoryAndFileName(char* destination, char* directory, char* fileName)
+{
+    if(directory && *directory) {
+        int len = strlen(directory);
+        strcpy(destination, directory);
+
+        if (destination[len - 1] == DIR_SEPARATOR)
+        {
+            if (fileName && *fileName)
+            {
+                strcpy(destination + len, (*fileName == DIR_SEPARATOR) ? (fileName + 1) : fileName);
+            }
+        }
+        else
+        {
+            if(fileName && *fileName)
+            {
+                if (*fileName == DIR_SEPARATOR)
+                {
+                    strcpy(destination + len, fileName);
+                }
+                else
+                {
+                    destination[len] = DIR_SEPARATOR;
+                    strcpy(destination + len + 1, fileName);
+                }
+            }
+        }
+    }
+    else if(fileName && *fileName)
+    {
+        strcpy(destination, fileName);
+    }
+    else
+    {
+        destination[0] = '\0';
+    }
+}
+
 void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction) {
     osSyncPrintf("ssSRAMReadWrite:%08x %08x %08x %d\n", addr, (uintptr_t)dramAddr, size, direction);
+    
+    char* directory = Config_getValue("SAVE", "Save File Directory");
+    char* fileName = Config_getValue("SAVE", "Save Filename");
+     
+    // This only happens if a user deletes the default filename and doesn't replace it
+    if(fileName[0] == '\0')
+    {
+        Config_setValue("SAVE", "Save Filename", "oot_save.sav");
+        free(fileName);
+        fileName = malloc(sizeof("oot_save.sav")+1);
+        strcpy(fileName, "oot_save.sav");
+    }
+
+    char* file = malloc(strlen(directory) + strlen(fileName) + 2);
+    combineDirectoryAndFileName(file, directory, fileName);
+
     //Check to see if the file exists
     FILE* saveFile;
-    saveFile = fopen("oot_save.sav", "rb");
+	saveFile = fopen(file, "rb");
 
     if (saveFile == NULL) {
 
-        saveFile = fopen("oot_save.sav", "wb");
+        saveFile = fopen(file, "wb");
         fseek(saveFile, 0, SEEK_SET);
         assert(saveFile != NULL); // OTRTODO LOG
         uint8_t zero = 0;
@@ -78,14 +142,14 @@ void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction
     }
     switch (direction) { 
         case OS_WRITE: {
-            saveFile = fopen("oot_save.sav", "r+b");
+            saveFile = fopen(file, "r+b");
             rewind(saveFile);
             fseek(saveFile, addr, SEEK_SET);
             fwrite(dramAddr, size, 1, saveFile);
             fclose(saveFile);
         } break;
         case OS_READ: {
-            saveFile = fopen("oot_save.sav", "rb+");
+            saveFile = fopen(file, "rb+");
             rewind(saveFile);
             fseek(saveFile, addr, SEEK_SET);
             fread(dramAddr, size, 1, saveFile);
@@ -94,4 +158,8 @@ void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction
     }
     //SsSram_Init(addr, DEVICE_TYPE_SRAM, PI_DOMAIN2, 5, 0xD, 2, 0xC, 0);
     //SsSram_Dma(dramAddr, size, direction);
+
+    free(file);
+    free(directory);
+    free(fileName);
 }
