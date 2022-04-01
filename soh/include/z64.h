@@ -340,6 +340,7 @@ typedef struct {
     s16 skyboxId;
     void* textures[2][6];
     void* palettes[6];
+    u16 palette_size;
     Gfx (*dListBuf)[150];
     Gfx* unk_138;
     Vtx* roomVtx;

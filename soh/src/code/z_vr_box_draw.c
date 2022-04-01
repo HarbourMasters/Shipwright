@@ -38,7 +38,12 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     gDPSetColorDither(POLY_OPA_DISP++, G_CD_MAGICSQ);
     gDPSetTextureFilter(POLY_OPA_DISP++, G_TF_BILERP);
 
-    gDPLoadTLUT_pal256(POLY_OPA_DISP++, skyboxCtx->palettes[0]);
+    if (skyboxCtx->palette_size == 256) {
+        gDPLoadTLUT_pal256(POLY_OPA_DISP++, skyboxCtx->palettes[0]);
+    } else {
+        gDPLoadTLUT_pal128(POLY_OPA_DISP++, 0, skyboxCtx->palettes[0]);
+        gDPLoadTLUT_pal128(POLY_OPA_DISP++, 1, skyboxCtx->palettes[1]);
+    }
     gDPSetTextureLUT(POLY_OPA_DISP++, G_TT_RGBA16);
     gDPSetTextureConvert(POLY_OPA_DISP++, G_TC_FILT);
 

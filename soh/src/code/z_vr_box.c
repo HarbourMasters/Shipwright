@@ -457,6 +457,7 @@ void LoadSkyboxTexAtOffset(SkyboxContext* skyboxCtx, int segmentIndex, int image
 void LoadSkyboxPalette(SkyboxContext* skyboxCtx, int paletteIndex, char* palTex, int width,
                        int height) {
     skyboxCtx->palettes[paletteIndex] = palTex;
+    skyboxCtx->palette_size = width * height;
 }
 
 static const char* sSBVRFine0Tex[] =
