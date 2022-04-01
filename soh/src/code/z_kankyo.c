@@ -677,7 +677,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
 
             envCtx->skybox1Index = newSkybox1Index;
 
@@ -695,7 +695,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
 
             envCtx->skybox2Index = newSkybox2Index;
 
