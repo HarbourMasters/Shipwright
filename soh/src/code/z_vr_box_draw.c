@@ -17,22 +17,10 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     func_800945A0(gfxCtx);
 
     //gsSPShaderTest(POLY_OPA_DISP++);
-    gSPInvalidateTexCache(POLY_OPA_DISP++, 0);
-    
-    // OTRTODO: Not working...
 
-    /*for (int i = 0; i < 8; i++) 
-    {
-        if (skyboxCtx->staticSegments[0] != NULL)
-            gSPInvalidateTexCache(POLY_OPA_DISP++, (uintptr_t)skyboxCtx->staticSegments[0] + (0x10000 * i));
-        
-        if (skyboxCtx->staticSegments[1] != NULL)
-            gSPInvalidateTexCache(POLY_OPA_DISP++, (uintptr_t)skyboxCtx->staticSegments[1] + (0x10000 * i));
-    }*/
-
-    gSPSegment(POLY_OPA_DISP++, 0x7, skyboxCtx->staticSegments[0]);
+    /*gSPSegment(POLY_OPA_DISP++, 0x7, skyboxCtx->staticSegments[0]);
     gSPSegment(POLY_OPA_DISP++, 0x8, skyboxCtx->staticSegments[1]);
-    gSPSegment(POLY_OPA_DISP++, 0x9, skyboxCtx->palettes);
+    gSPSegment(POLY_OPA_DISP++, 0x9, skyboxCtx->palettes);*/
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0x00, 0, 0, 0, blend);
     gSPTexture(POLY_OPA_DISP++, 0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON);
