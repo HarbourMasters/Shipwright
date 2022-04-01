@@ -945,6 +945,7 @@ void Skybox_Setup(GlobalContext* globalCtx, SkyboxContext* skyboxCtx, s16 skybox
 void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
     GlobalContext* globalCtx = (GlobalContext*)state;
 
+    skyboxCtx->skyboxId = skyboxId;
     skyboxCtx->unk_140 = 0;
     skyboxCtx->rot.x = skyboxCtx->rot.y = skyboxCtx->rot.z = 0.0f;
 
@@ -978,6 +979,23 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
                 skyboxCtx->roomVtx = GameState_Alloc(state, 160 * sizeof(Vtx), "../z_vr_box.c", 1653);
                 ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", "../z_vr_box.c", 1654);
 
+                func_800AF178(skyboxCtx, 5);
+            }
+        }
+        osSyncPrintf(VT_RST);
+    }
+}
+
+void Skybox_Update(SkyboxContext* skyboxCtx) {
+    if (skyboxCtx->skyboxId != SKYBOX_NONE) {
+        osSyncPrintf(VT_FGCOL(GREEN));
+
+        if (skyboxCtx->unk_140 != 0) {
+            func_800AEFC8(skyboxCtx, skyboxCtx->skyboxId);
+        } else {
+            if (skyboxCtx->skyboxId == SKYBOX_CUTSCENE_MAP) {
+                func_800AF178(skyboxCtx, 6);
+            } else {
                 func_800AF178(skyboxCtx, 5);
             }
         }

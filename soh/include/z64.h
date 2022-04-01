@@ -336,16 +336,17 @@ typedef enum {
 } SkyboxId;
 
 typedef struct {
-    /* 0x000 */ char unk_00[0x128];
-    /* 0x128 */ void* textures[2][6];
-    /* 0x130 */ void* palettes[6];
-    /* 0x134 */ Gfx (*dListBuf)[150];
-    /* 0x138 */ Gfx* unk_138;
-    /* 0x13C */ Vtx* roomVtx;
-    /* 0x140 */ s16  unk_140;
-    /* 0x144 */ Vec3f rot;
-    /* 0x150 */ char unk_150[0x10];
-} SkyboxContext; // size = 0x160
+    char unk_00[0x128];
+    s16 skyboxId;
+    void* textures[2][6];
+    void* palettes[6];
+    Gfx (*dListBuf)[150];
+    Gfx* unk_138;
+    Vtx* roomVtx;
+    s16  unk_140;
+    Vec3f rot;
+    char unk_150[0x10];
+} SkyboxContext;
 
 typedef enum {
     /*  0 */ OCARINA_SONG_MINUET,

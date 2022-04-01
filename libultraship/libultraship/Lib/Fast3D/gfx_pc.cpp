@@ -490,8 +490,8 @@ void gfx_texture_cache_clear()
     gfx_texture_cache.lru.clear();
 }
 
-static bool gfx_texture_cache_lookup(int i, TextureCacheNode **n, const uint8_t *orig_addr, uint32_t fmt, uint32_t siz, uint32_t palette_index) {
-    TextureCacheKey key = { orig_addr, fmt, siz, palette_index };
+static bool gfx_texture_cache_lookup(int i, TextureCacheNode **n, const uint8_t *orig_addr, const uint8_t *palette_addr, uint32_t fmt, uint32_t siz, uint32_t palette_index) {
+    TextureCacheKey key = { orig_addr, palette_addr, fmt, siz, palette_index };
     auto it = gfx_texture_cache.map.find(key);
 
     if (it != gfx_texture_cache.map.end()) {
@@ -815,7 +815,7 @@ static void import_texture(int i, int tile) {
     // if (ModInternal::callBindHook(0))
     //     return;
 
-    if (gfx_texture_cache_lookup(i, &rendering_state.textures[i], rdp.loaded_texture[tmem_index].addr, fmt, siz, rdp.texture_tile[tile].palette))
+    if (gfx_texture_cache_lookup(i, &rendering_state.textures[i], rdp.loaded_texture[tmem_index].addr, fmt == G_IM_FMT_CI ? rdp.palette : nullptr, fmt, siz, rdp.texture_tile[tile].palette))
     {
         return;
     }
