@@ -204,7 +204,7 @@ void Message_HandleChoiceSelection(GlobalContext* globalCtx, u8 numChoices) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Input* input = &globalCtx->state.input[0];
 
-    if (input->rel.stick_y >= 30 && !sAnalogStickHeld) {
+    if ((input->rel.stick_y >= 30 && !sAnalogStickHeld) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
         sAnalogStickHeld = true;
         msgCtx->choiceIndex--;
         if (msgCtx->choiceIndex > 128) {
@@ -212,7 +212,7 @@ void Message_HandleChoiceSelection(GlobalContext* globalCtx, u8 numChoices) {
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
-    } else if (input->rel.stick_y <= -30 && !sAnalogStickHeld) {
+    } else if ((input->rel.stick_y <= -30 && !sAnalogStickHeld) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
         sAnalogStickHeld = true;
         msgCtx->choiceIndex++;
         if (msgCtx->choiceIndex > numChoices) {
@@ -3032,7 +3032,7 @@ void Message_Update(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
     s16 var;
     s16 focusScreenPosX;
-    s16 averageY;
+    s16 averageY = 0;
     s16 playerFocusScreenPosY;
     s16 actorFocusScreenPosY;
 
