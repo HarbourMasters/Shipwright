@@ -2397,6 +2397,9 @@ void FileChoose_Destroy(GameState* thisx);
 
 char* SetQuote();
 
+void Heaps_Alloc(void);
+void Heaps_Free(void);
+
 #ifdef __cplusplus
 };
 #endif
