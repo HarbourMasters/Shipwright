@@ -824,10 +824,13 @@ NatureAmbienceDataIO sNatureAmbienceDataIO[20] = {
     },
 };
 
-u32 sOcarinaAllowedBtnMask = 0x800F;
-s32 sOcarinaABtnMap = 0x8000;
-s32 sOcarinaCUPBtnMap = 8;
-s32 sOcarinaCDownBtnMap = 4;
+u32 sOcarinaAllowedBtnMask =
+    (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
+s32 sOcarinaABtnMap = BTN_A;
+s32 sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
+s32 sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
+s32 sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
+s32 sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
 u8 sOcarinaInpEnabled = 0;
 s8 D_80130F10 = 0; // "OCA", ocarina active?
 u8 sCurOcarinaBtnVal = 0xFF;
@@ -1248,16 +1251,21 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 void func_800EC960(u8 custom) {
     if (!custom) {
         osSyncPrintf("AUDIO : Ocarina Control Assign Normal\n");
-        sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
+        sOcarinaAllowedBtnMask = 
+            (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaABtnMap = BTN_A;
-        sOcarinaCUPBtnMap = BTN_CUP;
-        sOcarinaCDownBtnMap = BTN_CDOWN;
+        sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
+        sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
+        sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
+        sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
     } else {
         osSyncPrintf("AUDIO : Ocarina Control Assign Custom\n");
         sOcarinaAllowedBtnMask = (BTN_A | BTN_B | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
         sOcarinaABtnMap = BTN_B;
         sOcarinaCUPBtnMap = BTN_CDOWN;
         sOcarinaCDownBtnMap = BTN_A;
+        sOcarinaCLeftBtnMap = BTN_CLEFT;
+        sOcarinaCRightBtnMap = BTN_CRIGHT;
     }
 }
 
@@ -1569,12 +1577,12 @@ void func_800ED458(s32 arg0) {
             osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaCDownBtnMap);
             sCurOcarinaBtnVal = 5;
             sCurOcarinaBtnIdx = 1;
-        } else if (D_8016BA18 & 1) {
-            osSyncPrintf("Presss NA_KEY_A4 %08x\n", 1);
+        } else if (D_8016BA18 & sOcarinaCRightBtnMap) {
+            osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaCRightBtnMap);
             sCurOcarinaBtnVal = 9;
             sCurOcarinaBtnIdx = 2;
-        } else if (D_8016BA18 & 2) {
-            osSyncPrintf("Presss NA_KEY_B4 %08x\n", 2);
+        } else if (D_8016BA18 & sOcarinaCLeftBtnMap) {
+            osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaCRightBtnMap);
             sCurOcarinaBtnVal = 0xB;
             sCurOcarinaBtnIdx = 3;
         } else if (D_8016BA18 & sOcarinaCUPBtnMap) {
@@ -1671,7 +1679,7 @@ void Audio_OcaSetSongPlayback(s8 songIdxPlusOne, s8 playbackState) {
 
 void Audio_OcaPlayback(void) {
     u32 noteTimerStep;
-    u32 nextNoteTimerStep;
+    u32 nextNoteTimerStep = 0;
 
     if (sPlaybackState != 0) {
         if (sStaffPlaybackPos == 0) {
@@ -4772,7 +4780,7 @@ void Audio_SetCodeReverb(s8 reverb) {
 }
 
 void func_800F6700(s8 arg0) {
-    s8 sp1F;
+    s8 sp1F = 0;
 
     switch (arg0) {
         case 0:
