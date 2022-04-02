@@ -4223,6 +4223,17 @@ _DW({                                   \
     gDPPipeSync(pkt);                       \
 })
 
+#define gDPLoadTLUT_pal128(pkt, pal, dram)              \
+_DW({                                   \
+    gDPSetTextureImage(pkt, G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, dram);  \
+    gDPTileSync(pkt);                       \
+    gDPSetTile(pkt, 0, 0, 0, 256 + ((pal)&1)*128,   \
+        G_TX_LOADTILE, 0 , 0, 0, 0, 0, 0, 0);           \
+    gDPLoadSync(pkt);                       \
+    gDPLoadTLUTCmd(pkt, G_TX_LOADTILE, 127);            \
+    gDPPipeSync(pkt);                       \
+})
+
 #else /* **** WORKAROUND hardware 1 load_tlut bug ****** */
 
 #define gDPLoadTLUT_pal256(pkt, dram)                                   \

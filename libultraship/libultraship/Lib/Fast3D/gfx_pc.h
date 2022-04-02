@@ -17,6 +17,7 @@ struct GfxDimensions
 
 struct TextureCacheKey {
     const uint8_t* texture_addr;
+    const uint8_t* palette_addrs[2];
     uint8_t fmt, siz;
     uint8_t palette_index;
 
