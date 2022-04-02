@@ -40,6 +40,8 @@ Gfx* ResourceMgr_LoadGfxByName(char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(char* path);
 CollisionHeader* ResourceMgr_LoadColByName(char* path);
+void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 char* Config_getValue(char* category, char* key);
 bool Config_setValue(char* category, char* key, char* value);
 uint64_t GetPerfCounter();

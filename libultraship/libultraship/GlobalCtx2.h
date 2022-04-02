@@ -20,6 +20,10 @@ namespace Ship {
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
 			std::shared_ptr<ConfigFile> GetConfig() { return Config; }
 
+			void CheckSaveFile(size_t sramSize);
+			void WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+			void ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+
 			GlobalCtx2(const std::string& Name);
 			~GlobalCtx2();
 

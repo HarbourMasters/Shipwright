@@ -29,6 +29,7 @@ OTRGlobals* OTRGlobals::Instance;
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     context->GetWindow()->Init();
+    context->CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -619,11 +620,18 @@ extern "C" s32* ResourceMgr_LoadCSByName(char* path)
     return (s32*)res->commands.data();
 }
 
+extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->ReadSaveFile(addr, dramAddr, size);
+}
+
+extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->WriteSaveFile(addr, dramAddr, size);
+}
+
 /* Remember to free after use of value */
-extern "C" char* Config_getValue(char* category, char* key)
-{
-	std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-	Ship::ConfigFile& Conf = *pConf.get();
+extern "C" char* Config_getValue(char* category, char* key) {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
 
     std::string data = Conf.get(std::string(category)).get(std::string(key));
     char* retval = (char*)malloc(data.length()+1);
@@ -632,10 +640,9 @@ extern "C" char* Config_getValue(char* category, char* key)
     return retval;
 }
 
-extern "C" bool Config_setValue(char* category, char* key, char* value)
-{
-	std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-	Ship::ConfigFile& Conf = *pConf.get();
+extern "C" bool Config_setValue(char* category, char* key, char* value)  {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
     Conf[std::string(category)][std::string(key)] = std::string(value);
     return Conf.Save();
 }
