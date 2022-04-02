@@ -52,7 +52,7 @@ public:
 	bool outputCrc = false;
 	bool profile;  // Measure performance of certain operations
 	bool useLegacyZDList;
-	bool singleThreaded;
+	bool singleThreaded = true;
 	VerbosityLevel verbosity;  // ZAPD outputs additional information
 	ZFileMode fileMode;
 	fs::path baseRomPath, inputPath, outputPath, sourceOutputPath, cfgPath, fileListPath;
