@@ -83,37 +83,37 @@ RomVersion GetVersion(FILE* rom) {
         break;
     case OOT_NTSC_JP_GC:
         version.version = "JP GameCube (MQ Disk)";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_GC;
         break;
     case OOT_NTSC_JP_GC_CE:
         version.version = "GameCube (Collectors Edition Disk)";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_GC_CE;
         break;
     case OOT_NTSC_JP_MQ:
         version.version = "JP Master Quest";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_MQ;
         break;
     case OOT_NTSC_US_MQ:
         version.version = "NTSC Master Quest";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_JP_MQ;
         break;
     case OOT_NTSC_US_GC:
         version.version = "NTSC GameCube";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube.txt";
         version.offset = OOT_OFF_US_MQ;
         break;
     case OOT_PAL_GC:
         version.version = "PAL GameCube";
-        version.listPath = "gamecube_mq.txt";
+        version.listPath = "gamecube_pal.txt";
         version.offset = OOT_OFF_PAL_GC;
         break;
     case OOT_PAL_MQ:
         version.version = "PAL Master Quest";
-        version.listPath = "pal_mq.txt";
+        version.listPath = "gamecube_pal.txt";
         version.offset = OOT_OFF_PAL_MQ;
         break;
     case OOT_PAL_GC_DBG1:
@@ -179,6 +179,8 @@ WriteResult ExtractBaserom(const char* romPath) {
 
     const std::vector<std::string> lines = MoonUtils::split(read(MoonUtils::join("assets/extractor/filelists", version.listPath)), '\n');
 
+    std::vector<uint8_t> decompressedData(1);
+
     for (int i = 0; i < lines.size(); i++) {
         FILE* outFile = fopen(MoonUtils::join("tmp/baserom", lines[i]).c_str(), "wb");
         const int romOffset = version.offset + (DMA_ENTRY_SIZE * i);
@@ -196,10 +198,13 @@ WriteResult ExtractBaserom(const char* romPath) {
         auto outData = new uint8_t[size];
         memcpy(outData, romData + physStart, size);
 
+
         if (compressed) {
-            std::vector<uint8_t> compressedData = yaz0_encode(outData, size);
-            outData = compressedData.data();
-            size = compressedData.size();
+            int decSize = virtEnd - virtStart;
+            decompressedData = std::vector<uint8_t>(decSize);
+            yaz0_decode(outData, decompressedData.data(), decSize);
+            outData = decompressedData.data();
+            size = decSize;
         }
 
         fwrite(outData, sizeof(char), size, outFile);

@@ -101,31 +101,49 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Testing|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Testing|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -326,6 +344,7 @@
     <ClInclude Include="Cvar.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="GameSettings.h" />
+    <ClInclude Include="GameVersions.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Lib\stb\stb_image_write.h" />
@@ -415,6 +434,12 @@
     <ClInclude Include="UltraController.h" />
     <ClInclude Include="SDLController.h" />
     <ClInclude Include="WindowShim.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
+      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

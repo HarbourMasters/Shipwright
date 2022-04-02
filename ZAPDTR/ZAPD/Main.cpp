@@ -23,16 +23,20 @@
 #include <string>
 #include <string_view>
 #include "tinyxml2.h"
+#include <ctpl_stl.h>
 
 //extern const char gBuildHash[];
 const char gBuildHash[] = "";
 
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
-           ZFileMode fileMode);
+           ZFileMode fileMode, int workerID);
 
 void BuildAssetTexture(const fs::path& pngFilePath, TextureType texType, const fs::path& outPath);
 void BuildAssetBackground(const fs::path& imageFilePath, const fs::path& outPath);
 void BuildAssetBlob(const fs::path& blobFilePath, const fs::path& outPath);
+int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileMode fileMode);
+
+volatile int numWorkersLeft = 0;
 
 #if !defined(_MSC_VER) && !defined(__CYGWIN__)
 #define ARRAY_COUNT(arr) (sizeof(arr) / sizeof(arr[0]))
@@ -182,6 +186,10 @@ int main(int argc, char* argv[])
 		{
 			Globals::Instance->cfgPath = argv[++i];
 		}
+		else if (arg == "-fl")  // Set baserom filelist path
+		{
+			Globals::Instance->fileListPath = argv[++i];
+		}
 		else if (arg == "-rconf")  // Read Config File
 		{
 			Globals::Instance->cfg.ReadConfigFile(argv[++i]);
@@ -242,6 +250,8 @@ int main(int argc, char* argv[])
 		fileMode = ZFileMode::BuildBlob;
 	else if (buildMode == "e")
 		fileMode = ZFileMode::Extract;
+	else if (buildMode == "ed")
+		fileMode = ZFileMode::ExtractDirectory;
 	else if (exporterSet != nullptr && exporterSet->parseFileModeFunc != nullptr)
 		exporterSet->parseFileModeFunc(buildMode, fileMode);
 
@@ -250,6 +260,11 @@ int main(int argc, char* argv[])
 		printf("Error: Invalid file mode '%s'\n", buildMode.c_str());
 		return 1;
 	}
+
+	Globals::Instance->fileMode = fileMode;
+
+	if (fileMode == ZFileMode::ExtractDirectory)
+		Globals::Instance->rom = new ZRom(Globals::Instance->baseRomPath.string());
 
 	// We've parsed through our commands once. If an exporter exists, it's been set by now.
 	// Now we'll parse through them again but pass them on to our exporter if one is available.
@@ -269,7 +284,7 @@ int main(int argc, char* argv[])
 	}
 
 	// TODO: switch
-	if (fileMode == ZFileMode::Extract || fileMode == ZFileMode::BuildSourceFile)
+	if (fileMode == ZFileMode::Extract || fileMode == ZFileMode::BuildSourceFile || fileMode == ZFileMode::ExtractDirectory)
 	{
 		bool procFileModeSuccess = false;
 
@@ -278,30 +293,85 @@ int main(int argc, char* argv[])
 
 		if (!procFileModeSuccess)
 		{
-			bool parseSuccessful;
-
-			for (auto& extFile : Globals::Instance->cfg.externalFiles)
+			if (fileMode == ZFileMode::ExtractDirectory)
 			{
-				fs::path externalXmlFilePath =
-					Globals::Instance->cfg.externalXmlFolder / extFile.xmlPath;
+				std::vector<std::string> fileList =
+					Directory::ListFiles(Globals::Instance->inputPath.string());
 
-				if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
+				const int num_threads = std::thread::hardware_concurrency();
+				ctpl::thread_pool pool(num_threads / 2);
+
+				bool parseSuccessful;
+				
+				auto start = std::chrono::steady_clock::now();
+				int fileListSize = fileList.size();
+				Globals::Instance->singleThreaded = false;
+
+				for (int i = 0; i < fileListSize; i++)
+					Globals::Instance->workerData[i] = new FileWorker();
+
+				numWorkersLeft = fileListSize;
+
+				for (int i = 0; i < fileListSize; i++)
 				{
-					printf("Parsing external file from config: '%s'\n",
-					       externalXmlFilePath.c_str());
+					if (Globals::Instance->singleThreaded)
+					{
+						ExtractFunc(i, fileList.size(), fileList[i], fileMode);
+					}
+					else
+					{
+						std::string fileListItem = fileList[i];
+						pool.push([i, fileListSize, fileListItem, fileMode](int) {
+							ExtractFunc(i, fileListSize, fileListItem, fileMode);
+						});
+					}
 				}
 
-				parseSuccessful = Parse(externalXmlFilePath, Globals::Instance->baseRomPath,
-				                        extFile.outPath, ZFileMode::ExternalFile);
+				if (!Globals::Instance->singleThreaded)
+				{
+					while (true)
+					{
+						if (numWorkersLeft <= 0)
+							break;
 
+						std::this_thread::sleep_for(std::chrono::milliseconds(250));
+					}
+				}
+
+				auto end = std::chrono::steady_clock::now();
+				auto diff =
+					std::chrono::duration_cast<std::chrono::seconds>(end - start).count();
+
+				printf("Generated OTR File Data in %i seconds\n", diff);
+ 			}
+			else
+			{
+				bool parseSuccessful;
+
+				for (auto& extFile : Globals::Instance->cfg.externalFiles)
+				{
+					fs::path externalXmlFilePath =
+						Globals::Instance->cfg.externalXmlFolder / extFile.xmlPath;
+
+					if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
+					{
+						printf("Parsing external file from config: '%s'\n",
+						       externalXmlFilePath.c_str());
+					}
+
+					parseSuccessful = Parse(externalXmlFilePath, Globals::Instance->baseRomPath,
+					                        extFile.outPath, ZFileMode::ExternalFile, 0);
+
+					if (!parseSuccessful)
+						return 1;
+				}
+
+				parseSuccessful =
+					Parse(Globals::Instance->inputPath, Globals::Instance->baseRomPath,
+				          Globals::Instance->outputPath, fileMode, 0);
 				if (!parseSuccessful)
 					return 1;
 			}
-
-			parseSuccessful = Parse(Globals::Instance->inputPath, Globals::Instance->baseRomPath,
-			                        Globals::Instance->outputPath, fileMode);
-			if (!parseSuccessful)
-				return 1;
 		}
 	}
 	else if (fileMode == ZFileMode::BuildTexture)
@@ -317,6 +387,7 @@ int main(int argc, char* argv[])
 	{
 		BuildAssetBlob(Globals::Instance->inputPath, Globals::Instance->outputPath);
 	}
+	/*
 	else if (fileMode == ZFileMode::BuildOverlay)
 	{
 		ZOverlay* overlay =
@@ -327,13 +398,77 @@ int main(int argc, char* argv[])
 			File::WriteAllText(Globals::Instance->outputPath.string(),
 			                   overlay->GetSourceOutputCode(""));
 	}
+	*/
+
+	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
+		exporterSet->endProgramFunc();
 
 	delete g;
 	return 0;
 }
 
+int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileMode fileMode)
+{
+	bool parseSuccessful;
+
+	printf("(%i / %i): %s\n", (workerID + 1), fileListSize, fileListItem.c_str());
+
+	for (auto& extFile : Globals::Instance->cfg.externalFiles)
+	{
+		fs::path externalXmlFilePath = Globals::Instance->cfg.externalXmlFolder / extFile.xmlPath;
+
+		if (Globals::Instance->verbosity >= VerbosityLevel::VERBOSITY_INFO)
+		{
+			printf("Parsing external file from config: '%s'\n", externalXmlFilePath.c_str());
+		}
+
+		parseSuccessful = Parse(externalXmlFilePath, Globals::Instance->baseRomPath,
+		                        extFile.outPath, ZFileMode::ExternalFile, workerID);
+
+		if (!parseSuccessful)
+			return 1;
+	}
+
+	parseSuccessful = Parse(fileListItem, Globals::Instance->baseRomPath,
+	                        Globals::Instance->outputPath, fileMode, workerID);
+
+	if (!parseSuccessful)
+		return 1;
+
+	if (Globals::Instance->singleThreaded)
+	{
+		for (int i = 0; i < Globals::Instance->files.size(); i++)
+		{
+			delete Globals::Instance->files[i];
+			Globals::Instance->files.erase(Globals::Instance->files.begin() + i);
+			i--;
+		}
+
+		Globals::Instance->externalFiles.clear();
+		Globals::Instance->segments.clear();
+		Globals::Instance->cfg.segmentRefFiles.clear();
+	}
+	else
+	{
+		for (int i = 0; i < Globals::Instance->workerData[workerID]->files.size(); i++)
+		{
+			delete Globals::Instance->workerData[workerID]->files[i];
+			Globals::Instance->workerData[workerID]->files.erase(
+				Globals::Instance->workerData[workerID]->files.begin() +
+			                               i);
+			i--;
+		}
+
+		Globals::Instance->workerData[workerID]->externalFiles.clear();
+		Globals::Instance->workerData[workerID]->segments.clear();
+		Globals::Instance->workerData[workerID]->segmentRefFiles.clear();
+
+		numWorkersLeft--;
+	}
+}
+
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
-           ZFileMode fileMode)
+           ZFileMode fileMode, int workerID)
 {
 	tinyxml2::XMLDocument doc;
 	tinyxml2::XMLError eResult = doc.LoadFile(xmlFilePath.string().c_str());
@@ -361,11 +496,11 @@ bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path
 	{
 		if (std::string_view(child->Name()) == "File")
 		{
-			ZFile* file = new ZFile(fileMode, child, basePath, outPath, "", xmlFilePath);
-			Globals::Instance->files.push_back(file);
+			ZFile* file = new ZFile(fileMode, child, basePath, outPath, "", xmlFilePath, workerID);
+			Globals::Instance->AddFile(file, workerID);
 			if (fileMode == ZFileMode::ExternalFile)
 			{
-				Globals::Instance->externalFiles.push_back(file);
+				Globals::Instance->AddExternalFile(file, workerID);
 				file->isExternalFile = true;
 			}
 		}
@@ -398,7 +533,7 @@ bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path
 			}
 
 			// Recursion. What can go wrong?
-			Parse(externalXmlFilePath, basePath, externalOutFilePath, ZFileMode::ExternalFile);
+			Parse(externalXmlFilePath, basePath, externalOutFilePath, ZFileMode::ExternalFile, workerID);
 		}
 		else
 		{
@@ -417,7 +552,14 @@ bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path
 		if (exporterSet != nullptr && exporterSet->beginXMLFunc != nullptr)
 			exporterSet->beginXMLFunc();
 
-		for (ZFile* file : Globals::Instance->files)
+		std::vector<ZFile*> files;
+
+		if (Globals::Instance->singleThreaded)
+			files = Globals::Instance->files;
+		else
+			files = Globals::Instance->workerData[workerID]->files;
+
+		for (ZFile* file : files)
 		{
 			if (fileMode == ZFileMode::BuildSourceFile)
 				file->BuildSourceFile();

@@ -24,6 +24,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gDisableLOD", 0);
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gPauseLiveLink", 0);
+    CVar_RegisterS32("gMinimalUI", 0);
 }
 
 //void BootCommands_ParseBootArgs(char* str)

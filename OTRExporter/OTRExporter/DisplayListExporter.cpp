@@ -209,7 +209,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		break;
 		case G_MTX:
 		{
-			if ((!Globals::Instance->HasSegment(GETSEGNUM(data))) || ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
+			if ((!Globals::Instance->HasSegment(GETSEGNUM(data), res->parent->workerID)) || ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
 			{
 				uint32_t pp = (data & 0x000000FF00000000) >> 32;
 				uint32_t mm = (data & 0x00000000FFFFFFFF);
@@ -370,7 +370,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 					std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-					if (!File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 					{
 						MemoryStream* dlStream = new MemoryStream();
 						BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -382,7 +382,10 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							//otrArchive->RemoveFile(fName);
 #endif
 
-						File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+							File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+						else
+							files[fName] = dlStream->ToVector();
 
 						//otrArchive->AddFile(fName, (uintptr_t)dlStream->ToVector().data(), dlWriter.GetBaseAddress());
 					}
@@ -401,7 +404,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		//case G_BRANCH_Z:
 		case G_DL:
 		{
-			if ((!Globals::Instance->HasSegment(GETSEGNUM(data)) && (int)opF3D != G_BRANCH_Z)
+			if ((!Globals::Instance->HasSegment(GETSEGNUM(data), res->parent->workerID) && (int)opF3D != G_BRANCH_Z)
 				|| ((data & 0xFFFFFFFF) == 0x07000000)) // En_Zf and En_Ny place a DL in segment 7
 			{
 				int32_t pp = (data & 0x00FF000000000000) >> 56;
@@ -464,14 +467,17 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 						std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-						if (!File::Exists("Extract\\" + fName))
+						if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 						{
 							MemoryStream* dlStream = new MemoryStream();
 							BinaryWriter dlWriter = BinaryWriter(dlStream);
 
 							Save(dList->otherDLists[i], outPath, &dlWriter);
 
-							File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+							if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+								File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+							else
+								files[fName] = dlStream->ToVector();
 						}
 					}
 					else
@@ -675,7 +681,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			uint32_t seg = data & 0xFFFFFFFF;
 			int32_t texAddress = Seg2Filespace(data, dList->parent->baseAddress);
 
-			if (!Globals::Instance->HasSegment(GETSEGNUM(seg)))
+			if (!Globals::Instance->HasSegment(GETSEGNUM(seg), res->parent->workerID))
 			{
 				int32_t __ = (data & 0x00FF000000000000) >> 48;
 				int32_t www = (data & 0x00000FFF00000000) >> 32;
@@ -693,7 +699,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			else
 			{
 				std::string texName = "";
-				bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", texName);
+				bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", texName, res->parent->workerID);
 
 				int32_t __ = (data & 0x00FF000000000000) >> 48;
 				int32_t www = (data & 0x00000FFF00000000) >> 32;
@@ -712,7 +718,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				if (foundDecl)
 				{
-					ZFile* assocFile = Globals::Instance->GetSegment(GETSEGNUM(seg));
+					ZFile* assocFile = Globals::Instance->GetSegment(GETSEGNUM(seg), res->parent->workerID);
 					std::string assocFileName = assocFile->GetName();
 					std::string fName = "";
 					
@@ -750,42 +756,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				word1 = value.words.w1 | 0xF0000000;
 			}
 			else
-			//if (dList->vertices.size() > 0)
 			{
-				// Connect neighboring vertex arrays
-				std::vector<std::pair<uint32_t, std::vector<ZVtx>>> vertsKeys(dList->vertices.begin(),
-					dList->vertices.end());
-
-				if (vertsKeys.size() > 0)
-				{
-					auto lastItem = vertsKeys[0];
-
-					for (size_t i = 1; i < vertsKeys.size(); i++)
-					{
-						auto curItem = vertsKeys[i];
-
-						int32_t sizeDiff = curItem.first - (lastItem.first + (lastItem.second.size() * 16));
-
-						// Make sure there isn't an unaccounted inbetween these two
-						if (sizeDiff == 0)
-						{
-							for (auto v : curItem.second)
-							{
-								dList->vertices[lastItem.first].push_back(v);
-								lastItem.second.push_back(v);
-							}
-
-							dList->vertices.erase(curItem.first);
-							vertsKeys.erase(vertsKeys.begin() + i);
-
-							i--;
-							continue;
-						}
-
-						lastItem = curItem;
-					}
-				}
-
 				// Write CRC64 of vtx file name
 				uint32_t addr = data & 0xFFFFFFFF;
 
@@ -793,10 +764,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					addr -= dList->parent->baseAddress;
 
 				auto segOffset = GETSEGOFFSET(addr);
-				//uint32_t seg = data & 0xFFFFFFFF;
 				Declaration* vtxDecl = dList->parent->GetDeclarationRanged(segOffset);
-				//std::string vtxName = "";
-				//bool foundDecl = Globals::Instance->GetSegmentedPtrName(seg, dList->parent, "", vtxName);
 
 				int32_t aa = (data & 0x000000FF00000000ULL) >> 32;
 				int32_t nn = (data & 0x000FF00000000000ULL) >> 44;
@@ -822,9 +790,8 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					word0 = hash >> 32;
 					word1 = hash & 0xFFFFFFFF;
 
-					if (!File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
 					{
-						//printf("Exporting VTX Data %s\n", fName.c_str());
 						// Write vertices to file
 						MemoryStream* vtxStream = new MemoryStream();
 						BinaryWriter vtxWriter = BinaryWriter(vtxStream);
@@ -847,44 +814,40 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						vtxWriter.Write((uint32_t)ZResourceType::Vertex);
 						vtxWriter.Write((uint32_t)arrCnt);
 
-						size_t sz = dList->vertices[vtxDecl->address].size();
+						auto start = std::chrono::steady_clock::now();
 
-						//if (sz > 0)
+						// God dammit this is so dumb
+						for (size_t i = 0; i < split.size(); i++)
 						{
-							auto start = std::chrono::steady_clock::now();
+							std::string line = split[i];
 
-							// God dammit this is so dumb
-							for (size_t i = 0; i < split.size(); i++)
+							if (StringHelper::Contains(line, "VTX("))
 							{
-								std::string line = split[i];
+								auto split2 = StringHelper::Split(StringHelper::Split(StringHelper::Split(line, "VTX(")[1], ")")[0], ",");
 
-								if (StringHelper::Contains(line, "VTX("))
-								{
-									auto split2 = StringHelper::Split(StringHelper::Split(StringHelper::Split(line, "VTX(")[1], ")")[0], ",");
+								vtxWriter.Write((int16_t)std::stoi(split2[0], nullptr, 10)); // v.x
+								vtxWriter.Write((int16_t)std::stoi(split2[1], nullptr, 10)); // v.y
+								vtxWriter.Write((int16_t)std::stoi(split2[2], nullptr, 10)); // v.z
 
-									vtxWriter.Write((int16_t)std::stoi(split2[0], nullptr, 10)); // v.x
-									vtxWriter.Write((int16_t)std::stoi(split2[1], nullptr, 10)); // v.y
-									vtxWriter.Write((int16_t)std::stoi(split2[2], nullptr, 10)); // v.z
+								vtxWriter.Write((int16_t)0);								 // v.flag
 
-									vtxWriter.Write((int16_t)0);								 // v.flag
-									
-									vtxWriter.Write((int16_t)std::stoi(split2[3], nullptr, 10)); // v.s
-									vtxWriter.Write((int16_t)std::stoi(split2[4], nullptr, 10)); // v.t
-									
-									vtxWriter.Write((uint8_t)std::stoi(split2[5], nullptr, 10)); // v.r
-									vtxWriter.Write((uint8_t)std::stoi(split2[6], nullptr, 10)); // v.g
-									vtxWriter.Write((uint8_t)std::stoi(split2[7], nullptr, 10)); // v.b
-									vtxWriter.Write((uint8_t)std::stoi(split2[8], nullptr, 10)); // v.a
-								}
+								vtxWriter.Write((int16_t)std::stoi(split2[3], nullptr, 10)); // v.s
+								vtxWriter.Write((int16_t)std::stoi(split2[4], nullptr, 10)); // v.t
+
+								vtxWriter.Write((uint8_t)std::stoi(split2[5], nullptr, 10)); // v.r
+								vtxWriter.Write((uint8_t)std::stoi(split2[6], nullptr, 10)); // v.g
+								vtxWriter.Write((uint8_t)std::stoi(split2[7], nullptr, 10)); // v.b
+								vtxWriter.Write((uint8_t)std::stoi(split2[8], nullptr, 10)); // v.a
 							}
-
-							File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
-
-							auto end = std::chrono::steady_clock::now();
-							size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-							//printf("Exported VTX Array %s in %zums\n", fName.c_str(), diff);
 						}
+
+						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
+							File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
+						else
+							files[fName] = vtxStream->ToVector();
+
+						auto end = std::chrono::steady_clock::now();
+						size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 					}
 				}
 				else
@@ -892,15 +855,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					spdlog::error("vtxDecl == nullptr!");
 				}
 			}
-			/*else
-			{
-				writer->Write(word0);
-				writer->Write(word1);
-				word0 = 0;
-				word1 = 0;
-
-				spdlog::error("dList->vertices.size() <= 0!");
-			}*/
 		}
 		break;
 		}

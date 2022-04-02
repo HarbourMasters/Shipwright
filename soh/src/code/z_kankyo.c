@@ -677,7 +677,9 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+
+            Skybox_Update(skyboxCtx);
 
             envCtx->skybox1Index = newSkybox1Index;
 
@@ -695,7 +697,9 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+
+            Skybox_Update(skyboxCtx);
 
             envCtx->skybox2Index = newSkybox2Index;
 
@@ -712,7 +716,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             if ((newSkybox1Index & 1) ^ ((newSkybox1Index & 4) >> 2)) {
 
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 0, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 0, entryA.palettes[0], 16, 8);
 
                 //size = gSkyboxFiles[newSkybox1Index].palette.vromEnd - gSkyboxFiles[newSkybox1Index].palette.vromStart;
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -721,7 +725,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     //"../z_kankyo.c", 1307);
             } else {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 1, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 1, entryA.palettes[0], 16, 8);
 
                 //size = gSkyboxFiles[newSkybox1Index].palette.vromEnd - gSkyboxFiles[newSkybox1Index].palette.vromStart;
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -729,6 +733,8 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     //gSkyboxFiles[newSkybox1Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
                                     //"../z_kankyo.c", 1320);
             }
+
+            Skybox_Update(skyboxCtx);
         }
 
         if (envCtx->skyboxDmaState == SKYBOX_DMA_FILE2_DONE) {
@@ -737,7 +743,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             if ((newSkybox2Index & 1) ^ ((newSkybox2Index & 4) >> 2)) 
             {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 0, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 0, entryA.palettes[0], 16, 8);
 
                 /*size = gSkyboxFiles[newSkybox2Index].palette.vromEnd - gSkyboxFiles[newSkybox2Index].palette.vromStart;
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -747,7 +753,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             } else 
             {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 1, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 1, entryA.palettes[0], 16, 8);
 
                 /*size = gSkyboxFiles[newSkybox2Index].palette.vromEnd - gSkyboxFiles[newSkybox2Index].palette.vromStart;
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -755,6 +761,8 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     gSkyboxFiles[newSkybox2Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
                                     "../z_kankyo.c", 1355);*/
             }
+
+            Skybox_Update(skyboxCtx);
         }
 
         if ((envCtx->skyboxDmaState == SKYBOX_DMA_FILE1_START) || (envCtx->skyboxDmaState == SKYBOX_DMA_FILE2_START)) {

@@ -80,7 +80,7 @@ namespace Ship {
 
 		if (!this->TextureCache.contains(path)) this->TextureCache[path].resize(10);
 
-		TextureCacheKey key = { orig_addr, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
+		TextureCacheKey key = { orig_addr, { }, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
 		TextureCacheValue value = { api->new_texture(), 0, 0, false };
 		const auto entry = new TextureCacheNode(key, value);
 		api->select_texture(tile, entry->second.texture_id);

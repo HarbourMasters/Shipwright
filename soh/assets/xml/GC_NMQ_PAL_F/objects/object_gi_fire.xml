@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_fire" Segment="6">
+        <DList Name="gGiBlueFireChamberstickDL" Offset="0x0C60"/>
+        <DList Name="gGiBlueFireFlameDL" Offset="0x0F08"/>
+    </File>
+</Root>

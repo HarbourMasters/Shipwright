@@ -1,0 +1,21 @@
+<Root>
+    <File Name="object_firefly" Segment="6">
+        <Animation Name="gKeeseFlyAnim" Offset="0x17C"/>
+
+        <Skeleton Name="gKeeseSkeleton" Type="Normal" LimbType="Standard" Offset="0x18B8"/>
+
+        <DList Name="gKeeseEyesDL" Offset="0x1678"/>
+
+        <Texture Name="gKeeseEyeTex" OutName="eye" Format="rgba16" Width="8" Height="8" Offset="0x190"/>
+        <Texture Name="gKeeseBodyTex" OutName="body" Format="rgba16" Width="8" Height="8" Offset="0x590"/>
+        <Texture Name="gKeeseTalonTex" OutName="talon" Format="rgba16" Width="8" Height="16" Offset="0x610"/>
+        <Texture Name="gKeeseWingTex" OutName="wing" Format="rgba16" Width="4" Height="16" Offset="0x710"/>
+        <Texture Name="gKeeseEarTex" OutName="ear" Format="rgba16" Width="16" Height="8" Offset="0x790"/>
+
+        <Texture Name="gFireKeeseBodyTex" OutName="fire_body" Format="rgba16" Width="8" Height="8" Offset="0x210"/>
+        <Texture Name="gFireKeeseEyeTex" OutName="fire_eye" Format="rgba16" Width="8" Height="8" Offset="0x290"/>
+        <Texture Name="gFireKeeseEarTex" OutName="fire_ear" Format="rgba16" Width="16" Height="8" Offset="0x310"/>
+        <Texture Name="gFireKeeseTalonTex" OutName="fire_talon" Format="rgba16" Width="8" Height="16" Offset="0x410"/>
+        <Texture Name="gFireKeeseWingTex" OutName="fire_wing" Format="rgba16" Width="4" Height="16" Offset="0x510"/>
+    </File>
+</Root>

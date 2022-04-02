@@ -1,0 +1,9 @@
+<Root>
+    <File Name="object_gi_ghost" Segment="6">
+        <DList Name="gGiPoeColorDL" Offset="0x0950"/>
+        <DList Name="gGiBigPoeColorDL" Offset="0x0970"/>
+        <DList Name="gGiGhostContainerLidDL" Offset="0x0990"/>
+        <DList Name="gGiGhostContainerGlassDL" Offset="0x0BE0"/>
+        <DList Name="gGiGhostContainerContentsDL" Offset="0x0CF0"/>
+    </File>
+</Root>

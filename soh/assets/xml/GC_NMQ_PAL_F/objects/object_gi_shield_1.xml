@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_shield_1" Segment="6">
+        <DList Name="gGiDekuShieldDL" Offset="0x0A50"/>
+    </File>
+</Root>
