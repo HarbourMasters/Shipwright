@@ -22,6 +22,7 @@
 #include "Lib/stb/stb_image.h"
 #include "AudioPlayer.h"
 #include "../soh/Enhancements/debugconsole.h"
+#include "../soh/Enhancements/debugger/debugger.h"
 #include "Utils/BitConverter.h"
 
 OTRGlobals* OTRGlobals::Instance;
@@ -54,6 +55,7 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     DebugConsole_Init();
+    Debug_Init();
 }
 
 extern "C" uint64_t GetFrequency() {
