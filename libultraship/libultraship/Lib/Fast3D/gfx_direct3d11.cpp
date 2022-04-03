@@ -977,8 +977,8 @@ uint16_t gfx_d3d11_get_pixel_depth_old(float x, float y) {
 
 } // namespace
 
-void* SohImGui::GetTextureByID(int id) {
-    return d3d.textures[id].resource_view.Get();
+ImTextureID SohImGui::GetTextureByID(int id) {
+    return impl.backend == Backend::DX11 ? d3d.textures[id].resource_view.Get() : reinterpret_cast<ImTextureID>(id);
 }
 
 struct GfxRenderingAPI gfx_direct3d11_api = {

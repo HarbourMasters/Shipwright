@@ -1,6 +1,7 @@
 #include "SohImGuiImpl.h"
 
 #include <iostream>
+#include <map>
 #include <utility>
 
 #include "Archive.h"
@@ -14,9 +15,11 @@
 #include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
+#include "Texture.h"
 #include "../Fast3D/gfx_pc.h"
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
+#include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
 #ifdef ENABLE_OPENGL
@@ -50,6 +53,9 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+
+    std::map<std::string, std::vector<std::string>> windowCategories;
+    std::map<std::string, CustomWindow> customWindows;
 
     void ImGuiWMInit() {
         switch (impl.backend) {
@@ -153,7 +159,7 @@ namespace SohImGui {
         }
     }
 
-    void LoadTexture(std::string name, std::string path) {
+    void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
         const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(normalize(path));
 
@@ -171,6 +177,25 @@ namespace SohImGui {
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
+    }
+
+    void LoadResource(const std::string& name, const std::string& path) {
+        GfxRenderingAPI* api = gfx_get_current_rendering_api();
+        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
+
+        if (res->texType != Ship::TextureType::RGBA32bpp) {
+            // TODO convert other image types
+            SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
+            return;
+        }
+
+        const auto asset = new GameAsset{ api->new_texture() };
+
+        api->select_texture(0, asset->textureId);
+        api->set_sampler_parameters(0, false, 0, 0);
+        api->upload_texture(res->imageData, res->width, res->height);
+
+        DefaultAssets[name] = asset;
     }
 
     void Init(WindowImpl window_impl) {
@@ -219,7 +244,7 @@ namespace SohImGui {
         ImGuiProcessEvent(event);
     }
 
-#define BindButton(btn, status) ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets[btn]->textureId) : (ImTextureID)(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
+#define BindButton(btn, status) ImGui::Image(GetTextureByID(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
 
     void BindAudioSlider(const char* name, const char* key, float* value, SeqPlayers playerId) {
         ImGui::Text(name, static_cast<int>(100 * *(value)));
@@ -278,7 +303,7 @@ namespace SohImGui {
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets["Game_Icon"]->textureId) : reinterpret_cast<ImTextureID>(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -425,6 +450,15 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            for (const auto& category : windowCategories) {
+                if (ImGui::BeginMenu(category.first.c_str())) {
+                    for (const std::string& name : category.second) {
+                        HOOK(ImGui::MenuItem(name.c_str(), nullptr, &customWindows[name].enabled));
+                    }
+                    ImGui::EndMenu();
+                }
+            }
+
             ImGui::EndMenuBar();
         }
 
@@ -527,6 +561,13 @@ namespace SohImGui {
 
         console->Draw();
 
+        for (auto& windowIter : customWindows) {
+            CustomWindow& window = windowIter.second;
+            if (window.drawFunc != nullptr) {
+                window.drawFunc(window.enabled);
+            }
+        }
+
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
         if (UseViewports()) {
@@ -537,5 +578,23 @@ namespace SohImGui {
 
     void BindCmd(const std::string& cmd, CommandEntry entry) {
         console->Commands[cmd] = std::move(entry);
+    }
+
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc) {
+        if (customWindows.contains(name)) {
+            SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
+            return;
+        }
+
+        customWindows[name] = {
+            .enabled = false,
+            .drawFunc = drawFunc
+        };
+
+        windowCategories[category].emplace_back(name);
+    }
+
+    ImTextureID GetTextureByName(const std::string& name) {
+        return GetTextureByID(DefaultAssets[name]->textureId);
     }
 }
