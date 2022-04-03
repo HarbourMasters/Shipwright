@@ -353,6 +353,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("DPad Support for Browsing Shop Items", &Game::Settings.controller.dpad_shop)) {
+                    CVar_SetS32(const_cast<char*>("gDpadShop"), Game::Settings.controller.dpad_shop);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
