@@ -345,6 +345,8 @@ baserom/
 *.otr
 *.swp
 *.a
+*.z64
+*.n64
 Extract/
 
 tmp.txt

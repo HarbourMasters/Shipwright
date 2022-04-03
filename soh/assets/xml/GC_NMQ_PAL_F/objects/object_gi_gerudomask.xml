@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_gerudomask" Segment="6">
+        <DList Name="gGiGerudoMaskDL" Offset="0x10E8"/>
+    </File>
+</Root>

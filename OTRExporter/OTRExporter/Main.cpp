@@ -25,6 +25,7 @@ std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
 BinaryWriter* fileWriter;
 std::chrono::steady_clock::time_point fileStart, resStart;
+std::map<std::string, std::vector<char>> files;
 
 void InitVersionInfo();
 
@@ -38,6 +39,8 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 	if (buildMode == "botr")
 	{
 		fileMode = (ZFileMode)ExporterFileMode::BuildOTR;
+
+		printf("BOTR: Generating OTR Archive...\n");
 
 		if (File::Exists(otrFileName))
 			otrArchive = std::shared_ptr<Ship::Archive>(new Ship::Archive(otrFileName, true));
@@ -53,6 +56,31 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 		}
 	}
 }
+
+static void ExporterProgramEnd()
+{
+	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
+	{
+		printf("Generating OTR Archive...\n");
+		otrArchive = Ship::Archive::CreateArchive(otrFileName, 65536 / 2);
+
+		for (auto item : files)
+		{
+			auto fileData = item.second;
+			otrArchive->AddFile(item.first, (uintptr_t)fileData.data(), fileData.size());
+		}
+
+		// Add any additional files that need to be manually copied...
+		auto lst = Directory::ListFiles("Extract");
+
+		for (auto item : lst)
+		{
+			auto fileData = File::ReadAllBytes(item);
+			otrArchive->AddFile(StringHelper::Split(item, "Extract\\")[1], (uintptr_t)fileData.data(), fileData.size());
+		}
+	}
+}
+
 
 static void ExporterParseArgs(int argc, char* argv[], int& i)
 {
@@ -85,6 +113,7 @@ static void ExporterFileBegin(ZFile* file)
 
 static void ExporterFileEnd(ZFile* file)
 {
+	int bp = 0;
 }
 
 static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
@@ -124,7 +153,10 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		else
 			fName = StringHelper::Sprintf("%s\\%s", oName.c_str(), rName.c_str());
 
-		File::WriteAllBytes("Extract\\" + fName, strem->ToVector());
+		if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
+			files[fName] = strem->ToVector();
+		else
+			File::WriteAllBytes("Extract\\" + fName, strem->ToVector());
 	}
 
 	auto end = std::chrono::steady_clock::now();
@@ -155,6 +187,8 @@ static void ImportExporters()
 	exporterSet->beginXMLFunc = ExporterXMLBegin;
 	exporterSet->endXMLFunc = ExporterXMLEnd;
 	exporterSet->resSaveFunc = ExporterResourceEnd;
+	exporterSet->endProgramFunc = ExporterProgramEnd;
+
 	exporterSet->exporters[ZResourceType::Background] = new OTRExporter_Background();
 	exporterSet->exporters[ZResourceType::Texture] = new OTRExporter_Texture();
 	exporterSet->exporters[ZResourceType::Room] = new OTRExporter_Room();

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_fish" Segment="6">
+        <DList Name="gGiFishDL" Offset="0x0600"/>
+    </File>
+</Root>

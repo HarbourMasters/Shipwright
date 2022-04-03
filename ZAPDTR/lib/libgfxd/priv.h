@@ -2,6 +2,8 @@
 #define GFXD_PRIV_H
 #include "gfxd.h"
 
+#define CONFIG_MT
+
 #ifdef CONFIG_MT
 # ifdef _MSC_VER
 #  define TLOCAL __declspec(thread)
@@ -9,7 +11,7 @@
 #  define TLOCAL _Thread_local
 # endif
 #else
-# define TLOCAL
+#define TLOCAL
 #endif
 
 #define UCFUNC static inline

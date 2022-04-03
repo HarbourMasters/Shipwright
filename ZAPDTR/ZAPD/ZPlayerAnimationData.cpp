@@ -3,6 +3,7 @@
 #include "Utils/BitConverter.h"
 #include "Utils/StringHelper.h"
 #include "ZFile.h"
+#include <Globals.h>
 
 REGISTER_ZFILENODE(PlayerAnimationData, ZPlayerAnimationData);
 
@@ -53,6 +54,9 @@ Declaration* ZPlayerAnimationData::DeclareVar(const std::string& prefix, const s
 std::string ZPlayerAnimationData::GetBodySourceCode() const
 {
 	std::string declaration = "";
+
+	if (Globals::Instance->otrMode)
+		return "";
 
 	size_t index = 0;
 	for (const auto& entry : limbRotData)

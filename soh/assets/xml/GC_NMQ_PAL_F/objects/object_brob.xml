@@ -1,0 +1,25 @@
+<Root>
+    <File Name="object_brob" Segment="6">
+        <Animation Name="object_brob_Anim_000290" Offset="0x290"/>
+        <DList Name="object_brob_DL_0007E0" Offset="0x7E0"/>
+        <DList Name="object_brob_DL_000898" Offset="0x898"/>
+        <DList Name="object_brob_DL_0009D0" Offset="0x9D0"/>
+        <DList Name="object_brob_DL_000AE8" Offset="0xAE8"/>
+        <DList Name="object_brob_DL_000C00" Offset="0xC00"/>
+        <Texture Name="object_brob_Tex_000D48" OutName="tex_00000D48" Format="rgba16" Width="32" Height="32" Offset="0xD48"/>
+        <Limb Name="object_brob_Limb_001548" LimbType="Standard" Offset="0x1548"/>
+        <Limb Name="object_brob_Limb_001554" LimbType="Standard" Offset="0x1554"/>
+        <Limb Name="object_brob_Limb_001560" LimbType="Standard" Offset="0x1560"/>
+        <Limb Name="object_brob_Limb_00156C" LimbType="Standard" Offset="0x156C"/>
+        <Limb Name="object_brob_Limb_001578" LimbType="Standard" Offset="0x1578"/>
+        <Limb Name="object_brob_Limb_001584" LimbType="Standard" Offset="0x1584"/>
+        <Limb Name="object_brob_Limb_001590" LimbType="Standard" Offset="0x1590"/>
+        <Limb Name="object_brob_Limb_00159C" LimbType="Standard" Offset="0x159C"/>
+        <Limb Name="object_brob_Limb_0015A8" LimbType="Standard" Offset="0x15A8"/>
+        <Skeleton Name="object_brob_Skel_0015D8" Type="Flex" LimbType="Standard" Offset="0x15D8"/>
+        <Animation Name="object_brob_Anim_001678" Offset="0x1678"/>
+        <Animation Name="object_brob_Anim_001750" Offset="0x1750"/>
+        <Animation Name="object_brob_Anim_001958" Offset="0x1958"/>
+        <Collision Name="object_brob_Col_001A70" Offset="0x1A70"/>
+    </File>
+</Root>

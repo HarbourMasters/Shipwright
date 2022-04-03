@@ -1495,26 +1495,6 @@ void Gameplay_InitScene(GlobalContext* globalCtx, s32 spawn)
 void Gameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s32 spawn) {
 
     OTRGameplay_SpawnScene(globalCtx, sceneNum, spawn);
-    return;
-
-    SceneTableEntry* scene = &gSceneTable[sceneNum];
-
-    scene->unk_13 = 0;
-    globalCtx->loadedScene = scene;
-    globalCtx->sceneNum = sceneNum;
-    globalCtx->sceneConfig = scene->config;
-
-    osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
-
-    globalCtx->sceneSegment = Gameplay_LoadFile(globalCtx, &scene->sceneFile);
-    scene->unk_13 = 0;
-    ASSERT(globalCtx->sceneSegment != NULL, "this->sceneSegment != NULL", "../z_play.c", 4960);
-
-    gSegments[2] = VIRTUAL_TO_PHYSICAL(globalCtx->sceneSegment);
-
-    Gameplay_InitScene(globalCtx, spawn);
-
-    osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(globalCtx, &globalCtx->roomCtx) / 1024.0f);
 }
 
 void func_800C016C(GlobalContext* globalCtx, Vec3f* src, Vec3f* dest) {

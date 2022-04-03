@@ -1,0 +1,36 @@
+<Root>
+    <File Name="object_os" Segment="6">
+        <Animation Name="object_os_Anim_0002E4" Offset="0x2E4"/>
+        <DList Name="object_os_DL_001D80" Offset="0x1D80"/>
+        <DList Name="object_os_DL_0020A8" Offset="0x20A8"/>
+        <DList Name="object_os_DL_0025E8" Offset="0x25E8"/>
+        <DList Name="object_os_DL_002718" Offset="0x2718"/>
+        <DList Name="object_os_DL_002848" Offset="0x2848"/>
+        <DList Name="object_os_DL_002A00" Offset="0x2A00"/>
+        <DList Name="object_os_DL_002B30" Offset="0x2B30"/>
+        <DList Name="object_os_DL_002C60" Offset="0x2C60"/>
+        <Texture Name="object_os_TLUT_002E18" OutName="tlut_00002E18" Format="rgba16" Width="16" Height="16" Offset="0x2E18"/>
+        <Texture Name="object_os_TLUT_003018" OutName="tlut_00003018" Format="rgba16" Width="16" Height="16" Offset="0x3018"/>
+        <Texture Name="object_os_Tex_003218" OutName="tex_00003218" Format="ci8" Width="8" Height="8" Offset="0x3218" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_003258" OutName="tex_00003258" Format="ci8" Width="16" Height="16" Offset="0x3258" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_003358" OutName="tex_00003358" Format="ci8" Width="8" Height="8" Offset="0x3358" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_003398" OutName="tex_00003398" Format="ci8" Width="8" Height="8" Offset="0x3398" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_0033D8" OutName="tex_000033D8" Format="ci8" Width="32" Height="16" Offset="0x33D8" TlutOffset="0x3018"/>
+        <Texture Name="gOsEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x35D8" TlutOffset="0x3018"/>
+        <Texture Name="gOsEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x39D8" TlutOffset="0x3018"/>
+        <Texture Name="object_os_Tex_003DD8" OutName="tex_00003DD8" Format="ci8" Width="16" Height="16" Offset="0x3DD8" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_003ED8" OutName="tex_00003ED8" Format="ci8" Width="16" Height="32" Offset="0x3ED8" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_0040D8" OutName="tex_000040D8" Format="ci8" Width="32" Height="32" Offset="0x40D8" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_0044D8" OutName="tex_000044D8" Format="ci8" Width="8" Height="16" Offset="0x44D8" TlutOffset="0x2E18"/>
+        <Texture Name="object_os_Tex_004558" OutName="tex_00004558" Format="ci8" Width="8" Height="16" Offset="0x4558" TlutOffset="0x2E18"/>
+        <Limb Name="object_os_Limb_0045D8" LimbType="Standard" Offset="0x45D8"/>
+        <Limb Name="object_os_Limb_0045E4" LimbType="Standard" Offset="0x45E4"/>
+        <Limb Name="object_os_Limb_0045F0" LimbType="Standard" Offset="0x45F0"/>
+        <Limb Name="object_os_Limb_0045FC" LimbType="Standard" Offset="0x45FC"/>
+        <Limb Name="object_os_Limb_004608" LimbType="Standard" Offset="0x4608"/>
+        <Limb Name="object_os_Limb_004614" LimbType="Standard" Offset="0x4614"/>
+        <Limb Name="object_os_Limb_004620" LimbType="Standard" Offset="0x4620"/>
+        <Limb Name="object_os_Limb_00462C" LimbType="Standard" Offset="0x462C"/>
+        <Skeleton Name="object_os_Skel_004658" Type="Flex" LimbType="Standard" Offset="0x4658"/>
+    </File>
+</Root>

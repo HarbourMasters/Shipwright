@@ -1,0 +1,75 @@
+<Root>
+    <File Name="object_ma2" Segment="6">
+        <Texture Name="gMalonAdultClothesTLUT" OutName="clothes_tlut" Format="rgba16" Width="16" Height="16" Offset="0x7F0"/>
+        <Texture Name="gMalonAdultFingersTex" OutName="fingers" Format="rgba16" Width="16" Height="16" Offset="0x9F0"/>
+        <Texture Name="gMalonAdultShirtTex" OutName="shirt" Format="ci8" Width="16" Height="16" Offset="0xBF0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultShirtCuffTex" OutName="shirt_cuff" Format="ci8" Width="8" Height="16" Offset="0xCF0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultScarfTex" OutName="scarf" Format="ci8" Width="8" Height="8" Offset="0xD70" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonBowserTex" OutName="bowser" Format="rgba16" Width="16" Height="32" Offset="0xDB0"/>
+        <Texture Name="gMalonAdultMiddleDressTex" OutName="middle_dress" Format="ci8" Width="16" Height="16" Offset="0x11B0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultFrontDressTex" OutName="front_dress" Format="rgba16" Width="16" Height="32" Offset="0x12B0"/>
+        <Texture Name="gMalonAdultDressPatternTex" OutName="dress_pattern" Format="ci8" Width="16" Height="32" Offset="0x16B0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultBootTex" OutName="boot" Format="ci8" Width="64" Height="16" Offset="0x18B0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultBeltTex" OutName="belt" Format="ci8" Width="32" Height="16" Offset="0x1CB0" TlutOffset="0x7F0"/>
+        <Texture Name="gMalonAdultHairTLUT" OutName="hair_tlut" Format="rgba16" Width="96" Height="1" Offset="0x1EB0"/>
+        <Texture Name="gMalonAdultGradientTex" OutName="gradient" Format="rgba16" Width="8" Height="8" Offset="0x2170"/>
+        <Texture Name="gMalonAdultNoseTex" OutName="nose" Format="rgba16" Width="8" Height="8" Offset="0x21F0"/>
+        <Texture Name="gMalonAdultEarTex" OutName="ear" Format="rgba16" Width="16" Height="16" Offset="0x2270"/>
+        <Texture Name="gMalonAdultHairTex" OutName="hair" Format="ci8" Width="16" Height="16" Offset="0x2470" TlutOffset="0x1EB0"/>
+
+        <Texture Name="gMalonAdultFaceTLUT" OutName="face_tlut" Format="rgba16" Width="16" Height="16" Offset="0x1F70"/>
+        <Texture Name="gMalonAdultEyeOpenTex" OutName="eye_open" Format="ci8" Width="32" Height="32" Offset="0x2570" TlutOffset="0x1F70"/>
+        <Texture Name="gMalonAdultEyeHalfTex" OutName="eye_half" Format="ci8" Width="32" Height="32" Offset="0x2C70" TlutOffset="0x1F70"/>
+        <Texture Name="gMalonAdultEyeClosedTex" OutName="eye_closed" Format="ci8" Width="32" Height="32" Offset="0x3070" TlutOffset="0x1F70"/>
+        
+        <Texture Name="gMalonAdultBasketTex" OutName="basket" Format="rgba16" Width="8" Height="16" Offset="0x2B70"/>
+        <Texture Name="gMalonAdultBasketInsideTex" OutName="basket_inside" Format="rgba16" Width="8" Height="16" Offset="0x3470"/>
+
+        <Texture Name="gMalonAdultMouthNeutralTex" OutName="mouth_neutral" Format="ci8" Width="32" Height="16" Offset="0x2970" TlutOffset="0x1F70"/>
+        <Texture Name="gMalonAdultMouthSadTex" OutName="mouth_sad" Format="ci8" Width="32" Height="16" Offset="0x3570" TlutOffset="0x1F70"/>
+        <Texture Name="gMalonAdultMouthHappyTex" OutName="mouth_happy" Format="ci8" Width="32" Height="16" Offset="0x3770" TlutOffset="0x1F70"/>
+
+        <DList Name="gMalonAdultHeadDL" Offset="0x4BE0"/>
+        <DList Name="gMalonAdultBasketDL" Offset="0x5420"/>
+        <DList Name="gMalonAdultChestAndNeckDL" Offset="0x7568"/>
+        <DList Name="gMalonAdultRightShoulderDL" Offset="0x7980"/>
+        <DList Name="gMalonAdultRightArmDL" Offset="0x7BB0"/>
+        <DList Name="gMalonAdultRightHandDL" Offset="0x7CA8"/>
+        <DList Name="gMalonAdultLeftShoulderDL" Offset="0x7E40"/>
+        <DList Name="gMalonAdultLeftArmDL" Offset="0x8070"/>
+        <DList Name="gMalonAdultLeftHandDL" Offset="0x8168"/>
+        <DList Name="gMalonAdultDressDL" Offset="0x8300"/>
+        <DList Name="gMalonAdultTorsoDL" Offset="0x8530"/>
+        <DList Name="gMalonAdultRightThighDL" Offset="0x87A0"/>
+        <DList Name="gMalonAdultRightLegDL" Offset="0x87F8"/>
+        <DList Name="gMalonAdultRightFootDL" Offset="0x88E8"/>
+        <DList Name="gMalonAdultLeftThighDL" Offset="0x8A08"/>
+        <DList Name="gMalonAdultLeftLegDL" Offset="0x8A60"/>
+        <DList Name="gMalonAdultLeftFootDL" Offset="0x8B50"/>
+
+        <Skeleton Name="gMalonAdultSkel" Type="Flex" LimbType="Standard" Offset="0x8D90"/>
+        <Limb Name="gMalonAdultRootLimb" LimbType="Standard" Offset="0x8C70"/>
+        <Limb Name="gMalonAdultLowerControlLimb" LimbType="Standard" Offset="0x8C7C"/>
+        <Limb Name="gMalonAdultLeftThighLimb" LimbType="Standard" Offset="0x8C88"/>
+        <Limb Name="gMalonAdultLeftLegLimb" LimbType="Standard" Offset="0x8C94"/>
+        <Limb Name="gMalonAdultLeftFootLimb" LimbType="Standard" Offset="0x8CA0"/>
+        <Limb Name="gMalonAdultRightThighLimb" LimbType="Standard" Offset="0x8CAC"/>
+        <Limb Name="gMalonAdultRightLegLimb" LimbType="Standard" Offset="0x8CB8"/>
+        <Limb Name="gMalonAdultRightFootLimb" LimbType="Standard" Offset="0x8CC4"/>
+        <Limb Name="gMalonAdultTorsoLimb" LimbType="Standard" Offset="0x8CD0"/>
+        <Limb Name="gMalonAdultDressLimb" LimbType="Standard" Offset="0x8CDC"/>
+        <Limb Name="gMalonAdultChestAndNeckLimb" LimbType="Standard" Offset="0x8CE8"/>
+        <Limb Name="gMalonAdultLeftShoulderLimb" LimbType="Standard" Offset="0x8CF4"/>
+        <Limb Name="gMalonAdultLeftArmLimb" LimbType="Standard" Offset="0x8D00"/>
+        <Limb Name="gMalonAdultLeftHandLimb" LimbType="Standard" Offset="0x8D0C"/>
+        <Limb Name="gMalonAdultRightShoulderLimb" LimbType="Standard" Offset="0x8D18"/>
+        <Limb Name="gMalonAdultRightArmLimb" LimbType="Standard" Offset="0x8D24"/>
+        <Limb Name="gMalonAdultRightHandLimb" LimbType="Standard" Offset="0x8D30"/>
+        <Limb Name="gMalonAdultHeadLimb" LimbType="Standard" Offset="0x8D3C"/>
+        <Animation Name="gMalonAdultIdleAnim" Offset="0x7D4"/>
+        <Animation Name="gMalonAdultSingToIdleAnim" Offset="0x92F0"/> <!-- Unused -->
+        <Animation Name="gMalonAdultStandStillAnim" Offset="0x93BC"/>
+        <Animation Name="gMalonAdultSingAnim" Offset="0x9EE0"/>
+
+    </File>
+</Root>
