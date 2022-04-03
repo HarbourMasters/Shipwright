@@ -1,3 +1,6 @@
+#ifndef OTR_GLOBALS_H
+#define OTR_GLOBALS_H
+
 #pragma once
 
 #include "GlobalCtx2.h"
@@ -67,4 +70,6 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+#endif
+
 #endif
