@@ -20,6 +20,7 @@ Globals::Globals()
 	profile = false;
 	useLegacyZDList = false;
 	useExternalResources = true;
+	singleThreaded = true;
 	verbosity = VerbosityLevel::VERBOSITY_SILENT;
 	outputPath = Directory::GetCurrentDirectory();
 }
