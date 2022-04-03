@@ -1,0 +1,6 @@
+<Root>
+    <File Name="object_gi_ticketstone" Segment="6">
+        <DList Name="gGiClaimCheckDL" Offset="0x0F00"/>
+        <DList Name="gGiClaimCheckWritingDL" Offset="0x1188"/>
+    </File>
+</Root>

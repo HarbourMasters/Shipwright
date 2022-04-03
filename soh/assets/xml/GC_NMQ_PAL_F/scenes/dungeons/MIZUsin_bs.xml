@@ -1,0 +1,11 @@
+<Root>
+    <File Name="MIZUsin_bs_scene" Segment="2">
+        <Scene Name="MIZUsin_bs_scene" Offset="0x0"/>
+    </File>
+    <File Name="MIZUsin_bs_room_0" Segment="3">
+        <Room Name="MIZUsin_bs_room_0" Offset="0x0"/>
+    </File>
+    <File Name="MIZUsin_bs_room_1" Segment="3">
+        <Room Name="MIZUsin_bs_room_1" Offset="0x0"/>
+    </File>
+</Root>

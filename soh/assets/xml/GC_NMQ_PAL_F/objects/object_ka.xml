@@ -1,0 +1,64 @@
+<Root>
+    <File Name="object_ka" Segment="6">
+        <Animation Name="object_ka_Anim_000214" Offset="0x214"/>
+        <DList Name="object_ka_DL_001550" Offset="0x1550"/>
+        <DList Name="object_ka_DL_001600" Offset="0x1600"/>
+        <DList Name="object_ka_DL_0017D8" Offset="0x17D8"/>
+        <DList Name="object_ka_DL_001878" Offset="0x1878"/>
+        <DList Name="object_ka_DL_001918" Offset="0x1918"/>
+        <DList Name="object_ka_DL_0019B8" Offset="0x19B8"/>
+        <DList Name="object_ka_DL_001CD8" Offset="0x1CD8"/>
+        <DList Name="object_ka_DL_001F68" Offset="0x1F68"/>
+        <DList Name="object_ka_DL_002020" Offset="0x2020"/>
+        <DList Name="object_ka_DL_0020C0" Offset="0x20C0"/>
+        <DList Name="object_ka_DL_002160" Offset="0x2160"/>
+        <DList Name="object_ka_DL_002200" Offset="0x2200"/>
+        <DList Name="object_ka_DL_0022A0" Offset="0x22A0"/>
+        <DList Name="object_ka_DL_002340" Offset="0x2340"/>
+        <DList Name="object_ka_DL_002430" Offset="0x2430"/>
+        <DList Name="object_ka_DL_0024D0" Offset="0x24D0"/>
+        <DList Name="object_ka_DL_002570" Offset="0x2570"/>
+        <DList Name="object_ka_DL_002610" Offset="0x2610"/>
+        <DList Name="object_ka_DL_0027A0" Offset="0x27A0"/>
+        <DList Name="object_ka_DL_002890" Offset="0x2890"/>
+        <DList Name="object_ka_DL_002930" Offset="0x2930"/>
+        <DList Name="object_ka_DL_0029D0" Offset="0x29D0"/>
+        <DList Name="object_ka_DL_002A70" Offset="0x2A70"/>
+        <Texture Name="object_ka_Tex_002C00" OutName="tex_00002C00" Format="rgba16" Width="32" Height="32" Offset="0x2C00"/>
+        <Texture Name="object_ka_Tex_003400" OutName="tex_00003400" Format="rgba16" Width="32" Height="32" Offset="0x3400"/>
+        <Texture Name="object_ka_Tex_003C00" OutName="tex_00003C00" Format="rgba16" Width="32" Height="32" Offset="0x3C00"/>
+        <Texture Name="object_ka_Tex_004400" OutName="tex_00004400" Format="rgba16" Width="32" Height="32" Offset="0x4400"/>
+        <Texture Name="object_ka_Tex_004C00" OutName="tex_00004C00" Format="rgba16" Width="32" Height="32" Offset="0x4C00"/>
+        <Texture Name="object_ka_Tex_005400" OutName="tex_00005400" Format="rgba16" Width="32" Height="32" Offset="0x5400"/>
+        <Texture Name="object_ka_Tex_005C00" OutName="tex_00005C00" Format="rgba16" Width="32" Height="32" Offset="0x5C00"/>
+        <Limb Name="object_ka_Limb_006400" LimbType="Standard" Offset="0x6400"/>
+        <Limb Name="object_ka_Limb_00640C" LimbType="Standard" Offset="0x640C"/>
+        <Limb Name="object_ka_Limb_006418" LimbType="Standard" Offset="0x6418"/>
+        <Limb Name="object_ka_Limb_006424" LimbType="Standard" Offset="0x6424"/>
+        <Limb Name="object_ka_Limb_006430" LimbType="Standard" Offset="0x6430"/>
+        <Limb Name="object_ka_Limb_00643C" LimbType="Standard" Offset="0x643C"/>
+        <Limb Name="object_ka_Limb_006448" LimbType="Standard" Offset="0x6448"/>
+        <Limb Name="object_ka_Limb_006454" LimbType="Standard" Offset="0x6454"/>
+        <Limb Name="object_ka_Limb_006460" LimbType="Standard" Offset="0x6460"/>
+        <Limb Name="object_ka_Limb_00646C" LimbType="Standard" Offset="0x646C"/>
+        <Limb Name="object_ka_Limb_006478" LimbType="Standard" Offset="0x6478"/>
+        <Limb Name="object_ka_Limb_006484" LimbType="Standard" Offset="0x6484"/>
+        <Limb Name="object_ka_Limb_006490" LimbType="Standard" Offset="0x6490"/>
+        <Limb Name="object_ka_Limb_00649C" LimbType="Standard" Offset="0x649C"/>
+        <Limb Name="object_ka_Limb_0064A8" LimbType="Standard" Offset="0x64A8"/>
+        <Limb Name="object_ka_Limb_0064B4" LimbType="Standard" Offset="0x64B4"/>
+        <Limb Name="object_ka_Limb_0064C0" LimbType="Standard" Offset="0x64C0"/>
+        <Limb Name="object_ka_Limb_0064CC" LimbType="Standard" Offset="0x64CC"/>
+        <Limb Name="object_ka_Limb_0064D8" LimbType="Standard" Offset="0x64D8"/>
+        <Limb Name="object_ka_Limb_0064E4" LimbType="Standard" Offset="0x64E4"/>
+        <Limb Name="object_ka_Limb_0064F0" LimbType="Standard" Offset="0x64F0"/>
+        <Limb Name="object_ka_Limb_0064FC" LimbType="Standard" Offset="0x64FC"/>
+        <Limb Name="object_ka_Limb_006508" LimbType="Standard" Offset="0x6508"/>
+        <Limb Name="object_ka_Limb_006514" LimbType="Standard" Offset="0x6514"/>
+        <Limb Name="object_ka_Limb_006520" LimbType="Standard" Offset="0x6520"/>
+        <Limb Name="object_ka_Limb_00652C" LimbType="Standard" Offset="0x652C"/>
+        <Limb Name="object_ka_Limb_006538" LimbType="Standard" Offset="0x6538"/>
+        <Skeleton Name="object_ka_Skel_0065B0" Type="Flex" LimbType="Standard" Offset="0x65B0"/>
+        <Animation Name="object_ka_Anim_0067AC" Offset="0x67AC"/>
+    </File>
+</Root>

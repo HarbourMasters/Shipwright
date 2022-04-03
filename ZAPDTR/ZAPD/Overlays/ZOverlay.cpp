@@ -1,3 +1,4 @@
+#if 0
 #include "ZOverlay.h"
 
 #include <cassert>
@@ -350,3 +351,4 @@ ELFIO::Elf_Half ZOverlay::FindSymbolInSection(const std::string& curSymName,
 	}
 	return SHN_UNDEF;
 }
+#endif

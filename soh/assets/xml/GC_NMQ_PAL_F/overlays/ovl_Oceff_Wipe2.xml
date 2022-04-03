@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Oceff_Wipe2" BaseAddress="0x80B80620" RangeStart="0x430" RangeEnd="0x16E8">
+        <Texture Name="s1Tex" OutName="eponas_song_effect_1" Format="i4" Width="64" Height="64" Offset="0x430"/>
+        <Texture Name="s2Tex" OutName="eponas_song_effect_2" Format="i4" Width="64" Height="64" Offset="0xC30"/>
+        <Array Name="sFrustumVtx" Count="22" Offset="0x1430">
+            <Vtx/>
+        </Array>
+        <DList Name="sMaterialDL" Offset="0x1590"/>
+        <DList Name="sFrustumDL" Offset="0x1638"/>
+    </File>
+</Root>

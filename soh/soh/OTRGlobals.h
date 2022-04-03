@@ -27,6 +27,7 @@ void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char))
 void OTRSetFrameDivisor(int divisor);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
+uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);

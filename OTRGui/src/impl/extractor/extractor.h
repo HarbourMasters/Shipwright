@@ -5,5 +5,7 @@ enum Platforms {
 	WINDOWS, LINUX
 };
 
-void startWorker();
+struct RomVersion;
+
+void startWorker(RomVersion version);
 void updateWorker(const std::string& output);

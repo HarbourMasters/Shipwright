@@ -18,6 +18,7 @@ Shader shader = { 0 };
 Light light = { 0 };
 Vector3 lightPos = { -5.0f, 10.0f, 10.0f };
 Vector2 dragOffset;
+bool isDragging = false;
 std::string sohFolder = NULLSTR;
 bool extracting = false;
 bool rom_ready = false;
@@ -25,6 +26,7 @@ bool single_thread = false;
 bool hide_second_btn = false;
 RomVersion version;
 const char* patched_rom = "tmp/rom.z64";
+extern bool oldExtractMode;
 
 static std::string currentStep = "None";
 
@@ -71,11 +73,28 @@ void OTRGame::init(){
 	}
 }
 
-void ExtractRom() {
-	const WriteResult result = ExtractBaserom(patched_rom);
+void ExtractRom() 
+{
+	WriteResult result;
+
+	if (oldExtractMode)
+		ExtractBaserom(patched_rom);
+	else
+		result.error = NULLSTR;
+
 	if (result.error == NULLSTR) {
 		if (MoonUtils::exists("oot.otr")) MoonUtils::rm("oot.otr");
-		startWorker();
+		if (MoonUtils::exists("Extract")) MoonUtils::rm("Extract");
+
+		MoonUtils::mkdir("Extract");
+		MoonUtils::copy("tmp/baserom/Audiobank", "Extract/Audiobank");
+		MoonUtils::copy("tmp/baserom/Audioseq", "Extract/Audioseq");
+		MoonUtils::copy("tmp/baserom/Audiotable", "Extract/Audiotable");
+		MoonUtils::copy("tmp/baserom/version", "Extract/version");
+
+		MoonUtils::copy("assets/game/", "Extract/assets/");
+
+		startWorker(version);
 		extracting = true;
 	}
 }
@@ -95,69 +114,103 @@ void OTRGame::update(){
 }
 
 void OTRGame::draw() {
+	Vector2 windowSize(GetScreenWidth(), GetScreenHeight());
+	Rectangle titlebar = Rectangle(0, 0, windowSize.x - 50, 35);
+	Vector2 mousePos = GetMousePosition();
+	Vector2 mouseDelta = GetMouseDelta();
+
+	if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && !isDragging &&
+		mousePos.x >= titlebar.x && mousePos.y >= titlebar.y && mousePos.x <= titlebar.x + titlebar.width && mousePos.y <= titlebar.y + titlebar.height) {
+		isDragging = true;
+		dragOffset = mousePos;
+	}
+	else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT) && isDragging) {
+		isDragging = false;
+		dragOffset = Vector2(0, 0);
+	}
+
+	if (isDragging && (mouseDelta.x != 0.0f || mouseDelta.y != 0.0f)) {
+		Vector2 wndPos = GetWindowPosition();
+		wndPos = Vector2(wndPos.x + (mousePos.x - dragOffset.x), wndPos.y + (mousePos.y - dragOffset.y));
+
+		// Calculate virtual screen total size in case there are multiple monitors
+
+		int vsX1 = 0, vsY1 = 0, vsX2 = 0, vsY2 = 0;
+		int monitorCount = GetMonitorCount();
+
+		for (int m = 0; m < monitorCount; m++) {
+			Vector2 monitorPos = GetMonitorPosition(m);
+			Vector2 monitorSize = Vector2(GetMonitorWidth(m), GetMonitorHeight(m));
+
+			if (monitorPos.x < vsX1) vsX1 = monitorPos.x;
+			if (monitorPos.y < vsY1) vsY1 = monitorPos.y;
+			if (monitorPos.x + monitorSize.x > vsX2) vsX2 = monitorPos.x + monitorSize.x;
+			if (monitorPos.y + monitorSize.y > vsY2) vsY2 = monitorPos.y + monitorSize.y;
+		}
+
+		// Clamp the window to the borders of the monitors
+		if (wndPos.x < vsX1) wndPos.x = vsX1;
+		if (wndPos.x < vsX1) wndPos.x = vsX1;
+		if (wndPos.y < vsY1) wndPos.y = vsY1;
+		if (wndPos.x + windowSize.x > vsX2) wndPos.x = vsX2 - windowSize.x;
+		if (wndPos.y + windowSize.y > vsY2) wndPos.y = vsY2 - windowSize.y;
+
+		SetWindowPosition(wndPos.x, wndPos.y);
+	}
+
 	BeginDrawing();
-		ClearBackground(Color(40, 40, 40, 255));
-		Vector3 windowSize(GetScreenWidth(), GetScreenHeight());
-		Rectangle titlebar = Rectangle(0, 0, windowSize.x - 50, 35);
-		Vector2 mousePos = Vector2(GetMouseX(), GetMouseY());
-		bool hoveredTitlebar = mousePos.x >= titlebar.x && mousePos.y >= titlebar.y && mousePos.x <= titlebar.x + titlebar.width && mousePos.y <= titlebar.y + titlebar.height;
+	ClearBackground(Color(40, 40, 40, 255));
 
-		if (hoveredTitlebar && IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-			if (dragOffset.x == 0 && dragOffset.y == 0) dragOffset = mousePos;
-			Vector2 wndPos = GetWindowPosition();
+	DrawTexture(Textures["Frame"], 0, 0, WHITE);
 
-			SetWindowPosition(wndPos.x + (mousePos.x - dragOffset.x), wndPos.y + (mousePos.y - dragOffset.y));
-		}
-		else dragOffset = Vector2(0, 0);
+	Texture2D titleTex = Textures["Title"];
+	DrawTexture(titleTex, windowSize.x / 2 - titleTex.width / 2, titlebar.height / 2 - titleTex.height / 2, WHITE);
 
-		DrawTexture(Textures["Frame"], 0, 0, WHITE);
+	if (UIUtils::GuiIcon("Exit", windowSize.x - 36, titlebar.height / 2 - 10) && (extracting && currentStep.find("Done") != std::string::npos || !extracting)) {
+		closeRequested = true;
+	}
 
-		Texture2D titleTex = Textures["Title"];
-		DrawTexture(titleTex, windowSize.x / 2 - titleTex.width / 2, titlebar.height / 2 - titleTex.height / 2, WHITE);
+	BeginMode3D(camera);
+	DrawModelEx(Models["Ship"], Vector3Zero(), Vector3(.0f, 1.0f, .0f), this->ModelRotation, SCALE(1.0f), WHITE);
+	EndMode3D();
 
-		if (UIUtils::GuiIcon("Exit", windowSize.x - 36, titlebar.height / 2 - 10) && (extracting && currentStep.find("Done") != std::string::npos || !extracting)) {
-			CloseWindow();
-		}
+	constexpr float text_y = 125.f;
+	UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
+	UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
+	UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
 
-		BeginMode3D(camera);
-			DrawModelEx(Models["Ship"] ,Vector3Zero(), Vector3(.0f, 1.0f, .0f), this->ModelRotation, SCALE(1.0f), WHITE);
-		EndMode3D();
-
-		constexpr float text_y = 125.f;
-		UIUtils::GuiShadowText(("Rom Type: " + version.version).c_str(), 32, text_y, 10, WHITE, BLACK);
-		UIUtils::GuiShadowText("Tool Version: 1.0", 32, text_y + 15, 10, WHITE, BLACK);
-		UIUtils::GuiShadowText("OTR Version: 1.0", 32, text_y + 30, 10, WHITE, BLACK);
+	if (oldExtractMode)
 		UIUtils::GuiToggle(&single_thread, "Single Thread", 32, text_y + 40, currentStep != NULLSTR);
-		
-		if(!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
-			const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);
-			sohFolder = path;
-		}
 
-		if (UIUtils::GuiIconButton("Cartridge", "Open\nOoT Rom", 32, 50, currentStep != NULLSTR, "Select an Ocarina of Time\nMaster Quest or Vanilla Debug Rom\n\nYou can dump it or lend one from Nintendo")) {
-			const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FILE);
-			if (path != NULLSTR) {
-				const std::string patched_n64 = std::string(patched_rom);
-				MoonUtils::rm(patched_n64);
-				version = GetVersion(fopen(path.c_str(), "r"));
-				if (version.version != NULLSTR) {
-					MoonUtils::copy(path, patched_n64);
-					rom_ready = true;
-					return;
-				}
-				fix_baserom(path.c_str(), patched_rom);
-				version = GetVersion(fopen(patched_rom, "r"));
-				if (version.version != NULLSTR) rom_ready = true;
+	if (!hide_second_btn && UIUtils::GuiIconButton("Folder", "Open\nShip Folder", 109, 50, currentStep != NULLSTR, "Select your Ship of Harkinian Folder\n\nYou could use another folder\nfor development purposes")) {
+		const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FOLDER);
+		sohFolder = path;
+	}
+
+	if (UIUtils::GuiIconButton("Cartridge", "Open\nOoT Rom", 32, 50, currentStep != NULLSTR, "Select an Ocarina of Time\nMaster Quest or Vanilla Debug Rom\n\nYou can dump it or lend one from Nintendo")) {
+		const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FILE);
+		if (path != NULLSTR) {
+			const std::string patched_n64 = std::string(patched_rom);
+			MoonUtils::rm(patched_n64);
+			version = GetVersion(fopen(path.c_str(), "r"));
+			if (version.version != NULLSTR) {
+				MoonUtils::copy(path, patched_n64);
+				rom_ready = true;
+				return;
 			}
+			fix_baserom(path.c_str(), patched_rom);
+			version = GetVersion(fopen(patched_rom, "r"));
+			if (version.version != NULLSTR) rom_ready = true;
 		}
+	}
 
-		if(currentStep != NULLSTR) {
-			DrawRectangle(0, 0, windowSize.x, windowSize.y, Color(0, 0, 0, 160));
-			DrawTexture(Textures["Modal"], windowSize.x / 2 - Textures["Modal"].width / 2, windowSize.y / 2 - Textures["Modal"].height / 2, WHITE);
-			UIUtils::GuiShadowText(currentStep.c_str(), 0, windowSize.y / 2, 10, WHITE, BLACK, windowSize.x, true);
-		}
+	if (currentStep != NULLSTR) {
+		DrawRectangle(0, 0, windowSize.x, windowSize.y, Color(0, 0, 0, 160));
+		DrawTexture(Textures["Modal"], windowSize.x / 2 - Textures["Modal"].width / 2, windowSize.y / 2 - Textures["Modal"].height / 2, WHITE);
+		UIUtils::GuiShadowText(currentStep.c_str(), 0, windowSize.y / 2, 10, WHITE, BLACK, windowSize.x, true);
+	}
 
-    EndDrawing();
+	EndDrawing();
 }
 
 void setCurrentStep(const std::string& step) {
