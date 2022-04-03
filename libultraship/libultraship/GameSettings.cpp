@@ -89,6 +89,9 @@ namespace Game {
 
         Settings.controller.input_enabled = stob(Conf[ControllerSection]["input_enabled"]);
         CVar_SetS32(const_cast<char*>("gInputEnabled"), Settings.controller.input_enabled);
+
+        Settings.controller.dpad_pause_name = stob(Conf[ControllerSection]["dpad_pause_name"]);
+        CVar_SetS32(const_cast<char*>("gDpadPauseName"), Settings.controller.dpad_pause_name);
         
         // Cheats
         Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
@@ -149,6 +152,7 @@ namespace Game {
         Conf[ControllerSection]["rumble_strength"]  = std::to_string(Settings.controller.rumble_strength);
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
+        Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
 
         // Cheats
         Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);

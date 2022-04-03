@@ -74,6 +74,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
     s16 pad2;
     s16 phi_s0_2;
     s16 sp208[3];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     OPEN_DISPS(gfxCtx, "../z_kaleido_collect.c", 248);
 
@@ -86,7 +87,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
             sp216 = pauseCtx->cursorSlot[PAUSE_QUEST];
             phi_s3 = pauseCtx->cursorPoint[PAUSE_QUEST];
 
-            if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 phi_s0 = D_8082A1AC[phi_s3][2];
                 if (phi_s0 == -3) {
                     KaleidoScope_MoveCursorToSpecialPos(globalCtx, PAUSE_CURSOR_PAGE_LEFT);
@@ -99,7 +100,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                         phi_s0 = D_8082A1AC[phi_s0][2];
                     }
                 }
-            } else if ((pauseCtx->stickRelX > 30) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 phi_s0 = D_8082A1AC[phi_s3][3];
                 if (phi_s0 == -2) {
                     KaleidoScope_MoveCursorToSpecialPos(globalCtx, PAUSE_CURSOR_PAGE_RIGHT);
@@ -114,7 +115,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 }
             }
 
-            if ((pauseCtx->stickRelY < -30) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                 phi_s0 = D_8082A1AC[phi_s3][1];
                 while (phi_s0 >= 0) {
                     if ((s16)KaleidoScope_UpdateQuestStatusPoint(pauseCtx, phi_s0) != 0) {
@@ -122,7 +123,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     }
                     phi_s0 = D_8082A1AC[phi_s0][1];
                 }
-            } else if ((pauseCtx->stickRelY > 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            } else if ((pauseCtx->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 phi_s0 = D_8082A1AC[phi_s3][0];
                 while (phi_s0 >= 0) {
                     if ((s16)KaleidoScope_UpdateQuestStatusPoint(pauseCtx, phi_s0) != 0) {
@@ -211,7 +212,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 }
             }
         } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-            if ((pauseCtx->stickRelX > 30) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 pauseCtx->cursorPoint[PAUSE_QUEST] = 0x15;
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
@@ -228,7 +229,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
             }
         } else {
-            if ((pauseCtx->stickRelX < -30) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 pauseCtx->cursorPoint[PAUSE_QUEST] = 0;
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
