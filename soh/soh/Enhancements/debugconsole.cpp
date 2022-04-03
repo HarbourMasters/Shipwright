@@ -1,7 +1,10 @@
 #include "debugconsole.h"
 #include "../libultraship/SohImGuiImpl.h"
+#include "savestates.h"
+
 #include <vector>
 #include <string>
+
 
 #define Path _Path
 #define PATH_HACK
@@ -303,6 +306,17 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     gSaveContext.nextTransition = 11;
 }
 
+static bool SaveStateHandler(const std::vector<std::string>& args) {
+    SaveState::Save(0);
+    return CMD_SUCCESS;
+}
+
+static bool LoadStateHandler(const std::vector<std::string>& args) {
+	SaveState::Load(0);
+	return CMD_SUCCESS;
+}
+
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -416,11 +430,10 @@ void DebugConsole_Init(void) {
                              { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance",
                  { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
-}
 
-template <typename Numeric> bool is_number(const std::string& s) {
-    Numeric n;
-    return ((std::istringstream(s) >> n >> std::ws).eof());
+    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
+    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
+    DebugConsole_LoadCVars();
 }
 
 void DebugConsole_LoadCVars()
