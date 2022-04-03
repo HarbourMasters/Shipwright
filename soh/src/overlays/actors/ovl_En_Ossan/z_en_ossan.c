@@ -950,6 +950,7 @@ s32 EnOssan_FacingShopkeeperDialogResult(EnOssan* this, GlobalContext* globalCtx
 void EnOssan_State_FacingShopkeeper(EnOssan* this, GlobalContext* globalCtx, Player* player) {
     Input* input = &globalCtx->state.input[0];
     u8 nextIndex;
+    bool dpad = CVar_GetS32("gDpadShop", 0);
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CHOICE) &&
         !EnOssan_TestEndInteraction(this, globalCtx, &globalCtx->state.input[0])) {
@@ -958,7 +959,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, GlobalContext* globalCtx, Pla
             return;
         }
         // Stick Left
-        if ((this->stickAccumX < 0) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+        if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 4);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -967,7 +968,7 @@ void EnOssan_State_FacingShopkeeper(EnOssan* this, GlobalContext* globalCtx, Pla
                 this->stickLeftPrompt.isEnabled = false;
                 func_80078884(NA_SE_SY_CURSOR);
             }
-        } else if ((this->stickAccumX > 0) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+        } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
             nextIndex = EnOssan_SetCursorIndexFromNeutral(this, 0);
             if (nextIndex != CURSOR_INVALID) {
                 this->cursorIndex = nextIndex;
@@ -1028,8 +1029,9 @@ void EnOssan_CursorUpDown(EnOssan* this, GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
     u8 curTemp = this->cursorIndex;
     u8 curScanTemp;
+    bool dpad = CVar_GetS32("gDpadShop", 0);
 
-    if ((this->stickAccumY < 0) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+    if ((this->stickAccumY < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         curTemp &= 0xFE;
         if (this->shelfSlots[curTemp] != NULL) {
             this->cursorIndex = curTemp;
@@ -1068,7 +1070,7 @@ void EnOssan_CursorUpDown(EnOssan* this, GlobalContext* globalCtx) {
                 }
             }
         }
-    } else if ((this->stickAccumY > 0) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+    } else if ((this->stickAccumY > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
         curTemp |= 1;
         if (this->shelfSlots[curTemp] != NULL) {
             this->cursorIndex = curTemp;
@@ -1180,6 +1182,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, GlobalContext* globalCtx, Play
     u8 prevIndex = this->cursorIndex;
     s32 c;
     s32 d;
+    bool dpad = CVar_GetS32("gDpadShop", 0);
 
     if (!EnOssan_ReturnItemToShelf(this)) {
         osSyncPrintf("%s[%d]:" VT_FGCOL(GREEN) "ズーム中！！" VT_RST "\n", "../z_en_oB1.c", 2152);
@@ -1196,7 +1199,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, GlobalContext* globalCtx, Play
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(globalCtx, this, &globalCtx->state.input[0])) {
         if (this->moveHorizontal) {
-            if ((this->stickAccumX > 0) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 a = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (a != CURSOR_INVALID) {
                     this->cursorIndex = a;
@@ -1204,14 +1207,14 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, GlobalContext* globalCtx, Play
                     EnOssan_SetLookToShopkeeperFromShelf(globalCtx, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            } else if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 b = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (b != CURSOR_INVALID) {
                     this->cursorIndex = b;
                 }
             }
         } else {
-            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 c = EnOssan_CursorRight(this, this->cursorIndex, 4);
                 if (c != CURSOR_INVALID) {
                     this->cursorIndex = c;
@@ -1219,7 +1222,7 @@ void EnOssan_State_BrowseLeftShelf(EnOssan* this, GlobalContext* globalCtx, Play
                     EnOssan_SetLookToShopkeeperFromShelf(globalCtx, this);
                     return;
                 }
-            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            } else if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 d = EnOssan_CursorLeft(this, this->cursorIndex, 8);
                 if (d != CURSOR_INVALID) {
                     this->cursorIndex = d;
@@ -1239,6 +1242,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, GlobalContext* globalCtx, Pla
     s32 pad[2];
     u8 prevIndex;
     u8 nextIndex;
+    bool dpad = CVar_GetS32("gDpadShop", 0);
 
     prevIndex = this->cursorIndex;
     if (!EnOssan_ReturnItemToShelf(this)) {
@@ -1256,7 +1260,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, GlobalContext* globalCtx, Pla
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) &&
         !EnOssan_HasPlayerSelectedItem(globalCtx, this, &globalCtx->state.input[0])) {
         if (this->moveHorizontal) {
-            if ((this->stickAccumX < 0) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            if ((this->stickAccumX < 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1264,14 +1268,14 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, GlobalContext* globalCtx, Pla
                     EnOssan_SetLookToShopkeeperFromShelf(globalCtx, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            } else if ((this->stickAccumX > 0) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
                 }
             }
         } else {
-            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            if ((this->stickAccumX < 0 && this->stickAccumX < -500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 nextIndex = EnOssan_CursorRight(this, this->cursorIndex, 0);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
@@ -1279,7 +1283,7 @@ void EnOssan_State_BrowseRightShelf(EnOssan* this, GlobalContext* globalCtx, Pla
                     EnOssan_SetLookToShopkeeperFromShelf(globalCtx, this);
                     return;
                 }
-            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            } else if ((this->stickAccumX > 0 && this->stickAccumX > 500) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 nextIndex = EnOssan_CursorLeft(this, this->cursorIndex, 4);
                 if (nextIndex != CURSOR_INVALID) {
                     this->cursorIndex = nextIndex;
