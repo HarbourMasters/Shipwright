@@ -62,6 +62,7 @@ void FileChoose_SelectCopySource(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (((this->buttonIndex == FS_BTN_COPY_QUIT) && CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) ||
         CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -82,10 +83,10 @@ void FileChoose_SelectCopySource(GameState* thisx) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
     } else {
-        if ((ABS(this->stickRelY) >= 30) || CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)) {
+        if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
-            if ((this->stickRelY >= 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            if ((this->stickRelY >= 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
 
                 if (this->buttonIndex < FS_BTN_COPY_FILE_1) {
@@ -174,6 +175,7 @@ void FileChoose_SelectCopyDest(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (((this->buttonIndex == FS_BTN_COPY_QUIT) && CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) ||
         CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -194,10 +196,10 @@ void FileChoose_SelectCopyDest(GameState* thisx) {
         }
     } else {
 
-        if ((ABS(this->stickRelY) >= 30) || CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)) {
+        if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
-            if ((this->stickRelY >= 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            if ((this->stickRelY >= 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
 
                 if ((this->buttonIndex == this->selectedFileIndex)) {
@@ -360,6 +362,7 @@ void FileChoose_CopyConfirm(GameState* thisx) {
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
     u16 dayTime;
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (((this->buttonIndex != FS_BTN_CONFIRM_YES) && CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) ||
         CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -377,7 +380,7 @@ void FileChoose_CopyConfirm(GameState* thisx) {
         this->configMode = CM_COPY_ANIM_1;
         func_800AA000(300.0f, 0xB4, 0x14, 0x64);
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-    } else if ((ABS(this->stickRelY) >= 30) || CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)) {
+    } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
     }
@@ -680,6 +683,7 @@ void FileChoose_EraseSelect(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (((this->buttonIndex == FS_BTN_COPY_QUIT) && CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) ||
         CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -700,10 +704,10 @@ void FileChoose_EraseSelect(GameState* thisx) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
     } else {
-        if ((ABS(this->stickRelY) >= 30) || CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)) {
+        if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
-            if ((this->stickRelY >= 30) || CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            if ((this->stickRelY >= 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
                 if (this->buttonIndex < FS_BTN_ERASE_FILE_1) {
                     this->buttonIndex = FS_BTN_ERASE_QUIT;
@@ -817,6 +821,7 @@ void FileChoose_SetupEraseConfirm2(GameState* thisx) {
 void FileChoose_EraseConfirm(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (((this->buttonIndex != FS_BTN_CONFIRM_YES) && CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) ||
         CHECK_BTN_ALL(input->press.button, BTN_B)) {
@@ -833,7 +838,7 @@ void FileChoose_EraseConfirm(GameState* thisx) {
         this->nextTitleLabel = FS_TITLE_ERASE_COMPLETE;
         func_800AA000(200.0f, 0xFF, 0x14, 0x96);
         sEraseDelayTimer = 15;
-    } else if ((ABS(this->stickRelY) >= 30) || CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP)) {
+    } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->buttonIndex ^= 1;
     }

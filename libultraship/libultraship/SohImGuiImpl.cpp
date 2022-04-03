@@ -353,6 +353,13 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                ImGui::Separator();
+
+                if (ImGui::Checkbox("Dpad Support on Pause and File Select", &Game::Settings.controller.dpad_pause_name)) {
+                    CVar_SetS32(const_cast<char*>("gDpadPauseName"), Game::Settings.controller.dpad_pause_name);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
