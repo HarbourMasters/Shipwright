@@ -4,6 +4,7 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "objects/object_triforce_spot/object_triforce_spot.h"
 #include "overlays/actors/ovl_Demo_Effect/z_demo_effect.h"
+#include <colors/colorPaths.h>
 
 typedef struct {
     /* 0x00 */ u8 flag;
@@ -713,7 +714,7 @@ Gfx* sBootDListGroups[][2] = {
 void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable, s32 dListCount, s32 lod, s32 tunic,
                    s32 boots, s32 face, OverrideLimbDrawOpa overrideLimbDraw, PostLimbDrawOpa postLimbDraw,
                    void* data) {
-    Color_RGB8* color;
+    Color_RGB8 color;
     s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
     s32 mouthIndex = (jointTable[22].x >> 4) - 1;
 
@@ -744,8 +745,23 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
   
-    color = &sTunicColors[tunic];
-    gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+    switch (tunic) { 
+        case 0:
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTunicKokiri);
+            break;
+        case 1:
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTunicGoron);
+            break;
+        case 2:
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTunicZora);
+            break;
+        default:
+            color.r = 255;
+            color.g = 255;
+            color.b = 255;
+            break;
+    }
+    gDPSetEnvColor(POLY_OPA_DISP++, color.r, color.g, color.b, 0);
 
     sDListsLodOffset = lod * 2;
 
@@ -758,8 +774,22 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
             if (strengthUpgrade >= 2) { // silver or gold gauntlets
                 gDPPipeSync(POLY_OPA_DISP++);
 
-                color = &sGauntletColors[strengthUpgrade - 2];
-                gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
+                switch (strengthUpgrade) { 
+                    case 2:
+                        color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorGauntletSilver);
+                        break;
+                    case 3:
+                        color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorGauntletGold);
+                        break;
+                    default:
+                        // Always accesses an out of bounds value
+                        // The Colored Gauntlets come from here. In the future, those values should be assetized
+                        // And added here so that we don't go out of bounds on this anymore
+                        color = sGauntletColors[strengthUpgrade - 2];
+                        break; // RBA Lives On
+                }
+                
+                gDPSetEnvColor(POLY_OPA_DISP++, color.r, color.g, color.b, 0);
 
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultLeftGauntletPlate1DL);
                 gSPDisplayList(POLY_OPA_DISP++, gLinkAdultRightGauntletPlate1DL);

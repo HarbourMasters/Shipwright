@@ -8,6 +8,20 @@
 #include "textures/message_static/message_static.h"
 #include "textures/message_texture_static/message_texture_static.h"
 
+#include <colors/colorPaths.h>
+
+// Appears frequently in z_message flashing animations.
+// "temp" variable is included because it is generally reused between instances of this block.
+// This is mathematically equivalent but does not match.Macro was introduced because it 
+// originally represented a 20 line block and was going to be used an additional 3 times.
+#define advanceFlashAnimation(currentColor, targetColor, flashIndex, flashTimer) \
+    currentColor.r += (currentColor.r >= targetColor[flashIndex].r ? -1 : 1) *         \
+                      ABS(currentColor.r - targetColor[flashIndex].r) / flashTimer;    \
+    currentColor.g += (currentColor.g >= targetColor[flashIndex].g ? -1 : 1) *         \
+                      ABS(currentColor.g - targetColor[flashIndex].g) / flashTimer;    \
+    currentColor.b += (currentColor.b >= targetColor[flashIndex].b ? -1 : 1) *         \
+                      ABS(currentColor.b - targetColor[flashIndex].b) / flashTimer; 
+
 s16 sTextFade = false; // original name: key_off_flag ?
 
 u8 D_8014B2F4 = 0;
@@ -37,42 +51,42 @@ MessageTableEntry* sStaffMessageEntryTablePtr;
 
 char* _message_0xFFFC_nes;
 
-//MessageTableEntry sNesMessageEntryTable[] = {
-//#define DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) \
+// MessageTableEntry sNesMessageEntryTable[] = {
+//#def ine DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) \
 //    { textId, (_SHIFTL(type, 4, 8) | _SHIFTL(yPos, 0, 8)), _message_##textId##_nes },
 //#define DEFINE_MESSAGE_FFFC
 //#include "text/message_data.h"
 //#undef DEFINE_MESSAGE_FFFC
 //#undef DEFINE_MESSAGE
-//    { 0xFFFF, 0, NULL },
-//};
+//     { 0xFFFF, 0, NULL },
+// };
 //
-//const char* sGerMessageEntryTable[] = {
+// const char* sGerMessageEntryTable[] = {
 //#define DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) _message_##textId##_ger,
 //#include "text/message_data.h"
 //#undef DEFINE_MESSAGE
-//    NULL,
-//};
+//     NULL,
+// };
 //
-//const char* sFraMessageEntryTable[] = {
+// const char* sFraMessageEntryTable[] = {
 //#define DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) _message_##textId##_fra,
 //#include "text/message_data.h"
 //#undef DEFINE_MESSAGE
-//    NULL,
-//};
+//     NULL,
+// };
 //
-//MessageTableEntry sStaffMessageEntryTable[] = {
-//#define DEFINE_MESSAGE(textId, type, yPos, staffMessage) \
+// MessageTableEntry sStaffMessageEntryTable[] = {
+//#def ine DEFINE_MESSAGE(textId, type, yPos, staffMessage) \
 //    { textId, (_SHIFTL(type, 4, 8) | _SHIFTL(yPos, 0, 8)), _message_##textId##_staff },
 //#include "text/message_data_staff.h"
 //#undef DEFINE_MESSAGE
-//    { 0xFFFF, 0, NULL },
-//};
+//     { 0xFFFF, 0, NULL },
+// };
 
-//MessageTableEntry* sNesMessageEntryTablePtr = sNesMessageEntryTable;
-//const char** sGerMessageEntryTablePtr = sGerMessageEntryTable;
-//const char** sFraMessageEntryTablePtr = sFraMessageEntryTable;
-//MessageTableEntry* sStaffMessageEntryTablePtr = sStaffMessageEntryTable;
+// MessageTableEntry* sNesMessageEntryTablePtr = sNesMessageEntryTable;
+// const char** sGerMessageEntryTablePtr = sGerMessageEntryTable;
+// const char** sFraMessageEntryTablePtr = sFraMessageEntryTable;
+// MessageTableEntry* sStaffMessageEntryTablePtr = sStaffMessageEntryTable;
 
 s16 sTextboxBackgroundForePrimColors[][3] = {
     { 255, 255, 255 }, { 50, 20, 0 },     { 255, 60, 0 },    { 255, 255, 255 },
@@ -105,18 +119,18 @@ s16 gOcarinaSongItemMap[] = {
 
 s32 sCharTexSize;
 s32 sCharTexScale;
-s16 sOcarinaNoteAPrimR;
-s16 sOcarinaNoteAPrimB;
-s16 sOcarinaNoteAPrimG;
-s16 sOcarinaNoteAEnvR;
-s16 sOcarinaNoteAEnvB;
-s16 sOcarinaNoteAEnvG;
-s16 sOcarinaNoteCPrimR;
-s16 sOcarinaNoteCPrimB;
-s16 sOcarinaNoteCPrimG;
-s16 sOcarinaNoteCEnvR;
-s16 sOcarinaNoteCEnvB;
-s16 sOcarinaNoteCEnvG;
+Color_RGB8 sOcarinaNoteAPrim;
+Color_RGB8 sOcarinaNoteAEnv;
+Color_RGB8 sOcarinaNoteCUpPrim;
+Color_RGB8 sOcarinaNoteCUpEnv;
+Color_RGB8 sOcarinaNoteCRightPrim;
+Color_RGB8 sOcarinaNoteCRightEnv;
+Color_RGB8 sOcarinaNoteCDownPrim;
+Color_RGB8 sOcarinaNoteCDownEnv;
+Color_RGB8 sOcarinaNoteCLeftPrim;
+Color_RGB8 sOcarinaNoteCLeftEnv;
+
+
 
 void Message_ResetOcarinaNoteState(void) {
     R_OCARINA_NOTES_YPOS(0) = 189;
@@ -128,18 +142,17 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNotesAlphaValues[0] = sOcarinaNotesAlphaValues[1] = sOcarinaNotesAlphaValues[2] =
         sOcarinaNotesAlphaValues[3] = sOcarinaNotesAlphaValues[4] = sOcarinaNotesAlphaValues[5] =
             sOcarinaNotesAlphaValues[6] = sOcarinaNotesAlphaValues[7] = sOcarinaNotesAlphaValues[8] = 0;
-    sOcarinaNoteAPrimR = 80;
-    sOcarinaNoteAPrimG = 255;
-    sOcarinaNoteAPrimB = 150;
-    sOcarinaNoteAEnvR = 10;
-    sOcarinaNoteAEnvG = 10;
-    sOcarinaNoteAEnvB = 10;
-    sOcarinaNoteCPrimR = 255;
-    sOcarinaNoteCPrimG = 255;
-    sOcarinaNoteCPrimB = 50;
-    sOcarinaNoteCEnvR = 10;
-    sOcarinaNoteCEnvG = 10;
-    sOcarinaNoteCEnvB = 10;
+    Color_RGB8 envColor = { 10, 10, 10 };
+    sOcarinaNoteAPrim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteA);
+    sOcarinaNoteAEnv = envColor;
+    sOcarinaNoteCUpPrim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCUp);
+    sOcarinaNoteCUpEnv = envColor;
+    sOcarinaNoteCRightPrim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCRight);
+    sOcarinaNoteCRightEnv = envColor;
+    sOcarinaNoteCDownPrim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCDown);
+    sOcarinaNoteCDownEnv = envColor;
+    sOcarinaNoteCLeftPrim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCLeft);
+    sOcarinaNoteCLeftEnv = envColor;
 }
 
 void Message_UpdateOcarinaGame(GlobalContext* globalCtx) {
@@ -234,8 +247,8 @@ void Message_DrawTextChar(GlobalContext* globalCtx, void* textureImage, Gfx** p)
     s16 x = msgCtx->textPosX;
     s16 y = msgCtx->textPosY;
 
-    //gSPInvalidateTexCache(gfx++, 0);
-    //gSPInvalidateTexCache(gfx++, msgCtx->textboxSegment);
+    // gSPInvalidateTexCache(gfx++, 0);
+    // gSPInvalidateTexCache(gfx++, msgCtx->textboxSegment);
     gSPInvalidateTexCache(gfx++, textureImage);
 
     gDPPipeSync(gfx++);
@@ -309,7 +322,6 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     Font* font;
     const char* seg;
 
-    
     if (gSaveContext.language == LANGUAGE_ENG) {
         seg = messageTableEntry->segment;
 
@@ -319,7 +331,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
             if (messageTableEntry->textId == textId) {
                 foundSeg = messageTableEntry->segment;
                 font->charTexBuf[0] = messageTableEntry->typePos;
-                //messageTableEntry++;
+                // messageTableEntry++;
                 nextSeg = messageTableEntry->segment;
                 font->msgOffset = messageTableEntry->segment;
                 font->msgLength = messageTableEntry->msgSize;
@@ -332,7 +344,8 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
             messageTableEntry++;
         }
     } else {
-        //languageSegmentTable = (gSaveContext.language == LANGUAGE_GER) ? sGerMessageEntryTablePtr : sFraMessageEntryTablePtr; // OTRTODO
+        // languageSegmentTable = (gSaveContext.language == LANGUAGE_GER) ? sGerMessageEntryTablePtr :
+        // sFraMessageEntryTablePtr; // OTRTODO
         seg = messageTableEntry->segment;
 
         while (messageTableEntry->textId != 0xFFFF) {
@@ -366,7 +379,8 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
         messageTableEntry++;
         nextSeg = messageTableEntry->segment;
     } else {
-        //languageSegmentTable = (gSaveContext.language == LANGUAGE_GER) ? sGerMessageEntryTablePtr : sFraMessageEntryTablePtr; // OTRTODO
+        // languageSegmentTable = (gSaveContext.language == LANGUAGE_GER) ? sGerMessageEntryTablePtr :
+        // sFraMessageEntryTablePtr; // OTRTODO
         foundSeg = *languageSegmentTable;
         font->charTexBuf[0] = messageTableEntry->typePos;
         languageSegmentTable++;
@@ -404,176 +418,94 @@ void Message_FindCreditsMessage(GlobalContext* globalCtx, u16 textId) {
 }
 
 void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
+    Color_RGB8 color;
+    bool isWooden = msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN;
+    bool isNoShadow = msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW;
     switch (colorParameter) {
         case MSGCOL_RED:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = 255;
-                msgCtx->textColorG = 120;
-                msgCtx->textColorB = 0;
-            } else {
-                msgCtx->textColorR = 255;
-                msgCtx->textColorG = 60;
-                msgCtx->textColorB = 60;
-            }
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(isWooden ? colorTextWoodenRed : colorTextDefaultRed);
             break;
         case MSGCOL_ADJUSTABLE:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = R_TEXT_ADJUST_COLOR_1_R;
-                msgCtx->textColorG = R_TEXT_ADJUST_COLOR_1_G;
-                msgCtx->textColorB = R_TEXT_ADJUST_COLOR_1_B;
+            if (isWooden) {
+                color.r = R_TEXT_ADJUST_COLOR_1_R;
+                color.g = R_TEXT_ADJUST_COLOR_1_G;
+                color.b = R_TEXT_ADJUST_COLOR_1_B;
             } else {
-                msgCtx->textColorR = R_TEXT_ADJUST_COLOR_2_R;
-                msgCtx->textColorG = R_TEXT_ADJUST_COLOR_2_G;
-                msgCtx->textColorB = R_TEXT_ADJUST_COLOR_2_B;
+                color.r = R_TEXT_ADJUST_COLOR_2_R;
+                color.g = R_TEXT_ADJUST_COLOR_2_G;
+                color.b = R_TEXT_ADJUST_COLOR_2_B;
             }
             break;
         case MSGCOL_BLUE:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = 80;
-                msgCtx->textColorG = 110;
-                msgCtx->textColorB = 255;
-            } else {
-                msgCtx->textColorR = 80;
-                msgCtx->textColorG = 90;
-                msgCtx->textColorB = 255;
-            }
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(isWooden ? colorTextWoodenBlue : colorTextDefaultBlue);
             break;
         case MSGCOL_LIGHTBLUE:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = 90;
-                msgCtx->textColorG = 180;
-                msgCtx->textColorB = 255;
-            } else if (msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW) {
-                msgCtx->textColorR = 80;
-                msgCtx->textColorG = 150;
-                msgCtx->textColorB = 180;
+            if (isWooden) {
+                color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTextWoodenLightBlue);
+            } else if (isNoShadow) {
+                color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTextNoShadowLightBlue);
             } else {
-                msgCtx->textColorR = 100;
-                msgCtx->textColorG = 180;
-                msgCtx->textColorB = 255;
+                color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTextDefaultLightBlue);
             }
             break;
         case MSGCOL_PURPLE:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = 210;
-                msgCtx->textColorG = 100;
-                msgCtx->textColorB = 255;
-            } else {
-                msgCtx->textColorR = 255;
-                msgCtx->textColorG = 150;
-                msgCtx->textColorB = 180;
-            }
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(isWooden ? colorTextWoodenPurple : colorTextDefaultPurple);
             break;
         case MSGCOL_YELLOW:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_WOODEN) {
-                msgCtx->textColorR = 255;
-                msgCtx->textColorG = 255;
-                msgCtx->textColorB = 30;
-            } else {
-                msgCtx->textColorR = 225;
-                msgCtx->textColorG = 255;
-                msgCtx->textColorB = 50;
-            }
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(isWooden ? colorTextWoodenYellow : colorTextDefaultYellow);
             break;
         case MSGCOL_BLACK:
-            msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 0;
+            color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTextDefaultBlack);
             break;
         case MSGCOL_DEFAULT:
         default:
-            if (msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW) {
-                msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 0;
-            } else {
-                msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 255;
-            }
+            color =
+                *(Color_RGB8*)ResourceMgr_LoadBlobByName(isNoShadow ? colorTextDefaultBlack : colorTextDefaultWhite);
             break;
     }
+    msgCtx->textColorR = color.r;
+    msgCtx->textColorG = color.g;
+    msgCtx->textColorB = color.b;
 }
 
 void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
-    static s16 sIconPrimColors[][3] = {
-        { 0, 200, 80 },
-        { 50, 255, 130 },
+    Color_RGB8 sIconPrimColors[2] = {
+        *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorTextStopIconDim),
+        *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorTextStopIconGlow)
     };
-    static s16 sIconEnvColors[][3] = {
-        { 0, 0, 0 },
-        { 0, 255, 130 },
+    Color_RGB8 sIconEnvColors[2] = {
+        { 0, 0, 0 }, 
+        sIconPrimColors[1]
     };
-    static s16 sIconPrimR = 0;
-    static s16 sIconPrimG = 200;
-    static s16 sIconPrimB = 80;
+    
     static s16 sIconFlashTimer = 12;
     static s16 sIconFlashColorIdx = 0;
-    static s16 sIconEnvR = 0;
-    static s16 sIconEnvG = 0;
-    static s16 sIconEnvB = 0;
+    static Color_RGB8 sIconPrim;
+    static Color_RGB8 sIconEnv;
+    if (sIconEnv.r == NULL || sIconEnv.g == NULL || sIconEnv.b == NULL) {
+        sIconEnv = sIconEnvColors[0];
+    }
+    if (sIconPrim.r == NULL || sIconPrim.g == NULL || sIconPrim.b == NULL) {
+        sIconPrim = sIconPrimColors[0];
+    }
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &msgCtx->font;
     Gfx* gfx = *p;
-    s16 primR;
-    s16 primG;
-    s16 primB;
-    s16 envR;
-    s16 envG;
-    s16 envB;
     u8* iconTexture = font->iconBuf;
 
     if (sTextIsCredits) {
         return;
     }
 
-    primR = (ABS(sIconPrimR - sIconPrimColors[sIconFlashColorIdx][0])) / sIconFlashTimer;
-    primG = (ABS(sIconPrimG - sIconPrimColors[sIconFlashColorIdx][1])) / sIconFlashTimer;
-    primB = (ABS(sIconPrimB - sIconPrimColors[sIconFlashColorIdx][2])) / sIconFlashTimer;
 
-    if (sIconPrimR >= sIconPrimColors[sIconFlashColorIdx][0]) {
-        sIconPrimR -= primR;
-    } else {
-        sIconPrimR += primR;
-    }
-
-    if (sIconPrimG >= sIconPrimColors[sIconFlashColorIdx][1]) {
-        sIconPrimG -= primG;
-    } else {
-        sIconPrimG += primG;
-    }
-
-    if (sIconPrimB >= sIconPrimColors[sIconFlashColorIdx][2]) {
-        sIconPrimB -= primB;
-    } else {
-        sIconPrimB += primB;
-    }
-
-    envR = (ABS(sIconEnvR - sIconEnvColors[sIconFlashColorIdx][0])) / sIconFlashTimer;
-    envG = (ABS(sIconEnvG - sIconEnvColors[sIconFlashColorIdx][1])) / sIconFlashTimer;
-    envB = (ABS(sIconEnvB - sIconEnvColors[sIconFlashColorIdx][2])) / sIconFlashTimer;
-
-    if (sIconEnvR >= sIconEnvColors[sIconFlashColorIdx][0]) {
-        sIconEnvR -= envR;
-    } else {
-        sIconEnvR += envR;
-    }
-
-    if (sIconEnvG >= sIconEnvColors[sIconFlashColorIdx][1]) {
-        sIconEnvG -= envG;
-    } else {
-        sIconEnvG += envG;
-    }
-
-    if (sIconEnvB >= sIconEnvColors[sIconFlashColorIdx][2]) {
-        sIconEnvB -= envB;
-    } else {
-        sIconEnvB += envB;
-    }
+    advanceFlashAnimation(sIconPrim, sIconPrimColors, sIconFlashColorIdx, sIconFlashTimer);
+    advanceFlashAnimation(sIconEnv, sIconEnvColors, sIconFlashColorIdx, sIconFlashTimer);
 
     sIconFlashTimer--;
 
     if (sIconFlashTimer == 0) {
-        sIconPrimR = sIconPrimColors[sIconFlashColorIdx][0];
-        sIconPrimG = sIconPrimColors[sIconFlashColorIdx][1];
-        sIconPrimB = sIconPrimColors[sIconFlashColorIdx][2];
-        sIconEnvR = sIconEnvColors[sIconFlashColorIdx][0];
-        sIconEnvG = sIconEnvColors[sIconFlashColorIdx][1];
-        sIconEnvB = sIconEnvColors[sIconFlashColorIdx][2];
+        sIconPrim = sIconPrimColors[sIconFlashColorIdx];
+        sIconEnv = sIconEnvColors[sIconFlashColorIdx];
         sIconFlashTimer = 12;
         sIconFlashColorIdx ^= 1;
     }
@@ -583,8 +515,8 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
-    gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
+    gDPSetPrimColor(gfx++, 0, 0, sIconPrim.r, sIconPrim.g, sIconPrim.b, 255);
+    gDPSetEnvColor(gfx++, sIconEnv.r, sIconEnv.g, sIconEnv.b, 255);
 
     gDPLoadTextureBlock_4b(gfx++, iconTexture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -763,13 +695,13 @@ u16 Message_DrawItemIcon(GlobalContext* globalCtx, u16 itemId, Gfx** p, u16 i) {
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, msgCtx->textColorAlpha);
 
     if (itemId >= ITEM_MEDALLION_FOREST) {
-        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA, G_IM_SIZ_32b,
-                            24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                            G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     } else {
-        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA, G_IM_SIZ_32b,
-                            32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
-                            G_TX_NOLOD, G_TX_NOLOD);
+        gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA,
+                            G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
     gSPTextureRectangle(gfx++, (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS) << 2, R_TEXTBOX_ICON_YPOS << 2,
                         (msgCtx->textPosX + R_TEXTBOX_ICON_XPOS + R_TEXTBOX_ICON_SIZE) << 2,
@@ -874,11 +806,11 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
         msgCtx->textPosY = YREG(1);
     }
 
-    if (msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW) {
-        msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 0;
-    } else {
-        msgCtx->textColorR = msgCtx->textColorG = msgCtx->textColorB = 255;
-    }
+    Color_RGB8 textColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(
+        msgCtx->textBoxType == TEXTBOX_TYPE_NONE_NO_SHADOW ? colorTextDefaultBlack : colorTextDefaultWhite);
+    msgCtx->textColorR = textColor.r;
+    msgCtx->textColorG = textColor.g;
+    msgCtx->textColorB = textColor.b;
 
     msgCtx->unk_E3D0 = 0;
     charTexIdx = 0;
@@ -1011,8 +943,8 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                                 sTextboxBackgroundBackPrimColors[msgCtx->textboxBackgroundBackColorIdx][2],
                                 msgCtx->textColorAlpha);
 
-                gDPLoadTextureBlock_4b(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_I, 96, 48,
-                                       0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                gDPLoadTextureBlock_4b(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_I,
+                                       96, 48, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPTextureRectangle(
                     gfx++, (msgCtx->textPosX + 1) << 2,
@@ -1021,9 +953,9 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                     (R_TEXTBOX_BG_YPOS + sTextboxBackgroundYOffsets[msgCtx->textboxBackgroundYOffsetIdx] + 48) << 2,
                     G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
-                gDPLoadTextureBlock_4b(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900, G_IM_FMT_I,
-                                       96, 48, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
-                                       G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gDPLoadTextureBlock_4b(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900,
+                                       G_IM_FMT_I, 96, 48, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                       G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPTextureRectangle(
                     gfx++, (msgCtx->textPosX + 96 + 1) << 2,
                     (R_TEXTBOX_BG_YPOS + sTextboxBackgroundYOffsets[msgCtx->textboxBackgroundYOffsetIdx]) << 2,
@@ -1037,8 +969,8 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                                 sTextboxBackgroundForePrimColors[msgCtx->textboxBackgroundForeColorIdx][2],
                                 msgCtx->textColorAlpha);
 
-                gDPLoadTextureBlock_4b(gfx++, ((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), G_IM_FMT_I, 96,
-                                       48, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                gDPLoadTextureBlock_4b(gfx++, ((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE), G_IM_FMT_I,
+                                       96, 48, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                        G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                 gSPTextureRectangle(gfx++, msgCtx->textPosX << 2, R_TEXTBOX_BG_YPOS << 2, (msgCtx->textPosX + 96) << 2,
                                     (R_TEXTBOX_BG_YPOS + 48) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
@@ -1172,7 +1104,7 @@ void Message_LoadItemIcon(GlobalContext* globalCtx, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gSaveContext.language];
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
-         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x900);
+        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x900);
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -1635,28 +1567,26 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         memcpy(font->msgBuf, src, font->msgLength);
 
         // OTRTODO
-        //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
-                            //font->msgLength, "../z_message_PAL.c", 1954);
+        // DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 +
+        // font->msgOffset), font->msgLength, "../z_message_PAL.c", 1954);
     } else {
-        if (gSaveContext.language == LANGUAGE_ENG) 
-        {
+        if (gSaveContext.language == LANGUAGE_ENG) {
             Message_FindMessage(globalCtx, textId);
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
             memcpy(font->msgBuf, src, font->msgLength);
         } else if (gSaveContext.language == LANGUAGE_GER) {
             // OTRTODO
-            //Message_FindMessage(globalCtx, textId);
-            //msgCtx->msgLength = font->msgLength;
-            //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_ger_message_data_staticSegmentRomStart + font->msgOffset),
-                                //font->msgLength, "../z_message_PAL.c", 1978);
-        } else 
-        {
+            // Message_FindMessage(globalCtx, textId);
+            // msgCtx->msgLength = font->msgLength;
+            // DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_ger_message_data_staticSegmentRomStart + font->msgOffset),
+            // font->msgLength, "../z_message_PAL.c", 1978);
+        } else {
             // OTRTODO
-            //Message_FindMessage(globalCtx, textId);
-            //msgCtx->msgLength = font->msgLength;
-            //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_fra_message_data_staticSegmentRomStart + font->msgOffset),
-                                //font->msgLength, "../z_message_PAL.c", 1990);
+            // Message_FindMessage(globalCtx, textId);
+            // msgCtx->msgLength = font->msgLength;
+            // DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_fra_message_data_staticSegmentRomStart + font->msgOffset),
+            // font->msgLength, "../z_message_PAL.c", 1990);
         }
     }
 
@@ -1667,7 +1597,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     // "Text Box Type"
     osSyncPrintf("吹き出し種類＝%d\n", msgCtx->textBoxType);
     if (textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
-        memcpy(msgCtx->textboxSegment, ResourceMgr_LoadTexByName(msgStaticTbl[messageStaticIndices[textBoxType]]), MESSAGE_STATIC_TEX_SIZE);
+        memcpy(msgCtx->textboxSegment, ResourceMgr_LoadTexByName(msgStaticTbl[messageStaticIndices[textBoxType]]),
+               MESSAGE_STATIC_TEX_SIZE);
         if (textBoxType == TEXTBOX_TYPE_BLACK) {
             msgCtx->textboxColorRed = 0;
             msgCtx->textboxColorGreen = 0;
@@ -1970,22 +1901,49 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
     static void* sOcarinaNoteTextures[] = {
         gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
     };
-    static s16 sOcarinaNoteAPrimColors[][3] = {
-        { 80, 255, 150 },
-        { 100, 255, 200 },
-    };
-    static s16 sOcarinaNoteAEnvColors[][3] = {
-        { 10, 10, 10 },
-        { 50, 255, 50 },
-    };
-    static s16 sOcarinaNoteCPrimColors[][3] = {
-        { 255, 255, 50 },
-        { 255, 255, 180 },
-    };
-    static s16 sOcarinaNoteCEnvColors[][3] = {
-        { 10, 10, 10 },
-        { 110, 110, 50 },
-    };
+
+    //static s16 sOcarinaNoteAPrimColors[2][3]; // Base Flash Colors
+    //static s16 sOcarinaNoteCPrimColors[2][3];
+    //static s16 sOcarinaNoteAEnvColors[2][3]; // Highlight Flash Colors
+    //static s16 sOcarinaNoteCEnvColors[2][3];
+
+    static Color_RGB8 sOcarinaNoteAPrimColors[2];
+    static Color_RGB8 sOcarinaNoteAEnvColors[2];
+    static Color_RGB8 sOcarinaNoteCUpPrimColors[2];
+    static Color_RGB8 sOcarinaNoteCUpEnvColors[2];
+    static Color_RGB8 sOcarinaNoteCRightPrimColors[2];
+    static Color_RGB8 sOcarinaNoteCRightEnvColors[2];
+    static Color_RGB8 sOcarinaNoteCDownPrimColors[2];
+    static Color_RGB8 sOcarinaNoteCDownEnvColors[2];
+    static Color_RGB8 sOcarinaNoteCLeftPrimColors[2];
+    static Color_RGB8 sOcarinaNoteCLeftEnvColors[2];
+
+    // Initialize static variables
+    if (sOcarinaNoteAPrimColors[0].r == NULL) {
+        Color_RGB8 dim = { 10, 10, 10 };
+        sOcarinaNoteAPrimColors[0] = sOcarinaNoteAPrim;
+        sOcarinaNoteCUpPrimColors[0] = sOcarinaNoteCUpPrim;
+        sOcarinaNoteCRightPrimColors[0] = sOcarinaNoteCRightPrim;
+        sOcarinaNoteCDownPrimColors[0] = sOcarinaNoteCDownPrim;
+        sOcarinaNoteCLeftPrimColors[0] = sOcarinaNoteCLeftPrim;
+        sOcarinaNoteAEnvColors[0] = dim;
+        sOcarinaNoteCUpEnvColors[0] = dim;
+        sOcarinaNoteCRightEnvColors[0] = dim;
+        sOcarinaNoteCDownEnvColors[0] = dim;
+        sOcarinaNoteCLeftEnvColors[0] = dim;
+
+        sOcarinaNoteAPrimColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteAFlashBase);
+        sOcarinaNoteCUpPrimColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCUpFlashBase);
+        sOcarinaNoteCRightPrimColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCRightFlashBase);
+        sOcarinaNoteCDownPrimColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCDownFlashBase);
+        sOcarinaNoteCLeftPrimColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCLeftFlashBase);
+        sOcarinaNoteAEnvColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteAFlashLight);
+        sOcarinaNoteCUpEnvColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCUpFlashLight);
+        sOcarinaNoteCRightEnvColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCRightFlashLight);
+        sOcarinaNoteCDownEnvColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCDownFlashLight);
+        sOcarinaNoteCLeftEnvColors[1] = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCLeftFlashLight);
+    }
+
     static s16 sOcarinaNoteFlashTimer = 12;
     static s16 sOcarinaNoteFlashColorIdx = 1;
     static s16 sOcarinaSongFanfares[] = {
@@ -1999,9 +1957,6 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
     Player* player = GET_PLAYER(globalCtx);
     s32 pad;
     Gfx* gfx = *p;
-    s16 r;
-    s16 g;
-    s16 b;
     u16 i;
     u16 notePosX;
     u16 pad1;
@@ -2025,7 +1980,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
 
-            bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
+        bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
                                                          : CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B);
 
         switch (msgCtx->msgMode) {
@@ -2190,112 +2145,32 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
             case MSGMODE_OCARINA_CORRECT_PLAYBACK:
             case MSGMODE_SONG_PLAYBACK_SUCCESS:
             case MSGMODE_SCARECROW_RECORDING_DONE:
-                r = ABS(sOcarinaNoteAPrimR - sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][0]) /
-                    sOcarinaNoteFlashTimer;
-                g = ABS(sOcarinaNoteAPrimG - sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][1]) /
-                    sOcarinaNoteFlashTimer;
-                b = ABS(sOcarinaNoteAPrimB - sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][2]) /
-                    sOcarinaNoteFlashTimer;
 
-                if (sOcarinaNoteAPrimR >= sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][0]) {
-                    sOcarinaNoteAPrimR -= r;
-                } else {
-                    sOcarinaNoteAPrimR += r;
-                }
-                if (sOcarinaNoteAPrimG >= sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][1]) {
-                    sOcarinaNoteAPrimG -= g;
-                } else {
-                    sOcarinaNoteAPrimG += g;
-                }
-                if (sOcarinaNoteAPrimB >= sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][2]) {
-                    sOcarinaNoteAPrimB -= b;
-                } else {
-                    sOcarinaNoteAPrimB += b;
-                }
-
-                r = ABS(sOcarinaNoteAEnvR - sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][0]) /
-                    sOcarinaNoteFlashTimer;
-                g = ABS(sOcarinaNoteAEnvG - sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][1]) /
-                    sOcarinaNoteFlashTimer;
-                b = ABS(sOcarinaNoteAEnvB - sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][2]) /
-                    sOcarinaNoteFlashTimer;
-
-                if (sOcarinaNoteCEnvR >= sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][0]) {
-                    sOcarinaNoteAEnvR -= r;
-                } else {
-                    sOcarinaNoteAEnvR += r;
-                }
-                if (sOcarinaNoteCEnvG >= sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][1]) {
-                    sOcarinaNoteAEnvG -= g;
-                } else {
-                    sOcarinaNoteAEnvG += g;
-                }
-                if (sOcarinaNoteCEnvB >= sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][2]) {
-                    sOcarinaNoteAEnvB -= b;
-                } else {
-                    sOcarinaNoteAEnvB += b;
-                }
-
-                r = ABS(sOcarinaNoteCPrimR - sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][0]) /
-                    sOcarinaNoteFlashTimer;
-                g = ABS(sOcarinaNoteCPrimG - sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][1]) /
-                    sOcarinaNoteFlashTimer;
-                b = ABS(sOcarinaNoteCPrimB - sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][2]) /
-                    sOcarinaNoteFlashTimer;
-
-                if (sOcarinaNoteCPrimR >= sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][0]) {
-                    sOcarinaNoteCPrimR -= r;
-                } else {
-                    sOcarinaNoteCPrimR += r;
-                }
-                if (sOcarinaNoteCPrimG >= sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][1]) {
-                    sOcarinaNoteCPrimG -= g;
-                } else {
-                    sOcarinaNoteCPrimG += g;
-                }
-                if (sOcarinaNoteCPrimB >= sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][2]) {
-                    sOcarinaNoteCPrimB -= b;
-                } else {
-                    sOcarinaNoteCPrimB += b;
-                }
-
-                r = ABS(sOcarinaNoteCEnvR - sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][0]) /
-                    sOcarinaNoteFlashTimer;
-                g = ABS(sOcarinaNoteCEnvG - sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][1]) /
-                    sOcarinaNoteFlashTimer;
-                b = ABS(sOcarinaNoteCEnvB - sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][2]) /
-                    sOcarinaNoteFlashTimer;
-
-                if (sOcarinaNoteCEnvR >= sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][0]) {
-                    sOcarinaNoteCEnvR -= r;
-                } else {
-                    sOcarinaNoteCEnvR += r;
-                }
-                if (sOcarinaNoteCEnvG >= sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][1]) {
-                    sOcarinaNoteCEnvG -= g;
-                } else {
-                    sOcarinaNoteCEnvG += g;
-                }
-                if (sOcarinaNoteCEnvB >= sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][2]) {
-                    sOcarinaNoteCEnvB -= b;
-                } else {
-                    sOcarinaNoteCEnvB += b;
-                }
+                advanceFlashAnimation(sOcarinaNoteAPrim, sOcarinaNoteAPrimColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                // expanded block used to contain minor logical error that produced nearly no visual difference
+                // for consistency and for the sake of a functional macro it has been patched
+                advanceFlashAnimation(sOcarinaNoteAEnv, sOcarinaNoteAEnvColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCUpPrim, sOcarinaNoteCUpPrimColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCUpEnv, sOcarinaNoteCUpEnvColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCRightPrim, sOcarinaNoteCRightPrimColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCRightEnv, sOcarinaNoteCRightEnvColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCDownPrim, sOcarinaNoteCDownPrimColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCDownEnv, sOcarinaNoteCDownEnvColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCLeftPrim, sOcarinaNoteCLeftPrimColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
+                advanceFlashAnimation(sOcarinaNoteCLeftEnv, sOcarinaNoteCLeftEnvColors, sOcarinaNoteFlashColorIdx, sOcarinaNoteFlashTimer);
 
                 sOcarinaNoteFlashTimer--;
                 if (sOcarinaNoteFlashTimer == 0) {
-                    sOcarinaNoteAPrimR = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteAPrimG = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteAPrimB = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][2];
-                    sOcarinaNoteAEnvR = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteAEnvG = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteAEnvB = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][2];
-                    sOcarinaNoteCPrimR = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteCPrimG = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteCPrimB = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][2];
-                    sOcarinaNoteCEnvR = sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteCEnvG = sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteCEnvB = sOcarinaNoteCEnvColors[sOcarinaNoteFlashColorIdx][2];
+                    sOcarinaNoteAPrim = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteAEnv = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCUpPrim = sOcarinaNoteCUpPrimColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCUpEnv = sOcarinaNoteCUpEnvColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCRightPrim = sOcarinaNoteCRightPrimColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCRightEnv = sOcarinaNoteCRightEnvColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCDownPrim = sOcarinaNoteCDownPrimColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCDownEnv = sOcarinaNoteCDownEnvColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCLeftPrim = sOcarinaNoteCLeftPrimColors[sOcarinaNoteFlashColorIdx];
+                    sOcarinaNoteCLeftEnv = sOcarinaNoteCLeftEnvColors[sOcarinaNoteFlashColorIdx];
                     sOcarinaNoteFlashTimer = 3;
                     sOcarinaNoteFlashColorIdx ^= 1;
                 }
@@ -2615,7 +2490,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     osSyncPrintf("\n====================================================================\n");
                     memcpy(gSaveContext.scarecrowCustomSong, gScarecrowCustomSongPtr,
-                            sizeof(gSaveContext.scarecrowCustomSong));
+                           sizeof(gSaveContext.scarecrowCustomSong));
                     for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowCustomSong); i++) {
                         osSyncPrintf("%d, ", gSaveContext.scarecrowCustomSong[i]);
                     }
@@ -2678,7 +2553,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     osSyncPrintf("\n====================================================================\n");
                     memcpy(gSaveContext.scarecrowSpawnSong, gScarecrowSpawnSongPtr,
-                            sizeof(gSaveContext.scarecrowSpawnSong));
+                           sizeof(gSaveContext.scarecrowSpawnSong));
                     for (i = 0; i < ARRAY_COUNT(gSaveContext.scarecrowSpawnSong); i++) {
                         osSyncPrintf("%d, ", gSaveContext.scarecrowSpawnSong[i]);
                     }
@@ -2866,20 +2741,20 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                               ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
             if (msgCtx->msgMode == MSGMODE_SONG_PLAYBACK) {
-                g = msgCtx->ocarinaAction - OCARINA_ACTION_PLAYBACK_MINUET;
-                r = gOcarinaSongNotes[g].len;
-                for (notePosX = R_OCARINA_NOTES_XPOS, i = 0; i < r; i++, notePosX += R_OCARINA_NOTES_XPOS_OFFSET) {
+                s16 songIdx = msgCtx->ocarinaAction - OCARINA_ACTION_PLAYBACK_MINUET;
+                s16 songLength = gOcarinaSongNotes[songIdx].len;
+                for (notePosX = R_OCARINA_NOTES_XPOS, i = 0; i < songLength; i++, notePosX += R_OCARINA_NOTES_XPOS_OFFSET) {
                     gDPPipeSync(gfx++);
                     gDPSetPrimColor(gfx++, 0, 0, 150, 150, 150, 150);
                     gDPSetEnvColor(gfx++, 10, 10, 10, 0);
 
-                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[gOcarinaSongNotes[g].notesIdx[i]], G_IM_FMT_IA,
+                    gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[gOcarinaSongNotes[songIdx].notesIdx[i]], G_IM_FMT_IA,
                                         G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                         G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
                     gSPTextureRectangle(
-                        gfx++, notePosX << 2, R_OCARINA_NOTES_YPOS(gOcarinaSongNotes[g].notesIdx[i]) << 2,
-                        (notePosX + 16) << 2, (R_OCARINA_NOTES_YPOS(gOcarinaSongNotes[g].notesIdx[i]) + 16) << 2,
+                        gfx++, notePosX << 2, R_OCARINA_NOTES_YPOS(gOcarinaSongNotes[songIdx].notesIdx[i]) << 2,
+                        (notePosX + 16) << 2, (R_OCARINA_NOTES_YPOS(gOcarinaSongNotes[songIdx].notesIdx[i]) + 16) << 2,
                         G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                 }
             }
@@ -2900,14 +2775,36 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     }
 
                     gDPPipeSync(gfx++);
-                    if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
-                        gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
-                    } else {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
-                        gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
+                    switch (sOcarinaNoteBuf[i]) { 
+                        case OCARINA_NOTE_A:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrim.r, sOcarinaNoteAPrim.g, sOcarinaNoteAPrim.b,
+                                            sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteAEnv.r, sOcarinaNoteAEnv.g, sOcarinaNoteAEnv.b, 0);
+                            break;
+                        case OCARINA_NOTE_C_UP:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCUpPrim.r, sOcarinaNoteCUpPrim.g,
+                                            sOcarinaNoteCUpPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCUpEnv.r, sOcarinaNoteCUpEnv.g, sOcarinaNoteCUpEnv.b, 0);
+                            break;
+                        case OCARINA_NOTE_C_RIGHT:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCRightPrim.r, sOcarinaNoteCRightPrim.g,
+                                            sOcarinaNoteCRightPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCRightEnv.r, sOcarinaNoteCRightEnv.g, sOcarinaNoteCRightEnv.b, 0);
+                            break;
+                        case OCARINA_NOTE_C_DOWN:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownPrim.r, sOcarinaNoteCDownPrim.g,
+                                            sOcarinaNoteCDownPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCDownEnv.r, sOcarinaNoteCDownEnv.g, sOcarinaNoteCDownEnv.b, 0);
+                            break;
+                        case OCARINA_NOTE_C_LEFT:
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftPrim.r, sOcarinaNoteCLeftPrim.g,
+                                            sOcarinaNoteCLeftPrim.b, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, sOcarinaNoteCLeftEnv.r, sOcarinaNoteCLeftEnv.g, sOcarinaNoteCLeftEnv.b, 0);
+                            break;
+                        default:
+                            gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, sOcarinaNotesAlphaValues[i]);
+                            gDPSetEnvColor(gfx++, 255, 255, 255, 0);
+                            break;
                     }
 
                     gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[sOcarinaNoteBuf[i]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
@@ -3319,12 +3216,12 @@ void Message_Update(GlobalContext* globalCtx) {
 
 void Message_SetTables(void) {
     OTRMessage_Init();
-    
+
     // OTRTODO
-    //sNesMessageEntryTablePtr = sNesMessageEntryTable;
-    //sGerMessageEntryTablePtr = sGerMessageEntryTable;
-    //sFraMessageEntryTablePtr = sFraMessageEntryTable;
-    //sStaffMessageEntryTablePtr = sStaffMessageEntryTable;
+    // sNesMessageEntryTablePtr = sNesMessageEntryTable;
+    // sGerMessageEntryTablePtr = sGerMessageEntryTable;
+    // sFraMessageEntryTablePtr = sFraMessageEntryTable;
+    // sStaffMessageEntryTablePtr = sStaffMessageEntryTable;
 }
 
 // Appears to be file padding

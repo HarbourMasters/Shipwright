@@ -1,5 +1,6 @@
 #include "global.h"
 #include <textures/do_action_static/do_action_static.h>
+#include <colors/colorPaths.h>
 
 void func_80110990(GlobalContext* globalCtx) {
     Map_Destroy(globalCtx);
@@ -57,8 +58,9 @@ void func_801109B0(GlobalContext* globalCtx) {
     }
 
     memcpy(interfaceCtx->doActionSegment, ResourceMgr_LoadTexByName(gAttackDoActionENGTex), 0x300);
-    //DmaMgr_SendRequest1(interfaceCtx->doActionSegment, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset, 0x300,
-                        //"../z_construct.c", 174);
+    // DmaMgr_SendRequest1(interfaceCtx->doActionSegment, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset,
+    // 0x300,
+    //"../z_construct.c", 174);
 
     if (gSaveContext.language == LANGUAGE_ENG) {
         doActionOffset = 0x480;
@@ -69,8 +71,8 @@ void func_801109B0(GlobalContext* globalCtx) {
     }
 
     memcpy(interfaceCtx->doActionSegment + 0x300, ResourceMgr_LoadTexByName(gReturnDoActionENGTex), 0x180);
-    //DmaMgr_SendRequest1(interfaceCtx->doActionSegment + 0x300, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset,
-                        //0x180, "../z_construct.c", 178);
+    // DmaMgr_SendRequest1(interfaceCtx->doActionSegment + 0x300, (uintptr_t)_do_action_staticSegmentRomStart +
+    // doActionOffset, 0x180, "../z_construct.c", 178);
 
     interfaceCtx->iconItemSegment = GameState_Alloc(&globalCtx->state, 0x4000, "../z_construct.c", 190);
 
@@ -154,17 +156,20 @@ void func_801109B0(GlobalContext* globalCtx) {
 
     interfaceCtx->unk_23C = interfaceCtx->unk_242 = 0;
 
+    Color_RGB8 buttonColor;
     R_ITEM_BTN_X(0) = B_BUTTON_X;
-    R_B_BTN_COLOR(0) = 255;
-    R_B_BTN_COLOR(1) = 30;
-    R_B_BTN_COLOR(2) = 30;
+    buttonColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorBtnB);
+    R_B_BTN_COLOR(0) = buttonColor.r;
+    R_B_BTN_COLOR(1) = buttonColor.g;
+    R_B_BTN_COLOR(2) = buttonColor.b;
     R_ITEM_ICON_X(0) = B_BUTTON_X;
     R_ITEM_AMMO_X(0) = B_BUTTON_X + 2;
     R_A_BTN_X = A_BUTTON_X;
     R_A_ICON_X = A_BUTTON_X;
-    R_A_BTN_COLOR(0) = 0;
-    R_A_BTN_COLOR(1) = 200;
-    R_A_BTN_COLOR(2) = 50;
+    buttonColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorBtnA);
+    R_A_BTN_COLOR(0) = buttonColor.r;
+    R_A_BTN_COLOR(1) = buttonColor.g;
+    R_A_BTN_COLOR(2) = buttonColor.b;
 }
 
 void Message_Init(GlobalContext* globalCtx) {
@@ -195,6 +200,7 @@ void Message_Init(GlobalContext* globalCtx) {
 }
 
 void func_80111070(void) {
+    Color_RGB8 color;
     YREG(8) = 10;
     YREG(14) = 0;
     YREG(15) = 0;
@@ -266,9 +272,10 @@ void func_80111070(void) {
     YREG(93) = 6;
     YREG(94) = 3;
     YREG(95) = 1;
-    R_MAGIC_FILL_COLOR(0) = 0;
-    R_MAGIC_FILL_COLOR(1) = 200;
-    R_MAGIC_FILL_COLOR(2) = 0;
+    color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorMagicFillNormal);
+    R_MAGIC_FILL_COLOR(0) = color.r;
+    R_MAGIC_FILL_COLOR(1) = color.g;
+    R_MAGIC_FILL_COLOR(2) = color.b;
     ZREG(9) = 140;
     ZREG(10) = 200;
     ZREG(11) = 0;
@@ -298,9 +305,10 @@ void func_80111070(void) {
     ZREG(36) = 0;
     ZREG(37) = 0;
     ZREG(38) = 0;
-    R_C_BTN_COLOR(0) = 255;
-    R_C_BTN_COLOR(1) = 160;
-    R_C_BTN_COLOR(2) = 0;
+    color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorBtnCLeft);
+    R_C_BTN_COLOR(0) = color.r; // Deprecated.
+    R_C_BTN_COLOR(1) = color.g; // All references to this reg are now removed.
+    R_C_BTN_COLOR(2) = color.b; // Use the colorBtnC directional assets to change colors.
     ZREG(46) = 1;
     ZREG(47) = 1;
     R_START_LABEL_DD(0) = 100;
@@ -524,9 +532,10 @@ void func_80111070(void) {
         R_COMPASS_SCALE_Y = 32;
         R_COMPASS_OFFSET_X = 110;
         R_COMPASS_OFFSET_Y = -740;
-        R_MINIMAP_COLOR(0) = 0;
-        R_MINIMAP_COLOR(1) = 255;
-        R_MINIMAP_COLOR(2) = 255;
+        color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorMinimap);
+        R_MINIMAP_COLOR(0) = color.r;
+        R_MINIMAP_COLOR(1) = color.g;
+        R_MINIMAP_COLOR(2) = color.b;
     }
 
     VREG(21) = 0;
@@ -542,13 +551,10 @@ void func_80111070(void) {
     VREG(31) = 0;
     VREG(32) = 0;
 
-    R_TEXT_ADJUST_COLOR_1_R = 70;
-    R_TEXT_ADJUST_COLOR_1_G = 255;
-    R_TEXT_ADJUST_COLOR_1_B = 80;
-
-    R_TEXT_ADJUST_COLOR_2_R = 70;
-    R_TEXT_ADJUST_COLOR_2_G = 255;
-    R_TEXT_ADJUST_COLOR_2_B = 80;
+    color = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorTextAdjustableDefault);
+    R_TEXT_ADJUST_COLOR_1_R = R_TEXT_ADJUST_COLOR_2_R = color.r;
+    R_TEXT_ADJUST_COLOR_1_G = R_TEXT_ADJUST_COLOR_2_G = color.g;
+    R_TEXT_ADJUST_COLOR_1_B = R_TEXT_ADJUST_COLOR_2_B = color.b;
 
     VREG(40) = 9;
     VREG(42) = 250;

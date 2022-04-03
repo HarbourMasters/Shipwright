@@ -31,7 +31,7 @@ typedef struct {
     /* 0x34 */ s32 isEnabled;
 } StickDirectionPrompt; // size = 0x38
 
-#define ColChanMix(c1, c2, m) (c1 - (s32)(c2 * m)) & 0xFF
+#define Lerp(c1, c2, m) (c1 - (s8)((c1 - c2) * m))
 
 typedef struct EnOssan {
     /* 0x0000 */ Actor actor;
@@ -81,7 +81,11 @@ typedef struct EnOssan {
     /* 0x02CD */ u8 stickAnimState;
     /* 0x02D0 */ f32 shopItemSelectedTween;
     /* 0x02D4 */ f32 cameraFaceAngle; // stored in degrees
-} EnOssan; // size = 0x02D8
+    /* 0x02D8 */ Color_RGB8 arrowColorNormal;
+    /* 0x02F0 */ Color_RGB8 arrowColorDim;
+    /* 0x0308 */ Color_RGB8 cursorColorNormal;
+    /* 0x0320 */ Color_RGB8 cursorColorDim;
+} EnOssan; // size = 0x0338
 
 typedef enum {
     /* 00 */ OSSAN_TYPE_KOKIRI,

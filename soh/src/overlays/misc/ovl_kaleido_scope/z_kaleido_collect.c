@@ -1,6 +1,7 @@
 #include "z_kaleido_scope.h"
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include <colors/colorPaths.h>
 
 extern const char* digitTextures[];
 
@@ -467,6 +468,11 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
             }
         }
 
+        Color_RGB8 colorA = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteA);
+        Color_RGB8 colorCUp = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCUp);
+        Color_RGB8 colorCRight = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCRight);
+        Color_RGB8 colorCDown = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCDown);
+        Color_RGB8 colorCLeft = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorOcarinaNoteCLeft);
         if (pauseCtx->unk_1E4 == 2) {
             pauseCtx->ocarinaStaff = Audio_OcaGetDisplayingStaff();
 
@@ -496,10 +502,24 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                     gDPPipeSync(POLY_KAL_DISP++);
 
-                    if (D_8082A124[sp218] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[sp218]);
-                    } else {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
+                    switch (D_8082A124[sp218]) {
+                        case OCARINA_NOTE_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorA.r, colorA.g, colorA.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_UP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCUp.r, colorCUp.g, colorCUp.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_RIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCRight.r, colorCRight.g, colorCRight.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_DOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCDown.r, colorCDown.g, colorCDown.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_LEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCLeft.r, colorCLeft.g, colorCLeft.b, 200);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
                     }
 
                     gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);
@@ -526,10 +546,24 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 gDPPipeSync(POLY_KAL_DISP++);
 
                 if (pauseCtx->unk_1E4 == 8) {
-                    if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, 200);
-                    } else {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
+                    switch (gOcarinaSongNotes[sp224].notesIdx[phi_s3]) { 
+                        case OCARINA_NOTE_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorA.r, colorA.g, colorA.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_UP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCUp.r, colorCUp.g, colorCUp.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_RIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCRight.r, colorCRight.g, colorCRight.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_DOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCDown.r, colorCDown.g, colorCDown.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_LEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCLeft.r, colorCLeft.g, colorCLeft.b, 200);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
                     }
                 } else {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 150, 150, 150, 150);
@@ -581,10 +615,24 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                     gDPPipeSync(POLY_KAL_DISP++);
 
-                    if (D_8082A124[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[phi_s3]);
-                    } else {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[phi_s3]);
+                    switch (D_8082A124[phi_s3]) {
+                        case OCARINA_NOTE_A:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorA.r, colorA.g, colorA.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_UP:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCUp.r, colorCUp.g, colorCUp.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_RIGHT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCRight.r, colorCRight.g, colorCRight.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_DOWN:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCDown.r, colorCDown.g, colorCDown.b, 200);
+                            break;
+                        case OCARINA_NOTE_C_LEFT:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, colorCLeft.r, colorCLeft.g, colorCLeft.b, 200);
+                            break;
+                        default:
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
                     }
 
                     gDPSetEnvColor(POLY_KAL_DISP++, 10, 10, 10, 0);

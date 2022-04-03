@@ -13,6 +13,7 @@
 #include "objects/object_mastergolon/object_mastergolon.h"
 #include "objects/object_masterzoora/object_masterzoora.h"
 #include "objects/object_masterkokirihead/object_masterkokirihead.h"
+#include <colors/colorPaths.h>
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4)
 
@@ -1879,17 +1880,19 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
             this->cursorAnimState = 0;
         }
     }
-    this->cursorColorR = ColChanMix(0, 0.0f, t);
-    this->cursorColorG = ColChanMix(255, 80.0f, t);
-    this->cursorColorB = ColChanMix(80, 0.0f, t);
-    this->cursorColorA = ColChanMix(255, 0.0f, t);
+
+    Color_RGB8 normalColor = this->cursorColorNormal;
+    Color_RGB8 dimColor = this->cursorColorDim;
+
+    this->cursorColorR = Lerp(normalColor.r, dimColor.r, t);
+    this->cursorColorG = Lerp(normalColor.g, dimColor.g, t);
+    this->cursorColorB = Lerp(normalColor.b, dimColor.b, t);
+    this->cursorColorA = 255;
     this->cursorAnimTween = t;
 }
 
 void EnOssan_UpdateStickDirectionPromptAnim(EnOssan* this) {
     f32 arrowAnimTween;
-    f32 new_var3;       // likely fake temp
-    s32 new_var2 = 255; // likely fake temp
     f32 stickAnimTween;
 
     arrowAnimTween = this->arrowAnimTween;
@@ -1922,16 +1925,17 @@ void EnOssan_UpdateStickDirectionPromptAnim(EnOssan* this) {
         this->stickAnimState = 0;
     }
 
+    Color_RGB8 arrowNormal = this->arrowColorNormal;
+    Color_RGB8 arrowDim = this->arrowColorDim;
     this->stickAnimTween = stickAnimTween;
-    this->stickLeftPrompt.arrowColorR = (u8)(255 - ((s32)(155.0f * arrowAnimTween)));
-    this->stickLeftPrompt.arrowColorG = (u8)(new_var2 - (s32)(155.0f * arrowAnimTween));
-    new_var3 = (155.0f * arrowAnimTween);
-    this->stickLeftPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
-    this->stickLeftPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
-    this->stickRightPrompt.arrowColorR = (u8)(new_var2 - (s32)new_var3);
-    this->stickRightPrompt.arrowColorG = (u8)(255 - (s32)new_var3);
-    this->stickRightPrompt.arrowColorB = (u8)(0 - ((s32)((-100.0f) * arrowAnimTween)));
-    this->stickRightPrompt.arrowColorA = (u8)(200 - ((s32)(50.0f * arrowAnimTween)));
+    this->stickLeftPrompt.arrowColorR = Lerp(arrowNormal.r, arrowDim.r, arrowAnimTween);
+    this->stickLeftPrompt.arrowColorG = Lerp(arrowNormal.g, arrowDim.g, arrowAnimTween);
+    this->stickLeftPrompt.arrowColorB = Lerp(arrowNormal.b, arrowDim.b, arrowAnimTween);
+    this->stickLeftPrompt.arrowColorA = Lerp(200, 150, arrowAnimTween);
+    this->stickRightPrompt.arrowColorR = Lerp(arrowNormal.r, arrowDim.r, arrowAnimTween);
+    this->stickRightPrompt.arrowColorG = Lerp(arrowNormal.g, arrowDim.g, arrowAnimTween);
+    this->stickRightPrompt.arrowColorB = Lerp(arrowNormal.b, arrowDim.b, arrowAnimTween);
+    this->stickRightPrompt.arrowColorA = Lerp(200, 150, arrowAnimTween);
     this->stickRightPrompt.arrowTexX = 290.0f;
     this->stickLeftPrompt.arrowTexX = 33.0f;
     this->stickRightPrompt.stickTexX = 274.0f;
@@ -2137,11 +2141,17 @@ void EnOssan_InitActionFunc(EnOssan* this, GlobalContext* globalCtx) {
         this->stateFlag = OSSAN_STATE_IDLE;
         this->stickAccumX = this->stickAccumY = 0;
 
+        this->cursorColorNormal = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorShopCursorNormal);
+        this->cursorColorDim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorShopCursorDim);
+        this->arrowColorNormal = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorShopArrowNormal);
+        this->arrowColorDim = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorShopArrowDim);
+        Color_RGB8 stickColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorShopStick);
+
         this->cursorIndex = 0;
         this->cursorZ = 1.5f;
-        this->cursorColorR = 0;
-        this->cursorColorG = 255;
-        this->cursorColorB = 80;
+        this->cursorColorR = this->cursorColorNormal.r;
+        this->cursorColorG = this->cursorColorNormal.g;
+        this->cursorColorB = this->cursorColorNormal.b;
         this->cursorColorA = 255;
         this->cursorAnimTween = 0;
 
@@ -2149,30 +2159,30 @@ void EnOssan_InitActionFunc(EnOssan* this, GlobalContext* globalCtx) {
         this->drawCursor = 0;
         this->happyMaskShopkeeperEyeIdx = 0;
 
-        this->stickLeftPrompt.stickColorR = 200;
-        this->stickLeftPrompt.stickColorG = 200;
-        this->stickLeftPrompt.stickColorB = 200;
+        this->stickLeftPrompt.stickColorR = stickColor.r;
+        this->stickLeftPrompt.stickColorG = stickColor.g;
+        this->stickLeftPrompt.stickColorB = stickColor.b;
         this->stickLeftPrompt.stickColorA = 180;
         this->stickLeftPrompt.stickTexX = 49;
         this->stickLeftPrompt.stickTexY = 95;
-        this->stickLeftPrompt.arrowColorR = 255;
-        this->stickLeftPrompt.arrowColorG = 255;
-        this->stickLeftPrompt.arrowColorB = 0;
+        this->stickLeftPrompt.arrowColorR = this->arrowColorNormal.r;
+        this->stickLeftPrompt.arrowColorG = this->arrowColorNormal.g;
+        this->stickLeftPrompt.arrowColorB = this->arrowColorNormal.b;
         this->stickLeftPrompt.arrowColorA = 200;
         this->stickLeftPrompt.arrowTexX = 33;
         this->stickLeftPrompt.arrowTexY = 91;
         this->stickLeftPrompt.z = 1;
         this->stickLeftPrompt.isEnabled = false;
 
-        this->stickRightPrompt.stickColorR = 200;
-        this->stickRightPrompt.stickColorG = 200;
-        this->stickRightPrompt.stickColorB = 200;
+        this->stickRightPrompt.stickColorR = stickColor.r;
+        this->stickRightPrompt.stickColorG = stickColor.g;
+        this->stickRightPrompt.stickColorB = stickColor.b;
         this->stickRightPrompt.stickColorA = 180;
         this->stickRightPrompt.stickTexX = 274;
         this->stickRightPrompt.stickTexY = 95;
-        this->stickRightPrompt.arrowColorR = 255;
-        this->stickRightPrompt.arrowColorG = 255;
-        this->stickRightPrompt.arrowColorB = 0;
+        this->stickRightPrompt.arrowColorR = this->arrowColorNormal.r;
+        this->stickRightPrompt.arrowColorG = this->arrowColorNormal.g;
+        this->stickRightPrompt.arrowColorB = this->arrowColorNormal.b;
         this->stickRightPrompt.arrowColorA = 200;
         this->stickRightPrompt.arrowTexX = 290;
         this->stickRightPrompt.arrowTexY = 91;

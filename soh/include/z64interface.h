@@ -27,6 +27,9 @@
  * for the base hearts, while the prim color for the double defense hearts is the white outline. The
  * env color for the base hearts is the purple-ish outline, while the env color for the double defense
  * hearts is the red color of the hearts.
+ * 
+ * These are deprecated and no references to them exist in source anymore. 
+ * The Resource Manager now handles these colors.
  */
 
 #define HEARTS_PRIM_R 255
