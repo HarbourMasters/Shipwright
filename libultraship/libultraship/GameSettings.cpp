@@ -159,7 +159,10 @@ namespace Game {
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
         Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
+<<<<<<< HEAD
         Conf[ControllerSection]["dpad_ocarina_text"] = std::to_string(Settings.controller.dpad_ocarina_text);
+=======
+>>>>>>> c9753a0 (Fixing rebase conflict again)
         Conf[ControllerSection]["dpad_shop"] = std::to_string(Settings.controller.dpad_shop);
 
         // Cheats
