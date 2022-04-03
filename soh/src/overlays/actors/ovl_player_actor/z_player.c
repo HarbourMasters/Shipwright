@@ -9434,7 +9434,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     if ((sp50 == 0) || (sp50 < -1)) {
         titleFileSize = scene->titleFile.vromEnd - scene->titleFile.vromStart;
-        if ((titleFileSize != 0) && gSaveContext.showTitleCard) {
+        if (gSaveContext.showTitleCard) {
             if ((gSaveContext.sceneSetupIndex < 4) &&
                 (gEntranceTable[((void)0, gSaveContext.entranceIndex) + ((void)0, gSaveContext.sceneSetupIndex)].field &
                     0x4000) &&
