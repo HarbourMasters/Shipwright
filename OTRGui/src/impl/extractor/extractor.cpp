@@ -83,7 +83,6 @@ void startWorker(RomVersion version) {
 
 	Util::write("tmp/baserom/version", (char*)&version.crc, sizeof(version.crc));
 
-
 	if (oldExtractMode)
 	{
 		std::vector<std::string> files;
