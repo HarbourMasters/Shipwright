@@ -824,13 +824,12 @@ NatureAmbienceDataIO sNatureAmbienceDataIO[20] = {
     },
 };
 
-u32 sOcarinaAllowedBtnMask =
-    (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
+u32 sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
 s32 sOcarinaABtnMap = BTN_A;
-s32 sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
-s32 sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
-s32 sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
-s32 sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
+s32 sOcarinaCUPBtnMap = BTN_CUP;
+s32 sOcarinaCDownBtnMap = BTN_CDOWN;
+s32 sOcarinaCLeftBtnMap = BTN_CLEFT;
+s32 sOcarinaCRightBtnMap = BTN_CRIGHT;
 u8 sOcarinaInpEnabled = 0;
 s8 D_80130F10 = 0; // "OCA", ocarina active?
 u8 sCurOcarinaBtnVal = 0xFF;
@@ -1248,8 +1247,9 @@ void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
 
+// Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 custom) {
-    if (!custom) {
+    if (custom) {
         osSyncPrintf("AUDIO : Ocarina Control Assign Normal\n");
         sOcarinaAllowedBtnMask = 
             (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
@@ -1258,14 +1258,6 @@ void func_800EC960(u8 custom) {
         sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
         sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
         sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
-    } else {
-        osSyncPrintf("AUDIO : Ocarina Control Assign Custom\n");
-        sOcarinaAllowedBtnMask = (BTN_A | BTN_B | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-        sOcarinaABtnMap = BTN_B;
-        sOcarinaCUPBtnMap = BTN_CDOWN;
-        sOcarinaCDownBtnMap = BTN_A;
-        sOcarinaCLeftBtnMap = BTN_CLEFT;
-        sOcarinaCRightBtnMap = BTN_CRIGHT;
     }
 }
 
@@ -1550,6 +1542,7 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
+    bool dpad = CVar_GetS32("gDpadOcarinaText", 0);
 
     if (D_80130F3C != 0 && D_80131880 != 0) {
         D_80131880--;
@@ -1569,6 +1562,7 @@ void func_800ED458(s32 arg0) {
             D_8016BA18 &= phi_v1_2;
         }
 
+        func_800EC960(dpad);
         if (D_8016BA18 & sOcarinaABtnMap) {
             osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaABtnMap);
             sCurOcarinaBtnVal = 2;
