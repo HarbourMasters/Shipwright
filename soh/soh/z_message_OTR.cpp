@@ -153,4 +153,15 @@ extern "C" void OTRMessage_Init()
             "Tu as l'air de t'ennuyer. Tu veux&aller faire un tour?\x1B&%gOui&Non%w",
         }
     );
+
+	auto file3 = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/test/test.xml"));
+
+	for (int i = 0; i < file->messages.size(); i++) 
+	{
+            //sNesMessageEntryTablePtr[i].textId = file3->messages[0].id;
+            //sNesMessageEntryTablePtr[i].typePos =
+                //(file3->messages[0].textboxType << 4) | file3->messages[0].textboxYPos;
+            sNesMessageEntryTablePtr[i].segment = file3->messages[0].msg.c_str();
+            sNesMessageEntryTablePtr[i].msgSize = file3->messages[0].msg.size();
+    }
 }

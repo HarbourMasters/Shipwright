@@ -22,6 +22,7 @@
 #include <Utils/MemoryStream.h>
 #include <Utils/BinaryWriter.h>
 #include <bit>
+#include "Main.h"
 
 std::string otrFileName = "oot.otr";
 std::shared_ptr<Ship::Archive> otrArchive;
@@ -228,6 +229,16 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		//printf("Exported Resource End %s in %zums\n", res->GetName().c_str(), diff);
 }
 
+static void ExporterProcessCompilable(tinyxml2::XMLElement* reader)
+{
+	std::string nodeName = reader->Name();
+
+	if (nodeName == "Text")
+	{
+		
+	}
+}
+
 static void ExporterXMLBegin()
 {
 }
@@ -254,6 +265,7 @@ static void ImportExporters()
 	ExporterSet* exporterSet = new ExporterSet();
 	exporterSet->processFileModeFunc = ExporterProcessFileMode;
 	exporterSet->parseFileModeFunc = ExporterParseFileMode;
+	exporterSet->processCompilableFunc = ExporterProcessCompilable;
 	exporterSet->parseArgsFunc = ExporterParseArgs;
 	exporterSet->beginFileFunc = ExporterFileBegin;
 	exporterSet->endFileFunc = ExporterFileEnd;
