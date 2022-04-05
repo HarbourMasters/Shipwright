@@ -1,12 +1,13 @@
-# Welcome to the Ship of Harkinian!
+# Welcome to the Ship of Harkinian - TAK Edition!
 
-A PC port of OoT allowing you to enjoy the game with modern controls, widescreen, high-resolution, gyroscopy and other great features! Setup is simple, let's get started!
+A Modification of the PC port of OoT
+Setup is simple, let's get started!
 
 The Ship does not include assets and as such requires a prior copy of the game to play.
 
 ## Quick Start
 
-1) Download The Ship of Harkinian from Discord.
+1) Download The Ship of Harkinian from Releases
 2) Requires an `oot debug` rom (not Master Quest).
 ```
 Build team: `zelda@srd022j`
@@ -14,13 +15,10 @@ Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
 3) Use the OTRGui to generate an `oot.otr` archive file.
-4) Launch `soh.exe`
+4) Use patch otr files and put them in "mods" folder.
+5) Launch `soh.exe`
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
-
-## Additional Setup Information
-
-The Ship of Harkinian uses a proprietary versioning system consisting of a sci-fi film character followed by a phonetic alphabet code word. The film character represents a major release version which increments with the addition of many new features and bug fixes. The code word represents a minor release version which increments with small updates mainly comprised of bug fixes. For example, `DECKARD ALFA`.
 
 ### The Extraction Tool
 
@@ -28,26 +26,18 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 * If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
 * When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
-This packaging process can take up to **5 minutes**.
+This packaging process can take up to **5-10 minutes**.
 
 Close the OTRGui when the `Done!` message appears.
 If you get another message, then you might have selected the wrong rom. Make sure to use a rom consistent with the above checksum.
 
-If you still cannot get the tool to work, join our [Discord Server](https://discord.com/invite/BtBmd55HVH) and ask for help in the `#support` text channel. Keep-in-mind that we do not condone piracy in any way.
+Keep-in-mind that we do not condone piracy in any way.
 
 ### Running The Ship of Harkinian
 
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
 
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
-
-## Take The Survey
-Want to use cartridge readers in tandem with the OTRGui?
-Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
-
-## Discord
-
-Official Discord: https://discord.com/invite/BtBmd55HVH
 
 ## Building The Ship of Harkinian
 
