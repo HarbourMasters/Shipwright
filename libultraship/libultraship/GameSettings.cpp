@@ -88,12 +88,10 @@ namespace Game {
         CVar_SetFloat("gInputScale", Settings.controller.input_scale);
 
         Settings.controller.input_enabled = stob(Conf[ControllerSection]["input_enabled"]);
-
-        CVar_SetS32(const_cast<char*>("gInputEnabled"), Settings.controller.input_enabled);
         CVar_SetS32("gInputEnabled", Settings.controller.input_enabled);
 
         Settings.controller.dpad_pause_name = stob(Conf[ControllerSection]["dpad_pause_name"]);
-        CVar_SetS32(const_cast<char*>("gDpadPauseName"), Settings.controller.dpad_pause_name);
+        CVar_SetS32("gDpadPauseName", Settings.controller.dpad_pause_name);
         
         // Cheats
         Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
