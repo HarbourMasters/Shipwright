@@ -32,7 +32,7 @@ def main():
         xmlVer = "GC_NMQ_PAL_F"
     elif (args.version == "dbg_mq"):
         xmlVer = "GC_MQ_D"
-        romVer = "..\\soh\\baserom_mq.z64"
+        romPath = "..\\soh\\baserom_mq.z64"
 
     if (os.path.exists("Extract")):
         shutil.rmtree("Extract")
