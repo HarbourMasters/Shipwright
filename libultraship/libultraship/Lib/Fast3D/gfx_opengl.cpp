@@ -582,7 +582,7 @@ static void gfx_opengl_init(void) {
 
     SohUtils::saveEnvironmentVar("framebuffer", std::to_string(textureColorbuffer));
     glDepthFunc(GL_LEQUAL);
-    glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 static void gfx_opengl_on_resize(void) {
