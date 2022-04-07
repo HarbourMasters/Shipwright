@@ -4,11 +4,13 @@ import argparse, json, os, signal, time, sys, shutil
 from multiprocessing import Pool, cpu_count, Event, Manager, ProcessError
 import shutil
 
+romPath = "..\\soh\\baserom_non_mq.z64"
+
 def BuildOTR(xmlPath):
     shutil.copytree("assets", "Extract/assets")
 
     execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPD/ZAPD.out"
-    execStr += " ed -i %s -b baserom.z64 -fl CFG\\filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath)
+    execStr += " ed -i %s -b %s -fl CFG\\filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, romPath)
 
     print(execStr)
     exitValue = os.system(execStr)
@@ -30,6 +32,7 @@ def main():
         xmlVer = "GC_NMQ_PAL_F"
     elif (args.version == "dbg_mq"):
         xmlVer = "GC_MQ_D"
+        romVer = "..\\soh\\baserom_mq.z64"
 
     if (os.path.exists("Extract")):
         shutil.rmtree("Extract")
