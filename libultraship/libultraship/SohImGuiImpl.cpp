@@ -354,7 +354,7 @@ namespace SohImGui {
                 }
 
                 if (ImGui::Checkbox("DPad Support in Ocarina and Text Choice", &Game::Settings.controller.dpad_ocarina_text)) {
-                    CVar_SetS32(const_cast<char*>("gDpadOcarinaText"), Game::Settings.controller.dpad_ocarina_text);
+                    CVar_SetS32("gDpadOcarinaText", Game::Settings.controller.dpad_ocarina_text);
                     needs_save = true;
                 }
 
