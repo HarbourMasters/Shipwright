@@ -225,7 +225,7 @@ namespace SohImGui {
         ImGui::Text(name, static_cast<int>(100 * *(value)));
         if (ImGui::SliderFloat((std::string("##") + key).c_str(), value, 0.0f, 1.0f, "")) {
             const float volume = floorf(*(value) * 100) / 100;
-            CVar_SetFloat(const_cast<char*>(key), volume);
+            CVar_SetFloat(key, volume);
             needs_save = true;
             Game::SetSeqPlayerVolume(playerId, volume);
         }
@@ -289,7 +289,7 @@ namespace SohImGui {
                 const float volume = Game::Settings.audio.master;
                 ImGui::Text("Master Volume: %d %%", static_cast<int>(100 * volume));
                 if (ImGui::SliderFloat("##Master_Vol", &Game::Settings.audio.master, 0.0f, 1.0f, "")) {
-                    CVar_SetFloat(const_cast<char*>("gGameMasterVolume"), volume);
+                    CVar_SetFloat("gGameMasterVolume", volume);
                     needs_save = true;
                 }
 
@@ -337,7 +337,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 if (ImGui::Checkbox("Fast Text", &Game::Settings.enhancements.fast_text)) {
-                    CVar_SetS32(const_cast<char*>("gFastText"), Game::Settings.enhancements.fast_text);
+                    CVar_SetS32("gFastText", Game::Settings.enhancements.fast_text);
                     needs_save = true;
                 }
 
@@ -354,12 +354,12 @@ namespace SohImGui {
                 }
 
                 if (ImGui::Checkbox("Animated Link in Pause Menu", &Game::Settings.enhancements.animated_pause_menu)) {
-                    CVar_SetS32(const_cast<char*>("gPauseLiveLink"), Game::Settings.enhancements.animated_pause_menu);
+                    CVar_SetS32("gPauseLiveLink", Game::Settings.enhancements.animated_pause_menu);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Disable LOD", &Game::Settings.enhancements.disable_lod)) {
-                    CVar_SetS32(const_cast<char*>("gDisableLOD"), Game::Settings.enhancements.disable_lod);
+                    CVar_SetS32("gDisableLOD", Game::Settings.enhancements.disable_lod);
                     needs_save = true;
                 }
 
@@ -374,7 +374,7 @@ namespace SohImGui {
                 ImGui::Separator();
                 
                 if (ImGui::Checkbox("Debug Mode", &Game::Settings.cheats.debug_mode)) {
-                    CVar_SetS32(const_cast<char*>("gDebugEnabled"), Game::Settings.cheats.debug_mode);
+                    CVar_SetS32("gDebugEnabled", Game::Settings.cheats.debug_mode);
                     needs_save = true;
                 }
 
@@ -383,42 +383,42 @@ namespace SohImGui {
             
             if (ImGui::BeginMenu("Cheats")) {
                 if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteMoney"), Game::Settings.cheats.infinite_money);
+                    CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Health", &Game::Settings.cheats.infinite_health)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteHealth"), Game::Settings.cheats.infinite_health);
+                    CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Ammo", &Game::Settings.cheats.infinite_ammo)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteAmmo"), Game::Settings.cheats.infinite_ammo);
+                    CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Magic", &Game::Settings.cheats.infinite_magic)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteMagic"), Game::Settings.cheats.infinite_magic);
+                    CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
-                    CVar_SetS32(const_cast<char*>("gNoClip"), Game::Settings.cheats.no_clip);
+                    CVar_SetS32("gNoClip", Game::Settings.cheats.no_clip);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
-                    CVar_SetS32(const_cast<char*>("gClimbEverything"), Game::Settings.cheats.climb_everything);
+                    CVar_SetS32("gClimbEverything", Game::Settings.cheats.climb_everything);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
-                    CVar_SetS32(const_cast<char*>("gMoonJumpOnL"), Game::Settings.cheats.moon_jump_on_l);
+                    CVar_SetS32("gMoonJumpOnL", Game::Settings.cheats.moon_jump_on_l);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
-                    CVar_SetS32(const_cast<char*>("gSuperTunic"), Game::Settings.cheats.super_tunic);
+                    CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
                     needs_save = true;
                 }
 
