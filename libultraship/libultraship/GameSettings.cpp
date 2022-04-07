@@ -59,7 +59,7 @@ namespace Game {
         CVar_SetS32("gPauseLiveLink", Settings.enhancements.animated_pause_menu);
 
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
-        CVar_SetS32(const_cast<char*>("gMinimalUI"), Settings.enhancements.minimal_ui);
+        CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
 
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
