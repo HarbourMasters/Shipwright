@@ -183,9 +183,9 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
     return (char*)finalBuffer;
 }
 
-extern "C" char* ResourceMgr_LoadTexByName(char* texPath);
+extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
 
-extern "C" char* ResourceMgr_LoadTexOrDListByName(char* filePath) {
+extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
 
     if (res->resType == Ship::ResourceType::DisplayList)
@@ -196,28 +196,28 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(char* filePath) {
         return ResourceMgr_LoadTexByName(filePath);
 }
 
-extern "C" char* ResourceMgr_LoadPlayerAnimByName(char* animPath) {
+extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
 
-extern "C" Gfx* ResourceMgr_LoadGfxByName(char* path)
+extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::DisplayList>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (Gfx*)&res->instructions[0];
 }
 
-extern "C" char* ResourceMgr_LoadArrayByName(char* path)
+extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
     return (char*)res->scalars.data();
 }
 
-extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(char* path) {
+extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res =
         std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -239,7 +239,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(char* path) {
     }
 }
 
-extern "C" CollisionHeader* ResourceMgr_LoadColByName(char* path)
+extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 {
     auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -333,7 +333,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(char* path)
     return (CollisionHeader*)colHeader;
 }
 
-extern "C" Vtx * ResourceMgr_LoadVtxByName(char* path)
+extern "C" Vtx * ResourceMgr_LoadVtxByName(const char* path)
 {
 	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 	return (Vtx*)res->vertices.data();
@@ -355,7 +355,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
     return 0;
 }
 
-extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(char* path) {
+extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Animation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -424,7 +424,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(char* path) {
     return anim;
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Skeleton>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
@@ -470,14 +470,14 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->sibling = limb->siblingIndex;
 
             if (limb->dListPtr != "") {
-                auto dList = ResourceMgr_LoadGfxByName((char*)limb->dListPtr.c_str());
+                auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dLists[0] = dList;
             } else {
                 limbC->dLists[0] = nullptr;
             }
 
             if (limb->dList2Ptr != "") {
-                auto dList = ResourceMgr_LoadGfxByName((char*)limb->dList2Ptr.c_str());
+                auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
                 limbC->dLists[1] = dList;
             } else {
                 limbC->dLists[1] = nullptr;
@@ -496,7 +496,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->dList = nullptr;
 
             if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dListPtr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dList = dList;
             }
 
@@ -512,12 +512,12 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->dList[1] = nullptr;
 
             if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dListPtr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dList[0] = dList;
             }
 
             if (!limb->dList2Ptr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dList2Ptr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
                 limbC->dList[1] = dList;
             }
 
@@ -543,7 +543,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
                 limbC->segmentType = 0;
 
             if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList)
-                limbC->segment = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->skinDList.c_str()));
+                limbC->segment = ResourceMgr_LoadGfxByName(limb->skinDList.c_str());
             else if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4) {
                 const auto animData = new SkinAnimatedLimbData;
                 const int skinDataSize = limb->skinData.size();
@@ -551,7 +551,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
                 animData->totalVtxCount = limb->skinVtxCnt;
                 animData->limbModifCount = skinDataSize;
                 animData->limbModifications = new SkinLimbModif[animData->limbModifCount];
-                animData->dlist = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->skinDList2.c_str()));
+                animData->dlist = ResourceMgr_LoadGfxByName(limb->skinDList2.c_str());
 
                 for (int i = 0; i < skinDataSize; i++)
                 {
@@ -611,7 +611,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
     return baseHeader;
 }
 
-extern "C" s32* ResourceMgr_LoadCSByName(char* path)
+extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (s32*)res->commands.data();
