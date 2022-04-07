@@ -71,7 +71,7 @@ void SetCsCamera::DeclareReferences(const std::string& prefix)
 	{
 		std::string camPointsName;
 		Globals::Instance->GetSegmentedPtrName(cameras.at(0).GetCamAddress(), parent, "Vec3s",
-		                                       camPointsName);
+		                                       camPointsName, parent->workerID);
 		std::string declaration;
 
 		size_t index = 0;
@@ -103,7 +103,8 @@ void SetCsCamera::DeclareReferences(const std::string& prefix)
 std::string SetCsCamera::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CsCameraEntry", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CsCameraEntry", listName,
+	                                       parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_ACTOR_CUTSCENE_CAM_LIST(%i, %s)", cameras.size(),
 	                             listName.c_str());
 }

@@ -272,9 +272,19 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     controllerCallback.rumble = padMgr->rumbleEnable[0] > 0 ? 1 : 0;
 
     if (HealthMeter_IsCritical()) {
-        controllerCallback.ledColor = 1;
-    } else {
         controllerCallback.ledColor = 0;
+    } else if (gGlobalCtx) {
+        switch (CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1) {
+            case PLAYER_TUNIC_KOKIRI:
+                controllerCallback.ledColor = 1;
+                break;
+            case PLAYER_TUNIC_GORON:
+                controllerCallback.ledColor = 2;
+                break;
+            case PLAYER_TUNIC_ZORA:
+                controllerCallback.ledColor = 3;
+                break;
+        }
     }
 
     OTRControllerCallback(&controllerCallback);

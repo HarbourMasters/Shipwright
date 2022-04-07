@@ -1,0 +1,27 @@
+<Root>
+    <File Name="hakasitarelay_scene" Segment="2">
+        <Scene Name="hakasitarelay_scene" Offset="0x0"/>
+        <Cutscene Name="gSongOfStormsCs" Offset="0xE080"/>
+    </File>
+    <File Name="hakasitarelay_room_0" Segment="3">
+        <Room Name="hakasitarelay_room_0" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_1" Segment="3">
+        <Room Name="hakasitarelay_room_1" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_2" Segment="3">
+        <Room Name="hakasitarelay_room_2" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_3" Segment="3">
+        <Room Name="hakasitarelay_room_3" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_4" Segment="3">
+        <Room Name="hakasitarelay_room_4" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_5" Segment="3">
+        <Room Name="hakasitarelay_room_5" Offset="0x0"/>
+    </File>
+    <File Name="hakasitarelay_room_6" Segment="3">
+        <Room Name="hakasitarelay_room_6" Offset="0x0"/>
+    </File>
+</Root>

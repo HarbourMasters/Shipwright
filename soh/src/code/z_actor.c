@@ -798,9 +798,9 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
             break;
         case SCENE_JYASINZOU:
             texture = gSpiritTempleTitleCardENGTex;
-            break; 
+            break;
         case SCENE_HAKADAN:
-            texture = gSpiritTempleTitleCardENGTex;
+            texture = gShadowTempleTitleCardENGTex;
             break;
         case SCENE_HAKADANCH:
             texture = gBottomOfTheWellTitleCardENGTex;

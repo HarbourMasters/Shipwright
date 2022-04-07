@@ -148,9 +148,12 @@ void ElfMsg2_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
+#if ZELDA_DEBUG
 #include "overlays/ovl_Elf_Msg2/ovl_Elf_Msg2.h"
+#endif
 
 void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
+#if ZELDA_DEBUG
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg2.c", 355);
 
     if (R_NAVI_MSG_REGION_ALPHA == 0) {
@@ -165,4 +168,5 @@ void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, sCubeDL);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg2.c", 367);
+    #endif
 }

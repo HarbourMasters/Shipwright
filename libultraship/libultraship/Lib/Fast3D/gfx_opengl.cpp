@@ -673,7 +673,11 @@ static void gfx_opengl_resize_framebuffer(int fb, uint32_t width, uint32_t heigh
 
 void gfx_opengl_set_framebuffer(int fb) 
 {
-    glClipControl(GL_UPPER_LEFT, GL_NEGATIVE_ONE_TO_ONE); // Set origin to upper left corner, to match N64 and DX11
+    if (GLEW_ARB_clip_control || GLEW_VERSION_4_5) {
+        // Set origin to upper left corner, to match N64 and DX11
+        // If this function is not supported, the texture will be upside down :(
+        glClipControl(GL_UPPER_LEFT, GL_NEGATIVE_ONE_TO_ONE);
+    }
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, fb);
 
     glDepthMask(GL_TRUE);
@@ -687,7 +691,9 @@ void gfx_opengl_reset_framebuffer(void)
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
     glBindFramebuffer(GL_FRAMEBUFFER_EXT, framebuffer);
-    glClipControl(GL_LOWER_LEFT, GL_NEGATIVE_ONE_TO_ONE);
+    if (GLEW_ARB_clip_control || GLEW_VERSION_4_5) {
+        glClipControl(GL_LOWER_LEFT, GL_NEGATIVE_ONE_TO_ONE);
+    }
 }
 
 void gfx_opengl_select_texture_fb(int fbID)

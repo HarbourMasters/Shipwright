@@ -81,7 +81,8 @@ void SetActorList::DeclareReferencesLate(const std::string& prefix)
 std::string SetActorList::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "ActorEntry", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "ActorEntry", listName,
+	                                       parent->workerID);
 	if (numActors != actors.size())
 	{
 		printf("%s: numActors(%i) ~ actors(%li)\n", parent->GetName().c_str(), numActors,

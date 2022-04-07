@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gm" Segment="6">
+        <Animation Name="object_gm_Anim_0002B8" Offset="0x2B8"/>
+    </File>
+</Root>
