@@ -1221,8 +1221,64 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                             sp80 = HREG(84);
                         }
                         Scene_Draw(globalCtx);
-                        Room_Draw(globalCtx, &globalCtx->roomCtx.curRoom, sp80 & 3);
-                        Room_Draw(globalCtx, &globalCtx->roomCtx.prevRoom, sp80 & 3);
+                        //Room_Draw(globalCtx, &globalCtx->roomCtx.curRoom, sp80 & 3);
+                        //Room_Draw(globalCtx, &globalCtx->roomCtx.prevRoom, sp80 & 3);
+
+                        Vec3f asd = { 0.0f, 0.0f, 0.0f };
+                        func_800342EC(&asd, globalCtx);
+                        //func_80093C80(globalCtx);
+                        {
+                            uint32_t rm;
+                            uint32_t blc1;
+                            uint32_t blc2;
+
+                            
+                            rm = Z_CMP | Z_UPD | CVG_DST_CLAMP | FORCE_BL;
+                            blc1 = GBL_c1(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1);
+                            blc2 = GBL_c2(G_BL_CLR_IN, G_BL_0, G_BL_CLR_IN, G_BL_1);
+                            rm |= ZMODE_OPA;
+
+                            gSPLoadGeometryMode(POLY_OPA_DISP++, G_ZBUFFER | G_SHADE | G_LIGHTING);
+                            gSPTexture(POLY_OPA_DISP++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
+
+                            //gDPPipeSync(POLY_OPA_DISP++);
+                            gDPSetCycleType(POLY_OPA_DISP++, G_CYC_1CYCLE);
+                            gDPSetRenderMode(POLY_OPA_DISP++, rm | blc1, rm | blc2);
+                            gDPSetCombineMode(POLY_OPA_DISP++, G_CC_HILITERGB, G_CC_HILITERGB);
+                            gDPSetEnvColor(POLY_OPA_DISP++, 0xFF, 0xFF, 0xFF, 0xFF);
+                        }
+                        gSPMatrix(POLY_OPA_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
+                        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0, 0, 0xFF);
+
+                        CollisionHeader* col = globalCtx->colCtx.colHeader;
+                        //for (int i = 0; i < col->numPolygons; i++) {
+                        for (int i = 0; i < col->numPolygons / 2; i++) {
+                            CollisionPoly* poly = &col->polyList[i];
+                            u16 a = poly->flags_vIA & 0x1FFF;
+                            u16 b = poly->flags_vIB & 0x1FFF;
+                            u16 c = poly->vIC & 0x1FFF;
+
+                            Vec3s* va = &col->vtxList[a];
+                            Vec3s* vb = &col->vtxList[b];
+                            Vec3s* vc = &col->vtxList[c];
+#define qs105(n) ((int16_t)((n)*0x0020))
+#define gdSPDefVtxN(x, y, z, s, t, nx, ny, nz, ca) \
+    ((Vtx){ .n = { .ob = { x, y, z }, .tc = { qs105(s), qs105(t) }, .n = { nx, ny, nz }, .a = ca } })
+                            Vtx v[3] = {
+                                gdSPDefVtxN(va->x, va->y, va->z, 0, 0, poly->normal.x / 0x100, poly->normal.y / 0x100,
+                                            poly->normal.z / 0x100, 0xFF),
+                                gdSPDefVtxN(vb->x, vb->y, vb->z, 0, 0, poly->normal.x / 0x100, poly->normal.y / 0x100,
+                                            poly->normal.z / 0x100, 0xFF),
+                                gdSPDefVtxN(vc->x, vc->y, vc->z, 0, 0, poly->normal.x / 0x100, poly->normal.y / 0x100,
+                                            poly->normal.z / 0x100, 0xFF),
+                            };
+
+                            void* vtxBuf = Graph_Alloc(gfxCtx, sizeof(Vtx) * 3);
+                            memcpy(vtxBuf, v, sizeof(Vtx) * 3);
+                            gSPVertex(POLY_OPA_DISP++, vtxBuf, 3, 0);
+                            gSP1Triangle(POLY_OPA_DISP++, 0, 1, 2, 0);
+                            
+                        }
                     }
                 }
 
