@@ -7,7 +7,6 @@ import shutil
 
 romVer = "..\\soh\\baserom_non_mq.z64"
 roms = [];
-checksums = ["", "", ""];
 
 class Checksums(Enum):
     OOT_NTSC_10 = "EC7011B7"
