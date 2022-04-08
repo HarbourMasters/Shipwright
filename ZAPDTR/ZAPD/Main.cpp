@@ -387,18 +387,6 @@ int main(int argc, char* argv[])
 	{
 		BuildAssetBlob(Globals::Instance->inputPath, Globals::Instance->outputPath);
 	}
-	/*
-	else if (fileMode == ZFileMode::BuildOverlay)
-	{
-		ZOverlay* overlay =
-			ZOverlay::FromBuild(Path::GetDirectoryName(Globals::Instance->inputPath),
-		                        Path::GetDirectoryName(Globals::Instance->cfgPath));
-
-		if (overlay != nullptr)
-			File::WriteAllText(Globals::Instance->outputPath.string(),
-			                   overlay->GetSourceOutputCode(""));
-	}
-	*/
 
 	if (exporterSet != nullptr && exporterSet->endProgramFunc != nullptr)
 		exporterSet->endProgramFunc();

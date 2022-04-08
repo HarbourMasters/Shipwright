@@ -78,6 +78,10 @@ static void ExporterProgramEnd()
 			auto fileData = File::ReadAllBytes(item);
 			otrArchive->AddFile(StringHelper::Split(item, "Extract\\")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
+
+		otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
+		otrArchive->AddFile("Audioseq", (uintptr_t)Globals::Instance->GetBaseromFile("Audioseq").data(), Globals::Instance->GetBaseromFile("Audioseq").size());
+		otrArchive->AddFile("Audiotable", (uintptr_t)Globals::Instance->GetBaseromFile("Audiotable").data(), Globals::Instance->GetBaseromFile("Audiotable").size());
 	}
 }
 
