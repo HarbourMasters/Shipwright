@@ -64,9 +64,11 @@ def checkChecksum(rom):
             print("Compatible roms:")
             for compat in CompatibleChecksums:
                 print(compat.name+" | 0x"+compat.value)
+            input("Press Enter to quit the program")
             sys.exit(1)
             
     print("Wrong rom! No valid checksum found")
+    input("Press Enter to quit the program")
     sys.exit(1)
 
 def main():
@@ -81,6 +83,7 @@ def main():
         
     if not (roms):
         print("Error: No roms located, place one in the OTRExporter directory", file=os.sys.stderr)
+        input("Press Enter to quit the program")
         sys.exit(1)
         
     if (len(roms) > 1):
