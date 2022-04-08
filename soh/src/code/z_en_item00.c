@@ -364,17 +364,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.3f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-            } else {
-		        Actor_SetScale(&this->actor, 0.015f);
-		        this->scale = 0.015f;
-		        yOffset = 750.0f;
-            }
-            break;
-=======
 				break;
             }
->>>>>>> Stashed changes
         case ITEM00_RUPEE_BLUE:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.3f);
@@ -382,16 +373,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.3f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-            } else {
-		        Actor_SetScale(&this->actor, 0.015f);
-		        this->scale = 0.015f;
-		        yOffset = 750.0f;
             }
-            break;
-=======
-            }
->>>>>>> Stashed changes
         case ITEM00_RUPEE_RED:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.3f);
@@ -419,19 +401,6 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case ITEM00_HEART:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
-<<<<<<< Updated upstream
-				Actor_SetScale(&this->actor, 0.15f);
-				this->scale = 0.15f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-            } else {
-				this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
-				yOffset = 430.0f;
-				Actor_SetScale(&this->actor, 0.02f);
-				this->scale = 0.02f;
-=======
-        		//Guessed value for custom drop I is as close as possible
 		        this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
 		        yOffset = 25.0f;
 		        Actor_SetScale(&this->actor, 0.3f);
@@ -442,7 +411,6 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 		        yOffset = 430.0f;
 		        Actor_SetScale(&this->actor, 0.02f);
 		        this->scale = 0.02f;
->>>>>>> Stashed changes
             }
             break;
         case ITEM00_HEART_CONTAINER:
@@ -459,15 +427,9 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
 			} else {
-<<<<<<< Updated upstream
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-=======
 		        yOffset = 400.0f;
 		        Actor_SetScale(&this->actor, 0.02f);
 		        this->scale = 0.02f;
->>>>>>> Stashed changes
 			}
 			break;
         case ITEM00_ARROWS_SMALL:
@@ -477,17 +439,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;
 			}
->>>>>>> Stashed changes
         case ITEM00_ARROWS_MEDIUM:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.2f);
@@ -495,17 +448,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;
 			}
->>>>>>> Stashed changes
         case ITEM00_ARROWS_LARGE:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.2f);
@@ -514,15 +458,9 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
 			} else {
-<<<<<<< Updated upstream
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-=======
 		        Actor_SetScale(&this->actor, 0.035f);
 		        this->scale = 0.035f;
 		        yOffset = 250.0f;
->>>>>>> Stashed changes
 			}
 			break;
         case ITEM00_BOMBS_A:
@@ -531,19 +469,9 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				this->scale = 0.2f;
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
-<<<<<<< Updated upstream
-				this->actor.world.rot.x = 0x4000;				
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				this->actor.world.rot.x = 0x4000;
 				break;			
 			}
->>>>>>> Stashed changes
         case ITEM00_BOMBS_B:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.2f);
@@ -551,18 +479,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-				
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;			
 			}
->>>>>>> Stashed changes
         case ITEM00_NUTS:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.2f);
@@ -570,20 +488,10 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;			
 			}
->>>>>>> Stashed changes
         case ITEM00_STICK:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				//This edit the model over head to show in 3D when you collect it, the dropped model remain the same!
 				Actor_SetScale(&this->actor, 0.2f);
 				this->scale = 0.2f;
 				yOffset = 50.0f;
@@ -598,17 +506,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;			
 			}
->>>>>>> Stashed changes
         case ITEM00_SEEDS:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
 		        Actor_SetScale(&this->actor, 0.2f);
@@ -616,36 +515,19 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 		        yOffset = 50.0f;
 		        shadowScale = 0.5f;
 		        this->actor.world.rot.x = 0x4000;
-<<<<<<< Updated upstream
-			} else {
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-			}
-			break;
-=======
 				break;			
 			}
->>>>>>> Stashed changes
         case ITEM00_BOMBS_SPECIAL:
 			if (CVar_GetS32("gNewDrops", 0) !=0) {
 				Actor_SetScale(&this->actor, 0.2f);
 				this->scale = 0.2f;
 				yOffset = 50.0f;
 				shadowScale = 0.5f;
-<<<<<<< Updated upstream
-				this->actor.world.rot.x = 0x4000;
-			} else {
-				Actor_SetScale(&this->actor, 0.03f);
-	            this->scale = 0.03f;
-	            yOffset = 320.0f;
-=======
 				this->actor.world.rot.x = 0x4000;		
 			} else {
 				Actor_SetScale(&this->actor, 0.03f);
 				this->scale = 0.03f;
 				yOffset = 320.0f;
->>>>>>> Stashed changes
 			}
 			break;
         case ITEM00_MAGIC_LARGE:
@@ -656,39 +538,28 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 				shadowScale = 0.5f;
 				this->actor.world.rot.x = 0x4000;
 			} else {
-<<<<<<< Updated upstream
-				yOffset = 400.0f;
-	            Actor_SetScale(&this->actor, 0.02f);
-	            this->scale = 0.02f;
-=======
 		        Actor_SetScale(&this->actor, 0.045 - 1e-10);
 		        this->scale = 0.045 - 1e-10;
 		        yOffset = 320.0f;
->>>>>>> Stashed changes
 			}
 			break;
         case ITEM00_RUPEE_ORANGE:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
+				Actor_SetScale(&this->actor, 0.45f);
+				this->scale = 0.45f;
 				yOffset = 50.0f;
 				shadowScale = 0.3f;
 				this->actor.world.rot.x = 0x4000;
             } else {
-<<<<<<< Updated upstream
-		        Actor_SetScale(&this->actor, 0.03f);
-		        this->scale = 0.03f;
-=======
 		        Actor_SetScale(&this->actor, 0.045 - 1e-10);
 		        this->scale = 0.045 - 1e-10;
->>>>>>> Stashed changes
 		        yOffset = 750.0f;
             }
             break;
         case ITEM00_RUPEE_PURPLE:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
+				Actor_SetScale(&this->actor, 0.4f);
+				this->scale = 0.4f;
 				yOffset = 50.0f;
 				shadowScale = 0.3f;
 				this->actor.world.rot.x = 0x4000;
@@ -833,32 +704,19 @@ void EnItem00_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
-<<<<<<< Updated upstream
 
-	if (CVar_GetS32("gNewDrops", 0) !=0) { //set the rotation system on selected model only :)
-		if ((this->actor.params == ITEM00_ARROWS_SINGLE) || (this->actor.params == ITEM00_ARROWS_SMALL) ||
-=======
 	if (CVar_GetS32("gNewDrops", 0) !=0) { //set the rotation system on selected model only :)
 		if ((this->actor.params == ITEM_RUPEE_GOLD) || (this->actor.params == ITEM_RUPEE_PURPLE) ||
 			(this->actor.params == ITEM00_ARROWS_SINGLE) || (this->actor.params == ITEM00_ARROWS_SMALL) ||
->>>>>>> Stashed changes
 		    (this->actor.params == ITEM00_ARROWS_MEDIUM) || (this->actor.params == ITEM00_ARROWS_LARGE) ||
 		    (this->actor.params == ITEM00_BOMBS_A) || (this->actor.params == ITEM00_BOMBS_B) ||
 		    (this->actor.params == ITEM00_NUTS) || (this->actor.params == ITEM00_STICK) ||
 		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) ||
-<<<<<<< Updated upstream
-		    (this->actor.params == ITEM00_BOMBS_SPECIAL) || (this->actor.params == ITEM00_MAGIC_LARGE) ||
-		    (this->actor.params == ITEM00_HEART)) {
-		    this->actor.shape.rot.y = DroppedItemRot;
-		}
-	}
-
-=======
 		    (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL)) {
 		    this->actor.shape.rot.y = DroppedItemRot;
 		}
 	}
->>>>>>> Stashed changes
+	
     if ((this->actor.params <= ITEM00_RUPEE_RED) || ((this->actor.params == ITEM00_HEART) && (this->unk_15A < 0)) ||
         (this->actor.params == ITEM00_HEART_PIECE)) {
         this->actor.shape.rot.y += 960;
@@ -1239,57 +1097,35 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnItem00* this = (EnItem00*)thisx;
     f32 mtxScale;
-
+	
     if (!(this->unk_156 & this->unk_158)) {
         switch (this->actor.params) {
             case ITEM00_RUPEE_GREEN:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
-<<<<<<< Updated upstream
-                	GetItem_Draw(globalCtx, GID_RUPEE_GREEN);
-                	break;
-=======
 					GetItem_Draw(globalCtx, GID_RUPEE_GREEN);
 					break;
->>>>>>> Stashed changes
-				}
+				}	
             case ITEM00_RUPEE_BLUE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_RUPEE_BLUE);
-<<<<<<< Updated upstream
-                	break;
-=======
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_RUPEE_RED:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_RUPEE_RED);
-<<<<<<< Updated upstream
-                	break;
-=======
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_RUPEE_ORANGE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_RUPEE_GOLD);
-<<<<<<< Updated upstream
-                	break;
-=======
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_RUPEE_PURPLE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_RUPEE_PURPLE);
 				} else {
-<<<<<<< Updated upstream
-                	EnItem00_DrawRupee(this, globalCtx);
-                }
-=======
 					EnItem00_DrawRupee(this, globalCtx);
 				}
->>>>>>> Stashed changes
                 break;
             case ITEM00_HEART_PIECE:
                 EnItem00_DrawHeartPiece(this, globalCtx);
@@ -1300,27 +1136,6 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
             case ITEM00_HEART:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
 					GetItem_Draw(globalCtx, GID_HEART);
-<<<<<<< Updated upstream
-				} else {
-	                if (this->unk_15A < 0) {
-	                    if (this->unk_15A == -1) {
-	                        s8 bankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GI_HEART);
-	
-	                        if (Object_IsLoaded(&globalCtx->objectCtx, bankIndex)) {
-	                            this->actor.objBankIndex = bankIndex;
-	                            Actor_SetObjectDependency(globalCtx, &this->actor);
-	                            this->unk_15A = -2;
-	                        }
-	                    } else {
-	                        mtxScale = 16.0f;
-	                        Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-	                        GetItem_Draw(globalCtx, GID_HEART);
-	                    }
-	                    break;
-	                }
-				}
-				break;
-=======
                     mtxScale = 16.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
 		            break;
@@ -1342,23 +1157,10 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 		                break;
 		            }
                 }
->>>>>>> Stashed changes
             case ITEM00_BOMBS_A:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
 					GetItem_Draw(globalCtx, GID_BOMB);
 					break;
-<<<<<<< Updated upstream
-                }
-            case ITEM00_BOMBS_B:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_BOMB);
-                	break;
-				}
-            case ITEM00_BOMBS_SPECIAL:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_BOMB);
-                	break;
-=======
 				}
             case ITEM00_BOMBS_B:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
@@ -1366,11 +1168,6 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 					break;
 				}
             case ITEM00_BOMBS_SPECIAL:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-					GetItem_Draw(globalCtx, GID_BOMB);
-					break;
->>>>>>> Stashed changes
-				}
             case ITEM00_ARROWS_SINGLE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
@@ -1380,38 +1177,22 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
                 	break;
-<<<<<<< Updated upstream
-				} 
-            case ITEM00_ARROWS_MEDIUM:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_ARROWS_MEDIUM);
-                	break;
-=======
-                }
+				}
             case ITEM00_ARROWS_MEDIUM:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_ARROWS_MEDIUM);
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_ARROWS_LARGE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_ARROWS_LARGE);
-<<<<<<< Updated upstream
-                	break;
-=======
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_NUTS:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
                 	GetItem_Draw(globalCtx, GID_NUTS);
                 	break;
-<<<<<<< Updated upstream
-                }
-=======
 				}
->>>>>>> Stashed changes
             case ITEM00_STICK:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
 		            GetItem_Draw(globalCtx, GID_STICK);
@@ -1420,24 +1201,11 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
             case ITEM00_MAGIC_LARGE:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
 		            GetItem_Draw(globalCtx, GID_MAGIC_LARGE);
-<<<<<<< Updated upstream
-		            break;
-=======
 					break;
->>>>>>> Stashed changes
 				}
             case ITEM00_MAGIC_SMALL:
 				if (CVar_GetS32("gNewDrops", 0) !=0) {
 		            GetItem_Draw(globalCtx, GID_MAGIC_SMALL);
-<<<<<<< Updated upstream
-		            break;
-                }
-            case ITEM00_SEEDS:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-		            GetItem_Draw(globalCtx, GID_SEEDS);
-		            break;
-                }
-=======
 					break;
 				}
             case ITEM00_SEEDS:
@@ -1445,7 +1213,6 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 		            GetItem_Draw(globalCtx, GID_SEEDS);
 					break;
 				}
->>>>>>> Stashed changes
             case ITEM00_SMALL_KEY:
                 EnItem00_DrawCollectible(this, globalCtx);
                 break;
