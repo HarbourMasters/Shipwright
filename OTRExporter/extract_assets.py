@@ -15,6 +15,7 @@ def BuildOTR():
     shutil.copyfile("baserom/Audiotable", "Extract/Audiotable")
 
     shutil.copytree("assets", "Extract/assets")
+    shutil.copytree("colors", "Extract/colors")
 
     execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPD/ZAPD.out"
 

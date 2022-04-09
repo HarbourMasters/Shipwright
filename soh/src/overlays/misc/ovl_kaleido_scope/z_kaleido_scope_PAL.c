@@ -1468,6 +1468,11 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 }
 
 void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
+    static Color_RGB8 aButtonColor;
+    if (aButtonColor.r == NULL) {
+        aButtonColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorPauseInfoPanelButtonA);
+    }
+
     static void* D_8082AD54[3] = {
         gPauseToEquipENGTex,
         gPauseToEquipGERTex,
@@ -1784,9 +1789,9 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] = D_8082ADE0[gSaveContext.language]
                                                                                       << 5;
 
-            gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
+            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
 
-            gDPPipeSync(POLY_KAL_DISP++);
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD60[gSaveContext.language],
@@ -1864,9 +1869,9 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                         D_8082ADE8[gSaveContext.language] << 5;
 
-                    gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
 
-                    gDPPipeSync(POLY_KAL_DISP++);
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD6C[gSaveContext.language],
@@ -1890,7 +1895,9 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, aButtonColor.r, aButtonColor.g, aButtonColor.b, 255);
+                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
+
 
                 gDPPipeSync(POLY_KAL_DISP++);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
