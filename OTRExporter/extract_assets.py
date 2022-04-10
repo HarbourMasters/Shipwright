@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 
-import argparse, json, os, signal, time, sys, shutil, glob
+# How to use:
+#   Place a rom in this directory then run the script.
+#   If you are using multiple roms, the script will let you choose one.
+#   To choose with a commandline argument:
+#      Python3 extract_assets.py <number>
+#      Invalid input results in the first rom being selected
+
+import json, os, signal, time, sys, shutil, glob
 from multiprocessing import Pool, cpu_count, Event, Manager, ProcessError
 from enum import Enum
 import shutil
 
 romVer = "..\\soh\\baserom_non_mq.z64"
 roms = [];
+checksums = ["", "", ""];
 
 class Checksums(Enum):
     OOT_NTSC_10 = "EC7011B7"
@@ -64,17 +72,12 @@ def checkChecksum(rom):
             print("Compatible roms:")
             for compat in CompatibleChecksums:
                 print(compat.name+" | 0x"+compat.value)
-            input("Press Enter to quit the program")
             sys.exit(1)
             
     print("Wrong rom! No valid checksum found")
-    input("Press Enter to quit the program")
     sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="baserom asset extractor")
-    parser.add_argument("-v", "--version", help="Sets game version.")
-    args = parser.parse_args()
     
     romToUse = "";
     
@@ -83,37 +86,53 @@ def main():
         
     if not (roms):
         print("Error: No roms located, place one in the OTRExporter directory", file=os.sys.stderr)
-        input("Press Enter to quit the program")
         sys.exit(1)
         
     if (len(roms) > 1):
     
-        print(str(len(roms))+" roms found, please select one by pressing 1-"+str(len(roms)))
-        
-        for list in range(len(roms)):
-            print(roms[list])
-            
-        while(1):
+        # If commandline args exist
+        if (len(sys.argv) > 1):
             try:
-                selection = int(input())
-            except:
-                print("Bad input. Try again with the number keys.")
-                continue
+                if ((int(sys.argv[1]) - 1) < 1):
+                    romToUse = roms[0]
+                    
+                elif ((int(sys.argv[1]) - 1) > len(roms)):
+                    romToUse = roms[len(roms) - 1]
                 
-            if (selection < 1 or selection > len(roms)):
-                print("Bad input. Try again.")
-                continue
+                else:
+                    romToUse = roms[int(sys.argv[1]) - 1]
+            except:
+                romToUse = roms[0]
             
-            else: break
+        # No commandline args, select rom using user input
+        else:
+        
+            print(str(len(roms))+" roms found, please select one by pressing 1-"+str(len(roms)))
+        
+            count = 1
+            for list in range(len(roms)):
+                print(str(count)+". "+roms[list])
+                count += 1
             
-        romToUse = roms[selection - 1]
+            while(1):
+                try:
+                    selection = int(input())
+                except:
+                    print("Bad input. Try again with the number keys.")
+                    continue
+                
+                if (selection < 1 or selection > len(roms)):
+                    print("Bad input. Try again.")
+                    continue
+            
+                else: break
+            
+            romToUse = roms[selection - 1]
         
     else:
         romToUse = roms[0]
-        
-    validRom = checkChecksum(romToUse)
     
-    match validRom.name:
+    match checkChecksum(romToUse).name:
         case Checksums.OOT_PAL_GC:
             xmlVer = "GC_NMQ_PAL_F"
         case Checksums.OOT_PAL_GC_DBG1:
