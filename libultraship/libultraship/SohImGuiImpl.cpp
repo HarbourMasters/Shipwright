@@ -353,6 +353,13 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                ImGui::Separator();
+
+                if (ImGui::Checkbox("Dpad Support on Pause and File Select", &Game::Settings.controller.dpad_pause_name)) {
+                    CVar_SetS32("gDpadPauseName", Game::Settings.controller.dpad_pause_name);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -367,7 +374,7 @@ namespace SohImGui {
                 }
 
                 if (ImGui::Checkbox("Minimal UI", &Game::Settings.enhancements.minimal_ui)) {
-                    CVar_SetS32(const_cast<char*>("gMinimalUI"), Game::Settings.enhancements.minimal_ui);
+                    CVar_SetS32("gMinimalUI", Game::Settings.enhancements.minimal_ui);
                     needs_save = true;
                 }
 
