@@ -3017,7 +3017,7 @@ void Message_TTS_Decode(u8* srcBuf, u8* dstBuf, u32 srcOffset, u32 size) {
 
         if (currChar < ' ') {
             switch (currChar) {
-                case CTRL_NEWLINE:
+                case MESSAGE_NEWLINE:
                     dstBuf[dstIdx++] = ' ';
                     break;
                 case MESSAGE_COLOR:
@@ -3030,6 +3030,7 @@ void Message_TTS_Decode(u8* srcBuf, u8* dstBuf, u32 srcOffset, u32 size) {
                     break;
                 case MESSAGE_FADE2:
                 case MESSAGE_SFX:
+                case MESSAGE_TEXTID:
                     i += 2;
                     break;
                 default:
