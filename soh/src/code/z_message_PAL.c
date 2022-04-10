@@ -3104,7 +3104,10 @@ void Message_TTS_Update(GlobalContext* globalCtx) {
     } else if (sTtsHasMessage == 1) {
         sTtsHasMessage = 0;
         sTtsHasNewMessage = 0;
-        OTRTextToSpeechCallback(""); // cancel current speech
+        if (msgCtx->decodedTextLen < 3 || (msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 2] != MESSAGE_FADE &&
+                                           msgCtx->msgBufDecoded[msgCtx->decodedTextLen - 3] != MESSAGE_FADE2)) {
+            OTRTextToSpeechCallback(""); // cancel current speech (except for faded out messages)
+        }
     }
 }
 
