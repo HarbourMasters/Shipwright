@@ -118,10 +118,10 @@ s16 sOcarinaNoteCEnvR;
 s16 sOcarinaNoteCEnvB;
 s16 sOcarinaNoteCEnvG;
 
-static u8 ttsHasNewMessage;
-static u8 ttsHasMessage;
-static s8 ttsCurrentChoice;
-static u8 ttsMessageBuf[256];
+static u8 sTtsHasNewMessage;
+static u8 sTtsHasMessage;
+static s8 sTtsCurrentChoice;
+static u8 sTtsMessageBuf[256];
 
 void Message_ResetOcarinaNoteState(void) {
     R_OCARINA_NOTES_YPOS(0) = 189;
@@ -3048,22 +3048,22 @@ void Message_TTS_Update(GlobalContext* globalCtx) {
 
     if (msgCtx->msgMode == MSGMODE_TEXT_NEXT_MSG || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT_BEGIN ||
         (msgCtx->msgMode == MSGMODE_TEXT_CONTINUING && msgCtx->stateTimer == 1)) {
-        ttsHasNewMessage = 1;
+        sTtsHasNewMessage = 1;
     } else if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING || msgCtx->msgMode == MSGMODE_OCARINA_STARTING ||
                msgCtx->msgMode == MSGMODE_OCARINA_PLAYING || msgCtx->msgMode == MSGMODE_TEXT_AWAIT_NEXT ||
                msgCtx->msgMode == MSGMODE_TEXT_DONE || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT ||
                msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK) {
-        if (ttsHasNewMessage == 1) {
-            ttsHasNewMessage = 0;
-            ttsHasMessage = 1;
-            ttsCurrentChoice = 0;
+        if (sTtsHasNewMessage == 1) {
+            sTtsHasNewMessage = 0;
+            sTtsHasMessage = 1;
+            sTtsCurrentChoice = 0;
 
             u32 size = msgCtx->decodedTextLen;
-            Message_TTS_Decode(msgCtx->msgBufDecoded, ttsMessageBuf, 0, size);
-            OTRTextToSpeechCallback(ttsMessageBuf);
+            Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, 0, size);
+            OTRTextToSpeechCallback(sTtsMessageBuf);
         } else if (msgCtx->msgMode == MSGMODE_TEXT_DONE && msgCtx->choiceNum > 0 &&
-                   msgCtx->choiceIndex != ttsCurrentChoice) {
-            ttsCurrentChoice = msgCtx->choiceIndex;
+                   msgCtx->choiceIndex != sTtsCurrentChoice) {
+            sTtsCurrentChoice = msgCtx->choiceIndex;
             u32 startOffset = 0;
             u32 endOffset = 0;
             while (startOffset < msgCtx->decodedTextLen) {
@@ -3095,14 +3095,14 @@ void Message_TTS_Update(GlobalContext* globalCtx) {
 
                 if (startOffset < msgCtx->decodedTextLen && startOffset != endOffset) {
                     u32 size = endOffset - startOffset;
-                    Message_TTS_Decode(msgCtx->msgBufDecoded, ttsMessageBuf, startOffset, size);
-                    OTRTextToSpeechCallback(ttsMessageBuf);
+                    Message_TTS_Decode(msgCtx->msgBufDecoded, sTtsMessageBuf, startOffset, size);
+                    OTRTextToSpeechCallback(sTtsMessageBuf);
                 }
             }
         }
-    } else if (ttsHasMessage == 1) {
-        ttsHasMessage = 0;
-        ttsHasNewMessage = 0;
+    } else if (sTtsHasMessage == 1) {
+        sTtsHasMessage = 0;
+        sTtsHasNewMessage = 0;
         OTRTextToSpeechCallback(""); // cancel current speech
     }
 }
