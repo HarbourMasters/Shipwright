@@ -1613,16 +1613,14 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
-    } else {
-    	gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 220);
     }
 
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
 
+    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 220);
+    
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
-    } else {
-    	gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 220);
     }
 
     gSPDisplayList(POLY_KAL_DISP++, gRButtonIconDL);
