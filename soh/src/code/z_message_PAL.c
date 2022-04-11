@@ -129,8 +129,8 @@ void Message_ResetOcarinaNoteState(void) {
         sOcarinaNotesAlphaValues[3] = sOcarinaNotesAlphaValues[4] = sOcarinaNotesAlphaValues[5] =
             sOcarinaNotesAlphaValues[6] = sOcarinaNotesAlphaValues[7] = sOcarinaNotesAlphaValues[8] = 0;
     sOcarinaNoteAPrimR = 80;
-    sOcarinaNoteAPrimG = 255;
-    sOcarinaNoteAPrimB = 150;
+    sOcarinaNoteAPrimG = 150;
+    sOcarinaNoteAPrimB = 255;
     sOcarinaNoteAEnvR = 10;
     sOcarinaNoteAEnvG = 10;
     sOcarinaNoteAEnvB = 10;
@@ -491,16 +491,16 @@ void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
 
 void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconPrimColors[][3] = {
-        { 0, 200, 80 },
-        { 50, 255, 130 },
+        { 4, 84, 204 },
+        { 45, 125, 250 },
     };
     static s16 sIconEnvColors[][3] = {
         { 0, 0, 0 },
-        { 0, 255, 130 },
+        { 0, 70, 255 },
     };
     static s16 sIconPrimR = 0;
-    static s16 sIconPrimG = 200;
-    static s16 sIconPrimB = 80;
+    static s16 sIconPrimG = 70;
+    static s16 sIconPrimB = 255;
     static s16 sIconFlashTimer = 12;
     static s16 sIconFlashColorIdx = 0;
     static s16 sIconEnvR = 0;
@@ -1971,12 +1971,12 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
     };
     static s16 sOcarinaNoteAPrimColors[][3] = {
-        { 80, 255, 150 },
-        { 100, 255, 200 },
+        { 80, 150, 255 },
+        { 100, 200, 255 },
     };
     static s16 sOcarinaNoteAEnvColors[][3] = {
         { 10, 10, 10 },
-        { 50, 255, 50 },
+        { 50, 50, 255 },
     };
     static s16 sOcarinaNoteCPrimColors[][3] = {
         { 255, 255, 50 },
@@ -2284,12 +2284,12 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                 sOcarinaNoteFlashTimer--;
                 if (sOcarinaNoteFlashTimer == 0) {
-                    sOcarinaNoteAPrimR = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteAPrimG = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteAPrimB = sOcarinaNoteAPrimColors[sOcarinaNoteFlashColorIdx][2];
-                    sOcarinaNoteAEnvR = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][0];
-                    sOcarinaNoteAEnvG = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][1];
-                    sOcarinaNoteAEnvB = sOcarinaNoteAEnvColors[sOcarinaNoteFlashColorIdx][2];
+                    sOcarinaNoteAPrimR = 70;
+                    sOcarinaNoteAPrimG = 70;
+                    sOcarinaNoteAPrimB = 255;
+                    sOcarinaNoteAEnvR = 50;
+                    sOcarinaNoteAEnvG = 50;
+                    sOcarinaNoteAEnvB = 255;
                     sOcarinaNoteCPrimR = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][0];
                     sOcarinaNoteCPrimG = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][1];
                     sOcarinaNoteCPrimB = sOcarinaNoteCPrimColors[sOcarinaNoteFlashColorIdx][2];
@@ -2901,7 +2901,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                     gDPPipeSync(gfx++);
                     if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
+                        gDPSetPrimColor(gfx++, 0, 0, 81, 135, 221,
                                         sOcarinaNotesAlphaValues[i]);
                         gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
                     } else {

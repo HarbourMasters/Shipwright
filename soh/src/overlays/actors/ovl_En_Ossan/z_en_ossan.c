@@ -2251,7 +2251,7 @@ void EnOssan_DrawCursor(GlobalContext* globalCtx, EnOssan* this, f32 x, f32 y, f
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_oB1.c", 4192);
     if (drawCursor != 0) {
         func_80094520(globalCtx->state.gfxCtx);
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, this->cursorColorR, this->cursorColorG, this->cursorColorB,
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 42, 238,
                         this->cursorColorA);
         gDPLoadTextureBlock_4b(OVERLAY_DISP++, gSelectionCursorTex, G_IM_FMT_IA, 16, 16, 0, G_TX_MIRROR | G_TX_WRAP,
                                G_TX_MIRROR | G_TX_WRAP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
