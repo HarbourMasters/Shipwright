@@ -34,6 +34,7 @@ struct SoHConfigType {
         float gyroDriftX = 0.0f;
         float gyroDriftY = 0.0f;
         bool input_enabled = false;
+        bool dpad_pause_name = false;
     } controller;
 
     // Cheats
