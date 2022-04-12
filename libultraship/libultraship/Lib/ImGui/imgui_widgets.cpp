@@ -1007,7 +1007,7 @@ bool ImGui::ScrollbarEx(const ImRect& bb_frame, ImGuiID id, ImGuiAxis axis, ImS6
     return held;
 }
 
-void ImGui::ImageRotated(ImTextureID tex_id, ImVec2 center, ImVec2 size, float angle) {
+void ImGui::ImageSimple(ImTextureID tex_id, ImVec2 center, ImVec2 size) {
 
     ImGuiWindow* window = GetCurrentWindow();
     if (window->SkipItems)
@@ -1025,10 +1025,10 @@ void ImGui::ImageRotated(ImTextureID tex_id, ImVec2 center, ImVec2 size, float a
     };
     ImVec2 uvs[4] =
     {
-        ImVec2(0.0f, 1.0f),
-        ImVec2(1.0f, 1.0f),
+        ImVec2(0.0f, 0.0f),
         ImVec2(1.0f, 0.0f),
-        ImVec2(0.0f, 0.0f)
+        ImVec2(1.0f, 1.0f),
+        ImVec2(0.0f, 1.0f)
     };
 
     draw_list->AddImageQuad(tex_id, pos[0], pos[1], pos[2], pos[3], uvs[0], uvs[1], uvs[2], uvs[3], IM_COL32_WHITE);

@@ -59,7 +59,10 @@ namespace SohImGui {
     extern Console* console;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
-    void Draw(void);
+    void Draw1(void);
+    void Draw2(void);
+    void Render(void);
+    void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, CommandEntry entry);
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc);
