@@ -172,51 +172,21 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                 pauseCtx->cursorItem[pauseCtx->pageIndex] = phi_s0_2;
                 pauseCtx->cursorSlot[pauseCtx->pageIndex] = sp216;
 
-                switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
-                    case ITEM_KOKIRI_EMERALD:
-                        OTRTextToSpeechCallback("Kokiri Emerald");
-                        break;
-                    case ITEM_GORON_RUBY:
-                        OTRTextToSpeechCallback("Goron Ruby");
-                        break;
-                    case ITEM_ZORA_SAPPHIRE:
-                        OTRTextToSpeechCallback("Zora Sapphire");
-                        break;
-                    case ITEM_MEDALLION_LIGHT:
-                        OTRTextToSpeechCallback("Light Medallion");
-                        break;
-                    case ITEM_MEDALLION_FOREST:
-                        OTRTextToSpeechCallback("Forest Medallion");
-                        break;
-                    case ITEM_MEDALLION_FIRE:
-                        OTRTextToSpeechCallback("Fire Medallion");
-                        break;
-                    case ITEM_MEDALLION_WATER:
-                        OTRTextToSpeechCallback("Water Medallion");
-                        break;
-                    case ITEM_MEDALLION_SHADOW:
-                        OTRTextToSpeechCallback("Shadow Medallion");
-                        break;
-                    case ITEM_MEDALLION_SPIRIT:
-                        OTRTextToSpeechCallback("Spirit Medallion");
-                        break;
-                    case ITEM_GERUDO_CARD:
-                        OTRTextToSpeechCallback("Gerudo Card");
-                        break;
-                    case ITEM_STONE_OF_AGONY:
-                        OTRTextToSpeechCallback("Stone of Agony");
-                        break;
-                    case ITEM_HEART_PIECE:
-                        OTRTextToSpeechCallback("Heart Pieces");
-                        break;
-                    case ITEM_SKULL_TOKEN: {
-                        int tokens = gSaveContext.inventory.gsTokens;
-                        OTRTextToSpeechCallback("Skulltula Tokens");
-                        break;
+                if (CVar_GetS32("gMessageTTS", 0)) {
+                    u8 arg[8]; // at least big enough where no s8 string will overflow
+                    switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
+                        case ITEM_SKULL_TOKEN:
+                            sprintf(arg, "%d", gSaveContext.inventory.gsTokens);
+                            break;
+                        case ITEM_HEART_CONTAINER:
+                            sprintf(arg, "%d of 4", (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C));
+                            break;
+                        default:
+                            arg[0] = '\0';
                     }
-                    default:
-                        OTRTextToSpeechCallback("Unknown Item");
-                        break;
+                    OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                                            pauseCtx->cursorItem[PAUSE_QUEST]),
+                                                                            arg);
                 }
             }
 

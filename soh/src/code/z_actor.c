@@ -763,8 +763,45 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     titleCtx->durationTimer = titleCtx->delayTimer = titleCtx->intensity = titleCtx->alpha = 0;
 }
 
+static u8* sTitleCardText;
+
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height) {
+
+    //TODO: improve
+    char* texturePath = (char*)texture;
+    s16 bossActorId = 0;
+    if (!strcmp(texturePath, "__OTR__objects/object_kingdodongo/gKingDodongoTitleCardTex")) {
+        // gKingDodongoTitleCardTex
+        bossActorId = ACTOR_EN_DODONGO;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_fd/gVolvagiaBossTitleCardTex")) {
+        // gVolvagiaTitleCardTex
+        bossActorId = ACTOR_BOSS_FD;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_ganon/gDorfTitleCardTex")) {
+        // gDorfTitleCardTex
+        bossActorId = ACTOR_BOSS_GANON;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_ganon2/object_ganon2_Tex_021A90")) {
+        // object_ganon2_Tex_021A90
+        bossActorId = ACTOR_BOSS_GANON2;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_goma/gGohmaTitleCardTex")) {
+        // gGohmaTitleCardTex
+        bossActorId = ACTOR_BOSS_GOMA;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_mo/gMorphaTitleCardTex")) {
+        // gMorphaTitleCardTex
+        bossActorId = ACTOR_BOSS_MO;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_sst/gBongoTitleCardTex")) {
+        // gBongoTitleCardTex
+        bossActorId = ACTOR_BOSS_SST;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_tw/gTwinrovaTitleCardTex")) {
+        // gTwinrovaTitleCardTex
+        bossActorId = ACTOR_BOSS_TW;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_bv/gBarinadeTitleCardTex")) {
+        // gBarinadeTitleCardTex
+        bossActorId = ACTOR_BOSS_VA;
+    } else if (!strcmp(texturePath, "__OTR__objects/object_fhg/gPhantomGanonTitleCardTex")) {
+        // gPhantomGanonTitleCardTex
+        bossActorId = ACTOR_EN_FHG;
+    }
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
@@ -776,6 +813,11 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = 0;
+
+    if (bossActorId != 0 && CVar_GetS32("gMessageTTS", 0)) {
+        sTitleCardText = OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                         0x1000 + bossActorId, NULL);
+    }
 }
 
 void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
@@ -993,10 +1035,19 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
     titleCtx->height = height;
     titleCtx->durationTimer = 80;
     titleCtx->delayTimer = delay;
+
+    if (CVar_GetS32("gMessageTTS", 0)) {
+        sTitleCardText =
+            OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", 0x0300 + globalCtx->sceneNum, NULL);
+    }
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     if (DECR(titleCtx->delayTimer) == 0) {
+        if (titleCtx->durationTimer == 80 && CVar_GetS32("gMessageTTS", 0)) {
+            OTRTextToSpeechCallback(sTitleCardText);
+        }
+
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
             Math_StepToS(&titleCtx->intensity, 0, 70);

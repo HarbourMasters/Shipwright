@@ -409,172 +409,25 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_ITEM]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
-            switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
-                case ITEM_STICK:
-                    OTRTextToSpeechCallback("Deku Stick");
-                    break;
-                case ITEM_NUT:
-                    OTRTextToSpeechCallback("Deku Nut");
-                    break;
-                case ITEM_BOMB:
-                    OTRTextToSpeechCallback("Bomb");
-                    break;
-                case ITEM_BOW:
-                    OTRTextToSpeechCallback("Fairy Bow");
-                    break;
-                case ITEM_ARROW_FIRE:
-                    OTRTextToSpeechCallback("Fire Arrow");
-                    break;
-                case ITEM_DINS_FIRE:
-                    OTRTextToSpeechCallback("Din's Fire");
-                    break;
-                case ITEM_SLINGSHOT:
-                    OTRTextToSpeechCallback("Slingshot");
-                    break;
-                case ITEM_OCARINA_FAIRY:
-                    OTRTextToSpeechCallback("Fairy Ocarina");
-                    break;
-                case ITEM_OCARINA_TIME:
-                    OTRTextToSpeechCallback("Ocarina of Time");
-                    break;
-                case ITEM_BOMBCHU:
-                    OTRTextToSpeechCallback("Bombchu");
-                    break;
-                case ITEM_HOOKSHOT:
-                    OTRTextToSpeechCallback("Hookshot");
-                    break;
-                case ITEM_LONGSHOT:
-                    OTRTextToSpeechCallback("Longshot");
-                    break;
-                case ITEM_ARROW_ICE:
-                    OTRTextToSpeechCallback("Ice Arrow");
-                    break;
-                case ITEM_FARORES_WIND:
-                    OTRTextToSpeechCallback("Farore's Wind");
-                    break;
-                case ITEM_BOOMERANG:
-                    OTRTextToSpeechCallback("Boomerang");
-                    break;
-                case ITEM_LENS:
-                    OTRTextToSpeechCallback("Lens of Truth");
-                    break;
-                case ITEM_BEAN:
-                    OTRTextToSpeechCallback("Magic Bean");
-                    break;
-                case ITEM_HAMMER:
-                    OTRTextToSpeechCallback("Megaton Hammer");
-                    break;
-                case ITEM_ARROW_LIGHT:
-                    OTRTextToSpeechCallback("Light Arrow");
-                    break;
-                case ITEM_NAYRUS_LOVE:
-                    OTRTextToSpeechCallback("Nayru's Love");
-                    break;
-                case ITEM_POTION_GREEN:
-                    OTRTextToSpeechCallback("Bottled Green Potion");
-                    break;
-                case ITEM_POTION_RED:
-                    OTRTextToSpeechCallback("Bottled Red Potion");
-                    break;
-                case ITEM_POTION_BLUE:
-                    OTRTextToSpeechCallback("Bottled Blue Potion");
-                    break;
-                case ITEM_MILK:
-                    OTRTextToSpeechCallback("Bottled Lon Lon Milk");
-                    break;
-                case ITEM_MILK_HALF:
-                    OTRTextToSpeechCallback("Bottled Lon Lon Milk (Half)");
-                    break;
-                case ITEM_FAIRY:
-                    OTRTextToSpeechCallback("Bottled Fairy");
-                    break;
-                case ITEM_BUG:
-                    OTRTextToSpeechCallback("Bottled Bugs");
-                    break;
-                case ITEM_FISH:
-                    OTRTextToSpeechCallback("Bottled Fish");
-                    break;
-                case ITEM_POE:
-                    OTRTextToSpeechCallback("Bottled Poe");
-                    break;
-                case ITEM_BIG_POE:
-                    OTRTextToSpeechCallback("Bottled Big Poe");
-                    break;
-                case ITEM_BLUE_FIRE:
-                    OTRTextToSpeechCallback("Bottled Blue Fire");
-                    break;
-                case ITEM_LETTER_RUTO:
-                    OTRTextToSpeechCallback("Bottled Ruto's Letter");
-                    break;
-                case ITEM_WEIRD_EGG:
-                    OTRTextToSpeechCallback("Weird Egg");
-                    break;
-                case ITEM_CHICKEN:
-                    OTRTextToSpeechCallback("Cucco");
-                    break;
-                case ITEM_LETTER_ZELDA:
-                    OTRTextToSpeechCallback("Zelda's Letter");
-                    break;
-                case ITEM_MASK_KEATON:
-                    OTRTextToSpeechCallback("Keaton Mask");
-                    break;
-                case ITEM_MASK_SKULL:
-                    OTRTextToSpeechCallback("Skull Mask");
-                    break;
-                case ITEM_MASK_SPOOKY:
-                    OTRTextToSpeechCallback("Spooky Mask");
-                    break;
-                case ITEM_MASK_BUNNY:
-                    OTRTextToSpeechCallback("Bunny Hood");
-                    break;
-                case ITEM_MASK_TRUTH:
-                    OTRTextToSpeechCallback("Mask of Truth");
-                    break;
-                case ITEM_MASK_GORON:
-                    OTRTextToSpeechCallback("Goron Mask");
-                    break;
-                case ITEM_MASK_ZORA:
-                    OTRTextToSpeechCallback("Zora Mask");
-                    break;
-                case ITEM_MASK_GERUDO:
-                    OTRTextToSpeechCallback("Gerudo Mask");
-                    break;
-                case ITEM_POCKET_EGG:
-                    OTRTextToSpeechCallback("Pocket Egg");
-                    break;
-                case ITEM_POCKET_CUCCO:
-                    OTRTextToSpeechCallback("Pocket Cucco");
-                    break;
-                case ITEM_COJIRO:
-                    OTRTextToSpeechCallback("Cojiro");
-                    break;
-                case ITEM_ODD_MUSHROOM:
-                    OTRTextToSpeechCallback("Odd Mushroom");
-                    break;
-                case ITEM_ODD_POTION:
-                    OTRTextToSpeechCallback("Odd Potion");
-                    break;
-                case ITEM_SAW:
-                    OTRTextToSpeechCallback("Poacher's Saw");
-                    break;
-                case ITEM_PRESCRIPTION:
-                    OTRTextToSpeechCallback("Prescription");
-                    break;
-                case ITEM_FROG:
-                    OTRTextToSpeechCallback("Eyeball Frog");
-                    break;
-                case ITEM_EYEDROPS:
-                    OTRTextToSpeechCallback("World's Finest Eye Drops");
-                    break;
-                case ITEM_CLAIM_CHECK:
-                    OTRTextToSpeechCallback("Claim Check");
-                    break;
-                case ITEM_BOTTLE:
-                    OTRTextToSpeechCallback("Empty Bottle");
-                    break;
-                default:
-                    OTRTextToSpeechCallback("Unknown Item");
-                    break;
+            if (CVar_GetS32("gMessageTTS", 0)) {
+                u8 arg[8]; // at least big enough where no s8 string will overflow
+                switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
+                    case ITEM_STICK:
+                    case ITEM_NUT:
+                    case ITEM_BOMB:
+                    case ITEM_BOMBCHU:
+                    case ITEM_SLINGSHOT:
+                    case ITEM_BOW:
+                        sprintf(arg, "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
+                        break;
+                    case ITEM_BEAN:
+                        sprintf(arg, "%d", BEANS_BOUGHT);
+                        break;
+                    default:
+                        arg[0] = '\0';
+                }
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                    pauseCtx->cursorItem[PAUSE_ITEM]), arg);
             }
         }
     } else if ((pauseCtx->unk_1E4 == 3) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
