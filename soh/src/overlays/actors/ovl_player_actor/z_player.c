@@ -11011,6 +11011,14 @@ void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     gSaveContext.linkAge = globalCtx->linkAgeOnLoad;
 }
 
+static s16 sDPadRotationLUT[3][3] = {
+    { -8000, 0, 8000 },
+    { -16000, 0, 16000 },
+    { -24000, 32000, 24000 }
+};
+static Vec3f sRelativeNorthPos;
+static f32 sLookNoisePitch;
+
 s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
     s32 temp1;
     s16 temp2;
@@ -11023,6 +11031,23 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         temp2 = sControlInput->rel.stick_x * -16.0f;
         temp2 = CLAMP(temp2, -3000, 3000);
         this->actor.focus.rot.y += temp2;
+
+        if (CVar_GetS32("gDPadLook", 0) && (sControlInput->press.button & (BTN_DUP | BTN_DRIGHT | BTN_DDOWN | BTN_DLEFT))) {
+            s16 x = !!(sControlInput->cur.button & BTN_DRIGHT) - !!(sControlInput->cur.button & BTN_DLEFT);
+            s16 y = !!(sControlInput->cur.button & BTN_DUP) - !!(sControlInput->cur.button & BTN_DDOWN);
+            s16 rot = sDPadRotationLUT[y + 1][x + 1];
+
+            this->actor.shape.rot.y = rot;
+            this->actor.focus.rot.y = rot;
+
+            sRelativeNorthPos.x = Math_SinS(rot) * -100.0f;
+            sRelativeNorthPos.y = 0;
+            sRelativeNorthPos.z = Math_CosS(rot) * 100.0f;
+
+            sLookNoisePitch = 1.5f;
+
+            Audio_PlaySoundGeneral(NA_SE_OC_REVENGE, &sRelativeNorthPos, 4, &sLookNoisePitch, &D_801333E0, &D_801333E8);
+        }
     }
     else {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
