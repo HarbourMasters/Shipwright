@@ -3059,7 +3059,11 @@ void Message_TTS_Update(GlobalContext* globalCtx) {
     } else if (msgCtx->msgMode == MSGMODE_TEXT_DISPLAYING || msgCtx->msgMode == MSGMODE_OCARINA_STARTING ||
                msgCtx->msgMode == MSGMODE_OCARINA_PLAYING || msgCtx->msgMode == MSGMODE_TEXT_AWAIT_NEXT ||
                msgCtx->msgMode == MSGMODE_TEXT_DONE || msgCtx->msgMode == MSGMODE_DISPLAY_SONG_PLAYED_TEXT ||
-               msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK) {
+               msgCtx->msgMode == MSGMODE_TEXT_DELAYED_BREAK || msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT_BEGIN ||
+               msgCtx->msgMode == MSGMODE_SONG_PLAYED_ACT || msgCtx->msgMode == MSGMODE_SONG_PLAYBACK_STARTING ||
+               msgCtx->msgMode == MSGMODE_SONG_PLAYBACK || msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_STARTING ||
+               msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_SELECT_INSTRUMENT ||
+               msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION) {
         if (sTtsHasNewMessage == 1) {
             sTtsHasNewMessage = 0;
             sTtsHasMessage = 1;
