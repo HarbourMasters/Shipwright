@@ -1260,6 +1260,193 @@ Vec3f D_801261E0[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+
+#define AIMCUE_COLLIDER_COUNT 5
+static ColliderQuad sAimCueCollider[AIMCUE_COLLIDER_COUNT];
+static s32 sAimSurfaceHookshotable;
+static s32 sAimLastHookshotableState;
+
+static ColliderQuadInit sSensingColliderInit = {
+    {
+        COLTYPE_NONE,
+        AT_ON | AT_TYPE_PLAYER,
+        AC_NONE,
+        OC1_ON | OC1_TYPE_ALL,
+        OC2_TYPE_2 | OC2_TYPE_1,
+        COLSHAPE_QUAD,
+    },
+    {
+        ELEMTYPE_SENSING,
+        { 0xFFFFFFFF, 0x00, 0x00 },
+        { 0xFFFFFFFF, 0x00, 0x00 },
+        TOUCH_ON | TOUCH_NEAREST | TOUCH_SFX_NONE,
+        BUMP_NONE,
+        OCELEM_NONE,
+    },
+    { { { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 0.0f } } },
+};
+
+void Player_InitAimCueCollision(Player* this, GlobalContext* globalCtx) {
+    for (int i = 0; i < AIMCUE_COLLIDER_COUNT; i++) {
+        Collider_InitQuad(globalCtx, &sAimCueCollider[i]);
+        Collider_SetQuad(globalCtx, &sAimCueCollider[i], NULL, &sSensingColliderInit);
+    }
+}
+
+void Player_UpdateAimCue(Player* this, GlobalContext* globalCtx) {
+    Actor* hitActor = NULL;
+
+    for (int i = 0; i < AIMCUE_COLLIDER_COUNT; i++) {
+        if (sAimCueCollider[i].base.atFlags & AT_HIT) {
+            sAimCueCollider[i].base.atFlags &= ~AC_HIT;
+
+            if (hitActor == NULL && sAimCueCollider[i].base.at != NULL) {
+                hitActor = sAimCueCollider[i].base.at;
+            } else {
+                continue;
+            }
+
+            if (i != 0 && (globalCtx->gameplayFrames % 1) != 0) {
+                continue;
+            }
+
+            u16 soundEffect = (i == 0) ? NA_SE_SY_HITPOINT_ALARM : NA_SE_SY_FSEL_CURSOR;
+
+            if (hitActor->category == ACTORCAT_ENEMY || hitActor->category == ACTORCAT_BOSS) {
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else if (hitActor->category == ACTORCAT_SWITCH) {
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else if (hitActor->category == ACTORCAT_NPC) {
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else if (hitActor->category == ACTORCAT_PROP &&
+                           (hitActor->id == ACTOR_EN_DNT_NOMAL && hitActor->params == 0) ||
+                       hitActor->id == ACTOR_EN_G_SWITCH) {
+                // lost woods slingshot target, shooting gallery rupees
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            }
+        }
+    }
+
+    if (sAimSurfaceHookshotable != sAimLastHookshotableState) {
+        if (sAimSurfaceHookshotable) {
+            Audio_PlaySoundGeneral(NA_SE_SY_LOCK_ON_HUMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else {
+            Audio_PlaySoundGeneral(NA_SE_SY_LOCK_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+        sAimLastHookshotableState = sAimSurfaceHookshotable;
+    }
+}
+
+void Player_ComputeAimCue(Player* this, GlobalContext* globalCtx, s32 limbIndex) {
+    if (this->heldItemId == 0) {
+        return;
+    }
+
+    bool isHoldingHookshotType = Player_HoldsHookshot(this);
+
+    if (!isHoldingHookshotType && limbIndex != PLAYER_LIMB_L_HAND ||
+        isHoldingHookshotType && limbIndex != PLAYER_LIMB_R_HAND) {
+        return;
+    }
+
+    sAimSurfaceHookshotable = 0;
+    
+    bool isCharged = (this->stateFlags1 & 0x200) && (this->unk_834 <= 10) && (this->unk_860 >= 0);
+    bool isAiming = !!func_8002DD78(this);
+    if (!isAiming || !(isCharged || isHoldingHookshotType)) {
+        return;
+    }
+
+    CollisionPoly* polyResult;
+    s32 bgId;
+
+    Matrix_Push();
+
+    f32 distance;
+    Vec3f vecCenter;
+    Vec3f vecCenterFar;
+    Vec3f vecA;
+    Vec3f vecB;
+    Vec3f vecC;
+    Vec3f vecD;
+    Vec3f vecResult;
+    Vec3f vecZero = { 0.0f, 0.0f, 0.0f };
+    Vec3f vecLeft = { 0.0f, 50.0f, 0.0f };
+    Vec3f vecRight = { 0.0f, -50.0f, 0.0f };
+
+    if (isHoldingHookshotType) {
+        if (this->heldItemActionParam == PLAYER_AP_HOOKSHOT) {
+            distance = 38600.0f;
+        } else {
+            distance = 77600.0f;
+        }
+        Matrix_Translate(0.0f, 150.0f, -100.0f, MTXMODE_APPLY);
+    } else {
+        distance = 200000.0f;
+        Matrix_Translate(-550.0f, -50.0f, -100.0f, MTXMODE_APPLY);
+    }
+
+    Matrix_MultVec3f(&vecZero, &vecCenter);
+    vecZero.z = distance;
+    Matrix_MultVec3f(&vecZero, &vecCenterFar);
+
+    if (BgCheck_AnyLineTest3(&globalCtx->colCtx, &vecCenter, &vecCenterFar, &vecResult, &polyResult, 1, 1, 1, 1,
+                             &bgId)) {
+        sAimSurfaceHookshotable =
+            isHoldingHookshotType && SurfaceType_IsHookshotSurface(&globalCtx->colCtx, polyResult, bgId);
+        distance *= Math_Vec3f_DistXYZ(&vecCenter, &vecResult) / Math_Vec3f_DistXYZ(&vecCenter, &vecCenterFar);
+    }
+
+    if (!isCharged) {
+        Matrix_Pop();
+        return;
+    }
+
+    Matrix_MultVec3f(&vecLeft, &vecA);
+    Matrix_MultVec3f(&vecRight, &vecB);
+
+    vecLeft.z = distance;
+    vecRight.z = distance;
+
+    Matrix_MultVec3f(&vecLeft, &vecC);
+    Matrix_MultVec3f(&vecRight, &vecD);
+
+    Collider_SetQuadVertices(&sAimCueCollider[0], &vecA, &vecB, &vecC, &vecD);
+    CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &sAimCueCollider[0].base);
+
+    Matrix_Scale(500.0f, 500.0f, 1.0f, MTXMODE_APPLY);
+
+    f32 rotateOffset = (globalCtx->gameplayFrames % 4) * M_PI / 16;
+    Matrix_RotateZ(rotateOffset, MTXMODE_APPLY);
+
+    for (int i = 1; i < AIMCUE_COLLIDER_COUNT; i++) {
+        if (i > 1) {
+            Matrix_RotateZ(M_PI / 4, MTXMODE_APPLY);
+        }
+
+        vecLeft.z = 0;
+        vecLeft.y = 0.5;
+        vecRight.z = 0;
+        vecRight.y = -0.5;
+
+        Matrix_MultVec3f(&vecLeft, &vecA);
+        Matrix_MultVec3f(&vecRight, &vecB);
+
+        vecLeft.z = distance * 1.2;
+        vecLeft.y = sqrtf(distance) * 0.2f;
+        vecRight.z = distance * 1.2;
+        vecRight.y = sqrtf(distance) * -0.2f;
+
+        Matrix_MultVec3f(&vecLeft, &vecC);
+        Matrix_MultVec3f(&vecRight, &vecD);
+
+        Collider_SetQuadVertices(&sAimCueCollider[i], &vecA, &vecB, &vecC, &vecD);
+        CollisionCheck_SetAT(globalCtx, &globalCtx->colChkCtx, &sAimCueCollider[i].base);
+    }
+
+    Matrix_Pop();
+}
+
 void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 
@@ -1413,9 +1600,11 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                     heldActor->shape.rot = heldActor->world.rot;
 
                     if (func_8002DD78(this) != 0) {
+                        Matrix_Push();
                         Matrix_Translate(500.0f, 300.0f, 0.0f, MTXMODE_APPLY);
                         Player_DrawHookshotReticle(
                             globalCtx, this, (this->heldItemActionParam == PLAYER_AP_HOOKSHOT) ? 38600.0f : 77600.0f);
+                        Matrix_Pop();
                     }
                 }
             }
@@ -1451,6 +1640,10 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
 
             Actor_SetFeetPos(&this->actor, limbIndex, PLAYER_LIMB_L_FOOT, vec, PLAYER_LIMB_R_FOOT, vec);
         }
+    }
+
+    if (CVar_GetS32("gAimAudioCues", 0)) {
+        Player_ComputeAimCue(this, globalCtx, limbIndex);
     }
 }
 

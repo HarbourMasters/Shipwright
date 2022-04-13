@@ -1702,23 +1702,25 @@ s32 CollisionCheck_SetATvsAC(GlobalContext* globalCtx, Collider* at, ColliderInf
             at->actor->colChkInfo.atHitEffect = acInfo->bumper.effect;
         }
     }
-    ac->acFlags |= AC_HIT;
-    ac->ac = at->actor;
-    acInfo->acHit = at;
-    acInfo->acHitInfo = atInfo;
-    acInfo->bumperFlags |= BUMP_HIT;
-    if (ac->actor != NULL) {
-        ac->actor->colChkInfo.acHitEffect = atInfo->toucher.effect;
-    }
-    acInfo->bumper.hitPos.x = hitPos->x;
-    acInfo->bumper.hitPos.y = hitPos->y;
-    acInfo->bumper.hitPos.z = hitPos->z;
-    if (!(atInfo->toucherFlags & TOUCH_AT_HITMARK) && ac->colType != COLTYPE_METAL && ac->colType != COLTYPE_WOOD &&
-        ac->colType != COLTYPE_HARD) {
-        acInfo->bumperFlags |= BUMP_DRAW_HITMARK;
-    } else {
-        CollisionCheck_HitEffects(globalCtx, at, atInfo, ac, acInfo, hitPos);
-        atInfo->toucherFlags |= TOUCH_DREW_HITMARK;
+    if (atInfo->elemType != ELEMTYPE_SENSING) {
+        ac->acFlags |= AC_HIT;
+        ac->ac = at->actor;
+        acInfo->acHit = at;
+        acInfo->acHitInfo = atInfo;
+        acInfo->bumperFlags |= BUMP_HIT;
+        if (ac->actor != NULL) {
+            ac->actor->colChkInfo.acHitEffect = atInfo->toucher.effect;
+        }
+        acInfo->bumper.hitPos.x = hitPos->x;
+        acInfo->bumper.hitPos.y = hitPos->y;
+        acInfo->bumper.hitPos.z = hitPos->z;
+        if (!(atInfo->toucherFlags & TOUCH_AT_HITMARK) && ac->colType != COLTYPE_METAL && ac->colType != COLTYPE_WOOD &&
+            ac->colType != COLTYPE_HARD) {
+            acInfo->bumperFlags |= BUMP_DRAW_HITMARK;
+        } else {
+            CollisionCheck_HitEffects(globalCtx, at, atInfo, ac, acInfo, hitPos);
+            atInfo->toucherFlags |= TOUCH_DREW_HITMARK;
+        }
     }
     return 1;
 }

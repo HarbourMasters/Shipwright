@@ -269,7 +269,8 @@ typedef enum {
     /* 4 */ ELEMTYPE_UNK4,
     /* 5 */ ELEMTYPE_UNK5,
     /* 6 */ ELEMTYPE_UNK6,
-    /* 7 */ ELEMTYPE_UNK7
+    /* 7 */ ELEMTYPE_UNK7,
+    /* 8 */ ELEMTYPE_SENSING
 } ElementType;
 
 #define AT_NONE 0 // No flags set. Cannot have AT collisions when set as AT
