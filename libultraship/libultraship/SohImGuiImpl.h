@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Lib/ImGui/imgui.h"
 #include "SohConsole.h"
 
 struct GameAsset {
@@ -63,7 +64,7 @@ namespace SohImGui {
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, CommandEntry entry);
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc);
-    void LoadResource(const std::string& name, const std::string& path);
+    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
 }

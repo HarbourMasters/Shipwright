@@ -179,21 +179,46 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadResource(const std::string& name, const std::string& path) {
+    void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
         const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
 
-        if (res->texType != Ship::TextureType::RGBA32bpp) {
+        std::vector<uint8_t> texBuffer;
+        texBuffer.reserve(res->width * res->height * 4);
+
+        switch (res->texType) {
+        case Ship::TextureType::RGBA32bpp:
+            texBuffer.assign(res->imageData, res->imageData + (res->width * res->height * 4));
+            break;
+        case Ship::TextureType::GrayscaleAlpha8bpp:
+            for (int32_t i = 0; i < res->width * res->height; i++) {
+                uint8_t ia = res->imageData[i];
+                uint8_t color = ((ia >> 4) & 0xF) * 255 / 15;
+                uint8_t alpha = (ia & 0xF) * 255 / 15;
+                texBuffer.push_back(color);
+                texBuffer.push_back(color);
+                texBuffer.push_back(color);
+                texBuffer.push_back(alpha);
+            }
+            break;
+        default:
             // TODO convert other image types
             SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
             return;
+        }
+
+        for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
+            texBuffer[pixel * 4 + 0] *= tint.x;
+            texBuffer[pixel * 4 + 1] *= tint.y;
+            texBuffer[pixel * 4 + 2] *= tint.z;
+            texBuffer[pixel * 4 + 3] *= tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
 
         api->select_texture(0, asset->textureId);
         api->set_sampler_parameters(0, false, 0, 0);
-        api->upload_texture(res->imageData, res->width, res->height);
+        api->upload_texture(texBuffer.data(), res->width, res->height);
 
         DefaultAssets[name] = asset;
     }
