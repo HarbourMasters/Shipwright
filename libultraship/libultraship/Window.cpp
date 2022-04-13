@@ -279,21 +279,22 @@ namespace Ship {
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }
 
-    void task1(const char textToRead[])
+    void task1(const std::string & textToRead)
     {
         const int w = 512;
         int* wp = const_cast <int*> (&w);
-        *wp = strlen(textToRead);
+        *wp = strlen(textToRead.c_str());
 
         wchar_t wtext[w];
-        mbstowcs(wtext, textToRead, strlen(textToRead) + 1);
+        mbstowcs(wtext, textToRead.c_str(), strlen(textToRead.c_str()) + 1);
 
         pVoice->Speak(wtext, SPF_IS_XML | SPF_ASYNC | SPF_PURGEBEFORESPEAK, NULL);
     }
 
     void Window::ReadText(const char textToRead[])
     {
-        std::thread t1(task1, textToRead);
+        std::string textCopy(textToRead);
+        std::thread t1(task1, textCopy);
         t1.detach();
     }
 
