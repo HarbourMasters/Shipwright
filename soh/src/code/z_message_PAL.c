@@ -3011,6 +3011,7 @@ void Message_Draw(GlobalContext* globalCtx) {
 
 void Message_TTS_Decode(u8* srcBuf, u8* dstBuf, u32 srcOffset, u32 size) {
     u32 dstIdx = 0;
+    bool isListingChoices = false;
 
     for (u32 i = 0; i < size; i++) {
         u8 currChar = srcBuf[i + srcOffset];
@@ -3018,7 +3019,12 @@ void Message_TTS_Decode(u8* srcBuf, u8* dstBuf, u32 srcOffset, u32 size) {
         if (currChar < ' ') {
             switch (currChar) {
                 case MESSAGE_NEWLINE:
-                    dstBuf[dstIdx++] = ' ';
+                    dstBuf[dstIdx++] = (isListingChoices) ? '\n' : ' ';
+                    break;
+                case MESSAGE_THREE_CHOICE:
+                case MESSAGE_TWO_CHOICE:
+                    dstBuf[dstIdx++] = '\n';
+                    isListingChoices = true;
                     break;
                 case MESSAGE_COLOR:
                 case MESSAGE_SHIFT:
