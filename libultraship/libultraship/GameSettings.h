@@ -36,6 +36,7 @@ struct SoHConfigType {
         bool input_enabled = false;
         bool dpad_pause_name = false;
         bool dpad_ocarina_text = false;
+        bool dpad_shop = false;
     } controller;
 
     // Cheats

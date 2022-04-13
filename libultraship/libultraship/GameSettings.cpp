@@ -95,6 +95,9 @@ namespace Game {
 
         Settings.controller.dpad_ocarina_text = stob(Conf[ControllerSection]["dpad_ocarina_text"]);
         CVar_SetS32("gDpadOcarinaText", Settings.controller.dpad_ocarina_text);
+
+        Settings.controller.dpad_shop = stob(Conf[ControllerSection]["dpad_shop"]);
+        CVar_SetS32("gDpadShop", Settings.controller.dpad_shop);
         
         // Cheats
         Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
@@ -157,6 +160,7 @@ namespace Game {
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
         Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
         Conf[ControllerSection]["dpad_ocarina_text"] = std::to_string(Settings.controller.dpad_ocarina_text);
+        Conf[ControllerSection]["dpad_shop"] = std::to_string(Settings.controller.dpad_shop);
 
         // Cheats
         Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);
