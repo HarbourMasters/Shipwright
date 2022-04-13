@@ -268,9 +268,7 @@ namespace SohImGui {
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::Begin("Main - Deck", nullptr, window_flags);
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
+        ImGui::PopStyleVar(3);
 
         ImVec2 top_left_pos = ImGui::GetWindowPos();
 
@@ -473,9 +471,7 @@ namespace SohImGui {
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
         ImGui::Begin("OoT Master Quest", nullptr, flags);
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
-        ImGui::PopStyleVar();
+        ImGui::PopStyleVar(3);
         ImGui::PopStyleColor();
 
         ImVec2 main_pos = ImGui::GetWindowPos();
