@@ -293,6 +293,9 @@ namespace Ship {
 
     void Window::ReadText(const char textToRead[])
     {
+        if (textToRead == nullptr) {
+            return;
+        }
         std::string textCopy(textToRead);
         std::thread t1(task1, textCopy);
         t1.detach();
