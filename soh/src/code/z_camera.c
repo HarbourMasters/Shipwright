@@ -1408,7 +1408,72 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
+s32 Camera_Blind(Camera* camera) {
+    Normal1* norm1 = (Normal1*)camera->paramData;
+
+    f32 playerHeight = Player_GetHeight(camera->player);
+    f32 sp94;
+    CamColChk bgChk;
+
+    sCameraInterfaceFlags = norm1->interfaceFlags;
+
+    if (RELOAD_PARAMS) {
+        VecSph eyeAdjustment1;
+        Vec3f oldCamRot;
+        oldCamRot.x = camera->player->actor.world.pos.x;
+        oldCamRot.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
+        oldCamRot.z = camera->player->actor.world.pos.z;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eye);
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eyeNext);
+
+        CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
+        f32 yNormal = (1.0f + PCT(R_CAM_YOFFSET_NORM) - PCT(R_CAM_YOFFSET_NORM) * (68.0f / playerHeight));
+        sp94 = yNormal * PCT(playerHeight);
+
+        norm1->yOffset = NEXTSETTING * sp94;
+        norm1->distMin = NEXTSETTING * sp94;
+        norm1->distMax = NEXTSETTING * sp94;
+        norm1->pitchTarget = DEGF_TO_BINANG(NEXTSETTING);
+        norm1->unk_0C = NEXTSETTING;
+        norm1->unk_10 = NEXTSETTING;
+        norm1->unk_14 = NEXTPCT;
+        norm1->fovTarget = NEXTSETTING;
+        norm1->atLERPScaleMax = NEXTPCT;
+        norm1->interfaceFlags = NEXTSETTING;
+    }
+
+    if (R_RELOAD_CAM_PARAMS) {
+        Camera_CopyPREGToModeValues(camera);
+    }
+
+    VecSph eyeAdjustment;
+
+    camera->animState = 1;
+
+    camera->at.x = camera->player->actor.world.pos.x;
+    camera->at.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
+    camera->at.z = camera->player->actor.world.pos.z;
+
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eyeNext);
+
+    camera->dist = eyeAdjustment.r = 250.0f;
+
+    eyeAdjustment.yaw = 0;
+    eyeAdjustment.pitch = 9000;
+
+    Camera_Vec3fVecSphGeoAdd(&camera->eye, &camera->at, &eyeAdjustment);
+    Camera_Vec3fVecSphGeoAdd(&camera->eyeNext, &camera->at, &eyeAdjustment);
+
+    return 1;
+}
+
 s32 Camera_Normal1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1636,6 +1701,11 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1802,6 +1872,11 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1953,6 +2028,11 @@ s32 Camera_Normal0(Camera* camera) {
 }
 
 s32 Camera_Parallel1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2136,6 +2216,11 @@ s32 Camera_Parallel2(Camera* camera) {
 }
 
 s32 Camera_Parallel3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
     s16 val = NEXTSETTING;
 
@@ -2162,6 +2247,11 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2307,6 +2397,11 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2489,6 +2584,11 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2681,6 +2781,11 @@ s32 Camera_Jump0(Camera* camera) {
 }
 
 s32 Camera_Battle1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2946,6 +3051,11 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3022,6 +3132,11 @@ s32 Camera_Battle0(Camera* camera) {
 
 // Targeting non-enemy
 s32 Camera_KeepOn1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3265,6 +3380,11 @@ s32 Camera_KeepOn2(Camera* camera) {
  * Talking to an NPC
  */
 s32 Camera_KeepOn3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3451,6 +3571,11 @@ s32 Camera_KeepOn3(Camera* camera) {
 }
 
 s32 Camera_KeepOn4(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     static Vec3f D_8015BD50;
     static Vec3f D_8015BD60;
     static Vec3f D_8015BD70;
@@ -3748,6 +3873,11 @@ s32 Camera_KeepOn4(Camera* camera) {
  * Talking in a pre-rendered room
  */
 s32 Camera_KeepOn0(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* eyeNext = &camera->eyeNext;
     Vec3f* at = &camera->at;
@@ -3822,6 +3952,11 @@ s32 Camera_KeepOn0(Camera* camera) {
 }
 
 s32 Camera_Fixed1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Fixed1* fixd1 = (Fixed1*)camera->paramData;
     Fixed1Anim* anim = &fixd1->anim;
     s32 pad;
@@ -3894,6 +4029,11 @@ s32 Camera_Fixed1(Camera* camera) {
 }
 
 s32 Camera_Fixed2(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3973,6 +4113,11 @@ s32 Camera_Fixed2(Camera* camera) {
  * Camera's position is fixed, does not move, or rotate
  */
 s32 Camera_Fixed3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4044,6 +4189,11 @@ s32 Camera_Fixed3(Camera* camera) {
  * specified in the scene.
  */
 s32 Camera_Fixed4(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4132,6 +4282,11 @@ s32 Camera_Subj2(Camera* camera) {
  * First person view
  */
 s32 Camera_Subj3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4253,6 +4408,11 @@ s32 Camera_Subj3(Camera* camera) {
 }
 
 s32 Camera_Subj4(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* eyeNext = &camera->eyeNext;
     Vec3f* at = &camera->at;
@@ -4400,6 +4560,11 @@ s32 Camera_Data3(Camera* camera) {
 }
 
 s32 Camera_Data4(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     s32 pad2[2];
     Data4* data4 = (Data4*)camera->paramData;
     VecSph eyeAtOffset;
@@ -4476,6 +4641,11 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4569,6 +4739,11 @@ s32 Camera_Unique1(Camera* camera) {
 }
 
 s32 Camera_Unique2(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4648,6 +4823,11 @@ s32 Camera_Unique2(Camera* camera) {
 }
 
 s32 Camera_Unique3(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     VecSph sp60;
     f32 playerHeight;
     Unique3* uniq3 = (Unique3*)camera->paramData;
@@ -4760,6 +4940,11 @@ s32 Camera_Unique3(Camera* camera) {
  * of the eye to the player
  */
 s32 Camera_Unique0(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     f32 yOffset;
     CameraModeValue* values;
     Player* player;
@@ -4889,6 +5074,11 @@ s32 Camera_Unique5(Camera* camera) {
  * Eye/at positions are updated via Camera_SetParam
  */
 s32 Camera_Unique6(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Unique6* uniq6 = (Unique6*)camera->paramData;
     CameraModeValue* values;
     Vec3f sp2C;
@@ -4935,6 +5125,11 @@ s32 Camera_Unique6(Camera* camera) {
  * camera rotates to follow player
  */
 s32 Camera_Unique7(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     s32 pad;
     Unique7* uniq7 = (Unique7*)camera->paramData;
     CameraModeValue* values;
@@ -5002,6 +5197,11 @@ s32 Camera_Unique8(Camera* camera) {
 }
 
 s32 Camera_Unique9(Camera* camera) {
+    if (CVar_GetS32("gBlindMode", 0)) {
+        Camera_Blind(camera);
+        return;
+    }
+
     Vec3f atTarget;
     Vec3f eyeTarget;
     Unique9* uniq9 = &ONEPOINT_CS_INFO(camera)->uniq9;
