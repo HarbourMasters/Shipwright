@@ -517,6 +517,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Gl
         targetCtx->activeCategory = actorCategory;
         targetCtx->unk_40 = 1.0f;
 
+        /*
         if (CVar_GetS32("gBlindMode", 0)) {
             u16 targetSound;
 
@@ -554,6 +555,7 @@ void func_8002C7BC(TargetContext* targetCtx, Player* player, Actor* actorArg, Gl
                 Audio_PlaySoundGeneral(targetSound, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             }
         }
+        */
     }
 
     if (unkActor == NULL) {

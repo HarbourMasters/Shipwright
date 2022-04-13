@@ -1619,16 +1619,18 @@ s32 Camera_Normal1(Camera* camera) {
 
     if (anim->startSwingTimer <= 0) {
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = CVar_GetS32("gBlindMode", 0) != 0 ? atEyeNextGeo.yaw
+                                                              :
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else if (anim->swing.unk_18 != 0) {
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = CVar_GetS32("gBlindMode", 0) != 0 ? atEyeNextGeo.yaw
+                                                              :
             Camera_LERPCeilS(anim->swing.unk_16, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
         eyeAdjustment.pitch =
             Camera_LERPCeilS(anim->swing.unk_14, atEyeNextGeo.pitch, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else {
         // rotate yaw to follow player.
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = 
             Camera_CalcDefaultYaw(camera, atEyeNextGeo.yaw, camera->playerPosRot.rot.y, norm1->unk_14, sp94);
         eyeAdjustment.pitch =
             Camera_CalcDefaultPitch(camera, atEyeNextGeo.pitch, norm1->pitchTarget, anim->slopePitchAdj);
