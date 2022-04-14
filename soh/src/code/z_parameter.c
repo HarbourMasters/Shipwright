@@ -3152,7 +3152,6 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         func_80094520(globalCtx->state.gfxCtx);
 
-<<<<<<< HEAD
         if (fullUi) {
             // Rupee Icon
             Color_RGB8 rupeeColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorRupeeIcon);
