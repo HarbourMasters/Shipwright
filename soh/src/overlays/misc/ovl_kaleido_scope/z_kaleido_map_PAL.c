@@ -208,6 +208,15 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
         }
     }
 
+    if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_MAP]) {
+        if (CVar_GetS32("gMessageTTS", 0)) {
+            if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText(
+                    "text/accessibility_text/accessibility_text_eng", pauseCtx->cursorItem[PAUSE_MAP], NULL));
+            }
+        }
+    }
+
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA, G_CC_MODULATEIA);
@@ -482,6 +491,11 @@ void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_WORLD_MAP]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+
+            if (CVar_GetS32("gMessageTTS", 0)) {
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText(
+                    "text/accessibility_text/accessibility_text_eng", 0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP], NULL));
+            }
         }
     }
 

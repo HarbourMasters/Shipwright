@@ -508,101 +508,10 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_EQUIP]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-
-            switch (pauseCtx->cursorItem[PAUSE_EQUIP]) {
-                case ITEM_SWORD_KOKIRI:
-                    OTRTextToSpeechCallback("Kokiri Sword");
-                    break;
-                case ITEM_SWORD_MASTER:
-                    OTRTextToSpeechCallback("Master Sword");
-                    break;
-                case ITEM_HEART_PIECE_2:
-                    OTRTextToSpeechCallback("Biggoron's Sword");
-                    break;
-                case ITEM_SWORD_BGS:
-                    OTRTextToSpeechCallback("Giant's Knife");
-                    break;
-                case ITEM_SWORD_KNIFE:
-                    OTRTextToSpeechCallback("Broken Giant's Knife");
-                    break;
-                case ITEM_SHIELD_DEKU:
-                    OTRTextToSpeechCallback("Deku Shield");
-                    break;
-                case ITEM_SHIELD_HYLIAN:
-                    OTRTextToSpeechCallback("Hylian Shield");
-                    break;
-                case ITEM_SHIELD_MIRROR:
-                    OTRTextToSpeechCallback("Mirror Shield");
-                    break;
-                case ITEM_TUNIC_KOKIRI:
-                    OTRTextToSpeechCallback("Kokiri Tunic");
-                    break;
-                case ITEM_TUNIC_GORON:
-                    OTRTextToSpeechCallback("Goron Tunic");
-                    break;
-                case ITEM_TUNIC_ZORA:
-                    OTRTextToSpeechCallback("Zora Tunic");
-                    break;
-                case ITEM_BOOTS_KOKIRI:
-                    OTRTextToSpeechCallback("Kokiri Boots");
-                    break;
-                case ITEM_BOOTS_IRON:
-                    OTRTextToSpeechCallback("Iron Boots");
-                    break;
-                case ITEM_BOOTS_HOVER:
-                    OTRTextToSpeechCallback("Hover Boots");
-                    break;
-                case ITEM_BULLET_BAG_30:
-                    OTRTextToSpeechCallback("Bullet Bag");
-                    break;
-                case ITEM_BULLET_BAG_40:
-                    OTRTextToSpeechCallback("Bigger Bullet Bag");
-                    break;
-                case ITEM_BULLET_BAG_50:
-                    OTRTextToSpeechCallback("Biggest Bullet Bag");
-                    break;
-                case ITEM_QUIVER_30:
-                    OTRTextToSpeechCallback("Quiver");
-                    break;
-                case ITEM_QUIVER_40:
-                    OTRTextToSpeechCallback("Big Quiver");
-                    break;
-                case ITEM_QUIVER_50:
-                    OTRTextToSpeechCallback("Biggest Quiver");
-                    break;
-                case ITEM_BOMB_BAG_20:
-                    OTRTextToSpeechCallback("Bomb Bag");
-                    break;
-                case ITEM_BOMB_BAG_30:
-                    OTRTextToSpeechCallback("Big Bomb Bag");
-                    break;
-                case ITEM_BOMB_BAG_40:
-                    OTRTextToSpeechCallback("Biggest Bomb Bag");
-                    break;
-                case ITEM_WALLET_ADULT:
-                    OTRTextToSpeechCallback("Adult Wallet");
-                    break;
-                case ITEM_WALLET_GIANT:
-                    OTRTextToSpeechCallback("Giant Wallet");
-                    break;
-                case ITEM_SCALE_SILVER:
-                    OTRTextToSpeechCallback("Silver Scale");
-                    break;
-                case ITEM_SCALE_GOLDEN:
-                    OTRTextToSpeechCallback("Golden Scale");
-                    break;
-                case ITEM_BRACELET:
-                    OTRTextToSpeechCallback("Goron Bracelet");
-                    break;
-                case ITEM_GAUNTLETS_SILVER:
-                    OTRTextToSpeechCallback("Silver Gauntlets");
-                    break;
-                case ITEM_GAUNTLETS_GOLD:
-                    OTRTextToSpeechCallback("Golden Gauntlets");
-                    break;
-                default:
-                    OTRTextToSpeechCallback("Unknown Item");
-                    break;
+            
+            if (CVar_GetS32("gMessageTTS", 0)) {
+                OTRTextToSpeechCallback(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                    pauseCtx->cursorItem[PAUSE_EQUIP], NULL));
             }
         }
     } else if ((pauseCtx->unk_1E4 == 7) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
