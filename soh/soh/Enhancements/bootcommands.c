@@ -28,6 +28,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gMoreTargets", 0);
     CVar_RegisterS32("gMessageTTS", 0);
     CVar_RegisterS32("gDPadLook", 0);
+    CVar_RegisterS32("gAimAudioCues", 0);
 }
 
 //void BootCommands_ParseBootArgs(char* str)
