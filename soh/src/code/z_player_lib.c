@@ -1655,6 +1655,8 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
         POLY_XLU_DISP = ohNo;
     }
 
+    POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP++);
+
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3288);
 }
 

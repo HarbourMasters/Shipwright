@@ -76,6 +76,12 @@
     <Filter Include="Source Files\src\overlays\actors">
       <UniqueIdentifier>{18b9727f-30de-4ab8-a317-916090d4a110}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\soh\Enhancements\debugger">
+      <UniqueIdentifier>{9a4378ec-e30f-47b6-9ad6-5ce738b4cf99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\soh\Enhancements\debugger">
+      <UniqueIdentifier>{04fc1c52-49ff-48e2-ae23-2c00867374f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -2169,6 +2175,12 @@
     <ClCompile Include="src\overlays\actors\ovl_Shot_Sun\z_shot_sun.c">
       <Filter>Source Files\src\overlays\actors</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\debugger\debugger.cpp">
+      <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp">
+      <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -3712,6 +3724,11 @@
     </ClInclude>
     <ClInclude Include="assets\colors\colorPaths.h">
       <Filter>Header Files</Filter>
+    <ClInclude Include="soh\Enhancements\debugger\debugger.h">
+      <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h">
+      <Filter>Header Files\soh\Enhancements\debugger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

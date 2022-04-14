@@ -626,5 +626,8 @@
     <ClInclude Include="GameSettings.h">
       <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
+    <ClInclude Include="GameVersions.h">
+      <Filter>Source Files\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

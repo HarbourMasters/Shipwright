@@ -1,6 +1,7 @@
 #include "SohImGuiImpl.h"
 
 #include <iostream>
+#include <map>
 #include <utility>
 
 #include "Archive.h"
@@ -14,9 +15,11 @@
 #include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
+#include "Texture.h"
 #include "../Fast3D/gfx_pc.h"
 #include "Lib/stb/stb_image.h"
 #include "Lib/Fast3D/gfx_rendering_api.h"
+#include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
 #ifdef ENABLE_OPENGL
@@ -50,6 +53,9 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+
+    std::map<std::string, std::vector<std::string>> windowCategories;
+    std::map<std::string, CustomWindow> customWindows;
 
     void ImGuiWMInit() {
         switch (impl.backend) {
@@ -153,7 +159,7 @@ namespace SohImGui {
         }
     }
 
-    void LoadTexture(std::string name, std::string path) {
+    void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
         const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(normalize(path));
 
@@ -171,6 +177,25 @@ namespace SohImGui {
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
+    }
+
+    void LoadResource(const std::string& name, const std::string& path) {
+        GfxRenderingAPI* api = gfx_get_current_rendering_api();
+        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
+
+        if (res->texType != Ship::TextureType::RGBA32bpp) {
+            // TODO convert other image types
+            SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
+            return;
+        }
+
+        const auto asset = new GameAsset{ api->new_texture() };
+
+        api->select_texture(0, asset->textureId);
+        api->set_sampler_parameters(0, false, 0, 0);
+        api->upload_texture(res->imageData, res->width, res->height);
+
+        DefaultAssets[name] = asset;
     }
 
     void Init(WindowImpl window_impl) {
@@ -219,13 +244,13 @@ namespace SohImGui {
         ImGuiProcessEvent(event);
     }
 
-#define BindButton(btn, status) ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets[btn]->textureId) : (ImTextureID)(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
+#define BindButton(btn, status) ImGui::Image(GetTextureByID(DefaultAssets[btn]->textureId), ImVec2(16.0f * scale, 16.0f * scale), ImVec2(0, 0), ImVec2(1.0f, 1.0f), ImVec4(255, 255, 255, (status) ? 255 : 0));
 
     void BindAudioSlider(const char* name, const char* key, float* value, SeqPlayers playerId) {
         ImGui::Text(name, static_cast<int>(100 * *(value)));
         if (ImGui::SliderFloat((std::string("##") + key).c_str(), value, 0.0f, 1.0f, "")) {
             const float volume = floorf(*(value) * 100) / 100;
-            CVar_SetFloat(const_cast<char*>(key), volume);
+            CVar_SetFloat(key, volume);
             needs_save = true;
             Game::SetSeqPlayerVolume(playerId, volume);
         }
@@ -278,7 +303,7 @@ namespace SohImGui {
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(impl.backend == Backend::DX11 ? GetTextureByID(DefaultAssets["Game_Icon"]->textureId) : reinterpret_cast<ImTextureID>(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -289,7 +314,7 @@ namespace SohImGui {
                 const float volume = Game::Settings.audio.master;
                 ImGui::Text("Master Volume: %d %%", static_cast<int>(100 * volume));
                 if (ImGui::SliderFloat("##Master_Vol", &Game::Settings.audio.master, 0.0f, 1.0f, "")) {
-                    CVar_SetFloat(const_cast<char*>("gGameMasterVolume"), volume);
+                    CVar_SetFloat("gGameMasterVolume", volume);
                     needs_save = true;
                 }
 
@@ -328,6 +353,23 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                ImGui::Separator();
+
+                if (ImGui::Checkbox("Dpad Support on Pause and File Select", &Game::Settings.controller.dpad_pause_name)) {
+                    CVar_SetS32("gDpadPauseName", Game::Settings.controller.dpad_pause_name);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("DPad Support in Ocarina and Text Choice", &Game::Settings.controller.dpad_ocarina_text)) {
+                    CVar_SetS32("gDpadOcarinaText", Game::Settings.controller.dpad_ocarina_text);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("DPad Support for Browsing Shop Items", &Game::Settings.controller.dpad_shop)) {
+                    CVar_SetS32("gDpadShop", Game::Settings.controller.dpad_shop);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -337,7 +379,12 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 if (ImGui::Checkbox("Fast Text", &Game::Settings.enhancements.fast_text)) {
-                    CVar_SetS32(const_cast<char*>("gFastText"), Game::Settings.enhancements.fast_text);
+                    CVar_SetS32("gFastText", Game::Settings.enhancements.fast_text);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Minimal UI", &Game::Settings.enhancements.minimal_ui)) {
+                    CVar_SetS32("gMinimalUI", Game::Settings.enhancements.minimal_ui);
                     needs_save = true;
                 }
 
@@ -349,12 +396,12 @@ namespace SohImGui {
                 }
 
                 if (ImGui::Checkbox("Animated Link in Pause Menu", &Game::Settings.enhancements.animated_pause_menu)) {
-                    CVar_SetS32(const_cast<char*>("gPauseLiveLink"), Game::Settings.enhancements.animated_pause_menu);
+                    CVar_SetS32("gPauseLiveLink", Game::Settings.enhancements.animated_pause_menu);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Disable LOD", &Game::Settings.enhancements.disable_lod)) {
-                    CVar_SetS32(const_cast<char*>("gDisableLOD"), Game::Settings.enhancements.disable_lod);
+                    CVar_SetS32("gDisableLOD", Game::Settings.enhancements.disable_lod);
                     needs_save = true;
                 }
 
@@ -369,7 +416,7 @@ namespace SohImGui {
                 ImGui::Separator();
                 
                 if (ImGui::Checkbox("Debug Mode", &Game::Settings.cheats.debug_mode)) {
-                    CVar_SetS32(const_cast<char*>("gDebugEnabled"), Game::Settings.cheats.debug_mode);
+                    CVar_SetS32("gDebugEnabled", Game::Settings.cheats.debug_mode);
                     needs_save = true;
                 }
 
@@ -378,46 +425,55 @@ namespace SohImGui {
             
             if (ImGui::BeginMenu("Cheats")) {
                 if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteMoney"), Game::Settings.cheats.infinite_money);
+                    CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Health", &Game::Settings.cheats.infinite_health)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteHealth"), Game::Settings.cheats.infinite_health);
+                    CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Ammo", &Game::Settings.cheats.infinite_ammo)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteAmmo"), Game::Settings.cheats.infinite_ammo);
+                    CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
                     needs_save = true;
                 }
 
                 if (ImGui::Checkbox("Infinite Magic", &Game::Settings.cheats.infinite_magic)) {
-                    CVar_SetS32(const_cast<char*>("gInfiniteMagic"), Game::Settings.cheats.infinite_magic);
+                    CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
-                    CVar_SetS32(const_cast<char*>("gNoClip"), Game::Settings.cheats.no_clip);
+                    CVar_SetS32("gNoClip", Game::Settings.cheats.no_clip);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
-                    CVar_SetS32(const_cast<char*>("gClimbEverything"), Game::Settings.cheats.climb_everything);
+                    CVar_SetS32("gClimbEverything", Game::Settings.cheats.climb_everything);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
-                    CVar_SetS32(const_cast<char*>("gMoonJumpOnL"), Game::Settings.cheats.moon_jump_on_l);
+                    CVar_SetS32("gMoonJumpOnL", Game::Settings.cheats.moon_jump_on_l);
                     needs_save = true;
                 }
                 
                 if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
-                    CVar_SetS32(const_cast<char*>("gSuperTunic"), Game::Settings.cheats.super_tunic);
+                    CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
                     needs_save = true;
                 }
 
                 ImGui::EndMenu();
+            }
+
+            for (const auto& category : windowCategories) {
+                if (ImGui::BeginMenu(category.first.c_str())) {
+                    for (const std::string& name : category.second) {
+                        HOOK(ImGui::MenuItem(name.c_str(), nullptr, &customWindows[name].enabled));
+                    }
+                    ImGui::EndMenu();
+                }
             }
 
             ImGui::EndMenuBar();
@@ -522,6 +578,13 @@ namespace SohImGui {
 
         console->Draw();
 
+        for (auto& windowIter : customWindows) {
+            CustomWindow& window = windowIter.second;
+            if (window.drawFunc != nullptr) {
+                window.drawFunc(window.enabled);
+            }
+        }
+
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
         if (UseViewports()) {
@@ -532,5 +595,23 @@ namespace SohImGui {
 
     void BindCmd(const std::string& cmd, CommandEntry entry) {
         console->Commands[cmd] = std::move(entry);
+    }
+
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc) {
+        if (customWindows.contains(name)) {
+            SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
+            return;
+        }
+
+        customWindows[name] = {
+            .enabled = false,
+            .drawFunc = drawFunc
+        };
+
+        windowCategories[category].emplace_back(name);
+    }
+
+    ImTextureID GetTextureByName(const std::string& name) {
+        return GetTextureByID(DefaultAssets[name]->textureId);
     }
 }

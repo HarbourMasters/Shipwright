@@ -1,5 +1,7 @@
 #pragma once
 
+#if 0
+
 #include "Utils/Directory.h"
 #include "ZResource.h"
 #include "elfio/elfio.hpp"
@@ -73,3 +75,4 @@ private:
 	ELFIO::Elf_Half FindSymbolInSection(const std::string& curSymName, ELFIO::section* sectionData,
 	                                    ELFIO::elfio& reader, size_t readerId);
 };
+#endif

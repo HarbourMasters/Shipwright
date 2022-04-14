@@ -50,7 +50,7 @@ void SetPathways::DeclareReferencesLate(const std::string& prefix)
 std::string SetPathways::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "Path", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "Path", listName, parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_PATH_LIST(%s)", listName.c_str());
 }
 

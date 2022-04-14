@@ -1,0 +1,35 @@
+<Root>
+    <File Name="object_wallmaster" Segment="6">
+        <!-- Used by both Wallmaster and Floormaster -->
+        <Animation Name="gWallmasterDamageAnim" Offset="0x590"/>
+        <Animation Name="gWallmasterRecoverFromDamageAnim" Offset="0xEA4"/>
+        <Animation Name="gWallmasterJumpAnim" Offset="0x19CC"/>
+        <Animation Name="gWallmasterWalkAnim" Offset="0x41F4"/>
+        <Animation Name="gWallmasterStopWalkAnim" Offset="0x9244"/>
+        <Animation Name="gWallmasterHoverAnim" Offset="0x9520"/>
+        <Animation Name="gWallmasterWaitAnim" Offset="0x9DB0"/>
+        <Animation Name="gWallmasterStandUpAnim" Offset="0xA054"/>
+
+        <DList Name="gWallmasterFingerDL" Offset="0x8688"/>
+
+        <Texture Name="gWallmasterExposedBoneTex" OutName="exposed_bone" Format="rgba16" Width="8" Height="16" Offset="0x88F0"/>
+        <Texture Name="gWallmasterBloodyEdgeTex" OutName="bloody_edge" Format="rgba16" Width="8" Height="16" Offset="0x89F0"/>
+        <Texture Name="gWallmasterUpperSkinTex" OutName="upper_skin" Format="rgba16" Width="8" Height="8" Offset="0x8AF0"/>
+        <Texture Name="gWallmasterFingerTipTex" OutName="finger_tip" Format="rgba16" Width="4" Height="16" Offset="0x8B70"/>
+        <Texture Name="gWallmasterUpperToUnderBorderTex" OutName="upper_under_border" Format="rgba16" Width="4" Height="8" Offset="0x8BF0"/>
+        <Texture Name="gWallmasterUnderSkinTex" OutName="under_skin" Format="rgba16" Width="8" Height="16" Offset="0x8C30"/>
+        <Texture Name="gWallmasterKnuckleTex" OutName="knuckle" Format="rgba16" Width="8" Height="16" Offset="0x8D30"/>
+
+        <Skeleton Name="gWallmasterSkel" Type="Flex" LimbType="Standard" Offset="0x8FB0"/>
+
+        <!-- Used by Wallmaster only -->
+        <Animation Name="gWallmasterLungeAnim" Offset="0x299C"/>
+
+        <!-- Used by Floormaster only -->
+        <Animation Name="gFloormasterTurnAnim" Offset="0x2158"/>
+        <Animation Name="gFloormasterTapFingerAnim" Offset="0x39B0"/>
+
+        <!-- Unused. Name inferred from OoT3D -->
+        <Animation Name="gWallmasterMissAnim" Offset="0x3120"/>
+    </File>
+</Root>

@@ -3130,6 +3130,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
     s16 svar4;
     s16 svar5;
     s16 svar6;
+    bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || globalCtx->pauseCtx.state != 0;
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3405);
 
@@ -3145,115 +3146,126 @@ void Interface_Draw(GlobalContext* globalCtx) {
     if (pauseCtx->debugState == 0) {
         Interface_InitVertices(globalCtx);
         func_8008A994(interfaceCtx);
-        HealthMeter_Draw(globalCtx);
+        if (fullUi || gSaveContext.health != gSaveContext.healthCapacity) {
+            HealthMeter_Draw(globalCtx);
+        }
 
         func_80094520(globalCtx->state.gfxCtx);
 
-        // Rupee Icon
-        Color_RGB8 rupeeColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorRupeeIcon);
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeColor.r, rupeeColor.g, rupeeColor.b, interfaceCtx->magicAlpha);
-        gDPSetEnvColor(OVERLAY_DISP++, 80, 0, 0, 255);
-        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26),
-                                      206, 16, 16, 1 << 10, 1 << 10);
+<<<<<<< HEAD
+        if (fullUi) {
+            // Rupee Icon
+            Color_RGB8 rupeeColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorRupeeIcon);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeColor.r, rupeeColor.g, rupeeColor.b, interfaceCtx->magicAlpha);
+            gDPSetEnvColor(OVERLAY_DISP++, 80, 0, 0, 255);
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26),
+                                          206, 16, 16, 1 << 10, 1 << 10);
 
-        switch (globalCtx->sceneNum) {
-            case SCENE_BMORI1:
-            case SCENE_HIDAN:
-            case SCENE_MIZUSIN:
-            case SCENE_JYASINZOU:
-            case SCENE_HAKADAN:
-            case SCENE_HAKADANCH:
-            case SCENE_ICE_DOUKUTO:
-            case SCENE_GANON:
-            case SCENE_MEN:
-            case SCENE_GERUDOWAY:
-            case SCENE_GANONTIKA:
-            case SCENE_GANON_SONOGO:
-            case SCENE_GANONTIKA_SONOGO:
-            case SCENE_TAKARAYA:
-                if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
-                    // Small Key Icon
-                    gDPPipeSync(OVERLAY_DISP++);
-                    Color_RGB8 keyColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorSmallKeyIcon);
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyColor.r, keyColor.g, keyColor.b, interfaceCtx->magicAlpha);
-                    gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255);
-                    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16,
-                                                  OTRGetRectDimensionFromLeftEdge(26), 190, 16, 16, 1 << 10, 1 << 10);
+            switch (globalCtx->sceneNum) {
+                case SCENE_BMORI1:
+                case SCENE_HIDAN:
+                case SCENE_MIZUSIN:
+                case SCENE_JYASINZOU:
+                case SCENE_HAKADAN:
+                case SCENE_HAKADANCH:
+                case SCENE_ICE_DOUKUTO:
+                case SCENE_GANON:
+                case SCENE_MEN:
+                case SCENE_GERUDOWAY:
+                case SCENE_GANONTIKA:
+                case SCENE_GANON_SONOGO:
+                case SCENE_GANONTIKA_SONOGO:
+                case SCENE_TAKARAYA:
+                    if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
+                        // Small Key Icon
+                        gDPPipeSync(OVERLAY_DISP++);
+                        Color_RGB8 keyColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorSmallKeyIcon);
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyColor.r, keyColor.g, keyColor.b, interfaceCtx->magicAlpha);
+                        gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255);
+                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16,
+                                                      OTRGetRectDimensionFromLeftEdge(26), 190, 16, 16, 1 << 10, 1 << 10);
 
-                    // Small Key Counter
-                    gDPPipeSync(OVERLAY_DISP++);
-                    Color_RGB8 keyCounterColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorSmallKeyCountNormal);
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCounterColor.r, keyCounterColor.g, keyCounterColor.b, interfaceCtx->magicAlpha);
-                    gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
-                                      TEXEL0, 0, PRIMITIVE, 0);
+                        // Small Key Counter
+                        gDPPipeSync(OVERLAY_DISP++);
+                        Color_RGB8 keyCounterColor = *(Color_RGB8*)ResourceMgr_LoadBlobByName(colorSmallKeyCountNormal);
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, keyCounterColor.r, keyCounterColor.g, keyCounterColor.b, interfaceCtx->magicAlpha);
+                        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
+                                          TEXEL0, 0, PRIMITIVE, 0);
 
-                    interfaceCtx->counterDigits[2] = 0;
-                    interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
+                        interfaceCtx->counterDigits[2] = 0;
+                        interfaceCtx->counterDigits[3] = gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex];
 
-                    while (interfaceCtx->counterDigits[3] >= 10) {
-                        interfaceCtx->counterDigits[2]++;
-                        interfaceCtx->counterDigits[3] -= 10;
+                        while (interfaceCtx->counterDigits[3] >= 10) {
+                            interfaceCtx->counterDigits[2]++;
+                            interfaceCtx->counterDigits[3] -= 10;
+                        }
+
+                        svar3 = OTRGetRectDimensionFromLeftEdge(42);
+
+                        if (interfaceCtx->counterDigits[2] != 0) {
+                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8,
+                                              16, svar3, 190, 8, 16, 1 << 10, 1 << 10);
+                            svar3 += 8;
+                        }
+
+                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP,
+                                                    ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
+                                          svar3, 190, 8, 16, 1 << 10, 1 << 10);
                     }
+                    break;
+                default:
+                    break;
+            }
 
-                    svar3 = OTRGetRectDimensionFromLeftEdge(42);
+            // Rupee Counter
+            gDPPipeSync(OVERLAY_DISP++);
 
-                    if (interfaceCtx->counterDigits[2] != 0) {
-                        OVERLAY_DISP =
-                            Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8,
-                                          16, svar3, 190, 8, 16, 1 << 10, 1 << 10);
-                        svar3 += 8;
-                    }
+            Color_RGB8 rupeeCountColor;
+            if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
+                rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountFull);
+            } else if (gSaveContext.rupees != 0) {
+                rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountNormal);
+            } else {
+                rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountEmpty);
+            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeCountColor.r, rupeeCountColor.g, rupeeCountColor.b, interfaceCtx->magicAlpha);
 
-                    OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8,
-                                                 16, svar3, 190, 8, 16, 1 << 10, 1 << 10);
-                }
-                break;
-            default:
-                break;
-        }
+            gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
+                              PRIMITIVE, 0);
 
-        // Rupee Counter
-        gDPPipeSync(OVERLAY_DISP++);
+            interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
+            interfaceCtx->counterDigits[2] = gSaveContext.rupees;
 
-        Color_RGB8 rupeeCountColor;
-        if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
-            rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountFull);
-        } else if (gSaveContext.rupees != 0) {
-            rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountNormal);
+            if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
+                interfaceCtx->counterDigits[2] &= 0xDDD;
+            }
+
+            while (interfaceCtx->counterDigits[2] >= 100) {
+                interfaceCtx->counterDigits[0]++;
+                interfaceCtx->counterDigits[2] -= 100;
+            }
+
+            while (interfaceCtx->counterDigits[2] >= 10) {
+                interfaceCtx->counterDigits[1]++;
+                interfaceCtx->counterDigits[2] -= 10;
+            }
+
+            svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
+            svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
+
+            for (svar1 = 0, svar3 = 42; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
+                OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
+                                             OTRGetRectDimensionFromLeftEdge(svar3), 206, 8, 16, 1 << 10, 1 << 10);
+            }
         } else {
-            rupeeCountColor = *(Color_RGB8*) ResourceMgr_LoadBlobByName(colorRupeeCountEmpty);
-        }
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rupeeCountColor.r, rupeeCountColor.g, rupeeCountColor.b, interfaceCtx->magicAlpha);
-
-        gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
-                          PRIMITIVE, 0);
-
-        interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
-        interfaceCtx->counterDigits[2] = gSaveContext.rupees;
-
-        if ((interfaceCtx->counterDigits[2] > 9999) || (interfaceCtx->counterDigits[2] < 0)) {
-            interfaceCtx->counterDigits[2] &= 0xDDD;
+            // Make sure item counts have black backgrounds
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
         }
 
-        while (interfaceCtx->counterDigits[2] >= 100) {
-            interfaceCtx->counterDigits[0]++;
-            interfaceCtx->counterDigits[2] -= 100;
+        if (fullUi || gSaveContext.unk_13F0 > 0) {
+            Interface_DrawMagicBar(globalCtx);
         }
-
-        while (interfaceCtx->counterDigits[2] >= 10) {
-            interfaceCtx->counterDigits[1]++;
-            interfaceCtx->counterDigits[2] -= 10;
-        }
-
-        svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
-        svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
-
-        for (svar1 = 0, svar3 = 42; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
-            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                                         OTRGetRectDimensionFromLeftEdge(svar3), 206, 8, 16, 1 << 10, 1 << 10);
-        }
-
-        Interface_DrawMagicBar(globalCtx);
         Minimap_Draw(globalCtx);
 
         if ((R_PAUSE_MENU_MODE != 2) && (R_PAUSE_MENU_MODE != 3)) {
@@ -3262,7 +3274,9 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         func_80094520(globalCtx->state.gfxCtx);
 
-        Interface_DrawItemButtons(globalCtx);
+        if (fullUi) {
+            Interface_DrawItemButtons(globalCtx);
+        }
 
         gDPPipeSync(OVERLAY_DISP++);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
@@ -3270,11 +3284,19 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (!(interfaceCtx->unk_1FA)) {
             // B Button Icon & Ammo Count
-            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE) {
-                Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+            if (gSaveContext.equips.buttonItems[0] != ITEM_NONE)
+            {
+                if (fullUi) {
+                    Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                }
 
                 if ((player->stateFlags1 & 0x00800000) || (globalCtx->shootingGalleryStatus > 1) ||
                     ((globalCtx->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(globalCtx, 0x38))) {
+
+                    if (!fullUi) {
+                        Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
+                    }
+
                     gDPPipeSync(OVERLAY_DISP++);
                     gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE,
                                       0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3347,7 +3369,9 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2),
                         interfaceCtx->aAlpha);
-        Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y);
+        if (fullUi) {
+            Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y);
+        }
         gDPPipeSync(OVERLAY_DISP++);
         const f32 rAIconX = OTRGetDimensionFromRightEdge(R_A_ICON_X);
         // func_8008A8B8(globalCtx, R_A_ICON_Y, R_A_ICON_Y + 45, rAIconX, rAIconX + 45);
@@ -3872,7 +3896,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
                                   TEXEL0, 0, PRIMITIVE, 0);
-                
+
                 Color_RGB8 timerColor;
                 if (gSaveContext.timer1State != 0) {
                     if ((gSaveContext.timer1Value < 10) && (gSaveContext.timer1State < 11)) {

@@ -1,0 +1,21 @@
+<Root>
+    <File Name="object_ganon_anime2" Segment="6">
+        <Animation Name="object_ganon_anime2_Anim_001F58" Offset="0x1F58"/>
+        <Animation Name="object_ganon_anime2_Anim_003018" Offset="0x3018"/>
+        <Animation Name="object_ganon_anime2_Anim_004304" Offset="0x4304"/>
+        <Animation Name="object_ganon_anime2_Anim_004F64" Offset="0x4F64"/>
+        <Animation Name="object_ganon_anime2_Anim_005FFC" Offset="0x5FFC"/>
+        <Animation Name="object_ganon_anime2_Anim_006AF4" Offset="0x6AF4"/>
+        <Animation Name="object_ganon_anime2_Anim_007268" Offset="0x7268"/>
+        <Animation Name="object_ganon_anime2_Anim_007A64" Offset="0x7A64"/>
+        <Animation Name="object_ganon_anime2_Anim_0089F8" Offset="0x89F8"/>
+        <Animation Name="object_ganon_anime2_Anim_009AE0" Offset="0x9AE0"/>
+        <Animation Name="object_ganon_anime2_Anim_00ADDC" Offset="0xADDC"/>
+        <Animation Name="object_ganon_anime2_Anim_00B668" Offset="0xB668"/>
+        <Animation Name="object_ganon_anime2_Anim_00BE38" Offset="0xBE38"/>
+        <Animation Name="object_ganon_anime2_Anim_00EA00" Offset="0xEA00"/>
+        <Animation Name="object_ganon_anime2_Anim_00F19C" Offset="0xF19C"/>
+        <Animation Name="object_ganon_anime2_Anim_010298" Offset="0x10298"/>
+        <Animation Name="object_ganon_anime2_Anim_010514" Offset="0x10514"/>
+    </File>
+</Root>

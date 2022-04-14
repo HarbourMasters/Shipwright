@@ -31,6 +31,16 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
     std::string scenePath = StringHelper::Sprintf("scenes\\%s\\%s", scene->sceneFile.fileName, scene->sceneFile.fileName);
 
     globalCtx->sceneSegment = (Ship::Scene*)OTRGameplay_LoadFile(globalCtx, scenePath.c_str());
+
+    // Failed to load scene... default to doodongs cavern
+    if (globalCtx->sceneSegment == nullptr) 
+    {
+        lusprintf(__FILE__, __LINE__, 2, "Unable to load scene %s... Defaulting to Doodong's Cavern!\n",
+                  scenePath.c_str());
+        OTRGameplay_SpawnScene(globalCtx, 0x01, 0);
+        return;
+    }
+
     scene->unk_13 = 0;
 
     //ASSERT(globalCtx->sceneSegment != NULL, "this->sceneSegment != NULL", "../z_play.c", 4960);

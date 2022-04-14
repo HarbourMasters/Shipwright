@@ -92,7 +92,7 @@ void Console::Update() {
 	}
 	for (auto [key, var] : BindingToggle) {
 		if (ImGui::IsKeyPressed(key)) {
-			CVar* cvar = CVar_GetVar(const_cast<char*>(var.c_str()));
+			CVar* cvar = CVar_GetVar(var.c_str());
 			Dispatch("set " + var + " " + std::to_string(cvar == nullptr ? 0 : !static_cast<bool>(cvar->value.valueS32)));
 		}
 	}

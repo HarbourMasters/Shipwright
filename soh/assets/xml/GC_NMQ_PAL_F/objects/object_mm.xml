@@ -1,0 +1,16 @@
+<Root>
+    <File Name="object_mm" Segment="6">
+        <Skeleton Name="gRunningManSkel" Type="Flex" LimbType="Standard" Offset="0x5E18"/>
+
+        <Animation Name="gRunningManRunAnim" Offset="0x0718"/>
+        <Animation Name="gRunningManSitStandAnim" Offset="0x6940"/>
+        <Animation Name="gRunningManSitWaitAnim" Offset="0x6C50"/>
+        <Animation Name="gRunningManSprintAnim" Offset="0x0468"/>
+        <Animation Name="gRunningManExcitedAnim" Offset="0x73A0"/>
+        <Animation Name="gRunningManHappyAnim" Offset="0x8060"/>
+
+        <Texture Name="gRunningManTLUT" OutName="running_man_tlut" Format="rgba16" Width="16" Height="16" Offset="0x730"/>
+        <Texture Name="gRunningManMouthOpenTex" OutName="running_man_mouth_open" Format="ci8" Width="32" Height="16" Offset="0xE30" TlutOffset="0x730"/>
+        <Texture Name="gRunningManMouthClosedTex" OutName="running_man_mouth_closed" Format="ci8" Width="32" Height="16" Offset="0xC30" TlutOffset="0x730"/>
+    </File>
+</Root>

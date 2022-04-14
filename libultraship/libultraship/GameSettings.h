@@ -23,6 +23,7 @@ struct SoHConfigType {
         bool fast_text = false;
         bool disable_lod = false;
         bool animated_pause_menu = false;
+        bool minimal_ui = false;
     } enhancements;
 
     // Controller
@@ -33,6 +34,9 @@ struct SoHConfigType {
         float gyroDriftX = 0.0f;
         float gyroDriftY = 0.0f;
         bool input_enabled = false;
+        bool dpad_pause_name = false;
+        bool dpad_ocarina_text = false;
+        bool dpad_shop = false;
     } controller;
 
     // Cheats

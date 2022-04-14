@@ -144,7 +144,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>INCLUDE_GAME_PRINTF;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;ENABLE_DX11;%(PreprocessorDefinitions)GLEW_STATIC </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -178,6 +178,8 @@
   <ItemGroup>
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugger.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp" />
     <ClCompile Include="soh\Enhancements\gameconsole.c" />
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
@@ -923,6 +925,8 @@
     <ClInclude Include="soh\Enhancements\bootcommands.h" />
     <ClInclude Include="soh\Enhancements\cvar.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugger.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\gameconsole.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />

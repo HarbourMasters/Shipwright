@@ -112,12 +112,15 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 	const uint8_t lineLength = 14;
 	const uint8_t offset = 0;
 
-	for (size_t i = 0; i < rotationValues.size(); i++)
+	if (!Globals::Instance->otrMode)
 	{
-		valuesStr += StringHelper::Sprintf("0x%04X, ", rotationValues[i]);
+		for (size_t i = 0; i < rotationValues.size(); i++)
+		{
+			valuesStr += StringHelper::Sprintf("0x%04X, ", rotationValues[i]);
 
-		if ((i - offset + 1) % lineLength == 0)
-			valuesStr += "\n    ";
+			if ((i - offset + 1) % lineLength == 0)
+				valuesStr += "\n    ";
+		}
 	}
 
 	parent->AddDeclarationArray(rotationValuesOffset, DeclarationAlignment::Align4,
@@ -125,13 +128,17 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 	                            StringHelper::Sprintf("%sFrameData", defaultPrefix.c_str()),
 	                            rotationValues.size(), valuesStr);
 
-	for (size_t i = 0; i < rotationIndices.size(); i++)
+	if (!Globals::Instance->otrMode)
 	{
-		indicesStr += StringHelper::Sprintf("    { 0x%04X, 0x%04X, 0x%04X },", rotationIndices[i].x,
-		                                    rotationIndices[i].y, rotationIndices[i].z);
+		for (size_t i = 0; i < rotationIndices.size(); i++)
+		{
+			indicesStr +=
+				StringHelper::Sprintf("    { 0x%04X, 0x%04X, 0x%04X },", rotationIndices[i].x,
+			                          rotationIndices[i].y, rotationIndices[i].z);
 
-		if (i != (rotationIndices.size() - 1))
-			indicesStr += "\n";
+			if (i != (rotationIndices.size() - 1))
+				indicesStr += "\n";
+		}
 	}
 
 	parent->AddDeclarationArray(rotationIndicesOffset, DeclarationAlignment::Align4,
@@ -143,10 +150,11 @@ void ZNormalAnimation::DeclareReferences(const std::string& prefix)
 std::string ZNormalAnimation::GetBodySourceCode() const
 {
 	std::string frameDataName;
-	Globals::Instance->GetSegmentedPtrName(rotationValuesSeg, parent, "s16", frameDataName);
+	Globals::Instance->GetSegmentedPtrName(rotationValuesSeg, parent, "s16", frameDataName,
+	                                       parent->workerID);
 	std::string jointIndicesName;
 	Globals::Instance->GetSegmentedPtrName(rotationIndicesSeg, parent, "JointIndex",
-	                                       jointIndicesName);
+	                                       jointIndicesName, parent->workerID);
 
 	std::string headerStr =
 		StringHelper::Sprintf("\n\t{ %i }, %s,\n", frameCount, frameDataName.c_str());
@@ -183,7 +191,7 @@ void ZLinkAnimation::ParseRawData()
 std::string ZLinkAnimation::GetBodySourceCode() const
 {
 	std::string segSymbol;
-	Globals::Instance->GetSegmentedPtrName(segmentAddress, parent, "", segSymbol);
+	Globals::Instance->GetSegmentedPtrName(segmentAddress, parent, "", segSymbol, parent->workerID);
 
 	return StringHelper::Sprintf("\n\t{ %i }, %s\n", frameCount, segSymbol.c_str());
 }
@@ -383,12 +391,13 @@ void ZCurveAnimation::DeclareReferences(const std::string& prefix)
 std::string ZCurveAnimation::GetBodySourceCode() const
 {
 	std::string refIndexStr;
-	Globals::Instance->GetSegmentedPtrName(refIndex, parent, "u8", refIndexStr);
+	Globals::Instance->GetSegmentedPtrName(refIndex, parent, "u8", refIndexStr, parent->workerID);
 	std::string transformDataStr;
 	Globals::Instance->GetSegmentedPtrName(transformData, parent, "TransformData",
-	                                       transformDataStr);
+	                                       transformDataStr, parent->workerID);
 	std::string copyValuesStr;
-	Globals::Instance->GetSegmentedPtrName(copyValues, parent, "s16", copyValuesStr);
+	Globals::Instance->GetSegmentedPtrName(copyValues, parent, "s16", copyValuesStr,
+	                                       parent->workerID);
 
 	return StringHelper::Sprintf("\n\t%s,\n\t%s,\n\t%s,\n\t%i, %i\n", refIndexStr.c_str(),
 	                             transformDataStr.c_str(), copyValuesStr.c_str(), unk_0C, unk_10);
@@ -510,8 +519,10 @@ std::string ZLegacyAnimation::GetBodySourceCode() const
 
 	std::string frameDataName;
 	std::string jointKeyName;
-	Globals::Instance->GetSegmentedPtrName(frameData, parent, "s16", frameDataName);
-	Globals::Instance->GetSegmentedPtrName(jointKey, parent, "JointKey", jointKeyName);
+	Globals::Instance->GetSegmentedPtrName(frameData, parent, "s16", frameDataName,
+	                                       parent->workerID);
+	Globals::Instance->GetSegmentedPtrName(jointKey, parent, "JointKey", jointKeyName,
+	                                       parent->workerID);
 
 	body += StringHelper::Sprintf("\t%i, %i,\n", frameCount, limbCount);
 	body += StringHelper::Sprintf("\t%s,\n", frameDataName.c_str());

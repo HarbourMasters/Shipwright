@@ -1,0 +1,8 @@
+<Root>
+    <File Name="tent_scene" Segment="2">
+        <Scene Name="tent_scene" Offset="0x0"/>
+    </File>
+    <File Name="tent_room_0" Segment="3">
+        <Room Name="tent_room_0" Offset="0x0"/>
+    </File>
+</Root>

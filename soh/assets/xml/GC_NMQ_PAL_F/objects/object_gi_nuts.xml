@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_nuts" Segment="6">
+        <DList Name="gGiNutDL" Offset="0x0E90"/>
+    </File>
+</Root>

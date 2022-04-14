@@ -553,7 +553,8 @@ int32_t ZDisplayList::OptimizationCheck_LoadTextureBlock(int32_t startIndex, std
 
 			lastTexSeg = segmentNumber;
 
-			Globals::Instance->GetSegmentedPtrName(data & 0xFFFFFFFF, parent, "", texStr);
+			Globals::Instance->GetSegmentedPtrName(data & 0xFFFFFFFF, parent, "", texStr,
+			                                       parent->workerID);
 		}
 
 		// gsDPSetTile
@@ -705,7 +706,7 @@ void ZDisplayList::Opcode_G_DL(uint64_t data, const std::string& prefix, char* l
 
 	if (pp != 0)
 	{
-		if (!Globals::Instance->HasSegment(segNum))
+		if (!Globals::Instance->HasSegment(segNum, parent->workerID))
 			sprintf(line, "gsSPBranchList(0x%08" PRIX64 "),", data & 0xFFFFFFFF);
 		else if (dListDecl != nullptr)
 			sprintf(line, "gsSPBranchList(%s),", dListDecl->varName.c_str());
@@ -715,7 +716,7 @@ void ZDisplayList::Opcode_G_DL(uint64_t data, const std::string& prefix, char* l
 	}
 	else
 	{
-		if (!Globals::Instance->HasSegment(segNum))
+		if (!Globals::Instance->HasSegment(segNum, parent->workerID))
 			sprintf(line, "gsSPDisplayList(0x%08" PRIX64 "),", data & 0xFFFFFFFF);
 		else if (dListDecl != nullptr)
 			sprintf(line, "gsSPDisplayList(%s),", dListDecl->varName.c_str());
@@ -726,7 +727,7 @@ void ZDisplayList::Opcode_G_DL(uint64_t data, const std::string& prefix, char* l
 
 	// if (segNum == 8 || segNum == 9 || segNum == 10 || segNum == 11 || segNum == 12 || segNum ==
 	// 13) // Used for runtime-generated display lists
-	if (!Globals::Instance->HasSegment(segNum))
+	if (!Globals::Instance->HasSegment(segNum, parent->workerID))
 	{
 		if (pp != 0)
 			sprintf(line, "gsSPBranchList(0x%08" PRIX64 "),", data & 0xFFFFFFFF);
@@ -847,7 +848,7 @@ void ZDisplayList::Opcode_G_VTX(uint64_t data, char* line)
 	}
 
 	// Hack: Don't extract vertices from a unknown segment.
-	if (!Globals::Instance->HasSegment(GETSEGNUM(data)))
+	if (!Globals::Instance->HasSegment(GETSEGNUM(data), parent->workerID))
 	{
 		segptr_t segmented = data & 0xFFFFFFFF;
 		references.push_back(segmented);
@@ -951,7 +952,7 @@ void ZDisplayList::Opcode_G_SETTIMG(uint64_t data, const std::string& prefix, ch
 
 		if (parent != nullptr)
 		{
-			if (Globals::Instance->HasSegment(segmentNumber))
+			if (Globals::Instance->HasSegment(segmentNumber, parent->workerID))
 				texDecl = parent->GetDeclaration(texAddress);
 			else
 				texDecl = parent->GetDeclaration(data);
@@ -959,7 +960,7 @@ void ZDisplayList::Opcode_G_SETTIMG(uint64_t data, const std::string& prefix, ch
 
 		if (texDecl != nullptr)
 			sprintf(texStr, "%s", texDecl->varName.c_str());
-		else if (data != 0 && Globals::Instance->HasSegment(segmentNumber))
+		else if (data != 0 && Globals::Instance->HasSegment(segmentNumber, parent->workerID))
 			sprintf(texStr, "%sTex_%06X", prefix.c_str(), texAddress);
 		else
 		{
@@ -972,7 +973,7 @@ void ZDisplayList::Opcode_G_SETTIMG(uint64_t data, const std::string& prefix, ch
 	else
 	{
 		std::string texName;
-		Globals::Instance->GetSegmentedPtrName(data, parent, "", texName);
+		Globals::Instance->GetSegmentedPtrName(data, parent, "", texName, parent->workerID);
 		sprintf(line, "gsDPSetTextureImage(%s, %s, %i, %s),", fmtTbl[fmt], sizTbl[siz], www + 1,
 		        texName.c_str());
 	}
@@ -1647,7 +1648,9 @@ static int32_t GfxdCallback_Vtx(uint32_t seg, int32_t count)
 	}
 
 	self->references.push_back(seg);
-	gfxd_puts("@r");
+	
+	if (!Globals::Instance->otrMode)
+		gfxd_puts("@r");
 
 	return 1;
 }
@@ -1670,7 +1673,7 @@ static int32_t GfxdCallback_Texture(segptr_t seg, int32_t fmt, int32_t siz, int3
 	self->TextureGenCheck();
 
 	std::string texName;
-	Globals::Instance->GetSegmentedPtrName(seg, self->parent, "", texName);
+	Globals::Instance->GetSegmentedPtrName(seg, self->parent, "", texName, self->parent->workerID);
 
 	gfxd_puts(texName.c_str());
 
@@ -1694,7 +1697,7 @@ static int32_t GfxdCallback_Palette(uint32_t seg, [[maybe_unused]] int32_t idx, 
 	self->TextureGenCheck();
 
 	std::string palName;
-	Globals::Instance->GetSegmentedPtrName(seg, self->parent, "", palName);
+	Globals::Instance->GetSegmentedPtrName(seg, self->parent, "", palName, self->parent->workerID);
 
 	gfxd_puts(palName.c_str());
 
@@ -1708,7 +1711,8 @@ static int32_t GfxdCallback_DisplayList(uint32_t seg)
 	uint32_t dListSegNum = GETSEGNUM(seg);
 
 	std::string dListName = "";
-	bool addressFound = Globals::Instance->GetSegmentedPtrName(seg, self->parent, "Gfx", dListName);
+	bool addressFound = Globals::Instance->GetSegmentedPtrName(seg, self->parent, "Gfx", dListName,
+	                                                           self->parent->workerID);
 
 	if (!addressFound && self->parent->segment == dListSegNum)
 	{
@@ -1731,7 +1735,8 @@ static int32_t GfxdCallback_Matrix(uint32_t seg)
 	std::string mtxName;
 	ZDisplayList* self = static_cast<ZDisplayList*>(gfxd_udata_get());
 
-	bool addressFound = Globals::Instance->GetSegmentedPtrName(seg, self->parent, "Mtx", mtxName);
+	bool addressFound = Globals::Instance->GetSegmentedPtrName(seg, self->parent, "Mtx", mtxName,
+	                                                           self->parent->workerID);
 	if (!addressFound && GETSEGNUM(seg) == self->parent->segment)
 	{
 		Declaration* decl =
@@ -1805,6 +1810,23 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 				curAddr, firstVtx.GetDeclarationAlignment(),
 				item.second.size() * firstVtx.GetRawDataSize(), firstVtx.GetSourceTypeName(),
 				firstVtx.GetDefaultName(name), item.second.size(), declaration);
+
+			/*for (auto vtx : item.second)
+			{
+				ZVtx* nVtx = new ZVtx(vtx.parent);
+				nVtx->x = vtx.x;
+				nVtx->y = vtx.y;
+				nVtx->z = vtx.z;
+				nVtx->flag = vtx.flag;
+				nVtx->s = vtx.s;
+				nVtx->t = vtx.t;
+				nVtx->r = vtx.r;
+				nVtx->g = vtx.g;
+				nVtx->b = vtx.b;
+				nVtx->a = vtx.a;
+				decl->vertexHack.push_back(nVtx);
+			}*/
+
 			decl->isExternal = true;
 		}
 	}
@@ -1850,15 +1872,15 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 		{
 			auto& item = vertices[vtxKeys[i]];
 
-			std::string declaration;
+			//std::string declaration;
 
-			for (auto& vtx : item)
-				declaration += StringHelper::Sprintf("\t%s,\n", vtx.GetBodySourceCode().c_str());
+			//for (auto& vtx : item)
+				//declaration += StringHelper::Sprintf("\t%s,\n", vtx.GetBodySourceCode().c_str());
 
 			// Ensure there's always a trailing line feed to prevent dumb warnings.
 			// Please don't remove this line, unless you somehow made a way to prevent
 			// that warning when building the OoT repo.
-			declaration += "\n";
+			//declaration += "\n";
 
 			if (parent != nullptr)
 			{
@@ -1869,12 +1891,6 @@ void ZDisplayList::DeclareReferences(const std::string& prefix)
 					vtxName = vtxRes->GetName();
 				else
 					vtxName = StringHelper::Sprintf("%sVtx_%06X", prefix.c_str(), vtxKeys[i]);
-
-
-				if (StringHelper::Contains(vtxName, "4B18"))
-				{
-					int bp = 0;
-				}
 
 				auto filepath = Globals::Instance->outputPath / vtxName;
 				std::string incStr = StringHelper::Sprintf("%s.%s.inc", filepath.string().c_str(), "vtx");
@@ -1991,7 +2007,7 @@ bool ZDisplayList::TextureGenCheck(int32_t texWidth, int32_t texHeight, uint32_t
 		       texWidth, texHeight, texIsPalette, texAddr);
 
 	if ((texSeg != 0 || texAddr != 0) && texWidth > 0 && texHeight > 0 && texLoaded &&
-	    Globals::Instance->HasSegment(segmentNumber))
+	    Globals::Instance->HasSegment(segmentNumber, self->parent->workerID))
 	{
 		ZFile* auxParent = nullptr;
 		if (segmentNumber == self->parent->segment)
@@ -2002,7 +2018,8 @@ bool ZDisplayList::TextureGenCheck(int32_t texWidth, int32_t texHeight, uint32_t
 		{
 			// Try to find a non-external file (i.e., one we are actually extracting)
 			// which has the same segment number we are looking for.
-			for (auto& otherFile : Globals::Instance->cfg.segmentRefFiles[segmentNumber])
+			auto segs = Globals::Instance->GetSegmentRefFiles(self->parent->workerID);
+			for (auto& otherFile : segs[segmentNumber])
 			{
 				if (!otherFile->isExternalFile)
 				{

@@ -25,7 +25,7 @@ private:
 
 	void Flush();
 
-	static OutputFormatter* Instance;
+	static __declspec(thread) OutputFormatter* Instance;
 	static int WriteStatic(const char* buf, int count);
 
 public:

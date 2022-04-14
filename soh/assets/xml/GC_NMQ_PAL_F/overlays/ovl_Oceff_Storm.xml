@@ -1,0 +1,11 @@
+<Root>
+    <File Name="ovl_Oceff_Storm" BaseAddress="0x80B7DCF0" RangeStart="0x750" RangeEnd="0x1B40">
+        <Texture Name="sTex" OutName="song_of_storms_effect" Format="i8" Width="64" Height="64" Offset="0x750"/>
+        <DList Name="sMaterialDL" Offset="0x1750"/>
+        <Array Name="sCylinderVtx" Count="27" Offset="0x17F8">
+            <Vtx/>
+        </Array>
+        <DList Name="sCylinderMaterialDL" Offset="0x19A8"/>
+        <DList Name="sCylinderModelDL" Offset="0x1A50"/>
+    </File>
+</Root>
