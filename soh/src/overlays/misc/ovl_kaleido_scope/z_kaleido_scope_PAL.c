@@ -2988,6 +2988,9 @@ void KaleidoScope_LoadDungeonMap(GlobalContext* globalCtx) {
 
     memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX]), 0x800);
     memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]), 0x800);
+
+    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyKal.p++, interfaceCtx->mapSegment);
+    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyKal.p++, interfaceCtx->mapSegment + 0x800);
 }
 
 void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx) {
