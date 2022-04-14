@@ -1408,6 +1408,66 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
+s32 Camera_Blind(Camera* camera) {
+    Normal1* norm1 = (Normal1*)camera->paramData;
+
+    f32 playerHeight = Player_GetHeight(camera->player);
+    f32 sp94;
+    CamColChk bgChk;
+
+    sCameraInterfaceFlags = norm1->interfaceFlags;
+
+    if (RELOAD_PARAMS) {
+        VecSph eyeAdjustment1;
+        Vec3f oldCamRot;
+        oldCamRot.x = camera->player->actor.world.pos.x;
+        oldCamRot.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
+        oldCamRot.z = camera->player->actor.world.pos.z;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eye);
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eyeNext);
+
+        CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
+        f32 yNormal = (1.0f + PCT(R_CAM_YOFFSET_NORM) - PCT(R_CAM_YOFFSET_NORM) * (68.0f / playerHeight));
+        sp94 = yNormal * PCT(playerHeight);
+
+        norm1->yOffset = NEXTSETTING * sp94;
+        norm1->distMin = NEXTSETTING * sp94;
+        norm1->distMax = NEXTSETTING * sp94;
+        norm1->pitchTarget = DEGF_TO_BINANG(NEXTSETTING);
+        norm1->unk_0C = NEXTSETTING;
+        norm1->unk_10 = NEXTSETTING;
+        norm1->unk_14 = NEXTPCT;
+        norm1->fovTarget = NEXTSETTING;
+        norm1->atLERPScaleMax = NEXTPCT;
+        norm1->interfaceFlags = NEXTSETTING;
+    }
+
+    if (R_RELOAD_CAM_PARAMS) {
+        Camera_CopyPREGToModeValues(camera);
+    }
+
+    VecSph eyeAdjustment;
+
+    camera->animState = 1;
+
+    camera->at.x = camera->player->actor.world.pos.x;
+    camera->at.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
+    camera->at.z = camera->player->actor.world.pos.z;
+
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eyeNext);
+
+    camera->dist = eyeAdjustment.r = 250.0f;
+
+    eyeAdjustment.yaw = 0;
+    eyeAdjustment.pitch = 9000;
+
+    Camera_Vec3fVecSphGeoAdd(&camera->eye, &camera->at, &eyeAdjustment);
+    Camera_Vec3fVecSphGeoAdd(&camera->eyeNext, &camera->at, &eyeAdjustment);
+
+    return 1;
+}
+
 s32 Camera_Normal1(Camera* camera) {
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
@@ -1559,16 +1619,18 @@ s32 Camera_Normal1(Camera* camera) {
 
     if (anim->startSwingTimer <= 0) {
         eyeAdjustment.pitch = atEyeNextGeo.pitch;
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = CVar_GetS32("gBlindMode", 0) != 0 ? atEyeNextGeo.yaw
+                                                              :
             Camera_LERPCeilS(anim->swingYawTarget, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else if (anim->swing.unk_18 != 0) {
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = CVar_GetS32("gBlindMode", 0) != 0 ? atEyeNextGeo.yaw
+                                                              :
             Camera_LERPCeilS(anim->swing.unk_16, atEyeNextGeo.yaw, 1.0f / camera->yawUpdateRateInv, 0xA);
         eyeAdjustment.pitch =
             Camera_LERPCeilS(anim->swing.unk_14, atEyeNextGeo.pitch, 1.0f / camera->yawUpdateRateInv, 0xA);
     } else {
         // rotate yaw to follow player.
-        eyeAdjustment.yaw =
+        eyeAdjustment.yaw = 
             Camera_CalcDefaultYaw(camera, atEyeNextGeo.yaw, camera->playerPosRot.rot.y, norm1->unk_14, sp94);
         eyeAdjustment.pitch =
             Camera_CalcDefaultPitch(camera, atEyeNextGeo.pitch, norm1->pitchTarget, anim->slopePitchAdj);
