@@ -1616,7 +1616,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
     	gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
-   	}
+    }
 
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
 
@@ -1624,7 +1624,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
     } else {
     	gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
-   	}
+    }
 
     gSPDisplayList(POLY_KAL_DISP++, gRButtonIconDL);
 
