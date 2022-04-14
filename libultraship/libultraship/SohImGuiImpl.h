@@ -59,8 +59,8 @@ namespace SohImGui {
     extern Console* console;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
-    void Draw1(void);
-    void Draw2(void);
+    void DrawMainMenuAndCalculateGameSize(void);
+    void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);

@@ -50,6 +50,11 @@ struct SoHConfigType {
         bool moon_jump_on_l = false;
         bool super_tunic = false;
     } cheats;
+
+    // Graphics
+    struct {
+        bool show = false;
+    } graphics;
 };
 
 enum SeqPlayers {

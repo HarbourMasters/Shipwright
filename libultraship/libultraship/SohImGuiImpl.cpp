@@ -248,7 +248,7 @@ namespace SohImGui {
         }
     }
 
-    void Draw1() {
+    void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -408,6 +408,11 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            if (ImGui::BeginMenu("Graphics")) {
+                HOOK(ImGui::MenuItem("Anti-aliasing", nullptr, &Game::Settings.graphics.show));
+                ImGui::EndMenu();
+            }
+
             if (ImGui::BeginMenu("Cheats")) {
                 if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
                     CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
@@ -465,6 +470,38 @@ namespace SohImGui {
         }
 
         ImGui::End();
+
+        if (Game::Settings.debug.soh) {
+            const float framerate = ImGui::GetIO().Framerate;
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
+
+            ImGui::Text("Platform: Windows");
+            ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
+
+        if (Game::Settings.graphics.show) {
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::Begin("Anti-aliasing settings", nullptr, ImGuiWindowFlags_None);
+            ImGui::Text("Internal Resolution:");
+            ImGui::SliderInt("Mul", reinterpret_cast<int*>(&gfx_current_dimensions.internal_mul), 1, 8);
+            ImGui::Text("MSAA:");
+            ImGui::SliderInt("MSAA", reinterpret_cast<int*>(&gfx_msaa_level), 1, 8);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
+
+        console->Draw();
+
+        for (auto& windowIter : customWindows) {
+            CustomWindow& window = windowIter.second;
+            if (window.drawFunc != nullptr) {
+                window.drawFunc(window.enabled);
+            }
+        }
+
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
@@ -496,7 +533,7 @@ namespace SohImGui {
         }
     }
 
-    void Draw2() {
+    void DrawFramebufferAndGameInput() {
         ImVec2 main_pos = ImGui::GetWindowPos();
         ImVec2 size = ImGui::GetContentRegionAvail();
         ImVec2 pos = ImVec2(0, 0);
@@ -508,25 +545,12 @@ namespace SohImGui {
         std::string fb_str = SohUtils::getEnvironmentVar("framebuffer");
         if (!fb_str.empty()) {
             uintptr_t fbuf = (uintptr_t)std::stoull(fb_str);
-            ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);
+            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);
+            ImGui::SetCursorPos(pos);
+            ImGui::Image(reinterpret_cast<ImTextureID>(fbuf), size);
         }
 
         ImGui::End();
-
-        if (Game::Settings.debug.soh) {
-            const float framerate = ImGui::GetIO().Framerate;
-            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
-
-            ImGui::Text("Platform: Windows");
-            ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
-            ImGui::Text("Internal Resolution:");
-            ImGui::SliderInt("Mul", reinterpret_cast<int*>(&gfx_current_dimensions.internal_mul), 1, 8);
-            ImGui::Text("MSAA:");
-            ImGui::SliderInt("MSAA", reinterpret_cast<int*>(&gfx_msaa_level), 1, 8);
-            ImGui::End();
-            ImGui::PopStyleColor();
-        }
 
         const float scale = Game::Settings.controller.input_scale;
         ImVec2 BtnPos = ImVec2(160 * scale, 85 * scale);
@@ -575,15 +599,6 @@ namespace SohImGui {
                 ImGui::EndGroup();
 
                 ImGui::End();
-            }
-        }
-
-        console->Draw();
-
-        for (auto& windowIter : customWindows) {
-            CustomWindow& window = windowIter.second;
-            if (window.drawFunc != nullptr) {
-                window.drawFunc(window.enabled);
             }
         }
     }
