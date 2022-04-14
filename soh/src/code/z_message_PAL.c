@@ -10,17 +10,13 @@
 
 #include <colors/colorPaths.h>
 
-// Appears frequently in z_message flashing animations.
-// "temp" variable is included because it is generally reused between instances of this block.
-// This is mathematically equivalent but does not match.Macro was introduced because it 
-// originally represented a 20 line block and was going to be used an additional 3 times.
+// Appears frequently in z_message flashing animations
+// This is mathematically equivalent but does not match
 #define advanceFlashAnimation(currentColor, targetColor, flashIndex, flashTimer) \
-    currentColor.r += (currentColor.r >= targetColor[flashIndex].r ? -1 : 1) *         \
-                      ABS(currentColor.r - targetColor[flashIndex].r) / flashTimer;    \
-    currentColor.g += (currentColor.g >= targetColor[flashIndex].g ? -1 : 1) *         \
-                      ABS(currentColor.g - targetColor[flashIndex].g) / flashTimer;    \
-    currentColor.b += (currentColor.b >= targetColor[flashIndex].b ? -1 : 1) *         \
-                      ABS(currentColor.b - targetColor[flashIndex].b) / flashTimer; 
+    currentColor.r += (targetColor[flashIndex].r - currentColor.r) / flashTimer; \
+    currentColor.g += (targetColor[flashIndex].g - currentColor.g) / flashTimer; \
+    currentColor.b += (targetColor[flashIndex].b - currentColor.b) / flashTimer; 
+
 
 s16 sTextFade = false; // original name: key_off_flag ?
 
