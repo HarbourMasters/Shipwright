@@ -37,6 +37,8 @@ MessageTableEntry* sStaffMessageEntryTablePtr;
 
 char* _message_0xFFFC_nes;
 
+
+
 //MessageTableEntry sNesMessageEntryTable[] = {
 //#define DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) \
 //    { textId, (_SHIFTL(type, 4, 8) | _SHIFTL(yPos, 0, 8)), _message_##textId##_nes },
@@ -118,6 +120,8 @@ s16 sOcarinaNoteCEnvR;
 s16 sOcarinaNoteCEnvB;
 s16 sOcarinaNoteCEnvG;
 
+
+
 void Message_ResetOcarinaNoteState(void) {
     R_OCARINA_NOTES_YPOS(0) = 189;
     R_OCARINA_NOTES_YPOS(1) = 184;
@@ -166,7 +170,7 @@ void Message_UpdateOcarinaGame(GlobalContext* globalCtx) {
 u8 Message_ShouldAdvance(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
@@ -178,7 +182,7 @@ u8 Message_ShouldAdvance(GlobalContext* globalCtx) {
 u8 Message_ShouldAdvanceSilent(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     return CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP);
@@ -951,7 +955,10 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                         }
                     }
                     i = j - 1;
-                    msgCtx->textDrawPos = i + 1;
+                    if (CVar_GetS32("gFastText", 0) !=0)
+                        msgCtx->textDrawPos = i + 5;
+                    else
+                        msgCtx->textDrawPos = i + 1;
 
                     if (character) {}
                 }
@@ -1061,7 +1068,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                 msgCtx->textDelay = msgCtx->msgBufDecoded[++i];
                 break;
             case MESSAGE_UNSKIPPABLE:
-                msgCtx->textUnskippable = CVar_GetS32("gFastText", 0) != 1;
+                msgCtx->textUnskippable = CVar_GetS32("gSkipText", 0) != 1;
                 break;
             case MESSAGE_TWO_CHOICE:
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_2_CHOICE;
@@ -1144,7 +1151,10 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + 1;
+        if (CVar_GetS32("gFastText", 0) !=0)
+            msgCtx->textDrawPos = i + 5;
+        else
+            msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
@@ -2026,7 +2036,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
 
-            bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
+            bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
                                                          : CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B);
 
         switch (msgCtx->msgMode) {
@@ -3067,7 +3077,7 @@ void Message_Update(GlobalContext* globalCtx) {
         return;
     }
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     switch (msgCtx->msgMode) {

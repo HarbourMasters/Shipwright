@@ -20,6 +20,7 @@ struct SoHConfigType {
 
     // Enhancements
     struct {
+        bool skip_text = false;
         bool fast_text = false;
         bool disable_lod = false;
         bool animated_pause_menu = false;
