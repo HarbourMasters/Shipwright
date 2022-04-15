@@ -202,8 +202,6 @@ namespace Ship
 				}
 
 				int polyType = reader->ReadByte();
-
-				int bp = 0;
 			}
 
 
