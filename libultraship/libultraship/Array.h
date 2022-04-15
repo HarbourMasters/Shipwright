@@ -88,7 +88,6 @@ namespace Ship
 	public:
 		std::vector<ScalarData> scalars;
 		std::vector<Vtx> vertices;
-		std::vector<Resource> resources;
 
 		// For everything else...
 		std::vector<Resource*> resources;
