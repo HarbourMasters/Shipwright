@@ -30,6 +30,11 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			for (int k = 0; k < vec->dimensions; k++)
 				OTRExporter_Scalar::WriteScalarType(&vec->scalars[k], writer);
 		}
+		else if (arr->resList[i]->GetResourceType() == ZResourceType::Vertex)
+		{
+			ZVtx* vtx = (ZVtx*)arr->resList[i];
+			OTRExporter_Vtx::WriteVtx(vtx, writer);
+		}
 		else
 		{	
 			auto expSet = Globals::Instance->GetExporterSet();
