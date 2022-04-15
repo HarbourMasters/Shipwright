@@ -12,6 +12,7 @@
 #include "MtxExporter.h"
 #include <Utils/File.h>
 #include "VersionInfo.h"
+#include "ArrayExporter.h"
 
 #define GFX_SIZE 8
 
@@ -44,13 +45,14 @@
 {    (_SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL(xh, 12, 12) | _SHIFTL(yh, 0, 12)),\
     (_SHIFTL(tile, 24, 3) | _SHIFTL(xl, 12, 12) | _SHIFTL(yl, 0, 12)) }
 
-void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
 {
 	ZDisplayList* dList = (ZDisplayList*)res;
 
 	//printf("Exporting DList %s\n", dList->GetName().c_str());
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::DisplayList);
+	if (writeHeader)
+		WriteHeader(res, writer, Ship::ResourceType::DisplayList, Ship::Version::Deckard);
 
 	while (writer->GetBaseAddress() % 8 != 0)
 		writer->Write((uint8_t)0xFF);
@@ -447,7 +449,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							MemoryStream* dlStream = new MemoryStream();
 							BinaryWriter dlWriter = BinaryWriter(dlStream);
 
-							Save(dList->otherDLists[i], outPath, &dlWriter);
+							Save(dList->otherDLists[i], outPath, &dlWriter, true);
 
 							AddFile(fName, dlStream->ToVector());
 						}
@@ -780,13 +782,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 								arrCnt++;
 						}
 
-						// OTRTODO: Once we aren't relying on text representations, we should call ArrayExporter...
-						OTRExporter::WriteHeader(nullptr, "", &vtxWriter, Ship::ResourceType::Array);
-
-						vtxWriter.Write((uint32_t)ZResourceType::Vertex);
-						vtxWriter.Write((uint32_t)arrCnt);
-
-						auto start = std::chrono::steady_clock::now();
+						ZArray* arr = new ZArray(res->parent);
 
 						// God dammit this is so dumb
 						for (size_t i = 0; i < split.size(); i++)
@@ -797,19 +793,24 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							{
 								auto split2 = StringHelper::Split(StringHelper::Split(StringHelper::Split(line, "VTX(")[1], ")")[0], ",");
 
-								vtxWriter.Write((int16_t)std::stoi(split2[0], nullptr, 10)); // v.x
-								vtxWriter.Write((int16_t)std::stoi(split2[1], nullptr, 10)); // v.y
-								vtxWriter.Write((int16_t)std::stoi(split2[2], nullptr, 10)); // v.z
+								ZVtx* v = new ZVtx(res->parent);
 
-								vtxWriter.Write((int16_t)0);								 // v.flag
+								v->x = (int16_t)std::stoi(split2[0], nullptr, 10);
+								v->y = (int16_t)std::stoi(split2[1], nullptr, 10);
+								v->z = (int16_t)std::stoi(split2[2], nullptr, 10);
+								
+								v->flag = 0;
 
-								vtxWriter.Write((int16_t)std::stoi(split2[3], nullptr, 10)); // v.s
-								vtxWriter.Write((int16_t)std::stoi(split2[4], nullptr, 10)); // v.t
+								v->s = (int16_t)std::stoi(split2[3], nullptr, 10);
+								v->t = (int16_t)std::stoi(split2[4], nullptr, 10);
 
-								vtxWriter.Write((uint8_t)std::stoi(split2[5], nullptr, 10)); // v.r
-								vtxWriter.Write((uint8_t)std::stoi(split2[6], nullptr, 10)); // v.g
-								vtxWriter.Write((uint8_t)std::stoi(split2[7], nullptr, 10)); // v.b
-								vtxWriter.Write((uint8_t)std::stoi(split2[8], nullptr, 10)); // v.a
+								v->r = (uint8_t)std::stoi(split2[5], nullptr, 10);
+								v->g = (uint8_t)std::stoi(split2[6], nullptr, 10);
+								v->b = (uint8_t)std::stoi(split2[7], nullptr, 10);
+								v->a = (uint8_t)std::stoi(split2[8], nullptr, 10);
+
+								arr->resList.push_back(v);
+								arr->arrayCnt++;
 							}
 						}
 

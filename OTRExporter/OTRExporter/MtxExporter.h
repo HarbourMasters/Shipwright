@@ -6,5 +6,5 @@
 class OTRExporter_MtxExporter : public OTRExporter
 {
 public:
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer) override;
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) override;
 };

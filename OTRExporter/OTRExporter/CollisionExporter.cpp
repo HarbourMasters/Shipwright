@@ -1,11 +1,12 @@
 #include "CollisionExporter.h"
 #include <Resource.h>
 
-void OTRExporter_Collision::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Collision::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
 {
 	ZCollisionHeader* col = (ZCollisionHeader*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::CollisionHeader);
+	if (writeHeader)
+		WriteHeader(res, writer, Ship::ResourceType::CollisionHeader, Ship::Version::Deckard);
 	
 	writer->Write(col->absMinX);
 	writer->Write(col->absMinY);

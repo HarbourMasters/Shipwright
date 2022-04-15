@@ -3,11 +3,12 @@
 #include <Globals.h>
 #include "DisplayListExporter.h"
 
-void OTRExporter_Skeleton::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Skeleton::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
 {
 	ZSkeleton* skel = (ZSkeleton*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Skeleton);
+	if (writeHeader)
+		WriteHeader(res, writer, Ship::ResourceType::Skeleton, Ship::Version::Deckard);
 
 	writer->Write((uint8_t)skel->type);
 	writer->Write((uint8_t)skel->limbType);

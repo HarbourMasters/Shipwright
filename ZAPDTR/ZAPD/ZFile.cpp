@@ -392,7 +392,7 @@ void ZFile::ExtractResources()
 		if (exporter != nullptr)
 		{
 			// exporter->Save(res, Globals::Instance->outputPath.string(), &writerFile);
-			exporter->Save(res, Globals::Instance->outputPath.string(), &writerRes);
+			exporter->Save(res, Globals::Instance->outputPath.string(), &writerRes, true);
 		}
 
 		if (exporterSet != nullptr && exporterSet->resSaveFunc != nullptr)

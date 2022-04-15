@@ -35,11 +35,12 @@
 #include "PathExporter.h"
 #undef FindResource
 
-void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
 {
 	ZRoom* room = (ZRoom*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Room);
+	if (writeHeader)
+		WriteHeader(res, writer, Ship::ResourceType::Room, Ship::Version::Deckard);
 
 	writer->Write((uint32_t)room->commands.size());
 
@@ -472,7 +473,7 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 				MemoryStream* pathStream = new MemoryStream();
 				BinaryWriter pathWriter = BinaryWriter(pathStream);
 				OTRExporter_Path pathExp;
-				pathExp.Save(&cmdSetPathways->pathwayList, outPath, &pathWriter);
+				pathExp.Save(&cmdSetPathways->pathwayList, outPath, &pathWriter, true);
 
 				AddFile(path, pathStream->ToVector());
 			}

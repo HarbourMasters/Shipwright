@@ -1,7 +1,7 @@
 #include "Exporter.h"
 #include "VersionInfo.h"
 
-void OTRExporter::WriteHeader(ZResource* res, const fs::path& outPath, BinaryWriter* writer, Ship::ResourceType resType, Ship::Version resVersion)
+void OTRExporter::WriteHeader(ZResource* res, BinaryWriter* writer, Ship::ResourceType resType, Ship::Version majorVersion)
 {
 	writer->Write((uint8_t)Endianness::Little); // 0x00
 	writer->Write((uint8_t)0); // 0x01
@@ -10,7 +10,7 @@ void OTRExporter::WriteHeader(ZResource* res, const fs::path& outPath, BinaryWri
 
 	writer->Write((uint32_t)resType); // 0x04
 	//writer->Write((uint32_t)MAJOR_VERSION); // 0x08
-	writer->Write((uint32_t)resVersion); // 0x08
+	writer->Write((uint32_t)majorVersion); // 0x08
 	writer->Write((uint64_t)0xDEADBEEFDEADBEEF); // id, 0x0C
 	writer->Write((uint32_t)resourceVersions[resType]); // 0x10
 	writer->Write((uint64_t)0); // ROM CRC, 0x14

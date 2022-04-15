@@ -2,35 +2,8 @@
 #include "Resource.h"
 #include "VersionInfo.h"
 
-
-void OTRExporter_Vtx::SaveArr(ZResource* res, const fs::path& outPath, const std::vector<ZResource*>& vec, BinaryWriter* writer)
+void OTRExporter_Vtx::WriteVtx(ZVtx* vtx, BinaryWriter* writer)
 {
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Vertex);
-	
-	for (auto& res: vec) {
-		ZVtx* vtx = (ZVtx*)res;
-		writer->Write(vtx->x);
-		writer->Write(vtx->y);
-		writer->Write(vtx->z);
-		writer->Write(vtx->flag);
-		writer->Write(vtx->s);
-		writer->Write(vtx->t);
-		writer->Write(vtx->r);
-		writer->Write(vtx->g);
-		writer->Write(vtx->b);
-		writer->Write(vtx->a);
-	}
-
-}
-
-void OTRExporter_Vtx::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
-{
-	ZVtx* vtx = (ZVtx*)res;
-
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Vertex);
-
-	writer->Write((uint32_t)1); //Yes I'm hard coding it to one, it *should* be fine.
-
 	writer->Write(vtx->x);
 	writer->Write(vtx->y);
 	writer->Write(vtx->z);
@@ -41,4 +14,26 @@ void OTRExporter_Vtx::Save(ZResource* res, const fs::path& outPath, BinaryWriter
 	writer->Write(vtx->g);
 	writer->Write(vtx->b);
 	writer->Write(vtx->a);
+}
+
+void OTRExporter_Vtx::SaveArr(ZResource* res, const fs::path& outPath, const std::vector<ZResource*>& vec, BinaryWriter* writer, bool writeHeader)
+{
+	if (writeHeader)
+		WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Deckard);
+	
+	writer->Write((uint32_t)vec.size());
+	
+	for (auto& res: vec) {
+		ZVtx* vtx = (ZVtx*)res;
+		WriteVtx(vtx, writer);
+	}
+}
+
+void OTRExporter_Vtx::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+{
+	ZVtx* vtx = (ZVtx*)res;
+	std::vector<ZResource*> vec;
+	vec.push_back(vtx);
+
+	SaveArr(res, outPath, vec, writer, writeHeader);
 }
