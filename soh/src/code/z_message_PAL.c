@@ -37,7 +37,9 @@ MessageTableEntry* sStaffMessageEntryTablePtr;
 
 char* _message_0xFFFC_nes;
 
-
+const int fastText = 5;
+const int slowText = 1;
+bool textSpeed = 1;
 
 //MessageTableEntry sNesMessageEntryTable[] = {
 //#define DEFINE_MESSAGE(textId, type, yPos, nesMessage, gerMessage, fraMessage) \
@@ -956,9 +958,10 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                     }
                     i = j - 1;
                     if (CVar_GetS32("gFastText", 0) !=0)
-                        msgCtx->textDrawPos = i + 5;
+                        textSpeed = fastText;
                     else
-                        msgCtx->textDrawPos = i + 1;
+                        textSpeed = slowText;
+                    msgCtx->textDrawPos = i + textSpeed;
 
                     if (character) {}
                 }
@@ -1152,9 +1155,10 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
     }
     if (msgCtx->textDelayTimer == 0) {
         if (CVar_GetS32("gFastText", 0) !=0)
-            msgCtx->textDrawPos = i + 5;
+            textSpeed = fastText;
         else
-            msgCtx->textDrawPos = i + 1;
+            textSpeed = slowText;
+        msgCtx->textDrawPos = i + textSpeed;
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
