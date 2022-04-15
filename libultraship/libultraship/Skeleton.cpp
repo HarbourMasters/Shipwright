@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-    void SkeletonV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void SkeletonV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         Skeleton* skel = (Skeleton*)res;
         
-        ResourceFile::ParseFileBinary(reader, skel);
+        ResourceFile::ParseFileBinary(reader, skel, readFullHeader);
 
         skel->type = (SkeletonType)reader->ReadByte();
         skel->limbType = (LimbType)reader->ReadByte();

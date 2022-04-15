@@ -13,15 +13,22 @@ namespace Ship
 		uint8_t r, g, b, a;
 	};
 
+	class VertexV1 : public ResourceFile
+	{
+	public:
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
+	};
+
 	class VertexV0 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class Vertex : public Resource
 	{
 	public:
-		std::vector<Vtx> vtxList;
+		Vtx vtx;
+		//std::vector<Vtx> vtxList; // Note: V0 never properly used this list...
 	};
 }

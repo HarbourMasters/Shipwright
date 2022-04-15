@@ -67,7 +67,7 @@ namespace Ship
 		std::vector<WaterBoxHeader> waterBoxes;
 		CameraDataList* camData = nullptr;
 
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
     class CollisionHeader : public Resource

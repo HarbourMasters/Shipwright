@@ -6,6 +6,6 @@ namespace Ship
     class ArrayFactory
     {
     public:
-        static Array* ReadArray(BinaryReader* reader);
+        static Array* ReadArray(BinaryReader* reader, bool readFullHeader);
     };
 }

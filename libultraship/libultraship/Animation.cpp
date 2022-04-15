@@ -1,10 +1,10 @@
 #include "Animation.h"
 
-void Ship::AnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+void Ship::AnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 {
 	Animation* anim = (Animation*)res;
 
-	ResourceFile::ParseFileBinary(reader, res);
+	ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 	AnimationType animType = (AnimationType)reader->ReadUInt32();
 	anim->type = animType;

@@ -18,7 +18,7 @@ namespace Ship
         uv = reader->ReadVec2f();
     }
 
-    void ModelV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void ModelV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         Model* mdl = (Model*)res;
 

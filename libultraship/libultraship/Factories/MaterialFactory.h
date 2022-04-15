@@ -6,6 +6,6 @@ namespace Ship
     class MaterialFactory
     {
     public:
-        static Material* ReadMaterial(BinaryReader* reader);
+        static Material* ReadMaterial(BinaryReader* reader, bool readFullHeader);
     };
 }

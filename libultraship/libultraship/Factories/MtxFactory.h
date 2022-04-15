@@ -7,6 +7,6 @@ namespace Ship
 	class MtxFactory
 	{
 	public:
-		static Matrix* ReadMtx(BinaryReader* reader);
+		static Matrix* ReadMtx(BinaryReader* reader, bool readFullHeader);
 	};
 }

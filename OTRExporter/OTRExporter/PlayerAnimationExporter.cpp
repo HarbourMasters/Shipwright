@@ -1,12 +1,11 @@
 #include "PlayerAnimationExporter.h"
 #include <Resource.h>
 
-void OTRExporter_PlayerAnimationExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_PlayerAnimationExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZPlayerAnimationData* anim = (ZPlayerAnimationData*)res;
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::PlayerAnimation, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::PlayerAnimation, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)anim->limbRotData.size());
 

@@ -1,12 +1,11 @@
 #include "TextureExporter.h"
 #include "../ZAPD/ZFile.h"
 
-void OTRExporter_Texture::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_Texture::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZTexture* tex = (ZTexture*)res;
 	
-	if (writeHeader)
-		WriteHeader(tex, writer, Ship::ResourceType::Texture, Ship::Version::Deckard);
+	WriteHeader(tex, writer, Ship::ResourceType::Texture, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)tex->GetTextureType());
 	writer->Write((uint32_t)tex->GetWidth());

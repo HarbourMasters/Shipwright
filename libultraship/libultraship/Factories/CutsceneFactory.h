@@ -6,6 +6,6 @@ namespace Ship
     class CutsceneFactory
     {
     public:
-        static Cutscene* ReadCutscene(BinaryReader* reader);
+        static Cutscene* ReadCutscene(BinaryReader* reader, bool readFullHeader);
     };
 }

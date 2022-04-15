@@ -6,6 +6,6 @@ namespace Ship
     class AnimationFactory
     {
     public:
-        static Animation* ReadAnimation(BinaryReader* reader);
+        static Animation* ReadAnimation(BinaryReader* reader, bool readFullHeader);
     };
 }

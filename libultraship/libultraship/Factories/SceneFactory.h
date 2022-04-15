@@ -6,6 +6,6 @@ namespace Ship
     class SceneFactory
     {
     public:
-        static Scene* ReadScene(BinaryReader* reader);
+        static Scene* ReadScene(BinaryReader* reader, bool readFullHeader);
     };
 }

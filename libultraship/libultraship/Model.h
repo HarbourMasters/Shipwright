@@ -40,7 +40,7 @@ namespace Ship
         uint32_t uvCoords;
         uint32_t boneWeights;
 
-        void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+        void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
     };
 
     struct Vertex

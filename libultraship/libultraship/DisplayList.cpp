@@ -3,11 +3,11 @@
 
 namespace Ship
 {
-	void DisplayListV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void DisplayListV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		DisplayList* dl = (DisplayList*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		while (reader->GetBaseAddress() % 8 != 0)
 			reader->ReadByte();

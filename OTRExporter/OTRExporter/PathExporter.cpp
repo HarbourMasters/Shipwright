@@ -1,12 +1,11 @@
 #include "PathExporter.h"
 #include "../ZAPD/ZFile.h"
 
-void OTRExporter_Path::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_Path::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZPath* path = (ZPath*)res;
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::Path, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::Path, Ship::Version::Deckard, writeFullHeader);
 	
 	writer->Write((uint32_t)path->pathways.size());
 

@@ -3,11 +3,11 @@
 
 namespace Ship
 {
-	void PlayerAnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void PlayerAnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		PlayerAnimation* anim = (PlayerAnimation*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		uint32_t numEntries = reader->ReadUInt32();
 		anim->limbRotData.reserve(numEntries);

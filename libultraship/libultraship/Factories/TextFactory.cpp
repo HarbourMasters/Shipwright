@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Text* TextFactory::ReadText(BinaryReader* reader)
+    Text* TextFactory::ReadText(BinaryReader* reader, bool readFullHeader)
     {
         Text* txt = new Text();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             TextV0 txtFac = TextV0();
-            txtFac.ParseFileBinary(reader, txt);
+            txtFac.ParseFileBinary(reader, txt, readFullHeader);
         }
         break;
         default:

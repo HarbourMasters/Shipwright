@@ -25,7 +25,7 @@ namespace Ship
 	class SkeletonLimbV0 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class Struct_800A57C0 // SkinVertex

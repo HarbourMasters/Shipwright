@@ -6,6 +6,6 @@ namespace Ship
     class PathFactory
     {
     public:
-        static Path* ReadPath(BinaryReader* reader);
+        static Path* ReadPath(BinaryReader* reader, bool readFullHeader);
     };
 }

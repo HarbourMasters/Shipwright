@@ -7,11 +7,11 @@ namespace Ship
 		int bp = 0;
 	}
 
-	void SceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void SceneV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{	
 		Scene* scene = (Scene*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		uint32_t cmdCnt = reader->ReadUInt32();
 		scene->commands.reserve(cmdCnt);

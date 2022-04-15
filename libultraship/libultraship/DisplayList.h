@@ -12,7 +12,7 @@ namespace Ship
 	class DisplayListV0 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
     class DisplayList : public Resource

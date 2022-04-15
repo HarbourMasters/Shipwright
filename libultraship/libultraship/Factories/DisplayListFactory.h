@@ -6,6 +6,6 @@ namespace Ship
     class DisplayListFactory
     {
     public:
-        static DisplayList* ReadDisplayList(BinaryReader* reader);
+        static DisplayList* ReadDisplayList(BinaryReader* reader, bool readFullHeader);
     };
 }

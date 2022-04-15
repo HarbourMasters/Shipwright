@@ -10,5 +10,5 @@ class OTRExporter_Room : public OTRExporter
 {
 public:
 	void WritePolyDList(BinaryWriter* writer, ZRoom* room, PolygonDlist* dlist);
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) override;
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader) override;
 };

@@ -3,6 +3,7 @@
 /* 
 * Changelog:
 * V0 (Deckard) - Initial implementation
+* V1 (Roy) - Removed count field. Now only holds one vertex, like it should have originally. The lists always had one element anyways so it was redundant...
 */
 
 
@@ -18,6 +19,6 @@ class OTRExporter_Vtx : public OTRExporter
 {
 public:
 	static void WriteVtx(ZVtx* vtx, BinaryWriter* writer);
-	void SaveArr(ZResource* res, const fs::path& outPath, const std::vector<ZResource*>&, BinaryWriter* writer, bool writeHeader);
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) override;
+	void SaveArr(ZResource* res, const fs::path& outPath, const std::vector<ZResource*>&, BinaryWriter* writer, bool writeFullHeader);
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader) override;
 };

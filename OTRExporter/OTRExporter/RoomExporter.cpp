@@ -35,12 +35,11 @@
 #include "PathExporter.h"
 #undef FindResource
 
-void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZRoom* room = (ZRoom*)res;
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::Room, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::Room, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)room->commands.size());
 

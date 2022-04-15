@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    SkeletonLimb* SkeletonLimbFactory::ReadSkeletonLimb(BinaryReader* reader)
+    SkeletonLimb* SkeletonLimbFactory::ReadSkeletonLimb(BinaryReader* reader, bool readFullHeader)
     {
         SkeletonLimb* limb = new SkeletonLimb();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             SkeletonLimbV0 Limb = SkeletonLimbV0();
-            Limb.ParseFileBinary(reader, limb);
+            Limb.ParseFileBinary(reader, limb, readFullHeader);
         }
         break;
         default:

@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Animation* AnimationFactory::ReadAnimation(BinaryReader* reader)
+    Animation* AnimationFactory::ReadAnimation(BinaryReader* reader, bool readFullHeader)
     {
         Animation* anim = new Animation();
         Version version = (Version)reader->ReadUInt32();
@@ -12,7 +12,7 @@ namespace Ship
         case Version::Deckard:
         {
             AnimationV0 Anim = AnimationV0();
-            Anim.ParseFileBinary(reader, anim);
+            Anim.ParseFileBinary(reader, anim, readFullHeader);
         }
         break;
         default:

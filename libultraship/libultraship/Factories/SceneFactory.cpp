@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Scene* SceneFactory::ReadScene(BinaryReader* reader)
+    Scene* SceneFactory::ReadScene(BinaryReader* reader, bool readFullHeader)
     {
         Scene* scene = new Scene();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             SceneV0 Scene = SceneV0();
-            Scene.ParseFileBinary(reader, scene);
+            Scene.ParseFileBinary(reader, scene, readFullHeader);
         }
         break;
         default:

@@ -1,10 +1,10 @@
 #include "Text.h"
 
-void Ship::TextV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+void Ship::TextV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 {
 	Text* txt = (Text*)res;
 
-	ResourceFile::ParseFileBinary(reader, txt);
+	ResourceFile::ParseFileBinary(reader, txt, readFullHeader);
 
 	uint32_t msgCount = reader->ReadUInt32();
 	txt->messages.reserve(msgCount);

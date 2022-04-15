@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-    void BlobV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void BlobV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         Blob* blob = (Blob*)res;
 
-        ResourceFile::ParseFileBinary(reader, blob);
+        ResourceFile::ParseFileBinary(reader, blob, readFullHeader);
 
         uint32_t dataSize = reader->ReadUInt32();
 

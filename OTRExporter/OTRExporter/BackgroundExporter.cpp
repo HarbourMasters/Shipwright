@@ -1,7 +1,7 @@
 #include "BackgroundExporter.h"
 #include "../ZAPD/ZFile.h"
 
-void OTRExporter_Background::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_Background::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZBackground* bg = (ZBackground*)res;
 	

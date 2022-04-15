@@ -7,5 +7,5 @@
 class OTRExporter_Cutscene : public OTRExporter
 {
 public:
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) override;
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader) override;
 };

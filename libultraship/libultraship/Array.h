@@ -70,10 +70,17 @@ namespace Ship
 		Audio
 	};
 
+	class ArrayV1 : public ResourceFile
+	{
+	public:
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
+	};
+
+
 	class ArrayV0 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class Array : public Resource
@@ -81,7 +88,8 @@ namespace Ship
 	public:
 		std::vector<ScalarData> scalars;
 		std::vector<Vtx> vertices;
-		std::vector<Resource> resources;
 
+		// For everything else...
+		std::vector<Resource*> resources;
 	};
 }

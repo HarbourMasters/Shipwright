@@ -3,12 +3,11 @@
 #include <Resource.h>
 #include <Globals.h>
 
-void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_SkeletonLimb::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZLimb* limb = (ZLimb*)res;
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::SkeletonLimb, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::SkeletonLimb, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint8_t)limb->type);
 	writer->Write((uint8_t)limb->skinSegmentType);

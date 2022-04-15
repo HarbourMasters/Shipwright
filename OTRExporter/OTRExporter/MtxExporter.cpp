@@ -1,11 +1,10 @@
 #include "MtxExporter.h"
 
-void OTRExporter_MtxExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_MtxExporter::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZMtx* mtx = (ZMtx*)res;
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::Matrix, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::Matrix, Ship::Version::Deckard, writeFullHeader);
 
 	for (size_t i = 0; i < 4; i++)
 		for (size_t j = 0; j < 4; j++)

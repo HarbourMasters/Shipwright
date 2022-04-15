@@ -2,15 +2,21 @@
 
 namespace Ship
 {
-	Vertex* VertexFactory::ReadVtx(BinaryReader* reader) {
+	Vertex* VertexFactory::ReadVtx(BinaryReader* reader, bool readFullHeader) {
 		Vertex* vtx = new Vertex();
 		uint32_t version = reader->ReadUInt32();
 		switch (version)
 		{
-		case 0:
+		case (uint32_t)Version::Roy:
+		{
+			VertexV1 Vtx = VertexV1();
+			Vtx.ParseFileBinary(reader, vtx, readFullHeader);
+		}
+		break;
+		case (uint32_t)Version::Deckard:
 		{
 			VertexV0 Vtx = VertexV0();
-			Vtx.ParseFileBinary(reader, vtx);
+			Vtx.ParseFileBinary(reader, vtx, readFullHeader);
 		}
 		break;
 		default:

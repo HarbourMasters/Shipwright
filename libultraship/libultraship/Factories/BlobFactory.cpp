@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Blob* BlobFactory::ReadBlob(BinaryReader* reader)
+    Blob* BlobFactory::ReadBlob(BinaryReader* reader, bool readFullHeader)
     {
         Blob* blob = new Blob();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             BlobV0 blobFac = BlobV0();
-            blobFac.ParseFileBinary(reader, blob);
+            blobFac.ParseFileBinary(reader, blob, readFullHeader);
         }
         break;
         default:

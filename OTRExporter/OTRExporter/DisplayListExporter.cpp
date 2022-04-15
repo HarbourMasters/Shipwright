@@ -45,14 +45,13 @@
 {    (_SHIFTL(G_TEXRECT, 24, 8) | _SHIFTL(xh, 12, 12) | _SHIFTL(yh, 0, 12)),\
     (_SHIFTL(tile, 24, 3) | _SHIFTL(xl, 12, 12) | _SHIFTL(yl, 0, 12)) }
 
-void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZDisplayList* dList = (ZDisplayList*)res;
 
 	//printf("Exporting DList %s\n", dList->GetName().c_str());
 
-	if (writeHeader)
-		WriteHeader(res, writer, Ship::ResourceType::DisplayList, Ship::Version::Deckard);
+	WriteHeader(res, writer, Ship::ResourceType::DisplayList, Ship::Version::Deckard, writeFullHeader);
 
 	while (writer->GetBaseAddress() % 8 != 0)
 		writer->Write((uint8_t)0xFF);

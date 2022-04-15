@@ -9,7 +9,6 @@ class ZScalar;
 class OTRExporter_Array : public OTRExporter
 {
 public:
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) override;
-	void WriteScalarType(ZScalar* scalar, BinaryWriter* writer);
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader) override;
 
 };

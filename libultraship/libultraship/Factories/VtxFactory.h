@@ -7,6 +7,6 @@ namespace Ship
 	class VertexFactory
 	{
 	public:
-		static Vertex* ReadVtx(BinaryReader* reader);
+		static Vertex* ReadVtx(BinaryReader* reader, bool readFullHeader);
 	};
 }

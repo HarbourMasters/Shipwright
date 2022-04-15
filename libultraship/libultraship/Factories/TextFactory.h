@@ -6,6 +6,6 @@ namespace Ship
     class TextFactory
     {
     public:
-        static Text* ReadText(BinaryReader* reader);
+        static Text* ReadText(BinaryReader* reader, bool readFullHeader);
     };
 }

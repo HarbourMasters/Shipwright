@@ -214,7 +214,7 @@ public:
 	ZResourceExporter() = default;
 	virtual ~ZResourceExporter() = default;
 
-	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader) = 0;
+	virtual void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader) = 0;
 };
 
 offset_t Seg2Filespace(segptr_t segmentedAddress, uint32_t parentBaseAddress);

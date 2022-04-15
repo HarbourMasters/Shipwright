@@ -1,12 +1,11 @@
 #include "BlobExporter.h"
 #include "../ZAPD/ZFile.h"
 
-void OTRExporter_Blob::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeHeader)
+void OTRExporter_Blob::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZBlob* blob = (ZBlob*)res;
 	
-	if (writeHeader)
-		WriteHeader(blob, writer, Ship::ResourceType::Blob, Ship::Version::Deckard);
+	WriteHeader(blob, writer, Ship::ResourceType::Blob, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)blob->GetRawDataSize());
 

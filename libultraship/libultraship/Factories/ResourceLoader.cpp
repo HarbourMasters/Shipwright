@@ -33,57 +33,76 @@ namespace Ship
         reader->SetEndianness(endianness);
 
         ResourceType resourceType = (ResourceType)reader->ReadUInt32();
+
+        Resource* result = LoadResource(reader.get(), resourceType, true);
+
+        if (result != nullptr) {
+            result->file = FileToLoad;
+            result->resType = resourceType;
+        } else {
+            if (FileToLoad != nullptr) {
+                SPDLOG_ERROR("Failed to load resource of type {} \"{}\"", resourceType, FileToLoad->path);
+            } else {
+                SPDLOG_ERROR("Failed to load resource because the file did not load.");
+            }
+        }
+
+        return result;
+    }
+
+    Resource* ResourceLoader::LoadResource(BinaryReader* reader, ResourceType resourceType, bool readFullHeader)
+    {
         Resource* result = nullptr;
 
         switch (resourceType)
         {
         case ResourceType::Material:
-            result = MaterialFactory::ReadMaterial(reader.get());
+            result = MaterialFactory::ReadMaterial(reader, readFullHeader);
             break;
         case ResourceType::Texture:
-            result = TextureFactory::ReadTexture(reader.get());
+            result = TextureFactory::ReadTexture(reader, readFullHeader);
             break;
         case ResourceType::Room:
-            result = SceneFactory::ReadScene(reader.get());
+            result = SceneFactory::ReadScene(reader, readFullHeader);
             break;
         case ResourceType::CollisionHeader:
-            result = CollisionHeaderFactory::ReadCollisionHeader(reader.get());
+            result = CollisionHeaderFactory::ReadCollisionHeader(reader, readFullHeader);
             break;
         case ResourceType::DisplayList:
-            result = DisplayListFactory::ReadDisplayList(reader.get());
+            result = DisplayListFactory::ReadDisplayList(reader, readFullHeader);
             break;
         case ResourceType::PlayerAnimation:
-            result = PlayerAnimationFactory::ReadPlayerAnimation(reader.get());
+            result = PlayerAnimationFactory::ReadPlayerAnimation(reader, readFullHeader);
             break;
         case ResourceType::Skeleton:
-            result = SkeletonFactory::ReadSkeleton(reader.get());
+            result = SkeletonFactory::ReadSkeleton(reader, readFullHeader);
             break;
         case ResourceType::SkeletonLimb:
-            result = SkeletonLimbFactory::ReadSkeletonLimb(reader.get());
+            result = SkeletonLimbFactory::ReadSkeletonLimb(reader, readFullHeader);
             break;
         case ResourceType::Vertex:
-            result = VertexFactory::ReadVtx(reader.get());
+            result = VertexFactory::ReadVtx(reader, readFullHeader);
             break;
         case ResourceType::Animation:
-            result = AnimationFactory::ReadAnimation(reader.get());
+            result = AnimationFactory::ReadAnimation(reader, readFullHeader);
             break;
         case ResourceType::Cutscene:
-            result = CutsceneFactory::ReadCutscene(reader.get());
+            result = CutsceneFactory::ReadCutscene(reader, readFullHeader);
             break;
         case ResourceType::Array:
-            result = ArrayFactory::ReadArray(reader.get());
+            result = ArrayFactory::ReadArray(reader, readFullHeader);
             break;
         case ResourceType::Path:
-            result = PathFactory::ReadPath(reader.get());
+            result = PathFactory::ReadPath(reader, readFullHeader);
             break;
         case ResourceType::Text:
-            result = TextFactory::ReadText(reader.get());
+            result = TextFactory::ReadText(reader, readFullHeader);
             break;
         case ResourceType::Blob:
-            result = BlobFactory::ReadBlob(reader.get());
+            result = BlobFactory::ReadBlob(reader, readFullHeader);
             break;
         case ResourceType::Matrix:
-            result = MtxFactory::ReadMtx(reader.get());
+            result = MtxFactory::ReadMtx(reader, readFullHeader);
             break;
         case ResourceType::Audio:
             result = AudioFactory::ReadAudio(reader.get());
@@ -100,17 +119,6 @@ namespace Ship
         default:
             // RESOURCE TYPE NOT SUPPORTED
             break;
-        }
-
-        if (result != nullptr) {
-            result->file = FileToLoad;
-            result->resType = resourceType;
-        } else {
-            if (FileToLoad != nullptr) {
-                SPDLOG_ERROR("Failed to load resource of type {} \"{}\"", resourceType, FileToLoad->path);
-            } else {
-                SPDLOG_ERROR("Failed to load resource because the file did not load.");
-            }
         }
 
         return result;

@@ -18,7 +18,9 @@ namespace Ship {
 
 	Archive::Archive(const std::string& MainPath, const std::string& PatchesPath, bool enableWriting, bool genCRCMap) : MainPath(MainPath), PatchesPath(PatchesPath) {
 		mainMPQ = nullptr;
-		Load(enableWriting, genCRCMap);
+
+		if (!enableWriting)
+			Load(enableWriting, genCRCMap);
 	}
 
 	Archive::~Archive() {

@@ -2,14 +2,33 @@
 
 namespace Ship
 {
-	void VertexV0::ParseFileBinary(BinaryReader* reader, Resource* res) {
+	void VertexV1::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
+	{
 		Vertex* vtx = (Vertex*)res;
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
+
+		vtx->vtx.x = reader->ReadInt16();
+		vtx->vtx.y = reader->ReadInt16();
+		vtx->vtx.z = reader->ReadInt16();
+		vtx->vtx.flag = reader->ReadUInt16();
+		vtx->vtx.s = reader->ReadInt16();
+		vtx->vtx.t = reader->ReadInt16();
+		vtx->vtx.r = reader->ReadUByte();
+		vtx->vtx.g = reader->ReadUByte();
+		vtx->vtx.b = reader->ReadUByte();
+		vtx->vtx.a = reader->ReadUByte();
+	}
+
+	void VertexV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
+	{
+		Vertex* vtx = (Vertex*)res;
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		uint32_t count = reader->ReadUInt32();
-		vtx->vtxList.reserve(count);
+		//vtx->vtxList.reserve(count);
 
-		for (uint32_t i = 0; i < count; i++) {
+		for (uint32_t i = 0; i < count; i++) 
+		{
 			Vtx data;
 			data.x = reader->ReadInt16();
 			data.y = reader->ReadInt16();
@@ -21,7 +40,9 @@ namespace Ship
 			data.g = reader->ReadUByte();
 			data.b = reader->ReadUByte();
 			data.a = reader->ReadUByte();
-			vtx->vtxList.push_back(data);
+			vtx->vtx = data;
+			break;
+			//vtx->vtxList.push_back(data);
 		}
 	}
 }

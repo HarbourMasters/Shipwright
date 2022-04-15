@@ -393,6 +393,6 @@ namespace Ship
 	{
 	public:
 		SceneCommand* ParseSceneCommand(BinaryReader* reader);
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 }
