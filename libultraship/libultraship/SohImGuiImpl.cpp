@@ -380,6 +380,7 @@ namespace SohImGui {
 
                 ImGui::Text("Text Speed", Game::Settings.enhancements.text_speed);
                 if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5)) {
+                    CVar_SetS32("gTextSpeed", Game::Settings.enhancements.text_speed);
                     needs_save = true;
                 }
 
