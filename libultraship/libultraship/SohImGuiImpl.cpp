@@ -479,7 +479,7 @@ namespace SohImGui {
                 }
 
                 if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
-                    CVar_SetS32("gNoRestrictItem", Game::Settings.cheats.no_restrict_item);
+                    CVar_SetS32("gNoRestrictItems", Game::Settings.cheats.no_restrict_item);
                     needs_save = true;
                 }
 

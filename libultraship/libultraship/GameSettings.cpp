@@ -134,7 +134,7 @@ namespace Game {
         CVar_SetS32("gEzISG", Settings.cheats.ez_isg);
 
         Settings.cheats.no_restrict_item = stob(Conf[CheatSection]["no_restrict_item"]);
-        CVar_SetS32("gNoRestrictItem", Settings.cheats.no_restrict_item);
+        CVar_SetS32("gNoRestrictItems", Settings.cheats.no_restrict_item);
 
         Settings.cheats.freeze_time = stob(Conf[CheatSection]["freeze_time"]);
         CVar_SetS32("gFreezeTime", Settings.cheats.freeze_time);
