@@ -118,8 +118,6 @@ s16 sOcarinaNoteCEnvR;
 s16 sOcarinaNoteCEnvB;
 s16 sOcarinaNoteCEnvG;
 
-
-
 void Message_ResetOcarinaNoteState(void) {
     R_OCARINA_NOTES_YPOS(0) = 189;
     R_OCARINA_NOTES_YPOS(1) = 184;
