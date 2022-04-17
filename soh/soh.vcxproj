@@ -185,6 +185,7 @@
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
     <ClCompile Include="soh\stubs.c" />
+    <ClCompile Include="soh\util.cpp" />
     <ClCompile Include="soh\z_message_OTR.cpp" />
     <ClCompile Include="soh\z_play_otr.cpp" />
     <ClCompile Include="soh\z_scene_otr.cpp" />
@@ -928,6 +929,7 @@
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\gameconsole.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
+    <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Ice\z_arrow_ice.h" />
