@@ -413,6 +413,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("MM Bunny Hood", &Game::Settings.enhancements.mm_bunny_hood)) {
+                    CVar_SetS32("gMMBunnyHood", Game::Settings.enhancements.mm_bunny_hood);
+                    needs_save = true;
+                }
+
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
