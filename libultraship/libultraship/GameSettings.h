@@ -24,6 +24,7 @@ struct SoHConfigType {
         bool disable_lod = false;
         bool animated_pause_menu = false;
         bool minimal_ui = false;
+        bool mm_bunny_hood = false;
     } enhancements;
 
     // Controller
