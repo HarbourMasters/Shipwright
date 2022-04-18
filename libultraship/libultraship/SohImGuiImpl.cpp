@@ -364,6 +364,11 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
+                if (ImGui::Checkbox("Rumble Enabled", &Game::Settings.controller.rumble_enabled)) {
+                    CVar_SetS32("gRumbleEnabled", Game::Settings.controller.rumble_enabled);
+                    needs_save = true;
+                }
+
                 ImGui::Text("Rumble Strength: %d %%", static_cast<int>(100 * Game::Settings.controller.rumble_strength));
                 if (ImGui::SliderFloat("##RUMBLE", &Game::Settings.controller.rumble_strength, 0.0f, 1.0f, "")) {
                     needs_save = true;

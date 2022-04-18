@@ -87,6 +87,9 @@ namespace Game {
         Settings.controller.rumble_strength = Ship::stof(Conf[ControllerSection]["rumble_strength"]);
         CVar_SetFloat("gRumbleStrength", Settings.controller.rumble_strength);
 
+        Settings.controller.rumble_enabled = Ship::stof(Conf[ControllerSection]["rumble_enabled"]);
+        CVar_SetS32("gRumbleEnabled", Settings.controller.rumble_enabled);
+
         Settings.controller.input_scale = Ship::stof(Conf[ControllerSection]["input_scale"]);
         CVar_SetFloat("gInputScale", Settings.controller.input_scale);
 
@@ -160,6 +163,7 @@ namespace Game {
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
         Conf[ControllerSection]["rumble_strength"]  = std::to_string(Settings.controller.rumble_strength);
+        Conf[ControllerSection]["rumble_enabled"]  = std::to_string(Settings.controller.rumble_enabled);
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
         Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);

@@ -31,6 +31,7 @@ struct SoHConfigType {
     struct {
         float gyro_sensitivity = 1.0f;
         float rumble_strength = 1.0f;
+        bool rumble_enabled = true;
         float input_scale = 1.0f;
         float gyroDriftX = 0.0f;
         float gyroDriftY = 0.0f;
