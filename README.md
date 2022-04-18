@@ -55,15 +55,15 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
- 5. Place `oot debug` rom (not Master Quest) in the `soh` folder named `baserom_original_non_mq`.
+ 5. Place `oot debug` rom (not Master Quest) named `baserom_original_non_mq` in the `soh` folder.
  6. Launch `soh/fixbaserom.py`.
  7. Launch `soh/extract_baserom.py`.
  8. Copy the `baserom` folder from the `soh` folder into the `OTRExporter` folder.
- 9. Run `OTRExporter/OTRExporter.sln`.
+ 9. Run `OTRExporter/OTRExporter.sln`. Do not upgrade the solution when prompted.
  10. Switch the solution to `Release x64`.
  11. Build the solution. 
  12. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
- 13. Run `soh/soh.sln`
+ 13. Run `soh/soh.sln`. Do not upgrade the solution when prompted.
  14. Switch the solution to `Release x86`.
  15. Build the solution.
  16. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
