@@ -286,6 +286,10 @@ namespace Ship {
         //gfx_set_framedivisor(0);
     }
 
+    void Window::GetPixelDepthPrepare(float x, float y) {
+        gfx_get_pixel_depth_prepare(x, y);
+    }
+
     uint16_t Window::GetPixelDepth(float x, float y) {
         return gfx_get_pixel_depth(x, y);
     }
