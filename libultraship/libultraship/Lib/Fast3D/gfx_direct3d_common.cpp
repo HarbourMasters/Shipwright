@@ -134,9 +134,6 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
             }
         }
     }
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len, "    float4 screenPos : TEXCOORD2;");
-    }
     if (cc_features.opt_fog) {
         append_line(buf, &len, "    float4 fog : FOG;");
         num_floats += 4;
@@ -163,7 +160,7 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     if (cc_features.opt_alpha && cc_features.opt_noise) {
         append_line(buf, &len, "cbuffer PerFrameCB : register(b0) {");
         append_line(buf, &len, "    uint noise_frame;");
-        append_line(buf, &len, "    float2 noise_scale;");
+        append_line(buf, &len, "    float noise_scale;");
         append_line(buf, &len, "}");
 
         append_line(buf, &len, "float random(in float3 value) {");
@@ -217,9 +214,6 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     append_line(buf, &len, ") {");
     append_line(buf, &len, "    PSInput result;");
     append_line(buf, &len, "    result.position = position;");
-    if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len, "    result.screenPos = position;");
-    }
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             len += sprintf(buf + len, "    result.uv%d = uv%d;\r\n", i, i);
@@ -244,7 +238,11 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     if (include_root_signature) {
         append_line(buf, &len, "[RootSignature(RS)]");
     }
-    append_line(buf, &len, "float4 PSMain(PSInput input) : SV_TARGET {");
+    if (cc_features.opt_alpha && cc_features.opt_noise) {
+        append_line(buf, &len, "float4 PSMain(PSInput input, float4 screenSpace : SV_Position) : SV_TARGET {");
+    } else {
+        append_line(buf, &len, "float4 PSMain(PSInput input) : SV_TARGET {");
+    }
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             len += sprintf(buf + len, "    float2 tc%d = input.uv%d;\r\n", i, i);
@@ -301,7 +299,7 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(buf, &len, "    float2 coords = (input.screenPos.xy / input.screenPos.w) * noise_scale;");
+        append_line(buf, &len, "    float2 coords = screenSpace.xy * noise_scale;");
         append_line(buf, &len, "    texel.a *= round(saturate(random(float3(floor(coords), noise_frame)) + texel.a - 0.5));");
     }
 

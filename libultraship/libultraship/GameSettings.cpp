@@ -59,7 +59,10 @@ namespace Game {
         CVar_SetS32("gPauseLiveLink", Settings.enhancements.animated_pause_menu);
 
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
-        CVar_SetS32(const_cast<char*>("gMinimalUI"), Settings.enhancements.minimal_ui);
+        CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
+
+        Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
+        CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
 
         Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
         CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
@@ -92,6 +95,15 @@ namespace Game {
 
         Settings.controller.input_enabled = stob(Conf[ControllerSection]["input_enabled"]);
         CVar_SetS32("gInputEnabled", Settings.controller.input_enabled);
+
+        Settings.controller.dpad_pause_name = stob(Conf[ControllerSection]["dpad_pause_name"]);
+        CVar_SetS32("gDpadPauseName", Settings.controller.dpad_pause_name);
+
+        Settings.controller.dpad_ocarina_text = stob(Conf[ControllerSection]["dpad_ocarina_text"]);
+        CVar_SetS32("gDpadOcarinaText", Settings.controller.dpad_ocarina_text);
+
+        Settings.controller.dpad_shop = stob(Conf[ControllerSection]["dpad_shop"]);
+        CVar_SetS32("gDpadShop", Settings.controller.dpad_shop);
         
         // Cheats
         Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
@@ -146,13 +158,18 @@ namespace Game {
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
         Conf[EnhancementSection]["minimal_ui"] = std::to_string(Settings.enhancements.minimal_ui);
-		Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
+        Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
+        Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
+
 
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
         Conf[ControllerSection]["rumble_strength"]  = std::to_string(Settings.controller.rumble_strength);
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
+        Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
+        Conf[ControllerSection]["dpad_ocarina_text"] = std::to_string(Settings.controller.dpad_ocarina_text);
+        Conf[ControllerSection]["dpad_shop"] = std::to_string(Settings.controller.dpad_shop);
 
         // Cheats
         Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);
