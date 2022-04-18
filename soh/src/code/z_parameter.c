@@ -919,7 +919,11 @@ void func_80083108(GlobalContext* globalCtx) {
 
                 if (interfaceCtx->restrictions.tradeItems != 0) {
                     for (i = 1; i < 4; i++) {
-                        if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
+                        if ((CVar_GetS32("gMMBunnyHood", 0) != 0)
+                            && (gSaveContext.equips.buttonItems[i] >= ITEM_MASK_KEATON)
+                            && (gSaveContext.equips.buttonItems[i] <= ITEM_MASK_TRUTH)) {
+                            gSaveContext.buttonStatus[i] = BTN_ENABLED;
+                        } else if ((gSaveContext.equips.buttonItems[i] >= ITEM_WEIRD_EGG) &&
                             (gSaveContext.equips.buttonItems[i] <= ITEM_CLAIM_CHECK)) {
                             if (gSaveContext.buttonStatus[i] == BTN_ENABLED) {
                                 sp28 = 1;

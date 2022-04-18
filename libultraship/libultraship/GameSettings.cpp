@@ -61,6 +61,9 @@ namespace Game {
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
         CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
 
+        Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
+        CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
+
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
         CVar_SetFloat("gGameMasterVolume", Settings.audio.master);
@@ -95,6 +98,9 @@ namespace Game {
 
         Settings.controller.dpad_ocarina_text = stob(Conf[ControllerSection]["dpad_ocarina_text"]);
         CVar_SetS32("gDpadOcarinaText", Settings.controller.dpad_ocarina_text);
+
+        Settings.controller.dpad_shop = stob(Conf[ControllerSection]["dpad_shop"]);
+        CVar_SetS32("gDpadShop", Settings.controller.dpad_shop);
         
         // Cheats
         Settings.cheats.debug_mode = stob(Conf[CheatSection]["debug_mode"]);
@@ -149,6 +155,7 @@ namespace Game {
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
         Conf[EnhancementSection]["minimal_ui"] = std::to_string(Settings.enhancements.minimal_ui);
+        Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
 
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
@@ -157,6 +164,7 @@ namespace Game {
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
         Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
         Conf[ControllerSection]["dpad_ocarina_text"] = std::to_string(Settings.controller.dpad_ocarina_text);
+        Conf[ControllerSection]["dpad_shop"] = std::to_string(Settings.controller.dpad_shop);
 
         // Cheats
         Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);
