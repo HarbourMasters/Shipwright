@@ -93,6 +93,9 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
+        if (SDL_GameControllerHasRumble(Cont)) {
+            SDL_GameControllerRumble(Cont, 0, 0, 0);
+        }
         if (Cont != nullptr) {
             SDL_GameControllerClose(Cont);
         }
@@ -331,7 +334,9 @@ namespace Ship {
     {
         if (SDL_GameControllerHasRumble(Cont)) {
             if (controller->rumble > 0) {
-                SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 1);
+                SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 0);
+            } else {
+                SDL_GameControllerRumble(Cont, 0, 0, 0);
             }
         }
 
