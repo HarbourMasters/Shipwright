@@ -814,3 +814,13 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
         OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
     }
 }
+
+extern "C" int Controller_CanRumble(void) {
+    for (const auto& controller : Ship::Window::Controllers.at(0)) {
+        if (controller->CanRumble()) {
+            return 1;
+        }
+    }
+
+    return 0;
+}

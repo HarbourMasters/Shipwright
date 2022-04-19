@@ -19,6 +19,7 @@ namespace Ship {
 			void Read(OSContPad* pad);
 			virtual void ReadFromSource() = 0;
 			virtual void WriteToSource(ControllerCallback* controller) = 0;
+			virtual bool CanRumble() const = 0;
 			bool isRumbling;
 
 			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);

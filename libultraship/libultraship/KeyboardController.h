@@ -10,6 +10,7 @@ namespace Ship {
 
 			void ReadFromSource();
 			void WriteToSource(ControllerCallback* controller);
+			bool CanRumble() const { return false; }
 
 			bool PressButton(int32_t dwScancode);
 			bool ReleaseButton(int32_t dwScancode);

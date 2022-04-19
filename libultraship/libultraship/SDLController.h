@@ -12,6 +12,7 @@ namespace Ship {
 
 			void ReadFromSource();
 			void WriteToSource(ControllerCallback* controller);
+			bool CanRumble() const { return SDL_GameControllerHasRumble(Cont); }
 
 			std::string GetGuid() { return guid; };
 
