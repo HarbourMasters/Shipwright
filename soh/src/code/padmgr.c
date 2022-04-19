@@ -383,7 +383,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
     s16* mesg = NULL;
     s32 exit;
 
-    //osSyncPrintf("コントローラスレッド実行開始\n"); // "Controller thread execution start"
+    osSyncPrintf("コントローラスレッド実行開始\n"); // "Controller thread execution start"
 
     exit = false;
     while (!exit) {
@@ -395,10 +395,6 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
         osRecvMesg(&padMgr->interruptMsgQ, (OSMesg)&mesg, OS_MESG_BLOCK);
         //LogUtils_CheckNullPointer("msg", mesg, "../padmgr.c", 563);
 
-        PadMgr_HandleRetraceMsg(padMgr);
-        break;
-
-#if 0
         switch (*mesg) {
             case OS_SC_RETRACE_MSG:
                 if (D_8012D280 > 2) {
@@ -419,13 +415,12 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
                 exit = true;
                 break;
         }
-#endif
     }
 
     // OTRTODO: Removed due to crash
     //IrqMgr_RemoveClient(padMgr->irqMgr, &padMgr->irqClient);
 
-    //osSyncPrintf("コントローラスレッド実行終了\n"); // "Controller thread execution end"
+    osSyncPrintf("コントローラスレッド実行終了\n"); // "Controller thread execution end"
 }
 
 void PadMgr_Init(PadMgr* padMgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id, OSPri priority, void* stack) {
