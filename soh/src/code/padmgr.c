@@ -417,8 +417,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
         }
     }
 
-    // OTRTODO: Removed due to crash
-    //IrqMgr_RemoveClient(padMgr->irqMgr, &padMgr->irqClient);
+    IrqMgr_RemoveClient(padMgr->irqMgr, &padMgr->irqClient);
 
     osSyncPrintf("コントローラスレッド実行終了\n"); // "Controller thread execution end"
 }
@@ -430,8 +429,7 @@ void PadMgr_Init(PadMgr* padMgr, OSMesgQueue* siIntMsgQ, IrqMgr* irqMgr, OSId id
     padMgr->irqMgr = irqMgr;
 
     osCreateMesgQueue(&padMgr->interruptMsgQ, padMgr->interruptMsgBuf, 4);
-    // OTRTODO: Removed due to crash
-    //IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptMsgQ);
+    IrqMgr_AddClient(padMgr->irqMgr, &padMgr->irqClient, &padMgr->interruptMsgQ);
     osCreateMesgQueue(&padMgr->serialMsgQ, padMgr->serialMsgBuf, 1);
     PadMgr_UnlockSerialMesgQueue(padMgr, siIntMsgQ);
     osCreateMesgQueue(&padMgr->lockMsgQ, padMgr->lockMsgBuf, 1);
