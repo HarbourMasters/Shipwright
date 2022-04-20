@@ -1845,6 +1845,150 @@ void Player_ComputeHandAimCue(Player* this, PlayState* play, s32 limbIndex) {
     Matrix_Pop();
 }
 
+static Actor* prevActorInView;
+extern Actor* gActorIdTable[ACTOR_NUMBER_MAX];
+extern int fbSceneInfo;
+static u8* sceneInfoFramebuffer = NULL;
+static s32 sceneInfoFbWidth;
+static s32 sceneInfoFbHeight;
+static bool sFirstPersonStart;
+static bool sSceneInfoContinuous;
+
+//without a way to get buffer sizes right now, this adds a bit of padding
+//to account for the difference between the window size and the framebuffer size
+static const float tmpBufferPadding = 120.0f;
+
+void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
+    bool isPlayerInFirstPersonMode = this->stateFlags1 & PLAYER_STATE1_20;
+
+    if (isPlayerInFirstPersonMode && !sFirstPersonStart) {
+        sFirstPersonStart = true;
+        sSceneInfoContinuous = true;
+    } else if (!isPlayerInFirstPersonMode && sFirstPersonStart) {
+        prevActorInView = NULL;
+        sFirstPersonStart = false;
+        sSceneInfoContinuous = false;
+    }
+
+    bool readNow = sSceneInfoContinuous && (play->state.frames % 20 == 0);
+    bool readMultipleItems = false;
+
+    if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
+        prevActorInView = NULL;
+        sSceneInfoContinuous = false;
+        readNow = true;
+    }
+    if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
+        prevActorInView = NULL;
+        sSceneInfoContinuous = false;
+        readMultipleItems = true;
+        readNow = true;
+    }
+
+    if (readNow) {
+        if (sceneInfoFbWidth != OTRGetFramebufferWidth(fbSceneInfo) ||
+            sceneInfoFbHeight != OTRGetFramebufferHeight(fbSceneInfo)) {
+            if (sceneInfoFramebuffer != NULL) {
+                free(sceneInfoFramebuffer);
+            }
+
+            sceneInfoFbWidth = OTRGetFramebufferWidth(fbSceneInfo);
+            sceneInfoFbHeight = OTRGetFramebufferHeight(fbSceneInfo);
+            sceneInfoFramebuffer = malloc(sceneInfoFbWidth * sceneInfoFbHeight * 4);
+        }
+        OTRReadFramebufferPixels(fbSceneInfo, 0, 0, sceneInfoFbWidth, sceneInfoFbHeight - tmpBufferPadding, 0,
+                                    sceneInfoFramebuffer);
+
+        struct VisibleItem {
+            u32 id;
+            u32 pixelCount;
+        };
+        struct VisibleItem topItems[256] = {0};
+
+        u32 width = sceneInfoFbWidth;
+        u32 height = sceneInfoFbHeight - tmpBufferPadding;
+        u32 x;
+        u32 y;
+        u32 offset;
+        u32 id;
+
+        u32 widthMargin = width / 8;
+        u32 heightMargin = height / 8;
+        for (x = widthMargin; x < width - widthMargin; x++) {
+            for (y = heightMargin; y < height - heightMargin; y++) {
+                offset = (x + y * width) * 4;
+                id = sceneInfoFramebuffer[offset + 2] & 0xFF;
+                
+                if (id == 0)
+                    continue;
+
+                s32 itemIndex = 0;
+                u32 currItemCount = 0;
+                while (itemIndex < 256) {
+                    if (topItems[itemIndex].id == id) {
+                        topItems[itemIndex].pixelCount++;
+                        currItemCount = topItems[itemIndex].pixelCount;
+                        break;
+                    } else if (topItems[itemIndex].id == 0) {
+                        topItems[itemIndex].id = id;
+                        topItems[itemIndex].pixelCount = 1;
+                        currItemCount = topItems[itemIndex].pixelCount;
+                        break;
+                    }
+                    ++itemIndex;
+                }
+                while (--itemIndex >= 0) {
+                    if (topItems[itemIndex].pixelCount > currItemCount) {
+                        break;
+                    }
+                    //swap
+                    struct VisibleItem tmp = topItems[itemIndex];
+                    topItems[itemIndex] = topItems[itemIndex + 1];
+                    topItems[itemIndex + 1] = tmp;
+                }
+            }
+        }
+
+        Actor* topVisibleActors[5] = {0};
+        for (int i = 0; i < 5; i++) {
+            topVisibleActors[i] = (topItems[0].id > 0) ? gActorIdTable[topItems[i].id - 1] : NULL;
+        }
+
+        if (topVisibleActors[0] != NULL && topVisibleActors[0] != prevActorInView) {
+            u8 announceStr[256];
+            s32 announceStrLength = 0;
+            announceStr[0] = '\0';
+            u8 arg[32];
+            for (int i = 0; i < 5; i++) {
+                if (topVisibleActors[i] == NULL)
+                    continue;
+                if (topVisibleActors[i]->id == ACTOR_PLAYER || topVisibleActors[i]->id == ACTOR_EN_ELF)
+                    continue;
+                if (topVisibleActors[i]->id == ACTOR_SCENE_EXIT) {
+                    u16 exitId = topVisibleActors[i]->params;
+                    u16 sceneId = gEntranceTable[play->setupExitList[exitId - 1]].scene;
+                    size_t result =
+                        sprintf(arg, "%s",
+                                OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                                0x0300 + sceneId, NULL));
+                    ASSERT(result < sizeof(arg));
+                } else {
+                    arg[0] = '\0';
+                }
+                size_t result = sprintf(announceStr + announceStrLength, "%s, ", OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                                0x1000 + topVisibleActors[i]->id, arg));
+                ASSERT(result < sizeof(announceStr) - announceStrLength);
+                announceStrLength += result;
+                if (!readMultipleItems)
+                    break;
+            }
+
+            OTRSpeakText(announceStr);
+        }
+        prevActorInView = topVisibleActors[0];
+    }
+}
+
 void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     Player* this = (Player*)thisx;
 

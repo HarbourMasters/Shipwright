@@ -45,6 +45,7 @@ struct GfxRenderingAPI {
     void (*upload_texture)(const uint8_t *rgba32_buf, uint32_t width, uint32_t height);
     void (*set_sampler_parameters)(int sampler, bool linear_filter, uint32_t cms, uint32_t cmt);
     void (*set_depth_test_and_mask)(bool depth_test, bool z_upd);
+    void (*read_pixels)(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data);
     void (*set_zmode_decal)(bool zmode_decal);
     void (*set_viewport)(int x, int y, int width, int height);
     void (*set_scissor)(int x, int y, int width, int height);

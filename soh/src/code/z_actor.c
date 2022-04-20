@@ -2710,6 +2710,9 @@ void Actor_FaultPrint(Actor* actor, char* command) {
     FaultDrawer_Printf("ACTOR NAME %08x:%s", actor, name);
 }
 
+Actor* gActorIdTable[ACTOR_NUMBER_MAX];
+s32 gActorIdCounter;
+
 void Actor_Draw(PlayState* play, Actor* actor) {
     FaultClient faultClient;
     Lights* lights;
@@ -2759,7 +2762,22 @@ void Actor_Draw(PlayState* play, Actor* actor) {
         }
     }
 
+
+    if (play->state.gfxCtx->unk_014 == 1) {
+        u32 actorId = (u32)actor->id;
+        if (actor->category == ACTORCAT_BG) {
+            actorId = 0;
+        }
+        gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0x50, 0, gActorIdCounter & 0xFF, 255);
+        gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0x50, 0, gActorIdCounter & 0xFF, 255);
+    }
+
     actor->draw(actor, play);
+
+    if (play->state.gfxCtx->unk_014 == 1) {
+        gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 0);
+        gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 0);
+    }
 
     if (actor->colorFilterTimer != 0) {
         if (actor->colorFilterParams & 0x2000) {
@@ -2878,6 +2896,8 @@ void Actor_DrawLensActors(PlayState* play, s32 numInvisibleActors, Actor** invis
         // "Magic lens invisible Actor display"
         gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示", i);
         Actor_Draw(play, *(invisibleActor++));
+        gActorIdTable[gActorIdCounter - 1] = invisibleActors[i];
+        gActorIdCounter++;
     }
 
     // "Magic lens invisible Actor display END"
@@ -2942,6 +2962,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
     s32 i;
 
     invisibleActorCounter = 0;
+    gActorIdCounter = 1;
 
     OPEN_DISPS(play->state.gfxCtx);
 
@@ -2992,6 +3013,8 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
                         if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(72) == 0)) {
                             Actor_Draw(play, actor);
                             actor->isDrawn = true;
+                            gActorIdTable[gActorIdCounter - 1] = actor;
+                            gActorIdCounter++;
                         }
                     }
                 }
@@ -3001,12 +3024,14 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
         }
     }
 
-    if ((HREG(64) != 1) || (HREG(73) != 0)) {
-        Effect_DrawAll(play->state.gfxCtx);
-    }
+    if (play->state.gfxCtx->unk_014 == 1) {
+        if ((HREG(64) != 1) || (HREG(73) != 0)) {
+            Effect_DrawAll(play->state.gfxCtx);
+        }
 
-    if ((HREG(64) != 1) || (HREG(74) != 0)) {
-        EffectSs_DrawAll(play);
+        if ((HREG(64) != 1) || (HREG(74) != 0)) {
+            EffectSs_DrawAll(play);
+        }
     }
 
     if ((HREG(64) != 1) || (HREG(72) != 0)) {
@@ -3020,16 +3045,18 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
     Actor_DrawFaroresWindPointer(play);
 
-    if (IREG(32) == 0) {
-        Lights_DrawGlow(play);
-    }
+    if (play->state.gfxCtx->unk_014 == 1) {
+        if (IREG(32) == 0) {
+            Lights_DrawGlow(play);
+        }
 
-    if ((HREG(64) != 1) || (HREG(75) != 0)) {
-        TitleCard_Draw(play, &actorCtx->titleCtx);
-    }
+        if ((HREG(64) != 1) || (HREG(75) != 0)) {
+            TitleCard_Draw(play, &actorCtx->titleCtx);
+        }
 
-    if ((HREG(64) != 1) || (HREG(76) != 0)) {
-        CollisionCheck_DrawCollision(play, &play->colChkCtx);
+        if ((HREG(64) != 1) || (HREG(76) != 0)) {
+            CollisionCheck_DrawCollision(play, &play->colChkCtx);
+        }
     }
 
     CLOSE_DISPS(play->state.gfxCtx);

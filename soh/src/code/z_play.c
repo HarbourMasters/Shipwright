@@ -1309,6 +1309,98 @@ void Play_DrawOverlayElements(PlayState* play) {
     }
 }
 
+extern int fbSceneInfo;
+
+void Gameplay_Draw_SceneInfo(PlayState* play) {
+    GraphicsContext* originalGfxCtx = play->state.gfxCtx;
+    GraphicsContext sceneInfoGfxCtx = *originalGfxCtx; 
+    GraphicsContext* gfxCtx = &sceneInfoGfxCtx;
+
+    if (play->pauseCtx.state != 0) {
+        return;
+    }
+
+    OPEN_DISPS(gfxCtx);
+
+    Graph_InitTHGAPoolIndex(gfxCtx, 2);
+    play->state.gfxCtx = gfxCtx;
+    gfxCtx->unk_014 = 1;
+
+
+    gSegments[4] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
+    gSegments[5] = VIRTUAL_TO_PHYSICAL(play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
+    gSegments[2] = VIRTUAL_TO_PHYSICAL(play->sceneSegment);
+
+    gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
+    gSPSegment(POLY_XLU_DISP++, 0x00, NULL);
+    gSPSegment(OVERLAY_DISP++, 0x00, NULL);
+
+    gSPSegment(POLY_OPA_DISP++, 0x04, play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
+    gSPSegment(POLY_XLU_DISP++, 0x04, play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
+    gSPSegment(OVERLAY_DISP++, 0x04, play->objectCtx.status[play->objectCtx.mainKeepIndex].segment);
+
+    gSPSegment(POLY_OPA_DISP++, 0x05, play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
+    gSPSegment(POLY_XLU_DISP++, 0x05, play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
+    gSPSegment(OVERLAY_DISP++, 0x05, play->objectCtx.status[play->objectCtx.subKeepIndex].segment);
+
+    gSPSegment(POLY_OPA_DISP++, 0x02, play->sceneSegment);
+    gSPSegment(POLY_XLU_DISP++, 0x02, play->sceneSegment);
+    gSPSegment(OVERLAY_DISP++, 0x02, play->sceneSegment);
+
+    func_80095248(gfxCtx, 0, 0, 0);
+
+    if ((HREG(80) != 10) || (HREG(82) != 0)) {
+        if (gTrnsnUnkState != 3) {
+            PreRender_SetValues(&play->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, gfxCtx->curFrameBuffer,
+                                gZBuffer);
+            {
+                s32 sp80;
+
+                gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 255);
+                gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
+
+                if ((HREG(80) != 10) || (HREG(84) != 0)) {
+                    if (VREG(94) == 0) {
+                        if (HREG(80) != 10) {
+                            sp80 = 3;
+                        } else {
+                            sp80 = HREG(84);
+                        }
+                        Scene_Draw(play);
+                        Room_Draw(play, &play->roomCtx.curRoom, sp80 & 3);
+                        Room_Draw(play, &play->roomCtx.prevRoom, sp80 & 3);
+                    }
+                }
+
+                gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 0);
+                gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 0);
+
+                if ((HREG(80) != 10) || (HREG(85) != 0)) {
+                    func_800315AC(play, &play->actorCtx);
+                }
+            }
+        }
+    }
+
+    gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
+    gSPEndDisplayList(POLY_XLU_DISP++);
+    //gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
+    //gSPEndDisplayList(POLY_KAL_DISP++);
+
+    CLOSE_DISPS(gfxCtx);
+
+    play->state.gfxCtx = originalGfxCtx;
+
+    OPEN_DISPS(originalGfxCtx);
+
+    gsSPSetFB(POLY_XLU_DISP++, fbSceneInfo);
+    gSPDisplayList(POLY_XLU_DISP++, gfxCtx->polyOpaBuffer);
+    gsSPResetFB(POLY_XLU_DISP++);
+    //gSPDisplayList(POLY_XLU_DISP++, gfxCtx->polyOpaBuffer);
+
+    CLOSE_DISPS(originalGfxCtx);
+}
+
 void Play_Draw(PlayState* play) {
     GraphicsContext* gfxCtx = play->state.gfxCtx;
     Lights* sp228;
@@ -1651,6 +1743,10 @@ void Play_Main(GameState* thisx) {
     FrameInterpolation_StartRecord();
     Play_Draw(play);
     FrameInterpolation_StopRecord();
+
+    if (CVar_GetS32("gObjectCue", 0)) {
+        Gameplay_Draw_SceneInfo(play);
+    }
 
     if (1 && HREG(63)) {
         LOG_NUM("1", 1);

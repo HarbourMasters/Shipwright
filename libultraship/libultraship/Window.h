@@ -38,6 +38,9 @@ namespace Ship {
 			void ToggleFullscreen();
 			void SetFullscreen(bool bIsFullscreen);
 			void SpeakText(const char* text);
+			uint32_t GetFramebufferWidth(int fb);
+			uint32_t GetFramebufferHeight(int fb);
+			void ReadFramebufferPixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data);
 			void SetCursorVisibility(bool visible);
 			uint32_t GetCurrentWidth();
 			uint32_t GetCurrentHeight();

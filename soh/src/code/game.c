@@ -236,6 +236,7 @@ void GameState_ReqPadData(GameState* gameState) {
 
 // OTRTODO
 int fbTest = -1;
+int fbSceneInfo = -1;
 
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
@@ -243,7 +244,7 @@ void GameState_Update(GameState* gameState) {
     if (fbTest == -1)
     {
         fbTest = gfx_create_framebuffer(64, 112);
-        //fbTest = gfx_create_framebuffer(256, 512);
+        fbSceneInfo = gfx_create_framebuffer(SCREEN_WIDTH, SCREEN_HEIGHT); //scene info buffer
     }
 
     GameState_SetFrameBuffer(gfxCtx);

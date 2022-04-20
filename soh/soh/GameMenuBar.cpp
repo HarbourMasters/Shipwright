@@ -715,6 +715,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Enables audio cues to indicate entrance/exits.");
                 UIWidgets::PaddedEnhancementCheckbox("Spatial Audio Cues", "gSpatialAudioCues", true, false);
                 UIWidgets::Tooltip("Enables audio cues for spatial awareness.");
+                UIWidgets::PaddedEnhancementCheckbox("Object Audio Cues", "gObjectCue", true, false);
+                UIWidgets::Tooltip("Enables audio cues for visible objects.");
                 ImGui::EndMenu();
             }
         #endif

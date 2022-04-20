@@ -112,6 +112,24 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     gfxCtx->unk_014 = 0;
 }
 
+void Graph_InitTHGAPoolIndex(GraphicsContext* gfxCtx, u32 poolIdx) {
+    GfxPool* pool = &gGfxPools[poolIdx];
+
+    pool->headMagic = GFXPOOL_HEAD_MAGIC;
+    pool->tailMagic = GFXPOOL_TAIL_MAGIC;
+    THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
+    THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
+    THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
+    THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
+    THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
+
+    gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
+    gfxCtx->polyXluBuffer = pool->polyXluBuffer;
+    gfxCtx->polyKalBuffer = pool->polyKalBuffer;
+    gfxCtx->overlayBuffer = pool->overlayBuffer;
+    gfxCtx->workBuffer = pool->workBuffer;
+}
+
 GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
     void* gameStateInitFunc = GameState_GetInit(gameState);
 

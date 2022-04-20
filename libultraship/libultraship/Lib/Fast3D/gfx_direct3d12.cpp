@@ -941,6 +941,10 @@ static uint16_t gfx_direct3d12_get_pixel_depth(float x, float y) {
     return 0; // OTRTODO
 }
 
+void gfx_direct3d12_read_pixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data) {
+    return;
+}
+
 } // namespace
 
 struct GfxRenderingAPI gfx_direct3d12_api = {
@@ -957,6 +961,7 @@ struct GfxRenderingAPI gfx_direct3d12_api = {
     gfx_direct3d12_set_depth_test,
     gfx_direct3d12_set_depth_mask,
     gfx_direct3d12_get_pixel_depth,
+    gfx_direct3d12_read_pixels,
     gfx_direct3d12_set_zmode_decal,
     gfx_direct3d12_set_viewport,
     gfx_direct3d12_set_scissor,

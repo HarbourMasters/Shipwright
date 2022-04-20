@@ -10943,6 +10943,10 @@ void Player_UpdateCommon(Player* this, PlayState* play, Input* input) {
     if (CVar_GetS32("gSpatialAudioCues", 0)) {
         Player_UpdateSpatialCues(this, play);
     }
+
+    if (CVar_GetS32("gObjectCue", 0)) {
+        Player_UpdateVisionCue(this, play, input);
+    }
 }
 
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
@@ -11345,7 +11349,11 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
                     (sControlInput->cur.right_stick_x) * 10.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1) * (CVar_GetFloat("gCameraSensitivity", 1.0f));
             }
         }
-    } else {
+
+        //immediately rotate the actor to face the same direction
+        this->actor.shape.rot.y = this->actor.focus.rot.y;
+    }
+    else {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
         temp3 =
             ((sControlInput->rel.stick_y >= 0) ? 1 : -1) * (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) *

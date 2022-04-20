@@ -957,6 +957,12 @@ FilteringMode gfx_opengl_get_texture_filter(void) {
     return current_filter_mode;
 }
 
+void gfx_opengl_read_pixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data) {
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, framebuffers[fb].fbo);
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+    glBindFramebuffer(GL_FRAMEBUFFER, current_framebuffer);
+}
+
 struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_get_clip_parameters,
     gfx_opengl_unload_shader,
@@ -969,6 +975,7 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_upload_texture,
     gfx_opengl_set_sampler_parameters,
     gfx_opengl_set_depth_test_and_mask,
+    gfx_opengl_read_pixels,
     gfx_opengl_set_zmode_decal,
     gfx_opengl_set_viewport,
     gfx_opengl_set_scissor,

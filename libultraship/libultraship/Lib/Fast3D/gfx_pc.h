@@ -83,5 +83,7 @@ void gfx_texture_cache_clear();
 extern "C" int gfx_create_framebuffer(uint32_t width, uint32_t height);
 void gfx_get_pixel_depth_prepare(float x, float y);
 uint16_t gfx_get_pixel_depth(float x, float y);
+void gfx_get_fb_dimensions(int fb, uint32_t *width, uint32_t *height);
+void gfx_read_pixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data);
 
 #endif

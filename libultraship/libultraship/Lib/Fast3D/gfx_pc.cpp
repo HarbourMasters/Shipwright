@@ -168,7 +168,7 @@ static struct RDP {
     bool     grayscale;
 
     uint8_t prim_lod_fraction;
-    struct RGBA env_color, prim_color, fog_color, fill_color, grayscale_color;
+    struct RGBA env_color, prim_color, fog_color, fill_color, grayscale_color, override_color;
     struct XYWidthHeight viewport, scissor;
     bool viewport_or_scissor_changed;
     void *z_buf_address;
@@ -996,7 +996,7 @@ static float gfx_adjust_x_for_aspect_ratio(float x)
 }
 
 static void gfx_adjust_width_height_for_scale(uint32_t& width, uint32_t& height) {
-    width = round(width * RATIO_Y);
+    width = round(width * RATIO_X);
     height = round(height * RATIO_Y);
     if (width == 0) {
         width = 1;
@@ -1240,7 +1240,72 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
         cc_id &= ~((0xfff << 16) | ((uint64_t)0xfff << 44));
     }
 
-    ColorCombiner* comb = gfx_lookup_or_create_color_combiner(cc_id);
+    if (rdp.override_color.a > 0) {
+        rdp.prim_color = rdp.override_color;
+        // rdp.fog_color = { 0 };
+        // rdp.fill_color = { 0 };
+        // rdp.env_color = { 0 };
+
+        uint64_t new_cc_id = (cc_id >> CC_SHADER_OPT_POS) << CC_SHADER_OPT_POS;
+
+        new_cc_id &= ~((uint64_t)SHADER_OPT_FOG << CC_SHADER_OPT_POS);
+        use_fog = false;
+
+        if (use_alpha) {
+            new_cc_id |= (uint64_t)SHADER_OPT_TEXTURE_EDGE << CC_SHADER_OPT_POS;
+            new_cc_id &= ~((uint64_t)SHADER_OPT_NOISE << CC_SHADER_OPT_POS); //needed?
+        }
+
+        //NOTE: temporary while experimenting with draw settings
+        for (int i = 0; i < 2; i++) {
+            uint32_t rgb_a = (cc_id >> (i * 28)) & 0xf;
+            uint32_t rgb_b = (cc_id >> (i * 28 + 4)) & 0xf;
+            uint32_t rgb_c = (cc_id >> (i * 28 + 8)) & 0x1f;
+            uint32_t rgb_d = (cc_id >> (i * 28 + 13)) & 7;
+            uint32_t alpha_a = (cc_id >> (i * 28 + 16)) & 7;
+            uint32_t alpha_b = (cc_id >> (i * 28 + 16 + 3)) & 7;
+            uint32_t alpha_c = (cc_id >> (i * 28 + 16 + 6)) & 7;
+            uint32_t alpha_d = (cc_id >> (i * 28 + 16 + 9)) & 7;
+
+            //rgb_a = (rgb_a == G_CCMUX_TEXEL0 || rgb_a == G_CCMUX_TEXEL1 ||
+            //    rgb_a == G_CCMUX_TEXEL0_ALPHA || rgb_a == G_CCMUX_TEXEL1_ALPHA) ? G_CCMUX_0 : rgb_a;
+            //rgb_b = (rgb_b == G_CCMUX_TEXEL0 || rgb_b == G_CCMUX_TEXEL1 ||
+            //    rgb_b == G_CCMUX_TEXEL0_ALPHA || rgb_b == G_CCMUX_TEXEL1_ALPHA) ? G_CCMUX_0 : rgb_b;
+            //rgb_c = (rgb_c == G_CCMUX_TEXEL0 || rgb_c == G_CCMUX_TEXEL1 ||
+            //    rgb_c == G_CCMUX_TEXEL0_ALPHA || rgb_c == G_CCMUX_TEXEL1_ALPHA) ? G_CCMUX_0 : rgb_c;
+            //rgb_d = (rgb_d == G_CCMUX_TEXEL0 || rgb_d == G_CCMUX_TEXEL1 ||
+            //    rgb_d == G_CCMUX_TEXEL0_ALPHA || rgb_d == G_CCMUX_TEXEL1_ALPHA) ? G_CCMUX_0 : rgb_d;
+
+            rgb_a = G_CCMUX_PRIMITIVE;
+            rgb_b = G_CCMUX_PRIMITIVE;
+            rgb_c = G_CCMUX_PRIMITIVE;
+            rgb_d = G_CCMUX_PRIMITIVE;
+
+            //alpha_a = (alpha_a == G_ACMUX_TEXEL0 || alpha_a == G_ACMUX_TEXEL1) ? G_ACMUX_0 : alpha_a;
+            //alpha_b = (alpha_b == G_ACMUX_TEXEL0 || alpha_b == G_ACMUX_TEXEL1) ? G_ACMUX_0 : alpha_b;
+            //alpha_c = (alpha_c == G_ACMUX_TEXEL0 || alpha_c == G_ACMUX_TEXEL1) ? G_ACMUX_0 : alpha_c;
+            //alpha_d = (alpha_d == G_ACMUX_TEXEL0 || alpha_d == G_ACMUX_TEXEL1) ? G_ACMUX_0 : alpha_d;
+
+            //alpha_a = G_ACMUX_PRIMITIVE;
+            //alpha_b = G_ACMUX_PRIMITIVE;
+            //alpha_c = G_ACMUX_PRIMITIVE;
+            //alpha_d = G_ACMUX_PRIMITIVE;
+
+            new_cc_id |= (uint64_t)(rgb_a & 0xf) << (i * 28);
+            new_cc_id |= (uint64_t)(rgb_b & 0xf) << (i * 28 + 4);
+            new_cc_id |= (uint64_t)(rgb_c & 0x1f) << (i * 28 + 8);
+            new_cc_id |= (uint64_t)(rgb_d & 7) << (i * 28 + 13);
+            new_cc_id |= (uint64_t)(alpha_a & 7) << (i * 28 + 16);
+            new_cc_id |= (uint64_t)(alpha_b & 7) << (i * 28 + 16 + 3);
+            new_cc_id |= (uint64_t)(alpha_c & 7) << (i * 28 + 16 + 6);
+            new_cc_id |= (uint64_t)(alpha_d & 7) << (i * 28 + 16 + 9);
+        }
+
+
+        cc_id = new_cc_id;
+    }
+
+    struct ColorCombiner* comb = gfx_lookup_or_create_color_combiner(cc_id);
 
     uint32_t tm = 0;
     uint32_t tex_width[2], tex_height[2], tex_width2[2], tex_height2[2];
@@ -1855,6 +1920,13 @@ static void gfx_dp_set_fog_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
     rdp.fog_color.g = g;
     rdp.fog_color.b = b;
     rdp.fog_color.a = a;
+}
+
+static void gfx_dp_set_override_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    rdp.override_color.r = r;
+    rdp.override_color.g = g;
+    rdp.override_color.b = b;
+    rdp.override_color.a = a;
 }
 
 static void gfx_dp_set_fill_color(uint32_t packed_color) {
@@ -2556,6 +2628,9 @@ static void gfx_run_dl(Gfx* cmd) {
                     color_comb(C0(5, 4), C1(24, 4), C0(0, 5), C1(6, 3)),
                     alpha_comb(C1(21, 3), C1(3, 3), C1(18, 3), C1(0, 3)));
                 break;
+            case G_SETOVERRIDECOLOR:
+                gfx_dp_set_override_color(C1(24, 8), C1(16, 8), C1(8, 8), C1(0, 8));
+                break;
             // G_SETPRIMCOLOR, G_CCMUX_PRIMITIVE, G_ACMUX_PRIMITIVE, is used by Goddard
             // G_CCMUX_TEXEL1, LOD_FRACTION is used in Bowser room 1
             case G_TEXRECT:
@@ -2791,6 +2866,7 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
         return;
     }
     dropped_frame = false;
+    rdp.override_color.a = 0;
 
     if (!has_drawn_imgui_menu) {
         SohImGui::DrawMainMenuAndCalculateGameSize();
@@ -2900,4 +2976,13 @@ uint16_t gfx_get_pixel_depth(float x, float y) {
     get_pixel_depth_pending.clear();
 
     return get_pixel_depth_cached.find(make_pair(x, y))->second;
+}
+
+void gfx_get_fb_dimensions(int fb, uint32_t *width, uint32_t *height) {
+    *width = framebuffers[fb].applied_width;
+    *height = framebuffers[fb].applied_height;
+}
+
+void gfx_read_pixels(int fb, uint32_t x, uint32_t y, uint32_t width, uint32_t height, uint32_t type, void* data) {
+    return gfx_rapi->read_pixels(fb, x, y, width, height, type, data);
 }
