@@ -425,6 +425,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("GameCube Colors", &Game::Settings.enhancements.gc_colors)) {
+                    CVar_SetS32("gGameCubeColors", Game::Settings.enhancements.gc_colors);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 

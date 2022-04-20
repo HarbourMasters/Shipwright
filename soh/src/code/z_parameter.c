@@ -2759,8 +2759,14 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     // Also loads the Item Button Texture reused by other buttons afterwards
     gDPPipeSync(OVERLAY_DISP++);
     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_B_BTN_COLOR(0), R_B_BTN_COLOR(1), R_B_BTN_COLOR(2),
-        interfaceCtx->bAlpha);
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 30, 30,
+                        interfaceCtx->bAlpha);
+    } else {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_B_BTN_COLOR(0), R_B_BTN_COLOR(1), R_B_BTN_COLOR(2),
+                        interfaceCtx->bAlpha);
+    }
+    
     gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
     OVERLAY_DISP =
@@ -2796,7 +2802,11 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
             // Start Button Texture, Color & Label
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 0, 0, interfaceCtx->startAlpha);
+            if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 120, 120, interfaceCtx->startAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 0, 0, interfaceCtx->startAlpha);
+            }
             gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]) << 2, 68,
                                 (OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]) + 22) << 2, 156, 
                                 G_TX_RENDERTILE, 0, 0, 1462, 1462);
@@ -3382,8 +3392,14 @@ void Interface_Draw(GlobalContext* globalCtx) {
         //func_8008A8B8(globalCtx, R_A_BTN_Y, R_A_BTN_Y + 45, rABtnX, rABtnX + 45);
         gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BOTH);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2),
-                        interfaceCtx->aAlpha);
+        if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 200, 50,
+                            interfaceCtx->aAlpha);
+        } else {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2),
+                            interfaceCtx->aAlpha);
+        }
+        
         if (fullUi) {
             Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y);
         }

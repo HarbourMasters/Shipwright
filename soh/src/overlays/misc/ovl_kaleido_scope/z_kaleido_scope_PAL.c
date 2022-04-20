@@ -966,6 +966,16 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
 
     temp = pauseCtx->unk_1E4;
 
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        sCursorColors[2][0] = 0;
+		sCursorColors[2][1] = 255;
+		sCursorColors[2][2] = 50;
+    } else {
+        sCursorColors[2][0] = 0;
+        sCursorColors[2][1] = 50;
+        sCursorColors[2][2] = 255;
+    }
+
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
         ((pauseCtx->pageIndex == PAUSE_QUEST) && ((temp < 3) || (temp == 5) || (temp == 8)))) {
 
@@ -1036,6 +1046,10 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
         { 0, 0, 0 }, { 255, 255, 0 }, { 0, 50, 255 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 50, 255 },
     };
+    static s16 D_8082ACF5[][3] = {
+        { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
+        { 0, 0, 0 }, { 255, 255, 0 }, { 0, 255, 50 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 255, 50 },
+    };
     static s16 D_8082AD3C = 20;
     static s16 D_8082AD40 = 0;
     static s16 D_8082AD44 = 0;
@@ -1051,36 +1065,72 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
     if ((pauseCtx->state < 8) || (pauseCtx->state > 0x11)) {
         if (pauseCtx->state != 7) {
-            stepR = ABS(D_8082AB8C - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0]) / D_8082AD3C;
-            stepG = ABS(D_8082AB90 - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1]) / D_8082AD3C;
-            stepB = ABS(D_8082AB94 - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2]) / D_8082AD3C;
-            if (D_8082AB8C >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0]) {
-                D_8082AB8C -= stepR;
+            if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                stepR = ABS(D_8082AB8C - D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][0]) / D_8082AD3C;
+                stepG = ABS(D_8082AB90 - D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][1]) / D_8082AD3C;
+                stepB = ABS(D_8082AB94 - D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][2]) / D_8082AD3C;
+                if (D_8082AB8C >= D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][0]) {
+                    D_8082AB8C -= stepR;
+                } else {
+                    D_8082AB8C += stepR;
+                }
+                if (D_8082AB90 >= D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][1]) {
+                    D_8082AB90 -= stepG;
+                } else {
+                    D_8082AB90 += stepG;
+                }
+                if (D_8082AB94 >= D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][2]) {
+                    D_8082AB94 -= stepB;
+                } else {
+                    D_8082AB94 += stepB;
+                }
             } else {
-                D_8082AB8C += stepR;
-            }
-            if (D_8082AB90 >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1]) {
-                D_8082AB90 -= stepG;
-            } else {
-                D_8082AB90 += stepG;
-            }
-            if (D_8082AB94 >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2]) {
-                D_8082AB94 -= stepB;
-            } else {
-                D_8082AB94 += stepB;
-            }
-
-            D_8082AD3C--;
-            if (D_8082AD3C == 0) {
-                D_8082AB8C = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0];
-                D_8082AB90 = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1];
-                D_8082AB94 = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2];
-                D_8082AD3C = ZREG(28 + D_8082AD40);
-                D_8082AD40++;
-                if (D_8082AD40 >= 4) {
-                    D_8082AD40 = 0;
+                stepR = ABS(D_8082AB8C - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0]) / D_8082AD3C;
+                stepG = ABS(D_8082AB90 - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1]) / D_8082AD3C;
+                stepB = ABS(D_8082AB94 - D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2]) / D_8082AD3C;
+                if (D_8082AB8C >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0]) {
+                    D_8082AB8C -= stepR;
+                } else {
+                    D_8082AB8C += stepR;
+                }
+                if (D_8082AB90 >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1]) {
+                    D_8082AB90 -= stepG;
+                } else {
+                    D_8082AB90 += stepG;
+                }
+                if (D_8082AB94 >= D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2]) {
+                    D_8082AB94 -= stepB;
+                } else {
+                    D_8082AB94 += stepB;
                 }
             }
+
+            if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                D_8082AD3C--;
+                if (D_8082AD3C == 0) {
+                    D_8082AB8C = D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][0];
+                    D_8082AB90 = D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][1];
+                    D_8082AB94 = D_8082ACF5[pauseCtx->cursorColorSet + D_8082AD40][2];
+                    D_8082AD3C = ZREG(28 + D_8082AD40);
+                    D_8082AD40++;
+                    if (D_8082AD40 >= 4) {
+                        D_8082AD40 = 0;
+                    }
+                }
+            } else {
+                D_8082AD3C--;
+                if (D_8082AD3C == 0) {
+                    D_8082AB8C = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][0];
+                    D_8082AB90 = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][1];
+                    D_8082AB94 = D_8082ACF4[pauseCtx->cursorColorSet + D_8082AD40][2];
+                    D_8082AD3C = ZREG(28 + D_8082AD40);
+                    D_8082AD40++;
+                    if (D_8082AD40 >= 4) {
+                        D_8082AD40 = 0;
+                    }
+                }
+            }
+            
 
             if (pauseCtx->stickRelX < -30) {
                 if (D_8082AD4C == -1) {
@@ -1363,7 +1413,11 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
             gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0,
                               0, PRIMITIVE, 0);
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 255, VREG(61));
+            if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61));
+            } else {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 255, VREG(61));
+            }
 
             if (pauseCtx->promptChoice == 0) {
                 gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
@@ -1387,8 +1441,11 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 
                 gDPSetCombineLERP(POLY_KAL_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0,
                                   TEXEL0, 0, PRIMITIVE, 0);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 255, VREG(61));
-
+                if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61));
+                } else {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 255, VREG(61));
+                }
                 if (pauseCtx->promptChoice == 0) {
                     gSPDisplayList(POLY_KAL_DISP++, gPromptCursorLeftDL);
                 } else {
@@ -1743,7 +1800,14 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] = D_8082ADE0[gSaveContext.language]
                                                                                       << 5;
 
-            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex
+            if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2],
+                                gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - Gamecube
+            } else {
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2],
+                                gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - N64
+            }
+            
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
             //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
 
@@ -1825,7 +1889,15 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                         D_8082ADE8[gSaveContext.language] << 5;
 
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex
+                    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1],
+                                        gABtnTexColour[1][2],
+                                        gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - Gamecube
+                    } else {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1],
+                                        gABtnTexColour[0][2],
+                                        gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - N64
+                    }
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
                     //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
 
@@ -1853,7 +1925,15 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex
+                if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1],
+                                    gABtnTexColour[1][2],
+                                    gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - Gamecube
+                } else {
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1],
+                                    gABtnTexColour[0][2],
+                                    gABtnTexColour[0][3]); // Set colour to gABtnSymbolTex - N64
+                }
                 POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, gABtnSymbolTex, 24, 16, 0);
                 //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
 
