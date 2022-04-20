@@ -453,27 +453,6 @@ void KaleidoScope_DrawItemSelect(PlayState* play) {
 
         if (oldCursorPoint != pauseCtx->cursorPoint[PAUSE_ITEM]) {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-
-            if (CVar_GetS32("gMessageTTS", 0)) {
-                u8 arg[8]; // at least big enough where no s8 string will overflow
-                switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
-                    case ITEM_STICK:
-                    case ITEM_NUT:
-                    case ITEM_BOMB:
-                    case ITEM_BOMBCHU:
-                    case ITEM_SLINGSHOT:
-                    case ITEM_BOW:
-                        sprintf(arg, "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
-                        break;
-                    case ITEM_BEAN:
-                        sprintf(arg, "%d", BEANS_BOUGHT);
-                        break;
-                    default:
-                        arg[0] = '\0';
-                }
-                OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                    pauseCtx->cursorItem[PAUSE_ITEM], NULL), arg);
-            }
         }
     } else if ((pauseCtx->unk_1E4 == 3) && (pauseCtx->pageIndex == PAUSE_ITEM)) {
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->itemVtx);

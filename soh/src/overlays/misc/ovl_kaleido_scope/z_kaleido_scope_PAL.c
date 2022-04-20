@@ -3283,8 +3283,18 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
 }
 
 void KaleidoScope_TTS_Update(PlayState* play) {
+    static u16 prevCursorIndex = 0;
+    static u16 prevCursorSpecialPos = 0;
+    static u16 prevCursorPoint[5] = { 0 };
+
     PauseContext* pauseCtx = &play->pauseCtx;
     Input* input = &play->state.input[0];
+
+    if (pauseCtx->state != 6) {
+        //reset cursor index to so it is announced when pause is reopened
+        prevCursorIndex = -1;
+        return;
+    }
 
     if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
         u8 arg[8];
@@ -3301,6 +3311,83 @@ void KaleidoScope_TTS_Update(PlayState* play) {
             //TODO: announce timer?
         }
     }
+
+    u16 cursorIndex = (pauseCtx->pageIndex == PAUSE_MAP && !sInDungeonScene) ? PAUSE_WORLD_MAP : pauseCtx->pageIndex;
+    if (prevCursorIndex == cursorIndex &&
+        prevCursorSpecialPos == pauseCtx->cursorSpecialPos &&
+        prevCursorPoint[cursorIndex] == pauseCtx->cursorPoint[cursorIndex]) {
+        return;
+    }
+
+    prevCursorSpecialPos = pauseCtx->cursorSpecialPos;
+
+    if (pauseCtx->cursorSpecialPos > 0) {
+        return;
+    }
+
+    switch (pauseCtx->pageIndex) {
+        case PAUSE_ITEM:
+        {
+            u8 arg[8]; // at least big enough where no s8 string will overflow
+            switch (pauseCtx->cursorItem[PAUSE_ITEM]) {
+                case ITEM_STICK:
+                case ITEM_NUT:
+                case ITEM_BOMB:
+                case ITEM_BOMBCHU:
+                case ITEM_SLINGSHOT:
+                case ITEM_BOW:
+                    sprintf(arg, "%d", AMMO(pauseCtx->cursorItem[PAUSE_ITEM]));
+                    break;
+                case ITEM_BEAN:
+                    sprintf(arg, "%d", BEANS_BOUGHT);
+                    break;
+                default:
+                    arg[0] = '\0';
+            }
+            OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                pauseCtx->cursorItem[PAUSE_ITEM], NULL), arg);
+            break;
+        }
+        case PAUSE_MAP:
+            if (sInDungeonScene) {
+                if (pauseCtx->cursorItem[PAUSE_MAP] != PAUSE_ITEM_NONE) {
+                    OTRSpeakText(OTRMessage_GetAccessibilityText(
+                        "text/accessibility_text/accessibility_text_eng", pauseCtx->cursorItem[PAUSE_MAP], NULL));
+                }
+            } else {
+                if (CVar_GetS32("gBlind_MessageTTS", 0)) {
+                    OTRSpeakText(OTRMessage_GetAccessibilityText(
+                        "text/accessibility_text/accessibility_text_eng", 0x0100 + pauseCtx->cursorPoint[PAUSE_WORLD_MAP], NULL));
+                }
+            }
+            break;
+        case PAUSE_QUEST:
+        {
+            u8 arg[8]; // at least big enough where no s8 string will overflow
+            switch (pauseCtx->cursorItem[PAUSE_QUEST]) {
+                case ITEM_SKULL_TOKEN:
+                    sprintf(arg, "%d", gSaveContext.inventory.gsTokens);
+                    break;
+                case ITEM_HEART_CONTAINER:
+                    sprintf(arg, "%d", (((gSaveContext.inventory.questItems & 0xF0000000) & 0xF0000000) >> 0x1C));
+                    break;
+                default:
+                    arg[0] = '\0';
+            }
+            OTRSpeakText(
+                OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", pauseCtx->cursorItem[PAUSE_QUEST], arg));
+            break;
+        }
+        case PAUSE_EQUIP:
+            OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                pauseCtx->cursorItem[PAUSE_EQUIP], NULL));
+            break;
+        default:
+            break;
+    }
+
+    prevCursorIndex = cursorIndex;
+    memcpy(prevCursorPoint, pauseCtx->cursorPoint, sizeof(prevCursorPoint));
 }
 
 void KaleidoScope_Update(PlayState* play)
@@ -3323,10 +3410,6 @@ void KaleidoScope_Update(PlayState* play)
     s16 stepB;
     s16 stepA;
     s32 pad;
-
-    if (CVar_GetS32("gMessageTTS", 0)) {
-        KaleidoScope_TTS_Update(play);
-    }
 
     if ((R_PAUSE_MENU_MODE >= 3) && (((pauseCtx->state >= 4) && (pauseCtx->state <= 7)) ||
                                      ((pauseCtx->state >= 0xA) && (pauseCtx->state <= 0x12)))) {
@@ -4331,5 +4414,9 @@ void KaleidoScope_Update(PlayState* play)
             Player_SetEquipmentData(play, player);
             osSyncPrintf(VT_RST);
             break;
+    }
+
+    if (CVar_GetS32("gMessageTTS", 0)) {
+        KaleidoScope_TTS_Update(play);
     }
 }
