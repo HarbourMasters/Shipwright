@@ -40,15 +40,19 @@ If you still cannot get the tool to work, join our [Discord Server](https://disc
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool.
 
 The default keyboard controls are as follows:
-A = X
-B = C
-Z = Z
-Start = Space bar
-Analog stick = WASD
-C buttons = Arrow keys
-D-Pad = TFGH
+| N64 | Keyboard |
+| A | X |
+| B | C |
+| Z | Z |
+| Start | Space |
+| Analog stick | WASD |
+| C buttons | Arrow keys |
+| D-Pad | TFGH |
 
-You can enable a taskbar by pressing F1, and you can enter fullscreen mode by pressing F10 or F11 (on OpenGL) or Alt+Enter (on DirectX).
+There are also some keyboard shortcuts:
+| Keys | Action |
+| F1 | Show/hide taskbar |
+| F10 / F11 / Alt+Enter | Fullscreen (depends on backend) |
 
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
