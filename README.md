@@ -41,15 +41,9 @@ Launch the game. If the window immediately closes, or if there are visual artifa
 
 The default keyboard controls are as follows:
 
-| N64 | Keyboard |
-| - | - |
-| A | X |
-| B | C |
-| Z | Z |
-| Start | Space |
-| Analog stick | WASD |
-| C buttons | Arrow keys |
-| D-Pad | TFGH |
+| N64 | A | B | Z | Start | Analog stick | C buttons | D-Pad |
+| - | - | - | - | - | - | - | - |
+| Keyboard | X | C | Z | Space | WASD | Arrow keys | TFGH |
 
 There are also some keyboard shortcuts:
 
