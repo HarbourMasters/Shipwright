@@ -48,7 +48,7 @@ Analog stick = WASD
 C buttons = Arrow keys
 D-Pad = TFGH
 
-You can enable a taskbar by pressing F1, and you can enter fullscreen mode by pressing F11 (on OpenGL) or Alt+Enter (on DirectX).
+You can enable a taskbar by pressing F1, and you can enter fullscreen mode by pressing F10 or F11 (on OpenGL) or Alt+Enter (on DirectX).
 
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
