@@ -3282,6 +3282,27 @@ void KaleidoScope_UpdateDungeonMap(PlayState* play) {
     }
 }
 
+void KaleidoScope_TTS_Update(PlayState* play) {
+    PauseContext* pauseCtx = &play->pauseCtx;
+    Input* input = &play->state.input[0];
+
+    if ((pauseCtx->debugState != 1) && (pauseCtx->debugState != 2)) {
+        u8 arg[8];
+        if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+            sprintf(arg, "%d", gSaveContext.health / 16);
+            OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", 0x0800 + 0, arg));
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+            sprintf(arg, "%d", gSaveContext.magic);
+            OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", 0x0800 + 1, arg));
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+            sprintf(arg, "%d", gSaveContext.rupees);
+            OTRSpeakText(OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", 0x0800 + 2, arg));
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+            //TODO: announce timer?
+        }
+    }
+}
+
 void KaleidoScope_Update(PlayState* play)
 {
     static s16 D_8082B258 = 0;
@@ -3302,6 +3323,10 @@ void KaleidoScope_Update(PlayState* play)
     s16 stepB;
     s16 stepA;
     s32 pad;
+
+    if (CVar_GetS32("gMessageTTS", 0)) {
+        KaleidoScope_TTS_Update(play);
+    }
 
     if ((R_PAUSE_MENU_MODE >= 3) && (((pauseCtx->state >= 4) && (pauseCtx->state <= 7)) ||
                                      ((pauseCtx->state >= 0xA) && (pauseCtx->state <= 0x12)))) {
