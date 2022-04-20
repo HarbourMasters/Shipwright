@@ -1481,6 +1481,7 @@ set(Source_Files__src__overlays__actors
     "src/overlays/actors/ovl_player_actor/z_player.c"
     "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.c"
     "src/overlays/actors/ovl_Shot_Sun/z_shot_sun.h"
+    "src/overlays/actors/ovl_Scene_Exit/z_scene_exit.c"
 )
 source_group("Source Files\\src\\overlays\\actors" FILES ${Source_Files__src__overlays__actors})
 

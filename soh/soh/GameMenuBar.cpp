@@ -711,6 +711,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Enables DPad directional look controls while in C-up mode.");
                 UIWidgets::PaddedEnhancementCheckbox("Aim Audio Cues", "gAimAudioCues", true, false);
                 UIWidgets::Tooltip("Enables audio cues to assist with ranged aiming.");
+                UIWidgets::PaddedEnhancementCheckbox("Scene Exit Actors", "gSceneExitActors", true, false);
+                UIWidgets::Tooltip("Enables audio cues to indicate entrance/exits.");
                 ImGui::EndMenu();
             }
         #endif

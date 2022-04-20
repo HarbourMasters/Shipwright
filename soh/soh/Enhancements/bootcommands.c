@@ -33,6 +33,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gMessageTTS", 0);
     CVar_RegisterS32("gDPadLook", 0);
     CVar_RegisterS32("gAimAudioCues", 0);
+    CVar_RegisterS32("gSceneExitActors", 0);
 #elif defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif

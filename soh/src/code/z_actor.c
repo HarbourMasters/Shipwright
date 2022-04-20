@@ -3,6 +3,7 @@
 
 #include "overlays/actors/ovl_Arms_Hook/z_arms_hook.h"
 #include "overlays/actors/ovl_En_Part/z_en_part.h"
+#include "overlays/actors/ovl_Scene_Exit/z_scene_exit.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
@@ -6210,4 +6211,59 @@ s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, PlayState* play) {
     }
 
     return ogDrawId;
+}
+
+void Actor_SpawnSceneExitActors(PlayState* play) {
+    struct ExitPoly {
+        CollisionPoly* poly;
+        SceneExit* actor;
+    };
+    s32 exitPolyListSize = 32;
+    struct ExitPoly* exitPolys = malloc(sizeof(struct ExitPoly) * exitPolyListSize);
+    memset(exitPolys, 0, sizeof(struct ExitPoly) * exitPolyListSize);
+
+    CollisionPoly* polyList = play->colCtx.colHeader->polyList;
+    Vec3s* vtxList = play->colCtx.colHeader->vtxList;
+    Vec3f vtx[3];
+    for (s32 i = 0; i < play->colCtx.colHeader->numPolygons; i++) {
+        u32 exitId = SurfaceType_GetSceneExitIndex(&play->colCtx, &polyList[i], BGCHECK_SCENE);
+        if (exitId == 0)
+            continue;
+
+        struct ExitPoly* exitPoly = NULL;
+        Actor* exitActor = NULL;
+        for (int e = 0; e < exitPolyListSize; e++) {
+            if (exitPolys[e].poly == NULL) {
+                if (exitPoly == NULL) {
+                    exitPoly = &exitPolys[e];
+                }
+                break;
+            } else if (CollisionPoly_PolysShareVertex(exitPolys[e].poly, &polyList[i])) {
+                if (exitActor == NULL) {
+                    exitActor = exitPolys[e].actor;
+                } else if (exitActor != exitPolys[e].actor) {
+                    //TODO: merge triangles into single actor
+                }
+            }
+
+            if (e == exitPolyListSize - 1 && exitActor == NULL) {
+                exitPolys = realloc(exitPolys, sizeof(struct ExitPoly) * exitPolyListSize * 2);
+                memset(exitPolys + exitPolyListSize, 0, sizeof(struct ExitPoly) * exitPolyListSize);
+                exitPolyListSize *= 2;
+            }
+        }
+
+        if (exitActor == NULL) {
+            exitActor = Actor_Spawn(&play->actorCtx, play, ACTOR_SCENE_EXIT, 0, 0, 0, 0, 0, 0, exitId);
+        }
+        exitPoly->poly = &polyList[i];
+        exitPoly->actor = exitActor;
+
+        for (int v = 0; v < 3; v++) {
+            Math_Vec3s_ToVec3f(&vtx[v], &vtxList[COLPOLY_VTX_INDEX(polyList[i].vtxData[v])]);
+        }
+        SceneExit_AddTriangle((SceneExit*)exitActor, &vtx);
+    }
+
+    free(exitPolys);
 }

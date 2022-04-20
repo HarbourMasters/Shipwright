@@ -449,6 +449,26 @@ s32 CollisionPoly_SphVsPoly(CollisionPoly* poly, Vec3s* vtxList, Vec3f* center, 
 }
 
 /**
+ * Tests if `polyA` shares a vertex (by index) with `polyB`
+ */
+bool CollisionPoly_PolysShareVertex(CollisionPoly* polyA, CollisionPoly* polyB) {
+    u16 vtx1;
+    u16 vtx2;
+
+    for (int v1 = 0; v1 < 3; v1++) {
+        vtx1 = COLPOLY_VTX_INDEX(polyA->vtxData[v1]);
+        for (int v2 = 0; v2 < 3; v2++) {
+            vtx2 = COLPOLY_VTX_INDEX(polyB->vtxData[v2]);
+            if (vtx1 == vtx2) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+/**
  * Add poly to StaticLookup table
  * Table is sorted by poly's smallest y vertex component
  * `ssList` is the list to append a new poly to

@@ -639,6 +639,10 @@ void Play_Init(GameState* thisx) {
         DmaMgr_DmaRomToRam(0x03FEB000, D_8012D1F0, sizeof(D_801614D0));
     }
     #endif
+
+    if (CVar_GetS32("gSceneExitActors", 0)) {
+        Actor_SpawnSceneExitActors(play);
+    }
 }
 
 void Play_Update(PlayState* play) {
