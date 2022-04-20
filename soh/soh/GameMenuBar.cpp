@@ -713,6 +713,8 @@ namespace GameMenuBar {
                 UIWidgets::Tooltip("Enables audio cues to assist with ranged aiming.");
                 UIWidgets::PaddedEnhancementCheckbox("Scene Exit Actors", "gSceneExitActors", true, false);
                 UIWidgets::Tooltip("Enables audio cues to indicate entrance/exits.");
+                UIWidgets::PaddedEnhancementCheckbox("Spatial Audio Cues", "gSpatialAudioCues", true, false);
+                UIWidgets::Tooltip("Enables audio cues for spatial awareness.");
                 ImGui::EndMenu();
             }
         #endif

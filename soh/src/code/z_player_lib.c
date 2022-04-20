@@ -1308,11 +1308,289 @@ Vec3f D_801261E0[] = {
     { 200.0f, 200.0f, 0.0f },
 };
 
+static Vec3f sLedgePosition;
+static f32 sLedgeCuePitch;
+static f32 sLedgeCueVolume;
+static bool sLedgeCueIsActive;
+static bool sLedgeCueIsPlaying;
+static s32 sLedgeAlarmFrameOffset;
+
+void Player_UpdateLedgeCue(Player* this, PlayState* play) {
+    Vec3f vecA;
+    Vec3f vecB;
+    Vec3f vecResult;
+    CollisionPoly* outPoly;
+    f32 dist = FLT_MAX;
+
+    bool isPlayerOnFloor = this->actor.bgCheckFlags & 1;
+    bool isPlayerAiming = !!func_8002DD78(this);
+    bool isPlayerPushingBlock = this->stateFlags2 & PLAYER_STATE2_0;
+    bool isPlayerClimbing = this->stateFlags1 & PLAYER_STATE1_21;
+    bool isPlayerHanging = this->stateFlags1 & (PLAYER_STATE1_13 | PLAYER_STATE1_14);
+    bool isPlayerRidingHorse = this->stateFlags1 & (PLAYER_STATE1_23);
+    s16 prevYaw = this->actor.world.rot.y;
+
+    sLedgeCueIsActive = false;
+
+    if (isPlayerOnFloor && !isPlayerAiming && !isPlayerRidingHorse && !isPlayerHanging &&
+        !isPlayerClimbing && !Player_InBlockingCsMode(play, this)) {
+        const int numHeightSamples = 5;
+        const f32 maxCheckAngle = 60.0f / 180.0f * M_PI;
+        const f32 ledgeHeightAlarmThreshold = 25.0f;
+        const f32 ledgeWarnAheadFrames = 20.0f;
+
+        Vec3f vecStep;
+        f32 linearVelocity;
+        
+        if (this->linearVelocity > 0.0f) {
+            linearVelocity = this->linearVelocity;
+        } else {
+            const f32 hypotheticalCheckSpeed = 2.5f;
+            linearVelocity = hypotheticalCheckSpeed;
+        }
+        vecStep.x = Math_SinS(this->currentYaw);
+        vecStep.z = Math_CosS(this->currentYaw);
+        vecStep.y = 0.0f;
+        Math_Vec3f_Scale(&vecStep, linearVelocity * ledgeWarnAheadFrames / numHeightSamples);
+
+        f32 stepLength = Math3D_Vec3fMagnitude(&vecStep);
+        f32 checkHeight = stepLength * Math_FTanF(maxCheckAngle);
+
+        vecResult = this->actor.world.pos;
+        f32 prevHeight = vecResult.y;
+
+        for (int i = 0; i < numHeightSamples; i++) {
+            Math_Vec3f_Sum(&vecResult, &vecStep, &vecA);
+
+            vecA.y += 20.0f;
+            vecB.y += 20.0f;
+            if (BgCheck_AnyLineTest2(&play->colCtx, &vecResult, &vecA, &vecB, &outPoly, true, false, false,
+                                     1)) {
+                //don't check past walls
+                break;
+            }
+            vecA.y -= 20.0f;
+            vecB.y -= 20.0f;
+            vecB = vecA;
+            vecA.y += checkHeight;
+            vecB.y -= checkHeight;
+
+            if (!BgCheck_AnyLineTest2(&play->colCtx, &vecA, &vecB, &vecResult, &outPoly, true, true, false, 1) ||
+                prevHeight - vecResult.y > ledgeHeightAlarmThreshold) {
+
+                if (BgCheck_AnyLineTest2(&play->colCtx, &this->actor.world.pos, &vecA, &vecResult, &outPoly,
+                                         true, false, false, 1)) {
+                    // one last check to prevent some edge cases where walls aren't detected
+                    break;
+                }
+
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &this->actor.world.pos, &vecA);
+                vecB.y = this->actor.world.pos.y;
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &vecB, &vecResult);
+                Math_Vec3f_Diff(&vecResult, &vecA, &sLedgePosition);
+
+                if (this->linearVelocity > 0.1f) {
+                    sLedgeCuePitch = 2.2f;
+                    Audio_PlaySoundGeneral(NA_SE_IT_ARROW_STICK_HRAD, &sLedgePosition, 4,
+                                        &sLedgeCuePitch, &D_801333E0,
+                                        &D_801333E8);
+                } else {
+                    sLedgeCuePitch = 0.7f;
+                    sLedgeCueVolume = LERP(0.1f, 1.0f, Math_Vec3f_DistXZ(&vecResult, &vecA));
+                    sLedgeCueIsActive = true;
+                }
+
+
+                break;
+            }
+
+            if (vecResult.y < prevHeight) {
+                prevHeight = vecResult.y;
+            }
+        }
+    }
+
+    if (sLedgeCueIsActive && (!sLedgeCueIsPlaying || play->gameplayFrames % 20 == sLedgeAlarmFrameOffset)) {
+        Audio_PlaySoundGeneral(NA_SE_PL_HOBBERBOOTS_LV, &sLedgePosition, 4, &sLedgeCuePitch,
+                               &D_801333E0,
+                               &D_801333E8);
+        sLedgeCueIsPlaying = true;
+        sLedgeAlarmFrameOffset = play->gameplayFrames % 20;
+    } else if (sLedgeCueIsPlaying && !sLedgeCueIsActive) {
+        Audio_StopSfxById(NA_SE_PL_HOBBERBOOTS_LV);
+        sLedgeCueIsPlaying = false;
+    }
+}
+
+static Vec3f sWallCuePosition;
+static f32 sWallCuePitch;
+static f32 sWallCueVolume;
+static bool sWallCueIsPlaying;
+
+void Player_UpdateWallCue(Player* this, PlayState* play) {
+    Vec3f vecA;
+    Vec3f vecB;
+    Vec3f vecResult;
+    CollisionPoly* outPoly;
+    f32 dist = FLT_MAX;
+
+    bool isPlayerOnFloor = this->actor.bgCheckFlags & 1;
+    bool isPlayerAiming = !!func_8002DD78(this);
+    bool isPlayerPushingBlock = this->stateFlags2 & PLAYER_STATE2_0;
+    bool isPlayerClimbing = this->stateFlags1 & PLAYER_STATE1_21;
+    bool isPlayerHanging = this->stateFlags1 & (PLAYER_STATE1_13 | PLAYER_STATE1_14);
+    bool isPlayerRidingHorse = this->stateFlags1 & (PLAYER_STATE1_23);
+    s16 prevYaw = this->actor.world.rot.y;
+
+    if (!isPlayerHanging && !isPlayerPushingBlock && !isPlayerAiming && !Player_InBlockingCsMode(play, this)) {
+        if (isPlayerClimbing && this->actor.wallPoly != NULL) {
+            const int radarSamples = 8;
+            const f32 radarRange = 100.0f;
+
+            MtxF rotationMtx;
+
+            Vec3f vecUp;
+            vecUp.x = 0.0f;
+            vecUp.y = 1.0f;
+            vecUp.z = 0.0f;
+
+            Vec3f wallNormal;
+            wallNormal.x = (f32)this->actor.wallPoly->normal.x / SHT_MAX;
+            wallNormal.y = (f32)this->actor.wallPoly->normal.y / SHT_MAX;
+            wallNormal.z = (f32)this->actor.wallPoly->normal.z / SHT_MAX;
+
+            f32 minDist = FLT_MAX;
+            Vec3f vecClosest;
+            vecA = this->bodyPartsPos[PLAYER_BODYPART_HEAD];
+            s16 angle = 0;
+            for (int i = 0; i < radarSamples; i++) {
+                SkinMatrix_SetRotateAxis(&rotationMtx, angle, wallNormal.x,
+                                         wallNormal.y, wallNormal.z);
+                SkinMatrix_Vec3fMtxFMultXYZ(&rotationMtx, &vecUp, &vecB);
+                Math_Vec3f_Scale(&vecB, radarRange);
+                Math_Vec3f_Sum(&vecA, &vecB, &vecB);
+
+                if (BgCheck_AnyLineTest2(&play->colCtx, &vecA, &vecB, &vecResult, &outPoly, false, true, true,
+                                         1)) {
+                    dist = Math_Vec3f_DistXYZ(&vecA, &vecResult);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        vecClosest = vecResult;
+                    }
+                }
+
+                angle += SHT_MAX / radarSamples * 2;
+            }
+
+            if (minDist < radarRange) {
+                Math_Vec3f_Diff(&vecClosest, &vecA, &vecB);
+                f32 intoWall = Math3D_Vec3fMagnitude(&vecB);
+                sWallCuePitch = LERP(0.1f, 0.5f, 0.5f); //(intoWall + 60.0f) / 120.0f);
+
+                sWallCueVolume = LERP(0.05f, 0.8f, SQ((radarRange - minDist) / radarRange));
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &vecA, &vecB);
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &vecClosest, &vecA);
+                Math_Vec3f_Diff(&vecA, &vecB, &sWallCuePosition);
+                dist = minDist;
+            } else {
+                dist = 0.0f;
+            }
+        } else {
+            const int radarSamples = 16;
+            const f32 normalRadarRange = 200.0f;
+            const f32 horseRadarRange = 600.0f;
+            f32 radarRange = (isPlayerRidingHorse) ? horseRadarRange : normalRadarRange;
+
+            f32 minDist = FLT_MAX;
+            Vec3f vecClosest;
+            CollisionPoly* polyClosest;
+            vecA = this->bodyPartsPos[PLAYER_BODYPART_HEAD];
+            for (int i = 0; i < radarSamples; i++) {
+                f32 angle = 2.0f * M_PI * (float)i / radarSamples;
+                vecB.x = Math_CosF(angle);
+                vecB.y = 0.0f;
+                vecB.z = Math_SinF(angle);
+                Math_Vec3f_Scale(&vecB, radarRange);
+                Math_Vec3f_Sum(&vecA, &vecB, &vecB);
+
+                if (BgCheck_AnyLineTest2(&play->colCtx, &vecA, &vecB, &vecResult, &outPoly, true, false, false,
+                                         1)) {
+                    dist = Math_Vec3f_DistXZ(&vecA, &vecResult);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        vecClosest = vecResult;
+                        polyClosest = outPoly;
+                    }
+                }
+            }
+
+            if (minDist < radarRange) {
+                Vec3f vecTestDir;
+                if (false) {
+                    f32 stickRadius = this->unk_A7C;
+                    s16 stickAngle = this->unk_A80;
+                    Camera* currentCamera = GET_ACTIVE_CAM(play);
+                    stickAngle = this->currentYaw; // stickAngle + currentCamera->camDir.y;
+                    vecTestDir.x = Math_SinS(stickAngle);
+                    vecTestDir.y = 0.0f;
+                    vecTestDir.z = Math_CosS(stickAngle);
+                    Math_Vec3f_Scale(&vecTestDir, -stickRadius);
+                } else {
+                    if (isPlayerRidingHorse && this->rideActor != NULL) {
+                        vecTestDir = this->rideActor->velocity;
+                    } else {
+                        vecTestDir = this->actor.velocity;
+                    }
+                    vecTestDir.y = 0.0f;
+                    Math_Vec3f_Scale(&vecTestDir, -1.0);
+                }
+
+                Vec3f wallNormal;
+                wallNormal.x = polyClosest->normal.x / (f32)SHT_MAX;
+                wallNormal.y = 0.0f;
+                wallNormal.z = polyClosest->normal.z / (f32)SHT_MAX;
+
+                // Math_Vec3f_Scale(&intendedMove, 20.0f);
+                f32 intoWall = DOTXYZ(wallNormal, vecTestDir); // Math3D_Vec3fMagnitude(&vecB);
+                sWallCuePitch = LERP(0.05f, 0.8f, (intoWall + 60.0f) / 120.0f);
+
+                sWallCueVolume = LERP(0.1f, 1.2f, SQ((radarRange - minDist) / radarRange));
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &vecA, &vecB);
+                SkinMatrix_Vec3fMtxFMultXYZ(&play->viewProjectionMtxF, &vecClosest, &vecA);
+                Math_Vec3f_Diff(&vecA, &vecB, &sWallCuePosition);
+                dist = minDist;
+            } else {
+                dist = 0.0f;
+            }
+        }
+    } else {
+        dist = 0.0f;
+    }
+
+    if (dist > 0.0f) {
+        if (!sWallCueIsPlaying || play->gameplayFrames % 20 == 0) {
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_CHARGE, &sWallCuePosition, 4, &sWallCuePitch, &sWallCueVolume,
+                                   &D_801333E8);
+            sWallCueIsPlaying = true;
+        }
+    } else if (sWallCueIsPlaying) {
+        Audio_StopSfxById(NA_SE_IT_SWORD_CHARGE);
+        sWallCueIsPlaying = false;
+    }
+}
+
+void Player_UpdateSpatialCues(Player* this, PlayState* play) {
+    Player_UpdateLedgeCue(this, play);
+    Player_UpdateWallCue(this, play);
+}
 
 #define AIMCUE_COLLIDER_COUNT 5
 static ColliderQuad sAimCueCollider[AIMCUE_COLLIDER_COUNT];
 static s32 sAimSurfaceHookshotable;
 static s32 sAimLastHookshotableState;
+static f32 sAimCuePitch;
+static f32 sAimCueVolume;
+static Vec3f sAimCueTargetPos;
 
 static ColliderQuadInit sSensingColliderInit = {
     {
@@ -1341,8 +1619,65 @@ void Player_InitAimCueCollision(Player* this, PlayState* play) {
     }
 }
 
+Actor* Player_UpdateSwimAimCue(Player* this, PlayState* play) {
+    Actor* closestActor = NULL;
+    const f32 maxDist = 500.0f;
+    f32 closestActorXZDist = maxDist;
+
+    ActorContext* actorCtx = &play->actorCtx;
+    ActorListEntry* actorListEntry;
+    actorListEntry = &actorCtx->actorLists[0];
+    Actor* actor;
+
+    for (int i = 0; i < ARRAY_COUNT(actorCtx->actorLists); i++, actorListEntry++) {
+        actor = actorListEntry->head;
+
+        while (actor != NULL) {
+            if (actor->id != ACTOR_PLAYER &&
+                actor->category != ACTORCAT_NPC &&
+                actor->world.pos.y < this->actor.world.pos.y &&
+                actor->xzDistToPlayer < closestActorXZDist) {
+
+                closestActor = actor;
+                closestActorXZDist = actor->xzDistToPlayer;
+            }
+
+            actor = actor->next;
+        }
+    }
+
+    if (closestActor != NULL) {
+        sAimCueVolume = LERP(0.1f, 1.5f, SQ(1.0f - closestActorXZDist / maxDist));
+        u16 soundEffect;
+        if (closestActorXZDist < 30.0f) {
+            soundEffect = NA_SE_PL_SPIRAL_HEAL_BEAM;
+            sAimCuePitch = 1.2;
+        } else {
+            soundEffect = NA_SE_PL_SPIRAL_HEAL_BEAM;
+            sAimCuePitch = 0.8;
+        }
+        Math_Vec3f_Copy(&sAimCueTargetPos, &closestActor->projectedPos);
+        if (play->state.frames % 20 == 0) {
+            Audio_PlaySoundGeneral(soundEffect, &sAimCueTargetPos, 4, &sAimCuePitch, &sAimCueVolume,
+                                   &D_801333E8);
+        }
+    } else {
+        Audio_StopSfxById(NA_SE_PL_SPIRAL_HEAL_BEAM);
+    }
+
+    return closestActor;
+}
+
 void Player_UpdateAimCue(Player* this, PlayState* play) {
     Actor* hitActor = NULL;
+
+    bool isPlayerSwimming = this->stateFlags1 & PLAYER_STATE1_27;
+    bool isPlayerOnFloor = this->actor.bgCheckFlags & 1;
+    bool isPlayerInFirstPersonMode = this->stateFlags1 & PLAYER_STATE1_20;
+    if (isPlayerSwimming && !isPlayerOnFloor && !isPlayerInFirstPersonMode) {
+        Player_UpdateSwimAimCue(this, play);
+        return;
+    }
 
     for (int i = 0; i < AIMCUE_COLLIDER_COUNT; i++) {
         if (sAimCueCollider[i].base.atFlags & AT_HIT) {
@@ -1358,21 +1693,35 @@ void Player_UpdateAimCue(Player* this, PlayState* play) {
                 continue;
             }
 
-            u16 soundEffect = (i == 0) ? NA_SE_SY_HITPOINT_ALARM : NA_SE_SY_FSEL_CURSOR;
+            u16 soundEffect;
+            if (i == 0) { //target centered
+                soundEffect = NA_SE_EN_BIMOS_LAZER;
+                sAimCuePitch = 1.3;
+                sAimCueVolume = 1.0;
+            } else {
+                soundEffect = NA_SE_EN_BIMOS_LAZER;
+                sAimCuePitch = 0.8;
+                sAimCueVolume = 1.0;
+            }
 
             if (hitActor->category == ACTORCAT_ENEMY || hitActor->category == ACTORCAT_BOSS) {
-                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &sAimCuePitch, &sAimCueVolume, &D_801333E8);
             } else if (hitActor->category == ACTORCAT_SWITCH) {
-                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &sAimCuePitch, &sAimCueVolume, &D_801333E8);
             } else if (hitActor->category == ACTORCAT_NPC) {
-                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &sAimCuePitch, &sAimCueVolume, &D_801333E8);
             } else if (hitActor->category == ACTORCAT_PROP &&
                            (hitActor->id == ACTOR_EN_DNT_NOMAL && hitActor->params == 0) ||
                        hitActor->id == ACTOR_EN_G_SWITCH) {
                 // lost woods slingshot target, shooting gallery rupees
-                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                Audio_PlaySoundGeneral(soundEffect, &D_801333D4, 4, &sAimCuePitch, &sAimCueVolume, &D_801333E8);
             }
         }
+    }
+
+    if (hitActor == NULL) {
+        Audio_StopSfxById(NA_SE_EV_SHIP_BELL);
+        Audio_StopSfxById(NA_SE_EN_BIMOS_LAZER);
     }
 
     if (sAimSurfaceHookshotable != sAimLastHookshotableState) {
@@ -1385,7 +1734,7 @@ void Player_UpdateAimCue(Player* this, PlayState* play) {
     }
 }
 
-void Player_ComputeAimCue(Player* this, PlayState* play, s32 limbIndex) {
+void Player_ComputeHandAimCue(Player* this, PlayState* play, s32 limbIndex) {
     if (this->heldItemId == 0) {
         return;
     }
@@ -1399,9 +1748,9 @@ void Player_ComputeAimCue(Player* this, PlayState* play, s32 limbIndex) {
 
     sAimSurfaceHookshotable = 0;
     
-    bool isCharged = (this->stateFlags1 & 0x200) && (this->unk_834 <= 10) && (this->unk_860 >= 0);
-    bool isAiming = !!func_8002DD78(this);
-    if (!isAiming || !(isCharged || isHoldingHookshotType)) {
+    bool isAimingCharged = (this->stateFlags1 & 0x200) && (this->unk_834 <= 10) && (this->unk_860 >= 0);
+    bool isPlayerAiming = !!func_8002DD78(this);
+    if (!isPlayerAiming || !(isAimingCharged || isHoldingHookshotType)) {
         return;
     }
 
@@ -1445,7 +1794,7 @@ void Player_ComputeAimCue(Player* this, PlayState* play, s32 limbIndex) {
         distance *= Math_Vec3f_DistXYZ(&vecCenter, &vecResult) / Math_Vec3f_DistXYZ(&vecCenter, &vecCenterFar);
     }
 
-    if (!isCharged) {
+    if (!isAimingCharged) {
         Matrix_Pop();
         return;
     }
@@ -1696,7 +2045,7 @@ void func_80090D20(PlayState* play, s32 limbIndex, Gfx** dList, Vec3s* rot, void
     }
 
     if (CVar_GetS32("gAimAudioCues", 0)) {
-        Player_ComputeAimCue(this, play, limbIndex);
+        Player_ComputeHandAimCue(this, play, limbIndex);
     }
 }
 
