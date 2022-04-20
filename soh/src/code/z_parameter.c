@@ -5994,6 +5994,58 @@ void Interface_Draw(PlayState* play) {
     CLOSE_DISPS(play->state.gfxCtx);
 }
 
+void Interface_TTS_Update(PlayState* play) {
+    static u32 sPrevTimer = 0;
+    static u8 sTtsAnnounceBuf[32];
+
+    u32 timer = 0;
+    if (gSaveContext.timer1State != 0) {
+        timer = gSaveContext.timer1Value;
+    } else if (gSaveContext.timer2State != 0) {
+        timer = gSaveContext.timer2Value;
+    }
+
+    if (timer > 0) {
+        if (timer > sPrevTimer || (timer % 30 == 0 && sPrevTimer != timer)) {
+            u32 minutes = timer / 60;
+            u32 seconds = timer % 60;
+            u8* announceBuf = sTtsAnnounceBuf;
+            u8 arg[8]; // at least big enough where no s8 string will overflow
+            if (minutes > 0) {
+                sprintf(arg, "%d", minutes);
+                announceBuf += sprintf(announceBuf, "%s ", OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                    0x800 + ((minutes > 1) ? 4 : 3), arg));
+            }
+            if (seconds > 0) {
+                sprintf(arg, "%d", seconds);
+                announceBuf += sprintf(announceBuf, "%s", OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                    0x800 + ((seconds > 1) ? 6 : 5), arg));
+            }
+            ASSERT(announceBuf < sTtsAnnounceBuf + sizeof(sTtsAnnounceBuf));
+            OTRSpeakText(sTtsAnnounceBuf);
+            sPrevTimer = timer;
+        }
+    }
+
+    sPrevTimer = timer;
+
+    static s16 sLostHealth = 0;
+    static s16 sPrevHealth = 0;
+
+    if (gSaveContext.health - sPrevHealth < 0) {
+        sLostHealth += sPrevHealth - gSaveContext.health;
+    }
+
+    if (play->state.frames % 7 == 0) {
+        if (sLostHealth >= 16) {
+            Audio_PlaySoundGeneral(NA_SE_SY_CANCEL, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            sLostHealth -= 16;
+        }
+    }
+
+    sPrevHealth = gSaveContext.health;
+}
+
 void Interface_Update(PlayState* play) {
     static u8 D_80125B60 = 0;
     static s16 sPrevTimeIncrement = 0;
@@ -6009,6 +6061,10 @@ void Interface_Update(PlayState* play) {
     Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
     Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
     Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
+
+    if (CVar_GetS32("gMessageTTS", 0) != 0) {
+        Interface_TTS_Update(play);
+    }
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;
