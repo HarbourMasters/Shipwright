@@ -494,7 +494,11 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     if (D_8082A124[sp218] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[sp218]);
+                        if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[sp218]);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, D_8082A150[sp218]);
+                        }
                     } else {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
                     }
@@ -524,7 +528,11 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                 if (pauseCtx->unk_1E4 == 8) {
                     if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, 200);
+                        if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, 200);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, 200);
+                        }
                     } else {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
                     }
@@ -579,7 +587,11 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     if (D_8082A124[phi_s3] == 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[phi_s3]);
+                        if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[phi_s3]);
+                        } else {
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, D_8082A150[phi_s3]);
+                        }
                     } else {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[phi_s3]);
                     }

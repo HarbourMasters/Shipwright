@@ -128,18 +128,18 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNotesAlphaValues[0] = sOcarinaNotesAlphaValues[1] = sOcarinaNotesAlphaValues[2] =
         sOcarinaNotesAlphaValues[3] = sOcarinaNotesAlphaValues[4] = sOcarinaNotesAlphaValues[5] =
             sOcarinaNotesAlphaValues[6] = sOcarinaNotesAlphaValues[7] = sOcarinaNotesAlphaValues[8] = 0;
-    sOcarinaNoteAPrimR = 80;
-    sOcarinaNoteAPrimG = 255;
-    sOcarinaNoteAPrimB = 150;
-    sOcarinaNoteAEnvR = 10;
-    sOcarinaNoteAEnvG = 10;
-    sOcarinaNoteAEnvB = 10;
-    sOcarinaNoteCPrimR = 255;
-    sOcarinaNoteCPrimG = 255;
-    sOcarinaNoteCPrimB = 50;
-    sOcarinaNoteCEnvR = 10;
-    sOcarinaNoteCEnvG = 10;
-    sOcarinaNoteCEnvB = 10;
+        sOcarinaNoteAPrimR = 80;
+        sOcarinaNoteAPrimG = 150;
+        sOcarinaNoteAPrimB = 255;
+        sOcarinaNoteAEnvR = 10;
+        sOcarinaNoteAEnvG = 10;
+        sOcarinaNoteAEnvB = 10;
+        sOcarinaNoteCPrimR = 255;
+        sOcarinaNoteCPrimG = 255;
+        sOcarinaNoteCPrimB = 50;
+        sOcarinaNoteCEnvR = 10;
+        sOcarinaNoteCEnvG = 10;
+        sOcarinaNoteCEnvB = 10;
 }
 
 void Message_UpdateOcarinaGame(GlobalContext* globalCtx) {
@@ -492,16 +492,48 @@ void Message_SetTextColor(MessageContext* msgCtx, u16 colorParameter) {
 
 void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconPrimColors[][3] = {
-        { 0, 200, 80 },
-        { 50, 255, 130 },
+        { 4, 84, 204 },
+        { 45, 125, 250 },
+    };
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        sIconPrimColors[0][0] = 0;
+        sIconPrimColors[0][1] = 200;
+        sIconPrimColors[0][2] = 80;
+        sIconPrimColors[1][0] = 50;
+        sIconPrimColors[1][0] = 255;
+        sIconPrimColors[1][0] = 130;
+    } else {
+        sIconPrimColors[0][0] = 4;
+        sIconPrimColors[0][1] = 84;
+        sIconPrimColors[0][2] = 204;
+        sIconPrimColors[1][0] = 45;
+        sIconPrimColors[1][1] = 125;
+        sIconPrimColors[1][2] = 255;
     };
     static s16 sIconEnvColors[][3] = {
         { 0, 0, 0 },
+        { 0, 70, 255 },
+        { 0, 0, 0 },
         { 0, 255, 130 },
     };
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 255;
+        sIconEnvColors[1][2] = 130;
+    } else {
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 70;
+        sIconEnvColors[1][2] = 255;
+    };
     static s16 sIconPrimR = 0;
-    static s16 sIconPrimG = 200;
-    static s16 sIconPrimB = 80;
+    static s16 sIconPrimG = 70;
+    static s16 sIconPrimB = 255;
     static s16 sIconFlashTimer = 12;
     static s16 sIconFlashColorIdx = 0;
     static s16 sIconEnvR = 0;
@@ -544,27 +576,27 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
         sIconPrimB += primB;
     }
 
-    envR = (ABS(sIconEnvR - sIconEnvColors[sIconFlashColorIdx][0])) / sIconFlashTimer;
-    envG = (ABS(sIconEnvG - sIconEnvColors[sIconFlashColorIdx][1])) / sIconFlashTimer;
-    envB = (ABS(sIconEnvB - sIconEnvColors[sIconFlashColorIdx][2])) / sIconFlashTimer;
+        envR = (ABS(sIconEnvR - sIconEnvColors[sIconFlashColorIdx][0])) / sIconFlashTimer;
+        envG = (ABS(sIconEnvG - sIconEnvColors[sIconFlashColorIdx][1])) / sIconFlashTimer;
+        envB = (ABS(sIconEnvB - sIconEnvColors[sIconFlashColorIdx][2])) / sIconFlashTimer;
 
-    if (sIconEnvR >= sIconEnvColors[sIconFlashColorIdx][0]) {
-        sIconEnvR -= envR;
-    } else {
-        sIconEnvR += envR;
-    }
+        if (sIconEnvR >= sIconEnvColors[sIconFlashColorIdx][0]) {
+            sIconEnvR -= envR;
+        } else {
+            sIconEnvR += envR;
+        }
 
-    if (sIconEnvG >= sIconEnvColors[sIconFlashColorIdx][1]) {
-        sIconEnvG -= envG;
-    } else {
-        sIconEnvG += envG;
-    }
+        if (sIconEnvG >= sIconEnvColors[sIconFlashColorIdx][1]) {
+            sIconEnvG -= envG;
+        } else {
+            sIconEnvG += envG;
+        }
 
-    if (sIconEnvB >= sIconEnvColors[sIconFlashColorIdx][2]) {
-        sIconEnvB -= envB;
-    } else {
-        sIconEnvB += envB;
-    }
+        if (sIconEnvB >= sIconEnvColors[sIconFlashColorIdx][2]) {
+            sIconEnvB -= envB;
+        } else {
+            sIconEnvB += envB;
+        }
 
     sIconFlashTimer--;
 
@@ -584,8 +616,12 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
-    gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        gDPSetPrimColor(gfx++, 0, 0, 0, 200, 80, 255);
+    } else {
+        gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
+    }
+        gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
 
     gDPLoadTextureBlock_4b(gfx++, iconTexture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -1972,12 +2008,12 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
     };
     static s16 sOcarinaNoteAPrimColors[][3] = {
-        { 80, 255, 150 },
-        { 100, 255, 200 },
+        { 80, 150, 255 },
+        { 100, 200, 255 },
     };
     static s16 sOcarinaNoteAEnvColors[][3] = {
         { 10, 10, 10 },
-        { 50, 255, 50 },
+        { 50, 50, 255 },
     };
     static s16 sOcarinaNoteCPrimColors[][3] = {
         { 255, 255, 50 },
@@ -1986,6 +2022,33 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
     static s16 sOcarinaNoteCEnvColors[][3] = {
         { 10, 10, 10 },
         { 110, 110, 50 },
+    };
+    if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+        sOcarinaNoteAPrimColors[0][0] = 80;
+        sOcarinaNoteAPrimColors[0][1] = 255;
+        sOcarinaNoteAPrimColors[0][2] = 150;
+        sOcarinaNoteAPrimColors[1][0] = 100;
+        sOcarinaNoteAPrimColors[1][1] = 255;
+        sOcarinaNoteAPrimColors[1][2] = 200;
+        sOcarinaNoteAEnvColors[0][0] = 10;
+        sOcarinaNoteAEnvColors[0][1] = 10;
+        sOcarinaNoteAEnvColors[0][2] = 10;
+        sOcarinaNoteAEnvColors[1][0] = 50;
+        sOcarinaNoteAEnvColors[1][1] = 150;
+        sOcarinaNoteAEnvColors[1][2] = 50;
+    } else {
+        sOcarinaNoteAPrimColors[0][0] = 80;
+        sOcarinaNoteAPrimColors[0][1] = 150;
+        sOcarinaNoteAPrimColors[0][2] = 255;
+        sOcarinaNoteAPrimColors[1][0] = 100;
+        sOcarinaNoteAPrimColors[1][1] = 200;
+        sOcarinaNoteAPrimColors[1][2] = 255;
+        sOcarinaNoteAEnvColors[0][0] = 10;
+        sOcarinaNoteAEnvColors[0][1] = 10;
+        sOcarinaNoteAEnvColors[0][2] = 10;
+        sOcarinaNoteAEnvColors[1][0] = 50;
+        sOcarinaNoteAEnvColors[1][1] = 50;
+        sOcarinaNoteAEnvColors[1][2] = 150;
     };
     static s16 sOcarinaNoteFlashTimer = 12;
     static s16 sOcarinaNoteFlashColorIdx = 1;
@@ -2902,8 +2965,14 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                     gDPPipeSync(gfx++);
                     if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                        if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                            gDPSetPrimColor(gfx++, 0, 0, 80, 255, 150,
+                                            sOcarinaNotesAlphaValues[i]);
+                        } else {
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
+                                            sOcarinaNotesAlphaValues[i]);
+                        }
+
                         gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
                     } else {
                         gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB,
