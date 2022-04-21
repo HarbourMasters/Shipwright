@@ -3129,6 +3129,14 @@ void Interface_Draw(GlobalContext* globalCtx) {
     };
     static s16 rupeeDigitsFirst[] = { 1, 0, 0 };
     static s16 rupeeDigitsCount[] = { 2, 3, 3 };
+
+    // courtesy of https://github.com/TestRunnerSRL/OoT-Randomizer/blob/Dev/ASM/c/hud_colors.c
+    static s16 rupeeWalletColors[3][3] = {
+        { 0xC8, 0xFF, 0x64 }, // Base Wallet (Green)
+        { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
+        { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
+    };
+
     static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
@@ -3171,7 +3179,15 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             // Rupee Icon
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 255, 100, interfaceCtx->magicAlpha);
+            s16* rColor;
+
+            if (CVar_GetS32("gDynamicWalletIcon", 0)) {
+                rColor = &rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)];
+            } else {
+              rColor = &rupeeWalletColors[0];
+            }
+
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor[0], rColor[1], rColor[2], interfaceCtx->magicAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 80, 0, 255);
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26),
                                           206, 16, 16, 1 << 10, 1 << 10);
@@ -3269,7 +3285,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                     Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
                         OTRGetRectDimensionFromLeftEdge(svar3), 206, 8, 16, 1 << 10, 1 << 10);
             }
-        } 
+        }
         else {
             // Make sure item counts have black backgrounds
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 0, 0, interfaceCtx->magicAlpha);

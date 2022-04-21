@@ -425,6 +425,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Dynamic Wallet Icon", &Game::Settings.enhancements.dynamic_wallet_icon)) {
+                    CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Game::Settings.enhancements.dynamic_wallet_icon);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
