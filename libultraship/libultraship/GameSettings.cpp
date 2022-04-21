@@ -124,6 +124,9 @@ namespace Game {
         Settings.cheats.infinite_magic = stob(Conf[CheatSection]["infinite_magic"]);
         CVar_SetS32("gInfiniteMagic", Settings.cheats.infinite_magic);
 
+        Settings.cheats.infinite_nayru = stob(Conf[CheatSection]["infinite_nayru"]);
+        CVar_SetS32("gInfiniteNayru", Settings.cheats.infinite_nayru);
+
         Settings.cheats.no_clip = stob(Conf[CheatSection]["no_clip"]);
         CVar_SetS32("gNoClip", Settings.cheats.no_clip);
 
@@ -135,6 +138,15 @@ namespace Game {
 
         Settings.cheats.super_tunic = stob(Conf[CheatSection]["super_tunic"]);
         CVar_SetS32("gSuperTunic", Settings.cheats.super_tunic);
+
+        Settings.cheats.ez_isg = stob(Conf[CheatSection]["ez_isg"]);
+        CVar_SetS32("gEzISG", Settings.cheats.ez_isg);
+
+        Settings.cheats.no_restrict_item = stob(Conf[CheatSection]["no_restrict_item"]);
+        CVar_SetS32("gNoRestrictItems", Settings.cheats.no_restrict_item);
+
+        Settings.cheats.freeze_time = stob(Conf[CheatSection]["freeze_time"]);
+        CVar_SetS32("gFreezeTime", Settings.cheats.freeze_time);
 
         UpdateAudio();
     }

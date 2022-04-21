@@ -49,10 +49,14 @@ struct SoHConfigType {
         bool infinite_health = false;
         bool infinite_ammo = false;
         bool infinite_magic = false;
+        bool infinite_nayru = false;
         bool no_clip = false;
         bool climb_everything = false;
         bool moon_jump_on_l = false;
         bool super_tunic = false;
+        bool ez_isg = false;
+        bool no_restrict_item = false;
+        bool freeze_time = false;
     } cheats;
 
     // Graphics
