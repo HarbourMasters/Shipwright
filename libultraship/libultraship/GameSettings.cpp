@@ -65,7 +65,8 @@ namespace Game {
         CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
 	    
         Settings.enhancements.uniform_lr = stob(Conf[EnhancementSection]["uniform_lr"]);
-        CVar_SetS32("gUniformLR", Settings.enhancements.uniform_lr);
+        //CVar_SetS32("gUniformLR", Settings.enhancements.uniform_lr);
+        CVar_SetS32("gUniformLR", 1);
 
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
