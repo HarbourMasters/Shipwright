@@ -67,6 +67,9 @@ namespace Game {
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
         CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
 
+        Settings.enhancements.visualagony = stob(Conf[EnhancementSection]["visualagony"]);
+        CVar_SetS32("gVisualAgony", Settings.enhancements.visualagony);
+      
         Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
         CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
 
@@ -175,7 +178,9 @@ namespace Game {
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
         Conf[EnhancementSection]["dynamic_wallet_icon"] = std::to_string(Settings.enhancements.dynamic_wallet_icon);
         Conf[EnhancementSection]["minimal_ui"] = std::to_string(Settings.enhancements.minimal_ui);
+        Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
+
 
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
