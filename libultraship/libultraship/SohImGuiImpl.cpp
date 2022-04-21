@@ -123,14 +123,6 @@ namespace SohImGui {
         }
     }
 
-    bool UseInternalRes() {
-        switch (impl.backend) {
-        case Backend::SDL:
-            return true;
-        }
-        return false;
-    }
-
     bool UseViewports() {
         switch (impl.backend) {
         case Backend::DX11:
@@ -281,20 +273,16 @@ namespace SohImGui {
         }
     }
 
-    void Draw() {
-
+    void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
         ImGui::NewFrame();
 
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
-        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking |
+        ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
             ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
-        if (UseViewports()) {
-            window_flags |= ImGuiWindowFlags_NoBackground;
-        }
         if (Game::Settings.debug.menu_bar) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -302,8 +290,12 @@ namespace SohImGui {
         ImGui::SetNextWindowSize(ImVec2(wnd->GetCurrentWidth(), wnd->GetCurrentHeight()));
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::Begin("Main - Deck", nullptr, window_flags);
-        ImGui::PopStyleVar();
+        ImGui::PopStyleVar(3);
+
+        ImVec2 top_left_pos = ImGui::GetWindowPos();
 
         const ImGuiID dockId = ImGui::GetID("main_dock");
 
@@ -408,8 +400,14 @@ namespace SohImGui {
                 ImGui::Text("Gameplay");
                 ImGui::Separator();
 
-                if (ImGui::Checkbox("Fast Text", &Game::Settings.enhancements.fast_text)) {
-                    CVar_SetS32("gFastText", Game::Settings.enhancements.fast_text);
+                ImGui::Text("Text Speed", Game::Settings.enhancements.text_speed);
+                if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5)) {
+                    CVar_SetS32("gTextSpeed", Game::Settings.enhancements.text_speed);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Skip Text", &Game::Settings.enhancements.skip_text)) {
+                    CVar_SetS32("gSkipText", Game::Settings.enhancements.skip_text);
                     needs_save = true;
                 }
 
@@ -426,9 +424,7 @@ namespace SohImGui {
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
-                if (UseInternalRes()) {
-                    HOOK(ImGui::Checkbox("N64 Mode", &Game::Settings.debug.n64mode));
-                }
+                HOOK(ImGui::Checkbox("N64 Mode", &Game::Settings.debug.n64mode));
 
                 if (ImGui::Checkbox("Animated Link in Pause Menu", &Game::Settings.enhancements.animated_pause_menu)) {
                     CVar_SetS32("gPauseLiveLink", Game::Settings.enhancements.animated_pause_menu);
@@ -440,16 +436,21 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Dynamic Wallet Icon", &Game::Settings.enhancements.dynamic_wallet_icon)) {
+                    CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Game::Settings.enhancements.dynamic_wallet_icon);
+                    needs_save = true;
+                }
+
                 ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Developer Tools")) {
                 HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
                 HOOK(ImGui::MenuItem("Console", nullptr, &console->opened));
-                
+
                 ImGui::Text("Debug");
                 ImGui::Separator();
-                
+
                 if (ImGui::Checkbox("Debug Mode", &Game::Settings.cheats.debug_mode)) {
                     CVar_SetS32("gDebugEnabled", Game::Settings.cheats.debug_mode);
                     needs_save = true;
@@ -457,45 +458,74 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
-            
+
+            if (ImGui::BeginMenu("Graphics")) {
+                HOOK(ImGui::MenuItem("Anti-aliasing", nullptr, &Game::Settings.graphics.show));
+                ImGui::EndMenu();
+            }
+
             if (ImGui::BeginMenu("Cheats")) {
-                if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
-                    CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
-                    needs_save = true;
+                if (ImGui::BeginMenu("Infinite...")) {
+                    if (ImGui::Checkbox("Money", &Game::Settings.cheats.infinite_money)) {
+                        CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
+                        needs_save = true;
+                    }
+
+                    if (ImGui::Checkbox("Health", &Game::Settings.cheats.infinite_health)) {
+                        CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
+                        needs_save = true;
+                    }
+
+                    if (ImGui::Checkbox("Ammo", &Game::Settings.cheats.infinite_ammo)) {
+                        CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
+                        needs_save = true;
+                    }
+
+                    if (ImGui::Checkbox("Magic", &Game::Settings.cheats.infinite_magic)) {
+                        CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
+                        needs_save = true;
+                    }
+
+                    if (ImGui::Checkbox("Nayru's Love", &Game::Settings.cheats.infinite_nayru)) {
+                        CVar_SetS32("gInfiniteNayru", Game::Settings.cheats.infinite_nayru);
+                        needs_save = true;
+                    }
+
+                ImGui::EndMenu();
                 }
 
-                if (ImGui::Checkbox("Infinite Health", &Game::Settings.cheats.infinite_health)) {
-                    CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
-                    needs_save = true;
-                }
-
-                if (ImGui::Checkbox("Infinite Ammo", &Game::Settings.cheats.infinite_ammo)) {
-                    CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
-                    needs_save = true;
-                }
-
-                if (ImGui::Checkbox("Infinite Magic", &Game::Settings.cheats.infinite_magic)) {
-                    CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
-                    needs_save = true;
-                }
-                
                 if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
                     CVar_SetS32("gNoClip", Game::Settings.cheats.no_clip);
                     needs_save = true;
                 }
-                
+
                 if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
                     CVar_SetS32("gClimbEverything", Game::Settings.cheats.climb_everything);
                     needs_save = true;
                 }
-                
+
                 if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
                     CVar_SetS32("gMoonJumpOnL", Game::Settings.cheats.moon_jump_on_l);
                     needs_save = true;
                 }
-                
+
                 if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
                     CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
+                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
+                    CVar_SetS32("gNoRestrictItems", Game::Settings.cheats.no_restrict_item);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
+                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
                     needs_save = true;
                 }
 
@@ -515,36 +545,6 @@ namespace SohImGui {
         }
 
         ImGui::End();
-        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
-        ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-        if (UseViewports()) {
-            flags |= ImGuiWindowFlags_NoBackground;
-        }
-        ImGui::Begin("OoT Master Quest", nullptr, flags);
-        ImGui::PopStyleVar();
-        ImGui::PopStyleColor();
-
-        ImVec2 main_pos = ImGui::GetWindowPos();
-        ImVec2 size = ImGui::GetContentRegionAvail();
-        ImVec2 pos = ImVec2(0, 0);
-        gfx_current_dimensions.width = size.x * gfx_current_dimensions.internal_mul;
-        gfx_current_dimensions.height = size.y * gfx_current_dimensions.internal_mul;
-        if (UseInternalRes()) {
-            if (Game::Settings.debug.n64mode) {
-                gfx_current_dimensions.width = 320;
-                gfx_current_dimensions.height = 240;
-                const int sw = size.y * 320 / 240;
-                pos = ImVec2(size.x / 2 - sw / 2, 0);
-                size = ImVec2(sw, size.y);
-            }
-        }
-
-        if (UseInternalRes()) {
-            int fbuf = std::stoi(SohUtils::getEnvironmentVar("framebuffer"));
-            ImGui::ImageRotated(reinterpret_cast<ImTextureID>(fbuf), pos, size, 0.0f);
-        }
-        ImGui::End();
 
         if (Game::Settings.debug.soh) {
             const float framerate = ImGui::GetIO().Framerate;
@@ -553,18 +553,84 @@ namespace SohImGui {
 
             ImGui::Text("Platform: Windows");
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
-            if (UseInternalRes()) {
-                ImGui::Text("Internal Resolution:");
-                ImGui::SliderInt("Mul", reinterpret_cast<int*>(&gfx_current_dimensions.internal_mul), 1, 8);
-            }
             ImGui::End();
             ImGui::PopStyleColor();
         }
 
+        if (Game::Settings.graphics.show) {
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::Begin("Anti-aliasing settings", nullptr, ImGuiWindowFlags_None);
+            ImGui::Text("Internal Resolution:");
+            ImGui::SliderInt("Mul", reinterpret_cast<int*>(&gfx_current_dimensions.internal_mul), 1, 8);
+            ImGui::Text("MSAA:");
+            ImGui::SliderInt("MSAA", reinterpret_cast<int*>(&gfx_msaa_level), 1, 8);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
+
+        console->Draw();
+
+        for (auto& windowIter : customWindows) {
+            CustomWindow& window = windowIter.second;
+            if (window.drawFunc != nullptr) {
+                window.drawFunc(window.enabled);
+            }
+        }
+
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+        ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
+        ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
+        ImGui::Begin("OoT Master Quest", nullptr, flags);
+        ImGui::PopStyleVar(3);
+        ImGui::PopStyleColor();
+
+        ImVec2 main_pos = ImGui::GetWindowPos();
+        main_pos.x -= top_left_pos.x;
+        main_pos.y -= top_left_pos.y;
+        ImVec2 size = ImGui::GetContentRegionAvail();
+        ImVec2 pos = ImVec2(0, 0);
+        gfx_current_dimensions.width = size.x * gfx_current_dimensions.internal_mul;
+        gfx_current_dimensions.height = size.y * gfx_current_dimensions.internal_mul;
+        gfx_current_game_window_viewport.x = main_pos.x;
+        gfx_current_game_window_viewport.y = main_pos.y;
+        gfx_current_game_window_viewport.width = size.x;
+        gfx_current_game_window_viewport.height = size.y;
+        if (Game::Settings.debug.n64mode) {
+            gfx_current_dimensions.width = 320;
+            gfx_current_dimensions.height = 240;
+            const int sw = size.y * 320 / 240;
+            gfx_current_game_window_viewport.x += (size.x - sw) / 2;
+            gfx_current_game_window_viewport.width = sw;
+            pos = ImVec2(size.x / 2 - sw / 2, 0);
+            size = ImVec2(sw, size.y);
+        }
+    }
+
+    void DrawFramebufferAndGameInput() {
+        ImVec2 main_pos = ImGui::GetWindowPos();
+        ImVec2 size = ImGui::GetContentRegionAvail();
+        ImVec2 pos = ImVec2(0, 0);
+        if (Game::Settings.debug.n64mode) {
+            const int sw = size.y * 320 / 240;
+            pos = ImVec2(size.x / 2 - sw / 2, 0);
+            size = ImVec2(sw, size.y);
+        }
+        std::string fb_str = SohUtils::getEnvironmentVar("framebuffer");
+        if (!fb_str.empty()) {
+            uintptr_t fbuf = (uintptr_t)std::stoull(fb_str);
+            //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);
+            ImGui::SetCursorPos(pos);
+            ImGui::Image(reinterpret_cast<ImTextureID>(fbuf), size);
+        }
+
+        ImGui::End();
+
         const float scale = Game::Settings.controller.input_scale;
         ImVec2 BtnPos = ImVec2(160 * scale, 85 * scale);
 
-        if(Game::Settings.controller.input_enabled) {
+        if (Game::Settings.controller.input_enabled) {
             ImGui::SetNextWindowSize(BtnPos);
             ImGui::SetNextWindowPos(ImVec2(main_pos.x + size.x - BtnPos.x - 20, main_pos.y + size.y - BtnPos.y - 20));
 
@@ -610,21 +676,21 @@ namespace SohImGui {
                 ImGui::End();
             }
         }
+    }
 
-        console->Draw();
-
-        for (auto& windowIter : customWindows) {
-            CustomWindow& window = windowIter.second;
-            if (window.drawFunc != nullptr) {
-                window.drawFunc(window.enabled);
-            }
-        }
-
+    void Render() {
         ImGui::Render();
         ImGuiRenderDrawData(ImGui::GetDrawData());
         if (UseViewports()) {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
+        }
+    }
+
+    void CancelFrame() {
+        ImGui::EndFrame();
+        if (UseViewports()) {
+            ImGui::UpdatePlatformWindows();
         }
     }
 
