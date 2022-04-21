@@ -418,10 +418,10 @@ namespace SohImGui {
                     needs_save = true;
                 }
                 
-                if (ImGui::Checkbox("Fix L&R Pause menu", &Game::Settings.enhancements.uniform_lr)) {
+                /*if (ImGui::Checkbox("Fix L&R Pause menu", &Game::Settings.enhancements.uniform_lr)) {
                     CVar_SetS32("gUniformLR", Game::Settings.enhancements.uniform_lr);
                     needs_save = true;
-                }
+                }*/
 
                 ImGui::Text("Graphics");
                 ImGui::Separator();
