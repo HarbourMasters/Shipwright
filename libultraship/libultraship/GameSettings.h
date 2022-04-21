@@ -20,7 +20,8 @@ struct SoHConfigType {
 
     // Enhancements
     struct {
-        bool fast_text = false;
+        int text_speed = 1;
+        bool skip_text = false;
         bool disable_lod = false;
         bool animated_pause_menu = false;
         bool dynamic_wallet_icon = false;

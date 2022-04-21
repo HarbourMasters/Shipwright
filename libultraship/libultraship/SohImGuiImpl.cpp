@@ -395,8 +395,14 @@ namespace SohImGui {
                 ImGui::Text("Gameplay");
                 ImGui::Separator();
 
-                if (ImGui::Checkbox("Fast Text", &Game::Settings.enhancements.fast_text)) {
-                    CVar_SetS32("gFastText", Game::Settings.enhancements.fast_text);
+                ImGui::Text("Text Speed", Game::Settings.enhancements.text_speed);
+                if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5)) {
+                    CVar_SetS32("gTextSpeed", Game::Settings.enhancements.text_speed);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Skip Text", &Game::Settings.enhancements.skip_text)) {
+                    CVar_SetS32("gSkipText", Game::Settings.enhancements.skip_text);
                     needs_save = true;
                 }
 
