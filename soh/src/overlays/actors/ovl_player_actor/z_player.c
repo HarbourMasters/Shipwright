@@ -10265,7 +10265,7 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     }
 }
 
-void func_80848EF8(Player* this) {
+void func_80848EF8(GlobalContext* globalCtx, Player* this) {
     if (CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) {
         f32 temp = 200000.0f - (this->unk_6A4 * 5.0f);
 
@@ -10584,7 +10584,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
                 else {
                     this->fallStartHeight = this->actor.world.pos.y;
                 }
-                func_80848EF8(this);
+                func_80848EF8(globalCtx,this);
             }
         }
 
