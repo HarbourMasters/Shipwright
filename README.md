@@ -49,10 +49,6 @@ Take [this survey](https://retroarchopenhardware.com/survey.php) to increase cha
 
 Official Discord: https://discord.com/invite/BtBmd55HVH
 
-## Building The Ship of Harkinian
-
-Refer to the [building instructions](https://github.com/HarbourMasters/Shipwright/BUILDING.md) to compile SoH.
-
 ## Compatible Roms
 ```
 OOT_PAL_GC      checksum 0x09465AC3
