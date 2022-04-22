@@ -416,6 +416,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Visual Stone of Agony", &Game::Settings.enhancements.visualagony)) {
+                    CVar_SetS32("gVisualAgony", Game::Settings.enhancements.visualagony);
+                    needs_save = true;
+                }
+
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
