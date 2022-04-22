@@ -178,11 +178,14 @@
   <ItemGroup>
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugger.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp" />
     <ClCompile Include="soh\Enhancements\gameconsole.c" />
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
     <ClCompile Include="soh\stubs.c" />
+    <ClCompile Include="soh\util.cpp" />
     <ClCompile Include="soh\z_message_OTR.cpp" />
     <ClCompile Include="soh\z_play_otr.cpp" />
     <ClCompile Include="soh\z_scene_otr.cpp" />
@@ -922,8 +925,11 @@
     <ClInclude Include="soh\Enhancements\bootcommands.h" />
     <ClInclude Include="soh\Enhancements\cvar.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugger.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\gameconsole.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
+    <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Ice\z_arrow_ice.h" />

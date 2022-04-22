@@ -140,6 +140,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     s16 cursorX;
     s16 cursorY;
     volatile s16 oldCursorPoint;
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 219);
 
@@ -174,7 +175,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
             cursorMoveResult = 0;
             while (cursorMoveResult == 0) {
-                if (pauseCtx->stickRelX < -30) {
+                if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                     if (pauseCtx->cursorX[PAUSE_EQUIP] != 0) {
                         pauseCtx->cursorX[PAUSE_EQUIP] -= 1;
                         pauseCtx->cursorPoint[PAUSE_EQUIP] -= 1;
@@ -216,7 +217,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                             cursorMoveResult = 3;
                         }
                     }
-                } else if (pauseCtx->stickRelX > 30) {
+                } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                     if (pauseCtx->cursorX[PAUSE_EQUIP] < 3) {
                         pauseCtx->cursorX[PAUSE_EQUIP] += 1;
                         pauseCtx->cursorPoint[PAUSE_EQUIP] += 1;
@@ -264,7 +265,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
             cursorMoveResult = 0;
             while (cursorMoveResult == 0) {
-                if (pauseCtx->stickRelY > 30) {
+                if ((pauseCtx->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                     if (pauseCtx->cursorY[PAUSE_EQUIP] != 0) {
                         pauseCtx->cursorY[PAUSE_EQUIP] -= 1;
                         pauseCtx->cursorPoint[PAUSE_EQUIP] -= 4;
@@ -286,7 +287,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                         pauseCtx->cursorPoint[PAUSE_EQUIP] = cursorPoint;
                         cursorMoveResult = 3;
                     }
-                } else if (pauseCtx->stickRelY < -30) {
+                } else if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                     if (pauseCtx->cursorY[PAUSE_EQUIP] < 3) {
                         pauseCtx->cursorY[PAUSE_EQUIP] += 1;
                         pauseCtx->cursorPoint[PAUSE_EQUIP] += 4;
@@ -309,7 +310,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 }
             }
         } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-            if (pauseCtx->stickRelX > 30) {
+            if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
@@ -356,7 +357,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if (pauseCtx->stickRelX < -30) {
+            if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
                 Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -594,7 +595,6 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItemSegment);
     //gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItem24Segment);
     gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->nameSegment);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, globalCtx->interfaceCtx.mapSegment);
 
     //gSPSegment(POLY_KAL_DISP++, 0x07, pauseCtx->playerSegment);
     gSPSegment(POLY_KAL_DISP++, 0x08, pauseCtx->iconItemSegment);

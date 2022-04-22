@@ -977,6 +977,7 @@ void LightContext_RemoveLight(GlobalContext* globalCtx, LightContext* lightCtx, 
 Lights* Lights_NewAndDraw(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambientB, u8 numLights, u8 r, u8 g,
                           u8 b, s8 x, s8 y, s8 z);
 Lights* Lights_New(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambientB);
+void Lights_GlowCheckPrepare(GlobalContext* globalCtx);
 void Lights_GlowCheck(GlobalContext* globalCtx);
 void Lights_DrawGlow(GlobalContext* globalCtx);
 void ZeldaArena_CheckPointer(void* ptr, size_t size, const char* name, const char* action);
@@ -2396,6 +2397,9 @@ void FileChoose_Init(GameState* thisx);
 void FileChoose_Destroy(GameState* thisx);
 
 char* SetQuote();
+
+void Heaps_Alloc(void);
+void Heaps_Free(void);
 
 #ifdef __cplusplus
 };

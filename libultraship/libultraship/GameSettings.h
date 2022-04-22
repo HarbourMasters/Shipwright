@@ -20,10 +20,15 @@ struct SoHConfigType {
 
     // Enhancements
     struct {
-        bool fast_text = false;
+        int text_speed = 1;
+        bool skip_text = false;
         bool disable_lod = false;
         bool animated_pause_menu = false;
+        bool dynamic_wallet_icon = false;
         bool minimal_ui = false;
+        bool visualagony = false;
+        bool mm_bunny_hood = false;
+
     } enhancements;
 
     // Controller
@@ -34,6 +39,9 @@ struct SoHConfigType {
         float gyroDriftX = 0.0f;
         float gyroDriftY = 0.0f;
         bool input_enabled = false;
+        bool dpad_pause_name = false;
+        bool dpad_ocarina_text = false;
+        bool dpad_shop = false;
     } controller;
 
     struct {
@@ -84,11 +92,20 @@ struct SoHConfigType {
         bool infinite_health = false;
         bool infinite_ammo = false;
         bool infinite_magic = false;
+        bool infinite_nayru = false;
         bool no_clip = false;
         bool climb_everything = false;
         bool moon_jump_on_l = false;
         bool super_tunic = false;
+        bool ez_isg = false;
+        bool no_restrict_item = false;
+        bool freeze_time = false;
     } cheats;
+
+    // Graphics
+    struct {
+        bool show = false;
+    } graphics;
 };
 
 enum SeqPlayers {

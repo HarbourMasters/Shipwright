@@ -226,6 +226,9 @@ u16 Environment_GetPixelDepth(s32 x, s32 y) {
 void Environment_GraphCallback(GraphicsContext* gfxCtx, void* param) {
     GlobalContext* globalCtx = (GlobalContext*)param;
 
+    OTRGetPixelDepthPrepare(D_8015FD7E, D_8015FD80);
+    Lights_GlowCheckPrepare(globalCtx);
+
     D_8011FB44 = Environment_GetPixelDepth(D_8015FD7E, D_8015FD80);
     Lights_GlowCheck(globalCtx);
 }
