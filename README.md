@@ -49,11 +49,10 @@ Take [this survey](https://retroarchopenhardware.com/survey.php) to increase cha
 
 Official Discord: https://discord.com/invite/BtBmd55HVH
 
-## Compatible Roms
-```
-OOT_PAL_GC      checksum 0x09465AC3
-OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
-```
+## Building The Ship of Harkinian
+
+Refer to the [building instructions](https://github.com/HarbourMasters/Shipwright/BUILDING.md) to compile SoH.
+
 ## Troubleshooting The Exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
