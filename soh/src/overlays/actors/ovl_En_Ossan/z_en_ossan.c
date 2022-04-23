@@ -1887,9 +1887,19 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
             this->cursorAnimState = 0;
         }
     }
-    this->cursorColorR = ColChanMix(0, 0.0f, t);
-    this->cursorColorG = ColChanMix(255, 80.0f, t);
-    this->cursorColorB = ColChanMix(80, 0.0f, t);
+    if (CVar_GetS32("gN64Colors", 0) != 0) {
+      this->cursorColorR = ColChanMix(0, 0.0f, t);
+      this->cursorColorG = ColChanMix(80, 80.0f, t);
+      this->cursorColorB = ColChanMix(255, 0.0f, t);
+    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+      this->cursorColorR = ColChanMix(0, 0.0f, t);
+      this->cursorColorG = ColChanMix(255, 80.0f, t);
+      this->cursorColorB = ColChanMix(80, 0.0f, t);
+    } else if (CVar_GetS32("gCustomColors", 0) != 0) {
+      this->cursorColorR = ColChanMix(CVar_GetInt("gCCABtnPrimR", 90), ((CVar_GetInt("gCCABtnPrimR", 90)/255)*100), t);
+      this->cursorColorG = ColChanMix(CVar_GetInt("gCCABtnPrimG", 90), ((CVar_GetInt("gCCABtnPrimG", 90)/255)*100), t);
+      this->cursorColorB = ColChanMix(CVar_GetInt("gCCABtnPrimB", 90), ((CVar_GetInt("gCCABtnPrimB", 90)/255)*100), t);
+    }
     this->cursorColorA = ColChanMix(255, 0.0f, t);
     this->cursorAnimTween = t;
 }
