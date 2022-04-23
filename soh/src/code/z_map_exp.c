@@ -662,8 +662,11 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                       TEXEL0, 0, PRIMITIVE, 0);
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
-
+                        if (CVar_GetS32("gCustomColors", 0) != 0) { //Dungeon minimap
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetInt("gCCMinimapPrimR", 255), CVar_GetInt("gCCMinimapPrimG", 255), CVar_GetInt("gCCMinimapPrimB", 255), interfaceCtx->magicAlpha);
+                        } else {
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
+                        }
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -718,8 +721,11 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     func_80094520(globalCtx->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2),
-                                    interfaceCtx->minimapAlpha);
+                    if (CVar_GetS32("gCustomColors", 0) != 0) {//Overworld minimap
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetInt("gCCMinimapPrimR", 255), CVar_GetInt("gCCMinimapPrimG", 255), CVar_GetInt("gCCMinimapPrimB", 255), interfaceCtx->magicAlpha);
+                    } else {
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                    }
 
                     gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_IA,
                                            gMapData->owMinimapWidth[mapIndex], gMapData->owMinimapHeight[mapIndex], 0,
@@ -739,6 +745,10 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
+
+                            if (CVar_GetS32("gCustomColors", 0) != 1) {//This need to be added else it will color dungeon entrance icon too. (it re-init prim color to default color)
+                                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                            }
 
                             gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                 8, 8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
