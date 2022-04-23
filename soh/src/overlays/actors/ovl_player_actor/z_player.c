@@ -19,6 +19,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 
 typedef struct {
     /* 0x00 */ u8 itemId;
@@ -10265,7 +10266,7 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     }
 }
 
-void func_80848EF8(Player* this) {
+void func_80848EF8(Player* this, GlobalContext* globalCtx) {
     if (CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) {
         f32 temp = 200000.0f - (this->unk_6A4 * 5.0f);
 
@@ -10584,7 +10585,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
                 else {
                     this->fallStartHeight = this->actor.world.pos.y;
                 }
-                func_80848EF8(this);
+                func_80848EF8(this, globalCtx);
             }
         }
 
