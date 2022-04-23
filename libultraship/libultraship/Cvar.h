@@ -27,11 +27,13 @@ CVar* CVar_Get(const char* name);
 s32 CVar_GetS32(const char* name, s32 defaultValue);
 float CVar_GetFloat(const char* name, float defaultValue);
 char* CVar_GetString(const char* name, char* defaultValue);
+int CVar_GetInt(const char* name, int defaultValue);
 void CVar_SetS32(const char* name, s32 value);
 
 void CVar_RegisterS32(const char* name, s32 defaultValue);
 void CVar_RegisterFloat(const char* name, float defaultValue);
 void CVar_RegisterString(const char* name, char* defaultValue);
+void CVar_RegisterInt(const char* name, int defaultValue);
 
 #ifdef __cplusplus
 };
@@ -45,5 +47,6 @@ extern std::map<std::string, CVar*> cvars;
 CVar* CVar_GetVar(const char* name);
 void CVar_SetFloat(const char* name, float value);
 void CVar_SetString(const char* name, char* value);
+void CVar_SetInt(const char* name, int value);
 #endif
 #endif
