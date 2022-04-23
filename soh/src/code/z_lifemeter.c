@@ -142,6 +142,18 @@ void HealthMeter_Init(GlobalContext* globalCtx) {
     sHeartsDDEnv[0][0] = sHeartsDDEnv[1][0] = HEARTS_DD_ENV_R;
     sHeartsDDEnv[0][1] = sHeartsDDEnv[1][1] = HEARTS_DD_ENV_G;
     sHeartsDDEnv[0][2] = sHeartsDDEnv[1][2] = HEARTS_DD_ENV_B;
+
+    if (CVar_GetS32("gCustomColors", 0) != 0) {//Load custom colors !
+        interfaceCtx->heartsPrimR[0] = CVar_GetInt("gCCHeartsPrimR", 220);
+        interfaceCtx->heartsPrimG[0] = CVar_GetInt("gCCHeartsPrimG", 10);
+        interfaceCtx->heartsPrimB[0] = CVar_GetInt("gCCHeartsPrimB", 10);
+        interfaceCtx->heartsPrimR[1] = CVar_GetInt("gCCHeartsPrimR", 220);
+        interfaceCtx->heartsPrimG[1] = CVar_GetInt("gCCHeartsPrimG", 10);
+        interfaceCtx->heartsPrimB[1] = CVar_GetInt("gCCHeartsPrimB", 10);
+        sHeartsDDPrim[0][0] = sHeartsDDPrim[1][0] = CVar_GetInt("gDDCCHeartsPrimR", 220);
+        sHeartsDDPrim[0][1] = sHeartsDDPrim[1][1] = CVar_GetInt("gDDCCHeartsPrimG", 10);
+        sHeartsDDPrim[0][2] = sHeartsDDPrim[1][2] = CVar_GetInt("gDDCCHeartsPrimB", 10);
+    }
 }
 
 void HealthMeter_Update(GlobalContext* globalCtx) {
@@ -171,7 +183,17 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     }
 
     ddFactor = factor;
-
+    
+    if (CVar_GetS32("gCustomColors", 0) != 0) {//Required for runtime colors change.
+        interfaceCtx->heartsPrimR[0] = CVar_GetInt("gCCHeartsPrimR", 220);
+        interfaceCtx->heartsPrimG[0] = CVar_GetInt("gCCHeartsPrimG", 10);
+        interfaceCtx->heartsPrimB[0] = CVar_GetInt("gCCHeartsPrimB", 10);
+    } else {
+        interfaceCtx->heartsPrimR[0] = HEARTS_PRIM_R;
+        interfaceCtx->heartsPrimG[0] = HEARTS_PRIM_G;
+        interfaceCtx->heartsPrimB[0] = HEARTS_PRIM_B;
+    }
+    
     interfaceCtx->heartsPrimR[0] = HEARTS_PRIM_R;
     interfaceCtx->heartsPrimG[0] = HEARTS_PRIM_G;
     interfaceCtx->heartsPrimB[0] = HEARTS_PRIM_B;
@@ -187,6 +209,16 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     interfaceCtx->heartsEnvR[1] = sHeartsEnvColors[type][0];
     interfaceCtx->heartsEnvG[1] = sHeartsEnvColors[type][1];
     interfaceCtx->heartsEnvB[1] = sHeartsEnvColors[type][2];
+
+    if (CVar_GetS32("gCustomColors", 0) != 0) {//Required for runtime colors change. (that when the heart grow and shrink color)
+        interfaceCtx->beatingHeartPrim[0] = (u8)(rFactor + CVar_GetInt("gCCHeartsPrimR", 220)) & 0xFF;
+        interfaceCtx->beatingHeartPrim[1] = (u8)(gFactor + CVar_GetInt("gCCHeartsPrimG", 10)) & 0xFF;
+        interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + CVar_GetInt("gCCHeartsPrimB", 10)) & 0xFF;
+    } else {
+        interfaceCtx->beatingHeartPrim[0] = (u8)(rFactor + HEARTS_PRIM_R) & 0xFF;
+        interfaceCtx->beatingHeartPrim[1] = (u8)(gFactor + HEARTS_PRIM_G) & 0xFF;
+        interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + HEARTS_PRIM_B) & 0xFF;
+    }
 
     rFactor = sHeartsPrimFactors[0][0] * factor;
     gFactor = sHeartsPrimFactors[0][1] * factor;
@@ -207,9 +239,15 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     interfaceCtx->beatingHeartEnv[1] = (u8)(gFactor + HEARTS_ENV_G) & 0xFF;
     interfaceCtx->beatingHeartEnv[2] = (u8)(bFactor + HEARTS_ENV_B) & 0xFF;
 
-    sHeartsDDPrim[0][0] = HEARTS_DD_PRIM_R;
-    sHeartsDDPrim[0][1] = HEARTS_DD_PRIM_G;
-    sHeartsDDPrim[0][2] = HEARTS_DD_PRIM_B;
+    if (CVar_GetS32("gCustomColors", 0) != 0) {//Same as abose (DD stand for Double Defense)
+        sHeartsDDPrim[0][0] = CVar_GetInt("gDDCCHeartsPrimR", 220);
+        sHeartsDDPrim[0][1] = CVar_GetInt("gDDCCHeartsPrimG", 0);
+        sHeartsDDPrim[0][2] = CVar_GetInt("gDDCCHeartsPrimB", 0);
+    } else {
+        sHeartsDDPrim[0][0] = HEARTS_DD_PRIM_R;
+        sHeartsDDPrim[0][1] = HEARTS_DD_PRIM_G;
+        sHeartsDDPrim[0][2] = HEARTS_DD_PRIM_B;
+    }
 
     sHeartsDDEnv[0][0] = HEARTS_DD_ENV_R;
     sHeartsDDEnv[0][1] = HEARTS_DD_ENV_G;
@@ -227,9 +265,15 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
     bFactor = sHeartsDDPrimFactors[ddType][2] * ddFactor;
 
-    sBeatingHeartsDDPrim[0] = (u8)(rFactor + HEARTS_DD_PRIM_R) & 0xFF;
-    sBeatingHeartsDDPrim[1] = (u8)(gFactor + HEARTS_DD_PRIM_G) & 0xFF;
-    sBeatingHeartsDDPrim[2] = (u8)(bFactor + HEARTS_DD_PRIM_B) & 0xFF;
+    if (CVar_GetS32("gCustomColors", 0) != 0) {//Since that in Update() runtime color change will work like that :)
+        sBeatingHeartsDDPrim[0] = (u8)(rFactor + CVar_GetInt("gDDCCHeartsPrimR", 220)) & 0xFF;
+        sBeatingHeartsDDPrim[1] = (u8)(gFactor + CVar_GetInt("gDDCCHeartsPrimG", 0)) & 0xFF;
+        sBeatingHeartsDDPrim[2] = (u8)(bFactor + CVar_GetInt("gDDCCHeartsPrimB", 0)) & 0xFF;
+    } else {
+        sBeatingHeartsDDPrim[0] = (u8)(rFactor + HEARTS_DD_PRIM_R) & 0xFF;
+        sBeatingHeartsDDPrim[1] = (u8)(gFactor + HEARTS_DD_PRIM_G) & 0xFF;
+        sBeatingHeartsDDPrim[2] = (u8)(bFactor + HEARTS_DD_PRIM_B) & 0xFF;
+    }
 
     rFactor = sHeartsDDEnvFactors[ddType][0] * ddFactor;
     gFactor = sHeartsDDEnvFactors[ddType][1] * ddFactor;
