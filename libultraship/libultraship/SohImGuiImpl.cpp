@@ -57,6 +57,19 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
+    //Custom color menu vars init
+    float hearts_colors[3] = {0,0,0};
+    float hearts_dd_colors[3] = {0,0,0};
+    float a_btn_colors[3] = {0,0,0};
+    float b_btn_colors[3] = {0,0,0};
+    float c_btn_colors[3] = {0,0,0};
+    float start_btn_colors[3] = {0,0,0};
+    float magic_border_colors[3] = {0,0,0};
+    float magic_remaining_colors[3] = {0,0,0};
+    float magic_use_colors[3] = {0,0,0};
+    float minimap_colors[3] = {0,0,0};
+    float rupee_colors[3] = {0,0,0};
+
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
