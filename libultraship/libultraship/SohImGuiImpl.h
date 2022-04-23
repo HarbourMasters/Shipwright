@@ -70,4 +70,5 @@ namespace SohImGui {
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
+    void LoadHUDColors();
 }
