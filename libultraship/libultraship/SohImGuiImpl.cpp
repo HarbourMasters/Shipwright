@@ -241,6 +241,7 @@ namespace SohImGui {
         console->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
+        LoadHudColors(); //Fill custom color HUD array
 
         ModInternal::registerHookListener({ GFX_INIT, [](const HookEvent ev) {
 
@@ -451,6 +452,220 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
+
+            if (ImGui::BeginMenu("HUD Colors")) {
+                if (ImGui::RadioButton("N64 Colors", CVar_GetS32("gN64Colors", 1))) {
+                    Game::Settings.hudcolors.n64_colors = 1;
+                    Game::Settings.hudcolors.gc_colors = 0;
+                    Game::Settings.hudcolors.custom_colors = 0;
+                    CVar_SetS32("gN64Colors", 1);
+                    CVar_SetS32("gGameCubeColors", 0);
+                    CVar_SetS32("gCustomColors", 0);
+                    needs_save = true;
+                }
+                if (ImGui::RadioButton("Gamecube Colors", CVar_GetS32("gGameCubeColors", 0))) {
+                    Game::Settings.hudcolors.n64_colors = 0;
+                    Game::Settings.hudcolors.gc_colors = 1;
+                    Game::Settings.hudcolors.custom_colors = 0;
+                    CVar_SetS32("gN64Colors", 0);
+                    CVar_SetS32("gGameCubeColors", 1);
+                    CVar_SetS32("gCustomColors", 0);
+                    needs_save = true;
+                }
+                if (ImGui::RadioButton("Custom Colors", CVar_GetS32("gCustomColors", 0))) {
+                    Game::Settings.hudcolors.n64_colors = 0;
+                    Game::Settings.hudcolors.gc_colors = 0;
+                    Game::Settings.hudcolors.custom_colors = 1;
+                    CVar_SetS32("gN64Colors", 0);
+                    CVar_SetS32("gGameCubeColors", 0);
+                    CVar_SetS32("gCustomColors", 1);
+                    needs_save = true;
+                }
+                bool OpenColorEdit = ImGui::SmallButton("Edit HUD Colors");
+                bool Hearts_col=false;
+                bool Hearts_dd_col=false;
+                bool Buttons_col=false;
+                bool Magic_col=false;
+                bool Minimap_col=false;
+                bool Rupee_col=false;
+                if (OpenColorEdit) {
+                     ImGui::OpenPopup("CustomColors");
+                }
+                if (ImGui::BeginPopup("CustomColors")){
+                    ImGui::Text("Edit custom HUD colors");
+                    ImGui::Separator();
+                    Hearts_col = ImGui::SmallButton("Hearts colors");
+                    ImGui::Separator();
+                    Hearts_dd_col = ImGui::SmallButton("Hearts double defense colors");
+                    ImGui::Separator();
+                    Buttons_col = ImGui::SmallButton("Buttons");
+                    ImGui::Separator();
+                    Magic_col = ImGui::SmallButton("Magic Bar");
+                    ImGui::Separator();
+                    Minimap_col = ImGui::SmallButton("Minimap");
+                    ImGui::Separator();
+                    Rupee_col = ImGui::SmallButton("Rupee icon");
+                    ImGui::EndPopup();
+                }
+                if (Hearts_col) { ImGui::OpenPopup("Hearts_col"); }
+                if (Hearts_dd_col) { ImGui::OpenPopup("Hearts_dd_col"); }
+                if (Buttons_col) { ImGui::OpenPopup("Buttons_col"); }
+                if (Magic_col) { ImGui::OpenPopup("Magic_col"); }
+                if (Minimap_col) { ImGui::OpenPopup("Minimap_col"); }
+                if (Rupee_col) { ImGui::OpenPopup("Rupee_col"); }
+                if (ImGui::BeginPopup("Hearts_col")){
+                    if (ImGui::ColorEdit3("Hearts", (float*)&hearts_colors)) {
+                        Game::Settings.hudcolors.ccheartsprimr = ClampFloatToInt(hearts_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccheartsprimg = ClampFloatToInt(hearts_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccheartsprimb = ClampFloatToInt(hearts_colors[2]*255,0,255);
+                        CVar_SetInt("gCCHeartsPrimR", Game::Settings.hudcolors.ccheartsprimr);
+                        CVar_SetInt("gCCHeartsPrimG", Game::Settings.hudcolors.ccheartsprimg);
+                        CVar_SetInt("gCCHeartsPrimB", Game::Settings.hudcolors.ccheartsprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::BeginPopup("Hearts_dd_col")){
+                    if (ImGui::ColorEdit3("Hearts", hearts_dd_colors)) {
+                        Game::Settings.hudcolors.ddccheartsprimr = ClampFloatToInt(hearts_dd_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ddccheartsprimg = ClampFloatToInt(hearts_dd_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ddccheartsprimb = ClampFloatToInt(hearts_dd_colors[2]*255,0,255);
+                        CVar_SetInt("gDDCCHeartsPrimR", Game::Settings.hudcolors.ddccheartsprimr);
+                        CVar_SetInt("gDDCCHeartsPrimG", Game::Settings.hudcolors.ddccheartsprimg);
+                        CVar_SetInt("gDDCCHeartsPrimB", Game::Settings.hudcolors.ddccheartsprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::BeginPopup("Buttons_col")){
+                    if (ImGui::ColorEdit3("A Buttons", a_btn_colors)) {
+                        Game::Settings.hudcolors.ccabtnprimr = ClampFloatToInt(a_btn_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccabtnprimg = ClampFloatToInt(a_btn_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccabtnprimb = ClampFloatToInt(a_btn_colors[2]*255,0,255);
+                        CVar_SetInt("gCCABtnPrimR", Game::Settings.hudcolors.ccabtnprimr);
+                        CVar_SetInt("gCCABtnPrimG", Game::Settings.hudcolors.ccabtnprimg);
+                        CVar_SetInt("gCCABtnPrimB", Game::Settings.hudcolors.ccabtnprimb);
+                        needs_save = true;
+                    }
+                    if (ImGui::ColorEdit3("B Buttons", b_btn_colors)) {
+                        Game::Settings.hudcolors.ccbbtnprimr = ClampFloatToInt(b_btn_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccbbtnprimg = ClampFloatToInt(b_btn_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccbbtnprimb = ClampFloatToInt(b_btn_colors[2]*255,0,255);
+                        CVar_SetInt("gCCBBtnPrimR", Game::Settings.hudcolors.ccbbtnprimr);
+                        CVar_SetInt("gCCBBtnPrimG", Game::Settings.hudcolors.ccbbtnprimg);
+                        CVar_SetInt("gCCBBtnPrimB", Game::Settings.hudcolors.ccbbtnprimb);
+                        needs_save = true;
+                    }
+                    if (ImGui::ColorEdit3("C Buttons", c_btn_colors)) {
+                        Game::Settings.hudcolors.cccbtnprimr = ClampFloatToInt(c_btn_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.cccbtnprimg = ClampFloatToInt(c_btn_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.cccbtnprimb = ClampFloatToInt(c_btn_colors[2]*255,0,255);
+                        CVar_SetInt("gCCCBtnPrimR", Game::Settings.hudcolors.cccbtnprimr);
+                        CVar_SetInt("gCCCBtnPrimG", Game::Settings.hudcolors.cccbtnprimg);
+                        CVar_SetInt("gCCCBtnPrimB", Game::Settings.hudcolors.cccbtnprimb);
+                        needs_save = true;
+                    }
+                    if (ImGui::ColorEdit3("Start Button", start_btn_colors)) {
+                        Game::Settings.hudcolors.ccstartbtnprimr = ClampFloatToInt(start_btn_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccstartbtnprimg = ClampFloatToInt(start_btn_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccstartbtnprimb = ClampFloatToInt(start_btn_colors[2]*255,0,255);
+                        CVar_SetInt("gCCStartBtnPrimR", Game::Settings.hudcolors.ccstartbtnprimr);
+                        CVar_SetInt("gCCStartBtnPrimG", Game::Settings.hudcolors.ccstartbtnprimg);
+                        CVar_SetInt("gCCStartBtnPrimB", Game::Settings.hudcolors.ccstartbtnprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::BeginPopup("Magic_col")){
+                    if (ImGui::ColorEdit3("Magic bar borders", magic_border_colors)) {
+                        Game::Settings.hudcolors.ccmagicborderprimr = ClampFloatToInt(magic_border_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicborderprimg = ClampFloatToInt(magic_border_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicborderprimb = ClampFloatToInt(magic_border_colors[2]*255,0,255);
+                        CVar_SetInt("gCCMagicBorderPrimR", Game::Settings.hudcolors.ccmagicborderprimr);
+                        CVar_SetInt("gCCMagicBorderPrimG", Game::Settings.hudcolors.ccmagicborderprimg);
+                        CVar_SetInt("gCCMagicBorderPrimB", Game::Settings.hudcolors.ccmagicborderprimb);
+                        needs_save = true;
+                    }
+                    if (ImGui::ColorEdit3("Magic bar main color", magic_remaining_colors)) {
+                        Game::Settings.hudcolors.ccmagicprimr = ClampFloatToInt(magic_remaining_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicprimg = ClampFloatToInt(magic_remaining_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicprimb = ClampFloatToInt(magic_remaining_colors[2]*255,0,255);
+                        CVar_SetInt("gCCMagicPrimR", Game::Settings.hudcolors.ccmagicprimr);
+                        CVar_SetInt("gCCMagicPrimG", Game::Settings.hudcolors.ccmagicprimg);
+                        CVar_SetInt("gCCMagicPrimB", Game::Settings.hudcolors.ccmagicprimb);
+                        needs_save = true;
+                    }
+                    if (ImGui::ColorEdit3("Magic bar being used", magic_use_colors)) {
+                        Game::Settings.hudcolors.ccmagicuseprimr = ClampFloatToInt(magic_use_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicuseprimg = ClampFloatToInt(magic_use_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccmagicuseprimb = ClampFloatToInt(magic_use_colors[2]*255,0,255);
+                        CVar_SetInt("CCMagicUsePrimR", Game::Settings.hudcolors.ccmagicuseprimr);
+                        CVar_SetInt("CCMagicUsePrimG", Game::Settings.hudcolors.ccmagicuseprimg);
+                        CVar_SetInt("CCMagicUsePrimB", Game::Settings.hudcolors.ccmagicuseprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::BeginPopup("Minimap_col")){
+                    if (ImGui::ColorEdit3("Minimap color", minimap_colors)) {
+                        Game::Settings.hudcolors.ccminimapprimr = ClampFloatToInt(minimap_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccminimapprimg = ClampFloatToInt(minimap_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccminimapprimb = ClampFloatToInt(minimap_colors[2]*255,0,255);
+                        CVar_SetInt("gCCMinimapPrimR", Game::Settings.hudcolors.ccminimapprimr);
+                        CVar_SetInt("gCCMinimapPrimG", Game::Settings.hudcolors.ccminimapprimg);
+                        CVar_SetInt("gCCMinimapPrimB", Game::Settings.hudcolors.ccminimapprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+                if (ImGui::BeginPopup("Rupee_col")){
+                    if (ImGui::ColorEdit3("Rupee icon color", rupee_colors)) {
+                        Game::Settings.hudcolors.ccrupeeprimr = ClampFloatToInt(rupee_colors[0]*255,0,255);
+                        Game::Settings.hudcolors.ccrupeeprimg = ClampFloatToInt(rupee_colors[1]*255,0,255);
+                        Game::Settings.hudcolors.ccrupeeprimb = ClampFloatToInt(rupee_colors[2]*255,0,255);
+                        CVar_SetInt("gCCRupeePrimR", Game::Settings.hudcolors.ccrupeeprimr);
+                        CVar_SetInt("gCCRupeePrimG", Game::Settings.hudcolors.ccrupeeprimg);
+                        CVar_SetInt("gCCRupeePrimB", Game::Settings.hudcolors.ccrupeeprimb);
+                        needs_save = true;
+                    }
+                    ImGui::EndPopup();
+                }
+
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("Languages")) {
+                if (ImGui::RadioButton("English", CVar_GetS32("gSetENG", 1))) {
+                    Game::Settings.languages.set_eng = 1;
+                    Game::Settings.languages.set_fra = 0;
+                    Game::Settings.languages.set_ger = 0;
+                    CVar_SetS32("gSetENG", 1);
+                    CVar_SetS32("gSetFRA", 0);
+                    CVar_SetS32("gSetGER", 0);
+                    needs_save = true;
+                }
+                  if (ImGui::RadioButton("German", CVar_GetS32("gSetGER", 0))) {
+                    Game::Settings.languages.set_eng = 0;
+                    Game::Settings.languages.set_fra = 0;
+                    Game::Settings.languages.set_ger = 1;
+                    CVar_SetS32("gSetENG", 0);
+                    CVar_SetS32("gSetFRA", 0);
+                    CVar_SetS32("gSetGER", 1);
+                    needs_save = true;
+                }
+                if (ImGui::RadioButton("French", CVar_GetS32("gSetFRA", 0))) {
+                    Game::Settings.languages.set_eng = 0;
+                    Game::Settings.languages.set_fra = 1;
+                    Game::Settings.languages.set_ger = 0;
+                    CVar_SetS32("gSetENG", 0);
+                    CVar_SetS32("gSetFRA", 1);
+                    CVar_SetS32("gSetGER", 0);
+                    needs_save = true;
+                }
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMenuBar();
 
             if (ImGui::BeginMenu("Developer Tools")) {
                 HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
