@@ -28,6 +28,7 @@ namespace Game {
     const std::string ControllerSection = CONTROLLER_SECTION;
     const std::string EnhancementSection = ENHANCEMENTS_SECTION;
     const std::string CheatSection = CHEATS_SECTION;
+    const std::string LanguagesSection = LANGUAGES_SECTION;
 
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, Settings.audio.music_main);
@@ -151,6 +152,92 @@ namespace Game {
         Settings.cheats.freeze_time = stob(Conf[CheatSection]["freeze_time"]);
         CVar_SetS32("gFreezeTime", Settings.cheats.freeze_time);
 
+        Settings.hudcolors.n64_colors = stob(Conf[HUDColorSection]["n64_colors"]);
+        CVar_SetS32("gN64Colors", Settings.hudcolors.n64_colors);
+
+        Settings.hudcolors.gc_colors = stob(Conf[HUDColorSection]["gc_colors"]);
+        CVar_SetS32("gGameCubeColors", Settings.hudcolors.gc_colors);
+
+        Settings.hudcolors.custom_colors = stob(Conf[HUDColorSection]["custom_colors"]);
+        CVar_SetS32("gCustomColors", Settings.hudcolors.custom_colors);
+        //hearts main colors
+        Settings.hudcolors.ccheartsprimr = (Conf[HUDColorSection]["cc_heartsprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_heartsprimr"]) : Settings.hudcolors.ccheartsprimr;
+        CVar_SetInt("gCCHeartsPrimR", Settings.hudcolors.ccheartsprimr);
+        Settings.hudcolors.ccheartsprimg = (Conf[HUDColorSection]["cc_heartsprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_heartsprimg"]) : Settings.hudcolors.ccheartsprimg;
+        CVar_SetInt("gCCHeartsPrimG", Settings.hudcolors.ccheartsprimg);
+        Settings.hudcolors.ccheartsprimb = (Conf[HUDColorSection]["cc_heartsprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_heartsprimb"]) : Settings.hudcolors.ccheartsprimb;
+        CVar_SetInt("gCCHeartsPrimB", Settings.hudcolors.ccheartsprimb);
+        //hearts double defense main colors
+        Settings.hudcolors.ddccheartsprimr = (Conf[HUDColorSection]["cc_ddheartsprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_ddheartsprimr"]) : Settings.hudcolors.ddccheartsprimr;
+        CVar_SetInt("gDDCCHeartsPrimR", Settings.hudcolors.ddccheartsprimr);
+        Settings.hudcolors.ddccheartsprimg = (Conf[HUDColorSection]["cc_ddheartsprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_ddheartsprimg"]) : Settings.hudcolors.ddccheartsprimg;
+        CVar_SetInt("gDDCCHeartsPrimG", Settings.hudcolors.ddccheartsprimg);
+        Settings.hudcolors.ddccheartsprimb = (Conf[HUDColorSection]["cc_ddheartsprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_ddheartsprimb"]) : Settings.hudcolors.ddccheartsprimb;
+        CVar_SetInt("gDDCCHeartsPrimB", Settings.hudcolors.ddccheartsprimb);
+        //a button
+        Settings.hudcolors.ccabtnprimr = (Conf[HUDColorSection]["cc_abtnprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_abtnprimr"]) : Settings.hudcolors.ccabtnprimr;
+        CVar_SetInt("gCCABtnPrimR", Settings.hudcolors.ccabtnprimr);
+        Settings.hudcolors.ccabtnprimg = (Conf[HUDColorSection]["cc_abtnprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_abtnprimg"]) : Settings.hudcolors.ccabtnprimg;
+        CVar_SetInt("gCCABtnPrimG", Settings.hudcolors.ccabtnprimg);
+        Settings.hudcolors.ccabtnprimb = (Conf[HUDColorSection]["cc_abtnprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_abtnprimb"]) : Settings.hudcolors.ccabtnprimb;
+        CVar_SetInt("gCCABtnPrimB", Settings.hudcolors.ccabtnprimb);
+        //b button
+        Settings.hudcolors.ccbbtnprimr = (Conf[HUDColorSection]["cc_bbtnprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_bbtnprimr"]) : Settings.hudcolors.ccbbtnprimr;
+        CVar_SetInt("gCCBBtnPrimR", Settings.hudcolors.ccbbtnprimr);
+        Settings.hudcolors.ccbbtnprimg = (Conf[HUDColorSection]["cc_bbtnprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_bbtnprimg"]) : Settings.hudcolors.ccbbtnprimg;
+        CVar_SetInt("gCCBBtnPrimG", Settings.hudcolors.ccbbtnprimg);
+        Settings.hudcolors.ccbbtnprimb = (Conf[HUDColorSection]["cc_bbtnprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_bbtnprimb"]) : Settings.hudcolors.ccbbtnprimb;
+        CVar_SetInt("gCCBBtnPrimB", Settings.hudcolors.ccbbtnprimb);
+        //start button
+        Settings.hudcolors.ccstartbtnprimr = (Conf[HUDColorSection]["cc_startbtnprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_startbtnprimr"]) : Settings.hudcolors.ccstartbtnprimr;
+        CVar_SetInt("gCCStartBtnPrimR", Settings.hudcolors.ccstartbtnprimr);
+        Settings.hudcolors.ccstartbtnprimg = (Conf[HUDColorSection]["cc_startbtnprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_startbtnprimg"]) : Settings.hudcolors.ccstartbtnprimg;
+        CVar_SetInt("gCCStartBtnPrimG", Settings.hudcolors.ccstartbtnprimg);
+        Settings.hudcolors.ccstartbtnprimb = (Conf[HUDColorSection]["cc_startbtnprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_startbtnprimb"]) : Settings.hudcolors.ccstartbtnprimb;
+        CVar_SetInt("gCCStartBtnPrimB", Settings.hudcolors.ccstartbtnprimb);
+        //c button
+        Settings.hudcolors.cccbtnprimr = (Conf[HUDColorSection]["cc_cbtnprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_cbtnprimr"]) : Settings.hudcolors.cccbtnprimr;
+        CVar_SetInt("gCCCBtnPrimR", Settings.hudcolors.cccbtnprimr);
+        Settings.hudcolors.cccbtnprimg = (Conf[HUDColorSection]["cc_cbtnprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_cbtnprimg"]) : Settings.hudcolors.cccbtnprimg;
+        CVar_SetInt("gCCCBtnPrimG", Settings.hudcolors.cccbtnprimg);
+        Settings.hudcolors.cccbtnprimb = (Conf[HUDColorSection]["cc_cbtnprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_cbtnprimb"]) : Settings.hudcolors.cccbtnprimb;
+        CVar_SetInt("gCCCBtnPrimB", Settings.hudcolors.cccbtnprimb);
+        //magic metter borders
+        Settings.hudcolors.ccmagicborderprimr = (Conf[HUDColorSection]["cc_magicborderprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicborderprimr"]) : Settings.hudcolors.ccmagicborderprimr;
+        CVar_SetInt("gCCMagicBorderPrimR", Settings.hudcolors.ccmagicborderprimr);
+        Settings.hudcolors.ccmagicborderprimg = (Conf[HUDColorSection]["cc_magicborderprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicborderprimg"]) : Settings.hudcolors.ccmagicborderprimg;
+        CVar_SetInt("gCCMagicBorderPrimG", Settings.hudcolors.ccmagicborderprimg);
+        Settings.hudcolors.ccmagicborderprimb = (Conf[HUDColorSection]["cc_magicborderprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicborderprimb"]) : Settings.hudcolors.ccmagicborderprimb;
+        CVar_SetInt("gCCMagicBorderPrimB", Settings.hudcolors.ccmagicborderprimb);
+        //magic metter remaining 
+        Settings.hudcolors.ccmagicprimr = (Conf[HUDColorSection]["cc_magicprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicprimr"]) : Settings.hudcolors.ccmagicprimr;
+        CVar_SetInt("gCCMagicPrimR", Settings.hudcolors.ccmagicprimr);
+        Settings.hudcolors.ccmagicprimg = (Conf[HUDColorSection]["cc_magicprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicprimg"]) : Settings.hudcolors.ccmagicprimg;
+        CVar_SetInt("gCCMagicPrimG", Settings.hudcolors.ccmagicprimg);
+        Settings.hudcolors.ccmagicprimb = (Conf[HUDColorSection]["cc_magicprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicprimb"]) : Settings.hudcolors.ccmagicprimb;
+        CVar_SetInt("gCCMagicPrimB", Settings.hudcolors.ccmagicprimb);
+        //magic metter being used
+        Settings.hudcolors.ccmagicuseprimr = (Conf[HUDColorSection]["cc_magicuseprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicuseprimr"]) : Settings.hudcolors.ccmagicuseprimr;
+        CVar_SetInt("gCCMagicUsePrimR", Settings.hudcolors.ccmagicuseprimr);
+        Settings.hudcolors.ccmagicuseprimg = (Conf[HUDColorSection]["cc_magicuseprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicuseprimg"]) : Settings.hudcolors.ccmagicuseprimg;
+        CVar_SetInt("gCCMagicUsePrimG", Settings.hudcolors.ccmagicuseprimg);
+        Settings.hudcolors.ccmagicuseprimb = (Conf[HUDColorSection]["cc_magicuseprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_magicuseprimb"]) : Settings.hudcolors.ccmagicuseprimb;
+        CVar_SetInt("gCCMagicUsePrimB", Settings.hudcolors.ccmagicuseprimb);
+        //minimap
+        Settings.hudcolors.ccminimapprimr = (Conf[HUDColorSection]["cc_minimapprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_minimapprimr"]) : Settings.hudcolors.ccminimapprimr;
+        CVar_SetInt("gCCMinimapPrimR", Settings.hudcolors.ccminimapprimr);
+        Settings.hudcolors.ccminimapprimg = (Conf[HUDColorSection]["cc_minimapprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_minimapprimg"]) : Settings.hudcolors.ccminimapprimg;
+        CVar_SetInt("gCCMinimapPrimG", Settings.hudcolors.ccminimapprimg);
+        Settings.hudcolors.ccminimapprimb = (Conf[HUDColorSection]["cc_minimapprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_minimapprimb"]) : Settings.hudcolors.ccminimapprimb;
+        CVar_SetInt("gCCMinimapPrimB", Settings.hudcolors.ccminimapprimb);
+        //rupee icon
+        Settings.hudcolors.ccrupeeprimr = (Conf[HUDColorSection]["cc_rupeeprimr"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_rupeeprimr"]) : Settings.hudcolors.ccrupeeprimr;
+        CVar_SetInt("gCCRupeePrimR", Settings.hudcolors.ccrupeeprimr);
+        Settings.hudcolors.ccrupeeprimg = (Conf[HUDColorSection]["cc_rupeeprimg"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_rupeeprimg"]) : Settings.hudcolors.ccrupeeprimg;
+        CVar_SetInt("gCCRupeePrimG", Settings.hudcolors.ccrupeeprimg);
+        Settings.hudcolors.ccrupeeprimb = (Conf[HUDColorSection]["cc_rupeeprimb"] != "") ? Ship::stoi(Conf[HUDColorSection]["cc_rupeeprimb"]) : Settings.hudcolors.ccrupeeprimb;
+        CVar_SetInt("gCCRupeePrimB", Settings.hudcolors.ccrupeeprimb);
+
         UpdateAudio();
     }
 
@@ -201,6 +288,44 @@ namespace Game {
         Conf[CheatSection]["climb_everything"] = std::to_string(Settings.cheats.climb_everything);
         Conf[CheatSection]["moon_jump_on_l"] = std::to_string(Settings.cheats.moon_jump_on_l);
         Conf[CheatSection]["super_tunic"] = std::to_string(Settings.cheats.super_tunic);
+
+        //HUD Color
+        Conf[HUDColorSection]["n64_colors"] = std::to_string(Settings.hudcolors.n64_colors);
+        Conf[HUDColorSection]["gc_colors"] = std::to_string(Settings.hudcolors.gc_colors);
+        Conf[HUDColorSection]["custom_colors"] = std::to_string(Settings.hudcolors.custom_colors);
+        Conf[HUDColorSection]["cc_heartsprimr"] = std::to_string(Settings.hudcolors.ccheartsprimr);
+        Conf[HUDColorSection]["cc_heartsprimg"] = std::to_string(Settings.hudcolors.ccheartsprimg);
+        Conf[HUDColorSection]["cc_heartsprimb"] = std::to_string(Settings.hudcolors.ccheartsprimb);
+        Conf[HUDColorSection]["cc_ddheartsprimr"] = std::to_string(Settings.hudcolors.ddccheartsprimr);
+        Conf[HUDColorSection]["cc_ddheartsprimg"] = std::to_string(Settings.hudcolors.ddccheartsprimg);
+        Conf[HUDColorSection]["cc_ddheartsprimb"] = std::to_string(Settings.hudcolors.ddccheartsprimb);
+        Conf[HUDColorSection]["cc_abtnprimr"] = std::to_string(Settings.hudcolors.ccabtnprimr);
+        Conf[HUDColorSection]["cc_abtnprimg"] = std::to_string(Settings.hudcolors.ccabtnprimg);
+        Conf[HUDColorSection]["cc_abtnprimb"] = std::to_string(Settings.hudcolors.ccabtnprimb);
+        Conf[HUDColorSection]["cc_bbtnprimr"] = std::to_string(Settings.hudcolors.ccbbtnprimr);
+        Conf[HUDColorSection]["cc_bbtnprimg"] = std::to_string(Settings.hudcolors.ccbbtnprimg);
+        Conf[HUDColorSection]["cc_bbtnprimb"] = std::to_string(Settings.hudcolors.ccbbtnprimb);
+        Conf[HUDColorSection]["cc_cbtnprimr"] = std::to_string(Settings.hudcolors.cccbtnprimr);
+        Conf[HUDColorSection]["cc_cbtnprimg"] = std::to_string(Settings.hudcolors.cccbtnprimg);
+        Conf[HUDColorSection]["cc_cbtnprimb"] = std::to_string(Settings.hudcolors.cccbtnprimb);
+        Conf[HUDColorSection]["cc_startbtnprimr"] = std::to_string(Settings.hudcolors.ccstartbtnprimr);
+        Conf[HUDColorSection]["cc_startbtnprimg"] = std::to_string(Settings.hudcolors.ccstartbtnprimg);
+        Conf[HUDColorSection]["cc_startbtnprimb"] = std::to_string(Settings.hudcolors.ccstartbtnprimb);
+        Conf[HUDColorSection]["cc_magicborderprimr"] = std::to_string(Settings.hudcolors.ccmagicborderprimr);
+        Conf[HUDColorSection]["cc_magicborderprimg"] = std::to_string(Settings.hudcolors.ccmagicborderprimg);
+        Conf[HUDColorSection]["cc_magicborderprimb"] = std::to_string(Settings.hudcolors.ccmagicborderprimb);
+        Conf[HUDColorSection]["cc_magicprimr"] = std::to_string(Settings.hudcolors.ccmagicprimr);
+        Conf[HUDColorSection]["cc_magicprimg"] = std::to_string(Settings.hudcolors.ccmagicprimg);
+        Conf[HUDColorSection]["cc_magicprimb"] = std::to_string(Settings.hudcolors.ccmagicprimb);
+        Conf[HUDColorSection]["cc_magicuseprimr"] = std::to_string(Settings.hudcolors.ccmagicuseprimr);
+        Conf[HUDColorSection]["cc_magicuseprimg"] = std::to_string(Settings.hudcolors.ccmagicuseprimg);
+        Conf[HUDColorSection]["cc_magicuseprimb"] = std::to_string(Settings.hudcolors.ccmagicuseprimb);
+        Conf[HUDColorSection]["cc_minimapprimr"] = std::to_string(Settings.hudcolors.ccminimapprimr);
+        Conf[HUDColorSection]["cc_minimapprimg"] = std::to_string(Settings.hudcolors.ccminimapprimg);
+        Conf[HUDColorSection]["cc_minimapprimb"] = std::to_string(Settings.hudcolors.ccminimapprimb);
+        Conf[HUDColorSection]["cc_rupeeprimr"] = std::to_string(Settings.hudcolors.ccrupeeprimr);
+        Conf[HUDColorSection]["cc_rupeeprimg"] = std::to_string(Settings.hudcolors.ccrupeeprimg);
+        Conf[HUDColorSection]["cc_rupeeprimb"] = std::to_string(Settings.hudcolors.ccrupeeprimb);
 
         Conf.Save();
     }
