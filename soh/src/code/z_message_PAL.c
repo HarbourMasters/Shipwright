@@ -507,6 +507,46 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconEnvR = 0;
     static s16 sIconEnvG = 0;
     static s16 sIconEnvB = 0;
+    if (CVar_GetS32("gN64Colors", 0) != 0) {
+      sIconPrimColors[0][0] = 4;
+      sIconPrimColors[0][1] = 84;
+      sIconPrimColors[0][2] = 204;
+      sIconPrimColors[1][0] = 45;
+      sIconPrimColors[1][1] = 125;
+      sIconPrimColors[1][2] = 255;
+      sIconEnvColors[0][0] = 0;
+      sIconEnvColors[0][1] = 0;
+      sIconEnvColors[0][2] = 0;
+      sIconEnvColors[1][0] = 0;
+      sIconEnvColors[1][1] = 70;
+      sIconEnvColors[1][2] = 255;
+    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {//Probably could emptied I need some testing there, I will do it later.
+      sIconPrimColors[0][0] = 4;
+      sIconPrimColors[0][1] = 200;
+      sIconPrimColors[0][2] = 80;
+      sIconPrimColors[1][0] = 50;
+      sIconPrimColors[1][1] = 255;
+      sIconPrimColors[1][2] = 130;
+      sIconEnvColors[0][0] = 0;
+      sIconEnvColors[0][1] = 0;
+      sIconEnvColors[0][2] = 0;
+      sIconEnvColors[1][0] = 0;
+      sIconEnvColors[1][1] = 255;
+      sIconEnvColors[1][2] = 130;
+    } else if (CVar_GetS32("gCustomColors", 0) != 0) {
+      sIconPrimColors[0][0] = CVar_GetInt("gCCABtnPrimR", 4)/2;
+      sIconPrimColors[0][1] = CVar_GetInt("gCCABtnPrimG", 200)/2;
+      sIconPrimColors[0][2] = CVar_GetInt("gCCABtnPrimB", 80)/2;
+      sIconPrimColors[1][0] = CVar_GetInt("gCCABtnPrimR", 50);
+      sIconPrimColors[1][1] = CVar_GetInt("gCCABtnPrimG", 255);
+      sIconPrimColors[1][2] = CVar_GetInt("gCCABtnPrimB", 130);
+      sIconEnvColors[0][0] = 0;
+      sIconEnvColors[0][1] = 0;
+      sIconEnvColors[0][2] = 0;
+      sIconEnvColors[1][0] = 10;
+      sIconEnvColors[1][1] = 10;
+      sIconEnvColors[1][2] = 10;
+    }
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &msgCtx->font;
     Gfx* gfx = *p;
@@ -584,9 +624,17 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
-    gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
-
+    if (CVar_GetS32("gN64Colors", 0) != 0) { //This method is used to refresh the colors, I will have to redo it I think there is color animation that fail there
+      gDPSetPrimColor(gfx++, 0, 0, 0, 70, 255, 255);
+      gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
+    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+      gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
+      gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
+    } else if (CVar_GetS32("gCustomColors", 0) != 0) {
+      gDPSetPrimColor(gfx++, 0, 0, CVar_GetInt("gCCABtnPrimR", 4), CVar_GetInt("gCCABtnPrimG", 200), CVar_GetInt("gCCABtnPrimB", 80), 255);
+      gDPSetEnvColor(gfx++, 10, 10, 10, 255);
+    }
+    
     gDPLoadTextureBlock_4b(gfx++, iconTexture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
@@ -2902,13 +2950,27 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                     gDPPipeSync(gfx++);
                     if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                      if (CVar_GetS32("gN64Colors", 0) != 0) { //A buttons :)
+                        gDPSetPrimColor(gfx++, 0, 0, 80, 150, 255, sOcarinaNotesAlphaValues[i]);
+                        gDPSetEnvColor(gfx++, 100, 200, 255, 0);
+                      } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB, sOcarinaNotesAlphaValues[i]);
                         gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
+                      } else if (CVar_GetS32("gCustomColors", 0) != 0) {
+                        gDPSetPrimColor(gfx++, 0, 0, CVar_GetInt("gCCABtnPrimR", 0), CVar_GetInt("gCCABtnPrimG", 0), CVar_GetInt("gCCABtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        gDPSetEnvColor(gfx++, CVar_GetInt("gCCABtnPrimR", 0)/2, CVar_GetInt("gCCABtnPrimG", 0)/2, CVar_GetInt("gCCABtnPrimB", 0)/2, 0);
+                      }
                     } else {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                      if (CVar_GetS32("gN64Colors", 0) != 0) { C buttons :)
+                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
                         gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
+                      } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
+                        gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
+                      } else if (CVar_GetS32("gCustomColors", 0) != 0) {
+                        gDPSetPrimColor(gfx++, 0, 0, CVar_GetInt("gCCCBtnPrimR", 0), CVar_GetInt("gCCCBtnPrimG", 0), CVar_GetInt("gCCCBtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        gDPSetEnvColor(gfx++, CVar_GetInt("gCCCBtnPrimR", 0)/2, CVar_GetInt("gCCCBtnPrimG", 0)/2, CVar_GetInt("gCCCBtnPrimB", 0)/2, 0);
+                      }
                     }
 
                     gDPLoadTextureBlock(gfx++, sOcarinaNoteTextures[sOcarinaNoteBuf[i]], G_IM_FMT_IA, G_IM_SIZ_8b, 16,
