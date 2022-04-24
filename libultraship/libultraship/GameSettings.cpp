@@ -49,8 +49,11 @@ namespace Game {
     	Settings.debug.n64mode = stob(Conf[ConfSection]["n64_mode"]);
 
         // Enhancements
-        Settings.enhancements.fast_text = stob(Conf[EnhancementSection]["fast_text"]);
-        CVar_SetS32("gFastText", Settings.enhancements.fast_text);
+        Settings.enhancements.skip_text = stob(Conf[EnhancementSection]["skip_text"]);
+        CVar_SetS32("gSkipText", Settings.enhancements.skip_text);
+
+        Settings.enhancements.text_speed = Ship::stoi(Conf[EnhancementSection]["text_speed"]);
+        CVar_SetS32("gTextSpeed", Settings.enhancements.text_speed);
 
         Settings.enhancements.disable_lod = stob(Conf[EnhancementSection]["disable_lod"]);
         CVar_SetS32("gDisableLOD", Settings.enhancements.disable_lod);
@@ -58,12 +61,21 @@ namespace Game {
         Settings.enhancements.animated_pause_menu = stob(Conf[EnhancementSection]["animated_pause_menu"]);
         CVar_SetS32("gPauseLiveLink", Settings.enhancements.animated_pause_menu);
 
+        Settings.enhancements.dynamic_wallet_icon = stob(Conf[EnhancementSection]["dynamic_wallet_icon"]);
+        CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Settings.enhancements.dynamic_wallet_icon);
+
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
         CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
 
+        Settings.enhancements.visualagony = stob(Conf[EnhancementSection]["visualagony"]);
+        CVar_SetS32("gVisualAgony", Settings.enhancements.visualagony);
+      
         Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
         CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
 
+        Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
+        CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
+        
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
         CVar_SetFloat("gGameMasterVolume", Settings.audio.master);
@@ -118,6 +130,9 @@ namespace Game {
         Settings.cheats.infinite_magic = stob(Conf[CheatSection]["infinite_magic"]);
         CVar_SetS32("gInfiniteMagic", Settings.cheats.infinite_magic);
 
+        Settings.cheats.infinite_nayru = stob(Conf[CheatSection]["infinite_nayru"]);
+        CVar_SetS32("gInfiniteNayru", Settings.cheats.infinite_nayru);
+
         Settings.cheats.no_clip = stob(Conf[CheatSection]["no_clip"]);
         CVar_SetS32("gNoClip", Settings.cheats.no_clip);
 
@@ -129,6 +144,15 @@ namespace Game {
 
         Settings.cheats.super_tunic = stob(Conf[CheatSection]["super_tunic"]);
         CVar_SetS32("gSuperTunic", Settings.cheats.super_tunic);
+
+        Settings.cheats.ez_isg = stob(Conf[CheatSection]["ez_isg"]);
+        CVar_SetS32("gEzISG", Settings.cheats.ez_isg);
+
+        Settings.cheats.no_restrict_item = stob(Conf[CheatSection]["no_restrict_item"]);
+        CVar_SetS32("gNoRestrictItems", Settings.cheats.no_restrict_item);
+
+        Settings.cheats.freeze_time = stob(Conf[CheatSection]["freeze_time"]);
+        CVar_SetS32("gFreezeTime", Settings.cheats.freeze_time);
 
         UpdateAudio();
     }
@@ -151,11 +175,16 @@ namespace Game {
         Conf[AudioSection]["fanfare"] = std::to_string(Settings.audio.fanfare);
 
         // Enhancements
-        Conf[EnhancementSection]["fast_text"] = std::to_string(Settings.enhancements.fast_text);
+        Conf[EnhancementSection]["skip_text"] = std::to_string(Settings.enhancements.skip_text);
+        Conf[EnhancementSection]["text_speed"] = std::to_string(Settings.enhancements.text_speed);
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
+        Conf[EnhancementSection]["dynamic_wallet_icon"] = std::to_string(Settings.enhancements.dynamic_wallet_icon);
         Conf[EnhancementSection]["minimal_ui"] = std::to_string(Settings.enhancements.minimal_ui);
+        Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
+        Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
+
 
         // Controllers
         Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);

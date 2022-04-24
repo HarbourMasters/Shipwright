@@ -646,7 +646,7 @@ static int gfx_opengl_create_framebuffer() {
     framebuffers[i].clrbuf_msaa = clrbuf_msaa;
     framebuffers[i].rbo = rbo;
 
-    return fbo;
+    return i;
 }
 
 static void gfx_opengl_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {

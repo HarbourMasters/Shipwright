@@ -595,7 +595,6 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItemSegment);
     //gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->iconItem24Segment);
     gSPInvalidateTexCache(POLY_KAL_DISP++, pauseCtx->nameSegment);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, globalCtx->interfaceCtx.mapSegment);
 
     //gSPSegment(POLY_KAL_DISP++, 0x07, pauseCtx->playerSegment);
     gSPSegment(POLY_KAL_DISP++, 0x08, pauseCtx->iconItemSegment);
