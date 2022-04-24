@@ -28,7 +28,7 @@ namespace Game {
     const std::string ControllerSection = CONTROLLER_SECTION;
     const std::string EnhancementSection = ENHANCEMENTS_SECTION;
     const std::string CheatSection = CHEATS_SECTION;
-    const std::string LanguagesSection = LANGUAGES_SECTION;
+    const std::string HUDColorSection = HUDCOLOR_SECTION;
 
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, Settings.audio.music_main);
