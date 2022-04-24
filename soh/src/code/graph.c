@@ -299,7 +299,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
     gSPBranchList(POLY_XLU_DISP++, gfxCtx->titlecardBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
+    gSPBranchList(TITLE_CARD_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
