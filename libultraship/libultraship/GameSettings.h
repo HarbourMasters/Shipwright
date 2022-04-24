@@ -26,6 +26,7 @@ struct SoHConfigType {
         bool animated_pause_menu = false;
         bool dynamic_wallet_icon = false;
         bool minimal_ui = false;
+        bool newdrops = false;
         bool visualagony = false;
         bool mm_bunny_hood = false;
 
