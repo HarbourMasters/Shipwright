@@ -2961,7 +2961,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                         gDPSetEnvColor(gfx++, CVar_GetInt("gCCABtnPrimR", 0)/2, CVar_GetInt("gCCABtnPrimG", 0)/2, CVar_GetInt("gCCABtnPrimB", 0)/2, 0);
                       }
                     } else {
-                      if (CVar_GetS32("gN64Colors", 0) != 0) { C buttons :)
+                      if (CVar_GetS32("gN64Colors", 0) != 0) { //C buttons :)
                         gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
                         gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
                       } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
