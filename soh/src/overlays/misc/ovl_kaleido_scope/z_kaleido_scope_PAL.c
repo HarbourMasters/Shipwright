@@ -1461,6 +1461,10 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
 }
 
 void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
+    static s16 gABtnTexColour[][4] = { //A button colors
+        { 0, 255, 100, 255 },//Gamecube
+        { 0, 100, 255, 255 },//Original N64
+    };
     static void* D_8082AD54[3] = {
         gPauseToEquipENGTex,
         gPauseToEquipGERTex,
