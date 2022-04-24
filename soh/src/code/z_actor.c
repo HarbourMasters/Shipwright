@@ -3024,7 +3024,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
         }
     }
 
-    if (play->state.gfxCtx->unk_014 == 1) {
+    if (play->state.gfxCtx->unk_014 != 1) {
         if ((HREG(64) != 1) || (HREG(73) != 0)) {
             Effect_DrawAll(play->state.gfxCtx);
         }
@@ -3045,7 +3045,7 @@ void func_800315AC(PlayState* play, ActorContext* actorCtx) {
 
     Actor_DrawFaroresWindPointer(play);
 
-    if (play->state.gfxCtx->unk_014 == 1) {
+    if (play->state.gfxCtx->unk_014 != 1) {
         if (IREG(32) == 0) {
             Lights_DrawGlow(play);
         }
