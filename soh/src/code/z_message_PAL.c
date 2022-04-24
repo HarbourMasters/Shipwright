@@ -520,7 +520,7 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
       sIconEnvColors[1][0] = 0;
       sIconEnvColors[1][1] = 70;
       sIconEnvColors[1][2] = 255;
-    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {//Probably could emptied I need some testing there, I will do it later.
+    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {//Required else it do not refresh
       sIconPrimColors[0][0] = 4;
       sIconPrimColors[0][1] = 200;
       sIconPrimColors[0][2] = 80;
@@ -624,16 +624,10 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     gDPSetCombineLERP(gfx++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
-    if (CVar_GetS32("gN64Colors", 0) != 0) { //This method is used to refresh the colors, I will have to redo it I think there is color animation that fail there
-      gDPSetPrimColor(gfx++, 0, 0, 0, 70, 255, 255);
-      gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
-    } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
-      gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
-      gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
-    } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-      gDPSetPrimColor(gfx++, 0, 0, CVar_GetInt("gCCABtnPrimR", 4), CVar_GetInt("gCCABtnPrimG", 200), CVar_GetInt("gCCABtnPrimB", 80), 255);
-      gDPSetEnvColor(gfx++, 10, 10, 10, 255);
-    }
+
+    gDPSetPrimColor(gfx++, 0, 0, sIconPrimR, sIconPrimG, sIconPrimB, 255);
+    gDPSetEnvColor(gfx++, sIconEnvR, sIconEnvG, sIconEnvB, 255);
+
     
     gDPLoadTextureBlock_4b(gfx++, iconTexture, G_IM_FMT_I, FONT_CHAR_TEX_WIDTH, FONT_CHAR_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
