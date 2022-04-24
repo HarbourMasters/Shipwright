@@ -220,19 +220,10 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + HEARTS_PRIM_B) & 0xFF;
     }
 
-    rFactor = sHeartsPrimFactors[0][0] * factor;
-    gFactor = sHeartsPrimFactors[0][1] * factor;
-    bFactor = sHeartsPrimFactors[0][2] * factor;
-
-    interfaceCtx->beatingHeartPrim[0] = (u8)(rFactor + HEARTS_PRIM_R) & 0xFF;
-    interfaceCtx->beatingHeartPrim[1] = (u8)(gFactor + HEARTS_PRIM_G) & 0xFF;
-    interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + HEARTS_PRIM_B) & 0xFF;
-
     rFactor = sHeartsEnvFactors[0][0] * factor;
     gFactor = sHeartsEnvFactors[0][1] * factor;
     bFactor = sHeartsEnvFactors[0][2] * factor;
 
-    if (1) {}
     ddType = type;
 
     interfaceCtx->beatingHeartEnv[0] = (u8)(rFactor + HEARTS_ENV_R) & 0xFF;
