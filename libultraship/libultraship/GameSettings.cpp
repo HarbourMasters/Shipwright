@@ -62,7 +62,7 @@ namespace Game {
         CVar_SetS32("gPauseLiveLink", Settings.enhancements.animated_pause_menu);
 
         Settings.enhancements.dynamic_wallet_icon = stob(Conf[EnhancementSection]["dynamic_wallet_icon"]);
-        CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Settings.enhancements.dynamic_wallet_icon);
+        CVar_SetS32("gDynamicWalletIcon", Settings.enhancements.dynamic_wallet_icon);
 
         Settings.enhancements.minimal_ui = stob(Conf[EnhancementSection]["minimal_ui"]);
         CVar_SetS32("gMinimalUI", Settings.enhancements.minimal_ui);
