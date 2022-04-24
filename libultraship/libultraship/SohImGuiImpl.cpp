@@ -395,8 +395,14 @@ namespace SohImGui {
                 ImGui::Text("Gameplay");
                 ImGui::Separator();
 
-                if (ImGui::Checkbox("Fast Text", &Game::Settings.enhancements.fast_text)) {
-                    CVar_SetS32("gFastText", Game::Settings.enhancements.fast_text);
+                ImGui::Text("Text Speed", Game::Settings.enhancements.text_speed);
+                if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5)) {
+                    CVar_SetS32("gTextSpeed", Game::Settings.enhancements.text_speed);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Skip Text", &Game::Settings.enhancements.skip_text)) {
+                    CVar_SetS32("gSkipText", Game::Settings.enhancements.skip_text);
                     needs_save = true;
                 }
 
@@ -429,6 +435,12 @@ namespace SohImGui {
                     CVar_SetS32("gNewDrops", Game::Settings.enhancements.newdrops);
                     needs_save = true;
                 }
+              
+                if (ImGui::Checkbox("Dynamic Wallet Icon", &Game::Settings.enhancements.dynamic_wallet_icon)) {
+                    CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Game::Settings.enhancements.dynamic_wallet_icon);
+
+                    needs_save = true;
+                }
 
                 ImGui::EndMenu();
             }
@@ -454,24 +466,33 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Cheats")) {
-                if (ImGui::Checkbox("Infinite Money", &Game::Settings.cheats.infinite_money)) {
-                    CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
-                    needs_save = true;
-                }
+                if (ImGui::BeginMenu("Infinite...")) {
+                    if (ImGui::Checkbox("Money", &Game::Settings.cheats.infinite_money)) {
+                        CVar_SetS32("gInfiniteMoney", Game::Settings.cheats.infinite_money);
+                        needs_save = true;
+                    }
 
-                if (ImGui::Checkbox("Infinite Health", &Game::Settings.cheats.infinite_health)) {
-                    CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
-                    needs_save = true;
-                }
+                    if (ImGui::Checkbox("Health", &Game::Settings.cheats.infinite_health)) {
+                        CVar_SetS32("gInfiniteHealth", Game::Settings.cheats.infinite_health);
+                        needs_save = true;
+                    }
 
-                if (ImGui::Checkbox("Infinite Ammo", &Game::Settings.cheats.infinite_ammo)) {
-                    CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
-                    needs_save = true;
-                }
+                    if (ImGui::Checkbox("Ammo", &Game::Settings.cheats.infinite_ammo)) {
+                        CVar_SetS32("gInfiniteAmmo", Game::Settings.cheats.infinite_ammo);
+                        needs_save = true;
+                    }
 
-                if (ImGui::Checkbox("Infinite Magic", &Game::Settings.cheats.infinite_magic)) {
-                    CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
-                    needs_save = true;
+                    if (ImGui::Checkbox("Magic", &Game::Settings.cheats.infinite_magic)) {
+                        CVar_SetS32("gInfiniteMagic", Game::Settings.cheats.infinite_magic);
+                        needs_save = true;
+                    }
+
+                    if (ImGui::Checkbox("Nayru's Love", &Game::Settings.cheats.infinite_nayru)) {
+                        CVar_SetS32("gInfiniteNayru", Game::Settings.cheats.infinite_nayru);
+                        needs_save = true;
+                    }
+
+                ImGui::EndMenu();
                 }
 
                 if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
@@ -491,6 +512,21 @@ namespace SohImGui {
 
                 if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
                     CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
+                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
+                    CVar_SetS32("gNoRestrictItems", Game::Settings.cheats.no_restrict_item);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
+                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
                     needs_save = true;
                 }
 
