@@ -3,6 +3,7 @@
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
+#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -886,9 +887,9 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
     }
 }
 
-extern "C" int Controller_CanRumble(void) {
-    for (const auto& controller : Ship::Window::Controllers.at(0)) {
-        if (controller->CanRumble()) {
+extern "C" int Controller_ShouldRumble(size_t i) {
+    for (const auto& controller : Ship::Window::Controllers.at(i)) {
+        if (controller->CanRumble() && Game::Settings.controller.extra[i].rumble_strength > 0.001f) {
             return 1;
         }
     }

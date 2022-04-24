@@ -15,6 +15,8 @@
 #include <string>
 #include "SohHooks.h"
 
+#include "Window.h"
+
 #define ABS(var) var < 0 ? -(var) : var
 
 using namespace Ship;
@@ -93,12 +95,6 @@ namespace Game {
         CVar_SetFloat("gFanfareVolume", Settings.audio.fanfare);
 
         // Controllers
-        Settings.controller.gyro_sensitivity = Ship::stof(Conf[ControllerSection]["gyro_sensitivity"]);
-        CVar_SetFloat("gGyroSensitivity", Settings.controller.gyro_sensitivity);
-
-        Settings.controller.rumble_strength = Ship::stof(Conf[ControllerSection]["rumble_strength"]);
-        CVar_SetFloat("gRumbleStrength", Settings.controller.rumble_strength);
-
         Settings.controller.rumble_enabled = Ship::stof(Conf[ControllerSection]["rumble_enabled"]);
         CVar_SetS32("gRumbleEnabled", Settings.controller.rumble_enabled);
 
@@ -157,7 +153,26 @@ namespace Game {
         Settings.cheats.freeze_time = stob(Conf[CheatSection]["freeze_time"]);
         CVar_SetS32("gFreezeTime", Settings.cheats.freeze_time);
 
+        // Per-Controller
+        LoadPadSettings();
+
         UpdateAudio();
+    }
+
+    void LoadPadSettings() {
+        const std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        ConfigFile& Conf = *pConf;
+
+        for (const auto& [i, controllers] : Ship::Window::Controllers) {
+            for (const auto& controller : controllers) {
+                if (auto padConfSection = controller->GetPadConfSection()) {
+                    Settings.controller.extra[i].gyro_sensitivity = Ship::stof(Conf[*padConfSection]["gyro_sensitivity"]);
+                    Settings.controller.extra[i].rumble_strength = Ship::stof(Conf[*padConfSection]["rumble_strength"]);
+                    Settings.controller.extra[i].gyro_drift_x = Ship::stof(Conf[*padConfSection]["gyro_drift_x"], 0.0f);
+                    Settings.controller.extra[i].gyro_drift_y = Ship::stof(Conf[*padConfSection]["gyro_drift_y"], 0.0f);
+                }
+            }
+        }
     }
 
     void SaveSettings() {
@@ -190,8 +205,6 @@ namespace Game {
 
 
         // Controllers
-        Conf[ControllerSection]["gyro_sensitivity"] = std::to_string(Settings.controller.gyro_sensitivity);
-        Conf[ControllerSection]["rumble_strength"]  = std::to_string(Settings.controller.rumble_strength);
         Conf[ControllerSection]["rumble_enabled"]  = std::to_string(Settings.controller.rumble_enabled);
         Conf[ControllerSection]["input_scale"]   = std::to_string(Settings.controller.input_scale);
         Conf[ControllerSection]["input_enabled"] = std::to_string(Settings.controller.input_enabled);
@@ -209,6 +222,18 @@ namespace Game {
         Conf[CheatSection]["climb_everything"] = std::to_string(Settings.cheats.climb_everything);
         Conf[CheatSection]["moon_jump_on_l"] = std::to_string(Settings.cheats.moon_jump_on_l);
         Conf[CheatSection]["super_tunic"] = std::to_string(Settings.cheats.super_tunic);
+
+        // Per-Controller
+        for (const auto& [i, controllers] : Ship::Window::Controllers) {
+            for (const auto& controller : controllers) {
+                if (auto padConfSection = controller->GetPadConfSection()) {
+                    Conf[*padConfSection]["gyro_sensitivity"] = std::to_string(Settings.controller.extra[i].gyro_sensitivity);
+                    Conf[*padConfSection]["rumble_strength"]  = std::to_string(Settings.controller.extra[i].rumble_strength);
+                    Conf[*padConfSection]["gyro_drift_x"] = std::to_string(Settings.controller.extra[i].gyro_drift_x);
+                    Conf[*padConfSection]["gyro_drift_y"]  = std::to_string(Settings.controller.extra[i].gyro_drift_y);
+                }
+            }
+        }
 
         Conf.Save();
     }

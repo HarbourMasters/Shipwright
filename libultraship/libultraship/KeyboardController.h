@@ -16,6 +16,9 @@ namespace Ship {
 			bool ReleaseButton(int32_t dwScancode);
 			void ReleaseAllButtons();
 
+			std::optional<std::string> GetPadConfSection() { return {}; }
+			bool HasPadConf() { return false; };
+
 		protected:
 			std::string GetControllerType();
 			std::string GetConfSection();

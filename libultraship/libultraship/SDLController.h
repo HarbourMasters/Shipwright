@@ -16,12 +16,16 @@ namespace Ship {
 
 			std::string GetGuid() { return guid; };
 
+			std::optional<std::string> GetPadConfSection();
+			bool HasPadConf() { return true; };
+
 		protected:
 			std::string GetControllerType();
 			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
 			std::string GetConfSection();
 			std::string GetBindingConfSection();
 			void CreateDefaultBinding();
+			void CreateDefaultPadConf();
 			static bool IsGuidInUse(const std::string& guid);
 
 		private:

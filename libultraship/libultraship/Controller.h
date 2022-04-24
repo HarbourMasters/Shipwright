@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include <optional>
 #include "stdint.h"
 #include "UltraController.h"
 #include "ControllerAttachment.h"
@@ -25,6 +26,8 @@ namespace Ship {
 			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
 			std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
 			int32_t GetControllerNumber() { return dwControllerNumber; }
+			virtual bool HasPadConf() = 0;
+			virtual std::optional<std::string> GetPadConfSection() = 0;
 
 		protected:
 			int32_t dwPressedButtons;

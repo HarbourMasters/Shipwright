@@ -3,6 +3,9 @@
 #include <iostream>
 #include <map>
 #include <utility>
+#include <string>
+#include <algorithm>
+#include <vector>
 
 #include "Archive.h"
 #include "Environment.h"
@@ -344,25 +347,40 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller")) {
-                ImGui::Text("Gyro Sensitivity: %d %%", static_cast<int>(100 * Game::Settings.controller.gyro_sensitivity));
-                if (ImGui::SliderFloat("##GYROSCOPE", &Game::Settings.controller.gyro_sensitivity, 0.0f, 1.0f, "")) {
-                    needs_save = true;
-                }
+                for (const auto& [i, controllers] : Ship::Window::Controllers) {
+                    bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
+                        return c->HasPadConf();
+                    }) != controllers.end();
+                    if (!hasPad) continue;
 
-                if (ImGui::Button("Recalibrate Gyro")) {
-                    Game::Settings.controller.gyroDriftX = 0;
-                    Game::Settings.controller.gyroDriftY = 0;
+                    auto menuLabel = "Controller " + std::to_string(i + 1);
+                    if (ImGui::BeginMenu(menuLabel.c_str())) {
+                        ImGui::Text("Gyro Sensitivity: %d %%", static_cast<int>(100 * Game::Settings.controller.extra[i].gyro_sensitivity));
+                        if (ImGui::SliderFloat("##GYROSCOPE", &Game::Settings.controller.extra[i].gyro_sensitivity, 0.0f, 1.0f, "")) {
+                            needs_save = true;
+                        }
+
+                        if (ImGui::Button("Recalibrate Gyro")) {
+                            Game::Settings.controller.extra[i].gyro_drift_x = 0;
+                            Game::Settings.controller.extra[i].gyro_drift_y = 0;
+                            needs_save = true;
+                        }
+
+                        ImGui::Separator();
+
+                        ImGui::Text("Rumble Strength: %d %%", static_cast<int>(100 * Game::Settings.controller.extra[i].rumble_strength));
+                        if (ImGui::SliderFloat("##RUMBLE", &Game::Settings.controller.extra[i].rumble_strength, 0.0f, 1.0f, "")) {
+                            needs_save = true;
+                        }
+
+                        ImGui::EndMenu();
+                    }
                 }
 
                 ImGui::Separator();
 
                 if (ImGui::Checkbox("Rumble Enabled", &Game::Settings.controller.rumble_enabled)) {
                     CVar_SetS32("gRumbleEnabled", Game::Settings.controller.rumble_enabled);
-                    needs_save = true;
-                }
-
-                ImGui::Text("Rumble Strength: %d %%", static_cast<int>(100 * Game::Settings.controller.rumble_strength));
-                if (ImGui::SliderFloat("##RUMBLE", &Game::Settings.controller.rumble_strength, 0.0f, 1.0f, "")) {
                     needs_save = true;
                 }
 
