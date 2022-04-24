@@ -112,9 +112,6 @@
       <GenerateMapFile>true</GenerateMapFile>
       <MapExports>true</MapExports>
     </Link>
-    <PreBuildEvent>
-      <Command>copy /b $(ProjectDir)src\boot\build.c +,,</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
