@@ -132,13 +132,13 @@ def main():
     else:
         romToUse = roms[0]
     
-    match checkChecksum(romToUse).name:
+    match checkChecksum(romToUse):
         case Checksums.OOT_PAL_GC:
             xmlVer = "GC_NMQ_PAL_F"
         case Checksums.OOT_PAL_GC_DBG1:
-            xmlVer = "GC_MQ_D"
-        case _: # default case
             xmlVer = "GC_NMQ_D"
+        case _: # default case
+            xmlVer = "GC_MQ_D"
 
     if (os.path.exists("Extract")):
         shutil.rmtree("Extract")
