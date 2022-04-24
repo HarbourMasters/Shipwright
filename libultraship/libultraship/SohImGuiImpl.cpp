@@ -400,8 +400,8 @@ namespace SohImGui {
                 ImGui::Text("Gameplay");
                 ImGui::Separator();
 
-                ImGui::Text("Text Speed", Game::Settings.enhancements.text_speed);
-                if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5)) {
+                ImGui::Text("Text Speed: %dx", Game::Settings.enhancements.text_speed);
+                if (ImGui::SliderInt("##TEXTSPEED", &Game::Settings.enhancements.text_speed, 1, 5, "")) {
                     CVar_SetS32("gTextSpeed", Game::Settings.enhancements.text_speed);
                     needs_save = true;
                 }
@@ -421,6 +421,11 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Visual Stone of Agony", &Game::Settings.enhancements.visualagony)) {
+                    CVar_SetS32("gVisualAgony", Game::Settings.enhancements.visualagony);
+                    needs_save = true;
+                }
+
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
@@ -436,8 +441,14 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                if (ImGui::Checkbox("Enable 3D Dropped items", &Game::Settings.enhancements.newdrops)) {
+                    CVar_SetS32("gNewDrops", Game::Settings.enhancements.newdrops);
+                    needs_save = true;
+                }
+              
                 if (ImGui::Checkbox("Dynamic Wallet Icon", &Game::Settings.enhancements.dynamic_wallet_icon)) {
                     CVar_SetS32(const_cast<char*>("gDynamicWalletIcon"), Game::Settings.enhancements.dynamic_wallet_icon);
+
                     needs_save = true;
                 }
 
