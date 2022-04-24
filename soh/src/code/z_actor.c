@@ -2764,10 +2764,6 @@ void Actor_Draw(PlayState* play, Actor* actor) {
 
 
     if (play->state.gfxCtx->unk_014 == 1) {
-        u32 actorId = (u32)actor->id;
-        if (actor->category == ACTORCAT_BG) {
-            actorId = 0;
-        }
         gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0x50, 0, gActorIdCounter & 0xFF, 255);
         gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0x50, 0, gActorIdCounter & 0xFF, 255);
     }
