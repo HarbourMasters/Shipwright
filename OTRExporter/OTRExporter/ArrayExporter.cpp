@@ -15,13 +15,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 
 	for (size_t i = 0; i < arr->arrayCnt; i++)
 	{
-		if (arr->resList[i]->GetResourceType() == ZResourceType::Scalar)
-		{
-			ZScalar* scal = (ZScalar*)arr->resList[i];
-			writer->Write((uint32_t)scal->scalarType);
-			OTRExporter_Scalar::WriteScalarType(scal, writer);
-		}
-		else if (arr->resList[i]->GetResourceType() == ZResourceType::Vector)
+		if (arr->resList[i]->GetResourceType() == ZResourceType::Vector)
 		{
 			ZVector* vec = (ZVector*)arr->resList[i];
 			writer->Write((uint32_t)vec->scalarType);

@@ -59,7 +59,6 @@ namespace Ship
 					case ScalarType::ZSCALAR_F64:
 						data.f64 = reader->ReadDouble();
 						break;
-						// OTRTODO: IMPLEMENT OTHER TYPES!
 					}
 
 					arr->scalars.push_back(data);

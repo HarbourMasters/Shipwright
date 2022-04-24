@@ -16,6 +16,7 @@
 #include "BlobExporter.h"
 #include "MtxExporter.h"
 #include "AudioExporter.h"
+#include "ScalarExporter.h"
 #include <Globals.h>
 #include <Utils/File.h>
 #include <Utils/Directory.h>
@@ -119,15 +120,12 @@ static void ExporterFileBegin(ZFile* file)
 
 static void ExporterFileEnd(ZFile* file)
 {
-	// delete fileWriter;
 }
 
 static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 {
 	auto streamShared = writer.GetStream();
-	MemoryStream* strem = (MemoryStream*)streamShared.get();
-
-	auto start = std::chrono::steady_clock::now();
+	MemoryStream* stream = (MemoryStream*)streamShared.get();
 
 	if (res->GetName() != "")
 	{
@@ -167,12 +165,6 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		else
 			File::WriteAllBytes("Extract/" + fName, strem->ToVector());
 	}
-
-	auto end = std::chrono::steady_clock::now();
-	size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-
-	//if (diff > 10)
-		//printf("Exported Resource End %s in %zums\n", res->GetName().c_str(), diff);
 }
 
 static void ExporterXMLBegin()
@@ -228,6 +220,7 @@ static void ImportExporters()
 	exporterSet->exporters[ZResourceType::Blob] = new OTRExporter_Blob();
 	exporterSet->exporters[ZResourceType::Mtx] = new OTRExporter_MtxExporter();
 	exporterSet->exporters[ZResourceType::Audio] = new OTRExporter_Audio();
+	exporterSet->exporters[ZResourceType::Scalar] = new OTRExporter_Scalar();
 
 	Globals::AddExporter("OTR", exporterSet);
 
