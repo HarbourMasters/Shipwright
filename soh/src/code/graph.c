@@ -95,12 +95,14 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
+    THGA_Ct(&gfxCtx->titlecard, pool->titlecardBuffer, sizeof(pool->titlecardBuffer));
     THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
+    gfxCtx->titlecardBuffer = pool->titlecardBuffer;
     gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
@@ -274,6 +276,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gDPNoOpString(WORK_DISP++, "WORK_DISP 開始", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 開始", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 開始", 0);
+    gDPNoOpString(TITLE_CARD_DISP++, "TITLE_CARD_DISP 開始", 0);//unsure if needed
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 開始", 0);
 
     CLOSE_DISPS(gfxCtx, "../graph.c", 975);
@@ -286,6 +289,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
+    gDPNoOpString(TITLE_CARD_DISP++, "TITLE_CARD_DISP 終了", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 終了", 0);
 
     CLOSE_DISPS(gfxCtx, "../graph.c", 996);
@@ -294,6 +298,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->titlecardBuffer);
     gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
@@ -468,35 +473,6 @@ static void RunFrame()
         {
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
-
-            OTRSetFrameDivisor(R_UPDATE_RATE);
-            //OTRSetFrameDivisor(0);
-
-            
-            //AudioMgr_ThreadEntry(&gAudioMgr);
-            // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-            // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-            #define SAMPLES_HIGH 560
-            #define SAMPLES_LOW 528
-            // PAL values
-            //#define SAMPLES_HIGH 656
-            //#define SAMPLES_LOW 624
-            #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-            #define NUM_AUDIO_CHANNELS 2
-            int samples_left = AudioPlayer_Buffered();
-            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-            // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
-
-            // 3 is the maximum authentic frame divisor.
-            s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-            for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
-            }
-            //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-            //    audio_buffer[i] = Rand_Next() & 0xFF;
-            //}
-            // printf("Audio samples before submitting: %d\n", audio_api->buffered());
-            AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
             
 
             PadMgr_ThreadEntry(&gPadMgr);

@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <wrl/client.h>
 #include <dxgi1_3.h>
+#include <dxgi1_4.h>
 #include <versionhelpers.h>
 
 #include <shellscalingapi.h>
@@ -61,6 +62,7 @@ static struct {
     RECT last_window_rect;
     bool is_full_screen, last_maximized_state;
 
+    bool dxgi1_4;
     ComPtr<IDXGIFactory2> factory;
     ComPtr<IDXGISwapChain1> swap_chain;
     HANDLE waitable_object;
@@ -197,17 +199,6 @@ static void toggle_borderless_window_full_screen(bool enable, bool call_callback
     }
 }
 
-static void gfx_dxgi_on_resize(void) {
-    if (dxgi.swap_chain.Get() != nullptr) {
-        gfx_get_current_rendering_api()->on_resize();
-
-        DXGI_SWAP_CHAIN_DESC1 desc1;
-        ThrowIfFailed(dxgi.swap_chain->GetDesc1(&desc1));
-        dxgi.current_width = desc1.Width;
-        dxgi.current_height = desc1.Height;
-    }
-}
-
 static void onkeydown(WPARAM w_param, LPARAM l_param) {
     int key = ((l_param >> 16) & 0x1ff);
     if (dxgi.on_key_down != nullptr) {
@@ -227,7 +218,8 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     SohImGui::Update(event_impl);
     switch (message) {
         case WM_SIZE:
-            gfx_dxgi_on_resize();
+            dxgi.current_width = (uint32_t)(l_param & 0xffff);
+            dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
             exit(0);
@@ -573,6 +565,13 @@ void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*crea
         ThrowIfFailed(dxgi.CreateDXGIFactory1(__uuidof(IDXGIFactory2), &dxgi.factory));
     }
 
+    {
+        ComPtr<IDXGIFactory4> factory4;
+        if (dxgi.factory->QueryInterface(__uuidof(IDXGIFactory4), &factory4) == S_OK) {
+            dxgi.dxgi1_4 = true;
+        }
+    }
+
     ComPtr<IDXGIAdapter1> adapter;
     for (UINT i = 0; dxgi.factory->EnumAdapters1(i, &adapter) != DXGI_ERROR_NOT_FOUND; i++) {
         DXGI_ADAPTER_DESC1 desc;
@@ -604,7 +603,9 @@ ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
     swap_chain_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swap_chain_desc.Scaling = win8 ? DXGI_SCALING_NONE : DXGI_SCALING_STRETCH;
-    swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // Apparently this was backported to Win 7 Platform Update
+    swap_chain_desc.SwapEffect = dxgi.dxgi1_4 ?
+        DXGI_SWAP_EFFECT_FLIP_DISCARD : // Introduced in DXGI 1.4 and Windows 10
+        DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // Apparently flip sequential was also backported to Win 7 Platform Update
     swap_chain_desc.Flags = dxgi_13 ? DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT : 0;
     swap_chain_desc.SampleDesc.Count = 1;
 
