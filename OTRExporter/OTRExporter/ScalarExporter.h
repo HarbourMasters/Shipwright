@@ -9,7 +9,6 @@
 #include "ZResource.h"
 #include "ZVtx.h"
 #include "Exporter.h"
-#include <Utils/BinaryWriter.h>
 
 class OTRExporter_Scalar : public OTRExporter
 {

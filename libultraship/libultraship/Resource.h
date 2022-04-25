@@ -6,7 +6,11 @@
 #include "GlobalCtx2.h"
 #include "StrHash.h"
 #include "File.h"
-#include "Lib/tinyxml2/tinyxml2.h"
+
+namespace tinyxml2
+{
+    class XMLElement;
+}
 
 namespace Ship
 {

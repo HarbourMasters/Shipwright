@@ -181,6 +181,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\lib\tinyxml2\tinyxml2.cpp" />
+    <ClCompile Include="StrHash.cpp" />
     <ClCompile Include="Utils\BinaryReader.cpp" />
     <ClCompile Include="Utils\BinaryWriter.cpp" />
     <ClCompile Include="Utils\MemoryStream.cpp" />

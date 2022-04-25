@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "OutputFormatter.h"
+#include <tinyxml2.h>
 #include "Utils/BinaryWriter.h"
 #include "Utils/BitConverter.h"
 #include "Utils/Directory.h"

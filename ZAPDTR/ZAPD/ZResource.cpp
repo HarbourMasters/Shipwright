@@ -3,6 +3,7 @@
 #include <cassert>
 #include <regex>
 
+#include "tinyxml2.h"
 #include "Utils/StringHelper.h"
 #include "WarningHandler.h"
 #include "ZFile.h"

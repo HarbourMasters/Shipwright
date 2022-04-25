@@ -1,7 +1,6 @@
 #pragma once
+
 #include "ZResource.h"
-#include "ZArray.h"
-//#include "OTRExporter.h"
 #include <Utils/BinaryWriter.h>
 #include <Resource.h>
 #include "VersionInfo.h"

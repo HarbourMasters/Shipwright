@@ -1,10 +1,7 @@
 #pragma once
 
-#include "ZResource.h"
-#include "ZTexture.h"
 #include "ZAnimation.h"
 #include "Exporter.h"
-#include <Utils/BinaryWriter.h>
 
 class OTRExporter_Animation : public OTRExporter
 {

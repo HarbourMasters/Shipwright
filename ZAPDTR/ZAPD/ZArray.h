@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include "ZResource.h"
-#include "tinyxml2.h"
 
 class ZArray : public ZResource
 {

@@ -1,5 +1,4 @@
 #include "VersionInfo.h"
-#include <Resource.h>
 
 std::map<Ship::ResourceType, uint32_t> resourceVersions;
 

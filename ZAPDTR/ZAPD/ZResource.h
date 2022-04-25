@@ -9,7 +9,11 @@
 #include "Declaration.h"
 #include "Utils/BinaryWriter.h"
 #include "Utils/Directory.h"
-#include "tinyxml2.h"
+
+namespace tinyxml2
+{
+	class XMLElement;
+}
 
 #define SEGMENT_SCENE 2
 #define SEGMENT_ROOM 3

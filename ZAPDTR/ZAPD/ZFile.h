@@ -5,7 +5,11 @@
 
 #include "ZSymbol.h"
 #include "ZTexture.h"
-#include "tinyxml2.h"
+
+namespace tinyxml2
+{
+	class XMLElement;
+}
 
 enum class ZFileMode
 {

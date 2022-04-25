@@ -2,7 +2,6 @@
 
 #include "ImageBackend.h"
 #include "ZResource.h"
-#include "tinyxml2.h"
 
 enum class TextureType
 {

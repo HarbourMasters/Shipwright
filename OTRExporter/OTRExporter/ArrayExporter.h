@@ -1,8 +1,7 @@
 #pragma once
-#include "ZResource.h"
+
 #include "ZArray.h"
 #include "Exporter.h"
-#include <Utils/BinaryWriter.h>
 
 class ZScalar;
 

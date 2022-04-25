@@ -7,10 +7,8 @@
 */
 
 
-#include "ZResource.h"
 #include "ZVtx.h"
 #include "Exporter.h"
-#include <Utils/BinaryWriter.h>
 
 // Note: Ultimately this exporter goes *mostly* unused. Because of the lack of single vertex elements, the Array Exporter is used instead, 
 // which calls our serialization function. So it remains here mostly as a placeholder and may be deleted altogether in the future.

@@ -1,7 +1,7 @@
-#include "ZResource.h"
+#pragma once
+
 #include "ZMtx.h"
 #include "Exporter.h"
-#include <Utils/BinaryWriter.h>
 
 class OTRExporter_MtxExporter : public OTRExporter
 {

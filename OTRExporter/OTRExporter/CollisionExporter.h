@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ZResource.h"
 #include "ZCollision.h"
 #include "Exporter.h"
 

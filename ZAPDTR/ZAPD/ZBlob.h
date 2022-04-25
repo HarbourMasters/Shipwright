@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ZResource.h"
-#include "tinyxml2.h"
 
 class ZBlob : public ZResource
 {
