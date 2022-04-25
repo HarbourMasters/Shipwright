@@ -578,7 +578,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 int itemId = ITEM_SWORD_KOKIRI + temp;
                 bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
                 if (not_acquired) {
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 100, 100, 100);
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
