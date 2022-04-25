@@ -2831,7 +2831,7 @@ _DW({                                   \
 {                                                   \
     Gfx *_g = (Gfx *)(pkt);                         \
                                                     \
-    _g->words.w0 = _SHIFTL(G_SET_GRAYSCALE, 24, 8); \
+    _g->words.w0 = _SHIFTL(G_SETGRAYSCALE, 24, 8); \
     _g->words.w1 = state;                           \
 }
 
