@@ -20,14 +20,15 @@ namespace Ship {
 			void Read(OSContPad* pad);
 			virtual void ReadFromSource() = 0;
 			virtual void WriteToSource(ControllerCallback* controller) = 0;
+			virtual bool Connected() const = 0;
 			virtual bool CanRumble() const = 0;
-			virtual bool Connected() = 0;
 			bool isRumbling;
 
 			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
 			std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
 			int32_t GetControllerNumber() { return dwControllerNumber; }
-			virtual bool HasPadConf() = 0;
+
+			virtual bool HasPadConf() const = 0;
 			virtual std::optional<std::string> GetPadConfSection() = 0;
 
 		protected:
