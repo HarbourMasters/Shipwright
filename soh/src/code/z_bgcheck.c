@@ -4569,3 +4569,79 @@ void BgCheck_DrawStaticCollision(PlayState* play, CollisionContext* colCtx) {
         BgCheck_DrawStaticPolyList(play, colCtx, &lookup->ceiling, 255, 0, 0);
     }
 }
+
+void BgCheck_DrawSceneInfoStaticCollision(PlayState* play, CollisionContext* colCtx) {
+    CollisionPoly* curPoly;
+    CollisionPoly* polyList;
+    SSNode* curNode;
+    s32 polyId;
+    Vec3s* vtxList;
+
+    Camera* activeCam = GET_ACTIVE_CAM(play);
+    f32 range = 500.0f;
+    Vec3i sectorStart;
+    BgCheck_GetStaticLookupIndicesFromPos(colCtx, &activeCam->at, &sectorStart);
+    Vec3i sectorEnd;
+    Vec3i sectorRange =
+    {
+        ceilf(colCtx->subdivLengthInv.x * range),
+        ceilf(colCtx->subdivLengthInv.y * range),
+        ceilf(colCtx->subdivLengthInv.z * range)
+    };
+    sectorEnd.x = MIN(colCtx->subdivAmount.x, sectorStart.x + sectorRange.x);
+    sectorEnd.y = MIN(colCtx->subdivAmount.y, sectorStart.y + sectorRange.y);
+    sectorEnd.z = MIN(colCtx->subdivAmount.z, sectorStart.z + sectorRange.z);
+    sectorStart.x = MAX(0, sectorStart.x - sectorRange.x);
+    sectorStart.y = MAX(0, sectorStart.y - sectorRange.y);
+    sectorStart.z = MAX(0, sectorStart.z - sectorRange.z);
+
+    Vec3i sector;
+
+    s16 oldReg = AREG(26);
+    AREG(26) = 5;
+
+    OPEN_DISPS(play->state.gfxCtx);
+
+    for (sector.z = sectorStart.z; sector.z < sectorEnd.z; sector.z++) {
+        for (sector.y = sectorStart.y; sector.y < sectorEnd.y; sector.y++) {
+            for (sector.x = sectorStart.x; sector.x < sectorEnd.x; sector.x++) {
+
+                StaticLookup* lookup = colCtx->lookupTbl + 
+                    sector.x +
+                    sector.y * colCtx->subdivAmount.x +
+                    sector.z * colCtx->subdivAmount.x * colCtx->subdivAmount.y;
+
+                if (lookup->wall.head == SS_NULL) {
+                    continue;
+                }
+
+                polyList = colCtx->colHeader->polyList;
+                vtxList = colCtx->colHeader->vtxList;
+                curNode = &colCtx->polyNodes.tbl[lookup->wall.head];
+
+                while (true) {
+                    polyId = curNode->polyId;
+                    curPoly = &polyList[polyId];
+
+                    s32 polyFlags = func_80041DB8(&play->colCtx, curPoly, BGCHECK_SCENE);
+                    if (polyFlags & (0x2 | 0x8 | 0x10)) {
+                        gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0xA0, 0, (polyFlags & 0xFF), 255);
+                        BgCheck_DrawStaticPoly(play, colCtx, curPoly, 0xFF, 0xFF, 0xFF);
+                    }
+
+                    if (curNode->next == SS_NULL) {
+                        break;
+                    } else {
+                        curNode = &colCtx->polyNodes.tbl[curNode->next];
+                        continue;
+                    }
+                }
+            }
+        }
+    }
+
+    gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 0);
+
+    CLOSE_DISPS(play->state.gfxCtx);
+    AREG(26) = oldReg;
+}

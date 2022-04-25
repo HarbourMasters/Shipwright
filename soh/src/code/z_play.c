@@ -1375,6 +1375,8 @@ void Gameplay_Draw_SceneInfo(PlayState* play) {
                 gDPSetOverrideColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, 0);
                 gDPSetOverrideColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 0);
 
+                BgCheck_DrawSceneInfoStaticCollision(play, &play->colCtx);
+
                 if ((HREG(80) != 10) || (HREG(85) != 0)) {
                     func_800315AC(play, &play->actorCtx);
                 }
@@ -1384,8 +1386,6 @@ void Gameplay_Draw_SceneInfo(PlayState* play) {
 
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
     gSPEndDisplayList(POLY_XLU_DISP++);
-    //gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
-    //gSPEndDisplayList(POLY_KAL_DISP++);
 
     CLOSE_DISPS(gfxCtx);
 
@@ -1396,6 +1396,8 @@ void Gameplay_Draw_SceneInfo(PlayState* play) {
     gsSPSetFB(POLY_XLU_DISP++, fbSceneInfo);
     gSPDisplayList(POLY_XLU_DISP++, gfxCtx->polyOpaBuffer);
     gsSPResetFB(POLY_XLU_DISP++);
+
+    // debug: add sceneinfo DL to normal DL
     //gSPDisplayList(POLY_XLU_DISP++, gfxCtx->polyOpaBuffer);
 
     CLOSE_DISPS(originalGfxCtx);

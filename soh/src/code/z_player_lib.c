@@ -1844,7 +1844,11 @@ void Player_ComputeHandAimCue(Player* this, PlayState* play, s32 limbIndex) {
 
     Matrix_Pop();
 }
-
+union VisibleItem {
+    Actor* actor;
+    u32 polyFlags;
+};
+static union VisibleItem prevVisibleItem;
 static Actor* prevActorInView;
 extern Actor* gActorIdTable[ACTOR_NUMBER_MAX];
 extern int fbSceneInfo;
@@ -1854,10 +1858,6 @@ static s32 sceneInfoFbHeight;
 static bool sFirstPersonStart;
 static bool sSceneInfoContinuous;
 
-//without a way to get buffer sizes right now, this adds a bit of padding
-//to account for the difference between the window size and the framebuffer size
-static const float tmpBufferPadding = 120.0f;
-
 void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
     bool isPlayerInFirstPersonMode = this->stateFlags1 & PLAYER_STATE1_20;
 
@@ -1865,7 +1865,7 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
         sFirstPersonStart = true;
         sSceneInfoContinuous = true;
     } else if (!isPlayerInFirstPersonMode && sFirstPersonStart) {
-        prevActorInView = NULL;
+        prevVisibleItem.actor = NULL;
         sFirstPersonStart = false;
         sSceneInfoContinuous = false;
     }
@@ -1874,12 +1874,12 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
     bool readMultipleItems = false;
 
     if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
-        prevActorInView = NULL;
+        prevVisibleItem.actor = NULL;
         sSceneInfoContinuous = false;
         readNow = true;
     }
     if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
-        prevActorInView = NULL;
+        prevVisibleItem.actor = NULL;
         sSceneInfoContinuous = false;
         readMultipleItems = true;
         readNow = true;
@@ -1896,17 +1896,17 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
             sceneInfoFbHeight = OTRGetFramebufferHeight(fbSceneInfo);
             sceneInfoFramebuffer = malloc(sceneInfoFbWidth * sceneInfoFbHeight * 4);
         }
-        OTRReadFramebufferPixels(fbSceneInfo, 0, 0, sceneInfoFbWidth, sceneInfoFbHeight - tmpBufferPadding, 0,
+        OTRReadFramebufferPixels(fbSceneInfo, 0, 0, sceneInfoFbWidth, sceneInfoFbHeight, 0,
                                     sceneInfoFramebuffer);
 
-        struct VisibleItem {
+        struct VisibleId {
             u32 id;
             u32 pixelCount;
         };
-        struct VisibleItem topItems[256] = {0};
+        struct VisibleId topIds[256] = {0};
 
         u32 width = sceneInfoFbWidth;
-        u32 height = sceneInfoFbHeight - tmpBufferPadding;
+        u32 height = sceneInfoFbHeight;
         u32 x;
         u32 y;
         u32 offset;
@@ -1917,66 +1917,88 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
         for (x = widthMargin; x < width - widthMargin; x++) {
             for (y = heightMargin; y < height - heightMargin; y++) {
                 offset = (x + y * width) * 4;
-                id = sceneInfoFramebuffer[offset + 2] & 0xFF;
-                
+                id = (sceneInfoFramebuffer[offset + 0] << 16) |
+                     (sceneInfoFramebuffer[offset + 1] << 8) |
+                     sceneInfoFramebuffer[offset + 2];
+
                 if (id == 0)
                     continue;
 
                 s32 itemIndex = 0;
                 u32 currItemCount = 0;
                 while (itemIndex < 256) {
-                    if (topItems[itemIndex].id == id) {
-                        topItems[itemIndex].pixelCount++;
-                        currItemCount = topItems[itemIndex].pixelCount;
+                    if (topIds[itemIndex].id == id) {
+                        topIds[itemIndex].pixelCount++;
+                        currItemCount = topIds[itemIndex].pixelCount;
                         break;
-                    } else if (topItems[itemIndex].id == 0) {
-                        topItems[itemIndex].id = id;
-                        topItems[itemIndex].pixelCount = 1;
-                        currItemCount = topItems[itemIndex].pixelCount;
+                    } else if (topIds[itemIndex].id == 0) {
+                        topIds[itemIndex].id = id;
+                        topIds[itemIndex].pixelCount = 1;
+                        currItemCount = topIds[itemIndex].pixelCount;
                         break;
                     }
                     ++itemIndex;
                 }
                 while (--itemIndex >= 0) {
-                    if (topItems[itemIndex].pixelCount > currItemCount) {
+                    if (topIds[itemIndex].pixelCount > currItemCount) {
                         break;
                     }
                     //swap
-                    struct VisibleItem tmp = topItems[itemIndex];
-                    topItems[itemIndex] = topItems[itemIndex + 1];
-                    topItems[itemIndex + 1] = tmp;
+                    struct VisibleId tmp = topIds[itemIndex];
+                    topIds[itemIndex] = topIds[itemIndex + 1];
+                    topIds[itemIndex + 1] = tmp;
                 }
             }
         }
 
-        Actor* topVisibleActors[5] = {0};
-        for (int i = 0; i < 5; i++) {
-            topVisibleActors[i] = (topItems[i].id > 0) ? gActorIdTable[topItems[i].id - 1] : NULL;
+        s32 topItemIndex = 0;
+        union VisibleItem topItems[5] = {0};
+        for (int i = 0; i < 256; i++) {
+            if (topIds[i].id == 0)
+                break;
+
+            u32 itemType = topIds[i].id & 0xFF0000;
+            if (itemType == 0x500000) {
+                topItems[topItemIndex].actor = gActorIdTable[(topIds[i].id & 0xFF) - 1];
+                // topItems[topItemIndex].polyFlags = 0;
+            } else if (itemType == 0xA00000) {
+                // topItems[topItemIndex].actor = NULL;
+                topItems[topItemIndex].polyFlags = topIds[i].id & 0xFF;
+            }
+
+            if (++topItemIndex == 5) {
+                break;
+            }
         }
 
-        if (topVisibleActors[0] != NULL && topVisibleActors[0] != prevActorInView) {
+        if (topItems[0].actor != NULL && topItems[0].actor != prevVisibleItem.actor) {
             u8 announceStr[256];
             s32 announceStrLength = 0;
             announceStr[0] = '\0';
-            u8 arg[32];
+            u8 arg[48];
+            arg[0] = '\0';
             for (int i = 0; i < 5; i++) {
-                if (topVisibleActors[i] == NULL)
+                if (topItems[i].actor == NULL)
                     continue;
-                if (topVisibleActors[i]->id == ACTOR_PLAYER || topVisibleActors[i]->id == ACTOR_EN_ELF)
-                    continue;
-                if (topVisibleActors[i]->id == ACTOR_SCENE_EXIT) {
-                    u16 exitId = topVisibleActors[i]->params;
-                    u16 sceneId = gEntranceTable[play->setupExitList[exitId - 1]].scene;
-                    size_t result =
-                        sprintf(arg, "%s",
-                                OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                                                                0x0300 + sceneId, NULL));
-                    ASSERT(result < sizeof(arg));
+                u32 textId;
+                if ((topItems[i].polyFlags & 0xFFFFFF00) == 0) {
+                    textId = 0x900 + topItems[i].polyFlags;
                 } else {
-                    arg[0] = '\0';
+                    if (topItems[i].actor->id == ACTOR_PLAYER || topItems[i].actor->id == ACTOR_EN_ELF)
+                        continue;
+                    if (topItems[i].actor->id == ACTOR_SCENE_EXIT) {
+                        u16 exitId = topItems[i].actor->params;
+                        u16 sceneId = gEntranceTable[play->setupExitList[exitId - 1]].scene;
+                        size_t result =
+                            sprintf(arg, "%s",
+                                    OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
+                                                                    0x0300 + sceneId, NULL));
+                        ASSERT(result < sizeof(arg));
+                    }
+                    textId = 0x1000 + topItems[i].actor->id;
                 }
                 size_t result = sprintf(announceStr + announceStrLength, "%s, ", OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                                                                0x1000 + topVisibleActors[i]->id, arg));
+                                                                textId, arg));
                 ASSERT(result < sizeof(announceStr) - announceStrLength);
                 announceStrLength += result;
                 if (!readMultipleItems)
@@ -1985,7 +2007,7 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
 
             OTRSpeakText(announceStr);
         }
-        prevActorInView = topVisibleActors[0];
+        prevVisibleItem.actor = topItems[0].actor;
     }
 }
 
