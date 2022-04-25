@@ -158,7 +158,7 @@ static struct RDP {
     bool     grayscale;
 
     uint8_t prim_lod_fraction;
-    struct RGBA env_color, prim_color, fog_color, fill_color, intensity_color;
+    struct RGBA env_color, prim_color, fog_color, fill_color, grayscale_color;
     struct XYWidthHeight viewport, scissor;
     bool viewport_or_scissor_changed;
     void *z_buf_address;
@@ -1394,10 +1394,10 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
         }
 
         if (use_grayscale) {
-            buf_vbo[buf_vbo_len++] = rdp.intensity_color.r / 255.0f;
-            buf_vbo[buf_vbo_len++] = rdp.intensity_color.g / 255.0f;
-            buf_vbo[buf_vbo_len++] = rdp.intensity_color.b / 255.0f;
-            buf_vbo[buf_vbo_len++] = rdp.intensity_color.a / 255.0f; // Unused
+            buf_vbo[buf_vbo_len++] = rdp.grayscale_color.r / 255.0f;
+            buf_vbo[buf_vbo_len++] = rdp.grayscale_color.g / 255.0f;
+            buf_vbo[buf_vbo_len++] = rdp.grayscale_color.b / 255.0f;
+            buf_vbo[buf_vbo_len++] = rdp.grayscale_color.a / 255.0f; // Unused
         }
 
         for (int j = 0; j < num_inputs; j++) {
@@ -1800,11 +1800,11 @@ static inline uint32_t alpha_comb(uint32_t a, uint32_t b, uint32_t c, uint32_t d
     return (a & 7) | ((b & 7) << 3) | ((c & 7) << 6) | ((d & 7) << 9);
 }
 
-static void gfx_dp_set_intensity_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    rdp.intensity_color.r = r;
-    rdp.intensity_color.g = g;
-    rdp.intensity_color.b = b;
-    rdp.intensity_color.a = a;
+static void gfx_dp_set_grayscale_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    rdp.grayscale_color.r = r;
+    rdp.grayscale_color.g = g;
+    rdp.grayscale_color.b = b;
+    rdp.grayscale_color.a = a;
 }
 
 static void gfx_dp_set_env_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
@@ -2480,7 +2480,7 @@ static void gfx_run_dl(Gfx* cmd) {
                     //gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), texPtr);
                 break;
             }
-			case G_SET_GRAYSCALE:
+            case G_SETGRAYSCALE:
             {
                 rdp.grayscale = cmd->words.w1;
                 break;
@@ -2513,7 +2513,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 gfx_dp_set_fill_color(cmd->words.w1);
                 break;
             case G_SETINTENSITY:
-                gfx_dp_set_intensity_color(C1(24, 8), C1(16, 8), C1(8, 8), C1(0, 8));
+                gfx_dp_set_grayscale_color(C1(24, 8), C1(16, 8), C1(8, 8), C1(0, 8));
                 break;
             case G_SETCOMBINE:
                 gfx_dp_set_combine_mode(

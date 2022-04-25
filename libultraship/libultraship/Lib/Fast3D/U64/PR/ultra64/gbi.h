@@ -173,7 +173,7 @@
 /* GFX Effects */
 
 // RDP Cmd
-#define G_SET_GRAYSCALE       0x39
+#define G_SETGRAYSCALE       0x39
 #define G_SETINTENSITY       0x40
 
 /*
@@ -440,8 +440,6 @@
 #define G_CCMUX_K5      15
 #define G_CCMUX_1       6
 #define G_CCMUX_0       31
-
-#define G_CCMUX_INTENSITY  32
 
 /* Alpha combiner constants: */
 #define G_ACMUX_COMBINED    0
@@ -2829,12 +2827,12 @@ _DW({                                   \
     _g->words.w1 = 0;                       \
 }
 
-#define gsSPGrayscale(pkt, state)                        \
-{                                   \
-    Gfx *_g = (Gfx *)(pkt);                     \
-                                    \
-    _g->words.w0 = _SHIFTL(G_SET_GRAYSCALE, 24, 8);             \
-    _g->words.w1 = state;                       \
+#define gsSPGrayscale(pkt, state)                   \
+{                                                   \
+    Gfx *_g = (Gfx *)(pkt);                         \
+                                                    \
+    _g->words.w0 = _SHIFTL(G_SET_GRAYSCALE, 24, 8); \
+    _g->words.w1 = state;                           \
 }
 
 #ifdef  F3DEX_GBI_2
