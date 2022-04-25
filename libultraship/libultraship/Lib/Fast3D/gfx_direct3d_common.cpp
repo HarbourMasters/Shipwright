@@ -308,7 +308,7 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
         }
     }
 
-    if(cc_features.opt_grayscale) {
+    if (cc_features.opt_grayscale) {
         append_line(buf, &len, "float intensity = (texel.r + texel.g + texel.b) / 3.0;");
         append_line(buf, &len, "texel.rgb = input.grayscale.rgb * intensity;");
     }
