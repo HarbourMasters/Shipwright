@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #include "global.h"
 #include "vt.h"
 
