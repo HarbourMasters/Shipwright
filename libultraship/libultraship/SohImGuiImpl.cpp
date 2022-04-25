@@ -349,7 +349,7 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Controller")) {
                 for (const auto& [i, controllers] : Ship::Window::Controllers) {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
-                        return c->HasPadConf();
+                        return c->HasPadConf() && c->Connected();
                     }) != controllers.end();
 
                     if (!hasPad) continue;
