@@ -351,6 +351,7 @@ namespace SohImGui {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
                         return c->HasPadConf();
                     }) != controllers.end();
+
                     if (!hasPad) continue;
 
                     auto menuLabel = "Controller " + std::to_string(i + 1);
