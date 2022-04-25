@@ -310,7 +310,8 @@ void gfx_direct3d_common_build_shader(char buf[4096], size_t& len, size_t& num_f
 
     if (cc_features.opt_grayscale) {
         append_line(buf, &len, "float intensity = (texel.r + texel.g + texel.b) / 3.0;");
-        append_line(buf, &len, "texel.rgb = input.grayscale.rgb * intensity;");
+        append_line(buf, &len, "float3 new_texel = input.grayscale.rgb * intensity;");
+        append_line(buf, &len, "texel.rgb = input.grayscale.a > 0 ? lerp(texel.rgb, new_texel, input.grayscale.a) : new_texel;");
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
