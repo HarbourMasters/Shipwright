@@ -199,7 +199,7 @@ void Title_Draw(TitleContext* this) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
 
-    gDPLoadMultiBlock(POLY_OPA_DISP++, ResourceMgr_LoadTexByName(nintendo_rogo_static_Tex_001800), 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)

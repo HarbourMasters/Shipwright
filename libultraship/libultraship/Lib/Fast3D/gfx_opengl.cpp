@@ -238,6 +238,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(vs_buf, &vs_len, "varying vec4 vFog;");
         num_floats += 4;
     }
+
+    if (cc_features.opt_grayscale) {
+        append_line(vs_buf, &vs_len, "attribute vec4 aGreyscaleColor;");
+        append_line(vs_buf, &vs_len, "varying vec4 vGreyscaleColor;");
+        num_floats += 4;
+    }
+
     for (int i = 0; i < cc_features.num_inputs; i++) {
         vs_len += sprintf(vs_buf + vs_len, "attribute vec%d aInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
         vs_len += sprintf(vs_buf + vs_len, "varying vec%d vInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
@@ -256,6 +263,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
     if (cc_features.opt_fog) {
         append_line(vs_buf, &vs_len, "vFog = aFog;");
+    }
+    if (cc_features.opt_grayscale) {
+        append_line(vs_buf, &vs_len, "vGreyscaleColor = aGreyscaleColor;");
     }
     for (int i = 0; i < cc_features.num_inputs; i++) {
         vs_len += sprintf(vs_buf + vs_len, "vInput%d = aInput%d;\n", i + 1, i + 1);
@@ -278,6 +288,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
     if (cc_features.opt_fog) {
         append_line(fs_buf, &fs_len, "varying vec4 vFog;");
+    }
+    if (cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "varying vec4 vGreyscaleColor;");
     }
     for (int i = 0; i < cc_features.num_inputs; i++) {
         fs_len += sprintf(fs_buf + fs_len, "varying vec%d vInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
@@ -355,6 +368,11 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "texel.a *= floor(clamp(random(vec3(floor(gl_FragCoord.xy * noise_scale), float(frame_count))) + texel.a, 0.0, 1.0));");
     }
 
+     if(cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "float intensity = (texel.r + texel.g + texel.b) / 3.0;");
+        append_line(fs_buf, &fs_len, "texel.rgb = vGreyscaleColor.rgb * intensity;");
+    }
+
     if (cc_features.opt_alpha) {
         if (cc_features.opt_alpha_threshold) {
             append_line(fs_buf, &fs_len, "if (texel.a < 8.0 / 256.0) discard;");
@@ -403,9 +421,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint max_length = 0;
         glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
-        //fprintf(stderr, "Fragment shader compilation failed\n");
+        fprintf(stderr, "Fragment shader compilation failed\n");
         glGetShaderInfoLog(fragment_shader, max_length, &max_length, &error_log[0]);
-        //fprintf(stderr, "%s\n", &error_log[0]);
+        fprintf(stderr, "%s\n", &error_log[0]);
         abort();
     }
 
@@ -442,6 +460,12 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     if (cc_features.opt_fog) {
         prg->attrib_locations[cnt] = glGetAttribLocation(shader_program, "aFog");
+        prg->attrib_sizes[cnt] = 4;
+        ++cnt;
+    }
+
+    if (cc_features.opt_grayscale) {
+        prg->attrib_locations[cnt] = glGetAttribLocation(shader_program, "aGreyscaleColor");
         prg->attrib_sizes[cnt] = 4;
         ++cnt;
     }

@@ -298,13 +298,13 @@ void EnPart_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPSegment(POLY_OPA_DISP++, 0x09, func_80ACEAC0(globalCtx->state.gfxCtx, 225, 205, 115, 25, 20, 0));
         gSPSegment(POLY_OPA_DISP++, 0x0A, func_80ACEAC0(globalCtx->state.gfxCtx, 225, 205, 115, 25, 20, 0));
     } else if ((thisx->params == 9) && (this->displayList == ResourceMgr_LoadGfxByName(object_tite_DL_002FF0))) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_001300)));
-        gSPSegment(POLY_OPA_DISP++, 0x09, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_001700)));
-        gSPSegment(POLY_OPA_DISP++, 0x0A, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_001900)));
+        gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001300);
+        gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001700);
+        gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_001900);
     } else if ((thisx->params == 10) && (this->displayList == ResourceMgr_LoadGfxByName(object_tite_DL_002FF0))) {
-        gSPSegment(POLY_OPA_DISP++, 0x08, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_001B00)));
-        gSPSegment(POLY_OPA_DISP++, 0x09, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_001F00)));
-        gSPSegment(POLY_OPA_DISP++, 0x0A, ResourceMgr_LoadTexByName(SEGMENTED_TO_VIRTUAL(object_tite_Tex_002100)));
+        gSPSegment(POLY_OPA_DISP++, 0x08, object_tite_Tex_001B00);
+        gSPSegment(POLY_OPA_DISP++, 0x09, object_tite_Tex_001F00);
+        gSPSegment(POLY_OPA_DISP++, 0x0A, object_tite_Tex_002100);
     }
 
     if (this->displayList != NULL) {

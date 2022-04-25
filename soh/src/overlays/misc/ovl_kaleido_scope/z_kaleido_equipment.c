@@ -64,7 +64,7 @@ void KaleidoScope_DrawEquipmentImage(GlobalContext* globalCtx, void* source, u32
 
         gDPLoadSync(POLY_KAL_DISP++);
         gDPLoadTile(POLY_KAL_DISP++, G_TX_LOADTILE, 0, 0, (width - 1) << 2, (textureHeight - 1) << 2);
-        
+
         gDPSetTextureImageFB(POLY_KAL_DISP++, G_IM_FMT_RGBA, G_IM_SIZ_16b, width, fbTest);
         gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
@@ -575,7 +575,14 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBrokenGiantsKnifeIconTex, 32, 32, point);
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
-                KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[ITEM_SWORD_KOKIRI + temp], 32, 32, point);
+                int itemId = ITEM_SWORD_KOKIRI + temp;
+                bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+                if (not_acquired){
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 100, 100, 100);
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                }
+                KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
+                gsSPGrayscale(POLY_KAL_DISP++, false);
             }
         }
     }
