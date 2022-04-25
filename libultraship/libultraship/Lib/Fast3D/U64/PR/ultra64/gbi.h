@@ -3175,7 +3175,7 @@ _DW({                                   \
              (_SHIFTL(r, 24, 8) | _SHIFTL(g, 16, 8) |   \
               _SHIFTL(b, 8, 8) | _SHIFTL(a, 0, 8)))
 
-#define gsDPSetGrayscaleColor(pkt, r, g, b, lerp)       \
+#define gsDPSetGrayscaleColor(pkt, r, g, b, lerp)        \
             DPRGBColor(pkt, G_SETINTENSITY, r, g, b, lerp)
 #define gDPSetEnvColor(pkt, r, g, b, a)                 \
             DPRGBColor(pkt, G_SETENVCOLOR, r,g,b,a)
