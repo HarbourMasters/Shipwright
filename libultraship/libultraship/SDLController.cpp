@@ -5,6 +5,7 @@
 #include "spdlog/spdlog.h"
 #include "stox.h"
 #include "Window.h"
+#include "Cvar.h"
 
 extern "C" uint8_t __osMaxControllers;
 
@@ -197,6 +198,7 @@ namespace Ship {
 
             const char* contName = SDL_GameControllerName(Cont);
             const int isSpecialController = !strcmp("PS5 Controller", contName);
+            const float gyroSensitivity = CVar_GetFloat("gGyroSensitivity", 1.0f);
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroData[0];
