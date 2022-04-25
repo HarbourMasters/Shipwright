@@ -577,7 +577,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 int itemId = ITEM_SWORD_KOKIRI + temp;
                 bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
-                if (not_acquired){
+                if (not_acquired) {
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 100, 100, 100);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }

@@ -469,7 +469,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
             int itemId = gSaveContext.inventory.items[i];
             bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
-            if (not_acquired){
+            if (not_acquired) {
                 gsDPSetGrayscaleColor(POLY_KAL_DISP++, 100, 100, 100);
                 gsSPGrayscale(POLY_KAL_DISP++, true);
             }
