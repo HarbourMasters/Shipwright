@@ -473,6 +473,11 @@ namespace SohImGui {
                     CVar_SetS32("gMMBunnyHood", Game::Settings.enhancements.mm_bunny_hood);
                     needs_save = true;
                 }
+                
+                /*if (ImGui::Checkbox("Fix L&R Pause menu", &Game::Settings.enhancements.uniform_lr)) {
+                    CVar_SetS32("gUniformLR", Game::Settings.enhancements.uniform_lr);
+                    needs_save = true;
+                }*/
 
                 if (ImGui::Checkbox("Visual Stone of Agony", &Game::Settings.enhancements.visualagony)) {
                     CVar_SetS32("gVisualAgony", Game::Settings.enhancements.visualagony);

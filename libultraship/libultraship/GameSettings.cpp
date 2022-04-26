@@ -74,6 +74,10 @@ namespace Game {
       
         Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
         CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
+	    
+        Settings.enhancements.uniform_lr = stob(Conf[EnhancementSection]["uniform_lr"]);
+        //CVar_SetS32("gUniformLR", Settings.enhancements.uniform_lr);
+        CVar_SetS32("gUniformLR", 1);
 
         Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
         CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
@@ -264,6 +268,7 @@ namespace Game {
         Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
         Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
+        Conf[EnhancementSection]["uniform_lr"] = std::to_string(Settings.enhancements.uniform_lr);
 
 
         // Controllers

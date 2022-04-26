@@ -29,7 +29,7 @@ struct SoHConfigType {
         bool newdrops = false;
         bool visualagony = false;
         bool mm_bunny_hood = false;
-
+        bool uniform_lr = true;
     } enhancements;
 
     // Controller
