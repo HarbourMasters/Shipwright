@@ -12,8 +12,13 @@ namespace Ship {
 
 			void ReadFromSource();
 			void WriteToSource(ControllerCallback* controller);
+			bool Connected() const { return Cont != nullptr; }
+			bool CanRumble() const { return SDL_GameControllerHasRumble(Cont); }
 
 			std::string GetGuid() { return guid; };
+
+			bool HasPadConf() const { return true; }
+			std::optional<std::string> GetPadConfSection();
 
 		protected:
 			std::string GetControllerType();
@@ -21,6 +26,7 @@ namespace Ship {
 			std::string GetConfSection();
 			std::string GetBindingConfSection();
 			void CreateDefaultBinding();
+			void CreateDefaultPadConf();
 			static bool IsGuidInUse(const std::string& guid);
 
 		private:

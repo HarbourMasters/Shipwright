@@ -74,15 +74,21 @@ namespace Ship {
                     Cont = NewCont;
 
                     std::string BindingConfSection = GetBindingConfSection();
-                    std::shared_ptr<ConfigFile> pBindingConf = GlobalCtx2::GetInstance()->GetConfig();
-                    ConfigFile& BindingConf = *pBindingConf.get();
+                    std::string PadConfSection = *GetPadConfSection();
+                    std::shared_ptr<ConfigFile> config = GlobalCtx2::GetInstance()->GetConfig();
 
-                    if (!BindingConf.has(BindingConfSection)) {
+                    if (!config->has(BindingConfSection)) {
                         CreateDefaultBinding();
+                    }
+
+                    if (!config->has(PadConfSection)) {
+                        CreateDefaultPadConf();
                     }
 
                     LoadBinding();
                     LoadAxisThresholds();
+                    // Update per-controller settings in ImGui menu after opening controller.
+                    Game::LoadPadSettings();
 
                     break;
                 }
@@ -93,6 +99,9 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
+        if (SDL_GameControllerHasRumble(Cont)) {
+            SDL_GameControllerRumble(Cont, 0, 0, 0);
+        }
         if (Cont != nullptr) {
             SDL_GameControllerClose(Cont);
         }
@@ -178,37 +187,41 @@ namespace Ship {
 
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
+            size_t contNumber = GetControllerNumber();
+            float& gyro_drift_x = Game::Settings.controller.extra[contNumber].gyro_drift_x;
+            float& gyro_drift_y = Game::Settings.controller.extra[contNumber].gyro_drift_y;
+            const float gyro_sensitivity = Game::Settings.controller.extra[contNumber].gyro_sensitivity;
+
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
             const char* contName = SDL_GameControllerName(Cont);
             const int isSpecialController = !strcmp("PS5 Controller", contName);
-            const float gyroSensitivity = Game::Settings.controller.gyro_sensitivity;
 
-            if (Game::Settings.controller.gyroDriftX == 0) {
-                Game::Settings.controller.gyroDriftX = gyroData[0];
+            if (gyro_drift_x == 0) {
+                gyro_drift_x = gyroData[0];
             }
 
-            if (Game::Settings.controller.gyroDriftY == 0) {
+            if (gyro_drift_y == 0) {
                 if (isSpecialController == 1) {
-                    Game::Settings.controller.gyroDriftY = gyroData[2];
+                    gyro_drift_y = gyroData[2];
                 }
                 else {
-                    Game::Settings.controller.gyroDriftY = gyroData[1];
+                    gyro_drift_y = gyroData[1];
                 }
             }
 
             if (isSpecialController == 1) {
-                wGyroX = gyroData[0] - Game::Settings.controller.gyroDriftX;
-                wGyroY = -gyroData[2] - Game::Settings.controller.gyroDriftY;
+                wGyroX = gyroData[0] - gyro_drift_x;
+                wGyroY = -gyroData[2] - gyro_drift_y;
             }
             else {
-                wGyroX = gyroData[0] - Game::Settings.controller.gyroDriftX;
-                wGyroY = gyroData[1] - Game::Settings.controller.gyroDriftY;
+                wGyroX = gyroData[0] - gyro_drift_x;
+                wGyroY = gyroData[1] - gyro_drift_y;
             }
 
-            wGyroX *= gyroSensitivity;
-            wGyroY *= gyroSensitivity;
+            wGyroX *= gyro_sensitivity;
+            wGyroY *= gyro_sensitivity;
         }
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
@@ -331,7 +344,10 @@ namespace Ship {
     {
         if (SDL_GameControllerHasRumble(Cont)) {
             if (controller->rumble > 0) {
-                SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 1);
+                float rumble_strength = Game::Settings.controller.extra[GetControllerNumber()].rumble_strength;
+                SDL_GameControllerRumble(Cont, 0xFFFF * rumble_strength, 0xFFFF * rumble_strength, 0);
+            } else {
+                SDL_GameControllerRumble(Cont, 0, 0, 0);
             }
         }
 
@@ -391,6 +407,19 @@ namespace Ship {
         Conf.Save();
     }
 
+    void SDLController::CreateDefaultPadConf() {
+        std::string ConfSection = *GetPadConfSection();
+        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        ConfigFile& Conf = *pConf.get();
+
+        Conf[ConfSection]["gyro_sensitivity"] = std::to_string(1.0f);
+        Conf[ConfSection]["rumble_strength"] = std::to_string(1.0f);
+        Conf[ConfSection]["gyro_drift_x"] = std::to_string(0.0f);
+        Conf[ConfSection]["gyro_drift_y"] = std::to_string(0.0f);
+
+        Conf.Save();
+    }
+
     void SDLController::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
         if (guid.compare(INVALID_SDL_CONTROLLER_GUID)) {
             return;
@@ -409,5 +438,9 @@ namespace Ship {
 
     std::string SDLController::GetBindingConfSection() {
         return GetControllerType() + " CONTROLLER BINDING " + guid;
+    }
+
+    std::optional<std::string> SDLController::GetPadConfSection() {
+        return GetControllerType() + " CONTROLLER PAD " + guid;
     }
 }

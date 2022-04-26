@@ -34,11 +34,14 @@ struct SoHConfigType {
 
     // Controller
     struct {
-        float gyro_sensitivity = 1.0f;
-        float rumble_strength = 1.0f;
+        struct {
+            float gyro_sensitivity = 1.0f;
+            float rumble_strength = 1.0f;
+            float gyro_drift_x = 0.0f;
+            float gyro_drift_y = 0.0f;
+        } extra[4];
+        bool rumble_enabled = true;
         float input_scale = 1.0f;
-        float gyroDriftX = 0.0f;
-        float gyroDriftY = 0.0f;
         bool input_enabled = false;
         bool dpad_pause_name = false;
         bool dpad_ocarina_text = false;
@@ -128,6 +131,7 @@ namespace Game {
     extern SoHConfigType Settings;
     void InitSettings();
     void LoadSettings();
+    void LoadPadSettings();
     void SaveSettings();
     void SetSeqPlayerVolume(SeqPlayers playerId, float volume);
 }
