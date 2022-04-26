@@ -3081,14 +3081,6 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
             gSegments[8] = VIRTUAL_TO_PHYSICAL(pauseCtx->iconItemSegment);
 
-            for (i = 0; i < ARRAY_COUNTU(gItemAgeReqs); i++) {
-                if ((gItemAgeReqs[i] != 9) && (gItemAgeReqs[i] != ((void)0, gSaveContext.linkAge)))
-                {
-                    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyKal.p++, ResourceMgr_LoadTexByName(gItemIcons[i]));
-                    KaleidoScope_GrayOutTextureRGBA32(SEGMENTED_TO_VIRTUAL(gItemIcons[i]), 0x400);
-                }
-            }
-
             pauseCtx->iconItem24Segment = (void*)(((uintptr_t)pauseCtx->iconItemSegment + size0 + 0xF) & ~0xF);
 
 #if 1
@@ -3177,15 +3169,9 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                 if (gSaveContext.language == LANGUAGE_ENG) {
                     memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[36 + gSaveContext.worldMapArea]), 0xA00);
                 } else if (gSaveContext.language == LANGUAGE_GER) {
-                    DmaMgr_SendRequest1(pauseCtx->nameSegment + 0x400,
-                                        (uintptr_t)_map_name_staticSegmentRomStart +
-                                            (((void)0, gSaveContext.worldMapArea) * 0xA00) + 0x16C00,
-                                        0xA00, "../z_kaleido_scope_PAL.c", 3780);
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[59 + gSaveContext.worldMapArea]), 0xA00);
                 } else {
-                    DmaMgr_SendRequest1(pauseCtx->nameSegment + 0x400,
-                                        (uintptr_t)_map_name_staticSegmentRomStart +
-                                            (((void)0, gSaveContext.worldMapArea) * 0xA00) + 0x24800,
-                                        0xA00, "../z_kaleido_scope_PAL.c", 3784);
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[81 + gSaveContext.worldMapArea]), 0xA00);
                 }
             }
             // OTRTODO - player on pause
