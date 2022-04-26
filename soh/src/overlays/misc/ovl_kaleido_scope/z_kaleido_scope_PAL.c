@@ -1614,14 +1614,24 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+    } else {
+      if (CVar_GetS32("gUniformLR", 0) != 0) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+      }
     }
-
+    
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
-
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 220);
+    
+    if (CVar_GetS32("gUniformLR", 0) == 0) { //Restore the misplace gDPSetPrimColor
+      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+    }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+    } else {
+      if (CVar_GetS32("gUniformLR", 0) != 0) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+      }
     }
 
     gSPDisplayList(POLY_KAL_DISP++, gRButtonIconDL);
@@ -3080,14 +3090,6 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                 "../z_kaleido_scope_PAL.c", 3662);
 
             gSegments[8] = VIRTUAL_TO_PHYSICAL(pauseCtx->iconItemSegment);
-
-            for (i = 0; i < ARRAY_COUNTU(gItemAgeReqs); i++) {
-                if ((gItemAgeReqs[i] != 9) && (gItemAgeReqs[i] != ((void)0, gSaveContext.linkAge)))
-                {
-                    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyKal.p++, ResourceMgr_LoadTexByName(gItemIcons[i]));
-                    KaleidoScope_GrayOutTextureRGBA32(SEGMENTED_TO_VIRTUAL(gItemIcons[i]), 0x400);
-                }
-            }
 
             pauseCtx->iconItem24Segment = (void*)(((uintptr_t)pauseCtx->iconItemSegment + size0 + 0xF) & ~0xF);
 

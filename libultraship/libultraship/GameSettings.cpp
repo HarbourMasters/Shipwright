@@ -29,7 +29,9 @@ namespace Game {
     const std::string AudioSection = AUDIO_SECTION;
     const std::string ControllerSection = CONTROLLER_SECTION;
     const std::string EnhancementSection = ENHANCEMENTS_SECTION;
+    const std::string CosmeticsSection = COSMETICS_SECTION;
     const std::string CheatSection = CHEATS_SECTION;
+
 
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, Settings.audio.music_main);
@@ -74,6 +76,10 @@ namespace Game {
       
         Settings.enhancements.mm_bunny_hood = stob(Conf[EnhancementSection]["mm_bunny_hood"]);
         CVar_SetS32("gMMBunnyHood", Settings.enhancements.mm_bunny_hood);
+	    
+        Settings.enhancements.uniform_lr = stob(Conf[EnhancementSection]["uniform_lr"]);
+        //CVar_SetS32("gUniformLR", Settings.enhancements.uniform_lr);
+        CVar_SetS32("gUniformLR", 1);
 
         Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
         CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
@@ -102,6 +108,84 @@ namespace Game {
         CVar_SetFloat("gInputScale", Settings.controller.input_scale);
 
         Settings.controller.input_enabled = stob(Conf[ControllerSection]["input_enabled"]);
+
+        CVar_SetS32("gInputEnabled", Settings.controller.input_enabled);
+        //Tunics
+        Settings.cosmetic.tunic_kokiri_red = (Conf[CosmeticsSection]["tunic_kokiri_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_kokiri_red"]) : Settings.cosmetic.tunic_kokiri_red;
+        CVar_SetS32("gTunic_Kokiri_Red", Settings.cosmetic.tunic_kokiri_red);
+        Settings.cosmetic.tunic_kokiri_green = (Conf[CosmeticsSection]["tunic_kokiri_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_kokiri_green"]) : Settings.cosmetic.tunic_kokiri_green;
+        CVar_SetS32("gTunic_Kokiri_Green", Settings.cosmetic.tunic_kokiri_green);
+        Settings.cosmetic.tunic_kokiri_blue = (Conf[CosmeticsSection]["tunic_kokiri_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_kokiri_blue"]) : Settings.cosmetic.tunic_kokiri_blue;
+        CVar_SetS32("gTunic_Kokiri_Blue", Settings.cosmetic.tunic_kokiri_blue);
+
+        Settings.cosmetic.tunic_goron_red = (Conf[CosmeticsSection]["tunic_goron_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_goron_red"]) : Settings.cosmetic.tunic_goron_red;
+        CVar_SetS32("gTunic_Goron_Red", Settings.cosmetic.tunic_goron_red);
+        Settings.cosmetic.tunic_goron_green = (Conf[CosmeticsSection]["tunic_goron_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_goron_green"]) : Settings.cosmetic.tunic_goron_green;
+        CVar_SetS32("gTunic_Goron_Green", Settings.cosmetic.tunic_goron_green);
+        Settings.cosmetic.tunic_goron_blue = (Conf[CosmeticsSection]["tunic_goron_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_goron_blue"]) : Settings.cosmetic.tunic_goron_blue;
+        CVar_SetS32("gTunic_Goron_Blue", Settings.cosmetic.tunic_goron_blue);
+
+        Settings.cosmetic.tunic_zora_red = (Conf[CosmeticsSection]["tunic_zora_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_zora_red"]) : Settings.cosmetic.tunic_zora_red;
+        CVar_SetS32("gTunic_Zora_Red", Settings.cosmetic.tunic_zora_red);
+        Settings.cosmetic.tunic_zora_green = (Conf[CosmeticsSection]["tunic_zora_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["tunic_zora_green"]) : Settings.cosmetic.tunic_zora_green;
+        CVar_SetS32("gTunic_Zora_Green", Settings.cosmetic.tunic_zora_green);
+        Settings.cosmetic.tunic_zora_blue = (Conf[CosmeticsSection]["tunic_zora_blue"] != "" ) ? Ship::stoi(Conf[CosmeticsSection]["tunic_zora_blue"]) : Settings.cosmetic.tunic_zora_blue;
+        CVar_SetS32("gTunic_Zora_Blue", Settings.cosmetic.tunic_zora_blue);
+        //Navi
+        Settings.cosmetic.navi_idle_inner_red = (Conf[CosmeticsSection]["navi_idle_inner_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_inner_red"]) : Settings.cosmetic.navi_idle_inner_red;
+        CVar_SetS32("gNavi_Idle_Inner_Red", Settings.cosmetic.navi_idle_inner_red);
+        Settings.cosmetic.navi_idle_inner_green = (Conf[CosmeticsSection]["navi_idle_inner_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_inner_green"]) : Settings.cosmetic.navi_idle_inner_green;
+        CVar_SetS32("gNavi_Idle_Inner_Green", Settings.cosmetic.navi_idle_inner_green);
+        Settings.cosmetic.navi_idle_inner_blue = (Conf[CosmeticsSection]["navi_idle_inner_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_inner_blue"]) : Settings.cosmetic.navi_idle_inner_blue;
+        CVar_SetS32("gNavi_Idle_Inner_Blue", Settings.cosmetic.navi_idle_inner_blue);
+        Settings.cosmetic.navi_idle_outer_red = (Conf[CosmeticsSection]["navi_idle_outer_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_outer_red"]) : Settings.cosmetic.navi_idle_outer_red;
+        CVar_SetS32("gNavi_Idle_Outer_Red", Settings.cosmetic.navi_idle_outer_red);
+        Settings.cosmetic.navi_idle_outer_green = (Conf[CosmeticsSection]["navi_idle_outer_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_outer_green"]) : Settings.cosmetic.navi_idle_outer_green;
+        CVar_SetS32("gNavi_Idle_Outer_Green", Settings.cosmetic.navi_idle_outer_green);
+        Settings.cosmetic.navi_idle_outer_blue = (Conf[CosmeticsSection]["navi_idle_outer_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_idle_outer_blue"]) : Settings.cosmetic.navi_idle_outer_blue;
+        CVar_SetS32("gNavi_Idle_Outer_Blue", Settings.cosmetic.navi_idle_outer_blue);
+
+        Settings.cosmetic.navi_npc_inner_red = (Conf[CosmeticsSection]["navi_npc_inner_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_inner_red"]) : Settings.cosmetic.navi_npc_inner_red;
+        CVar_SetS32("gNavi_NPC_Inner_Red", Settings.cosmetic.navi_npc_inner_red);
+        Settings.cosmetic.navi_npc_inner_green = (Conf[CosmeticsSection]["navi_npc_inner_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_inner_green"]) : Settings.cosmetic.navi_npc_inner_green;
+        CVar_SetS32("gNavi_NPC_Inner_Green", Settings.cosmetic.navi_npc_inner_green);
+        Settings.cosmetic.navi_npc_inner_blue = (Conf[CosmeticsSection]["navi_npc_inner_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_inner_blue"]) : Settings.cosmetic.navi_npc_inner_blue;
+        CVar_SetS32("gNavi_NPC_Inner_Blue", Settings.cosmetic.navi_npc_inner_blue);
+        Settings.cosmetic.navi_npc_outer_red = (Conf[CosmeticsSection]["navi_npc_outer_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_outer_red"]) : Settings.cosmetic.navi_npc_outer_red;
+        CVar_SetS32("gNavi_NPC_Outer_Red", Settings.cosmetic.navi_npc_outer_red);
+        Settings.cosmetic.navi_npc_outer_green = (Conf[CosmeticsSection]["navi_npc_outer_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_outer_green"]) : Settings.cosmetic.navi_npc_outer_green;
+        CVar_SetS32("gNavi_NPC_Outer_Green", Settings.cosmetic.navi_npc_outer_green);
+        Settings.cosmetic.navi_npc_outer_blue = (Conf[CosmeticsSection]["navi_npc_outer_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_npc_outer_blue"]) : Settings.cosmetic.navi_npc_outer_blue;
+        CVar_SetS32("gNavi_NPC_Outer_Blue", Settings.cosmetic.navi_npc_outer_blue);
+
+        Settings.cosmetic.navi_enemy_inner_red = (Conf[CosmeticsSection]["navi_enemy_inner_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_inner_red"]) : Settings.cosmetic.navi_enemy_inner_red;
+        CVar_SetS32("gNavi_Enemy_Inner_Red", Settings.cosmetic.navi_enemy_inner_red);
+        Settings.cosmetic.navi_enemy_inner_green = (Conf[CosmeticsSection]["navi_enemy_inner_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_inner_green"]) : Settings.cosmetic.navi_enemy_inner_green;
+        CVar_SetS32("gNavi_Enemy_Inner_Green", Settings.cosmetic.navi_enemy_inner_green);
+        Settings.cosmetic.navi_enemy_inner_blue = (Conf[CosmeticsSection]["navi_enemy_inner_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_inner_blue"]) : Settings.cosmetic.navi_enemy_inner_blue;
+        CVar_SetS32("gNavi_Enemy_Inner_Blue", Settings.cosmetic.navi_enemy_inner_blue);
+        Settings.cosmetic.navi_enemy_outer_red = (Conf[CosmeticsSection]["navi_enemy_outer_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_outer_red"]) : Settings.cosmetic.navi_enemy_outer_red;
+        CVar_SetS32("gNavi_Enemy_Outer_Red", Settings.cosmetic.navi_enemy_outer_red);
+        Settings.cosmetic.navi_enemy_outer_green = (Conf[CosmeticsSection]["navi_enemy_outer_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_outer_green"]) : Settings.cosmetic.navi_enemy_outer_green;
+        CVar_SetS32("gNavi_Enemy_Outer_Green", Settings.cosmetic.navi_enemy_outer_green);
+        Settings.cosmetic.navi_enemy_outer_blue = (Conf[CosmeticsSection]["navi_enemy_outer_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_enemy_outer_blue"]) : Settings.cosmetic.navi_enemy_outer_blue;
+        CVar_SetS32("gNavi_Enemy_Outer_Blue", Settings.cosmetic.navi_enemy_outer_blue);
+
+        Settings.cosmetic.navi_prop_inner_red = (Conf[CosmeticsSection]["navi_prop_inner_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_inner_red"]) : Settings.cosmetic.navi_prop_inner_red;
+        CVar_SetS32("gNavi_Prop_Inner_Red", Settings.cosmetic.navi_prop_inner_red);
+        Settings.cosmetic.navi_prop_inner_green = (Conf[CosmeticsSection]["navi_prop_inner_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_inner_green"]) : Settings.cosmetic.navi_prop_inner_green;
+        CVar_SetS32("gNavi_Prop_Inner_Green", Settings.cosmetic.navi_prop_inner_green);
+        Settings.cosmetic.navi_prop_inner_blue = (Conf[CosmeticsSection]["navi_prop_inner_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_inner_blue"]) : Settings.cosmetic.navi_prop_inner_blue;
+        CVar_SetS32("gNavi_Prop_Inner_Blue", Settings.cosmetic.navi_prop_inner_blue);
+        Settings.cosmetic.navi_prop_outer_red = (Conf[CosmeticsSection]["navi_prop_outer_red"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_outer_red"]) : Settings.cosmetic.navi_prop_outer_red;
+        CVar_SetS32("gNavi_Prop_Outer_Red", Settings.cosmetic.navi_prop_outer_red);
+        Settings.cosmetic.navi_prop_outer_green = (Conf[CosmeticsSection]["navi_prop_outer_green"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_outer_green"]) : Settings.cosmetic.navi_prop_outer_green;
+        CVar_SetS32("gNavi_Prop_Outer_Green", Settings.cosmetic.navi_prop_outer_green);
+        Settings.cosmetic.navi_prop_outer_blue = (Conf[CosmeticsSection]["navi_prop_outer_blue"] != "") ? Ship::stoi(Conf[CosmeticsSection]["navi_prop_outer_blue"]) : Settings.cosmetic.navi_prop_outer_blue;
+        CVar_SetS32("gNavi_Prop_Outer_Blue", Settings.cosmetic.navi_prop_outer_blue);
+
+
+
         CVar_SetS32("gInputEnabled", Settings.controller.input_enabled);
 
         Settings.controller.dpad_pause_name = stob(Conf[ControllerSection]["dpad_pause_name"]);
@@ -202,6 +286,7 @@ namespace Game {
         Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
         Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
+        Conf[EnhancementSection]["uniform_lr"] = std::to_string(Settings.enhancements.uniform_lr);
 
 
         // Controllers
@@ -211,6 +296,48 @@ namespace Game {
         Conf[ControllerSection]["dpad_pause_name"] = std::to_string(Settings.controller.dpad_pause_name);
         Conf[ControllerSection]["dpad_ocarina_text"] = std::to_string(Settings.controller.dpad_ocarina_text);
         Conf[ControllerSection]["dpad_shop"] = std::to_string(Settings.controller.dpad_shop);
+
+
+        // Cosmetics 
+        Conf[CosmeticsSection]["tunic_kokiri_red"] = std::to_string(Settings.cosmetic.tunic_kokiri_red);
+        Conf[CosmeticsSection]["tunic_kokiri_green"] = std::to_string(Settings.cosmetic.tunic_kokiri_green);
+        Conf[CosmeticsSection]["tunic_kokiri_blue"] = std::to_string(Settings.cosmetic.tunic_kokiri_blue);
+
+        Conf[CosmeticsSection]["tunic_goron_red"] = std::to_string(Settings.cosmetic.tunic_goron_red);
+        Conf[CosmeticsSection]["tunic_goron_green"] = std::to_string(Settings.cosmetic.tunic_goron_green);
+        Conf[CosmeticsSection]["tunic_goron_blue"] = std::to_string(Settings.cosmetic.tunic_goron_blue);
+
+        Conf[CosmeticsSection]["tunic_zora_red"] = std::to_string(Settings.cosmetic.tunic_zora_red);
+        Conf[CosmeticsSection]["tunic_zora_green"] = std::to_string(Settings.cosmetic.tunic_zora_green);
+        Conf[CosmeticsSection]["tunic_zora_blue"] = std::to_string(Settings.cosmetic.tunic_zora_blue);
+
+        Conf[CosmeticsSection]["navi_idle_inner_red"] = std::to_string(Settings.cosmetic.navi_idle_inner_red);
+        Conf[CosmeticsSection]["navi_idle_inner_green"] = std::to_string(Settings.cosmetic.navi_idle_inner_green);
+        Conf[CosmeticsSection]["navi_idle_inner_blue"] = std::to_string(Settings.cosmetic.navi_idle_inner_blue);
+        Conf[CosmeticsSection]["navi_idle_outer_red"] = std::to_string(Settings.cosmetic.navi_idle_outer_red);
+        Conf[CosmeticsSection]["navi_idle_outer_green"] = std::to_string(Settings.cosmetic.navi_idle_outer_green);
+        Conf[CosmeticsSection]["navi_idle_outer_blue"] = std::to_string(Settings.cosmetic.navi_idle_outer_blue);
+
+        Conf[CosmeticsSection]["navi_npc_inner_red"] = std::to_string(Settings.cosmetic.navi_npc_inner_red);
+        Conf[CosmeticsSection]["navi_npc_inner_green"] = std::to_string(Settings.cosmetic.navi_npc_inner_green);
+        Conf[CosmeticsSection]["navi_npc_inner_blue"] = std::to_string(Settings.cosmetic.navi_npc_inner_blue);
+        Conf[CosmeticsSection]["navi_npc_outer_red"] = std::to_string(Settings.cosmetic.navi_npc_outer_red);
+        Conf[CosmeticsSection]["navi_npc_outer_green"] = std::to_string(Settings.cosmetic.navi_npc_outer_green);
+        Conf[CosmeticsSection]["navi_npc_outer_blue"] = std::to_string(Settings.cosmetic.navi_npc_outer_blue);
+
+        Conf[CosmeticsSection]["navi_enemy_inner_red"] = std::to_string(Settings.cosmetic.navi_enemy_inner_red);
+        Conf[CosmeticsSection]["navi_enemy_inner_green"] = std::to_string(Settings.cosmetic.navi_enemy_inner_green);
+        Conf[CosmeticsSection]["navi_enemy_inner_blue"] = std::to_string(Settings.cosmetic.navi_enemy_inner_blue);
+        Conf[CosmeticsSection]["navi_enemy_outer_red"] = std::to_string(Settings.cosmetic.navi_enemy_outer_red);
+        Conf[CosmeticsSection]["navi_enemy_outer_green"] = std::to_string(Settings.cosmetic.navi_enemy_outer_green);
+        Conf[CosmeticsSection]["navi_enemy_outer_blue"] = std::to_string(Settings.cosmetic.navi_enemy_outer_blue);
+
+        Conf[CosmeticsSection]["navi_prop_inner_red"] = std::to_string(Settings.cosmetic.navi_prop_inner_red);
+        Conf[CosmeticsSection]["navi_prop_inner_green"] = std::to_string(Settings.cosmetic.navi_prop_inner_green);
+        Conf[CosmeticsSection]["navi_prop_inner_blue"] = std::to_string(Settings.cosmetic.navi_prop_inner_blue);
+        Conf[CosmeticsSection]["navi_prop_outer_red"] = std::to_string(Settings.cosmetic.navi_prop_outer_red);
+        Conf[CosmeticsSection]["navi_prop_outer_green"] = std::to_string(Settings.cosmetic.navi_prop_outer_green);
+        Conf[CosmeticsSection]["navi_prop_outer_blue"] = std::to_string(Settings.cosmetic.navi_prop_outer_blue);
 
         // Cheats
         Conf[CheatSection]["debug_mode"] = std::to_string(Settings.cheats.debug_mode);
