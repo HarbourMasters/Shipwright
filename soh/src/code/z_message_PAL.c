@@ -1096,6 +1096,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA:
+                msgCtx->textDrawPos = i + 1;
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(globalCtx);
                     *gfxP = gfx;
