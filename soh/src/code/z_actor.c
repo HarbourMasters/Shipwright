@@ -1009,7 +1009,6 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     s32 doubleWidth;
     s32 titleY;
     s32 titleSecondY;
-    s32 textureLanguageOffset;
 
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
@@ -1020,7 +1019,6 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 
         OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2824);
 
-        textureLanguageOffset = width * height * gSaveContext.language;
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
 
@@ -1030,7 +1028,8 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         gDPSetPrimColor(TITLE_CARD_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset, G_IM_FMT_IA,
+        gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
+
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1042,7 +1041,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 
         // If texture is bigger than 0x1000, display the rest
         if (height > 0) {
-            gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + 0x1000,
+            gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture + 0x1000,
                                 G_IM_FMT_IA,
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
