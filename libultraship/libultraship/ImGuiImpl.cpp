@@ -1538,14 +1538,15 @@ namespace SohImGui {
                         EnhancementCheckbox(name.c_str(), toggleName.c_str());
                         customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
                     }
-                    ImGui::EndMenu();
                 }
             }
 
-            ImGui::EndMenuBar();
-        }
+            ImGui::End();
 
-        ImGui::End();
+            if (Game::Settings.debug.soh) {
+                const float framerate = ImGui::GetIO().Framerate;
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
 
         for (const auto& category : hiddenwindowCategories) {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
@@ -1584,7 +1585,6 @@ namespace SohImGui {
             if (window.drawFunc != nullptr) {
                 window.drawFunc(window.enabled);
             }
-        }
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

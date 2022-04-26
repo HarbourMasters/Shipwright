@@ -25,12 +25,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 				OTRExporter_Scalar::WriteScalarType(&vec->scalars[k], writer);
 		}
 		else
-		{	
-			if (arr->resList[i]->GetResourceType() == ZResourceType::Scalar)
-			{
-				printf("");
-			}
-
+		{
 			auto expSet = Globals::Instance->GetExporterSet();
 			expSet->exporters[arr->resList[i]->GetResourceType()]->Save(arr->resList[i], outPath, writer, false);
 		}
