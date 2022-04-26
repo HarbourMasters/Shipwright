@@ -39,11 +39,6 @@ MessageTableEntry* sStaffMessageEntryTablePtr;
 
 char* _message_0xFFFC_nes;
 
-//MessageTableEntry* sNesMessageEntryTablePtr = sNesMessageEntryTable;
-//const char** sGerMessageEntryTablePtr = sGerMessageEntryTable;
-//const char** sFraMessageEntryTablePtr = sFraMessageEntryTable;
-//MessageTableEntry* sStaffMessageEntryTablePtr = sStaffMessageEntryTable;
-
 s16 sTextboxBackgroundForePrimColors[][3] = {
     { 255, 255, 255 }, { 50, 20, 0 },     { 255, 60, 0 },    { 255, 255, 255 },
     { 255, 255, 255 }, { 255, 255, 255 }, { 255, 255, 255 }, { 255, 255, 255 },
@@ -205,8 +200,6 @@ void Message_DrawTextChar(GlobalContext* globalCtx, void* textureImage, Gfx** p)
     s16 x = msgCtx->textPosX;
     s16 y = msgCtx->textPosY;
 
-    //gSPInvalidateTexCache(gfx++, 0);
-    //gSPInvalidateTexCache(gfx++, msgCtx->textboxSegment);
     gSPInvalidateTexCache(gfx++, textureImage);
 
     gDPPipeSync(gfx++);
