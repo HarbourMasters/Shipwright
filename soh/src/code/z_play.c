@@ -421,7 +421,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
 
     input = globalCtx->state.input;
 
-    if ((SREG(1) < 0) || (DREG(0) != 0)) {
+        if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
     }
