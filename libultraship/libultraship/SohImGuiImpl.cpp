@@ -53,6 +53,21 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+    float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
+    float goron_col[3] = { 0.392f, 0.078f, 0.0f };
+    float zora_col[3] = { 0.0f, 0.235f, 0.392f };
+
+    float navi_idle_i_col[3] = { 0.0f, 0.0f, 0.0f };
+    float navi_idle_o_col[3] = { 0.0f, 0.0f, 0.0f };
+
+    float navi_npc_i_col[3] = { 0.0f, 0.0f, 0.0f };
+    float navi_npc_o_col[3] = { 0.0f, 0.0f, 0.0f };
+
+    float navi_enemy_i_col[3] = { 0.0f, 0.0f, 0.0f };
+    float navi_enemy_o_col[3] = { 0.0f, 0.0f, 0.0f };
+
+    float navi_prop_i_col[3] = { 0.0f, 0.0f, 0.0f };
+    float navi_prop_o_col[3] = { 0.0f, 0.0f, 0.0f };
 
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
@@ -66,6 +81,49 @@ namespace SohImGui {
             ImGui_ImplWin32_Init(impl.dx11.window);
             break;
         }
+        kokiri_col[0] = std::clamp((float) CVar_GetS32((char*)"gTunic_Kokiri_Red", 30)/255, 0.0f, 1.0f);
+        kokiri_col[1] = std::clamp((float)CVar_GetS32((char*)"gTunic_Kokiri_Green", 105) / 255, 0.0f, 1.0f);
+        kokiri_col[2] = std::clamp((float)CVar_GetS32((char*)"gTunic_Kokiri_Blue", 27) / 255, 0.0f, 1.0f);
+
+        goron_col[0] = std::clamp((float)CVar_GetS32((char*)"gTunic_Goron_Red", 100) / 255, 0.0f, 1.0f);
+        goron_col[1] = std::clamp((float)CVar_GetS32((char*)"gTunic_Goron_Green", 20) / 255, 0.0f, 1.0f);
+        goron_col[2] = std::clamp((float)CVar_GetS32((char*)"gTunic_Goron_Blue", 0) / 255, 0.0f, 1.0f);
+        
+        zora_col[0] = std::clamp((float)CVar_GetS32((char*)"gTunic_Zora_Red", 0) / 255, 0.0f, 1.0f);
+        zora_col[1] = std::clamp((float)CVar_GetS32((char*)"gTunic_Zora_Green", 60) / 255, 0.0f, 1.0f);
+        zora_col[2] = std::clamp((float)CVar_GetS32((char*)"gTunic_Zora_Blue", 100) / 255, 0.0f, 1.0f);
+
+        navi_idle_i_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Inner_Red", 0) / 255, 0.0f, 1.0f);
+        navi_idle_i_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Inner_Green", 0) / 255, 0.0f, 1.0f);
+        navi_idle_i_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Inner_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_idle_o_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Outer_Red", 0) / 255, 0.0f, 1.0f);
+        navi_idle_o_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Outer_Green", 0) / 255, 0.0f, 1.0f);
+        navi_idle_o_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Idle_Outer_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_npc_i_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Inner_Red", 0) / 255, 0.0f, 1.0f);
+        navi_npc_i_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Inner_Green", 0) / 255, 0.0f, 1.0f);
+        navi_npc_i_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Inner_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_npc_o_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Outer_Red", 0) / 255, 0.0f, 1.0f);
+        navi_npc_o_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Outer_Green", 0) / 255, 0.0f, 1.0f);
+        navi_npc_o_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_NPC_Outer_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_enemy_i_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Inner_Red", 0) / 255, 0.0f, 1.0f);
+        navi_enemy_i_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Inner_Green", 0) / 255, 0.0f, 1.0f);
+        navi_enemy_i_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Inner_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_enemy_o_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Outer_Red", 0) / 255, 0.0f, 1.0f);
+        navi_enemy_o_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Outer_Green", 0) / 255, 0.0f, 1.0f);
+        navi_enemy_o_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Enemy_Outer_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_prop_i_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Inner_Red", 0) / 255, 0.0f, 1.0f);
+        navi_prop_i_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Inner_Green", 0) / 255, 0.0f, 1.0f);
+        navi_prop_i_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Inner_Blue", 0) / 255, 0.0f, 1.0f);
+
+        navi_prop_o_col[0] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Outer_Red", 0) / 255, 0.0f, 1.0f);
+        navi_prop_o_col[1] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Outer_Green", 0) / 255, 0.0f, 1.0f);
+        navi_prop_o_col[2] = std::clamp((float)CVar_GetS32((char*)"gNavi_Prop_Outer_Blue", 0) / 255, 0.0f, 1.0f);
     }
 
     void ImGuiBackendInit() {
@@ -520,6 +578,126 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+
+            if (ImGui::BeginMenu("Cosmetics")) {
+                ImGui::Text("Tunics");
+                ImGui::Separator();
+                if (ImGui::ColorEdit3("Kokiri Tunic", kokiri_col)) {
+                    Game::Settings.cosmetic.tunic_kokiri_red = (int) (kokiri_col[0] * 255);
+                    Game::Settings.cosmetic.tunic_kokiri_green = (int) (kokiri_col[1] * 255);
+                    Game::Settings.cosmetic.tunic_kokiri_blue = (int) (kokiri_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gTunic_Kokiri_Red"), Game::Settings.cosmetic.tunic_kokiri_red);
+                    CVar_SetS32(const_cast<char*>("gTunic_Kokiri_Green"), Game::Settings.cosmetic.tunic_kokiri_green);
+                    CVar_SetS32(const_cast<char*>("gTunic_Kokiri_Blue"), Game::Settings.cosmetic.tunic_kokiri_blue);
+                    needs_save = true;
+                }
+                if (ImGui::ColorEdit3("Goron Tunic", goron_col)) {
+                    Game::Settings.cosmetic.tunic_goron_red = (int)(goron_col[0] * 255);
+                    Game::Settings.cosmetic.tunic_goron_green = (int)(goron_col[1] * 255);
+                    Game::Settings.cosmetic.tunic_goron_blue = (int)(goron_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gTunic_Goron_Red"), Game::Settings.cosmetic.tunic_goron_red);
+                    CVar_SetS32(const_cast<char*>("gTunic_Goron_Green"), Game::Settings.cosmetic.tunic_goron_green);
+                    CVar_SetS32(const_cast<char*>("gTunic_Goron_Blue"), Game::Settings.cosmetic.tunic_goron_blue);
+                    needs_save = true;
+                }
+                if (ImGui::ColorEdit3("Zora Tunic", zora_col)) {
+                    Game::Settings.cosmetic.tunic_zora_red = (int)(zora_col[0] * 255);
+                    Game::Settings.cosmetic.tunic_zora_green = (int)(zora_col[1] * 255);
+                    Game::Settings.cosmetic.tunic_zora_blue = (int)(zora_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gTunic_Zora_Red"), Game::Settings.cosmetic.tunic_zora_red);
+                    CVar_SetS32(const_cast<char*>("gTunic_Zora_Green"), Game::Settings.cosmetic.tunic_zora_green);
+                    CVar_SetS32(const_cast<char*>("gTunic_Zora_Blue"), Game::Settings.cosmetic.tunic_zora_blue);
+                    needs_save = true;
+                }
+                ImGui::Text("Navi");
+                ImGui::Separator();
+                if (ImGui::ColorEdit3("Navi Idle Inner", navi_idle_i_col)) {
+                    Game::Settings.cosmetic.navi_idle_inner_red = (int)(navi_idle_i_col[0] * 255);
+                    Game::Settings.cosmetic.navi_idle_inner_green = (int)(navi_idle_i_col[1] * 255);
+                    Game::Settings.cosmetic.navi_idle_inner_blue = (int)(navi_idle_i_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Inner_Red"), Game::Settings.cosmetic.navi_idle_inner_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Inner_Green"), Game::Settings.cosmetic.navi_idle_inner_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Inner_Blue"), Game::Settings.cosmetic.navi_idle_inner_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi Idle Outer", navi_idle_o_col)) {
+                    Game::Settings.cosmetic.navi_idle_outer_red = (int)(navi_idle_o_col[0] * 255);
+                    Game::Settings.cosmetic.navi_idle_outer_green = (int)(navi_idle_o_col[1] * 255);
+                    Game::Settings.cosmetic.navi_idle_outer_blue = (int)(navi_idle_o_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Outer_Red"), Game::Settings.cosmetic.navi_idle_outer_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Outer_Green"), Game::Settings.cosmetic.navi_idle_outer_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Idle_Outer_Blue"), Game::Settings.cosmetic.navi_idle_outer_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi NPC Inner", navi_npc_i_col)) {
+                    Game::Settings.cosmetic.navi_npc_inner_red = (int)(navi_npc_i_col[0] * 255);
+                    Game::Settings.cosmetic.navi_npc_inner_green = (int)(navi_npc_i_col[1] * 255);
+                    Game::Settings.cosmetic.navi_npc_inner_blue = (int)(navi_npc_i_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Inner_Red"), Game::Settings.cosmetic.navi_npc_inner_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Inner_Green"), Game::Settings.cosmetic.navi_npc_inner_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Inner_Blue"), Game::Settings.cosmetic.navi_npc_inner_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi NPC Outer", navi_npc_o_col)) {
+                    Game::Settings.cosmetic.navi_npc_outer_red = (int)(navi_npc_o_col[0] * 255);
+                    Game::Settings.cosmetic.navi_npc_outer_green = (int)(navi_npc_o_col[1] * 255);
+                    Game::Settings.cosmetic.navi_npc_outer_blue = (int)(navi_npc_o_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Outer_Red"), Game::Settings.cosmetic.navi_npc_outer_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Outer_Green"), Game::Settings.cosmetic.navi_npc_outer_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_NPC_Outer_Blue"), Game::Settings.cosmetic.navi_npc_outer_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi Enemy Inner", navi_enemy_i_col)) {
+                    Game::Settings.cosmetic.navi_enemy_inner_red = (int)(navi_enemy_i_col[0] * 255);
+                    Game::Settings.cosmetic.navi_enemy_inner_green = (int)(navi_enemy_i_col[1] * 255);
+                    Game::Settings.cosmetic.navi_enemy_inner_blue = (int)(navi_enemy_i_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Inner_Red"), Game::Settings.cosmetic.navi_enemy_inner_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Inner_Green"), Game::Settings.cosmetic.navi_enemy_inner_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Inner_Blue"), Game::Settings.cosmetic.navi_enemy_inner_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi Enemy Outer", navi_enemy_o_col)) {
+                    Game::Settings.cosmetic.navi_enemy_outer_red = (int)(navi_enemy_o_col[0] * 255);
+                    Game::Settings.cosmetic.navi_enemy_outer_green = (int)(navi_enemy_o_col[1] * 255);
+                    Game::Settings.cosmetic.navi_enemy_outer_blue = (int)(navi_enemy_o_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Outer_Red"), Game::Settings.cosmetic.navi_enemy_outer_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Outer_Green"), Game::Settings.cosmetic.navi_enemy_outer_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Enemy_Outer_Blue"), Game::Settings.cosmetic.navi_enemy_outer_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi Prop Inner", navi_prop_i_col)) {
+                    Game::Settings.cosmetic.navi_prop_inner_red = (int)(navi_prop_i_col[0] * 255);
+                    Game::Settings.cosmetic.navi_prop_inner_green = (int)(navi_prop_i_col[1] * 255);
+                    Game::Settings.cosmetic.navi_prop_inner_blue = (int)(navi_prop_i_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Inner_Red"), Game::Settings.cosmetic.navi_prop_inner_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Inner_Green"), Game::Settings.cosmetic.navi_prop_inner_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Inner_Blue"), Game::Settings.cosmetic.navi_prop_inner_blue);
+                    needs_save = true;
+                }
+
+                if (ImGui::ColorEdit3("Navi Prop Outer", navi_prop_o_col)) {
+                    Game::Settings.cosmetic.navi_prop_outer_red = (int)(navi_prop_o_col[0] * 255);
+                    Game::Settings.cosmetic.navi_prop_outer_green = (int)(navi_prop_o_col[1] * 255);
+                    Game::Settings.cosmetic.navi_prop_outer_blue = (int)(navi_prop_o_col[2] * 255);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Outer_Red"), Game::Settings.cosmetic.navi_prop_outer_red);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Outer_Green"), Game::Settings.cosmetic.navi_prop_outer_green);
+                    CVar_SetS32(const_cast<char*>("gNavi_Prop_Outer_Blue"), Game::Settings.cosmetic.navi_prop_outer_blue);
+                    needs_save = true;
+                }
+
+                ImGui::EndMenu();
+            }
+
+
+            if (ImGui::BeginMenu("Developer Tools")) {
+                HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
+                HOOK(ImGui::MenuItem("Console", nullptr, &console->opened));
                 if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
                     CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
                     needs_save = true;
