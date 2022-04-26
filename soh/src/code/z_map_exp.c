@@ -408,7 +408,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                 //gMapData->owMinimapTexSize[mapIndex], "../z_map_exp.c", 309);
 
             if (sEntranceIconMapIndex < 24)
-                memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableOW[sEntranceIconMapIndex]), gMapData->owMinimapTexSize[mapIndex]);
+                memcpy(globalCtx->interfaceCtx.mapSegment, minimapTableOW[sEntranceIconMapIndex], strlen(minimapTableOW[sEntranceIconMapIndex]) + 1);
 
             interfaceCtx->unk_258 = mapIndex;
             break;
@@ -440,7 +440,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, "../z_map_exp.c", 346);
 
-            memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]), 0xFF0);
+            memcpy(globalCtx->interfaceCtx.mapSegment, minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room], strlen(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]) + 1);
 
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];

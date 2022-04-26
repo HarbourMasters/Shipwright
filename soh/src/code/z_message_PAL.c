@@ -1531,10 +1531,8 @@ void Message_Decode(GlobalContext* globalCtx) {
             msgCtx->textboxBackgroundYOffsetIdx = (font->msgBuf[msgCtx->msgBufPos + 3] & 0xF0) >> 4;
             msgCtx->textboxBackgroundUnkArg = font->msgBuf[msgCtx->msgBufPos + 3] & 0xF;
 
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
-                   ResourceMgr_LoadTexByName(gRedMessageXLeftTex), 0x900);
-            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900,
-                   ResourceMgr_LoadTexByName(gRedMessageXRightTex), 0x900);
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gRedMessageXLeftTex, strlen(gRedMessageXLeftTex) + 1);
+            memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE + 0x900, gRedMessageXRightTex, strlen(gRedMessageXRightTex) + 1);
 
             msgCtx->msgBufPos += 3;
             R_TEXTBOX_BG_YPOS = R_TEXTBOX_Y + 8;
@@ -1668,7 +1666,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     // "Text Box Type"
     osSyncPrintf("吹き出し種類＝%d\n", msgCtx->textBoxType);
     if (textBoxType < TEXTBOX_TYPE_NONE_BOTTOM) {
-        memcpy(msgCtx->textboxSegment, ResourceMgr_LoadTexByName(msgStaticTbl[messageStaticIndices[textBoxType]]), MESSAGE_STATIC_TEX_SIZE);
+        memcpy(msgCtx->textboxSegment, msgStaticTbl[messageStaticIndices[textBoxType]], strlen(msgStaticTbl[messageStaticIndices[textBoxType]]) + 1);
         if (textBoxType == TEXTBOX_TYPE_BLACK) {
             msgCtx->textboxColorRed = 0;
             msgCtx->textboxColorGreen = 0;

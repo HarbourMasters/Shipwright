@@ -2,6 +2,7 @@
 #include "../libultraship/SohImGuiImpl.h"
 #include <vector>
 #include <string>
+#include <map>
 
 #define Path _Path
 #define PATH_HACK

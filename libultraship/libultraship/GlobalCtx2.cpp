@@ -82,4 +82,8 @@ namespace Ship {
             std::cout << "Log initialization failed: " << ex.what() << std::endl;
         }
     }
+
+    ModManager* GlobalCtx2::GetModManager() {
+        return INSTANCE;
+    }
 }

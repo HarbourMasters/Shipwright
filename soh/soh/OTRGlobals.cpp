@@ -188,7 +188,7 @@ extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->CacheDirectory(resName);
 }
 extern "C" void ResourceMgr_DirtyDirectory(const char* resName) {
-    OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
+    //OTRGlobals::Instance->context->GetResourceManager()->DirtyDirectory(resName);
 }
 
 extern "C" void ResourceMgr_InvalidateCache() {

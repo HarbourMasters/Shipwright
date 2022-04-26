@@ -1,6 +1,6 @@
 #include "TextureMod.h"
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <iostream>
 #include <filesystem>
@@ -16,8 +16,8 @@ namespace fs = std::filesystem;
 
 namespace Ship {
 	void TextureModule::Init() {
-		BIND_HOOK(LOOKUP_TEXTURE, Hook_LookupTexture);
 		BIND_HOOK(GRAYOUT_TEXTURE, Hook_GrayScaleFilter);
+		//BIND_HOOK(LOAD_TEXTURE, Hook_LoadTexture);
 		BIND_HOOK(INVALIDATE_TEXTURE, Hook_InvalidateTexture);
 
 		SohImGui::BindCmd("reload", { .handler = [&](const std::vector<std::string>&) {
@@ -29,54 +29,48 @@ namespace Ship {
 		} });
 	}
 
-	void TextureModule::Open(std::shared_ptr<Ship::Archive> archive) {
+	void TextureModule::Open(std::shared_ptr<Archive> archive) {
 		this->LoadedOTRS.push_back(archive);
 	}
 
-	void TextureModule::Close(Ship::Archive otr) {
+	void TextureModule::Close(Archive otr) {
 		// Remove all loaded textures
 		// this->LoadedOTRS.erase(std::find(this->LoadedOTRS.begin(), this->LoadedOTRS.end(), otr));
 	}
 
-	void TextureModule::Hook_LookupTexture(HookEvent call) {
-		const auto raw_path = BIND_PTR("path", char*);
-		if (raw_path == nullptr) return;
+	bool TextureModule::LookupTexture(int tile, char* path, GfxRenderingAPI* api, TextureCacheNode** node, uint32_t fmt, uint32_t siz, uint32_t palette, const uint8_t* orig_addr) {
 
-		const auto api = BIND_PTR("gfx_api", GfxRenderingAPI*);
-		const auto path = normalize(raw_path) + ".png";
-		const auto node = BIND_PTR("node", TextureCacheNode**);
-		const auto fmt = BIND_VAR("fmt", uint32_t*);
-		const auto siz = BIND_VAR("siz", uint32_t*);
-		const auto tile = BIND_VAR("tile", int*);
-		const auto palette = BIND_VAR("palette", uint32_t*);
-		const auto orig_addr = BIND_VAR("addr", const uint8_t**);
-
-		// INFO("The game is trying to load %s", path.c_str());
+		if (path == nullptr || (path != nullptr && (strlen(path) > 128 || path[0] == '\0')))
+			return false;
 
 		if (this->TextureCache.contains(path) && this->TextureCache[path][tile] != nullptr) {
 			*node = this->TextureCache[path][tile];
 			api->select_texture(tile, (*node)->second.texture_id);
-			call->cancelled = true;
-			return;
+			return true;
 		}
 
 		// OTRTODO: Implement loading order
 		TextureData* tex_data = nullptr;
 		if (!this->TexturePool.contains(path)) {
-			std::shared_ptr<Ship::File> raw_data = std::make_shared<Ship::File>();
-			this->Manager->ResManager->GetArchive()->LoadPatchFile(path, false, raw_data);
+			for(auto &otr : LoadedOTRS) {
+				const auto fix_path = normalize(path) + ".png";
+				std::shared_ptr<File> raw_data = std::make_shared<File>();
+				if (!otr->HasFile(fix_path)) continue;
 
-			if (raw_data->bIsLoaded) {
-				char* tdata = new char[raw_data->dwBufferSize];
-				memcpy(tdata, raw_data->buffer.get(), raw_data->dwBufferSize);
-				tex_data = new TextureData({ .data = tdata, .size = raw_data->dwBufferSize });
-				INFO("Loaded %s", path.c_str());
-				this->TexturePool[path] = tex_data;
+				otr->LoadFile(fix_path, false, raw_data);
+
+				if (raw_data->bIsLoaded) {
+					auto tdata = new char[raw_data->dwBufferSize];
+					memcpy(tdata, raw_data->buffer.get(), raw_data->dwBufferSize);
+					tex_data = new TextureData({ .data = tdata, .size = raw_data->dwBufferSize });
+					INFO("Loaded %s", path);
+					this->TexturePool[path] = tex_data;
+				}
 			}
 		}
 
 		if (tex_data == nullptr)
-			return;
+			return false;
 
 		if (!this->TextureCache.contains(path)) this->TextureCache[path].resize(10);
 
@@ -90,7 +84,7 @@ namespace Ship {
 		uint8_t* img_data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(tex_data->data), tex_data->size, &tex_data->width, &tex_data->height, nullptr, 4);
 
 		if (!img_data)
-			return;
+			return false;
 
 		switch (tex_data->color_modifier) {
 		case GRAYSCALE: {
@@ -104,12 +98,61 @@ namespace Ship {
 		this->TextureCache[path][tile] = entry;
 
 		stbi_image_free(img_data);
-		call->cancelled = true;
+		return true;
 	}
-
 
 	void TextureModule::Hook_GrayScaleFilter(HookEvent event) {
 		// this->Exit();
+	}
+
+	void TextureModule::Hook_LoadTexture(HookEvent event) {
+		char* path = (char*)event->baseArgs["path"] + 7; // __OTR__
+		void** outPtr = (void**)event->baseArgs["texture"];
+
+		TextureData* tex_data = nullptr;
+		if (!this->TexturePool.contains(path)) {
+			for(auto &otr : LoadedOTRS) {
+				const auto fix_path = normalize(path) + ".png";
+				std::shared_ptr<File> raw_data = std::make_shared<File>();
+				if (!otr->HasFile(fix_path)) continue;
+
+				otr->LoadFile(fix_path, false, raw_data);
+
+				if (raw_data->bIsLoaded) {
+					auto tdata = new char[raw_data->dwBufferSize];
+					memcpy(tdata, raw_data->buffer.get(), raw_data->dwBufferSize);
+					tex_data = new TextureData({ .data = tdata, .size = raw_data->dwBufferSize });
+					INFO("Loaded %s", path);
+				}
+			}
+		}
+
+		if (tex_data == nullptr)
+			return;
+
+		uint8_t* img_data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(tex_data->data), tex_data->size, &tex_data->width, &tex_data->height, nullptr, 4);
+
+		if (!img_data)
+		{
+			delete[] tex_data->data;
+			delete tex_data;
+			return;
+		}
+
+		switch (tex_data->color_modifier) {
+		case GRAYSCALE: {
+			GrayOutTexture(img_data, tex_data->width, tex_data->height);
+		}
+		default:;
+		}
+
+		*outPtr = malloc(tex_data->size);
+		memcpy(*outPtr, img_data, tex_data->size);
+
+		//*outPtr = img_data;
+		stbi_image_free(img_data);
+		delete[] tex_data->data;
+		delete tex_data;
 	}
 
 	void TextureModule::Hook_InvalidateTexture(HookEvent event) {

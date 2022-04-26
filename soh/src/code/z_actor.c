@@ -728,9 +728,10 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
                             u8 height) {
 
-    if (ResourceMgr_OTRSigCheck(texture))
-        texture = ResourceMgr_LoadTexByName(texture);
+    //if (ResourceMgr_OTRSigCheck(texture))
+    //    texture = ResourceMgr_LoadTexByName(texture);
 
+    // Only works for english
     titleCtx->texture = texture;
     titleCtx->x = x;
     titleCtx->y = y;
@@ -946,7 +947,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         texture = newName;
     }
 
-    titleCtx->texture = ResourceMgr_LoadTexByName(texture);
+    titleCtx->texture = texture;
 
     //titleCtx->texture = texture;
     titleCtx->x = x;

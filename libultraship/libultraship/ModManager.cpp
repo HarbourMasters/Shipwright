@@ -4,20 +4,15 @@
 #include "SohImGuiImpl.h"
 
 namespace Ship {
-	std::vector<ModModule*> modules;
 
 	void ModManager::Init() {
-		// ResManager->GetArchive()->loa
-		// modules.push_back(new TextureModule(this));
-		// std::shared_ptr<Ship::Archive> archive = std::make_shared<Ship::Archive>("mods/TexMods.otr", "", false);
-		for (auto& mod : modules) {
-			mod->Init();
-			// mod->Open(archive);
-		}
+		TextureMod = new TextureModule(this);
+		const std::shared_ptr<Archive> archive = std::make_shared<Archive>("mods/TexModDemo.otr", "", false);
+		static_cast<ModModule*>(TextureMod)->Init();
+		static_cast<ModModule*>(TextureMod)->Open(archive);
 	}
 
 	void ModManager::Exit() {
-		for (auto& mod : modules)
-			mod->Exit();
+		static_cast<ModModule*>(TextureMod)->Exit();
 	}
 }

@@ -197,13 +197,17 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        void* imageData = nullptr;
         ModInternal::bindHook(LOAD_TEXTURE);
         ModInternal::initBindHook(2,
             HookParameter({ .name = "path", .parameter = (void*)texPath }),
-            HookParameter({ .name = "texture", .parameter = static_cast<void*>(&res->imageData) })
+            HookParameter({ .name = "texture", .parameter = &imageData })
         );
         ModInternal::callBindHook(0);
+        if(imageData)
+            return (char*)imageData;
+
+        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
         return (char*)res->imageData;
     }
 

@@ -4,6 +4,7 @@
 #include "Lib/Fast3D/gfx_pc.h"
 
 namespace Ship {
+
 	enum TextureMod {
 		GRAYSCALE,
 		NONE
@@ -15,23 +16,24 @@ namespace Ship {
 		int width;
 		int height;
 		char* loaded_data;
-		std::shared_ptr<Ship::Archive> parent;
+		std::shared_ptr<Archive> parent;
 		TextureMod color_modifier = NONE;
 	};
 
 	class TextureModule : public ModModule {
 	public:
 		explicit TextureModule(ModManager* Manager) : ModModule(Manager) {}
+		bool LookupTexture(int tile, char* path, GfxRenderingAPI* api, TextureCacheNode** node, uint32_t fmt, uint32_t siz, uint32_t palette, const uint8_t* addr);
 	private:
-		std::vector<std::shared_ptr<Ship::Archive>> LoadedOTRS;
-		std::map<std::string, TextureData*> TexturePool;
-		std::map<std::string, std::vector<TextureCacheNode*>> TextureCache;
+		std::vector<std::shared_ptr<Archive>> LoadedOTRS;
+		std::unordered_map<std::string, TextureData*> TexturePool;
+		std::unordered_map<std::string, std::vector<TextureCacheNode*>> TextureCache;
 		void Init() override;
-		void Open(std::shared_ptr<Ship::Archive> archive) override;
-		void Close(Ship::Archive mod) override;
+		void Open(std::shared_ptr<Archive> archive) override;
+		void Close(Archive mod) override;
 		void Exit() override;
 	protected:
-		void Hook_LookupTexture(HookEvent event);
+		void Hook_LoadTexture(HookEvent event);
 		void Hook_GrayScaleFilter(HookEvent event);
 		void Hook_InvalidateTexture(HookEvent event);
 	};

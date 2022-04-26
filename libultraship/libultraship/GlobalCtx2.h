@@ -6,6 +6,7 @@
 #include "ConfigFile.h"
 
 namespace Ship {
+	class ModManager;
 	class ResourceMgr;
 	class Window;
 
@@ -19,6 +20,7 @@ namespace Ship {
 			std::shared_ptr<ResourceMgr> GetResourceManager() { return ResMan; }
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
 			std::shared_ptr<ConfigFile> GetConfig() { return Config; }
+			ModManager* GetModManager();
 
 			GlobalCtx2(const std::string& Name);
 			~GlobalCtx2();
