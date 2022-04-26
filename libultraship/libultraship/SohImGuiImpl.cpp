@@ -559,8 +559,7 @@ namespace SohImGui {
                         CVar_SetS32("gInfiniteNayru", Game::Settings.cheats.infinite_nayru);
                         needs_save = true;
                     }
-
-                ImGui::EndMenu();
+                    ImGui::EndMenu();
                 }
 
                 if (ImGui::Checkbox("No Clip", &Game::Settings.cheats.no_clip)) {
@@ -582,7 +581,7 @@ namespace SohImGui {
                     CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
                     needs_save = true;
                 }
-
+            }
 
             if (ImGui::BeginMenu("Cosmetics")) {
                 ImGui::Text("Tunics");
