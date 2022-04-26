@@ -834,8 +834,7 @@ static void import_texture(int i, int tile) {
         return;
     }
 
-    if (gfx_texture_cache_lookup(i, tile))
-    {
+    if (gfx_texture_cache_lookup(i, tile)) {
         return;
     }
 
@@ -846,7 +845,7 @@ static void import_texture(int i, int tile) {
         } else if (siz == G_IM_SIZ_32b) {
             import_texture_rgba32(tile);
         } else {
-            //abort(); // OTRTODO: Sometimes, seemingly randomly, we end up here. Could be a bad dlist, could be something F3D does not have supported. Further investigation is needed.
+            abort(); // OTRTODO: Sometimes, seemingly randomly, we end up here. Could be a bad dlist, could be something F3D does not have supported. Further investigation is needed.
         }
     } else if (fmt == G_IM_FMT_IA) {
         if (siz == G_IM_SIZ_4b) {
@@ -856,7 +855,7 @@ static void import_texture(int i, int tile) {
         } else if (siz == G_IM_SIZ_16b) {
             import_texture_ia16(tile);
         } else {
-           // abort();
+            abort();
         }
     } else if (fmt == G_IM_FMT_CI) {
         if (siz == G_IM_SIZ_4b) {
@@ -864,7 +863,7 @@ static void import_texture(int i, int tile) {
         } else if (siz == G_IM_SIZ_8b) {
             import_texture_ci8(tile);
         } else {
-           // abort();
+           abort();
         }
     } else if (fmt == G_IM_FMT_I) {
         if (siz == G_IM_SIZ_4b) {
@@ -872,13 +871,14 @@ static void import_texture(int i, int tile) {
         } else if (siz == G_IM_SIZ_8b) {
             import_texture_i8(tile);
         } else {
-            //abort();
+            abort();
         }
-    } else {
-       // abort();
     }
-    int t1 = get_time();
-    //printf("Time diff: %d\n", t1 - t0);
+
+    abort();
+
+    // int t1 = get_time();
+    // printf("Time diff: %d\n", t1 - t0);
 }
 
 static void gfx_normalize_vector(float v[3]) {
@@ -2410,9 +2410,6 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t i = (uintptr_t) seg_addr(cmd->words.w1);
 
                 char* imgData = (char*)i;
-
-                if (strstr(imgData, "spot04_room_0Tex_"))
-                    volatile u32 bla = 0;
 
                 if ((i & 0xF0000000) != 0xF0000000)
                     if (ResourceMgr_OTRSigCheck(imgData) == 1)
