@@ -48,47 +48,6 @@ struct SoHConfigType {
         bool dpad_shop = false;
     } controller;
 
-    struct {
-        int tunic_kokiri_red = 30;
-        int tunic_kokiri_green = 105;
-        int tunic_kokiri_blue = 27;
-        int tunic_goron_red = 100;
-        int tunic_goron_green = 20;
-        int tunic_goron_blue = 0;
-        int tunic_zora_red = 0;
-        int tunic_zora_green = 60;
-        int tunic_zora_blue = 100;
-        
-        int navi_idle_inner_red = 255;
-        int navi_idle_inner_green = 255;
-        int navi_idle_inner_blue = 255;
-        int navi_idle_outer_red = 0;
-        int navi_idle_outer_green = 0;
-        int navi_idle_outer_blue = 255;
-
-        int navi_enemy_inner_red = 255;
-        int navi_enemy_inner_green = 255;
-        int navi_enemy_inner_blue = 0;
-        int navi_enemy_outer_red = 200;
-        int navi_enemy_outer_green = 155;
-        int navi_enemy_outer_blue = 0;
-
-        int navi_npc_inner_red = 150;
-        int navi_npc_inner_green = 150;
-        int navi_npc_inner_blue = 255;
-        int navi_npc_outer_red = 150;
-        int navi_npc_outer_green = 150;
-        int navi_npc_outer_blue = 255;
-
-        int navi_prop_inner_red = 0;
-        int navi_prop_inner_green = 250;
-        int navi_prop_inner_blue = 0;
-        int navi_prop_outer_red = 0;
-        int navi_prop_outer_green = 250;
-        int navi_prop_outer_blue = 0;
-
-    } cosmetic;
-
     // Cheats
     struct {
         bool debug_mode = false;
@@ -111,56 +70,6 @@ struct SoHConfigType {
         bool show = false;
     } graphics;
     
-    // HUD Colors
-    struct {
-        bool n64_colors = true;
-        bool gc_colors = false;
-        bool custom_colors = false;
-        //hearts colors
-        int ccheartsprimr = 255;
-        int ccheartsprimg = 70;
-        int ccheartsprimb = 50;
-        //hearts double defense colors
-        int ddccheartsprimr = 255;
-        int ddccheartsprimg = 255;
-        int ddccheartsprimb = 255;
-        //A Button Main colors
-        int ccabtnprimr = 90;
-        int ccabtnprimg = 90;
-        int ccabtnprimb = 255;
-        //B Button Main colors
-        int ccbbtnprimr = 0;
-        int ccbbtnprimg = 150;
-        int ccbbtnprimb = 0;
-        //C Button Main colors
-        int cccbtnprimr = 255;
-        int cccbtnprimg = 160;
-        int cccbtnprimb = 0;
-        //Start Button Main colors
-        int ccstartbtnprimr = 200;
-        int ccstartbtnprimg = 0;
-        int ccstartbtnprimb = 0;
-        //Magic Border colors
-        int ccmagicborderprimr = 255;
-        int ccmagicborderprimg = 255;
-        int ccmagicborderprimb = 255;
-        //Magic Main colors
-        int ccmagicprimr = 10;
-        int ccmagicprimg = 255;
-        int ccmagicprimb = 10;
-        //Magic Being used colors
-        int ccmagicuseprimr = 250;
-        int ccmagicuseprimg = 250;
-        int ccmagicuseprimb = 0;
-        //Minimap
-        int ccminimapprimr = 10;
-        int ccminimapprimg = 10;
-        int ccminimapprimb = 180;
-        //Rupee icon
-        int ccrupeeprimr = 10;
-        int ccrupeeprimg = 220;
-        int ccrupeeprimb = 10;
-    } hudcolors;
 };
 
 enum SeqPlayers {
@@ -177,7 +86,6 @@ enum SeqPlayers {
 #define ENHANCEMENTS_SECTION "ENHANCEMENT SETTINGS"
 #define COSMETICS_SECTION "COSMETIC SETTINGS"
 #define CHEATS_SECTION "CHEATS SETTINGS"
-#define HUDCOLOR_SECTION "HUD COLORS SETTINGS"
 
 namespace Game {
     extern SoHConfigType Settings;
