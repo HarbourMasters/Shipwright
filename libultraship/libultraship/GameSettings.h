@@ -26,23 +26,68 @@ struct SoHConfigType {
         bool animated_pause_menu = false;
         bool dynamic_wallet_icon = false;
         bool minimal_ui = false;
+        bool newdrops = false;
         bool visualagony = false;
         bool mm_bunny_hood = false;
-
+        bool uniform_lr = true;
     } enhancements;
 
     // Controller
     struct {
-        float gyro_sensitivity = 1.0f;
-        float rumble_strength = 1.0f;
+        struct {
+            float gyro_sensitivity = 1.0f;
+            float rumble_strength = 1.0f;
+            float gyro_drift_x = 0.0f;
+            float gyro_drift_y = 0.0f;
+        } extra[4];
+        bool rumble_enabled = true;
         float input_scale = 1.0f;
-        float gyroDriftX = 0.0f;
-        float gyroDriftY = 0.0f;
         bool input_enabled = false;
         bool dpad_pause_name = false;
         bool dpad_ocarina_text = false;
         bool dpad_shop = false;
     } controller;
+
+    struct {
+        int tunic_kokiri_red = 30;
+        int tunic_kokiri_green = 105;
+        int tunic_kokiri_blue = 27;
+        int tunic_goron_red = 100;
+        int tunic_goron_green = 20;
+        int tunic_goron_blue = 0;
+        int tunic_zora_red = 0;
+        int tunic_zora_green = 60;
+        int tunic_zora_blue = 100;
+        
+        int navi_idle_inner_red = 255;
+        int navi_idle_inner_green = 255;
+        int navi_idle_inner_blue = 255;
+        int navi_idle_outer_red = 0;
+        int navi_idle_outer_green = 0;
+        int navi_idle_outer_blue = 255;
+
+        int navi_enemy_inner_red = 255;
+        int navi_enemy_inner_green = 255;
+        int navi_enemy_inner_blue = 0;
+        int navi_enemy_outer_red = 200;
+        int navi_enemy_outer_green = 155;
+        int navi_enemy_outer_blue = 0;
+
+        int navi_npc_inner_red = 150;
+        int navi_npc_inner_green = 150;
+        int navi_npc_inner_blue = 255;
+        int navi_npc_outer_red = 150;
+        int navi_npc_outer_green = 150;
+        int navi_npc_outer_blue = 255;
+
+        int navi_prop_inner_red = 0;
+        int navi_prop_inner_green = 250;
+        int navi_prop_inner_blue = 0;
+        int navi_prop_outer_red = 0;
+        int navi_prop_outer_green = 250;
+        int navi_prop_outer_blue = 0;
+
+    } cosmetic;
 
     // Cheats
     struct {
@@ -130,6 +175,7 @@ enum SeqPlayers {
 #define AUDIO_SECTION "AUDIO SETTINGS"
 #define CONTROLLER_SECTION "CONTROLLER SECTION"
 #define ENHANCEMENTS_SECTION "ENHANCEMENT SETTINGS"
+#define COSMETICS_SECTION "COSMETIC SETTINGS"
 #define CHEATS_SECTION "CHEATS SETTINGS"
 #define HUDCOLOR_SECTION "HUD COLORS SETTINGS"
 
@@ -137,6 +183,7 @@ namespace Game {
     extern SoHConfigType Settings;
     void InitSettings();
     void LoadSettings();
+    void LoadPadSettings();
     void SaveSettings();
     void SetSeqPlayerVolume(SeqPlayers playerId, float volume);
 }

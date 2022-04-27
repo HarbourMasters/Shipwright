@@ -391,7 +391,7 @@ void Message_FindCreditsMessage(GlobalContext* globalCtx, u16 textId) {
         if (messageTableEntry->textId == textId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
-            messageTableEntry++;
+            //messageTableEntry++;
             nextSeg = messageTableEntry->segment;
             font->msgOffset = messageTableEntry->segment;
             font->msgLength = messageTableEntry->msgSize;
@@ -1138,6 +1138,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA:
+                msgCtx->textDrawPos = i + 1;
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(globalCtx);
                     *gfxP = gfx;
@@ -1186,7 +1187,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVar_GetS32("gTextSpeed", 1);
+        msgCtx->textDrawPos = i + 1;
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;

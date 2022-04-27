@@ -99,6 +99,7 @@ extern "C"
 	extern u32 gGsFlagsMasks[4];
 	extern u32 gGsFlagsShifts[4];
 	extern void* gItemIcons[0x82];
+	extern u8 gItemAgeReqs[];
 	extern u8 gItemSlots[56];
 	extern void (*gSceneCmdHandlers[26])(GlobalContext*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
