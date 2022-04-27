@@ -97,49 +97,6 @@ namespace SohImGui {
             ImGui_ImplWin32_Init(impl.dx11.window);
             break;
         }
-        kokiri_col[0] = std::clamp((float) CVar_GetS32("gTunic_Kokiri_Red", 30)/255, 0.0f, 1.0f);
-        kokiri_col[1] = std::clamp((float)CVar_GetS32("gTunic_Kokiri_Green", 105) / 255, 0.0f, 1.0f);
-        kokiri_col[2] = std::clamp((float)CVar_GetS32("gTunic_Kokiri_Blue", 27) / 255, 0.0f, 1.0f);
-
-        goron_col[0] = std::clamp((float)CVar_GetS32("gTunic_Goron_Red", 100) / 255, 0.0f, 1.0f);
-        goron_col[1] = std::clamp((float)CVar_GetS32("gTunic_Goron_Green", 20) / 255, 0.0f, 1.0f);
-        goron_col[2] = std::clamp((float)CVar_GetS32("gTunic_Goron_Blue", 0) / 255, 0.0f, 1.0f);
-        
-        zora_col[0] = std::clamp((float)CVar_GetS32("gTunic_Zora_Red", 0) / 255, 0.0f, 1.0f);
-        zora_col[1] = std::clamp((float)CVar_GetS32("gTunic_Zora_Green", 60) / 255, 0.0f, 1.0f);
-        zora_col[2] = std::clamp((float)CVar_GetS32("gTunic_Zora_Blue", 100) / 255, 0.0f, 1.0f);
-
-        navi_idle_i_col[0] = std::clamp((float)CVar_GetS32("gNavi_Idle_Inner_Red", 0) / 255, 0.0f, 1.0f);
-        navi_idle_i_col[1] = std::clamp((float)CVar_GetS32("gNavi_Idle_Inner_Green", 0) / 255, 0.0f, 1.0f);
-        navi_idle_i_col[2] = std::clamp((float)CVar_GetS32("gNavi_Idle_Inner_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_idle_o_col[0] = std::clamp((float)CVar_GetS32("gNavi_Idle_Outer_Red", 0) / 255, 0.0f, 1.0f);
-        navi_idle_o_col[1] = std::clamp((float)CVar_GetS32("gNavi_Idle_Outer_Green", 0) / 255, 0.0f, 1.0f);
-        navi_idle_o_col[2] = std::clamp((float)CVar_GetS32("gNavi_Idle_Outer_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_npc_i_col[0] = std::clamp((float)CVar_GetS32("gNavi_NPC_Inner_Red", 0) / 255, 0.0f, 1.0f);
-        navi_npc_i_col[1] = std::clamp((float)CVar_GetS32("gNavi_NPC_Inner_Green", 0) / 255, 0.0f, 1.0f);
-        navi_npc_i_col[2] = std::clamp((float)CVar_GetS32("gNavi_NPC_Inner_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_npc_o_col[0] = std::clamp((float)CVar_GetS32("gNavi_NPC_Outer_Red", 0) / 255, 0.0f, 1.0f);
-        navi_npc_o_col[1] = std::clamp((float)CVar_GetS32("gNavi_NPC_Outer_Green", 0) / 255, 0.0f, 1.0f);
-        navi_npc_o_col[2] = std::clamp((float)CVar_GetS32("gNavi_NPC_Outer_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_enemy_i_col[0] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Inner_Red", 0) / 255, 0.0f, 1.0f);
-        navi_enemy_i_col[1] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Inner_Green", 0) / 255, 0.0f, 1.0f);
-        navi_enemy_i_col[2] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Inner_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_enemy_o_col[0] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Outer_Red", 0) / 255, 0.0f, 1.0f);
-        navi_enemy_o_col[1] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Outer_Green", 0) / 255, 0.0f, 1.0f);
-        navi_enemy_o_col[2] = std::clamp((float)CVar_GetS32("gNavi_Enemy_Outer_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_prop_i_col[0] = std::clamp((float)CVar_GetS32("gNavi_Prop_Inner_Red", 0) / 255, 0.0f, 1.0f);
-        navi_prop_i_col[1] = std::clamp((float)CVar_GetS32("gNavi_Prop_Inner_Green", 0) / 255, 0.0f, 1.0f);
-        navi_prop_i_col[2] = std::clamp((float)CVar_GetS32("gNavi_Prop_Inner_Blue", 0) / 255, 0.0f, 1.0f);
-
-        navi_prop_o_col[0] = std::clamp((float)CVar_GetS32("gNavi_Prop_Outer_Red", 0) / 255, 0.0f, 1.0f);
-        navi_prop_o_col[1] = std::clamp((float)CVar_GetS32("gNavi_Prop_Outer_Green", 0) / 255, 0.0f, 1.0f);
-        navi_prop_o_col[2] = std::clamp((float)CVar_GetS32("gNavi_Prop_Outer_Blue", 0) / 255, 0.0f, 1.0f);
     }
 
     void ImGuiBackendInit() {
@@ -245,6 +202,78 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
+    void LoadCosmeticColors(){//This function is necessary as without it IMGui wont load the updated float array.
+        hearts_colors[0] = (float)CVar_GetS32("gCCHeartsPrimR", 255)/255;
+        hearts_colors[1] = (float)CVar_GetS32("gCCHeartsPrimG", 10)/255;
+        hearts_colors[2] = (float)CVar_GetS32("gCCHeartsPrimB", 10)/255;
+        hearts_dd_colors[0] = (float)CVar_GetS32("gDDCCHeartsPrimR", 255)/255;
+        hearts_dd_colors[1] = (float)CVar_GetS32("gDDCCHeartsPrimG", 255)/255;
+        hearts_dd_colors[2] = (float)CVar_GetS32("gDDCCHeartsPrimB", 255)/255;
+        a_btn_colors[0] = (float)CVar_GetS32("gCCABtnPrimR", 90)/255;
+        a_btn_colors[1] = (float)CVar_GetS32("gCCABtnPrimG", 90)/255;
+        a_btn_colors[2] = (float)CVar_GetS32("gCCABtnPrimB", 255)/255;
+        b_btn_colors[0] = (float)CVar_GetS32("gCCBBtnPrimR", 0)/255;
+        b_btn_colors[1] = (float)CVar_GetS32("gCCBBtnPrimG", 150)/255;
+        b_btn_colors[2] = (float)CVar_GetS32("gCCBBtnPrimB", 0)/255;
+        c_btn_colors[0] = (float)CVar_GetS32("gCCCBtnPrimR", 255)/255;
+        c_btn_colors[1] = (float)CVar_GetS32("gCCCBtnPrimG", 160)/255;
+        c_btn_colors[2] = (float)CVar_GetS32("gCCCBtnPrimB", 0)/255;
+        start_btn_colors[0] = (float)CVar_GetS32("gCCStartBtnPrimR", 120)/255;
+        start_btn_colors[1] = (float)CVar_GetS32("gCCStartBtnPrimG", 120)/255;
+        start_btn_colors[2] = (float)CVar_GetS32("gCCStartBtnPrimB", 120)/255;
+        magic_border_colors[0] = (float)CVar_GetS32("gCCMagicBorderPrimR", 255)/255;
+        magic_border_colors[1] = (float)CVar_GetS32("gCCMagicBorderPrimG", 255)/255;
+        magic_border_colors[2] = (float)CVar_GetS32("gCCMagicBorderPrimB", 255)/255;
+        magic_remaining_colors[0] = (float)CVar_GetS32("gCCMagicPrimR", 250)/255;
+        magic_remaining_colors[1] = (float)CVar_GetS32("gCCMagicPrimG", 250)/255;
+        magic_remaining_colors[2] = (float)CVar_GetS32("gCCMagicPrimB", 0)/255;
+        magic_remaining_colors[0] = (float)CVar_GetS32("gCCMagicUsePrimR", 0)/255;
+        magic_remaining_colors[1] = (float)CVar_GetS32("gCCMagicUsePrimG", 200)/255;
+        magic_remaining_colors[2] = (float)CVar_GetS32("gCCMagicUsePrimB", 0)/255;
+        minimap_colors[0] = (float)CVar_GetS32("gCCMinimapPrimR", 0)/255;
+        minimap_colors[1] = (float)CVar_GetS32("gCCMinimapPrimG", 255)/255;
+        minimap_colors[2] = (float)CVar_GetS32("gCCMinimapPrimB", 255)/255;
+        rupee_colors[0] = (float)CVar_GetS32("gCCRupeePrimR", 120)/255;
+        rupee_colors[1] = (float)CVar_GetS32("gCCRupeePrimG", 120)/255;
+        rupee_colors[2] = (float)CVar_GetS32("gCCRupeePrimB", 120)/255;
+        kokiri_col[0] = (float)CVar_GetS32("gTunic_Kokiri_R", 30)/255;
+        kokiri_col[1] = (float)CVar_GetS32("gTunic_Kokiri_G", 105)/255;
+        kokiri_col[2] = (float)CVar_GetS32("gTunic_Kokiri_B", 27)/255;
+        kokiri_col[1] = (float)CVar_GetS32("gTunic_Kokiri_G", 105)/255;
+        kokiri_col[2] = (float)CVar_GetS32("gTunic_Kokiri_B", 27)/255;
+        zora_col[0] = (float)CVar_GetS32("gTunic_Zora_R", 0)/255;
+        zora_col[1] = (float)CVar_GetS32("gTunic_Zora_G", 60)/255;
+        zora_col[2] = (float)CVar_GetS32("gTunic_Zora_B", 100)/255;
+        navi_idle_i_col[0] = (float)CVar_GetS32("gNavi_Idle_Inner_R", 255)/255;
+        navi_idle_i_col[1] = (float)CVar_GetS32("gNavi_Idle_Inner_G", 255)/255;
+        navi_idle_i_col[2] = (float)CVar_GetS32("gNavi_Idle_Inner_B", 255)/255;
+        navi_idle_o_col[0] = (float)CVar_GetS32("gNavi_Idle_Outer_R", 115)/255;
+        navi_idle_o_col[1] = (float)CVar_GetS32("gNavi_Idle_Outer_G", 230)/255;
+        navi_idle_o_col[2] = (float)CVar_GetS32("gNavi_Idle_Outer_B", 255)/255;
+        navi_npc_i_col[0] = (float)CVar_GetS32("gNavi_NPC_Inner_R", 100)/255;
+        navi_npc_i_col[1] = (float)CVar_GetS32("gNavi_NPC_Inner_G", 100)/255;
+        navi_npc_i_col[2] = (float)CVar_GetS32("gNavi_NPC_Inner_B", 255)/255;
+        navi_npc_o_col[0] = (float)CVar_GetS32("gNavi_NPC_Outer_R", 90)/255;
+        navi_npc_o_col[1] = (float)CVar_GetS32("gNavi_NPC_Outer_G", 90)/255;
+        navi_npc_o_col[2] = (float)CVar_GetS32("gNavi_NPC_Outer_B", 255)/255;
+        navi_enemy_i_col[0] = (float)CVar_GetS32("gNavi_Enemy_Inner_R", 255)/255;
+        navi_enemy_i_col[1] = (float)CVar_GetS32("gNavi_Enemy_Inner_G", 255)/255;
+        navi_enemy_i_col[2] = (float)CVar_GetS32("gNavi_Enemy_Inner_B", 0)/255;
+        navi_enemy_o_col[0] = (float)CVar_GetS32("gNavi_Enemy_Outer_R", 220)/255;
+        navi_enemy_o_col[1] = (float)CVar_GetS32("gNavi_Enemy_Outer_G", 220)/255;
+        navi_enemy_o_col[2] = (float)CVar_GetS32("gNavi_Enemy_Outer_B", 0)/255;
+        navi_prop_i_col[0] = (float)CVar_GetS32("gNavi_Prop_Inner_R", 0)/255;
+        navi_prop_i_col[1] = (float)CVar_GetS32("gNavi_Prop_Inner_G", 255)/255;
+        navi_prop_i_col[2] = (float)CVar_GetS32("gNavi_Prop_Inner_B", 0)/255;
+        navi_prop_o_col[0] = (float)CVar_GetS32("gNavi_Prop_Outer_R", 0)/255;
+        navi_prop_o_col[1] = (float)CVar_GetS32("gNavi_Prop_Outer_G", 220)/255;
+        navi_prop_o_col[2] = (float)CVar_GetS32("gNavi_Prop_Outer_B", 0)/255;
+    }
+
+    int ClampFloatToInt(float value, int min, int max){
+        return fmin(fmax(value,min),max);
+    }
+
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
         const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
@@ -302,7 +331,7 @@ namespace SohImGui {
         console->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
-        LoadHudColors(); //Fill custom color HUD array
+        LoadCosmeticColors(); //Fill custom colors array for Cosmetics tabs
 
         ModInternal::registerHookListener({ GFX_INIT, [](const HookEvent ev) {
 
