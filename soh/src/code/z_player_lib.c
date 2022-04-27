@@ -1848,8 +1848,11 @@ union VisibleItem {
     Actor* actor;
     u32 polyFlags;
 };
-static union VisibleItem prevVisibleItem;
-static Actor* prevActorInView;
+static union VisibleItem sTopVisibleItems[10];
+static union VisibleItem sPrevFocusedVisibleItem;
+static s32 sFocusedVisibleItemIdx;
+static bool sFocusedItemBeaconActive;
+
 extern Actor* gActorIdTable[ACTOR_NUMBER_MAX];
 extern int fbSceneInfo;
 static u8* sceneInfoFramebuffer = NULL;
@@ -1858,6 +1861,9 @@ static s32 sceneInfoFbHeight;
 static bool sFirstPersonStart;
 static bool sSceneInfoContinuous;
 
+//TODO: temp, replace with SoundCue
+static f32 sBeaconFreq;
+
 void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
     bool isPlayerInFirstPersonMode = this->stateFlags1 & PLAYER_STATE1_20;
 
@@ -1865,27 +1871,52 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
         sFirstPersonStart = true;
         sSceneInfoContinuous = true;
     } else if (!isPlayerInFirstPersonMode && sFirstPersonStart) {
-        prevVisibleItem.actor = NULL;
         sFirstPersonStart = false;
         sSceneInfoContinuous = false;
     }
 
-    bool readNow = sSceneInfoContinuous && (play->state.frames % 20 == 0);
-    bool readMultipleItems = false;
+    bool needsUpdate = false;
 
-    if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
-        prevVisibleItem.actor = NULL;
+    if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
         sSceneInfoContinuous = false;
-        readNow = true;
+        sPrevFocusedVisibleItem.actor = NULL;
+        needsUpdate = true;
     }
-    if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
-        prevVisibleItem.actor = NULL;
+    if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
         sSceneInfoContinuous = false;
-        readMultipleItems = true;
-        readNow = true;
+        if (!sFocusedItemBeaconActive && sPrevFocusedVisibleItem.actor != NULL) {
+            sFocusedItemBeaconActive = true;
+        } else {
+            sFocusedItemBeaconActive = false;
+        }
+    }
+    if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+        sSceneInfoContinuous = false;
+        if (sFocusedVisibleItemIdx == 0) {
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        } else {
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            sFocusedVisibleItemIdx--;
+        }
+    }
+    if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+        sSceneInfoContinuous = false;
+        if (sFocusedVisibleItemIdx == ARRAY_COUNT(sTopVisibleItems) - 1 ||
+            sTopVisibleItems[sFocusedVisibleItemIdx + 1].actor == NULL) {
+            Audio_PlaySoundGeneral(NA_SE_IT_SWORD_IMPACT, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+        else {
+            Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            sFocusedVisibleItemIdx++;
+        }
     }
 
-    if (readNow) {
+    needsUpdate = needsUpdate || (sSceneInfoContinuous && (play->state.frames % 10 == 0));
+
+    if (needsUpdate) {
+        sFocusedVisibleItemIdx = 0;
+        memset(&sTopVisibleItems, 0, sizeof(sTopVisibleItems));
+
         if (sceneInfoFbWidth != OTRGetFramebufferWidth(fbSceneInfo) ||
             sceneInfoFbHeight != OTRGetFramebufferHeight(fbSceneInfo)) {
             if (sceneInfoFramebuffer != NULL) {
@@ -1912,8 +1943,8 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
         u32 offset;
         u32 id;
 
-        u32 widthMargin = width / 8;
-        u32 heightMargin = height / 8;
+        u32 widthMargin = (sSceneInfoContinuous) ? width / 4 : 0;
+        u32 heightMargin = (sSceneInfoContinuous) ? height / 4 : 0;
         for (x = widthMargin; x < width - widthMargin; x++) {
             for (y = heightMargin; y < height - heightMargin; y++) {
                 offset = (x + y * width) * 4;
@@ -1952,62 +1983,72 @@ void Player_UpdateVisionCue(Player* this, PlayState* play, Input* input) {
         }
 
         s32 topItemIndex = 0;
-        union VisibleItem topItems[5] = {0};
-        for (int i = 0; i < 256; i++) {
+        
+        for (int i = 0; i < ARRAY_COUNT(topIds); i++) {
             if (topIds[i].id == 0)
                 break;
 
             u32 itemType = topIds[i].id & 0xFF0000;
             if (itemType == 0x500000) {
-                topItems[topItemIndex].actor = gActorIdTable[(topIds[i].id & 0xFF) - 1];
+                Actor* actor = gActorIdTable[(topIds[i].id & 0xFF) - 1];
+                if (actor->id == ACTOR_PLAYER || actor->id == ACTOR_EN_ELF)
+                    continue;
+                sTopVisibleItems[topItemIndex].actor = actor;
                 // topItems[topItemIndex].polyFlags = 0;
             } else if (itemType == 0xA00000) {
                 // topItems[topItemIndex].actor = NULL;
-                topItems[topItemIndex].polyFlags = topIds[i].id & 0xFF;
+                sTopVisibleItems[topItemIndex].polyFlags = topIds[i].id & 0xFF;
             }
 
-            if (++topItemIndex == 5) {
+            if (++topItemIndex == ARRAY_COUNT(sTopVisibleItems)) {
                 break;
             }
         }
+    }
 
-        if (topItems[0].actor != NULL && topItems[0].actor != prevVisibleItem.actor) {
-            u8 announceStr[256];
-            s32 announceStrLength = 0;
-            announceStr[0] = '\0';
-            u8 arg[48];
-            arg[0] = '\0';
-            for (int i = 0; i < 5; i++) {
-                if (topItems[i].actor == NULL)
-                    continue;
-                u32 textId;
-                if ((topItems[i].polyFlags & 0xFFFFFF00) == 0) {
-                    textId = 0x900 + topItems[i].polyFlags;
-                } else {
-                    if (topItems[i].actor->id == ACTOR_PLAYER || topItems[i].actor->id == ACTOR_EN_ELF)
-                        continue;
-                    if (topItems[i].actor->id == ACTOR_SCENE_EXIT) {
-                        u16 exitId = topItems[i].actor->params;
-                        u16 sceneId = gEntranceTable[play->setupExitList[exitId - 1]].scene;
-                        size_t result =
-                            sprintf(arg, "%s",
-                                    OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                                                                    0x0300 + sceneId, NULL));
-                        ASSERT(result < sizeof(arg));
-                    }
-                    textId = 0x1000 + topItems[i].actor->id;
-                }
-                size_t result = sprintf(announceStr + announceStrLength, "%s, ", OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng",
-                                                                textId, arg));
-                ASSERT(result < sizeof(announceStr) - announceStrLength);
-                announceStrLength += result;
-                if (!readMultipleItems)
-                    break;
+    union VisibleItem focusedVisibleItem = sTopVisibleItems[sFocusedVisibleItemIdx];
+
+    if (sFocusedItemBeaconActive && ((focusedVisibleItem.polyFlags & 0xFFFFFF00) != 0) && (play->gameplayFrames % 20 == 0)) {
+        //TODO: replace with SoundCue
+        sBeaconFreq = LERP(0.08f, 0.2f, 1.0f - MAX(0.1f, MIN(1.0f, focusedVisibleItem.actor->xyzDistToPlayerSq / SQ(500.0f))));
+        static s8 reverbAdd = 1;
+        static Vec3f pos;
+        Math_Vec3f_Diff(&focusedVisibleItem.actor->projectedPos, &this->actor.projectedPos, &pos);
+        Audio_PlaySoundGeneral(NA_SE_EV_SHIP_BELL, &pos, 4, &sBeaconFreq, &D_801333E0, &reverbAdd);
+    }
+
+    if (focusedVisibleItem.actor != NULL &&
+        focusedVisibleItem.actor != sPrevFocusedVisibleItem.actor) {
+
+        u8 announceStr[256];
+        s32 announceStrLength = 0;
+        announceStr[0] = '\0';
+        u8 arg[48];
+        arg[0] = '\0';
+
+        u32 textId;
+        if ((focusedVisibleItem.polyFlags & 0xFFFFFF00) == 0) {
+            textId = 0x900 + focusedVisibleItem.polyFlags;
+        } else {
+            if (focusedVisibleItem.actor->id == ACTOR_SCENE_EXIT) {
+                u16 exitId = focusedVisibleItem.actor->params;
+                u16 sceneId = gEntranceTable[play->setupExitList[exitId - 1]].scene;
+                size_t result = sprintf(arg, "%s",
+                                        OTRMessage_GetAccessibilityText(
+                                            "text/accessibility_text/accessibility_text_eng", 0x0300 + sceneId, NULL));
+                ASSERT(result < sizeof(arg));
             }
-
-            OTRSpeakText(announceStr);
+            textId = 0x1000 + focusedVisibleItem.actor->id;
         }
-        prevVisibleItem.actor = topItems[0].actor;
+        size_t result =
+            sprintf(announceStr + announceStrLength, "%s",
+                    OTRMessage_GetAccessibilityText("text/accessibility_text/accessibility_text_eng", textId, arg));
+        ASSERT(result < sizeof(announceStr) - announceStrLength);
+        announceStrLength += result;
+
+        OTRSpeakText(announceStr);
+
+        sPrevFocusedVisibleItem.actor = focusedVisibleItem.actor;
     }
 }
 
