@@ -708,7 +708,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Message Text to Speech", "gMessageTTS", true, false);
                 UIWidgets::Tooltip("Enables text to speech for game dialogue.");
                 UIWidgets::PaddedEnhancementCheckbox("D-Pad Directional Look Controls", "gDPadLook", true, false);
-                UIWidgets::Tooltip("Enables DPad directional look controls while in C-up mode.");
+                UIWidgets::Tooltip("Enables DPad directional look controls while in C-up mode while pressing L.");
                 UIWidgets::PaddedEnhancementCheckbox("Aim Audio Cues", "gAimAudioCues", true, false);
                 UIWidgets::Tooltip("Enables audio cues to assist with ranged aiming.");
                 UIWidgets::PaddedEnhancementCheckbox("Scene Exit Actors", "gSceneExitActors", true, false);
@@ -716,7 +716,7 @@ namespace GameMenuBar {
                 UIWidgets::PaddedEnhancementCheckbox("Spatial Audio Cues", "gSpatialAudioCues", true, false);
                 UIWidgets::Tooltip("Enables audio cues for spatial awareness.");
                 UIWidgets::PaddedEnhancementCheckbox("Object Audio Cues", "gObjectCue", true, false);
-                UIWidgets::Tooltip("Enables audio cues for visible objects.");
+                UIWidgets::Tooltip("Enables audio cues for visible objects. Use L to read again.");
                 ImGui::EndMenu();
             }
         #endif
