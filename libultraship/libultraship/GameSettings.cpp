@@ -32,6 +32,7 @@ namespace Game {
     const std::string CosmeticsSection = COSMETICS_SECTION;
     const std::string CheatSection = CHEATS_SECTION;
 
+
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, Settings.audio.music_main);
         Audio_SetGameVolume(SEQ_BGM_SUB, Settings.audio.music_sub);
@@ -48,6 +49,7 @@ namespace Game {
         SohImGui::console->opened = stob(Conf[ConfSection]["console"]);
         Settings.debug.menu_bar = stob(Conf[ConfSection]["menu_bar"]);
         Settings.debug.soh = stob(Conf[ConfSection]["soh_debug"]);
+
     	Settings.debug.n64mode = stob(Conf[ConfSection]["n64_mode"]);
 
         // Enhancements
@@ -228,7 +230,6 @@ namespace Game {
         Conf[CheatSection]["climb_everything"] = std::to_string(Settings.cheats.climb_everything);
         Conf[CheatSection]["moon_jump_on_l"] = std::to_string(Settings.cheats.moon_jump_on_l);
         Conf[CheatSection]["super_tunic"] = std::to_string(Settings.cheats.super_tunic);
-
 
         // Per-Controller
         for (const auto& [i, controllers] : Ship::Window::Controllers) {
