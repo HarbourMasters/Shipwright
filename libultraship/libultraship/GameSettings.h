@@ -69,7 +69,6 @@ struct SoHConfigType {
     struct {
         bool show = false;
     } graphics;
-    
 };
 
 enum SeqPlayers {
