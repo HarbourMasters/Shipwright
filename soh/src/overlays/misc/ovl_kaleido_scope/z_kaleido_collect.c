@@ -494,20 +494,20 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     if (D_8082A124[sp218] == 0) {
-                        if (CVar_GetS32("gN64Colors", 0) != 0) { // A Button notes
+                        if (CVar_GetS32("gHudColors", 1) == 0) { // A Button notes
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, D_8082A150[sp218]);
-                        } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[sp218]);
-                        } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCABtnPrimR", 80), CVar_GetInt("gCCABtnPrimG", 255), CVar_GetInt("gCCABtnPrimB", 150), D_8082A150[sp218]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80), CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150), D_8082A150[sp218]);
                         }
                     } else {
-                      if (CVar_GetS32("gN64Colors", 0) != 0) { // C Buttons notes
+                      if (CVar_GetS32("gHudColors", 1) == 0) { // C Buttons notes
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
-                      } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                      } else if (CVar_GetS32("gHudColors", 1) == 1) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
-                      } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCCBtnPrimR", 255), CVar_GetInt("gCCCBtnPrimG", 160), CVar_GetInt("gCCCBtnPrimB", 0), D_8082A150[sp218]);
+                      } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), D_8082A150[sp218]);
                       }
                     }
 
@@ -536,20 +536,20 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
 
                 if (pauseCtx->unk_1E4 == 8) {
                     if (gOcarinaSongNotes[sp224].notesIdx[phi_s3] == 0) {
-                        if (CVar_GetS32("gN64Colors", 0) != 0) {
+                        if (CVar_GetS32("gHudColors", 1) == 0) {
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, 200);
-                        } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, 200);
-                        } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCABtnPrimR", 80), CVar_GetInt("gCCABtnPrimG", 255), CVar_GetInt("gCCABtnPrimB", 150), 200);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80), CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150), 200);
                         }
                     } else {
-                      if (CVar_GetS32("gN64Colors", 0) != 0) {
+                      if (CVar_GetS32("gHudColors", 1) == 0) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
-                      } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                      } else if (CVar_GetS32("gHudColors", 1) == 1) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
-                      } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCCBtnPrimR", 255), CVar_GetInt("gCCCBtnPrimG", 160), CVar_GetInt("gCCCBtnPrimB", 0), 200);
+                      } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), 200);
                       }
                     }
                 } else {
@@ -603,20 +603,20 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                     gDPPipeSync(POLY_KAL_DISP++);
 
                     if (D_8082A124[phi_s3] == 0) {
-                        if (CVar_GetS32("gN64Colors", 0) != 0) {
+                        if (CVar_GetS32("gHudColors", 1) == 0) {
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 150, 255, D_8082A150[phi_s3]);
-                        } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
                           gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 80, 255, 150, D_8082A150[phi_s3]);
-                        } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCABtnPrimR", 80), CVar_GetInt("gCCABtnPrimG", 255), CVar_GetInt("gCCABtnPrimB", 150), D_8082A150[phi_s3]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                          gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80), CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150), D_8082A150[phi_s3]);
                         }
                     } else {
-                      if (CVar_GetS32("gN64Colors", 0) != 0) {
+                      if (CVar_GetS32("gHudColors", 1) == 0) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[phi_s3]);
-                      } else if (CVar_GetS32("gGameCubeColors", 0) != 0) {
+                      } else if (CVar_GetS32("gHudColors", 1) == 1) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[phi_s3]);
-                      } else if (CVar_GetS32("gCustomColors", 0) != 0) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetInt("gCCCBtnPrimR", 255), CVar_GetInt("gCCCBtnPrimG", 160), CVar_GetInt("gCCCBtnPrimB", 0), D_8082A150[phi_s3]);
+                      } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), D_8082A150[phi_s3]);
                       }
                     }
 
