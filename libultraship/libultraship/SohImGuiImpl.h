@@ -60,6 +60,7 @@ namespace SohImGui {
     extern Console* console;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
+    void EnhancementRadioButton(std::string text, std::string cvarName, int value);
     void DrawMainMenuAndCalculateGameSize(void);
     void DrawFramebufferAndGameInput(void);
     void Render(void);
