@@ -56,6 +56,7 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+    int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
     float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
     float goron_col[3] = { 0.392f, 0.078f, 0.0f };
     float zora_col[3] = { 0.0f, 0.235f, 0.392f };
@@ -331,6 +332,24 @@ namespace SohImGui {
             CVar_SetFloat(key, volume);
             needs_save = true;
             Game::SetSeqPlayerVolume(playerId, volume);
+        }
+    }
+
+    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+        /*Usage :
+        EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
+        First arg is the visible name of the Radio button
+        Second is the cvar name where MyID will be saved.
+        Note: the CVar name should be the same to each Buddies.
+        Example :
+            EnhancementRadioButton("English", "gLanguages", 0);
+            EnhancementRadioButton("German", "gLanguages", 1);
+            EnhancementRadioButton("French", "gLanguages", 2);
+        */
+        int val = CVar_GetS32(cvarName.c_str(), 0);
+        if (ImGui::RadioButton(text.c_str(), id==val)) {
+            CVar_SetS32(cvarName.c_str(), (int)id);
+            needs_save = true;
         }
     }
 
@@ -722,6 +741,19 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            if (CVar_GetS32("gLanguages", 0) == 0) {
+                SelectedLanguage = 0;
+            } else if (CVar_GetS32("gLanguages", 0) == 1) {
+                SelectedLanguage = 1;
+            } else if (CVar_GetS32("gLanguages", 0) == 2) {
+                SelectedLanguage = 2;
+            }
+            if (ImGui::BeginMenu("Languages")) {
+                EnhancementRadioButton("English", "gLanguages", 0);
+                EnhancementRadioButton("German", "gLanguages", 1);
+                EnhancementRadioButton("French", "gLanguages", 2);
+                ImGui::EndMenu();
+            }
 
             if (ImGui::BeginMenu("Developer Tools")) {
                 HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
