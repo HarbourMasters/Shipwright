@@ -60,6 +60,9 @@ namespace SohImGui {
     extern Console* console;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
+    void EnhancementColorEdit3(std::string text, std::string cvarName, float ColorRGB[3]);
+    void EnhancementCheckbox(std::string text, std::string cvarName);
+    int ClampFloatToInt(float value, int min, int max);
     void DrawMainMenuAndCalculateGameSize(void);
     void DrawFramebufferAndGameInput(void);
     void Render(void);
@@ -70,5 +73,5 @@ namespace SohImGui {
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
-    void LoadHUDColors();
+    void LoadCosmeticColors();
 }
