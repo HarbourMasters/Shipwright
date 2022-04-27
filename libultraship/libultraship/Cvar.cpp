@@ -47,17 +47,6 @@ extern "C" char* CVar_GetString(const char* name, char* defaultValue) {
     return defaultValue;
 }
 
-extern "C" int CVar_GetInt(const char* name, int defaultValue) {
-    CVar* cvar = CVar_Get(name);
-
-    if (cvar != nullptr) {
-        if (cvar->type == CVAR_TYPE_INT)
-            return cvar->value.valueInt;
-    }
-
-    return defaultValue;
-}
-
 extern "C" void CVar_SetS32(const char* name, s32 value) {
     CVar* cvar = CVar_Get(name);
     if (!cvar) {
@@ -88,16 +77,6 @@ void CVar_SetString(const char* name, char* value) {
     cvar->value.valueStr = value;
 }
 
-void CVar_SetInt(const char* name, int value) {
-    CVar* cvar = CVar_Get(name);
-    if (!cvar) {
-        cvar = new CVar;
-        cvars[std::string(name)] = cvar;
-    }
-    cvar->type = CVAR_TYPE_INT;
-    cvar->value.valueInt = value;
-}
-
 extern "C" void CVar_RegisterS32(const char* name, s32 defaultValue) {
     CVar* cvar = CVar_Get(name);
 
@@ -117,11 +96,4 @@ extern "C" void CVar_RegisterString(const char* name, char* defaultValue) {
 
     if (cvar == nullptr)
         CVar_SetString(name, defaultValue);
-}
-
-extern "C" void CVar_RegisterInt(const char* name, int defaultValue) {
-    CVar* cvar = CVar_Get(name);
-
-    if (cvar == nullptr)
-        CVar_SetInt(name, defaultValue);
 }
