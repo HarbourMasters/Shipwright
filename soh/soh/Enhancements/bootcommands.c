@@ -29,9 +29,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gUniformLR", 1);
     CVar_RegisterS32("gNewDrops", 0);
     CVar_RegisterS32("gVisualAgony", 0);
-    CVar_RegisterS32("gN64Colors", 1);
-    CVar_RegisterS32("gGameCubeColors", 0);
-    CVar_RegisterS32("gCustomColors", 0);
+    CVar_RegisterS32("gHudColors", 1); //0 N64 colors/1 Gamecube colors/2 Custom colors
 }
 
 //void BootCommands_ParseBootArgs(char* str)
