@@ -307,8 +307,8 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
 }
 
 static bool SaveStateHandler(const std::vector<std::string>& args) {
-    const SaveStateReturn rtn = SaveState::Save(gCurrentSlot);
-    
+    const SaveStateReturn rtn = SaveState::RequestSaveState(gCurrentSlot);
+
     switch (rtn) { 
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Saved state to slot %u", gCurrentSlot);
@@ -316,14 +316,11 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
         case SaveStateReturn::FAIL_INVALID_SLOT:
             ERROR("[SOH] Invalid State Slot Number (%u)", gCurrentSlot);
             return CMD_FAILED;
-        case SaveStateReturn::FAIL_NO_MEMORY:
-            ERROR("[SOH] No Memory to save state to slot %u", gCurrentSlot);
-            return CMD_FAILED;
     }
 }
 
 static bool LoadStateHandler(const std::vector<std::string>& args) {
-    const SaveStateReturn rtn = SaveState::Load(gCurrentSlot);
+    const SaveStateReturn rtn = SaveState::RequestLoadState(gCurrentSlot);
     
     switch (rtn) {
         case SaveStateReturn::SUCCESS:

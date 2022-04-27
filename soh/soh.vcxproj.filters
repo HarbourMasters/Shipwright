@@ -3751,6 +3751,8 @@
     </ClInclude>
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    <ClInclude Include="soh\OTRAudio.h">
+      <Filter>Source Files\soh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
