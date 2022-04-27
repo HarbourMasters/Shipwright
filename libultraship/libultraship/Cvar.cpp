@@ -77,6 +77,7 @@ void CVar_SetString(const char* name, char* value) {
     cvar->value.valueStr = value;
 }
 
+
 extern "C" void CVar_RegisterS32(const char* name, s32 defaultValue) {
     CVar* cvar = CVar_Get(name);
 
