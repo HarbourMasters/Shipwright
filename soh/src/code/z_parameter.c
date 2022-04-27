@@ -2832,7 +2832,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
 
     // C-Right Button Color & Texture
-    if (CVar_GetS32("gHudColors", 1) == 2) {
+    if (CVar_GetS32("gHudColors", 1) == 0) {
       gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
       gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
