@@ -51,7 +51,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 
 ## Building The Ship of Harkinian
 
-Refer to the [building instructions](https://github.com/HarbourMasters/Shipwright/blob/develop/BUILDING.md) to compile SoH.
+Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Troubleshooting The Exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
