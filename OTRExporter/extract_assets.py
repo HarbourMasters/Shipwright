@@ -45,7 +45,7 @@ def BuildOTR(xmlPath, rom):
     shutil.copytree("assets", "Extract/assets")
 
     execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPD/ZAPD.out"    
-    execStr += " ed -i %s -b %s -fl CFG\\filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, rom)
+    execStr += " ed -i %s -b \"%s\" -fl CFG\\filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, rom)
 
     print(execStr)
     exitValue = os.system(execStr)
