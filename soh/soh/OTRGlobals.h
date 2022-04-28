@@ -6,15 +6,17 @@
 #include "GlobalCtx2.h"
 
 #ifdef __cplusplus
+#include "Enhancements/savestates.h"
 class OTRGlobals
 {
 public:
-	static OTRGlobals* Instance;
+    static OTRGlobals* Instance;
 
-	std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<SaveStateMgr> gSaveStateMgr;
 
-	OTRGlobals();
-	~OTRGlobals();
+    OTRGlobals();
+    ~OTRGlobals();
 
 private:
 

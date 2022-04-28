@@ -1,172 +1,135 @@
 #include "savestates.h"
 
 #include "GameVersions.h"
-#include <variables.h>
 
 #include <cstdio> // std::sprintf
-#include <mutex>
 
-#include "soh/OTRAudio.h"
-//#include "spdlog/spdlog.h"
+#include "spdlog/spdlog.h"
 
-//#include "global.h"
-//#include <soh/OTRGlobals.h>
+#include <soh/OTRGlobals.h>
 
+#include "z64.h"
+#include "z64save.h"
+#include <variables.h>
+#include <functions.h>
+#include "z64map_mark.h"
 
-//TODO is there a better way?
-unsigned int gCurrentSlot = 0;
+// FROM z_lights.c
+// I didn't feel like moving it into a header file.
+#define LIGHTS_BUFFER_SIZE 32
 
-static std::array<SaveStateInfo*, SaveState::SAVE_SLOT_MAX + 1> gSaveStates;
+typedef struct {
+    /* 0x000 */ s32 numOccupied;
+    /* 0x004 */ s32 searchIndex;
+    /* 0x008 */ LightNode buf[LIGHTS_BUFFER_SIZE];
+} LightsBuffer; // size = 0x188
 
+typedef struct SaveStateInfo {
+    SaveStateHeader stateHeader;
 
+    unsigned char sysHeapCopy[SYSTEM_HEAP_SIZE];
+    unsigned char audioHeapCopy[AUDIO_HEAP_SIZE];
 
-SaveState::SaveState(){}
-SaveState::~SaveState() {}
+    SaveContext saveContextCopy;
+    GameInfo gameInfoCopy;
+    LightsBuffer lightBufferCopy;
+    AudioContext audioContextCopy;
+    std::array<MtxF, 20> mtxStackCopy; // always 20 matricies
+    MtxF currentMtxCopy;
+    uint32_t rngSeed;
+    int16_t blueWarpTimerCopy; /* From door_warp_1 */
 
-void SaveState::Init(void) {
-    gSaveStates[0] = nullptr;
-    gSaveStates[1] = nullptr;
-    gSaveStates[2] = nullptr;
+    std::array<SeqScriptState, 4> seqScriptStateCopy; // Unrelocated
+    // std::array<u8, 4> seqIdCopy;
+    std::array<unk_D_8016E750, 4> unk_D_8016E750Copy;
+
+    ActiveSound gActiveSoundsCopy[7][MAX_CHANNELS_PER_BANK];
+    std::array<u8, 7> gSoundBankMutedCopy;
+    u8 D_801333F0_copy;
+    u8 gAudioSfxSwapOff_copy;
+    std::array<u16, 10> gAudioSfxSwapSource_copy;
+    std::array<u16, 10> gAudioSfxSwapTarget_copy;
+    std::array<u8, 10> gAudioSfxSwapMode_copy;
+    void (*D_801755D0_copy)(void);
+    MapMarkData** sLoadedMarkDataTableCopy;
+} SaveStateInfo;
+
+class SaveState {
+    friend class SaveStateMgr;
+
+  public:
+    SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot);
+
+  private:
+    unsigned int slot;
+    std::shared_ptr<SaveStateMgr> saveStateMgr;
+    std::shared_ptr<SaveStateInfo> info;
+
+    void Save(void);
+    void Load(void);
+    void BackupSeqScriptState(void);
+    void LoadSeqScriptState(void);
+
+    SaveStateInfo* GetSaveStateInfo(void);
+};
+
+SaveStateMgr::SaveStateMgr() {
+    this->SetCurrentSlot(0);
+}
+SaveStateMgr::~SaveStateMgr() { 
+    this->states.clear();
 }
 
-void SaveState::SetHeader(SaveStateHeader& header) {
-    header.stateMagic = 0x07151129;
-    //TODO state version ENUM;
-    header.stateVersion = 0;
+SaveState::SaveState(std::shared_ptr<SaveStateMgr> mgr, unsigned int slot) : saveStateMgr(mgr), slot(slot), info(nullptr) {
+    this->info = std::make_shared<SaveStateInfo>();
 }
 
-SaveStateReturn SaveState::Delete(const unsigned int slot) {
-    if (slot > SAVE_SLOT_MAX) {
-        return SaveStateReturn::FAIL_INVALID_SLOT;
-    }
-    if (gSaveStates[slot] != nullptr) {
-        delete gSaveStates[slot];
-        gSaveStates[slot] = nullptr;
-    }
-    return SaveStateReturn::SUCCESS;
-}
-
-SaveStateReturn SaveState::Export(const unsigned int slot) {
-    if (slot > SAVE_SLOT_MAX) {
-        return SaveStateReturn::FAIL_INVALID_SLOT;
-    }
-    if (gSaveStates[slot] == nullptr) {
-        return SaveStateReturn::FAIL_STATE_EMPTY;
-    }
-
-    char outFileName[20];
-    std::sprintf(outFileName, "SOH_STATE_%u.state", gCurrentSlot);
-    
-    FILE* outFile = fopen(outFileName, "wb+");
-    
-    if (outFile == nullptr) {
-        return SaveStateReturn::FAIL_FILE_NOT_OPENED;
-    }
-
-    SaveState::SetHeader(gSaveStates[slot]->stateHeader);
-    std::fwrite(gSaveStates[slot], sizeof(SaveState), 1, outFile);
-    std::fclose(outFile);
-    
-    return SaveStateReturn::SUCCESS;
-}
-
-SaveStateReturn SaveState::Import(const unsigned int slot) {
-    if (slot > SAVE_SLOT_MAX) {
-        return SaveStateReturn::FAIL_INVALID_SLOT;
-    }
-    
-    char inFileName[20];
-    std::sprintf(inFileName, "SOH_STATE_%u.state", gCurrentSlot);
-    
-    FILE* inFile = std::fopen(inFileName, "rb");
-    
-    if (inFile == nullptr) {
-        return SaveStateReturn::FAIL_FILE_NOT_OPENED;
-    }
-    
-    std::fseek(inFile, 0, SEEK_END);
-    const size_t inFileSize = std::ftell(inFile);
-    
-    if (inFileSize != sizeof(SaveState)) {
-        std::fclose(inFile);
-        return SaveStateReturn::FAIL_INVALID_SIZE;
-    }
-    std::fseek(inFile, 0, SEEK_SET);
-    
-    SaveStateHeader tempHeader;
-    std::fread(&tempHeader, sizeof(SaveStateHeader), 1, inFile);
-    
-    if (tempHeader.stateMagic != 0x07151129) {
-        std::fclose(inFile);
-        return SaveStateReturn::FAIL_INVALID_MAGIC;
-    }
-
-    if (gSaveStates[slot] == nullptr) {
-        gSaveStates[slot] = new SaveStateInfo;
-        if (gSaveStates[slot] == nullptr) {
-            fclose(inFile);
-            return SaveStateReturn::FAIL_NO_MEMORY;
-        }
-    }
-    
-    std::fseek(inFile, 0, SEEK_SET);
-    std::fread(gSaveStates[slot], sizeof(SaveStateInfo), 1, inFile);
-    std::fclose(inFile);
-    //TODO version system
-    //if (gSaveStates[slot]->stateHeader.stateVersion != 0) {
-    //	return SaveStateReturn::FAIL_INVALID_STATE;
-    //}
-    
-    return SaveStateReturn::SUCCESS;
-    
-}
-
-void SaveState::BackupSeqScriptState(SaveStateInfo* state) {
+void SaveState::BackupSeqScriptState(void) {
     for (unsigned int i = 0; i < 4; i++) {
-        state->seqScriptStateCopy[i].value = gAudioContext.seqPlayers[i].scriptState.value;
+        info->seqScriptStateCopy[i].value = gAudioContext.seqPlayers[i].scriptState.value;
         
-        state->seqScriptStateCopy[i].remLoopIters[0] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[0];
-        state->seqScriptStateCopy[i].remLoopIters[1] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[1];
-        state->seqScriptStateCopy[i].remLoopIters[2] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[2];
-        state->seqScriptStateCopy[i].remLoopIters[3] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[3];
+        info->seqScriptStateCopy[i].remLoopIters[0] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[0];
+        info->seqScriptStateCopy[i].remLoopIters[1] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[1];
+        info->seqScriptStateCopy[i].remLoopIters[2] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[2];
+        info->seqScriptStateCopy[i].remLoopIters[3] = gAudioContext.seqPlayers[i].scriptState.remLoopIters[3];
         
-        state->seqScriptStateCopy[i].depth = gAudioContext.seqPlayers[i].scriptState.depth;
+        info->seqScriptStateCopy[i].depth = gAudioContext.seqPlayers[i].scriptState.depth;
         
-        state->seqScriptStateCopy[i].pc = (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.pc - (uintptr_t)gAudioHeap);
+        info->seqScriptStateCopy[i].pc = (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.pc - (uintptr_t)gAudioHeap);
         
-        state->seqScriptStateCopy[i].stack[0] =
+        info->seqScriptStateCopy[i].stack[0] =
             (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.stack[0] - (uintptr_t)gAudioHeap);
-        state->seqScriptStateCopy[i].stack[1] =
+        info->seqScriptStateCopy[i].stack[1] =
             (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.stack[1] - (uintptr_t)gAudioHeap);
-        state->seqScriptStateCopy[i].stack[2] =
+        info->seqScriptStateCopy[i].stack[2] =
             (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.stack[2] - (uintptr_t)gAudioHeap);
-        state->seqScriptStateCopy[i].stack[3] =
+        info->seqScriptStateCopy[i].stack[3] =
             (u8*)((uintptr_t)gAudioContext.seqPlayers[i].scriptState.stack[3] - (uintptr_t)gAudioHeap);
     }
 }
 
-void SaveState::LoadSeqScriptState(SaveStateInfo* state) {
+void SaveState::LoadSeqScriptState(void) {
     for (unsigned int i = 0; i < 4; i++) {
-        gAudioContext.seqPlayers[i].scriptState.value = state->seqScriptStateCopy[i].value;
+        gAudioContext.seqPlayers[i].scriptState.value = info->seqScriptStateCopy[i].value;
 
-        gAudioContext.seqPlayers[i].scriptState.remLoopIters[0] = state->seqScriptStateCopy[i].remLoopIters[0];
-        gAudioContext.seqPlayers[i].scriptState.remLoopIters[1] = state->seqScriptStateCopy[i].remLoopIters[1];
-        gAudioContext.seqPlayers[i].scriptState.remLoopIters[2] = state->seqScriptStateCopy[i].remLoopIters[2];
-        gAudioContext.seqPlayers[i].scriptState.remLoopIters[3] = state->seqScriptStateCopy[i].remLoopIters[3];
+        gAudioContext.seqPlayers[i].scriptState.remLoopIters[0] = info->seqScriptStateCopy[i].remLoopIters[0];
+        gAudioContext.seqPlayers[i].scriptState.remLoopIters[1] = info->seqScriptStateCopy[i].remLoopIters[1];
+        gAudioContext.seqPlayers[i].scriptState.remLoopIters[2] = info->seqScriptStateCopy[i].remLoopIters[2];
+        gAudioContext.seqPlayers[i].scriptState.remLoopIters[3] = info->seqScriptStateCopy[i].remLoopIters[3];
 
-        gAudioContext.seqPlayers[i].scriptState.depth = state->seqScriptStateCopy[i].depth;
+        gAudioContext.seqPlayers[i].scriptState.depth = info->seqScriptStateCopy[i].depth;
 
         gAudioContext.seqPlayers[i].scriptState.pc =
-            (u8*)((uintptr_t)state->seqScriptStateCopy[i].pc + (uintptr_t)gAudioHeap);
+            (u8*)((uintptr_t)info->seqScriptStateCopy[i].pc + (uintptr_t)gAudioHeap);
 
         gAudioContext.seqPlayers[i].scriptState.stack[0] =
-            (u8*)((uintptr_t)state->seqScriptStateCopy[i].stack[0] + (uintptr_t)gAudioHeap);
+            (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[0] + (uintptr_t)gAudioHeap);
         gAudioContext.seqPlayers[i].scriptState.stack[1] =
-            (u8*)((uintptr_t)state->seqScriptStateCopy[i].stack[1] + (uintptr_t)gAudioHeap);
+            (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[1] + (uintptr_t)gAudioHeap);
         gAudioContext.seqPlayers[i].scriptState.stack[2] =
-            (u8*)((uintptr_t)state->seqScriptStateCopy[i].stack[2] + (uintptr_t)gAudioHeap);
+            (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[2] + (uintptr_t)gAudioHeap);
         gAudioContext.seqPlayers[i].scriptState.stack[3] =
-            (u8*)((uintptr_t)state->seqScriptStateCopy[i].stack[3] + (uintptr_t)gAudioHeap);
+            (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[3] + (uintptr_t)gAudioHeap);
 
     }
 }
@@ -175,136 +138,137 @@ extern "C" MtxF* sMatrixStack;
 extern "C" MtxF* sCurrentMatrix;
 extern "C" LightsBuffer sLightsBuffer;
 extern "C" s16 sWarpTimerTarget;
-
-std::queue<SaveStateRequest> SaveState::requests;
+extern "C" MapMarkData** sLoadedMarkDataTable;
 
 extern "C" void ProcessSaveStateRequests(void) {
-    SaveState::ProcessSaveStateRequestsImpl();
+    OTRGlobals::Instance->gSaveStateMgr->ProcessSaveStateRequests();
 }
 
-void SaveState::ProcessSaveStateRequestsImpl(void) {
-    while (!requests.empty()) {
-        if (requests.front().type == RequestType::SAVE) {
-            SaveState::Save(requests.front().slot);
-        } else if (requests.front().type == RequestType::LOAD) {
-            SaveState::Load(requests.front().slot);
-        } else {
-            // SPDLOG_ERROR("Invalid Request type for SaveState: {}", requests.front().type);
+void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
+    this->currentSlot = slot;
+}
+
+unsigned int SaveStateMgr::GetCurrentSlot(void) {
+    return this->currentSlot;
+}
+
+void SaveStateMgr::ProcessSaveStateRequests(void) {
+    std::unique_lock<std::mutex> Lock(this->mutex);
+
+    while (!this->requests.empty()) {
+        const auto& request = this->requests.front();
+        
+        switch (request.type) {
+            case RequestType::SAVE:
+                if (!this->states.contains(request.slot)) {
+                    this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
+                }
+                this->states[request.slot]->Save();
+                break;
+            case RequestType::LOAD:
+                if (this->states.contains(request.slot)) {
+                    this->states[request.slot]->Load();
+                } else {
+                    //TODO log invalid state
+                }
+                break;
+            [[unlikely]] default:
+                //TODO fix logging
+                break;
         }
-        requests.pop();
+        this->requests.pop();
     }
 }
 
-SaveStateReturn SaveState::RequestSaveState(const unsigned int slot) {
-    if (slot > SaveState::SAVE_SLOT_MAX) {
-        return SaveStateReturn::FAIL_INVALID_SLOT;
-    }
-    if (gSaveStates[slot] == nullptr) {
-        gSaveStates[slot] = new SaveStateInfo;
-        if (gSaveStates[slot] == nullptr) {
-            return SaveStateReturn::FAIL_NO_MEMORY;
-        }
-    }
+SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
+    std::unique_lock<std::mutex> Lock(this->mutex);
 
-    SaveState::requests.push({ slot, RequestType::SAVE });
-    return SaveStateReturn::SUCCESS;
+    switch (request.type) { 
+        case RequestType::SAVE:
+            requests.push(request);
+            break;
+        case RequestType::LOAD:
+            if (states.contains(request.slot)) {
+                requests.push(request);
+            } else {
+                return SaveStateReturn::FAIL_INVALID_SLOT;
+            }
+            break;
+        [[unlikely]] default:
+            //TODO fix logging
+            break;
+        
+    }
+    requests.push(request);
 }
 
-extern "C" void SaveState::Save(const unsigned int slot) {
-    std::unique_lock<std::mutex> Lock(audio.mutex);
-
-
-    SaveState::SetHeader(gSaveStates[slot]->stateHeader);
+void SaveState::Save(void) {
+    //this->SetHeader();
     
-    memcpy(&gSaveStates[slot]->sysHeapCopy, gSystemHeap, SYSTEM_HEAP_SIZE /* sizeof(gSystemHeap) */);
-    memcpy(&gSaveStates[slot]->audioHeapCopy, gAudioHeap, AUDIO_HEAP_SIZE /* sizeof(gAudioContext) */);
+    memcpy(&info->sysHeapCopy, gSystemHeap, SYSTEM_HEAP_SIZE /* sizeof(gSystemHeap) */);
+    memcpy(&info->audioHeapCopy, gAudioHeap, AUDIO_HEAP_SIZE /* sizeof(gAudioContext) */);
 
-    memcpy(&gSaveStates[slot]->audioContextCopy, &gAudioContext, sizeof(AudioContext));
-    memcpy(&gSaveStates[slot]->unk_D_8016E750Copy, D_8016E750, sizeof(gSaveStates[slot]->unk_D_8016E750Copy));
-    BackupSeqScriptState(gSaveStates[slot]);
+    memcpy(&info->audioContextCopy, &gAudioContext, sizeof(AudioContext));
+    memcpy(&info->unk_D_8016E750Copy, D_8016E750, sizeof(info->unk_D_8016E750Copy));
+    BackupSeqScriptState();
 
-    memcpy(gSaveStates[slot]->gActiveSoundsCopy, gActiveSounds, sizeof(gActiveSounds));
-    memcpy(&gSaveStates[slot]->gSoundBankMutedCopy, gSoundBankMuted, sizeof(gSaveStates[0]->gSoundBankMutedCopy));
-    gSaveStates[slot]->D_801333F0_copy = D_801333F0;
-    gSaveStates[slot]->gAudioSfxSwapOff_copy = gAudioSfxSwapOff;
+    memcpy(info->gActiveSoundsCopy, gActiveSounds, sizeof(gActiveSounds));
+    memcpy(&info->gSoundBankMutedCopy, gSoundBankMuted, sizeof(info->gSoundBankMutedCopy));
+    
+    info->D_801333F0_copy = D_801333F0;
+    info->gAudioSfxSwapOff_copy = gAudioSfxSwapOff;
 
-    memcpy(&gSaveStates[slot]->gAudioSfxSwapSource_copy, gAudioSfxSwapSource,
-           sizeof(gSaveStates[slot]->gAudioSfxSwapSource_copy));
-    memcpy(&gSaveStates[slot]->gAudioSfxSwapTarget_copy, gAudioSfxSwapTarget,
-           sizeof(gSaveStates[slot]->gAudioSfxSwapTarget_copy));
-    memcpy(&gSaveStates[slot]->gAudioSfxSwapMode_copy, gAudioSfxSwapMode, 
-        sizeof(&gSaveStates[slot]->gAudioSfxSwapMode_copy));
+    memcpy(&info->gAudioSfxSwapSource_copy, gAudioSfxSwapSource,
+           sizeof(info->gAudioSfxSwapSource_copy));
+    memcpy(&info->gAudioSfxSwapTarget_copy, gAudioSfxSwapTarget,
+           sizeof(info->gAudioSfxSwapTarget_copy));
+    memcpy(&info->gAudioSfxSwapMode_copy, gAudioSfxSwapMode, 
+        sizeof(info->gAudioSfxSwapMode_copy));
 
-    gSaveStates[slot]->D_801755D0_copy = D_801755D0;
+    info->D_801755D0_copy = D_801755D0;
 
-
-   // gSaveStates[slot]->seqIdCopy[0] = gAudioContext.seqPlayers[0].seqId;
-   // gSaveStates[slot]->seqIdCopy[1] = gAudioContext.seqPlayers[1].seqId;
-   // gSaveStates[slot]->seqIdCopy[2] = gAudioContext.seqPlayers[2].seqId;
-   // gSaveStates[slot]->seqIdCopy[3] = gAudioContext.seqPlayers[3].seqId;
-
-
-    memcpy(&gSaveStates[slot]->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
-    memcpy(&gSaveStates[slot]->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
-    memcpy(&gSaveStates[slot]->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
-    memcpy(&gSaveStates[slot]->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
-    memcpy(&gSaveStates[slot]->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
-    gSaveStates[slot]->blueWarpTimerCopy = sWarpTimerTarget;
+    memcpy(&info->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
+    memcpy(&info->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
+    memcpy(&info->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
+    memcpy(&info->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
+    memcpy(&info->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
+    info->blueWarpTimerCopy = sWarpTimerTarget;
+    info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
     
 }
 
-SaveStateReturn SaveState::RequestLoadState(const unsigned int slot) {
-    if (slot > SaveState::SAVE_SLOT_MAX) {
-        return SaveStateReturn::FAIL_INVALID_SLOT;
-    }
-    if (gSaveStates[slot] == nullptr) {
-        return SaveStateReturn::FAIL_STATE_EMPTY;
-    }
+void SaveState::Load(void) {
+    memcpy(gSystemHeap, &info->sysHeapCopy, SYSTEM_HEAP_SIZE);
+    memcpy(gAudioHeap, &info->audioHeapCopy, AUDIO_HEAP_SIZE);
 
-    SaveState::requests.push({ slot, RequestType::LOAD });
-    return SaveStateReturn::SUCCESS;
-}
-
-void SaveState::Load(const unsigned int slot) {
-    
-    std::unique_lock<std::mutex> Lock(audio.mutex);
+    memcpy(&gAudioContext, &info->audioContextCopy, sizeof(AudioContext));
+    memcpy(D_8016E750, &info->unk_D_8016E750Copy, sizeof(info->unk_D_8016E750Copy));
+    LoadSeqScriptState();
 
 
-
-    //gSaveStates[slot]->stateHeader.gameVersion = 0;
-    //gSaveStates[slot]->stateHeader.stateVersion = 0;
-
-    memcpy(gSystemHeap, &gSaveStates[slot]->sysHeapCopy, SYSTEM_HEAP_SIZE);
-    memcpy(gAudioHeap, &gSaveStates[slot]->audioHeapCopy, AUDIO_HEAP_SIZE);
-
-    memcpy(&gAudioContext, &gSaveStates[slot]->audioContextCopy, sizeof(AudioContext));
-    memcpy(D_8016E750, &gSaveStates[slot]->unk_D_8016E750Copy, sizeof(gSaveStates[slot]->unk_D_8016E750Copy));
-    LoadSeqScriptState(gSaveStates[slot]);
-    //gAudioContext.seqPlayers[0].seqId = gSaveStates[slot]->seqIdCopy[0];
-    //gAudioContext.seqPlayers[1].seqId = gSaveStates[slot]->seqIdCopy[1];
-    //gAudioContext.seqPlayers[2].seqId = gSaveStates[slot]->seqIdCopy[2];
-    //gAudioContext.seqPlayers[3].seqId = gSaveStates[slot]->seqIdCopy[3];
-
-    memcpy(&gSaveContext, &gSaveStates[slot]->saveContextCopy, sizeof(gSaveContext));
-    memcpy(gGameInfo, &gSaveStates[slot]->gameInfoCopy, sizeof(*gGameInfo));
-    memcpy(&sLightsBuffer, &gSaveStates[slot]->lightBufferCopy, sizeof(sLightsBuffer));
-    memcpy(&sMatrixStack, &gSaveStates[slot]->mtxStackCopy, sizeof(MtxF) * 20);
-    memcpy(&sCurrentMatrix, &gSaveStates[slot]->currentMtxCopy, sizeof(MtxF));
-    sWarpTimerTarget = gSaveStates[slot]->blueWarpTimerCopy;
+    memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
+    memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
+    memcpy(&sLightsBuffer, &info->lightBufferCopy, sizeof(sLightsBuffer));
+    memcpy(&sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
+    memcpy(&sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
+    sWarpTimerTarget = info->blueWarpTimerCopy;
     //TODO RNG seed
 
-    memcpy(gActiveSounds, gSaveStates[slot]->gActiveSoundsCopy, sizeof(gActiveSounds));
-    memcpy(gSoundBankMuted, &gSaveStates[slot]->gSoundBankMutedCopy, sizeof(gSaveStates[0]->gSoundBankMutedCopy));
-    D_801333F0 = gSaveStates[slot]->D_801333F0_copy;
-    gAudioSfxSwapOff = gSaveStates[slot]->gAudioSfxSwapOff_copy;
+    memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));
+    memcpy(gSoundBankMuted, &info->gSoundBankMutedCopy, sizeof(info->gSoundBankMutedCopy));
+    D_801333F0 = info->D_801333F0_copy;
+    gAudioSfxSwapOff = info->gAudioSfxSwapOff_copy;
 
-    memcpy(gAudioSfxSwapSource, &gSaveStates[slot]->gAudioSfxSwapSource_copy,
-           sizeof(&gSaveStates[slot]->gAudioSfxSwapSource_copy));
-    memcpy(gAudioSfxSwapTarget, &gSaveStates[slot]->gAudioSfxSwapTarget_copy,
-           sizeof(&gSaveStates[slot]->gAudioSfxSwapTarget_copy));
-    memcpy(gAudioSfxSwapMode, &gSaveStates[slot]->gAudioSfxSwapMode_copy,
-           sizeof(&gSaveStates[slot]->gAudioSfxSwapMode_copy));
+    memcpy(gAudioSfxSwapSource, &info->gAudioSfxSwapSource_copy,
+           sizeof(info->gAudioSfxSwapSource_copy));
+    memcpy(gAudioSfxSwapTarget, &info->gAudioSfxSwapTarget_copy,
+           sizeof(info->gAudioSfxSwapTarget_copy));
+    memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy,
+           sizeof(info->gAudioSfxSwapMode_copy));
+    Audio_ResetSounds();
+    Audio_SendCmd
 
-    D_801755D0 = gSaveStates[slot]->D_801755D0_copy;
+    D_801755D0 = info->D_801755D0_copy;
+    sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
 
 }

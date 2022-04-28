@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include "soh/OTRGlobals.h"
 
 
 #define Path _Path
@@ -307,45 +308,36 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
 }
 
 static bool SaveStateHandler(const std::vector<std::string>& args) {
-    const SaveStateReturn rtn = SaveState::RequestSaveState(gCurrentSlot);
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
     switch (rtn) { 
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Saved state to slot %u", gCurrentSlot);
+            INFO("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number (%u)", gCurrentSlot);
+            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
             return CMD_FAILED;
     }
 }
 
 static bool LoadStateHandler(const std::vector<std::string>& args) {
-    const SaveStateReturn rtn = SaveState::RequestLoadState(gCurrentSlot);
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
     
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Loaded state from slot %u", gCurrentSlot);
+            INFO("[SOH] Loaded state from slot %u", slot);
             return CMD_SUCCESS;
         case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number (%u)", gCurrentSlot);
+            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
             return CMD_FAILED;
         case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERROR("[SOH] State Slot (%u) is empty", gCurrentSlot);
+            ERROR("[SOH] State Slot (%u) is empty", slot);
             return CMD_FAILED;
             
     }
 
-}
-
-static bool StateSlotCycleHandler(const std::vector<std::string>& args) {
-    if (gCurrentSlot == SaveState::SAVE_SLOT_MAX) {
-        gCurrentSlot = 0;
-        INFO("[SOH] Slot 0 selected");
-    } else {
-        gCurrentSlot++;
-        INFO("[SOH] Slot %u selected", gCurrentSlot);
-    }
-    return CMD_SUCCESS;
 }
 
 static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
@@ -362,116 +354,14 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
         return CMD_FAILED;
     }
     
-    if (slot < 0 || slot > SaveState::SAVE_SLOT_MAX) {
+    if (slot < 0) {
         ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
         return CMD_FAILED;
     }
 
-    gCurrentSlot = slot;
-    INFO("[SOH] Slot %u selected", gCurrentSlot);
+    OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+    INFO("[SOH] Slot %u selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
     return CMD_SUCCESS;
-}
-
-static bool StateDeleteHandler(const std::vector<std::string>& args) {
-    int slot = gCurrentSlot;
-    
-    if (args.size() == 2) {
-
-        try {
-            slot = std::stoi(args[1], nullptr, 10);
-        } catch (std::invalid_argument const& ex) {
-            ERROR("[SOH] SaveState slot value must be a number.");
-            return CMD_FAILED;
-        }
-
-        if (slot < 0 || slot > SaveState::SAVE_SLOT_MAX) {
-            ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
-            return CMD_FAILED;
-        }
-
-    }
-    SaveState::Delete(slot);
-    
-    return CMD_SUCCESS;
-    
-}
-
-static bool StateExportHandler(const std::vector<std::string>& args) {
-    int slot = gCurrentSlot;
-    
-    if (args.size() == 2) {
-
-        try {
-            slot = std::stoi(args[1], nullptr, 10);
-        } catch (std::invalid_argument const& ex) {
-            ERROR("[SOH] SaveState slot value must be a number.");
-            return CMD_FAILED;
-        }
-
-        if (slot < 0 || slot > SaveState::SAVE_SLOT_MAX) {
-            ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
-            return CMD_FAILED;
-        }
-
-    }
-    
-    const SaveStateReturn rtn = SaveState::Export(slot);
-    
-    switch (rtn) { 
-        case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Exported slot %u", slot);
-            return CMD_SUCCESS;
-        case SaveStateReturn::FAIL_FILE_NOT_OPENED:
-            ERROR("[SOH] Could not open file for writing");
-            return CMD_FAILED;
-        case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number %u", slot);
-            return CMD_FAILED;
-        case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERROR("[SOH] SaveState slot %u empty", slot);
-            return CMD_FAILED;
-    }
-    
-}
-
-static bool StateImportHandler(const std::vector<std::string>& args) {
-    int slot = gCurrentSlot;
-
-    if (args.size() == 2) {
-
-        try {
-            slot = std::stoi(args[1], nullptr, 10);
-        } catch (std::invalid_argument const& ex) {
-            ERROR("[SOH] SaveState slot value must be a number.");
-            return CMD_FAILED;
-        }
-
-        if (slot < 0 || slot > SaveState::SAVE_SLOT_MAX) {
-            ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
-            return CMD_FAILED;
-        }
-    }
-    
-    const SaveStateReturn rtn = SaveState::Import(slot);
-    
-    switch (rtn) { 
-        case SaveStateReturn::SUCCESS:
-            INFO("[SOH] Imported slot %u", slot);
-            return CMD_SUCCESS;
-        case SaveStateReturn::FAIL_FILE_NOT_OPENED:
-            ERROR("[SOH] Could not open file for reading");
-            return CMD_FAILED;
-        case SaveStateReturn::FAIL_NO_MEMORY:
-            ERROR("[SOH] Could not allocate memory for Slot Number %u", slot);
-            return CMD_FAILED;
-        case SaveStateReturn::FAIL_STATE_EMPTY:
-            ERROR("[SOH] SaveState slot %u empty", slot);
-            return CMD_FAILED;
-        case SaveStateReturn::FAIL_INVALID_MAGIC:
-            ERROR("[SOH] Invalid magic number in file");
-            return CMD_FAILED;
-    }
-    
 }
 
 #define VARTYPE_INTEGER 0
@@ -590,18 +480,8 @@ void DebugConsole_Init(void) {
 
     CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
     CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
-    CMD_REGISTER("cycle_state", { StateSlotCycleHandler, "Cycle through states.",});
-    CMD_REGISTER("clear_state", { StateDeleteHandler, "Clear a save slot", { 
-        { "Slot number", ArgumentType::NUMBER, true },
-        } });
     CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
         { "Slot number", ArgumentType::NUMBER, }
-        } });
-    CMD_REGISTER("export_state", { StateExportHandler, "Exports a SaveState to a file", {
-        { "Slot number", ArgumentType::NUMBER, true },
-        } });
-    CMD_REGISTER("import_state", { StateImportHandler, "Imports a SaveState to a file", {
-        { "Slot number", ArgumentType::NUMBER, true },
         } });
     DebugConsole_LoadCVars();
 }
