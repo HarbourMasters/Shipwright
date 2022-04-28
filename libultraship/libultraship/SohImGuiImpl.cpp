@@ -605,6 +605,21 @@ namespace SohImGui {
                     CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
                     needs_save = true;
                 }
+
+                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
+                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
+                    CVar_SetS32("gNoRestrictItem", Game::Settings.cheats.no_restrict_item);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
+                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
+                    needs_save = true;
+                }
             }
 
             if (ImGui::BeginMenu("Cosmetics")) {

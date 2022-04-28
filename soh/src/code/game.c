@@ -421,6 +421,8 @@ void GameState_Update(GameState* gameState) {
 
         int32_t prevTime = CVar_GetS32("gPrevTime", gSaveContext.dayTime);
         gSaveContext.dayTime = prevTime;
+    } else {
+        CVar_SetS32("gPrevTime", -1);
     }
         
 
