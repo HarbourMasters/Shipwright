@@ -266,7 +266,7 @@ void SaveState::Load(void) {
     memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy,
            sizeof(info->gAudioSfxSwapMode_copy));
     Audio_ResetSounds();
-    Audio_SendCmd
+    
 
     D_801755D0 = info->D_801755D0_copy;
     sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
