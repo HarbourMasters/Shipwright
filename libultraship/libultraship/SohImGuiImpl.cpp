@@ -740,28 +740,6 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
-
-            if (ImGui::BeginMenu("Developer Tools")) {
-                HOOK(ImGui::MenuItem("Stats", nullptr, &Game::Settings.debug.soh));
-                HOOK(ImGui::MenuItem("Console", nullptr, &console->opened));
-                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
-                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
-                    needs_save = true;
-                }
-
-                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
-                    CVar_SetS32("gNoRestrictItems", Game::Settings.cheats.no_restrict_item);
-                    needs_save = true;
-                }
-
-                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
-                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
-                    needs_save = true;
-                }
-
-                ImGui::EndMenu();
-            }
-
             for (const auto& category : windowCategories) {
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
