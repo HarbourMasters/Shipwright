@@ -620,6 +620,9 @@ namespace SohImGui {
                     CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
                     needs_save = true;
                 }
+                
+                ImGui::EndMenu();
+
             }
 
             if (ImGui::BeginMenu("Cosmetics")) {
