@@ -605,6 +605,7 @@ namespace SohImGui {
                     CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
                     needs_save = true;
                 }
+                ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Cosmetics")) {
