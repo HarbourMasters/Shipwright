@@ -334,7 +334,7 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, GlobalContext* g
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, GlobalContext* globalCtx) {
     NaviColor* naviColor = &sNaviColorList[actorCategory];
-    if (actorCategory == ACTORCAT_PLAYER) {
+    if (actorCategory == ACTORCAT_PLAYER && CVar_GetS32("gUseNaviCol",0) == 1 ) {
         naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
         naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
         naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
@@ -342,7 +342,7 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
         naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
     }
-    if (actorCategory == ACTORCAT_NPC) {
+    if (actorCategory == ACTORCAT_NPC && CVar_GetS32("gUseNaviCol",0) == 1 ) {
         naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
         naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
         naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
@@ -350,7 +350,7 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
         naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
     }
-    if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+    if (actorCategory == ACTORCAT_BOSS && CVar_GetS32("gUseNaviCol",0) == 1 || actorCategory == ACTORCAT_ENEMYY && CVar_GetS32("gUseNaviCol",0) == 1 ) {
         naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
         naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
         naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
@@ -358,7 +358,7 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
         naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
     }
-    if (actorCategory == ACTORCAT_PROP) {
+    if (actorCategory == ACTORCAT_PROPY && CVar_GetS32("gUseNaviCol",0) == 1 ) {
         naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
         naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
         naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
