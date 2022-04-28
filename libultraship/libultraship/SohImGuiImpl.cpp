@@ -391,8 +391,8 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Audio")) {
                 const float volume = Game::Settings.audio.master;
                 ImGui::Text("Master Volume: %d %%", static_cast<int>(100 * volume));
-                if (ImGui::SliderFloat("##Master_Vol", &Game::Settings.audio.master, 0.0f, 1.0f, "")) {
-                    CVar_SetFloat("gGameMasterVolume", volume);
+                if (ImGui::SliderFloat("##Master_Vol", &Game::Settings.audio.master, 0.0f, 1.0f, "", ImGuiSliderFlags_AlwaysClamp)) {
+                    CVar_SetFloat("gGameMasterVolume", Game::Settings.audio.master);
                     needs_save = true;
                 }
 
