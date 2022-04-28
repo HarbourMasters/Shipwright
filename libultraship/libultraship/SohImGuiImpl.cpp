@@ -483,6 +483,12 @@ namespace SohImGui {
                     needs_save = true;
                 }
 
+                ImGui::Text("King Zora Speed: %dx", Game::Settings.enhancements.mweep_speed);
+                if (ImGui::SliderInt("##MWEEPSPEED", &Game::Settings.enhancements.mweep_speed, 1, 5, "")) {
+                    CVar_SetS32("gMweepSpeed", Game::Settings.enhancements.mweep_speed);
+                    needs_save = true;
+                }
+
                 if (ImGui::Checkbox("Skip Text", &Game::Settings.enhancements.skip_text)) {
                     CVar_SetS32("gSkipText", Game::Settings.enhancements.skip_text);
                     needs_save = true;

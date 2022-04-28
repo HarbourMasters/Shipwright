@@ -59,6 +59,9 @@ namespace Game {
         Settings.enhancements.text_speed = Ship::stoi(Conf[EnhancementSection]["text_speed"]);
         CVar_SetS32("gTextSpeed", Settings.enhancements.text_speed);
 
+        Settings.enhancements.mweep_speed = Ship::stoi(Conf[EnhancementSection]["mweep_speed"]);
+        CVar_SetS32("gMweepSpeed", Settings.enhancements.mweep_speed);
+
         Settings.enhancements.disable_lod = stob(Conf[EnhancementSection]["disable_lod"]);
         CVar_SetS32("gDisableLOD", Settings.enhancements.disable_lod);
 
@@ -279,6 +282,7 @@ namespace Game {
         // Enhancements
         Conf[EnhancementSection]["skip_text"] = std::to_string(Settings.enhancements.skip_text);
         Conf[EnhancementSection]["text_speed"] = std::to_string(Settings.enhancements.text_speed);
+        Conf[EnhancementSection]["mweep_speed"] = std::to_string(Settings.enhancements.mweep_speed);
         Conf[EnhancementSection]["disable_lod"] = std::to_string(Settings.enhancements.disable_lod);
         Conf[EnhancementSection]["animated_pause_menu"] = std::to_string(Settings.enhancements.animated_pause_menu);
         Conf[EnhancementSection]["dynamic_wallet_icon"] = std::to_string(Settings.enhancements.dynamic_wallet_icon);
