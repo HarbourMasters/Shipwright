@@ -83,6 +83,9 @@ namespace Game {
 
         Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
         CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
+
+        Settings.enhancements.save_entrance = stob(Conf[EnhancementSection]["save_entrance"]);
+        CVar_SetS32("gSaveEntrance", Settings.enhancements.save_entrance);
         
         // Audio
         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);

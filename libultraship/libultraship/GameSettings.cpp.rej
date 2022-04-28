@@ -1,0 +1,9 @@
+diff a/libultraship/libultraship/GameSettings.cpp b/libultraship/libultraship/GameSettings.cpp	(rejected hunks)
+@@ -184,6 +187,7 @@ namespace Game {
+         Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
+         Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
+         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
++        Conf[EnhancementSection]["save_entrance"] = std::to_string(Settings.enhancements.save_entrance);
+ 
+ 
+         // Controllers
