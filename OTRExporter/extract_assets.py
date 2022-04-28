@@ -8,9 +8,7 @@
 #      Invalid input results in the first rom being selected
 
 import json, os, signal, time, sys, shutil, glob
-from multiprocessing import Pool, cpu_count, Event, Manager, ProcessError
 from enum import Enum
-import shutil
 
 romVer = "..\\soh\\baserom_non_mq.z64"
 roms = [];
