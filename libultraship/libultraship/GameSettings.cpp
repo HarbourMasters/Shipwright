@@ -60,10 +60,6 @@ namespace Game {
         for (const auto& [i, controllers] : Ship::Window::Controllers) {
             for (const auto& controller : controllers) {
                 if (auto padConfSection = controller->GetPadConfSection()) {
-                    Settings.controller.extra[i].gyro_sensitivity = Ship::stof(Conf[*padConfSection]["gyro_sensitivity"]);
-                    Settings.controller.extra[i].rumble_strength = Ship::stof(Conf[*padConfSection]["rumble_strength"]);
-                    Settings.controller.extra[i].gyro_drift_x = Ship::stof(Conf[*padConfSection]["gyro_drift_x"], 0.0f);
-                    Settings.controller.extra[i].gyro_drift_y = Ship::stof(Conf[*padConfSection]["gyro_drift_y"], 0.0f);
                 }
             }
         }

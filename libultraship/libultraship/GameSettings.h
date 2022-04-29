@@ -8,12 +8,6 @@ struct SoHConfigType {
         bool soh_sink = true;
     } debug;
 
-    // Controller
-    struct {
-        float gyroDriftX = 0.0f;
-        float gyroDriftY = 0.0f;
-    } controller;
-
     // Graphics
     struct {
         bool show = false;

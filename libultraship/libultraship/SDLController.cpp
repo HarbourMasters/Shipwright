@@ -6,6 +6,7 @@
 #include "stox.h"
 #include "Window.h"
 #include "Cvar.h"
+#include <Utils/StringHelper.h>
 
 extern "C" uint8_t __osMaxControllers;
 
@@ -189,16 +190,15 @@ namespace Ship {
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
             size_t contNumber = GetControllerNumber();
-            float& gyro_drift_x = Game::Settings.controller.extra[contNumber].gyro_drift_x;
-            float& gyro_drift_y = Game::Settings.controller.extra[contNumber].gyro_drift_y;
-            const float gyro_sensitivity = Game::Settings.controller.extra[contNumber].gyro_sensitivity;
-
+            
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
             const char* contName = SDL_GameControllerName(Cont);
             const int isSpecialController = !strcmp("PS5 Controller", contName);
-            const float gyroSensitivity = CVar_GetFloat("gGyroSensitivity", 1.0f);
+            float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), 0.0f);
+            float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), 0.0f);
+            const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity").c_str(), 1.0f);
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroData[0];
@@ -212,6 +212,9 @@ namespace Ship {
                     gyro_drift_y = gyroData[1];
                 }
             }
+
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), gyro_drift_x);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), gyro_drift_y);
 
             if (isSpecialController == 1) {
                 wGyroX = gyroData[0] - gyro_drift_x;
@@ -346,7 +349,7 @@ namespace Ship {
     {
         if (SDL_GameControllerHasRumble(Cont)) {
             if (controller->rumble > 0) {
-                float rumble_strength = Game::Settings.controller.extra[GetControllerNumber()].rumble_strength;
+                float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", GetControllerNumber()).c_str(), 1.0f);
                 SDL_GameControllerRumble(Cont, 0xFFFF * rumble_strength, 0xFFFF * rumble_strength, 0);
             } else {
                 SDL_GameControllerRumble(Cont, 0, 0, 0);
@@ -413,11 +416,6 @@ namespace Ship {
         std::string ConfSection = *GetPadConfSection();
         std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
         ConfigFile& Conf = *pConf.get();
-
-        Conf[ConfSection]["gyro_sensitivity"] = std::to_string(1.0f);
-        Conf[ConfSection]["rumble_strength"] = std::to_string(1.0f);
-        Conf[ConfSection]["gyro_drift_x"] = std::to_string(0.0f);
-        Conf[ConfSection]["gyro_drift_y"] = std::to_string(0.0f);
 
         Conf.Save();
     }
