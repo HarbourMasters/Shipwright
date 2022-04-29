@@ -92,6 +92,10 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
 }
 
+extern "C" void Graph_StartFrame() {
+    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+}
+
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(R_UPDATE_RATE);
