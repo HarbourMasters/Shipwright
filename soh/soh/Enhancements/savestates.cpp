@@ -14,6 +14,9 @@
 #include <functions.h>
 #include "z64map_mark.h"
 
+
+extern "C" GlobalContext* gGlobalCtx;
+
 // FROM z_lights.c
 // I didn't feel like moving it into a header file.
 #define LIGHTS_BUFFER_SIZE 32
@@ -130,7 +133,6 @@ void SaveState::LoadSeqScriptState(void) {
             (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[2] + (uintptr_t)gAudioHeap);
         gAudioContext.seqPlayers[i].scriptState.stack[3] =
             (u8*)((uintptr_t)info->seqScriptStateCopy[i].stack[3] + (uintptr_t)gAudioHeap);
-
     }
 }
 
@@ -169,11 +171,11 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
                 } else {
-                    //TODO log invalid state
+                    SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
                 break;
-            [[unlikely]] default:
-                //TODO fix logging
+            [[unlikely]] default: 
+                SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
                 break;
         }
         this->requests.pop();
@@ -181,6 +183,10 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 }
 
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
+    if (gGlobalCtx == nullptr) {
+        return SaveStateReturn::FAIL_WRONG_GAMESTATE;
+    }
+
     std::unique_lock<std::mutex> Lock(this->mutex);
 
     switch (request.type) { 
@@ -191,11 +197,12 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
             if (states.contains(request.slot)) {
                 requests.push(request);
             } else {
+                SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
             break;
-        [[unlikely]] default:
-            //TODO fix logging
+        [[unlikely]] default: 
+            SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             break;
         
     }
@@ -203,8 +210,6 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
 }
 
 void SaveState::Save(void) {
-    //this->SetHeader();
-    
     memcpy(&info->sysHeapCopy, gSystemHeap, SYSTEM_HEAP_SIZE /* sizeof(gSystemHeap) */);
     memcpy(&info->audioHeapCopy, gAudioHeap, AUDIO_HEAP_SIZE /* sizeof(gAudioContext) */);
 
@@ -252,7 +257,6 @@ void SaveState::Load(void) {
     memcpy(&sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
     memcpy(&sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
     sWarpTimerTarget = info->blueWarpTimerCopy;
-    //TODO RNG seed
 
     memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));
     memcpy(gSoundBankMuted, &info->gSoundBankMutedCopy, sizeof(info->gSoundBankMutedCopy));
@@ -265,10 +269,8 @@ void SaveState::Load(void) {
            sizeof(info->gAudioSfxSwapTarget_copy));
     memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy,
            sizeof(info->gAudioSfxSwapMode_copy));
-    Audio_ResetSounds();
     
 
     D_801755D0 = info->D_801755D0_copy;
     sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
-
 }
