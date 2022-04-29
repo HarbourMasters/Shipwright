@@ -474,6 +474,7 @@ static void RunFrame()
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
             
+            Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
             
