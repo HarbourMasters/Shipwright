@@ -17,6 +17,7 @@ enum class SaveStateReturn {
     FAIL_FILE_NOT_OPENED,
     FAIL_INVALID_MAGIC,
     FAIL_INVALID_SIZE,
+    FAIL_WRONG_GAMESTATE,
 };
 
 typedef struct SaveStateHeader {
