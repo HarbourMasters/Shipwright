@@ -1032,6 +1032,9 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             Also Ganondorf do not have French and German title card it seem.
             A dirty method has been applied to actually detect it, once a better 
             method is found this workaround will be reverted.*/
+        textureLanguageOffset = 0x0;
+        shiftTopY = 0x0;
+        shiftBottomY = 0x1000;
         if (gSaveContext.language == LANGUAGE_GER && titleCtx->height == 40 && titleCtx->width == 128) {
             textureLanguageOffset = (width * height * gSaveContext.language);
             shiftTopY = 0x400;
@@ -1040,10 +1043,6 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             textureLanguageOffset = (width * height * gSaveContext.language);
             shiftTopY = 0x800;
             shiftBottomY = 0x1800;
-        } else if (titleCtx->height == 39 && titleCtx->width == 128 || gSaveContext.language == LANGUAGE_ENG) { //Fall back to English value.
-            textureLanguageOffset = 0;
-            shiftTopY = 0;
-            shiftBottomY = 0x1000;
         }
 
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
