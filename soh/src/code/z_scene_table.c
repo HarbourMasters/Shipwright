@@ -816,10 +816,8 @@ EntranceInfo gEntranceTable[] = {
 //            (u32)_##title##SegmentRomEnd, unk_10, config, unk_12, 0                                  \
 //    }
 
-#define TITLED_SCENE(name, title, unk_10, config, unk_12)                                            \
-    {                                                                                                \
-        {0, 0, #name}, {0, 0, #title}, unk_10, config, unk_12, 0                         \
-    }
+#define TITLED_SCENE(name, title, unk_10, config, unk_12) \
+    { { 0, 0, #name }, { 0, 0, #title }, unk_10, config, unk_12, 0 }
 
 //#define UNTITLED_SCENE(name, unk_10, config, unk_12) \
     //{ (u32) _##name##SegmentRomStart, (u32)_##name##SegmentRomEnd, 0, 0, unk_10, config, unk_12, 0 }
@@ -2445,7 +2443,7 @@ void func_8009FE58(GlobalContext* globalCtx) {
                 }
                 break;
         }
-        
+
         if (globalCtx->pauseCtx.state == 0) {
             D_8012A398 += 0.15f + (globalCtx->roomCtx.unk_74[1] * 0.001f);
         }

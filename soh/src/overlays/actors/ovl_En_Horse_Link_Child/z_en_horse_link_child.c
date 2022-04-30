@@ -144,6 +144,11 @@ void EnHorseLinkChild_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnHorseLinkChild* this = (EnHorseLinkChild*)thisx;
     s32 pad;
 
+    //if (!Flags_GetEventChkInf(0x14)) {
+        Actor_Kill(&this->actor);
+        return;
+    //}
+
     Actor_ProcessInitChain(&this->actor, sInitChain);
     Actor_SetScale(&this->actor, 0.005f);
     this->actor.gravity = -3.5f;
@@ -152,8 +157,10 @@ void EnHorseLinkChild_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->action = 1;
     this->actor.focus.pos = this->actor.world.pos;
     this->actor.focus.pos.y += 70.0f;
-    Skin_Init(globalCtx, &this->skin, &gChildEponaSkel, &gChildEponaGallopingAnim);
+
+    Skin_Init(globalCtx, &this->skin, &gChildEponaSkel, &gChildEponaGallopingAnim); //william
     this->animationIdx = 0;
+
     Animation_PlayOnce(&this->skin.skelAnime, sAnimations[0]);
     Collider_InitCylinder(globalCtx, &this->bodyCollider);
     Collider_SetCylinderType1(globalCtx, &this->bodyCollider, &this->actor, &sCylinderInit);

@@ -269,7 +269,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
     }
 
-    controllerCallback.rumble = CVar_GetS32("gRumbleEnabled", 0) && (padMgr->rumbleEnable[0] > 0);
+    controllerCallback.rumble = padMgr->rumbleEnable[0] > 0 ? 1 : 0;
 
     if (HealthMeter_IsCritical()) {
         controllerCallback.ledColor = 0;
@@ -303,11 +303,6 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
     }
     osRecvMesg(queue, NULL, OS_MESG_BLOCK);
     osContGetReadData(padMgr->pads);
-
-    for (i = 0; i < __osMaxControllers; i++) {
-        padMgr->padStatus[i].status = CVar_GetS32("gRumbleEnabled", 0) && Controller_ShouldRumble(i);
-    }
-
     if (padMgr->preNMIShutdown) {
         memset(padMgr->pads, 0, sizeof(padMgr->pads));
     }

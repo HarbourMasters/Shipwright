@@ -109,10 +109,10 @@ s32 EnHorseGameCheck_DestroyIngoRace(EnHorseGameCheckBase* base, GlobalContext* 
 
 void EnHorseGameCheck_FinishIngoRace(EnHorseGameCheckIngoRace* this, GlobalContext* globalCtx) {
     gSaveContext.cutsceneIndex = 0;
-    if (this->result == INGORACE_PLAYER_WIN) {
+    if (this->result == INGORACE_PLAYER_WIN) { //player won race william
         globalCtx->nextEntranceIndex = 0x4CE;
         if (gSaveContext.eventInf[0] & 0x40) {
-            gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 6;
+            gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0xF) | 6; //this says that you won
             gSaveContext.eventInf[0] = (gSaveContext.eventInf[0] & ~0x8000) | 0x8000;
             globalCtx->fadeTransition = 3;
             Environment_ForcePlaySequence(NA_BGM_INGO);

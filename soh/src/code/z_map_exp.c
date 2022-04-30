@@ -664,7 +664,6 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
 
-                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

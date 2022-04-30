@@ -19,7 +19,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
-#include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <math.h>
 
 typedef struct {
     /* 0x00 */ u8 itemId;
@@ -10266,7 +10266,7 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     }
 }
 
-void func_80848EF8(Player* this, GlobalContext* globalCtx) {
+void func_80848EF8(Player* this) {
     if (CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) {
         f32 temp = 200000.0f - (this->unk_6A4 * 5.0f);
 
@@ -10275,45 +10275,8 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
         }
 
         this->unk_6A0 += temp;
-
-        /*Prevent it on horse, while jumping and on title screen.
-        If you fly around no stone of agony for you! */
-        if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
-            int rectLeft    = OTRGetRectDimensionFromLeftEdge(26); //Left X Pos
-            int rectTop     = 60; //Top Y Pos
-            int rectWidth   = 24; //Texture Width
-            int rectHeight  = 24; //Texture Heigh
-            int DefaultIconA= 50; //Default icon alphe (55 on 255)
-
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
-            gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
-            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            if (this->unk_6A0 > 4000000.0f) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
-            }
-            if (temp == 0 || temp <= 0.1f) {
-               /*Fail check, it is used to draw off the icon when
-               link is standing out range but do not refresh unk_6A0.
-               Also used to make a default value in my case.*/
-               gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
-            }
-            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
-            gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-            gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 3500);
-        }
-
         if (this->unk_6A0 > 4000000.0f) {
             this->unk_6A0 = 0.0f;
-            if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
-                //This audio is placed here and not in previous CVar check to prevent ears ra.. :)
-                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E0);
-            }
             func_8083264C(this, 120, 20, 10, 0);
         }
     }
@@ -10585,7 +10548,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
                 else {
                     this->fallStartHeight = this->actor.world.pos.y;
                 }
-                func_80848EF8(this, globalCtx);
+                func_80848EF8(this);
             }
         }
 
@@ -12005,11 +11968,20 @@ void func_8084CC98(Player* this, GlobalContext* globalCtx) {
         }
     }
 
-    this->actor.world.pos.x = rideActor->actor.world.pos.x + rideActor->riderPos.x;
-    this->actor.world.pos.y = (rideActor->actor.world.pos.y + rideActor->riderPos.y) - 27.0f;
-    this->actor.world.pos.z = rideActor->actor.world.pos.z + rideActor->riderPos.z;
+
 
     this->currentYaw = this->actor.shape.rot.y = rideActor->actor.shape.rot.y;
+
+    float miniOffset = 0;
+
+    if (LINK_IS_ADULT)
+        miniOffset = 27;
+
+    this->actor.world.pos.x = rideActor->actor.world.pos.x + rideActor->riderPos.x;
+    this->actor.world.pos.y = (rideActor->actor.world.pos.y + rideActor->riderPos.y) - miniOffset; //WILLIAM
+    this->actor.world.pos.z = rideActor->actor.world.pos.z + rideActor->riderPos.z;
+
+    
 
     if ((this->csMode != 0) ||
         (!func_8083224C(globalCtx) && ((rideActor->actor.speedXZ != 0.0f) || !func_8083B644(this, globalCtx)) &&
@@ -12021,10 +11993,16 @@ void func_8084CC98(Player* this, GlobalContext* globalCtx) {
                     this->unk_84F = 0;
                 }
 
-                if (this->skelAnime2.animation == &gPlayerAnim_0033B0) {
+                if (this->skelAnime2.animation == &gPlayerAnim_0033B0) { //INITIAL KICKOFF WITH HORSE
                     if (LinkAnimation_OnFrame(&this->skelAnime2, 23.0f)) {
-                        func_8002F7DC(&this->actor, NA_SE_IT_LASH);
-                        func_80832698(this, NA_SE_VO_LI_LASH);
+                        if (LINK_IS_ADULT) {
+                            func_8002F7DC(&this->actor, NA_SE_IT_LASH); // real
+                            func_80832698(this, NA_SE_VO_LI_LASH);
+                        } else 
+                        {
+                            func_8002F7DC(&this->actor, NA_SE_VO_LI_AUTO_JUMP);
+                            func_80832698(this, NA_SE_VO_LI_AUTO_JUMP);
+                        }
                     }
 
                     AnimationContext_SetCopyAll(globalCtx, this->skelAnime.limbCount, this->skelAnime.jointTable,
@@ -12032,8 +12010,15 @@ void func_8084CC98(Player* this, GlobalContext* globalCtx) {
                 }
                 else {
                     if (LinkAnimation_OnFrame(&this->skelAnime2, 10.0f)) {
-                        func_8002F7DC(&this->actor, NA_SE_IT_LASH);
-                        func_80832698(this, NA_SE_VO_LI_LASH);
+                        if (LINK_IS_ADULT) {
+                            func_8002F7DC(&this->actor, NA_SE_IT_LASH);
+                            func_80832698(this, NA_SE_VO_LI_LASH);
+                        }
+                        else
+                        {
+                            func_8002F7DC(&this->actor, NA_SE_VO_LI_AUTO_JUMP);
+                            func_80832698(this, NA_SE_VO_LI_AUTO_JUMP);
+                        }
                     }
 
                     AnimationContext_SetCopyTrue(globalCtx, this->skelAnime.limbCount, this->skelAnime.jointTable,

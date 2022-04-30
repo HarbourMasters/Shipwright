@@ -612,8 +612,9 @@ void func_80A79FB0(EnIn* this, GlobalContext* globalCtx) {
 void func_80A7A304(EnIn* this, GlobalContext* globalCtx) {
     if (this->skelAnime.animation == &object_in_Anim_015814 || this->skelAnime.animation == &object_in_Anim_01646C) {
         if (this->skelAnime.curFrame == 8.0f) {
-            Audio_PlaySoundRandom(&this->actor.projectedPos, NA_SE_VO_IN_LASH_0,
-                                  NA_SE_VO_IN_LASH_1 - NA_SE_VO_IN_LASH_0 + 1);
+            Audio_PlaySoundRandom(&this->actor.projectedPos, NA_SE_SY_ERROR,
+                                  NA_SE_SY_ERROR); // NA_SE_VO_IN_LASH_0, //william
+                                  //NA_SE_VO_IN_LASH_1 - NA_SE_VO_IN_LASH_0 + 1);
         }
     }
     if (this->skelAnime.animation == &object_in_Anim_018C38 && this->skelAnime.curFrame == 20.0f) {
@@ -623,7 +624,8 @@ void func_80A7A304(EnIn* this, GlobalContext* globalCtx) {
         this->animationIdx %= 8;
         this->unk_1E8 = this->animationIdx;
         if (this->animationIdx == 3 || this->animationIdx == 4) {
-            Audio_PlaySoundGeneral(NA_SE_IT_LASH, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            //Audio_PlaySoundGeneral(NA_SE_IT_LASH, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8); real
+            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &this->actor.projectedPos, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             if (Rand_ZeroOne() < 0.3f) {
                 Audio_PlaySoundGeneral(NA_SE_IT_INGO_HORSE_NEIGH, &this->actor.projectedPos, 4, &D_801333E0,
                                        &D_801333E0, &D_801333E8);

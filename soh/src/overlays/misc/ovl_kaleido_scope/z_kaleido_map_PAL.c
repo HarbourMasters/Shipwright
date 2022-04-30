@@ -332,10 +332,6 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
 
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[60], 8, 0);
 
-    // The dungeon map textures are recreated each frame, so always invalidate them
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment);
-    gSPInvalidateTexCache(POLY_KAL_DISP++, interfaceCtx->mapSegment + 0x800);
-
     gDPLoadTextureBlock_4b(POLY_KAL_DISP++, interfaceCtx->mapSegment, G_IM_FMT_CI, 48, 85, 0, G_TX_WRAP | G_TX_NOMIRROR,
                            G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 

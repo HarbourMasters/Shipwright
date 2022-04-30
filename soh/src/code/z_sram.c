@@ -378,6 +378,7 @@ void Sram_OpenSave(SramContext* sramCtx) {
                 }
                 break;
             }
+
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);

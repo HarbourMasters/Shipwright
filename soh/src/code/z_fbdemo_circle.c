@@ -56,6 +56,8 @@ void TransitionCircle_Start(void* thisx) {
             break;
     }
 
+    this->texture = ResourceMgr_LoadTexByName(this->texture);
+
     if (this->speed == 0) {
         this->step = 0x14;
     } else {
