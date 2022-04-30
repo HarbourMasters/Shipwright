@@ -776,8 +776,13 @@ static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(in
         res.emplace(*coordinates.begin(), (depth_stencil_value >> 18) << 2);
     } else {
         if (pixel_depth_rb_size < coordinates.size()) {
+            // Resizing a renderbuffer seems broken with Intel's driver, so recreate one instead.
+            glBindFramebuffer(GL_FRAMEBUFFER, pixel_depth_fb);
+            glDeleteRenderbuffers(1, &pixel_depth_rb);
+            glGenRenderbuffers(1, &pixel_depth_rb);
             glBindRenderbuffer(GL_RENDERBUFFER, pixel_depth_rb);
             glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, coordinates.size(), 1);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, pixel_depth_rb);
             glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
             pixel_depth_rb_size = coordinates.size();
@@ -814,6 +819,7 @@ static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(in
     }
 
     glBindFramebuffer(GL_FRAMEBUFFER, current_framebuffer);
+
     return res;
 }
 
