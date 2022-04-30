@@ -423,14 +423,8 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.dayTime = prevTime;
     }
    
-    //I added this check here to allow Player to switch languages on runtime
-    if (CVar_GetS32("gLanguages", 0) == 0) { 
-        gSaveContext.language = LANGUAGE_ENG;
-    } else if (CVar_GetS32("gLanguages", 0) == 1) {
-        gSaveContext.language = LANGUAGE_GER;
-    } else if (CVar_GetS32("gLanguages", 0) == 2) {
-        gSaveContext.language = LANGUAGE_FRA;
-    }
+    //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
+    gSaveContext.language = CVar_GetS32("gLanguages", 0);
 
     gameState->frames++;
 }
