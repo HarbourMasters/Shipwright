@@ -327,9 +327,6 @@ static int CheckVarType(const std::string& input)
     return result;
 }
 
-void DebugConsole_LoadCVars();
-void DebugConsole_SaveCVars();
-
 static bool SetCVarHandler(const std::vector<std::string>& args) {
     if (args.size() < 3)
         return CMD_FAILED;
