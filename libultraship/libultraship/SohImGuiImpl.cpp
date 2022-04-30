@@ -632,10 +632,10 @@ namespace SohImGui {
                 EnhancementColor3("Kokiri Tunic", "gTunic_Kokiri", kokiri_col);
                 EnhancementColor3("Goron Tunic", "gTunic_Goron", goron_col);
                 EnhancementColor3("Zora Tunic", "gTunic_Zora", zora_col);
-                
+
                 ImGui::Text("Navi");
                 ImGui::Separator();
-                
+
                 EnhancementColor3("Navi Idle Inner", "gNavi_Idle_Inner", navi_idle_i_col);
                 EnhancementColor3("Navi Idle Outer", "gNavi_Idle_Outer", navi_idle_o_col);
                 EnhancementColor3("Navi NPC Inner", "gNavi_NPC_Inner", navi_npc_i_col);
