@@ -1028,7 +1028,10 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         /* A more elegant way should be made but this one actually work fine.
             I tried every single bosses in both English/French and German.
             Zone name should not be affected by this changes.
-            I do not see any zone name with these dimensions. */
+            I do not see any zone name with these dimensions. 
+            Also Ganondorf do not have French and German title card it seem.
+            A dirty method has been applied to actually detect it, once a better 
+            method is found this workaround will be reverted.*/
         if (gSaveContext.language == LANGUAGE_GER && titleCtx->height == 40 && titleCtx->width == 128) {
             textureLanguageOffset = (width * height * gSaveContext.language);
             shiftTopY = 0x400;
@@ -1037,7 +1040,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             textureLanguageOffset = (width * height * gSaveContext.language);
             shiftTopY = 0x800;
             shiftBottomY = 0x1800;
-        } else { //Fall back to English value.
+        } else if (titleCtx->height == 39 && titleCtx->width == 128 || gSaveContext.language == LANGUAGE_ENG) { //Fall back to English value.
             textureLanguageOffset = 0;
             shiftTopY = 0;
             shiftBottomY = 0x1000;
