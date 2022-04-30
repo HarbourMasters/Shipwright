@@ -7,14 +7,21 @@ The Ship does not include assets and as such requires a prior copy of the game t
 ## Quick Start
 
 1) Download The Ship of Harkinian from Discord.
-2) Requires an `oot debug` rom (not Master Quest).
+2) Requires a supported copy of the game (See supported games below).
+3) Use the OTRGui to generate an `oot.otr` archive file.
+4) Launch `soh.exe`
+
+### Supported Games
+oot debug (not Master Quest)
 ```
 Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-3) Use the OTRGui to generate an `oot.otr` archive file.
-4) Launch `soh.exe`
+oot pal
+```
+sha1: d0c95b2cb3c6682a171db267932af7af8cf5fa82
+```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
