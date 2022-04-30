@@ -196,8 +196,8 @@ namespace Ship {
 
             const char* contName = SDL_GameControllerName(Cont);
             const int isSpecialController = !strcmp("PS5 Controller", contName);
-            float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), 0.0f);
-            float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), 0.0f);
+            float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), 0.0f);
+            float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), 0.0f);
             const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity").c_str(), 1.0f);
 
             if (gyro_drift_x == 0) {
@@ -213,8 +213,8 @@ namespace Ship {
                 }
             }
 
-            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), gyro_drift_x);
-            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), gyro_drift_y);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), gyro_drift_x);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), gyro_drift_y);
 
             if (isSpecialController == 1) {
                 wGyroX = gyroData[0] - gyro_drift_x;
