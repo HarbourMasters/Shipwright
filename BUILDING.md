@@ -1,6 +1,6 @@
 # Building Ship of Harkinian
 
- 1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
+ 1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe) (3.10+)
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
