@@ -1,6 +1,11 @@
 #include "global.h"
 #include "textures/parameter_static/parameter_static.h"
 
+s16 Top_LM_Margin = 0;
+s16 Left_LM_Margin = 0;
+s16 Right_LM_Margin = 0;
+s16 Bottom_LM_Margin = 0;
+
 static s16 sHeartsPrimColors[3][3] = {
     { HEARTS_PRIM_R, HEARTS_PRIM_G, HEARTS_PRIM_B },
     { HEARTS_BURN_PRIM_R, HEARTS_BURN_PRIM_G, HEARTS_BURN_PRIM_B },    // unused
@@ -165,6 +170,18 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     s16 rFactor;
     s16 gFactor;
     s16 bFactor;
+
+    if (CVar_GetS32("gHUDMargins", 0) != 0) {
+        Top_LM_Margin = CVar_GetS32("gHUDMargin_T", 0);
+        Left_LM_Margin = CVar_GetS32("gHUDMargin_L", 0);
+        Right_LM_Margin = CVar_GetS32("gHUDMargin_R", 0);
+        Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
+    } else {
+        Top_LM_Margin = 0;
+        Left_LM_Margin = 0;
+        Right_LM_Margin = 0;
+        Bottom_LM_Margin = 0;
+    }
 
     if (interfaceCtx) {}
 
@@ -357,8 +374,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     curColorSet = -1;
-    offsetY = 0.0f;
-    offsetX = OTRGetDimensionFromLeftEdge(0.0f);
+    offsetY = 0.0f+(Top_LM_Margin*-1);
+    offsetX = OTRGetDimensionFromLeftEdge(0.0f)+(Left_LM_Margin*-1);
 
     for (i = 0; i < totalHeartCount; i++) {
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
@@ -518,7 +535,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
         offsetX += 10.0f;
         if (i == 9) {
             offsetY += 10.0f;
-            offsetX = OTRGetDimensionFromLeftEdge(0.0f);
+            offsetX = OTRGetDimensionFromLeftEdge(0.0f)+(Left_LM_Margin*-1);
         }
     }
 
