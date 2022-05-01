@@ -2,7 +2,6 @@
 #define SAVE_STATES_H
 
 #include <cstdint>
-#include <array>
 #include <queue>
 #include <unordered_map>
 #include <memory>
