@@ -979,7 +979,7 @@ void BossVa_BodyIntro(BossVa* this, GlobalContext* globalCtx) {
 
                 if (!(gSaveContext.eventChkInf[7] & 0x40)) {
                     TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gBarinadeTitleCardTex), 160, 180, 128, 40);
+                                           SEGMENTED_TO_VIRTUAL(gBarinadeTitleCardTex), 160, 180, 128, 40, true);
                 }
 
                 if (Rand_ZeroOne() < 0.1f) {
