@@ -96,6 +96,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     s16 cursorY;
     s16 oldCursorPoint;
     s16 moveCursorResult;
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 234);
 
@@ -120,7 +121,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 pauseCtx->stickRelX = 40;
             }
 
-            if (ABS(pauseCtx->stickRelX) > 30) {
+            if ((ABS(pauseCtx->stickRelX) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DLEFT | BTN_DRIGHT))) {
                 cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                 cursorX = pauseCtx->cursorX[PAUSE_ITEM];
                 cursorY = pauseCtx->cursorY[PAUSE_ITEM];
@@ -132,7 +133,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]]) {}
 
                 while (moveCursorResult == 0) {
-                    if (pauseCtx->stickRelX < -30) {
+                    if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] != 0) {
                             pauseCtx->cursorX[PAUSE_ITEM] -= 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] -= 1;
@@ -164,7 +165,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                                 moveCursorResult = 2;
                             }
                         }
-                    } else if (pauseCtx->stickRelX > 30) {
+                    } else if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] < 5) {
                             pauseCtx->cursorX[PAUSE_ITEM] += 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] += 1;
@@ -208,7 +209,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                              cursorItem, pauseCtx->cursorSpecialPos);
             }
         } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-            if (pauseCtx->stickRelX > 30) {
+            if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
@@ -242,7 +243,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if (pauseCtx->stickRelX < -30) {
+            if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
                 pauseCtx->nameDisplayTimer = 0;
                 pauseCtx->cursorSpecialPos = 0;
 
@@ -280,13 +281,13 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
         if (pauseCtx->cursorSpecialPos == 0) {
             if (cursorItem != PAUSE_ITEM_NONE) {
-                if (ABS(pauseCtx->stickRelY) > 30) {
+                if ((ABS(pauseCtx->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
                     moveCursorResult = 0;
 
                     cursorPoint = pauseCtx->cursorPoint[PAUSE_ITEM];
                     cursorY = pauseCtx->cursorY[PAUSE_ITEM];
                     while (moveCursorResult == 0) {
-                        if (pauseCtx->stickRelY > 30) {
+                        if ((pauseCtx->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] != 0) {
                                 pauseCtx->cursorY[PAUSE_ITEM] -= 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] -= 6;
@@ -300,7 +301,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                                 moveCursorResult = 2;
                             }
-                        } else if (pauseCtx->stickRelY < -30) {
+                        } else if ((pauseCtx->stickRelY < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] < 3) {
                                 pauseCtx->cursorY[PAUSE_ITEM] += 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] += 6;
@@ -466,8 +467,15 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             }
 
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
-            KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[gSaveContext.inventory.items[i]], 32,
+            int itemId = gSaveContext.inventory.items[i];
+            bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            if (not_acquired) {
+                gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gsSPGrayscale(POLY_KAL_DISP++, true);
+            }
+            KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32,
                                                32, 0);
+            gsSPGrayscale(POLY_KAL_DISP++, false);
         }
     }
 

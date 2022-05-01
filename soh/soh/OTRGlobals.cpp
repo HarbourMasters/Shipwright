@@ -3,6 +3,7 @@
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
+#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -26,9 +27,19 @@
 #include "Lib/stb/stb_image.h"
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
+#include "Enhancements/debugger/debugger.h"
+#include "Utils/BitConverter.h"
+#include "variables.h"
 #include "macros.h"
 
 OTRGlobals* OTRGlobals::Instance;
+
+static struct {
+    std::condition_variable cv_to_thread, cv_from_thread;
+    std::mutex mutex;
+    bool initialized;
+    bool processing;
+} audio;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
@@ -42,13 +53,27 @@ extern uintptr_t clearMtx;
 extern "C" Mtx gMtxClear;
 extern "C" MtxF gMtxFClear;
 extern "C" void OTRMessage_Init();
+extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
+extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
+extern "C" int AudioPlayer_Buffered(void);
+extern "C" int AudioPlayer_GetDesiredBuffered(void);
 
 // C->C++ Bridge
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
+
+    if (!t->bHasLoadError)
+    {
+        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
+        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
+    }
+
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     DebugConsole_Init();
+    Debug_Init();
 }
 
 #ifdef _MSC_VER
@@ -89,7 +114,66 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(R_UPDATE_RATE);
+
+    if (!audio.initialized) {
+        audio.initialized = true;
+        std::thread([]() {
+            for (;;) {
+                {
+                    std::unique_lock<std::mutex> Lock(audio.mutex);
+                    while (!audio.processing) {
+                        audio.cv_to_thread.wait(Lock);
+                    }
+                }
+                //AudioMgr_ThreadEntry(&gAudioMgr);
+                // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
+                // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
+                #define SAMPLES_HIGH 560
+                #define SAMPLES_LOW 528
+                // PAL values
+                //#define SAMPLES_HIGH 656
+                //#define SAMPLES_LOW 624
+                #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
+                #define NUM_AUDIO_CHANNELS 2
+                int samples_left = AudioPlayer_Buffered();
+                u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
+                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
+
+                // 3 is the maximum authentic frame divisor.
+                s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
+                for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
+                    AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+                }
+                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
+                //    audio_buffer[i] = Rand_Next() & 0xFF;
+                //}
+                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+                AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
+
+                {
+                    std::unique_lock<std::mutex> Lock(audio.mutex);
+                    audio.processing = false;
+                }
+                audio.cv_from_thread.notify_one();
+            }
+        }).detach();
+    }
+
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        audio.processing = true;
+    }
+    audio.cv_to_thread.notify_one();
+
     OTRGlobals::Instance->context->GetWindow()->RunCommands(commands);
+
+    {
+        std::unique_lock<std::mutex> Lock(audio.mutex);
+        while (audio.processing) {
+            audio.cv_from_thread.wait(Lock);
+        }
+    }
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -99,8 +183,8 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
 float divisor_num = 0.0f;
 
-extern "C" void OTRSetFrameDivisor(int divisor) {
-   OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(divisor);
+extern "C" void OTRGetPixelDepthPrepare(float x, float y) {
+    OTRGlobals::Instance->context->GetWindow()->GetPixelDepthPrepare(x, y);
 }
 
 extern "C" uint16_t OTRGetPixelDepth(float x, float y) {
@@ -115,6 +199,11 @@ extern "C" int32_t OTRGetLastScancode()
 extern "C" void OTRResetScancode()
 {
     OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+}
+
+extern "C" uint32_t ResourceMgr_GetGameVersion()
+{
+    return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
 
 extern "C" void ResourceMgr_CacheDirectory(const char* resName) {
@@ -189,9 +278,9 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
     return (char*)finalBuffer;
 }
 
-extern "C" char* ResourceMgr_LoadTexByName(char* texPath);
+extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
 
-extern "C" char* ResourceMgr_LoadTexOrDListByName(char* filePath) {
+extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
 
     if (res->resType == Ship::ResourceType::DisplayList)
@@ -202,28 +291,28 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(char* filePath) {
         return ResourceMgr_LoadTexByName(filePath);
 }
 
-extern "C" char* ResourceMgr_LoadPlayerAnimByName(char* animPath) {
+extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
 
     return (char*)&anim->limbRotData[0];
 }
 
-extern "C" Gfx* ResourceMgr_LoadGfxByName(char* path)
+extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::DisplayList>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (Gfx*)&res->instructions[0];
 }
 
-extern "C" char* ResourceMgr_LoadArrayByName(char* path)
+extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
     return (char*)res->scalars.data();
 }
 
-extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(char* path) {
+extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     auto res =
         std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -245,7 +334,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(char* path) {
     }
 }
 
-extern "C" CollisionHeader* ResourceMgr_LoadColByName(char* path)
+extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 {
     auto colRes = std::static_pointer_cast<Ship::CollisionHeader>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -339,7 +428,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(char* path)
     return (CollisionHeader*)colHeader;
 }
 
-extern "C" Vtx * ResourceMgr_LoadVtxByName(char* path)
+extern "C" Vtx * ResourceMgr_LoadVtxByName(const char* path)
 {
 	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 	return (Vtx*)res->vertices.data();
@@ -361,7 +450,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
     return 0;
 }
 
-extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(char* path) {
+extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Animation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
@@ -430,7 +519,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(char* path) {
     return anim;
 }
 
-extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
+extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
     auto res = std::static_pointer_cast<Ship::Skeleton>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
     if (res->cachedGameAsset != nullptr)
@@ -476,14 +565,14 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->sibling = limb->siblingIndex;
 
             if (limb->dListPtr != "") {
-                auto dList = ResourceMgr_LoadGfxByName((char*)limb->dListPtr.c_str());
+                auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dLists[0] = dList;
             } else {
                 limbC->dLists[0] = nullptr;
             }
 
             if (limb->dList2Ptr != "") {
-                auto dList = ResourceMgr_LoadGfxByName((char*)limb->dList2Ptr.c_str());
+                auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
                 limbC->dLists[1] = dList;
             } else {
                 limbC->dLists[1] = nullptr;
@@ -502,7 +591,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->dList = nullptr;
 
             if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dListPtr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dList = dList;
             }
 
@@ -518,12 +607,12 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
             limbC->dList[1] = nullptr;
 
             if (!limb->dListPtr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dListPtr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dListPtr.c_str());
                 limbC->dList[0] = dList;
             }
 
             if (!limb->dList2Ptr.empty()) {
-                const auto dList = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->dList2Ptr.c_str()));
+                const auto dList = ResourceMgr_LoadGfxByName(limb->dList2Ptr.c_str());
                 limbC->dList[1] = dList;
             }
 
@@ -549,7 +638,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
                 limbC->segmentType = 0;
 
             if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_DList)
-                limbC->segment = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->skinDList.c_str()));
+                limbC->segment = ResourceMgr_LoadGfxByName(limb->skinDList.c_str());
             else if (limb->skinSegmentType == Ship::ZLimbSkinType::SkinType_4) {
                 const auto animData = new SkinAnimatedLimbData;
                 const int skinDataSize = limb->skinData.size();
@@ -557,7 +646,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
                 animData->totalVtxCount = limb->skinVtxCnt;
                 animData->limbModifCount = skinDataSize;
                 animData->limbModifications = new SkinLimbModif[animData->limbModifCount];
-                animData->dlist = ResourceMgr_LoadGfxByName(const_cast<char*>(limb->skinDList2.c_str()));
+                animData->dlist = ResourceMgr_LoadGfxByName(limb->skinDList2.c_str());
 
                 for (int i = 0; i < skinDataSize; i++)
                 {
@@ -617,7 +706,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path) {
     return baseHeader;
 }
 
-extern "C" s32* ResourceMgr_LoadCSByName(char* path)
+extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (s32*)res->commands.data();
@@ -817,4 +906,14 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
     if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
         OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
     }
+}
+
+extern "C" int Controller_ShouldRumble(size_t i) {
+    for (const auto& controller : Ship::Window::Controllers.at(i)) {
+        if (controller->CanRumble() && Game::Settings.controller.extra[i].rumble_strength > 0.001f) {
+            return 1;
+        }
+    }
+
+    return 0;
 }

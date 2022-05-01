@@ -83,6 +83,7 @@ typedef struct {
     /* 0x00000 */ u16 headMagic; // GFXPOOL_HEAD_MAGIC
     /* 0x00008 */ Gfx polyOpaBuffer[0x2FC0];
     /* 0x0BF08 */ Gfx polyXluBuffer[0x1000];
+    /* 0xXXXXX */ Gfx titlecardBuffer[0x1000];
     /* 0x0BF08 */ Gfx polyKalBuffer[0x1000];
     /* 0x0FF08 */ Gfx overlayBuffer[0x800];
     /* 0x11F08 */ Gfx workBuffer[0x100];
@@ -130,6 +131,7 @@ typedef struct OSScTask {
 typedef struct GraphicsContext {
     /* 0x0000 */ Gfx* polyOpaBuffer; // Pointer to "Zelda 0"
     /* 0x0004 */ Gfx* polyXluBuffer; // Pointer to "Zelda 1"
+    /* 0xXXX */  Gfx* titlecardBuffer; // Pointer to "Paris"
     /* 0xXXX */  Gfx* polyKalBuffer; // Pointer to "Rome"
     /* 0x0008 */ char unk_008[0x08]; // Unused, could this be pointers to "Zelda 2" / "Zelda 3"
     /* 0x0010 */ Gfx* overlayBuffer; // Pointer to "Zelda 4"
@@ -149,6 +151,7 @@ typedef struct GraphicsContext {
     /* 0x02A8 */ TwoHeadGfxArena overlay; // "Zelda 4"
     /* 0x02B8 */ TwoHeadGfxArena polyOpa; // "Zelda 0"
     /* 0x02C8 */ TwoHeadGfxArena polyXlu; // "Zelda 1"
+    /* 0x0XXX */ TwoHeadGfxArena titlecard; // When in Paris...
     /* 0x0XXX */ TwoHeadGfxArena polyKal; // When in Rome...
     /* 0x02D8 */ u32 gfxPoolIdx;
     /* 0x02DC */ u16* curFrameBuffer;
@@ -336,16 +339,18 @@ typedef enum {
 } SkyboxId;
 
 typedef struct {
-    /* 0x000 */ char unk_00[0x128];
-    /* 0x128 */ void* staticSegments[2];
-    /* 0x130 */ u16 (*palettes)[256];
-    /* 0x134 */ Gfx (*dListBuf)[150];
-    /* 0x138 */ Gfx* unk_138;
-    /* 0x13C */ Vtx* roomVtx;
-    /* 0x140 */ s16  unk_140;
-    /* 0x144 */ Vec3f rot;
-    /* 0x150 */ char unk_150[0x10];
-} SkyboxContext; // size = 0x160
+    char unk_00[0x128];
+    s16 skyboxId;
+    void* textures[2][6];
+    void* palettes[6];
+    u16 palette_size;
+    Gfx (*dListBuf)[150];
+    Gfx* unk_138;
+    Vtx* roomVtx;
+    s16  unk_140;
+    Vec3f rot;
+    char unk_150[0x10];
+} SkyboxContext;
 
 typedef enum {
     /*  0 */ OCARINA_SONG_MINUET,

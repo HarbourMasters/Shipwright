@@ -43,6 +43,14 @@ extern "C" {
             exit(EXIT_FAILURE);
         }
 
+        const char* controllerDb = "gamecontrollerdb.txt";
+        int mappingsAdded = SDL_GameControllerAddMappingsFromFile(controllerDb);
+        if (mappingsAdded >= 0) {
+            SPDLOG_INFO("Added SDL game controllers from \"{}\" ({})", controllerDb, mappingsAdded);
+        } else {
+            SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
+        }
+
         // TODO: This for loop is debug. Burn it with fire.
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
@@ -280,6 +288,10 @@ namespace Ship {
     void Window::SetFrameDivisor(int divisor) {
         gfx_set_framedivisor(divisor);
         //gfx_set_framedivisor(0);
+    }
+
+    void Window::GetPixelDepthPrepare(float x, float y) {
+        gfx_get_pixel_depth_prepare(x, y);
     }
 
     uint16_t Window::GetPixelDepth(float x, float y) {

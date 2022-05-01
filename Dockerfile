@@ -12,7 +12,7 @@ RUN dpkg --add-architecture i386 && \
         binutils:i386 \
         gcc-10:i386 \
         g++-10:i386 \
-        python3 \
+        python3.10 \
         python \
         make \
         cmake \
@@ -23,6 +23,7 @@ RUN dpkg --add-architecture i386 && \
         libbz2-dev:i386 \
         libpng-dev:i386 \
         libgles2-mesa-dev && \
+    ln -s /usr/bin/python3.10 /usr/bin/python3.10 \
     ln -s /usr/bin/gcc-10 /usr/bin/gcc && \
     ln -s /usr/bin/gcc-10 /usr/bin/cc && \
     ln -s /usr/bin/g++-10 /usr/bin/g++ && \

@@ -1,0 +1,64 @@
+<Root>
+    <File Name="object_oE5" Segment="6">
+        <!--<Limb Name="object_oE5_Limb_000000" LimbType="Standard" Offset="0x0"/>
+        <Limb Name="object_oE5_Limb_00000C" LimbType="Standard" Offset="0xC"/>
+        <Limb Name="object_oE5_Limb_000018" LimbType="Standard" Offset="0x18"/>
+        <Limb Name="object_oE5_Limb_000024" LimbType="Standard" Offset="0x24"/>
+        <Limb Name="object_oE5_Limb_000030" LimbType="Standard" Offset="0x30"/>
+        <Limb Name="object_oE5_Limb_00003C" LimbType="Standard" Offset="0x3C"/>
+        <Limb Name="object_oE5_Limb_000048" LimbType="Standard" Offset="0x48"/>
+        <Limb Name="object_oE5_Limb_000054" LimbType="Standard" Offset="0x54"/>
+        <Limb Name="object_oE5_Limb_000060" LimbType="Standard" Offset="0x60"/>
+        <Limb Name="object_oE5_Limb_00006C" LimbType="Standard" Offset="0x6C"/>
+        <Limb Name="object_oE5_Limb_000078" LimbType="Standard" Offset="0x78"/>
+        <Limb Name="object_oE5_Limb_000084" LimbType="Standard" Offset="0x84"/>
+        <Limb Name="object_oE5_Limb_000090" LimbType="Standard" Offset="0x90"/>
+        <Limb Name="object_oE5_Limb_00009C" LimbType="Standard" Offset="0x9C"/>
+        <Limb Name="object_oE5_Limb_0000A8" LimbType="Standard" Offset="0xA8"/>
+        <Limb Name="object_oE5_Limb_0000B4" LimbType="Standard" Offset="0xB4"/>
+        <Limb Name="object_oE5_Limb_0000C0" LimbType="Standard" Offset="0xC0"/>
+        <Limb Name="object_oE5_Limb_0000CC" LimbType="Standard" Offset="0xCC"/>
+        <Limb Name="object_oE5_Limb_0000D8" LimbType="Standard" Offset="0xD8"/>
+        <Limb Name="object_oE5_Limb_0000E4" LimbType="Standard" Offset="0xE4"/>
+        <Limb Name="object_oE5_Limb_0000F0" LimbType="Standard" Offset="0xF0"/>
+        <Limb Name="object_oE5_Limb_0000FC" LimbType="Standard" Offset="0xFC"/>
+        <Limb Name="object_oE5_Limb_000108" LimbType="Standard" Offset="0x108"/>
+        <Limb Name="object_oE5_Limb_000114" LimbType="Standard" Offset="0x114"/>
+        <Limb Name="object_oE5_Limb_000120" LimbType="Standard" Offset="0x120"/>
+        <Limb Name="object_oE5_Limb_00012C" LimbType="Standard" Offset="0x12C"/>
+        <Limb Name="object_oE5_Limb_000138" LimbType="Standard" Offset="0x138"/>
+        <Limb Name="object_oE5_Limb_000144" LimbType="Standard" Offset="0x144"/>
+        <Limb Name="object_oE5_Limb_000150" LimbType="Standard" Offset="0x150"/>
+        <Limb Name="object_oE5_Limb_00015C" LimbType="Standard" Offset="0x15C"/>
+        <Limb Name="object_oE5_Limb_000168" LimbType="Standard" Offset="0x168"/>
+        <Limb Name="object_oE5_Limb_000174" LimbType="Standard" Offset="0x174"/>
+        <Limb Name="object_oE5_Limb_000180" LimbType="Standard" Offset="0x180"/>
+        <Limb Name="object_oE5_Limb_00018C" LimbType="Standard" Offset="0x18C"/>
+        <Limb Name="object_oE5_Limb_000198" LimbType="Standard" Offset="0x198"/>
+        <Limb Name="object_oE5_Limb_0001A4" LimbType="Standard" Offset="0x1A4"/>
+        <Limb Name="object_oE5_Limb_0001B0" LimbType="Standard" Offset="0x1B0"/>
+        <Limb Name="object_oE5_Limb_0001BC" LimbType="Standard" Offset="0x1BC"/>
+        <Skeleton Name="object_oE5_Skel_000260" Type="Normal" LimbType="Standard" Offset="0x260"/>-->
+        <DList Name="object_oE5_DL_0024E8" Offset="0x24E8"/>
+        <DList Name="object_oE5_DL_002690" Offset="0x2690"/>
+        <DList Name="object_oE5_DL_002C60" Offset="0x2C60"/>
+        <DList Name="object_oE5_DL_002E10" Offset="0x2E10"/>
+        <DList Name="object_oE5_DL_002F00" Offset="0x2F00"/>
+        <DList Name="object_oE5_DL_003050" Offset="0x3050"/>
+        <DList Name="object_oE5_DL_003200" Offset="0x3200"/>
+        <DList Name="object_oE5_DL_0032F0" Offset="0x32F0"/>
+        <Texture Name="object_oE5_TLUT_003440" OutName="tlut_00003440" Format="rgba16" Width="16" Height="16" Offset="0x3440"/>
+        <Texture Name="object_oE5_Tex_003640" OutName="tex_00003640" Format="ci8" Width="32" Height="32" Offset="0x3640"  TlutOffset="0x3440"/>
+        <Blob Name="object_oE5_Blob_003A40" Size="0x800" Offset="0x3A40"/>
+        <Texture Name="object_oE5_TLUT_004240" OutName="tlut_00004240" Format="rgba16" Width="16" Height="16" Offset="0x4240"/>
+        <Texture Name="object_oE5_Tex_004440" OutName="tex_00004440" Format="ci8" Width="8" Height="8" Offset="0x4440"  TlutOffset="0x4240"/>
+        <Texture Name="object_oE5_Tex_004480" OutName="tex_00004480" Format="ci8" Width="16" Height="16" Offset="0x4480"  TlutOffset="0x4240"/>
+        <Texture Name="object_oE5_Tex_004580" OutName="tex_00004580" Format="ci8" Width="16" Height="16" Offset="0x4580"  TlutOffset="0x4240"/>
+        <Texture Name="object_oE5_Tex_004680" OutName="tex_00004680" Format="rgba16" Width="32" Height="16" Offset="0x4680"/>
+        <Texture Name="object_oE5_Tex_004A80" OutName="tex_00004A80" Format="rgba16" Width="8" Height="16" Offset="0x4A80"/>
+        <Texture Name="object_oE5_Tex_004B80" OutName="tex_00004B80" Format="i4" Width="16" Height="8" Offset="0x4B80"/>
+        <Texture Name="object_oE5_Tex_004BC0" OutName="tex_00004BC0" Format="rgba16" Width="32" Height="32" Offset="0x4BC0"/>
+        <Texture Name="object_oE5_Tex_0053C0" OutName="tex_000053C0" Format="rgba16" Width="16" Height="8" Offset="0x53C0"/>
+        <Texture Name="object_oE5_Tex_0054C0" OutName="tex_000054C0" Format="i4" Width="16" Height="32" Offset="0x54C0"/>
+    </File>
+</Root>

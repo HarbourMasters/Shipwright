@@ -8,6 +8,13 @@ ZAPD := ../ZAPDTR/ZAPD.out
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
 
+ROM_DEBUG ?= 0
+
+EXTRACT_BASEROM := ../OTRExporter/extract_baserom_gc.py
+ifneq ($(ROM_DEBUG), 0)
+EXTRACT_BASEROM := ../OTRExporter/extract_baserom_debug.py
+endif
+
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
@@ -91,7 +98,10 @@ CXX_FILES := \
 	soh/OTRGlobals.cpp \
 	soh/z_message_OTR.cpp \
 	soh/z_play_otr.cpp \
-	soh/z_scene_otr.cpp
+	soh/z_scene_otr.cpp \
+	soh/Enhancements/debugger/debugger.cpp \
+	soh/Enhancements/debugger/debugSaveEditor.cpp \
+	soh/util.cpp
 
 C_FILES := \
 	soh/Enhancements/bootcommands.c \
@@ -800,7 +810,7 @@ all:
 	$(MAKE) $(TARGET)
 
 setup:
-	python3 extract_baserom.py
+	python3 $(EXTRACT_BASEROM)
 	$(MAKE) mpq
 
 mpq:

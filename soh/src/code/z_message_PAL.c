@@ -166,7 +166,7 @@ void Message_UpdateOcarinaGame(GlobalContext* globalCtx) {
 u8 Message_ShouldAdvance(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP)) {
@@ -178,7 +178,7 @@ u8 Message_ShouldAdvance(GlobalContext* globalCtx) {
 u8 Message_ShouldAdvanceSilent(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B)
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     return CHECK_BTN_ALL(input->press.button, BTN_A) || isB_Held || CHECK_BTN_ALL(input->press.button, BTN_CUP);
@@ -203,8 +203,9 @@ void Message_HandleChoiceSelection(GlobalContext* globalCtx, u8 numChoices) {
     static s16 sAnalogStickHeld = false;
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Input* input = &globalCtx->state.input[0];
+    bool dpad = CVar_GetS32("gDpadOcarinaText", 0);
 
-    if (input->rel.stick_y >= 30 && !sAnalogStickHeld) {
+    if ((input->rel.stick_y >= 30 && !sAnalogStickHeld) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
         sAnalogStickHeld = true;
         msgCtx->choiceIndex--;
         if (msgCtx->choiceIndex > 128) {
@@ -212,7 +213,7 @@ void Message_HandleChoiceSelection(GlobalContext* globalCtx, u8 numChoices) {
         } else {
             Audio_PlaySoundGeneral(NA_SE_SY_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
-    } else if (input->rel.stick_y <= -30 && !sAnalogStickHeld) {
+    } else if ((input->rel.stick_y <= -30 && !sAnalogStickHeld) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         sAnalogStickHeld = true;
         msgCtx->choiceIndex++;
         if (msgCtx->choiceIndex > numChoices) {
@@ -390,7 +391,7 @@ void Message_FindCreditsMessage(GlobalContext* globalCtx, u16 textId) {
         if (messageTableEntry->textId == textId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
-            messageTableEntry++;
+            //messageTableEntry++;
             nextSeg = messageTableEntry->segment;
             font->msgOffset = messageTableEntry->segment;
             font->msgLength = messageTableEntry->msgSize;
@@ -950,7 +951,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                         }
                     }
                     i = j - 1;
-                    msgCtx->textDrawPos = i + 1;
+                    msgCtx->textDrawPos = i + CVar_GetS32("gTextSpeed", 1);
 
                     if (character) {}
                 }
@@ -1060,7 +1061,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                 msgCtx->textDelay = msgCtx->msgBufDecoded[++i];
                 break;
             case MESSAGE_UNSKIPPABLE:
-                msgCtx->textUnskippable = CVar_GetS32("gFastText", 0) != 1;
+                msgCtx->textUnskippable = CVar_GetS32("gSkipText", 0) != 1;
                 break;
             case MESSAGE_TWO_CHOICE:
                 msgCtx->textboxEndType = TEXTBOX_ENDTYPE_2_CHOICE;
@@ -1095,6 +1096,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
                 *gfxP = gfx;
                 return;
             case MESSAGE_OCARINA:
+                msgCtx->textDrawPos = i + 1;
                 if (i + 1 == msgCtx->textDrawPos) {
                     Message_HandleOcarina(globalCtx);
                     *gfxP = gfx;
@@ -2025,7 +2027,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         gDPSetCombineLERP(gfx++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE,
                           0);
 
-            bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
+            bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(globalCtx->state.input[0].cur.button, BTN_B)
                                                          : CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B);
 
         switch (msgCtx->msgMode) {
@@ -3032,7 +3034,7 @@ void Message_Update(GlobalContext* globalCtx) {
     Input* input = &globalCtx->state.input[0];
     s16 var;
     s16 focusScreenPosX;
-    s16 averageY;
+    s16 averageY = 0;
     s16 playerFocusScreenPosY;
     s16 actorFocusScreenPosY;
 
@@ -3066,7 +3068,7 @@ void Message_Update(GlobalContext* globalCtx) {
         return;
     }
 
-    bool isB_Held = CVar_GetS32("gFastText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
+    bool isB_Held = CVar_GetS32("gSkipText", 0) != 0 ? CHECK_BTN_ALL(input->cur.button, BTN_B) && !sTextboxSkipped
                                                      : CHECK_BTN_ALL(input->press.button, BTN_B);
 
     switch (msgCtx->msgMode) {

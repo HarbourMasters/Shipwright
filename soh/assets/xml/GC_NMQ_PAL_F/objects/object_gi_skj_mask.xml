@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_skj_mask" Segment="6">
+        <DList Name="gGiSkullMaskDL" Offset="0x09D0"/>
+    </File>
+</Root>

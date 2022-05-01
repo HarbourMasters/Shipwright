@@ -631,9 +631,9 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
         if (0) {}
 
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON)) ||
+            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA)))) {
+              (this->currentTunic != PLAYER_TUNIC_ZORA && CVar_GetS32("gSuperTunic", 0) == 0)))) {
             Message_StartTextbox(globalCtx, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
@@ -743,8 +743,27 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
-  
-    color = &sTunicColors[tunic];
+    if (tunic == PLAYER_TUNIC_KOKIRI) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", &sTunicColors[PLAYER_TUNIC_KOKIRI].r),
+                             CVar_GetS32("gTunic_Kokiri_Green", &sTunicColors[PLAYER_TUNIC_KOKIRI].g),
+                             CVar_GetS32("gTunic_Kokiri_Blue", &sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_GORON) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Goron_Red", &sTunicColors[PLAYER_TUNIC_GORON].r),
+                             CVar_GetS32("gTunic_Goron_Green", &sTunicColors[PLAYER_TUNIC_GORON].g),
+                             CVar_GetS32("gTunic_Goron_Blue", &sTunicColors[PLAYER_TUNIC_GORON].b) };
+        color = &sTemp;
+    } else if (tunic == PLAYER_TUNIC_ZORA) {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Zora_Red", &sTunicColors[PLAYER_TUNIC_ZORA].r),
+                             CVar_GetS32("gTunic_Zora_Green", &sTunicColors[PLAYER_TUNIC_ZORA].g),
+                             CVar_GetS32("gTunic_Zora_Blue", &sTunicColors[PLAYER_TUNIC_ZORA].b) };
+        color = &sTemp;
+    } else {
+        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", &sTunicColors[PLAYER_TUNIC_KOKIRI].r),
+                             CVar_GetS32("gTunic_Kokiri_Green", &sTunicColors[PLAYER_TUNIC_KOKIRI].g),
+                             CVar_GetS32("gTunic_Kokiri_Blue", &sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
+        color = &sTemp;
+    }
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
     sDListsLodOffset = lod * 2;
@@ -1590,7 +1609,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     sp12C[0] = sword;
     sp12C[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVar_GetS32("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVar_GetS32("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
@@ -1624,6 +1643,8 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
         POLY_OPA_DISP = POLY_XLU_DISP;
         POLY_XLU_DISP = ohNo;
     }
+
+    POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP++);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3288);
 }

@@ -102,7 +102,7 @@ void osCreateViManager(OSPri pri)
 
 s32 osMotorInit(OSMesgQueue* ctrlrqueue, OSPfs* pfs, s32 channel)
 {
-
+    return 0;
 }
 
 u32 osAiGetLength(void)

@@ -1857,7 +1857,7 @@ s32 Math3D_CylTriVsIntersect(Cylinder16* cyl, TriNorm* tri, Vec3f* intersect) {
         }
     }
 
-    if (minDistSq != 1.e38f) {
+    if (minDistSq != (f32)1.e38f) {
         return true;
     }
 

@@ -789,40 +789,10 @@ static PreRender sPlayerPreRender;
 static void* sPreRenderCvg;
 extern int fbTest;
 
-// OTRTODO: This function is no longer used. We could probably remove it.
-void KaleidoScope_SetupPlayerPreRender(GlobalContext* globalCtx) {
-    Gfx* gfx;
-    Gfx* gfxRef;
-    void* fbuf;
-    static Gfx testBuffer[2048];
-
-    //return;
-
-    fbuf = globalCtx->state.gfxCtx->curFrameBuffer;
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_scope_PAL.c", 496);
-
-    gfx = &testBuffer[0];
-
-    PreRender_SetValues(&sPlayerPreRender, 64, 112, fbuf, NULL);
-    func_800C1F20(&sPlayerPreRender, &gfx);
-    func_800C20B4(&sPlayerPreRender, &gfx);
-
-    gSPEndDisplayList(gfx++);
-    gSPDisplayList(POLY_KAL_DISP++, &testBuffer[0]);
-
-    SREG(33) |= 1;
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_scope_PAL.c", 509);
-}
-//OTRTODO - Player on pause
-#if 1
 void KaleidoScope_ProcessPlayerPreRender(void) {
-    //Sleep_Msec(50);
     PreRender_Calc(&sPlayerPreRender);
     PreRender_Destroy(&sPlayerPreRender);
 }
-#endif
 
 Gfx* KaleidoScope_QuadTextureIA4(Gfx* gfx, void* texture, s16 width, s16 height, u16 point) {
     gDPLoadTextureBlock_4b(gfx++, texture, G_IM_FMT_IA, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -966,8 +936,9 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-        if (pauseCtx->stickRelX < -30) {
+        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 0);
@@ -976,7 +947,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
             pauseCtx->pageSwitchTimer = -1;
         }
     } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
-        if (pauseCtx->stickRelX > 30) {
+        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 2);
@@ -1643,14 +1614,24 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+    } else {
+      if (CVar_GetS32("gUniformLR", 0) != 0) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+      }
     }
 
     gSPDisplayList(POLY_KAL_DISP++, gLButtonIconDL);
 
-    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 220);
+    if (CVar_GetS32("gUniformLR", 0) == 0) { //Restore the misplace gDPSetPrimColor
+      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+    }
 
     if ((pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) && (pauseCtx->unk_1E4 == 0)) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, D_808321A0, D_808321A2, D_808321A4, D_808321A6);
+    } else {
+      if (CVar_GetS32("gUniformLR", 0) != 0) {
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 180, 210, 255, 255);
+      }
     }
 
     gSPDisplayList(POLY_KAL_DISP++, gRButtonIconDL);
@@ -3110,14 +3091,6 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
             gSegments[8] = VIRTUAL_TO_PHYSICAL(pauseCtx->iconItemSegment);
 
-            for (i = 0; i < ARRAY_COUNTU(gItemAgeReqs); i++) {
-                if ((gItemAgeReqs[i] != 9) && (gItemAgeReqs[i] != ((void)0, gSaveContext.linkAge)))
-                {
-                    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyKal.p++, ResourceMgr_LoadTexByName(gItemIcons[i]));
-                    KaleidoScope_GrayOutTextureRGBA32(SEGMENTED_TO_VIRTUAL(gItemIcons[i]), 0x400);
-                }
-            }
-
             pauseCtx->iconItem24Segment = (void*)(((uintptr_t)pauseCtx->iconItemSegment + size0 + 0xF) & ~0xF);
 
 #if 1
@@ -3206,15 +3179,9 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                 if (gSaveContext.language == LANGUAGE_ENG) {
                     memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[36 + gSaveContext.worldMapArea]), 0xA00);
                 } else if (gSaveContext.language == LANGUAGE_GER) {
-                    DmaMgr_SendRequest1(pauseCtx->nameSegment + 0x400,
-                                        (uintptr_t)_map_name_staticSegmentRomStart +
-                                            (((void)0, gSaveContext.worldMapArea) * 0xA00) + 0x16C00,
-                                        0xA00, "../z_kaleido_scope_PAL.c", 3780);
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[59 + gSaveContext.worldMapArea]), 0xA00);
                 } else {
-                    DmaMgr_SendRequest1(pauseCtx->nameSegment + 0x400,
-                                        (uintptr_t)_map_name_staticSegmentRomStart +
-                                            (((void)0, gSaveContext.worldMapArea) * 0xA00) + 0x24800,
-                                        0xA00, "../z_kaleido_scope_PAL.c", 3784);
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[81 + gSaveContext.worldMapArea]), 0xA00);
                 }
             }
             // OTRTODO - player on pause
@@ -4023,10 +3990,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             R_UPDATE_RATE = 3;
             R_PAUSE_MENU_MODE = 0;
 
-            ResourceMgr_DirtyDirectory("textures/icon_item_24_static*");
-            ResourceMgr_DirtyDirectory("textures/icon_item_static*");
             CVar_SetS32("gPauseTriforce", 0);
-            //ResourceMgr_InvalidateCache();
 
             func_800981B8(&globalCtx->objectCtx);
             func_800418D0(&globalCtx->colCtx, globalCtx);

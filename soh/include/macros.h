@@ -129,6 +129,7 @@ extern GraphicsContext* __gfxCtx;
 #define WORK_DISP       __gfxCtx->work.p
 #define POLY_OPA_DISP   __gfxCtx->polyOpa.p
 #define POLY_XLU_DISP   __gfxCtx->polyXlu.p
+#define TITLE_CARD_DISP   __gfxCtx->titlecard.p
 #define POLY_KAL_DISP   __gfxCtx->polyKal.p
 #define OVERLAY_DISP    __gfxCtx->overlay.p
 

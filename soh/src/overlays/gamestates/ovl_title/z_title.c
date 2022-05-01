@@ -10,6 +10,9 @@
 #include "alloca.h"
 #include "textures/nintendo_rogo_static/nintendo_rogo_static.h"
 #include <soh/Enhancements/bootcommands.h>
+#include "GameVersions.h"
+
+const char* GetGameVersionString();
 
 char* quote;
 
@@ -17,6 +20,8 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
     Gfx* g;
     //GfxPrint* printer;
     GfxPrint printer;
+
+    const char* gameVersionStr = GetGameVersionString();
 
     g = *gfxp;
     g = func_8009411C(g);
@@ -31,6 +36,9 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
 #else
     GfxPrint_Printf(&printer, "GCC SHIP");
 #endif
+
+    GfxPrint_SetPos(&printer, 5, 4);
+    GfxPrint_Printf(&printer, "Game Version: %s", gameVersionStr);
 
     GfxPrint_SetColor(&printer, 255, 255, 255, 255);
     GfxPrint_SetPos(&printer, 2, 22);
@@ -64,6 +72,36 @@ char* SetQuote() {
     srand(time(NULL));
     int randomQuote = rand() % 11;
     return quotes[randomQuote];
+}
+
+const char* GetGameVersionString() {
+    uint32_t gameVersion = ResourceMgr_GetGameVersion();
+    switch (gameVersion) {
+        case OOT_NTSC_10:
+            return "N64 NTSC 1.0";
+        case OOT_NTSC_11:
+            return "N64 NTSC 1.1";
+        case OOT_NTSC_12:
+            return "N64 NTSC 1.2";
+        case OOT_PAL_10:
+            return "N64 PAL 1.0";
+        case OOT_PAL_11:
+            return "N64 PAL 1.1";
+        case OOT_PAL_GC:
+            return "GC PAL";
+        case OOT_PAL_MQ:
+            return "GC PAL MQ";
+        case OOT_PAL_GC_DBG1:
+            return "GC PAL DEBUG";
+        case OOT_PAL_GC_DBG2:
+            return "GC PAL DEBUG MQ";
+        case OOT_IQUE_CN:
+            return "IQUE CN";
+        case OOT_IQUE_TW:
+            return "IQUE TW";
+        default:
+            return "UNKNOWN";
+    }
 }
 
 // Note: In other rom versions this function also updates unk_1D4, coverAlpha, addAlpha, visibleDuration to calculate
@@ -161,7 +199,7 @@ void Title_Draw(TitleContext* this) {
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 170, 255, 255, 255);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 255, 128);
 
-    gDPLoadMultiBlock(POLY_OPA_DISP++, ResourceMgr_LoadTexByName(nintendo_rogo_static_Tex_001800), 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
+    gDPLoadMultiBlock(POLY_OPA_DISP++, nintendo_rogo_static_Tex_001800, 0x100, 1, G_IM_FMT_I, G_IM_SIZ_8b, 32, 32, 0,
         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 5, 5, 2, 11);
 
     for (idx = 0, y = 94; idx < 16; idx++, y += 2)
@@ -233,6 +271,8 @@ void Title_Init(GameState* thisx) {
 
     //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
 
+    // Disable vismono
+    D_801614B0.a = 0;
     R_UPDATE_RATE = 1;
     Matrix_Init(&this->state);
     View_Init(&this->view, this->state.gfxCtx);

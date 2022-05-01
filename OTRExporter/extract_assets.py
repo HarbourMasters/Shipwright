@@ -1,24 +1,51 @@
 #!/usr/bin/env python3
 
-import argparse, json, os, signal, time, sys, shutil
+# How to use:
+#   Place a rom in this directory then run the script.
+#   If you are using multiple roms, the script will let you choose one.
+#   To choose with a commandline argument:
+#      Python3 extract_assets.py <number>
+#      Invalid input results in the first rom being selected
+
+import json, os, signal, time, sys, shutil, glob
 from multiprocessing import Pool, cpu_count, Event, Manager, ProcessError
+from enum import Enum
 import shutil
 
-def SignalHandler(sig, frame):
-    print(f'Signal {sig} received. Aborting...')
-    mainAbort.set()
-    # Don't exit immediately to update the extracted assets file.
+romVer = "..\\soh\\baserom_non_mq.z64"
+roms = [];
+checksums = ["", "", ""];
 
-def BuildOTR():
-    shutil.copyfile("../soh/baserom/Audiobank", "Extract/Audiobank")
-    shutil.copyfile("../soh/baserom/Audioseq", "Extract/Audioseq")
-    shutil.copyfile("../soh/baserom/Audiotable", "Extract/Audiotable")
+class Checksums(Enum):
+    OOT_NTSC_10 = "EC7011B7"
+    OOT_NTSC_11 = "D43DA81F"
+    OOT_NTSC_12 = "693BA2AE"
+    OOT_PAL_10 = "B044B569"
+    OOT_PAL_11 = "B2055FBD"
+    OOT_NTSC_JP_GC_CE = "F7F52DB8"
+    OOT_NTSC_JP_GC = "F611F4BA"
+    OOT_NTSC_US_GC = "F3DD35BA"
+    OOT_PAL_GC = "09465AC3"
+    OOT_NTSC_JP_MQ = "F43B45BA"
+    OOT_NTSC_US_MQ = "F034001A"
+    OOT_PAL_MQ = "1D4136F3"
+    OOT_PAL_GC_DBG1 = "871E1C92"
+    OOT_PAL_GC_DBG2 = "87121EFE"
+    OOT_PAL_GC_MQ_DBG = "917D18F6"
+    OOT_IQUE_TW = "3D81FB3E"
+    OOT_IQUE_CN = "B1E1E07B"
+    OOT_UNKNOWN = "FFFFFFFF"
 
+CompatibleChecksums = [
+    Checksums.OOT_PAL_GC,
+    Checksums.OOT_PAL_GC_DBG1
+]
+
+def BuildOTR(xmlPath, rom):
     shutil.copytree("assets", "Extract/assets")
 
     execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
-
-    execStr += " botr -se OTR"
+    execStr += " ed -i %s -b %s -fl CFG/filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, rom)
 
     print(execStr)
     exitValue = os.system(execStr)
@@ -28,90 +55,95 @@ def BuildOTR():
         print("Aborting...", file=os.sys.stderr)
         print("\n")
 
-def ExtractFile(xmlPath, outputPath, outputSourcePath):
-    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
-    execStr += " e -eh -i %s -b ../soh/baserom/ -o %s -osf %s -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, outputPath, outputSourcePath)
+def checkChecksum(rom):
+    r = open(rom, "rb")
+    r.seek(16)
+    bytes = r.read(4).hex().upper()
+    r.close()
 
-    if "overlays" in xmlPath:
-        execStr += " --static"
+    for checksum in Checksums:
+        if (checksum.value == bytes):
 
-    print(execStr)
-    exitValue = os.system(execStr)
-    #exitValue = 0
-    if exitValue != 0:
-        print("\n")
-        print("Error when extracting from file " + xmlPath, file=os.sys.stderr)
-        print("Aborting...", file=os.sys.stderr)
-        print("\n")
+            for compat in CompatibleChecksums:
+                if (checksum.name == compat.name):
+                    print("Compatible rom found!")
+                    return checksum
+            print("Valid oot rom found. However, not compatible with SoH.")
+            print("Compatible roms:")
+            for compat in CompatibleChecksums:
+                print(compat.name+" | 0x"+compat.value)
+            sys.exit(1)
 
-def ExtractFunc(fullPath):
-    *pathList, xmlName = fullPath.split(os.sep)
-    objectName = os.path.splitext(xmlName)[0]
-
-    outPath = os.path.join("../soh/assets/", *pathList[4:], objectName)
-    os.makedirs(outPath, exist_ok=True)
-    outSourcePath = outPath
-
-    ExtractFile(fullPath, outPath, outSourcePath)
-
-def initializeWorker(abort, test):
-    global globalAbort
-    globalAbort = abort
-
+    print("Wrong rom! No valid checksum found")
+    sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="baserom asset extractor")
-    parser.add_argument("-s", "--single", help="asset path relative to assets/, e.g. objects/gameplay_keep")
-    parser.add_argument("-f", "--force", help="Force the extraction of every xml instead of checking the touched ones.", action="store_true")
-    parser.add_argument("-u", "--unaccounted", help="Enables ZAPD unaccounted detector warning system.", action="store_true")
-    args = parser.parse_args()
 
-    global mainAbort
-    mainAbort = Event()
-    manager = Manager()
-    signal.signal(signal.SIGINT, SignalHandler)
+    romToUse = "";
 
-    extractedAssetsTracker = manager.dict()
+    for file in glob.glob("*.z64"):
+        roms.append(file)
 
-    asset_path = args.single
-    if asset_path is not None:
-        fullPath = os.path.join("../soh/assets", "xml", asset_path + ".xml")
-        if not os.path.exists(fullPath):
-            print(f"Error. File {fullPath} doesn't exists.", file=os.sys.stderr)
-            exit(1)
+    if not (roms):
+        print("Error: No roms located, place one in the OTRExporter directory", file=os.sys.stderr)
+        sys.exit(1)
 
-        ExtractFunc(fullPath)
+    if (len(roms) > 1):
+
+        # If commandline args exist
+        if (len(sys.argv) > 1):
+            try:
+                if ((int(sys.argv[1]) - 1) < 1):
+                    romToUse = roms[0]
+
+                elif ((int(sys.argv[1]) - 1) > len(roms)):
+                    romToUse = roms[len(roms) - 1]
+
+                else:
+                    romToUse = roms[int(sys.argv[1]) - 1]
+            except:
+                romToUse = roms[0]
+
+        # No commandline args, select rom using user input
+        else:
+
+            print(str(len(roms))+" roms found, please select one by pressing 1-"+str(len(roms)))
+
+            count = 1
+            for list in range(len(roms)):
+                print(str(count)+". "+roms[list])
+                count += 1
+
+            while(1):
+                try:
+                    selection = int(input())
+                except:
+                    print("Bad input. Try again with the number keys.")
+                    continue
+
+                if (selection < 1 or selection > len(roms)):
+                    print("Bad input. Try again.")
+                    continue
+
+                else: break
+
+            romToUse = roms[selection - 1]
+
     else:
-        extract_text_path = "assets/text/message_data.h"
-        if os.path.isfile(extract_text_path):
-            extract_text_path = None
-        extract_staff_text_path = "assets/text/message_data_staff.h"
-        if os.path.isfile(extract_staff_text_path):
-            extract_staff_text_path = None
+        romToUse = roms[0]
 
-        xmlFiles = []
-        for currentPath, _, files in os.walk(os.path.join("../soh/assets", "xml")):
-            for file in files:
-                fullPath = os.path.join(currentPath, file)
-                if file.endswith(".xml"):
-                    xmlFiles.append(fullPath)
+    match checkChecksum(romToUse):
+        case Checksums.OOT_PAL_GC:
+            xmlVer = "GC_NMQ_PAL_F"
+        case Checksums.OOT_PAL_GC_DBG1:
+            xmlVer = "GC_NMQ_D"
+        case _: # default case
+            xmlVer = "GC_MQ_D"
 
-        try:
-            numCores = 2
-            print("Extracting assets with " + str(numCores) + " CPU cores.")
-            with Pool(numCores, initializer=initializeWorker, initargs=(mainAbort, 0)) as p:
-                p.map(ExtractFunc, xmlFiles)
-        except Exception as e:
-            print("Warning: Multiprocessing exception ocurred.", file=os.sys.stderr)
-            print("Disabling mutliprocessing.", file=os.sys.stderr)
-
-            initializeWorker(mainAbort, 0)
-            for singlePath in xmlFiles:
-                ExtractFunc(singlePath)
-
-
-        BuildOTR()
+    if (os.path.exists("Extract")):
         shutil.rmtree("Extract")
+
+    BuildOTR("../soh/assets/xml/" + xmlVer + "/", romToUse)
 
 if __name__ == "__main__":
     main()

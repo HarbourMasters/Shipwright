@@ -323,6 +323,44 @@ Lights* Lights_New(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambient
     return lights;
 }
 
+void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
+    LightNode* node;
+    LightPoint* params;
+    Vec3f pos;
+    Vec3f multDest;
+    f32 wDest;
+    f32 wX;
+    f32 wY;
+
+    node = globalCtx->lightCtx.listHead;
+
+    while (node != NULL) {
+        params = &node->info->params.point;
+
+        if (node->info->type == LIGHT_POINT_GLOW) {
+            f32 x, y;
+            u32 shrink;
+            uint32_t height;
+
+            pos.x = params->x;
+            pos.y = params->y;
+            pos.z = params->z;
+            func_8002BE04(globalCtx, &pos, &multDest, &wDest);
+            wX = multDest.x * wDest;
+            wY = multDest.y * wDest;
+
+            x = wX * 160 + 160;
+            y = wY * 120 + 120;
+            shrink = ShrinkWindow_GetCurrentVal();
+
+            if ((multDest.z > 1.0f) && y >= shrink && y <= SCREEN_HEIGHT - shrink) {
+                OTRGetPixelDepthPrepare(x, y);
+            }
+        }
+        node = node->next;
+    }
+}
+
 void Lights_GlowCheck(GlobalContext* globalCtx) {
     LightNode* node;
     LightPoint* params;

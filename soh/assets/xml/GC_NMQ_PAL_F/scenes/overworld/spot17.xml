@@ -1,0 +1,13 @@
+<Root>
+    <File Name="spot17_scene" Segment="2">
+        <Cutscene Name="gDeathMountainCraterBoleroCs" Offset="0x45D0"/>
+        <Cutscene Name="gDeathMountainCraterIntroCs" Offset="0x76D0"/>
+        <Scene Name="spot17_scene" Offset="0x0"/>
+    </File>
+    <File Name="spot17_room_0" Segment="3">
+        <Room Name="spot17_room_0" Offset="0x0"/>
+    </File>
+    <File Name="spot17_room_1" Segment="3">
+        <Room Name="spot17_room_1" Offset="0x0"/>
+    </File>
+</Root>
