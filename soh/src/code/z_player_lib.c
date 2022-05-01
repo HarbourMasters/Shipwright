@@ -743,6 +743,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
+
     if (CVar_GetS32("gUseTunicsCol",0) != 1) { //Mod is not on bring back original colors.
         color = &sTunicColors[tunic];
     }
@@ -1218,7 +1219,7 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
     if (BgCheck_AnyLineTest3(&globalCtx->colCtx, &sp8C, &sp80, &sp74, &sp9C, 1, 1, 1, 1, &bgId)) {
         OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2572);
 
-        OVERLAY_DISP = Gfx_CallSetupDL(OVERLAY_DISP, 0x07);
+        WORLD_OVERLAY_DISP = Gfx_CallSetupDL(WORLD_OVERLAY_DISP, 0x07);
 
         SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &sp74, &sp68, &sp64);
 
@@ -1227,10 +1228,10 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
         Matrix_Translate(sp74.x, sp74.y, sp74.z, MTXMODE_NEW);
         Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
 
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2587),
+        gSPMatrix(WORLD_OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2587),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(OVERLAY_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
-        gSPDisplayList(OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
+        gSPSegment(WORLD_OVERLAY_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
+        gSPDisplayList(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
 
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2592);
     }

@@ -1022,31 +1022,30 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
 
-        //TITLE_CARD_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
-        TITLE_CARD_DISP = func_80093808(TITLE_CARD_DISP);
+        // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
+        WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
 
-        gDPSetPrimColor(TITLE_CARD_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
+        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
-
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPTextureRectangle(TITLE_CARD_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4) - 1,
+        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4) - 1,
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
 
         // If texture is bigger than 0x1000, display the rest
         if (height > 0) {
-            gDPLoadTextureBlock(TITLE_CARD_DISP++, (uintptr_t)titleCtx->texture + 0x1000,
+            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + 0x1000,
                                 G_IM_FMT_IA,
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            gSPTextureRectangle(TITLE_CARD_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
+            gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
                                 titleSecondY + (height * 4) - 1, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 

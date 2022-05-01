@@ -2184,6 +2184,12 @@
     <ClCompile Include="soh\util.cpp">
       <Filter>Source Files\soh</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp">
+      <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp">
+      <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -3733,6 +3739,12 @@
     </ClInclude>
     <ClInclude Include="soh\util.h">
       <Filter>Header Files\soh</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\debugger\colViewer.h">
+      <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h">
+      <Filter>Header Files\soh\Enhancements\debugger</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
