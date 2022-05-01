@@ -926,7 +926,7 @@ void BossGoma_Encounter(BossGoma* this, GlobalContext* globalCtx) {
 
                 if (!(gSaveContext.eventChkInf[7] & 1)) {
                     TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardTex), 160, 180, 128, 40);
+                                           SEGMENTED_TO_VIRTUAL(gGohmaTitleCardTex), 160, 180, 128, 40, true);
                 }
 
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
