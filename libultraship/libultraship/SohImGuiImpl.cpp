@@ -579,6 +579,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementCheckbox("Debug Mode", "gDebugEnabled");
+                EnhancementCheckbox("Show Build Info on Title Screen", "gShowTitleInfo");
 
                 ImGui::EndMenu();
             }
