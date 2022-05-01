@@ -4,7 +4,7 @@
 #   Place a rom in this directory then run the script.
 #   If you are using multiple roms, the script will let you choose one.
 #   To choose with a commandline argument:
-#      Python3 extract_assets.py <number>
+#      Python3 extract_assets.py <rom_name>
 #      Invalid input results in the first rom being selected
 
 import json, os, signal, time, sys, shutil, glob
@@ -93,16 +93,9 @@ def main():
         # If commandline args exist
         if (len(sys.argv) > 1):
             try:
-                if ((int(sys.argv[1]) - 1) < 1):
-                    romToUse = roms[0]
-                    
-                elif ((int(sys.argv[1]) - 1) > len(roms)):
-                    romToUse = roms[len(roms) - 1]
-                
-                else:
-                    romToUse = roms[int(sys.argv[1]) - 1]
+                romToUse = sys.argv[1]
             except:
-                romToUse = roms[0]
+                print("Error with rom inputted via argument")
             
         # No commandline args, select rom using user input
         else:
@@ -132,13 +125,12 @@ def main():
     else:
         romToUse = roms[0]
     
-    match checkChecksum(romToUse):
-        case Checksums.OOT_PAL_GC:
-            xmlVer = "GC_NMQ_PAL_F"
-        case Checksums.OOT_PAL_GC_DBG1:
-            xmlVer = "GC_NMQ_D"
-        case _: # default case
-            xmlVer = "GC_MQ_D"
+    if checkChecksum(romToUse) == Checksums.OOT_PAL_GC:
+        xmlVer = "GC_NMQ_PAL_F"
+    elif checkChecksum(romToUse) == Checksums.OOT_PAL_GC_DBG1:
+        xmlVer = "GC_NMQ_D"
+    else: # default selection
+        xmlVer = "GC_MQ_D"
 
     if (os.path.exists("Extract")):
         shutil.rmtree("Extract")
