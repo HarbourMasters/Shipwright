@@ -310,6 +310,13 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         } });
 
+        for (const auto& [i, controllers] : Ship::Window::Controllers)
+        {
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
+            needs_save = true;
+        }
+
         ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
             pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
         } });
@@ -509,8 +516,8 @@ namespace SohImGui {
 
                             if (ImGui::Button("Recalibrate Gyro"))
                             {
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), 0);
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), 0);
+                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
+                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
                                 needs_save = true;
                             }
 
