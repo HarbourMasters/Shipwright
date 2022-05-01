@@ -758,13 +758,13 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 }
 
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height, bool hasTranslation) {
+                            u8 height, s16 hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
 
     titleCtx->texture = texture;
-    titleCtx->isBossCard = false;
+    titleCtx->isBossCard = true;
     titleCtx->hasTranslation = hasTranslation;   
     titleCtx->x = x;
     titleCtx->y = y;
@@ -1034,7 +1034,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         shiftBottomY = 0x1000;
 
         //if this card is bosses cards, has translation and that is not using English language.
-        if (titleCtx->isBossCard && titleCtx->hasTranslation && gSaveContext.language != LANGUAGE_ENG) {
+        if (titleCtx->isBossCard == 1 && titleCtx->hasTranslation == 1 && gSaveContext.language != LANGUAGE_ENG) {
             if (gSaveContext.language == LANGUAGE_GER) {
                 textureLanguageOffset = (width * height * gSaveContext.language);
                 shiftTopY = 0x400;
