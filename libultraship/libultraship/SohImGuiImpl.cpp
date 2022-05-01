@@ -559,6 +559,8 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
+                //EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon"); //This is just to show that we can toggle it on/off with that cvar 
+                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
 
                 ImGui::EndMenu();
             }
