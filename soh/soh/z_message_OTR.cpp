@@ -78,26 +78,48 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
 	return table;
 }
 
-static std::unordered_map<u16, std::string> sAccessibilityText;
+static std::unordered_multimap<uint16_t, std::pair<uint32_t, std::string>> sAccessibilityText;
 static std::string sTextInterpolated;
 extern "C" void OTRMessage_InitAccessibilityText()
 {
     auto file = std::static_pointer_cast<Ship::Text>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource("text/accessibility_text/accessibility_text_eng"));
 
-    for (size_t i = 0; i < file->messages.size(); i++) {
-        sAccessibilityText[file->messages[i].id] = file->messages[i].msg;
+    if (file == nullptr || sAccessibilityText.size() > 0) {
+        return;
+    }
+
+    for (int i = 0; i < file->messages.size(); i++) {
+        auto& message = file->messages[i];
+        if (message.textboxType == 0xFF && message.textboxYPos == 0xFF && message.msg.size() > sizeof(uint32_t)) {
+            uint32_t param = *reinterpret_cast<const uint32_t*>(message.msg.c_str());
+            sAccessibilityText.insert(
+                std::make_pair(message.id, std::make_pair(param, message.msg.substr(sizeof(uint32_t)))));
+            continue;
+        }
+        sAccessibilityText.insert(std::make_pair(message.id, std::make_pair(0, message.msg)));
     }
 }
+extern "C" const char* OTRMessage_GetAccessibilityText(const char* textResourcePath, uint32_t textId, const char* arg) {
+    std::string* result = nullptr;
 
-extern "C" const char* OTRMessage_GetAccessibilityText(const char* textResourcePath, u16 textId, const char* arg) {
-    auto it = sAccessibilityText.find(textId);
- 	if (it == sAccessibilityText.end()) {
+    auto range = sAccessibilityText.equal_range(textId & 0xFFFF);
+    uint16_t param = textId >> 16;
+    for (auto it = range.first; it != range.second; ++it) {
+        uint16_t id = it->second.first >> 16;
+        uint16_t mask = it->second.first & 0xFFFF;
+        if ((param & mask) == id) {
+            result = &it->second.second;
+            break;
+        }
+    }
+
+    if (result == nullptr) {
         return nullptr;
 	}
 
-	if (arg != nullptr) {
-        sTextInterpolated = it->second;
+    if (arg != nullptr) {
+        sTextInterpolated = *result;
         std::string searchString = "$0";
         size_t index = sTextInterpolated.find(searchString);
 		if (index != std::string::npos) {
@@ -106,7 +128,7 @@ extern "C" const char* OTRMessage_GetAccessibilityText(const char* textResourceP
 		}
 	}
 
-	return strdup(it->second.c_str());
+    return strdup(result->c_str());
 }
 
 extern "C" void OTRMessage_Init()
