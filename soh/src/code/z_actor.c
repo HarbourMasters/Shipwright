@@ -758,12 +758,14 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 }
 
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height) {
+                            u8 height, bool hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
 
     titleCtx->texture = texture;
+    titleCtx->isBossCard = false;
+    titleCtx->hasTranslation = hasTranslation;   
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -981,6 +983,8 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
     titleCtx->texture = ResourceMgr_LoadTexByName(texture);
 
     //titleCtx->texture = texture;
+    titleCtx->isBossCard = false;
+    titleCtx->hasTranslation = false;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -1025,24 +1029,21 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
 
-        /* A more elegant way should be made but this one actually work fine.
-            I tried every single bosses in both English/French and German.
-            Zone name should not be affected by this changes.
-            I do not see any zone name with these dimensions. 
-            Also Ganondorf do not have French and German title card it seem.
-            A dirty method has been applied to actually detect it, once a better 
-            method is found this workaround will be reverted.*/
         textureLanguageOffset = 0x0;
         shiftTopY = 0x0;
         shiftBottomY = 0x1000;
-        if (gSaveContext.language == LANGUAGE_GER && titleCtx->height == 40 && titleCtx->width == 128) {
-            textureLanguageOffset = (width * height * gSaveContext.language);
-            shiftTopY = 0x400;
-            shiftBottomY = 0x1400;
-        } else if (gSaveContext.language == LANGUAGE_FRA && titleCtx->height == 40 && titleCtx->width == 128) {
-            textureLanguageOffset = (width * height * gSaveContext.language);
-            shiftTopY = 0x800;
-            shiftBottomY = 0x1800;
+
+        //if this card is bosses cards, has translation and that is not using English language.
+        if (titleCtx->isBossCard && titleCtx->hasTranslation && gSaveContext.language != LANGUAGE_ENG) {
+            if (gSaveContext.language == LANGUAGE_GER) {
+                textureLanguageOffset = (width * height * gSaveContext.language);
+                shiftTopY = 0x400;
+                shiftBottomY = 0x1400;
+            } else if (gSaveContext.language == LANGUAGE_FRA) {
+                textureLanguageOffset = (width * height * gSaveContext.language);
+                shiftTopY = 0x800;
+                shiftBottomY = 0x1800;
+            }
         }
 
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
