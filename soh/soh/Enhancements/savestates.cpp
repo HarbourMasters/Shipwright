@@ -7,13 +7,13 @@
 #include "spdlog/spdlog.h"
 
 #include <soh/OTRGlobals.h>
+#include <soh/OTRAudio.h>
 
 #include "z64.h"
 #include "z64save.h"
 #include <variables.h>
 #include <functions.h>
 #include "z64map_mark.h"
-
 
 extern "C" GlobalContext* gGlobalCtx;
 
@@ -155,8 +155,6 @@ unsigned int SaveStateMgr::GetCurrentSlot(void) {
 }
 
 void SaveStateMgr::ProcessSaveStateRequests(void) {
-    std::unique_lock<std::mutex> Lock(this->mutex);
-
     while (!this->requests.empty()) {
         const auto& request = this->requests.front();
         
@@ -187,8 +185,6 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
-    std::unique_lock<std::mutex> Lock(this->mutex);
-
     switch (request.type) { 
         case RequestType::SAVE:
             requests.push(request);
@@ -210,6 +206,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
 }
 
 void SaveState::Save(void) {
+    std::unique_lock<std::mutex> Lock(audio.mutex);
     memcpy(&info->sysHeapCopy, gSystemHeap, SYSTEM_HEAP_SIZE /* sizeof(gSystemHeap) */);
     memcpy(&info->audioHeapCopy, gAudioHeap, AUDIO_HEAP_SIZE /* sizeof(gAudioContext) */);
 
@@ -237,12 +234,15 @@ void SaveState::Save(void) {
     memcpy(&info->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
     memcpy(&info->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
     memcpy(&info->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
+
+    //Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
     info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
     
 }
 
 void SaveState::Load(void) {
+    std::unique_lock<std::mutex> Lock(audio.mutex);
     memcpy(gSystemHeap, &info->sysHeapCopy, SYSTEM_HEAP_SIZE);
     memcpy(gAudioHeap, &info->audioHeapCopy, AUDIO_HEAP_SIZE);
 
@@ -270,7 +270,7 @@ void SaveState::Load(void) {
     memcpy(gAudioSfxSwapMode, &info->gAudioSfxSwapMode_copy,
            sizeof(info->gAudioSfxSwapMode_copy));
     
-
+    //Various static data
     D_801755D0 = info->D_801755D0_copy;
     sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
 }
