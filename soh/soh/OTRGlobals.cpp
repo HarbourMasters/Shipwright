@@ -31,6 +31,7 @@
 #include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
+#include <Utils/StringHelper.h>
 
 OTRGlobals* OTRGlobals::Instance;
 
@@ -110,6 +111,10 @@ extern "C" uint64_t GetPerfCounter() {
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
+}
+
+extern "C" void Graph_StartFrame() {
+    OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 // C->C++ Bridge
@@ -909,8 +914,11 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    for (const auto& controller : Ship::Window::Controllers.at(i)) {
-        if (controller->CanRumble() && Game::Settings.controller.extra[i].rumble_strength > 0.001f) {
+    for (const auto& controller : Ship::Window::Controllers.at(i))
+    {
+        float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 1.0f);
+
+        if (controller->CanRumble() && rumble_strength > 0.001f) {
             return 1;
         }
     }

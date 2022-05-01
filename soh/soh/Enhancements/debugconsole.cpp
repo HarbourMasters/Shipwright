@@ -122,7 +122,7 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
     try {
         rupeeAmount = std::stoi(args[1]);
     }
-    catch (std::invalid_argument const& ex) { 
+    catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
@@ -168,13 +168,13 @@ static bool ResetHandler(std::vector<std::string> args) {
         ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
-    
+
     SET_NEXT_GAMESTATE(&gGlobalCtx->state, TitleSetup_Init, GameState);
     gGlobalCtx->state.running = false;
     return CMD_SUCCESS;
 }
 
-const static std::map<std::string, uint16_t> ammoItems{ 
+const static std::map<std::string, uint16_t> ammoItems{
     { "sticks", ITEM_STICK }, { "deku_sticks", ITEM_STICK },
     { "nuts", ITEM_NUT },     { "deku_nuts", ITEM_NUT },
     { "bombs", ITEM_BOMB },      { "arrows", ITEM_BOW },
@@ -194,7 +194,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     try {
         count = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("Ammo count must be an integer");
         return CMD_FAILED;
     }
@@ -203,7 +203,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
         ERROR("Ammo count must be positive");
         return CMD_FAILED;
     }
-    
+
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
@@ -213,7 +213,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     // I dont think you can do OOB with just this
     AMMO(it->second) = count;
-    
+
     //To use a change by uncomment this
     //Inventory_ChangeAmmo(it->second, count);
 }
@@ -236,7 +236,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     unsigned int slot;
     try {
         slot = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
@@ -275,7 +275,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
         return CMD_FAILED;
     }
 
-    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]); 
+    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]);
 
     return CMD_SUCCESS;
 }
@@ -326,9 +326,6 @@ static int CheckVarType(const std::string& input)
 
     return result;
 }
-
-void DebugConsole_LoadCVars();
-void DebugConsole_SaveCVars();
 
 static bool SetCVarHandler(const std::vector<std::string>& args) {
     if (args.size() < 3)

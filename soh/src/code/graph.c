@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/Enhancements/debugger/debugger.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -95,14 +96,14 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
-    THGA_Ct(&gfxCtx->titlecard, pool->titlecardBuffer, sizeof(pool->titlecardBuffer));
+    THGA_Ct(&gfxCtx->worldOverlay, pool->worldOverlayBuffer, sizeof(pool->worldOverlayBuffer));
     THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
-    gfxCtx->titlecardBuffer = pool->titlecardBuffer;
+    gfxCtx->worldOverlayBuffer = pool->worldOverlayBuffer;
     gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
@@ -276,20 +277,19 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gDPNoOpString(WORK_DISP++, "WORK_DISP 開始", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 開始", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 開始", 0);
-    gDPNoOpString(TITLE_CARD_DISP++, "TITLE_CARD_DISP 開始", 0);//unsure if needed
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 開始", 0);
 
     CLOSE_DISPS(gfxCtx, "../graph.c", 975);
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
+    Debug_Draw();
 
     OPEN_DISPS(gfxCtx, "../graph.c", 987);
 
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
-    gDPNoOpString(TITLE_CARD_DISP++, "TITLE_CARD_DISP 終了", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 終了", 0);
 
     CLOSE_DISPS(gfxCtx, "../graph.c", 996);
@@ -298,8 +298,8 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->titlecardBuffer);
-    gSPBranchList(TITLE_CARD_DISP++, gfxCtx->polyKalBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->worldOverlayBuffer);
+    gSPBranchList(WORLD_OVERLAY_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
@@ -474,6 +474,7 @@ static void RunFrame()
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
             
+            Graph_StartFrame();
 
             PadMgr_ThreadEntry(&gPadMgr);
             

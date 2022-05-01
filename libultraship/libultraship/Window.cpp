@@ -279,8 +279,11 @@ namespace Ship {
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }
 
-    void Window::RunCommands(Gfx* Commands) {
+    void Window::StartFrame() {
         gfx_start_frame();
+    }
+
+    void Window::RunCommands(Gfx* Commands) {
         gfx_run(Commands);
         gfx_end_frame();
     }
