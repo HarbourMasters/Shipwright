@@ -284,6 +284,13 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
     return (Gfx*)&res->instructions[0];
 }
 
+extern "C" Gfx* ResourceMgr_PatchGfxByName(const char* path, int size) {
+    auto res = std::static_pointer_cast<Ship::DisplayList>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    res->instructions.resize(res->instructions.size() + size);
+    return (Gfx*)&res->instructions[0];
+}
+
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
