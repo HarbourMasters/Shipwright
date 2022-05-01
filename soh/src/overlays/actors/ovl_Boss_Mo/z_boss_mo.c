@@ -1423,7 +1423,7 @@ void BossMo_IntroCs(BossMo* this, GlobalContext* globalCtx) {
             }
             if (this->timers[2] == 130) {
                 TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardTex), 160, 180, 128, 40);
+                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardTex), 160, 180, 128, 40, true);
                 gSaveContext.eventChkInf[7] |= 0x10;
             }
             break;
