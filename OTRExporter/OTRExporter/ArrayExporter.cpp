@@ -32,7 +32,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			writer->Write((uint32_t)vec->scalarType);
 			writer->Write((uint32_t)vec->dimensions);
 
-			for (uint32_t k = 0; k < vec->dimensions; k++)
+			for (size_t k = 0; k < vec->dimensions; k++)
 			{
 				// OTRTODO: Duplicate code here. Cleanup at a later date...
 				switch (vec->scalarType)
