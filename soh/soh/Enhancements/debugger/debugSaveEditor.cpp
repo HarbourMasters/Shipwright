@@ -1,6 +1,7 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
 #include "../libultraship/SohImGuiImpl.h"
+#include "ImGuiHelpers.h"
 
 #include <array>
 #include <bit>
@@ -223,26 +224,6 @@ std::array<SongMapEntry, 12> songMapping = { {
     SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
     SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
 } };
-
-// Adds a text tooltip for the previous ImGui item
-void SetLastItemHoverText(const std::string& text) {
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text(text.c_str());
-        ImGui::EndTooltip();
-    }
-}
-
-// Adds a "?" next to the previous ImGui item with a custom tooltip
-void InsertHelpHoverText(const std::string& text) {
-    ImGui::SameLine();
-    ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
-    if (ImGui::IsItemHovered()) {
-        ImGui::BeginTooltip();
-        ImGui::Text(text.c_str());
-        ImGui::EndTooltip();
-    }
-}
 
 // Encapsulates what is drawn by the passed-in function within a border
 template<typename T>

@@ -178,8 +178,10 @@
   <ItemGroup>
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\debugger.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp" />
     <ClCompile Include="soh\Enhancements\gameconsole.c" />
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
@@ -925,8 +927,10 @@
     <ClInclude Include="soh\Enhancements\bootcommands.h" />
     <ClInclude Include="soh\Enhancements\cvar.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
+    <ClInclude Include="soh\Enhancements\debugger\colViewer.h" />
     <ClInclude Include="soh\Enhancements\debugger\debugger.h" />
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
+    <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
     <ClInclude Include="soh\util.h" />
