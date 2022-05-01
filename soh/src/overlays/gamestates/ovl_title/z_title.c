@@ -18,43 +18,41 @@ const char* GetGameVersionString();
 char* quote;
 
 void Title_PrintBuildInfo(Gfx** gfxp) {
-    if (CVar_GetS32("gShowTitleInfo",0)!=0) {
-            Gfx* g;
-            //GfxPrint* printer;
-            GfxPrint printer;
+    Gfx* g;
+    //GfxPrint* printer;
+    GfxPrint printer;
 
-            const char* gameVersionStr = GetGameVersionString();
+    const char* gameVersionStr = GetGameVersionString();
 
-            g = *gfxp;
-            g = func_8009411C(g);
-            //printer = alloca(sizeof(GfxPrint));
-            GfxPrint_Init(&printer);
-            GfxPrint_Open(&printer, g);
-            GfxPrint_SetColor(&printer, 255, 155, 255, 255);
-            GfxPrint_SetPos(&printer, 12, 20);
+    g = *gfxp;
+    g = func_8009411C(g);
+    //printer = alloca(sizeof(GfxPrint));
+    GfxPrint_Init(&printer);
+    GfxPrint_Open(&printer, g);
+    GfxPrint_SetColor(&printer, 255, 155, 255, 255);
+    GfxPrint_SetPos(&printer, 12, 20);
 
-        #ifdef _MSC_VER
-            GfxPrint_Printf(&printer, "MSVC SHIP");
-        #else
-            GfxPrint_Printf(printer, "GCC SHIP");
-        #endif
+#ifdef _MSC_VER
+    GfxPrint_Printf(&printer, "MSVC SHIP");
+#else
+    GfxPrint_Printf(printer, "GCC SHIP");
+#endif
 
-            GfxPrint_SetPos(&printer, 5, 4);
-            GfxPrint_Printf(&printer, "Game Version: %s", gameVersionStr);
+    GfxPrint_SetPos(&printer, 5, 4);
+    GfxPrint_Printf(&printer, "Game Version: %s", gameVersionStr);
 
-            GfxPrint_SetColor(&printer, 255, 255, 255, 255);
-            GfxPrint_SetPos(&printer, 2, 22);
-            GfxPrint_Printf(&printer, quote);
-            GfxPrint_SetPos(&printer, 1, 25);
-            GfxPrint_Printf(&printer, "Build Date:%s", gBuildDate);
-            GfxPrint_SetPos(&printer, 3, 26);
-            GfxPrint_Printf(&printer, "%s", gBuildTeam);
-            GfxPrint_SetPos(&printer, 3, 28);
-            GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
-            g = GfxPrint_Close(&printer);
-            GfxPrint_Destroy(&printer);
-            *gfxp = g;
-    }
+    GfxPrint_SetColor(&printer, 255, 255, 255, 255);
+    GfxPrint_SetPos(&printer, 2, 22);
+    GfxPrint_Printf(&printer, quote);
+    GfxPrint_SetPos(&printer, 1, 25);
+    GfxPrint_Printf(&printer, "Build Date:%s", gBuildDate);
+    GfxPrint_SetPos(&printer, 3, 26);
+    GfxPrint_Printf(&printer, "%s", gBuildTeam);
+    GfxPrint_SetPos(&printer, 3, 28);
+    GfxPrint_Printf(&printer, "Release Version: %s", gBuildVersion);
+    g = GfxPrint_Close(&printer);
+    GfxPrint_Destroy(&printer);
+    *gfxp = g;
 }
 
 const char* quotes[11] = {
@@ -237,7 +235,9 @@ void Title_Main(GameState* thisx) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
-        Title_PrintBuildInfo(&gfx);
+        if (CVar_GetS32("gShowTitleInfo",0)!=0) {
+            Title_PrintBuildInfo(&gfx);
+        }
         POLY_OPA_DISP = gfx;
     }
 
