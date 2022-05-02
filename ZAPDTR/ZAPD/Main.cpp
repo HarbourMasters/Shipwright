@@ -10,7 +10,7 @@
 #include "ZFile.h"
 #include "ZTexture.h"
 
-#if !defined(_MSC_VER) && !defined(__CYGWIN__)
+#ifdef __linux__
 #include <csignal>
 #include <cstdlib>
 #include <ctime>
@@ -58,7 +58,7 @@ int ExtractFunc(int workerID, int fileListSize, std::string fileListItem, ZFileM
 
 volatile int numWorkersLeft = 0;
 
-#if !defined(_MSC_VER) && !defined(__CYGWIN__)
+#ifdef __linux__
 #define ARRAY_COUNT(arr) (sizeof(arr) / sizeof(arr[0]))
 void ErrorHandler(int sig)
 {
@@ -216,7 +216,7 @@ int main(int argc, char* argv[])
 		}
 		else if (arg == "-eh")  // Enable Error Handler
 		{
-	#if !defined(_MSC_VER) && !defined(__CYGWIN__)
+#ifdef __linux__
 			signal(SIGSEGV, ErrorHandler);
 			signal(SIGABRT, ErrorHandler);
 #else

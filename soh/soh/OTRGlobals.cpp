@@ -14,7 +14,7 @@
 #include "Enhancements/gameconsole.h"
 #include <ultra64/gbi.h>
 #include <Animation.h>
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include <Windows.h>
 #else
 #include <time.h>
@@ -77,7 +77,7 @@ extern "C" void InitOTR() {
     Debug_Init();
 }
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 extern "C" uint64_t GetFrequency() {
     LARGE_INTEGER nFreq;
 

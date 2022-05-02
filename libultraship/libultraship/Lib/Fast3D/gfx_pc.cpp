@@ -210,7 +210,7 @@ static map<int, FBInfo> framebuffers;
 static set<pair<float, float>> get_pixel_depth_pending;
 static map<pair<float, float>, uint16_t> get_pixel_depth_cached;
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 // TODO: Properly implement for MSVC
 static unsigned long get_time(void)
 {

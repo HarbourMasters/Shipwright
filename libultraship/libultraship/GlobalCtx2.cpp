@@ -54,7 +54,7 @@ namespace Ship {
 
         if (!ResMan->DidLoadSuccessfully())
         {
-#ifdef _MSC_VER
+#ifdef _WIN32
             MessageBox(NULL, L"Main OTR file not found!", L"Uh oh", MB_OK);
 #else
             SPDLOG_ERROR("Main OTR file not found!");

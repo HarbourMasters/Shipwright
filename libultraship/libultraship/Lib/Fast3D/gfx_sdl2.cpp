@@ -23,7 +23,7 @@
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include <WTypesbase.h>
 #endif
 #include <time.h>

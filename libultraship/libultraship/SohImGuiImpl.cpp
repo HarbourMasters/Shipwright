@@ -674,7 +674,7 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
 
-#ifdef _MSC_VER
+#ifdef _WIN32
             ImGui::Text("Platform: Windows");
 #else
             ImGui::Text("Platform: Linux");

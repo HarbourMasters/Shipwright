@@ -243,7 +243,7 @@ namespace Ship {
 
 	std::shared_ptr<ResourcePromise> ResourceMgr::LoadResourceAsync(std::string FilePath) {
 		// todo: what?
-#ifdef _MSC_VER
+#ifdef _WIN32
 		StringHelper::ReplaceOriginal(FilePath, "/", "\\");
 #else
 		StringHelper::ReplaceOriginal(FilePath, "\\", "/");

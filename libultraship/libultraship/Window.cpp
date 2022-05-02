@@ -11,7 +11,7 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "AudioPlayer.h"
-#ifdef _MSC_VER
+#ifdef _WIN32
 #include "WasapiAudioPlayer.h"
 #else
 #include "SDLAudioPlayer.h"
@@ -401,7 +401,7 @@ namespace Ship {
     }
 
     void Window::SetAudioPlayer() {
-#ifdef _MSC_VER
+#ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
