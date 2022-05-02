@@ -570,6 +570,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
