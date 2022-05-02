@@ -99,8 +99,7 @@ C_FILES := \
 	$(shell find soh -type f -name *.c) \
 	$(shell find src/boot -type f -name *.c) \
 	$(shell find src/buffers -type f -name *.c) \
-	$(shell find src/code -type f -name *.c \
-	-and -not -wholename src/code/z_camera_data.c) \
+	$(shell find src/code -type f -name *.c) \
 	$(shell find src/overlays -type f -name *.c) \
 	src/libultra/gu/coss.c \
 	src/libultra/gu/guLookAt.c \
