@@ -957,7 +957,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         default:
             titleCtx->texture = NULL;
             return;
-            
+
     }
 
     char newName[512];
@@ -1122,7 +1122,7 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
     {
         //Actor_SetObjectDependency(globalCtx, actor);
         actor->init(actor, globalCtx);
@@ -2358,7 +2358,7 @@ void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx) {
             actor->sfx = 0;
 
             if (actor->init != NULL) {
-                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
                 {
                     Actor_SetObjectDependency(globalCtx, actor);
                     actor->init(actor, globalCtx);
@@ -2547,10 +2547,16 @@ void func_80030FA8(GraphicsContext* gfxCtx) {
     gDPLoadTextureBlock(POLY_XLU_DISP++, gLensOfTruthMaskTex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0,
                         G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, 384, 224, 892, 732);
-    gSPTextureRectangle(POLY_XLU_DISP++, 0, 0, 1280, 960, G_TX_RENDERTILE, 2240, 1600, 576, 597);
-    gDPPipeSync(POLY_XLU_DISP++);
+    s32 x = OTRGetRectDimensionFromLeftEdge(0) << 2;
+    s32 w = OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2;
 
+    float ratio = OTRGetAspectRatio();
+
+    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, 384, 224, 892, 732);
+    // TODO: Do correct math to fix it
+    gSPWideTextureRectangle(POLY_XLU_DISP++, x, 0, x + abs(x), 960, G_TX_RENDERTILE, 0, 0, 0, 0);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, 960, G_TX_RENDERTILE, 2240, 1600, 576, 597);
+    gDPPipeSync(POLY_XLU_DISP++);
     CLOSE_DISPS(gfxCtx, "../z_actor.c", 6183);
 }
 
@@ -2894,7 +2900,7 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
     osSyncPrintf(VT_FGCOL(CYAN));
 
     if (actorOverlay->numLoaded == 0) {
-        
+
         if (actorOverlay->initInfo->reset != NULL) {
             actorOverlay->initInfo->reset();
         }
@@ -3020,7 +3026,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     if (objBankIndex < 0 && !gMapLoading)
         objBankIndex = 0;
-    
+
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
         // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
