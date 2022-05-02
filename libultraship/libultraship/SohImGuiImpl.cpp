@@ -628,7 +628,40 @@ namespace SohImGui {
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
 
+
+                if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
+                    CVar_SetS32("gClimbEverything", Game::Settings.cheats.climb_everything);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
+                    CVar_SetS32("gMoonJumpOnL", Game::Settings.cheats.moon_jump_on_l);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
+                    CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
+                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
+                    CVar_SetS32("gNoRestrictItem", Game::Settings.cheats.no_restrict_item);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
+                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
+                    needs_save = true;
+                }
+                
+
                 ImGui::EndMenu();
+
             }
 
             if (ImGui::BeginMenu("Cosmetics"))
