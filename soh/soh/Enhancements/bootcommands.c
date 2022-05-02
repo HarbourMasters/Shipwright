@@ -30,6 +30,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gNewDrops", 0);
     CVar_RegisterS32("gVisualAgony", 0);
     CVar_RegisterS32("gHudColors", 1); //0 N64 colors/1 Gamecube colors/2 Custom colors
+    CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
 }
 
 //void BootCommands_ParseBootArgs(char* str)

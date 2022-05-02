@@ -56,6 +56,7 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+    int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
     int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to Gamecube.
     float hearts_colors[3] = {0,0,0};
     float hearts_dd_colors[3] = {0,0,0};
@@ -384,6 +385,24 @@ namespace SohImGui {
         }
     }
 
+    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+        /*Usage :
+        EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
+        First arg is the visible name of the Radio button
+        Second is the cvar name where MyID will be saved.
+        Note: the CVar name should be the same to each Buddies.
+        Example :
+            EnhancementRadioButton("English", "gLanguages", 0);
+            EnhancementRadioButton("German", "gLanguages", 1);
+            EnhancementRadioButton("French", "gLanguages", 2);
+        */
+        int val = CVar_GetS32(cvarName.c_str(), 0);
+        if (ImGui::RadioButton(text.c_str(), id==val)) {
+            CVar_SetS32(cvarName.c_str(), (int)id);
+            needs_save = true;
+        }
+    }
+
     void EnhancementCheckbox(std::string text, std::string cvarName)
     {
         bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
@@ -576,6 +595,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
@@ -591,7 +611,13 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
-
+                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                
+                if (ImGui::BeginMenu("Fixes")) {
+                    EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                    EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    ImGui::EndMenu();
+                }
                 ImGui::EndMenu();
             }
 
@@ -634,7 +660,40 @@ namespace SohImGui {
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
 
+
+                if (ImGui::Checkbox("Climb Everything", &Game::Settings.cheats.climb_everything)) {
+                    CVar_SetS32("gClimbEverything", Game::Settings.cheats.climb_everything);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Moon Jump on L", &Game::Settings.cheats.moon_jump_on_l)) {
+                    CVar_SetS32("gMoonJumpOnL", Game::Settings.cheats.moon_jump_on_l);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Super Tunic", &Game::Settings.cheats.super_tunic)) {
+                    CVar_SetS32("gSuperTunic", Game::Settings.cheats.super_tunic);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Easy ISG", &Game::Settings.cheats.ez_isg)) {
+                    CVar_SetS32("gEzISG", Game::Settings.cheats.ez_isg);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Unrestricted Items", &Game::Settings.cheats.no_restrict_item)) {
+                    CVar_SetS32("gNoRestrictItem", Game::Settings.cheats.no_restrict_item);
+                    needs_save = true;
+                }
+
+                if (ImGui::Checkbox("Freeze Time", &Game::Settings.cheats.freeze_time)) {
+                    CVar_SetS32("gFreezeTime", Game::Settings.cheats.freeze_time);
+                    needs_save = true;
+                }
+                
+
                 ImGui::EndMenu();
+
             }
 
             if (CVar_GetS32("gHudColors", 1) ==0) {
@@ -713,6 +772,20 @@ namespace SohImGui {
                 EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", -20, 20, "");
                 ImGui::End();
                 ImGui::PopStyleColor();
+            }
+
+            if (CVar_GetS32("gLanguages", 0) == 0) {
+                SelectedLanguage = 0;
+            } else if (CVar_GetS32("gLanguages", 0) == 1) {
+                SelectedLanguage = 1;
+            } else if (CVar_GetS32("gLanguages", 0) == 2) {
+                SelectedLanguage = 2;
+            }
+            if (ImGui::BeginMenu("Languages")) {
+                EnhancementRadioButton("English", "gLanguages", 0);
+                EnhancementRadioButton("German", "gLanguages", 1);
+                EnhancementRadioButton("French", "gLanguages", 2);
+                ImGui::EndMenu();
             }
 
             for (const auto& category : windowCategories) {
