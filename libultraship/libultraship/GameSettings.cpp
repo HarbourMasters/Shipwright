@@ -32,7 +32,7 @@ namespace Game {
     const std::string EnhancementSection = ENHANCEMENTS_SECTION;
     const std::string CosmeticsSection = COSMETICS_SECTION;
     const std::string CheatSection = CHEATS_SECTION;
-
+    const std::string LanguagesSection = LANGUAGES_SECTION;
 
     void UpdateAudio() {
         Audio_SetGameVolume(SEQ_BGM_MAIN, CVar_GetFloat("gMainMusicVolume", 1));
