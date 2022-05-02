@@ -758,12 +758,14 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 }
 
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height) {
+                            u8 height, s16 hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
 
     titleCtx->texture = texture;
+    titleCtx->isBossCard = true;
+    titleCtx->hasTranslation = hasTranslation;   
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -981,6 +983,8 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
     titleCtx->texture = ResourceMgr_LoadTexByName(texture);
 
     //titleCtx->texture = texture;
+    titleCtx->isBossCard = false;
+    titleCtx->hasTranslation = false;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -1009,6 +1013,9 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     s32 doubleWidth;
     s32 titleY;
     s32 titleSecondY;
+    s32 textureLanguageOffset;
+    s32 shiftTopY;
+    s32 shiftBottomY;
 
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
@@ -1022,31 +1029,48 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
 
+        textureLanguageOffset = 0x0;
+        shiftTopY = 0x0;
+        shiftBottomY = 0x1000;
+
+        //if this card is bosses cards, has translation and that is not using English language.
+        if (titleCtx->isBossCard == 1 && titleCtx->hasTranslation == 1 && gSaveContext.language != LANGUAGE_ENG) {
+            if (gSaveContext.language == LANGUAGE_GER) {
+                textureLanguageOffset = (width * height * gSaveContext.language);
+                shiftTopY = 0x400;
+                shiftBottomY = 0x1400;
+            } else if (gSaveContext.language == LANGUAGE_FRA) {
+                textureLanguageOffset = (width * height * gSaveContext.language);
+                shiftTopY = 0x800;
+                shiftBottomY = 0x1800;
+            }
+        }
+
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
         WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
 
         gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4) - 1,
+        //Removing the -1 there remove the gap between top and bottom textures.
+        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
 
         // If texture is bigger than 0x1000, display the rest
         if (height > 0) {
-            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + 0x1000,
+            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY,
                                 G_IM_FMT_IA,
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
+            //Removing the -1 there remove the gap between top and bottom textures.
             gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
-                                titleSecondY + (height * 4) - 1, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                titleSecondY + (height * 4), G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2880);
