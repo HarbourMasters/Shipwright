@@ -94,14 +94,16 @@ TEXTURE_FILES_OUT := $(foreach f,$(TEXTURE_FILES_PNG:.png=.inc.c),build/$f) \
 
 CXX_FILES := \
 	soh/Enhancements/debugconsole.cpp \
-	soh/GbiWrap.cpp \
-	soh/OTRGlobals.cpp \
-	soh/z_message_OTR.cpp \
-	soh/z_play_otr.cpp \
-	soh/z_scene_otr.cpp \
+	soh/Enhancements/debugger/colViewer.cpp \
 	soh/Enhancements/debugger/debugger.cpp \
 	soh/Enhancements/debugger/debugSaveEditor.cpp \
-	soh/util.cpp
+	soh/Enhancements/debugger/ImGuiHelpers.cpp \
+	soh/GbiWrap.cpp \
+	soh/OTRGlobals.cpp \
+	soh/util.cpp \
+	soh/z_message_OTR.cpp \
+	soh/z_play_otr.cpp \
+	soh/z_scene_otr.cpp
 
 C_FILES := \
 	soh/Enhancements/bootcommands.c \
@@ -823,6 +825,9 @@ mpq:
 
 distclean: clean
 	$(RM) -r baserom/
+	$(MAKE) clean -C ../libultraship
+	$(MAKE) clean -C ../OTRExporter/OTRExporter
+	$(MAKE) clean -C ../ZAPDTR
 
 clean:
 	rm -rf build $(TARGET)
