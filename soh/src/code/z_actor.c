@@ -957,7 +957,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         default:
             titleCtx->texture = NULL;
             return;
-            
+
     }
 
     char newName[512];
@@ -1122,7 +1122,7 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
     {
         //Actor_SetObjectDependency(globalCtx, actor);
         actor->init(actor, globalCtx);
@@ -2358,7 +2358,7 @@ void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx) {
             actor->sfx = 0;
 
             if (actor->init != NULL) {
-                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
                 {
                     Actor_SetObjectDependency(globalCtx, actor);
                     actor->init(actor, globalCtx);
@@ -2894,7 +2894,7 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
     osSyncPrintf(VT_FGCOL(CYAN));
 
     if (actorOverlay->numLoaded == 0) {
-        
+
         if (actorOverlay->initInfo->reset != NULL) {
             actorOverlay->initInfo->reset();
         }
@@ -3020,7 +3020,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     if (objBankIndex < 0 && !gMapLoading)
         objBankIndex = 0;
-    
+
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
         // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
@@ -4242,8 +4242,6 @@ s32 func_80035124(Actor* actor, GlobalContext* globalCtx) {
 
     return ret;
 }
-
-#include "z_cheap_proc.c"
 
 u8 func_800353E8(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
