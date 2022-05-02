@@ -60,7 +60,13 @@ namespace SohImGui {
     extern Console* console;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
+
+
+    void EnhancementCheckbox(std::string text, std::string cvarName);
+    void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format);
+    void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue);
     void DrawMainMenuAndCalculateGameSize(void);
+    
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
