@@ -585,7 +585,13 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
-
+                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                
+                if (ImGui::BeginMenu("Fixes")) {
+                    EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                    EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    ImGui::EndMenu();
+                }
                 ImGui::EndMenu();
             }
 
