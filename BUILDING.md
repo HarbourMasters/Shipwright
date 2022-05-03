@@ -23,8 +23,8 @@
 # Clone the repo
 git clone git@github.com:HarbourMasters/ShipWright.git
 cd ShipWright
-# Copy the baserom to the soh folder
-cp .../baserom_non_mq.z64 soh
+# Copy the baserom to the OTRExporter folder
+cp <path to your ROM> OTRExporter
 # Build the docker image
 sudo docker build . -t soh
 # Run the docker image with the working directory mounted to /soh

@@ -8,13 +8,6 @@ ZAPD := ../ZAPDTR/ZAPD.out
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
 
-ROM_DEBUG ?= 0
-
-EXTRACT_BASEROM := ../OTRExporter/extract_baserom_gc.py
-ifneq ($(ROM_DEBUG), 0)
-EXTRACT_BASEROM := ../OTRExporter/extract_baserom_debug.py
-endif
-
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
@@ -127,7 +120,7 @@ all:
 	$(MAKE) $(TARGET)
 
 setup:
-	python3 $(EXTRACT_BASEROM)
+	cd ../OTRExporter && python3 extract_baserom.py
 	$(MAKE) mpq
 
 mpq:
