@@ -2220,7 +2220,7 @@ void BossTw_TwinrovaIntroCS(BossTw* this, GlobalContext* globalCtx) {
                 globalCtx->envCtx.unk_BE = 1;
                 globalCtx->envCtx.unk_BD = 1;
                 globalCtx->envCtx.unk_D8 = 0.0f;
-                TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gTwinrovaTitleCardTex), 160, 180, 128, 40); // OTRTODO
+                TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx, SEGMENTED_TO_VIRTUAL(gTwinrovaTitleCardTex), 160, 180, 128, 40, true);
                 gSaveContext.eventChkInf[7] |= 0x20;
                 Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_BOSS);
             }

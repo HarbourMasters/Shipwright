@@ -56,6 +56,7 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+    int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
     float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
     float goron_col[3] = { 0.392f, 0.078f, 0.0f };
     float zora_col[3] = { 0.0f, 0.235f, 0.392f };
@@ -336,6 +337,13 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         } });
 
+        for (const auto& [i, controllers] : Ship::Window::Controllers)
+        {
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
+            needs_save = true;
+        }
+
         ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
             pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
         } });
@@ -362,6 +370,24 @@ namespace SohImGui {
             CVar_SetFloat(key, volume);
             needs_save = true;
             Game::SetSeqPlayerVolume(playerId, volume);
+        }
+    }
+
+    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+        /*Usage :
+        EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
+        First arg is the visible name of the Radio button
+        Second is the cvar name where MyID will be saved.
+        Note: the CVar name should be the same to each Buddies.
+        Example :
+            EnhancementRadioButton("English", "gLanguages", 0);
+            EnhancementRadioButton("German", "gLanguages", 1);
+            EnhancementRadioButton("French", "gLanguages", 2);
+        */
+        int val = CVar_GetS32(cvarName.c_str(), 0);
+        if (ImGui::RadioButton(text.c_str(), id==val)) {
+            CVar_SetS32(cvarName.c_str(), (int)id);
+            needs_save = true;
         }
     }
 
@@ -535,8 +561,8 @@ namespace SohImGui {
 
                             if (ImGui::Button("Recalibrate Gyro"))
                             {
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX").c_str(), 0);
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY").c_str(), 0);
+                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
+                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
                                 needs_save = true;
                             }
 
@@ -570,6 +596,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
@@ -585,7 +612,13 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
-
+                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                
+                if (ImGui::BeginMenu("Fixes")) {
+                    EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                    EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    ImGui::EndMenu();
+                }
                 ImGui::EndMenu();
             }
 
@@ -629,6 +662,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
 
                 ImGui::EndMenu();
+
             }
 
             if (ImGui::BeginMenu("Cosmetics"))
@@ -652,6 +686,20 @@ namespace SohImGui {
                 EnhancementColor3("Navi Prop Inner", "gNavi_Prop_Inner", navi_prop_i_col);
                 EnhancementColor3("Navi Prop Outer", "gNavi_Prop_Outer", navi_prop_o_col);
 
+                ImGui::EndMenu();
+            }
+
+            if (CVar_GetS32("gLanguages", 0) == 0) {
+                SelectedLanguage = 0;
+            } else if (CVar_GetS32("gLanguages", 0) == 1) {
+                SelectedLanguage = 1;
+            } else if (CVar_GetS32("gLanguages", 0) == 2) {
+                SelectedLanguage = 2;
+            }
+            if (ImGui::BeginMenu("Languages")) {
+                EnhancementRadioButton("English", "gLanguages", 0);
+                EnhancementRadioButton("German", "gLanguages", 1);
+                EnhancementRadioButton("French", "gLanguages", 2);
                 ImGui::EndMenu();
             }
 
