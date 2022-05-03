@@ -20,3 +20,14 @@
 OOT_PAL_GC      checksum 0x09465AC3
 OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
 ```
+
+# OTRExporter Usage
+
+The OTRExporter exports an `oot.otr` archive file which Ship of Harkinian requires to play.
+Use the `extract_assets.py` script file to run the exporter using any of the following methods:
+1) Double click on the script after placing one or more roms in the directory.
+2) Drag & Drop a rom onto the script.
+3) In a terminal run `python3 extract_assets.py`
+4) In a terminal run `python3 extract_assets.py <path_to_rom>`
+
+If the script finds multiple roms the user is prompted which to use.
