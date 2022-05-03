@@ -30,4 +30,4 @@ Use the `extract_assets.py` script file to run the exporter using any of the fol
 3) In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
 4) In a terminal run `python3 extract_assets.py <path_to_rom>`
 
-If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing enter.
+If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
