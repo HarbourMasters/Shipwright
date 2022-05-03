@@ -146,7 +146,7 @@ namespace Ship {
 						ToLoad->resource = Res;
 						ResourceCache[Res->file->path] = Res;
 
-						SPDLOG_DEBUG("Loaded Resource {} on ResourceMgr thread", ToLoad->File->path);
+						SPDLOG_DEBUG("Loaded Resource {} on ResourceMgr thread", ToLoad->file->path);
 
 						// Disabled for now because it can cause random crashes
 						//FileCache[Res->File->path] = nullptr;

@@ -986,7 +986,7 @@ std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id,
 } // namespace
 
 ImTextureID gfx_d3d11_get_texture_by_id(int id) {
-    return impl.backend == Backend::DX11 ? d3d.textures[id].resource_view.Get() : reinterpret_cast<ImTextureID>(id);
+    return d3d.textures[id].resource_view.Get();
 }
 
 struct GfxRenderingAPI gfx_direct3d11_api = {

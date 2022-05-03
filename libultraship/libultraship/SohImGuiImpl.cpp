@@ -613,7 +613,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
-                
+
                 if (ImGui::BeginMenu("Fixes")) {
                     EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
@@ -895,8 +895,11 @@ namespace SohImGui {
 
     ImTextureID GetTextureByID(int id) {
 #ifdef ENABLE_DX11
+    if (impl.backend == Backend::DX11)
+    {
         ImTextureID gfx_d3d11_get_texture_by_id(int id);
         return gfx_d3d11_get_texture_by_id(id);
+    }
 #else
         return reinterpret_cast<ImTextureID>(id);
 #endif

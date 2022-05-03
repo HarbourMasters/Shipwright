@@ -18,8 +18,8 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -m32
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -m32
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
 CPPFLAGS := -MMD
 
 ifneq ($(DEBUG),0)
