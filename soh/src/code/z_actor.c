@@ -1052,7 +1052,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY, G_IM_FMT_IA,
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + (uintptr_t)textureLanguageOffset + (uintptr_t)shiftBottomY, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -1064,7 +1064,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 
         // If texture is bigger than 0x1000, display the rest
         if (height > 0) {
-            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY,
+            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + (uintptr_t)textureLanguageOffset + (uintptr_t)shiftBottomY,
                                 G_IM_FMT_IA,
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
