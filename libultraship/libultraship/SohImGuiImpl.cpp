@@ -583,6 +583,7 @@ namespace SohImGui {
                 EnhancementCheckbox("N64 Mode", "gN64Mode");
 
                 EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
+                EnhancementCheckbox("Disable Black Bars", "gDisableBlackBars");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");

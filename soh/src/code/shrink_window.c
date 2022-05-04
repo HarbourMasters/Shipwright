@@ -6,6 +6,8 @@ s32 sShrinkWindowVal = 0;
 s32 sShrinkWindowCurrentVal = 0;
 
 void ShrinkWindow_SetVal(s32 value) {
+    if (CVar_GetS32("gDisableBlackBars", 0) != 0)
+        value = 0;
     if (HREG(80) == 0x13 && HREG(81) == 1) {
         osSyncPrintf("shrink_window_setval(%d)\n", value);
     }
@@ -17,6 +19,8 @@ u32 ShrinkWindow_GetVal(void) {
 }
 
 void ShrinkWindow_SetCurrentVal(s32 currentVal) {
+    if (CVar_GetS32("gDisableBlackBars", 0) != 0)
+        currentVal = 0;
     if (HREG(80) == 0x13 && HREG(81) == 1) {
         osSyncPrintf("shrink_window_setnowval(%d)\n", currentVal);
     }
