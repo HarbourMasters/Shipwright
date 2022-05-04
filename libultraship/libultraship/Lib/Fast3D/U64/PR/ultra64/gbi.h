@@ -4575,6 +4575,20 @@ _DW({                                   \
     _g2->words.w1 = (_SHIFTL(dsdx, 16, 16) | _SHIFTL(dtdy, 0, 16));	\
 }
 
+# define gsSPWideTextureRectangle(xl, yl, xh, yh, tile, s, t, dsdx, dtdy)   \
+{{									                                        \
+    (_SHIFTL(G_TEXRECT_WIDE, 24, 8) | _SHIFTL((xh), 0, 24)),			    \
+    _SHIFTL((yh), 0, 24),						                            \
+}},									                                        \
+{{									                                        \
+    (_SHIFTL((tile), 24, 3) | _SHIFTL((xl), 0, 24)),			            \
+    _SHIFTL((yl), 0, 24),						                            \
+}},									                                        \
+{{									                                        \
+    _SHIFTL(s, 16, 16) | _SHIFTL(t, 0, 16),				                    \
+    _SHIFTL(dsdx, 16, 16) | _SHIFTL(dtdy, 0, 16)			                \
+}}
+
  /* like gSPTextureRectangle but accepts negative position arguments */
 #define gSPScisTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy) \
 _DW({                                                                            \

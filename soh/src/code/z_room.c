@@ -126,7 +126,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
         sp90.y = polygonDlist->pos.y;
         sp90.z = polygonDlist->pos.z;
         SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &sp90, &sp84, &sp80);
-        if (-(f32)polygonDlist->unk_06 < sp84.z) 
+        if (-(f32)polygonDlist->unk_06 < sp84.z)
         {
             temp_f2 = sp84.z - polygonDlist->unk_06;
             if (temp_f2 < globalCtx->lightCtx.fogFar) {
@@ -171,7 +171,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
         Gfx* temp2;
 
         polygonDlist = spB4->unk_00;
-        if (iREG(86) != 0) 
+        if (iREG(86) != 0)
         {
             temp = sp78;
             for (phi_v1 = 0; phi_v1 < polygon2->num; phi_v1++, temp++) {
@@ -180,7 +180,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
                 }
             }
 
-            if (((iREG(86) == 1) && (iREG(89) >= sp9C)) || ((iREG(86) == 2) && (iREG(89) == sp9C))) 
+            if (((iREG(86) == 1) && (iREG(89) >= sp9C)) || ((iREG(86) == 2) && (iREG(89) == sp9C)))
             {
                 if (flags & 1) {
                     temp2 = polygonDlist->opa;
@@ -224,7 +224,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
 s32 func_80096238(void* data) {
     OSTime time;
 
-    if (*(u32*)data == JPEG_MARKER) 
+    if (*(u32*)data == JPEG_MARKER)
     {
         char* decodedJpeg = ResourceMgr_LoadJPEG(data, 320 * 240 * 2);
         //char* decodedJpeg = ResourceMgr_LoadJPEG(data, 480 * 240 * 2);
@@ -235,8 +235,8 @@ s32 func_80096238(void* data) {
         osSyncPrintf("ワークバッファアドレス（Ｚバッファ）%08x\n", gZBuffer);
 
         time = osGetTime();
-        
-        //if (!Jpeg_Decode(data, gZBuffer, gGfxSPTaskOutputBuffer, sizeof(gGfxSPTaskOutputBuffer))) 
+
+        //if (!Jpeg_Decode(data, gZBuffer, gGfxSPTaskOutputBuffer, sizeof(gGfxSPTaskOutputBuffer)))
         if (1)
         {
             memcpy(data, decodedJpeg, 320 * 240 * 2);
@@ -294,13 +294,16 @@ void func_8009638C(Gfx** displayList, void* source, void* tlut, u16 width, u16 h
         bg->b.frameW = width * 4;
         bg->b.frameH = height * 4;
         guS2DInitBg(bg);
-        
-        gDPSetOtherMode(displayListHead++, mode0 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_COPY | G_PM_NPRIMITIVE,
+
+        gDPSetOtherMode(displayListHead++, mode0 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_FILL | G_PM_NPRIMITIVE,
                         G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
 
         gDPSetFillColor(displayListHead++, GPACK_RGBA5551(0, 0, 0, 1) << 16 | GPACK_RGBA5551(0, 0, 0, 1));
         gDPFillWideRectangle(displayListHead++, OTRGetRectDimensionFromLeftEdge(0), 0,
                          OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH), SCREEN_HEIGHT);
+
+        gDPSetOtherMode(displayListHead++, mode0 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_COPY | G_PM_NPRIMITIVE,
+                        G_AC_THRESHOLD | G_ZS_PIXEL | G_RM_NOOP | G_RM_NOOP2);
 
         gDPLoadMultiTile(displayListHead++, bg->b.imagePtr, 0,
             G_TX_RENDERTILE, G_IM_FMT_RGBA, G_IM_SIZ_16b, 320, 0, 0, 0, 0 + 31,

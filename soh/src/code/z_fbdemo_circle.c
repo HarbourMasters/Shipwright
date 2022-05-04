@@ -145,8 +145,6 @@ void TransitionCircle_Draw(void* thisx, Gfx** gfxP) {
 
     modelView = this->modelView[this->frame];
 
-    this->color.rgba = 0xFFFFFFFF;
-
     this->frame ^= 1;
     gDPPipeSync(gfx++);
     texScroll = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 0x10, 0x40);
