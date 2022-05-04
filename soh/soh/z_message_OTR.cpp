@@ -20,12 +20,34 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
         return nullptr;
     
     MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file->messages.size());
+    char* kaeporaPatch;
+
+    for (int i = 0; i < file->messages.size(); i++) {
+        if (file->messages[i].id == 0x2066) {
+            kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
+            kaeporaPatch = (char*)file->messages[i].msg.c_str();
+
+            kaeporaPatch[26] = 'Y';
+            kaeporaPatch[27] = 'e';
+            kaeporaPatch[28] = 's';
+            kaeporaPatch[29] = 1;
+            kaeporaPatch[30] = 'N';
+            kaeporaPatch[31] = 'o';
+            break;
+        }
+    }
 
     for (int i = 0; i < file->messages.size(); i++) {
         table[i].textId = file->messages[i].id;
         table[i].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
-        table[i].segment = file->messages[i].msg.c_str();
         table[i].msgSize = file->messages[i].msg.size();
+		
+        if (kaeporaPatch != "" && (file->messages[i].id == 0x2066 || file->messages[i].id == 0x607B || 
+            file->messages[i].id == 0x10C2 || file->messages[i].id == 0x10C6 || file->messages[i].id == 0x206A)) {
+            table[i].segment = kaeporaPatch;
+        } else {
+            table[i].segment = file->messages[i].msg.c_str();
+        }
 
         if (isNES && file->messages[i].id == 0xFFFC)
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
