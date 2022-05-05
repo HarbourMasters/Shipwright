@@ -18,9 +18,9 @@ Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-Ocarina of Time Pal Gamecube
+Ocarina of Time PAL Gamecube
 ```
-sha1: d0c95b2cb3c6682a171db267932af7af8cf5fa82
+sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
