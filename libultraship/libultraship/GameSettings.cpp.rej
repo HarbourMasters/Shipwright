@@ -1,0 +1,19 @@
+diff a/libultraship/libultraship/GameSettings.cpp b/libultraship/libultraship/GameSettings.cpp	(rejected hunks)
+@@ -75,6 +75,9 @@ namespace Game {
+ 
+         Settings.enhancements.newdrops = stob(Conf[EnhancementSection]["newdrops"]);
+         CVar_SetS32("gNewDrops", Settings.enhancements.newdrops);
++
++        Settings.enhancements.save_entrance = stob(Conf[EnhancementSection]["save_entrance"]);
++        CVar_SetS32("gSaveEntrance", Settings.enhancements.save_entrance);
+         
+         // Audio
+         Settings.audio.master = Ship::stof(Conf[AudioSection]["master"]);
+@@ -184,6 +187,7 @@ namespace Game {
+         Conf[EnhancementSection]["newdrops"] = std::to_string(Settings.enhancements.newdrops);
+         Conf[EnhancementSection]["visualagony"] = std::to_string(Settings.enhancements.visualagony);
+         Conf[EnhancementSection]["mm_bunny_hood"] = std::to_string(Settings.enhancements.mm_bunny_hood);
++        Conf[EnhancementSection]["save_entrance"] = std::to_string(Settings.enhancements.save_entrance);
+ 
+ 
+         // Controllers
