@@ -29,11 +29,6 @@ typedef enum {
 } FrogSongType;
 
 typedef struct {
-    u8 flags;
-    EnFr* frogs[5];
-} EnFrPointers;
-
-typedef struct {
     f32 xzDist;
     f32 yaw;
     f32 yDist;
@@ -79,5 +74,10 @@ typedef struct EnFr {
     /* 0x03AC */ Vec3f posButterfly; // Position/Coordinates of the Butterfly
     /* 0x03B8 */ Vec3f posButterflyLight; // Used in Lights_PointNoGlowSetInfo()
 } EnFr; // size = 0x03C4
+
+typedef struct {
+    u8 flags;
+    EnFr* frogs[5];
+} EnFrPointers;
 
 #endif

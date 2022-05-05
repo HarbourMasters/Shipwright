@@ -34,128 +34,7 @@ typedef struct {
 
 #include "savestates_extern.inc"
 
-// z_bg_ddan_kd
-extern "C" Vec3f sBgDdanKdVelocity;
-extern "C" Vec3f sBgDdanKdAccel;
-
-// z_bg_dodoago
-extern "C" s16 sBgDodoagoFirstExplosiveFlag;
-extern "C" u8 sBgDodoagoDisableBombCatcher;
-extern "C" s32 sBgDodoagoTimer;
-
-// z_bg_haka_trap
-extern "C" uint32_t D_80880F30;
-extern "C" uint32_t D_80881014;
-
-// z_bg_hidan_rock
-extern "C" float D_8088BFC0;
-
-// z_bg_menkuri_eye
-extern "C" int32_t D_8089C1A0;
-
-// z_bg_mori_hineri
-extern "C" int16_t sBgMoriHineriNextCamIdx;
-
-// z_bg_po_event
-extern "C" uint8_t sBgPoEventBlocksAtRest;
-extern "C" uint8_t sBgPoEventPuzzleState;
-extern "C" float sBgPoEventblockPushDist;
-
-// z_bg_relay_objects
-extern "C" uint32_t D_808A9508;
-
-// z_bg_spot18_basket
-extern "C" int16_t D_808B85D0;
-
-// z_boss_ganon
-extern "C" uint32_t sBossGanonSeed1;
-extern "C" uint32_t sBossGanonSeed2;
-extern "C" uint32_t sBossGanonSeed3;
-extern "C" void* sBossGanonGanondorf;
-extern "C" void* sBossGanonZelda;
-extern "C" void* sBossGanonCape;
-extern "C" GanondorfEffect sBossGanonEffectBuf[200];
-
-// z_boss_ganon2
-extern "C" Vec3f D_8090EB20;
-extern "C" int8_t D_80910638;
-extern "C" void* sBossGanon2Zelda;
-extern "C" void* D_8090EB30;
-extern "C" int32_t sBossGanon2Seed1;
-extern "C" int32_t sBossGanon2Seed2;
-extern "C" int32_t sBossGanon2Seed3;
-extern "C" Vec3f D_809105D8[4];
-extern "C" Vec3f D_80910608[4];
-extern "C" BossGanon2Effect sBossGanon2Particles[100];
-
-// z_boss_tw
-extern "C" uint8_t sTwInitalized;
-extern "C" BossTwEffect sTwEffects[150];
-
-// z_demo_6k
-extern "C" Vec3f sDemo6kVelocity;
-
-// z_demo_du
-extern "C" int32_t D_8096CE94;
-
-// z_demo_kekkai
-extern "C" Vec3f demoKekkaiVel;
-
-// z_en_bw
-extern "C" int32_t sSlugGroup;
-
-// z_en_clear_tag
-extern "C" uint8_t sClearTagIsEffectInitialized;
-extern "C" EnClearTagEffect sClearTagEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
-
-// z_en_fr
-extern "C" EnFrPointers sEnFrPointers;
-
-// z_en_goma
-extern "C" uint8_t sSpawnNum;
-
-// z_en_in
-extern "C" int32_t D_80A7B998;
-
-// z_en_insect
-extern "C" float D_80A7DEB0;
-extern "C" int16_t D_80A7DEB4;
-extern "C" int16_t D_80A7DEB8;
-
-// z_en_ishi
-extern "C" int16_t sRockRotSpeedX;
-extern "C" int16_t sRockRotSpeedY;
-
-// z_en_niw
-extern "C" int16_t D_80AB85E0;
-extern "C" uint8_t sLowerRiverSpawned;
-extern "C" uint8_t sUpperRiverSpawned;
-
-// z_en_po_field
-extern "C" int32_t sEnPoFieldNumSpawned;
-extern "C" Vec3s sEnPoFieldSpawnPositions[10];
-extern "C" u8 sEnPoFieldSpawnSwitchFlags[10];
-
-// z_en_takara_man
-extern "C" uint8_t sTakaraIsInitialized;
-
-// z_en_xc
-extern "C" int32_t D_80B41D90;
-extern "C" int32_t sEnXcFlameSpawned;
-extern "C" int32_t D_80B41DA8;
-extern "C" int32_t D_80B41DAC;
-
-// z_en_zf
-extern "C" int16_t D_80B4A1B0;
-extern "C" int16_t D_80B4A1B4;
-
-extern "C" int32_t D_80B5A468;
-extern "C" int32_t D_80B5A494;
-extern "C" int32_t D_80B5A4BC;
-
-extern "C" uint8_t sKankyoIsSpawned;
-extern "C" int16_t sTrailingFairies;
-
+extern "C" uint16_t gTimeIncrement;
 
 typedef struct SaveStateInfo {
     unsigned char sysHeapCopy[SYSTEM_HEAP_SIZE];
@@ -254,6 +133,8 @@ typedef struct SaveStateInfo {
     OnePointCsFull D_8012395C_copy[3];
     OnePointCsFull D_801239D4_copy[3];
 
+    uint16_t gTimeIncrement_copy;
+
     //Overlay static data
     //  z_bg_ddan_kd
     Vec3f sBgDdanKdVelocity_copy;
@@ -338,6 +219,12 @@ typedef struct SaveStateInfo {
     uint8_t sClearTagIsEffectInitialized_copy;
     EnClearTagEffect sClearTagEffects_copy[CLEAR_TAG_EFFECT_MAX_COUNT];
 
+    // z_en_fr
+    EnFrPointers sEnFrPointers_copy;
+
+    // z_en_goma
+    uint8_t sSpawnNum_copy;
+
     // z_en_insect
     float D_80A7DEB0_copy;
     int16_t D_80A7DEB4_copy;
@@ -400,6 +287,9 @@ class SaveState {
     void LoadOnePointDemoData(void);
     void SaveOverlayStaticData(void);
     void LoadOverlayStaticData(void);
+
+    void SaveMiscCodeData(void);
+    void LoadMiscCodeData(void);
 
     SaveStateInfo* GetSaveStateInfo(void);
 };
@@ -635,8 +525,11 @@ void SaveState::SaveOverlayStaticData(void) {
     info->D_8096CE94_copy = D_8096CE94;
     info->demoKekkaiVel_copy = demoKekkaiVel;
     info->sSlugGroup_copy = sSlugGroup;
-    info->sClearTagIsEffectInitialized_copy = sClearTagIsEffectInitialized;
+    info->sClearTagIsEffectInitialized_copy = sClearTagIsEffectsInitialized;
     memcpy(info->sClearTagEffects_copy, sClearTagEffects, sizeof(sClearTagEffects));
+
+    memcpy(&info->sEnFrPointers_copy, &sEnFrPointers, sizeof(info->sEnFrPointers_copy));
+    info->sSpawnNum_copy = sSpawnNum;
 
     info->D_80A7DEB0_copy = D_80A7DEB0;
     info->D_80A7DEB4_copy = D_80A7DEB4;
@@ -705,7 +598,7 @@ void SaveState::LoadOverlayStaticData(void) {
     D_8096CE94 = info->D_8096CE94_copy;
     demoKekkaiVel = info->demoKekkaiVel_copy;
     sSlugGroup = info->sSlugGroup_copy;
-    sClearTagIsEffectInitialized = info->sClearTagIsEffectInitialized_copy;
+    sClearTagIsEffectsInitialized = info->sClearTagIsEffectInitialized_copy;
     memcpy(sClearTagEffects, info->sClearTagEffects_copy, sizeof(sClearTagEffects));
 
     D_80A7DEB0 = info->D_80A7DEB0_copy;
@@ -734,6 +627,17 @@ void SaveState::LoadOverlayStaticData(void) {
     sTrailingFairies = info->sTrailingFairies_copy;
 }
 
+void SaveState::SaveMiscCodeData(void) {
+    info->gGameOverTimer_copy = gGameOverTimer;
+    info->gTimeIncrement_copy = gTimeIncrement;
+    info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
+}
+
+void SaveState::LoadMiscCodeData(void) {
+    gGameOverTimer = info->gGameOverTimer_copy;
+    gTimeIncrement = info->gTimeIncrement_copy;
+    sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
+}
 
 extern "C" void ProcessSaveStateRequests(void) {
     OTRGlobals::Instance->gSaveStateMgr->ProcessSaveStateRequests();
@@ -829,11 +733,12 @@ void SaveState::Save(void) {
 
     //Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
-    info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
     BackupCameraData();
     SaveOnePointDemoData();
-    info->gGameOverTimer_copy = gGameOverTimer;
-    SaveOverlayStaticData();}
+    SaveOverlayStaticData();
+    SaveMiscCodeData();
+
+}
 
 void SaveState::Load(void) {
     std::unique_lock<std::mutex> Lock(audio.mutex);
@@ -843,7 +748,6 @@ void SaveState::Load(void) {
     memcpy(&gAudioContext, &info->audioContextCopy, sizeof(AudioContext));
     memcpy(D_8016E750, &info->unk_D_8016E750Copy, sizeof(info->unk_D_8016E750Copy));
     LoadSeqScriptState();
-
 
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
     memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
@@ -866,10 +770,9 @@ void SaveState::Load(void) {
     
     //Various static data
     D_801755D0 = info->D_801755D0_copy;
-    sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
     LoadCameraData();
     LoadOnePointDemoData();
-    gGameOverTimer = info->gGameOverTimer_copy;
     LoadOverlayStaticData();
+    LoadMiscCodeData();
 
 }
