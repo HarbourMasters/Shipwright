@@ -14,7 +14,7 @@ void BgJyaBigmirror_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void BgJyaBigmirror_Update(Actor* thisx, GlobalContext* globalCtx);
 void BgJyaBigmirror_Draw(Actor* thisx, GlobalContext* globalCtx);
 
-static u8 sIsSpawned = false;
+static u8 sKankyoIsSpawned = false;
 
 const ActorInit Bg_Jya_Bigmirror_InitVars = {
     ACTOR_BG_JYA_BIGMIRROR,
@@ -176,7 +176,7 @@ void BgJyaBigmirror_HandleMirRay(Actor* thisx, GlobalContext* globalCtx) {
 void BgJyaBigmirror_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgJyaBigmirror* this = (BgJyaBigmirror*)thisx;
 
-    if (sIsSpawned) {
+    if (sKankyoIsSpawned) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -185,7 +185,7 @@ void BgJyaBigmirror_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->cobraInfo[0].rotY = sCobraSpawnData[0].initRotY;
     this->cobraInfo[1].rotY = sCobraSpawnData[1].initRotY;
     this->actor.room = -1;
-    sIsSpawned = true;
+    sKankyoIsSpawned = true;
     this->spawned = true;
     this->mirRayObjIndex = -1;
 
@@ -197,7 +197,7 @@ void BgJyaBigmirror_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     BgJyaBigmirror* this = (BgJyaBigmirror*)thisx;
 
     if (this->spawned) {
-        sIsSpawned = false;
+        sKankyoIsSpawned = false;
     }
 }
 

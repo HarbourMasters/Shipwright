@@ -84,7 +84,7 @@ void func_808B7710(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.colChkInfo.mass = MASS_IMMOVABLE;
 }
 
-static s16 D_808B85D0 = 0;
+s16 D_808B85D0 = 0;
 void func_808B7770(BgSpot18Basket* this, GlobalContext* globalCtx, f32 arg2) {
     Vec3f acceleration;
     Vec3f velocity;
