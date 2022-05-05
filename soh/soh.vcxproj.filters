@@ -156,7 +156,6 @@
     <ClCompile Include="src\code\z_msgevent.c" />
     <ClCompile Include="src\code\z_olib.c" />
     <ClCompile Include="src\code\z_onepointdemo.c" />
-    <ClCompile Include="src\code\z_onepointdemo_data.c" />
     <ClCompile Include="src\code\z_parameter.c" />
     <ClCompile Include="src\code\z_path.c" />
     <ClCompile Include="src\code\z_play.c" />

@@ -307,7 +307,7 @@ void func_8096712C(Demo6K* this, GlobalContext* globalCtx) {
     }
 }
 
-static Vec3f velocity = { 0.0f, 0.0f, 0.0f };
+Vec3f sDemo6kVelocity = { 0.0f, 0.0f, 0.0f };
 void func_80967244(Demo6K* this, GlobalContext* globalCtx) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 primColor = { 255, 255, 255, 0 };
@@ -324,9 +324,9 @@ void func_80967244(Demo6K* this, GlobalContext* globalCtx) {
     rand1 = Rand_ZeroFloat(0xFFFF);
     rand2 = Rand_ZeroFloat(0xFFFF);
 
-    velocity.x = Math_SinS(rand2) * Math_CosS(rand1) * 20.0f;
-    velocity.z = Math_CosS(rand2) * Math_CosS(rand1) * 20.0f;
-    velocity.y = Math_SinS(rand1) * 20.0f;
+    sDemo6kVelocity.x = Math_SinS(rand2) * Math_CosS(rand1) * 20.0f;
+    sDemo6kVelocity.z = Math_CosS(rand2) * Math_CosS(rand1) * 20.0f;
+    sDemo6kVelocity.y = Math_SinS(rand1) * 20.0f;
 
     accel.y = 0.0f;
 
@@ -342,7 +342,7 @@ void func_80967244(Demo6K* this, GlobalContext* globalCtx) {
         scale = 18000;
     }
 
-    EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, scale, 20);
+    EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &sDemo6kVelocity, &accel, &primColor, &envColor, scale, 20);
 }
 
 void func_80967410(Demo6K* this, GlobalContext* globalCtx) {
@@ -820,7 +820,7 @@ void func_809691BC(Demo6K* this, GlobalContext* globalCtx, s32 params) {
 }
 
 void Demo6K_Reset(void) {
-    velocity.x = 0.0f;
-    velocity.y = 0.0f;
-    velocity.z = 0.0f;
+    sDemo6kVelocity.x = 0.0f;
+    sDemo6kVelocity.y = 0.0f;
+    sDemo6kVelocity.z = 0.0f;
 }

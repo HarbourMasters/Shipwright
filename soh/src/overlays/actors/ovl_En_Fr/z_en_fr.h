@@ -28,6 +28,17 @@ typedef enum {
     /* 07 */ FROG_NO_SONG
 } FrogSongType;
 
+typedef struct {
+    u8 flags;
+    EnFr* frogs[5];
+} EnFrPointers;
+
+typedef struct {
+    f32 xzDist;
+    f32 yaw;
+    f32 yDist;
+} LogSpotToFromWater;
+
 typedef struct EnFr {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;   // Frog Skeleton

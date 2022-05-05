@@ -8,34 +8,6 @@
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 typedef enum {
-    /*  0 */ TWEFF_NONE,
-    /*  1 */ TWEFF_DOT,
-    /*  2 */ TWEFF_2,
-    /*  3 */ TWEFF_3,
-    /*  4 */ TWEFF_RING,
-    /*  5 */ TWEFF_PLYR_FRZ,
-    /*  6 */ TWEFF_FLAME,
-    /*  7 */ TWEFF_MERGEFLAME,
-    /*  8 */ TWEFF_SHLD_BLST,
-    /*  9 */ TWEFF_SHLD_DEFL,
-    /* 10 */ TWEFF_SHLD_HIT
-} TwEffType;
-
-typedef enum {
-    /* 0 */ EFF_ARGS,
-    /* 1 */ EFF_UNKS1,
-    /* 2 */ EFF_WORK_MAX
-} EffectWork;
-
-typedef enum {
-    /* 0 */ EFF_SCALE,
-    /* 1 */ EFF_DIST,
-    /* 2 */ EFF_ROLL,
-    /* 3 */ EFF_YAW,
-    /* 4 */ EFF_FWORK_MAX
-} EffectFWork;
-
-typedef enum {
     /* 0x00 */ TW_KOTAKE,
     /* 0x01 */ TW_KOUME,
     /* 0x02 */ TW_TWINROVA,
@@ -46,19 +18,6 @@ typedef enum {
     /* 0x68 */ TW_DEATHBALL_KOTAKE,
     /* 0x69 */ TW_DEATHBALL_KOUME
 } TwinrovaType;
-
-typedef struct {
-    /* 0x0000 */ u8 type;
-    /* 0x0001 */ u8 frame;
-    /* 0x0004 */ Vec3f pos;
-    /* 0x0010 */ Vec3f curSpeed;
-    /* 0x001C */ Vec3f accel;
-    /* 0x0028 */ Color_RGB8 color;
-    /* 0x002C */ s16 alpha;
-    /* 0x002E */ s16 work[EFF_WORK_MAX];
-    /* 0x0034 */ f32 workf[EFF_FWORK_MAX];
-    /* 0x0044 */ Actor* target;
-} BossTwEffect;
 
 void BossTw_Init(Actor* thisx, GlobalContext* globalCtx);
 void BossTw_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -200,7 +159,7 @@ static Vec3f sTwinrovaPillarPos[] = {
     { 0.0f, 380.0f, -580.0f },
 };
 
-static u8 sTwInitalized = false;
+u8 sTwInitalized = false;
 
 static InitChainEntry sInitChain[] = {
     ICHAIN_U8(targetMode, 5, ICHAIN_CONTINUE),
@@ -233,7 +192,7 @@ static u8 D_8094C878;
 static s16 D_8094C87A;
 static s16 D_8094C87C;
 static u8 D_8094C87E;
-static BossTwEffect sTwEffects[150];
+BossTwEffect sTwEffects[150];
 
 void BossTw_AddDotEffect(GlobalContext* globalCtx, Vec3f* initalPos, Vec3f* initalSpeed, Vec3f* accel, f32 scale,
                          s16 args, s16 countLimit) {

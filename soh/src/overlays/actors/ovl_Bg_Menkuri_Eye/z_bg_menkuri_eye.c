@@ -28,7 +28,7 @@ const ActorInit Bg_Menkuri_Eye_InitVars = {
     (ActorResetFunc)BgMenkuriEye_Reset,
 };
 
-static s32 D_8089C1A0;
+s32 D_8089C1A0;
 
 static ColliderJntSphElementInit sJntSphElementsInit[1] = {
     {
