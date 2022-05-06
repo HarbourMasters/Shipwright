@@ -631,7 +631,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
 
-                ImGui::Text("Graphics");
+                ImGui::Text("Fixes");
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
