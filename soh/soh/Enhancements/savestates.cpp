@@ -679,6 +679,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gGlobalCtx == nullptr) {
+        SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -696,6 +697,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
             break;
         [[unlikely]] default: 
             SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
+            return SaveStateReturn::FAIL_BAD_REQUEST;
             break;
         
     }

@@ -1,3 +1,7 @@
+#ifdef _MSC_VER
+#define NOGDI
+#endif
+
 #include "debugconsole.h"
 #include "../libultraship/SohImGuiImpl.h"
 #include "savestates.h"
@@ -318,6 +322,10 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
         case SaveStateReturn::FAIL_INVALID_SLOT:
             ERROR("[SOH] Invalid State Slot Number (%u)", slot);
             return CMD_FAILED;
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+            return CMD_FAILED;
+
     }
 }
 
@@ -335,7 +343,9 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
         case SaveStateReturn::FAIL_STATE_EMPTY:
             ERROR("[SOH] State Slot (%u) is empty", slot);
             return CMD_FAILED;
-            
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+            return CMD_FAILED;            
     }
 
 }
