@@ -59,10 +59,10 @@ pipeline {
                     move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
                     rename README.md readme.txt
                     
-                    "${env.ZIP}" a soh.zip soh.exe OTRGui.exe assets readme.txt
+                    "${env.ZIP}" a soh.7z soh.exe OTRGui.exe assets readme.txt
                     
                     """
-                    archiveArtifacts artifacts: 'soh.zip', followSymlinks: false, onlyIfSuccessful: true
+                    archiveArtifacts artifacts: 'soh.7z', followSymlinks: false, onlyIfSuccessful: true
                 }
             }
             post {
@@ -100,13 +100,13 @@ pipeline {
                     mv README.md build/readme.txt
                     cd build
 
-                    zip -r soh-linux.zip soh.elf OTRGui assets readme.txt
-                    mv soh-linux.zip ../
+                    7z a soh-linux.7z soh.elf OTRGui assets readme.txt
+                    mv soh-linux.7z ../
                     
                     '''
                 }
                 sh 'sudo docker container stop sohcont'
-                archiveArtifacts artifacts: 'soh-linux.zip', followSymlinks: false, onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'soh-linux.7z', followSymlinks: false, onlyIfSuccessful: true
             }
             post {
                 always {
