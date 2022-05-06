@@ -16,6 +16,7 @@ pipeline {
                 PLATFORM='x86'
                 ZIP='C:\\Program Files\\7-Zip\\7z.exe'
                 PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
+                CMAKE='C:\\Program Files\\CMake\\bin\\cmake.exe'
                 TOOLSET='v142'
             }
             agent {
@@ -43,7 +44,22 @@ pipeline {
                     
                     "${env.MSBUILD}" ".\\soh\\soh.sln" -t:build -p:Configuration=${env.CONFIG};Platform=${env.PLATFORM};PlatformToolset=${env.TOOLSET} /nodeReuse:false /m
                     
-                    "${env.ZIP}" a "soh.zip" ".\\soh\\Release\\soh.exe"
+                    cd OTRGui
+                    mkdir build
+                    cd build
+                    
+                    "${env.CMAKE}" ..
+                    "${env.CMAKE}" --build . --config Release
+                    
+                    cd "..\\..\\"
+                    
+                    move "soh\\Release\\soh.exe" ".\\"
+                    move "OTRGui\\build\\assets" ".\\"
+                    move ".\\OTRExporter\\x64\\Release\\ZAPD.exe" ".\\assets\\extractor\\"
+                    move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
+                    rename README.md readme.txt
+                    
+                    "${env.ZIP}" a soh.zip soh.exe OTRGui.exe assets readme.txt
                     
                     """
                     archiveArtifacts artifacts: 'soh.zip', followSymlinks: false, onlyIfSuccessful: true
