@@ -86,12 +86,21 @@ pipeline {
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                     sh '''
                     
-                    sudo cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-                    sudo docker build . -t soh
-                    sudo docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
-                    sudo cp ../../buildsoh.bash soh
-                    sudo docker exec sohcont soh/buildsoh.bash
-                    sudo zip soh-linux.zip ./soh/soh.elf
+                    cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                    docker build . -t soh
+                    docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
+                    cp ../../buildsoh.bash soh
+                    docker exec sohcont soh/buildsoh.bash
+                    
+                    mkdir build
+                    mv soh/soh.elf build/
+                    mv OTRGui/build/OTRGui build/
+                    mv OTRGui/build/assets build/
+                    mv README.md build/readme.txt
+                    cd build
+
+                    zip -r soh-linux.zip soh.elf OTRGui assets readme.txt
+                    mv soh-linux.zip ../
                     
                     '''
                 }
