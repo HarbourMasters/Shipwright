@@ -96,6 +96,7 @@ pipeline {
                     mv soh/soh.elf build/
                     mv OTRGui/build/OTRGui build/
                     mv OTRGui/build/assets build/
+                    mv ZAPDTR/ZAPD.out build/assets/extractor/
                     mv README.md build/readme.txt
                     cd build
 
