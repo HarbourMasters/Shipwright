@@ -10758,14 +10758,6 @@ void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
     Input sp44;
     Actor* dog;
 
-    int bp = 0;
-
-    if (bp) {
-        func_8083A098(this, gPlayerAnim_003458, globalCtx);
- //       bp = 0;
-        return;
-    }
-
     if (func_8084FCAC(this, globalCtx)) {
         if (gSaveContext.dogParams < 0) {
             if (Object_GetIndex(&globalCtx->objectCtx, OBJECT_DOG) < 0) {
