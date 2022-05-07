@@ -235,7 +235,7 @@ void Title_Main(GameState* thisx) {
         Gfx* gfx = POLY_OPA_DISP;
         s32 pad;
 
-        if (CVar_GetS32("gShowTitleInfo",0)!=0) {
+        if (CVar_GetS32("gSOHSplashscreen",0)!=0) {
             Title_PrintBuildInfo(&gfx);
         }
         POLY_OPA_DISP = gfx;
