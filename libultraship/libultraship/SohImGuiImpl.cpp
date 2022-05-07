@@ -587,6 +587,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                EnhancementCheckbox("SoH Splashcreen", "gSOHSplashscreen");
                 
                 if (ImGui::BeginMenu("Fixes")) {
                     EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
@@ -605,7 +606,6 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementCheckbox("Debug Mode", "gDebugEnabled");
-                EnhancementCheckbox("Show Build Info on Title Screen", "gShowTitleInfo");
 
                 ImGui::EndMenu();
             }
