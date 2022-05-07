@@ -585,6 +585,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
+                EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
                 
