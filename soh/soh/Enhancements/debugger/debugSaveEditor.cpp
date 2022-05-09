@@ -416,7 +416,7 @@ void DrawInfoTab() {
     ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
     InsertHelpHoverText("Time, in seconds");
      
-    std::string audioName;
+    const char* audioName;
     switch (gSaveContext.audioSetting) { 
         case 0:
             audioName = "Stereo";
@@ -433,7 +433,7 @@ void DrawInfoTab() {
         default:
             audioName = "?";
     }
-    if (ImGui::BeginCombo("Audio", audioName.c_str())) {
+    if (ImGui::BeginCombo("Audio", audioName)) {
         if (ImGui::Selectable("Stereo")) {
             gSaveContext.audioSetting = 0;
         }
@@ -470,10 +470,13 @@ void DrawInfoTab() {
 
 
     ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
-    std::vector<std::string> minigameHS = { "Horseback Archery", "Big Poe Points",
-                                            "Fishing",           "Malon's Obstacle Course",
-                                            "Running Man Race",  "?",
-                                            "Dampe's Race" };
+    std::array<const char*, 7> minigameHS = { "Horseback Archery", 
+        "Big Poe Points",                                            
+        "Fishing",
+        "Malon's Obstacle Course",                                    
+        "Running Man Race",
+        "?",
+        "Dampe's Race" };
     
     if (ImGui::TreeNode("Minigames")) {
         for (int i = 0; i < 7; i++) {
@@ -1290,11 +1293,13 @@ void DrawQuestStatusTab() {
 }
 
 void DrawPlayerTab() {
-    if (gGlobalCtx) {
+    if (gGlobalCtx != nullptr) {
         Player* player = GET_PLAYER(gGlobalCtx);
-        std::string curSword, curShield, curTunic, curBoots;
+        const char* curSword;
+        const char* curShield;
+        const char* curTunic;
+        const char* curBoots;
         switch (player->currentSwordItem) {
-
             case ITEM_SWORD_KOKIRI:
                 curSword = "Kokiri Sword"; 
                 break;
@@ -1308,6 +1313,7 @@ void DrawPlayerTab() {
                 curSword = "None";
                 break;
             default:
+                curSword = "None";
                 break;
         }
         switch (player->currentShield) {
@@ -1406,7 +1412,7 @@ void DrawPlayerTab() {
         
         ImGui::Text("Link's Current Equipment");
         ImGui::PushItemWidth(ImGui::GetFontSize() * 15);
-        if (ImGui::BeginCombo("Sword", curSword.c_str())) {
+        if (ImGui::BeginCombo("Sword", curSword)) {
             if (ImGui::Selectable("None")) {
                 player->currentSwordItem = ITEM_NONE;
                 gSaveContext.equips.buttonItems[0] = ITEM_NONE;
@@ -1442,7 +1448,7 @@ void DrawPlayerTab() {
             ImGui::EndCombo();
 
         }
-        if (ImGui::BeginCombo("Shield", curShield.c_str())) {
+        if (ImGui::BeginCombo("Shield", curShield)) {
             if (ImGui::Selectable("None")) {
                 player->currentShield = PLAYER_SHIELD_NONE;
                 Inventory_ChangeEquipment(EQUIP_SHIELD, PLAYER_SHIELD_NONE);
@@ -1461,22 +1467,22 @@ void DrawPlayerTab() {
             }
             ImGui::EndCombo();
         }
-        if (ImGui::BeginCombo("Tunic", curTunic.c_str())) {
+        if (ImGui::BeginCombo("Tunic", curTunic)) {
             if (ImGui::Selectable("Kokiri Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_KOKIRI;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI);
+                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
             }
             if (ImGui::Selectable("Goron Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_GORON;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON);
+                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
             }
             if (ImGui::Selectable("Zora Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_ZORA;
-                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_ZORA);
+                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_ZORA + 1);
             }
             ImGui::EndCombo();
         }
-        if (ImGui::BeginCombo("Boots", curBoots.c_str())) {
+        if (ImGui::BeginCombo("Boots", curBoots)) {
             if (ImGui::Selectable("Kokiri Boots")) {
                 player->currentBoots = PLAYER_BOOTS_KOKIRI;
                 Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
@@ -1502,8 +1508,6 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("C Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &one, NULL);
         });
-        
-
 
     } else {
         ImGui::Text("Global Context needed for player info!");
