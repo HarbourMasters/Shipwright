@@ -36,6 +36,67 @@ typedef struct {
 
 extern "C" uint16_t gTimeIncrement;
 
+extern "C" s16 sPlayerInitialPosX;
+extern "C" s16 sPlayerInitialPosZ;
+extern "C" s16 sPlayerInitialDirection;
+
+// code_800EC960
+// Related to ocarina
+extern "C" u8 sOcarinaInpEnabled;
+extern "C" s8 D_80130F10;
+extern "C" u8 sCurOcarinaBtnVal;
+extern "C" u8 sPrevOcarinaNoteVal;
+extern "C" u8 sCurOcarinaBtnIdx;
+extern "C" u8 sLearnSongLastBtn;
+extern "C" f32 D_80130F24;
+extern "C" f32 D_80130F28;
+extern "C" s8 D_80130F2C;
+extern "C" s8 D_80130F30;
+extern "C" s8 D_80130F34;
+extern "C" u8 sPlaybackState;
+extern "C" u32 D_80130F3C;
+extern "C" u32 sNotePlaybackTimer;
+extern "C" u16 sPlaybackNotePos;
+extern "C" u16 sStaffPlaybackPos;
+
+//IDK what this is but it looks important 
+extern "C" u32 sCurOcarinaBtnPress;
+extern "C" u32 D_8016BA10;
+extern "C" u32 sPrevOcarinaBtnPress;
+extern "C" s32 D_8016BA18;
+extern "C" s32 D_8016BA1C;
+extern "C" u8 sCurOcarinaSong[8];
+extern "C" u8 sOcarinaSongAppendPos;
+extern "C" u8 sOcarinaHasStartedSong;
+extern "C" u8 sOcarinaSongNoteStartIdx;
+extern "C" u8 sOcarinaSongCnt;
+extern "C" u16 sOcarinaAvailSongs;
+extern "C" u8 sStaffPlayingPos;
+extern "C" u16 sLearnSongPos[0x10];
+extern "C" u16 D_8016BA50[0x10];
+extern "C" u16 D_8016BA70[0x10];
+extern "C" u8 sLearnSongExpectedNote[0x10];
+extern "C" OcarinaNote D_8016BAA0;
+extern "C" u8 sAudioHasMalonBgm;
+extern "C" f32 sAudioMalonBgmDist;
+extern "C" u8 sDisplayedNoteValue;
+
+
+
+// z_message_PAL
+extern "C" s16 sOcarinaNoteBufPos;
+extern "C" s16 sOcarinaNoteBufLen;
+extern "C" u8 sOcarinaNoteBuf[12];
+
+extern "C" u8 D_8014B2F4;
+extern "C" u8 sTextboxSkipped;
+extern "C" u16 sNextTextId;
+extern "C" s16 sLastPlayedSong;
+extern "C" s16 sHasSunsSong;
+extern "C" s16 sMessageHasSetSfx;
+extern "C" u16 sOcarinaSongBitFlags;
+
+
 typedef struct SaveStateInfo {
     unsigned char sysHeapCopy[SYSTEM_HEAP_SIZE];
     unsigned char audioHeapCopy[AUDIO_HEAP_SIZE];
@@ -263,6 +324,67 @@ typedef struct SaveStateInfo {
 
     uint8_t sKankyoIsSpawned_copy;
     int16_t sTrailingFairies_copy;
+
+
+    //Misc static data
+    // z_map_exp
+
+    s16 sPlayerInitialPosX_copy;
+    s16 sPlayerInitialPosZ_copy;
+    s16 sPlayerInitialDirection_copy;
+
+    // code_800E(something. fill me in later)
+    u8 sOcarinaInpEnabled_copy;
+    s8 D_80130F10_copy;
+    u8 sCurOcarinaBtnVal_copy;
+    u8 sPrevOcarinaNoteVal_copy;
+    u8 sCurOcarinaBtnIdx_copy;
+    u8 sLearnSongLastBtn_copy;
+    f32 D_80130F24_copy;
+    f32 D_80130F28_copy;
+    s8 D_80130F2C_copy;
+    s8 D_80130F30_copy;
+    s8 D_80130F34_copy;
+    u8 sDisplayedNoteValue_copy;
+    u8 sPlaybackState_copy;
+    u32 D_80130F3C_copy;
+    u32 sNotePlaybackTimer_copy;
+    u16 sPlaybackNotePos_copy;
+    u16 sStaffPlaybackPos_copy;
+
+    u32 sCurOcarinaBtnPress_copy;
+    u32 D_8016BA10_copy;
+    u32 sPrevOcarinaBtnPress_copy;
+    s32 D_8016BA18_copy;
+    s32 D_8016BA1C_copy;
+    u8 sCurOcarinaSong_copy[8];
+    u8 sOcarinaSongAppendPos_copy;
+    u8 sOcarinaHasStartedSong_copy;
+    u8 sOcarinaSongNoteStartIdx_copy;
+    u8 sOcarinaSongCnt_copy;
+    u16 sOcarinaAvailSongs_copy;
+    u8 sStaffPlayingPos_copy;
+    u16 sLearnSongPos_copy[0x10];
+    u16 D_8016BA50_copy[0x10];
+    u16 D_8016BA70_copy[0x10];
+    u8 sLearnSongExpectedNote_copy[0x10];
+    OcarinaNote D_8016BAA0_copy;
+    u8 sAudioHasMalonBgm_copy;
+    f32 sAudioMalonBgmDist_copy;
+
+    // Message_PAL
+    s16 sOcarinaNoteBufPos_copy;
+    s16 sOcarinaNoteBufLen_copy;
+    u8 sOcarinaNoteBuf_copy[12];
+
+    u8 D_8014B2F4_copy;
+    u8 sTextboxSkipped_copy;
+    u16 sNextTextId_copy;
+    s16 sLastPlayedSong_copy;
+    s16 sHasSunsSong_copy;
+    s16 sMessageHasSetSfx_copy;
+    u16 sOcarinaSongBitFlags_copy;
+
 
 } SaveStateInfo;
 
@@ -631,12 +753,123 @@ void SaveState::SaveMiscCodeData(void) {
     info->gGameOverTimer_copy = gGameOverTimer;
     info->gTimeIncrement_copy = gTimeIncrement;
     info->sLoadedMarkDataTableCopy = sLoadedMarkDataTable;
+
+    info->sPlayerInitialPosX_copy = sPlayerInitialPosX;
+    info->sPlayerInitialPosZ_copy = sPlayerInitialPosZ;
+    info->sPlayerInitialDirection_copy = sPlayerInitialDirection;
+
+    info->sOcarinaInpEnabled_copy = sOcarinaInpEnabled;
+    info->D_80130F10_copy = D_80130F10;
+    info->sCurOcarinaBtnVal_copy = sCurOcarinaBtnVal;
+    info->sPrevOcarinaNoteVal_copy = sPrevOcarinaNoteVal;
+    info->sCurOcarinaBtnIdx_copy = sCurOcarinaBtnIdx;
+    info->sLearnSongLastBtn_copy = sLearnSongLastBtn;
+    info->D_80130F24_copy = D_80130F24;
+    info->D_80130F28_copy = D_80130F28;
+    info->D_80130F2C_copy = D_80130F2C;
+    info->D_80130F30_copy = D_80130F30;
+    info->D_80130F34_copy = D_80130F34;
+    info->sPlaybackState_copy = sPlaybackState;
+    info->D_80130F3C_copy = D_80130F3C;
+    info->sNotePlaybackTimer_copy = sNotePlaybackTimer;
+    info->sPlaybackNotePos_copy = sPlaybackNotePos;
+    info->sStaffPlaybackPos_copy = sStaffPlaybackPos;
+
+
+    info->sCurOcarinaBtnPress_copy = sCurOcarinaBtnPress;
+    info->D_8016BA10_copy = D_8016BA10;
+    info->sPrevOcarinaBtnPress_copy = sPrevOcarinaBtnPress;
+    info->D_8016BA18_copy = D_8016BA18;
+    info->D_8016BA1C_copy = D_8016BA1C;
+    memcpy(info->sCurOcarinaSong_copy, sCurOcarinaSong, sizeof(sCurOcarinaSong));
+    info->sOcarinaSongAppendPos_copy = sOcarinaSongAppendPos;
+    info->sOcarinaHasStartedSong_copy = sOcarinaHasStartedSong;
+    info->sOcarinaSongNoteStartIdx_copy = sOcarinaSongNoteStartIdx;
+    info->sOcarinaSongCnt_copy = sOcarinaSongCnt;
+    info->sOcarinaAvailSongs_copy = sOcarinaAvailSongs;
+    info->sStaffPlayingPos_copy = sStaffPlayingPos;
+    memcpy(info->sLearnSongPos_copy, sLearnSongPos, sizeof(sLearnSongPos));
+    memcpy(info->D_8016BA50_copy, D_8016BA50, sizeof(D_8016BA50));
+    memcpy(info->D_8016BA70_copy, D_8016BA70, sizeof(D_8016BA70));
+    memcpy(info->sLearnSongExpectedNote_copy, sLearnSongExpectedNote, sizeof(sLearnSongExpectedNote));
+    memcpy(&info->D_8016BAA0_copy, &D_8016BAA0, sizeof(D_8016BAA0));
+    info->sAudioHasMalonBgm_copy = sAudioHasMalonBgm;
+    info->sAudioMalonBgmDist_copy = sAudioMalonBgmDist;
+    info->sDisplayedNoteValue_copy = sDisplayedNoteValue;
+
+
+    info->sOcarinaNoteBufPos_copy = sOcarinaNoteBufPos;
+    info->sOcarinaNoteBufLen_copy = sOcarinaNoteBufLen;
+    memcpy(info->sOcarinaNoteBuf_copy, sOcarinaNoteBuf, sizeof(sOcarinaNoteBuf));
+    info->D_8014B2F4_copy = D_8014B2F4;
+    info->sTextboxSkipped_copy = sTextboxSkipped;
+    info->sNextTextId_copy = sNextTextId;
+    info->sLastPlayedSong_copy = sLastPlayedSong;
+    info->sHasSunsSong_copy = sHasSunsSong;
+    info->sMessageHasSetSfx_copy = sMessageHasSetSfx;
+    info->sOcarinaSongBitFlags_copy = sOcarinaSongBitFlags;
 }
 
 void SaveState::LoadMiscCodeData(void) {
     gGameOverTimer = info->gGameOverTimer_copy;
     gTimeIncrement = info->gTimeIncrement_copy;
     sLoadedMarkDataTable = info->sLoadedMarkDataTableCopy;
+
+    sPlayerInitialPosX = info->sPlayerInitialPosX_copy;
+    sPlayerInitialPosZ = info->sPlayerInitialPosZ_copy;
+    sPlayerInitialDirection = info->sPlayerInitialDirection_copy;
+
+    sOcarinaInpEnabled = info->sOcarinaInpEnabled_copy;
+    D_80130F10 = info->D_80130F10_copy;
+    sCurOcarinaBtnVal = info->sCurOcarinaBtnVal_copy;
+    sPrevOcarinaNoteVal = info->sPrevOcarinaNoteVal_copy;
+    sCurOcarinaBtnIdx = info->sCurOcarinaBtnIdx_copy;
+    sLearnSongLastBtn = info->sLearnSongLastBtn_copy;
+    D_80130F24 = info->D_80130F24_copy;
+    D_80130F28 = info->D_80130F28_copy;
+    D_80130F2C = info->D_80130F2C_copy;
+    D_80130F30 = info->D_80130F30_copy;
+    D_80130F34 = info->D_80130F34_copy;
+    sPlaybackState = info->sPlaybackState_copy;
+    D_80130F3C = info->D_80130F3C_copy;
+    sNotePlaybackTimer = info->sNotePlaybackTimer_copy;
+    sPlaybackNotePos = info->sPlaybackNotePos_copy;
+    sStaffPlaybackPos = info->sStaffPlaybackPos_copy;
+
+    sCurOcarinaBtnPress = info->sCurOcarinaBtnPress_copy;
+    D_8016BA10 = info->D_8016BA10_copy;
+    sPrevOcarinaBtnPress = info->sPrevOcarinaBtnPress_copy;
+    D_8016BA18 = info->D_8016BA18_copy;
+    D_8016BA1C = info->D_8016BA1C_copy;
+    memcpy(sCurOcarinaSong, info->sCurOcarinaSong_copy, sizeof(sCurOcarinaSong));
+    sOcarinaSongAppendPos = info->sOcarinaSongAppendPos_copy;
+    sOcarinaHasStartedSong = info->sOcarinaHasStartedSong_copy;
+    sOcarinaSongNoteStartIdx = info->sOcarinaSongNoteStartIdx_copy;
+    sOcarinaSongCnt = info->sOcarinaSongCnt_copy;
+    sOcarinaAvailSongs = info->sOcarinaAvailSongs_copy;
+    sStaffPlayingPos = info->sStaffPlayingPos_copy;
+    memcpy(info->sLearnSongPos_copy, info->sLearnSongPos_copy, sizeof(sLearnSongPos));
+    memcpy(info->D_8016BA50_copy, info->D_8016BA50_copy, sizeof(D_8016BA50));
+    memcpy(info->D_8016BA70_copy, info->D_8016BA70_copy, sizeof(D_8016BA70));
+    memcpy(info->sLearnSongExpectedNote_copy, info->sLearnSongExpectedNote_copy, sizeof(sLearnSongExpectedNote));
+    memcpy(&D_8016BAA0, &info->D_8016BAA0_copy, sizeof(D_8016BAA0));
+    sAudioHasMalonBgm = info->sAudioHasMalonBgm_copy;
+    sAudioMalonBgmDist = info->sAudioMalonBgmDist_copy;
+    sDisplayedNoteValue = info->sDisplayedNoteValue_copy;
+    
+    sOcarinaNoteBufPos = info->sOcarinaNoteBufPos_copy;
+    sOcarinaNoteBufLen = info->sOcarinaNoteBufLen_copy;
+    memcpy(sOcarinaNoteBuf, info->sOcarinaNoteBuf_copy, sizeof(sOcarinaNoteBuf));
+
+    D_8014B2F4 = info->D_8014B2F4_copy;
+    sTextboxSkipped = info->sTextboxSkipped_copy;
+    sNextTextId = info->sNextTextId_copy;
+    sLastPlayedSong = info->sLastPlayedSong_copy;
+    sHasSunsSong = info->sHasSunsSong_copy;
+    sMessageHasSetSfx = info->sMessageHasSetSfx_copy;
+    sOcarinaSongBitFlags = info->sOcarinaSongBitFlags_copy;
+
+
 }
 
 extern "C" void ProcessSaveStateRequests(void) {
