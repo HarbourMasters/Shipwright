@@ -403,16 +403,22 @@ void DrawInfoTab() {
 
     ImGui::InputScalar("Entrance Index", ImGuiDataType_S32, &gSaveContext.entranceIndex);
     InsertHelpHoverText("From which entrance did Link arrive?");
+
     ImGui::InputScalar("Cutscene Index", ImGuiDataType_S32, &gSaveContext.cutsceneIndex);
     InsertHelpHoverText("Which cutscene is this?");
+
     ImGui::InputScalar("Navi Timer", ImGuiDataType_U16, &gSaveContext.naviTimer);
     InsertHelpHoverText("Navi wants to talk at 600 units, decides not to at 3000.");
+
     ImGui::InputScalar("Timer 1 State", ImGuiDataType_S16, &gSaveContext.timer1State);
     InsertHelpHoverText("Heat timer, race timer, etc. Has white font");
+
     ImGui::InputScalar("Timer 1 Value", ImGuiDataType_S16, &gSaveContext.timer1Value, &one, NULL);
     InsertHelpHoverText("Time, in seconds");
+
     ImGui::InputScalar("Timer 2 State", ImGuiDataType_S16, &gSaveContext.timer2State);
     InsertHelpHoverText("Trade timer, Ganon collapse timer, etc. Has yellow font");
+
     ImGui::InputScalar("Timer 2 Value", ImGuiDataType_S16, &gSaveContext.timer2Value, &one, NULL);
     InsertHelpHoverText("Time, in seconds");
      
@@ -469,8 +475,8 @@ void DrawInfoTab() {
     InsertHelpHoverText("Z-Targeting behavior");
 
 
-    ImGui::SetNextItemWidth(ImGui::GetFontSize() * 15);
-    std::array<const char*, 7> minigameHS = { "Horseback Archery", 
+    ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
+    static std::array<const char*, 7> minigameHS = { "Horseback Archery", 
         "Big Poe Points",                                            
         "Fishing",
         "Malon's Obstacle Course",                                    
@@ -626,7 +632,7 @@ void DrawFlagArray32(const std::string& name, uint32_t& flags) {
 
 void DrawFlagArray16(const std::string& name, uint16_t& flags) {
     ImGui::PushID(name.c_str());
-    for (int32_t flagIndex = 0; flagIndex < 16; flagIndex++) {
+    for (int32_t flagIndex = 15; flagIndex >= 0; flagIndex--) {
         ImGui::SameLine();
         ImGui::PushID(flagIndex);
         uint32_t bitMask = 1 << flagIndex;
@@ -937,7 +943,7 @@ void DrawFlagsTab() {
     }
     if (ImGui::TreeNode("Inf Table Flags")) {
         for (int i = 0; i < 30; i++) {
-            std::string it_id = "it" + (char)i;
+            std::string it_id = "it" + std::to_string(i);
             DrawGroupWithBorder([&]() {
                 ImGui::Text("%2d", i);
                 DrawFlagArray16(it_id, gSaveContext.infTable[i]);
@@ -947,23 +953,23 @@ void DrawFlagsTab() {
     }
     if (ImGui::TreeNode("Item Get Inf Flags")) {
         for (int i = 0; i < 4; i++) {
-            std::string igi_id = "igi" + (char)i;
+            std::string igi_id = "igi" + std::to_string(i);
             DrawGroupWithBorder([&]() {
                 ImGui::Text("%d", i);
                 DrawFlagArray16(igi_id, gSaveContext.itemGetInf[i]);
             });
         }
-
         ImGui::TreePop();
     }
     if (ImGui::TreeNode("Event Inf Flags")) {
         for (int i = 0; i < 4; i++) {
-            std::string ei_id = "ei" + (char)i;
+            std::string ei_id = "ei" + std::to_string(i);
             DrawGroupWithBorder([&]() {
                 ImGui::Text("%d", i);
                 DrawFlagArray16(ei_id, gSaveContext.eventInf[i]);
             });
         }
+        ImGui::TreePop();
     }
 }
 
@@ -1299,6 +1305,7 @@ void DrawPlayerTab() {
         const char* curShield;
         const char* curTunic;
         const char* curBoots;
+
         switch (player->currentSwordItem) {
             case ITEM_SWORD_KOKIRI:
                 curSword = "Kokiri Sword"; 
@@ -1316,6 +1323,7 @@ void DrawPlayerTab() {
                 curSword = "None";
                 break;
         }
+
         switch (player->currentShield) {
             case PLAYER_SHIELD_NONE:
                 curShield = "None";
@@ -1332,6 +1340,7 @@ void DrawPlayerTab() {
             default:
                 break;
         }
+
         switch (player->currentTunic) {
             case PLAYER_TUNIC_KOKIRI:
                 curTunic = "Kokiri Tunic";
@@ -1345,6 +1354,7 @@ void DrawPlayerTab() {
             default:
                 break;
         }
+
         switch (player->currentBoots) {
             case PLAYER_BOOTS_KOKIRI:
                 curBoots = "Kokiri Boots";
@@ -1368,6 +1378,7 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("Z Pos", ImGuiDataType_Float, &player->actor.world.pos.z);
         });
+
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Rotation");
             InsertHelpHoverText("For Link's rotation in relation to the world");
@@ -1377,6 +1388,7 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("Z Rot", ImGuiDataType_S16, &player->actor.world.rot.z);
         });
+
         DrawGroupWithBorder([&]() {
             ImGui::Text("Link's Model Rotation");
             InsertHelpHoverText("For Link's actual model");
@@ -1386,16 +1398,22 @@ void DrawPlayerTab() {
             ImGui::SameLine();
             ImGui::InputScalar("Z ModRot", ImGuiDataType_S16, &player->actor.shape.rot.z);
         });
+
         ImGui::InputScalar("Linear Velocity", ImGuiDataType_Float, &player->linearVelocity);
         InsertHelpHoverText("Link's speed along the XZ plane");
+
         ImGui::InputScalar("Y Velocity", ImGuiDataType_Float, &player->actor.velocity.y);
         InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
+
         ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->wallHeight);
         InsertHelpHoverText("\"height used to determine whether link can climb or grab a ledge at the top\"");
+
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
         InsertHelpHoverText("Can't take damage while this is nonzero");
+
         ImGui::InputScalar("Gravity", ImGuiDataType_Float, &player->actor.gravity);
         InsertHelpHoverText("Rate at which Link falls. Default -4.0f");
+
         if (ImGui::BeginCombo("Link Age on Load", gGlobalCtx->linkAgeOnLoad == 0 ? "Adult" : "Child")) {
             if (ImGui::Selectable("Adult")) {
                 gGlobalCtx->linkAgeOnLoad = 0;
@@ -1467,6 +1485,7 @@ void DrawPlayerTab() {
             }
             ImGui::EndCombo();
         }
+
         if (ImGui::BeginCombo("Tunic", curTunic)) {
             if (ImGui::Selectable("Kokiri Tunic")) {
                 player->currentTunic = PLAYER_TUNIC_KOKIRI;
@@ -1482,6 +1501,7 @@ void DrawPlayerTab() {
             }
             ImGui::EndCombo();
         }
+
         if (ImGui::BeginCombo("Boots", curBoots)) {
             if (ImGui::Selectable("Kokiri Boots")) {
                 player->currentBoots = PLAYER_BOOTS_KOKIRI;
