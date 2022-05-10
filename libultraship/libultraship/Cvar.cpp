@@ -16,7 +16,7 @@ extern "C" CVar* CVar_Get(const char* name) {
 extern "C" s32 CVar_GetS32(const char* name, s32 defaultValue) {
     CVar* cvar = CVar_Get(name);
 
-    if (cvar != nullptr) {
+    if (cvar) {
         if (cvar->type == CVAR_TYPE_S32)
             return cvar->value.valueS32;
     }
@@ -27,7 +27,7 @@ extern "C" s32 CVar_GetS32(const char* name, s32 defaultValue) {
 extern "C" float CVar_GetFloat(const char* name, float defaultValue) {
     CVar* cvar = CVar_Get(name);
 
-    if (cvar != nullptr) {
+    if (cvar) {
         if (cvar->type == CVAR_TYPE_FLOAT)
             return cvar->value.valueFloat;
     }
@@ -38,7 +38,7 @@ extern "C" float CVar_GetFloat(const char* name, float defaultValue) {
 extern "C" const char* CVar_GetString(const char* name, const char* defaultValue) {
     CVar* cvar = CVar_Get(name);
 
-    if (cvar != nullptr) {
+    if (cvar) {
         if (cvar->type == CVAR_TYPE_STRING)
             return cvar->value.valueStr;
     }
@@ -48,7 +48,7 @@ extern "C" const char* CVar_GetString(const char* name, const char* defaultValue
 
 extern "C" void CVar_SetS32(const char* name, s32 value) {
     auto& cvar = cvars[name];
-    if (cvar == nullptr) {
+    if (!cvar) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVAR_TYPE_S32;
@@ -57,7 +57,7 @@ extern "C" void CVar_SetS32(const char* name, s32 value) {
 
 void CVar_SetFloat(const char* name, float value) {
     auto& cvar = cvars[name];
-    if (cvar == nullptr) {
+    if (!cvar) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVAR_TYPE_FLOAT;
@@ -66,7 +66,7 @@ void CVar_SetFloat(const char* name, float value) {
 
 void CVar_SetString(const char* name, const char* value) {
     auto& cvar = cvars[name];
-    if (cvar == nullptr) {
+    if (!cvar) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVAR_TYPE_STRING;
@@ -74,22 +74,16 @@ void CVar_SetString(const char* name, const char* value) {
 }
 
 extern "C" void CVar_RegisterS32(const char* name, s32 defaultValue) {
-    CVar* cvar = CVar_Get(name);
-
-    if (cvar == nullptr)
+    if (!CVar_Get(name))
         CVar_SetS32(name, defaultValue);
 }
 
 extern "C" void CVar_RegisterFloat(const char* name, float defaultValue) {
-    CVar* cvar = CVar_Get(name);
-
-    if (cvar == nullptr)
+    if (!CVar_Get(name))
         CVar_SetFloat(name, defaultValue);
 }
 
 extern "C" void CVar_RegisterString(const char* name, const char* defaultValue) {
-    CVar* cvar = CVar_Get(name);
-
-    if (cvar == nullptr)
+    if (!CVar_Get(name))
         CVar_SetString(name, defaultValue);
 }
