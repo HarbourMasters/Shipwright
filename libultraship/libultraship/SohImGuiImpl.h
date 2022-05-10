@@ -58,6 +58,7 @@ namespace SohImGui {
     } CustomWindow;
 
     extern Console* console;
+    extern std::vector<const char*> CustomTexts;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
 

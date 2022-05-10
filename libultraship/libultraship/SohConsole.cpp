@@ -26,6 +26,32 @@ static bool ClearCommand(const std::vector<std::string>&) {
 	return CMD_SUCCESS;
 }
 
+static bool OverlayCommand(const std::vector<std::string>& args) {
+	SohImGui::console->Log[SohImGui::console->selected_channel].clear();
+	if(args.size() < 3) {
+		return CMD_FAILED;
+	}
+
+	if(CVar_GetVar(args[2].c_str()) != nullptr) {
+		const char* key = ImStrdup(args[2].c_str());
+		if (args[1] == "add") {
+			if (std::ranges::find(SohImGui::CustomTexts, key) == SohImGui::CustomTexts.end()) {
+				SohImGui::CustomTexts.push_back(key);
+				INFO("Added overlay: %s ", key);
+			}
+		} else if (args[1] == "remove") {
+			if (std::ranges::find(SohImGui::CustomTexts, key) != SohImGui::CustomTexts.end()) {
+				SohImGui::CustomTexts.push_back(key);
+				INFO("Removed overlay: %s ", key);
+			}
+		} else {
+			return CMD_FAILED;
+		}
+	}
+
+	return CMD_SUCCESS;
+}
+
 std::string toLowerCase(std::string in) {
 	std::string cpy(in);
 	std::ranges::transform(cpy, cpy.begin(), [](unsigned char c) { return std::tolower(c); });
@@ -84,6 +110,7 @@ void Console::Init() {
 	this->Commands["clear"] = { ClearCommand, "Clear the console history" };
 	this->Commands["bind"]  = { BindCommand, "Binds key to commands" };
 	this->Commands["bind-toggle"] = { BindToggleCommand, "Bind key as a bool toggle" };
+	this->Commands["overlay"] = { OverlayCommand, "Overlay cvar value" };
 }
 
 void Console::Update() {

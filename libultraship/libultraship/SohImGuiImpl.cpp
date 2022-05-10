@@ -53,6 +53,7 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+std::map<std::string, ImFont*> Fonts;
 
 namespace SohImGui {
 
@@ -61,6 +62,7 @@ namespace SohImGui {
     Console* console = new Console;
     bool p_open = false;
     bool needs_save = false;
+    std::vector<const char*> CustomTexts;
     int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
     float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
     float goron_col[3] = { 0.392f, 0.078f, 0.0f };
@@ -297,6 +299,16 @@ namespace SohImGui {
         ImGui::SetCurrentContext(ctx);
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io->Fonts->AddFontDefault();
+        std::shared_ptr<Archive> base = GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive();
+        std::shared_ptr<File> font = std::make_shared<File>();
+        base->LoadFile("assets\\ship_of_harkinian\\fonts\\PressStart2P-Regular.ttf", false, font);
+        if(font->bIsLoaded) {
+            char* font_data = new char[font->dwBufferSize];
+            memcpy(font_data, font->buffer.get(), font->dwBufferSize);
+            Fonts["Player2"] = io->Fonts->AddFontFromMemoryTTF(font_data, font->dwBufferSize, 14.0f);
+        }
+
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
@@ -462,6 +474,48 @@ namespace SohImGui {
                 needs_save = true;
             }
         }
+    }
+
+    #define TextDraw(x, y, shadow, text, ...) {                                 \
+        ImGui::PushFont(Fonts["Player2"]);                                      \
+        if(shadow) {                                                            \
+            ImGui::SetCursorPos(ImVec2(x + 1, y + 1));                          \
+            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.0f, .0f, .0f, 255));   \
+            ImGui::Text(text, __VA_ARGS__);                                     \
+        }                                                                       \
+        ImGui::PopStyleColor();                                                 \
+        ImGui::SetCursorPos(ImVec2(x, y));                                      \
+        ImGui::Text(text, __VA_ARGS__);                                         \
+        ImGui::PopFont();                                                       \
+    }                                                                           \
+
+	void DrawCustomText() {
+        const ImGuiViewport* viewport = ImGui::GetMainViewport();
+
+        ImGui::SetNextWindowPos(viewport->Pos, ImGuiCond_Always);
+        ImGui::SetNextWindowSize(viewport->Size, ImGuiCond_Always);
+        ImGui::Begin("SoHOverlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
+
+        for (int xId = 0; xId < CustomTexts.size(); xId++) {
+            const char* text = CustomTexts[xId];
+	        const CVar* var = CVar_GetVar(text);
+            int textY = 50 + (xId * 30);
+
+            switch (var->type) {
+	            case CVAR_TYPE_FLOAT:
+                    TextDraw(30, textY, true, "%s %.2f", text, var->value.valueFloat);
+                    break;
+                case CVAR_TYPE_S32:
+                    TextDraw(30, textY, true, "%s %d", text, var->value.valueS32);
+                    break;
+                case CVAR_TYPE_STRING:
+                    TextDraw(30, textY, true, "%s %s", text, var->value.valueStr);
+                    break;
+            }
+        }
+
+        ImGui::End();
     }
 
     void DrawMainMenuAndCalculateGameSize() {
@@ -770,6 +824,8 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
+
+        DrawCustomText();
     }
 
     void DrawFramebufferAndGameInput() {
