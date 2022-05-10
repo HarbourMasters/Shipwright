@@ -15,7 +15,7 @@ static const Vtx sMarkChestVtx[] = {
 };
 
 PauseMapMarksData gPauseMapMarkDataTable[] = {
-    // Deku Tree map 0
+    // Deku Tree map 3F
     {
         { PAUSE_MAP_MARK_CHEST,
           23,
