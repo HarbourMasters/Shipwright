@@ -136,20 +136,6 @@ PauseMapMarksData gPauseMapMarkDataTable[] = {
     },
     // Jabu-Jabu's Belly map B1
     {
-        { PAUSE_MAP_MARK_CHEST,
-          23,
-          sMarkChestVtx,
-          4,
-          7,
-          {
-            { 1, 50.0f, -12.0f },
-            { 3, 46.0f, -66.0f },
-            { 4, 20.0f, -38.0f },
-            { 12, 49.0f, -3.0f },
-            { 13, 39.0f, 0.0f },
-            { 14, 18.0f, -2.0f },
-            { 15, 59.0f, 0.0f },
-          } },
         { PAUSE_MAP_MARK_NONE, 0, NULL, 0, 0, { 0 } },
     },
     // Forest Temple map 2F
