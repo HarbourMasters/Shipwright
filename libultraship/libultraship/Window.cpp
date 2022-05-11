@@ -11,11 +11,9 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "AudioPlayer.h"
-#ifdef _WIN32
 #include "WasapiAudioPlayer.h"
-#else
+#include "PulseAudioPlayer.h"
 #include "SDLAudioPlayer.h"
-#endif
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
@@ -403,6 +401,8 @@ namespace Ship {
     void Window::SetAudioPlayer() {
 #ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
+#elif defined(__linux)
+        APlayer = std::make_shared<PulseAudioPlayer>();
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif

@@ -71,6 +71,7 @@ LDLIBS := \
 	GL \
 	GLEW \
 	storm \
+	pulse\
 	ultraship \
 ) \
 
