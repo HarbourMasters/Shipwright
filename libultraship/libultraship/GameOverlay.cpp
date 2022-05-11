@@ -52,7 +52,34 @@ float Ship::GameOverlay::GetScreenHeight() {
 }
 
 float Ship::GameOverlay::GetStringWidth(const char* text) {
-	return ImGui::CalcTextSize(text).x;
+	return CalculateTextSize(text).x;
+}
+
+ImVec2 Ship::GameOverlay::CalculateTextSize(const char* text, const char* text_end, bool hide_text_after_double_hash, float wrap_width) {
+	ImGuiContext& g = *GImGui;
+
+	const char* text_display_end;
+	if (hide_text_after_double_hash)
+		text_display_end = ImGui::FindRenderedTextEnd(text, text_end);      // Hide anything after a '##' string
+	else
+		text_display_end = text_end;
+
+	GameOverlay* overlay = SohImGui::overlay;
+	
+	ImFont* font = overlay->CurrentFont == "Default" ? g.Font : overlay->Fonts[overlay->CurrentFont];
+	const float font_size = font->FontSize;
+	if (text == text_display_end)
+		return ImVec2(0.0f, font_size);
+	ImVec2 text_size = font->CalcTextSizeA(font_size, FLT_MAX, wrap_width, text, text_display_end, NULL);
+
+	// Round
+	// FIXME: This has been here since Dec 2015 (7b0bf230) but down the line we want this out.
+	// FIXME: Investigate using ceilf or e.g.
+	// - https://git.musl-libc.org/cgit/musl/tree/src/math/ceilf.c
+	// - https://embarkstudios.github.io/rust-gpu/api/src/libm/math/ceilf.rs.html
+	text_size.x = IM_FLOOR(text_size.x + 0.99999f);
+
+	return text_size;
 }
 
 void Ship::GameOverlay::Init() {

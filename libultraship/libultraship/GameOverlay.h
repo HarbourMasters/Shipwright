@@ -27,6 +27,7 @@ namespace Ship {
 		static float GetScreenWidth();
 		static float GetScreenHeight();
 		static float GetStringWidth(const char* text);
+		static ImVec2 CalculateTextSize(const char* text, const char* text_end = NULL, bool hide_text_after_double_hash = false, float wrap_width = -1.0f);
 	private:
 		void TextDraw(float x, float y, bool shadow, const char* text, ...);
 		void LoadFont(const std::string& name, const std::string& path, float fontSize);
