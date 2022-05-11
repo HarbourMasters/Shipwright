@@ -106,7 +106,7 @@ void Console::Draw() {
 	if (!this->opened) return;
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-	ImGui::Begin("Console", nullptr);
+	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 

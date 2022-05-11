@@ -417,6 +417,15 @@ namespace SohImGui {
         }
     }
 
+    void EnhancementButton(std::string text, std::string cvarName)
+    {
+        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
+        if (ImGui::Button(text.c_str())) {
+            CVar_SetS32(cvarName.c_str(), !val);
+            needs_save = true;
+        }
+    }
+
     void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format)
     {
         int val = CVar_GetS32(cvarName.c_str(), 0);
@@ -725,10 +734,11 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Developer Tools"))
             {
+                EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
+                ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
-                EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
 
                 ImGui::EndMenu();
             }
@@ -745,6 +755,7 @@ namespace SohImGui {
                     }
                     ImGui::EndMenu();
                 }
+
             }
 
             ImGui::EndMenuBar();
@@ -755,7 +766,7 @@ namespace SohImGui {
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
+            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
