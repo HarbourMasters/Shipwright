@@ -45,7 +45,7 @@ endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
 LDFLAGS := -lm -ldl -lpng \
-  -L../external -L../libultraship -lz -lbz2 -pthread -lultraship -lstorm -lSDL2 -lGLEW -lGL -lX11
+  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 -lGLEW -lGL -lX11
 
 # Use LLD if available. Set LLD=0 to not use it
 ifeq ($(shell command -v ld.lld >/dev/null 2>&1; echo $$?),0)
