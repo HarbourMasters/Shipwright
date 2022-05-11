@@ -46,6 +46,8 @@ extern "C" {
 
 using namespace std;
 
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
+
 #define SUPPORT_CHECK(x) assert(x)
 
 // SCALE_M_N: upscale/downscale M-bit integer to N-bit
@@ -2149,7 +2151,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t mtxAddr = cmd->words.w1;
 
                 // OTRTODO: Temp way of dealing with gMtxClear. Need something more elegant in the future...
-                if (mtxAddr == 0xF012DB20 || mtxAddr == 0xF012DB40)
+                if (mtxAddr == SEG_ADDR(0, 0x12DB20) || mtxAddr == SEG_ADDR(0, 0x12DB40))
                     mtxAddr = clearMtx;
 
 #ifdef F3DEX_GBI_2
