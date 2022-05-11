@@ -7,13 +7,13 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
 #include "textures/place_title_cards/g_pn_01.h"
 #include "textures/place_title_cards/g_pn_02.h"
@@ -765,7 +765,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
 
     titleCtx->texture = texture;
     titleCtx->isBossCard = true;
-    titleCtx->hasTranslation = hasTranslation;   
+    titleCtx->hasTranslation = hasTranslation;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -774,7 +774,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
     titleCtx->delayTimer = 0;
 }
 
-void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
+void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
 
@@ -4271,8 +4271,6 @@ s32 func_80035124(Actor* actor, GlobalContext* globalCtx) {
 
     return ret;
 }
-
-#include "z_cheap_proc.c"
 
 u8 func_800353E8(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);

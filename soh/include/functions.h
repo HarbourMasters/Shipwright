@@ -14,7 +14,7 @@ extern "C"
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
-#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, __VA_ARGS__)
+#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
 
 f32 fabsf(f32 f);

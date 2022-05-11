@@ -12,7 +12,7 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn);
 s32 OTRScene_ExecuteCommands(GlobalContext* globalCtx, Ship::Scene* sceneCmd);
 
 //Ship::OTRResource* OTRGameplay_LoadFile(GlobalContext* globalCtx, RomFile* file) {
-Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName) 
+Ship::Resource* OTRGameplay_LoadFile(GlobalContext* globalCtx, const char* fileName)
 {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(fileName);
     return res.get();
@@ -28,7 +28,7 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
 
     //osSyncPrintf("\nSCENE SIZE %fK\n", (scene->sceneFile.vromEnd - scene->sceneFile.vromStart) / 1024.0f);
 
-    std::string scenePath = StringHelper::Sprintf("scenes\\%s\\%s", scene->sceneFile.fileName, scene->sceneFile.fileName);
+    std::string scenePath = StringHelper::Sprintf("scenes/%s/%s", scene->sceneFile.fileName, scene->sceneFile.fileName);
 
     globalCtx->sceneSegment = (Ship::Scene*)OTRGameplay_LoadFile(globalCtx, scenePath.c_str());
 
@@ -47,7 +47,7 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(globalCtx->sceneSegment);
 
     OTRGameplay_InitScene(globalCtx, spawn);
-    
+
     osSyncPrintf("ROOM SIZE=%fK\n", func_80096FE8(globalCtx, &globalCtx->roomCtx) / 1024.0f);
 }
 
@@ -72,7 +72,7 @@ void OTRGameplay_InitScene(GlobalContext* globalCtx, s32 spawn) {
                                                ->GetResourceManager()
                                                ->LoadResource("object_link_child\\object_link_childVtx_01FE08")
                                                .get());
-    
+
     auto data2 = ResourceMgr_LoadVtxByCRC(0x68d4ea06044e228f);*/
 
     volatile int a = 0;

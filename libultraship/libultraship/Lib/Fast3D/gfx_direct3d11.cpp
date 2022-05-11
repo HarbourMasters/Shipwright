@@ -158,7 +158,7 @@ static LARGE_INTEGER last_time, accumulated_time, frequency;
 
 int gfx_d3d11_create_framebuffer(void);
 
-void create_depth_stencil_objects(uint32_t width, uint32_t height, uint32_t msaa_count, ID3D11DepthStencilView **view, ID3D11ShaderResourceView **srv) {
+static void create_depth_stencil_objects(uint32_t width, uint32_t height, uint32_t msaa_count, ID3D11DepthStencilView **view, ID3D11ShaderResourceView **srv) {
     D3D11_TEXTURE2D_DESC texture_desc;
     texture_desc.Width = width;
     texture_desc.Height = height;
@@ -992,8 +992,8 @@ std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id,
 
 } // namespace
 
-ImTextureID SohImGui::GetTextureByID(int id) {
-    return impl.backend == Backend::DX11 ? d3d.textures[id].resource_view.Get() : reinterpret_cast<ImTextureID>(id);
+ImTextureID gfx_d3d11_get_texture_by_id(int id) {
+    return d3d.textures[id].resource_view.Get();
 }
 
 struct GfxRenderingAPI gfx_direct3d11_api = {

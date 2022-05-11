@@ -92,8 +92,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_Init(impl.dx11.window);
+            break;
+#endif
+        default:
             break;
         }
 
@@ -148,8 +152,13 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_Init("#version 120");
             break;
+
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_Init(static_cast<ID3D11Device*>(impl.dx11.device), static_cast<ID3D11DeviceContext*>(impl.dx11.device_context));
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -159,8 +168,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_ProcessEvent(static_cast<const SDL_Event*>(event.sdl.event));
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_WndProcHandler(static_cast<HWND>(event.win32.handle), event.win32.msg, event.win32.wparam, event.win32.lparam);
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -170,8 +183,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(impl.sdl.window));
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_NewFrame();
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -181,8 +198,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_NewFrame();
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_NewFrame();
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -192,8 +213,12 @@ namespace SohImGui {
         case Backend::SDL:
             ImGui_ImplOpenGL3_RenderDrawData(data);
             break;
+#if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_RenderDrawData(data);
+            break;
+#endif
+        default:
             break;
         }
     }
@@ -202,11 +227,12 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::DX11:
             return true;
+        default:
+            return false;
         }
-        return false;
     }
 
-    void SohImGui::ShowCursor(bool hide, Dialogues d) {
+    void ShowCursor(bool hide, Dialogues d) {
         if (d == Dialogues::dLoadSettings) {
             GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(hide);
             return;
@@ -724,7 +750,11 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
 
+#ifdef _WIN32
             ImGui::Text("Platform: Windows");
+#else
+            ImGui::Text("Platform: Linux");
+#endif
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
             ImGui::End();
             ImGui::PopStyleColor();
@@ -878,5 +908,17 @@ namespace SohImGui {
 
     ImTextureID GetTextureByName(const std::string& name) {
         return GetTextureByID(DefaultAssets[name]->textureId);
+    }
+
+    ImTextureID GetTextureByID(int id) {
+#ifdef ENABLE_DX11
+    if (impl.backend == Backend::DX11)
+    {
+        ImTextureID gfx_d3d11_get_texture_by_id(int id);
+        return gfx_d3d11_get_texture_by_id(id);
+    }
+#else
+        return reinterpret_cast<ImTextureID>(id);
+#endif
     }
 }

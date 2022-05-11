@@ -1,10 +1,11 @@
 ﻿#include "GameSettings.h"
 
 // Audio
+#include <cstddef>
+#include <PR/ultra64/types.h>
 #include <PR/ultra64/sptask.h>
 #include <PR/ultra64/pi.h>
 #include <PR/ultra64/message.h>
-#include <PR/ultra64/types.h>
 
 #include "ConfigFile.h"
 #include "Cvar.h"

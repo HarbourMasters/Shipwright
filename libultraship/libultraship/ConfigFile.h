@@ -29,9 +29,9 @@ namespace Ship {
 			bool CreateDefaultConfig();
 
 		private:
-			mINI::INIFile File;
 			mINI::INIStructure Val;
 			std::weak_ptr<GlobalCtx2> Context;
 			std::string Path;
+			mINI::INIFile File;
 	};
 }

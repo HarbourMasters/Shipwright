@@ -205,6 +205,14 @@ extern GraphicsContext* __gfxCtx;
 #define ALIGNED8
 #endif
 
-#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 0xF0000000)
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
+
+#ifdef _MSC_VER
+#define BOMSWAP16 _byteswap_ushort
+#define BOMSWAP32 _byteswap_ulong
+#else
+#define BOMSWAP16 __builtin_bswap16
+#define BOMSWAP32 __builtin_bswap32
+#endif
 
 #endif

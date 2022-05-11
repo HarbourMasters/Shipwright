@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
 
 extern "C" {
 #include <z64.h>

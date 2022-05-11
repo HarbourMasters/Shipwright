@@ -30,7 +30,7 @@ namespace Ship {
     }
 
     GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
-        
+
     }
 
     GlobalCtx2::~GlobalCtx2() {
@@ -54,7 +54,11 @@ namespace Ship {
 
         if (!ResMan->DidLoadSuccessfully())
         {
+#ifdef _WIN32
             MessageBox(NULL, L"Main OTR file not found!", L"Uh oh", MB_OK);
+#else
+            SPDLOG_ERROR("Main OTR file not found!");
+#endif
             exit(1);
         }
         INSTANCE = new ModManager(ResMan);

@@ -29,8 +29,9 @@
 #include "SDL_opengl.h"
 #else
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 #define GL_GLEXT_PROTOTYPES 1
-#include <SDL2/SDL_opengles2.h>
+// #include <SDL2/SDL_opengles2.h>
 #endif
 
 #include "gfx_cc.h"
@@ -178,6 +179,7 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return "texel.a";
         }
     }
+    return "";
 }
 
 static void append_formula(char *buf, size_t *len, uint8_t c[2][4], bool do_single, bool do_multiply, bool do_mix, bool with_alpha, bool only_alpha, bool opt_alpha) {
@@ -571,6 +573,7 @@ static uint32_t gfx_cm_to_opengl(uint32_t val) {
         case G_TX_NOMIRROR | G_TX_WRAP:
             return GL_REPEAT;
     }
+    return 0;
 }
 
 static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
