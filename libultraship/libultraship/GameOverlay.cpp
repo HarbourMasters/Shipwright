@@ -84,8 +84,17 @@ ImVec2 Ship::GameOverlay::CalculateTextSize(const char* text, const char* text_e
 
 void Ship::GameOverlay::Init() {
 	this->LoadFont("Press Start 2P", "assets/ship_of_harkinian/fonts/PressStart2P-Regular.ttf", 12.0f);
+	this->LoadFont("Fipps", "assets/ship_of_harkinian/fonts/Fipps-Regular.otf", 32.0f);
+	const std::string DefaultFont = this->Fonts.begin()->first;
 	if(!this->Fonts.empty()) {
-		this->CurrentFont = CVar_GetString("gOverlayFont", ImStrdup(this->Fonts.begin()->first.c_str()));
+		const std::string font = CVar_GetString("gOverlayFont", ImStrdup(DefaultFont.c_str()));
+		for (auto& [name, _] : this->Fonts) {
+			if (font.starts_with(name)) {
+				this->CurrentFont = name;
+				break;
+			}
+			this->CurrentFont = DefaultFont;
+		}
 	}
 	SohImGui::console->Commands["overlay"] = { OverlayCommand, "Draw an overlay using a cvar value" };
 }
