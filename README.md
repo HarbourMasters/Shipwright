@@ -6,7 +6,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 
 ## Quick Start
 
-1) Download The Ship of Harkinian from Discord.
+1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
 2) Requires a supported copy of the game (See supported games below).
 3) Use the OTRGui to generate an `oot.otr` archive file.
 4) Launch `soh.exe`
