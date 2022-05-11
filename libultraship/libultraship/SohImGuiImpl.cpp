@@ -18,6 +18,7 @@
 #include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
+#include "GameOverlay.h"
 #include "Texture.h"
 #include "../Fast3D/gfx_pc.h"
 #include "Lib/stb/stb_image.h"
@@ -59,8 +60,10 @@ namespace SohImGui {
     WindowImpl impl;
     ImGuiIO* io;
     Console* console = new Console;
+    GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
+    std::vector<const char*> CustomTexts;
     int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
     float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
     float goron_col[3] = { 0.392f, 0.078f, 0.0f };
@@ -323,10 +326,13 @@ namespace SohImGui {
         ImGui::SetCurrentContext(ctx);
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io->Fonts->AddFontDefault();
+
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
         console->Init();
+        overlay->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
 
@@ -490,7 +496,7 @@ namespace SohImGui {
         }
     }
 
-    void DrawMainMenuAndCalculateGameSize() {
+   void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -624,6 +630,7 @@ namespace SohImGui {
                     }
                     ImGui::EndCombo();
                 }
+                overlay->DrawSettings();
                 ImGui::EndMenu();
             }
 
@@ -800,6 +807,8 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
+
+        overlay->Draw();
     }
 
     void DrawFramebufferAndGameInput() {
