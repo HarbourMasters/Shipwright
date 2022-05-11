@@ -24,6 +24,8 @@
 #include <chrono>
 #include "SohHooks.h"
 #include "SohConsole.h"
+
+#include "../../soh/soh/OTRGlobals.h"
 #include <iostream>
 
 extern "C" {
@@ -328,6 +330,8 @@ namespace Ship {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
 
+        
+
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
@@ -349,6 +353,61 @@ namespace Ship {
     }
 
     bool Window::KeyDown(int32_t dwScancode) {
+        //Why -1?
+        switch (dwScancode - 1) {
+        case SDL_SCANCODE_F5:
+            {
+                const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+                const SaveStateReturn stateReturn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+                
+                switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Saved state to slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+                    break;
+
+                }
+                break;
+            }   
+        case SDL_SCANCODE_F6:
+        {
+            unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            slot++;
+            if (slot > 5) {
+                slot = 0;
+            }
+            OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+            SPDLOG_INFO("Set SaveState slot to {}.", slot);
+            break;
+        }
+        case SDL_SCANCODE_F7:
+            {
+                const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+                const SaveStateReturn stateReturn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+                
+                switch (stateReturn) {
+                    case SaveStateReturn::SUCCESS:
+                        SPDLOG_INFO("[SOH] Loaded state from slot {}", slot);
+                        break;
+                    case SaveStateReturn::FAIL_INVALID_SLOT:
+                        SPDLOG_ERROR("[SOH] Invalid State Slot Number {}", slot);
+                        break;
+                    case SaveStateReturn::FAIL_STATE_EMPTY:
+                        SPDLOG_ERROR("[SOH] State Slot {} is empty", slot);
+                        break;
+                    case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                        SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+                        break;
+                }
+
+                break;
+
+            }
+        }
+
+
         bool bIsProcessed = false;
         for (size_t i = 0; i < __osMaxControllers; i++) {
             for (size_t j = 0; j < Controllers[i].size(); j++) {

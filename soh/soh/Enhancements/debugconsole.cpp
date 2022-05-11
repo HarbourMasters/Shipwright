@@ -319,9 +319,6 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
-        case SaveStateReturn::FAIL_INVALID_SLOT:
-            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
-            return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
             return CMD_FAILED;
