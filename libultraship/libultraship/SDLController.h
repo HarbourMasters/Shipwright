@@ -13,8 +13,12 @@ namespace Ship {
 			void ReadFromSource();
 			void WriteToSource(ControllerCallback* controller);
 			bool Connected() const { return Cont != nullptr; }
-			// LINUX_TODO:
-			bool CanRumble() const { return false; /* return SDL_GameControllerHasRumble(Cont); */ }
+			bool CanRumble() const {
+#if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
+				return SDL_GameControllerHasRumble(Cont);
+#endif
+				return true;
+			}
 
 			std::string GetGuid() { return guid; };
 
