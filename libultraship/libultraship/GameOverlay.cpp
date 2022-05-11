@@ -13,7 +13,7 @@ void Ship::GameOverlay::LoadFont(const std::string& name, const std::string& pat
 	ImGuiIO& io = ImGui::GetIO();
 	std::shared_ptr<Archive> base = GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive();
 	std::shared_ptr<File> font = std::make_shared<File>();
-	base->LoadFile(normalize(path), false, font);
+	base->LoadFile(path, false, font);
 	if (font->bIsLoaded) {
 		char* font_data = new char[font->dwBufferSize];
 		memcpy(font_data, font->buffer.get(), font->dwBufferSize);
@@ -65,7 +65,7 @@ ImVec2 Ship::GameOverlay::CalculateTextSize(const char* text, const char* text_e
 		text_display_end = text_end;
 
 	GameOverlay* overlay = SohImGui::overlay;
-	
+
 	ImFont* font = overlay->CurrentFont == "Default" ? g.Font : overlay->Fonts[overlay->CurrentFont];
 	const float font_size = font->FontSize;
 	if (text == text_display_end)

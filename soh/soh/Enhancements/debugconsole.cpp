@@ -7,6 +7,8 @@
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 #include <Utils/File.h>
+
+#include "Lib/ImGui/imgui_internal.h"
 #undef PATH_HACK
 #undef Path
 
@@ -421,14 +423,6 @@ template <typename Numeric> bool is_number(const std::string& s) {
     return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
-char* Strdup(const char* src) {
-    const unsigned len = strlen(src) + 1;
-    char* newstr = static_cast<char*>(malloc(len));
-    if (newstr)
-        memcpy(newstr, src, len);
-    return newstr;
-}
-
 void DebugConsole_LoadCVars()
 {
     if (File::Exists("cvars.cfg")) {
@@ -441,7 +435,7 @@ void DebugConsole_LoadCVars()
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
                 value.erase(std::ranges::remove(value, '\"').begin(), value.end());
-                CVar_SetString(cfg[0].c_str(), Strdup(value.c_str()));
+                CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
             }
             if (is_number<float>(cfg[1])) {
                 CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
