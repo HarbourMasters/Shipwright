@@ -668,6 +668,7 @@ namespace SohImGui {
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
 
                 EXPERIMENTAL();
 
