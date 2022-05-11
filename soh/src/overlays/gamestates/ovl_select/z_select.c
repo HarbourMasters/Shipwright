@@ -624,10 +624,10 @@ void Select_Init(GameState* thisx) {
         this->pageDownIndex = dREG(82);
     }
     R_UPDATE_RATE = 1;
-    #ifndef _MSC_VER
+#if !defined(_MSC_VER) && !defined(__GNUC__)
     this->staticSegment = GameState_Alloc(&this->state, size, "../z_select.c", 1114);
     DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, "../z_select.c", 1115);
-    #endif
+#endif
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.linkAge = 1;
 }

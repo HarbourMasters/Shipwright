@@ -52,7 +52,7 @@ static void ExporterParseFileMode(const std::string& buildMode, ZFileMode& fileM
 		for (auto item : lst)
 		{
 			auto fileData = File::ReadAllBytes(item);
-			otrArchive->AddFile(StringHelper::Split(item, "Extract\\")[1], (uintptr_t)fileData.data(), fileData.size());
+			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 	}
 }
@@ -76,7 +76,7 @@ static void ExporterProgramEnd()
 		for (auto item : lst)
 		{
 			auto fileData = File::ReadAllBytes(item);
-			otrArchive->AddFile(StringHelper::Split(item, "Extract\\")[1], (uintptr_t)fileData.data(), fileData.size());
+			otrArchive->AddFile(StringHelper::Split(item, "Extract/")[1], (uintptr_t)fileData.data(), fileData.size());
 		}
 
 		otrArchive->AddFile("Audiobank", (uintptr_t)Globals::Instance->GetBaseromFile("Audiobank").data(), Globals::Instance->GetBaseromFile("Audiobank").size());
@@ -117,7 +117,7 @@ static void ExporterFileBegin(ZFile* file)
 
 static void ExporterFileEnd(ZFile* file)
 {
-	int bp = 0;
+	// delete fileWriter;
 }
 
 static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
@@ -140,7 +140,7 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		{
 			auto split = StringHelper::Split(oName, "_");
 			oName = "";
-			for (int i = 0; i < split.size() - 1; i++)
+			for (size_t i = 0; i < split.size() - 1; i++)
 				oName += split[i] + "_";
 
 			oName += "scene";
@@ -153,14 +153,14 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		std::string fName = "";
 
 		if (prefix != "")
-			fName = StringHelper::Sprintf("%s\\%s\\%s", prefix.c_str(), oName.c_str(), rName.c_str());
+			fName = StringHelper::Sprintf("%s/%s/%s", prefix.c_str(), oName.c_str(), rName.c_str());
 		else
-			fName = StringHelper::Sprintf("%s\\%s", oName.c_str(), rName.c_str());
+			fName = StringHelper::Sprintf("%s/%s", oName.c_str(), rName.c_str());
 
 		if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 			files[fName] = strem->ToVector();
 		else
-			File::WriteAllBytes("Extract\\" + fName, strem->ToVector());
+			File::WriteAllBytes("Extract/" + fName, strem->ToVector());
 	}
 
 	auto end = std::chrono::steady_clock::now();

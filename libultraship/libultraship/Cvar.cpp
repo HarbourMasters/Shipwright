@@ -1,4 +1,4 @@
-#include "cvar.h"
+#include "Cvar.h"
 #include <map>
 #include <string>
 #include <PR/ultra64/gbi.h>

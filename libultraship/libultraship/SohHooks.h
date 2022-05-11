@@ -47,6 +47,7 @@ struct HookParameter {
 #include <functional>
 #include <string>
 #include <map>
+#include <memory>
 
 struct HookCall {
     std::string name;

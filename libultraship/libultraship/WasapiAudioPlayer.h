@@ -1,4 +1,7 @@
 #pragma once
+
+#ifdef _WIN32
+
 #include "AudioPlayer.h"
 #include <wrl/client.h>
 #include <mmdeviceapi.h>
@@ -39,3 +42,4 @@ namespace Ship {
 		bool started;
 	};
 }
+#endif
