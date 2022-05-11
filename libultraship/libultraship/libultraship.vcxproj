@@ -256,6 +256,7 @@
     <ClCompile Include="Blob.cpp" />
     <ClCompile Include="Cvar.cpp" />
     <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="GameOverlay.cpp" />
     <ClCompile Include="GameSettings.cpp" />
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp" />
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_win32.cpp" />
@@ -343,6 +344,7 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="Cvar.h" />
     <ClInclude Include="Environment.h" />
+    <ClInclude Include="GameOverlay.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameVersions.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h" />

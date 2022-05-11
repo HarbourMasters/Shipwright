@@ -61,15 +61,15 @@ namespace Ship {
                 if (Conf[ConfSection]["GUID"].compare("") == 0 || Conf[ConfSection]["GUID"].compare(INVALID_SDL_CONTROLLER_GUID) == 0 || Conf[ConfSection]["GUID"].compare(NewGuid) == 0) {
                     auto NewCont = SDL_GameControllerOpen(i);
 
-                    if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO))
-                    {
-                        SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
-                    }
-
                     // We failed to load the controller. Go to next.
                     if (NewCont == nullptr) {
                         SPDLOG_ERROR("SDL Controller failed to open: ({})", SDL_GetError());
                         continue;
+                    }
+
+                    if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO))
+                    {
+                        SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
                     }
 
                     guid = NewGuid;
@@ -101,7 +101,7 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
-        if (SDL_GameControllerHasRumble(Cont)) {
+        if (CanRumble()) {
             SDL_GameControllerRumble(Cont, 0, 0, 0);
         }
         if (Cont != nullptr) {
@@ -190,7 +190,7 @@ namespace Ship {
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
             size_t contNumber = GetControllerNumber();
-            
+
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
@@ -198,7 +198,7 @@ namespace Ship {
             const int isSpecialController = !strcmp("PS5 Controller", contName);
             float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), 0.0f);
             float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), 0.0f);
-            const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity").c_str(), 1.0f);
+            const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity", contNumber).c_str(), 1.0f);
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroData[0];
@@ -347,7 +347,7 @@ namespace Ship {
 
     void SDLController::WriteToSource(ControllerCallback* controller)
     {
-        if (SDL_GameControllerHasRumble(Cont)) {
+        if (CanRumble()) {
             if (controller->rumble > 0) {
                 float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", GetControllerNumber()).c_str(), 1.0f);
                 SDL_GameControllerRumble(Cont, 0xFFFF * rumble_strength, 0xFFFF * rumble_strength, 0);

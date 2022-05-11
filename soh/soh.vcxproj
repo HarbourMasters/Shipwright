@@ -278,6 +278,7 @@
     <ClCompile Include="src\code\z_actor_dlftbls.c" />
     <ClCompile Include="src\code\z_bgcheck.c" />
     <ClCompile Include="src\code\z_camera.c" />
+    <ClCompile Include="src\code\z_cheap_proc.c" />
     <ClCompile Include="src\code\z_collision_btltbls.c" />
     <ClCompile Include="src\code\z_collision_check.c" />
     <ClCompile Include="src\code\z_common_data.c" />

@@ -137,8 +137,8 @@ namespace Ship
 		y = 0;
 		z = 0;
 		unk_06 = 0;
-		opa;
-		xlu;
+		// opa;
+		// xlu;
 	}
 
 	SetMesh::SetMesh(BinaryReader* reader) : SceneCommand(reader)
@@ -398,18 +398,18 @@ namespace Ship
 			LightInfo light = LightInfo();
 
 			light.type = reader->ReadUByte();
-			
+
 			light.x = reader->ReadInt16();
-			light.y = reader->ReadInt16();			
+			light.y = reader->ReadInt16();
 			light.z = reader->ReadInt16();
 
 			light.r = reader->ReadUByte();
 			light.g = reader->ReadUByte();
 			light.b = reader->ReadUByte();
-			
+
 			light.drawGlow = reader->ReadUByte();
 			light.radius = reader->ReadInt16();
-			
+
 			lights.push_back(light);
 		}
 	}

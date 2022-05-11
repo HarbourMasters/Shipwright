@@ -654,7 +654,7 @@ u8 sEyeMouthIndexes[][2] = {
  * from adult Link's object are used here.
  */
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 //TODO: Formatting
 void* sEyeTextures[2][8] = {
     { gLinkAdultEyesOpenTex, gLinkAdultEyesHalfTex, gLinkAdultEyesClosedfTex, gLinkAdultEyesRollLeftTex,
@@ -670,7 +670,7 @@ void* sEyeTextures[] = {
 };
 #endif
 
-#if defined(modding) || defined(_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 void* sMouthTextures[2][4] = {
     {
         gLinkAdultMouth1Tex,
@@ -726,7 +726,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (eyeIndex > 7)
         eyeIndex = 7;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.linkAge][eyeIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
@@ -738,31 +738,29 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (mouthIndex > 3)
         mouthIndex = 3;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.linkAge][mouthIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
+    Color_RGB8 sTemp;
+    color = &sTemp;
     if (tunic == PLAYER_TUNIC_KOKIRI) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r),
-                             CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g),
-                             CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
-        color = &sTemp;
+        color->r = CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+        color->g = CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+        color->b = CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
     } else if (tunic == PLAYER_TUNIC_GORON) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Goron_Red", sTunicColors[PLAYER_TUNIC_GORON].r),
-                             CVar_GetS32("gTunic_Goron_Green", sTunicColors[PLAYER_TUNIC_GORON].g),
-                             CVar_GetS32("gTunic_Goron_Blue", sTunicColors[PLAYER_TUNIC_GORON].b) };
-        color = &sTemp;
+        color->r = CVar_GetS32("gTunic_Goron_Red", sTunicColors[PLAYER_TUNIC_GORON].r);
+        color->g = CVar_GetS32("gTunic_Goron_Green", sTunicColors[PLAYER_TUNIC_GORON].g);
+        color->b = CVar_GetS32("gTunic_Goron_Blue", sTunicColors[PLAYER_TUNIC_GORON].b);
     } else if (tunic == PLAYER_TUNIC_ZORA) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Zora_Red", sTunicColors[PLAYER_TUNIC_ZORA].r),
-                             CVar_GetS32("gTunic_Zora_Green", sTunicColors[PLAYER_TUNIC_ZORA].g),
-                             CVar_GetS32("gTunic_Zora_Blue", sTunicColors[PLAYER_TUNIC_ZORA].b) };
-        color = &sTemp;
+        color->r = CVar_GetS32("gTunic_Zora_Red", sTunicColors[PLAYER_TUNIC_ZORA].r);
+        color->g = CVar_GetS32("gTunic_Zora_Green", sTunicColors[PLAYER_TUNIC_ZORA].g);
+        color->b = CVar_GetS32("gTunic_Zora_Blue", sTunicColors[PLAYER_TUNIC_ZORA].b);
     } else {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r),
-                             CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g),
-                             CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
-        color = &sTemp;
+        color->r = CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+        color->g = CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+        color->b = CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
     }
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 

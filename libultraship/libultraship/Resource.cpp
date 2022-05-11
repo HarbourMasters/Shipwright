@@ -2,8 +2,8 @@
 #include "DisplayList.h"
 #include "ResourceMgr.h"
 #include "Utils/BinaryReader.h"
-#include "lib/tinyxml2/tinyxml2.h"
-#include "lib/Fast3D/U64/PR/ultra64/gbi.h"
+#include "Lib/tinyxml2/tinyxml2.h"
+#include "Lib/Fast3D/U64/PR/ultra64/gbi.h"
 
 namespace Ship
 {
@@ -25,7 +25,7 @@ namespace Ship
 
     void ResourceFile::WriteFileBinary(BinaryWriter* writer, Resource* res)
     {
-        
+
     }
 
     void ResourceFile::WriteFileXML(tinyxml2::XMLElement* writer, Resource* res)
@@ -35,17 +35,17 @@ namespace Ship
 
     Resource::~Resource()
     {
-        free(cachedGameAsset); 
+        free(cachedGameAsset);
         cachedGameAsset = nullptr;
 
-        for (int i = 0; i < patches.size(); i++)
+        for (size_t i = 0; i < patches.size(); i++)
         {
             std::string hashStr = resMgr->HashToString(patches[i].crc);
             auto resShared = resMgr->GetCachedFile(hashStr);
             if (resShared != nullptr)
             {
                 auto res = (Ship::DisplayList*)resShared.get();
-                
+
                 Gfx* gfx = (Gfx*)&res->instructions[patches[i].index];
                 gfx->words.w1 = patches[i].origData;
             }

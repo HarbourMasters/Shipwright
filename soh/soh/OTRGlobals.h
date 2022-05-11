@@ -38,6 +38,7 @@ char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
+Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
