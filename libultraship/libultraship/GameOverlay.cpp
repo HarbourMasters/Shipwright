@@ -21,7 +21,7 @@ void Ship::GameOverlay::LoadFont(const std::string& name, const std::string& pat
 	}
 }
 
-void Ship::GameOverlay::TextDraw(float x, float y, bool shadow, const char* fmt, ...) IM_FMTARGS(5) {
+void Ship::GameOverlay::TextDraw(float x, float y, bool shadow, const char* fmt, ...) {
 	char buf[1024];
 	va_list args;
 	va_start(args, fmt);
