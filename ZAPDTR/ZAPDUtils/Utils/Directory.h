@@ -52,7 +52,7 @@ public:
 			for (auto& p : fs::recursive_directory_iterator(dir))
 			{
 				if (!p.is_directory())
-					lst.push_back(p.path().string());
+					lst.push_back(p.path().generic_string());
 			}
 		}
 

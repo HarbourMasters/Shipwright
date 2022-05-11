@@ -15,11 +15,9 @@
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
 #endif
-#include <PR/ultra64/gbi.h>
+#include "PR/ultra64/gbi.h"
 
-#include "gfx_cc.h"
 #include "gfx_window_manager_api.h"
-#include "gfx_rendering_api.h"
 #include "gfx_direct3d_common.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
@@ -28,7 +26,9 @@
 #include "gfx_screen_config.h"
 #include "../../SohImGuiImpl.h"
 
-#define THREE_POINT_FILTERING 0
+#include "gfx_cc.h"
+#include "gfx_rendering_api.h"
+#include "gfx_pc.h"
 #define DEBUG_D3D 0
 
 using namespace Microsoft::WRL; // For ComPtr
@@ -135,6 +135,7 @@ static struct {
     //uint32_t current_width, current_height;
     uint32_t render_target_height;
     int current_framebuffer;
+    FilteringMode current_filter_mode = NONE;
 
     int8_t depth_test;
     int8_t depth_mask;
@@ -157,7 +158,7 @@ static LARGE_INTEGER last_time, accumulated_time, frequency;
 
 int gfx_d3d11_create_framebuffer(void);
 
-void create_depth_stencil_objects(uint32_t width, uint32_t height, uint32_t msaa_count, ID3D11DepthStencilView **view, ID3D11ShaderResourceView **srv) {
+static void create_depth_stencil_objects(uint32_t width, uint32_t height, uint32_t msaa_count, ID3D11DepthStencilView **view, ID3D11ShaderResourceView **srv) {
     D3D11_TEXTURE2D_DESC texture_desc;
     texture_desc.Width = width;
     texture_desc.Height = height;
@@ -397,7 +398,7 @@ static struct ShaderProgram *gfx_d3d11_create_and_load_new_shader(uint64_t shade
     char buf[4096];
     size_t len, num_floats;
 
-    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, THREE_POINT_FILTERING);
+    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, d3d.current_filter_mode == THREE_POINT);
 
     ComPtr<ID3DBlob> vs, ps;
     ComPtr<ID3DBlob> error_blob;
@@ -564,11 +565,8 @@ static void gfx_d3d11_set_sampler_parameters(int tile, bool linear_filter, uint3
     D3D11_SAMPLER_DESC sampler_desc;
     ZeroMemory(&sampler_desc, sizeof(D3D11_SAMPLER_DESC));
 
-#if THREE_POINT_FILTERING
-    sampler_desc.Filter = D3D11_FILTER_MIN_MAG_MIP_POINT;
-#else
-    sampler_desc.Filter = linear_filter ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
-#endif
+    sampler_desc.Filter = linear_filter && d3d.current_filter_mode == LINEAR ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+
     sampler_desc.AddressU = gfx_cm_to_d3d11(cms);
     sampler_desc.AddressV = gfx_cm_to_d3d11(cmt);
     sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -672,12 +670,12 @@ static void gfx_d3d11_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
                 d3d.last_resource_views[i] = d3d.textures[d3d.current_texture_ids[i]].resource_view.Get();
                 d3d.context->PSSetShaderResources(i, 1, d3d.textures[d3d.current_texture_ids[i]].resource_view.GetAddressOf());
 
-#if THREE_POINT_FILTERING
-                d3d.per_draw_cb_data.textures[i].width = d3d.textures[d3d.current_texture_ids[i]].width;
-                d3d.per_draw_cb_data.textures[i].height = d3d.textures[d3d.current_texture_ids[i]].height;
-                d3d.per_draw_cb_data.textures[i].linear_filtering = d3d.textures[d3d.current_texture_ids[i]].linear_filtering;
-                textures_changed = true;
-#endif
+                if (d3d.current_filter_mode == THREE_POINT) {
+                    d3d.per_draw_cb_data.textures[i].width = d3d.textures[d3d.current_texture_ids[i]].width;
+                    d3d.per_draw_cb_data.textures[i].height = d3d.textures[d3d.current_texture_ids[i]].height;
+                    d3d.per_draw_cb_data.textures[i].linear_filtering = d3d.textures[d3d.current_texture_ids[i]].linear_filtering;
+                    textures_changed = true;
+                }
 
                 if (d3d.last_sampler_states[i].Get() != d3d.textures[d3d.current_texture_ids[i]].sampler_state.Get()) {
                     d3d.last_sampler_states[i] = d3d.textures[d3d.current_texture_ids[i]].sampler_state.Get();
@@ -880,6 +878,15 @@ void gfx_d3d11_select_texture_fb(int fbID) {
     gfx_d3d11_select_texture(tile, d3d.framebuffers[fbID].texture_id);
 }
 
+void gfx_d3d11_set_texture_filter(FilteringMode mode) {
+    d3d.current_filter_mode = mode;
+    gfx_texture_cache_clear();
+}
+
+FilteringMode gfx_d3d11_get_texture_filter(void) {
+    return d3d.current_filter_mode;
+}
+
 std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     Framebuffer& fb = d3d.framebuffers[fb_id];
     TextureData& td = d3d.textures[fb.texture_id];
@@ -985,8 +992,8 @@ std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id,
 
 } // namespace
 
-ImTextureID SohImGui::GetTextureByID(int id) {
-    return impl.backend == Backend::DX11 ? d3d.textures[id].resource_view.Get() : reinterpret_cast<ImTextureID>(id);
+ImTextureID gfx_d3d11_get_texture_by_id(int id) {
+    return d3d.textures[id].resource_view.Get();
 }
 
 struct GfxRenderingAPI gfx_direct3d11_api = {
@@ -1019,7 +1026,9 @@ struct GfxRenderingAPI gfx_direct3d11_api = {
     gfx_d3d11_get_pixel_depth,
     gfx_d3d11_get_framebuffer_texture_id,
     gfx_d3d11_select_texture_fb,
-    gfx_d3d11_delete_texture
+    gfx_d3d11_delete_texture,
+    gfx_d3d11_set_texture_filter,
+    gfx_d3d11_get_texture_filter
 };
 
 #endif

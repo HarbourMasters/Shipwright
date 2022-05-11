@@ -449,13 +449,16 @@ void aFilterImpl(uint8_t flags, uint16_t count_or_buf, int16_t *state_or_filter)
         int16_t *buf = BUF_S16(count_or_buf);
 
         if (flags == A_INIT) {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmemset-elt-size"
             memset(tmp, 0, 8 * sizeof(int16_t));
+#pragma GCC diagnostic pop
             memset(tmp2, 0, 8 * sizeof(int16_t));
         } else {
             memcpy(tmp, state_or_filter, 8 * sizeof(int16_t));
             memcpy(tmp2, state_or_filter + 8, 8 * sizeof(int16_t));
         }
-        
+
         for (int i = 0; i < 8; i++) {
             rspa.filter[i] = (tmp2[i] + rspa.filter[i]) / 2;
         }

@@ -1323,14 +1323,14 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                     case 0xB2:
                         offset = (u16)parameters[0];
                         // OTRTODO: Byteswap added for quick audio
-                        channel->unk_22 = _byteswap_ushort(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
+                        channel->unk_22 = BOMSWAP16(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
                         break;
                     case 0xB4:
                         channel->dynTable = (void*)&seqPlayer->seqData[channel->unk_22];
                         break;
                     case 0xB5:
                         // OTRTODO: Byteswap added for quick audio
-                        channel->unk_22 = _byteswap_ushort(((u16*)(channel->dynTable))[scriptState->value]);
+                        channel->unk_22 = BOMSWAP16(((u16*)(channel->dynTable))[scriptState->value]);
                         break;
                     case 0xB6:
                         scriptState->value = (*channel->dynTable)[0][scriptState->value];

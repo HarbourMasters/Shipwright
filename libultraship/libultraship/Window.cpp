@@ -12,6 +12,8 @@
 #include "Matrix.h"
 #include "AudioPlayer.h"
 #include "WasapiAudioPlayer.h"
+#include "PulseAudioPlayer.h"
+#include "SDLAudioPlayer.h"
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
@@ -48,7 +50,7 @@ extern "C" {
         }
 
         // TODO: This for loop is debug. Burn it with fire.
-        for (size_t i = 0; i < SDL_NumJoysticks(); i++) {
+        for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
                 // Get the GUID from SDL
                 char buf[33];
@@ -207,7 +209,7 @@ extern "C" {
         return (char*)res->imageData;
     }
 
-    void ResourceMgr_WriteTexS16ByName(char* texPath, int index, s16 value) {
+    void ResourceMgr_WriteTexS16ByName(char* texPath, size_t index, s16 value) {
         const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
 
         if (res != nullptr)
@@ -237,7 +239,7 @@ extern "C" {
     }
 }
 
-extern "C" GfxWindowManagerAPI gfx_sdl;
+extern GfxWindowManagerAPI gfx_sdl;
 void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend);
 
 namespace Ship {
@@ -397,6 +399,12 @@ namespace Ship {
     }
 
     void Window::SetAudioPlayer() {
+#ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
+#elif defined(__linux)
+        APlayer = std::make_shared<PulseAudioPlayer>();
+#else
+        APlayer = std::make_shared<SDLAudioPlayer>();
+#endif
     }
 }

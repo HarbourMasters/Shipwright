@@ -15,6 +15,12 @@ struct GfxClipParameters {
     bool invert_y;
 };
 
+enum FilteringMode {
+    THREE_POINT,
+    LINEAR,
+    NONE
+};
+
 struct GfxRenderingAPI {
     struct GfxClipParameters (*get_clip_parameters)(void);
     void (*unload_shader)(struct ShaderProgram *old_prg);
@@ -46,6 +52,8 @@ struct GfxRenderingAPI {
     void *(*get_framebuffer_texture_id)(int fb_id);
     void (*select_texture_fb)(int fb_id);
     void (*delete_texture)(uint32_t texID);
+    void (*set_texture_filter)(FilteringMode mode);
+    FilteringMode(*get_texture_filter)(void);
 };
 
 #endif

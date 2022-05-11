@@ -1004,7 +1004,7 @@
 #define G_DL_PUSH       0x00
 #define G_DL_NOPUSH     0x01
 
-#if _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #define _LANGUAGE_C
 #endif
 
@@ -3132,7 +3132,7 @@ _DW({                                   \
   #endif
   */
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 #define CALL_2(A,B) A B
 #define CALL_3(A,B,C) A B C
 
@@ -3143,12 +3143,12 @@ _DW({                                   \
 #define	gsDPSetCombineMode(a, b)	gsDPSetCombineLERP(a, b)
 #endif
 
-#if _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #define CALL_2(A,B) A B
 #define CALL_3(A,B,C) A B C
 
-#define	gsDPSetCombineMode(a, b)	CALL_2(gsDPSetCombineLERP, (a, b))
-  //#define gsDPSetCombineMode(a, b)    _SHIFTL(0, 24, 8), 0
+// #define	gsDPSetCombineMode(a, b)	CALL_2(gsDPSetCombineLERP, (a, b))
+//   #define gsDPSetCombineMode(a, b)    _SHIFTL(0, 24, 8), 0
 #else
 #define gsDPSetCombineMode(a, b)    gsDPSetCombineLERP(a, b)
 #endif
