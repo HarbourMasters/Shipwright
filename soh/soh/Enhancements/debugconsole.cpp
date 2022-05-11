@@ -122,7 +122,7 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
     try {
         rupeeAmount = std::stoi(args[1]);
     }
-    catch (std::invalid_argument const& ex) { 
+    catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
@@ -168,13 +168,13 @@ static bool ResetHandler(std::vector<std::string> args) {
         ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
-    
+
     SET_NEXT_GAMESTATE(&gGlobalCtx->state, TitleSetup_Init, GameState);
     gGlobalCtx->state.running = false;
     return CMD_SUCCESS;
 }
 
-const static std::map<std::string, uint16_t> ammoItems{ 
+const static std::map<std::string, uint16_t> ammoItems{
     { "sticks", ITEM_STICK }, { "deku_sticks", ITEM_STICK },
     { "nuts", ITEM_NUT },     { "deku_nuts", ITEM_NUT },
     { "bombs", ITEM_BOMB },      { "arrows", ITEM_BOW },
@@ -194,7 +194,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     try {
         count = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("Ammo count must be an integer");
         return CMD_FAILED;
     }
@@ -203,7 +203,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
         ERROR("Ammo count must be positive");
         return CMD_FAILED;
     }
-    
+
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
@@ -213,7 +213,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     // I dont think you can do OOB with just this
     AMMO(it->second) = count;
-    
+
     //To use a change by uncomment this
     //Inventory_ChangeAmmo(it->second, count);
 }
@@ -236,7 +236,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     unsigned int slot;
     try {
         slot = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
@@ -275,7 +275,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
         return CMD_FAILED;
     }
 
-    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]); 
+    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]);
 
     return CMD_SUCCESS;
 }
@@ -414,8 +414,11 @@ void DebugConsole_Init(void) {
                              { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance",
                  { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
+}
 
-    DebugConsole_LoadCVars();
+template <typename Numeric> bool is_number(const std::string& s) {
+    Numeric n;
+    return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
 void DebugConsole_LoadCVars()
@@ -424,7 +427,18 @@ void DebugConsole_LoadCVars()
         const auto lines = File::ReadAllLines("cvars.cfg");
 
         for (const std::string& line : lines) {
-            SohImGui::console->Dispatch(line);
+            std::vector<std::string> cfg = StringHelper::Split(line, " = ");
+            if (line.empty()) continue;
+            if (cfg.size() < 2) continue;
+            if (cfg[1].find("\"") != std::string::npos) {
+                CVar_SetString(cfg[0].c_str(), const_cast<char*>(cfg[1].c_str()));
+            }
+            if (is_number<float>(cfg[1])) {
+                CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
+            }
+            if (is_number<int>(cfg[1])) {
+                CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
+            }
         }
     }
 }
@@ -435,11 +449,11 @@ void DebugConsole_SaveCVars()
 
     for (const auto &cvar : cvars) {
         if (cvar.second->type == CVAR_TYPE_STRING)
-            output += StringHelper::Sprintf("set %s %s\n", cvar.first.c_str(), cvar.second->value.valueStr);
+            output += StringHelper::Sprintf("%s = \"%s\"\n", cvar.first.c_str(), cvar.second->value.valueStr);
         else if (cvar.second->type == CVAR_TYPE_S32)
-            output += StringHelper::Sprintf("set %s %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
+            output += StringHelper::Sprintf("%s = %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            output += StringHelper::Sprintf("set %s %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
+            output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
     }
 
     File::WriteAllText("cvars.cfg", output);

@@ -322,7 +322,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    SohImGui::AddWindow("Debug", "Collision Viewer", DrawColViewerWindow);
+    SohImGui::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
 
     CreateCylinderData();
     CreateSphereData();
