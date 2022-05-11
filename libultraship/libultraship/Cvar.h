@@ -43,7 +43,6 @@ void CVar_RegisterString(const char* name, const char* defaultValue);
 #include <memory>
 
 extern std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
-CVar* CVar_GetVar(const char* name);
 void CVar_SetFloat(const char* name, float value);
 void CVar_SetString(const char* name, const char* value);
 #endif

@@ -128,7 +128,7 @@ void Ship::GameOverlay::Draw() {
 
 		if (overlay.type == OverlayType::TEXT) {
 			const char* text = ImStrdup(key.c_str());
-			const CVar* var = CVar_GetVar(text);
+			const CVar* var = CVar_Get(text);
 
 			switch (var->type) {
 			case CVAR_TYPE_FLOAT:
@@ -156,7 +156,7 @@ bool Ship::OverlayCommand(const std::vector<std::string>& args) {
 		return CMD_FAILED;
 	}
 
-	if (CVar_GetVar(args[2].c_str()) != nullptr) {
+	if (CVar_Get(args[2].c_str()) != nullptr) {
 		const char* key = args[2].c_str();
 		GameOverlay* overlay = SohImGui::overlay;
 		if (args[1] == "add") {
