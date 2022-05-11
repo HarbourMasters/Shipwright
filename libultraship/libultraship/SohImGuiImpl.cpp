@@ -808,10 +808,6 @@ namespace SohImGui {
             size = ImVec2(sw, size.y);
         }
 
-        if (ImGui::Button("Test Notification")) {
-            overlay->TextDrawNotification(3.0f, true, ("Test Notification: " + std::to_string(rand())).c_str());
-        }
-
         overlay->Draw();
     }
 
