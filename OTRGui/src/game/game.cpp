@@ -67,7 +67,7 @@ void OTRGame::init(){
 		mat.shader = shader;
 	}
 
-	if(fs::exists("soh.exe") && !fs::exists("oot.otr")) {
+	if(fs::exists("soh.exe") || fs::exists("soh.elf") && !fs::exists("oot.otr")) {
 		hide_second_btn = true;
 		sohFolder = ".";
 	}
