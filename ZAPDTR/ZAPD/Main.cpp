@@ -47,6 +47,11 @@ void DebugConsole_SaveCVars()
 
 }
 
+void DebugConsole_LoadCVars()
+{
+
+}
+
 
 bool Parse(const fs::path& xmlFilePath, const fs::path& basePath, const fs::path& outPath,
            ZFileMode fileMode, int workerID);
