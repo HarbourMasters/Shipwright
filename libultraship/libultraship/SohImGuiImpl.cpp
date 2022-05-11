@@ -18,6 +18,7 @@
 #include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
+#include "GameOverlay.h"
 #include "Texture.h"
 #include "../Fast3D/gfx_pc.h"
 #include "Lib/stb/stb_image.h"
@@ -53,13 +54,13 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
-std::map<std::string, ImFont*> Fonts;
 
 namespace SohImGui {
 
     WindowImpl impl;
     ImGuiIO* io;
     Console* console = new Console;
+    GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
     std::vector<const char*> CustomTexts;
@@ -300,19 +301,12 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
-        std::shared_ptr<Archive> base = GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive();
-        std::shared_ptr<File> font = std::make_shared<File>();
-        base->LoadFile("assets\\ship_of_harkinian\\fonts\\PressStart2P-Regular.ttf", false, font);
-        if(font->bIsLoaded) {
-            char* font_data = new char[font->dwBufferSize];
-            memcpy(font_data, font->buffer.get(), font->dwBufferSize);
-            Fonts["Player2"] = io->Fonts->AddFontFromMemoryTTF(font_data, font->dwBufferSize, 14.0f);
-        }
 
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }
         console->Init();
+        overlay->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
 
@@ -476,49 +470,7 @@ namespace SohImGui {
         }
     }
 
-    #define TextDraw(x, y, shadow, text, ...) {                                 \
-        ImGui::PushFont(Fonts["Player2"]);                                      \
-        if(shadow) {                                                            \
-            ImGui::SetCursorPos(ImVec2(x + 1, y + 1));                          \
-            ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.0f, .0f, .0f, 255));   \
-            ImGui::Text(text, __VA_ARGS__);                                     \
-        }                                                                       \
-        ImGui::PopStyleColor();                                                 \
-        ImGui::SetCursorPos(ImVec2(x, y));                                      \
-        ImGui::Text(text, __VA_ARGS__);                                         \
-        ImGui::PopFont();                                                       \
-    }                                                                           \
-
-	void DrawCustomText() {
-        const ImGuiViewport* viewport = ImGui::GetMainViewport();
-
-        ImGui::SetNextWindowPos(viewport->Pos, ImGuiCond_Always);
-        ImGui::SetNextWindowSize(viewport->Size, ImGuiCond_Always);
-        ImGui::Begin("SoHOverlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
-            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
-
-        for (int xId = 0; xId < CustomTexts.size(); xId++) {
-            const char* text = CustomTexts[xId];
-	        const CVar* var = CVar_GetVar(text);
-            int textY = 50 + (xId * 30);
-
-            switch (var->type) {
-	            case CVAR_TYPE_FLOAT:
-                    TextDraw(30, textY, true, "%s %.2f", text, var->value.valueFloat);
-                    break;
-                case CVAR_TYPE_S32:
-                    TextDraw(30, textY, true, "%s %d", text, var->value.valueS32);
-                    break;
-                case CVAR_TYPE_STRING:
-                    TextDraw(30, textY, true, "%s %s", text, var->value.valueStr);
-                    break;
-            }
-        }
-
-        ImGui::End();
-    }
-
-    void DrawMainMenuAndCalculateGameSize() {
+   void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -652,6 +604,7 @@ namespace SohImGui {
                     }
                     ImGui::EndCombo();
                 }
+                overlay->DrawSettings();
                 ImGui::EndMenu();
             }
 
@@ -825,7 +778,7 @@ namespace SohImGui {
             size = ImVec2(sw, size.y);
         }
 
-        DrawCustomText();
+        overlay->Draw();
     }
 
     void DrawFramebufferAndGameInput() {

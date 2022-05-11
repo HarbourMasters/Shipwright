@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "SohConsole.h"
 
@@ -58,7 +59,8 @@ namespace SohImGui {
     } CustomWindow;
 
     extern Console* console;
-    extern std::vector<const char*> CustomTexts;
+    extern Ship::GameOverlay* overlay;
+    extern bool needs_save;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
 
