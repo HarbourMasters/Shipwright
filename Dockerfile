@@ -29,9 +29,10 @@ RUN dpkg --add-architecture i386 && \
     ln -s /usr/bin/g++-10 /usr/bin/g++ && \
     ln -s /usr/bin/g++-10 /usr/bin/c++
 
-RUN git clone https://github.com/nigels-com/glew.git && \
-    make -C /glew extensions -j$(nproc) && \
-    make -C /glew install ARCH64=false
+RUN git clone https://github.com/Perlmint/glew-cmake.git && \
+    cmake glew-cmake && \
+    make -j$(nproc) && \
+    make install ARCH64=false
 
 RUN mkdir /soh
 WORKDIR /soh
