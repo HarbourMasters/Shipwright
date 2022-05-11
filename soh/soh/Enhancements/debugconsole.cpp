@@ -414,8 +414,11 @@ void DebugConsole_Init(void) {
                              { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance",
                  { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
+}
 
-    DebugConsole_LoadCVars();
+template <typename Numeric> bool is_number(const std::string& s) {
+    Numeric n;
+    return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
 void DebugConsole_LoadCVars()
@@ -424,7 +427,18 @@ void DebugConsole_LoadCVars()
         const auto lines = File::ReadAllLines("cvars.cfg");
 
         for (const std::string& line : lines) {
-            SohImGui::console->Dispatch(line);
+            std::vector<std::string> cfg = StringHelper::Split(line, " = ");
+            if (line.empty()) continue;
+            if (cfg.size() < 2) continue;
+            if (cfg[1].find("\"") != std::string::npos) {
+                CVar_SetString(cfg[0].c_str(), const_cast<char*>(cfg[1].c_str()));
+            }
+            if (is_number<float>(cfg[1])) {
+                CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
+            }
+            if (is_number<int>(cfg[1])) {
+                CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
+            }
         }
     }
 }
@@ -435,11 +449,11 @@ void DebugConsole_SaveCVars()
 
     for (const auto &cvar : cvars) {
         if (cvar.second->type == CVAR_TYPE_STRING)
-            output += StringHelper::Sprintf("set %s %s\n", cvar.first.c_str(), cvar.second->value.valueStr);
+            output += StringHelper::Sprintf("%s = \"%s\"\n", cvar.first.c_str(), cvar.second->value.valueStr);
         else if (cvar.second->type == CVAR_TYPE_S32)
-            output += StringHelper::Sprintf("set %s %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
+            output += StringHelper::Sprintf("%s = %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            output += StringHelper::Sprintf("set %s %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
+            output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
     }
 
     File::WriteAllText("cvars.cfg", output);
