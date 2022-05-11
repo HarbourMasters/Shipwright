@@ -336,7 +336,7 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
     int vType = CheckVarType(args[2]);
 
     if (vType == VARTYPE_STRING)
-        CVar_SetString(args[1].c_str(), (char*)args[2].c_str());
+        CVar_SetString(args[1].c_str(), args[2].c_str());
     else if (vType == VARTYPE_FLOAT)
         CVar_SetFloat(args[1].c_str(), std::stof(args[2]));
     else
@@ -353,7 +353,7 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
     if (args.size() < 2)
         return CMD_FAILED;
 
-    CVar* cvar = CVar_GetVar(args[1].c_str());
+    CVar* cvar = CVar_Get(args[1].c_str());
 
     if (cvar != nullptr)
     {
