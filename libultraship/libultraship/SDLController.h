@@ -13,7 +13,12 @@ namespace Ship {
 			void ReadFromSource();
 			void WriteToSource(ControllerCallback* controller);
 			bool Connected() const { return Cont != nullptr; }
-			bool CanRumble() const { return SDL_GameControllerHasRumble(Cont); }
+			bool CanRumble() const {
+#if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
+				return SDL_GameControllerHasRumble(Cont);
+#endif
+				return true;
+			}
 
 			std::string GetGuid() { return guid; };
 
@@ -30,8 +35,8 @@ namespace Ship {
 			static bool IsGuidInUse(const std::string& guid);
 
 		private:
-			std::string guid;
 			SDL_GameController* Cont;
+			std::string guid;
 			std::map<int32_t, int16_t> ThresholdMapping;
 
 			void LoadAxisThresholds();

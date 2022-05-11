@@ -3,6 +3,10 @@
 #pragma optimize("2", on)
 #define _CRT_SECURE_NO_WARNINGS
 
+#ifndef _MSC_VER
+#define vsprintf_s vsprintf
+#endif
+
 std::vector<std::string> StringHelper::Split(std::string s, const std::string& delimiter)
 {
 	std::vector<std::string> result;
@@ -44,7 +48,7 @@ std::string StringHelper::Replace(std::string str, const std::string& from,
 
 	while (start_pos != std::string::npos)
 	{
-		str.replace(start_pos, from.length(), to);		
+		str.replace(start_pos, from.length(), to);
 		start_pos = str.find(from);
 	}
 

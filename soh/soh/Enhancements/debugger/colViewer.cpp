@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
 
 extern "C" {
 #include <z64.h>
@@ -322,7 +323,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    SohImGui::AddWindow("Debug", "Collision Viewer", DrawColViewerWindow);
+    SohImGui::AddWindow("Developer Tools", "Collision Viewer", DrawColViewerWindow);
 
     CreateCylinderData();
     CreateSphereData();

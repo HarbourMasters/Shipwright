@@ -39,13 +39,13 @@ D_FILES   := $(O_FILES:%.o=%.d)
 LIB       := OTRExporter.a
 
 INC_DIRS := $(addprefix -I, \
-	../../ZAPD/ZAPD \
-	../../ZAPD/lib/tinyxml2 \
-	../../ZAPD/lib/libgfxd \
-	../../ZAPD/ZAPDUtils \
-	../../OtrLib/otrlib \
-	../../OtrLib/otrlib/Lib/spdlog/include \
-	../../OtrLib/otrlib/Lib/Fast3D/U64 \
+	../../ZAPDTR/ZAPD \
+	../../ZAPDTR/lib/tinyxml2 \
+	../../ZAPDTR/lib/libgfxd \
+	../../ZAPDTR/ZAPDUtils \
+	../../libultraship/libultraship \
+	../../libultraship/libultraship/Lib/spdlog/include \
+	../../libultraship/libultraship/Lib/Fast3D/U64 \
 )
 
 # create build directories

@@ -28,7 +28,7 @@ namespace Ship
 		std::string HashToString(uint64_t Hash);
 
 		void InvalidateResourceCache();
-		
+
 		uint32_t GetGameVersion();
 		void SetGameVersion(uint32_t newGameVersion);
 		std::shared_ptr<File> LoadFileAsync(std::string FilePath);
@@ -48,6 +48,7 @@ namespace Ship
 
 	private:
 		std::weak_ptr<GlobalCtx2> Context;
+		volatile bool bIsRunning;
 		std::map<std::string, std::shared_ptr<File>> FileCache;
 		std::map<std::string, std::shared_ptr<Resource>> ResourceCache;
 		std::queue<std::shared_ptr<File>> FileLoadQueue;
@@ -59,7 +60,6 @@ namespace Ship
 		std::mutex ResourceLoadMutex;
 		std::condition_variable FileLoadNotifier;
 		std::condition_variable ResourceLoadNotifier;
-		volatile bool bIsRunning;
 		uint32_t gameVersion;
 	};
 }

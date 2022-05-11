@@ -10,6 +10,7 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <list>
 
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
@@ -30,6 +31,8 @@
 #include "../StrHash64.h"
 #include "../../SohImGuiImpl.h"
 #include "../../Environment.h"
+#include "../../GameVersions.h"
+#include "../../ResourceMgr.h"
 
 // OTRTODO: fix header files for these
 extern "C" {
@@ -44,6 +47,8 @@ extern "C" {
 }
 
 using namespace std;
+
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 
 #define SUPPORT_CHECK(x) assert(x)
 
@@ -209,7 +214,7 @@ static map<int, FBInfo> framebuffers;
 static set<pair<float, float>> get_pixel_depth_pending;
 static map<pair<float, float>, uint16_t> get_pixel_depth_cached;
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 // TODO: Properly implement for MSVC
 static unsigned long get_time(void)
 {
@@ -447,15 +452,15 @@ static void gfx_generate_cc(struct ColorCombiner *comb, uint64_t cc_id) {
                         val = SHADER_COMBINED;
                         break;
                     }
-                    // fallthrough for G_ACMUX_LOD_FRACTION
                     c[i][1][j] = G_CCMUX_LOD_FRACTION;
+                    [[fallthrough]]; // for G_ACMUX_LOD_FRACTION
                 case G_ACMUX_1:
                     //case G_ACMUX_PRIM_LOD_FRAC: same numerical value
                     if (j != 2) {
                         val = SHADER_1;
                         break;
                     }
-                    // fallthrough for G_ACMUX_PRIM_LOD_FRAC
+                    [[fallthrough]]; // for G_ACMUX_PRIM_LOD_FRAC
                 case G_ACMUX_PRIMITIVE:
                 case G_ACMUX_SHADE:
                 case G_ACMUX_ENVIRONMENT:
@@ -564,7 +569,7 @@ static void gfx_texture_cache_delete(const uint8_t* orig_addr)
             if (it->first.texture_addr == orig_addr) {
                 gfx_texture_cache.lru.erase(*(list<TextureCacheMap::iterator>::iterator*)&it->second.lru_location);
                 gfx_texture_cache.free_texture_ids.push_back(it->second.texture_id);
-                gfx_texture_cache.map.erase(it);
+                gfx_texture_cache.map.erase(it->first);
                 again = true;
                 break;
             }
@@ -1692,7 +1697,7 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
     SUPPORT_CHECK(ult == 0);
 
     // The lrs field rather seems to be number of pixels to load
-    uint32_t word_size_shift;
+    uint32_t word_size_shift = 0;
     switch (rdp.texture_to_load.siz) {
         case G_IM_SIZ_4b:
             word_size_shift = 0; // Or -1? It's unused in SM64 anyway.
@@ -1720,7 +1725,7 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
 static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t lrs, uint32_t lrt) {
     SUPPORT_CHECK(tile == G_TX_LOADTILE);
 
-    uint32_t word_size_shift;
+    uint32_t word_size_shift = 0;
     switch (rdp.texture_to_load.siz) {
         case G_IM_SIZ_4b:
             word_size_shift = 0;
@@ -2060,12 +2065,11 @@ static void gfx_s2dex_bg_copy(const uObjBg* bg) {
 static inline void* seg_addr(uintptr_t w1)
 {
     // Segmented?
-    if (w1 >= 0xF0000000)
+    if (w1 & 1)
     {
         uint32_t segNum = (w1 >> 24);
-        segNum -= 0xF0;
 
-        uint32_t offset = w1 & 0x00FFFFFF;
+        uint32_t offset = w1 & 0x00FFFFFE;
         //offset = 0; // Cursed Malon bug
 
         if (segmentPointers[segNum] != 0)
@@ -2082,7 +2086,7 @@ static inline void* seg_addr(uintptr_t w1)
 #define C0(pos, width) ((cmd->words.w0 >> (pos)) & ((1U << width) - 1))
 #define C1(pos, width) ((cmd->words.w1 >> (pos)) & ((1U << width) - 1))
 
-int dListBP;
+unsigned int dListBP;
 int matrixBP;
 uintptr_t clearMtx;
 
@@ -2149,8 +2153,16 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t mtxAddr = cmd->words.w1;
 
                 // OTRTODO: Temp way of dealing with gMtxClear. Need something more elegant in the future...
-                if (mtxAddr == 0xF012DB20 || mtxAddr == 0xF012DB40)
-                    mtxAddr = clearMtx;
+                uint32_t gameVersion = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetGameVersion();
+                if (gameVersion == OOT_PAL_GC) {
+                    if (mtxAddr == SEG_ADDR(0, 0x0FBC20)) {
+                        mtxAddr = clearMtx;
+                    }
+                } else {
+                    if (mtxAddr == SEG_ADDR(0, 0x12DB20) || mtxAddr == SEG_ADDR(0, 0x12DB40)) {
+                        mtxAddr = clearMtx;
+                    }
+                }
 
 #ifdef F3DEX_GBI_2
                 gfx_sp_matrix(C0(0, 8) ^ G_MTX_PUSH, (const int32_t *) seg_addr(mtxAddr));
@@ -2250,7 +2262,7 @@ static void gfx_run_dl(Gfx* cmd) {
 
                         cmd--;
 
-                        if (ourHash != -1)
+                        if (ourHash != (uint64_t)-1)
                             ResourceMgr_RegisterResourcePatch(ourHash, cmd - dListStart, cmd->words.w1);
 
                         cmd->words.w1 = (uintptr_t)vtx;
@@ -2368,7 +2380,7 @@ static void gfx_run_dl(Gfx* cmd) {
             case G_QUAD:
             {
                 int bp = 0;
-                // fallthrough
+                [[fallthrough]];
             }
 #endif
 #if defined(F3DEX_GBI) || defined(F3DLP_GBI)
@@ -2398,11 +2410,11 @@ static void gfx_run_dl(Gfx* cmd) {
 
                 char* imgData = (char*)i;
 
-                if ((i & 0xF0000000) != 0xF0000000)
+                if ((i & 1) != 1)
                     if (ResourceMgr_OTRSigCheck(imgData) == 1)
                         i = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
 
-                    gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, imgData);
+                gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, imgData);
                 break;
             }
             case G_SETTIMG_OTR:
@@ -2419,7 +2431,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 char* tex = NULL;
 #endif
 
-                if (addr != NULL)
+                if (addr != 0)
                 {
                     tex = (char*)addr;
                 }
@@ -2433,7 +2445,7 @@ static void gfx_run_dl(Gfx* cmd) {
                         uintptr_t oldData = cmd->words.w1;
                         cmd->words.w1 = (uintptr_t)tex;
 
-                        if (ourHash  != -1)
+                        if (ourHash != (uint64_t)-1)
                             ResourceMgr_RegisterResourcePatch(ourHash, cmd - dListStart, oldData);
 
                         cmd++;
@@ -2648,7 +2660,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
     game_framebuffer_msaa_resolved = gfx_rapi->create_framebuffer();
 
     for (int i = 0; i < 16; i++)
-        segmentPointers[i] = NULL;
+        segmentPointers[i] = 0;
 
     // Used in the 120 star TAS
     static uint32_t precomp_shaders[] = {

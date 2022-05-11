@@ -96,7 +96,7 @@ int OutputFormatter::Write(const std::string& buf)
 	return Write(buf.data(), buf.size());
 }
 
-__declspec(thread) OutputFormatter* OutputFormatter::Instance;
+thread_local OutputFormatter* OutputFormatter::Instance;
 
 int OutputFormatter::WriteStatic(const char* buf, int count)
 {

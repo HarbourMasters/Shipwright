@@ -6,7 +6,7 @@
 #include "GlobalCtx2.h"
 #include "StrHash.h"
 #include "File.h"
-#include "lib/tinyxml2/tinyxml2.h"
+#include "Lib/tinyxml2/tinyxml2.h"
 
 namespace Ship
 {
@@ -101,10 +101,10 @@ namespace Ship
 
     class ResourcePromise {
     public:
-        std::shared_ptr<Resource> Resource;
-        std::shared_ptr<File> File;
-        std::condition_variable ResourceLoadNotifier;
-        std::mutex ResourceLoadMutex;
+        std::shared_ptr<Resource> resource;
+        std::shared_ptr<File> file;
+        std::condition_variable resourceLoadNotifier;
+        std::mutex resourceLoadMutex;
         bool bHasResourceLoaded = false;
     };
 }
