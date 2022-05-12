@@ -69,6 +69,7 @@ typedef struct {
     /* 0x40 */ f32 unk_40;
     /* 0x44 */ f32 unk_44; // mostly x rot
     /* 0x48 */ f32 unk_48; // mostly y rot
+    u32 epoch;
 } GanondorfEffect;         // size = 0x4C
 
 typedef struct BossGanon {

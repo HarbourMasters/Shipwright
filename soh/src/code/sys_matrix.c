@@ -1,5 +1,7 @@
 #include "global.h"
 
+#include "soh/frame_interpolation.h"
+
 // clang-format off
 Mtx gMtxClear = {
     65536,     0,     1,     0,
@@ -25,11 +27,13 @@ void Matrix_Init(GameState* gameState) {
 }
 
 void Matrix_Push(void) {
+    FrameInterpolation_RecordMatrixPush();
     Matrix_MtxFCopy(sCurrentMatrix + 1, sCurrentMatrix);
     sCurrentMatrix++;
 }
 
 void Matrix_Pop(void) {
+    FrameInterpolation_RecordMatrixPop();
     sCurrentMatrix--;
     ASSERT(sCurrentMatrix >= sMatrixStack, "Matrix_now >= Matrix_stack", "../sys_matrix.c", 176);
 }
@@ -39,6 +43,7 @@ void Matrix_Get(MtxF* dest) {
 }
 
 void Matrix_Put(MtxF* src) {
+    FrameInterpolation_RecordMatrixPut(src);
     Matrix_MtxFCopy(sCurrentMatrix, src);
 }
 
@@ -47,6 +52,7 @@ MtxF* Matrix_GetCurrent(void) {
 }
 
 void Matrix_Mult(MtxF* mf, u8 mode) {
+    FrameInterpolation_RecordMatrixMult(mf, mode);
     MtxF* cmf = Matrix_GetCurrent();
 
     if (mode == MTXMODE_APPLY) {
@@ -57,6 +63,7 @@ void Matrix_Mult(MtxF* mf, u8 mode) {
 }
 
 void Matrix_Translate(f32 x, f32 y, f32 z, u8 mode) {
+    FrameInterpolation_RecordMatrixTranslate(x, y, z, mode);
     MtxF* cmf = sCurrentMatrix;
     f32 tx;
     f32 ty;
@@ -80,6 +87,7 @@ void Matrix_Translate(f32 x, f32 y, f32 z, u8 mode) {
 }
 
 void Matrix_Scale(f32 x, f32 y, f32 z, u8 mode) {
+    FrameInterpolation_RecordMatrixScale(x, y, z, mode);
     MtxF* cmf = sCurrentMatrix;
 
     if (mode == MTXMODE_APPLY) {
@@ -101,6 +109,7 @@ void Matrix_Scale(f32 x, f32 y, f32 z, u8 mode) {
 }
 
 void Matrix_RotateX(f32 x, u8 mode) {
+    FrameInterpolation_RecordMatrixRotate1Coord(0, x, mode);
     MtxF* cmf;
     f32 sin;
     f32 cos;
@@ -165,6 +174,7 @@ void Matrix_RotateX(f32 x, u8 mode) {
 }
 
 void Matrix_RotateY(f32 y, u8 mode) {
+    FrameInterpolation_RecordMatrixRotate1Coord(1, y, mode);
     MtxF* cmf;
     f32 sin;
     f32 cos;
@@ -229,6 +239,7 @@ void Matrix_RotateY(f32 y, u8 mode) {
 }
 
 void Matrix_RotateZ(f32 z, u8 mode) {
+    FrameInterpolation_RecordMatrixRotate1Coord(2, z, mode);
     MtxF* cmf;
     f32 sin;
     f32 cos;
@@ -299,6 +310,7 @@ void Matrix_RotateZ(f32 z, u8 mode) {
  * Original Name: Matrix_RotateXYZ, changed to reflect rotation order.
  */
 void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
+    FrameInterpolation_RecordMatrixRotateZYX(x, y, z, mode);
     MtxF* cmf = sCurrentMatrix;
     f32 temp1;
     f32 temp2;
@@ -389,6 +401,7 @@ void Matrix_RotateZYX(s16 x, s16 y, s16 z, u8 mode) {
  * transformed according to whatever the matrix was previously.
  */
 void Matrix_TranslateRotateZYX(Vec3f* translation, Vec3s* rotation) {
+    FrameInterpolation_RecordMatrixTranslateRotateZYX(translation, rotation);
     MtxF* cmf = sCurrentMatrix;
     f32 sin = Math_SinS(rotation->z);
     f32 cos = Math_CosS(rotation->z);
@@ -530,15 +543,20 @@ void Matrix_SetTranslateRotateYXZ(f32 translateX, f32 translateY, f32 translateZ
     } else {
         cmf->yx = 0.0f;
     }
+    FrameInterpolation_RecordMatrixSetTranslateRotateYXZ(translateX, translateY, translateZ, rot);
 }
 
 Mtx* Matrix_MtxFToMtx(MtxF* src, Mtx* dest) {
+    FrameInterpolation_RecordMatrixMtxFToMtx(src, dest);
     guMtxF2L(src, dest);
     return dest;
 }
 
 Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
-    return Matrix_MtxFToMtx(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
+    FrameInterpolation_RecordMatrixToMtx(dest, file, line);
+    guMtxF2L(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
+    return dest;
+    //return Matrix_MtxFToMtx(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
 }
 
 Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx, char* file, s32 line) {
@@ -627,6 +645,7 @@ void Matrix_Transpose(MtxF* mf) {
  * seen as replacing the R rotation with `mf`, hence the function name.
  */
 void Matrix_ReplaceRotation(MtxF* mf) {
+    FrameInterpolation_RecordMatrixReplaceRotation(mf);
     MtxF* cmf = sCurrentMatrix;
     f32 acc;
     f32 temp;
@@ -779,6 +798,7 @@ void Matrix_MtxFToZYXRotS(MtxF* mf, Vec3s* rotDest, s32 flag) {
  * NB: `axis` is assumed to be a unit vector.
  */
 void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
+    FrameInterpolation_RecordMatrixRotateAxis(angle, axis, mode);
     MtxF* cmf;
     f32 sin;
     f32 cos;

@@ -29,6 +29,7 @@
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
@@ -174,7 +175,7 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(R_UPDATE_RATE);
+    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(CVar_GetS32("g60FPS", 0) == 0 ? R_UPDATE_RATE : 1);
 
     if (!audio.initialized) {
         audio.initialized = true;
@@ -224,7 +225,15 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
     audio.cv_to_thread.notify_one();
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands);
+    std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
+    if (CVar_GetS32("g60FPS", 0) != 0) {
+        int to = R_UPDATE_RATE;
+        for (int i = 1; i < to; i++) {
+            mtx_replacements.push_back(FrameInterpolation_Interpolate(i / (float)to));
+        }
+    }
+
+    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);

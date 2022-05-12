@@ -1,6 +1,7 @@
 #include "colViewer.h"
 #include "../libultraship/SohImGuiImpl.h"
 #include "ImGuiHelpers.h"
+#include "../../frame_interpolation.h"
 
 #include <vector>
 #include <string>

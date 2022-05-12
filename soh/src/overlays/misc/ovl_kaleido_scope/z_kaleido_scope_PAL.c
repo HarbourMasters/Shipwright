@@ -1047,6 +1047,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
 
+    FrameInterpolation_RecordOpenChild(NULL, pauseCtx->state + pauseCtx->pageIndex * 100);
     OPEN_DISPS(gfxCtx, "../z_kaleido_scope_PAL.c", 1100);
 
     if ((pauseCtx->state < 8) || (pauseCtx->state > 0x11)) {
@@ -1418,6 +1419,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     }
 
     CLOSE_DISPS(gfxCtx, "../z_kaleido_scope_PAL.c", 1577);
+    FrameInterpolation_RecordCloseChild();
 }
 
 void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {

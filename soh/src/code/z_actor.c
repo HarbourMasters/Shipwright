@@ -6,6 +6,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/frame_interpolation.h"
 
 #if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
@@ -410,6 +411,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         f32 var2;
         s32 i;
 
+        FrameInterpolation_RecordOpenChild(actor, 0);
         player = GET_PLAYER(globalCtx);
 
         spCE = 0xFF;
@@ -486,10 +488,12 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
                 }
             }
         }
+        FrameInterpolation_RecordCloseChild();
     }
 
     actor = targetCtx->unk_94;
     if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_27)) {
+        FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x7);
@@ -503,6 +507,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 2153),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, gZTargetArrowDL);
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2158);
@@ -2490,6 +2495,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
 
     Fault_AddClient(&faultClient, Actor_FaultPrint, actor, "Actor_draw");
 
+    FrameInterpolation_RecordOpenChild(actor, 0);
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6035);
 
     lights = LightContext_NewLights(&globalCtx->lightCtx, globalCtx->state.gfxCtx);
@@ -2497,6 +2503,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     Lights_BindAll(lights, globalCtx->lightCtx.listHead, (actor->flags & ACTOR_FLAG_22) ? NULL : &actor->world.pos);
     Lights_Draw(lights, globalCtx->state.gfxCtx);
 
+    FrameInterpolation_RecordActorPosRotMatrix();
     if (actor->flags & ACTOR_FLAG_12) {
         Matrix_SetTranslateRotateYXZ(
             actor->world.pos.x + globalCtx->mainCamera.skyboxOffset.x,
@@ -2546,6 +2553,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6119);
+    FrameInterpolation_RecordCloseChild();
 
     Fault_RemoveClient(&faultClient);
 }
