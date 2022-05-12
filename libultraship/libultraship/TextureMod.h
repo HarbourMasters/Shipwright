@@ -36,15 +36,6 @@ namespace Ship {
 		void Hook_InvalidateTexture(HookEvent event);
 	};
 
-	inline std::string normalize(std::string path) {
-#ifdef _WIN32
-		std::ranges::replace(path, '/', '\\');
-#else
-		std::replace(path.begin(), path.end(), '\\', '/');
-#endif
-		return path;
-	}
-
 	inline void GrayOutTexture(uint8_t* data, int width, int height) {
 		for (int x = 0; x < width * height * 4; x += 4) {
 

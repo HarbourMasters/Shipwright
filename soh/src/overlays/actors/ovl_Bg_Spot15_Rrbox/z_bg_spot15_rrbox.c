@@ -260,7 +260,7 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
     s32 approxFResult;
     Actor* actor = &this->dyna.actor;
 
-    this->unk_174 += 0.5f;
+    this->unk_174 += CVar_GetS32("gFasterBlockPush", 0) != 0 ? 1.0f : 0.5f;
 
     this->unk_174 = CLAMP_MAX(this->unk_174, 2.0f);
 
@@ -294,7 +294,7 @@ void func_808B4194(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
         this->dyna.unk_150 = 0.0f;
         this->unk_178 = 0.0f;
         this->unk_174 = 0.0f;
-        this->unk_168 = 10;
+        this->unk_168 = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3 : 10;
         func_808B4084(this, globalCtx);
     }
     Audio_PlayActorSound2(actor, NA_SE_EV_ROCK_SLIDE - SFX_FLAG);

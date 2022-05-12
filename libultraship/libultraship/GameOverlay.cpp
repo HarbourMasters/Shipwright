@@ -21,7 +21,7 @@ void Ship::GameOverlay::LoadFont(const std::string& name, const std::string& pat
 	}
 }
 
-void Ship::GameOverlay::TextDraw(float x, float y, bool shadow, const char* fmt, ...) {
+void Ship::GameOverlay::TextDraw(float x, float y, bool shadow, ImVec4 color, const char* fmt, ...) {
 	char buf[1024];
 	va_list args;
 	va_start(args, fmt);
@@ -29,17 +29,31 @@ void Ship::GameOverlay::TextDraw(float x, float y, bool shadow, const char* fmt,
 	buf[IM_ARRAYSIZE(buf) - 1] = 0;
 	va_end(args);
 
+	ImGui::PushStyleColor(ImGuiCol_Text, color);
 	ImGui::PushFont(Fonts[this->CurrentFont]);
 	if (shadow) {
 		ImGui::SetCursorPos(ImVec2(x + 1, y + 1));
-		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.0f, .0f, .0f, 255));
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.0f, .0f, .0f, color.w));
 		ImGui::Text(buf, args);
 	}
 	ImGui::PopStyleColor();
 	ImGui::SetCursorPos(ImVec2(x, y));
 	ImGui::Text(buf, args);
 	ImGui::PopFont();
+	ImGui::PopStyleColor();
 }
+
+void Ship::GameOverlay::TextDrawNotification(float duration, bool shadow, const char* fmt, ...) {
+	char buf[1024];
+	va_list args;
+	va_start(args, fmt);
+	vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
+	buf[IM_ARRAYSIZE(buf) - 1] = 0;
+	va_end(args);
+
+	this->RegisteredOverlays[fmt] = new Overlay({ OverlayType::NOTIFICATION, ImStrdup(buf), duration, duration });
+}
+
 
 float Ship::GameOverlay::GetScreenWidth() {
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -124,26 +138,41 @@ void Ship::GameOverlay::Draw() {
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
 
 	float textY = 50;
+	float notY = 0;
+
 	for (auto &[key, overlay] : this->RegisteredOverlays) {
 
-		if (overlay.type == OverlayType::TEXT) {
-			const char* text = ImStrdup(key.c_str());
+		if (overlay->type == OverlayType::TEXT) {
+			const char* text = ImStrdup(overlay->value);
 			const CVar* var = CVar_Get(text);
+			ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 			switch (var->type) {
 			case CVAR_TYPE_FLOAT:
-				this->TextDraw(30, textY, true, "%s %.2f", text, var->value.valueFloat);
+				this->TextDraw(30, textY, true, color, "%s %.2f", text, var->value.valueFloat);
 				break;
 			case CVAR_TYPE_S32:
-				this->TextDraw(30, textY, true, "%s %d", text, var->value.valueS32);
+				this->TextDraw(30, textY, true, color, "%s %d", text, var->value.valueS32);
 				break;
 			case CVAR_TYPE_STRING:
-				this->TextDraw(30, textY, true, "%s %s", text, var->value.valueStr);
+				this->TextDraw(30, textY, true, color, "%s %s", text, var->value.valueStr);
 				break;
 			}
 
 			free((void*) text);
 			textY += 30;
+		}
+
+		if (overlay->type == OverlayType::NOTIFICATION && overlay->duration > 0) {
+			const char* text = overlay->value;
+			const float duration = overlay->duration / overlay->fadeTime;
+
+			const ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, duration);
+			const float textWidth = this->GetStringWidth(overlay->value);
+
+			this->TextDraw(GetScreenWidth() - textWidth - 40, GetScreenHeight() - 40 - notY, true, color, text);
+			notY += 30;
+			overlay->duration -= .05f;
 		}
 	}
 
@@ -160,19 +189,15 @@ bool Ship::OverlayCommand(const std::vector<std::string>& args) {
 		const char* key = args[2].c_str();
 		GameOverlay* overlay = SohImGui::overlay;
 		if (args[1] == "add") {
-			if (!overlay->RegisteredOverlays.contains(args[2])) {
-				overlay->RegisteredOverlays[args[2]] = {
-					OverlayType::TEXT,
-					key
-				};
+			if (!overlay->RegisteredOverlays.contains(key)) {
+				overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });
 				INFO("Added overlay: %s ", key);
 			} else {
 				ERROR("Overlay already exists: %s", key);
 			}
-		}
-		else if (args[1] == "remove") {
-			if (overlay->RegisteredOverlays.contains(args[2])) {
-				overlay->RegisteredOverlays.erase(args[2]);
+		} else if (args[1] == "remove") {
+			if (overlay->RegisteredOverlays.contains(key)) {
+				overlay->RegisteredOverlays.erase(key);
 				INFO("Removed overlay: %s ", key);
 			} else {
 				ERROR("Overlay not found: %s ", key);

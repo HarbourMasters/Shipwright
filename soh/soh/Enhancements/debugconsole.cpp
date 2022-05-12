@@ -1,7 +1,15 @@
+#ifdef _MSC_VER
+#define NOGDI
+#endif
+
 #include "debugconsole.h"
 #include "../libultraship/SohImGuiImpl.h"
+#include "savestates.h"
+
 #include <vector>
 #include <string>
+#include "soh/OTRGlobals.h"
+
 
 #define Path _Path
 #define PATH_HACK
@@ -303,6 +311,66 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     gSaveContext.nextTransition = 11;
 }
 
+static bool SaveStateHandler(const std::vector<std::string>& args) {
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+
+    switch (rtn) { 
+        case SaveStateReturn::SUCCESS:
+            INFO("[SOH] Saved state to slot %u", slot);
+            return CMD_SUCCESS;
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+            return CMD_FAILED;
+
+    }
+}
+
+static bool LoadStateHandler(const std::vector<std::string>& args) {
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+    
+    switch (rtn) {
+        case SaveStateReturn::SUCCESS:
+            INFO("[SOH] Loaded state from slot %u", slot);
+            return CMD_SUCCESS;
+        case SaveStateReturn::FAIL_INVALID_SLOT:
+            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
+            return CMD_FAILED;
+        case SaveStateReturn::FAIL_STATE_EMPTY:
+            ERROR("[SOH] State Slot (%u) is empty", slot);
+            return CMD_FAILED;
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+            return CMD_FAILED;            
+    }
+
+}
+
+static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        ERROR("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+    int slot;
+
+    try {
+        slot = std::stoi(args[1], nullptr, 10);
+    } catch (std::invalid_argument const& ex) {
+        ERROR("[SOH] SaveState slot value must be a number.");
+        return CMD_FAILED;
+    }
+    
+    if (slot < 0) {
+        ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
+        return CMD_FAILED;
+    }
+
+    OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+    INFO("[SOH] Slot %u selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
+    return CMD_SUCCESS;
+}
+
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
@@ -416,6 +484,13 @@ void DebugConsole_Init(void) {
                              { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
     CMD_REGISTER("entrance",
                  { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
+
+    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
+    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
+    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
+        { "Slot number", ArgumentType::NUMBER, }
+        } });
+    DebugConsole_LoadCVars();
 }
 
 template <typename Numeric> bool is_number(const std::string& s) {

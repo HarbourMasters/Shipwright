@@ -121,8 +121,8 @@ void BgDdanKd_CheckForExplosions(BgDdanKd* this, GlobalContext* globalCtx) {
     }
 }
 
-static Vec3f velocity = { 0.0f, 5.0f, 0.0f };
-static Vec3f accel = { 0.0f, -0.45f, 0.0f };
+Vec3f sBgDdanKdVelocity = { 0.0f, 5.0f, 0.0f };
+Vec3f sBgDdanKdAccel = { 0.0f, -0.45f, 0.0f };
 
 void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
     Vec3f pos1;
@@ -158,11 +158,11 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
             func_80033480(globalCtx, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
             func_80033480(globalCtx, &pos2, 20.0f, 1, effectStrength * 135.0f, 60, 1);
 
-            velocity.x = Rand_CenteredFloat(3.0f);
-            velocity.z = Rand_CenteredFloat(3.0f);
+            sBgDdanKdVelocity.x = Rand_CenteredFloat(3.0f);
+            sBgDdanKdVelocity.z = Rand_CenteredFloat(3.0f);
 
-            func_8003555C(globalCtx, &pos1, &velocity, &accel);
-            func_8003555C(globalCtx, &pos2, &velocity, &accel);
+            func_8003555C(globalCtx, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
+            func_8003555C(globalCtx, &pos2, &sBgDdanKdVelocity, &sBgDdanKdAccel);
 
             pos1 = this->dyna.actor.world.pos;
             pos1.z += 560.0f + Rand_ZeroOne() * 5.0f;
@@ -170,7 +170,7 @@ void BgDdanKd_LowerStairs(BgDdanKd* this, GlobalContext* globalCtx) {
             pos1.y = Rand_ZeroOne() * 3.0f + (this->dyna.actor.floorHeight + 20.0f);
 
             func_80033480(globalCtx, &pos1, 20.0f, 1, effectStrength * 135.0f, 60, 1);
-            func_8003555C(globalCtx, &pos1, &velocity, &accel);
+            func_8003555C(globalCtx, &pos1, &sBgDdanKdVelocity, &sBgDdanKdAccel);
         }
         Camera_AddQuake(&globalCtx->mainCamera, 0, effectStrength * 0.6f, 3);
         Audio_PlaySoundGeneral(NA_SE_EV_PILLAR_SINK - SFX_FLAG, &this->dyna.actor.projectedPos, 4, &D_801333E0,
@@ -192,11 +192,11 @@ void BgDdanKd_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgDdanKd_Reset(void) {
-    velocity.x = 0.0f;
-    velocity.y = 5.0f;
-    velocity.z = 0.0f;
+    sBgDdanKdVelocity.x = 0.0f;
+    sBgDdanKdVelocity.y = 5.0f;
+    sBgDdanKdVelocity.z = 0.0f;
 
-    accel.x = 0.0f;
-    accel.y = -0.45f;
-    accel.z = 0.0f;
+    sBgDdanKdAccel.x = 0.0f;
+    sBgDdanKdAccel.y = -0.45f;
+    sBgDdanKdAccel.z = 0.0f;
 }
