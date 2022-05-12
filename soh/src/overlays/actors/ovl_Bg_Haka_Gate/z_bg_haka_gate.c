@@ -192,7 +192,12 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
     s16 turnAngle;
 
     this->vTurnRateDeg10++;
-    this->vTurnRateDeg10 = CLAMP_MAX(this->vTurnRateDeg10, 5);
+    if (CVar_GetS32("gFasterBlockPush", 0) != 0) {
+        this->vTurnRateDeg10 = 10;
+        CLAMP_MAX(this->vTurnRateDeg10, 5);
+    } else {
+        this->vTurnRateDeg10 = CLAMP_MAX(this->vTurnRateDeg10, 5);
+    }
     turnFinished = Math_StepToS(&this->vTurnAngleDeg10, 600, this->vTurnRateDeg10);
     turnAngle = this->vTurnAngleDeg10 * this->vTurnDirection;
     this->dyna.actor.shape.rot.y = (this->vRotYDeg10 + turnAngle) * 0.1f * (0x10000 / 360.0f);
@@ -212,7 +217,7 @@ void BgHakaGate_StatueTurn(BgHakaGate* this, GlobalContext* globalCtx) {
         this->vRotYDeg10 = (this->vRotYDeg10 + turnAngle) % 3600;
         this->vTurnRateDeg10 = 0;
         this->vTurnAngleDeg10 = 0;
-        this->vTimer = 5;
+        this->vTimer = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 2 : 5;
         this->actionFunc = BgHakaGate_StatueIdle;
         this->dyna.unk_150 = 0.0f;
     }
