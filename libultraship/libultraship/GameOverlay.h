@@ -33,6 +33,8 @@ namespace Ship {
 		void TextDraw(float x, float y, bool shadow, ImVec4 color, const char* text, ...);
 		void TextDrawNotification(float duration, bool shadow, const char* fmt, ...);
 	private:
+		bool NeedsCleanup = false;
+		void CleanupNotifications();
 		void LoadFont(const std::string& name, const std::string& path, float fontSize);
 	};
 

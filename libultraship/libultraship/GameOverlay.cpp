@@ -8,6 +8,7 @@
 #include "SohImGuiImpl.h"
 #include "TextureMod.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "Utils/StringHelper.h"
 
 void Ship::GameOverlay::LoadFont(const std::string& name, const std::string& path, float fontSize) {
 	ImGuiIO& io = ImGui::GetIO();
@@ -50,10 +51,21 @@ void Ship::GameOverlay::TextDrawNotification(float duration, bool shadow, const 
 	vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
 	buf[IM_ARRAYSIZE(buf) - 1] = 0;
 	va_end(args);
-
-	this->RegisteredOverlays[fmt] = new Overlay({ OverlayType::NOTIFICATION, ImStrdup(buf), duration, duration });
+	this->RegisteredOverlays[StringHelper::Sprintf("NotificationID:%d%d", rand(), this->RegisteredOverlays.size())] = new Overlay({ OverlayType::NOTIFICATION, ImStrdup(buf), duration, duration });
+	NeedsCleanup = true;
 }
 
+void Ship::GameOverlay::CleanupNotifications() {
+	if(!NeedsCleanup) return;
+	for (auto it = this->RegisteredOverlays.begin(); it != this->RegisteredOverlays.end(); ) {
+		if (it->second->type == OverlayType::NOTIFICATION && it->second->duration <= 0.0f) {
+			it = this->RegisteredOverlays.erase(it);
+		} else {
+			++it;
+		}
+	}
+	NeedsCleanup = false;
+}
 
 float Ship::GameOverlay::GetScreenWidth() {
 	const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -136,6 +148,8 @@ void Ship::GameOverlay::Draw() {
 	ImGui::SetNextWindowSize(viewport->Size, ImGuiCond_Always);
 	ImGui::Begin("SoHOverlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs);
+
+	this->CleanupNotifications();
 
 	float textY = 50;
 	float notY = 0;
