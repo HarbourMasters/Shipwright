@@ -34,6 +34,8 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
+#include <SDL2/SDL_scancode.h>
+
 OTRGlobals* OTRGlobals::Instance;
 
 OTRGlobals::OTRGlobals() {
@@ -110,6 +112,63 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern "C" void Graph_StartFrame() {
+    // Why -1?
+    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
+    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+
+    switch (dwScancode - 1) {
+        case SDL_SCANCODE_F5: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Saved state to slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+            break;
+        }
+        case SDL_SCANCODE_F6: {
+            unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            slot++;
+            if (slot > 5) {
+                slot = 0;
+            }
+            OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+            SPDLOG_INFO("Set SaveState slot to {}.", slot);
+            break;
+        }
+        case SDL_SCANCODE_F7: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Loaded state from slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_INVALID_SLOT:
+                    SPDLOG_ERROR("[SOH] Invalid State Slot Number {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_STATE_EMPTY:
+                    SPDLOG_ERROR("[SOH] State Slot {} is empty", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+
+            break;
+        }
+    }
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
