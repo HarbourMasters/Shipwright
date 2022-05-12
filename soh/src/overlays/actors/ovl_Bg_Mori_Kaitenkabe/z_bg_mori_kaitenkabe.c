@@ -94,7 +94,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
 
     if (this->dyna.unk_150 > 0.001f) {
         this->timer++;
-        if ((this->timer > 28) && !Player_InCsMode(globalCtx)) {
+        if ((this->timer > CVar_GetS32("gFasterBlockPush", 0) != 0 ? 14 : 28) && !Player_InCsMode(globalCtx)) {
             BgMoriKaitenkabe_SetupRotate(this);
             func_8002DF54(globalCtx, &this->dyna.actor, 8);
             Math_Vec3f_Copy(&this->lockedPlayerPos, &player->actor.world.pos);
@@ -118,7 +118,7 @@ void BgMoriKaitenkabe_Wait(BgMoriKaitenkabe* this, GlobalContext* globalCtx) {
 
 void BgMoriKaitenkabe_SetupRotate(BgMoriKaitenkabe* this) {
     this->actionFunc = BgMoriKaitenkabe_Rotate;
-    this->rotSpeed = 0.0f;
+    this->rotSpeed = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 0.5f : 0.0f;
     this->rotYdeg = 0.0f;
 }
 

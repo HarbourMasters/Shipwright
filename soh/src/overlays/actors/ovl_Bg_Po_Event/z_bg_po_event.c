@@ -388,7 +388,7 @@ void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
     s32 blockStop;
     Player* player = GET_PLAYER(globalCtx);
 
-    this->dyna.actor.speedXZ += 0.1f;
+    this->dyna.actor.speedXZ += CVar_GetS32("gFasterBlockPush", 0) != 0 ? 0.5f : 0.1f;
     this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
     blockStop = Math_StepToF(&blockPushDist, 20.0f, this->dyna.actor.speedXZ);
     displacement = this->direction * blockPushDist;
@@ -404,7 +404,7 @@ void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
         this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
         blockPushDist = 0.0f;
         this->dyna.actor.speedXZ = 0.0f;
-        this->direction = 5;
+        this->direction = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3 : 5;
         sBlocksAtRest++;
         this->actionFunc = BgPoEvent_BlockIdle;
         if (this->type == 1) {
