@@ -9,6 +9,8 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
+#include <SohImGuiImpl.h>
+
 #include "z64.h"
 #include "z64save.h"
 #include <variables.h>
@@ -877,6 +879,7 @@ extern "C" void ProcessSaveStateRequests(void) {
 }
 
 void SaveStateMgr::SetCurrentSlot(unsigned int slot) {
+    SohImGui::overlay->TextDrawNotification(1.0f, true, "slot %u set", slot);
     this->currentSlot = slot;
 }
 
@@ -894,10 +897,12 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
                     this->states[request.slot] = std::make_shared<SaveState>(OTRGlobals::Instance->gSaveStateMgr, request.slot);
                 }
                 this->states[request.slot]->Save();
+                SohImGui::overlay->TextDrawNotification(1.0f, true, "saved state %u", request.slot);
                 break;
             case RequestType::LOAD:
                 if (this->states.contains(request.slot)) {
                     this->states[request.slot]->Load();
+                    SohImGui::overlay->TextDrawNotification(1.0f, true, "loaded state %u", request.slot);
                 } else {
                     SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 }
@@ -913,6 +918,7 @@ void SaveStateMgr::ProcessSaveStateRequests(void) {
 SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
     if (gGlobalCtx == nullptr) {
         SPDLOG_ERROR("[SOH] Can not save or load a state outside of \"GamePlay\"");
+        SohImGui::overlay->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
 
@@ -925,6 +931,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 requests.push(request);
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
+                SohImGui::overlay->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
             break;

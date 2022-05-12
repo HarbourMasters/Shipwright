@@ -493,6 +493,11 @@ void DebugConsole_Init(void) {
     DebugConsole_LoadCVars();
 }
 
+template <typename Numeric> bool is_number(const std::string& s) {
+    Numeric n;
+    return ((std::istringstream(s) >> n >> std::ws).eof());
+}
+
 void DebugConsole_LoadCVars()
 {
     if (File::Exists("cvars.cfg")) {
