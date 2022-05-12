@@ -188,7 +188,7 @@ void OTRGame::draw() {
 		sohFolder = path;
 	}
 
-	if (UIUtils::GuiIconButton("Cartridge", "Open\nOoT Rom", 32, 50, currentStep != NULLSTR, "Select an Ocarina of Time\nMaster Quest or Vanilla Debug Rom\n\nYou can dump it or lend one from Nintendo")) {
+	if (UIUtils::GuiIconButton("Cartridge", "Open\nOoT Rom", 32, 50, currentStep != NULLSTR, "Select an Ocarina of Time\nGameCube PAL or Vanilla Debug Rom\n\nYou can dump it or lend one from Nintendo")) {
 		const std::string path = NativeFS->LaunchFileExplorer(LaunchType::FILE);
 		if (path != NULLSTR) {
 			const std::string patched_n64 = std::string(patched_rom);
