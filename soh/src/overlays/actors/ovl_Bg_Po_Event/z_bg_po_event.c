@@ -80,11 +80,11 @@ static ColliderTrisInit sTrisInit = {
     sTrisElementsInit,
 };
 
-static u8 sBlocksAtRest = 0;
+u8 sBgPoEventBlocksAtRest = 0;
 
 static Vec3f sZeroVec = { 0.0f, 0.0f, 0.0f };
 
-static u8 sPuzzleState;
+u8 sBgPoEventPuzzleState;
 
 void BgPoEvent_InitPaintings(BgPoEvent* this, GlobalContext* globalCtx) {
     static s16 paintingPosX[] = { -1302, -866, 1421, 985 };
@@ -142,10 +142,10 @@ void BgPoEvent_InitPaintings(BgPoEvent* this, GlobalContext* globalCtx) {
     }
     this->timer = 0;
     if (this->type == 4) {
-        sPuzzleState = 0;
+        sBgPoEventPuzzleState = 0;
         this->actionFunc = BgPoEvent_AmyWait;
     } else {
-        sPuzzleState = (s32)(Rand_ZeroOne() * 3.0f) % 3;
+        sBgPoEventPuzzleState = (s32)(Rand_ZeroOne() * 3.0f) % 3;
         this->actionFunc = BgPoEvent_PaintingEmpty;
     }
 }
@@ -236,7 +236,7 @@ void BgPoEvent_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 void BgPoEvent_BlockWait(BgPoEvent* this, GlobalContext* globalCtx) {
     this->dyna.actor.world.pos.y = 833.0f;
-    if (sPuzzleState == 0x3F) {
+    if (sBgPoEventPuzzleState == 0x3F) {
         if (this->type == 1) {
             OnePointCutscene_Init(globalCtx, 3150, 65, NULL, MAIN_CAM);
         }
@@ -244,14 +244,14 @@ void BgPoEvent_BlockWait(BgPoEvent* this, GlobalContext* globalCtx) {
         this->actionFunc = BgPoEvent_BlockShake;
     } else if (this->dyna.actor.xzDistToPlayer > 50.0f) {
         if (this->type != 1) {
-            sPuzzleState |= (1 << this->index);
+            sBgPoEventPuzzleState |= (1 << this->index);
         } else {
-            sPuzzleState |= 0x10;
+            sBgPoEventPuzzleState |= 0x10;
         }
     } else if (this->type != 1) {
-        sPuzzleState &= ~(1 << this->index);
+        sBgPoEventPuzzleState &= ~(1 << this->index);
     } else {
-        sPuzzleState &= ~0x10;
+        sBgPoEventPuzzleState &= ~0x10;
     }
 }
 
@@ -265,7 +265,7 @@ void BgPoEvent_BlockShake(BgPoEvent* this, GlobalContext* globalCtx) {
     }
     if (this->timer == 0) {
         this->dyna.actor.world.pos.x = this->dyna.actor.home.pos.x;
-        sPuzzleState = 0;
+        sBgPoEventPuzzleState = 0;
         this->timer = 60;
         this->actionFunc = BgPoEvent_BlockFall;
     }
@@ -299,9 +299,9 @@ void BgPoEvent_CheckBlock(BgPoEvent* this) {
         }
     }
     if ((phi_v1 == phi_a1) && ((phi_t0 - phi_a3) == 60)) {
-        sPuzzleState |= (1 << this->index);
+        sBgPoEventPuzzleState |= (1 << this->index);
     } else {
-        sPuzzleState &= ~(1 << this->index);
+        sBgPoEventPuzzleState &= ~(1 << this->index);
     }
 }
 
@@ -312,7 +312,7 @@ void BgPoEvent_BlockFall(BgPoEvent* this, GlobalContext* globalCtx) {
     if (Math_StepToF(&this->dyna.actor.world.pos.y, 433.0f, this->dyna.actor.velocity.y)) {
         this->dyna.actor.flags &= ~ACTOR_FLAG_5;
         this->dyna.actor.velocity.y = 0.0f;
-        sBlocksAtRest++;
+        sBgPoEventBlocksAtRest++;
         if (this->type != 1) {
             BgPoEvent_CheckBlock(this);
         } else {
@@ -334,7 +334,7 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     Actor* amy;
 
-    if (sPuzzleState == 0xF) {
+    if (sBgPoEventPuzzleState == 0xF) {
         this->actionFunc = BgPoEvent_BlockSolved;
         if ((this->type == 0) && (this->index == 0)) {
             amy =
@@ -348,23 +348,23 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, GlobalContext* globalCtx) {
             gSaveContext.timer1State = 0xA;
         }
     } else {
-        if ((gSaveContext.timer1Value == 0) && (sBlocksAtRest == 5)) {
+        if ((gSaveContext.timer1Value == 0) && (sBgPoEventBlocksAtRest == 5)) {
             player->stateFlags2 &= ~0x10;
-            sPuzzleState = 0x10;
-            sBlocksAtRest = 0;
+            sBgPoEventPuzzleState = 0x10;
+            sBgPoEventBlocksAtRest = 0;
         }
-        if ((sPuzzleState == 0x40) || ((sPuzzleState == 0x10) && !Player_InCsMode(globalCtx))) {
+        if ((sBgPoEventPuzzleState == 0x40) || ((sBgPoEventPuzzleState == 0x10) && !Player_InCsMode(globalCtx))) {
             this->dyna.actor.world.rot.z = this->dyna.actor.shape.rot.z;
             this->actionFunc = BgPoEvent_BlockReset;
-            if (sPuzzleState == 0x10) {
-                sPuzzleState = 0x40;
+            if (sBgPoEventPuzzleState == 0x10) {
+                sBgPoEventPuzzleState = 0x40;
                 Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_BLOCK_RISING);
                 func_8002DF54(globalCtx, &player->actor, 8);
             }
         } else if (this->dyna.unk_150 != 0.0f) {
             if (this->direction == 0) {
                 if (func_800435D8(globalCtx, &this->dyna, 0x1E, 0x32, -0x14) != 0) {
-                    sBlocksAtRest--;
+                    sBgPoEventBlocksAtRest--;
                     this->direction = (this->dyna.unk_150 >= 0.0f) ? 1.0f : -1.0f;
                     this->actionFunc = BgPoEvent_BlockPush;
                 } else {
@@ -382,7 +382,7 @@ void BgPoEvent_BlockIdle(BgPoEvent* this, GlobalContext* globalCtx) {
     }
 }
 
-static f32 blockPushDist = 0.0f;
+f32 sBgPoEventblockPushDist = 0.0f;
 void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
     f32 displacement;
     s32 blockStop;
@@ -390,8 +390,8 @@ void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
 
     this->dyna.actor.speedXZ += CVar_GetS32("gFasterBlockPush", 0) != 0 ? 0.5f : 0.1f;
     this->dyna.actor.speedXZ = CLAMP_MAX(this->dyna.actor.speedXZ, 2.0f);
-    blockStop = Math_StepToF(&blockPushDist, 20.0f, this->dyna.actor.speedXZ);
-    displacement = this->direction * blockPushDist;
+    blockStop = Math_StepToF(&sBgPoEventblockPushDist, 20.0f, this->dyna.actor.speedXZ);
+    displacement = this->direction * sBgPoEventblockPushDist;
     this->dyna.actor.world.pos.x = (Math_SinS(this->dyna.unk_158) * displacement) + this->dyna.actor.home.pos.x;
     this->dyna.actor.world.pos.z = (Math_CosS(this->dyna.unk_158) * displacement) + this->dyna.actor.home.pos.z;
     if (blockStop) {
@@ -402,10 +402,10 @@ void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
         this->dyna.unk_150 = 0.0f;
         this->dyna.actor.home.pos.x = this->dyna.actor.world.pos.x;
         this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
-        blockPushDist = 0.0f;
+        sBgPoEventblockPushDist = 0.0f;
         this->dyna.actor.speedXZ = 0.0f;
         this->direction = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3 : 5;
-        sBlocksAtRest++;
+        sBgPoEventBlocksAtRest++;
         this->actionFunc = BgPoEvent_BlockIdle;
         if (this->type == 1) {
             return;
@@ -428,7 +428,7 @@ void BgPoEvent_BlockReset(BgPoEvent* this, GlobalContext* globalCtx) {
 
         this->index = (this->index + 1) % 4;
         this->actionFunc = BgPoEvent_BlockFall;
-        sPuzzleState = 0;
+        sBgPoEventPuzzleState = 0;
         if (this->type == 1) {
             this->timer += 10;
             this->timer = CLAMP_MAX(this->timer, 120);
@@ -443,14 +443,14 @@ void BgPoEvent_BlockSolved(BgPoEvent* this, GlobalContext* globalCtx) {
         player->stateFlags2 &= ~0x10;
     }
     if (Math_StepToF(&this->dyna.actor.world.pos.y, 369.0f, 2.0f)) {
-        sPuzzleState = 0x20;
+        sBgPoEventPuzzleState = 0x20;
         Actor_Kill(&this->dyna.actor);
     }
 }
 
 void BgPoEvent_AmyWait(BgPoEvent* this, GlobalContext* globalCtx) {
     if (this->collider.base.acFlags & AC_HIT) {
-        sPuzzleState |= 0x20;
+        sBgPoEventPuzzleState |= 0x20;
         this->timer = 5;
         Actor_SetColorFilter(&this->dyna.actor, 0x4000, 0xFF, 0, 5);
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EN_PO_LAUGH2);
@@ -461,12 +461,12 @@ void BgPoEvent_AmyWait(BgPoEvent* this, GlobalContext* globalCtx) {
 void BgPoEvent_AmyPuzzle(BgPoEvent* this, GlobalContext* globalCtx) {
     Vec3f pos;
 
-    if (sPuzzleState == 0xF) {
+    if (sBgPoEventPuzzleState == 0xF) {
         pos.x = this->dyna.actor.world.pos.x - 5.0f;
         pos.y = Rand_CenteredFloat(120.0f) + this->dyna.actor.world.pos.y;
         pos.z = Rand_CenteredFloat(120.0f) + this->dyna.actor.world.pos.z;
         EffectSsDeadDb_Spawn(globalCtx, &pos, &sZeroVec, &sZeroVec, 170, 0, 200, 255, 100, 170, 0, 255, 0, 1, 9, true);
-    } else if (sPuzzleState == 0x20) {
+    } else if (sBgPoEventPuzzleState == 0x20) {
         Actor_Kill(&this->dyna.actor);
     } else {
         DECR(this->timer);
@@ -476,14 +476,14 @@ void BgPoEvent_AmyPuzzle(BgPoEvent* this, GlobalContext* globalCtx) {
 s32 BgPoEvent_NextPainting(BgPoEvent* this) {
     if ((this->dyna.actor.parent != NULL) && (this->dyna.actor.child != NULL)) {
         if (Rand_ZeroOne() < 0.5f) {
-            sPuzzleState = ((BgPoEvent*)this->dyna.actor.parent)->index;
+            sBgPoEventPuzzleState = ((BgPoEvent*)this->dyna.actor.parent)->index;
         } else {
-            sPuzzleState = ((BgPoEvent*)this->dyna.actor.child)->index;
+            sBgPoEventPuzzleState = ((BgPoEvent*)this->dyna.actor.child)->index;
         }
     } else if (this->dyna.actor.parent != NULL) {
-        sPuzzleState = ((BgPoEvent*)this->dyna.actor.parent)->index;
+        sBgPoEventPuzzleState = ((BgPoEvent*)this->dyna.actor.parent)->index;
     } else if (this->dyna.actor.child != NULL) {
-        sPuzzleState = ((BgPoEvent*)this->dyna.actor.child)->index;
+        sBgPoEventPuzzleState = ((BgPoEvent*)this->dyna.actor.child)->index;
     } else {
         return false;
     }
@@ -491,7 +491,7 @@ s32 BgPoEvent_NextPainting(BgPoEvent* this) {
 }
 
 void BgPoEvent_PaintingEmpty(BgPoEvent* this, GlobalContext* globalCtx) {
-    if (sPuzzleState == this->index) {
+    if (sBgPoEventPuzzleState == this->index) {
         this->timer = 255;
         this->actionFunc = BgPoEvent_PaintingAppear;
     }
@@ -636,7 +636,7 @@ void BgPoEvent_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgPoEvent_Reset(void) {
-    sBlocksAtRest = 0;
-    sPuzzleState = 0;
-    blockPushDist = 0.0f;
+    sBgPoEventBlocksAtRest = 0;
+    sBgPoEventPuzzleState = 0;
+    sBgPoEventblockPushDist = 0.0f;
 }

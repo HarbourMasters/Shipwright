@@ -35,7 +35,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 void EnNiw_FeatherUpdate(EnNiw* this, GlobalContext* globalCtx);
 void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx);
 
-static s16 D_80AB85E0 = 0;
+s16 D_80AB85E0 = 0;
 
 const ActorInit En_Niw_InitVars = {
     ACTOR_EN_NIW,
@@ -70,9 +70,9 @@ static s16 sKakarikoFlagList[] = {
     0x0200, 0x0400, 0x0800, 0x1000, 0x2000, 0x4000, 0x8000,
 };
 
-static u8 sLowerRiverSpawned = false;
+u8 sLowerRiverSpawned = false;
 
-static u8 sUpperRiverSpawned = false;
+u8 sUpperRiverSpawned = false;
 
 static ColliderCylinderInit sCylinderInit1 = {
     {

@@ -96,7 +96,7 @@ static ColliderCylinderInit D_80A4B7CC = {
     { 15, 30, 10, { 0, 0, 0 } },
 };
 
-static u8 sSpawnNum = 0;
+u8 sSpawnNum = 0;
 static Vec3f sDeadEffectVel = { 0.0f, 0.0f, 0.0f };
 
 static InitChainEntry sInitChain[] = {

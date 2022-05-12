@@ -132,7 +132,7 @@ void DemoKekkai_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     Collider_DestroyCylinder(globalCtx, &this->collider2);
 }
 
-static Vec3f vel = { 0.0f, 0.0f, 0.0f };
+Vec3f demoKekkaiVel = { 0.0f, 0.0f, 0.0f };
 void DemoKekkai_SpawnParticles(DemoKekkai* this, GlobalContext* globalCtx) {
     static Vec3f accel = { 0.0f, 0.0f, 0.0f };
     static Color_RGBA8 lightYellow = { 255, 255, 170, 0 };
@@ -144,15 +144,15 @@ void DemoKekkai_SpawnParticles(DemoKekkai* this, GlobalContext* globalCtx) {
         s16 roll = Rand_ZeroFloat(65535.0f);
         s16 yaw = Rand_ZeroFloat(65535.0f);
 
-        vel.x = Math_SinS(yaw) * Math_CosS(roll) * Rand_ZeroFloat(8.0f);
-        vel.z = Math_CosS(yaw) * Math_CosS(roll) * Rand_ZeroFloat(8.0f);
-        vel.y = Math_SinS(roll) * Rand_ZeroFloat(3.0f);
+        demoKekkaiVel.x = Math_SinS(yaw) * Math_CosS(roll) * Rand_ZeroFloat(8.0f);
+        demoKekkaiVel.z = Math_CosS(yaw) * Math_CosS(roll) * Rand_ZeroFloat(8.0f);
+        demoKekkaiVel.y = Math_SinS(roll) * Rand_ZeroFloat(3.0f);
 
-        pos.x = (vel.x * 7.0f) + this->actor.world.pos.x;
-        pos.y = (vel.y * 20.0f) + this->actor.world.pos.y + 120.0f;
-        pos.z = (vel.z * 7.0f) + this->actor.world.pos.z;
+        pos.x = (demoKekkaiVel.x * 7.0f) + this->actor.world.pos.x;
+        pos.y = (demoKekkaiVel.y * 20.0f) + this->actor.world.pos.y + 120.0f;
+        pos.z = (demoKekkaiVel.z * 7.0f) + this->actor.world.pos.z;
 
-        EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &vel, &accel, &lightYellow, &darkRed, 3000,
+        EffectSsKiraKira_SpawnFocused(globalCtx, &pos, &demoKekkaiVel, &accel, &lightYellow, &darkRed, 3000,
                                       (s32)Rand_ZeroFloat(40.0f) + 45);
     }
 }
@@ -338,7 +338,7 @@ void DemoKekkai_DrawTowerBarrier(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void DemoKekkai_Reset(void) {
-    vel.x = 0.0f;
-    vel.y = 0.0f;
-    vel.z = 0.0f;
+    demoKekkaiVel.x = 0.0f;
+    demoKekkaiVel.y = 0.0f;
+    demoKekkaiVel.z = 0.0f;
 }

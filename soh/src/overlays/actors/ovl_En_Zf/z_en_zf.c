@@ -97,8 +97,8 @@ static Vec3f sPlatformPositions[] = {
 };
 
 // These seem to relate to the tagging in/out the minibosses do
-static s16 D_80B4A1B0 = 0;
-static s16 D_80B4A1B4 = 1;
+s16 D_80B4A1B0 = 0;
+s16 D_80B4A1B4 = 1;
 
 const ActorInit En_Zf_InitVars = {
     ACTOR_EN_ZF,

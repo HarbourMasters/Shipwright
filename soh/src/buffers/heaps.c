@@ -6,9 +6,6 @@
 #include <unistd.h>
 #endif
 
-#define AUDIO_HEAP_SIZE 0x38000
-#define SYSTEM_HEAP_SIZE (1024 * 1024 * 128)
-
 u8* gAudioHeap;
 u8* gSystemHeap;
 
