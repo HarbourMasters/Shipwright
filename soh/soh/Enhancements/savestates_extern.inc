@@ -193,3 +193,65 @@ extern "C" int32_t D_80B5A4BC;
 
 extern "C" uint8_t sKankyoIsSpawned;
 extern "C" int16_t sTrailingFairies;
+
+extern "C" uint16_t gTimeIncrement;
+
+extern "C" s16 sPlayerInitialPosX;
+extern "C" s16 sPlayerInitialPosZ;
+extern "C" s16 sPlayerInitialDirection;
+
+// code_800EC960
+// Related to ocarina
+extern "C" u8 sOcarinaInpEnabled;
+extern "C" s8 D_80130F10;
+extern "C" u8 sCurOcarinaBtnVal;
+extern "C" u8 sPrevOcarinaNoteVal;
+extern "C" u8 sCurOcarinaBtnIdx;
+extern "C" u8 sLearnSongLastBtn;
+extern "C" f32 D_80130F24;
+extern "C" f32 D_80130F28;
+extern "C" s8 D_80130F2C;
+extern "C" s8 D_80130F30;
+extern "C" s8 D_80130F34;
+extern "C" u8 sPlaybackState;
+extern "C" u32 D_80130F3C;
+extern "C" u32 sNotePlaybackTimer;
+extern "C" u16 sPlaybackNotePos;
+extern "C" u16 sStaffPlaybackPos;
+
+//IDK what this is but it looks important 
+extern "C" u32 sCurOcarinaBtnPress;
+extern "C" u32 D_8016BA10;
+extern "C" u32 sPrevOcarinaBtnPress;
+extern "C" s32 D_8016BA18;
+extern "C" s32 D_8016BA1C;
+extern "C" u8 sCurOcarinaSong[8];
+extern "C" u8 sOcarinaSongAppendPos;
+extern "C" u8 sOcarinaHasStartedSong;
+extern "C" u8 sOcarinaSongNoteStartIdx;
+extern "C" u8 sOcarinaSongCnt;
+extern "C" u16 sOcarinaAvailSongs;
+extern "C" u8 sStaffPlayingPos;
+extern "C" u16 sLearnSongPos[0x10];
+extern "C" u16 D_8016BA50[0x10];
+extern "C" u16 D_8016BA70[0x10];
+extern "C" u8 sLearnSongExpectedNote[0x10];
+extern "C" OcarinaNote D_8016BAA0;
+extern "C" u8 sAudioHasMalonBgm;
+extern "C" f32 sAudioMalonBgmDist;
+extern "C" u8 sDisplayedNoteValue;
+
+
+
+// z_message_PAL
+extern "C" s16 sOcarinaNoteBufPos;
+extern "C" s16 sOcarinaNoteBufLen;
+extern "C" u8 sOcarinaNoteBuf[12];
+
+extern "C" u8 D_8014B2F4;
+extern "C" u8 sTextboxSkipped;
+extern "C" u16 sNextTextId;
+extern "C" s16 sLastPlayedSong;
+extern "C" s16 sHasSunsSong;
+extern "C" s16 sMessageHasSetSfx;
+extern "C" u16 sOcarinaSongBitFlags;

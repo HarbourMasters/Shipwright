@@ -6,10 +6,6 @@
 #include <unistd.h>
 #endif
 
-//#ifdef _MSC_VER
-//#include <Windows.h>
-//#include <>
-
 u8* gAudioHeap;
 u8* gSystemHeap;
 
