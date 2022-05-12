@@ -25,7 +25,6 @@
 #include "SohHooks.h"
 #include "SohConsole.h"
 
-#include "../../soh/soh/OTRGlobals.h"
 #include <iostream>
 
 extern "C" {
