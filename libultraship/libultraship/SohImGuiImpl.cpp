@@ -257,7 +257,7 @@ namespace SohImGui {
 
     void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(normalize(path));
+        const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(path);
 
         const auto asset = new GameAsset{ api->new_texture() };
         uint8_t* img_data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(res->buffer.get()), res->dwBufferSize, &asset->width, &asset->height, nullptr, 4);
@@ -277,7 +277,7 @@ namespace SohImGui {
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
+        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(path)).get());
 
         std::vector<uint8_t> texBuffer;
         texBuffer.reserve(res->width * res->height * 4);
