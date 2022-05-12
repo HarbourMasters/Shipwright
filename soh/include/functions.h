@@ -2404,6 +2404,7 @@ void Heaps_Alloc(void);
 void Heaps_Free(void);
 
 #ifdef __cplusplus
+#undef this
 };
 #endif
 
