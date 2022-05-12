@@ -32,6 +32,8 @@ typedef struct SaveStateRequest {
     RequestType type;
 } SaveStateRequest;
 
+class SaveState;
+
 class SaveStateMgr {
     friend class SaveState;
   private:
