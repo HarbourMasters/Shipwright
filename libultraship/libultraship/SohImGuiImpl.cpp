@@ -505,6 +505,11 @@ namespace SohImGui {
         }
     }
 
+    void Tooltip(std::string text){
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip(text.c_str());
+    }
+
    void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
@@ -603,9 +608,11 @@ namespace SohImGui {
                 }
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                Tooltip("Sets the scale of the displayed inputs from Show Inputs");
 
                 ImGui::Separator();
 
@@ -659,29 +666,38 @@ namespace SohImGui {
                 EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
                 EnhancementCheckbox("Skip Text", "gSkipText");
+                Tooltip("Holding down B skips text");
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
                 EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                 EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
+                Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
 
                 ImGui::Text("Graphics");
                 ImGui::Separator();
 
                 EnhancementCheckbox("N64 Mode", "gN64Mode");
+                Tooltip("Sets aspect ratio to 4:3 and lowers resolution to N64 native");
 
                 EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                 EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
+                Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                Tooltip("Alays shows entrances to dungeons on the minimap");
 
                 ImGui::Text("Fixes");
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                Tooltip("Makes the L and R buttons in the pause menu the same colour");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                Tooltip("Hides the dungeon entrance icon in the top left of the screen");
 
                 EXPERIMENTAL();
 
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                Tooltip("Turns off the level of detail setting, making models always their higher poly variants");
 
                 ImGui::EndMenu();
             }
