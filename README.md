@@ -64,6 +64,8 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
 
+## Nightly Builds
+ If You want the latest version of soh go to https://builds.shipofharkinian.com/
 
 ## The Harbour Masters Are...
 
