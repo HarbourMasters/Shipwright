@@ -404,7 +404,7 @@ void BgPoEvent_BlockPush(BgPoEvent* this, GlobalContext* globalCtx) {
         this->dyna.actor.home.pos.z = this->dyna.actor.world.pos.z;
         sBgPoEventblockPushDist = 0.0f;
         this->dyna.actor.speedXZ = 0.0f;
-        this->direction = 5;
+        this->direction = CVar_GetS32("gFasterBlockPush", 0) != 0 ? 3 : 5;
         sBgPoEventBlocksAtRest++;
         this->actionFunc = BgPoEvent_BlockIdle;
         if (this->type == 1) {
