@@ -932,13 +932,12 @@ namespace SohImGui {
 
     ImTextureID GetTextureByID(int id) {
 #ifdef ENABLE_DX11
-    if (impl.backend == Backend::DX11)
-    {
-        ImTextureID gfx_d3d11_get_texture_by_id(int id);
-        return gfx_d3d11_get_texture_by_id(id);
-    }
-#else
-        return reinterpret_cast<ImTextureID>(id);
+        if (impl.backend == Backend::DX11)
+        {
+            ImTextureID gfx_d3d11_get_texture_by_id(int id);
+            return gfx_d3d11_get_texture_by_id(id);
+        }
 #endif
+        return reinterpret_cast<ImTextureID>(id);
     }
 }
