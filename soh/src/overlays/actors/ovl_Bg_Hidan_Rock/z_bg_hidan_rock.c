@@ -120,7 +120,7 @@ void func_8088B24C(BgHidanRock* this) {
     this->actionFunc = func_8088B990;
 }
 
-static f32 D_8088BFC0 = 0.0f;
+f32 D_8088BFC0 = 0.0f;
 void func_8088B268(BgHidanRock* this, GlobalContext* globalCtx) {
     f32 sp2C;
     s32 temp_v1;

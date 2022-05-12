@@ -57,8 +57,8 @@ const ActorInit Object_Kankyo_InitVars = {
     (ActorResetFunc)ObjectKankyo_Reset,
 };
 
-static u8 sIsSpawned = false;
-static s16 sTrailingFairies = 0;
+u8 sKankyoIsSpawned = false;
+s16 sTrailingFairies = 0;
 
 void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc action) {
     this->actionFunc = action;
@@ -76,18 +76,18 @@ void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.room = -1;
     switch (this->actor.params) {
         case 0:
-            if (!sIsSpawned) {
+            if (!sKankyoIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Fairies);
-                sIsSpawned = true;
+                sKankyoIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
             break;
 
         case 3:
-            if (!sIsSpawned) {
+            if (!sKankyoIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Snow);
-                sIsSpawned = true;
+                sKankyoIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
@@ -939,6 +939,6 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
 }
 
 void ObjectKankyo_Reset(void) {
-    sIsSpawned = false;
+    sKankyoIsSpawned = false;
     sTrailingFairies = 0;
 }

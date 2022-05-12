@@ -29,6 +29,7 @@ void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
 void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0);
+void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr);
 
 void cleararena(void);
 void bootproc(void);
@@ -2406,6 +2407,7 @@ void Heaps_Free(void);
 #ifdef __cplusplus
 #undef this
 };
+#undef this
 #endif
 
 #endif

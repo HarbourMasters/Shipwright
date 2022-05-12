@@ -126,7 +126,7 @@ static DamageTable sDamageTable = {
     /* Unknown 2     */ DMG_ENTRY(0, 0x0),
 };
 
-static s32 sNumSpawned = 0;
+s32 sEnPoFieldNumSpawned = 0;
 
 static Vec3f sFieldMiddle = { -1000.0f, 0.0f, 6500.0f };
 
@@ -145,22 +145,22 @@ static EnPoFieldInfo sPoFieldInfo[2] = {
 
 static Vec3f D_80AD714C = { 0.0f, 1400.0f, 0.0f };
 
-static Vec3s sSpawnPositions[10];
-static u8 sSpawnSwitchFlags[10];
+Vec3s sEnPoFieldSpawnPositions[10];
+u8 sEnPoFieldSpawnSwitchFlags[10];
 static MtxF sLimb7Mtx;
 
 void EnPoField_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoField* this = (EnPoField*)thisx;
     s32 pad;
 
-    if (sNumSpawned != 10) {
-        sSpawnPositions[sNumSpawned].x = this->actor.world.pos.x;
-        sSpawnPositions[sNumSpawned].y = this->actor.world.pos.y;
-        sSpawnPositions[sNumSpawned].z = this->actor.world.pos.z;
-        sSpawnSwitchFlags[sNumSpawned] = this->actor.params & 0xFF;
-        sNumSpawned++;
+    if (sEnPoFieldNumSpawned != 10) {
+        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].x = this->actor.world.pos.x;
+        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].y = this->actor.world.pos.y;
+        sEnPoFieldSpawnPositions[sEnPoFieldNumSpawned].z = this->actor.world.pos.z;
+        sEnPoFieldSpawnSwitchFlags[sEnPoFieldNumSpawned] = this->actor.params & 0xFF;
+        sEnPoFieldNumSpawned++;
     }
-    if (sNumSpawned >= 2) {
+    if (sEnPoFieldNumSpawned >= 2) {
         this->actor.params = 0xFF;
         Actor_Kill(&this->actor);
         return;
@@ -407,10 +407,10 @@ void EnPoField_WaitForSpawn(EnPoField* this, GlobalContext* globalCtx) {
         this->actionTimer--;
     }
     if (this->actionTimer == 0) {
-        for (i = 0; i < sNumSpawned; i++) {
-            if (fabsf(sSpawnPositions[i].x - player->actor.world.pos.x) < 150.0f &&
-                fabsf(sSpawnPositions[i].z - player->actor.world.pos.z) < 150.0f) {
-                if (Flags_GetSwitch(globalCtx, sSpawnSwitchFlags[i])) {
+        for (i = 0; i < sEnPoFieldNumSpawned; i++) {
+            if (fabsf(sEnPoFieldSpawnPositions[i].x - player->actor.world.pos.x) < 150.0f &&
+                fabsf(sEnPoFieldSpawnPositions[i].z - player->actor.world.pos.z) < 150.0f) {
+                if (Flags_GetSwitch(globalCtx, sEnPoFieldSpawnSwitchFlags[i])) {
                     if (player->stateFlags1 & 0x800000) { // Player riding Epona
                         return;
                     } else {
@@ -711,7 +711,7 @@ void EnPoField_SoulInteract(EnPoField* this, GlobalContext* globalCtx) {
                     } else {
                         this->actor.textId = 0x508F;
                         Item_Give(globalCtx, ITEM_BIG_POE);
-                        Flags_SetSwitch(globalCtx, sSpawnSwitchFlags[this->spawnFlagIndex]);
+                        Flags_SetSwitch(globalCtx, sEnPoFieldSpawnSwitchFlags[this->spawnFlagIndex]);
                     }
                 } else {
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
@@ -1009,8 +1009,8 @@ void EnPoField_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnPoField_Reset(void) {
-    sNumSpawned = 0;
+    sEnPoFieldNumSpawned = 0;
 
-    memset(sSpawnPositions, 0, sizeof(sSpawnPositions));
-    memset(sSpawnSwitchFlags, 0, sizeof(sSpawnSwitchFlags));
+    memset(sEnPoFieldSpawnPositions, 0, sizeof(sEnPoFieldSpawnPositions));
+    memset(sEnPoFieldSpawnSwitchFlags, 0, sizeof(sEnPoFieldSpawnSwitchFlags));
 }

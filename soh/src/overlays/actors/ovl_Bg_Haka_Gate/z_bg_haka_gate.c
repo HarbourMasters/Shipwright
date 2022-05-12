@@ -47,7 +47,7 @@ void BgHakaGate_SkullOfTruth(BgHakaGate* this, GlobalContext* globalCtx);
 void BgHakaGate_FalseSkull(BgHakaGate* this, GlobalContext* globalCtx);
 
 static s16 sSkullOfTruthRotY = 0x100;
-static u8 sPuzzleState = 1;
+static u8 sBgPoEventPuzzleState = 1;
 static f32 sStatueDistToPlayer = 0;
 
 static s16 sStatueRotY;
@@ -82,7 +82,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
         if (sSkullOfTruthRotY != 0x100) {
             this->actionFunc = BgHakaGate_FalseSkull;
         } else if (ABS(thisx->shape.rot.y) < 0x4000) {
-            if ((Rand_ZeroOne() * 3.0f) < sPuzzleState) {
+            if ((Rand_ZeroOne() * 3.0f) < sBgPoEventPuzzleState) {
                 this->vIsSkullOfTruth = true;
                 sSkullOfTruthRotY = thisx->shape.rot.y + 0x8000;
                 if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
@@ -91,7 +91,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
                     this->actionFunc = BgHakaGate_SkullOfTruth;
                 }
             } else {
-                sPuzzleState++;
+                sBgPoEventPuzzleState++;
                 this->actionFunc = BgHakaGate_FalseSkull;
             }
         } else {
@@ -141,7 +141,7 @@ void BgHakaGate_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     if (this->dyna.actor.params == BGHAKAGATE_STATUE) {
         sSkullOfTruthRotY = 0x100;
-        sPuzzleState = 1;
+        sBgPoEventPuzzleState = 1;
     }
 }
 
@@ -178,7 +178,7 @@ void BgHakaGate_StatueIdle(BgHakaGate* this, GlobalContext* globalCtx) {
             }
         }
     } else {
-        if (sPuzzleState == SKULL_OF_TRUTH_FOUND) {
+        if (sBgPoEventPuzzleState == SKULL_OF_TRUTH_FOUND) {
             this->actionFunc = BgHakaGate_StatueInactive;
         } else {
             this->vTimer = 0;
@@ -243,7 +243,7 @@ void BgHakaGate_FloorClosed(BgHakaGate* this, GlobalContext* globalCtx) {
             sStatueDistToPlayer = 0.0f;
             if (ABS(yawDiff) < 0x80) {
                 Flags_SetSwitch(globalCtx, this->switchFlag);
-                sPuzzleState = SKULL_OF_TRUTH_FOUND;
+                sBgPoEventPuzzleState = SKULL_OF_TRUTH_FOUND;
                 this->actionFunc = BgHakaGate_DoNothing;
             } else {
                 func_80078884(NA_SE_SY_ERROR);
