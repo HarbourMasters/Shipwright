@@ -668,6 +668,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 Tooltip("Holding down B skips text");
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                Tooltip("Hides most of the UI when not needed");
                 EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                 Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                 EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
