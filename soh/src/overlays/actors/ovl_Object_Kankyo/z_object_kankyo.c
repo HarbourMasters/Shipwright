@@ -9,6 +9,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_spot02_objects/object_spot02_objects.h"
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_25)
 
 void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx);
@@ -57,8 +59,8 @@ const ActorInit Object_Kankyo_InitVars = {
     (ActorResetFunc)ObjectKankyo_Reset,
 };
 
-static u8 sIsSpawned = false;
-static s16 sTrailingFairies = 0;
+u8 sKankyoIsSpawned = false;
+s16 sTrailingFairies = 0;
 
 void ObjectKankyo_SetupAction(ObjectKankyo* this, ObjectKankyoActionFunc action) {
     this->actionFunc = action;
@@ -76,18 +78,18 @@ void ObjectKankyo_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.room = -1;
     switch (this->actor.params) {
         case 0:
-            if (!sIsSpawned) {
+            if (!sKankyoIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Fairies);
-                sIsSpawned = true;
+                sKankyoIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
             break;
 
         case 3:
-            if (!sIsSpawned) {
+            if (!sKankyoIsSpawned) {
                 ObjectKankyo_SetupAction(this, ObjectKankyo_Snow);
-                sIsSpawned = true;
+                sKankyoIsSpawned = true;
             } else {
                 Actor_Kill(&this->actor);
             }
@@ -260,6 +262,7 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
                 this->effects[i].dirPhase.z = Rand_ZeroOne() * 360.0f;
                 this->effects[i].state++;
                 this->effects[i].timer = 0;
+                this->effects[i].epoch++;
                 break;
 
             case 1: // blinking fairies / inactive fairy trails
@@ -417,26 +420,32 @@ void ObjectKankyo_Fairies(ObjectKankyo* this, GlobalContext* globalCtx) {
                         if (this->effects[i].base.x + this->effects[i].pos.x - baseX > maxDist) {
                             this->effects[i].base.x = baseX - maxDist;
                             this->effects[i].pos.x = 0.0f;
+                            this->effects[i].epoch++;
                         }
                         if (this->effects[i].base.x + this->effects[i].pos.x - baseX < -maxDist) {
                             this->effects[i].base.x = baseX + maxDist;
                             this->effects[i].pos.x = 0.0f;
+                            this->effects[i].epoch++;
                         }
                         if (this->effects[i].base.y + this->effects[i].pos.y - baseY > 50.0f) {
                             this->effects[i].base.y = baseY - 50.0f;
                             this->effects[i].pos.y = 0.0f;
+                            this->effects[i].epoch++;
                         }
                         if (this->effects[i].base.y + this->effects[i].pos.y - baseY < -50.0f) {
                             this->effects[i].base.y = baseY + 50.0f;
                             this->effects[i].pos.y = 0.0f;
+                            this->effects[i].epoch++;
                         }
                         if (this->effects[i].base.z + this->effects[i].pos.z - baseZ > maxDist) {
                             this->effects[i].base.z = baseZ - maxDist;
                             this->effects[i].pos.z = 0.0f;
+                            this->effects[i].epoch++;
                         }
                         if (this->effects[i].base.z + this->effects[i].pos.z - baseZ < -maxDist) {
                             this->effects[i].base.z = baseZ + maxDist;
                             this->effects[i].pos.z = 0.0f;
+                            this->effects[i].epoch++;
                         }
                     }
                 }
@@ -496,6 +505,7 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
 
         for (i = 0; i < globalCtx->envCtx.unk_EE[3]; i++) {
+            FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
             Matrix_Translate(this->effects[i].base.x + this->effects[i].pos.x,
                              this->effects[i].base.y + this->effects[i].pos.y,
                              this->effects[i].base.z + this->effects[i].pos.z, MTXMODE_NEW);
@@ -561,6 +571,7 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             Matrix_RotateZ(DEG_TO_RAD(globalCtx->state.frames * 20.0f), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 913), G_MTX_LOAD);
             gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
+            FrameInterpolation_RecordCloseChild();
         }
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 922);
     }
@@ -939,6 +950,6 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
 }
 
 void ObjectKankyo_Reset(void) {
-    sIsSpawned = false;
+    sKankyoIsSpawned = false;
     sTrailingFairies = 0;
 }

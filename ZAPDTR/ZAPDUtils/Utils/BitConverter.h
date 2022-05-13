@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <limits>
 #include <vector>
+#include <cstring>
 
 class BitConverter
 {

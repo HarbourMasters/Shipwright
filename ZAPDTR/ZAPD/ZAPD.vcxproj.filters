@@ -58,6 +58,12 @@
     <Filter Include="NuGet">
       <UniqueIdentifier>{730beb67-6d59-4849-9d9b-702c4a565fc0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Yaz0">
+      <UniqueIdentifier>{b26457d2-cdb8-4c92-9ed7-a55bf6d3619e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Yaz0">
+      <UniqueIdentifier>{9651a041-1019-4486-9e90-1dccfa9471e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -281,6 +287,15 @@
     </ClCompile>
     <ClCompile Include="ZText.cpp">
       <Filter>Source Files\Z64</Filter>
+    </ClCompile>
+    <ClCompile Include="ZRom.cpp">
+      <Filter>Source Files\Z64</Filter>
+    </ClCompile>
+    <ClCompile Include="yaz0\yaz0.cpp">
+      <Filter>Source Files\Yaz0</Filter>
+    </ClCompile>
+    <ClCompile Include="FileWorker.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +553,21 @@
     </ClInclude>
     <ClInclude Include="ZText.h">
       <Filter>Header Files\Z64</Filter>
+    </ClInclude>
+    <ClInclude Include="ZRom.h">
+      <Filter>Header Files\Z64</Filter>
+    </ClInclude>
+    <ClInclude Include="yaz0\readwrite.h">
+      <Filter>Header Files\Yaz0</Filter>
+    </ClInclude>
+    <ClInclude Include="yaz0\yaz0.h">
+      <Filter>Header Files\Yaz0</Filter>
+    </ClInclude>
+    <ClInclude Include="FileWorker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ctpl_stl.h">
+      <Filter>Header Files\Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

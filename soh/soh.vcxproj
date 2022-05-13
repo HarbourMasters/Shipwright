@@ -112,9 +112,6 @@
       <GenerateMapFile>true</GenerateMapFile>
       <MapExports>true</MapExports>
     </Link>
-    <PreBuildEvent>
-      <Command>copy /b $(ProjectDir)src\boot\build.c +,,</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -144,7 +141,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>INCLUDE_GAME_PRINTF;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;ENABLE_DX11;%(PreprocessorDefinitions)GLEW_STATIC </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -176,13 +173,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugger.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp" />
+    <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp" />
     <ClCompile Include="soh\Enhancements\gameconsole.c" />
+    <ClCompile Include="soh\Enhancements\savestates.cpp" />
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
     <ClCompile Include="soh\stubs.c" />
+    <ClCompile Include="soh\util.cpp" />
     <ClCompile Include="soh\z_message_OTR.cpp" />
     <ClCompile Include="soh\z_play_otr.cpp" />
     <ClCompile Include="soh\z_scene_otr.cpp" />
@@ -276,6 +280,7 @@
     <ClCompile Include="src\code\z_actor_dlftbls.c" />
     <ClCompile Include="src\code\z_bgcheck.c" />
     <ClCompile Include="src\code\z_camera.c" />
+    <ClCompile Include="src\code\z_cheap_proc.c" />
     <ClCompile Include="src\code\z_collision_btltbls.c" />
     <ClCompile Include="src\code\z_collision_check.c" />
     <ClCompile Include="src\code\z_common_data.c" />
@@ -325,7 +330,6 @@
     <ClCompile Include="src\code\z_msgevent.c" />
     <ClCompile Include="src\code\z_olib.c" />
     <ClCompile Include="src\code\z_onepointdemo.c" />
-    <ClCompile Include="src\code\z_onepointdemo_data.c" />
     <ClCompile Include="src\code\z_parameter.c" />
     <ClCompile Include="src\code\z_path.c" />
     <ClCompile Include="src\code\z_play.c" />
@@ -875,6 +879,7 @@
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />
     <ClInclude Include="include\color.h" />
@@ -922,8 +927,15 @@
     <ClInclude Include="soh\Enhancements\bootcommands.h" />
     <ClInclude Include="soh\Enhancements\cvar.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
+    <ClInclude Include="soh\Enhancements\debugger\colViewer.h" />
+    <ClInclude Include="soh\Enhancements\savestates.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugger.h" />
+    <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
+    <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
+    <ClInclude Include="soh\OTRAudio.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
+    <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Ice\z_arrow_ice.h" />

@@ -2,6 +2,7 @@
 #include "spdlog/spdlog.h"
 #include "GlobalCtx2.h"
 #include "Window.h"
+#include "GameSettings.h"
 
 namespace Ship {
 	ConfigFile::ConfigFile(std::shared_ptr<GlobalCtx2> Context, const std::string& Path) : Context(Context), Path(Path), File(Path.c_str()) {
@@ -71,7 +72,7 @@ namespace Ship {
 		(*this)["WINDOW"]["FULLSCREEN WIDTH"] = std::to_string(1920);
 		(*this)["WINDOW"]["FULLSCREEN HEIGHT"] = std::to_string(1080);
 		(*this)["WINDOW"]["FULLSCREEN"] = std::to_string(false);
-		(*this)["WINDOW"]["GFX BACKEND"] = "sdl";
+		(*this)["WINDOW"]["GFX BACKEND"] = "";
 
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_CRIGHT)] = std::to_string(0x14D);
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_CLEFT)] = std::to_string(0x14B);
@@ -148,6 +149,8 @@ namespace Ship {
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKLEFT)] = std::to_string(0x01E);
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKDOWN)] = std::to_string(0x01F);
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKUP)] = std::to_string(0x011);
+
+		(*this)["ENHANCEMENT SETTINGS"]["TEXT_SPEED"] = "1";
 
 		(*this)["SDL CONTROLLER 1"]["GUID"] = "";
 		(*this)["SDL CONTROLLER 2"]["GUID"] = "";

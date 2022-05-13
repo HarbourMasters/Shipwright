@@ -19,6 +19,8 @@ public:
     void update();
     void draw();
     void exit();
+
+    inline bool CloseRequested() { return closeRequested; }
 protected:
     void LoadTexture(const std::string& name, const std::string& path) {
         const Image tmp = LoadImage(path.c_str());
@@ -32,6 +34,9 @@ protected:
         SetTextureFilter(font.texture, TEXTURE_FILTER_POINT);
         Fonts[name] = font;
     }
+
+private:
+    bool closeRequested = false;
 };
 
 extern OTRGame* Game;

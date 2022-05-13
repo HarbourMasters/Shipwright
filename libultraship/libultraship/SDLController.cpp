@@ -5,14 +5,12 @@
 #include "spdlog/spdlog.h"
 #include "stox.h"
 #include "Window.h"
+#include "Cvar.h"
+#include <Utils/StringHelper.h>
 
 extern "C" uint8_t __osMaxControllers;
-float gyroDriftX;
-float gyroDriftY;
 
 namespace Ship {
-
-
 	SDLController::SDLController(int32_t dwControllerNumber) : Controller(dwControllerNumber), Cont(nullptr), guid(INVALID_SDL_CONTROLLER_GUID) {
 
 	}
@@ -63,30 +61,36 @@ namespace Ship {
                 if (Conf[ConfSection]["GUID"].compare("") == 0 || Conf[ConfSection]["GUID"].compare(INVALID_SDL_CONTROLLER_GUID) == 0 || Conf[ConfSection]["GUID"].compare(NewGuid) == 0) {
                     auto NewCont = SDL_GameControllerOpen(i);
 
-                    if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO))
-                    {
-                        SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
-                    }
-
                     // We failed to load the controller. Go to next.
                     if (NewCont == nullptr) {
                         SPDLOG_ERROR("SDL Controller failed to open: ({})", SDL_GetError());
                         continue;
                     }
 
+                    if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO))
+                    {
+                        SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
+                    }
+
                     guid = NewGuid;
                     Cont = NewCont;
 
                     std::string BindingConfSection = GetBindingConfSection();
-                    std::shared_ptr<ConfigFile> pBindingConf = GlobalCtx2::GetInstance()->GetConfig();
-                    ConfigFile& BindingConf = *pBindingConf.get();
+                    std::string PadConfSection = *GetPadConfSection();
+                    std::shared_ptr<ConfigFile> config = GlobalCtx2::GetInstance()->GetConfig();
 
-                    if (!BindingConf.has(BindingConfSection)) {
+                    if (!config->has(BindingConfSection)) {
                         CreateDefaultBinding();
+                    }
+
+                    if (!config->has(PadConfSection)) {
+                        CreateDefaultPadConf();
                     }
 
                     LoadBinding();
                     LoadAxisThresholds();
+                    // Update per-controller settings in ImGui menu after opening controller.
+                    Game::LoadPadSettings();
 
                     break;
                 }
@@ -97,6 +101,9 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
+        if (CanRumble()) {
+            SDL_GameControllerRumble(Cont, 0, 0, 0);
+        }
         if (Cont != nullptr) {
             SDL_GameControllerClose(Cont);
         }
@@ -147,8 +154,8 @@ namespace Ship {
         //bound diagonals to an octagonal range {-68 ... +68}
         if (ax != 0.0 && ay != 0.0) {
             auto slope = ay / ax;
-            auto edgex = copysign(85.0 / (abs(slope) + wAxisThreshold / 69.0), ax);
-            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + wAxisThreshold / 69.0)), ay);
+            auto edgex = copysign(85.0 / (abs(slope) + 16.0 / 69.0), ax);
+            auto edgey = copysign(std::min(abs(edgex * slope), 85.0 / (1.0 / abs(slope) + 16.0 / 69.0)), ay);
             edgex = edgey / slope;
 
             auto scale = sqrt(edgex * edgex + edgey * edgey) / 85.0;
@@ -182,37 +189,44 @@ namespace Ship {
 
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
+            size_t contNumber = GetControllerNumber();
+
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
             const char* contName = SDL_GameControllerName(Cont);
-            const int isSpecialController = strcmp("PS5 Controller", contName);
-            const float gyroSensitivity = Game::Settings.controller.gyro_sensitivity;
+            const int isSpecialController = !strcmp("PS5 Controller", contName);
+            float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), 0.0f);
+            float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), 0.0f);
+            const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity", contNumber).c_str(), 1.0f);
 
-            if (gyroDriftX == 0) {
-                if (isSpecialController == 0) {
-                    gyroDriftX = gyroData[2];
+            if (gyro_drift_x == 0) {
+                gyro_drift_x = gyroData[0];
+            }
+
+            if (gyro_drift_y == 0) {
+                if (isSpecialController == 1) {
+                    gyro_drift_y = gyroData[2];
                 }
                 else {
-                    gyroDriftX = gyroData[0];
+                    gyro_drift_y = gyroData[1];
                 }
             }
 
-            if (gyroDriftY == 0) {
-                gyroDriftY = gyroData[1];
-            }
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), gyro_drift_x);
+            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), gyro_drift_y);
 
-            if (isSpecialController == 0) {
-                wGyroX = gyroData[2] - gyroDriftX;
+            if (isSpecialController == 1) {
+                wGyroX = gyroData[0] - gyro_drift_x;
+                wGyroY = -gyroData[2] - gyro_drift_y;
             }
             else {
-                wGyroX = gyroData[0] - gyroDriftX;
+                wGyroX = gyroData[0] - gyro_drift_x;
+                wGyroY = gyroData[1] - gyro_drift_y;
             }
 
-            wGyroY = gyroData[1] - gyroDriftY;
-
-            wGyroX *= gyroSensitivity;
-            wGyroY *= gyroSensitivity;
+            wGyroX *= gyro_sensitivity;
+            wGyroY *= gyro_sensitivity;
         }
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
@@ -333,18 +347,29 @@ namespace Ship {
 
     void SDLController::WriteToSource(ControllerCallback* controller)
     {
-        if (SDL_GameControllerHasRumble(Cont)) {
+        if (CanRumble()) {
             if (controller->rumble > 0) {
-                SDL_GameControllerRumble(Cont, 0xFFFF * Game::Settings.controller.rumble_strength, 0xFFFF * Game::Settings.controller.rumble_strength, 1);
+                float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", GetControllerNumber()).c_str(), 1.0f);
+                SDL_GameControllerRumble(Cont, 0xFFFF * rumble_strength, 0xFFFF * rumble_strength, 0);
+            } else {
+                SDL_GameControllerRumble(Cont, 0, 0, 0);
             }
         }
 
         if (SDL_GameControllerHasLED(Cont)) {
-            if (controller->ledColor == 1) {
+            switch (controller->ledColor) {
+            case 0:
                 SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 255, 0, 0);
-            }
-            else {
-                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0, 255, 0);
+                break;
+            case 1:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x1E, 0x69, 0x1B);
+                break;
+            case 2:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x64, 0x14, 0x00);
+                break;
+            case 3:
+                SDL_JoystickSetLED(SDL_GameControllerGetJoystick(Cont), 0x00, 0x3C, 0x64);
+                break;
             }
         }
     }
@@ -387,6 +412,14 @@ namespace Ship {
         Conf.Save();
     }
 
+    void SDLController::CreateDefaultPadConf() {
+        std::string ConfSection = *GetPadConfSection();
+        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        ConfigFile& Conf = *pConf.get();
+
+        Conf.Save();
+    }
+
     void SDLController::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
         if (guid.compare(INVALID_SDL_CONTROLLER_GUID)) {
             return;
@@ -405,5 +438,9 @@ namespace Ship {
 
     std::string SDLController::GetBindingConfSection() {
         return GetControllerType() + " CONTROLLER BINDING " + guid;
+    }
+
+    std::optional<std::string> SDLController::GetPadConfSection() {
+        return GetControllerType() + " CONTROLLER PAD " + guid;
     }
 }

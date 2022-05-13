@@ -300,7 +300,7 @@ void EnKusa_Main(EnKusa* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         EnKusa_SetupLiftedUp(this);
         SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_PL_PULL_UP_PLANT);
-    } else if (this->collider.base.acFlags & AC_HIT) {
+    } else if (this->collider.base.acFlags & AC_HIT && gGlobalCtx->csCtx.state == 0) {
         this->collider.base.acFlags &= ~AC_HIT;
         EnKusa_SpawnFragments(this, globalCtx);
         EnKusa_DropCollectible(this, globalCtx);

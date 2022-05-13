@@ -35,7 +35,7 @@ const ActorInit En_Takara_Man_InitVars = {
     (ActorResetFunc)EnTakaraMan_Reset,
 };
 
-static u8 sTakaraIsInitialized = false;
+u8 sTakaraIsInitialized = false;
 
 void EnTakaraMan_Reset(Actor* thisx, GlobalContext* globalCtx) {
     sTakaraIsInitialized = false;

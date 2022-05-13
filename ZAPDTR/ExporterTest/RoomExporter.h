@@ -6,5 +6,5 @@
 class ExporterExample_Room : public ZResourceExporter
 {
 public:
-	void Save(ZResource* res, fs::path outPath, BinaryWriter* writer) override;
+	void Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer) override;
 };

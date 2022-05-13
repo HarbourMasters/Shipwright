@@ -53,7 +53,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_F32(uncullZoneDownward, 4000, ICHAIN_STOP),
 };
 
-static s16 sWarpTimerTarget;
+s16 sWarpTimerTarget;
 
 void DoorWarp1_SetupAction(DoorWarp1* this, DoorWarp1ActionFunc actionFunc) {
     this->actionFunc = actionFunc;

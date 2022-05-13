@@ -48,7 +48,8 @@ void SetAlternateHeaders::DeclareReferencesLate(const std::string& prefix)
 		for (size_t i = 0; i < headers.size(); i++)
 		{
 			std::string altHeaderName;
-			Globals::Instance->GetSegmentedPtrName(headers.at(i), parent, "", altHeaderName);
+			Globals::Instance->GetSegmentedPtrName(headers.at(i), parent, "", altHeaderName,
+			                                       parent->workerID);
 
 			declaration += StringHelper::Sprintf("\t%s,", altHeaderName.c_str());
 
@@ -66,7 +67,8 @@ void SetAlternateHeaders::DeclareReferencesLate(const std::string& prefix)
 std::string SetAlternateHeaders::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "SceneCmd*", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "SceneCmd*", listName,
+	                                       parent->workerID);
 	return StringHelper::Sprintf("SCENE_CMD_ALTERNATE_HEADER_LIST(%s)", listName.c_str());
 }
 

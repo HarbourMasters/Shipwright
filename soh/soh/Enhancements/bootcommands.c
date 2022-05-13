@@ -24,6 +24,12 @@ void BootCommands_Init()
     CVar_RegisterS32("gDisableLOD", 0);
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gPauseLiveLink", 0);
+    CVar_RegisterS32("gMinimalUI", 0);
+    CVar_RegisterS32("gRumbleEnabled", 0);
+    CVar_RegisterS32("gUniformLR", 1);
+    CVar_RegisterS32("gNewDrops", 0);
+    CVar_RegisterS32("gVisualAgony", 0);
+    CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
 }
 
 //void BootCommands_ParseBootArgs(char* str)

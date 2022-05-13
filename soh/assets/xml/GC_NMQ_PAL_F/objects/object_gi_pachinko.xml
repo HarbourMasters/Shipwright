@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_pachinko" Segment="6">
+        <DList Name="gGiSlingshotDL" Offset="0x0940"/>
+    </File>
+</Root>
