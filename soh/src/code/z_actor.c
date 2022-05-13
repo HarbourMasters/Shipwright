@@ -7,13 +7,13 @@
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
 #include "textures/place_title_cards/g_pn_01.h"
 #include "textures/place_title_cards/g_pn_02.h"
@@ -758,12 +758,14 @@ void func_8002CDE4(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
 }
 
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height) {
+                            u8 height, s16 hasTranslation) {
 
     if (ResourceMgr_OTRSigCheck(texture))
         texture = ResourceMgr_LoadTexByName(texture);
 
     titleCtx->texture = texture;
+    titleCtx->isBossCard = true;
+    titleCtx->hasTranslation = hasTranslation;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -772,7 +774,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
     titleCtx->delayTimer = 0;
 }
 
-void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
+void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
 
@@ -957,7 +959,7 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         default:
             titleCtx->texture = NULL;
             return;
-            
+
     }
 
     char newName[512];
@@ -981,6 +983,8 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
     titleCtx->texture = ResourceMgr_LoadTexByName(texture);
 
     //titleCtx->texture = texture;
+    titleCtx->isBossCard = false;
+    titleCtx->hasTranslation = false;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -1009,6 +1013,9 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     s32 doubleWidth;
     s32 titleY;
     s32 titleSecondY;
+    s32 textureLanguageOffset;
+    s32 shiftTopY;
+    s32 shiftBottomY;
 
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
@@ -1022,31 +1029,47 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
 
+        textureLanguageOffset = 0x0;
+        shiftTopY = 0x0;
+        shiftBottomY = 0x1000;
+
+        //if this card is bosses cards, has translation and that is not using English language.
+        if (titleCtx->isBossCard && titleCtx->hasTranslation && gSaveContext.language != LANGUAGE_ENG) {
+            textureLanguageOffset = (width * height * gSaveContext.language);
+            if (gSaveContext.language == LANGUAGE_GER) {
+                shiftTopY = 0x400;
+                shiftBottomY = 0x1400;
+            } else if (gSaveContext.language == LANGUAGE_FRA) {
+                shiftTopY = 0x800;
+                shiftBottomY = 0x1800;
+            }
+        }
+
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
         WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
 
         gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture, G_IM_FMT_IA,
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftTopY, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4) - 1,
+        //Removing the -1 there remove the gap between top and bottom textures.
+        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
 
         // If texture is bigger than 0x1000, display the rest
         if (height > 0) {
-            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + 0x1000,
+            gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY,
                                 G_IM_FMT_IA,
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
+            //Removing the -1 there remove the gap between top and bottom textures.
             gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
-                                titleSecondY + (height * 4) - 1, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                                titleSecondY + (height * 4), G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2880);
@@ -1122,7 +1145,7 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     CollisionCheck_InitInfo(&actor->colChkInfo);
     actor->floorBgId = BGCHECK_SCENE;
     ActorShape_Init(&actor->shape, 0.0f, NULL, 0.0f);
-    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+    //if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
     {
         //Actor_SetObjectDependency(globalCtx, actor);
         actor->init(actor, globalCtx);
@@ -2358,7 +2381,7 @@ void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx) {
             actor->sfx = 0;
 
             if (actor->init != NULL) {
-                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex)) 
+                if (Object_IsLoaded(&globalCtx->objectCtx, actor->objBankIndex))
                 {
                     Actor_SetObjectDependency(globalCtx, actor);
                     actor->init(actor, globalCtx);
@@ -2547,10 +2570,16 @@ void func_80030FA8(GraphicsContext* gfxCtx) {
     gDPLoadTextureBlock(POLY_XLU_DISP++, gLensOfTruthMaskTex, G_IM_FMT_I, G_IM_SIZ_8b, 64, 64, 0,
                         G_TX_MIRROR | G_TX_CLAMP, G_TX_MIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
 
-    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, 384, 224, 892, 732);
-    gSPTextureRectangle(POLY_XLU_DISP++, 0, 0, 1280, 960, G_TX_RENDERTILE, 2240, 1600, 576, 597);
-    gDPPipeSync(POLY_XLU_DISP++);
+    s32 x = OTRGetRectDimensionFromLeftEdge(0) << 2;
+    s32 w = OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2;
 
+    float ratio = OTRGetAspectRatio();
+
+    gDPSetTileSize(POLY_XLU_DISP++, G_TX_RENDERTILE, 384, 224, 892, 732);
+    // TODO: Do correct math to fix it
+    gSPWideTextureRectangle(POLY_XLU_DISP++, x, 0, x + abs(x), 960, G_TX_RENDERTILE, 0, 0, 0, 0);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, 0, 0, w, 960, G_TX_RENDERTILE, 2240, 1600, 576, 597);
+    gDPPipeSync(POLY_XLU_DISP++);
     CLOSE_DISPS(gfxCtx, "../z_actor.c", 6183);
 }
 
@@ -2894,7 +2923,7 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
     osSyncPrintf(VT_FGCOL(CYAN));
 
     if (actorOverlay->numLoaded == 0) {
-        
+
         if (actorOverlay->initInfo->reset != NULL) {
             actorOverlay->initInfo->reset();
         }
@@ -3020,7 +3049,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
     if (objBankIndex < 0 && !gMapLoading)
         objBankIndex = 0;
-    
+
     if ((objBankIndex < 0) ||
         ((actorInit->category == ACTORCAT_ENEMY) && Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num))) {
         // "No data bank!! <data bank＝%d> (profilep->bank=%d)"
@@ -4242,8 +4271,6 @@ s32 func_80035124(Actor* actor, GlobalContext* globalCtx) {
 
     return ret;
 }
-
-#include "z_cheap_proc.c"
 
 u8 func_800353E8(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);

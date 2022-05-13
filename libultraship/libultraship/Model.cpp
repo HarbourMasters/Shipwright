@@ -39,7 +39,7 @@ namespace Ship
         Vertex* vtxData = new Vertex[numVerts];
         uint32_t* indicesData = new uint32_t[numPolys];
 
-        if (vertices != NULL)
+        if (vertices != 0)
         {
             reader->Seek(headerStart + vertices, SeekOffsetType::Start);
 
@@ -47,7 +47,7 @@ namespace Ship
                 vtxData[i].pos = reader->ReadVec3f();
         }
 
-        if (normals != NULL)
+        if (normals != 0)
         {
             reader->Seek(headerStart + normals, SeekOffsetType::Start);
 
@@ -55,7 +55,7 @@ namespace Ship
                 vtxData[i].normal = reader->ReadVec3f();
         }
 
-        if (vertexColors != NULL)
+        if (vertexColors != 0)
         {
             reader->Seek(headerStart + vertexColors, SeekOffsetType::Start);
 
@@ -63,7 +63,7 @@ namespace Ship
                 vtxData[i].color = reader->ReadColor3b();
         }
 
-        if (uvCoords != NULL)
+        if (uvCoords != 0)
         {
             reader->Seek(headerStart + uvCoords, SeekOffsetType::Start);
 
@@ -71,7 +71,7 @@ namespace Ship
                 vtxData[i].uv = reader->ReadVec2f();
         }
 
-        if (boneWeights != NULL)
+        if (boneWeights != 0)
         {
             reader->Seek(headerStart + boneWeights, SeekOffsetType::Start);
 
@@ -81,7 +81,7 @@ namespace Ship
                 mdl->boneWeights[i] = reader->ReadVec2f();
         }
 
-        if (faces != NULL)
+        if (faces != 0)
         {
             reader->Seek(headerStart + faces, SeekOffsetType::Start);
             reader->Read((char*)indicesData, numPolys * sizeof(uint32_t));

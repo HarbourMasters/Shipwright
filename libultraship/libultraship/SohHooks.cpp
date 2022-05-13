@@ -24,7 +24,7 @@ namespace ModInternal {
 
     bool handleHook(std::shared_ptr<HookCall> call) {
         std::string hookName = std::string(call->name);
-        for (int l = 0; l < listeners[hookName].size(); l++) {
+        for (size_t l = 0; l < listeners[hookName].size(); l++) {
             (listeners[hookName][l])(call);
         }
         return call->cancelled;

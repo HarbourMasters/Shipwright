@@ -32,9 +32,9 @@ void func_80A7D26C(EnInsect* this, GlobalContext* globalCtx);
 void func_80A7D39C(EnInsect* this);
 void func_80A7D460(EnInsect* this, GlobalContext* globalCtx);
 
-static f32 D_80A7DEB0 = 0.0f;
-static s16 D_80A7DEB4 = 0;
-static s16 D_80A7DEB8 = 0;
+f32 D_80A7DEB0 = 0.0f;
+s16 D_80A7DEB4 = 0;
+s16 D_80A7DEB8 = 0;
 
 const ActorInit En_Insect_InitVars = {
     ACTOR_EN_INSECT,

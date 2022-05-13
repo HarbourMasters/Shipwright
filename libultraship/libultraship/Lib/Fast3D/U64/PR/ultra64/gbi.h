@@ -1004,7 +1004,7 @@
 #define G_DL_PUSH       0x00
 #define G_DL_NOPUSH     0x01
 
-#if _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #define _LANGUAGE_C
 #endif
 
@@ -3132,7 +3132,7 @@ _DW({                                   \
   #endif
   */
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER)
 #define CALL_2(A,B) A B
 #define CALL_3(A,B,C) A B C
 
@@ -3143,12 +3143,12 @@ _DW({                                   \
 #define	gsDPSetCombineMode(a, b)	gsDPSetCombineLERP(a, b)
 #endif
 
-#if _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #define CALL_2(A,B) A B
 #define CALL_3(A,B,C) A B C
 
-#define	gsDPSetCombineMode(a, b)	CALL_2(gsDPSetCombineLERP, (a, b))
-  //#define gsDPSetCombineMode(a, b)    _SHIFTL(0, 24, 8), 0
+// #define	gsDPSetCombineMode(a, b)	CALL_2(gsDPSetCombineLERP, (a, b))
+//   #define gsDPSetCombineMode(a, b)    _SHIFTL(0, 24, 8), 0
 #else
 #define gsDPSetCombineMode(a, b)    gsDPSetCombineLERP(a, b)
 #endif
@@ -4574,6 +4574,20 @@ _DW({                                   \
     _g2->words.w0 = (_SHIFTL(s, 16, 16) | _SHIFTL(t, 0, 16));		\
     _g2->words.w1 = (_SHIFTL(dsdx, 16, 16) | _SHIFTL(dtdy, 0, 16));	\
 }
+
+# define gsSPWideTextureRectangle(xl, yl, xh, yh, tile, s, t, dsdx, dtdy)   \
+{{									                                        \
+    (_SHIFTL(G_TEXRECT_WIDE, 24, 8) | _SHIFTL((xh), 0, 24)),			    \
+    _SHIFTL((yh), 0, 24),						                            \
+}},									                                        \
+{{									                                        \
+    (_SHIFTL((tile), 24, 3) | _SHIFTL((xl), 0, 24)),			            \
+    _SHIFTL((yl), 0, 24),						                            \
+}},									                                        \
+{{									                                        \
+    _SHIFTL(s, 16, 16) | _SHIFTL(t, 0, 16),				                    \
+    _SHIFTL(dsdx, 16, 16) | _SHIFTL(dtdy, 0, 16)			                \
+}}
 
  /* like gSPTextureRectangle but accepts negative position arguments */
 #define gSPScisTextureRectangle(pkt, xl, yl, xh, yh, tile, s, t, dsdx, dtdy) \

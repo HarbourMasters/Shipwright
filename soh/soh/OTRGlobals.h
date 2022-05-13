@@ -1,17 +1,22 @@
+#ifndef OTR_GLOBALS_H
+#define OTR_GLOBALS_H
+
 #pragma once
 
 #include "GlobalCtx2.h"
 
 #ifdef __cplusplus
+#include "Enhancements/savestates.h"
 class OTRGlobals
 {
 public:
-	static OTRGlobals* Instance;
+    static OTRGlobals* Instance;
 
-	std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<SaveStateMgr> gSaveStateMgr;
 
-	OTRGlobals();
-	~OTRGlobals();
+    OTRGlobals();
+    ~OTRGlobals();
 
 private:
 
@@ -38,6 +43,7 @@ char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
+Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
@@ -66,4 +72,6 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+#endif
+
 #endif

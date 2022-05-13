@@ -29,8 +29,9 @@
 #include "SDL_opengl.h"
 #else
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 #define GL_GLEXT_PROTOTYPES 1
-#include <SDL2/SDL_opengles2.h>
+// #include <SDL2/SDL_opengles2.h>
 #endif
 
 #include "gfx_cc.h"
@@ -73,6 +74,7 @@ static uint32_t frame_count;
 static vector<Framebuffer> framebuffers;
 static size_t current_framebuffer;
 static float current_noise_scale;
+static FilteringMode current_filter_mode = THREE_POINT;
 
 GLuint pixel_depth_rb, pixel_depth_fb;
 size_t pixel_depth_rb_size;
@@ -177,6 +179,7 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return "texel.a";
         }
     }
+    return "";
 }
 
 static void append_formula(char *buf, size_t *len, uint8_t c[2][4], bool do_single, bool do_multiply, bool do_mix, bool with_alpha, bool only_alpha, bool opt_alpha) {
@@ -211,7 +214,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
 
     char vs_buf[1024];
-    char fs_buf[1024];
+    char fs_buf[3000];
     size_t vs_len = 0;
     size_t fs_len = 0;
     size_t num_floats = 4;
@@ -312,21 +315,42 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "}");
     }
 
+    if (current_filter_mode == THREE_POINT) {
+        append_line(fs_buf, &fs_len, "#define TEX_OFFSET(off) texture2D(tex, texCoord - (off)/texSize)");
+        append_line(fs_buf, &fs_len, "vec4 filter3point(in sampler2D tex, in vec2 texCoord, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    vec2 offset = fract(texCoord*texSize - vec2(0.5));");
+        append_line(fs_buf, &fs_len, "    offset -= step(1.0, offset.x + offset.y);");
+        append_line(fs_buf, &fs_len, "    vec4 c0 = TEX_OFFSET(offset);");
+        append_line(fs_buf, &fs_len, "    vec4 c1 = TEX_OFFSET(vec2(offset.x - sign(offset.x), offset.y));");
+        append_line(fs_buf, &fs_len, "    vec4 c2 = TEX_OFFSET(vec2(offset.x, offset.y - sign(offset.y)));");
+        append_line(fs_buf, &fs_len, "    return c0 + abs(offset.x)*(c1-c0) + abs(offset.y)*(c2-c0);");
+        append_line(fs_buf, &fs_len, "}");
+        append_line(fs_buf, &fs_len, "vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    return filter3point(tex, uv, texSize);");
+        append_line(fs_buf, &fs_len, "}");
+    } else {
+        append_line(fs_buf, &fs_len, "vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    return texture2D(tex, uv);");
+        append_line(fs_buf, &fs_len, "}");
+    }
+
     append_line(fs_buf, &fs_len, "void main() {");
 
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
+
+            fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
+
             if (!s && !t) {
-                fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vTexCoord%d);\n", i, i, i);
+                fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vTexCoord%d, texSize%d);\n", i, i, i, i);
             } else {
-                fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
                 if (s && t) {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, clamp(vTexCoord%d, 0.5 / texSize%d, vec2(vTexClampS%d, vTexClampT%d)));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, clamp(vTexCoord%d, 0.5 / texSize%d, vec2(vTexClampS%d, vTexClampT%d)), texSize%d);\n", i, i, i, i, i, i, i);
                 } else if (s) {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vec2(clamp(vTexCoord%d.s, 0.5 / texSize%d.s, vTexClampS%d), vTexCoord%d.t));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vec2(clamp(vTexCoord%d.s, 0.5 / texSize%d.s, vTexClampS%d), vTexCoord%d.t), texSize%d);\n", i, i, i, i, i, i, i);
                 } else {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vec2(vTexCoord%d.s, clamp(vTexCoord%d.t, 0.5 / texSize%d.t, vTexClampT%d)));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vec2(vTexCoord%d.s, clamp(vTexCoord%d.t, 0.5 / texSize%d.t, vTexClampT%d)), texSize%d);\n", i, i, i, i, i, i, i);
                 }
             }
         }
@@ -422,9 +446,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint max_length = 0;
         glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
-        //fprintf(stderr, "Fragment shader compilation failed\n");
+        fprintf(stderr, "Fragment shader compilation failed\n");
         glGetShaderInfoLog(fragment_shader, max_length, &max_length, &error_log[0]);
-        //fprintf(stderr, "%s\n", &error_log[0]);
+        fprintf(stderr, "%s\n", &error_log[0]);
         abort();
     }
 
@@ -549,12 +573,14 @@ static uint32_t gfx_cm_to_opengl(uint32_t val) {
         case G_TX_NOMIRROR | G_TX_WRAP:
             return GL_REPEAT;
     }
+    return 0;
 }
 
 static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
+    const GLint filter = linear_filter && current_filter_mode == LINEAR ? GL_LINEAR : GL_NEAREST;
     glActiveTexture(GL_TEXTURE0 + tile);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear_filter ? GL_LINEAR : GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear_filter ? GL_LINEAR : GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
 }
@@ -823,6 +849,15 @@ static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(in
     return res;
 }
 
+void gfx_opengl_set_texture_filter(FilteringMode mode) {
+    current_filter_mode = mode;
+    gfx_texture_cache_clear();
+}
+
+FilteringMode gfx_opengl_get_texture_filter(void) {
+    return current_filter_mode;
+}
+
 struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_get_clip_parameters,
     gfx_opengl_unload_shader,
@@ -853,7 +888,9 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_get_pixel_depth,
     gfx_opengl_get_framebuffer_texture_id,
     gfx_opengl_select_texture_fb,
-    gfx_opengl_delete_texture
+    gfx_opengl_delete_texture,
+    gfx_opengl_set_texture_filter,
+    gfx_opengl_get_texture_filter
 };
 
 #endif

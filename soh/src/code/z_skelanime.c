@@ -863,7 +863,7 @@ void AnimationContext_SetLoadFrame(GlobalContext* globalCtx, LinkAnimationHeader
 
         char animPath[2048];
 
-        sprintf(animPath, "misc\\link_animetion\\gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
+        sprintf(animPath, "misc/link_animetion/gPlayerAnimData_%06X", (((uintptr_t)linkAnimHeader->segment - 0x07000000)));
 
         //printf("Streaming %s, seg = %08X\n", animPath, linkAnimHeader->segment);
 
@@ -877,7 +877,7 @@ void AnimationContext_SetLoadFrame(GlobalContext* globalCtx, LinkAnimationHeader
         {
             ramPtr[i] = i * 7;
         }*/
-        
+
 
         //DmaMgr_SendRequest2(&entry->data.load.req, ram,
                             //LINK_ANIMATION_OFFSET(linkAnimHeader->segment, ((sizeof(Vec3s) * limbCount + 2) * frame)),

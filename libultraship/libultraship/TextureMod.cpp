@@ -43,7 +43,7 @@ namespace Ship {
 		if (raw_path == nullptr) return;
 
 		const auto api = BIND_PTR("gfx_api", GfxRenderingAPI*);
-		const auto path = normalize(raw_path) + ".png";
+		const auto path = std::string(raw_path) + ".png";
 		const auto node = BIND_PTR("node", TextureCacheNode**);
 		const auto fmt = BIND_VAR("fmt", uint32_t*);
 		const auto siz = BIND_VAR("siz", uint32_t*);

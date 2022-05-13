@@ -30,6 +30,9 @@
 #include "ichain.h"
 #include "regs.h"
 
+#define AUDIO_HEAP_SIZE 0x38000
+#define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
+
 #ifdef __cplusplus
 namespace Ship
 {
@@ -251,6 +254,8 @@ typedef struct {
     /* 0x0B */ u8       delayTimer; // how long the title card waits to appear
     /* 0x0C */ s16      alpha;
     /* 0x0E */ s16      intensity;
+    /* ---- */ s16     isBossCard; //To detect if that a Boss name title card.
+    /* ---- */ s16     hasTranslation; // to detect if the current title card has translation (used for bosses only)
 } TitleCardContext; // size = 0x10
 
 typedef struct {

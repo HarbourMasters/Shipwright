@@ -144,25 +144,25 @@ static f32 sFlatWidth[41] = {
 #include "z_boss_mo_colchk.c"
 
 static BossMoEffect sEffects[300];
-static s32 sSeed1;
-static s32 sSeed2;
-static s32 sSeed3;
+static s32 sBossGanonSeed1;
+static s32 sBossGanonSeed2;
+static s32 sBossGanonSeed3;
 
 void BossMo_InitRand(s32 seedInit0, s32 seedInit1, s32 seedInit2) {
-    sSeed1 = seedInit0;
-    sSeed2 = seedInit1;
-    sSeed3 = seedInit2;
+    sBossGanonSeed1 = seedInit0;
+    sBossGanonSeed2 = seedInit1;
+    sBossGanonSeed3 = seedInit2;
 }
 
 f32 BossMo_RandZeroOne(void) {
     // Wichmann-Hill algorithm
     f32 randFloat;
 
-    sSeed1 = (sSeed1 * 171) % 30269;
-    sSeed2 = (sSeed2 * 172) % 30307;
-    sSeed3 = (sSeed3 * 170) % 30323;
+    sBossGanonSeed1 = (sBossGanonSeed1 * 171) % 30269;
+    sBossGanonSeed2 = (sBossGanonSeed2 * 172) % 30307;
+    sBossGanonSeed3 = (sBossGanonSeed3 * 170) % 30323;
 
-    randFloat = (sSeed1 / 30269.0f) + (sSeed2 / 30307.0f) + (sSeed3 / 30323.0f);
+    randFloat = (sBossGanonSeed1 / 30269.0f) + (sBossGanonSeed2 / 30307.0f) + (sBossGanonSeed3 / 30323.0f);
     while (randFloat >= 1.0f) {
         randFloat -= 1.0f;
     }
@@ -1423,7 +1423,7 @@ void BossMo_IntroCs(BossMo* this, GlobalContext* globalCtx) {
             }
             if (this->timers[2] == 130) {
                 TitleCard_InitBossName(globalCtx, &globalCtx->actorCtx.titleCtx,
-                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardTex), 0xA0, 0xB4, 0x80, 0x28);
+                                       SEGMENTED_TO_VIRTUAL(gMorphaTitleCardTex), 160, 180, 128, 40, true);
                 gSaveContext.eventChkInf[7] |= 0x10;
             }
             break;
@@ -3588,7 +3588,7 @@ void BossMo_Reset(void) {
     sMorphaTent1 = NULL;
     sMorphaTent2 = NULL;
     memset(sEffects, 0, sizeof(sEffects));
-    sSeed1 = 0;
-    sSeed2 = 0;
-    sSeed3 = 0;
+    sBossGanonSeed1 = 0;
+    sBossGanonSeed2 = 0;
+    sBossGanonSeed3 = 0;
 }

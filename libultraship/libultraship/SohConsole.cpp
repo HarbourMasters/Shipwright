@@ -16,7 +16,7 @@ std::map<ImGuiKey, std::string> BindingToggle;
 static bool HelpCommand(const std::vector<std::string>&) {
 	INFO("SoH Commands:");
 	for(const auto& cmd : SohImGui::console->Commands) {
-		INFO((" - " + cmd.first).c_str());
+		INFO("%s", (" - " + cmd.first).c_str());
 	}
 	return CMD_SUCCESS;
 }
@@ -35,7 +35,7 @@ std::string toLowerCase(std::string in) {
 static bool BindCommand(const std::vector<std::string>& args) {
 	if(args.size() > 2) {
 		const ImGuiIO* io = &ImGui::GetIO();;
-		for (int k = 0; k < std::size(io->KeysData); k++) {
+		for (size_t k = 0; k < std::size(io->KeysData); k++) {
 			std::string key(ImGui::GetKeyName(k));
 
 			if(toLowerCase(args[1]) == toLowerCase(key)) {
@@ -55,7 +55,7 @@ static bool BindCommand(const std::vector<std::string>& args) {
 static bool BindToggleCommand(const std::vector<std::string>& args) {
 	if (args.size() > 2) {
 		const ImGuiIO* io = &ImGui::GetIO();;
-		for (int k = 0; k < std::size(io->KeysData); k++) {
+		for (size_t k = 0; k < std::size(io->KeysData); k++) {
 			std::string key(ImGui::GetKeyName(k));
 
 			if (toLowerCase(args[1]) == toLowerCase(key)) {
@@ -92,7 +92,7 @@ void Console::Update() {
 	}
 	for (auto [key, var] : BindingToggle) {
 		if (ImGui::IsKeyPressed(key)) {
-			CVar* cvar = CVar_GetVar(var.c_str());
+			CVar* cvar = CVar_Get(var.c_str());
 			Dispatch("set " + var + " " + std::to_string(cvar == nullptr ? 0 : !static_cast<bool>(cvar->value.valueS32)));
 		}
 	}
@@ -106,7 +106,7 @@ void Console::Draw() {
 	if (!this->opened) return;
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-	ImGui::Begin("Console", &this->opened);
+	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 
@@ -177,8 +177,10 @@ void Console::Draw() {
 			for (const auto& filter : priority_filters) {
 				const bool is_selected = (filter == std::string(this->level_filter));
 				if (ImGui::Selectable(filter.c_str(), is_selected))
+				{
 					this->level_filter = filter;
 					if (is_selected) ImGui::SetItemDefaultFocus();
+				}
 			}
 			ImGui::EndCombo();
 		}
@@ -194,7 +196,7 @@ void Console::Draw() {
 			if (ImGui::BeginTable("History", 1)) {
 
 				if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow)))
-					if (this->selectedId < this->Log.size() - 1) ++this->selectedId;
+					if (this->selectedId < (int)this->Log.size() - 1) ++this->selectedId;
 				if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow)))
 					if (this->selectedId > 0) --this->selectedId;
 
@@ -226,7 +228,7 @@ void Console::Draw() {
 		ImGui::EndChild();
 
 		// Renders input textfield
-		constexpr ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackEdit | 
+		constexpr ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackEdit |
 			                                  ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
 		ImGui::PushItemWidth(-1);
 		if(ImGui::InputTextWithHint("CMDInput", ">", this->InputBuffer, MAX_BUFFER_SIZE, flags, &Console::CallbackStub, this)) {
@@ -317,7 +319,7 @@ int Console::CallbackStub(ImGuiInputTextCallbackData* data) {
 	return 0;
 }
 
-void Console::Append(const std::string& channel, Priority priority, const char* fmt, ...) IM_FMTARGS(4) {
+void Console::Append(const std::string& channel, Priority priority, const char* fmt, ...) {
 	char buf[1024];
 	va_list args;
 	va_start(args, fmt);

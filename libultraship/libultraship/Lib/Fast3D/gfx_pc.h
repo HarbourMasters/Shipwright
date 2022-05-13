@@ -4,12 +4,14 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <unordered_map>
+#include <list>
 
 struct GfxRenderingAPI;
 struct GfxWindowManagerAPI;
 
 struct XYWidthHeight {
-    int16_t x, y, width, height;
+    int16_t x, y;
+    uint32_t width, height;
 };
 
 struct GfxDimensions {
@@ -25,7 +27,7 @@ struct TextureCacheKey {
     uint8_t palette_index;
 
     bool operator==(const TextureCacheKey&) const noexcept = default;
-     
+
     struct Hasher {
         size_t operator()(const TextureCacheKey& key) const noexcept {
             uintptr_t addr = (uintptr_t)key.texture_addr;

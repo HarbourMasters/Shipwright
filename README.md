@@ -7,14 +7,21 @@ The Ship does not include assets and as such requires a prior copy of the game t
 ## Quick Start
 
 1) Download The Ship of Harkinian from Discord.
-2) Requires an `oot debug` rom (not Master Quest).
+2) Requires a supported copy of the game (See supported games below).
+3) Use the OTRGui to generate an `oot.otr` archive file.
+4) Launch `soh.exe`
+
+### Supported Games
+Ocarina of Time Debug (not Master Quest)
 ```
 Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-3) Use the OTRGui to generate an `oot.otr` archive file.
-4) Launch `soh.exe`
+Ocarina of Time Pal Gamecube
+```
+sha1: d0c95b2cb3c6682a171db267932af7af8cf5fa82
+```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
@@ -37,7 +44,7 @@ If you still cannot get the tool to work, join our [Discord Server](https://disc
 
 ### Running The Ship of Harkinian
 
-Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool. 
+Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool.
 
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
@@ -51,7 +58,7 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 
 ## Building The Ship of Harkinian
 
-Refer to the [building instructions](https://github.com/HarbourMasters/Shipwright/BUILDING.md) to compile SoH.
+Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Troubleshooting The Exporter
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe

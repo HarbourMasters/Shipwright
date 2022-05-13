@@ -20,7 +20,7 @@ void BgJyaLift_DelayMove(BgJyaLift* this, GlobalContext* globalCtx);
 void BgJyaLift_SetupMove(BgJyaLift* this);
 void BgJyaLift_Move(BgJyaLift* this, GlobalContext* globalCtx);
 
-static s16 sIsSpawned = false;
+static s16 sKankyoIsSpawned = false;
 
 const ActorInit Bg_Jya_Lift_InitVars = {
     ACTOR_BG_JYA_LIFT,
@@ -55,7 +55,7 @@ void BgJyaLift_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgJyaLift* this = (BgJyaLift*)thisx;
 
     this->isSpawned = false;
-    if (sIsSpawned) {
+    if (sKankyoIsSpawned) {
         Actor_Kill(thisx);
         return;
     }
@@ -70,7 +70,7 @@ void BgJyaLift_Init(Actor* thisx, GlobalContext* globalCtx) {
         BgJyaLift_SetInitPosY(this);
     }
     thisx->room = -1;
-    sIsSpawned = true;
+    sKankyoIsSpawned = true;
     this->isSpawned = true;
 }
 
@@ -81,7 +81,7 @@ void BgJyaLift_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
         // "Goddess Lift DT"
         osSyncPrintf("女神リフト DT\n");
-        sIsSpawned = false;
+        sKankyoIsSpawned = false;
         DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
 }

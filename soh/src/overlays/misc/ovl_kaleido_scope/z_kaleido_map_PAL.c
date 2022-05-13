@@ -17,6 +17,14 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
         gPauseDekuTitleENGTex, gPauseDodongoTitleENGTex,   gPauseJabuTitleENGTex,   gPauseForestTitleENGTex,
         gPauseFireTitleENGTex, gPauseWaterTitleENGTex,     gPauseSpiritTitleENGTex, gPauseShadowTitleENGTex,
         gPauseBotWTitleENGTex, gPauseIceCavernTitleENGTex,
+
+        gPauseDekuTitleGERTex, gPauseDodongoTitleGERTex,   gPauseJabuTitleGERTex,   gPauseForestTitleGERTex,
+        gPauseFireTitleGERTex, gPauseWaterTitleGERTex,     gPauseSpiritTitleGERTex, gPauseShadowTitleGERTex,
+        gPauseBotWTitleGERTex, gPauseIceCavernTitleGERTex,
+
+        gPauseDekuTitleFRATex, gPauseDodongoTitleFRATex,   gPauseJabuTitleFRATex,   gPauseForestTitleFRATex,
+        gPauseFireTitleFRATex, gPauseWaterTitleFRATex,     gPauseSpiritTitleFRATex, gPauseShadowTitleFRATex,
+        gPauseBotWTitleFRATex, gPauseIceCavernTitleFRATex,
     };
     static void* floorIconTexs[] = {
         gDungeonMapBlankFloorButtonTex, gDungeonMap8FButtonTex, gDungeonMap7FButtonTex, gDungeonMap6FButtonTex,
@@ -216,7 +224,7 @@ void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxC
 
     gSPVertex(POLY_KAL_DISP++, &pauseCtx->mapPageVtx[68], 16, 0);
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonTitleTexs[gSaveContext.mapIndex], G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
+    gDPLoadTextureBlock(POLY_KAL_DISP++, dungeonTitleTexs[gSaveContext.mapIndex+(10*gSaveContext.language)], G_IM_FMT_IA, G_IM_SIZ_8b, 96, 16, 0,
                         G_TX_WRAP | G_TX_NOMIRROR, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
 

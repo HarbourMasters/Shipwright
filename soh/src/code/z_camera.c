@@ -26,7 +26,7 @@ s32 Camera_CheckWater(Camera* camera);
 #define FLG_ADJSLOPE (1 << 0)
 #define FLG_OFFGROUND (1 << 7)
 
-#include "z_camera_data.c"
+#include "z_camera_data.inc"
 
 /*===============================================================*/
 
@@ -565,10 +565,10 @@ s16 Camera_XZAngle(Vec3f* to, Vec3f* from) {
     return DEGF_TO_BINANG(RADF_TO_DEGF(Math_FAtan2F(from->x - to->x, from->z - to->z)));
 }
 
+ f32 D_8015CE50;
+ f32 D_8015CE54;
+ CamColChk D_8015CE58;
 s16 func_80044ADC(Camera* camera, s16 yaw, s16 arg2) {
-    static f32 D_8015CE50;
-    static f32 D_8015CE54;
-    static CamColChk D_8015CE58;
     Vec3f playerPos;
     Vec3f rotatedPos;
     Vec3f floorNorm;
@@ -7221,9 +7221,9 @@ s32 Camera_DbgChangeMode(Camera* camera) {
     return true;
 }
 
+s16 D_8011DB08 = 0x3F0;
+s16 D_8011DB0C = 0x156;
 void func_80058E8C(Camera* camera) {
-    static s16 D_8011DB08 = 0x3F0;
-    static s16 D_8011DB0C = 0x156;
     s32 pad3;
     f32 sp60;
     s32 pad;
@@ -7299,8 +7299,8 @@ void func_80058E8C(Camera* camera) {
     }
 }
 
+s32 sOOBTimer = 0;
 Vec3s Camera_Update(Camera* camera) {
-    static s32 sOOBTimer = 0;
     Vec3f viewAt;
     Vec3f viewEye;
     Vec3f viewUp;

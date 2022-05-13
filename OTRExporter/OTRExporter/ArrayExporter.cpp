@@ -10,7 +10,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 	writer->Write((uint32_t)arr->resList[0]->GetResourceType());
 	writer->Write((uint32_t)arr->arrayCnt);
 
-	for (int i = 0; i < arr->arrayCnt; i++)
+	for (size_t i = 0; i < arr->arrayCnt; i++)
 	{
 		if (arr->resList[i]->GetResourceType() == ZResourceType::Vertex)
 		{
@@ -32,7 +32,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			writer->Write((uint32_t)vec->scalarType);
 			writer->Write((uint32_t)vec->dimensions);
 
-			for (int k = 0; k < vec->dimensions; k++)
+			for (size_t k = 0; k < vec->dimensions; k++)
 			{
 				// OTRTODO: Duplicate code here. Cleanup at a later date...
 				switch (vec->scalarType)
@@ -62,6 +62,8 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 					writer->Write(vec->scalars[k].scalarData.u64);
 					break;
 					// OTRTODO: ADD OTHER TYPES
+				default:
+					break;
 				}
 			}
 		}
@@ -98,6 +100,8 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 				writer->Write(scal->scalarData.u64);
 				break;
 				// OTRTODO: ADD OTHER TYPES
+			default:
+				break;
 			}
 		}
 	}
