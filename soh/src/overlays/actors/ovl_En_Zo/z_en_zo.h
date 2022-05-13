@@ -15,6 +15,7 @@ typedef struct {
     /* 0x14 */ Vec3f pos;
     /* 0x20 */ Vec3f vel;
     /* 0x2C */ Vec3f vec; // Usage specific
+    u32 epoch;
 } EnZoEffect; // size = 0x38
 
 typedef void (*EnZoActionFunc)(struct EnZo*, GlobalContext*);

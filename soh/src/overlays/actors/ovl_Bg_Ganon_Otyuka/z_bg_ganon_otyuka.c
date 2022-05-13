@@ -8,6 +8,8 @@
 #include "overlays/actors/ovl_Boss_Ganon/z_boss_ganon.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 typedef enum {
@@ -283,6 +285,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
             platform = (BgGanonOtyuka*)actor;
 
             if (platform->dyna.actor.projectedPos.z > spBC) {
+                FrameInterpolation_RecordOpenChild(platform, 0);
                 if (camera->eye.y > platform->dyna.actor.world.pos.y) {
                     phi_s2 = sPlatformTopDL;
                 } else {
@@ -309,7 +312,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 }
 
                 for (i = 0; i < ARRAY_COUNT(sSides); i++) {
-                    if (platform->visibleSides & sSides[i]) {
+                    if ((platform->visibleSides & sSides[i]) || 1) { // || 1 for frame interpolation
                         Matrix_Push();
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
@@ -320,6 +323,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         Matrix_Pop();
                     }
                 }
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
@@ -333,6 +337,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
             platform = (BgGanonOtyuka*)actor;
 
             if ((platform->dyna.actor.projectedPos.z > -30.0f) && (platform->flashState != FLASH_NONE)) {
+                FrameInterpolation_RecordOpenChild(platform, 0);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
                            Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
                                             platform->flashTimer * 4, 0, 32, 64));
@@ -344,7 +349,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_Translate(platform->dyna.actor.world.pos.x, 0.0f, platform->dyna.actor.world.pos.z, MTXMODE_NEW);
 
                 for (i = 0; i < ARRAY_COUNT(sSides); i++) {
-                    if (platform->unwalledSides & sSides[i]) {
+                    if ((platform->unwalledSides & sSides[i]) || 1) { // || 1 for frame interpolation
                         Matrix_Push();
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
                         Matrix_RotateY(sSideAngles[i], MTXMODE_APPLY);
@@ -356,6 +361,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         Matrix_Pop();
                     }
                 }
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
