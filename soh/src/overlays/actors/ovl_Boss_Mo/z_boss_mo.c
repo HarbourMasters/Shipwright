@@ -10,6 +10,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 #include <string.h>
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
