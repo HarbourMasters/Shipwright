@@ -695,7 +695,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                 Tooltip("Makes the L and R buttons in the pause menu the same color");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                Tooltip("Show dungeon entrances icon only when it should be.");
+                Tooltip("Show dungeon entrances icon only when it should be");
 
                 EXPERIMENTAL();
 
