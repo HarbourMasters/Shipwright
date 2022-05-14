@@ -1480,7 +1480,7 @@ s32 Camera_Free(Camera* camera) {
     at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
     at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
                                                                      ? Player_GetHeight(camera->player) / 2
-                                                                     : Player_GetHeight(camera->player)),
+                                                                     : Player_GetHeight(camera->player)) / 1.2f,
                             camera->at.y,
                                     camSpeed, 1.0f);
     at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
@@ -1528,6 +1528,7 @@ s32 Camera_Free(Camera* camera) {
     Camera_Vec3fVecSphGeoAdd(&camera->eye, &at, &eyeAdjustment);
 
     camera->at = at;
+    camera->fov = Camera_LERPCeilF(60.0f, camera->fov, camSpeed / 2, 1.0f);
     camera->eyeNext = camera->eye;
 
     return 1;
