@@ -696,6 +696,8 @@ namespace SohImGui {
                 Tooltip("Makes the L and R buttons in the pause menu the same color");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
                 Tooltip("Show dungeon entrances icon only when it should be");
+                EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
+                Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
 
                 EXPERIMENTAL();
 
