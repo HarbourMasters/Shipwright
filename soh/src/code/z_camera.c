@@ -1422,7 +1422,7 @@ s32 SetCameraManual(Camera* camera) {
         manualCamera = true;
 
         VecSph eyeAdjustment;
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->playerPosRot, &camera->eye);
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
 
         camX = eyeAdjustment.yaw;
         camY = eyeAdjustment.pitch;
@@ -1446,12 +1446,7 @@ s32 Camera_Free(Camera* camera) {
 
     if (RELOAD_PARAMS) {
         VecSph eyeAdjustment1;
-        Vec3f oldCamRot;
-        oldCamRot.x = camera->player->actor.world.pos.x;
-        oldCamRot.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
-        oldCamRot.z = camera->player->actor.world.pos.z;
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eye);
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eyeNext);
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &camera->at, &camera->eye);
 
         camX = eyeAdjustment1.yaw;
         camY = eyeAdjustment1.pitch;
