@@ -1516,7 +1516,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         if (globalCtx->sceneNum == SCENE_MALON_STABLE) {
             // "/* BGCheck LonLon Size %dbyte */\n"
             osSyncPrintf("/* BGCheck LonLonサイズ %dbyte */\n", 0x3520);
-            colCtx->memSize = 0x3520;
+            colCtx->memSize = 0x3520 * (sizeof(void*) / 4); // 64-bit build needs more memory
         } else {
             // "/* BGCheck Mini Size %dbyte */\n"
             osSyncPrintf("/* BGCheck ミニサイズ %dbyte */\n", 0x4E20);

@@ -204,6 +204,7 @@ void EnRiverSound_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnRiverSound_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    return; // OTRTODO64
     static s16 soundEffects[] = {
         0,
         NA_SE_EV_WATER_WALL - SFX_FLAG,

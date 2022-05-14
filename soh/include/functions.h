@@ -2176,10 +2176,10 @@ f32 Math_FAtanF(f32 x);
 f32 Math_FAtan2F(f32 y, f32 x);
 f32 Math_FAsinF(f32 x);
 f32 Math_FAcosF(f32 x);
-f32 ceilf(f32 x);
+/*f32 ceilf(f32 x);
 f32 truncf(f32 x);
 f32 roundf(f32 x);
-f32 nearbyintf(f32 x);
+f32 nearbyintf(f32 x);*/
 void SystemArena_CheckPointer(void* ptr, size_t size, const char* name, const char* action);
 void* SystemArena_Malloc(size_t size);
 void* SystemArena_MallocDebug(size_t size, const char* file, s32 line);

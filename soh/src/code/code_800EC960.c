@@ -3502,6 +3502,7 @@ void func_800F4A70(void);
 void func_800F5CF8(void);
 
 void func_800F3054(void) {
+    return; // OTRTODO64
     if (func_800FAD34() == 0) {
         sAudioUpdateTaskStart = gAudioContext.totalTaskCnt;
         sAudioUpdateStartTime = osGetTime();
@@ -4420,6 +4421,8 @@ void func_800F5918(void) {
 void func_800F595C(u16 arg0) {
     u8 arg0b = arg0 & 0xFF;
 
+    return; // OTRTODO60
+
     if (sSeqFlags[arg0b] & 2) {
         Audio_PlayFanfare(arg0);
     } else if (sSeqFlags[arg0b] & 4) {
@@ -4523,6 +4526,8 @@ void Audio_PlayFanfare(u16 seqId)
     u32 sp20;
     u8* sp1C;
     u8* sp18;
+
+    return; // OTRTODO64
 
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);

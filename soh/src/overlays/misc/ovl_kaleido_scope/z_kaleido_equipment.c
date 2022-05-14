@@ -135,7 +135,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     u16 pad;
     s16 cursorMoveResult;
     u16 cursorItem;
-    u16 cursorSlot;
+    u16 cursorSlot = 0;
     s16 cursorPoint;
     s16 cursorX;
     s16 cursorY;

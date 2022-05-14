@@ -194,7 +194,7 @@ void Font_LoadOrderedFont(Font* font) {
     size_t len;
     size_t jj;
     s32 fontStatic;
-    u32 fontBuf;
+    u8* fontBuf;
     s32 codePointIndex;
     s32 fontBufIndex;
     s32 offset;

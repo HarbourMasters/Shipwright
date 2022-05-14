@@ -177,7 +177,7 @@ extern "C" void Graph_StartFrame() {
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(CVar_GetS32("g60FPS", 0) == 0 ? R_UPDATE_RATE : 1);
 
-    if (!audio.initialized) {
+    if (!audio.initialized && 0) {
         audio.initialized = true;
         std::thread([]() {
             for (;;) {
@@ -235,7 +235,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
     OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
 
-    {
+    if (0) {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
@@ -512,10 +512,10 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
 	uintptr_t i = (uintptr_t)(imgData);
 
-    if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+    if ((i & 1) == 1)
         return 0;
 
-    if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+    if (i != 0) {
         if (imgData[0] == '_' && imgData[1] == '_' && imgData[2] == 'O' && imgData[3] == 'T' && imgData[4] == 'R' &&
             imgData[5] == '_' && imgData[6] == '_')
             return 1;

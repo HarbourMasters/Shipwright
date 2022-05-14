@@ -579,6 +579,8 @@ void func_800F8884(u8 bankId, Vec3f* pos) {
     u8 entryIndex = gSoundBanks[bankId][0].next;
     u8 prevEntryIndex = 0;
 
+    return; // OTRTODO64
+
     while (entryIndex != 0xFF) {
         entry = &gSoundBanks[bankId][entryIndex];
         if (entry->posX == &pos->x) {
@@ -676,6 +678,7 @@ void Audio_StopSfxById(u32 sfxId) {
     u8 entryIndex = gSoundBanks[SFX_BANK(sfxId)][0].next;
     u8 prevEntryIndex = 0;
     SoundBankEntry cmp;
+    return; // OTRTODO64
 
     while (entryIndex != 0xFF) {
         entry = &gSoundBanks[SFX_BANK(sfxId)][entryIndex];
@@ -737,6 +740,7 @@ void func_800F8F88(void) {
 
 u8 Audio_IsSfxPlaying(u32 sfxId) 
 {
+    return; // OTRTODO64
     SoundBankEntry* entry;
     u8 entryIndex = gSoundBanks[SFX_BANK(sfxId)][0].next;
 
