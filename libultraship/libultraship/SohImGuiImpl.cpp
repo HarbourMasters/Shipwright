@@ -767,7 +767,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Stats", "gStatsEnabled");
 		Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
-		Tooltip("Enables the console window, allowing you to input commands, type help for some examples")
+		Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
