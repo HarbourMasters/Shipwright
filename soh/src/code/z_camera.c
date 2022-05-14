@@ -1440,7 +1440,8 @@ s32 Camera_Free(Camera* camera) {
 
     f32 playerHeight = Player_GetHeight(camera->player);
     f32 sp94;
-    CamColChk bgChk;
+    CamColChk camBgChk;
+    Vec3f at;
 
     sCameraInterfaceFlags = norm1->interfaceFlags;
 
@@ -1476,21 +1477,28 @@ s32 Camera_Free(Camera* camera) {
 
     camera->animState = 1;
 
-    camera->at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
-    camera->at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + Player_GetHeight(camera->player), camera->at.y,
+    at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
+    at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + Player_GetHeight(camera->player), camera->at.y,
                                     camSpeed, 1.0f);
-    camera->at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
+    at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
 
-    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
-    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eyeNext);
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &at, &camera->eye);
 
-    if (Camera_BGCheck(camera, &camera->at, &camera->eye)) {
+    camBgChk.pos = camera->eye;
+
+    if (Camera_BGCheckInfo(camera, &at, &camBgChk)) {
         VecSph collSphere;
-        OLib_Vec3fDiffToVecSphGeo(&collSphere, &camera->at, &camera->eye);
+        OLib_Vec3fDiffToVecSphGeo(&collSphere, &at, &camBgChk.pos);
         float rad = collSphere.r;
-        camera->dist = eyeAdjustment.r = rad;
+
+        if (rad > 150) {
+            camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
+        }
+        else {
+            camera->dist = eyeAdjustment.r = rad;
+        }
     } else {
-        camera->dist = eyeAdjustment.r = 150;
+        camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
     }
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
@@ -1514,8 +1522,10 @@ s32 Camera_Free(Camera* camera) {
     eyeAdjustment.yaw = camX;
     eyeAdjustment.pitch = camY;
 
-    Camera_Vec3fVecSphGeoAdd(&camera->eye, &camera->at, &eyeAdjustment);
-    Camera_Vec3fVecSphGeoAdd(&camera->eyeNext, &camera->at, &eyeAdjustment);
+    Camera_Vec3fVecSphGeoAdd(&camera->eye, &at, &eyeAdjustment);
+
+    camera->at = at;
+    camera->eyeNext = camera->eye;
 
     return 1;
 }
