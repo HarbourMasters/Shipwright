@@ -190,7 +190,11 @@ static int game_framebuffer_msaa_resolved;
 
 uint32_t gfx_msaa_level = 1;
 
+static bool has_drawn_imgui_menu;
+
 static bool dropped_frame;
+
+static const std::unordered_map<Mtx *, MtxF> *current_mtx_replacements;
 
 static float buf_vbo[MAX_BUFFERED * (32 * 3)]; // 3 vertices in a triangle and 32 floats per vtx
 static size_t buf_vbo_len;
@@ -916,20 +920,31 @@ static void gfx_matrix_mul(float res[4][4], const float a[4][4], const float b[4
 
 static void gfx_sp_matrix(uint8_t parameters, const int32_t *addr) {
     float matrix[4][4];
-#ifndef GBI_FLOATS
-    // Original GBI where fixed point matrices are used
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j += 2) {
-            int32_t int_part = addr[i * 2 + j / 2];
-            uint32_t frac_part = addr[8 + i * 2 + j / 2];
-            matrix[i][j] = (int32_t)((int_part & 0xffff0000) | (frac_part >> 16)) / 65536.0f;
-            matrix[i][j + 1] = (int32_t)((int_part << 16) | (frac_part & 0xffff)) / 65536.0f;
+
+    if (auto it = current_mtx_replacements->find((Mtx *)addr); it != current_mtx_replacements->end()) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                float v = it->second.mf[i][j];
+                int as_int = (int)(v * 65536.0f);
+                matrix[i][j] = as_int * (1.0f / 65536.0f);
+            }
         }
-    }
+    } else {
+#ifndef GBI_FLOATS
+        // Original GBI where fixed point matrices are used
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j += 2) {
+                int32_t int_part = addr[i * 2 + j / 2];
+                uint32_t frac_part = addr[8 + i * 2 + j / 2];
+                matrix[i][j] = (int32_t)((int_part & 0xffff0000) | (frac_part >> 16)) / 65536.0f;
+                matrix[i][j + 1] = (int32_t)((int_part << 16) | (frac_part & 0xffff)) / 65536.0f;
+            }
+        }
 #else
-    // For a modified GBI where fixed point values are replaced with floats
-    memcpy(matrix, addr, sizeof(matrix));
+        // For a modified GBI where fixed point values are replaced with floats
+        memcpy(matrix, addr, sizeof(matrix));
 #endif
+    }
 
     if (parameters & G_MTX_PROJECTION) {
         if (parameters & G_MTX_LOAD) {
@@ -2708,6 +2723,7 @@ void gfx_start_frame(void) {
     gfx_wapi->handle_events();
     gfx_wapi->get_dimensions(&gfx_current_window_dimensions.width, &gfx_current_window_dimensions.height);
     SohImGui::DrawMainMenuAndCalculateGameSize();
+    has_drawn_imgui_menu = true;
     if (gfx_current_dimensions.height == 0) {
         // Avoid division by zero
         gfx_current_dimensions.height = 1;
@@ -2746,7 +2762,7 @@ void gfx_start_frame(void) {
     fbActive = 0;
 }
 
-void gfx_run(Gfx *commands) {
+void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replacements) {
     gfx_sp_reset();
 
     //puts("New frame");
@@ -2755,11 +2771,20 @@ void gfx_run(Gfx *commands) {
 
     if (!gfx_wapi->start_frame()) {
         dropped_frame = true;
-        SohImGui::DrawFramebufferAndGameInput();
-        SohImGui::CancelFrame();
+        if (has_drawn_imgui_menu) {
+            SohImGui::DrawFramebufferAndGameInput();
+            SohImGui::CancelFrame();
+            has_drawn_imgui_menu = false;
+        }
         return;
     }
     dropped_frame = false;
+
+    if (!has_drawn_imgui_menu) {
+        SohImGui::DrawMainMenuAndCalculateGameSize();
+    }
+
+    current_mtx_replacements = &mtx_replacements;
 
     double t0 = gfx_wapi->get_time();
     gfx_rapi->update_framebuffer_parameters(0, gfx_current_window_dimensions.width, gfx_current_window_dimensions.height, 1, false, true, true, !game_renders_to_framebuffer);
@@ -2792,6 +2817,7 @@ void gfx_run(Gfx *commands) {
     //printf("Process %f %f\n", t1, t1 - t0);
     gfx_rapi->end_frame();
     gfx_wapi->swap_buffers_begin();
+    has_drawn_imgui_menu = false;
 }
 
 void gfx_end_frame(void) {

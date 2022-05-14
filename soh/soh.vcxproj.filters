@@ -2186,6 +2186,8 @@
     </ClCompile>
     <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp">
       <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    <ClCompile Include="soh\frame_interpolation.cpp">
+      <Filter>Source Files\soh</Filter>
     </ClCompile>
     <ClCompile Include="src\code\z_cheap_proc.c">
       <Filter>Source Files</Filter>
@@ -3748,6 +3750,8 @@
     </ClInclude>
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    <ClInclude Include="soh\frame_interpolation.h">
+      <Filter>Header Files\soh</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\savestates.h">
       <Filter>Source Files\soh\Enhancements</Filter>

@@ -282,8 +282,12 @@ namespace Ship {
         gfx_start_frame();
     }
 
-    void Window::RunCommands(Gfx* Commands) {
-        gfx_run(Commands);
+    void Window::RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements) {
+        for (const auto& m : mtx_replacements) {
+            gfx_run(Commands, m);
+            gfx_end_frame();
+        }
+        gfx_run(Commands, {});
         gfx_end_frame();
     }
 

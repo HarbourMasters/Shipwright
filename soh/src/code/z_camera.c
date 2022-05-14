@@ -6,6 +6,8 @@
 
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 
+#include "soh/frame_interpolation.h"
+
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);
@@ -6675,6 +6677,7 @@ s32 Camera_Special9(Camera* camera) {
         case 1:
             spec9->doorParams.timer1--;
             if (spec9->doorParams.timer1 <= 0) {
+                FrameInterpolation_DontInterpolateCamera();
                 camera->animState++;
                 if (params->interfaceFlags & 1) {
                     camPosData = Camera_GetCamBGData(camera);
@@ -7967,6 +7970,8 @@ s32 Camera_SetCSParams(Camera* camera, CutsceneCameraPoint* atPoints, CutsceneCa
         camera->xzSpeed = 0.0f;
         camera->speedRatio = 0.0f;
     }
+
+    FrameInterpolation_DontInterpolateCamera();
 
     return 1;
 }
