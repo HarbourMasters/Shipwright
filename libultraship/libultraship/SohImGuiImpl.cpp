@@ -683,6 +683,7 @@ namespace SohImGui {
 
                 EnhancementCheckbox("60 fps interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                EnhancementCheckbox("Free Camera", "gFreeCamera");
 
                 ImGui::EndMenu();
             }
