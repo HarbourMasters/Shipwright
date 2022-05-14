@@ -708,7 +708,7 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
 
-                EnhancementCheckbox("60 fps interpolation", "g60FPS");
+                EnhancementCheckbox("60FPS Interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
 
