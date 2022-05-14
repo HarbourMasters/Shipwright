@@ -616,9 +616,9 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
-                EnhancementCheckbox("Dpad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("DPad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("DPad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                EnhancementCheckbox("D-Pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("D-Pad Support for Browsing Shop Items", "gDpadShop");
 
                 ImGui::EndMenu();
             }
@@ -763,7 +763,7 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
-		Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + Dpad Right,\n and open the debug menu with L on the pause screen");
+		Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\n and open the debug menu with L on the pause screen");
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
 		Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
