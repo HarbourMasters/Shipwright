@@ -1,0 +1,13 @@
+diff a/libultraship/libultraship/SohImGuiImpl.cpp b/libultraship/libultraship/SohImGuiImpl.cpp	(rejected hunks)
+@@ -421,6 +421,11 @@ namespace SohImGui {
+                     needs_save = true;
+                 }
+ 
++                if (ImGui::Checkbox("Save Last Entrance", &Game::Settings.enhancements.save_entrance)) {
++                    CVar_SetS32("gSaveEntrance", Game::Settings.enhancements.save_entrance);
++                    needs_save = true;
++                }
++
+                 ImGui::Text("Graphics");
+                 ImGui::Separator();
+ 

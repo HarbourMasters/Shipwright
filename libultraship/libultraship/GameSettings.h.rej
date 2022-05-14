@@ -1,0 +1,9 @@
+diff a/libultraship/libultraship/GameSettings.h b/libultraship/libultraship/GameSettings.h	(rejected hunks)
+@@ -29,6 +29,7 @@ struct SoHConfigType {
+         bool newdrops = false;
+         bool visualagony = false;
+         bool mm_bunny_hood = false;
++        bool save_entrance = true;
+ 
+     } enhancements;
+ 

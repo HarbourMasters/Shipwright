@@ -662,6 +662,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Minimal UI", "gMinimalUI");
                 EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                 EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
+                EnhancementCheckbox("Save Last Entrance", "gSaveEntrance");
 
                 ImGui::Text("Graphics");
                 ImGui::Separator();
