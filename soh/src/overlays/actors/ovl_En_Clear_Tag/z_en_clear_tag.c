@@ -35,7 +35,7 @@ const ActorInit En_Clear_Tag_InitVars = {
     (ActorResetFunc)EnClearTag_Reset,
 };
 
-static u8 sIsEffectsInitialized = false;
+u8 sClearTagIsEffectsInitialized = false;
 
 static Vec3f sZeroVector = { 0.0f, 0.0f, 0.0f };
 
@@ -79,10 +79,10 @@ static ColliderCylinderInit sLaserCylinderInit = {
     { 15, 30, 10, { 0, 0, 0 } },
 };
 
-static UNK_TYPE4 D_809D5C98 = 0; // unused
-static UNK_TYPE4 D_809D5C9C = 0; // unused
+//static UNK_TYPE4 D_809D5C98 = 0; // unused
+//static UNK_TYPE4 D_809D5C9C = 0; // unused
 
-static EnClearTagEffect sClearTagEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
+EnClearTagEffect sClearTagEffects[CLEAR_TAG_EFFECT_MAX_COUNT];
 
 #include "overlays/ovl_En_Clear_Tag/ovl_En_Clear_Tag.h"
 
@@ -273,8 +273,8 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
 
         // Initialize all effects to available if effects have not been initialized.
-        if (!sIsEffectsInitialized) {
-            sIsEffectsInitialized = true;
+        if (!sClearTagIsEffectsInitialized) {
+            sClearTagIsEffectsInitialized = true;
             globalCtx->specialEffects = &sClearTagEffects[0];
             for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++) {
                 sClearTagEffects[i].type = CLEAR_TAG_EFFECT_AVAILABLE;
@@ -1027,5 +1027,5 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
 
 void EnClearTag_Reset(void) {
     memset(sClearTagEffects, 0, sizeof(sClearTagEffects));
-    sIsEffectsInitialized = false;
+    sClearTagIsEffectsInitialized = false;
 }

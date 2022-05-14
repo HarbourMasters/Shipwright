@@ -29,20 +29,6 @@
                    Ab1, Ad1))       \
 }
 
-typedef int32_t Mtx_t[4][4];
-
-typedef union Mtx
-{
-	//_Alignas(8)
-		Mtx_t		m;
-	int32_t		l[16];
-	struct
-	{
-		int16_t		i[16];
-		uint16_t	f[16];
-	};
-} Mtx;
-
 #define gsSPBranchLessZraw2(dl, vtx, zval)               \
 {   _SHIFTL(G_BRANCH_Z,24,8)|_SHIFTL((vtx)*5,12,12)|_SHIFTL((vtx)*2,0,12),\
     (unsigned int)(zval),                       }
@@ -71,7 +57,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 	// DEBUG: Write in a marker
 	Declaration* dbgDecl = dList->parent->GetDeclaration(dList->GetRawDataIndex());
-	std::string dbgName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dbgDecl->varName.c_str());
+	std::string dbgName = StringHelper::Sprintf("%s/%s", GetParentFolderName(res).c_str(), dbgDecl->varName.c_str());
 	uint64_t hash = CRC64(dbgName.c_str());
 	writer->Write((uint32_t)(G_MARKER << 24));
 	writer->Write((uint32_t)0xBEEFBEEF);
@@ -81,7 +67,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 	auto dlStart = std::chrono::steady_clock::now();
 
 	//for (auto data : dList->instructions)
-	for (int dataIdx = 0; dataIdx < dList->instructions.size(); dataIdx++)
+	for (size_t dataIdx = 0; dataIdx < dList->instructions.size(); dataIdx++)
 	{
 		auto data = dList->instructions[dataIdx];
 		uint32_t word0 = 0;
@@ -216,7 +202,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				pp ^= G_MTX_PUSH;
 
-				mm = (mm & 0x0FFFFFFF) + 0xF0000000;
+				mm = (mm & 0x0FFFFFFF) + 1;
 
 				Gfx value = gsSPMatrix(mm, pp);
 				word0 = value.words.w0;
@@ -243,7 +229,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				if (mtxDecl != nullptr)
 				{
-					std::string vName = StringHelper::Sprintf("%s\\%s", (GetParentFolderName(res).c_str()), mtxDecl->varName.c_str());
+					std::string vName = StringHelper::Sprintf("%s/%s", (GetParentFolderName(res).c_str()), mtxDecl->varName.c_str());
 
 					uint64_t hash = CRC64(vName.c_str());
 
@@ -347,7 +333,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 			if (dListDecl != nullptr)
 			{
-				std::string vName = StringHelper::Sprintf("%s\\%s", (GetParentFolderName(res).c_str()), dListDecl->varName.c_str());
+				std::string vName = StringHelper::Sprintf("%s/%s", (GetParentFolderName(res).c_str()), dListDecl->varName.c_str());
 
 				uint64_t hash = CRC64(vName.c_str());
 
@@ -370,7 +356,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 					std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
 					{
 						MemoryStream* dlStream = new MemoryStream();
 						BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -383,7 +369,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 #endif
 
 						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-							File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+							File::WriteAllBytes("Extract/" + fName, dlStream->ToVector());
 						else
 							files[fName] = dlStream->ToVector();
 
@@ -411,7 +397,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				Gfx value;
 
-				u32 dListVal = (data & 0x0FFFFFFF) + 0xF0000000;
+				u32 dListVal = (data & 0x0FFFFFFF) + 1;
 
 				if (pp != 0)
 					value = gsSPBranchList(dListVal);
@@ -444,7 +430,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				if (dListDecl != nullptr)
 				{
-					std::string vName = StringHelper::Sprintf("%s\\%s", (GetParentFolderName(res).c_str()), dListDecl->varName.c_str());
+					std::string vName = StringHelper::Sprintf("%s/%s", (GetParentFolderName(res).c_str()), dListDecl->varName.c_str());
 
 					uint64_t hash = CRC64(vName.c_str());
 
@@ -467,7 +453,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						//std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), dListDecl2->varName.c_str());
 						std::string fName = OTRExporter_DisplayList::GetPathToRes(res, dListDecl2->varName.c_str());
 
-						if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
+						if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
 						{
 							MemoryStream* dlStream = new MemoryStream();
 							BinaryWriter dlWriter = BinaryWriter(dlStream);
@@ -475,7 +461,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 							Save(dList->otherDLists[i], outPath, &dlWriter);
 
 							if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-								File::WriteAllBytes("Extract\\" + fName, dlStream->ToVector());
+								File::WriteAllBytes("Extract/" + fName, dlStream->ToVector());
 							else
 								files[fName] = dlStream->ToVector();
 						}
@@ -533,7 +519,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t bb = ((data & 0x0000FF0000000000ULL) >> 40) / 2;
 			int32_t cc = ((data & 0x000000FF00000000ULL) >> 32) / 2;
 			int32_t dd = ((data & 0x000000000000FFULL)) / 2;
-			
+
 			Gfx test = gsSP1Quadrangle(aa, bb, cc, dd, 0);
 			word0 = test.words.w0;
 			word1 = test.words.w1;
@@ -689,7 +675,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				uint32_t fmt = (__ & 0xE0) >> 5;
 				uint32_t siz = (__ & 0x18) >> 3;
 
-				Gfx value = gsDPSetTextureImage(fmt, siz, www + 1, (seg & 0x0FFFFFFF) + 0xF0000000);
+				Gfx value = gsDPSetTextureImage(fmt, siz, www + 1, (seg & 0x0FFFFFFF) + 1);
 				word0 = value.words.w0;
 				word1 = value.words.w1;
 
@@ -721,7 +707,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					ZFile* assocFile = Globals::Instance->GetSegment(GETSEGNUM(seg), res->parent->workerID);
 					std::string assocFileName = assocFile->GetName();
 					std::string fName = "";
-					
+
 					if (GETSEGNUM(seg) == SEGMENT_SCENE || GETSEGNUM(seg) == SEGMENT_ROOM)
 						fName = GetPathToRes(res, texName.c_str());
 					else
@@ -753,7 +739,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				Gfx value = gsSPVertex(data & 0xFFFFFFFF, nn, ((aa >> 1) - nn));
 
 				word0 = value.words.w0;
-				word1 = value.words.w1 | 0xF0000000;
+				word1 = value.words.w1 | 1;
 			}
 			else
 			{
@@ -790,7 +776,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 					word0 = hash >> 32;
 					word1 = hash & 0xFFFFFFFF;
 
-					if (files.find(fName) == files.end() && !File::Exists("Extract\\" + fName))
+					if (files.find(fName) == files.end() && !File::Exists("Extract/" + fName))
 					{
 						// Write vertices to file
 						MemoryStream* vtxStream = new MemoryStream();
@@ -800,7 +786,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 						auto split = StringHelper::Split(vtxDecl->text, "\n");
 
-						for (int i = 0; i < split.size(); i++)
+						for (size_t i = 0; i < split.size(); i++)
 						{
 							std::string line = split[i];
 
@@ -842,7 +828,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						}
 
 						if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
-							File::WriteAllBytes("Extract\\" + fName, vtxStream->ToVector());
+							File::WriteAllBytes("Extract/" + fName, vtxStream->ToVector());
 						else
 							files[fName] = vtxStream->ToVector();
 
@@ -858,7 +844,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		}
 		break;
 		}
-	
+
 		writer->Write(word0);
 		writer->Write(word1);
 	}
@@ -872,7 +858,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 std::string OTRExporter_DisplayList::GetPathToRes(ZResource* res, std::string varName)
 {
 	std::string prefix = GetPrefix(res);
-	std::string fName = StringHelper::Sprintf("%s\\%s", GetParentFolderName(res).c_str(), varName.c_str());
+	std::string fName = StringHelper::Sprintf("%s/%s", GetParentFolderName(res).c_str(), varName.c_str());
 
 	return fName;
 }
@@ -886,7 +872,7 @@ std::string OTRExporter_DisplayList::GetParentFolderName(ZResource* res)
 	{
 		auto split = StringHelper::Split(oName, "_");
 		oName = "";
-		for (int i = 0; i < split.size() - 1; i++)
+		for (size_t i = 0; i < split.size() - 1; i++)
 			oName += split[i] + "_";
 
 		oName += "scene";
@@ -897,7 +883,7 @@ std::string OTRExporter_DisplayList::GetParentFolderName(ZResource* res)
 	}
 
 	if (prefix != "")
-		oName = prefix + "\\" + oName;
+		oName = prefix + "/" + oName;
 
 	return oName;
 }

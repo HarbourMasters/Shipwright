@@ -86,14 +86,8 @@
 
 #include <stdint.h>
 
-#define u8 uint8_t
-#define u16 uint16_t
-#define u32 uint32_t
-#define u64 uint64_t
-#define unint uint32_t
-
 #define INITIAL_CRC64 0xffffffffffffffffULL
 
-extern uint64_t update_crc64(const void* buf, unint len, u64 crc);
-extern u64 crc64(const void* buf, unint len);
-extern u64 CRC64(const char* t);
+extern uint64_t update_crc64(const void* buf, uint32_t len, uint64_t crc);
+extern uint64_t crc64(const void* buf, uint32_t len);
+extern uint64_t CRC64(const char* t);

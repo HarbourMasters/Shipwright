@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "SohConsole.h"
 
@@ -58,15 +59,16 @@ namespace SohImGui {
     } CustomWindow;
 
     extern Console* console;
+    extern Ship::GameOverlay* overlay;
+    extern bool needs_save;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
 
-    void EnhancementColorEdit3(std::string text, std::string cvarName, float ColorRGB[3]);
-    int ClampFloatToInt(float value, int min, int max);
     void EnhancementRadioButton(std::string text, std::string cvarName, int value);
     void EnhancementCheckbox(std::string text, std::string cvarName);
     void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format);
     void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue);
+    void EnhancementColor3(std::string text, std::string cvarName, float ColorRGB[3], bool TitleSameLine);
 
     void DrawMainMenuAndCalculateGameSize(void);
     
@@ -77,7 +79,7 @@ namespace SohImGui {
     void BindCmd(const std::string& cmd, CommandEntry entry);
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
+    void LoadInterfaceEditor();
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
-    void LoadCosmeticColors();
 }

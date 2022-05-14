@@ -668,12 +668,12 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         if (CVar_GetS32("gHudColors", 1) == 2) { //Dungeon minimap
-                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", 255), CVar_GetS32("gCCMinimapPrimG", 255), CVar_GetS32("gCCMinimapPrimB", 255), interfaceCtx->magicAlpha);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", 255), CVar_GetS32("gCCMinimapPrimG", 255), CVar_GetS32("gCCMinimapPrimB", 255), interfaceCtx->minimapAlpha);
                         } else {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
                         }
-                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
 
+                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -752,18 +752,24 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
                     }
 
-                    if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) && (globalCtx->sceneNum != SCENE_SPOT08)) || (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                    if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&
+                         (globalCtx->sceneNum != SCENE_SPOT08)) ||
+                        (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
                         s16 IconSize = 8;
                         s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex]+Right_MM_Margin;
                         s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex]+Bottom_MM_Margin;
-                        if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){ //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
-                            PosY = PosY+1024; //No idea why and how Original value work but this does actually fix them all.
+                        //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
+                        if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                            //No idea why and how Original value work but this does actually fix them all.
+                            PosY = PosY+1024;
                         }
                         s16 TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
                         s16 TopLeftY = PosY << 2;
                         s16 TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
                         s16 TopLeftH = (PosY + IconSize) << 2;
-                        if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) || ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) && (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
+                        if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
+                            ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
+                             (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
                             if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 != 0 && CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
                                 gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                     IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
@@ -777,14 +783,15 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                             gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                         } 
                     }
-					          if ((globalCtx->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
+
+                    if ((globalCtx->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
                                             8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                        const s16 entranceX = OTRGetRectDimensionFromRightEdge(270);
+                        const s16 entranceX = OTRGetRectDimensionFromRightEdge(270);  
 
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, 154 << 2, (entranceX + 32) << 2, (154 + 8) << 2,
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, 154 << 2, (entranceX + 32) << 2, (154 + 8) << 2, 
                                                 G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
 
@@ -819,7 +826,7 @@ void Map_Update(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 floor;
     s16 i;
-    
+
     if (CVar_GetS32("gHUDMargins", 0) != 0) {
         Top_MM_Margin = CVar_GetS32("gHUDMargin_T", 0);
         Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0);
@@ -831,7 +838,7 @@ void Map_Update(GlobalContext* globalCtx) {
         Right_MM_Margin = 0;
         Bottom_MM_Margin = 0;
     }
-    
+
     if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
         switch (globalCtx->sceneNum) {
             case SCENE_YDAN:

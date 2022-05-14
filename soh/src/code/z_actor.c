@@ -6,14 +6,15 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/frame_interpolation.h"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
 #include "textures/place_title_cards/g_pn_01.h"
 #include "textures/place_title_cards/g_pn_02.h"
@@ -334,38 +335,59 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, GlobalContext* g
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, GlobalContext* globalCtx) {
     NaviColor* naviColor = &sNaviColorList[actorCategory];
-    if (actorCategory == ACTORCAT_PLAYER && CVar_GetS32("gUseNaviCol",0) == 1 ) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+
+    if (CVar_GetS32("gUseNaviCol",0) != 1 ) {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
+            naviColor->outer.r = 115; naviColor->outer.g = 230; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = 100; naviColor->inner.g = 100; naviColor->inner.b = 255;
+            naviColor->outer.r = 90; naviColor->outer.g = 90; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 0;
+            naviColor->outer.r = 220; naviColor->outer.g = 220; naviColor->outer.b = 0;
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 90;
+            naviColor->outer.r = 0; naviColor->outer.g = 220; naviColor->outer.b = 0;
+        }
+    } else {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
+        }
     }
-    if (actorCategory == ACTORCAT_NPC && CVar_GetS32("gUseNaviCol",0) == 1 ) {
-        naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_BOSS && CVar_GetS32("gUseNaviCol",0) == 1 || actorCategory == ACTORCAT_ENEMYY && CVar_GetS32("gUseNaviCol",0) == 1 ) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_PROPY && CVar_GetS32("gUseNaviCol",0) == 1 ) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
-    }
+    
     targetCtx->naviRefPos.x = actor->focus.pos.x;
     targetCtx->naviRefPos.y = actor->focus.pos.y + (actor->targetArrowOffset * actor->scale.y);
     targetCtx->naviRefPos.z = actor->focus.pos.z;
@@ -410,6 +432,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         f32 var2;
         s32 i;
 
+        FrameInterpolation_RecordOpenChild(actor, 0);
         player = GET_PLAYER(globalCtx);
 
         spCE = 0xFF;
@@ -486,10 +509,12 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
                 }
             }
         }
+        FrameInterpolation_RecordCloseChild();
     }
 
     actor = targetCtx->unk_94;
     if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_27)) {
+        FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x7);
@@ -503,6 +528,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 2153),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, gZTargetArrowDL);
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2158);
@@ -765,7 +791,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
 
     titleCtx->texture = texture;
     titleCtx->isBossCard = true;
-    titleCtx->hasTranslation = hasTranslation;   
+    titleCtx->hasTranslation = hasTranslation;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -774,7 +800,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
     titleCtx->delayTimer = 0;
 }
 
-void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
+void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
 
@@ -1034,13 +1060,12 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         shiftBottomY = 0x1000;
 
         //if this card is bosses cards, has translation and that is not using English language.
-        if (titleCtx->isBossCard == 1 && titleCtx->hasTranslation == 1 && gSaveContext.language != LANGUAGE_ENG) {
+        if (titleCtx->isBossCard && titleCtx->hasTranslation && gSaveContext.language != LANGUAGE_ENG) {
+            textureLanguageOffset = (width * height * gSaveContext.language);
             if (gSaveContext.language == LANGUAGE_GER) {
-                textureLanguageOffset = (width * height * gSaveContext.language);
                 shiftTopY = 0x400;
                 shiftBottomY = 0x1400;
             } else if (gSaveContext.language == LANGUAGE_FRA) {
-                textureLanguageOffset = (width * height * gSaveContext.language);
                 shiftTopY = 0x800;
                 shiftBottomY = 0x1800;
             }
@@ -1052,7 +1077,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
                         (u8)titleCtx->alpha);
 
-        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftBottomY, G_IM_FMT_IA,
+        gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftTopY, G_IM_FMT_IA,
                             G_IM_SIZ_8b,
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -2491,6 +2516,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
 
     Fault_AddClient(&faultClient, Actor_FaultPrint, actor, "Actor_draw");
 
+    FrameInterpolation_RecordOpenChild(actor, 0);
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6035);
 
     lights = LightContext_NewLights(&globalCtx->lightCtx, globalCtx->state.gfxCtx);
@@ -2498,6 +2524,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     Lights_BindAll(lights, globalCtx->lightCtx.listHead, (actor->flags & ACTOR_FLAG_22) ? NULL : &actor->world.pos);
     Lights_Draw(lights, globalCtx->state.gfxCtx);
 
+    FrameInterpolation_RecordActorPosRotMatrix();
     if (actor->flags & ACTOR_FLAG_12) {
         Matrix_SetTranslateRotateYXZ(
             actor->world.pos.x + globalCtx->mainCamera.skyboxOffset.x,
@@ -2547,6 +2574,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6119);
+    FrameInterpolation_RecordCloseChild();
 
     Fault_RemoveClient(&faultClient);
 }
@@ -4272,8 +4300,6 @@ s32 func_80035124(Actor* actor, GlobalContext* globalCtx) {
 
     return ret;
 }
-
-#include "z_cheap_proc.c"
 
 u8 func_800353E8(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);

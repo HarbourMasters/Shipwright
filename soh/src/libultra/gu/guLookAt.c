@@ -62,5 +62,6 @@ void guLookAt(Mtx* m, f32 xEye, f32 yEye, f32 zEye, f32 xAt, f32 yAt, f32 zAt, f
 
     guLookAtF(mf, xEye, yEye, zEye, xAt, yAt, zAt, xUp, yUp, zUp);
 
-    guMtxF2L((MtxF*)mf, m);
+    //guMtxF2L((MtxF*)mf, m);
+    Matrix_MtxFToMtx((MtxF*)mf, m);
 }

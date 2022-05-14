@@ -7,7 +7,7 @@
 #include <filesystem>
 
 namespace Ship {
-	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting) 
+	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting)
 	{
 		mainMPQ = nullptr;
 	}
@@ -28,7 +28,7 @@ namespace Ship {
 
 	std::shared_ptr<Archive> Archive::CreateArchive(const std::string& archivePath, int fileCapacity)
 	{
-		Archive* archive = new Archive(archivePath, true);
+		auto archive = std::make_shared<Archive>(archivePath, true);
 
 		TCHAR* t_filename = new TCHAR[archivePath.size() + 1];
 		t_filename[archivePath.size()] = 0;
@@ -37,10 +37,15 @@ namespace Ship {
 		bool success = SFileCreateArchive(t_filename, MPQ_CREATE_LISTFILE | MPQ_CREATE_ATTRIBUTES | MPQ_CREATE_ARCHIVE_V2, fileCapacity, &archive->mainMPQ);
 		int error = GetLastError();
 
-		if (success) {
+		delete[] t_filename;
+
+		if (success)
+		{
 			archive->mpqHandles[archivePath] = archive->mainMPQ;
-			return std::make_shared<Archive>(*archive);
-		} else {
+			return archive;
+		}
+		else
+		{
 			SPDLOG_ERROR("({}) We tried to create an archive, but it has fallen and cannot get up.");
 			return nullptr;
 		}
@@ -49,11 +54,16 @@ namespace Ship {
 	std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
 		HANDLE fileHandle = NULL;
 
+		if (FileToLoad == nullptr) {
+			FileToLoad = std::make_shared<File>();
+			FileToLoad->path = filePath;
+		}
+
 		if (!SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
@@ -67,16 +77,11 @@ namespace Ship {
 			}
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		if (!SFileCloseFile(fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
-
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
 		}
 
 		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
@@ -91,6 +96,11 @@ namespace Ship {
 	std::shared_ptr<File> Archive::LoadPatchFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
 		HANDLE fileHandle = NULL;
 		HANDLE mpqHandle = NULL;
+
+		if (FileToLoad == nullptr) {
+			FileToLoad = std::make_shared<File>();
+			FileToLoad->path = filePath;
+		}
 
 		for(auto [path, handle] : mpqHandles) {
 			if (SFileOpenFileEx(mpqHandle, filePath.c_str(), 0, &fileHandle)) {
@@ -116,16 +126,11 @@ namespace Ship {
 			}
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		if (!SFileCloseFile(fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
-
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
 		}
 
 		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
@@ -139,13 +144,16 @@ namespace Ship {
 
 	bool Archive::AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize) {
 		HANDLE hFile;
-
+#ifdef _WIN32
 		SYSTEMTIME sysTime;
 		GetSystemTime(&sysTime);
 		FILETIME t;
 		SystemTimeToFileTime(&sysTime, &t);
 		ULONGLONG stupidHack = static_cast<uint64_t>(t.dwHighDateTime) << (sizeof(t.dwHighDateTime) * 8) | t.dwLowDateTime;
-
+#else
+		time_t stupidHack;
+		time(&stupidHack);
+#endif
 		if (!SFileCreateFile(mainMPQ, path.c_str(), stupidHack, dwFileSize, 0, MPQ_FILE_COMPRESS, &hFile)) {
 			SPDLOG_ERROR("({}) Failed to create file of {} bytes {} in archive {}", GetLastError(), dwFileSize, path.c_str(), MainPath.c_str());
 			return false;
@@ -181,7 +189,7 @@ namespace Ship {
 			SPDLOG_ERROR("({}) Failed to remove file {} in archive {}", GetLastError(), path.c_str(), MainPath.c_str());
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -201,7 +209,7 @@ namespace Ship {
 		SFILE_FIND_DATA findContext;
 		HANDLE hFind;
 
-		
+
 		hFind = SFileFindFirstFile(mainMPQ, searchMask.c_str(), &findContext, nullptr);
 		//if (hFind && GetLastError() != ERROR_NO_MORE_FILES) {
 		if (hFind != nullptr) {
@@ -245,7 +253,7 @@ namespace Ship {
 		auto start = std::chrono::steady_clock::now();
 
 		auto lst = ListFiles(filename);
-		
+
 		for (const auto& item : lst) {
 			if (item.cFileName == filename) {
 				result = true;
@@ -267,7 +275,7 @@ namespace Ship {
 		return LoadMainMPQ(enableWriting, genCRCMap) && LoadPatchMPQs();
 	}
 
-	bool Archive::Unload() 
+	bool Archive::Unload()
 	{
 		bool success = true;
 		for (const auto& mpqHandle : mpqHandles) {
@@ -302,11 +310,16 @@ namespace Ship {
 
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
 		HANDLE mpqHandle = NULL;
+#ifdef _WIN32
+		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
+#endif
 		std::string fullPath = std::filesystem::absolute(MainPath).string();
 
-		std::wstring wFileName = std::filesystem::absolute(MainPath).wstring();
-
-		if (!SFileOpenArchive(wFileName.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+#ifdef _WIN32
+		if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+#else
+		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+#endif
 			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
 			return false;
 		}
@@ -340,12 +353,19 @@ namespace Ship {
 
 		std::wstring wPath = std::filesystem::absolute(path).wstring();
 
+#ifdef _WIN32
 		if (!SFileOpenArchive(wPath.c_str(), 0, MPQ_OPEN_READ_ONLY, &patchHandle)) {
+#else
+		if (!SFileOpenArchive(fullPath.c_str(), 0, MPQ_OPEN_READ_ONLY, &patchHandle)) {
+#endif
 			SPDLOG_ERROR("({}) Failed to open patch mpq file {} while applying to {}.", GetLastError(), path.c_str(), MainPath.c_str());
 			return false;
 		}
-
+#ifdef _WIN32
 		if (!SFileOpenPatchArchive(mainMPQ, wPath.c_str(), "", 0)) {
+#else
+		if (!SFileOpenPatchArchive(mainMPQ, fullPath.c_str(), "", 0)) {
+#endif
 			SPDLOG_ERROR("({}) Failed to apply patch mpq file {} to main mpq {}.", GetLastError(), path.c_str(), MainPath.c_str());
 			return false;
 		}

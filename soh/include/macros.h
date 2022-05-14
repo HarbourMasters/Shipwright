@@ -138,6 +138,8 @@ extern GraphicsContext* __gfxCtx;
 #ifndef NDEBUG
 #define OPEN_DISPS(gfxCtx, file, line) \
     { \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
+        FrameInterpolation_RecordOpenChild(file, line); \
         GraphicsContext* __gfxCtx; \
         Gfx* dispRefs[4]; \
         __gfxCtx = gfxCtx; \
@@ -146,6 +148,8 @@ extern GraphicsContext* __gfxCtx;
 #else
 #define OPEN_DISPS(gfxCtx, file, line) \
     { \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
+        FrameInterpolation_RecordOpenChild(file, line); \
         GraphicsContext* __gfxCtx; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx;
@@ -153,11 +157,15 @@ extern GraphicsContext* __gfxCtx;
 
 #ifndef NDEBUG
 #define CLOSE_DISPS(gfxCtx, file, line) \
+    {void FrameInterpolation_RecordCloseChild(void); \
+    FrameInterpolation_RecordCloseChild();} \
     Graph_CloseDisps(dispRefs, gfxCtx, file, line); \
     } \
     (void)0
 #else
 #define CLOSE_DISPS(gfxCtx, file, line) \
+    {void FrameInterpolation_RecordCloseChild(void); \
+    FrameInterpolation_RecordCloseChild();} \
     (void)0; \
     } \
     (void)0
@@ -205,6 +213,14 @@ extern GraphicsContext* __gfxCtx;
 #define ALIGNED8
 #endif
 
-#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 0xF0000000)
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
+
+#ifdef _MSC_VER
+#define BOMSWAP16 _byteswap_ushort
+#define BOMSWAP32 _byteswap_ulong
+#else
+#define BOMSWAP16 __builtin_bswap16
+#define BOMSWAP32 __builtin_bswap32
+#endif
 
 #endif

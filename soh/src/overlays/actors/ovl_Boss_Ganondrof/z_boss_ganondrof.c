@@ -210,7 +210,7 @@ static Vec3f sAudioVec = { 0.0f, 0.0f, 50.0f };
 
 // OTRTODO: This code appears to cause the game to gradually crash...
 // Might be an OoB write. For now it's disabled.
-void BossGanondrof_ClearPixels8x8(s16* texture, u8* mask, s16 index) 
+void BossGanondrof_ClearPixels8x8(s16* texture, u8* mask, s16 index)
 {
     //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
@@ -248,18 +248,18 @@ void BossGanondrof_ClearPixels32x16(s16* texture, u8* mask, s16 index) {
     }
 }
 
-void BossGanondrof_ClearPixels16x32(s16* texture, u8* mask, s16 index) { 
+void BossGanondrof_ClearPixels16x32(s16* texture, u8* mask, s16 index) {
     //texture = ResourceMgr_LoadTexByName(texture);
     if (mask[index]) {
         s16 i = ((index & 0xF) * 2) + ((index & 0xF0) * 2);
-        
+
         ResourceMgr_WriteTexS16ByName(texture, i + 1, 0);
         ResourceMgr_WriteTexS16ByName(texture, i, 0);
 
         //texture[i + 1] = 0;
         //texture[i] = 0;
     }
-    
+
 }
 
 void BossGanondrof_ClearPixels(u8* mask, s16 index) {

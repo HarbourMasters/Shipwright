@@ -654,7 +654,7 @@ u8 sEyeMouthIndexes[][2] = {
  * from adult Link's object are used here.
  */
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 //TODO: Formatting
 void* sEyeTextures[2][8] = {
     { gLinkAdultEyesOpenTex, gLinkAdultEyesHalfTex, gLinkAdultEyesClosedfTex, gLinkAdultEyesRollLeftTex,
@@ -670,7 +670,7 @@ void* sEyeTextures[] = {
 };
 #endif
 
-#if defined(modding) || defined(_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 void* sMouthTextures[2][4] = {
     {
         gLinkAdultMouth1Tex,
@@ -726,7 +726,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (eyeIndex > 7)
         eyeIndex = 7;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.linkAge][eyeIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
@@ -738,12 +738,11 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (mouthIndex > 3)
         mouthIndex = 3;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.linkAge][mouthIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
-
     if (CVar_GetS32("gUseTunicsCol",0) != 1) { //Mod is not on bring back original colors.
         color = &sTunicColors[tunic];
     }

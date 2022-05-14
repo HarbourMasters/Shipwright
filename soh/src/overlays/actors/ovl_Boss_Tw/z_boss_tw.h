@@ -4,9 +4,46 @@
 #include "ultra64.h"
 #include "global.h"
 
-struct BossTw;
+typedef enum {
+    /*  0 */ TWEFF_NONE,
+    /*  1 */ TWEFF_DOT,
+    /*  2 */ TWEFF_2,
+    /*  3 */ TWEFF_3,
+    /*  4 */ TWEFF_RING,
+    /*  5 */ TWEFF_PLYR_FRZ,
+    /*  6 */ TWEFF_FLAME,
+    /*  7 */ TWEFF_MERGEFLAME,
+    /*  8 */ TWEFF_SHLD_BLST,
+    /*  9 */ TWEFF_SHLD_DEFL,
+    /* 10 */ TWEFF_SHLD_HIT
+} TwEffType;
 
-typedef void (*BossTwActionFunc)(struct BossTw* this, GlobalContext* globalCtx);
+typedef enum {
+    /* 0 */ EFF_ARGS,
+    /* 1 */ EFF_UNKS1,
+    /* 2 */ EFF_WORK_MAX
+} EffectWork;
+
+typedef enum {
+    /* 0 */ EFF_SCALE,
+    /* 1 */ EFF_DIST,
+    /* 2 */ EFF_ROLL,
+    /* 3 */ EFF_YAW,
+    /* 4 */ EFF_FWORK_MAX
+} EffectFWork;
+
+typedef struct {
+    /* 0x0000 */ u8 type;
+    /* 0x0001 */ u8 frame;
+    /* 0x0004 */ Vec3f pos;
+    /* 0x0010 */ Vec3f curSpeed;
+    /* 0x001C */ Vec3f accel;
+    /* 0x0028 */ Color_RGB8 color;
+    /* 0x002C */ s16 alpha;
+    /* 0x002E */ s16 work[EFF_WORK_MAX];
+    /* 0x0034 */ f32 workf[EFF_FWORK_MAX];
+    /* 0x0044 */ Actor* target;
+} BossTwEffect;
 
 typedef enum {
     /*  0 */ CS_TIMER_1,
@@ -54,6 +91,10 @@ typedef enum {
     /* 25 */ UNK_F19,
     /* 26 */ FWORK_MAX
 } TwFwork;
+
+struct BossTw;
+
+typedef void (*BossTwActionFunc)(struct BossTw*, GlobalContext* globalCtx);
 
 typedef struct BossTw {
     /* 0x0000 */ Actor actor;
