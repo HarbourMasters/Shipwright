@@ -688,7 +688,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
-                Tooltip("Always shows entrances to dungeons on the minimap");
+                Tooltip("Always shows dungeon entrance icons on the minimap");
 
                 ImGui::Text("Fixes");
                 ImGui::Separator();
