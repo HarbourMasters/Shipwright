@@ -688,14 +688,14 @@ namespace SohImGui {
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
-                Tooltip("Alays shows entrances to dungeons on the minimap");
+                Tooltip("Always shows entrances to dungeons on the minimap");
 
                 ImGui::Text("Fixes");
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                 Tooltip("Makes the L and R buttons in the pause menu the same color");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                Tooltip("Hides the dungeon entrance icon in the top left of the screen");
+                Tooltip("Show dungeon entrances icon only when it should be.");
 
                 EXPERIMENTAL();
 
@@ -743,19 +743,19 @@ namespace SohImGui {
                 }
 
                 EnhancementCheckbox("No Clip", "gNoClip");
-		Tooltip("Allows you to walk through walls");
+		        Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
-		Tooltip("Makes every surface in the game climbable");
+		        Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
-		Tooltip("Holding L makes you float into the air");
+		        Tooltip("Holding L makes you float into the air");
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
-		Tooltip("Makes every tunic have the effects of every other tunic");
+		        Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
-		Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
+		        Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
-		Tooltip("Allows you to use all items at any age");
+		        Tooltip("Allows you to use all items at any age");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
-		Tooltip("Freezes the time of day");
+		        Tooltip("Freezes the time of day");
 
                 ImGui::EndMenu();
             }
@@ -763,12 +763,12 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
-		Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\n and open the debug menu with L on the pause screen");
+		        Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\n and open the debug menu with L on the pause screen");
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
-		Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
+		        Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
-		Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
+		        Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
