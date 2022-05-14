@@ -661,44 +661,50 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Enhancements"))
             {
-                ImGui::Text("Gameplay");
-                ImGui::Separator();
+                if (ImGui::BeginMenu("Gameplay"))
+                {
+                    EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                    EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
-                EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
-                EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementCheckbox("Skip Text", "gSkipText");
+                    Tooltip("Holding down B skips text");
+                    EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                    Tooltip("Hides most of the UI when not needed");
+                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
+                    
+                    ImGui::EndMenu();
+                }
 
-                EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
-                EnhancementCheckbox("Skip Text", "gSkipText");
-                Tooltip("Holding down B skips text");
-                EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                Tooltip("Hides most of the UI when not needed");
-                EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
-                EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
-                Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
 
-                ImGui::Text("Graphics");
-                ImGui::Separator();
+                if (ImGui::BeginMenu("Graphics"))
+                {
+                    EnhancementCheckbox("N64 Mode", "gN64Mode");
+                    Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
+                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
+                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                    EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
+                    Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
+                    EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                    Tooltip("Always shows dungeon entrance icons on the minimap");
+                    
+                    ImGui::EndMenu();
+                }
 
-                EnhancementCheckbox("N64 Mode", "gN64Mode");
-                Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-
-                EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
-                EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
-                EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
-                EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
-                Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
-                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
-                Tooltip("Always shows dungeon entrance icons on the minimap");
-
-                ImGui::Text("Fixes");
-                ImGui::Separator();
-                EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
-                Tooltip("Makes the L and R buttons in the pause menu the same color");
-                EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                Tooltip("Show dungeon entrances icon only when it should be");
-                EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
-                Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                if (ImGui::BeginMenu("Fixes"))
+                {
+                    EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                    Tooltip("Makes the L and R buttons in the pause menu the same color");
+                    EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    Tooltip("Show dungeon entrances icon only when it should be");
+                    EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
+                    Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                    
+                    ImGui::EndMenu();
+                }
 
                 EXPERIMENTAL();
 
