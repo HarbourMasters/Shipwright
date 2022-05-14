@@ -557,6 +557,7 @@ namespace SohImGui {
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
         ImGui::NewFrame();
+	LoadInterfaceEditor();
 
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
