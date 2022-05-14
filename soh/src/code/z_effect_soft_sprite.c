@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 EffectSsInfo sEffectSsInfo = { 0 }; // "EffectSS2Info"
 
 void EffectSs_InitInfo(GlobalContext* globalCtx, s32 tableSize) {
@@ -233,6 +235,7 @@ void EffectSs_Spawn(GlobalContext* globalCtx, s32 type, s32 priority, void* init
 
     sEffectSsInfo.table[index].type = type;
     sEffectSsInfo.table[index].priority = priority;
+    sEffectSsInfo.table[index].epoch++;
 
     if (initInfo->init(globalCtx, index, &sEffectSsInfo.table[index], initParams) == 0) {
         osSyncPrintf(VT_FGCOL(GREEN));
@@ -284,7 +287,9 @@ void EffectSs_Draw(GlobalContext* globalCtx, s32 index) {
     EffectSs* effectSs = &sEffectSsInfo.table[index];
 
     if (effectSs->draw != NULL) {
+        FrameInterpolation_RecordOpenChild(effectSs, effectSs->epoch);
         effectSs->draw(globalCtx, index, effectSs);
+        FrameInterpolation_RecordCloseChild();
     }
 }
 

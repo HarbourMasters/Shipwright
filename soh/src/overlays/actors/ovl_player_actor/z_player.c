@@ -4804,7 +4804,7 @@ s32 func_8083ADD4(GlobalContext* globalCtx, Player* this) {
 
 void func_8083AE40(Player* this, s16 objectId) {
     s32 pad;
-    u32 size;
+    size_t size;
 
     if (objectId != OBJECT_INVALID) {
         this->giObjectLoading = true;
@@ -4815,7 +4815,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         LOG_HEX("size", size, "../z_player.c", 9090);
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
-        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (u32)this->giObjectSegment, gObjectTable[objectId].vromStart,
+        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
             size, 0, &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
     }
 }
@@ -6981,7 +6981,7 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                         ((sp34 == 3) || Player_GetSwordHeld(this)))) {
-                        if ((sp34 == 0) && Player_HoldsTwoHandedWeapon(this)) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 1) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;
@@ -10751,7 +10751,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
 
 void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
-    static Vec3f sDogSpawnPos;
+    static Vec3f sDogSpawnPos; 
     Player* this = (Player*)thisx;
     s32 dogParams;
     s32 pad;

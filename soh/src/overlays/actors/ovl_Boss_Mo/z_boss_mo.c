@@ -10,6 +10,8 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 #include <string.h>
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
@@ -34,6 +36,7 @@ typedef struct {
     /* 0x30 */ f32 scale;
     /* 0x30 */ f32 fwork[2];
     /* 0x3C */ Vec3f* targetPos;
+    u32 epoch;
 } BossMoEffect; // size = 0x40
 
 #define MO_FX_MAX_SIZE 0
@@ -144,25 +147,25 @@ static f32 sFlatWidth[41] = {
 #include "z_boss_mo_colchk.c"
 
 static BossMoEffect sEffects[300];
-static s32 sSeed1;
-static s32 sSeed2;
-static s32 sSeed3;
+static s32 sBossGanonSeed1;
+static s32 sBossGanonSeed2;
+static s32 sBossGanonSeed3;
 
 void BossMo_InitRand(s32 seedInit0, s32 seedInit1, s32 seedInit2) {
-    sSeed1 = seedInit0;
-    sSeed2 = seedInit1;
-    sSeed3 = seedInit2;
+    sBossGanonSeed1 = seedInit0;
+    sBossGanonSeed2 = seedInit1;
+    sBossGanonSeed3 = seedInit2;
 }
 
 f32 BossMo_RandZeroOne(void) {
     // Wichmann-Hill algorithm
     f32 randFloat;
 
-    sSeed1 = (sSeed1 * 171) % 30269;
-    sSeed2 = (sSeed2 * 172) % 30307;
-    sSeed3 = (sSeed3 * 170) % 30323;
+    sBossGanonSeed1 = (sBossGanonSeed1 * 171) % 30269;
+    sBossGanonSeed2 = (sBossGanonSeed2 * 172) % 30307;
+    sBossGanonSeed3 = (sBossGanonSeed3 * 170) % 30323;
 
-    randFloat = (sSeed1 / 30269.0f) + (sSeed2 / 30307.0f) + (sSeed3 / 30323.0f);
+    randFloat = (sBossGanonSeed1 / 30269.0f) + (sBossGanonSeed2 / 30307.0f) + (sBossGanonSeed3 / 30323.0f);
     while (randFloat >= 1.0f) {
         randFloat -= 1.0f;
     }
@@ -211,6 +214,7 @@ void BossMo_SpawnRipple(BossMoEffect* effect, Vec3f* pos, f32 scale, f32 maxScal
                 effect->rippleMode = 1;
                 effect->fwork[MO_FX_SPREAD_RATE] = (effect->fwork[MO_FX_MAX_SIZE] - effect->scale) * 0.1f;
             }
+            effect->epoch++;
             break;
         }
     }
@@ -232,6 +236,7 @@ void BossMo_SpawnDroplet(s16 type, BossMoEffect* effect, Vec3f* pos, Vec3f* vel,
             effect->scale = scale;
             effect->fwork[MO_FX_SPREAD_RATE] = 1.0f;
             effect->stopTimer = 0;
+            effect->epoch++;
             break;
         }
     }
@@ -250,6 +255,7 @@ void BossMo_SpawnStillDroplet(BossMoEffect* effect, Vec3f* pos, f32 scale) {
             effect->accel = zeroVec;
             effect->scale = scale;
             effect->fwork[MO_FX_SPREAD_RATE] = 1.0f;
+            effect->epoch++;
             break;
         }
     }
@@ -274,6 +280,7 @@ void BossMo_SpawnBubble(BossMoEffect* effect, Vec3f* pos, Vec3f* vel, Vec3f* acc
                 effect->alpha = 0;
             }
             effect->timer = 0;
+            effect->epoch++;
             break;
         }
     }
@@ -2909,6 +2916,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type == MO_FX_BIG_RIPPLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 func_80094BC4(gfxCtx);
 
@@ -2925,6 +2933,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gEffWaterRippleDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2932,6 +2941,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type == MO_FX_SMALL_RIPPLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 func_80093D84(globalCtx->state.gfxCtx);
 
@@ -2948,6 +2958,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gEffShockwaveDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2956,6 +2967,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (((effect->type == MO_FX_DROPLET) || (effect->type == MO_FX_SPLASH)) ||
             (effect->type == MO_FX_SPLASH_TRAIL)) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
 
@@ -2977,6 +2989,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gMorphaDropletModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -2984,6 +2997,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type == MO_FX_WET_SPOT) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 func_80094044(gfxCtx);
 
@@ -3003,6 +3017,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gMorphaWetSpotModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -3010,6 +3025,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type == MO_FX_BUBBLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 func_80093D18(globalCtx->state.gfxCtx);
 
@@ -3027,6 +3043,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_OPA_DISP++, gMorphaBubbleDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -3588,7 +3605,7 @@ void BossMo_Reset(void) {
     sMorphaTent1 = NULL;
     sMorphaTent2 = NULL;
     memset(sEffects, 0, sizeof(sEffects));
-    sSeed1 = 0;
-    sSeed2 = 0;
-    sSeed3 = 0;
+    sBossGanonSeed1 = 0;
+    sBossGanonSeed2 = 0;
+    sBossGanonSeed3 = 0;
 }

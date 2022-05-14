@@ -1,6 +1,7 @@
 #include "colViewer.h"
 #include "../libultraship/SohImGuiImpl.h"
 #include "ImGuiHelpers.h"
+#include "../../frame_interpolation.h"
 
 #include <vector>
 #include <string>
@@ -97,7 +98,7 @@ void DrawColViewerWindow(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &open)) {
+    if (!ImGui::Begin("Collision Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }

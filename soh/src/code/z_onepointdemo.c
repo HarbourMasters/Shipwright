@@ -4,9 +4,9 @@
 
 static s16 sDisableAttention = false;
 static s16 sUnused = -1;
-static s32 sPrevFrameCs1100 = -4096;
+s32 sPrevFrameCs1100 = -4096;
 
-#include "z_onepointdemo_data.c"
+#include "z_onepointdemo_data.inc"
 
 void OnePointCutscene_AddVecSphToVec3f(Vec3f* dst, Vec3f* src, VecSph* vecSph) {
     Vec3f out;

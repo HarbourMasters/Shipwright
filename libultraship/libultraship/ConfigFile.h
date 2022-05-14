@@ -1,3 +1,6 @@
+#ifndef CONFIG_FILE_H
+#define CONFIG_FILE_H
+
 #pragma once
 
 #include <string>
@@ -35,3 +38,5 @@ namespace Ship {
 			mINI::INIFile File;
 	};
 }
+
+#endif

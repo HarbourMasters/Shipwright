@@ -1,6 +1,8 @@
 #include "global.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 // clang-format off
 MtxF sMtxFClear = {
     1.0f, 0.0f, 0.0f, 0.0f,
@@ -523,6 +525,7 @@ void SkinMatrix_Vec3sToVec3f(Vec3s* src, Vec3f* dest) {
 }
 
 void SkinMatrix_MtxFToMtx(MtxF* src, Mtx* dest) {
+    FrameInterpolation_RecordSkinMatrixMtxFToMtx(src, dest);
     guMtxF2L(src, dest);
 }
 

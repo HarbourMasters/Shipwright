@@ -257,7 +257,7 @@ namespace SohImGui {
 
     void LoadTexture(const std::string& name, const std::string& path) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(normalize(path));
+        const auto res = GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(path);
 
         const auto asset = new GameAsset{ api->new_texture() };
         uint8_t* img_data = stbi_load_from_memory(reinterpret_cast<const stbi_uc*>(res->buffer.get()), res->dwBufferSize, &asset->width, &asset->height, nullptr, 4);
@@ -277,7 +277,7 @@ namespace SohImGui {
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
         GfxRenderingAPI* api = gfx_get_current_rendering_api();
-        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(normalize(path)).get());
+        const auto res = static_cast<Ship::Texture*>(GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(path).get());
 
         std::vector<uint8_t> texBuffer;
         texBuffer.reserve(res->width * res->height * 4);
@@ -413,6 +413,15 @@ namespace SohImGui {
         bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
         if (ImGui::Checkbox(text.c_str(), &val)) {
             CVar_SetS32(cvarName.c_str(), val);
+            needs_save = true;
+        }
+    }
+
+    void EnhancementButton(std::string text, std::string cvarName)
+    {
+        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
+        if (ImGui::Button(text.c_str())) {
+            CVar_SetS32(cvarName.c_str(), !val);
             needs_save = true;
         }
     }
@@ -661,6 +670,7 @@ namespace SohImGui {
 
                 EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
+                EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                 EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                 EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
 
@@ -668,9 +678,11 @@ namespace SohImGui {
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
 
                 EXPERIMENTAL();
 
+                EnhancementCheckbox("60 fps interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
 
                 ImGui::EndMenu();
@@ -725,10 +737,11 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Developer Tools"))
             {
+                EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
+                ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
-                EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
 
                 ImGui::EndMenu();
             }
@@ -745,6 +758,7 @@ namespace SohImGui {
                     }
                     ImGui::EndMenu();
                 }
+
             }
 
             ImGui::EndMenuBar();
@@ -755,7 +769,7 @@ namespace SohImGui {
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_None);
+            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
@@ -921,13 +935,12 @@ namespace SohImGui {
 
     ImTextureID GetTextureByID(int id) {
 #ifdef ENABLE_DX11
-    if (impl.backend == Backend::DX11)
-    {
-        ImTextureID gfx_d3d11_get_texture_by_id(int id);
-        return gfx_d3d11_get_texture_by_id(id);
-    }
-#else
-        return reinterpret_cast<ImTextureID>(id);
+        if (impl.backend == Backend::DX11)
+        {
+            ImTextureID gfx_d3d11_get_texture_by_id(int id);
+            return gfx_d3d11_get_texture_by_id(id);
+        }
 #endif
+        return reinterpret_cast<ImTextureID>(id);
     }
 }

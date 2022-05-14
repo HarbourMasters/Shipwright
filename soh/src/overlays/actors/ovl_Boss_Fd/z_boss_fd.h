@@ -49,6 +49,7 @@ typedef struct {
     /* 0x30 */ f32 scale;
     /* 0x34 */ f32 bFdFxFloat1;
     /* 0x38 */ f32 bFdFxFloat2;
+    u32 epoch;
 } BossFdEffect; // size = 0x3C
 
 #define BOSSFD_EFFECT_COUNT 180

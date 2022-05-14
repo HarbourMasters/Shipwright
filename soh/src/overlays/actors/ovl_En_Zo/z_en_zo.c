@@ -7,6 +7,8 @@
 #include "z_en_zo.h"
 #include "objects/object_zo/object_zo.h"
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 
 typedef enum {
@@ -41,6 +43,7 @@ void EnZo_Ripple(EnZo* this, Vec3f* pos, f32 scale, f32 targetScale, u8 alpha) {
             effect->scale = scale;
             effect->targetScale = targetScale;
             effect->color.a = alpha;
+            effect->epoch++;
             break;
         }
         effect++;
@@ -65,6 +68,7 @@ void EnZo_Bubble(EnZo* this, Vec3f* pos) {
                 effect->vec = *pos;
                 effect->vel = vel;
                 effect->scale = ((Rand_ZeroOne() - 0.5f) * 0.02f) + 0.12f;
+                effect->epoch++;
                 break;
             }
         }
@@ -87,6 +91,7 @@ void EnZo_Splash(EnZo* this, Vec3f* pos, Vec3f* vel, f32 scale) {
             effect->vel = *vel;
             effect->color.a = (Rand_ZeroOne() * 100.0f) + 100.0f;
             effect->scale = scale;
+            effect->epoch++;
             break;
         }
         effect++;
@@ -180,6 +185,7 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_RIPPLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 if (1) {}
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -194,6 +200,7 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_zo_eff.c", 242),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gZoraRipplesModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -210,6 +217,7 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_BUBBLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 if (1) {}
                 gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesMaterialDL);
@@ -227,6 +235,7 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_zo_eff.c", 281),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -244,6 +253,7 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_SPLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 if (1) {}
                 gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesMaterialDL);
@@ -260,6 +270,7 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }

@@ -30,6 +30,9 @@
 #include "ichain.h"
 #include "regs.h"
 
+#define AUDIO_HEAP_SIZE 0x38000
+#define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
+
 #ifdef __cplusplus
 namespace Ship
 {

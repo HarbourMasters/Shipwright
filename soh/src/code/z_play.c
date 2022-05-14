@@ -5,6 +5,8 @@
 
 #include "soh/Enhancements/gameconsole.h"
 
+#include "soh/frame_interpolation.h"
+
 void* D_8012D1F0 = NULL;
 //UNK_TYPE D_8012D1F4 = 0; // unused
 Input* D_8012D1F8 = NULL;
@@ -421,7 +423,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
 
     input = globalCtx->state.input;
 
-    if ((SREG(1) < 0) || (DREG(0) != 0)) {
+        if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
     }
@@ -1379,7 +1381,9 @@ void Gameplay_Main(GameState* thisx) {
         LOG_NUM("1", 1, "../z_play.c", 4583);
     }
 
+    FrameInterpolation_StartRecord();
     Gameplay_Draw(globalCtx);
+    FrameInterpolation_StopRecord();
 
     if (1 && HREG(63)) {
         LOG_NUM("1", 1, "../z_play.c", 4587);

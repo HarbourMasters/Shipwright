@@ -10,6 +10,8 @@
 #include "objects/object_fish/object_fish.h"
 #include "vt.h"
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS ACTOR_FLAG_4
 
 #define WATER_SURFACE_Y(globalCtx) globalCtx->colCtx.colHeader->waterBoxes->ySurface
@@ -56,6 +58,7 @@ typedef struct {
     /* 0x34 */ f32 unk_34;
     /* 0x38 */ f32 unk_38;
     /* 0x3C */ f32 unk_3C;
+    u32 epoch;
 } FishingEffect; // size = 0x40
 
 #define POND_PROP_COUNT 140
@@ -490,6 +493,8 @@ void Fishing_SpawnRipple(Vec3f* projectedPos, FishingEffect* effect, Vec3f* pos,
                 effect->unk_2C = 1;
                 effect->unk_38 = (effect->unk_34 - effect->unk_30) * 0.1f;
             }
+
+            effect->epoch++;
             break;
         }
 
@@ -514,6 +519,7 @@ void Fishing_SpawnDustSplash(Vec3f* projectedPos, FishingEffect* effect, Vec3f* 
             effect->accel = accel;
             effect->alpha = 100 + (s16)Rand_ZeroFloat(100.0f);
             effect->unk_30 = scale;
+            effect->epoch++;
             break;
         }
 
@@ -539,6 +545,7 @@ void Fishing_SpawnWaterDust(Vec3f* projectedPos, FishingEffect* effect, Vec3f* p
             effect->timer = (s16)Rand_ZeroFloat(100.0f);
             effect->unk_30 = scale;
             effect->unk_34 = 2.0f * scale;
+            effect->epoch++;
             break;
         }
 
@@ -563,6 +570,7 @@ void Fishing_SpawnBubble(Vec3f* projectedPos, FishingEffect* effect, Vec3f* pos,
             effect->timer = (s16)Rand_ZeroFloat(100.0f);
             effect->unk_30 = scale;
             effect->unk_2C = arg4;
+            effect->epoch++;
             break;
         }
 
@@ -591,6 +599,7 @@ void Fishing_SpawnRainDrop(FishingEffect* effect, Vec3f* pos, Vec3f* rot) {
             Matrix_RotateY(rot->y, MTXMODE_NEW);
             Matrix_RotateX(rot->x, MTXMODE_APPLY);
             Matrix_MultVec3f(&velSrc, &effect->vel);
+            effect->epoch++;
             break;
         }
 
@@ -1182,6 +1191,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
 
     for (i = 0; i < 100; i++) {
         if (effect->type == FS_EFF_RIPPLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gFishingRippleMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
@@ -1197,6 +1207,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingRippleModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1205,6 +1216,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < 100; i++) {
         if (effect->type == FS_EFF_DUST_SPLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gFishingDustSplashMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 200, 0);
@@ -1221,6 +1233,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingDustSplashModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1229,6 +1242,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < 100; i++) {
         if (effect->type == FS_EFF_WATER_DUST) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gFishingWaterDustMaterialDL);
                 gDPSetEnvColor(POLY_OPA_DISP++, 40, 90, 80, 128);
@@ -1249,6 +1263,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_OPA_DISP++, gFishingWaterDustModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1257,6 +1272,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 0; i < 100; i++) {
         if (effect->type == FS_EFF_BUBBLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gFishingBubbleMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 150, 150, 150, 0);
@@ -1272,6 +1288,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingBubbleModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1280,6 +1297,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 30; i < EFFECT_COUNT; i++) {
         if (effect->type == FS_EFF_RAIN_DROP) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
                 gDPSetCombineMode(POLY_XLU_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
@@ -1297,6 +1315,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingRainDropModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1307,6 +1326,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 30; i < EFFECT_COUNT; i++) {
         if (effect->type == FS_EFF_RAIN_RIPPLE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gFishingRippleMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
@@ -1321,6 +1341,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingRippleModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
@@ -1329,6 +1350,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
     flag = 0;
     for (i = 30; i < EFFECT_COUNT; i++) {
         if (effect->type == FS_EFF_RAIN_SPLASH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gFishingRainSplashMaterialDL);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, KREG(19) + 80);
@@ -1350,12 +1372,14 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gFishingRainSplashModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
 
     effect = firstEffect;
     if (effect->type == FS_EFF_OWNER_HAT) {
+        FrameInterpolation_RecordOpenChild(effect, effect->epoch);
         Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
         Matrix_RotateY((sEffOwnerHatRot.y * M_PI) / 32768, MTXMODE_APPLY);
         Matrix_RotateX((sEffOwnerHatRot.x * M_PI) / 32768, MTXMODE_APPLY);
@@ -1367,6 +1391,7 @@ void Fishing_DrawEffects(FishingEffect* effect, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, gFishingOwnerHatDL);
+        FrameInterpolation_RecordCloseChild();
     }
 
     Matrix_Pop();
@@ -4398,6 +4423,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
             }
 
             if (prop->shouldDraw) {
+                FrameInterpolation_RecordOpenChild(prop, 0);
                 Matrix_Translate(prop->pos.x, prop->pos.y, prop->pos.z, MTXMODE_NEW);
                 Matrix_Scale(prop->scale, prop->scale, prop->scale, MTXMODE_APPLY);
                 Matrix_RotateY(prop->rotY, MTXMODE_APPLY);
@@ -4407,6 +4433,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fishing.c", 7726),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gFishingReedModelDL);
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
@@ -4423,12 +4450,14 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
             }
 
             if (prop->shouldDraw) {
+                FrameInterpolation_RecordOpenChild(prop, 0);
                 Matrix_Translate(prop->pos.x, prop->pos.y, prop->pos.z, MTXMODE_NEW);
                 Matrix_Scale(prop->scale, prop->scale, prop->scale, MTXMODE_APPLY);
 
                 gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fishing.c", 7748),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gFishingWoodPostModelDL);
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
@@ -4445,6 +4474,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
             }
 
             if (prop->shouldDraw) {
+                FrameInterpolation_RecordOpenChild(prop, 0);
                 Matrix_Translate(prop->pos.x, prop->pos.y, prop->pos.z, MTXMODE_NEW);
                 Matrix_Scale(prop->scale, 1.0f, prop->scale, MTXMODE_APPLY);
                 Matrix_RotateY(prop->lilyPadAngle * (M_PI / 32768), MTXMODE_APPLY);
@@ -4454,6 +4484,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fishing.c", 7774),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gFishingLilyPadModelDL);
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
@@ -4470,6 +4501,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
             }
 
             if (prop->shouldDraw) {
+                FrameInterpolation_RecordOpenChild(prop, 0);
                 Matrix_Translate(prop->pos.x, prop->pos.y, prop->pos.z, MTXMODE_NEW);
                 Matrix_Scale(prop->scale, prop->scale, prop->scale, MTXMODE_APPLY);
                 Matrix_RotateY(prop->rotY, MTXMODE_APPLY);
@@ -4477,6 +4509,7 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fishing.c", 7798),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gFishingRockModelDL);
+                FrameInterpolation_RecordCloseChild();
             }
         }
 

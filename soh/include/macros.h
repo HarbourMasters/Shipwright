@@ -138,6 +138,8 @@ extern GraphicsContext* __gfxCtx;
 #ifndef NDEBUG
 #define OPEN_DISPS(gfxCtx, file, line) \
     { \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
+        FrameInterpolation_RecordOpenChild(file, line); \
         GraphicsContext* __gfxCtx; \
         Gfx* dispRefs[4]; \
         __gfxCtx = gfxCtx; \
@@ -146,6 +148,8 @@ extern GraphicsContext* __gfxCtx;
 #else
 #define OPEN_DISPS(gfxCtx, file, line) \
     { \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
+        FrameInterpolation_RecordOpenChild(file, line); \
         GraphicsContext* __gfxCtx; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx;
@@ -153,11 +157,15 @@ extern GraphicsContext* __gfxCtx;
 
 #ifndef NDEBUG
 #define CLOSE_DISPS(gfxCtx, file, line) \
+    {void FrameInterpolation_RecordCloseChild(void); \
+    FrameInterpolation_RecordCloseChild();} \
     Graph_CloseDisps(dispRefs, gfxCtx, file, line); \
     } \
     (void)0
 #else
 #define CLOSE_DISPS(gfxCtx, file, line) \
+    {void FrameInterpolation_RecordCloseChild(void); \
+    FrameInterpolation_RecordCloseChild();} \
     (void)0; \
     } \
     (void)0

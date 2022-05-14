@@ -28,6 +28,12 @@ typedef enum {
     /* 07 */ FROG_NO_SONG
 } FrogSongType;
 
+typedef struct {
+    f32 xzDist;
+    f32 yaw;
+    f32 yDist;
+} LogSpotToFromWater;
+
 typedef struct EnFr {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ SkelAnime skelAnime;   // Frog Skeleton
@@ -68,5 +74,10 @@ typedef struct EnFr {
     /* 0x03AC */ Vec3f posButterfly; // Position/Coordinates of the Butterfly
     /* 0x03B8 */ Vec3f posButterflyLight; // Used in Lights_PointNoGlowSetInfo()
 } EnFr; // size = 0x03C4
+
+typedef struct {
+    u8 flags;
+    EnFr* frogs[5];
+} EnFrPointers;
 
 #endif
