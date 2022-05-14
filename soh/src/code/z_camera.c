@@ -1415,22 +1415,17 @@ f32 camX;
 f32 camY;
 
 s32 SetCameraManual(Camera* camera) {
-    auto newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    auto newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    if (fabsf(newCamX) >= 350.0f || fabsf(newCamY) >= 350.0f && manualCamera == false) {
+    if ((fabsf(newCamX) >= 350.0f || fabsf(newCamY) >= 350.0f) && manualCamera == false) {
         manualCamera = true;
 
-        VecSph eyeAdjustment1;
-        Vec3f oldCamRot;
-        oldCamRot.x = camera->player->actor.world.pos.x;
-        oldCamRot.y = camera->player->actor.world.pos.y + Player_GetHeight(camera->player);
-        oldCamRot.z = camera->player->actor.world.pos.z;
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eye);
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &oldCamRot, &camera->eyeNext);
+        VecSph eyeAdjustment;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->playerPosRot, &camera->eye);
 
-        camX = eyeAdjustment1.yaw;
-        camY = eyeAdjustment1.pitch;
+        camX = eyeAdjustment.yaw;
+        camY = eyeAdjustment.pitch;
     }
 
     if (manualCamera) {
