@@ -6,24 +6,30 @@ The Ship does not include assets and as such requires a prior copy of the game t
 
 ## Quick Start
 
-1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
-2) Requires a supported copy of the game (See supported games below).
-3) Use the OTRGui to generate an `oot.otr` archive file.
-4) Launch `soh.exe`
+1. Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
+2. Requires a supported copy of the game (See supported games below).
+3. Use the OTRGui to generate an `oot.otr` archive file.
+4. Launch `soh.exe`
 
 ### Supported Games
-Ocarina of Time Debug (not Master Quest)
+
+#### Ocarina of Time Debug (not Master Quest)
+
+> Currently the recommended option
+
 ```
 Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-> Currently the recommended option
-Ocarina of Time PAL GameCube
+
+#### Ocarina of Time PAL GameCube
+
+> May lead to crashes and instability
+
 ```
 sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
-> May lead to crashes
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
 
@@ -33,9 +39,9 @@ The Ship of Harkinian uses a proprietary versioning system consisting of a sci-f
 
 ### The Extraction Tool
 
-* Open a rom to initiate generating the `oot.otr` archive file.
-* If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
-* When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
+- Open a rom to initiate generating the `oot.otr` archive file.
+- If a second button exists then `oot.otr` already exists. To prevent overwriting the old `oot.otr` use this button to choose a new game directory. The new directory must not already contain an `oot.otr` to prevent an error.
+- When the process completes, place `oot.otr` beside `soh.exe` if it is not already.
 
 This packaging process can take up to **5 minutes**.
 
@@ -51,6 +57,7 @@ Launch the game. If the window immediately closes, or if there are visual artifa
 Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
 ## Take The Survey
+
 Want to use cartridge readers in tandem with the OTRGui?
 Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
 
@@ -63,9 +70,9 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Troubleshooting The Exporter
+
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
-
 
 ## The Harbour Masters Are...
 
@@ -79,7 +86,7 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
     JoshDuMan | Developer - General Programmer
     KiritoDev/Lywx | Developer - General Programmer
     Theo3 | Developer - General Programmer
-	Random06457 | Developer - Linux Build
+    Random06457 | Developer - Linux Build
 
 ## Special Thanks
 
@@ -91,23 +98,24 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
     zel. | For his contributions to decomp
     Aloxado | Developer - General Programmer
     MegaMech | Developer - General Programmer
-	Revo | Tester - GCC support and General Testing
-	zfg | Tester - General Testing
-	Horseless Headman | Tester - General Testing
+    Revo | Tester - GCC support and General Testing
+    zfg | Tester - General Testing
+    Horseless Headman | Tester - General Testing
     Steven Pritchett | Tester - General Testing
-	Trenton May | Tester - General Testing
-	Zeldaboy14 | Tester - General Testing, encouragement, and community moderation
-	Koby Howell | Tester - General Testing
-	Logg | Tester - General Testing
-	Taylor Daley | Graphic Design
-	Can't Sleep | Graphic Design
-	
+    Trenton May | Tester - General Testing
+    Zeldaboy14 | Tester - General Testing, encouragement, and community moderation
+    Koby Howell | Tester - General Testing
+    Logg | Tester - General Testing
+    Taylor Daley | Graphic Design
+    Can't Sleep | Graphic Design
+
 ## Video Credits
+
     Kenix | Producer / Writer
-	rainbow_fash | Executive Producer
+    rainbow_fash | Executive Producer
     TheLegendOfXela | Editor
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link
     AceHeart | Zelda
-    
+
 ###### Lemons
