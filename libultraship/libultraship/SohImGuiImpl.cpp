@@ -701,7 +701,7 @@ namespace SohImGui {
 
                 EnhancementCheckbox("60 fps interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
-                Tooltip("Turns off the level of detail setting, making models always their higher poly variants");
+                Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
 
                 ImGui::EndMenu();
             }
