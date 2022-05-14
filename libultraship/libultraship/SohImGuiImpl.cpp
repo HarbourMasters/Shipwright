@@ -65,19 +65,28 @@ namespace SohImGui {
     bool needs_save = false;
     std::vector<const char*> CustomTexts;
     int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
+    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to Gamecube.
+    float hearts_colors[3] = {0,0,0};
+    float hearts_dd_colors[3] = {0,0,0};
+    float a_btn_colors[3] = {0,0,0};
+    float b_btn_colors[3] = {0,0,0};
+    float c_btn_colors[3] = {0,0,0};
+    float start_btn_colors[3] = {0,0,0};
+    float magic_border_colors[3] = {0,0,0};
+    float magic_remaining_colors[3] = {0,0,0};
+    float magic_use_colors[3] = {0,0,0};
+    float minimap_colors[3] = {0,0,0};
+    float rupee_colors[3] = {0,0,0};
+    float smolekey_colors[3] = {0,0,0};
     float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
     float goron_col[3] = { 0.392f, 0.078f, 0.0f };
     float zora_col[3] = { 0.0f, 0.235f, 0.392f };
-
     float navi_idle_i_col[3] = { 0.0f, 0.0f, 0.0f };
     float navi_idle_o_col[3] = { 0.0f, 0.0f, 0.0f };
-
     float navi_npc_i_col[3] = { 0.0f, 0.0f, 0.0f };
     float navi_npc_o_col[3] = { 0.0f, 0.0f, 0.0f };
-
     float navi_enemy_i_col[3] = { 0.0f, 0.0f, 0.0f };
     float navi_enemy_o_col[3] = { 0.0f, 0.0f, 0.0f };
-
     float navi_prop_i_col[3] = { 0.0f, 0.0f, 0.0f };
     float navi_prop_o_col[3] = { 0.0f, 0.0f, 0.0f };
 
@@ -104,50 +113,6 @@ namespace SohImGui {
             break;
         }
 
-        // OTRTODO: This gameplay specific stuff should not be in libultraship. This needs to be moved to soh and use sTunicColors
-        kokiri_col[0] = 30 / 255.0f;
-        kokiri_col[1] = 105 / 255.0f;
-        kokiri_col[2] = 27 / 255.0f;
-
-        goron_col[0] = 100 / 255.0f;
-        goron_col[1] = 20 / 255.0f;
-        goron_col[2] = 0;
-
-        zora_col[0] = 0;
-        zora_col[1] = 60 / 255.0f;
-        zora_col[2] = 100 / 255.0f;
-
-        navi_idle_i_col[0] = 0;
-        navi_idle_i_col[1] = 0;
-        navi_idle_i_col[2] = 0;
-
-        navi_idle_o_col[0] = 0;
-        navi_idle_o_col[1] = 0;
-        navi_idle_o_col[2] = 0;
-
-        navi_npc_i_col[0] = 0;
-        navi_npc_i_col[1] = 0;
-        navi_npc_i_col[2] = 0;
-
-        navi_npc_o_col[0] = 0;
-        navi_npc_o_col[1] = 0;
-        navi_npc_o_col[2] = 0;
-
-        navi_enemy_i_col[0] = 0;
-        navi_enemy_i_col[1] = 0;
-        navi_enemy_i_col[2] = 0;
-
-        navi_enemy_o_col[0] = 0;
-        navi_enemy_o_col[1] = 0;
-        navi_enemy_o_col[2] = 0;
-
-        navi_prop_i_col[0] = 0;
-        navi_prop_i_col[1] = 0;
-        navi_prop_i_col[2] = 0;
-
-        navi_prop_o_col[0] = 0;
-        navi_prop_o_col[1] = 0;
-        navi_prop_o_col[2] = 0;
     }
 
     void ImGuiBackendInit() {
@@ -273,6 +238,85 @@ namespace SohImGui {
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
+    }
+
+    void LoadInterfaceEditor(){//This function is necessary as without it IMGui wont load the updated float array.
+        hearts_colors[0] = (float)CVar_GetS32("gCCHeartsPrimR", 255)/255;
+        hearts_colors[1] = (float)CVar_GetS32("gCCHeartsPrimG", 70)/255;
+        hearts_colors[2] = (float)CVar_GetS32("gCCHeartsPrimB", 50)/255;
+        hearts_dd_colors[0] = (float)CVar_GetS32("gDDCCHeartsPrimR", 255)/255;
+        hearts_dd_colors[1] = (float)CVar_GetS32("gDDCCHeartsPrimG", 255)/255;
+        hearts_dd_colors[2] = (float)CVar_GetS32("gDDCCHeartsPrimB", 255)/255;
+        a_btn_colors[0] = (float)CVar_GetS32("gCCABtnPrimR", 90)/255;
+        a_btn_colors[1] = (float)CVar_GetS32("gCCABtnPrimG", 90)/255;
+        a_btn_colors[2] = (float)CVar_GetS32("gCCABtnPrimB", 255)/255;
+        b_btn_colors[0] = (float)CVar_GetS32("gCCBBtnPrimR", 0)/255;
+        b_btn_colors[1] = (float)CVar_GetS32("gCCBBtnPrimG", 150)/255;
+        b_btn_colors[2] = (float)CVar_GetS32("gCCBBtnPrimB", 0)/255;
+        c_btn_colors[0] = (float)CVar_GetS32("gCCCBtnPrimR", 255)/255;
+        c_btn_colors[1] = (float)CVar_GetS32("gCCCBtnPrimG", 160)/255;
+        c_btn_colors[2] = (float)CVar_GetS32("gCCCBtnPrimB", 0)/255;
+        start_btn_colors[0] = (float)CVar_GetS32("gCCStartBtnPrimR", 120)/255;
+        start_btn_colors[1] = (float)CVar_GetS32("gCCStartBtnPrimG", 120)/255;
+        start_btn_colors[2] = (float)CVar_GetS32("gCCStartBtnPrimB", 120)/255;
+        magic_border_colors[0] = (float)CVar_GetS32("gCCMagicBorderPrimR", 255)/255;
+        magic_border_colors[1] = (float)CVar_GetS32("gCCMagicBorderPrimG", 255)/255;
+        magic_border_colors[2] = (float)CVar_GetS32("gCCMagicBorderPrimB", 255)/255;
+        magic_use_colors[0] = (float)CVar_GetS32("gCCMagicPrimR", 250)/255;
+        magic_use_colors[1] = (float)CVar_GetS32("gCCMagicPrimG", 250)/255;
+        magic_use_colors[2] = (float)CVar_GetS32("gCCMagicPrimB", 0)/255;
+        magic_remaining_colors[0] = (float)CVar_GetS32("gCCMagicUsePrimR", 0)/255;
+        magic_remaining_colors[1] = (float)CVar_GetS32("gCCMagicUsePrimG", 200)/255;
+        magic_remaining_colors[2] = (float)CVar_GetS32("gCCMagicUsePrimB", 0)/255;
+        minimap_colors[0] = (float)CVar_GetS32("gCCMinimapPrimR", 0)/255;
+        minimap_colors[1] = (float)CVar_GetS32("gCCMinimapPrimG", 255)/255;
+        minimap_colors[2] = (float)CVar_GetS32("gCCMinimapPrimB", 255)/255;
+        rupee_colors[0] = (float)CVar_GetS32("gCCRupeePrimR", 120)/255;
+        rupee_colors[1] = (float)CVar_GetS32("gCCRupeePrimG", 120)/255;
+        rupee_colors[2] = (float)CVar_GetS32("gCCRupeePrimB", 120)/255;
+        smolekey_colors[0] = (float)CVar_GetS32("gCCKeysPrimR", 200)/255;
+        smolekey_colors[1] = (float)CVar_GetS32("gCCKeysPrimG", 230)/255;
+        smolekey_colors[2] = (float)CVar_GetS32("gCCKeysPrimB", 255)/255;
+        kokiri_col[0] = (float)CVar_GetS32("gTunic_Kokiri_R", 30)/255;
+        kokiri_col[1] = (float)CVar_GetS32("gTunic_Kokiri_G", 105)/255;
+        kokiri_col[2] = (float)CVar_GetS32("gTunic_Kokiri_B", 27)/255;
+        goron_col[0] = (float)CVar_GetS32("gTunic_Goron_R", 100)/255;
+        goron_col[1] = (float)CVar_GetS32("gTunic_Goron_G", 20)/255;
+        goron_col[2] = (float)CVar_GetS32("gTunic_Goron_B", 0)/255;
+        zora_col[0] = (float)CVar_GetS32("gTunic_Zora_R", 0)/255;
+        zora_col[1] = (float)CVar_GetS32("gTunic_Zora_G", 60)/255;
+        zora_col[2] = (float)CVar_GetS32("gTunic_Zora_B", 100)/255;
+        navi_idle_i_col[0] = (float)CVar_GetS32("gNavi_Idle_Inner_R", 255)/255;
+        navi_idle_i_col[1] = (float)CVar_GetS32("gNavi_Idle_Inner_G", 255)/255;
+        navi_idle_i_col[2] = (float)CVar_GetS32("gNavi_Idle_Inner_B", 255)/255;
+        navi_idle_o_col[0] = (float)CVar_GetS32("gNavi_Idle_Outer_R", 115)/255;
+        navi_idle_o_col[1] = (float)CVar_GetS32("gNavi_Idle_Outer_G", 230)/255;
+        navi_idle_o_col[2] = (float)CVar_GetS32("gNavi_Idle_Outer_B", 255)/255;
+        navi_npc_i_col[0] = (float)CVar_GetS32("gNavi_NPC_Inner_R", 100)/255;
+        navi_npc_i_col[1] = (float)CVar_GetS32("gNavi_NPC_Inner_G", 100)/255;
+        navi_npc_i_col[2] = (float)CVar_GetS32("gNavi_NPC_Inner_B", 255)/255;
+        navi_npc_o_col[0] = (float)CVar_GetS32("gNavi_NPC_Outer_R", 90)/255;
+        navi_npc_o_col[1] = (float)CVar_GetS32("gNavi_NPC_Outer_G", 90)/255;
+        navi_npc_o_col[2] = (float)CVar_GetS32("gNavi_NPC_Outer_B", 255)/255;
+        navi_enemy_i_col[0] = (float)CVar_GetS32("gNavi_Enemy_Inner_R", 255)/255;
+        navi_enemy_i_col[1] = (float)CVar_GetS32("gNavi_Enemy_Inner_G", 255)/255;
+        navi_enemy_i_col[2] = (float)CVar_GetS32("gNavi_Enemy_Inner_B", 0)/255;
+        navi_enemy_o_col[0] = (float)CVar_GetS32("gNavi_Enemy_Outer_R", 220)/255;
+        navi_enemy_o_col[1] = (float)CVar_GetS32("gNavi_Enemy_Outer_G", 220)/255;
+        navi_enemy_o_col[2] = (float)CVar_GetS32("gNavi_Enemy_Outer_B", 0)/255;
+        navi_prop_i_col[0] = (float)CVar_GetS32("gNavi_Prop_Inner_R", 0)/255;
+        navi_prop_i_col[1] = (float)CVar_GetS32("gNavi_Prop_Inner_G", 255)/255;
+        navi_prop_i_col[2] = (float)CVar_GetS32("gNavi_Prop_Inner_B", 0)/255;
+        navi_prop_o_col[0] = (float)CVar_GetS32("gNavi_Prop_Outer_R", 0)/255;
+        navi_prop_o_col[1] = (float)CVar_GetS32("gNavi_Prop_Outer_G", 220)/255;
+        navi_prop_o_col[2] = (float)CVar_GetS32("gNavi_Prop_Outer_B", 0)/255;
+        if (CVar_GetS32("gHudColors", 1) ==0) {
+            SelectedHUD = 0;
+        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+            SelectedHUD = 1;
+        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+            SelectedHUD = 2;
+        }
     }
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
@@ -483,29 +527,32 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementColor3(std::string text, std::string cvarName, float defaultColors[3])
-    {
-        int r = CVar_GetS32((cvarName + "_Red").c_str(), (defaultColors[0] * 255.0f));
-        int g = CVar_GetS32((cvarName + "_Green").c_str(), (defaultColors[1] * 255.0f));
-        int b = CVar_GetS32((cvarName + "_Blue").c_str(), (defaultColors[2] * 255.0f));
+    int ClampFloatToInt(float value, int min, int max){
+        return fmin(fmax(value,min),max);
+    }
 
-        float colors[3];
-        colors[0] = r / 255.0f;
-        colors[1] = g / 255.0f;
-        colors[2] = b / 255.0f;
-
-        {
-            if (ImGui::ColorEdit3(text.c_str(), colors))
-            {
-                CVar_SetS32((cvarName + "_Red").c_str(), (int)(colors[0] * 255));
-                CVar_SetS32((cvarName + "_Green").c_str(), (int)(colors[1] * 255));
-                CVar_SetS32((cvarName + "_Blue").c_str(), (int)(colors[2] * 255));
-                needs_save = true;
-            }
+    void EnhancementColor3(std::string text, std::string cvarName, float ColorRGB[3], bool TitleSameLine) {
+        //Simplified.
+        ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+        if (!TitleSameLine){
+            ImGui::Text("%s", text.c_str());
+            flags = ImGuiColorEditFlags_NoLabel;
+        }
+        if (ImGui::ColorEdit3(text.c_str(), ColorRGB, flags)) {
+            CVar_SetS32((cvarName+"R").c_str(), ClampFloatToInt(ColorRGB[0]*255,0,255));
+            CVar_SetS32((cvarName+"G").c_str(), ClampFloatToInt(ColorRGB[1]*255,0,255));
+            CVar_SetS32((cvarName+"B").c_str(), ClampFloatToInt(ColorRGB[2]*255,0,255));
+            needs_save = true;
         }
     }
 
-   void DrawMainMenuAndCalculateGameSize() {
+    void Tooltip(std::string text){
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", text.c_str());
+        }
+    }
+
+    void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -687,28 +734,21 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
-            if (ImGui::BeginMenu("Cosmetics"))
-            {
-                ImGui::Text("Tunics");
-                ImGui::Separator();
-
-                EnhancementColor3("Kokiri Tunic", "gTunic_Kokiri", kokiri_col);
-                EnhancementColor3("Goron Tunic", "gTunic_Goron", goron_col);
-                EnhancementColor3("Zora Tunic", "gTunic_Zora", zora_col);
-
-                ImGui::Text("Navi");
-                ImGui::Separator();
-
-                EnhancementColor3("Navi Idle Inner", "gNavi_Idle_Inner", navi_idle_i_col);
-                EnhancementColor3("Navi Idle Outer", "gNavi_Idle_Outer", navi_idle_o_col);
-                EnhancementColor3("Navi NPC Inner", "gNavi_NPC_Inner", navi_npc_i_col);
-                EnhancementColor3("Navi NPC Outer", "gNavi_NPC_Outer", navi_npc_o_col);
-                EnhancementColor3("Navi Enemy Inner", "gNavi_Enemy_Inner", navi_enemy_i_col);
-                EnhancementColor3("Navi Enemy Outer", "gNavi_Enemy_Outer", navi_enemy_o_col);
-                EnhancementColor3("Navi Prop Inner", "gNavi_Prop_Inner", navi_prop_i_col);
-                EnhancementColor3("Navi Prop Outer", "gNavi_Prop_Outer", navi_prop_o_col);
-
-                ImGui::EndMenu();
+            if (ImGui::BeginMenu("Cosmetics"))  {
+                EnhancementCheckbox("Cosmetics editor", "gCosmticsEditor");
+                Tooltip("Edit Navi and Link's Tunics color.");
+                EnhancementCheckbox("HUD Margins editor", "gUseMargins");
+                EnhancementRadioButton("N64 interface", "gHudColors", 0);
+                Tooltip("Change interface color to N64 style.");
+                EnhancementRadioButton("Gamecube interface", "gHudColors", 1);
+                Tooltip("Change interface color to Gamecube style.");
+                EnhancementRadioButton("Custom interface", "gHudColors", 2);
+                Tooltip("Change interface color to your own made style.");
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    EnhancementCheckbox("Interface editor", "gColorsEditor");
+                    Tooltip("Edit the colors used for your own interface");
+                }
+            ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Cheats"))
@@ -743,6 +783,126 @@ namespace SohImGui {
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
+            }
+
+            bool Margins_isOpen = CVar_GetS32("gUseMargins", 0);
+            bool Cosmetics_isOpen = CVar_GetS32("gCosmticsEditor", 0);
+            bool Interface_isOpen = CVar_GetS32("gColorsEditor", 0);
+
+            if (Margins_isOpen) {
+                if (!Margins_isOpen) {
+                    return;
+                }
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+                if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+                    if (ImGui::BeginTabItem("Interface margins")) {
+                        EnhancementCheckbox("Use margins", "gHUDMargins");
+                        Tooltip("Enable/Disable custom margins. \nIf disabled you will have original margins.");
+                        EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", -20, 20, "");
+                        EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, 25, "");
+                        EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", -25, 25, "");
+                        EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", -20, 20, "");
+                        ImGui::EndTabItem();
+                    }
+                    ImGui::EndTabBar();
+                }
+                ImGui::PopStyleColor();
+                ImGui::End();
+            }
+            if (Cosmetics_isOpen) {
+                if (!Cosmetics_isOpen) {
+                    return;
+                }
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::Begin("Cosmetics Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+                if (ImGui::BeginTabBar("Cosmetics Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+                    if (ImGui::BeginTabItem("Navi")) {
+                        EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
+                        Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
+                        EnhancementColor3("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, false);
+                        Tooltip("Inner color for Navi (idle flying around)");
+                        EnhancementColor3("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, false);
+                        Tooltip("Outer color for Navi (idle flying around)");
+                        ImGui::Separator();
+                        EnhancementColor3("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, false);
+                        Tooltip("Inner color for Navi (when Navi fly around NPCs)");
+                        EnhancementColor3("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, false);
+                        Tooltip("Outer color for Navi (when Navi fly around NPCs)");
+                        ImGui::Separator();
+                        EnhancementColor3("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, false);
+                        Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
+                        EnhancementColor3("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, false);
+                        Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
+                        ImGui::Separator();
+                        EnhancementColor3("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, false);
+                        Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
+                        EnhancementColor3("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, false);
+                        Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
+                        ImGui::EndTabItem();
+                    }
+                    if (ImGui::BeginTabItem("Tunics")) {
+                        EnhancementCheckbox("Custom colors on tunics", "gUseTunicsCol");
+                        Tooltip("Enable/Disable custom Link's tunics colors. \nIf disabled you will have original colors for Link's tunics.");
+                        EnhancementColor3("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, false);
+                        ImGui::Separator();
+                        EnhancementColor3("Goron Tunic", "gTunic_Goron_", goron_col, false);
+                        ImGui::Separator();
+                        EnhancementColor3("Zora Tunic", "gTunic_Zora_", zora_col, false);
+                        ImGui::EndTabItem();
+                    }
+                    ImGui::EndTabBar();
+                }
+                ImGui::PopStyleColor();
+                ImGui::End();
+            }
+            if (Interface_isOpen) {
+                if (!Interface_isOpen) {
+                    return;
+                }
+                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::Begin("Interface Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+                if (ImGui::BeginTabBar("Interface Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+                    if (ImGui::BeginTabItem("Hearts")) {
+                        EnhancementColor3("Hearts inner", "gCCHeartsPrim", hearts_colors, false);
+                        Tooltip("Hearts inner color (red in original)\nAffect both Normal Hearts and the ones in Double Defense");
+                        EnhancementColor3("Hearts double def", "gDDCCHeartsPrim", hearts_dd_colors, false);
+                        Tooltip("Hearts outline color (white in original)\nAffect Double Defense outline only.");
+                        ImGui::EndTabItem();
+                    }
+                    if (ImGui::BeginTabItem("Buttons")) {
+                        EnhancementColor3("A Buttons", "gCCABtnPrim", a_btn_colors, false);
+                        Tooltip("A Buttons colors (Green in original Gamecube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
+                        EnhancementColor3("B Buttons", "gCCBBtnPrim", b_btn_colors, false);
+                        Tooltip("B Button colors (Red in original Gamecube)\nAffect B button colors on interface");
+                        EnhancementColor3("C Buttons", "gCCCBtnPrim", c_btn_colors, false);
+                        Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
+                        EnhancementColor3("Start Buttons", "gCCStartBtnPrim", start_btn_colors, false);
+                        Tooltip("Start Button colors (gray in Gamecube)\nAffect Start button colors in inventory");
+                        ImGui::EndTabItem();
+                    }
+                    if (ImGui::BeginTabItem("Magic Bar")) {
+                        EnhancementColor3("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, false);
+                        Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game.");
+                        EnhancementColor3("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, false);
+                        Tooltip("Affect the magic bar color\nGreen in original game.");
+                        EnhancementColor3("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, false);
+                        Tooltip("Affect the magic bar when being used\nYellow in original game.");
+                        ImGui::EndTabItem();
+                    }
+                    if (ImGui::BeginTabItem("Misc")) {
+                        EnhancementColor3("Minimap color", "gCCMinimapPrim", minimap_colors, false);
+                        Tooltip("Affect the Dungeon and Overworld minimaps.");
+                        EnhancementColor3("Rupee icon color", "gCCRupeePrim", rupee_colors, false);
+                        Tooltip("Affect the Rupee icon on interface\nGreen by default.");
+                        EnhancementColor3("Small Keys icon color", "gCCKeysPrim", smolekey_colors, false);
+                        Tooltip("Affect the Small keys icon on interface\nGray by default.");
+                        ImGui::EndTabItem();
+                    }
+                    ImGui::EndTabBar();
+                }
+                ImGui::PopStyleColor();
+                ImGui::End();
             }
 
             for (const auto& category : windowCategories) {

@@ -12,6 +12,11 @@ s16 sPlayerInitialPosZ = 0;
 s16 sPlayerInitialDirection = 0;
 s16 sEntranceIconMapIndex = 0;
 
+s16 Top_MM_Margin = 0;
+s16 Left_MM_Margin = 0;
+s16 Right_MM_Margin = 0;
+s16 Bottom_MM_Margin = 0;
+
 void Map_SavePlayerInitialInfo(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -604,11 +609,11 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-        tempX = player->actor.world.pos.x;
-        tempZ = player->actor.world.pos.z;
+        tempX = player->actor.world.pos.x+Right_MM_Margin;
+        tempZ = player->actor.world.pos.z+Bottom_MM_Margin;
         tempX /= R_COMPASS_SCALE_X;
         tempZ /= R_COMPASS_SCALE_Y;
-        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + tempX) / 10.0f), (R_COMPASS_OFFSET_Y - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(Right_MM_Margin*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Bottom_MM_Margin*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
         Matrix_RotateX(-1.6f, MTXMODE_APPLY);
         tempX = (0x7FFF - player->actor.shape.rot.y) / 0x400;
@@ -619,11 +624,11 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 255, 0, 255);
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
-        tempX = sPlayerInitialPosX;
-        tempZ = sPlayerInitialPosZ;
+        tempX = sPlayerInitialPosX+Right_MM_Margin;
+        tempZ = sPlayerInitialPosZ+Bottom_MM_Margin;
         tempX /= R_COMPASS_SCALE_X;
         tempZ /= R_COMPASS_SCALE_Y;
-        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + tempX) / 10.0f), (R_COMPASS_OFFSET_Y - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(Right_MM_Margin*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Bottom_MM_Margin*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
         Matrix_Scale(VREG(9) / 100.0f, VREG(9) / 100.0f, VREG(9) / 100.0f, MTXMODE_APPLY);
         Matrix_RotateX(VREG(52) / 10.0f, MTXMODE_APPLY);
         Matrix_RotateY(sPlayerInitialDirection / 10.0f, MTXMODE_APPLY);
@@ -662,17 +667,22 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                       TEXEL0, 0, PRIMITIVE, 0);
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
+                        if (CVar_GetS32("gHudColors", 1) == 2) { //Dungeon minimap
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", 255), CVar_GetS32("gCCMinimapPrimG", 255), CVar_GetS32("gCCMinimapPrimB", 255), interfaceCtx->minimapAlpha);
+                        } else {
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
+                        }
 
                         gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                        const s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X);
+                        const s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + Right_MM_Margin);
+                        const s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Bottom_MM_Margin;
 
-                        gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, R_DGN_MINIMAP_Y << 2,
-                                            (dgnMiniMapX + 96) << 2, (R_DGN_MINIMAP_Y + 85) << 2, G_TX_RENDERTILE,
+                        gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
+                                            (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
                                             0, 0, 1 << 10, 1 << 10);
                     }
 
@@ -719,27 +729,35 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     func_80094520(globalCtx->state.gfxCtx);
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2),
-                                    interfaceCtx->minimapAlpha);
+                    if (CVar_GetS32("gHudColors", 1) == 2) {//Overworld minimap
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", 255), CVar_GetS32("gCCMinimapPrimG", 255), CVar_GetS32("gCCMinimapPrimB", 255), interfaceCtx->minimapAlpha);
+                    } else {
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                    }
 
                     gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_IA,
                                            gMapData->owMinimapWidth[mapIndex], gMapData->owMinimapHeight[mapIndex], 0,
                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    const s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X);
+                    const s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + Right_MM_Margin);
+                    const s16 oWMiniMapY = R_OW_MINIMAP_Y + Bottom_MM_Margin;
 
-                    gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, R_OW_MINIMAP_Y << 2,
+                    gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) << 2,
-                                           (R_OW_MINIMAP_Y + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, 0,
+                                           (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, 0,
                                             0, 1 << 10, 1 << 10);
+
+                    if (CVar_GetS32("gHudColors", 1) != 2) {//This need to be added else it will color dungeon entrance icon too. (it re-init prim color to default color)
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                    }
 
                     if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&
                          (globalCtx->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
                         s16 IconSize = 8;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex];
-                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex];
+                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex]+Right_MM_Margin;
+                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex]+Bottom_MM_Margin;
                         //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
                         if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
                             //No idea why and how Original value work but this does actually fix them all.
@@ -808,6 +826,18 @@ void Map_Update(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 floor;
     s16 i;
+
+    if (CVar_GetS32("gHUDMargins", 0) != 0) {
+        Top_MM_Margin = CVar_GetS32("gHUDMargin_T", 0);
+        Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0);
+        Right_MM_Margin = CVar_GetS32("gHUDMargin_R", 0);
+        Bottom_MM_Margin = CVar_GetS32("gHUDMargin_B", 0);
+    } else {
+        Top_MM_Margin = 0;
+        Left_MM_Margin = 0;
+        Right_MM_Margin = 0;
+        Bottom_MM_Margin = 0;
+    }
 
     if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
         switch (globalCtx->sceneNum) {

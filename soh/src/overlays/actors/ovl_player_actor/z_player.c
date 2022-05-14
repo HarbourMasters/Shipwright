@@ -10285,6 +10285,14 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             int rectHeight  = 24; //Texture Heigh
             int DefaultIconA= 50; //Default icon alphe (55 on 255)
 
+            if (CVar_GetS32("gHUDMargins", 0) != 0) {
+                rectLeft = OTRGetRectDimensionFromLeftEdge(26+(CVar_GetS32("gHUDMargin_L", 0)*-1));
+                rectTop = 60+(CVar_GetS32("gHUDMargin_T", 0)*-1);
+            } else {
+                rectTop = 60;
+                rectLeft = OTRGetRectDimensionFromLeftEdge(26);
+            }
+
             OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
