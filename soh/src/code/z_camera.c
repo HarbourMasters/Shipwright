@@ -1504,11 +1504,11 @@ s32 Camera_Free(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    if (fabsf(newCamX) >= 350.0f) {
+    if (fabsf(newCamX) >= 250.0f) {
         camX += newCamX;
     }
 
-    if (fabsf(newCamY) >= 350.0f) {
+    if (fabsf(newCamY) >= 250.0f) {
         camY += newCamY;
     }
 
