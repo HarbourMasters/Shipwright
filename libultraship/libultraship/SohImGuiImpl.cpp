@@ -680,7 +680,7 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementCheckbox("N64 Mode", "gN64Mode");
-                Tooltip("Sets aspect ratio to 4:3 and lowers resolution to N64 native");
+                Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
 
                 EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                 EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
@@ -693,7 +693,7 @@ namespace SohImGui {
                 ImGui::Text("Fixes");
                 ImGui::Separator();
                 EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
-                Tooltip("Makes the L and R buttons in the pause menu the same colour");
+                Tooltip("Makes the L and R buttons in the pause menu the same color");
                 EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
                 Tooltip("Hides the dungeon entrance icon in the top left of the screen");
 
@@ -765,7 +765,7 @@ namespace SohImGui {
 		Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + Dpad Right,\n and open the debug menu with L on the pause screen");
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
-		Tooltip("Shows the stats window, with your FPS and framtimes, and the OS you're playing on");
+		Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
 		Tooltip("Enables the console window, allowing you to input commands, type help for some examples")
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
