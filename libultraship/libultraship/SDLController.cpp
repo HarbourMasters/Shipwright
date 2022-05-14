@@ -187,6 +187,9 @@ namespace Ship {
             }
         }
 
+        wCamX = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTX) / 25;
+        wCamY = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTY) / 25;
+
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
             size_t contNumber = GetControllerNumber();
@@ -377,12 +380,13 @@ namespace Ship {
     void SDLController::CreateDefaultBinding() {
         std::string ConfSection = GetBindingConfSection();
         std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
         ConfigFile& Conf = *pConf.get();
 
-        Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
+        Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+        Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(SDL_CONTROLLER_BUTTON_Y);
+        Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string(SDL_CONTROLLER_BUTTON_X);
+        Conf[ConfSection][STR(BTN_CUP)] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         //Conf[ConfSection][STR(BTN_CRIGHT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_X);
         //Conf[ConfSection][STR(BTN_CLEFT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_Y);
         //Conf[ConfSection][STR(BTN_CDOWN + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);

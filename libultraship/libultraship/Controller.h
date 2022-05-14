@@ -13,7 +13,6 @@
 
 namespace Ship {
 	class Controller {
-
 		public:
 			Controller(int32_t dwControllerNumber);
 
@@ -38,6 +37,8 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
+		  float wCamX;
+		  float wCamY;
 			
 			virtual std::string GetControllerType() = 0;
 			virtual std::string GetConfSection() = 0;
