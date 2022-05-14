@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#if !defined(__linux__) && defined(ENABLE_OPENGL)
+#if defined(ENABLE_OPENGL)
 
 #ifdef __MINGW32__
 #define FOR_WINDOWS 1
@@ -23,7 +23,9 @@
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
+#ifdef _WIN32
 #include <WTypesbase.h>
+#endif
 #include <time.h>
 
 #define GFX_API_NAME "SDL2 - OpenGL"
@@ -41,7 +43,7 @@ static bool (*on_key_up_callback)(int scancode);
 static void (*on_all_keys_up_callback)(void);
 
 const SDL_Scancode windows_scancode_table[] =
-{ 
+{
     /*	0						1							2							3							4						5							6							7 */
     /*	8						9							A							B							C						D							E							F */
     SDL_SCANCODE_UNKNOWN,		SDL_SCANCODE_ESCAPE,		SDL_SCANCODE_1,				SDL_SCANCODE_2,				SDL_SCANCODE_3,			SDL_SCANCODE_4,				SDL_SCANCODE_5,				SDL_SCANCODE_6,			/* 0 */
@@ -117,7 +119,9 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
+#ifndef __linux__
 static HANDLE timer;
+#endif
 
 static int frameDivisor = 1;
 
@@ -131,7 +135,9 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
+#ifndef __linux
     timer = CreateWaitableTimer(nullptr, false, nullptr);
+#endif
 
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
@@ -188,7 +194,7 @@ static void gfx_sdl_set_keyboard_callbacks(bool (*on_key_down)(int scancode), bo
 }
 
 static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
-    while (1) 
+    while (1)
     {
         run_one_game_iter();
     }

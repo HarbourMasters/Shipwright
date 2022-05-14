@@ -45,7 +45,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-static u32 D_808A9508 = 0;
+u32 D_808A9508 = 0;
 void BgRelayObjects_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgRelayObjects* this = (BgRelayObjects*)thisx;
     s32 pad;

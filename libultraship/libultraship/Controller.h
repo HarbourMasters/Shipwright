@@ -3,6 +3,7 @@
 #include <memory>
 #include <map>
 #include <string>
+#include <optional>
 #include "stdint.h"
 #include "UltraController.h"
 #include "ControllerAttachment.h"
@@ -12,36 +13,40 @@
 
 namespace Ship {
 	class Controller {
+		public:
+			Controller(int32_t dwControllerNumber);
 
-	public:
-		Controller(int32_t dwControllerNumber);
+			void Read(OSContPad* pad);
+			virtual void ReadFromSource() = 0;
+			virtual void WriteToSource(ControllerCallback* controller) = 0;
+			virtual bool Connected() const = 0;
+			virtual bool CanRumble() const = 0;
+			bool isRumbling;
 
-		void Read(OSContPad* pad);
-		virtual void ReadFromSource() = 0;
-		virtual void WriteToSource(ControllerCallback* controller) = 0;
-		bool isRumbling;
+			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
+			std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
+			int32_t GetControllerNumber() { return dwControllerNumber; }
 
-		void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
-		std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
-		int32_t GetControllerNumber() { return dwControllerNumber; }
+			virtual bool HasPadConf() const = 0;
+			virtual std::optional<std::string> GetPadConfSection() = 0;
 
-	protected:
-		int32_t dwPressedButtons;
-		std::map<int32_t, int32_t> ButtonMapping;
-		int8_t wStickX;
-		int8_t wStickY;
-		float wGyroX;
-		float wGyroY;
-		float wCamX;
-		float wCamY;
+		protected:
+			int32_t dwPressedButtons;
+			std::map<int32_t, int32_t> ButtonMapping;
+			int8_t wStickX;
+			int8_t wStickY;
+			float wGyroX;
+			float wGyroY;
+		  float wCamX;
+		  float wCamY;
+			
+			virtual std::string GetControllerType() = 0;
+			virtual std::string GetConfSection() = 0;
+			virtual std::string GetBindingConfSection() = 0;
+			void LoadBinding();
 
-		virtual std::string GetControllerType() = 0;
-		virtual std::string GetConfSection() = 0;
-		virtual std::string GetBindingConfSection() = 0;
-		void LoadBinding();
-
-	private:
-		std::shared_ptr<ControllerAttachment> Attachment;
-		int32_t dwControllerNumber;
+		private:
+			std::shared_ptr<ControllerAttachment> Attachment;
+			int32_t dwControllerNumber;
 	};
 }

@@ -1,0 +1,5 @@
+<Root>
+    <File Name="object_gi_boomerang" Segment="6">
+        <DList Name="gGiBoomerangDL" Offset="0x0A30"/>
+    </File>
+</Root>

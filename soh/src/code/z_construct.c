@@ -56,7 +56,8 @@ void func_801109B0(GlobalContext* globalCtx) {
         doActionOffset = 0x5700;
     }
 
-    memcpy(interfaceCtx->doActionSegment, ResourceMgr_LoadTexByName(gAttackDoActionENGTex), 0x300);
+    memcpy(interfaceCtx->doActionSegment, ResourceMgr_LoadTexByName(gAttackDoActionENGTex), 0x180);
+    memcpy(interfaceCtx->doActionSegment + 0x180, ResourceMgr_LoadTexByName(gCheckDoActionENGTex), 0x180);
     //DmaMgr_SendRequest1(interfaceCtx->doActionSegment, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset, 0x300,
                         //"../z_construct.c", 174);
 
@@ -462,7 +463,7 @@ void func_80111070(void) {
     WREG(28) = 0;
     R_OW_MINIMAP_X = 238;
     R_OW_MINIMAP_Y = 164;
-    R_MINIMAP_DISABLED = false;
+    R_MINIMAP_DISABLED = CVar_GetS32("gMinimalUI", 0);
     WREG(32) = 122;
     WREG(33) = 60;
     WREG(35) = 0;

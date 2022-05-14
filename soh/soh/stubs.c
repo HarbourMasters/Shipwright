@@ -12,12 +12,12 @@ OSViMode osViModeNtscLan1;
 OSViMode osViModeMpalLan1;
 OSViMode osViModeFpalLan1;
 OSViMode osViModePalLan1;
-AudioContext gAudioContext;
-unk_D_8016E750 D_8016E750[4];
+// AudioContext gAudioContext;
+// unk_D_8016E750 D_8016E750[4];
 u8 gLetterTLUT[4][32];
 u8 gFontFF[999];
 DmaEntry gDmaDataTable[0x60C];
-u8 D_80133418;
+// u8 D_80133418;
 u16 gAudioSEFlagSwapSource[64];
 u16 gAudioSEFlagSwapTarget[64];
 u8 gAudioSEFlagSwapMode[64];
@@ -102,7 +102,7 @@ void osCreateViManager(OSPri pri)
 
 s32 osMotorInit(OSMesgQueue* ctrlrqueue, OSPfs* pfs, s32 channel)
 {
-
+    return 0;
 }
 
 u32 osAiGetLength(void)

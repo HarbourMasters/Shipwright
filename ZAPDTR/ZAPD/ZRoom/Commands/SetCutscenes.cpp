@@ -86,7 +86,8 @@ void SetCutscenes::ParseRawData()
 std::string SetCutscenes::GetBodySourceCode() const
 {
 	std::string listName;
-	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneData", listName);
+	Globals::Instance->GetSegmentedPtrName(cmdArg2, parent, "CutsceneData", listName,
+	                                       parent->workerID);
 
 	if (Globals::Instance->game == ZGame::MM_RETAIL)
 		return StringHelper::Sprintf("SCENE_CMD_CUTSCENE_LIST(%i, %s)", numCutscenes,

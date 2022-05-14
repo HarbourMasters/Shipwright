@@ -349,9 +349,12 @@ std::string TextureColorChangingParams::GetBodySourceCode() const
 	std::string envColorListName;
 	std::string frameDataListName;
 
-	Globals::Instance->GetSegmentedPtrName(primColorListAddress, parent, "", primColorListName);
-	Globals::Instance->GetSegmentedPtrName(envColorListAddress, parent, "", envColorListName);
-	Globals::Instance->GetSegmentedPtrName(frameDataListAddress, parent, "", frameDataListName);
+	Globals::Instance->GetSegmentedPtrName(primColorListAddress, parent, "", primColorListName,
+	                                       parent->workerID);
+	Globals::Instance->GetSegmentedPtrName(envColorListAddress, parent, "", envColorListName,
+	                                       parent->workerID);
+	Globals::Instance->GetSegmentedPtrName(frameDataListAddress, parent, "", frameDataListName,
+	                                       parent->workerID);
 
 	std::string bodyStr = StringHelper::Sprintf(
 		"\n    %d, %d, %s, %s, %s,\n", animLength, colorListCount, primColorListName.c_str(),
@@ -423,7 +426,8 @@ void TextureCyclingParams::DeclareReferences([[maybe_unused]] const std::string&
 
 		for (const auto& tex : textureList)
 		{
-			bool texFound = Globals::Instance->GetSegmentedPtrName(tex, parent, "", texName);
+			bool texFound =
+				Globals::Instance->GetSegmentedPtrName(tex, parent, "", texName, parent->workerID);
 
 			// texName is a raw segmented pointer. This occurs if the texture is not declared
 			// separately since we cannot read the format. In theory we could scan DLists for the
@@ -477,9 +481,10 @@ std::string TextureCyclingParams::GetBodySourceCode() const
 	std::string textureListName;
 	std::string textureIndexListName;
 
-	Globals::Instance->GetSegmentedPtrName(textureListAddress, parent, "", textureListName);
+	Globals::Instance->GetSegmentedPtrName(textureListAddress, parent, "", textureListName,
+	                                       parent->workerID);
 	Globals::Instance->GetSegmentedPtrName(textureIndexListAddress, parent, "",
-	                                       textureIndexListName);
+	                                       textureIndexListName, parent->workerID);
 
 	std::string bodyStr = StringHelper::Sprintf(
 		"\n    %d, %s, %s,\n", cycleLength, textureListName.c_str(), textureIndexListName.c_str());
@@ -652,7 +657,8 @@ std::string ZTextureAnimation::GetBodySourceCode() const
 	for (const auto& entry : entries)
 	{
 		std::string paramName;
-		Globals::Instance->GetSegmentedPtrName(entry.paramsPtr, parent, "", paramName);
+		Globals::Instance->GetSegmentedPtrName(entry.paramsPtr, parent, "", paramName,
+		                                       parent->workerID);
 
 		bodyStr += StringHelper::Sprintf("\t{ %d, %d, %s },\n", entry.segment, entry.type,
 		                                 paramName.c_str());

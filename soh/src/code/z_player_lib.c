@@ -631,9 +631,9 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
         if (0) {}
 
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON)) ||
+            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA)))) {
+              (this->currentTunic != PLAYER_TUNIC_ZORA && CVar_GetS32("gSuperTunic", 0) == 0)))) {
             Message_StartTextbox(globalCtx, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
@@ -654,7 +654,7 @@ u8 sEyeMouthIndexes[][2] = {
  * from adult Link's object are used here.
  */
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 //TODO: Formatting
 void* sEyeTextures[2][8] = {
     { gLinkAdultEyesOpenTex, gLinkAdultEyesHalfTex, gLinkAdultEyesClosedfTex, gLinkAdultEyesRollLeftTex,
@@ -670,7 +670,7 @@ void* sEyeTextures[] = {
 };
 #endif
 
-#if defined(modding) || defined(_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
 void* sMouthTextures[2][4] = {
     {
         gLinkAdultMouth1Tex,
@@ -726,7 +726,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (eyeIndex > 7)
         eyeIndex = 7;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[gSaveContext.linkAge][eyeIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[eyeIndex]));
@@ -738,13 +738,30 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     if (mouthIndex > 3)
         mouthIndex = 3;
 
-#if defined(MODDING) || (_MSC_VER)
+#if defined(MODDING) || defined(_MSC_VER) || defined(__GNUC__)
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[gSaveContext.linkAge][mouthIndex]));
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
-  
-    color = &sTunicColors[tunic];
+    Color_RGB8 sTemp;
+    color = &sTemp;
+    if (tunic == PLAYER_TUNIC_KOKIRI) {
+        color->r = CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+        color->g = CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+        color->b = CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
+    } else if (tunic == PLAYER_TUNIC_GORON) {
+        color->r = CVar_GetS32("gTunic_Goron_Red", sTunicColors[PLAYER_TUNIC_GORON].r);
+        color->g = CVar_GetS32("gTunic_Goron_Green", sTunicColors[PLAYER_TUNIC_GORON].g);
+        color->b = CVar_GetS32("gTunic_Goron_Blue", sTunicColors[PLAYER_TUNIC_GORON].b);
+    } else if (tunic == PLAYER_TUNIC_ZORA) {
+        color->r = CVar_GetS32("gTunic_Zora_Red", sTunicColors[PLAYER_TUNIC_ZORA].r);
+        color->g = CVar_GetS32("gTunic_Zora_Green", sTunicColors[PLAYER_TUNIC_ZORA].g);
+        color->b = CVar_GetS32("gTunic_Zora_Blue", sTunicColors[PLAYER_TUNIC_ZORA].b);
+    } else {
+        color->r = CVar_GetS32("gTunic_Kokiri_Red", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+        color->g = CVar_GetS32("gTunic_Kokiri_Green", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+        color->b = CVar_GetS32("gTunic_Kokiri_Blue", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
+    }
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
     sDListsLodOffset = lod * 2;
@@ -1196,7 +1213,7 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
     if (BgCheck_AnyLineTest3(&globalCtx->colCtx, &sp8C, &sp80, &sp74, &sp9C, 1, 1, 1, 1, &bgId)) {
         OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2572);
 
-        OVERLAY_DISP = Gfx_CallSetupDL(OVERLAY_DISP, 0x07);
+        WORLD_OVERLAY_DISP = Gfx_CallSetupDL(WORLD_OVERLAY_DISP, 0x07);
 
         SkinMatrix_Vec3fMtxFMultXYZW(&globalCtx->viewProjectionMtxF, &sp74, &sp68, &sp64);
 
@@ -1205,10 +1222,10 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
         Matrix_Translate(sp74.x, sp74.y, sp74.z, MTXMODE_NEW);
         Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
 
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2587),
+        gSPMatrix(WORLD_OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2587),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(OVERLAY_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
-        gSPDisplayList(OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
+        gSPSegment(WORLD_OVERLAY_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
+        gSPDisplayList(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
 
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2592);
     }
@@ -1590,7 +1607,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     sp12C[0] = sword;
     sp12C[1] = shield;
 
-    Matrix_SetTranslateRotateYXZ(pos->x - (LINK_AGE_IN_YEARS == YEARS_ADULT ? 25 : 0),
+    Matrix_SetTranslateRotateYXZ(pos->x - ((CVar_GetS32("gPauseLiveLink", 0) && LINK_AGE_IN_YEARS == YEARS_ADULT) ? 25 : 0),
                                  pos->y - (CVar_GetS32("gPauseTriforce", 0) ? 16 : 0), pos->z, rot);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
@@ -1624,6 +1641,8 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
         POLY_OPA_DISP = POLY_XLU_DISP;
         POLY_XLU_DISP = ohNo;
     }
+
+    POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP++);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3288);
 }

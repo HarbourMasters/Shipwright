@@ -664,6 +664,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
 
+                        gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
                         gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_I, 96, 85, 0,
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -736,21 +737,33 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&
                          (globalCtx->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                        s16 IconSize = 8;
+                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex];
+                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex];
+                        //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
+                        if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                            //No idea why and how Original value work but this does actually fix them all.
+                            PosY = PosY+1024;
+                        }
+                        s16 TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
+                        s16 TopLeftY = PosY << 2;
+                        s16 TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
+                        s16 TopLeftH = (PosY + IconSize) << 2;
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
-
+                            if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 != 0 && CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                                gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
+                                                    IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                                    G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                                gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                            }
+                        } else if (CVar_GetS32("gAlwaysShowDungeonMinimapIcon", 0) != 0){ //Ability to show entrance Before beating the dungeon itself
                             gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
-                                                8, 8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                                                IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-                            gSPWideTextureRectangle(OVERLAY_DISP++,
-                                                OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex]) << 2,
-                                                gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2,
-                                                OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + 8) << 2,
-                                                (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + 8) << 2,
-                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                        }
+                            gSPWideTextureRectangle(OVERLAY_DISP++, TopLeftX, TopLeftY, TopLeftW, TopLeftH, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        } 
                     }
 
                     if ((globalCtx->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {

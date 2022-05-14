@@ -1,0 +1,10 @@
+<Root>
+    <File Name="object_gi_gloves" Segment="6">
+        <DList Name="gGiSilverGauntletsColorDL" Offset="0x14C0"/>
+        <DList Name="gGiGoldenGauntletsColorDL" Offset="0x14E0"/>
+        <DList Name="gGiSilverGauntletsPlateColorDL" Offset="0x1500"/>
+        <DList Name="gGiGoldenGauntletsPlateColorDL" Offset="0x1520"/>
+        <DList Name="gGiGauntletsDL" Offset="0x1540"/>
+        <DList Name="gGiGauntletsPlateDL" Offset="0x1860"/>
+    </File>
+</Root>

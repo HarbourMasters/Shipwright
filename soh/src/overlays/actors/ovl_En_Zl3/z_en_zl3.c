@@ -45,7 +45,7 @@ static void* sEyeTextures[] = { gZelda2EyeOpenTex, gZelda2EyeHalfTex, gZelda2Eye
 
 static void* sMouthTextures[] = { gZelda2MouthSeriousTex, gZelda2MouthHappyTex, gZelda2MouthOpenTex };
 
-static s32 D_80B5A468 = 0;
+s32 D_80B5A468 = 0;
 
 static Vec3f D_80B5A46C = { 0.0f, 0.0f, 0.0f };
 
@@ -55,7 +55,7 @@ static f32 D_80B5A484 = 0.0f;
 
 static Vec3f D_80B5A488 = { 0.0f, 0.0f, 0.0f };
 
-static s32 D_80B5A494 = -1;
+s32 D_80B5A494 = -1;
 
 static Vec3f D_80B5A498 = { 148.0f, 260.0f, -87.0f };
 
@@ -63,7 +63,7 @@ static Vec3f D_80B5A4A4 = { -12.0f, 260.0f, -147.0f };
 
 static Vec3f D_80B5A4B0 = { 42.0f, 260.0f, 13.0f };
 
-static u32 D_80B5A4BC = 0;
+u32 D_80B5A4BC = 0;
 
 void func_80B533B0(Actor* thisx, GlobalContext* globalCtx) {
     EnZl3* this = (EnZl3*)thisx;

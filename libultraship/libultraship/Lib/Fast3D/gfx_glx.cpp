@@ -150,29 +150,29 @@ static struct {
     Display *dpy;
     Window root;
     Window win;
-    
+
     Atom atom_wm_state;
     Atom atom_wm_state_fullscreen;
     Atom atom_wm_delete_window;
-    
+
     bool is_fullscreen;
     void (*on_fullscreen_changed)(bool is_now_fullscreen);
-    
+
     int keymap[256];
     bool (*on_key_down)(int scancode);
     bool (*on_key_up)(int scancode);
     void (*on_all_keys_up)(void);
-    
+
     PFNGLXGETSYNCVALUESOMLPROC glXGetSyncValuesOML;
     PFNGLXSWAPBUFFERSMSCOMLPROC glXSwapBuffersMscOML;
     PFNGLXWAITFORSBCOMLPROC glXWaitForSbcOML;
-    
+
     PFNGLXSWAPINTERVALEXTPROC glXSwapIntervalEXT;
     PFNGLXSWAPINTERVALSGIPROC glXSwapIntervalSGI;
-    
+
     PFNGLXGETVIDEOSYNCSGIPROC glXGetVideoSyncSGI;
     PFNGLXWAITVIDEOSYNCSGIPROC glXWaitVideoSyncSGI;
-    
+
     bool has_oml_sync_control;
     uint64_t ust0;
     int64_t last_msc;
@@ -181,7 +181,7 @@ static struct {
     uint64_t last_ust;
     int64_t target_msc;
     bool dropped_frame;
-    
+
     bool has_sgi_video_sync;
     uint64_t last_sync_counter;
     int64_t this_msc;
@@ -220,7 +220,7 @@ static int64_t glXGetVideoSyncSGI_wrapper(void) {
 static void init_keymap(void) {
     XkbDescPtr desc = XkbGetMap(glx.dpy, 0, XkbUseCoreKbd);
     XkbGetNames(glx.dpy, XkbKeyNamesMask, desc);
-    
+
     for (int i = desc->min_key_code; i <= desc->max_key_code && i < 256; i++) {
         char name[XkbKeyNameLength + 1];
         memcpy(name, desc->names->keys[i].name, XkbKeyNameLength);
@@ -232,7 +232,7 @@ static void init_keymap(void) {
             }
         }
     }
-    
+
     XkbFreeNames(desc, XkbKeyNamesMask, True);
     XkbFreeKeyboard(desc, 0, True);
 }
@@ -265,7 +265,7 @@ static void gfx_glx_set_fullscreen_state(bool on, bool call_callback) {
         return;
     }
     glx.is_fullscreen = on;
-    
+
     XEvent xev;
     xev.xany.type = ClientMessage;
     xev.xclient.message_type = glx.atom_wm_state;
@@ -276,8 +276,8 @@ static void gfx_glx_set_fullscreen_state(bool on, bool call_callback) {
     xev.xclient.data.l[2] = 0;
     xev.xclient.data.l[3] = 0;
     XSendEvent(glx.dpy, glx.root, 0, SubstructureNotifyMask | SubstructureRedirectMask, &xev);
-    gfx_glx_ShowHideMouse(on);
-    
+    gfx_glx_show_cursor(on);
+
     if (glx.on_fullscreen_changed != NULL && call_callback) {
         glx.on_fullscreen_changed(on);
     }
@@ -303,7 +303,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen) {
     // which means that glXSwapBuffers should be non-blocking,
     // if we are sure to wait at least one vsync interval between calls.
     setenv("__GL_MaxFramesAllowed", "2", true);
-    
+
     glx.dpy = XOpenDisplay(NULL);
     if (glx.dpy == NULL) {
         fprintf(stderr, "Cannot connect to X server\n");
@@ -311,7 +311,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen) {
     }
     int screen = DefaultScreen(glx.dpy);
     glx.root = RootWindow(glx.dpy, screen);
-    
+
     GLint att[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
     XVisualInfo *vi = glXChooseVisual(glx.dpy, 0, att);
     if (vi == NULL) {
@@ -323,7 +323,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen) {
     swa.colormap = cmap;
     swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask;
     glx.win = XCreateWindow(glx.dpy, glx.root, 0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-    
+
     glx.atom_wm_state = XInternAtom(glx.dpy, "_NET_WM_STATE", False);
     glx.atom_wm_state_fullscreen = XInternAtom(glx.dpy, "_NET_WM_STATE_FULLSCREEN", False);
     glx.atom_wm_delete_window = XInternAtom(glx.dpy, "WM_DELETE_WINDOW", False);
@@ -340,11 +340,11 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen) {
     XStoreName(glx.dpy, glx.win, title);
     GLXContext glc = glXCreateContext(glx.dpy, vi, NULL, GL_TRUE);
     glXMakeCurrent(glx.dpy, glx.win, glc);
-    
+
     init_keymap();
-    
+
     const char *extensions = glXQueryExtensionsString(glx.dpy, screen);
-    
+
     if (gfx_glx_check_extension(extensions, "GLX_OML_sync_control")) {
         glx.glXGetSyncValuesOML = (PFNGLXGETSYNCVALUESOMLPROC)glXGetProcAddressARB((const GLubyte *)"glXGetSyncValuesOML");
         glx.glXSwapBuffersMscOML = (PFNGLXSWAPBUFFERSMSCOMLPROC)glXGetProcAddressARB((const GLubyte *)"glXSwapBuffersMscOML");
@@ -360,7 +360,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen) {
         glx.glXGetVideoSyncSGI = (PFNGLXGETVIDEOSYNCSGIPROC)glXGetProcAddressARB((const GLubyte *)"glXGetVideoSyncSGI");
         glx.glXWaitVideoSyncSGI = (PFNGLXWAITVIDEOSYNCSGIPROC)glXGetProcAddressARB((const GLubyte *)"glXWaitVideoSyncSGI");
     }
-    
+
     int64_t ust, msc, sbc;
     if (glx.glXGetSyncValuesOML != NULL && glx.glXGetSyncValuesOML(glx.dpy, glx.win, &ust, &msc, &sbc)) {
         glx.has_oml_sync_control = true;
@@ -439,7 +439,7 @@ static void gfx_glx_handle_events(void) {
                 }
             }
         }
-        if (xev.type == ClientMessage && xev.xclient.data.l[0] == glx.atom_wm_delete_window) {
+        if (xev.type == ClientMessage && (Atom)xev.xclient.data.l[0] == glx.atom_wm_delete_window) {
             exit(0);
         }
     }
@@ -451,19 +451,19 @@ static bool gfx_glx_start_frame(void) {
 
 static void gfx_glx_swap_buffers_begin(void) {
     glx.wanted_ust += FRAME_INTERVAL_US_NUMERATOR; // advance 1/30 seconds on JP/US or 1/25 seconds on EU
-    
+
     if (!glx.has_oml_sync_control && !glx.has_sgi_video_sync) {
         glFlush();
-        
+
         uint64_t target = glx.wanted_ust / FRAME_INTERVAL_US_DENOMINATOR;
         uint64_t now;
         while (target > (now = (uint64_t)get_time() - glx.ust0)) {
-            struct timespec ts = {(target - now) / 1000000, ((target - now) % 1000000) * 1000};
+            struct timespec ts = {(time_t)((target - now) / 1000000), (time_t)(((target - now) % 1000000) * 1000)};
             if (nanosleep(&ts, NULL) == 0) {
                 break;
             }
         }
-        
+
         if (target + 2 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR < now) {
             if (target + 32 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR >= now) {
                 printf("Dropping frame\n");
@@ -476,10 +476,10 @@ static void gfx_glx_swap_buffers_begin(void) {
         }
         glXSwapBuffers(glx.dpy, glx.win);
         glx.dropped_frame = false;
-        
+
         return;
     }
-    
+
     double vsyncs_to_wait = (int64_t)(glx.wanted_ust / FRAME_INTERVAL_US_DENOMINATOR - glx.last_ust) / (double)glx.vsync_interval;
     if (vsyncs_to_wait <= 0) {
         printf("Dropping frame\n");
@@ -519,17 +519,17 @@ static void gfx_glx_swap_buffers_begin(void) {
         vsyncs_to_wait = 2;
     }
     glx.target_msc = glx.last_msc + vsyncs_to_wait;
-    
+
     if (glx.has_oml_sync_control) {
         glx.glXSwapBuffersMscOML(glx.dpy, glx.win, glx.target_msc, 0, 0);
     } else if (glx.has_sgi_video_sync) {
         glFlush(); // Try to submit pending work. Don't use glFinish since that busy loops on NVIDIA proprietary driver.
-        
+
         //uint64_t counter0;
         uint64_t counter1, counter2;
-        
+
         //uint64_t before_wait = get_time();
-        
+
         counter1 = glXGetVideoSyncSGI_wrapper();
         //counter0 = counter1;
         //int waits = 0;
@@ -537,17 +537,17 @@ static void gfx_glx_swap_buffers_begin(void) {
             counter1 = glXWaitVideoSyncSGI_wrapper();
             //++waits;
         }
-        
+
         //uint64_t before = get_time();
         glXSwapBuffers(glx.dpy, glx.win);
-        
-        
+
+
         counter2 = glXGetVideoSyncSGI_wrapper();
         while (counter2 < (uint64_t)glx.target_msc) {
             counter2 = glXWaitVideoSyncSGI_wrapper();
         }
         uint64_t after = get_time();
-        
+
         //printf("%.3f %.3f %.3f\t%.3f\t%u %d %.2f %u %d\n", before_wait * 0.000060, before * 0.000060, after * 0.000060, (after - before) * 0.000060, counter0, counter2 - counter0, vsyncs_to_wait, (unsigned int)glx.target_msc, waits);
         glx.this_msc = counter2;
         glx.this_ust = after;
@@ -558,7 +558,7 @@ static void gfx_glx_swap_buffers_end(void) {
     if (glx.dropped_frame || (!glx.has_oml_sync_control && !glx.has_sgi_video_sync)) {
         return;
     }
-    
+
     int64_t ust, msc, sbc;
     if (glx.has_oml_sync_control) {
         if (!glx.glXWaitForSbcOML(glx.dpy, glx.win, 0, &ust, &msc, &sbc)) {
@@ -600,6 +600,10 @@ static double gfx_glx_get_time(void) {
     return 0.0;
 }
 
+static void gfx_glx_set_frame_divisor(int divisor) {
+    // TODO
+}
+
 struct GfxWindowManagerAPI gfx_glx = {
     gfx_glx_init,
     gfx_glx_set_keyboard_callbacks,
@@ -612,7 +616,8 @@ struct GfxWindowManagerAPI gfx_glx = {
     gfx_glx_start_frame,
     gfx_glx_swap_buffers_begin,
     gfx_glx_swap_buffers_end,
-    gfx_glx_get_time
+    gfx_glx_get_time,
+    gfx_glx_set_frame_divisor,
 };
 
 #endif

@@ -74,15 +74,29 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
     <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)ZAPD\lib\tinyxml2;$(SolutionDir)ZAPD\lib\libgfxd;$(SolutionDir)ZAPD\lib\elfio;$(SolutionDir)ZAPD\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)ZAPD\lib\libgfxd;$(SolutionDir)x64\Debug;$(SolutionDir)packages\libpng.1.6.28.1\build\native\lib\x64\v140\dynamic\Debug;$(LibraryPath)</LibraryPath>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules />
+    <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -170,6 +184,7 @@
     <ClCompile Include="..\lib\libgfxd\uc_f3dex2.c" />
     <ClCompile Include="..\lib\libgfxd\uc_f3dexb.c" />
     <ClCompile Include="Declaration.cpp" />
+    <ClCompile Include="FileWorker.cpp" />
     <ClCompile Include="GameConfig.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ImageBackend.cpp" />
@@ -178,6 +193,7 @@
     <ClCompile Include="OutputFormatter.cpp" />
     <ClCompile Include="Overlays\ZOverlay.cpp" />
     <ClCompile Include="WarningHandler.cpp" />
+    <ClCompile Include="yaz0\yaz0.cpp" />
     <ClCompile Include="ZArray.cpp" />
     <ClCompile Include="ZBackground.cpp" />
     <ClCompile Include="ZCutsceneMM.cpp" />
@@ -185,6 +201,7 @@
     <ClCompile Include="ZMtx.cpp" />
     <ClCompile Include="ZPath.cpp" />
     <ClCompile Include="ZPlayerAnimationData.cpp" />
+    <ClCompile Include="ZRom.cpp" />
     <ClCompile Include="ZRoom\Commands\SetActorCutsceneList.cpp" />
     <ClCompile Include="ZRoom\Commands\SetAnimatedMaterialList.cpp" />
     <ClCompile Include="ZRoom\Commands\SetCsCamera.cpp" />
@@ -257,7 +274,9 @@
     <ClInclude Include="..\lib\stb\stb_image_write.h" />
     <ClInclude Include="..\lib\stb\tinyxml2.h" />
     <ClInclude Include="CRC32.h" />
+    <ClInclude Include="ctpl_stl.h" />
     <ClInclude Include="Declaration.h" />
+    <ClInclude Include="FileWorker.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImageBackend.h" />
@@ -265,6 +284,8 @@
     <ClInclude Include="OutputFormatter.h" />
     <ClInclude Include="Overlays\ZOverlay.h" />
     <ClInclude Include="WarningHandler.h" />
+    <ClInclude Include="yaz0\readwrite.h" />
+    <ClInclude Include="yaz0\yaz0.h" />
     <ClInclude Include="ZAnimation.h" />
     <ClInclude Include="ZArray.h" />
     <ClInclude Include="ZBackground.h" />
@@ -278,6 +299,7 @@
     <ClInclude Include="ZMtx.h" />
     <ClInclude Include="ZPath.h" />
     <ClInclude Include="ZPlayerAnimationData.h" />
+    <ClInclude Include="ZRom.h" />
     <ClInclude Include="ZRoom\Commands\SetActorCutsceneList.h" />
     <ClInclude Include="ZRoom\Commands\SetAnimatedMaterialList.h" />
     <ClInclude Include="ZRoom\Commands\SetCsCamera.h" />
@@ -333,6 +355,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
+      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

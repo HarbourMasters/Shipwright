@@ -150,8 +150,11 @@ std::string ZBackground::GetExternalExtension() const
 
 void ZBackground::Save(const fs::path& outFolder)
 {
-	fs::path filepath = outFolder / (outName + "." + GetExternalExtension());
-	File::WriteAllBytes(filepath.string(), data);
+	if (!Globals::Instance->otrMode)
+	{
+		fs::path filepath = outFolder / (outName + "." + GetExternalExtension());
+		File::WriteAllBytes(filepath.string(), data);
+	}
 }
 
 std::string ZBackground::GetBodySourceCode() const

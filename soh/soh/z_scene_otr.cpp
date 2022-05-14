@@ -72,7 +72,7 @@ bool func_800985DC(GlobalContext* globalCtx, Ship::SceneCommand* cmd) {
     else
     {
         ActorEntry* entries = (ActorEntry*)malloc(cmdActor->entries.size() * sizeof(ActorEntry));
-        
+
         for (int i = 0; i < cmdActor->entries.size(); i++)
         {
             entries[i].id = cmdActor->entries[i].actorNum;
@@ -241,7 +241,7 @@ bool func_800987F8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
             globalCtx->setupEntranceList[i].room = otrEntrance->entrances[i].roomToLoad;
             globalCtx->setupEntranceList[i].spawn = otrEntrance->entrances[i].startPositionIndex;
         }
-        
+
         otrEntrance->cachedGameData = globalCtx->setupEntranceList;
     }
 
@@ -252,11 +252,11 @@ bool func_800987F8(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 bool func_8009883C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetSpecialObjects* otrSpecial = (Ship::SetSpecialObjects*)cmd;
-    
+
     if (otrSpecial->globalObject != 0)
         globalCtx->objectCtx.subKeepIndex = Object_Spawn(&globalCtx->objectCtx, otrSpecial->globalObject);
 
-    if (otrSpecial->elfMessage != 0) 
+    if (otrSpecial->elfMessage != 0)
     {
         auto res = (Ship::Blob*)OTRGameplay_LoadFile(globalCtx, sNaviMsgFiles[otrSpecial->elfMessage - 1].fileName);
         globalCtx->cUpElfMsgs = (ElfMessage*)res->data.data();
@@ -436,7 +436,7 @@ extern "C" void* func_800982FC(ObjectContext * objectCtx, s32 bankIndex, s16 obj
 bool func_8009899C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetObjectList* cmdObj = (Ship::SetObjectList*)cmd;
-    
+
     s32 i;
     s32 j;
     s32 k;
@@ -743,7 +743,7 @@ bool func_8009918C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 }
 
 // Scene Command 0x18: Alternate Headers
-bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd) 
+bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetAlternateHeaders* cmdHeaders = (Ship::SetAlternateHeaders*)cmd;
 
@@ -754,7 +754,7 @@ bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
     //osSyncPrintf("\n[ZU]sceneset time   =[%X]", ((void)0, gSaveContext.cutsceneIndex));
     //osSyncPrintf("\n[ZU]sceneset counter=[%X]", ((void)0, gSaveContext.sceneSetupIndex));
 
-    if (gSaveContext.sceneSetupIndex != 0) 
+    if (gSaveContext.sceneSetupIndex != 0)
     {
         std::string desiredHeader = cmdHeaders->headers[gSaveContext.sceneSetupIndex - 1];
         Ship::Scene* headerData = nullptr;
@@ -798,7 +798,7 @@ bool func_800991A0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 }
 
 // Scene Command 0x17: Cutscene Data
-bool func_8009934C(GlobalContext* globalCtx, Ship::SceneCommand* cmd) 
+bool func_8009934C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetCutscenes* cmdCS = (Ship::SetCutscenes*)cmd;
 
@@ -810,7 +810,7 @@ bool func_8009934C(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 }
 
 // Scene Command 0x19: Misc. Settings (Camera & World Map Area)
-bool func_800993C0(GlobalContext* globalCtx, Ship::SceneCommand* cmd) 
+bool func_800993C0(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
 {
     Ship::SetCameraSettings* cmdCam = (Ship::SetCameraSettings*)cmd;
 
