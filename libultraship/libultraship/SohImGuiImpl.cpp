@@ -670,10 +670,11 @@ namespace SohImGui {
                     Tooltip("Holding down B skips text");
                     EnhancementCheckbox("Minimal UI", "gMinimalUI");
                     Tooltip("Hides most of the UI when not needed");
-                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
+                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     
                     ImGui::EndMenu();
                 }
@@ -685,7 +686,6 @@ namespace SohImGui {
 
                     EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
-                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
