@@ -626,7 +626,7 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Graphics"))
             {
                 EnhancementSliderInt("Internal Resolution: %dx", "##IMul", "gInternalResolution", 1, 8, "");
-		Tooltip("Increases the render resolution of the game, up to 8x your output resolution,\n as a more intensive but effective form of anti-aliasing");
+		Tooltip("Increases the render resolution of the game, up to 8x your output resolution,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetS32("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
 		Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
