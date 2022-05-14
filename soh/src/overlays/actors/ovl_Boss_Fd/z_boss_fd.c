@@ -12,6 +12,8 @@
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
+#include "soh/frame_interpolation.h"
+
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
 typedef enum {
@@ -78,6 +80,7 @@ void BossFd_SpawnEmber(BossFdEffect* effect, Vec3f* position, Vec3f* velocity, V
             effect->scale = scale / 1000.0f;
             effect->alpha = 255;
             effect->timer1 = (s16)Rand_ZeroFloat(10.0f);
+            effect->epoch++;
             break;
         }
     }
@@ -95,6 +98,7 @@ void BossFd_SpawnDebris(BossFdEffect* effect, Vec3f* position, Vec3f* velocity, 
             effect->scale = scale / 1000.0f;
             effect->vFdFxRotX = Rand_ZeroFloat(100.0f);
             effect->vFdFxRotY = Rand_ZeroFloat(100.0f);
+            effect->epoch++;
             break;
         }
     }
@@ -111,6 +115,7 @@ void BossFd_SpawnDust(BossFdEffect* effect, Vec3f* position, Vec3f* velocity, Ve
             effect->accel = *acceleration;
             effect->timer2 = 0;
             effect->scale = scale / 400.0f;
+            effect->epoch++;
             break;
         }
     }
@@ -136,6 +141,7 @@ void BossFd_SpawnFireBreath(BossFdEffect* effect, Vec3f* position, Vec3f* veloci
             effect->timer2 = 0;
             effect->scale = scale / 400.0f;
             effect->kbAngle = kbAngle;
+            effect->epoch++;
             break;
         }
     }
@@ -1522,6 +1528,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
 
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_EMBER) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaEmberMaterialDL);
@@ -1536,6 +1543,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_fd.c", 4046),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaEmberModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1543,6 +1551,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     flag = false;
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_DEBRIS) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
                 func_80093D18(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gVolvagiaDebrisMaterialDL);
@@ -1557,6 +1566,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_fd.c", 4068),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gVolvagiaDebrisModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1564,6 +1574,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     flag = false;
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_DUST) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustMaterialDL);
@@ -1580,6 +1591,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[effect->timer2]));
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1587,6 +1599,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     flag = false;
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_FIRE_BREATH) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustMaterialDL);
@@ -1603,6 +1616,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[effect->timer2]));
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -1610,6 +1624,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     flag = false;
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_SKULL_PIECE) {
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gVolvagiaSkullPieceMaterialDL);
@@ -1624,6 +1639,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_fd.c", 4192),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaSkullPieceModelDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 

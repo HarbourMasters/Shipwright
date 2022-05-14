@@ -19,7 +19,7 @@ namespace Ship {
 			void MainLoop(void (*MainFunction)(void));
 			void Init();
 			void StartFrame();
-			void RunCommands(Gfx* Commands);
+			void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements);
 			void SetFrameDivisor(int divisor);
 			void GetPixelDepthPrepare(float x, float y);
 			uint16_t GetPixelDepth(float x, float y);
