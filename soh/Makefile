@@ -1,5 +1,5 @@
-CXX := g++
-CC := gcc
+CXX := g++-mp-devel
+CC := gcc-mp-devel
 LD := lld
 AR	:= ar
 FORMAT := clang-format-11
@@ -16,11 +16,11 @@ LTO ?= 0
 WARN := \
 	-Wno-return-type \
 	-funsigned-char \
-	-m32 -mhard-float -fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
+	-mhard-float -fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
 
 CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib -march=i386
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib -march=i386
-LDFLAGS := -m32
+LDFLAGS :=
 CPPFLAGS := -MMD
 
 ifneq ($(DEBUG),0)

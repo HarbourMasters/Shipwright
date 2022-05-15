@@ -27,6 +27,9 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
+#elif __APPLE__
+#include <SDL.h>
+#include <GL/glew.h>
 #else
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
@@ -496,7 +499,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
 
     for (int i = 0; i < cc_features.num_inputs; i++) {
-        char name[16];
+        char name[32];
         sprintf(name, "aInput%d", i + 1);
         prg->attrib_locations[cnt] = glGetAttribLocation(shader_program, name);
         prg->attrib_sizes[cnt] = cc_features.opt_alpha ? 4 : 3;

@@ -13,6 +13,8 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
+#elif __APPLE__
+#include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
@@ -120,7 +122,9 @@ static void set_fullscreen(bool on, bool call_callback) {
 
 static uint64_t previous_time;
 #ifndef __linux__
+#ifndef __APPLE__
 static HANDLE timer;
+#endif
 #endif
 
 static int frameDivisor = 1;
@@ -136,7 +140,9 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 #ifndef __linux
+#ifndef __APPLE__
     timer = CreateWaitableTimer(nullptr, false, nullptr);
+#endif
 #endif
 
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
@@ -271,7 +277,7 @@ static inline void sync_framerate_with_timer(void) {
     const int64_t next = qpc_to_100ns(previous_time) + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
     const int64_t left = next - qpc_to_100ns(t);
     if (left > 0) {
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
         const timespec spec = { 0, left * 100 };
         nanosleep(&spec, nullptr);
 #else

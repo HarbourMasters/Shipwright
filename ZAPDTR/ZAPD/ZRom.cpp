@@ -5,7 +5,9 @@
 #include "yaz0/yaz0.h"
 
 #ifndef _MSC_VER
+#ifndef __APPLE__
 #include <byteswap.h>
+#endif
 #endif
 #include <Globals.h>
 
@@ -16,6 +18,10 @@ namespace fs = std::filesystem;
 #if defined(_MSC_VER)
 #define __bswap_32 _byteswap_ulong
 #define bswap_32 _byteswap_ulong
+#endif
+#if defined __APPLE__
+#define __bswap32 __builtin_bswap32
+#define bswap32 __builtin_bswap32
 #endif
 
 // ROM DMA Table Start

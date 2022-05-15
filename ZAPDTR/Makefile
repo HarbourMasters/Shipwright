@@ -15,6 +15,8 @@ else
   CXX := g++
 endif
 
+CXX := g++-mp-devel
+
 INC := -I ZAPD -I lib/elfio -I lib/libgfxd -I lib/tinyxml2 -I ZAPDUtils
 CXXFLAGS := -fpic -std=c++17 -Wall -Wextra -fno-omit-frame-pointer
 OPTFLAGS :=
@@ -45,7 +47,7 @@ endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
 LDFLAGS := -lm -ldl -lpng \
-  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 -lGLEW -lGL -lX11
+  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 $(shell pkg-config --libs glew) -lX11
 
 # Use LLD if available. Set LLD=0 to not use it
 ifeq ($(shell command -v ld.lld >/dev/null 2>&1; echo $$?),0)
@@ -64,12 +66,8 @@ ifneq ($(UNAME), Darwin)
 else
   EXPORTERS := -Wl,-force_load ../OTRExporter/OTRExporter/OTRExporter.a
   ifeq ($(UNAMEM),arm64)
-    ifeq ($(shell brew list libpng > /dev/null 2>&1; echo $$?),0)
-      LDFLAGS += -L $(shell brew --prefix)/lib
-      INC += -I $(shell brew --prefix)/include
-      else
-      $(error Please install libpng via Homebrew)
-    endif
+	LDFLAGS += $(shell pkg-config --libs libpng)
+	INC += $(shell pkg-config --cflags libpng)
   endif
 endif
 

@@ -1,7 +1,7 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++
-CC := gcc
+CXX := g++-mp-devel
+CC := gcc-mp-devel
 AR	:= ar
 FORMAT := clang-format-11
 
@@ -18,9 +18,9 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
-CPPFLAGS := -MMD
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g -D_DEBUG
@@ -37,7 +37,7 @@ ifneq ($(LTO),0)
 	CFLAGS += -flto
 endif
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 
 CXX_FILES := \
 	$(shell find libultraship/Factories -name *.cpp) \
