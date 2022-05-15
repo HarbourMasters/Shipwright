@@ -122,7 +122,7 @@ extern "C" {
     char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc) {
         std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
         strcpy(alloc, hashStr.c_str());
-        return (char*)hashStr.c_str();
+        return alloc;
     }
 
     Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc) {
