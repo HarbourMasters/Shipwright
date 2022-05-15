@@ -12,7 +12,7 @@ pipeline {
                 MSBUILD='C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\msbuild.exe'
                 CONFIG='Release'
                 OTRPLATFORM='x64'
-                PLATFORM='x86'
+                PLATFORM='x64'
                 ZIP='C:\\Program Files\\7-Zip\\7z.exe'
                 PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
                 CMAKE='C:\\Program Files\\CMake\\bin\\cmake.exe'
