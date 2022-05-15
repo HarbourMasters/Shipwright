@@ -325,6 +325,7 @@
     <ClCompile Include="src\code\padutils.c" />
     <ClCompile Include="src\code\PreRender.c" />
     <ClCompile Include="src\code\printutils.c" />
+    <ClCompile Include="src\code\random_experiment.cpp" />
     <ClCompile Include="src\code\relocation.c" />
     <ClCompile Include="src\code\sched.c" />
     <ClCompile Include="src\code\shrink_window.c" />
@@ -1042,6 +1043,7 @@
     <ClInclude Include="soh\OTRGlobals.h" />
     <ClInclude Include="soh\SaveManager.h" />
     <ClInclude Include="soh\util.h" />
+    <ClInclude Include="src\code\random_experiment.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Ice\z_arrow_ice.h" />

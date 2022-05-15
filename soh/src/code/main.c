@@ -2,7 +2,7 @@
 #include "vt.h"
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
-
+#include "random_experiment.h"
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -53,6 +53,11 @@ void Main(void* arg) {
     void* debugHeap;
     size_t debugHeapSize;
     s16* msg;
+
+    if (CVar_GetS32("gCryptoRandom", 0)) {
+        cryptoRandomInit();
+        osSyncPrintf("CSPRNG initialized.");
+    }
 
     osSyncPrintf("mainproc 実行開始\n"); // "Start running"
     gScreenWidth = SCREEN_WIDTH;

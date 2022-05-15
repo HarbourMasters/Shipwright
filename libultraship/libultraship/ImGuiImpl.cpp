@@ -1357,6 +1357,9 @@ namespace SohImGui {
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
                 Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
 
+                EnhancementCheckbox("Use CSPRNG random", "gCryptoRandom");
+                Tooltip("Uses secure RNG for better randomness and non-manipulable RNG (Requires restart)");
+
              #ifdef __SWITCH__
                 int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
                 ImGui::Text("Switch performance mode");
