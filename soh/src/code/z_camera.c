@@ -2095,16 +2095,6 @@ s32 Camera_Normal0(Camera* camera) {
 }
 
 s32 Camera_Parallel1(Camera* camera) {
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
-
-    manualCamera = false;
-
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2148,6 +2138,8 @@ s32 Camera_Parallel1(Camera* camera) {
 
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
+
+    manualCamera = false;
 
     switch (camera->animState) {
         case 0:
