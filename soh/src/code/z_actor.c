@@ -6,14 +6,15 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_dangeon_keep/gameplay_dangeon_keep.h"
 #include "objects/object_bdoor/object_bdoor.h"
+#include "soh/frame_interpolation.h"
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
 #endif
 
-#ifdef _MSC_VER
+#if defined(_MSC_VER) || defined(__GNUC__)
 #include "textures/place_title_cards/g_pn_49.h"
 #include "textures/place_title_cards/g_pn_01.h"
 #include "textures/place_title_cards/g_pn_02.h"
@@ -410,6 +411,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         f32 var2;
         s32 i;
 
+        FrameInterpolation_RecordOpenChild(actor, 0);
         player = GET_PLAYER(globalCtx);
 
         spCE = 0xFF;
@@ -486,10 +488,12 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
                 }
             }
         }
+        FrameInterpolation_RecordCloseChild();
     }
 
     actor = targetCtx->unk_94;
     if ((actor != NULL) && !(actor->flags & ACTOR_FLAG_27)) {
+        FrameInterpolation_RecordOpenChild(actor, 1);
         NaviColor* naviColor = &sNaviColorList[actor->category];
 
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x7);
@@ -503,6 +507,7 @@ void func_8002C124(TargetContext* targetCtx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_actor.c", 2153),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_XLU_DISP++, gZTargetArrowDL);
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2158);
@@ -765,7 +770,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
 
     titleCtx->texture = texture;
     titleCtx->isBossCard = true;
-    titleCtx->hasTranslation = hasTranslation;   
+    titleCtx->hasTranslation = hasTranslation;
     titleCtx->x = x;
     titleCtx->y = y;
     titleCtx->width = width;
@@ -774,7 +779,7 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
     titleCtx->delayTimer = 0;
 }
 
-void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, char* texture, s32 x, s32 y,
+void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
 
@@ -2490,6 +2495,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
 
     Fault_AddClient(&faultClient, Actor_FaultPrint, actor, "Actor_draw");
 
+    FrameInterpolation_RecordOpenChild(actor, 0);
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6035);
 
     lights = LightContext_NewLights(&globalCtx->lightCtx, globalCtx->state.gfxCtx);
@@ -2497,6 +2503,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     Lights_BindAll(lights, globalCtx->lightCtx.listHead, (actor->flags & ACTOR_FLAG_22) ? NULL : &actor->world.pos);
     Lights_Draw(lights, globalCtx->state.gfxCtx);
 
+    FrameInterpolation_RecordActorPosRotMatrix();
     if (actor->flags & ACTOR_FLAG_12) {
         Matrix_SetTranslateRotateYXZ(
             actor->world.pos.x + globalCtx->mainCamera.skyboxOffset.x,
@@ -2546,6 +2553,7 @@ void Actor_Draw(GlobalContext* globalCtx, Actor* actor) {
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 6119);
+    FrameInterpolation_RecordCloseChild();
 
     Fault_RemoveClient(&faultClient);
 }
@@ -4271,8 +4279,6 @@ s32 func_80035124(Actor* actor, GlobalContext* globalCtx) {
 
     return ret;
 }
-
-#include "z_cheap_proc.c"
 
 u8 func_800353E8(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);

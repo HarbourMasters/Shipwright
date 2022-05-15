@@ -2,19 +2,6 @@
 #include "overlays/actors/ovl_En_Zl3/z_en_zl3.h"
 #include "objects/object_ganon2/object_ganon2.h"
 
-typedef struct {
-    /* 0x00 */ u8 type;
-    /* 0x01 */ u8 unk_01;
-    /* 0x04 */ Vec3f position;
-    /* 0x10 */ Vec3f velocity;
-    /* 0x1C */ Vec3f accel;
-    /* 0x28 */ char unk_28[0x6];
-    /* 0x2E */ s16 unk_2E;
-    /* 0x30 */ char unk_30[0x4];
-    /* 0x34 */ f32 scale;
-    /* 0x38 */ Vec3f unk_38;
-} BossGanon2Effect; // size = 0x44
-
 static Vec3f D_80906D60 = { 0.0f, 0.0f, 0.0f };
 
 static Vec3f D_80906D6C = { 0.0f, 0.0f, 500.0f };
@@ -326,31 +313,7 @@ static s16 D_809071CC[] = { 1, -1, 1, 1, 3, 4, 1, 6, 7, 2, 9, 10, 2, 12, 13 };
 
 static u8 D_809071EC[] = { 3, 2, 2, 1, 3, 3, 1, 3, 3, 1, 0, 3, 1, 0, 3 };
 
-// padding
-static u32 D_809071FC[2] = { 0 };
-
 #include "overlays/ovl_Boss_Ganon2/ovl_Boss_Ganon2.h"
 
-static Vec3f D_8090EB20;
-
-static EnZl3* sZelda;
-
-static Actor* D_8090EB30;
-
-// unused
-static UNK_TYPE D_8090EB34;
-
-static BossGanon2Effect sParticles[100];
-
-static s32 sSeed1;
-static s32 sSeed2;
-static s32 sSeed3;
-
-// unused
-static UNK_TYPE D_809105DC;
-
-static Vec3f D_809105D8[4];
-
-static Vec3f D_80910608[4];
-
-static s8 D_80910638;
+// padding
+//static u32 D_809071FC[2] = { 0 };

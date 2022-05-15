@@ -44,7 +44,8 @@ ifneq ($(DEPRECATION_ON),0)
 endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
-LDFLAGS := -lm -ldl -lpng
+LDFLAGS := -lm -ldl -lpng \
+  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 -lGLEW -lGL -lX11
 
 # Use LLD if available. Set LLD=0 to not use it
 ifeq ($(shell command -v ld.lld >/dev/null 2>&1; echo $$?),0)
@@ -59,9 +60,9 @@ UNAME := $(shell uname)
 UNAMEM := $(shell uname -m)
 ifneq ($(UNAME), Darwin)
   LDFLAGS += -Wl,-export-dynamic -lstdc++fs
-  EXPORTERS := -Wl,--whole-archive ExporterTest/ExporterTest.a -Wl,--no-whole-archive
+  EXPORTERS := -Wl,--whole-archive ../OTRExporter/OTRExporter/OTRExporter.a -Wl,--no-whole-archive
 else
-  EXPORTERS := -Wl,-force_load ExporterTest/ExporterTest.a
+  EXPORTERS := -Wl,-force_load ../OTRExporter/OTRExporter/OTRExporter.a
   ifeq ($(UNAMEM),arm64)
     ifeq ($(shell brew list libpng > /dev/null 2>&1; echo $$?),0)
       LDFLAGS += -L $(shell brew --prefix)/lib

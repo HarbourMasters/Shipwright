@@ -51,6 +51,8 @@ namespace Ship
 						data.u16 = reader->ReadUInt16();
 						break;
 						// OTRTODO: IMPLEMENT OTHER TYPES!
+					default:
+						break;
 					}
 
 					arr->scalars.push_back(data);

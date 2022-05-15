@@ -49,12 +49,12 @@ void OTRExporter_Animation::Save(ZResource* res, const fs::path& outPath, Binary
 
 		writer->Write((uint32_t)normalAnim->rotationValues.size());
 
-		for (int i = 0; i < normalAnim->rotationValues.size(); i++)
+		for (size_t i = 0; i < normalAnim->rotationValues.size(); i++)
 			writer->Write(normalAnim->rotationValues[i]);
 
 		writer->Write((uint32_t)normalAnim->rotationIndices.size());
 
-		for (int i = 0; i < normalAnim->rotationIndices.size(); i++)
+		for (size_t i = 0; i < normalAnim->rotationIndices.size(); i++)
 		{
 			writer->Write(normalAnim->rotationIndices[i].x);
 			writer->Write(normalAnim->rotationIndices[i].y);

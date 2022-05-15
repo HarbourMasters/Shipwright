@@ -25,19 +25,19 @@ public:
 
 	ZLimbSkinType skinSegmentType = ZLimbSkinType::SkinType_0;  // Skin only
 	segptr_t skinSegment = 0;                                   // Skin only
-	Struct_800A5E28 segmentStruct;                              // Skin only
+	Struct_800A5E28 segmentStruct = {0};                              // Skin only
 
 	// Legacy only
-	float legTransX, legTransY, legTransZ;  // Vec3f
-	uint16_t rotX, rotY, rotZ;              // Vec3s
-	segptr_t childPtr;                      // LegacyLimb*
-	segptr_t siblingPtr;                    // LegacyLimb*
+	float legTransX = 0, legTransY = 0, legTransZ = 0;  // Vec3f
+	uint16_t rotX = 0, rotY = 0, rotZ = 0;              // Vec3s
+	segptr_t childPtr = 0;                      // LegacyLimb*
+	segptr_t siblingPtr = 0;                    // LegacyLimb*
 
 	segptr_t dListPtr = 0;
 	segptr_t dList2Ptr = 0;  // LOD and Curve Only
 
-	int16_t transX, transY, transZ;
-	uint8_t childIndex, siblingIndex;
+	int16_t transX = 0, transY = 0, transZ = 0;
+	uint8_t childIndex = 0, siblingIndex = 0;
 
 	ZLimb(ZFile* nParent);
 

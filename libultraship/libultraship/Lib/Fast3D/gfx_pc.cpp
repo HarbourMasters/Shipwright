@@ -10,6 +10,7 @@
 #include <set>
 #include <unordered_map>
 #include <vector>
+#include <list>
 
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
@@ -30,10 +31,12 @@
 #include "../StrHash64.h"
 #include "../../SohImGuiImpl.h"
 #include "../../Environment.h"
+#include "../../GameVersions.h"
+#include "../../ResourceMgr.h"
 
 // OTRTODO: fix header files for these
 extern "C" {
-    char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
+    const char* ResourceMgr_GetNameByCRC(uint64_t crc);
     int32_t* ResourceMgr_LoadMtxByCRC(uint64_t crc);
     Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
     Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
@@ -44,6 +47,8 @@ extern "C" {
 }
 
 using namespace std;
+
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 
 #define SUPPORT_CHECK(x) assert(x)
 
@@ -83,7 +88,7 @@ struct LoadedVertex {
 
 static struct {
     TextureCacheMap map;
-    list<TextureCacheMap::iterator> lru;
+    list<TextureCacheMapIter> lru;
     vector<uint32_t> free_texture_ids;
 } gfx_texture_cache;
 
@@ -129,14 +134,14 @@ static struct RDP {
         const uint8_t *addr;
         uint8_t siz;
         uint32_t width;
-        char* otr_path;
+        const char* otr_path;
     } texture_to_load;
     struct {
         const uint8_t *addr;
         uint32_t size_bytes;
         uint32_t full_image_line_size_bytes;
         uint32_t line_size_bytes;
-        char* otr_path;
+        const char* otr_path;
     } loaded_texture[2];
     struct {
         uint8_t fmt;
@@ -185,7 +190,11 @@ static int game_framebuffer_msaa_resolved;
 
 uint32_t gfx_msaa_level = 1;
 
+static bool has_drawn_imgui_menu;
+
 static bool dropped_frame;
+
+static const std::unordered_map<Mtx *, MtxF> *current_mtx_replacements;
 
 static float buf_vbo[MAX_BUFFERED * (32 * 3)]; // 3 vertices in a triangle and 32 floats per vtx
 static size_t buf_vbo_len;
@@ -209,7 +218,7 @@ static map<int, FBInfo> framebuffers;
 static set<pair<float, float>> get_pixel_depth_pending;
 static map<pair<float, float>, uint16_t> get_pixel_depth_cached;
 
-#ifdef _MSC_VER
+#ifdef _WIN32
 // TODO: Properly implement for MSVC
 static unsigned long get_time(void)
 {
@@ -447,15 +456,15 @@ static void gfx_generate_cc(struct ColorCombiner *comb, uint64_t cc_id) {
                         val = SHADER_COMBINED;
                         break;
                     }
-                    // fallthrough for G_ACMUX_LOD_FRACTION
                     c[i][1][j] = G_CCMUX_LOD_FRACTION;
+                    [[fallthrough]]; // for G_ACMUX_LOD_FRACTION
                 case G_ACMUX_1:
                     //case G_ACMUX_PRIM_LOD_FRAC: same numerical value
                     if (j != 2) {
                         val = SHADER_1;
                         break;
                     }
-                    // fallthrough for G_ACMUX_PRIM_LOD_FRAC
+                    [[fallthrough]]; // for G_ACMUX_PRIM_LOD_FRAC
                 case G_ACMUX_PRIMITIVE:
                 case G_ACMUX_SHADE:
                 case G_ACMUX_ENVIRONMENT:
@@ -518,18 +527,18 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
         key = { orig_addr, { }, fmt, siz, palette_index };
     }
 
-    auto it = gfx_texture_cache.map.find(key);
+    TextureCacheMap::iterator it = gfx_texture_cache.map.find(key);
 
     if (it != gfx_texture_cache.map.end()) {
         gfx_rapi->select_texture(i, it->second.texture_id);
         *n = &*it;
-        gfx_texture_cache.lru.splice(gfx_texture_cache.lru.end(), gfx_texture_cache.lru, *(list<TextureCacheMap::iterator>::iterator*)&it->second.lru_location); // move to back
+        gfx_texture_cache.lru.splice(gfx_texture_cache.lru.end(), gfx_texture_cache.lru, it->second.lru_location); // move to back
         return true;
     }
 
     if (gfx_texture_cache.map.size() >= TEXTURE_CACHE_MAX_SIZE) {
         // Remove the texture that was least recently used
-        it = gfx_texture_cache.lru.front();
+        it = gfx_texture_cache.lru.front().it;
         gfx_texture_cache.free_texture_ids.push_back(it->second.texture_id);
         gfx_texture_cache.map.erase(it);
         gfx_texture_cache.lru.pop_front();
@@ -546,7 +555,7 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
     it = gfx_texture_cache.map.insert(make_pair(key, TextureCacheValue())).first;
     TextureCacheNode* node = &*it;
     node->second.texture_id = texture_id;
-    *(list<TextureCacheMap::iterator>::iterator*)&node->second.lru_location = gfx_texture_cache.lru.insert(gfx_texture_cache.lru.end(), it);
+    node->second.lru_location = gfx_texture_cache.lru.insert(gfx_texture_cache.lru.end(), { it });
 
     gfx_rapi->select_texture(i, texture_id);
     gfx_rapi->set_sampler_parameters(i, false, 0, 0);
@@ -562,9 +571,9 @@ static void gfx_texture_cache_delete(const uint8_t* orig_addr)
         bool again = false;
         for (auto it = gfx_texture_cache.map.begin(bucket); it != gfx_texture_cache.map.end(bucket); ++it) {
             if (it->first.texture_addr == orig_addr) {
-                gfx_texture_cache.lru.erase(*(list<TextureCacheMap::iterator>::iterator*)&it->second.lru_location);
+                gfx_texture_cache.lru.erase(it->second.lru_location);
                 gfx_texture_cache.free_texture_ids.push_back(it->second.texture_id);
-                gfx_texture_cache.map.erase(it);
+                gfx_texture_cache.map.erase(it->first);
                 again = true;
                 break;
             }
@@ -911,20 +920,31 @@ static void gfx_matrix_mul(float res[4][4], const float a[4][4], const float b[4
 
 static void gfx_sp_matrix(uint8_t parameters, const int32_t *addr) {
     float matrix[4][4];
-#ifndef GBI_FLOATS
-    // Original GBI where fixed point matrices are used
-    for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j += 2) {
-            int32_t int_part = addr[i * 2 + j / 2];
-            uint32_t frac_part = addr[8 + i * 2 + j / 2];
-            matrix[i][j] = (int32_t)((int_part & 0xffff0000) | (frac_part >> 16)) / 65536.0f;
-            matrix[i][j + 1] = (int32_t)((int_part << 16) | (frac_part & 0xffff)) / 65536.0f;
+
+    if (auto it = current_mtx_replacements->find((Mtx *)addr); it != current_mtx_replacements->end()) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                float v = it->second.mf[i][j];
+                int as_int = (int)(v * 65536.0f);
+                matrix[i][j] = as_int * (1.0f / 65536.0f);
+            }
         }
-    }
+    } else {
+#ifndef GBI_FLOATS
+        // Original GBI where fixed point matrices are used
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j += 2) {
+                int32_t int_part = addr[i * 2 + j / 2];
+                uint32_t frac_part = addr[8 + i * 2 + j / 2];
+                matrix[i][j] = (int32_t)((int_part & 0xffff0000) | (frac_part >> 16)) / 65536.0f;
+                matrix[i][j + 1] = (int32_t)((int_part << 16) | (frac_part & 0xffff)) / 65536.0f;
+            }
+        }
 #else
-    // For a modified GBI where fixed point values are replaced with floats
-    memcpy(matrix, addr, sizeof(matrix));
+        // For a modified GBI where fixed point values are replaced with floats
+        memcpy(matrix, addr, sizeof(matrix));
 #endif
+    }
 
     if (parameters & G_MTX_PROJECTION) {
         if (parameters & G_MTX_LOAD) {
@@ -1616,11 +1636,11 @@ static void gfx_dp_set_scissor(uint32_t mode, uint32_t ulx, uint32_t uly, uint32
     rdp.viewport_or_scissor_changed = true;
 }
 
-static void gfx_dp_set_texture_image(uint32_t format, uint32_t size, uint32_t width, const void* addr, char* otr_path) {
+static void gfx_dp_set_texture_image(uint32_t format, uint32_t size, uint32_t width, const void* addr, const char* otr_path) {
     rdp.texture_to_load.addr = (const uint8_t*)addr;
     rdp.texture_to_load.siz = size;
     rdp.texture_to_load.width = width;
-    if ( otr_path != nullptr && !strncmp(otr_path, "__OTR__", 7)) otr_path = otr_path + 7;
+    if (otr_path != nullptr && !strncmp(otr_path, "__OTR__", 7)) otr_path = otr_path + 7;
     rdp.texture_to_load.otr_path = otr_path;
 }
 
@@ -1692,7 +1712,7 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
     SUPPORT_CHECK(ult == 0);
 
     // The lrs field rather seems to be number of pixels to load
-    uint32_t word_size_shift;
+    uint32_t word_size_shift = 0;
     switch (rdp.texture_to_load.siz) {
         case G_IM_SIZ_4b:
             word_size_shift = 0; // Or -1? It's unused in SM64 anyway.
@@ -1720,7 +1740,7 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
 static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t lrs, uint32_t lrt) {
     SUPPORT_CHECK(tile == G_TX_LOADTILE);
 
-    uint32_t word_size_shift;
+    uint32_t word_size_shift = 0;
     switch (rdp.texture_to_load.siz) {
         case G_IM_SIZ_4b:
             word_size_shift = 0;
@@ -2060,12 +2080,11 @@ static void gfx_s2dex_bg_copy(const uObjBg* bg) {
 static inline void* seg_addr(uintptr_t w1)
 {
     // Segmented?
-    if (w1 >= 0xF0000000)
+    if (w1 & 1)
     {
         uint32_t segNum = (w1 >> 24);
-        segNum -= 0xF0;
 
-        uint32_t offset = w1 & 0x00FFFFFF;
+        uint32_t offset = w1 & 0x00FFFFFE;
         //offset = 0; // Cursed Malon bug
 
         if (segmentPointers[segNum] != 0)
@@ -2082,7 +2101,7 @@ static inline void* seg_addr(uintptr_t w1)
 #define C0(pos, width) ((cmd->words.w0 >> (pos)) & ((1U << width) - 1))
 #define C1(pos, width) ((cmd->words.w1 >> (pos)) & ((1U << width) - 1))
 
-int dListBP;
+unsigned int dListBP;
 int matrixBP;
 uintptr_t clearMtx;
 
@@ -2095,7 +2114,7 @@ static void gfx_run_dl(Gfx* cmd) {
     //puts("dl");
     int dummy = 0;
     char dlName[128];
-    char fileName[128];
+    const char* fileName;
 
     Gfx* dListStart = cmd;
     uint64_t ourHash = -1;
@@ -2149,8 +2168,16 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t mtxAddr = cmd->words.w1;
 
                 // OTRTODO: Temp way of dealing with gMtxClear. Need something more elegant in the future...
-                if (mtxAddr == 0xF012DB20 || mtxAddr == 0xF012DB40)
-                    mtxAddr = clearMtx;
+                uint32_t gameVersion = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetGameVersion();
+                if (gameVersion == OOT_PAL_GC) {
+                    if (mtxAddr == SEG_ADDR(0, 0x0FBC20)) {
+                        mtxAddr = clearMtx;
+                    }
+                } else {
+                    if (mtxAddr == SEG_ADDR(0, 0x12DB20) || mtxAddr == SEG_ADDR(0, 0x12DB40)) {
+                        mtxAddr = clearMtx;
+                    }
+                }
 
 #ifdef F3DEX_GBI_2
                 gfx_sp_matrix(C0(0, 8) ^ G_MTX_PUSH, (const int32_t *) seg_addr(mtxAddr));
@@ -2250,7 +2277,7 @@ static void gfx_run_dl(Gfx* cmd) {
 
                         cmd--;
 
-                        if (ourHash != -1)
+                        if (ourHash != (uint64_t)-1)
                             ResourceMgr_RegisterResourcePatch(ourHash, cmd - dListStart, cmd->words.w1);
 
                         cmd->words.w1 = (uintptr_t)vtx;
@@ -2368,7 +2395,7 @@ static void gfx_run_dl(Gfx* cmd) {
             case G_QUAD:
             {
                 int bp = 0;
-                // fallthrough
+                [[fallthrough]];
             }
 #endif
 #if defined(F3DEX_GBI) || defined(F3DLP_GBI)
@@ -2398,11 +2425,11 @@ static void gfx_run_dl(Gfx* cmd) {
 
                 char* imgData = (char*)i;
 
-                if ((i & 0xF0000000) != 0xF0000000)
+                if ((i & 1) != 1)
                     if (ResourceMgr_OTRSigCheck(imgData) == 1)
                         i = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
 
-                    gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, imgData);
+                gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, imgData);
                 break;
             }
             case G_SETTIMG_OTR:
@@ -2410,7 +2437,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t addr = cmd->words.w1;
                 cmd++;
                 uint64_t hash = ((uint64_t)cmd->words.w0 << 32) + (uint64_t)cmd->words.w1;
-                ResourceMgr_GetNameByCRC(hash, fileName);
+                fileName = ResourceMgr_GetNameByCRC(hash);
 #if _DEBUG && 0
                 char* tex = ResourceMgr_LoadTexByCRC(hash);
                 ResourceMgr_GetNameByCRC(hash, fileName);
@@ -2419,7 +2446,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 char* tex = NULL;
 #endif
 
-                if (addr != NULL)
+                if (addr != 0)
                 {
                     tex = (char*)addr;
                 }
@@ -2433,7 +2460,7 @@ static void gfx_run_dl(Gfx* cmd) {
                         uintptr_t oldData = cmd->words.w1;
                         cmd->words.w1 = (uintptr_t)tex;
 
-                        if (ourHash  != -1)
+                        if (ourHash != (uint64_t)-1)
                             ResourceMgr_RegisterResourcePatch(ourHash, cmd - dListStart, oldData);
 
                         cmd++;
@@ -2648,7 +2675,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
     game_framebuffer_msaa_resolved = gfx_rapi->create_framebuffer();
 
     for (int i = 0; i < 16; i++)
-        segmentPointers[i] = NULL;
+        segmentPointers[i] = 0;
 
     // Used in the 120 star TAS
     static uint32_t precomp_shaders[] = {
@@ -2696,6 +2723,7 @@ void gfx_start_frame(void) {
     gfx_wapi->handle_events();
     gfx_wapi->get_dimensions(&gfx_current_window_dimensions.width, &gfx_current_window_dimensions.height);
     SohImGui::DrawMainMenuAndCalculateGameSize();
+    has_drawn_imgui_menu = true;
     if (gfx_current_dimensions.height == 0) {
         // Avoid division by zero
         gfx_current_dimensions.height = 1;
@@ -2734,7 +2762,7 @@ void gfx_start_frame(void) {
     fbActive = 0;
 }
 
-void gfx_run(Gfx *commands) {
+void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replacements) {
     gfx_sp_reset();
 
     //puts("New frame");
@@ -2743,11 +2771,20 @@ void gfx_run(Gfx *commands) {
 
     if (!gfx_wapi->start_frame()) {
         dropped_frame = true;
-        SohImGui::DrawFramebufferAndGameInput();
-        SohImGui::CancelFrame();
+        if (has_drawn_imgui_menu) {
+            SohImGui::DrawFramebufferAndGameInput();
+            SohImGui::CancelFrame();
+            has_drawn_imgui_menu = false;
+        }
         return;
     }
     dropped_frame = false;
+
+    if (!has_drawn_imgui_menu) {
+        SohImGui::DrawMainMenuAndCalculateGameSize();
+    }
+
+    current_mtx_replacements = &mtx_replacements;
 
     double t0 = gfx_wapi->get_time();
     gfx_rapi->update_framebuffer_parameters(0, gfx_current_window_dimensions.width, gfx_current_window_dimensions.height, 1, false, true, true, !game_renders_to_framebuffer);
@@ -2780,6 +2817,7 @@ void gfx_run(Gfx *commands) {
     //printf("Process %f %f\n", t1, t1 - t0);
     gfx_rapi->end_frame();
     gfx_wapi->swap_buffers_begin();
+    has_drawn_imgui_menu = false;
 }
 
 void gfx_end_frame(void) {
