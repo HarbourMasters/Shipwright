@@ -2,9 +2,9 @@
 
 ## Windows
 
- 1. Install [Python](https://www.python.org/ftp/python/3.10.2/python-3.10.2-amd64.exe)
+ 1. Requires [Python](https://www.python.org/downloads/) >= 3.6.
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
- 2b. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
+ 3. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
  5. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice.
  6. Run `OTRExporter/OTRExporter.sln`.
@@ -41,9 +41,9 @@ cp /usr/local/lib/libGLEW.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
-make setup -j$(nproc)
+make setup -j$(nproc) OPTFLAGS=-O0 DEBUG=0
 # Compile the code
-make -j $(nproc)
+make -j $(nproc) OPTFLAGS=-O0 DEBUG=0
 ```
 
 # Compatible Roms
@@ -51,3 +51,16 @@ make -j $(nproc)
 OOT_PAL_GC      checksum 0x09465AC3
 OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
 ```
+
+# OTRExporter Usage
+
+The OTRExporter exports an `oot.otr` archive file which Ship of Harkinian requires to play.
+
+Use the `extract_assets.py` script file to run the exporter using any of the following methods:
+1) Double click on the script after placing one or more roms in the directory.
+2) Drag & Drop a rom onto the script.
+3) In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
+4) In a terminal run `python3 extract_assets.py <path_to_rom>`
+
+If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
+

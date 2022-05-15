@@ -92,7 +92,7 @@ void Console::Update() {
 	}
 	for (auto [key, var] : BindingToggle) {
 		if (ImGui::IsKeyPressed(key)) {
-			CVar* cvar = CVar_GetVar(var.c_str());
+			CVar* cvar = CVar_Get(var.c_str());
 			Dispatch("set " + var + " " + std::to_string(cvar == nullptr ? 0 : !static_cast<bool>(cvar->value.valueS32)));
 		}
 	}
@@ -106,7 +106,7 @@ void Console::Draw() {
 	if (!this->opened) return;
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-	ImGui::Begin("Console", nullptr);
+	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 

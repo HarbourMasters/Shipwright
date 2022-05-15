@@ -630,9 +630,6 @@
     <ClCompile Include="src\code\z_onepointdemo.c">
       <Filter>Source Files\src\code</Filter>
     </ClCompile>
-    <ClCompile Include="src\code\z_onepointdemo_data.c">
-      <Filter>Source Files\src\code</Filter>
-    </ClCompile>
     <ClCompile Include="src\code\z_parameter.c">
       <Filter>Source Files\src\code</Filter>
     </ClCompile>
@@ -2189,6 +2186,14 @@
     </ClCompile>
     <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp">
       <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    <ClCompile Include="soh\frame_interpolation.cpp">
+      <Filter>Source Files\soh</Filter>
+    </ClCompile>
+    <ClCompile Include="src\code\z_cheap_proc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\savestates.cpp">
+      <Filter>Source Files\soh\Enhancements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3745,6 +3750,14 @@
     </ClInclude>
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    <ClInclude Include="soh\frame_interpolation.h">
+      <Filter>Header Files\soh</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\savestates.h">
+      <Filter>Source Files\soh\Enhancements</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\OTRAudio.h">
+      <Filter>Source Files\soh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

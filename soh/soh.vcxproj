@@ -173,6 +173,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="soh\Enhancements\debugger\debugSaveEditor.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp" />
     <ClCompile Include="soh\Enhancements\gameconsole.c" />
+    <ClCompile Include="soh\Enhancements\savestates.cpp" />
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
@@ -328,7 +330,6 @@
     <ClCompile Include="src\code\z_msgevent.c" />
     <ClCompile Include="src\code\z_olib.c" />
     <ClCompile Include="src\code\z_onepointdemo.c" />
-    <ClCompile Include="src\code\z_onepointdemo_data.c" />
     <ClCompile Include="src\code\z_parameter.c" />
     <ClCompile Include="src\code\z_path.c" />
     <ClCompile Include="src\code\z_play.c" />
@@ -878,6 +879,7 @@
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />
     <ClInclude Include="include\color.h" />
@@ -926,10 +928,12 @@
     <ClInclude Include="soh\Enhancements\cvar.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
     <ClInclude Include="soh\Enhancements\debugger\colViewer.h" />
+    <ClInclude Include="soh\Enhancements\savestates.h" />
     <ClInclude Include="soh\Enhancements\debugger\debugger.h" />
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
+    <ClInclude Include="soh\OTRAudio.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
     <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />

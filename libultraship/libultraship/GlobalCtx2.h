@@ -1,3 +1,6 @@
+#ifndef GLOBAL_CTX_2
+#define GLOBAL_CTX_2
+
 #pragma once
 
 #ifdef __cplusplus
@@ -38,4 +41,6 @@ namespace Ship {
 			std::string PatchesPath;
 	};
 }
+#endif
+
 #endif

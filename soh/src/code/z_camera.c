@@ -6,6 +6,8 @@
 
 #include "overlays/actors/ovl_En_Horse/z_en_horse.h"
 
+#include "soh/frame_interpolation.h"
+
 s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags);
 s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags);
 s32 Camera_QRegInit(void);
@@ -565,10 +567,10 @@ s16 Camera_XZAngle(Vec3f* to, Vec3f* from) {
     return DEGF_TO_BINANG(RADF_TO_DEGF(Math_FAtan2F(from->x - to->x, from->z - to->z)));
 }
 
+ f32 D_8015CE50;
+ f32 D_8015CE54;
+ CamColChk D_8015CE58;
 s16 func_80044ADC(Camera* camera, s16 yaw, s16 arg2) {
-    static f32 D_8015CE50;
-    static f32 D_8015CE54;
-    static CamColChk D_8015CE58;
     Vec3f playerPos;
     Vec3f rotatedPos;
     Vec3f floorNorm;
@@ -6675,6 +6677,7 @@ s32 Camera_Special9(Camera* camera) {
         case 1:
             spec9->doorParams.timer1--;
             if (spec9->doorParams.timer1 <= 0) {
+                FrameInterpolation_DontInterpolateCamera();
                 camera->animState++;
                 if (params->interfaceFlags & 1) {
                     camPosData = Camera_GetCamBGData(camera);
@@ -7221,9 +7224,9 @@ s32 Camera_DbgChangeMode(Camera* camera) {
     return true;
 }
 
+s16 D_8011DB08 = 0x3F0;
+s16 D_8011DB0C = 0x156;
 void func_80058E8C(Camera* camera) {
-    static s16 D_8011DB08 = 0x3F0;
-    static s16 D_8011DB0C = 0x156;
     s32 pad3;
     f32 sp60;
     s32 pad;
@@ -7299,8 +7302,8 @@ void func_80058E8C(Camera* camera) {
     }
 }
 
+s32 sOOBTimer = 0;
 Vec3s Camera_Update(Camera* camera) {
-    static s32 sOOBTimer = 0;
     Vec3f viewAt;
     Vec3f viewEye;
     Vec3f viewUp;
@@ -7967,6 +7970,8 @@ s32 Camera_SetCSParams(Camera* camera, CutsceneCameraPoint* atPoints, CutsceneCa
         camera->xzSpeed = 0.0f;
         camera->speedRatio = 0.0f;
     }
+
+    FrameInterpolation_DontInterpolateCamera();
 
     return 1;
 }

@@ -753,7 +753,15 @@ void func_80083108(GlobalContext* globalCtx) {
                 gSaveContext.buttonStatus[0] = BTN_DISABLED;
 
                 for (i = 1; i < 4; i++) {
-                    if (func_8008F2F8(globalCtx) == 2) {
+                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
+                        // Equipment on c-buttons is always enabled
+                        if (gSaveContext.buttonStatus[i] == BTN_DISABLED) {
+                            sp28 = 1;
+                        }
+
+                        gSaveContext.buttonStatus[i] = BTN_ENABLED;
+                    } else if (func_8008F2F8(globalCtx) == 2) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
                             if (gSaveContext.buttonStatus[i] == BTN_ENABLED) {

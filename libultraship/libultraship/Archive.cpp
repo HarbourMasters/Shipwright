@@ -54,11 +54,16 @@ namespace Ship {
 	std::shared_ptr<File> Archive::LoadFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
 		HANDLE fileHandle = NULL;
 
+		if (FileToLoad == nullptr) {
+			FileToLoad = std::make_shared<File>();
+			FileToLoad->path = filePath;
+		}
+
 		if (!SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		DWORD dwFileSize = SFileGetFileSize(fileHandle, 0);
@@ -72,16 +77,11 @@ namespace Ship {
 			}
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		if (!SFileCloseFile(fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
-
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
 		}
 
 		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
@@ -96,6 +96,11 @@ namespace Ship {
 	std::shared_ptr<File> Archive::LoadPatchFile(const std::string& filePath, bool includeParent, std::shared_ptr<File> FileToLoad) {
 		HANDLE fileHandle = NULL;
 		HANDLE mpqHandle = NULL;
+
+		if (FileToLoad == nullptr) {
+			FileToLoad = std::make_shared<File>();
+			FileToLoad->path = filePath;
+		}
 
 		for(auto [path, handle] : mpqHandles) {
 			if (SFileOpenFileEx(mpqHandle, filePath.c_str(), 0, &fileHandle)) {
@@ -121,16 +126,11 @@ namespace Ship {
 			}
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
-			return nullptr;
+			return FileToLoad;
 		}
 
 		if (!SFileCloseFile(fileHandle)) {
 			SPDLOG_ERROR("({}) Failed to close file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
-		}
-
-		if (FileToLoad == nullptr) {
-			FileToLoad = std::make_shared<File>();
-			FileToLoad->path = filePath;
 		}
 
 		std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
@@ -204,7 +204,7 @@ namespace Ship {
 		return true;
 	}
 
-	std::vector<SFILE_FIND_DATA> Archive::ListFiles(const std::string& searchMask) {
+	std::vector<SFILE_FIND_DATA> Archive::ListFiles(const std::string& searchMask) const {
 		auto fileList = std::vector<SFILE_FIND_DATA>();
 		SFILE_FIND_DATA findContext;
 		HANDLE hFind;
@@ -248,7 +248,7 @@ namespace Ship {
 		return fileList;
 	}
 
-	bool Archive::HasFile(const std::string& filename) {
+	bool Archive::HasFile(const std::string& filename) const {
 		bool result = false;
 		auto start = std::chrono::steady_clock::now();
 
@@ -267,8 +267,9 @@ namespace Ship {
 		return result;
 	}
 
-	std::string Archive::HashToString(uint64_t hash) {
-		return hashes[hash];
+	const std::string* Archive::HashToString(uint64_t hash) const {
+		auto it = hashes.find(hash);
+		return it != hashes.end() ? &it->second : nullptr;
 	}
 
 	bool Archive::Load(bool enableWriting, bool genCRCMap) {

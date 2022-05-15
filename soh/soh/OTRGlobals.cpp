@@ -1,4 +1,5 @@
 ﻿#include "OTRGlobals.h"
+#include "OTRAudio.h"
 #include <iostream>
 #include <locale>
 #include <codecvt>
@@ -28,22 +29,20 @@
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
+#include <SDL2/SDL_scancode.h>
+
 OTRGlobals* OTRGlobals::Instance;
 
-static struct {
-    std::condition_variable cv_to_thread, cv_from_thread;
-    std::mutex mutex;
-    bool initialized;
-    bool processing;
-} audio;
-
 OTRGlobals::OTRGlobals() {
+
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
+    gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
 }
 
@@ -114,12 +113,69 @@ extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
 }
 
 extern "C" void Graph_StartFrame() {
+    // Why -1?
+    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
+    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+
+    switch (dwScancode - 1) {
+        case SDL_SCANCODE_F5: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Saved state to slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+            break;
+        }
+        case SDL_SCANCODE_F6: {
+            unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            slot++;
+            if (slot > 5) {
+                slot = 0;
+            }
+            OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+            SPDLOG_INFO("Set SaveState slot to {}.", slot);
+            break;
+        }
+        case SDL_SCANCODE_F7: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Loaded state from slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_INVALID_SLOT:
+                    SPDLOG_ERROR("[SOH] Invalid State Slot Number {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_STATE_EMPTY:
+                    SPDLOG_ERROR("[SOH] State Slot {} is empty", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+
+            break;
+        }
+    }
     OTRGlobals::Instance->context->GetWindow()->StartFrame();
 }
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(R_UPDATE_RATE);
+    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(CVar_GetS32("g60FPS", 0) == 0 ? R_UPDATE_RATE : 1);
 
     if (!audio.initialized) {
         audio.initialized = true;
@@ -131,6 +187,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                         audio.cv_to_thread.wait(Lock);
                     }
                 }
+                std::unique_lock<std::mutex> Lock(audio.mutex);
                 //AudioMgr_ThreadEntry(&gAudioMgr);
                 // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
                 // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
@@ -156,10 +213,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                 // printf("Audio samples before submitting: %d\n", audio_api->buffered());
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
-                {
-                    std::unique_lock<std::mutex> Lock(audio.mutex);
-                    audio.processing = false;
-                }
+                audio.processing = false;
                 audio.cv_from_thread.notify_one();
             }
         }).detach();
@@ -171,7 +225,15 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
     audio.cv_to_thread.notify_one();
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands);
+    std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
+    if (CVar_GetS32("g60FPS", 0) != 0) {
+        int to = R_UPDATE_RATE;
+        for (int i = 1; i < to; i++) {
+            mtx_replacements.push_back(FrameInterpolation_Interpolate(i / (float)to));
+        }
+    }
+
+    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);

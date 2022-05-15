@@ -1027,7 +1027,7 @@ struct GfxRenderingAPI gfx_direct3d11_api = {
     gfx_d3d11_get_framebuffer_texture_id,
     gfx_d3d11_select_texture_fb,
     gfx_d3d11_delete_texture,
-	gfx_d3d11_set_texture_filter,
+    gfx_d3d11_set_texture_filter,
     gfx_d3d11_get_texture_filter
 };
 
