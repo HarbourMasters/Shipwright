@@ -698,6 +698,8 @@ namespace SohImGui {
                 Tooltip("Show dungeon entrances icon only when it should be");
                 EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
                 Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
+                Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
 
                 EXPERIMENTAL();
 

@@ -1795,7 +1795,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             }
         }
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
-        if (item == ITEM_SAW) {
+        if ((item == ITEM_SAW) && CVar_GetS32("gDekuNutUpgradeFix", 0) == 0) {
             gSaveContext.itemGetInf[1] |= 0x8000;
         }
 
