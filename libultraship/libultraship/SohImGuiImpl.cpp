@@ -327,7 +327,9 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
-        SohImGui::overlay->TextDrawNotification(12.0f, true, "Press F1 to access enhancements menu");
+        if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
+            SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+        }
 
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
