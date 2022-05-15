@@ -668,6 +668,8 @@ namespace SohImGui {
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
+					EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
+					Tooltip("Disable the low HP beeping sound");
                     EnhancementCheckbox("Minimal UI", "gMinimalUI");
                     Tooltip("Hides most of the UI when not needed");
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
