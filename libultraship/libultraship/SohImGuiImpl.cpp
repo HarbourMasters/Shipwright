@@ -762,7 +762,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Easy ISG", "gEzISG");
 		        Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
-		        Tooltip("Allows you to use all items at any age");
+                Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
 		        Tooltip("Freezes the time of day");
 
