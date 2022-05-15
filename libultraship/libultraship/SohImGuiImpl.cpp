@@ -363,7 +363,7 @@ namespace SohImGui {
 
         ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
             pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
-        }});
+        } });
         Game::InitSettings();
     }
 
@@ -402,7 +402,7 @@ namespace SohImGui {
             EnhancementRadioButton("French", "gLanguages", 2);
         */
         int val = CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::RadioButton(text.c_str(), id==val)) {
+        if (ImGui::RadioButton(text.c_str(), id == val)) {
             CVar_SetS32(cvarName.c_str(), (int)id);
             needs_save = true;
         }
@@ -675,12 +675,13 @@ namespace SohImGui {
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                    EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
+                    Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
 
                     ImGui::EndMenu();
                 }
-
 
                 if (ImGui::BeginMenu("Graphics"))
                 {
