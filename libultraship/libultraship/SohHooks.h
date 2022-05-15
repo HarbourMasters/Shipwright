@@ -22,7 +22,7 @@ namespace ModInternal {
 
     template <typename H, typename... Args>
     void ExecuteHooks(Args&&... args) {
-        for (auto fn : RegisteredHooks<H>::functions) {
+        for (auto& fn : RegisteredHooks<H>::functions) {
             fn(std::forward<Args>(args)...);
         }
     }
