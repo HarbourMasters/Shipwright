@@ -1529,6 +1529,7 @@ s32 Camera_Free(Camera* camera) {
 
     camera->at = at;
     camera->fov = Camera_LERPCeilF(60.0f, camera->fov, camSpeed / 2, 1.0f);
+    camera->roll = 0;
     camera->eyeNext = camera->eye;
 
     return 1;
