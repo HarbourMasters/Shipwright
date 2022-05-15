@@ -10,6 +10,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 2) Requires a supported copy of the game (See supported games below).
 3) Use the OTRGui to generate an `oot.otr` archive file.
 4) Launch `soh.exe`
+5) Press F1 to view the menu bar and access all neat features.
 
 ### Supported Games
 Ocarina of Time Debug (not Master Quest)
