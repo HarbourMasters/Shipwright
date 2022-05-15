@@ -675,6 +675,8 @@ namespace SohImGui {
                 Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                 EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                 Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
+                EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
+                Tooltip("Allows equiping the tunic and boots to c-buttons");
 
                 ImGui::Text("Graphics");
                 ImGui::Separator();

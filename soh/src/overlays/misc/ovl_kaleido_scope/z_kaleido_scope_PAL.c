@@ -916,6 +916,13 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex + pt][3];
     gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex + pt][4];
 
+    if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (D_8082ABEC[pauseCtx->mode] == PAUSE_EQUIP)) {
+        gSaveContext.buttonStatus[1] = BTN_ENABLED;
+        gSaveContext.buttonStatus[2] = BTN_ENABLED;
+        gSaveContext.buttonStatus[3] = BTN_ENABLED;
+        gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    }
+
     osSyncPrintf("kscope->kscp_pos+pt = %d\n", pauseCtx->pageIndex + pt);
 
     gSaveContext.unk_13EA = 0;
@@ -2902,7 +2909,16 @@ void func_808265BC(GlobalContext* globalCtx) {
         gSaveContext.buttonStatus[2] = D_8082AB6C[pauseCtx->pageIndex][2];
         gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex][3];
         gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex][4];
+
         pauseCtx->pageIndex = D_8082ABEC[pauseCtx->mode];
+
+        if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
+            gSaveContext.buttonStatus[1] = BTN_ENABLED;
+            gSaveContext.buttonStatus[2] = BTN_ENABLED;
+            gSaveContext.buttonStatus[3] = BTN_ENABLED;
+            gSaveContext.buttonStatus[4] = BTN_ENABLED;
+        }
+
         pauseCtx->unk_1E4 = 0;
         pauseCtx->state++;
         pauseCtx->alpha = 255;
