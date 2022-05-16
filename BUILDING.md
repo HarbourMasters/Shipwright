@@ -2,7 +2,7 @@
 
 ## Windows
 
- 1. Install [Python](https://www.python.org/downloads/) >= 3.6.
+ 1. Requires [Python](https://www.python.org/downloads/) >= 3.6.
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  3. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
@@ -57,10 +57,10 @@ OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
 The OTRExporter exports an `oot.otr` archive file which Ship of Harkinian requires to play.
 
 Use the `extract_assets.py` script file to run the exporter using any of the following methods:
-
-1. Double click on the script after placing one or more roms in the directory.
-2. Drag & Drop a rom onto the script.
-3. In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
-4. In a terminal run `python3 extract_assets.py <path_to_rom>`
+1) Double click on the script after placing one or more roms in the directory.
+2) Drag & Drop a rom onto the script.
+3) In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
+4) In a terminal run `python3 extract_assets.py <path_to_rom>`
 
 If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
+
