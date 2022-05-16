@@ -11,6 +11,7 @@ extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
+extern "C" const u16 sKaeporaPatchIndex = 0x71B3;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
@@ -19,13 +20,12 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     if (file == nullptr)
         return nullptr;
     
-    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * file->messages.size());
-    char* kaeporaPatch;
+    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
 
     for (int i = 0; i < file->messages.size(); i++) {
         if (file->messages[i].id == 0x2066) {
-            kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
-            kaeporaPatch = (char*)file->messages[i].msg.c_str();
+            char* kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
+            file->messages[i].msg.copy(kaeporaPatch, file->messages[i].msg.size(), 0);
 
             kaeporaPatch[26] = 'Y';
             kaeporaPatch[27] = 'e';
@@ -33,21 +33,17 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             kaeporaPatch[29] = 1;
             kaeporaPatch[30] = 'N';
             kaeporaPatch[31] = 'o';
-            break;
-        }
-    }
 
-    for (int i = 0; i < file->messages.size(); i++) {
+            table[file->messages.size()].textId = sKaeporaPatchIndex;
+            table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
+            table[file->messages.size()].segment = kaeporaPatch;
+            table[file->messages.size()].msgSize = file->messages[i].msg.size();
+        }
+
         table[i].textId = file->messages[i].id;
         table[i].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
+        table[i].segment = file->messages[i].msg.c_str();
         table[i].msgSize = file->messages[i].msg.size();
-		
-        if (kaeporaPatch != "" && (file->messages[i].id == 0x2066 || file->messages[i].id == 0x607B || 
-            file->messages[i].id == 0x10C2 || file->messages[i].id == 0x10C6 || file->messages[i].id == 0x206A)) {
-            table[i].segment = kaeporaPatch;
-        } else {
-            table[i].segment = file->messages[i].msg.c_str();
-        }
 
         if (isNES && file->messages[i].id == 0xFFFC)
             _message_0xFFFC_nes = (char*)file->messages[i].msg.c_str();
