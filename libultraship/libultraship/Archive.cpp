@@ -204,7 +204,7 @@ namespace Ship {
 		return true;
 	}
 
-	std::vector<SFILE_FIND_DATA> Archive::ListFiles(const std::string& searchMask) {
+	std::vector<SFILE_FIND_DATA> Archive::ListFiles(const std::string& searchMask) const {
 		auto fileList = std::vector<SFILE_FIND_DATA>();
 		SFILE_FIND_DATA findContext;
 		HANDLE hFind;
@@ -248,7 +248,7 @@ namespace Ship {
 		return fileList;
 	}
 
-	bool Archive::HasFile(const std::string& filename) {
+	bool Archive::HasFile(const std::string& filename) const {
 		bool result = false;
 		auto start = std::chrono::steady_clock::now();
 
@@ -267,8 +267,9 @@ namespace Ship {
 		return result;
 	}
 
-	std::string Archive::HashToString(uint64_t hash) {
-		return hashes[hash];
+	const std::string* Archive::HashToString(uint64_t hash) const {
+		auto it = hashes.find(hash);
+		return it != hashes.end() ? &it->second : nullptr;
 	}
 
 	bool Archive::Load(bool enableWriting, bool genCRCMap) {
