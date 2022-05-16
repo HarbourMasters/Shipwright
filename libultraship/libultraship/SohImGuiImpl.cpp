@@ -536,10 +536,10 @@ namespace SohImGui {
 
     void EnhancementColor3(const char* text, const char* cvarName, float defaultColors[3])
     {
-
-        int r = CVar_GetS32((std::string(cvarName) + "_Red").c_str(), (int32_t)(defaultColors[0] * 255.0f));
-        int g = CVar_GetS32((std::string(cvarName) + "_Green").c_str(), (int32_t)(defaultColors[1] * 255.0f));
-        int b = CVar_GetS32((std::string(cvarName) + "_Blue").c_str(), (int32_t)(defaultColors[2] * 255.0f));
+        std::string cVarNameStr(cvarName);
+        const int r = CVar_GetS32((cVarNameStr + "_Red").c_str(), (int32_t)(defaultColors[0] * 255.0f));
+        const int g = CVar_GetS32((cVarNameStr + "_Green").c_str(), (int32_t)(defaultColors[1] * 255.0f));
+        const int b = CVar_GetS32((cVarNameStr + "_Blue").c_str(), (int32_t)(defaultColors[2] * 255.0f));
 
 
         float colors[3];
@@ -550,9 +550,9 @@ namespace SohImGui {
         {
             if (ImGui::ColorEdit3(text, colors))
             {
-                CVar_SetS32((std::string(cvarName) + "_Red").c_str(), (int)(colors[0] * 255));
-                CVar_SetS32((std::string(cvarName) + "_Green").c_str(), (int)(colors[1] * 255));
-                CVar_SetS32((std::string(cvarName) + "_Blue").c_str(), (int)(colors[2] * 255));
+                CVar_SetS32((cVarNameStr + "_Red").c_str(), (int)(colors[0] * 255));
+                CVar_SetS32((cVarNameStr + "_Green").c_str(), (int)(colors[1] * 255));
+                CVar_SetS32((cVarNameStr + "_Blue").c_str(), (int)(colors[2] * 255));
                 needs_save = true;
             }
         }
