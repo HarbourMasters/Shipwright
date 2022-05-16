@@ -507,7 +507,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
                             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, D_8082A150[sp218]);
                         } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), D_8082A150[sp218]);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 255), CVar_GetS32("gCCCBtnPrimB", 50), D_8082A150[sp218]);
                         }
                     }
 
@@ -549,7 +549,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
                         } else if (CVar_GetS32("gHudColors", 1) == 1) {
                             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 50, 200);
                         } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 160), CVar_GetS32("gCCCBtnPrimB", 0), 200);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 255), CVar_GetS32("gCCCBtnPrimB", 50), 200);
                         }
                     }
                 } else {
