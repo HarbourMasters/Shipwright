@@ -153,7 +153,11 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
+#if __APPLE__
             ImGui_ImplOpenGL3_Init("#version 120");
+#else
+            ImGui_ImplOpenGL3_Init("#version 120");
+#endif
             break;
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)

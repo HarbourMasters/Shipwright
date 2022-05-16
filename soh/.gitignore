@@ -18,6 +18,7 @@ notes/
 baserom/
 docs/doxygen/
 *.elf
+*.arm64
 *.sra
 *.z64
 *.n64

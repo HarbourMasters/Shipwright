@@ -16,10 +16,10 @@ LTO ?= 0
 WARN := \
 	-Wno-return-type \
 	-funsigned-char \
-	-mhard-float -fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
+	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib -march=i386
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib -march=i386
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags sdl2 x11)
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags sdl2 x11)
 LDFLAGS :=
 CPPFLAGS := -MMD
 
@@ -27,6 +27,9 @@ ifneq ($(DEBUG),0)
 	CXXFLAGS += -g
 	CFLAGS += -g
 endif
+
+CXXFLAGS += -g
+CFLAGS += -g
 
 ifneq ($(ASAN),0)
 	CXXFLAGS += -fsanitize=address
@@ -38,7 +41,7 @@ ifneq ($(LTO),0)
 	LDFLAGS += -flto
 endif
 
-TARGET := soh.elf
+TARGET := soh.arm64
 
 INC_DIRS := $(addprefix -I, \
 	. \
@@ -51,11 +54,16 @@ INC_DIRS := $(addprefix -I, \
 	../libultraship/libultraship/Lib/spdlog/include \
 	../libultraship/libultraship/Lib/Fast3D/U64 \
 	../libultraship/libultraship/Lib/Fast3D/U64/PR \
+	/opt/X11/include \
 )
+CFLAGS := $(CFLAGS) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew)
+CXXFLAGS := $(CXXFLAGS) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew)
+
 
 LDDIRS := $(addprefix -L, \
 	../external \
 	../libultraship/ \
+	/opt/X11/lib \
 )
 
 LDLIBS := \
@@ -67,13 +75,12 @@ LDLIBS := \
 	z \
 	pthread \
 	atomic \
-	SDL2 \
 	GL \
-	GLEW \
 	storm \
-	pulse\
 	ultraship \
 ) \
+
+LDLIBS := $(LDLIBS) $(shell sdl2-config --libs) $(shell pkg-config --libs glew)
 
 ASSET_BIN_DIRS := $(shell find assets/* -type d -not -path "assets/xml*")
 ASSET_FILES_XML := $(foreach dir,$(ASSET_BIN_DIRS),$(wildcard $(dir)/*.xml))
