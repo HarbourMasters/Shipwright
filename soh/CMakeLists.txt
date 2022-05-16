@@ -1710,6 +1710,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 		glew_s
 		${OPENGL_glx_LIBRARY}
 		${OPENGL_opengl_LIBRARY}
+		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
 endif()
