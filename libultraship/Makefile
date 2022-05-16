@@ -10,7 +10,7 @@ DEBUG ?= 1
 OPTFLAGS ?= -O0
 LTO ?= 0
 
-WARN := -Wall -Wextra -Werror \
+WARN := -Wall -Wextra \
 	-Wno-unused-variable \
 	-Wno-unused-parameter \
 	-Wno-unused-function \
