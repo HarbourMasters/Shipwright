@@ -679,6 +679,8 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("2 Day Biggoron Quest", "gBiggoronShortQuest");
+                    Tooltip("Makes you wait 2 days instead of 3 to forge the Biggoron Sword");
 
                     ImGui::EndMenu();
                 }

@@ -96,10 +96,18 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
             if (gSaveContext.bgsFlag) {
                 return 0x305E;
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_CLAIM_CHECK) {
-                if (Environment_GetBgsDayCount() >= 3) {
-                    return 0x305E;
+                if (CVar_GetS32("gBiggoronShortQuest", 0) != 0) {
+                    if (Environment_GetBgsDayCount() >= 2) {
+                        return 0x305E;
+                    } else {
+                        return 0x305D;
+                    }
                 } else {
-                    return 0x305D;
+                    if (Environment_GetBgsDayCount() >= 3) {
+                        return 0x305E;
+                    } else {
+                        return 0x305D;
+                    }
                 }
             } else if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_EYEDROPS) {
                 player->exchangeItemId = EXCH_ITEM_EYEDROPS;
