@@ -546,11 +546,9 @@ namespace SohImGui {
         }
     }
 
-
     void Tooltip(std::string text) {
         if (ImGui::IsItemHovered())
             ImGui::SetTooltip("%s", text.c_str());
-        }
     }
 
     void DrawMainMenuAndCalculateGameSize() {
