@@ -473,9 +473,9 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
         sIconEnvColors[1][1] = 255;
         sIconEnvColors[1][2] = 130;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 4)/255)*80;
-        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 200)/255)*80;
-        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 80)/255)*80;
+        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 50)/255)*95;
+        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 255)/255)*95;
+        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 130)/255)*95;
         sIconPrimColors[1][0] = CVar_GetS32("gCCABtnPrimR", 50);
         sIconPrimColors[1][1] = CVar_GetS32("gCCABtnPrimG", 255);
         sIconPrimColors[1][2] = CVar_GetS32("gCCABtnPrimB", 130);
