@@ -36,7 +36,7 @@ MessageTableEntry* sNesMessageEntryTablePtr;
 MessageTableEntry* sGerMessageEntryTablePtr;
 MessageTableEntry* sFraMessageEntryTablePtr;
 MessageTableEntry* sStaffMessageEntryTablePtr;
-const u16 sKaeporaPatchIndex;
+u16 sKaeporaPatchIndex;
 
 char* _message_0xFFFC_nes;
 
