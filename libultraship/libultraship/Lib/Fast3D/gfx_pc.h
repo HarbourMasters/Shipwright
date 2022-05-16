@@ -46,12 +46,11 @@ struct TextureCacheValue {
     uint8_t cms, cmt;
     bool linear_filter;
 
-    // Old versions of libstdc++ fail to compile this
-#ifdef _MSC_VER
-    std::list<TextureCacheMap::iterator>::iterator lru_location;
-#else
-    std::list<int>::iterator lru_location;
-#endif
+    std::list<struct TextureCacheMapIter>::iterator lru_location;
+};
+
+struct TextureCacheMapIter {
+    TextureCacheMap::iterator it;
 };
 
 extern "C" {
