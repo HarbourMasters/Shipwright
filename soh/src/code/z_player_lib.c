@@ -744,29 +744,25 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #else
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sMouthTextures[eyeIndex]));
 #endif
-    if (CVar_GetS32("gUseTunicsCol",0) != 1) { //Mod is not on bring back original colors.
-        color = &sTunicColors[tunic];
-    }
-    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gUseTunicsCol",0) ==1 ) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r),
-                             CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g),
-                             CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
-        color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gUseTunicsCol",0) ==1 ) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Goron_R", sTunicColors[PLAYER_TUNIC_GORON].r),
-                             CVar_GetS32("gTunic_Goron_G", sTunicColors[PLAYER_TUNIC_GORON].g),
-                             CVar_GetS32("gTunic_Goron_B", sTunicColors[PLAYER_TUNIC_GORON].b) };
-        color = &sTemp;
-    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gUseTunicsCol",0) ==1 ) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Zora_R", sTunicColors[PLAYER_TUNIC_ZORA].r),
-                             CVar_GetS32("gTunic_Zora_G", sTunicColors[PLAYER_TUNIC_ZORA].g),
-                             CVar_GetS32("gTunic_Zora_B", sTunicColors[PLAYER_TUNIC_ZORA].b) };
-        color = &sTemp;
-    } else if (CVar_GetS32("gUseTunicsCol",0) == 1) {
-        Color_RGB8 sTemp = { CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r),
-                             CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g),
-                             CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b) };
-        color = &sTemp;
+    Color_RGB8 NewColor[3];
+    color = &sTunicColors[tunic];
+    if (CVar_GetS32("gUseTunicsCol",0) == 1) {
+        if (tunic == PLAYER_TUNIC_KOKIRI || tunic == PLAYER_TUNIC_GORON || tunic == PLAYER_TUNIC_ZORA) {
+            NewColor[PLAYER_TUNIC_KOKIRI].r = CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+            NewColor[PLAYER_TUNIC_KOKIRI].g = CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+            NewColor[PLAYER_TUNIC_KOKIRI].b = CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
+            NewColor[PLAYER_TUNIC_GORON].r = CVar_GetS32("gTunic_Goron_R", sTunicColors[PLAYER_TUNIC_GORON].r);
+            NewColor[PLAYER_TUNIC_GORON].g = CVar_GetS32("gTunic_Goron_G", sTunicColors[PLAYER_TUNIC_GORON].g);
+            NewColor[PLAYER_TUNIC_GORON].b = CVar_GetS32("gTunic_Goron_B", sTunicColors[PLAYER_TUNIC_GORON].b);
+            NewColor[PLAYER_TUNIC_ZORA].r = CVar_GetS32("gTunic_Zora_R", sTunicColors[PLAYER_TUNIC_ZORA].r);
+            NewColor[PLAYER_TUNIC_ZORA].g = CVar_GetS32("gTunic_Zora_G", sTunicColors[PLAYER_TUNIC_ZORA].g);
+            NewColor[PLAYER_TUNIC_ZORA].b = CVar_GetS32("gTunic_Zora_B", sTunicColors[PLAYER_TUNIC_ZORA].b);
+        } else {
+            NewColor[PLAYER_TUNIC_KOKIRI].r = CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
+            NewColor[PLAYER_TUNIC_KOKIRI].g = CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
+            NewColor[PLAYER_TUNIC_KOKIRI].b = CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
+        }
+        color = NewColor;
     }
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);
 
