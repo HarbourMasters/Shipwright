@@ -1410,10 +1410,6 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
-bool manualCamera;
-f32 camX;
-f32 camY;
-
 s32 SetCameraManual(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
@@ -1441,6 +1437,7 @@ s32 Camera_Free(Camera* camera) {
     f32 playerHeight = Player_GetHeight(camera->player);
     f32 sp94;
     CamColChk camBgChk;
+    PosRot* playerPosRot = &camera->playerPosRot;
     Vec3f at;
 
     sCameraInterfaceFlags = norm1->interfaceFlags;
@@ -1475,14 +1472,14 @@ s32 Camera_Free(Camera* camera) {
     VecSph eyeAdjustment;
     const f32 camSpeed = 0.5f;
 
-    camera->animState = 1;
+    camera->animState = 0;
 
     at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
     at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
                                                                      ? Player_GetHeight(camera->player) / 2
-                                                                     : Player_GetHeight(camera->player)) / 1.2f,
-                            camera->at.y,
-                                    camSpeed, 1.0f);
+                                                                     : Player_GetHeight(camera->player)) /
+                                                                    1.2f,
+                            camera->at.y, camSpeed, 1.0f);
     at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
 
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &at, &camera->eye);
@@ -1496,8 +1493,7 @@ s32 Camera_Free(Camera* camera) {
 
         if (rad > 150) {
             camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
-        }
-        else {
+        } else {
             camera->dist = eyeAdjustment.r = rad;
         }
     } else {
