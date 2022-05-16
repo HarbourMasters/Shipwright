@@ -271,9 +271,9 @@ namespace SohImGui {
         minimap_colors[0] = (float)CVar_GetS32("gCCMinimapPrimR", 0)/255;
         minimap_colors[1] = (float)CVar_GetS32("gCCMinimapPrimG", 255)/255;
         minimap_colors[2] = (float)CVar_GetS32("gCCMinimapPrimB", 255)/255;
-        rupee_colors[0] = (float)CVar_GetS32("gCCRupeePrimR", 120)/255;
-        rupee_colors[1] = (float)CVar_GetS32("gCCRupeePrimG", 120)/255;
-        rupee_colors[2] = (float)CVar_GetS32("gCCRupeePrimB", 120)/255;
+        rupee_colors[0] = (float)CVar_GetS32("gCCRupeePrimR", 200)/255;
+        rupee_colors[1] = (float)CVar_GetS32("gCCRupeePrimG", 255)/255;
+        rupee_colors[2] = (float)CVar_GetS32("gCCRupeePrimB", 100)/255;
         smolekey_colors[0] = (float)CVar_GetS32("gCCKeysPrimR", 200)/255;
         smolekey_colors[1] = (float)CVar_GetS32("gCCKeysPrimG", 230)/255;
         smolekey_colors[2] = (float)CVar_GetS32("gCCKeysPrimB", 255)/255;
