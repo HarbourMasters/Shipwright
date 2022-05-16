@@ -5,10 +5,6 @@
 
 struct Player;
 
-bool manualCamera;
-f32 camX;
-f32 camY;
-
 typedef enum {
     /* 0 */ PLAYER_SWORD_NONE,
     /* 1 */ PLAYER_SWORD_KOKIRI,

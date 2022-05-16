@@ -1400,6 +1400,7 @@
     <ClInclude Include="src\overlays\effects\ovl_Effect_Ss_Stick\z_eff_ss_stick.h" />
     <ClInclude Include="src\overlays\effects\ovl_Effect_Ss_Stone1\z_eff_ss_stone1.h" />
     <ClInclude Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_scope.h" />
+    <ClInclude Include="z_camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\macro.inc" />

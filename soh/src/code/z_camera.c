@@ -29,6 +29,7 @@ s32 Camera_CheckWater(Camera* camera);
 #define FLG_OFFGROUND (1 << 7)
 
 #include "z_camera_data.inc"
+#include "z_camera.h"
 
 /*===============================================================*/
 
