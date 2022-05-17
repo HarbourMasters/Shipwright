@@ -776,7 +776,12 @@ namespace SohImGui {
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
-                ImGui::Separator();
+                EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
+                Tooltip("Directly load the game to selected slot bellow\nUse slot number 4 to load directly in Zelda Map Select\n(Do not require debug menu but you will be unable to save there)\n(you can also load Zelda map select with Debug mod + slot 0).");
+                if (CVar_GetS32("gSkipLogoTitle",0)) {
+                    EnhancementSliderInt("Save file to load: %d", "##SaveFileID", "gSaveFileID", 1, 4, "");
+                }
+		ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
