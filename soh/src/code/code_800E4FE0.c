@@ -39,7 +39,6 @@ extern u64 rspAspMainDataStart[];
 extern u64 rspAspMainDataEnd[];
 
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples) {
-    // OTRTODO: uintptr_t?
     u32 sp4C;
 
     gAudioContext.totalTaskCnt++;

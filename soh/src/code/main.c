@@ -6,7 +6,7 @@
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
-u32 gSystemHeapSize = 0;
+size_t gSystemHeapSize = 0;
 
 PreNmiBuff* gAppNmiBufferPtr;
 SchedContext gSchedContext;
@@ -53,7 +53,7 @@ void Main(void* arg) {
     uintptr_t sysHeap;
     uintptr_t fb;
     void* debugHeap;
-    s32 debugHeapSize;
+    size_t debugHeapSize;
     s16* msg;
 
     osSyncPrintf("mainproc 実行開始\n"); // "Start running"
