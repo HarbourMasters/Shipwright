@@ -1021,37 +1021,19 @@ void EnGo2_BiggoronSetTextId(EnGo2* this, GlobalContext* globalCtx, Player* play
 
         } else if (!gSaveContext.bgsFlag && (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK)) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_CLAIM_CHECK) {
-                if (CVar_GetS32("gBiggoronShortQuest", 0) != 0) {
-                    if (Environment_GetBgsDayCount() >= 2) {
-                        textId = 0x305E;
-                    } else {
-                    textId = 0x305D;
-                    }
-                    this->actor.textId = textId;
+                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 1)) {
+                    textId = 0x305E;
                 } else {
-                    if (Environment_GetBgsDayCount() >= 3) {
-                        textId = 0x305E;
-                    } else {
                     textId = 0x305D;
-                    }
-                    this->actor.textId = textId;
                 }
+                this->actor.textId = textId;
             } else {
-                if (CVar_GetS32("gBiggoronShortQuest", 0) != 0) {
-                    if (Environment_GetBgsDayCount() >= 2) {
-                        textId = 0x3002;
-                    } else {
-                        textId = 0x305D;
-                    }
-                    this->actor.textId = textId;
+                if (Environment_GetBgsDayCount() >= CVar_GetS32("gForgeTime", 1)) {
+                    textId = 0x3002;
                 } else {
-                    if (Environment_GetBgsDayCount() >= 3) {
-                        textId = 0x3002;
-                    } else {
-                        textId = 0x305D;
-                    }
-                    this->actor.textId = textId;
+                    textId = 0x305D;
                 }
+                this->actor.textId = textId;
             }
             player->actor.textId = this->actor.textId;
 
