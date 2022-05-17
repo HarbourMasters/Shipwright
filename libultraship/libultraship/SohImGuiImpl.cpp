@@ -812,6 +812,24 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            bool FPSCounter_isOpen = CVar_GetS32("gDebugFPSCounterEnabled", 0);
+            if (FPSCounter_isOpen) {
+                if (!FPSCounter_isOpen) {
+                    return;
+                }
+                ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize |
+                ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar |
+                ImGuiWindowFlags_NoFocusOnAppearing;
+                ImGui::Begin("FPSCounter", nullptr, window_flags);
+                const float framerate = ImGui::GetIO().Framerate;
+                float PosX = CVar_GetS32("gFPSCounterPosX", 0);
+                float PosY = CVar_GetS32("gFPSCounterPosY", 0);
+                ImGui::SetWindowPos(ImVec2{PosX,PosY},0);
+                SohImGui::overlay->TextDraw(0,0,true,ImVec4{FPSCounter[0],FPSCounter[1],FPSCounter[2],FPSCounter[3]}," %.1f FPS", framerate);
+                ImGui::End();
+            }
+
             for (const auto& category : windowCategories) {
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
