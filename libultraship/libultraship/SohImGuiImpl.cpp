@@ -505,6 +505,22 @@ namespace SohImGui {
         }
     }
 
+    void EnhancementColor4(std::string text, std::string cvarName, float ColorRGBA[4], bool TitleSameLine) {
+        //If you do not need Alpha channel use 3 Variant !
+        ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+        if (!TitleSameLine){
+            ImGui::Text("%s", text.c_str());
+            flags = ImGuiColorEditFlags_NoLabel;
+        }
+        if (ImGui::ColorEdit4(text.c_str(), ColorRGBA, flags)) {
+            CVar_SetS32((cvarName+"R").c_str(), ClampFloatToInt(ColorRGBA[0]*255,0,255));
+            CVar_SetS32((cvarName+"G").c_str(), ClampFloatToInt(ColorRGBA[1]*255,0,255));
+            CVar_SetS32((cvarName+"B").c_str(), ClampFloatToInt(ColorRGBA[2]*255,0,255));
+            CVar_SetS32((cvarName+"A").c_str(), ClampFloatToInt(ColorRGBA[3]*255,0,255));
+            needs_save = true;
+        }
+    }
+
     void Tooltip(std::string text) {
         if (ImGui::IsItemHovered())
             ImGui::SetTooltip("%s", text.c_str());
@@ -774,6 +790,16 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Developer Tools"))
             {
+                if (ImGui::BeginMenu("FPS Counter")) {
+                    EnhancementCheckbox("Show FPS counter", "gDebugFPSCounterEnabled");
+                    Tooltip("FPS Counter for PC Master Race users.");
+                    EnhancementColor4("FPS Counter color", "gFPSCounter", FPSCounter, false);
+                    ImGui::Separator();
+                    ImGui::Text("Position");
+                    EnhancementSliderInt("Top | Bottom : %d", "##FPSCounterPosY", "gFPSCounterPosY", 0, gfx_current_game_window_viewport.height, "");
+                    EnhancementSliderInt("Left | Right : %d", "##FPSCounterPosX", "gFPSCounterPosX", -5, gfx_current_game_window_viewport.width, "");
+                    ImGui::EndMenu();
+                }
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 ImGui::Separator();
