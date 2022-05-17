@@ -784,14 +784,20 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         } 
                     }
 
+                    const s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + Right_MM_Margin);  
+                    const s16 entranceY = 154 + Bottom_MM_Margin; 
                     if ((globalCtx->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
                                             8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
+                                                G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                    } else if (CVar_GetS32("gAlwaysShowDungeonMinimapIcon", 0) != 0){
+                        gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
+                                            8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
+                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                        const s16 entranceX = OTRGetRectDimensionFromRightEdge(270);  
-
-                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, 154 << 2, (entranceX + 32) << 2, (154 + 8) << 2, 
+                        gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
                                                 G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
 
