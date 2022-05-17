@@ -792,7 +792,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                         gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
                                                 G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-                    } else if (CVar_GetS32("gAlwaysShowDungeonMinimapIcon", 0) != 0){
+                    } else if ((globalCtx->sceneNum == SCENE_SPOT08) && CVar_GetS32("gAlwaysShowDungeonMinimapIcon", 0) != 0){
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
                                             8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
