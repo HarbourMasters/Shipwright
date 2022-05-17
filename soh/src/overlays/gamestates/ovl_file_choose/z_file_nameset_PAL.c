@@ -347,6 +347,25 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                       PRIMITIVE, 0);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
+    if (HandleMouseCursor(this, input, 193, 169, 28, 17)) {
+        if (this->kbdButton != FS_KBD_BTN_BACKSPACE) {
+            this->kbdButton = FS_KBD_BTN_BACKSPACE;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
+    if (HandleMouseCursor(this, input, 226, 169, 44, 17)) {
+        if (this->kbdY != 5 && this->kbdX != 4) {
+            this->kbdY = 5;
+            this->kbdX = 4;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
     if (this->configMode == CM_NAME_ENTRY) {
         if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

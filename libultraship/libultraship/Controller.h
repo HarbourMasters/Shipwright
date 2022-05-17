@@ -38,6 +38,9 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
+			bool wTouching;
+			float wTouchX;
+			float wTouchY;
 			
 			virtual std::string GetControllerType() = 0;
 			virtual std::string GetConfSection() = 0;

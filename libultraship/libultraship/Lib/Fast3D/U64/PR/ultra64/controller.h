@@ -114,7 +114,10 @@ typedef struct {
     /* 0x04 */ u8 err_no;
 	/* 0x05 */ f32 gyro_x;
 	/* 0x09 */ f32 gyro_y;
-} OSContPad; // size = 0x0D
+    /* 0x0A */ u8 touch;
+    /* 0x0B */ f32 touch_x;
+    /* 0x0F */ f32 touch_y;
+} OSContPad; // size = 0x13
 
 typedef struct {
     /* 0x00 */ u8 rumble;

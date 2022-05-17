@@ -247,6 +247,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 input->cur.button = 0;
                 input->cur.stick_x = 0;
                 input->cur.stick_y = 0;
+                input->cur.touch = 0;
                 input->cur.err_no = padnow1->err_no;
                 if (padMgr->ctrlrIsConnected[i]) {
                     padMgr->ctrlrIsConnected[i] = false;
@@ -269,6 +270,11 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         PadUtils_UpdateRelXY(input);
         input->press.stick_x += (s8)(input->cur.stick_x - input->prev.stick_x);
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
+
+        u8 buttonDiff2;
+        buttonDiff2 = input->prev.touch != input->cur.touch;
+        input->press.touch = (u8)(input->cur.touch && buttonDiff2);
+        input->rel.touch = (u8)(!input->cur.touch && buttonDiff2);
     }
 
     controllerCallback.rumble = CVar_GetS32("gRumbleEnabled", 0) && (padMgr->rumbleEnable[0] > 0);
