@@ -11,7 +11,6 @@ extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
-extern "C" u16 sKaeporaPatchIndex = 0x71B3;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
@@ -27,14 +26,33 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             char* kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
             file->messages[i].msg.copy(kaeporaPatch, file->messages[i].msg.size(), 0);
 
-            kaeporaPatch[26] = 'Y';
-            kaeporaPatch[27] = 'e';
-            kaeporaPatch[28] = 's';
-            kaeporaPatch[29] = 1;
-            kaeporaPatch[30] = 'N';
-            kaeporaPatch[31] = 'o';
+            if (filePath == "text/nes_message_data_static/nes_message_data_static") {
+                kaeporaPatch[26] = 'Y';
+                kaeporaPatch[27] = 'e';
+                kaeporaPatch[28] = 's';
+                kaeporaPatch[29] = 1;
+                kaeporaPatch[30] = 'N';
+                kaeporaPatch[31] = 'o';
+            } else if (filePath == "text/ger_message_data_static/ger_message_data_static") {
+                kaeporaPatch[30] = 'J';
+                kaeporaPatch[31] = 'a';
+                kaeporaPatch[32] = '!';
+                kaeporaPatch[33] = 1;
+                kaeporaPatch[34] = 'N';
+                kaeporaPatch[35] = 'e';
+                kaeporaPatch[36] = 'i';
+                kaeporaPatch[37] = 'n';
+            } else {
+                kaeporaPatch[26] = 'O';
+                kaeporaPatch[27] = 'u';
+                kaeporaPatch[28] = 'i';
+                kaeporaPatch[29] = 1;
+                kaeporaPatch[30] = 'N';
+                kaeporaPatch[31] = 'o';
+                kaeporaPatch[32] = 'n';
+            }
 
-            table[file->messages.size()].textId = sKaeporaPatchIndex;
+            table[file->messages.size()].textId = 0x71B3;
             table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
             table[file->messages.size()].segment = kaeporaPatch;
             table[file->messages.size()].msgSize = file->messages[i].msg.size();

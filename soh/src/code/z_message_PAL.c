@@ -36,7 +36,6 @@ MessageTableEntry* sNesMessageEntryTablePtr;
 MessageTableEntry* sGerMessageEntryTablePtr;
 MessageTableEntry* sFraMessageEntryTablePtr;
 MessageTableEntry* sStaffMessageEntryTablePtr;
-u16 sKaeporaPatchIndex;
 
 char* _message_0xFFFC_nes;
 
@@ -277,7 +276,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
-        bufferId = sKaeporaPatchIndex;
+        bufferId = 0x71B3;
     }
 
     if (gSaveContext.language == LANGUAGE_GER)
