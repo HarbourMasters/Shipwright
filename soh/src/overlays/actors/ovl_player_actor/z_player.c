@@ -898,6 +898,15 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_SWORD_KOKIRI,
     PLAYER_AP_SWORD_MASTER,
     PLAYER_AP_SWORD_BGS,
+    PLAYER_AP_SHIELD_DEKU,
+    PLAYER_AP_SHIELD_HYLIAN,
+    PLAYER_AP_SHIELD_MIRROR,
+    PLAYER_AP_TUNIC_KOKIRI,
+    PLAYER_AP_TUNIC_GORON,
+    PLAYER_AP_TUNIC_ZORA,
+    PLAYER_AP_BOOTS_KOKIRI,
+    PLAYER_AP_BOOTS_IRON,
+    PLAYER_AP_BOOTS_HOVER,
 };
 
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
@@ -910,7 +919,8 @@ static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
-    func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
 };
 
 static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
@@ -923,7 +933,8 @@ static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
-    func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
 };
 
 typedef enum {
@@ -2752,7 +2763,8 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
 
         if ((actionParam == PLAYER_AP_NONE) || !(this->stateFlags1 & PLAYER_STATE1_27) ||
             ((this->actor.bgCheckFlags & 1) &&
-                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT)))) {
+                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT))) ||
+            ((actionParam >= PLAYER_AP_SHIELD_DEKU) && (actionParam <= PLAYER_AP_BOOTS_HOVER))) {
 
             if ((globalCtx->bombchuBowlingStatus == 0) &&
                 (((actionParam == PLAYER_AP_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -2761,6 +2773,33 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                         ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                             (globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3)))))) {
                 func_80078884(NA_SE_SY_ERROR);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_BOOTS_KOKIRI) {
+                u16 bootsValue = actionParam - PLAYER_AP_BOOTS_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_TUNIC_KOKIRI) {
+                u16 tunicValue = actionParam - PLAYER_AP_TUNIC_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_SHIELD_DEKU) {
+                // Changing shields through action commands is unimplemented
                 return;
             }
 
@@ -6981,7 +7020,7 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                         ((sp34 == 3) || Player_GetSwordHeld(this)))) {
-                        if ((sp34 == 0) && Player_HoldsTwoHandedWeapon(this)) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 1) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;

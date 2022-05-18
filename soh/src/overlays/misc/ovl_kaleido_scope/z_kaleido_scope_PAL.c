@@ -14,6 +14,8 @@
 #include "vt.h"
 #include "SohHooks.h"
 
+#include "soh/frame_interpolation.h"
+
 static void* sEquipmentFRATexs[] = {
     gPauseEquipment00FRATex, gPauseEquipment01Tex, gPauseEquipment02Tex, gPauseEquipment03Tex, gPauseEquipment04Tex,
     gPauseEquipment10FRATex, gPauseEquipment11Tex, gPauseEquipment12Tex, gPauseEquipment13Tex, gPauseEquipment14Tex,
@@ -914,6 +916,13 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex + pt][3];
     gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex + pt][4];
 
+    if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (D_8082ABEC[pauseCtx->mode] == PAUSE_EQUIP)) {
+        gSaveContext.buttonStatus[1] = BTN_ENABLED;
+        gSaveContext.buttonStatus[2] = BTN_ENABLED;
+        gSaveContext.buttonStatus[3] = BTN_ENABLED;
+        gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    }
+
     osSyncPrintf("kscope->kscp_pos+pt = %d\n", pauseCtx->pageIndex + pt);
 
     gSaveContext.unk_13EA = 0;
@@ -1047,6 +1056,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     s16 stepG;
     s16 stepB;
 
+    FrameInterpolation_RecordOpenChild(NULL, pauseCtx->state + pauseCtx->pageIndex * 100);
     OPEN_DISPS(gfxCtx, "../z_kaleido_scope_PAL.c", 1100);
 
     if ((pauseCtx->state < 8) || (pauseCtx->state > 0x11)) {
@@ -1418,6 +1428,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     }
 
     CLOSE_DISPS(gfxCtx, "../z_kaleido_scope_PAL.c", 1577);
+    FrameInterpolation_RecordCloseChild();
 }
 
 void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
@@ -2898,7 +2909,16 @@ void func_808265BC(GlobalContext* globalCtx) {
         gSaveContext.buttonStatus[2] = D_8082AB6C[pauseCtx->pageIndex][2];
         gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex][3];
         gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex][4];
+
         pauseCtx->pageIndex = D_8082ABEC[pauseCtx->mode];
+
+        if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->pageIndex == PAUSE_EQUIP)) {
+            gSaveContext.buttonStatus[1] = BTN_ENABLED;
+            gSaveContext.buttonStatus[2] = BTN_ENABLED;
+            gSaveContext.buttonStatus[3] = BTN_ENABLED;
+            gSaveContext.buttonStatus[4] = BTN_ENABLED;
+        }
+
         pauseCtx->unk_1E4 = 0;
         pauseCtx->state++;
         pauseCtx->alpha = 255;

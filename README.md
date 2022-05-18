@@ -6,7 +6,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 
 ## Quick Start
 
-1) Download The Ship of Harkinian from Discord.
+1) Download The Ship of Harkinian from [Discord](https://discord.com/invite/BtBmd55HVH).
 2) Requires a supported copy of the game (See supported games below).
 3) Use the OTRGui to generate an `oot.otr` archive file.
 4) Launch `soh.exe`
@@ -18,9 +18,9 @@ Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-Ocarina of Time Pal Gamecube
+Ocarina of Time PAL GameCube
 ```
-sha1: d0c95b2cb3c6682a171db267932af7af8cf5fa82
+sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
 
 Congratulations, you are now sailing with the Ship of Harkinian! Have fun!
@@ -64,42 +64,51 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
 - Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
 - Affirm that `zapd.exe` exists in the `/assets/extractor` folder
 
+## Nightly Builds
+Nightly builds of Ship of Harkinian are available at [https://builds.shipofharkinian.com/job/SoH_Multibranch/job/develop]
+
 
 ## The Harbour Masters Are...
 
-    Kenix 			| Lead Developer/Public Relations - Resource Management Programmer, Audio System Programmer, and General Programmer
-    Jack Walker 		| Lead Developer - OTR Format Programmer, Resource Load Programmer, and General Programmer
-    Louist103 		| Developer - Save System Programmer and General Programmer
-    Emil 			| Developer - Fast3D Programmer
-    m4xw 			| Developer - Shipwright, Throwing Baguettes, and General Programmer
-    MelonSpeedruns 		| Developer - General Programmer
-    Rozlette 		| Developer - General Programmer
-    JoshDuMan 		| Developer - General Programmer
-    KiritoDev/Lywx 		| Developer - General Programmer
-    Theo3 			| Developer - General Programmer
-	Random06457  		| Developer - Linux Build
+    Kenix | Lead Developer/Public Relations - Resource Management Programmer, Audio System Programmer, and General Programmer
+    Jack Walker | Lead Developer - OTR Format Programmer, Resource Load Programmer, and General Programmer
+    Louist103 | Developer - Save System Programmer and General Programmer
+    Emil | Developer - Fast3D Programmer
+    m4xw | Developer - Shipwright, Throwing Baguettes, and General Programmer
+    MelonSpeedruns | Developer - General Programmer
+    Rozlette | Developer - General Programmer
+    JoshDuMan | Developer - General Programmer
+    KiritoDev/Lywx | Developer - General Programmer
+    Theo3 | Developer - General Programmer
+	Random06457 | Developer - Linux Build
 
 ## Special Thanks
 
-    Decomp & ZAPD 		| Made this project even possible in the first place!
-    MNGoldenEagle 		| Patiently explained audio data formats, encouragement, and founding ZSO which was the first source of the game's code and resource format documentation.
-    Rrrrry123 		| Speedbunner, encouragement, and community moderation
-    Fierce deity 		| Encouragement and community moderation
-    mzxrules		| For his contributions to decomp
-    zel.		        | For his contributions to decomp
-    Aloxado 		| Developer - General Programmer
-    MegaMech 		| Developer - General Programmer
-	Revo 			| Tester - GCC support and General Testing
-	zfg 			| Tester - General Testing
-	Horseless Headman 	| Tester - General Testing
-    Steven Pritchett        | Tester - General Testing
-	Trenton May 		| Tester - General Testing
-	Zeldaboy14 		| Tester - General Testing, encouragement, and community moderation
-	Koby Howell 		| Tester - General Testing
-	Logg 			| Tester - General Testing
-	Taylor Daley		| Graphic Design
-	Can't Sleep 		| Graphic Design
-    MicTheMicrophone 	| Voice actor for the King
-    Amphibibro		| Voice actor for Link
-
-Lemons
+    Decomp & ZAPD | Made this project even possible in the first place!
+    MNGoldenEagle | Patiently explained audio data formats, encouragement, and founding ZSO which was the first source of the game's code and resource format documentation.
+    Rrrrry123 | Speedbunner, encouragement, and community moderation
+    Fierce deity | Encouragement and community moderation
+    mzxrules | For his contributions to decomp
+    zel. | For his contributions to decomp
+    Aloxado | Developer - General Programmer
+    MegaMech | Developer - General Programmer
+	Revo | Tester - GCC support and General Testing
+	zfg | Tester - General Testing
+	Horseless Headman | Tester - General Testing
+    Steven Pritchett | Tester - General Testing
+	Trenton May | Tester - General Testing
+	Zeldaboy14 | Tester - General Testing, encouragement, and community moderation
+	Koby Howell | Tester - General Testing
+	Logg | Tester - General Testing
+	Taylor Daley | Graphic Design
+	Can't Sleep | Graphic Design
+	
+## Video Credits
+    Kenix | Producer / Writer
+	rainbow_fash | Executive Producer
+    TheLegendOfXela | Editor
+    MicTheMicrophone | Gwonam / The King
+    Amphibibro | Link
+    AceHeart | Zelda
+    
+###### Lemons

@@ -363,7 +363,7 @@ namespace SohImGui {
 
         ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
             pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
-        }});
+        } });
         Game::InitSettings();
     }
 
@@ -402,7 +402,7 @@ namespace SohImGui {
             EnhancementRadioButton("French", "gLanguages", 2);
         */
         int val = CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::RadioButton(text.c_str(), id==val)) {
+        if (ImGui::RadioButton(text.c_str(), id == val)) {
             CVar_SetS32(cvarName.c_str(), (int)id);
             needs_save = true;
         }
@@ -505,7 +505,12 @@ namespace SohImGui {
         }
     }
 
-   void DrawMainMenuAndCalculateGameSize() {
+    void Tooltip(std::string text) {
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("%s", text.c_str());
+    }
+
+    void DrawMainMenuAndCalculateGameSize() {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -603,15 +608,17 @@ namespace SohImGui {
                 }
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");
 
                 ImGui::Separator();
 
-                EnhancementCheckbox("Dpad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("DPad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("DPad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
 
                 ImGui::EndMenu();
             }
@@ -619,8 +626,10 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Graphics"))
             {
                 EnhancementSliderInt("Internal Resolution: %dx", "##IMul", "gInternalResolution", 1, 8, "");
+                Tooltip("Increases the render resolution of the game, up to 8x your output resolution,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetS32("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
+                Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
                 EXPERIMENTAL();
@@ -632,7 +641,7 @@ namespace SohImGui {
                             INFO("New Filter: %s", filters[fId]);
                             gapi->set_texture_filter((FilteringMode)fId);
 
-                            CVar_SetS32("gTextureFilter", (int) fId);
+                            CVar_SetS32("gTextureFilter", (int)fId);
                             needs_save = true;
                         }
 
@@ -652,36 +661,59 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Enhancements"))
             {
-                ImGui::Text("Gameplay");
-                ImGui::Separator();
+                if (ImGui::BeginMenu("Gameplay"))
+                {
+                    EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                    EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
-                EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
-                EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementCheckbox("Skip Text", "gSkipText");
+                    Tooltip("Holding down B skips text");
+                    EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
+                    Tooltip("Disable the low HP beeping sound");
+                    EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                    Tooltip("Hides most of the UI when not needed");
+                    EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
+                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                    EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
+                    Tooltip("Allows equiping the tunic and boots to c-buttons");
+                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
 
-                EnhancementCheckbox("Skip Text", "gSkipText");
-                EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
+                    ImGui::EndMenu();
+                }
 
-                ImGui::Text("Graphics");
-                ImGui::Separator();
+                if (ImGui::BeginMenu("Graphics"))
+                {
+                    EnhancementCheckbox("N64 Mode", "gN64Mode");
+                    Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
+                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
+                    EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
+                    Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
+                    EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                    Tooltip("Always shows dungeon entrance icons on the minimap");
 
-                EnhancementCheckbox("N64 Mode", "gN64Mode");
+                    ImGui::EndMenu();
+                }
 
-                EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
-                EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
-                EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
-                EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
-                EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
+                if (ImGui::BeginMenu("Fixes"))
+                {
+                    EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
+                    Tooltip("Makes the L and R buttons in the pause menu the same color");
+                    EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    Tooltip("Show dungeon entrances icon only when it should be");
+                    EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
+                    Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
 
-                ImGui::Text("Fixes");
-                ImGui::Separator();
-                EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
-                EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
+                    ImGui::EndMenu();
+                }
 
                 EXPERIMENTAL();
 
+                EnhancementCheckbox("60FPS Interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
+                Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
 
                 ImGui::EndMenu();
             }
@@ -723,12 +755,19 @@ namespace SohImGui {
                 }
 
                 EnhancementCheckbox("No Clip", "gNoClip");
+                Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
+                Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
+                Tooltip("Holding L makes you float into the air");
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
+                Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
+                Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
+                Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
+                Tooltip("Freezes the time of day");
 
                 ImGui::EndMenu();
             }
@@ -736,9 +775,12 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
+                Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
+                Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
+                Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
@@ -748,7 +790,7 @@ namespace SohImGui {
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
                         std::string varName(name);
-                    	varName.erase(std::ranges::remove_if(varName, isspace).begin(), varName.end());
+                        varName.erase(std::ranges::remove_if(varName, isspace).begin(), varName.end());
                         std::string toggleName = "g" + varName + "Enabled";
 
                         EnhancementCheckbox(name, toggleName);

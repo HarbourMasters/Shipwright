@@ -72,7 +72,7 @@ namespace Ship {
 		(*this)["WINDOW"]["FULLSCREEN WIDTH"] = std::to_string(1920);
 		(*this)["WINDOW"]["FULLSCREEN HEIGHT"] = std::to_string(1080);
 		(*this)["WINDOW"]["FULLSCREEN"] = std::to_string(false);
-		(*this)["WINDOW"]["GFX BACKEND"] = "sdl";
+		(*this)["WINDOW"]["GFX BACKEND"] = "";
 
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_CRIGHT)] = std::to_string(0x14D);
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_CLEFT)] = std::to_string(0x14B);
