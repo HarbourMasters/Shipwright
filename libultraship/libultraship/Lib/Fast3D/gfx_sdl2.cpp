@@ -150,8 +150,10 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
 
     std::cout << "\nwe hit gfx_sdl_init in gfx_sdl2.cpp\n";
 
+    window_width = width;
+    window_height = height;
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
