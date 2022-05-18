@@ -311,15 +311,14 @@ namespace Ship {
 	bool Archive::LoadMainMPQ(bool enableWriting, bool genCRCMap) {
 		HANDLE mpqHandle = NULL;
 #ifdef _WIN32
-		std::wstring wfullPath = std::filesystem::absolute(MainPath).wstring();
-#endif
-		std::string fullPath = std::filesystem::absolute(MainPath).string();
-
-#ifdef _WIN32
-		if (!SFileOpenArchive(wfullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+		std::wstring fullPath = std::filesystem::absolute(MainPath).wstring();
+#elif defined(__SWITCH__)
+		std::string fullPath =  MainPath;
 #else
-		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
+		std::string fullPath = std::filesystem::absolute(MainPath).string();
 #endif
+
+		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
 			return false;
 		}
@@ -346,18 +345,20 @@ namespace Ship {
 
 	bool Archive::LoadPatchMPQ(const std::string& path) {
 		HANDLE patchHandle = NULL;
+
+#ifdef _WIN32
+		std::wstring fullPath = std::filesystem::absolute(path).wstring();
+#elif defined(__SWITCH__)
+		std::string fullPath = path;
+#else
 		std::string fullPath = std::filesystem::absolute(path).string();
+#endif
+
 		if (mpqHandles.contains(fullPath)) {
 			return true;
 		}
 
-		std::wstring wPath = std::filesystem::absolute(path).wstring();
-
-#ifdef _WIN32
-		if (!SFileOpenArchive(wPath.c_str(), 0, MPQ_OPEN_READ_ONLY, &patchHandle)) {
-#else
 		if (!SFileOpenArchive(fullPath.c_str(), 0, MPQ_OPEN_READ_ONLY, &patchHandle)) {
-#endif
 			SPDLOG_ERROR("({}) Failed to open patch mpq file {} while applying to {}.", GetLastError(), path.c_str(), MainPath.c_str());
 			return false;
 		}

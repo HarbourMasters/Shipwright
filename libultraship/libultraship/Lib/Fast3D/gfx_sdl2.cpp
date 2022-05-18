@@ -13,14 +13,18 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
-#else
+#elif !defined(__SWITCH__)
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
 #include <SDL2/SDL_opengles2.h>
+#else
+#include <SDL2/SDL.h>
+#include <switch.h>
+#include "glad/glad.h"
 #endif
 
 #include "../../SohImGuiImpl.h"
-
+#include "../../SwitchImpl.h"
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
 #ifdef _WIN32
@@ -37,6 +41,7 @@ static int vsync_enabled = 0;
 static unsigned int window_width = DESIRED_SCREEN_WIDTH;
 static unsigned int window_height = DESIRED_SCREEN_HEIGHT;
 static bool fullscreen_state;
+static bool is_running = true;
 static void (*on_fullscreen_changed_callback)(bool is_now_fullscreen);
 static bool (*on_key_down_callback)(int scancode);
 static bool (*on_key_up_callback)(int scancode);
@@ -119,7 +124,7 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
-#ifndef __linux__
+#if !defined(__linux__) && !defined(__SWITCH__)
 static HANDLE timer;
 #endif
 
@@ -135,12 +140,16 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#ifndef __linux
+#if !defined(__linux__) && !defined(__SWITCH__)
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
-    //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
+#ifdef __SWITCH__
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    Ship::Switch::GetDisplaySize(&window_width, &window_height);
+#endif
 
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
@@ -148,11 +157,19 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
+#ifndef __SWITCH__
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
     }
+#endif
 
     ctx = SDL_GL_CreateContext(wnd);
+
+#ifdef __SWITCH__
+    if(!gladLoadGLLoader(SDL_GL_GetProcAddress)){
+        printf("Failed to initialize glad\n");
+    }
+#endif
 
     SDL_GL_SetSwapInterval(1);
 
@@ -194,15 +211,25 @@ static void gfx_sdl_set_keyboard_callbacks(bool (*on_key_down)(int scancode), bo
 }
 
 static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
-    while (1)
-    {
+#ifdef __SWITCH__
+    while(Ship::Switch::IsRunning()) {
+#else
+    while(is_running) {
+#endif
         run_one_game_iter();
     }
+#ifdef __SWITCH__
+    Ship::Switch::Exit();
+#endif
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
-    *width = window_width;
+#ifdef __SWITCH__
+    Ship::Switch::GetDisplaySize(width, height);
+#else
+    *width  = window_width;
     *height = window_height;
+#endif
 }
 
 static int translate_scancode(int scancode) {
@@ -228,6 +255,8 @@ static void gfx_sdl_onkeyup(int scancode) {
 }
 
 static void gfx_sdl_handle_events(void) {
+
+    Ship::Switch::Update();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         SohImGui::EventImpl event_impl;
@@ -250,7 +279,7 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_QUIT:
-                exit(0);
+                is_running = false;
         }
     }
 }
@@ -271,7 +300,7 @@ static inline void sync_framerate_with_timer(void) {
     const int64_t next = qpc_to_100ns(previous_time) + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
     const int64_t left = next - qpc_to_100ns(t);
     if (left > 0) {
-#ifdef __linux__
+#if defined(__linux__) || defined(__SWITCH__)
         const timespec spec = { 0, left * 100 };
         nanosleep(&spec, nullptr);
 #else

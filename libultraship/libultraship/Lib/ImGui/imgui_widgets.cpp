@@ -4261,6 +4261,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         const bool is_paste = ((is_shortcut_key && IsKeyPressed(ImGuiKey_V)) || (is_shift_key_only && IsKeyPressed(ImGuiKey_Insert))) && !is_readonly;
         const bool is_undo  = ((is_shortcut_key && IsKeyPressed(ImGuiKey_Z)) && !is_readonly && is_undoable);
         const bool is_redo  = ((is_shortcut_key && IsKeyPressed(ImGuiKey_Y)) || (is_osx_shift_shortcut && IsKeyPressed(ImGuiKey_Z))) && !is_readonly && is_undoable;
+        const bool is_overwrite = state->OverwriteData != NULL;
 
         // We allow validate/cancel with Nav source (gamepad) to makes it easier to undo an accidental NavInput press with no keyboard wired, but otherwise it isn't very useful.
         const bool is_validate_enter = IsKeyPressed(ImGuiKey_Enter) || IsKeyPressed(ImGuiKey_KeypadEnter);
@@ -4341,9 +4342,9 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                 stb_textedit_cut(state, &state->Stb);
             }
         }
-        else if (is_paste)
+        else if (is_paste || is_overwrite)
         {
-            if (const char* clipboard = GetClipboardText())
+            if (const char* clipboard = is_overwrite ? state->OverwriteData : GetClipboardText())
             {
                 // Filter pasted buffer
                 const int clipboard_len = (int)strlen(clipboard);
@@ -4365,6 +4366,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
                     stb_textedit_paste(state, &state->Stb, clipboard_filtered, clipboard_filtered_len);
                     state->CursorFollow = true;
                 }
+                if(is_overwrite) state->OverwriteData = NULL;
                 MemFree(clipboard_filtered);
             }
         }

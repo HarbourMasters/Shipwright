@@ -42,6 +42,7 @@ extern "C" {
             exit(EXIT_FAILURE);
         }
 
+    #ifndef __SWITCH__
         const char* controllerDb = "gamecontrollerdb.txt";
         int mappingsAdded = SDL_GameControllerAddMappingsFromFile(controllerDb);
         if (mappingsAdded >= 0) {
@@ -49,7 +50,7 @@ extern "C" {
         } else {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
         }
-
+    #endif
         // TODO: This for loop is debug. Burn it with fire.
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
@@ -332,8 +333,6 @@ namespace Ship {
         if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_FULLSCREEN"])) {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
-
-        
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {

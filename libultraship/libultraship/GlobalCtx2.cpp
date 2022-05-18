@@ -47,7 +47,7 @@ namespace Ship {
         }
         PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
         if (PatchesPath.empty()) {
-            PatchesPath = "./";
+            PatchesPath = "./mods";
         }
         ResMan = std::make_shared<ResourceMgr>(GlobalCtx2::GetInstance(), MainPath, PatchesPath);
         Win = std::make_shared<Window>(GlobalCtx2::GetInstance());
@@ -56,6 +56,8 @@ namespace Ship {
         {
 #ifdef _WIN32
             MessageBox(NULL, L"Main OTR file not found!", L"Uh oh", MB_OK);
+#elif defined(__SWITCH__)
+            printf("Main OTR file not found!\n");
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif

@@ -27,11 +27,14 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
+#elif __SWITCH__
+#include <SDL2/SDL.h>
+#include "glad/glad.h"
 #else
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
 #define GL_GLEXT_PROTOTYPES 1
-// #include <SDL2/SDL_opengles2.h>
+#include <SDL2/SDL_opengles2.h>
 #endif
 
 #include "gfx_cc.h"
@@ -562,6 +565,10 @@ static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width,
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
 }
 
+#ifdef __SWITCH__
+#define GL_MIRROR_CLAMP_TO_EDGE 0x8743
+#endif
+
 static uint32_t gfx_cm_to_opengl(uint32_t val) {
     switch (val) {
         case G_TX_NOMIRROR | G_TX_CLAMP:
@@ -629,9 +636,9 @@ static void gfx_opengl_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_
 }
 
 static void gfx_opengl_init(void) {
-//#if FOR_WINDOWS
+#ifndef __SWITCH__
     glewInit();
-//#endif
+#endif
 
     glGenBuffers(1, &opengl_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, opengl_vbo);

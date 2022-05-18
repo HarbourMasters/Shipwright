@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+#ifdef __SWITCH__
+long int pathconf (const char *__path, int __name){}
+#endif
+
 #if __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;

@@ -25,6 +25,7 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
+#include "SwitchImpl.h"
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -335,6 +336,9 @@ namespace SohImGui {
         overlay->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
+    #ifdef __SWITCH__
+        ImGui::GetStyle().ScaleAllSizes(Ship::Switch::GetDPI() / 96.0f);
+    #endif
 
         ModInternal::registerHookListener({ GFX_INIT, [](const HookEvent ev) {
 
@@ -368,6 +372,11 @@ namespace SohImGui {
     }
 
     void Update(EventImpl event) {
+    #ifdef __SWITCH__
+        int xPos, yPos;
+        Switch::GetTouchPosition(&xPos, &yPos);
+        io->MousePos = ImVec2(xPos, yPos);
+    #endif
         if (needs_save) {
             Game::SaveSettings();
             needs_save = false;
@@ -524,7 +533,7 @@ namespace SohImGui {
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(ImVec2(wnd->GetCurrentWidth(), wnd->GetCurrentHeight()));
+        ImGui::SetNextWindowSize(ImVec2((int) wnd->GetCurrentWidth(), (int) wnd->GetCurrentHeight()));
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);

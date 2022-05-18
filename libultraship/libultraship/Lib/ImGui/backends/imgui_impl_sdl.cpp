@@ -63,11 +63,13 @@
 
 #include "../imgui.h"
 #include "imgui_impl_sdl.h"
-
+#include "../../../SwitchImpl.h"
 // SDL
 // (the multi-viewports feature requires SDL features supported from SDL 2.0.4+. SDL 2.0.5+ is highly recommended)
 #include <SDL2/SDL.h>
+#ifndef __SWITCH__
 #include <SDL2/SDL_syswm.h>
+#endif
 #include <SDL2/SDL_stdinc.h>
 #if defined(__APPLE__)
 #include <TargetConditionals.h>
@@ -618,6 +620,7 @@ static void ImGui_ImplSDL2_UpdateMonitors()
 {
     ImGuiPlatformIO& platform_io = ImGui::GetPlatformIO();
     platform_io.Monitors.resize(0);
+#ifndef __SWITCH__
     int display_count = SDL_GetNumVideoDisplays();
     for (int n = 0; n < display_count; n++)
     {
@@ -639,6 +642,15 @@ static void ImGui_ImplSDL2_UpdateMonitors()
 #endif
         platform_io.Monitors.push_back(monitor);
     }
+#else
+        uint32_t width, height;
+        Ship::Switch::GetDisplaySize(&width, &height);
+        ImGuiPlatformMonitor monitor;
+        monitor.MainPos = monitor.WorkPos = ImVec2(.0f, .0f);
+        monitor.MainSize = monitor.WorkSize = ImVec2((float) width, (float) height);
+        monitor.DpiScale = Ship::Switch::GetDPI() / 96.0f;
+        platform_io.Monitors.push_back(monitor);
+#endif
 }
 
 void ImGui_ImplSDL2_NewFrame()

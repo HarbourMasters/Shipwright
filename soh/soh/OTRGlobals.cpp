@@ -34,6 +34,7 @@
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include "SwitchImpl.h"
 
 #include <SDL2/SDL_scancode.h>
 
@@ -60,6 +61,7 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 
 // C->C++ Bridge
 extern "C" void InitOTR() {
+    Ship::Switch::Init();
     OTRGlobals::Instance = new OTRGlobals();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 

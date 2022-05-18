@@ -401,3 +401,10 @@ ZAPD/BuildInfo.h
 
 DebugObj/*
 ReleaseObj/*
+
+// Switch Stuff
+
+*.nro
+*.nacp
+ZAPDTR/ZAPDUtils/lib/*
+!/soh/icon.jpg
