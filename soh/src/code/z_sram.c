@@ -362,13 +362,21 @@ void Sram_OpenSave(SramContext* sramCtx) {
         case SCENE_GANON_DEMO:
             gSaveContext.entranceIndex = 0x41B;
             break;
-
-        default:
+        case SCENE_KAKUSIANA:
             if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
                 gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
             } else {
                 gSaveContext.entranceIndex = 0xBB;
             }
+            break;
+
+        default:
+            if (!CVar_GetS32("gSaveEntrance", true))
+                if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
+                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
+                } else {
+                    gSaveContext.entranceIndex = 0xBB;
+                }
             break;
     }
 

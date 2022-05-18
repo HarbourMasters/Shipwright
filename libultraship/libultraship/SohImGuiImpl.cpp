@@ -679,6 +679,8 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("Load Save Entrance", "gSaveEntrance");
+                    Tooltip("Instead of going to Link's House or the Temple of Time when you load your save, go to where you saved your game.");
 
                     ImGui::EndMenu();
                 }
