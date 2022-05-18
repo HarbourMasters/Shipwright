@@ -687,6 +687,8 @@ namespace SohImGui {
                 {
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting");
                     EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
