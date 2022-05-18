@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <iostream>
-
 
 #if defined(ENABLE_OPENGL)
 
@@ -96,7 +94,6 @@ const SDL_Scancode scancode_rmapping_nonextended[][2] = {
 };
 
 static void set_fullscreen(bool on, bool call_callback) {
-    std::cout << "\nwe hit set_fullscreen\n";
     if (fullscreen_state == on) {
         return;
     }
@@ -147,8 +144,6 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
 
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
-
-    std::cout << "\nwe hit gfx_sdl_init in gfx_sdl2.cpp\n";
 
     window_width = width;
     window_height = height;

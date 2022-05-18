@@ -268,19 +268,14 @@ namespace Ship {
             dwWidth = Ship::stoi(Conf["WINDOW"]["FULLSCREEN WIDTH"], 1920);
             dwHeight = Ship::stoi(Conf["WINDOW"]["FULLSCREEN HEIGHT"], 1080);
         } else {
-            dwWidth = Ship::stoi(Conf["WINDOW"]["WINDOW WIDTH"], 320);
-            dwHeight = Ship::stoi(Conf["WINDOW"]["WINDOW HEIGHT"], 240);
+            dwWidth = Ship::stoi(Conf["WINDOW"]["WINDOW WIDTH"], 640);
+            dwHeight = Ship::stoi(Conf["WINDOW"]["WINDOW HEIGHT"], 480);
         }
         dwMenubar = Ship::stoi(Conf["WINDOW"]["menubar"], 0);
         const std::string& gfx_backend = Conf["WINDOW"]["GFX BACKEND"];
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
 
-        std::cout << "\nwe're about to call gfx_init from Window.cpp Init\n";
-
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
-
-        std::cout << "\nwe're back after calling gfx_init from Window.cpp Init\n";
-
         WmApi->set_fullscreen_changed_callback(Window::OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }
