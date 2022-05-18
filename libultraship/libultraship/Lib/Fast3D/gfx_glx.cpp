@@ -322,10 +322,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen, u_int3
     XSetWindowAttributes swa;
     swa.colormap = cmap;
     swa.event_mask = ExposureMask | KeyPressMask | KeyReleaseMask | FocusChangeMask;
-    // glx.win = XCreateWindow(glx.dpy, glx.root, 0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-    glx.win = XCreateWindow(glx.dpy, glx.root, 0, 0, width, height, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
-
-
+    glx.win = XCreateWindow(glx.dpy, glx.root, 0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
 
     glx.atom_wm_state = XInternAtom(glx.dpy, "_NET_WM_STATE", False);
     glx.atom_wm_state_fullscreen = XInternAtom(glx.dpy, "_NET_WM_STATE_FULLSCREEN", False);
