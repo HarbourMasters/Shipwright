@@ -18,6 +18,7 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx);
 void KaleidoScope_DrawEquipment(GlobalContext* globalCtx);
 void KaleidoScope_SetCursorVtx(PauseContext* pauseCtx, u16 index, Vtx* vtx);
 void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx);
+void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s16 animX, s16 animY);
 void KaleidoScope_UpdateItemEquip(GlobalContext* globalCtx);
 void KaleidoScope_DrawDungeonMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx);
 void KaleidoScope_DrawWorldMap(GlobalContext* globalCtx, GraphicsContext* gfxCtx);

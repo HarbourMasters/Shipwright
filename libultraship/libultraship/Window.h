@@ -18,8 +18,10 @@ namespace Ship {
 			~Window();
 			void MainLoop(void (*MainFunction)(void));
 			void Init();
-			void RunCommands(Gfx* Commands);
+			void StartFrame();
+			void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements);
 			void SetFrameDivisor(int divisor);
+			void GetPixelDepthPrepare(float x, float y);
 			uint16_t GetPixelDepth(float x, float y);
 			void ToggleFullscreen();
 			void SetFullscreen(bool bIsFullscreen);

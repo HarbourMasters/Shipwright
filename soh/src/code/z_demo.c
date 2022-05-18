@@ -2105,7 +2105,7 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
 }
 
 void Cutscene_SetSegment(GlobalContext* globalCtx, void* segment) {
-    if (SEGMENT_NUMBER(segment) != 0) 
+    if (SEGMENT_NUMBER(segment) != 0)
     {
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(segment);
     } else {

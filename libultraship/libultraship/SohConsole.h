@@ -7,10 +7,10 @@
 
 #include "Lib/ImGui/imgui.h"
 
-#define LOG(msg, ...) SohImGui::console->Append("Main", Priority::LOG_LVL, msg, __VA_ARGS__)
-#define INFO(msg, ...) SohImGui::console->Append("Main", Priority::INFO_LVL, msg, __VA_ARGS__)
-#define WARNING(msg, ...) SohImGui::console->Append("Main", Priority::WARNING_LVL, msg, __VA_ARGS__)
-#define ERROR(msg, ...) SohImGui::console->Append("Main", Priority::ERROR_LVL, msg, __VA_ARGS__)
+#define LOG(msg, ...) SohImGui::console->Append("Main", Priority::LOG_LVL, msg, ##__VA_ARGS__)
+#define INFO(msg, ...) SohImGui::console->Append("Main", Priority::INFO_LVL, msg, ##__VA_ARGS__)
+#define WARNING(msg, ...) SohImGui::console->Append("Main", Priority::WARNING_LVL, msg, ##__VA_ARGS__)
+#define ERROR(msg, ...) SohImGui::console->Append("Main", Priority::ERROR_LVL, msg, ##__VA_ARGS__)
 #define CMD_SUCCESS true
 #define CMD_FAILED false
 #define MAX_BUFFER_SIZE 255
@@ -75,7 +75,7 @@ public:
 	void Init();
 	void Update();
 	void Draw();
-	void Append(const std::string& channel, Priority priority, const char* fmt, ...);
+	void Append(const std::string& channel, Priority priority, const char* fmt, ...) IM_FMTARGS(4);
 	void Dispatch(const std::string& line);
 	static int CallbackStub(ImGuiInputTextCallbackData* data);
 };

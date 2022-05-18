@@ -29,8 +29,8 @@ void EnIshi_SpawnFragmentsLarge(EnIshi* this, GlobalContext* globalCtx);
 void EnIshi_SpawnDustSmall(EnIshi* this, GlobalContext* globalCtx);
 void EnIshi_SpawnDustLarge(EnIshi* this, GlobalContext* globalCtx);
 
-static s16 sRotSpeedX = 0;
-static s16 sRotSpeedY = 0;
+s16 sRockRotSpeedX = 0;
+s16 sRockRotSpeedY = 0;
 
 const ActorInit En_Ishi_InitVars = {
     ACTOR_EN_ISHI,
@@ -405,11 +405,11 @@ void EnIshi_SetupFly(EnIshi* this) {
     this->actor.velocity.x = Math_SinS(this->actor.world.rot.y) * this->actor.speedXZ;
     this->actor.velocity.z = Math_CosS(this->actor.world.rot.y) * this->actor.speedXZ;
     if ((this->actor.params & 1) == ROCK_SMALL) {
-        sRotSpeedX = (Rand_ZeroOne() - 0.5f) * 16000.0f;
-        sRotSpeedY = (Rand_ZeroOne() - 0.5f) * 2400.0f;
+        sRockRotSpeedX = (Rand_ZeroOne() - 0.5f) * 16000.0f;
+        sRockRotSpeedY = (Rand_ZeroOne() - 0.5f) * 2400.0f;
     } else {
-        sRotSpeedX = (Rand_ZeroOne() - 0.5f) * 8000.0f;
-        sRotSpeedY = (Rand_ZeroOne() - 0.5f) * 1600.0f;
+        sRockRotSpeedX = (Rand_ZeroOne() - 0.5f) * 8000.0f;
+        sRockRotSpeedY = (Rand_ZeroOne() - 0.5f) * 1600.0f;
     }
     this->actor.colChkInfo.mass = 240;
     this->actionFunc = EnIshi_Fly;
@@ -455,8 +455,8 @@ void EnIshi_Fly(EnIshi* this, GlobalContext* globalCtx) {
             EffectSsGRipple_Spawn(globalCtx, &contactPos, 500, 1300, 8);
         }
         this->actor.minVelocityY = -6.0f;
-        sRotSpeedX >>= 2;
-        sRotSpeedY >>= 2;
+        sRockRotSpeedX >>= 2;
+        sRockRotSpeedY >>= 2;
         SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 40, NA_SE_EV_DIVE_INTO_WATER_L);
         this->actor.bgCheckFlags &= ~0x40;
     }
@@ -464,8 +464,8 @@ void EnIshi_Fly(EnIshi* this, GlobalContext* globalCtx) {
     EnIshi_Fall(this);
     func_80A7ED94(&this->actor.velocity, D_80A7FA28[type]);
     func_8002D7EC(&this->actor);
-    this->actor.shape.rot.x += sRotSpeedX;
-    this->actor.shape.rot.y += sRotSpeedY;
+    this->actor.shape.rot.x += sRockRotSpeedX;
+    this->actor.shape.rot.y += sRockRotSpeedY;
     Actor_UpdateBgCheckInfo(globalCtx, &this->actor, 7.5f, 35.0f, 0.0f, 0xC5);
     Collider_UpdateCylinder(&this->actor, &this->collider);
     CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
@@ -502,6 +502,6 @@ void EnIshi_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnIshi_Reset(void) {
-    sRotSpeedX = 0;
-    sRotSpeedY = 0;
+    sRockRotSpeedX = 0;
+    sRockRotSpeedY = 0;
 }

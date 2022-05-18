@@ -2,6 +2,8 @@
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 
+#include "soh/frame_interpolation.h"
+
 static Vtx sVertices[5] = {
     VTX(-32, -32, 0, 0, 1024, 0xFF, 0xFF, 0xFF, 0xFF),
     VTX(32, 32, 0, 1024, 0, 0xFF, 0xFF, 0xFF, 0xFF),
@@ -154,6 +156,7 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
 
+    FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx, "../z_eff_shield_particle.c", 272);
 
     if (this != NULL) {
@@ -213,4 +216,5 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     }
 
     CLOSE_DISPS(gfxCtx, "../z_eff_shield_particle.c", 359);
+    FrameInterpolation_RecordCloseChild();
 }

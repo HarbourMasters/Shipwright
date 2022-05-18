@@ -33,6 +33,7 @@
 #define G_OFF   (0)
 
 #include <stdint.h>
+#include "types.h"
 #include "gbi.h"
 #include "abi.h"
 

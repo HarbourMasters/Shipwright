@@ -1,3 +1,4 @@
+#ifdef _WIN32
 #include "WasapiAudioPlayer.h"
 #include "spdlog/spdlog.h"
 
@@ -170,3 +171,4 @@ namespace Ship {
 		return S_OK;
 	}
 }
+#endif

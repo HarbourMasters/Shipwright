@@ -19,6 +19,7 @@
 #include "overlays/effects/ovl_Effect_Ss_Fhg_Flash/z_eff_ss_fhg_flash.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_link_child/object_link_child.h"
+#include "textures/icon_item_24_static/icon_item_24_static.h"
 
 typedef struct {
     /* 0x00 */ u8 itemId;
@@ -897,6 +898,15 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_SWORD_KOKIRI,
     PLAYER_AP_SWORD_MASTER,
     PLAYER_AP_SWORD_BGS,
+    PLAYER_AP_SHIELD_DEKU,
+    PLAYER_AP_SHIELD_HYLIAN,
+    PLAYER_AP_SHIELD_MIRROR,
+    PLAYER_AP_TUNIC_KOKIRI,
+    PLAYER_AP_TUNIC_GORON,
+    PLAYER_AP_TUNIC_ZORA,
+    PLAYER_AP_BOOTS_KOKIRI,
+    PLAYER_AP_BOOTS_IRON,
+    PLAYER_AP_BOOTS_HOVER,
 };
 
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
@@ -909,7 +919,8 @@ static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
-    func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
 };
 
 static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
@@ -922,7 +933,8 @@ static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
-    func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
 };
 
 typedef enum {
@@ -1875,10 +1887,20 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
     s32 i;
 
     if (this->currentMask != PLAYER_MASK_NONE) {
-        maskActionParam = this->currentMask - 1 + PLAYER_AP_MASK_KEATON;
-        if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-            !func_80833C98(C_BTN_ITEM(2), maskActionParam)) {
-            this->currentMask = PLAYER_MASK_NONE;
+        if (CVar_GetS32("gMMBunnyHood", 0) != 0) {
+            s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
+
+            if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
+                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem) {
+                this->currentMask = PLAYER_MASK_NONE;
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            }
+        } else {
+            maskActionParam = this->currentMask - 1 + PLAYER_AP_MASK_KEATON;
+            if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
+                !func_80833C98(C_BTN_ITEM(2), maskActionParam)) {
+                this->currentMask = PLAYER_MASK_NONE;
+            }
         }
     }
 
@@ -2741,7 +2763,8 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
 
         if ((actionParam == PLAYER_AP_NONE) || !(this->stateFlags1 & PLAYER_STATE1_27) ||
             ((this->actor.bgCheckFlags & 1) &&
-                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT)))) {
+                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT))) ||
+            ((actionParam >= PLAYER_AP_SHIELD_DEKU) && (actionParam <= PLAYER_AP_BOOTS_HOVER))) {
 
             if ((globalCtx->bombchuBowlingStatus == 0) &&
                 (((actionParam == PLAYER_AP_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -2750,6 +2773,33 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                         ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                             (globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3)))))) {
                 func_80078884(NA_SE_SY_ERROR);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_BOOTS_KOKIRI) {
+                u16 bootsValue = actionParam - PLAYER_AP_BOOTS_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_TUNIC_KOKIRI) {
+                u16 tunicValue = actionParam - PLAYER_AP_TUNIC_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_SHIELD_DEKU) {
+                // Changing shields through action commands is unimplemented
                 return;
             }
 
@@ -4793,7 +4843,7 @@ s32 func_8083ADD4(GlobalContext* globalCtx, Player* this) {
 
 void func_8083AE40(Player* this, s16 objectId) {
     s32 pad;
-    u32 size;
+    size_t size;
 
     if (objectId != OBJECT_INVALID) {
         this->giObjectLoading = true;
@@ -4804,7 +4854,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         LOG_HEX("size", size, "../z_player.c", 9090);
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
-        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (u32)this->giObjectSegment, gObjectTable[objectId].vromStart,
+        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
             size, 0, &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
     }
 }
@@ -5942,7 +5992,11 @@ void func_8083DFE0(Player* this, f32* arg1, s16* arg2) {
     s16 yawDiff = this->currentYaw - *arg2;
 
     if (this->swordState == 0) {
-        this->linearVelocity = CLAMP(this->linearVelocity, -(R_RUN_SPEED_LIMIT / 100.0f), (R_RUN_SPEED_LIMIT / 100.0f));
+        float maxSpeed = R_RUN_SPEED_LIMIT / 100.0f;
+        if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+            maxSpeed *= 1.5f;
+        }
+        this->linearVelocity = CLAMP(this->linearVelocity, -maxSpeed, maxSpeed);
     }
 
     if (ABS(yawDiff) > 0x6000) {
@@ -6966,7 +7020,7 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                         ((sp34 == 3) || Player_GetSwordHeld(this)))) {
-                        if ((sp34 == 0) && Player_HoldsTwoHandedWeapon(this)) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 1) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;
@@ -7523,6 +7577,9 @@ void func_80842180(Player* this, GlobalContext* globalCtx) {
         func_80837268(this, &sp2C, &sp2A, 0.018f, globalCtx);
 
         if (!func_8083C484(this, &sp2C, &sp2A)) {
+            if (CVar_GetS32("gMMBunnyHood", 0) != 0 && this->currentMask == PLAYER_MASK_BUNNY) {
+                sp2C *= 1.5f;
+            }
             func_8083DF68(this, sp2C, sp2A);
             func_8083DDC8(this, globalCtx);
 
@@ -10248,7 +10305,7 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     }
 }
 
-void func_80848EF8(Player* this) {
+void func_80848EF8(Player* this, GlobalContext* globalCtx) {
     if (CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)) {
         f32 temp = 200000.0f - (this->unk_6A4 * 5.0f);
 
@@ -10257,8 +10314,45 @@ void func_80848EF8(Player* this) {
         }
 
         this->unk_6A0 += temp;
+
+        /*Prevent it on horse, while jumping and on title screen.
+        If you fly around no stone of agony for you! */
+        if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
+            int rectLeft    = OTRGetRectDimensionFromLeftEdge(26); //Left X Pos
+            int rectTop     = 60; //Top Y Pos
+            int rectWidth   = 24; //Texture Width
+            int rectHeight  = 24; //Texture Heigh
+            int DefaultIconA= 50; //Default icon alphe (55 on 255)
+
+            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
+            gDPPipeSync(OVERLAY_DISP++);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            if (this->unk_6A0 > 4000000.0f) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+            }
+            if (temp == 0 || temp <= 0.1f) {
+               /*Fail check, it is used to draw off the icon when
+               link is standing out range but do not refresh unk_6A0.
+               Also used to make a default value in my case.*/
+               gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+            }
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+            gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_POINT | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
+            gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+            gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 3500);
+        }
+
         if (this->unk_6A0 > 4000000.0f) {
             this->unk_6A0 = 0.0f;
+            if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
+                //This audio is placed here and not in previous CVar check to prevent ears ra.. :)
+                Audio_PlaySoundGeneral(NA_SE_SY_MESSAGE_WOMAN, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E0);
+            }
             func_8083264C(this, 120, 20, 10, 0);
         }
     }
@@ -10530,7 +10624,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
                 else {
                     this->fallStartHeight = this->actor.world.pos.y;
                 }
-                func_80848EF8(this);
+                func_80848EF8(this, globalCtx);
             }
         }
 
@@ -10696,7 +10790,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
 
 void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
-    static Vec3f sDogSpawnPos;
+    static Vec3f sDogSpawnPos; 
     Player* this = (Player*)thisx;
     s32 dogParams;
     s32 pad;

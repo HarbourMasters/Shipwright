@@ -84,18 +84,7 @@ sEnFrPointers.flags = 12
      - Deactivate frogs, frogs will jump back into the water
 */
 
-typedef struct {
-    u8 flags;
-    EnFr* frogs[5];
-} EnFrPointers;
-
-typedef struct {
-    f32 xzDist;
-    f32 yaw;
-    f32 yDist;
-} LogSpotToFromWater;
-
-static EnFrPointers sEnFrPointers = {
+EnFrPointers sEnFrPointers = {
     0x00,
     {
         NULL,
@@ -105,6 +94,7 @@ static EnFrPointers sEnFrPointers = {
         NULL,
     },
 };
+
 
 // Flags for gSaveContext.eventChkInf[13]
 static u16 sSongIndex[] = {

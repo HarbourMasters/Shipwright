@@ -1,3 +1,4 @@
+#include <sstream>
 #include "stox.h"
 #include "spdlog/spdlog.h"
 

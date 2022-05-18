@@ -447,7 +447,7 @@ void func_80B3D118(GlobalContext* globalCtx) {
 
 static Vec3f D_80B42DA0;
 
-static s32 D_80B41D90 = 0;
+s32 D_80B41D90 = 0;
 void EnXc_SetColossusWindSFX(GlobalContext* globalCtx) {
     if (gSaveContext.sceneSetupIndex == 4) {
         static Vec3f sPos = { 0.0f, 0.0f, 0.0f };
@@ -484,17 +484,17 @@ void EnXc_SetColossusWindSFX(GlobalContext* globalCtx) {
     }
 }
 
-static s32 sFlameSpawned = false;
+s32 sEnXcFlameSpawned = false;
 void EnXc_SpawnFlame(EnXc* this, GlobalContext* globalCtx) {
 
-    if (!sFlameSpawned) {
+    if (!sEnXcFlameSpawned) {
         CsCmdActorAction* npcAction = EnXc_GetCsCmd(globalCtx, 0);
         f32 xPos = npcAction->startPos.x;
         f32 yPos = npcAction->startPos.y;
         f32 zPos = npcAction->startPos.z;
 
         this->flameActor = Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_LIGHT, xPos, yPos, zPos, 0, 0, 0, 5);
-        sFlameSpawned = true;
+        sEnXcFlameSpawned = true;
     }
 }
 
@@ -519,7 +519,7 @@ void EnXc_DestroyFlame(EnXc* this) {
     Actor_Kill(&this->actor);
 }
 
-static s32 D_80B41DA8 = 1;
+s32 D_80B41DA8 = 1;
 void EnXc_InitFlame(EnXc* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 sceneNum = globalCtx->sceneNum;
@@ -1402,7 +1402,7 @@ void func_80B3F534(GlobalContext* globalCtx) {
     }
 }
 
-static s32 D_80B41DAC = 1;
+s32 D_80B41DAC = 1;
 void func_80B3F59C(EnXc* this, GlobalContext* globalCtx) {
     CsCmdActorAction* npcAction = EnXc_GetCsCmd(globalCtx, 0);
 
@@ -2430,7 +2430,7 @@ const ActorInit En_Xc_InitVars = {
 
 void EnXc_Reset(void) {
     D_80B41D90 = 0;
-    sFlameSpawned = false;
+    sEnXcFlameSpawned = false;
     D_80B41DA8 = 1;
     D_80B41DAC = 1;
 }

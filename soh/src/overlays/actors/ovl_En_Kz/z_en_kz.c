@@ -287,7 +287,7 @@ s32 EnKz_FollowPath(EnKz* this, GlobalContext* globalCtx) {
     pathDiffZ = pointPos->z - this->actor.world.pos.z;
     Math_SmoothStepToS(&this->actor.world.rot.y, (Math_FAtan2F(pathDiffX, pathDiffZ) * (0x8000 / M_PI)), 0xA, 0x3E8, 1);
 
-    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f) {
+    if ((SQ(pathDiffX) + SQ(pathDiffZ)) < 10.0f * CVar_GetS32("gMweepSpeed", 1)) {
         this->waypoint++;
         if (this->waypoint >= path->count) {
             this->waypoint = 0;
@@ -378,7 +378,7 @@ void EnKz_SetupMweep(EnKz* this, GlobalContext* globalCtx) {
     initPos.z += 260.0f;
     Gameplay_CameraSetAtEye(globalCtx, this->cutsceneCamera, &pos, &initPos);
     func_8002DF54(globalCtx, &this->actor, 8);
-    this->actor.speedXZ = 0.1f;
+    this->actor.speedXZ = 0.1f * CVar_GetS32("gMweepSpeed", 1);
     this->actionFunc = EnKz_Mweep;
 }
 

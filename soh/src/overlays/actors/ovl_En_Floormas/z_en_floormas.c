@@ -427,7 +427,8 @@ void EnFloormas_SetupFreeze(EnFloormas* this) {
 }
 
 void EnFloormas_Die(EnFloormas* this, GlobalContext* globalCtx) {
-    if (this->actor.scale.x > 0.004f) {
+    //Originally was doing > 0.004f, better fix thanks Gary :D
+    if (this->actor.scale.x > (f32)0.004f) {
         // split
         this->actor.shape.rot.y = this->actor.yawTowardsPlayer + 0x8000;
         EnFloormas_SetupSplit((EnFloormas*)this->actor.child);

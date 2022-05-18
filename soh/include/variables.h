@@ -99,6 +99,7 @@ extern "C"
 	extern u32 gGsFlagsMasks[4];
 	extern u32 gGsFlagsShifts[4];
 	extern void* gItemIcons[0x82];
+	extern u8 gItemAgeReqs[];
 	extern u8 gItemSlots[56];
 	extern void (*gSceneCmdHandlers[26])(GlobalContext*, SceneCmd*);
 	extern s16 gLinkObjectIds[2];
@@ -237,8 +238,8 @@ extern void(*D_801755D0)(void);
 	extern u8 gGfxSPTaskYieldBuffer[OS_YIELD_DATA_SIZE]; // 0xC00 bytes
 	extern u8 gGfxSPTaskStack[0x400]; // 0x400 bytes
 	extern GfxPool gGfxPools[2]; // 0x24820 bytes
-	extern u8 gAudioHeap[0x38000]; // 0x38000 bytes
-	extern u8 gSystemHeap[];
+	extern u8* gAudioHeap;
+	extern u8* gSystemHeap;
 
 #ifdef __cplusplus
 };

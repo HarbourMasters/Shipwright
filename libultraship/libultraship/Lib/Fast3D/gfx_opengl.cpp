@@ -29,8 +29,9 @@
 #include "SDL_opengl.h"
 #else
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 #define GL_GLEXT_PROTOTYPES 1
-#include <SDL2/SDL_opengles2.h>
+// #include <SDL2/SDL_opengles2.h>
 #endif
 
 #include "gfx_cc.h"
@@ -52,19 +53,34 @@ struct ShaderProgram {
     uint8_t num_attribs;
     bool used_noise;
     GLint frame_count_location;
-    GLint window_height_location;
+    GLint noise_scale_location;
+};
+
+struct Framebuffer {
+    uint32_t width, height;
+    bool has_depth_buffer;
+    uint32_t msaa_level;
+    bool invert_y;
+
+    GLuint fbo, clrbuf, clrbuf_msaa, rbo;
 };
 
 static map<pair<uint64_t, uint32_t>, struct ShaderProgram> shader_program_pool;
 static GLuint opengl_vbo;
-
-static uint32_t frame_count;
-static uint32_t current_height;
-static map<int, pair<GLuint, GLuint>> fb2tex;
 static bool current_depth_mask;
 
-static bool gfx_opengl_z_is_from_0_to_1(void) {
-    return false;
+static uint32_t frame_count;
+
+static vector<Framebuffer> framebuffers;
+static size_t current_framebuffer;
+static float current_noise_scale;
+static FilteringMode current_filter_mode = THREE_POINT;
+
+GLuint pixel_depth_rb, pixel_depth_fb;
+size_t pixel_depth_rb_size;
+
+static struct GfxClipParameters gfx_opengl_get_clip_parameters(void) {
+    return { false, framebuffers[current_framebuffer].invert_y };
 }
 
 static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram *prg) {
@@ -81,7 +97,7 @@ static void gfx_opengl_vertex_array_set_attribs(struct ShaderProgram *prg) {
 static void gfx_opengl_set_uniforms(struct ShaderProgram *prg) {
     if (prg->used_noise) {
         glUniform1i(prg->frame_count_location, frame_count);
-        glUniform1i(prg->window_height_location, current_height);
+        glUniform1f(prg->noise_scale_location, current_noise_scale);
     }
 }
 
@@ -163,6 +179,7 @@ static const char *shader_item_to_str(uint32_t item, bool with_alpha, bool only_
                 return "texel.a";
         }
     }
+    return "";
 }
 
 static void append_formula(char *buf, size_t *len, uint8_t c[2][4], bool do_single, bool do_multiply, bool do_mix, bool with_alpha, bool only_alpha, bool opt_alpha) {
@@ -197,7 +214,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     gfx_cc_get_features(shader_id0, shader_id1, &cc_features);
 
     char vs_buf[1024];
-    char fs_buf[1024];
+    char fs_buf[3000];
     size_t vs_len = 0;
     size_t fs_len = 0;
     size_t num_floats = 4;
@@ -224,6 +241,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(vs_buf, &vs_len, "varying vec4 vFog;");
         num_floats += 4;
     }
+
+    if (cc_features.opt_grayscale) {
+        append_line(vs_buf, &vs_len, "attribute vec4 aGrayscaleColor;");
+        append_line(vs_buf, &vs_len, "varying vec4 vGrayscaleColor;");
+        num_floats += 4;
+    }
+
     for (int i = 0; i < cc_features.num_inputs; i++) {
         vs_len += sprintf(vs_buf + vs_len, "attribute vec%d aInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
         vs_len += sprintf(vs_buf + vs_len, "varying vec%d vInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
@@ -242,6 +266,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
     if (cc_features.opt_fog) {
         append_line(vs_buf, &vs_len, "vFog = aFog;");
+    }
+    if (cc_features.opt_grayscale) {
+        append_line(vs_buf, &vs_len, "vGrayscaleColor = aGrayscaleColor;");
     }
     for (int i = 0; i < cc_features.num_inputs; i++) {
         vs_len += sprintf(vs_buf + vs_len, "vInput%d = aInput%d;\n", i + 1, i + 1);
@@ -265,6 +292,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     if (cc_features.opt_fog) {
         append_line(fs_buf, &fs_len, "varying vec4 vFog;");
     }
+    if (cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "varying vec4 vGrayscaleColor;");
+    }
     for (int i = 0; i < cc_features.num_inputs; i++) {
         fs_len += sprintf(fs_buf + fs_len, "varying vec%d vInput%d;\n", cc_features.opt_alpha ? 4 : 3, i + 1);
     }
@@ -277,11 +307,30 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
         append_line(fs_buf, &fs_len, "uniform int frame_count;");
-        append_line(fs_buf, &fs_len, "uniform int window_height;");
+        append_line(fs_buf, &fs_len, "uniform float noise_scale;");
 
         append_line(fs_buf, &fs_len, "float random(in vec3 value) {");
         append_line(fs_buf, &fs_len, "    float random = dot(sin(value), vec3(12.9898, 78.233, 37.719));");
         append_line(fs_buf, &fs_len, "    return fract(sin(random) * 143758.5453);");
+        append_line(fs_buf, &fs_len, "}");
+    }
+
+    if (current_filter_mode == THREE_POINT) {
+        append_line(fs_buf, &fs_len, "#define TEX_OFFSET(off) texture2D(tex, texCoord - (off)/texSize)");
+        append_line(fs_buf, &fs_len, "vec4 filter3point(in sampler2D tex, in vec2 texCoord, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    vec2 offset = fract(texCoord*texSize - vec2(0.5));");
+        append_line(fs_buf, &fs_len, "    offset -= step(1.0, offset.x + offset.y);");
+        append_line(fs_buf, &fs_len, "    vec4 c0 = TEX_OFFSET(offset);");
+        append_line(fs_buf, &fs_len, "    vec4 c1 = TEX_OFFSET(vec2(offset.x - sign(offset.x), offset.y));");
+        append_line(fs_buf, &fs_len, "    vec4 c2 = TEX_OFFSET(vec2(offset.x, offset.y - sign(offset.y)));");
+        append_line(fs_buf, &fs_len, "    return c0 + abs(offset.x)*(c1-c0) + abs(offset.y)*(c2-c0);");
+        append_line(fs_buf, &fs_len, "}");
+        append_line(fs_buf, &fs_len, "vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    return filter3point(tex, uv, texSize);");
+        append_line(fs_buf, &fs_len, "}");
+    } else {
+        append_line(fs_buf, &fs_len, "vec4 hookTexture2D(in sampler2D tex, in vec2 uv, in vec2 texSize) {");
+        append_line(fs_buf, &fs_len, "    return texture2D(tex, uv);");
         append_line(fs_buf, &fs_len, "}");
     }
 
@@ -290,16 +339,18 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     for (int i = 0; i < 2; i++) {
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
+
+            fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
+
             if (!s && !t) {
-                fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vTexCoord%d);\n", i, i, i);
+                fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vTexCoord%d, texSize%d);\n", i, i, i, i);
             } else {
-                fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
                 if (s && t) {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, clamp(vTexCoord%d, 0.5 / texSize%d, vec2(vTexClampS%d, vTexClampT%d)));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, clamp(vTexCoord%d, 0.5 / texSize%d, vec2(vTexClampS%d, vTexClampT%d)), texSize%d);\n", i, i, i, i, i, i, i);
                 } else if (s) {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vec2(clamp(vTexCoord%d.s, 0.5 / texSize%d.s, vTexClampS%d), vTexCoord%d.t));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vec2(clamp(vTexCoord%d.s, 0.5 / texSize%d.s, vTexClampS%d), vTexCoord%d.t), texSize%d);\n", i, i, i, i, i, i, i);
                 } else {
-                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = texture2D(uTex%d, vec2(vTexCoord%d.s, clamp(vTexCoord%d.t, 0.5 / texSize%d.t, vTexClampT%d)));\n", i, i, i, i, i, i);
+                    fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vec2(vTexCoord%d.s, clamp(vTexCoord%d.t, 0.5 / texSize%d.t, vTexClampT%d)), texSize%d);\n", i, i, i, i, i, i, i);
                 }
             }
         }
@@ -338,7 +389,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
-        append_line(fs_buf, &fs_len, "texel.a *= floor(clamp(random(vec3(floor(gl_FragCoord.xy * (240.0 / float(window_height))), float(frame_count))) + texel.a, 0.0, 1.0));");
+        append_line(fs_buf, &fs_len, "texel.a *= floor(clamp(random(vec3(floor(gl_FragCoord.xy * noise_scale), float(frame_count))) + texel.a, 0.0, 1.0));");
+    }
+
+    if (cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "float intensity = (texel.r + texel.g + texel.b) / 3.0;");
+        append_line(fs_buf, &fs_len, "vec3 new_texel = vGrayscaleColor.rgb * intensity;");
+        append_line(fs_buf, &fs_len, "texel.rgb = mix(texel.rgb, new_texel, vGrayscaleColor.a);");
     }
 
     if (cc_features.opt_alpha) {
@@ -389,9 +446,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint max_length = 0;
         glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
-        //fprintf(stderr, "Fragment shader compilation failed\n");
+        fprintf(stderr, "Fragment shader compilation failed\n");
         glGetShaderInfoLog(fragment_shader, max_length, &max_length, &error_log[0]);
-        //fprintf(stderr, "%s\n", &error_log[0]);
+        fprintf(stderr, "%s\n", &error_log[0]);
         abort();
     }
 
@@ -432,6 +489,12 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         ++cnt;
     }
 
+    if (cc_features.opt_grayscale) {
+        prg->attrib_locations[cnt] = glGetAttribLocation(shader_program, "aGrayscaleColor");
+        prg->attrib_sizes[cnt] = 4;
+        ++cnt;
+    }
+
     for (int i = 0; i < cc_features.num_inputs; i++) {
         char name[16];
         sprintf(name, "aInput%d", i + 1);
@@ -460,7 +523,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
         prg->frame_count_location = glGetUniformLocation(shader_program, "frame_count");
-        prg->window_height_location = glGetUniformLocation(shader_program, "window_height");
+        prg->noise_scale_location = glGetUniformLocation(shader_program, "noise_scale");
         prg->used_noise = true;
     } else {
         prg->used_noise = false;
@@ -496,7 +559,7 @@ static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
 }
 
 static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
 }
 
 static uint32_t gfx_cm_to_opengl(uint32_t val) {
@@ -510,12 +573,14 @@ static uint32_t gfx_cm_to_opengl(uint32_t val) {
         case G_TX_NOMIRROR | G_TX_WRAP:
             return GL_REPEAT;
     }
+    return 0;
 }
 
 static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
+    const GLint filter = linear_filter && current_filter_mode == LINEAR ? GL_LINEAR : GL_NEAREST;
     glActiveTexture(GL_TEXTURE0 + tile);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear_filter ? GL_LINEAR : GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, linear_filter ? GL_LINEAR : GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, gfx_cm_to_opengl(cmt));
 }
@@ -543,7 +608,6 @@ static void gfx_opengl_set_zmode_decal(bool zmode_decal) {
 
 static void gfx_opengl_set_viewport(int x, int y, int width, int height) {
     glViewport(x, y, width, height);
-    current_height = height;
 }
 
 static void gfx_opengl_set_scissor(int x, int y, int width, int height) {
@@ -564,10 +628,6 @@ static void gfx_opengl_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_
     glDrawArrays(GL_TRIANGLES, 0, 3 * buf_vbo_num_tris);
 }
 
-static unsigned int framebuffer;
-static unsigned int textureColorbuffer;
-static unsigned int rbo;
-
 static void gfx_opengl_init(void) {
 //#if FOR_WINDOWS
     glewInit();
@@ -576,143 +636,230 @@ static void gfx_opengl_init(void) {
     glGenBuffers(1, &opengl_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, opengl_vbo);
 
-    glGenFramebuffers(1, &framebuffer);
-    glGenTextures(1, &textureColorbuffer);
-    glGenRenderbuffers(1, &rbo);
-
-    SohUtils::saveEnvironmentVar("framebuffer", std::to_string(textureColorbuffer));
+    glEnable(GL_DEPTH_CLAMP);
     glDepthFunc(GL_LEQUAL);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    framebuffers.resize(1); // for the default screen buffer
+
+    glGenRenderbuffers(1, &pixel_depth_rb);
+    glBindRenderbuffer(GL_RENDERBUFFER, pixel_depth_rb);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1, 1);
+    glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+    glGenFramebuffers(1, &pixel_depth_fb);
+    glBindFramebuffer(GL_FRAMEBUFFER, pixel_depth_fb);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, pixel_depth_rb);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    pixel_depth_rb_size = 1;
 }
 
 static void gfx_opengl_on_resize(void) {
 }
 
 static void gfx_opengl_start_frame(void) {
-    GLsizei framebuffer_width  = gfx_current_dimensions.width;
-    GLsizei framebuffer_height = gfx_current_dimensions.height;
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    std::shared_ptr<Ship::Window> wnd = Ship::GlobalCtx2::GetInstance()->GetWindow();
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, framebuffer_width, framebuffer_height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, framebuffer_width, framebuffer_height); // use a single renderbuffer object for both a depth AND stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-
     frame_count++;
-
-    glDisable(GL_SCISSOR_TEST);
-    glDepthMask(GL_TRUE);
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glEnable(GL_SCISSOR_TEST);
-    glEnable(GL_DEPTH_CLAMP);
-    current_depth_mask = true;
 }
 
 static void gfx_opengl_end_frame(void) {
-
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    GLint last_program;
-    glGetIntegerv(GL_CURRENT_PROGRAM, &last_program);
-    glUseProgram(0);
-    SohImGui::Draw();
-    glUseProgram(last_program);
+    glFlush();
 }
 
 static void gfx_opengl_finish_render(void) {
 }
 
-static int gfx_opengl_create_framebuffer(uint32_t width, uint32_t height) {
-    GLuint textureColorbuffer;
-
-    glGenTextures(1, &textureColorbuffer);
-    glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+static int gfx_opengl_create_framebuffer() {
+    GLuint clrbuf;
+    glGenTextures(1, &clrbuf);
+    glBindTexture(GL_TEXTURE_2D, clrbuf);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, 1, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glBindTexture(GL_TEXTURE_2D, 0);
 
+    GLuint clrbuf_msaa;
+    glGenRenderbuffers(1, &clrbuf_msaa);
+
     GLuint rbo;
     glGenRenderbuffers(1, &rbo);
     glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1, 1);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     GLuint fbo;
     glGenFramebuffers(1, &fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+    size_t i = framebuffers.size();
+    framebuffers.resize(i + 1);
 
-    fb2tex[fbo] = make_pair(textureColorbuffer, rbo);
+    framebuffers[i].fbo = fbo;
+    framebuffers[i].clrbuf = clrbuf;
+    framebuffers[i].clrbuf_msaa = clrbuf_msaa;
+    framebuffers[i].rbo = rbo;
 
-    //glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    return fbo;
+    return i;
 }
 
-static void gfx_opengl_resize_framebuffer(int fb, uint32_t width, uint32_t height) {
-    glBindTexture(GL_TEXTURE_2D, fb2tex[fb].first);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glBindTexture(GL_TEXTURE_2D, 0);
+static void gfx_opengl_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
+    Framebuffer& fb = framebuffers[fb_id];
 
-    glBindRenderbuffer(GL_RENDERBUFFER, fb2tex[fb].second);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glBindRenderbuffer(GL_RENDERBUFFER, 0);
-}
+    width = max(width, 1U);
+    height = max(height, 1U);
 
-void gfx_opengl_set_framebuffer(int fb) 
-{
-    if (GLEW_ARB_clip_control || GLEW_VERSION_4_5) {
-        // Set origin to upper left corner, to match N64 and DX11
-        // If this function is not supported, the texture will be upside down :(
-        glClipControl(GL_UPPER_LEFT, GL_NEGATIVE_ONE_TO_ONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, fb.fbo);
+
+    if (fb_id != 0) {
+        if (fb.width != width || fb.height != height || fb.msaa_level != msaa_level) {
+            if (msaa_level <= 1) {
+                glBindTexture(GL_TEXTURE_2D, fb.clrbuf);
+                glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+                glBindTexture(GL_TEXTURE_2D, 0);
+                glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, fb.clrbuf, 0);
+            } else {
+                glBindRenderbuffer(GL_RENDERBUFFER, fb.clrbuf_msaa);
+                glRenderbufferStorageMultisample(GL_RENDERBUFFER, msaa_level, GL_RGB8, width, height);
+                glBindRenderbuffer(GL_RENDERBUFFER, 0);
+                glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, fb.clrbuf_msaa);
+            }
+        }
+
+        if (has_depth_buffer && (fb.width != width || fb.height != height || fb.msaa_level != msaa_level || !fb.has_depth_buffer)) {
+            glBindRenderbuffer(GL_RENDERBUFFER, fb.rbo);
+            if (msaa_level <= 1) {
+                glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+            } else {
+                glRenderbufferStorageMultisample(GL_RENDERBUFFER, msaa_level, GL_DEPTH24_STENCIL8, width, height);
+            }
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+        }
+
+        if (!fb.has_depth_buffer && has_depth_buffer) {
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, fb.rbo);
+        } else if (fb.has_depth_buffer && !has_depth_buffer) {
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, 0);
+        }
     }
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, fb);
 
+    fb.width = width;
+    fb.height = height;
+    fb.has_depth_buffer = has_depth_buffer;
+    fb.msaa_level = msaa_level;
+    fb.invert_y = opengl_invert_y;
+}
+
+void gfx_opengl_start_draw_to_framebuffer(int fb_id, float noise_scale) {
+    Framebuffer& fb = framebuffers[fb_id];
+
+    if (noise_scale != 0.0f) {
+        current_noise_scale = 1.0f / noise_scale;
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, fb.fbo);
+
+    current_framebuffer = fb_id;
+}
+
+void gfx_opengl_clear_framebuffer() {
+    glDisable(GL_SCISSOR_TEST);
     glDepthMask(GL_TRUE);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDepthMask(current_depth_mask ? GL_TRUE : GL_FALSE);
+    glEnable(GL_SCISSOR_TEST);
 }
 
-void gfx_opengl_reset_framebuffer(void) 
-{
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-    glBindFramebuffer(GL_FRAMEBUFFER_EXT, framebuffer);
-    if (GLEW_ARB_clip_control || GLEW_VERSION_4_5) {
-        glClipControl(GL_LOWER_LEFT, GL_NEGATIVE_ONE_TO_ONE);
-    }
+void gfx_opengl_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
+    Framebuffer& fb_dst = framebuffers[fb_id_target];
+    Framebuffer& fb_src = framebuffers[fb_id_source];
+    glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fb_dst.fbo);
+    glBindFramebuffer(GL_READ_FRAMEBUFFER, fb_src.fbo);
+    glBlitFramebuffer(0, 0, fb_src.width, fb_src.height, 0, 0, fb_dst.width, fb_dst.height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    glBindFramebuffer(GL_FRAMEBUFFER, current_framebuffer);
 }
 
-void gfx_opengl_select_texture_fb(int fbID)
-{
+void *gfx_opengl_get_framebuffer_texture_id(int fb_id) {
+    return (void *)(uintptr_t)framebuffers[fb_id].clrbuf;
+}
+
+void gfx_opengl_select_texture_fb(int fb_id) {
     //glDisable(GL_DEPTH_TEST);
     glActiveTexture(GL_TEXTURE0 + 0);
-    glBindTexture(GL_TEXTURE_2D, fb2tex[fbID].first);
+    glBindTexture(GL_TEXTURE_2D, framebuffers[fb_id].clrbuf);
 }
 
-static uint16_t gfx_opengl_get_pixel_depth(float x, float y) {
-    float depth;
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    glReadPixels(x, y, 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &depth);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    return depth * 65532.0f;
+static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
+    std::map<std::pair<float, float>, uint16_t> res;
+
+    Framebuffer& fb = framebuffers[fb_id];
+
+    if (coordinates.size() == 1) {
+        uint32_t depth_stencil_value;
+        glBindFramebuffer(GL_FRAMEBUFFER, fb.fbo);
+        int x = coordinates.begin()->first;
+        int y = coordinates.begin()->second;
+        glReadPixels(x, fb.invert_y ? fb.height - y : y, 1, 1, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, &depth_stencil_value);
+        res.emplace(*coordinates.begin(), (depth_stencil_value >> 18) << 2);
+    } else {
+        if (pixel_depth_rb_size < coordinates.size()) {
+            // Resizing a renderbuffer seems broken with Intel's driver, so recreate one instead.
+            glBindFramebuffer(GL_FRAMEBUFFER, pixel_depth_fb);
+            glDeleteRenderbuffers(1, &pixel_depth_rb);
+            glGenRenderbuffers(1, &pixel_depth_rb);
+            glBindRenderbuffer(GL_RENDERBUFFER, pixel_depth_rb);
+            glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, coordinates.size(), 1);
+            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, pixel_depth_rb);
+            glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+            pixel_depth_rb_size = coordinates.size();
+        }
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, fb.fbo);
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, pixel_depth_fb);
+
+        glDisable(GL_SCISSOR_TEST); // needed for the blit operation
+
+        {
+            size_t i = 0;
+            for (const auto& coord : coordinates) {
+                int x = coord.first;
+                int y = coord.second;
+                if (fb.invert_y) {
+                    y = fb.height - y;
+                }
+                glBlitFramebuffer(x, y, x + 1, y + 1, i, 0, i + 1, 1, GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT, GL_NEAREST);
+                ++i;
+            }
+        }
+
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, pixel_depth_fb);
+        vector<uint32_t> depth_stencil_values(coordinates.size());
+        glReadPixels(0, 0, coordinates.size(), 1, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, depth_stencil_values.data());
+
+        {
+            size_t i = 0;
+            for (const auto& coord : coordinates) {
+                res.emplace(coord, (depth_stencil_values[i++] >> 18) << 2);
+            }
+        }
+    }
+
+    glBindFramebuffer(GL_FRAMEBUFFER, current_framebuffer);
+
+    return res;
+}
+
+void gfx_opengl_set_texture_filter(FilteringMode mode) {
+    current_filter_mode = mode;
+    gfx_texture_cache_clear();
+}
+
+FilteringMode gfx_opengl_get_texture_filter(void) {
+    return current_filter_mode;
 }
 
 struct GfxRenderingAPI gfx_opengl_api = {
-    gfx_opengl_z_is_from_0_to_1,
+    gfx_opengl_get_clip_parameters,
     gfx_opengl_unload_shader,
     gfx_opengl_load_shader,
     gfx_opengl_create_and_load_new_shader,
@@ -723,7 +870,6 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_upload_texture,
     gfx_opengl_set_sampler_parameters,
     gfx_opengl_set_depth_test_and_mask,
-    gfx_opengl_get_pixel_depth,
     gfx_opengl_set_zmode_decal,
     gfx_opengl_set_viewport,
     gfx_opengl_set_scissor,
@@ -735,11 +881,16 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_end_frame,
     gfx_opengl_finish_render,
     gfx_opengl_create_framebuffer,
-    gfx_opengl_resize_framebuffer,
-    gfx_opengl_set_framebuffer,
-    gfx_opengl_reset_framebuffer,
+    gfx_opengl_update_framebuffer_parameters,
+    gfx_opengl_start_draw_to_framebuffer,
+    gfx_opengl_clear_framebuffer,
+    gfx_opengl_resolve_msaa_color_buffer,
+    gfx_opengl_get_pixel_depth,
+    gfx_opengl_get_framebuffer_texture_id,
     gfx_opengl_select_texture_fb,
-    gfx_opengl_delete_texture
+    gfx_opengl_delete_texture,
+    gfx_opengl_set_texture_filter,
+    gfx_opengl_get_texture_filter
 };
 
 #endif

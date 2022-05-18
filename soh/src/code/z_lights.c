@@ -4,6 +4,8 @@
 
 #include "objects/gameplay_keep/gameplay_keep.h"
 
+#include "soh/frame_interpolation.h"
+
 #define LIGHTS_BUFFER_SIZE 32
 //#define LIGHTS_BUFFER_SIZE 1024 // Kill me
 
@@ -323,6 +325,44 @@ Lights* Lights_New(GraphicsContext* gfxCtx, u8 ambientR, u8 ambientG, u8 ambient
     return lights;
 }
 
+void Lights_GlowCheckPrepare(GlobalContext* globalCtx) {
+    LightNode* node;
+    LightPoint* params;
+    Vec3f pos;
+    Vec3f multDest;
+    f32 wDest;
+    f32 wX;
+    f32 wY;
+
+    node = globalCtx->lightCtx.listHead;
+
+    while (node != NULL) {
+        params = &node->info->params.point;
+
+        if (node->info->type == LIGHT_POINT_GLOW) {
+            f32 x, y;
+            u32 shrink;
+            uint32_t height;
+
+            pos.x = params->x;
+            pos.y = params->y;
+            pos.z = params->z;
+            func_8002BE04(globalCtx, &pos, &multDest, &wDest);
+            wX = multDest.x * wDest;
+            wY = multDest.y * wDest;
+
+            x = wX * 160 + 160;
+            y = wY * 120 + 120;
+            shrink = ShrinkWindow_GetCurrentVal();
+
+            if ((multDest.z > 1.0f) && y >= shrink && y <= SCREEN_HEIGHT - shrink) {
+                OTRGetPixelDepthPrepare(x, y);
+            }
+        }
+        node = node->next;
+    }
+}
+
 void Lights_GlowCheck(GlobalContext* globalCtx) {
     LightNode* node;
     LightPoint* params;
@@ -396,12 +436,14 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         if ((info->type == LIGHT_POINT_GLOW) && (params->drawGlow)) {
             scale = SQ(params->radius) * 0.0000026f;
 
+            FrameInterpolation_RecordOpenChild(node, 0);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, params->color[0], params->color[1], params->color[2], 50);
             Matrix_Translate(params->x, params->y, params->z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_lights.c", 918),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGlowCircleDL);
+            FrameInterpolation_RecordCloseChild();
         }
 
         node = node->next;
