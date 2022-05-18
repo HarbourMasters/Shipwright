@@ -275,7 +275,12 @@ namespace Ship {
         const std::string& gfx_backend = Conf["WINDOW"]["GFX BACKEND"];
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
 
+        std::cout << "\nwe're about to call gfx_init from Window.cpp Init\n";
+
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
+
+        std::cout << "\nwe're back after calling gfx_init from Window.cpp Init\n";
+
         WmApi->set_fullscreen_changed_callback(Window::OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }

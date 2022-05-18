@@ -2664,7 +2664,7 @@ void gfx_get_dimensions(uint32_t *width, uint32_t *height) {
 void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, const char *game_name, bool start_in_fullscreen, uint32_t screen_width, uint32_t screen_height) {
     gfx_wapi = wapi;
     gfx_rapi = rapi;
-    gfx_wapi->init(game_name, start_in_fullscreen);
+    gfx_wapi->init(game_name, start_in_fullscreen, screen_width, screen_height);
     gfx_rapi->init();
     gfx_rapi->update_framebuffer_parameters(0, screen_width, screen_height, 1, false, true, true, true);
     gfx_current_dimensions.internal_mul = 1;

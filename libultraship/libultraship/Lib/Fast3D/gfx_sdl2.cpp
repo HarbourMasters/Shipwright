@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <iostream>
+
 
 #if defined(ENABLE_OPENGL)
 
@@ -94,6 +96,7 @@ const SDL_Scancode scancode_rmapping_nonextended[][2] = {
 };
 
 static void set_fullscreen(bool on, bool call_callback) {
+    std::cout << "\nwe hit set_fullscreen\n";
     if (fullscreen_state == on) {
         return;
     }
@@ -129,7 +132,7 @@ static int frameDivisor = 1;
 #define FRAME_INTERVAL_US_DENOMINATOR 3
 #define FRAME_INTERVAL_US_NUMERATOR (FRAME_INTERVAL_US_NUMERATOR_ * frameDivisor)
 
-static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
+static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
@@ -145,8 +148,10 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
 
+    std::cout << "\nwe hit gfx_sdl_init in gfx_sdl2.cpp\n";
+
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+            width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
