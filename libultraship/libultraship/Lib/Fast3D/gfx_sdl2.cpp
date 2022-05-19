@@ -255,8 +255,9 @@ static void gfx_sdl_onkeyup(int scancode) {
 }
 
 static void gfx_sdl_handle_events(void) {
-
+#ifdef __SWITCH__
     Ship::Switch::Update();
+#endif
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         SohImGui::EventImpl event_impl;

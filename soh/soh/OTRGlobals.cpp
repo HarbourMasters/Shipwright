@@ -61,7 +61,9 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 
 // C->C++ Bridge
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
     Ship::Switch::Init();
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
