@@ -154,6 +154,8 @@ void Gameplay_Destroy(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     Player* player = GET_PLAYER(globalCtx);
 
+    CVar_SetS32("gMaskNum", player->currentMask);
+
     globalCtx->state.gfxCtx->callback = NULL;
     globalCtx->state.gfxCtx->callbackParam = 0;
     SREG(91) = 0;

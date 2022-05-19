@@ -412,6 +412,7 @@ void func_8008EC70(Player* this) {
 
 void Player_SetEquipmentData(GlobalContext* globalCtx, Player* this) {
     if (this->csMode != 0x56) {
+        this->currentMask = CVar_GetS32("gMaskNum", 0);
         this->currentShield = CUR_EQUIP_VALUE(EQUIP_SHIELD);
         this->currentTunic = CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1;
         this->currentBoots = CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1;
