@@ -390,6 +390,32 @@ namespace SohImGui {
         }
     }
 
+    void EnhancementCombobox(const char* cvarname, const char* ComboArray[], s16 FirstTimeValue = -1){
+        //The -1 do not force the make to add a default value
+        if (FirstTimeValue < 0){
+            //If there is no default value it will pass this condition
+            FirstTimeValue = 0;
+        }
+        //And now we set the default value to the CVar fallback
+        //This way we ensure to show the number we want the user to see the first time
+        s16 selected=CVar_GetS32(cvarname, FirstTimeValue);
+        //Now we set the fetched value to the drop box.
+        //This way if a player set something else than the default it will show their selection.
+        s16 DefaultValue=selected;
+        if (ImGui::BeginCombo("##cvarname", ComboArray[DefaultValue])) {
+            s16 ComboxSize = sizeof(&ComboArray) / sizeof(ComboArray[0]);
+            //Seem like it does not count entry 0 so it end up doing 0, 1, 2 and count 2 not 3
+            for (uint8_t i = 0; i <= ComboxSize+1; i++) {
+                if (ImGui::Selectable(ComboArray[i], i==selected)) {
+                    CVar_SetS32(cvarname, i);
+                    selected=i;
+                    needs_save = true;
+                }
+            }
+            ImGui::EndCombo();
+        }
+    }
+
     void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
@@ -634,20 +660,9 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
+                EnhancementCombobox("gTextureFilter", filters);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::NONE; fId++) {
-                        if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
-                            INFO("New Filter: %s", filters[fId]);
-                            gapi->set_texture_filter((FilteringMode)fId);
-
-                            CVar_SetS32("gTextureFilter", (int)fId);
-                            needs_save = true;
-                        }
-
-                    }
-                    ImGui::EndCombo();
-                }
+                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
