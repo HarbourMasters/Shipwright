@@ -281,7 +281,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     // Fragment shader
 #ifdef __APPLE__
-    append_line(fs_buf, &fs_len, "#version 130");
+    append_line(fs_buf, &fs_len, "#version 120");
 #else
     append_line(fs_buf, &fs_len, "#version 130");
 #endif
@@ -307,9 +307,15 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
     if (cc_features.used_textures[0]) {
         append_line(fs_buf, &fs_len, "uniform sampler2D uTex0;");
+#if __APPLE__
+        append_line(fs_buf, &fs_len, "uniform vec2 texSize0;");
+#endif
     }
     if (cc_features.used_textures[1]) {
         append_line(fs_buf, &fs_len, "uniform sampler2D uTex1;");
+#if __APPLE__
+        append_line(fs_buf, &fs_len, "uniform vec2 texSize1;");
+#endif
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
@@ -347,7 +353,12 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
 
+#ifdef __APPLE__
+			// we used the uniform earlier
+            //fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = vec2(1/192.0, 1/32.0);\n", i);
+#else
             fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
+#endif
 
             if (!s && !t) {
                 fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vTexCoord%d, texSize%d);\n", i, i, i, i);
@@ -420,12 +431,13 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     vs_buf[vs_len] = '\0';
     fs_buf[fs_len] = '\0';
-
-    /*puts("Vertex shader:");
+	/*
+    puts("Vertex shader:");
     puts(vs_buf);
     puts("Fragment shader:");
     puts(fs_buf);
-    puts("End");*/
+    puts("End");
+	*/
 
     const GLchar *sources[2] = { vs_buf, fs_buf };
     const GLint lengths[2] = { (GLint) vs_len, (GLint) fs_len };
@@ -521,11 +533,15 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     if (cc_features.used_textures[0]) {
         GLint sampler_location = glGetUniformLocation(shader_program, "uTex0");
+        GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
         glUniform1i(sampler_location, 0);
+        glUniform2f(uniform_location_0, 64.0,32.0);
     }
     if (cc_features.used_textures[1]) {
         GLint sampler_location = glGetUniformLocation(shader_program, "uTex1");
+        GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
         glUniform1i(sampler_location, 1);
+        glUniform2f(uniform_location_1, 128.0,64.0);
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
@@ -564,7 +580,6 @@ static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
     glActiveTexture(GL_TEXTURE0 + tile);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 }
-
 static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
 }
