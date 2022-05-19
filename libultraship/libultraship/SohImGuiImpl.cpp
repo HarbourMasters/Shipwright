@@ -724,8 +724,15 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementColor3("Kokiri Tunic", "gTunic_Kokiri", kokiri_col);
+                ImGui::SameLine();
+                EnhancementCheckbox("Rainbow##Kokiri", "gTunic_KokiriRainbow");
                 EnhancementColor3("Goron Tunic", "gTunic_Goron", goron_col);
+                ImGui::SameLine();
+                EnhancementCheckbox("Rainbow##Goron", "gTunic_GoronRainbow");
                 EnhancementColor3("Zora Tunic", "gTunic_Zora", zora_col);
+                ImGui::SameLine();
+                EnhancementCheckbox("Rainbow##Zora", "gTunic_ZoraRainbow");
+                EnhancementSliderInt("Rainbow Speed: %dx", "##RainbowTunicSpeed", "gTunic_RainbowSpeed", 1, 6, "");
 
                 ImGui::Text("Navi");
                 ImGui::Separator();
