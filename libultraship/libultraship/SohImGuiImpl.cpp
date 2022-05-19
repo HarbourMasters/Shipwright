@@ -154,7 +154,7 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::SDL:
 #if __APPLE__
-            ImGui_ImplOpenGL3_Init("#version 120");
+            ImGui_ImplOpenGL3_Init("#version 420");
 #else
             ImGui_ImplOpenGL3_Init("#version 120");
 #endif
