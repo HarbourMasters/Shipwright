@@ -768,6 +768,8 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
+                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
 
                 ImGui::EndMenu();
             }
