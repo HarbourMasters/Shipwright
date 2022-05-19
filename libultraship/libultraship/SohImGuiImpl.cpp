@@ -390,7 +390,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementCombobox(const char* cvarname, const char* ComboArray[], s16 FirstTimeValue = -1){
+    void EnhancementCombobox(const char* name, const char* ComboArray[], s16 FirstTimeValue = -1){
         //The -1 do not force the maker to add a default first value
         if (FirstTimeValue < 0){
             //If there is no default value it will pass this condition and so to prevent crash we set 0
@@ -398,16 +398,17 @@ namespace SohImGui {
         }
         //And now we set the default value to the CVar fallback
         //This way we ensure to show the number we want the user to see the first time
-        s16 selected=CVar_GetS32(cvarname, FirstTimeValue);
+        s16 selected=CVar_GetS32(name, FirstTimeValue);
         //Now we set the fetched value to the drop box.
         //This way if a player set something else than the default it will show their selection.
         s16 DefaultValue=selected;
-        if (ImGui::BeginCombo("##cvarname", ComboArray[DefaultValue])) {
-            s16 ComboxSize = sizeof(&ComboArray) / sizeof(ComboArray[0]);
+        if (ImGui::BeginCombo("##name", ComboArray[DefaultValue])) {
+            //char *[] got two extra : '\123' (begin) '\n' (last)
+            s16 ComboxSize = sizeof(&ComboArray)-2;
             //Seem like it does not count entry 0 so it end up doing 0, 1, 2 and count 2 not 3
-            for (uint8_t i = 0; i <= ComboxSize+1; i++) {
+            for (uint8_t i = 0; i <= ComboxSize; i++) {
                 if (ImGui::Selectable(ComboArray[i], i==selected)) {
-                    CVar_SetS32(cvarname, i);
+                    CVar_SetS32(name, i);
                     selected=i;
                     needs_save = true;
                 }
