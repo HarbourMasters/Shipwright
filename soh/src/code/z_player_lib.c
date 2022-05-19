@@ -753,30 +753,17 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
         u16 hueDelta = CVar_GetS32("gTunic_RainbowSpeed", 1) * 36.0f / 20.0f; 
         CVar_SetS32("gTunic_RainbowHue", (hue + hueDelta) % 360);
 
-        if (hue < 60) {
-            color->r = 255;
-            color->g = (hue / 60.0f) * 255;
-            color->b = 0;
-        } else if (hue < 120) {
-            color->r = (-hue / 60.0f + 2.0f) * 255;
-            color->g = 255;
-            color->b = 0;
-        } else if (hue < 180) {
-            color->r = 0;
-            color->g = 255;
-            color->b = (hue / 60.0f - 2.0f) * 255;
-        } else if (hue < 240) {
-            color->r = 0;
-            color->g = (-hue / 60.0f + 4.0f) * 255;
-            color->b = 255;
-        } else if (hue < 300) {
-            color->r = (hue / 60.0f - 4.0f) * 255;
-            color->g = 0;
-            color->b = 255;
-        } else {
-            color->r = 255;
-            color->g = 0;
-            color->b = (-hue / 60.0f + 6.0f) * 255;
+        u8 i = hue / 60 + 1;
+        u8 a = (-hue / 60.0f + i) * 255;
+        u8 b = (hue / 60.0f + (1 - i)) * 255;
+
+        switch (i) {
+            case 1: color->r = 255; color->g = b; color->b = 0; break;
+            case 2: color->r = a; color->g = 255; color->b = 0; break;
+            case 3: color->r = 0; color->g = 255; color->b = b; break;
+            case 4: color->r = 0; color->g = a; color->b = 255; break;
+            case 5: color->r = b; color->g = 0; color->b = 255; break;
+            case 6: color->r = 255; color->g = 0; color->b = a; break;
         }
     }
     else if (tunic == PLAYER_TUNIC_KOKIRI) {
