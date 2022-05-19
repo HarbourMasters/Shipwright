@@ -37,6 +37,7 @@ static int vsync_enabled = 0;
 static unsigned int window_width = DESIRED_SCREEN_WIDTH;
 static unsigned int window_height = DESIRED_SCREEN_HEIGHT;
 static bool fullscreen_state;
+static bool is_running = true;
 static void (*on_fullscreen_changed_callback)(bool is_now_fullscreen);
 static bool (*on_key_down_callback)(int scancode);
 static bool (*on_key_up_callback)(int scancode);
@@ -135,7 +136,7 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#ifndef __linux
+#ifndef __linux__
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
@@ -194,14 +195,13 @@ static void gfx_sdl_set_keyboard_callbacks(bool (*on_key_down)(int scancode), bo
 }
 
 static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
-    while (1)
-    {
+    while(is_running) {
         run_one_game_iter();
     }
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
-    *width = window_width;
+    *width  = window_width;
     *height = window_height;
 }
 
@@ -250,7 +250,7 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_QUIT:
-                exit(0);
+                is_running = false;
         }
     }
 }
