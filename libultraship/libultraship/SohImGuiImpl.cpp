@@ -391,9 +391,9 @@ namespace SohImGui {
     }
 
     void EnhancementCombobox(const char* cvarname, const char* ComboArray[], s16 FirstTimeValue = -1){
-        //The -1 do not force the make to add a default value
+        //The -1 do not force the maker to add a default first value
         if (FirstTimeValue < 0){
-            //If there is no default value it will pass this condition
+            //If there is no default value it will pass this condition and so to prevent crash we set 0
             FirstTimeValue = 0;
         }
         //And now we set the default value to the CVar fallback
