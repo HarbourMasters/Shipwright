@@ -606,18 +606,22 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
+            s32 collectibleParams = rewardParams[this->currentReward];
             if (this->currentReward == 3) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (!(gSaveContext.itemGetInf[1] & 0x1000)) {
-                    gSaveContext.itemGetInf[1] |= 0x1000;
+                if (Flags_GetCollectible(globalCtx, 0x19) == 0) {
                     this->currentReward = 4;
+                    collectibleParams = ITEM00_HEART_PIECE;
                 }
             }
 
-            Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, collectibleParams);
+            if (this->currentReward == 4) {
+                reward->collectibleFlag = 0x19;
+            }
         }
     }
 
