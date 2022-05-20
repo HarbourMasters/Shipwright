@@ -223,17 +223,24 @@ void Title_Main(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
     if (CVar_GetS32("gSkipLogoTitle",0)!=0) {
+        gSaveContext.language = CVar_GetS32("gLanguages", 0);
         Sram_InitSram(&this->state, &this->sramCtx);
         s16 selectedfile = CVar_GetS32("gSaveFileID", 0);
         if (selectedfile == 4) {
             selectedfile = 0xFF;
+        } else if(selectedfile == 0){
+            gSaveContext.fileNum = selectedfile;
+            gSaveContext.gameMode = 0;
+            this->state.running = false;
+            SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, SelectContext);
+            return;
         } else {
             selectedfile--;
             if (selectedfile < 0) {
                 selectedfile = 0xFF;
             }
         }
-        if (selectedfile == 0 && CVar_GetS32("gDebugEnabled", 0) || selectedfile == 0xFF) {
+        if (selectedfile == 0xFF) {
             gSaveContext.fileNum = selectedfile;
             Sram_OpenSave(&this->sramCtx);
             gSaveContext.gameMode = 0;
@@ -244,6 +251,7 @@ void Title_Main(GameState* thisx) {
             Sram_OpenSave(&this->sramCtx);
             gSaveContext.gameMode = 0;
             this->state.running = false;
+            //return;
             SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
         }
         gSaveContext.respawn[0].entranceIndex = -1;
@@ -277,7 +285,6 @@ void Title_Main(GameState* thisx) {
         gSaveContext.magic = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
         gSaveContext.naviTimer = 0;
-        //Properly exit the function to avoid issues with OPEN_DISP etc.
         return;
     }
 
