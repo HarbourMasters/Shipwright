@@ -89,11 +89,15 @@ void KaleidoScope_DrawEquipmentImage(GlobalContext* globalCtx, void* source, u32
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 122);
 }
 
+Vec3s link_kaleido_rot = { 0, 32300, 0 }; // Default rotation link face us.
+
 void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     Vec3f pos;
-    Vec3s rot;
+    //Vec3s rot; // Removed for not having it use din the function
     f32 scale;
+    Input* input = &globalCtx->state.input[0];
+    s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
@@ -112,11 +116,25 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
         scale = 0.047f;
     }
 
-    rot.y = 32300;
-    rot.x = rot.z = 0;
+    link_kaleido_rot.x = link_kaleido_rot.z = 0;
+
+    if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT) && CVar_GetS32("gPauseLiveLink", 1) >= 1) {
+        //printf("Rotation (L)Desired:[%d]\n", link_kaleido_rot.x);
+        link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
+        link_kaleido_rot.x = 0;
+    } else if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT) && CVar_GetS32("gPauseLiveLink", 1) >= 1) {
+        //printf("Rotation (R)Desired:[%d]\n", link_kaleido_rot.x);
+        link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
+        link_kaleido_rot.x = 0;
+    }
+
+    if (CHECK_BTN_ALL(input->press.button, BTN_DUP) || CHECK_BTN_ALL(input->press.button, BTN_DDOWN) && CVar_GetS32("gPauseLiveLink", 1) >= 1) {
+        link_kaleido_rot.y = 32300;
+    }
+
     extern int fbTest;
     gsSPSetFB(globalCtx->state.gfxCtx->polyOpa.p++, fbTest);
-    func_8009214C(globalCtx, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &rot, scale,
+    func_8009214C(globalCtx, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                   CUR_EQUIP_VALUE(EQUIP_SWORD), CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1, CUR_EQUIP_VALUE(EQUIP_SHIELD),
                   CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1);
     gsSPResetFB(globalCtx->state.gfxCtx->polyOpa.p++);

@@ -685,9 +685,43 @@ namespace SohImGui {
 
                 if (ImGui::BeginMenu("Graphics"))
                 {
+                    if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
+                        EnhancementCheckbox("Rotate Link with D-pad", "gPauseLiveLinkRotation");
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
+                        if (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) {
+                            EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
+                        }
+                        ImGui::Separator();
+                        ImGui::Text("Static loop");
+                        EnhancementRadioButton("Disabled", "gPauseLiveLink", 0);
+                        EnhancementRadioButton("Idle (standing)", "gPauseLiveLink", 1);
+                        EnhancementRadioButton("Idle (look around)", "gPauseLiveLink", 2);
+                        EnhancementRadioButton("Idle (belt)", "gPauseLiveLink", 3);
+                        EnhancementRadioButton("Idle (shield)", "gPauseLiveLink", 4);
+                        EnhancementRadioButton("Idle (test sword)", "gPauseLiveLink", 5);
+                        EnhancementRadioButton("Idle (yawn)", "gPauseLiveLink", 6);
+                        EnhancementRadioButton("Battle Stance", "gPauseLiveLink", 7);
+                        EnhancementRadioButton("Walking (no shield)", "gPauseLiveLink", 8);
+                        EnhancementRadioButton("Walking (holding shield)", "gPauseLiveLink", 9);
+                        EnhancementRadioButton("Running (no shield)", "gPauseLiveLink", 10);
+                        EnhancementRadioButton("Running (holding shield)", "gPauseLiveLink", 11);
+                        EnhancementRadioButton("Hand on hip", "gPauseLiveLink", 12);
+                        EnhancementRadioButton("Spin attack charge", "gPauseLiveLink", 13);
+                        EnhancementRadioButton("Look at hand", "gPauseLiveLink", 14);
+                        ImGui::Separator();
+                        ImGui::Text("Randomize");
+                        EnhancementRadioButton("Random", "gPauseLiveLink", 15);
+                        Tooltip("Randomize the animation played each time you open the menu");
+                        EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
+                        Tooltip("andomize the animation played on hte menu after a certain time");
+                        if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
+                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
+                        }
+                        
+                        ImGui::EndMenu();
+                    }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-                    EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
