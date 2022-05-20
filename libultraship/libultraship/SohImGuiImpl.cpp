@@ -828,6 +828,15 @@ namespace SohImGui {
             ImGui::PopStyleColor();
         }
 
+        if ((CVar_GetS32("gTunic_KokiriRainbow", 0) | CVar_GetS32("gTunic_GoronRainbow", 0) |CVar_GetS32("gTunic_ZoraRainbow", 0)) != 0) {
+            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
+            f32 hue = CVar_GetFloat("gTunic_RainbowHue", 0.0f);
+            f32 newHue = hue + CVar_GetS32("gTunic_RainbowSpeed", 1) * 36.0f * deltaTime;
+            if (newHue >= 360)
+                newHue = 0;
+            CVar_SetFloat("gTunic_RainbowHue", newHue);
+        }
+
         console->Draw();
 
         for (auto& windowIter : customWindows) {
