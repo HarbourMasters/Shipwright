@@ -930,7 +930,14 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
-    if (CVar_GetS32("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, BTN_L)) {
+    s16 Debug_BTN = BTN_L;
+    s16 PageLeft_BTN = BTN_Z;
+    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 1) {
+        Debug_BTN = BTN_Z;
+        PageLeft_BTN = BTN_L;
+    }
+
+    if (CVar_GetS32("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
         pauseCtx->debugState = 1;
         return;
     }
@@ -940,7 +947,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_Z)) {
+    if (CHECK_BTN_ALL(input->press.button, PageLeft_BTN)) {
         KaleidoScope_SwitchPage(pauseCtx, 0);
         return;
     }
