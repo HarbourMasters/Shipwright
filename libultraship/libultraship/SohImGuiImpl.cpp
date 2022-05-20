@@ -663,6 +663,10 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
+                    EnhancementCheckbox("Force Max heart", "gForceMaxHeartCount");
+                    if(CVar_GetS32("gForceMaxHeartCount",0)){
+                        EnhancementSliderInt("Link maximum hearts %dx", "##HEARTSCOUNT", "gMaxHeartCount", 0, 20, "");
+                    }
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
 
