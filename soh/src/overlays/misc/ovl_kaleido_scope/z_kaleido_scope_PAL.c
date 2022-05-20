@@ -932,7 +932,7 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
     s16 Debug_BTN = BTN_L;
     s16 PageLeft_BTN = BTN_Z;
-    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 1) {
+    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 0) {
         Debug_BTN = BTN_Z;
         PageLeft_BTN = BTN_L;
     }
