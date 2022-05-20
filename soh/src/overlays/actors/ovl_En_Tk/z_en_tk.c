@@ -606,21 +606,28 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
-            s32 collectibleParams = rewardParams[this->currentReward];
+            this->currentReward = 3;
             if (this->currentReward == 3) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (Flags_GetCollectible(globalCtx, 0x19) == 0) {
+                // Initialized with bugfixed condition, overriden with original check if bugfix cvar is 0 (which is default).
+                bool condition = Flags_GetCollectible(globalCtx, 0x19) == 0;
+                if (CVar_GetS32("gGravediggingTourFix", 0) == 0) {
+                    condition = !(gSaveContext.itemGetInf[1] & 0x1000);
+                }
+                if (condition) {
                     this->currentReward = 4;
-                    collectibleParams = ITEM00_HEART_PIECE;
+                    gSaveContext.itemGetInf[1] |= 0x1000;
                 }
             }
 
-            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, collectibleParams);
+            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
             if (this->currentReward == 4) {
-                reward->collectibleFlag = 0x19;
+                if (CVar_GetS32("gGravediggingTourFix", 0) != 0) {
+                    reward->collectibleFlag = 0x19;
+                }
             }
         }
     }
