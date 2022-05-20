@@ -390,14 +390,14 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementCombobox(const char* name, const char* ComboArray[], s16 FirstTimeValue = -1){
-        if (FirstTimeValue < 0){
+    void EnhancementCombobox(const char* name, const char* ComboArray[], uint8_t FirstTimeValue = 0){
+        if (FirstTimeValue <= 0){
             FirstTimeValue = 0;
         }
-        s16 selected=CVar_GetS32(name, FirstTimeValue);
-        s16 DefaultValue=selected;
+        uint8_t selected=CVar_GetS32(name, FirstTimeValue);
+        uint8_t DefaultValue=selected;
         if (ImGui::BeginCombo("##name", ComboArray[DefaultValue])) {
-            s16 ComboxSize = sizeof(&ComboArray);
+            uint8_t ComboxSize = sizeof(&ComboArray);
             for (uint8_t i = 0; i <= ComboxSize; i++) {
                 if (strlen(ComboArray[i]) > 1) {
                     if (ImGui::Selectable(ComboArray[i], i==selected)) {
