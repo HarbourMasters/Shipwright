@@ -401,11 +401,19 @@ namespace SohImGui {
             EnhancementRadioButton("German", "gLanguages", 1);
             EnhancementRadioButton("French", "gLanguages", 2);
         */
-        int val = CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::RadioButton(text.c_str(), id == val)) {
-            CVar_SetS32(cvarName.c_str(), (int)id);
+        char* unique_name = (char* ) malloc(1 + strlen(text)+ strlen(cvarName));
+        strcpy(unique_name, text);
+        strcat(unique_name, cvarName);
+        char* non_visible_unique_name = (char* ) malloc(1 + strlen("##")+ strlen(unique_name));
+        strcpy(non_visible_unique_name, "##");
+        strcat(non_visible_unique_name, unique_name);
+        int val = CVar_GetS32(cvarName, 0);
+        if (ImGui::RadioButton(non_visible_unique_name, id == val)) {
+            CVar_SetS32(cvarName, id);
             needs_save = true;
         }
+        ImGui::SameLine();
+        ImGui::Text("%s", text);
     }
 
     void EnhancementCheckbox(std::string text, std::string cvarName)
