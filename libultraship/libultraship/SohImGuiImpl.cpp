@@ -390,7 +390,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+    void EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
         First arg is the visible name of the Radio button
@@ -401,14 +401,12 @@ namespace SohImGui {
             EnhancementRadioButton("German", "gLanguages", 1);
             EnhancementRadioButton("French", "gLanguages", 2);
         */
-        char* unique_name = (char* ) malloc(1 + strlen(text)+ strlen(cvarName));
-        strcpy(unique_name, text);
-        strcat(unique_name, cvarName);
-        char* non_visible_unique_name = (char* ) malloc(1 + strlen("##")+ strlen(unique_name));
-        strcpy(non_visible_unique_name, "##");
-        strcat(non_visible_unique_name, unique_name);
+        std::string make_invisible = "##";
+        make_invisible += text;
+        make_invisible += cvarName;
+        
         int val = CVar_GetS32(cvarName, 0);
-        if (ImGui::RadioButton(non_visible_unique_name, id == val)) {
+        if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVar_SetS32(cvarName, id);
             needs_save = true;
         }
