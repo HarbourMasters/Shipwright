@@ -52,7 +52,7 @@ pipeline {
                     
                     cd "..\\..\\"
                     
-                    move "soh\\Release\\soh.exe" ".\\"
+                    move "soh\\x64\\Release\\soh.exe" ".\\"
                     move "OTRGui\\build\\assets" ".\\"
                     move ".\\OTRExporter\\x64\\Release\\ZAPD.exe" ".\\assets\\extractor\\"
                     move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
