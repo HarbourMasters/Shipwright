@@ -120,10 +120,11 @@ typedef struct {
     /* 0x04 */ uint8_t err_no;
     /* 0x05 */ float gyro_x;
     /* 0x09 */ float gyro_y;
-    /* 0x0A */ uint8_t touch;
-    /* 0x0B */ float touch_x;
-    /* 0x0F */ float touch_y;
-} OSContPad; // size = 0x13
+    /* 0x0A */ uint8_t left_click;
+    /* 0x0B */ uint8_t right_click;
+    /* 0x0C */ float touch_x;
+    /* 0x10 */ float touch_y;
+} OSContPad; // size = 0x14
 
 typedef struct {
     /* 0x00 */ uint8_t rumble;

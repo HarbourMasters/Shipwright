@@ -227,21 +227,6 @@ namespace Ship {
 
             wGyroX *= gyro_sensitivity;
             wGyroY *= gyro_sensitivity;
-
-            int x, y;
-            Uint32 buttons;
-            SDL_PumpEvents();
-            buttons = SDL_GetMouseState(&x, &y);
-
-            wTouchX = x;
-            wTouchY = y;
-
-            if ((buttons & SDL_BUTTON_LMASK) != 0) {
-                wTouching = 1;
-            }
-            else {
-                wTouching = 0;
-            }
         }
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {

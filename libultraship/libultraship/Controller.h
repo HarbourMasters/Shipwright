@@ -38,7 +38,9 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
-			bool wTouching;
+
+			bool wLeftClick;
+			bool wRightClick;
 			float wTouchX;
 			float wTouchY;
 			

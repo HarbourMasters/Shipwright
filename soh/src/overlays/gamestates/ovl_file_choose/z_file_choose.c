@@ -164,7 +164,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
 }
 
 void HandleMouseInput(Input* input) {
-    if (input->press.touch) {
+    if (input->press.left_click) {
         input->press.button = BTN_A;
     }
 }
@@ -175,8 +175,8 @@ u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, 
 
     float newX = ((240.0f * ratio) - (240.0f * ogratio)) / 2.0f;
 
-    float pos_x = ((input->cur.touch_x / OTRGetCurrentWidth()) * (240.0f * ratio) - newX);
-    float pos_y = (input->cur.touch_y / OTRGetCurrentHeight()) * 240.0f;
+    uint32_t pos_x = ((input->cur.touch_x / OTRGetCurrentWidth()) * (240.0f * ratio) - newX);
+    uint32_t pos_y = (input->cur.touch_y / OTRGetCurrentHeight()) * 240.0f;
 
     if (pos_x >= minx && pos_x <= minx + maxx) {
         if (pos_y >= miny && pos_y <= miny + maxy) {
@@ -185,6 +185,46 @@ u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, 
     }
 
     return 0;
+}
+
+Vec2f HandleMouseCursorSplit(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy, int countx, int county) {
+    float ogratio = 320.0f / 240.0f;
+    float ratio = (float)OTRGetCurrentWidth() / (float)OTRGetCurrentHeight();
+
+    float newX = ((240.0f * ratio) - (240.0f * ogratio)) / 2.0f;
+
+    uint32_t pos_x = ((input->cur.touch_x / OTRGetCurrentWidth()) * (240.0f * ratio) - newX);
+    uint32_t pos_y = (input->cur.touch_y / OTRGetCurrentHeight()) * 240.0f;
+
+    Vec2f pos;
+
+    if (pos_x < minx || pos_x > minx + maxx || pos_y < miny || pos_y > miny + maxy) {
+        pos.x = -1;
+        pos.y = -1;
+        return pos;
+    }
+
+    int pointerx = (pos_x - minx) / 16.3f;
+    int pointery = (pos_y - miny) / 16.0f;
+
+    if (pointerx <= 0) {
+        pointerx = 0;
+    }
+    if (pointery <= 0) {
+        pointery = 0;
+    }
+
+    if (pointerx >= countx - 1) {
+        pointerx = countx - 1;
+    }
+    if (pointery >= county - 1) {
+        pointery = county - 1;
+    }
+
+    pos.x = pointerx;
+    pos.y = pointery;
+
+    return pos;
 }
 
 /**
@@ -202,23 +242,21 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
-    if (HandleMouseCursor(this, input, 57, 74, 66, 17)) {
+    if (HandleMouseCursor(this, input, 57, 74, 66, 17) == 1) {
         if (this->buttonIndex != FS_BTN_MAIN_FILE_1) {
             this->buttonIndex = FS_BTN_MAIN_FILE_1;
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
 
         HandleMouseInput(input);
-    }
-    else if (HandleMouseCursor(this, input, 57, 91, 66, 17)) {
+    } else if (HandleMouseCursor(this, input, 57, 91, 66, 17) == 1) {
         if (this->buttonIndex != FS_BTN_MAIN_FILE_2) {
             this->buttonIndex = FS_BTN_MAIN_FILE_2;
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         }
 
         HandleMouseInput(input);
-    }
-    else if (HandleMouseCursor(this, input, 57, 107, 66, 17)) {
+    } else if (HandleMouseCursor(this, input, 57, 107, 66, 17) == 1) {
         if (this->buttonIndex != FS_BTN_MAIN_FILE_3) {
             this->buttonIndex = FS_BTN_MAIN_FILE_3;
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
@@ -1367,6 +1405,22 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
+    if (HandleMouseCursor(this, input, 57, 156, 66, 17) == 1) {
+        if (this->confirmButtonIndex != FS_BTN_CONFIRM_YES) {
+            this->confirmButtonIndex = FS_BTN_CONFIRM_YES;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    } else if (HandleMouseCursor(this, input, 57, 173, 66, 17) == 1) {
+        if (this->confirmButtonIndex != FS_BTN_CONFIRM_QUIT) {
+            this->confirmButtonIndex = FS_BTN_CONFIRM_QUIT;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
             func_800AA000(300.0f, 180, 20, 100);
@@ -1377,7 +1431,7 @@ void FileChoose_ConfirmFile(GameState* thisx) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             this->selectMode++;
         }
-    } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+    } else if (CHECK_BTN_ALL(input->press.button, BTN_B) || input->press.right_click) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->selectMode++;
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
