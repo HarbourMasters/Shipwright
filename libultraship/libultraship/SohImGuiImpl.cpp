@@ -686,9 +686,14 @@ namespace SohImGui {
                 if (ImGui::BeginMenu("Graphics"))
                 {
                     if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
-                        EnhancementCheckbox("Rotate Link with D-pad", "gPauseLiveLinkRotation");
+                        ImGui::Text("Rotation");
+                        EnhancementRadioButton("Disabled", "gPauseLiveRotation", 0);
+                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveRotation", 1);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
-                        if (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) {
+                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveRotation", 2);
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
+
+                        if (CVar_GetS32("gPauseLiveRotation", 0) != 0) {
                             EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
                         }
                         ImGui::Separator();
