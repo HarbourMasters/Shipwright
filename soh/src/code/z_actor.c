@@ -335,38 +335,59 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, GlobalContext* g
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, GlobalContext* globalCtx) {
     NaviColor* naviColor = &sNaviColorList[actorCategory];
-    if (actorCategory == ACTORCAT_PLAYER) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_Blue", naviColor->outer.b);
+
+    if (CVar_GetS32("gUseNaviCol",0) != 1 ) {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
+            naviColor->outer.r = 115; naviColor->outer.g = 230; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = 100; naviColor->inner.g = 100; naviColor->inner.b = 255;
+            naviColor->outer.r = 90; naviColor->outer.g = 90; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 0;
+            naviColor->outer.r = 220; naviColor->outer.g = 220; naviColor->outer.b = 0;
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 90;
+            naviColor->outer.r = 0; naviColor->outer.g = 220; naviColor->outer.b = 0;
+        }
+    } else {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
+        }
     }
-    if (actorCategory == ACTORCAT_NPC) {
-        naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_Blue", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_Blue", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_PROP) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_Blue", naviColor->outer.b);
-    }
+    
     targetCtx->naviRefPos.x = actor->focus.pos.x;
     targetCtx->naviRefPos.y = actor->focus.pos.y + (actor->targetArrowOffset * actor->scale.y);
     targetCtx->naviRefPos.z = actor->focus.pos.z;
