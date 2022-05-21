@@ -383,8 +383,7 @@ namespace SohImGui {
         ImGuiWMInit();
         ImGuiBackendInit();
 
-        ModInternal::registerHookListener({ GFX_INIT, [](const HookEvent ev) {
-
+        ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
                 ShowCursor(CVar_GetS32("gOpenMenuBar", 0), Dialogues::dLoadSettings);
 
@@ -399,7 +398,7 @@ namespace SohImGui {
             LoadTexture("C-Right", "assets/ship_of_harkinian/buttons/CRight.png");
             LoadTexture("C-Up", "assets/ship_of_harkinian/buttons/CUp.png");
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
-        } });
+        });
 
         for (const auto& [i, controllers] : Ship::Window::Controllers)
         {
@@ -408,9 +407,9 @@ namespace SohImGui {
             needs_save = true;
         }
 
-        ModInternal::registerHookListener({ CONTROLLER_READ, [](const HookEvent ev) {
-            pads = static_cast<OSContPad*>(ev->baseArgs["cont_pad"]);
-        } });
+        ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
+            pads = cont_pad;
+        });
         Game::InitSettings();
     }
 

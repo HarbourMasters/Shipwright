@@ -2948,14 +2948,6 @@ void KaleidoScope_GrayOutTextureRGBA32(u32* texture, u16 pixelCount) {
     u16 gray;
     u16 i;
 
-    bind_hook( GRAYOUT_TEXTURE);
-    init_hook(2,
-        (struct HookParameter){ .name = "texture",    .parameter = &texture },
-        (struct HookParameter){ .name = "pixelCount", .parameter = &pixelCount }
-    );
-    if (!call_hook(0))
-        return;
-
     texture = ResourceMgr_LoadTexByName(texture);
 
     for (i = 0; i < pixelCount; i++) {
