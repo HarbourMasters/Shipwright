@@ -1065,14 +1065,8 @@ Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
 
 void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     static s16 D_8082ACF4[][3] = {
-        { 0, 0, 0 }, 
-        { 0, 0, 0 },     
-        { 0, 0, 0 },    
-        { 0, 0, 0 }, 
-        { 255, 255, 0 }, 
-        { 0, 0, 0 },
-        { 0, 0, 0 }, 
-        { 255, 255, 0 }, { 0, 255, 50 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 255, 50 },
+        { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
+        { 0, 0, 0 }, { 255, 255, 0 }, { 0, 255, 50 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 255, 50 },
     };
     if (CVar_GetS32("gHudColors", 1) == 0) {
         D_8082ACF4[4][0] = 255;
