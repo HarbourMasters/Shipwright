@@ -706,7 +706,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
                     Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
-                    Tooltip("Fixes a vanilla bug where you can permanently miss the Gravedigging Tour\nHeart Piece in Kakariko Graveyard if you spawn the Heart Piece and leave\nwithout picking it up");
+                    Tooltip("Fixes a bug where you can permanently miss the Gravedigging Tour Heart Piece");
 
                     ImGui::EndMenu();
                 }
