@@ -606,7 +606,6 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
-            this->currentReward = 3;
             if (this->currentReward == 3) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
