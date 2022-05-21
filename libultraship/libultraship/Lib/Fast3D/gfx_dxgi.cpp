@@ -264,7 +264,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     return 0;
 }
 
-void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
+void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     LARGE_INTEGER qpc_init, qpc_freq;
     QueryPerformanceCounter(&qpc_init);
     QueryPerformanceFrequency(&qpc_freq);
