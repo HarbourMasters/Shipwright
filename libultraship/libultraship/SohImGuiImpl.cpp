@@ -762,6 +762,8 @@ namespace SohImGui {
                 EnhancementCheckbox("60FPS Interpolation", "g60FPS");
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
+                EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
+                Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
 
                 ImGui::EndMenu();
             }
