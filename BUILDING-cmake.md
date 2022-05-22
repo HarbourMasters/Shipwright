@@ -47,7 +47,7 @@ git clone https://github.com/Perlmint/glew-cmake.git external/glew
 cd OTRExporter
 
 # change the path to ZAPD in extract_assets.py
-sed "s%../ZAPDTR/ZAPD.out%build-cmake/ZAPD/ZAPD%" < extract_assets.py > extract_assets_cmake.py
+sed "s%../ZAPDTR/ZAPD.out%build-cmake/ZAPD/ZAPD.out%" < extract_assets.py > extract_assets_cmake.py
 chmod +x extract_assets_cmake.py
 
 cmake -S . -B build-cmake 

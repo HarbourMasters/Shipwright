@@ -273,6 +273,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 		)
 	endif()
+else()
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+		OUTPUT_NAME "ZAPD.out"
+	)
 endif()
 ################################################################################
 # MSVC runtime library
