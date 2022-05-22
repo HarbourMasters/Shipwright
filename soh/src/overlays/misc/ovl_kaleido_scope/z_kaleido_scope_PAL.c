@@ -3625,7 +3625,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_SaveSceneFlags(globalCtx);
                             gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            Sram_WriteSave(&globalCtx->sramCtx);
+                            Sram_WriteSave();
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }
@@ -3865,7 +3865,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     pauseCtx->promptChoice = 0;
                     Gameplay_SaveSceneFlags(globalCtx);
                     gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                    Sram_WriteSave(&globalCtx->sramCtx);
+                    Sram_WriteSave();
                     pauseCtx->state = 0xF;
                     D_8082B25C = 3;
                 }

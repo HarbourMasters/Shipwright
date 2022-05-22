@@ -256,7 +256,7 @@ void Title_Main(GameState* thisx) {
 void Title_Destroy(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
-    Sram_InitSram(&this->state, &this->sramCtx);
+    Sram_InitSram(&this->state);
 }
 
 void Title_Init(GameState* thisx) {
@@ -280,7 +280,6 @@ void Title_Init(GameState* thisx) {
     this->state.destroy = Title_Destroy;
     this->exit = false;
     gSaveContext.fileNum = 0xFF;
-    Sram_Alloc(&this->state, &this->sramCtx);
     this->ult = 0;
     this->unk_1D4 = 0x14;
     this->coverAlpha = 255;
