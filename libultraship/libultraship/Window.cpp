@@ -272,13 +272,14 @@ namespace Ship {
             gfx_run(Commands, m);
             gfx_end_frame();
         }
-        gfx_run(Commands, {});
-        gfx_end_frame();
     }
 
-    void Window::SetFrameDivisor(int divisor) {
-        gfx_set_framedivisor(divisor);
-        //gfx_set_framedivisor(0);
+    void Window::SetTargetFps(int fps) {
+        gfx_set_target_fps(fps);
+    }
+
+    void Window::SetMaximumFrameLatency(int latency) {
+        gfx_set_maximum_frame_latency(latency);
     }
 
     void Window::GetPixelDepthPrepare(float x, float y) {
