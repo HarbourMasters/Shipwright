@@ -6,10 +6,8 @@
 #include <unordered_map>
 #include <list>
 #include "U64/PR/ultra64/types.h"
-
-#ifdef __SWITCH__
 #include <cstddef>
-#endif
+
 
 struct GfxRenderingAPI;
 struct GfxWindowManagerAPI;
