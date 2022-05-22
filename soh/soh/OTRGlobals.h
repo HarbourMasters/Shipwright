@@ -4,6 +4,7 @@
 #pragma once
 
 #include "GlobalCtx2.h"
+#include "SaveManager.h"
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"

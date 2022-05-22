@@ -39,6 +39,7 @@
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
+SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
 
@@ -70,6 +71,7 @@ extern "C" void OTRAudio_Init()
 
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
