@@ -19,13 +19,17 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     if (file == nullptr)
         return nullptr;
     
+    // Allocate room for an additional message
     MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
 
     for (int i = 0; i < file->messages.size(); i++) {
+        // Look for Owl Text
         if (file->messages[i].id == 0x2066) {
+            // Create a new message based on the Owl Text
             char* kaeporaPatch = (char*)malloc(sizeof(char) * file->messages[i].msg.size());
             file->messages[i].msg.copy(kaeporaPatch, file->messages[i].msg.size(), 0);
 
+            // Swap the order of yes and no in this new message
             if (filePath == "text/nes_message_data_static/nes_message_data_static") {
                 kaeporaPatch[26] = 'Y';
                 kaeporaPatch[27] = 'e';
@@ -52,6 +56,7 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
                 kaeporaPatch[32] = 'n';
             }
 
+            // load data into message
             table[file->messages.size()].textId = 0x71B3;
             table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
             table[file->messages.size()].segment = kaeporaPatch;

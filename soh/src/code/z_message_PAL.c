@@ -273,6 +273,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     Font* font;
     const char* seg;
     u16 bufferId = textId;
+    // Use the better owl message if better owl is enabled
     if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
