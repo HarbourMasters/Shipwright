@@ -14,25 +14,27 @@ namespace Ship {
 		Attachment = nullptr;
 	}
 
+	SDL_Event ev;
+
+
 	void Controller::Read(OSContPad* pad) {
 		ReadFromSource();
 
-		// Mouse Inputs
+		// Touch Inputs
 		int x, y;
 		Uint32 buttons;
 		SDL_PumpEvents();
 		buttons = SDL_GetMouseState(&x, &y);
-
 		wTouchX = x;
 		wTouchY = y;
 
+		// Click Inputs
 		if ((buttons & SDL_BUTTON_LMASK) != 0) {
 			wLeftClick = 1;
 		}
 		else {
 			wLeftClick = 0;
 		}
-		
 		if ((buttons & SDL_BUTTON_RMASK) != 0) {
 			wRightClick = 1;
 		}
@@ -40,8 +42,18 @@ namespace Ship {
 			wRightClick = 0;
 		}
 
+		// Mouse Inputs
+		int x2, y2;
+		Uint32 buttons2;
+		SDL_PumpEvents();
+		buttons2 = SDL_GetRelativeMouseState(&x2, &y2);
+		wMouseMoveX = x2;
+		wMouseMoveY = y2;
+
+		// Button Inputs
 		pad->button |= dwPressedButtons & 0xFFFF;
 
+		// Stick Inputs
 		if (pad->stick_x == 0) {
 			if (dwPressedButtons & BTN_STICKLEFT) {
 				pad->stick_x = -128;
@@ -66,16 +78,23 @@ namespace Ship {
 			}
 		}
 
+		// Gyro
 		pad->gyro_x = wGyroX;
 		pad->gyro_y = wGyroY;
 
+		// Right Stick
 		pad->cam_x = wCamX;
 		pad->cam_y = wCamY;
 		
+		// Click/Touch
 		pad->touch_x = wTouchX;
 		pad->touch_y = wTouchY;
 		pad->left_click = wLeftClick;
 		pad->right_click = wRightClick;
+
+		// Mouse
+		pad->mouse_move_x = wMouseMoveX;
+		pad->mouse_move_y = wMouseMoveY;
 	}
 
 	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {

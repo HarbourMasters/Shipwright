@@ -124,9 +124,11 @@ typedef struct {
     /* 0x0B */ uint8_t right_click;
     /* 0x0C */ float touch_x;
     /* 0x10 */ float touch_y;
-    /* 0x14 */ float cam_x;
-    /* 0x18 */ float cam_y;
-} OSContPad; // size = 0x1C
+    /* 0x14 */ float mouse_move_x;
+    /* 0x18 */ float mouse_move_y;
+    /* 0x1C */ float cam_x;
+    /* 0x20 */ float cam_y;
+} OSContPad; // size = 0x24
 
 typedef struct {
     /* 0x00 */ uint8_t rumble;

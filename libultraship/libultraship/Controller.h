@@ -45,7 +45,10 @@ namespace Ship {
 			
 		  	float wCamX;
 		  	float wCamY;
-			
+
+			float wMouseMoveX;
+			float wMouseMoveY;
+
 			virtual std::string GetControllerType() = 0;
 			virtual std::string GetConfSection() = 0;
 			virtual std::string GetBindingConfSection() = 0;

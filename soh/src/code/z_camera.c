@@ -1432,6 +1432,9 @@ s32 SetCameraManual(Camera* camera) {
     return 0;
 }
 
+f32 lastMouseX;
+f32 lastMouseY;
+
 s32 Camera_Free(Camera* camera) {
     Normal1* norm1 = (Normal1*)camera->paramData;
 
@@ -1501,14 +1504,20 @@ s32 Camera_Free(Camera* camera) {
         camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
     }
 
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+    // Mouse Free Camera
+    f32 mouseX = D_8015BD7C->state.input[0].cur.touch_x - lastMouseX;
+    lastMouseX = D_8015BD7C->state.input[0].cur.touch_x;
+    f32 mouseY = D_8015BD7C->state.input[0].cur.touch_y - lastMouseY;
+    lastMouseY = D_8015BD7C->state.input[0].cur.touch_y;
 
-    if (fabsf(newCamX) >= 250.0f) {
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
+
+    if (fabsf(newCamX) >= 200.0f) {
         camX += newCamX;
     }
 
-    if (fabsf(newCamY) >= 250.0f) {
+    if (fabsf(newCamY) >= 200.0f) {
         camY += newCamY;
     }
 
