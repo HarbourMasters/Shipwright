@@ -754,7 +754,7 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
-                EnhancementSliderInt("Vine/Ladder Climb speed: %dx", "##CLIMBSPEED", "gClimbSpeed", 1, 9, "");
+                EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
