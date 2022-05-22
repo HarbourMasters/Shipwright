@@ -37,8 +37,14 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
-		  float wCamX;
-		  float wCamY;
+
+			bool wLeftClick;
+			bool wRightClick;
+			float wTouchX;
+			float wTouchY;
+			
+		  	float wCamX;
+		  	float wCamY;
 			
 			virtual std::string GetControllerType() = 0;
 			virtual std::string GetConfSection() = 0;

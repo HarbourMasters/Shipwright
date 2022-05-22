@@ -347,13 +347,49 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                       PRIMITIVE, 0);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
 
+    if (HandleMouseCursor(this, input, 193, 169, 28, 17) == 1) {
+        if (this->kbdButton != FS_KBD_BTN_BACKSPACE) {
+            this->charIndex = 0;
+            this->kbdX = 3;
+            this->kbdY = 5;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
+    if (HandleMouseCursor(this, input, 226, 169, 44, 17) == 1) {
+        if (this->kbdButton != FS_KBD_BTN_END) {
+            this->charIndex = 0;
+            this->kbdX = 4;
+            this->kbdY = 5;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
+    Vec2f namePos = HandleMouseCursorSplit(this, input, 60, 79, 211, 79, 13, 5);
+    if (namePos.x != -1 && namePos.y != -1) {
+        int index = namePos.x + (namePos.y * 13);
+        if (this->charIndex != index) {
+            this->kbdButton = 99;
+            this->kbdX = 0;
+            this->kbdY = 0;
+            this->charIndex = index;
+            Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
+
+        HandleMouseInput(input);
+    }
+
     if (this->configMode == CM_NAME_ENTRY) {
         if (CHECK_BTN_ALL(input->press.button, BTN_START)) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             // place cursor on END button
             this->kbdY = 5;
             this->kbdX = 4;
-        } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
+        } else if (CHECK_BTN_ALL(input->press.button, BTN_B) || input->press.right_click) {
             if ((this->newFileNameCharCount == 7) && (this->fileNames[this->buttonIndex][7] != 0x3E)) {
                 for (i = this->newFileNameCharCount; i < 7; i++) {
                     this->fileNames[this->buttonIndex][i] = this->fileNames[this->buttonIndex][i + 1];
@@ -397,7 +433,8 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             this->newFileNameCharCount = 7;
                         }
                     }
-                } else if (CHECK_BTN_ALL(input->press.button, BTN_A) && (this->charPage != this->kbdButton)) {
+                } else if (CHECK_BTN_ALL(input->press.button, BTN_A) &&
+                           (this->charPage != this->kbdButton)) {
                     if (this->kbdButton == FS_KBD_BTN_BACKSPACE) {
                         if ((this->newFileNameCharCount == 7) && (this->fileNames[this->buttonIndex][7] != 0x3E)) {
                             for (i = this->newFileNameCharCount; i < 7; i++) {

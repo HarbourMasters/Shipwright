@@ -2,6 +2,7 @@
 #include "GlobalCtx2.h"
 #include "stox.h"
 #include <memory>
+#include <SDL2/SDL_events.h>
 
 namespace Ship {
 	Controller::Controller(int32_t dwControllerNumber) : dwControllerNumber(dwControllerNumber) {
@@ -15,6 +16,29 @@ namespace Ship {
 
 	void Controller::Read(OSContPad* pad) {
 		ReadFromSource();
+
+		// Mouse Inputs
+		int x, y;
+		Uint32 buttons;
+		SDL_PumpEvents();
+		buttons = SDL_GetMouseState(&x, &y);
+
+		wTouchX = x;
+		wTouchY = y;
+
+		if ((buttons & SDL_BUTTON_LMASK) != 0) {
+			wLeftClick = 1;
+		}
+		else {
+			wLeftClick = 0;
+		}
+		
+		if ((buttons & SDL_BUTTON_RMASK) != 0) {
+			wRightClick = 1;
+		}
+		else {
+			wRightClick = 0;
+		}
 
 		pad->button |= dwPressedButtons & 0xFFFF;
 
@@ -47,6 +71,11 @@ namespace Ship {
 
 		pad->cam_x = wCamX;
 		pad->cam_y = wCamY;
+		
+		pad->touch_x = wTouchX;
+		pad->touch_y = wTouchY;
+		pad->left_click = wLeftClick;
+		pad->right_click = wRightClick;
 	}
 
 	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
