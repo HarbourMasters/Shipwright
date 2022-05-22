@@ -1163,7 +1163,7 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ) { // Extra check for Dark Link and his room
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -2690,7 +2690,7 @@ s32 func_800314B0(GlobalContext* globalCtx, Actor* actor) {
 s32 func_800314D4(GlobalContext* globalCtx, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ) { // Extra check for Dark Link and his room
         return true;
     }
 
