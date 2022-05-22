@@ -108,9 +108,7 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
         AudioLoad_SetDmaHandler(DmaMgr_DmaHandler);
         Audio_InitSound();
         osSendMesg(&audioMgr->unk_C8, NULL, OS_MESG_BLOCK);
-        bind_hook(AUDIO_INIT);
-        init_hook(0);
-        call_hook(0);
+        ModInternal_ExecuteAudioInitHooks();
         // Removed due to crash
         //IrqMgr_AddClient(audioMgr->irqMgr, &irqClient, &audioMgr->unk_74);
         hasInitialized = true;
