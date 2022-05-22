@@ -164,12 +164,20 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
 }
 
 void HandleMouseInput(Input* input) {
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        return;
+    }
+
     if (input->press.left_click) {
         input->press.button = BTN_A;
     }
 }
 
 u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy) {
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        return 0;
+    }
+
     float ogratio = 320.0f / 240.0f;
     float ratio = (float)OTRGetCurrentWidth() / (float)OTRGetCurrentHeight();
 
@@ -188,6 +196,13 @@ u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, 
 }
 
 Vec2f HandleMouseCursorSplit(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy, int countx, int county) {
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        Vec2f pos;
+        pos.x = -1;
+        pos.y = -1;
+        return pos;
+    }
+
     float ogratio = 320.0f / 240.0f;
     float ratio = (float)OTRGetCurrentWidth() / (float)OTRGetCurrentHeight();
 

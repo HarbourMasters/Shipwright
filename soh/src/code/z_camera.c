@@ -1411,11 +1411,24 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
-s32 SetCameraManual(Camera* camera) {
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+f32 lastMouseX2;
+f32 lastMouseY2;
 
-    if ((fabsf(newCamX) >= 350.0f || fabsf(newCamY) >= 350.0f) && manualCamera == false) {
+s32 SetCameraManual(Camera* camera) {
+    f32 mouseX = D_8015BD7C->state.input[0].cur.touch_x - lastMouseX2;
+    lastMouseX2 = D_8015BD7C->state.input[0].cur.touch_x;
+    f32 mouseY = D_8015BD7C->state.input[0].cur.touch_y - lastMouseY2;
+    lastMouseY2 = D_8015BD7C->state.input[0].cur.touch_y;
+
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        mouseX = 0.0f;
+        mouseY = 0.0f;
+    }
+
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
+
+    if ((fabsf(newCamX) >= 200.0f || fabsf(newCamY) >= 200.0f) && manualCamera == false) {
         manualCamera = true;
 
         VecSph eyeAdjustment;
@@ -1509,6 +1522,11 @@ s32 Camera_Free(Camera* camera) {
     lastMouseX = D_8015BD7C->state.input[0].cur.touch_x;
     f32 mouseY = D_8015BD7C->state.input[0].cur.touch_y - lastMouseY;
     lastMouseY = D_8015BD7C->state.input[0].cur.touch_y;
+
+    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
+        mouseX = 0.0f;
+        mouseY = 0.0f;
+    }
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);

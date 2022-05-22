@@ -609,6 +609,7 @@ namespace SohImGui {
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
+                EnhancementCheckbox("Mouse/Touch Enabled", "gMouseTouchEnabled");
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);

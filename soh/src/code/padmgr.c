@@ -271,16 +271,13 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         PadUtils_UpdateRelXY(input);
         input->press.stick_x += (s8)(input->cur.stick_x - input->prev.stick_x);
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
-
-        u8 buttonDiff2;
-        buttonDiff2 = input->prev.left_click != input->cur.left_click;
-        input->press.left_click = (u8)(input->cur.left_click && buttonDiff2);
-        input->rel.left_click = (u8)(!input->cur.left_click && buttonDiff2);
-
-        buttonDiff2 = input->prev.right_click != input->cur.right_click;
-        input->press.right_click = (u8)(input->cur.right_click && buttonDiff2);
-        input->rel.right_click = (u8)(!input->cur.right_click && buttonDiff2);
     }
+
+    buttonDiff = input->prev.left_click != input->cur.left_click;
+    input->press.left_click = buttonDiff;
+
+    buttonDiff = input->prev.right_click != input->cur.right_click;
+    input->press.right_click = buttonDiff;
 
     controllerCallback.rumble = CVar_GetS32("gRumbleEnabled", 0) && (padMgr->rumbleEnable[0] > 0);
 
@@ -303,6 +300,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     OTRControllerCallback(&controllerCallback);
 
     PadMgr_UnlockPadData(padMgr);
+   
 }
 
 void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
