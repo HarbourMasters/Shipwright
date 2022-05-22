@@ -240,7 +240,7 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha = false) {
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
         std::string Cvar_Red = cvarname;
         Cvar_Red += "R";
         std::string Cvar_Green = cvarname;
@@ -472,7 +472,7 @@ namespace SohImGui {
         return fmin(fmax(value,min),max);
     }
 
-    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool has_alpha = false, bool TitleSameLine = false) {
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool has_alpha, bool TitleSameLine) {
         std::string Cvar_Red = cvarName;
         Cvar_Red += "R";
         std::string Cvar_Green = cvarName;
@@ -488,7 +488,7 @@ namespace SohImGui {
             ImGui::Text("%s", text);
             flags = ImGuiColorEditFlags_NoLabel;
         }
-        if (has_alpha) {
+        if (!has_alpha) {
             if (ImGui::ColorEdit3(text, (float *)&ColorRGBA, flags)) {
                 CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x*255,0,255));
                 CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y*255,0,255));
