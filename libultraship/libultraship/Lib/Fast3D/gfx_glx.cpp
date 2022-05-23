@@ -11,7 +11,6 @@
 #include <X11/extensions/Xrandr.h>
 #include <X11/XKBlib.h>
 #include <X11/Xatom.h>
-#include <SDL2/SDL.h>  
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
@@ -441,7 +440,6 @@ static void gfx_glx_handle_events(void) {
             }
         }
         if (xev.type == ClientMessage && (Atom)xev.xclient.data.l[0] == glx.atom_wm_delete_window) {
-            SDL_Quit();
             exit(0);
         }
     }
