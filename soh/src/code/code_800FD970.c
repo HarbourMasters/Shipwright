@@ -19,7 +19,11 @@ u32 Rand_Next(void) {
  * Seeds the pseudo-random number generator by providing a starting value.
  */
 void Rand_Seed(u32 seed) {
-    sRandInt = randomUint32(sRandInt);
+    if (CSPRNG_INITIALIZED) {
+        sRandInt = randomUint32(seed);
+    } else {
+        sRandInt = seed;
+    }
 }
 
 /**
