@@ -75,7 +75,7 @@ Kaleido_sprites GymnaseTitle_Kspr = { gGERudoTrainingGroundTitleCardENGTex, 144,
 Kaleido_sprites GanonCastleTitle_Kspr = { gGanonsCastleTitleCardENGTex, 144, 24, 0.45f, 0.45f, G_IM_FMT_IA, { 255,255,255,255 }, false };
 
 //For translation purpose I do an array with all the title card and fetch them directly there
-static void* TitleCard[] = {
+const void* TitleCard[] = {
     gDekuTreeTitleCardENGTex,        gDodongosCavernTitleCardENGTex,   gJabuJabuTitleCardENGTex,
     gForestTempleTitleCardENGTex,    gFireTempleTitleCardENGTex,       gWaterTempleTitleCardENGTex,
     gSpiritTempleTitleCardENGTex,    gShadowTempleTitleCardENGTex,     gTempleOfTimeTitleCardENGTex,
@@ -92,6 +92,7 @@ static void* TitleCard[] = {
     gGanonsCastleTitleCardFRATex,    gBottomOfTheWellTitleCardFRATex,  gIceCavernTitleCardFRATex,
     gGERudoTrainingGroundTitleCardFRATex,
 };
+
 //Dungeon tokens
 Kaleido_sprites ForestT_Kspr = { gForestMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
 Kaleido_sprites FireT_Kspr = { gFireMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
@@ -103,21 +104,38 @@ Kaleido_sprites KokiriT_Kspr = { gKokiriEmeraldIconTex, 24, 24, 0.5f, 0.5f, 0, 0
 Kaleido_sprites GoronT_Kspr = { gGoronRubyIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
 Kaleido_sprites ZoraT_Kspr = { gZoraSapphireIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
 Kaleido_sprites GymT_Kspr = { gGerudosCardIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+                                        //Right now the structure has a count for the maximumm small key possible but do not use it maybe 
+                                        //I could make a system to keep track of how many keys the players had and have and 
+                                        //once he/she reach the max amount it change the digit to green?
+Kaleido_dgn_container DungeonsSettings[] = {{ &DekuTitle_Kspr, 0, false, false, false, true, true, false, true, &KokiriT_Kspr,false,0,0,0 },
+                                    { &DodongoTitle_Kspr, 0, false, false, false, true, true, false, true, &GoronT_Kspr,false,0,1,1 },
+                                    { &JabuTitle_Kspr, 0, false, false, false, true, true, false, true, &ZoraT_Kspr,false,0,2,2 },
+                                    { &ForestTitle_Kspr, 5, false, false, false, true, true, true, true, &ForestT_Kspr,false,1,0,3}, //if master quest keys = 6 
+                                    { &FireTitle_Kspr, 8, false, false, false, true, true, true, true, &FireT_Kspr,false,1,1,4},   //if master quest keys = 5
+                                    { &WaterTitle_Kspr, 6, false, false, false, true, true, true, true, &WaterT_Kspr,false,2,0,5},  //if master quest keys = 2 ?
+                                    { &SpiritTitle_Kspr, 5, false, false, false, true, true, true, true, &SpritT_Kspr,false,2,1,6}, //if master quest keys = 6
+                                    { &ShadowTitle_Kspr, 5, false, false, false, true, true, true, true, &ShadowT_Kspr,false,3,0,7}, //if master quest keys = 7
+                                    { &ToTTitle_Kspr, 0, false, false, false, false, false, false, true, &LightT_Kspr,false,3,1,0},
+                                    { &GanonCastleTitle_Kspr, 2, false, false, false, false, false, true, false, &GymT_Kspr,false,4,1,13}, //if master quest keys = 3
+                                    { &BotwTitle_Kspr, 2, false, false, false, true, true, false, false, &GymT_Kspr,false,1,2,8},
+                                    { &IceCavernTitle_Kspr, 0, false, false, false, true, true, false, false, &GymT_Kspr,false,2,2,9 },
+                                    { &GymnaseTitle_Kspr, 9, false, false, false, true, true, false, true, &GymT_Kspr,false,3,2,11 } };
+
 
 /**
  * Sound effects
  */
-s32 Close_SFX = NA_SE_SY_DECIDE;
+const s32 Close_SFX = NA_SE_SY_DECIDE;
 
 /**
  * Settings
  */
 s16 FrameSinceOpen = 0; //Count the frame since this menu is open. (used to make a little latence before being able to close it.)
-u8 MapIndex_GSFlags[] = { //Array used to detect when ever a player has all gs token from a dungeon.
+const u8 MapIndex_GSFlags[] = { //Array used to detect when ever a player has all gs token from a dungeon.
     0x0F, 0x1F, 0x0F, 0x1F, 0x1F, 0x1F, 0x1F, 0x1F, 0x07, 0x07, 0x03,
     0x0F, 0x07, 0x0F, 0x0F, 0xFF, 0xFF, 0xFF, 0x1F, 0x0F, 0x03, 0x0F,
 };
-s16 X_Offset_GS[3][13] = {//same order than TitleCard[], this i sthe X position of GS icon next to dungeon label. 
+const s16 X_Offset_GS[3][13] = {//same order than TitleCard[], this i sthe X position of GS icon next to dungeon label. 
     {-6,-6,-6,
      -4, 2,-2,
      -1,-5,-3,
@@ -153,7 +171,7 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
     int width_factor = (1 << 10) * Size_W / width;
     int height_factor = (1 << 10) * Size_H / height;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 51);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sprite->color.r, sprite->color.g, sprite->color.b, sprite->color.a);
 
@@ -170,7 +188,7 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
     gSPWideTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
     
     gsSPGrayscale(POLY_KAL_DISP++, false);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 62);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 const char* Kaleido_ProgressDigits_tex[] = { //Array holding digit texture for small keys counter
@@ -188,7 +206,7 @@ void Kaleido_DigitsDraw(GlobalContext* globalCtx, s16 number, f32 scale, s16 Lin
     int width_factor = (1 << 10) * 16 / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 100);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -208,11 +226,11 @@ void Kaleido_DigitsDraw(GlobalContext* globalCtx, s16 number, f32 scale, s16 Lin
 
     //We close the DISP has there no more GFX to be draw there.
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 400);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void KaleidoScope_BackgroundDraw(GlobalContext* globalCtx){
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_progress.c", 402);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     //We want settings for proper color and textures display, this allow colour etc. , in short if I get it right we define our shader here.
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
@@ -249,40 +267,40 @@ void KaleidoScope_BackgroundDraw(GlobalContext* globalCtx){
     MenuBackground_Draw(globalCtx,&Background_Win20_Kspr,4,3);
 
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_progress.c", 861);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
-void KaleidoScope_DungeonsLabelsDraw(GlobalContext* globalCtx, Kaleido_sprites sprite, s16 Line, s16 Col){
+void KaleidoScope_DungeonsLabelsDraw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 Line, s16 Col){
     s16 PosX = MENU_LEFT_INNER + (MENU_CELLS_SPACE_X * Col); //General Pos
     s16 PosY = MENU_TOP_INNER + (MENU_CELLS_SPACE_Y * Line); //General Pos
-    int height = sprite.height * sprite.scale_h; //Adjust Height with scale
-    int width = sprite.width * sprite.scale_w; //Adjust Width with scale
-    int height_factor = (1 << 10) * sprite.height / height;
-    int width_factor = (1 << 10) * sprite.width / width;
+    int height = sprite->height * sprite->scale_h; //Adjust Height with scale
+    int width = sprite->width * sprite->scale_w; //Adjust Width with scale
+    int height_factor = (1 << 10) * sprite->height / height;
+    int width_factor = (1 << 10) * sprite->width / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 51);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
     //We set color to match the one we set in the Sprite.
     if (CVar_GetS32("gKaleidoProgressColored", 0) == 1) {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sprite->color.r, sprite->color.g, sprite->color.b, sprite->color.a);
     } else {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, sprite.color.a);
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, sprite->color.a);
     }
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite.tex, sprite.im_fmt, G_IM_SIZ_8b, sprite.width, sprite.height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_8b, sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     //Making a "room" for our loaded graphic, it's like making a size where our graphic will draw, it has a top left corner at one postion and bottom right corner at another and make a rectangle from it, and we draw in that rectangle
     gSPTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
 
     //We close the DISP has there no more GFX to be draw there.
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 62);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
-void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites sprite, s16 Line, s16 Col, s16 Icon_Type, bool greyscale, s16 ID){
+void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 Line, s16 Col, s16 Icon_Type, bool greyscale, s16 ID){
     s16 X_Offset = 0;
     s16 Y_Offset = 12;
     if (Icon_Type == TYPE_SKULLTULA) {
@@ -306,13 +324,13 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites 
     }
     s16 PosX = MENU_LEFT_INNER + (MENU_CELLS_SPACE_X * Col)+X_Offset; //General Pos
     s16 PosY = MENU_TOP_INNER + (MENU_CELLS_SPACE_Y * Line)+Y_Offset; //General Pos
-    int height = sprite.height * sprite.scale_h; //Adjust Height with scale
-    int width = sprite.width * sprite.scale_w; //Adjust Width with scale
-    int height_factor = (1 << 10) * sprite.height / height;
-    int width_factor = (1 << 10) * sprite.width / width;
+    int height = sprite->height * sprite->scale_h; //Adjust Height with scale
+    int width = sprite->width * sprite->scale_w; //Adjust Width with scale
+    int height_factor = (1 << 10) * sprite->height / height;
+    int width_factor = (1 << 10) * sprite->width / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 100);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -326,7 +344,7 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites 
     }
 
     //Loading texture with proper settings (settings like size if it clamp mirror etc.)
-    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite.tex, G_IM_FMT_RGBA, G_IM_SIZ_32b, sprite.width, sprite.height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite->tex, G_IM_FMT_RGBA, G_IM_SIZ_32b, sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     //Making a "room" for our loaded graphic, it's like making a size where our graphic will draw, it has a top left corner at one postion and bottom right corner at another and make a rectangle from it, and we draw in that rectangle
     gSPTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
@@ -334,42 +352,27 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites 
     //We close the DISP has there no more GFX to be draw there.
     gsSPGrayscale(POLY_KAL_DISP++, false);
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "z_kaleido_progress.c", 400);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {
-                                        //Right now the structure has a count for the maximumm small key possible but do not use it maybe 
-                                        //I could make a system to keep track of how many keys the players had and have and 
-                                        //once he/she reach the max amount it change the digit to green?
-    Kaleido_dgn_container DungeonsSettings[] = {{ DekuTitle_Kspr, 0, false, false, false, true, true, false, true, KokiriT_Kspr,false,0,0,0 },
-                                        { DodongoTitle_Kspr, 0, false, false, false, true, true, false, true, GoronT_Kspr,false,0,1,1 },
-                                        { JabuTitle_Kspr, 0, false, false, false, true, true, false, true, ZoraT_Kspr,false,0,2,2 },
-                                        { ForestTitle_Kspr, 5, false, false, false, true, true, true, true, ForestT_Kspr,false,1,0,3}, //if master quest keys = 6 
-                                        { FireTitle_Kspr, 8, false, false, false, true, true, true, true, FireT_Kspr,false,1,1,4},   //if master quest keys = 5
-                                        { WaterTitle_Kspr, 6, false, false, false, true, true, true, true, WaterT_Kspr,false,2,0,5},  //if master quest keys = 2 ?
-                                        { SpiritTitle_Kspr, 5, false, false, false, true, true, true, true, SpritT_Kspr,false,2,1,6}, //if master quest keys = 6
-                                        { ShadowTitle_Kspr, 5, false, false, false, true, true, true, true, ShadowT_Kspr,false,3,0,7}, //if master quest keys = 7
-                                        { ToTTitle_Kspr, 0, false, false, false, false, false, false, true, LightT_Kspr,false,3,1,0},
-                                        { GanonCastleTitle_Kspr, 2, false, false, false, false, false, true, false, GymT_Kspr,false,4,1,13}, //if master quest keys = 3
-                                        { BotwTitle_Kspr, 2, false, false, false, true, true, false, false, GymT_Kspr,false,1,2,8},
-                                        { IceCavernTitle_Kspr, 0, false, false, false, true, true, false, false, GymT_Kspr,false,2,2,9 },
-                                        { GymnaseTitle_Kspr, 9, false, false, false, true, true, false, true, GymT_Kspr,false,3,2,11 } };
+
     for (s16 i =0; i < ARRAY_COUNT(DungeonsSettings); i++){
         //Dungeon name draw
-        DungeonsSettings[i].name_sptr.tex = TitleCard[i+(13*gSaveContext.language)]; //Translation fetch the tex from the array.
+        DungeonsSettings[i].name_sptr->tex = TitleCard[i+(13*gSaveContext.language)]; //Translation fetch the tex from the array.
         KaleidoScope_DungeonsLabelsDraw(globalCtx, DungeonsSettings[i].name_sptr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol);
-
+        
         bool not_all_gs_found = true;
         if (GET_GS_FLAGS(DungeonsSettings[i].MapIndex) == MapIndex_GSFlags[DungeonsSettings[i].MapIndex]) {
             //if all skulltula has been found make it appear.
             not_all_gs_found = false;
         }
         
-        KaleidoScope_DungeonsIcons24Draw(globalCtx, GoldSkulltula_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_SKULLTULA, not_all_gs_found, i);
+        KaleidoScope_DungeonsIcons24Draw(globalCtx, &GoldSkulltula_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_SKULLTULA, not_all_gs_found, i);
 
         if (DungeonsSettings[i].smallkeys_count > 0) {
             //If dungeon has at least one key draw
-            KaleidoScope_DungeonsIcons24Draw(globalCtx, Small_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_SMALL_KEYS, false, i);
+            KaleidoScope_DungeonsIcons24Draw(globalCtx, &Small_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_SMALL_KEYS, false, i);
             //We set the color for our Digits here
             s16 KeyCount = gSaveContext.inventory.dungeonKeys[DungeonsSettings[i].MapIndex];
             if (KeyCount < 0) {
@@ -383,7 +386,7 @@ void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {
             if (CHECK_DUNGEON_ITEM(2, DungeonsSettings[i].MapIndex)){
                 is_greyscale = false;
             }
-            KaleidoScope_DungeonsIcons24Draw(globalCtx, Map_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_MAP, is_greyscale, i);
+            KaleidoScope_DungeonsIcons24Draw(globalCtx, &Map_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_MAP, is_greyscale, i);
         }
         if (DungeonsSettings[i].has_compass) {
             //If dungeon has a compass let draw it here.
@@ -391,7 +394,7 @@ void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {
             if (CHECK_DUNGEON_ITEM(1, DungeonsSettings[i].MapIndex)){
                 is_greyscale = false;
             }
-            KaleidoScope_DungeonsIcons24Draw(globalCtx, Compass_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_COMPASS, is_greyscale, i);
+            KaleidoScope_DungeonsIcons24Draw(globalCtx, &Compass_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_COMPASS, is_greyscale, i);
         }
         if (DungeonsSettings[i].has_bosskey) {
             //If dungeon has a boss key let draw it here.
@@ -399,7 +402,7 @@ void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {
             if (CHECK_DUNGEON_ITEM(0, DungeonsSettings[i].MapIndex)){
                 is_greyscale = false;
             }
-            KaleidoScope_DungeonsIcons24Draw(globalCtx, BossKey_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_BOSS_KEY, is_greyscale, i);
+            KaleidoScope_DungeonsIcons24Draw(globalCtx, &BossKey_Kspr, DungeonsSettings[i].DrawListLine, DungeonsSettings[i].DrawListCol, TYPE_BOSS_KEY, is_greyscale, i);
         }
         if (DungeonsSettings[i].has_token) {
             //If dungeon has a token let draw it here.

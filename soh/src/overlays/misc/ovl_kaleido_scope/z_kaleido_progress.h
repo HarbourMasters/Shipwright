@@ -36,7 +36,7 @@ typedef struct { //This structure help me to draw icon
 } Kaleido_sprites;
 
 typedef struct {
-    Kaleido_sprites name_sptr; //This structure hold the dungeon informations
+    Kaleido_sprites* name_sptr; //This structure hold the dungeon informations
     s16 smallkeys_count;
     bool compass_opt;
     bool map_opt;
@@ -45,7 +45,7 @@ typedef struct {
     bool has_map;
     bool has_bosskey;
     bool has_token;
-    Kaleido_sprites tokens_sptr;
+    Kaleido_sprites* tokens_sptr;
     bool is_masterquest;
     s16 DrawListLine; //This ajust the Y axe
     s16 DrawListCol; ///0 Left /1 Middle /2 Right
