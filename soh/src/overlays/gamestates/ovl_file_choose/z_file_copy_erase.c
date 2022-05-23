@@ -367,7 +367,7 @@ void FileChoose_CopyConfirm(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     } else if (CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) {
         dayTime = gSaveContext.dayTime;
-        Sram_CopySave(this);
+        Save_CopyFile(this->selectedFileIndex, this->copyDestFileIndex);
         gSaveContext.dayTime = dayTime;
         this->fileInfoAlpha[this->copyDestFileIndex] = this->nameAlpha[this->copyDestFileIndex] = 0;
         this->nextTitleLabel = FS_TITLE_COPY_COMPLETE;
@@ -924,7 +924,7 @@ void FileChoose_EraseAnim1(GameState* thisx) {
         D_80813800 += 2;
 
         if (this->actionTimer == 0) {
-            Sram_EraseSave(this);
+            Save_DeleteFile(this->selectedFileIndex);
             this->titleLabel = this->nextTitleLabel;
             this->titleAlpha[0] = 255;
             this->titleAlpha[1] = this->connectorAlpha[this->selectedFileIndex] = 0;
