@@ -3,6 +3,9 @@
 
 #include <string.h>
 
+void Sram_InitNewSave(void);
+void Sram_InitDebugSave(void);
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
