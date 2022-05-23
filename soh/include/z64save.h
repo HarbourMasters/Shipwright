@@ -68,7 +68,6 @@ typedef struct {
     /* 0x0010 */ s32 nightFlag;
     /* 0x0014 */ s32 totalDays;
     /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
-    /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
     /* 0x0022 */ u16 deaths;
     /* 0x0024 */ char playerName[8];
     /* 0x002C */ s16 n64ddFlag;
@@ -104,7 +103,6 @@ typedef struct {
     /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
     /* 0x1346 */ char unk_1346[0x02];
     /* 0x1348 */ HorseData horseData;
-    /* 0x1352 */ u16 checksum; // "check_sum"
     /* 0x1354 */ s32 fileNum; // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;

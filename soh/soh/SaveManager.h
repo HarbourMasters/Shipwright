@@ -19,6 +19,7 @@ typedef struct {
 #include <tuple>
 #include <functional>
 #include <vector>
+#include <filesystem>
 
 #include "Lib/nlohmann/json.hpp"
 
@@ -43,13 +44,15 @@ public:
     void AddSaveFunction(const std::string& name, int version, SaveFunc func);
     void AddPostFunction(const std::string& name, PostFunc func);
 
-    void CopyFile(int from, int to);
-    void DeleteFile(int fileNum);
+    void CopyZeldaFile(int from, int to);
+    void DeleteZeldaFile(int fileNum);
+
+    std::filesystem::path GetFileName(int fileNum);
 
     template<typename T>
     void SaveData(const std::string& name, const T& data) {
         if (name == "") {
-            // TODO check is_array
+            assert((*currentJsonContext).is_array());
             (*currentJsonContext).push_back(data);
         } else {
             (*currentJsonContext)[name.c_str()] = data;
@@ -64,7 +67,12 @@ public:
 
     template<typename T> void LoadData(const std::string& name, T& data, const T& defaultValue = T{}) {
         if (name == "") {
-            currentJsonArrayContext.value().get_to(data);
+            if (currentJsonArrayContext == currentJsonContext->end()) {
+                // This array member is past the data in the json file. Therefor, default construct it
+                data = defaultValue;
+            } else {
+                currentJsonArrayContext.value().get_to(data);
+            }
         } else if (!currentJsonContext->contains(name.c_str())) {
             data = defaultValue;
         } else {
@@ -78,7 +86,8 @@ public:
     using LoadStructFunc = std::function<void()>;
     void LoadStruct(const std::string& name, LoadStructFunc func);
 
-    std::array<SaveFileMetaInfo, 3> fileMetaInfo;
+    static const int MaxFiles = 3;
+    std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
 private:
     void ConvertFromUnversioned();
