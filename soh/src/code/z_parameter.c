@@ -2916,7 +2916,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             }
 
             const s16 rCUpBtnX  = OTRGetRectDimensionFromRightEdge(R_C_UP_BTN_X+Right_HUD_Margin);
-            const s16 rCUPIconX = OTRGetRectDimensionFromRightEdge(R_C_UP_ICON_X+Right_HUD_Margin-CVar_GetS32("gNaviTextFix", 0));
+            const s16 rCUPIconX = OTRGetRectDimensionFromRightEdge(R_C_UP_ICON_X+Right_HUD_Margin-!!CVar_GetS32("gNaviTextFix", 0));
             if (CVar_GetS32("gHudColors", 1) == 0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
