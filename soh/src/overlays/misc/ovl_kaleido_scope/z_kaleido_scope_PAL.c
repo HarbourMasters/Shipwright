@@ -945,6 +945,12 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
+    if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && CVar_GetS32("gKaleidoProgress", 0)) {
+        //debug state 99 should be unique, if someone find it is bot please tell me :)
+        pauseCtx->debugState = 99;
+        return;
+    }
+
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
         if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
@@ -2927,6 +2933,11 @@ void KaleidoScope_Draw(GlobalContext* globalCtx) {
 
     if ((pauseCtx->debugState == 1) || (pauseCtx->debugState == 2)) {
         KaleidoScope_DrawDebugEditor(globalCtx);
+    }
+
+    if (pauseCtx->debugState == 99) {
+        //This will draw our progress page when debug state is set at 99 like we made ~
+        KaleidoScope_ProgressPage(globalCtx);
     }
 
     func_800AAA50(&globalCtx->view, 15);

@@ -725,7 +725,13 @@ namespace SohImGui {
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
                     Tooltip("Disables the voice audio when Navi calls you");
-                    
+                    EnhancementCheckbox("Pause menu progress page", "gKaleidoProgress");
+                    Tooltip("Press C-Up in pause menu to open a progress page menu.");
+                    if (CVar_GetS32("gKaleidoProgress", 0) != 0) {
+                        EnhancementCheckbox("Colored labels progress page", "gKaleidoProgressColored");
+                        Tooltip("Color the labels of Progress page to match their theme.");
+                    }
+
                     ImGui::EndMenu();
                 }
 
