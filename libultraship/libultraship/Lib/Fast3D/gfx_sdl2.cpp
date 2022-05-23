@@ -250,12 +250,8 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_QUIT:
-            #ifndef __linux__
+                SDL_Quit();
                 exit(0);
-            #endif
-            #ifdef __linux__
-                _Exit(0);
-            #endif
         }
     }
 }
