@@ -210,13 +210,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    gSaveContext.newf[0] = 'Z';
-    gSaveContext.newf[1] = 'E';
-    gSaveContext.newf[2] = 'L';
-    gSaveContext.newf[3] = 'D';
-    gSaveContext.newf[4] = 'A';
-    gSaveContext.newf[5] = 'Z';
-
     Sram_WriteSave();
 }
 
