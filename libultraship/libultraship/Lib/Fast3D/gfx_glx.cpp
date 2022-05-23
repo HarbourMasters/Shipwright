@@ -440,7 +440,12 @@ static void gfx_glx_handle_events(void) {
             }
         }
         if (xev.type == ClientMessage && (Atom)xev.xclient.data.l[0] == glx.atom_wm_delete_window) {
+        #ifndef __linux__
             exit(0);
+        #endif
+        #ifdef __linux__
+            _Exit(0);
+        #endif
         }
     }
 }
