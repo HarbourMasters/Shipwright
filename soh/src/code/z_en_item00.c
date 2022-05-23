@@ -894,8 +894,11 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 		DroppedItemRot += 100;
 	}
 
-    if ((this->unk_15A > 0) && !CVar_GetS32("gDropsDontDie", 0)) {
+    if (this->unk_15A > 0) {
         this->unk_15A--;
+        if (CVar_GetS32("gDropsDontDie", 0) && (this->unk_154 <= 0)) {
+            this->unk_15A++;
+        }
     }
 
     if ((this->unk_15A > 0) && (this->unk_15A < 41) && (this->unk_154 <= 0)) {
