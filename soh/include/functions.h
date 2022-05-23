@@ -1323,11 +1323,7 @@ void SkinMatrix_SetTranslateRotateZYX(MtxF* dest, s16 rotX, s16 rotY, s16 rotZ, 
 Mtx* SkinMatrix_MtxFToNewMtx(GraphicsContext* gfxCtx, MtxF* src);
 void SkinMatrix_SetRotateAxis(MtxF* mf, s16 angle, f32 axisX, f32 axisY, f32 axisZ);
 void Sram_OpenSave();
-void Sram_WriteSave();
 void Sram_InitSave(FileChooseContext* fileChoose);
-void Sram_EraseSave(FileChooseContext* fileChoose);
-void Sram_CopySave(FileChooseContext* fileChoose);
-void Sram_WriteSramHeader();
 void Sram_InitSram(GameState* gameState);
 void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction);
 void func_800A9F30(PadMgr*, s32);

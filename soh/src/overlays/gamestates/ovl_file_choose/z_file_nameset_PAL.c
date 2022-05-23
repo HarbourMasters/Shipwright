@@ -663,7 +663,7 @@ void FileChoose_UpdateOptionsMenu(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->configMode = CM_OPTIONS_TO_MAIN;
         osSyncPrintf("ＳＡＶＥ");
-        Sram_WriteSramHeader();
+        Save_SaveGlobal();
         osSyncPrintf(VT_FGCOL(YELLOW));
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);
         osSyncPrintf("Na_SetSoundOutputMode = %d\n", gSaveContext.audioSetting);

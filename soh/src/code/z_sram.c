@@ -3,9 +3,6 @@
 
 #include <string.h>
 
-void Sram_InitNewSave(void);
-void Sram_InitDebugSave(void);
-
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -180,14 +177,6 @@ void Sram_OpenSave() {
     gSaveContext.magicLevel = 0;
 }
 
-/**
- *  Write the contents of the Save Context to a main and backup slot in SRAM.
- *  Note: The whole Save Context is written even though only the `save` substruct is read back later
- */
-void Sram_WriteSave() {
-    Save_SaveFile();
-}
-
 void Sram_InitSave(FileChooseContext* fileChooseCtx) {
     u16 offset;
     u16 j;
@@ -213,22 +202,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    Sram_WriteSave();
-}
-
-void Sram_EraseSave(FileChooseContext* fileChooseCtx) {
-    Save_DeleteFile(fileChooseCtx->selectedFileIndex);
-}
-
-void Sram_CopySave(FileChooseContext* fileChooseCtx) {
-    Save_CopyFile(fileChooseCtx->selectedFileIndex, fileChooseCtx->copyDestFileIndex);
-}
-
-/**
- *  Write the first 16 bytes of the read buffer to the SRAM header
- */
-void Sram_WriteSramHeader() {
-    Save_SaveGlobal();
+    Save_SaveFile();
 }
 
 void Sram_InitSram(GameState* gameState) {
