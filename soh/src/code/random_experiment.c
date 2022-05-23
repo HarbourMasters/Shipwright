@@ -10,9 +10,12 @@ static HCRYPTPROV cryptProvider;
 
 bool cryptoRandomInit()
 {
-    randomUint32 = &cryptoRandomUint32;
-    CSPRNG_INITIALIZED = true;
-    return CryptAcquireContext(&cryptProvider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+    bool success = CryptAcquireContext(&cryptProvider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+    if (success) {
+        randomUint32 = &cryptoRandomUint32;
+        CSPRNG_INITIALIZED = true;
+    }
+    return success;
 }
 void cryptoRandomTearDown()
 {

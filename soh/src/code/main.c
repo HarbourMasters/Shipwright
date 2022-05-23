@@ -59,10 +59,10 @@ void Main(void* arg) {
 #if defined(_WIN32)
     if (CVar_GetS32("gCryptoRandom", 0)) {
         if (!cryptoRandomInit()) {
-            osSyncPrintf("Unable to initialize CSPRNG. Quitting.");
-            exit(1);
+            osSyncPrintf("Unable to initialize CSPRNG. Falling back to standard RNG.");
+        } else {
+            osSyncPrintf("CSPRNG initialized.");
         }
-        osSyncPrintf("CSPRNG initialized.");
     }
 #endif // _WIN32
 
