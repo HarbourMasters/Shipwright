@@ -321,7 +321,7 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites 
         gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 220);
         gsSPGrayscale(POLY_KAL_DISP++, true);
     } else {
-        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sprite.color.r, sprite.color.g, sprite.color.b, sprite.color.a);
+        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
         gsSPGrayscale(POLY_KAL_DISP++, false);
     }
 
@@ -412,7 +412,8 @@ void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {
                 if (CHECK_QUEST_ITEM(i - 3)){
                     is_greyscale = false;
                 }
-            } else if (i >= 12) {
+            }
+            if (DungeonsSettings[i].MapIndex == 11) {
                 if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)){
                     is_greyscale = false;
                 }
