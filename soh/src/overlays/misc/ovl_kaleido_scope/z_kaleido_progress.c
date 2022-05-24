@@ -94,16 +94,16 @@ const void* TitleCard[] = {
 };
 
 //Dungeon tokens
-Kaleido_sprites ForestT_Kspr = { gForestMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites FireT_Kspr = { gFireMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites WaterT_Kspr = { gWaterMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites SpritT_Kspr = { gSpiritMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites ShadowT_Kspr = { gShadowMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites LightT_Kspr = { gLightMedallionIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites KokiriT_Kspr = { gKokiriEmeraldIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites GoronT_Kspr = { gGoronRubyIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites ZoraT_Kspr = { gZoraSapphireIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
-Kaleido_sprites GymT_Kspr = { gGerudosCardIconTex, 24, 24, 0.5f, 0.5f, 0, 0, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites ForestT_Kspr    = { gForestMedallionIconTex, 24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites FireT_Kspr      = { gFireMedallionIconTex,   24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites WaterT_Kspr     = { gWaterMedallionIconTex,  24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites SpritT_Kspr     = { gSpiritMedallionIconTex, 24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites ShadowT_Kspr    = { gShadowMedallionIconTex, 24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites LightT_Kspr     = { gLightMedallionIconTex,  24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites KokiriT_Kspr    = { gKokiriEmeraldIconTex,   24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites GoronT_Kspr     = { gGoronRubyIconTex,       24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites ZoraT_Kspr      = { gZoraSapphireIconTex,    24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
+Kaleido_sprites GymT_Kspr       = { gGerudosCardIconTex,     24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
                                         //Right now the structure has a count for the maximumm small key possible but do not use it maybe 
                                         //I could make a system to keep track of how many keys the players had and have and 
                                         //once he/she reach the max amount it change the digit to green?
