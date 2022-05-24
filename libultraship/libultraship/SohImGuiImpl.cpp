@@ -757,6 +757,14 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
+                if (ImGui::BeginMenu("Restoration"))
+                {
+                    EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                    Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood.");
+
+                    ImGui::EndMenu();
+                }
+
                 EXPERIMENTAL();
 
                 EnhancementCheckbox("60FPS Interpolation", "g60FPS");
@@ -776,8 +784,6 @@ namespace SohImGui {
                 Tooltip("Change interface color to GameCube style.");
                 EnhancementRadioButton("Custom interface", "gHudColors", 2);
                 Tooltip("Change interface color to your own made style.");
-                EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
-                Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood.");
                 if (CVar_GetS32("gHudColors", 1) == 2) {
                     EnhancementCheckbox("Interface editor", "gColorsEditor");
                     Tooltip("Edit the colors used for your own interface");
