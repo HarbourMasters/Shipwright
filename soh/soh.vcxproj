@@ -874,6 +874,7 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_map_PAL.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_prompt.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_scope_PAL.c" />
+    <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_progress.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark_data.c" />
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
@@ -1325,6 +1326,7 @@
     <ClInclude Include="src\overlays\actors\ovl_Item_Ocarina\z_item_ocarina.h" />
     <ClInclude Include="src\overlays\actors\ovl_Item_Shield\z_item_shield.h" />
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h" />
+    <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_progress.h" />
     <ClInclude Include="src\overlays\actors\ovl_Magic_Dark\z_magic_dark.h" />
     <ClInclude Include="src\overlays\actors\ovl_Magic_Fire\z_magic_fire.h" />
     <ClInclude Include="src\overlays\actors\ovl_Magic_Wind\z_magic_wind.h" />
