@@ -888,9 +888,9 @@ namespace SohImGui {
                     if (ImGui::BeginTabItem("Magic Bar")) {
                         EnhancementColor("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255));
                         Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game.");
-                        EnhancementColor("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(250,250,0,255));
+                        EnhancementColor("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255));
                         Tooltip("Affect the magic bar color\nGreen in original game.");
-                        EnhancementColor("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, ImVec4(0,200,0,255));
+                        EnhancementColor("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255));
                         Tooltip("Affect the magic bar when being used\nYellow in original game.");
                         ImGui::EndTabItem();
                     }
