@@ -1454,7 +1454,6 @@ void func_80901020(BossGanon2* this, GlobalContext* globalCtx) {
 }
 
 void func_8090109C(BossGanon2* this, GlobalContext* globalCtx) {
-
     u8 i;
 
     static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
