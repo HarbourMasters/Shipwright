@@ -714,7 +714,7 @@ void EnOkuta_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_okuta.c", 1653);
 
-        if (CVar_GetS32("gNewProjectiles", 0) != 0) {
+        if (CVar_GetS32("gNewDrops", 0) != 0) {
             func_80093D18(globalCtx->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x08,
                     Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),

@@ -734,9 +734,8 @@ namespace SohImGui {
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                     EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
-                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
-                    EnhancementCheckbox("Enable 3D projectiles", "gNewProjectiles");
-                    Tooltip("Change some of monsters projectiles to their a 3D version");
+                    EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
+                    Tooltip("Change most 2D items & projectiles to their a 3D version");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
