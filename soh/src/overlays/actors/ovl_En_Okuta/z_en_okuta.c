@@ -1,5 +1,6 @@
 #include "z_en_okuta.h"
 #include "objects/object_okuta/object_okuta.h"
+#include "objects/gameplay_field_keep/gameplay_field_keep.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
 
@@ -713,11 +714,24 @@ void EnOkuta_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_okuta.c", 1653);
 
-        Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-        Matrix_RotateZ(this->actor.home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_okuta.c", 1657),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gOctorokProjectileDL);
+        if (CVar_GetS32("gNewProjectiles", 0) != 0) {
+            func_80093D18(globalCtx->state.gfxCtx);
+            gSPSegment(POLY_OPA_DISP++, 0x08,
+                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),
+                                        1 * (globalCtx->state.frames * 6), 32, 32, 1, 1 * (globalCtx->state.frames * 6),
+                                        1 * (globalCtx->state.frames * 6), 32, 32));
+            Matrix_Scale(7.0f,7.0f,7.0f,MTXMODE_APPLY);
+            Matrix_RotateX(thisx->home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 901),
+                    G_MTX_MODELVIEW | G_MTX_LOAD);
+            gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
+        } else {
+            Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
+            Matrix_RotateZ(this->actor.home.rot.z * (M_PI / 0x8000), MTXMODE_APPLY);
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_okuta.c", 1657),
+                    G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gOctorokProjectileDL);
+        }
 
         CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_okuta.c", 1662);
     }
