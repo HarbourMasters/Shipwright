@@ -27,12 +27,20 @@ typedef struct {
     Vec3s rot;
 } ActorInfo;
 
-std::vector<std::string> acMapping = { "Switch",      "Background (Prop type 1)",
-                                       "Player",      "Bomb",
-                                       "NPC",         "Enemy",
-                                       "Prop type 2", "Item/Action",
-                                       "Misc.",       "Boss",
-                                       "Door",        "Chest" };
+std::vector<std::string> acMapping = { 
+    "Switch",
+    "Background (Prop type 1)",
+    "Player",
+    "Bomb",
+    "NPC",
+    "Enemy",
+    "Prop type 2",
+    "Item/Action",
+    "Misc.",
+    "Boss",
+    "Door",
+    "Chest"
+};
 
 std::vector<Actor*> PopulateActorDropdown(int i, std::vector<Actor*> data) {
     if (gGlobalCtx == nullptr) {
@@ -64,9 +72,13 @@ void DrawActorViewer(bool& open) {
     }
 
     static int category = 0;
+    static ImU16 one = 1;
+    static int actor;
     static std::vector<Actor*> list;
     static Actor display;
+    static ActorInfo newActor = {0,0, {0, 0, 0}, {0, 0, 0}};
     static ActorOverlay* dispOverlay;
+    static std::string filler = "Please select";
 
     if (ImGui::BeginCombo("Actor Type", acMapping[category].c_str())) {
         for (int i = 0; i < acMapping.size(); i++) {
@@ -79,12 +91,12 @@ void DrawActorViewer(bool& open) {
         ImGui::EndCombo();
     }
 
-    static std::string filler = "Please select";
     if (ImGui::BeginCombo("Actor", filler.c_str())) {
         for (int i = 0; i < list.size(); i++) {
             std::string label = acMapping[category] + " Actor " + std::to_string(i);
             if (ImGui::Selectable(label.c_str())) {
                 display = *list[i];
+                actor = i;
                 filler = label;
                 break;
             }
@@ -112,28 +124,35 @@ void DrawActorViewer(bool& open) {
         ImGui::SameLine();
         ImGui::InputScalar("z rot", ImGuiDataType_S16, &display.world.rot.z);
 
+        if (display.category == ACTORCAT_BOSS || display.category == ACTORCAT_ENEMY) {
+            ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display.colChkInfo.health);
+            InsertHelpHoverText("Some actors might not use this!");
+        }
+
         if (ImGui::Button("Kill")) {
             Actor_Delete(&gGlobalCtx->actorCtx, &display, gGlobalCtx);
+            PopulateActorDropdown(category, list);
+            dispOverlay = NULL;
+            filler = "Please select";
         }
 
         if (ImGui::Button("Refresh")) {
             PopulateActorDropdown(category, list);
+            display = *list[actor];
         }
 
         if (ImGui::Button("Go to Actor")) {
             Player* player = GET_PLAYER(gGlobalCtx);
-            player->actor.world.pos = display.world.pos;
-            player->actor.world.rot = display.world.rot;
+            Math_Vec3f_Copy(&player->actor.world.pos, &display.world.pos);
+            Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
         }
 
         ImGui::TreePop();
     }
     
-    
-    static ActorInfo newActor = { 0, 0, { 0, 0, 0 }, {0,0,0} };
     if (ImGui::TreeNode("New...")) {
         ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
-        ImU16 one = 1;
+
         ImGui::InputScalar("ID", ImGuiDataType_U16, &newActor.id, &one);
         ImGui::InputScalar("params", ImGuiDataType_U16, &newActor.params, &one);
         ImGui::InputScalar("posX", ImGuiDataType_Float, &newActor.pos.x);
@@ -162,8 +181,13 @@ void DrawActorViewer(bool& open) {
         }
 
         if (ImGui::Button("Spawn as Child")) {
-            Actor_SpawnAsChild(&gGlobalCtx->actorCtx, gGlobalCtx->actorCtx.actorLists[category].head, gGlobalCtx, newActor.id, newActor.pos.x, newActor.pos.y,
-                               newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
+            Actor* parent = gGlobalCtx->actorCtx.actorLists[category].head;
+            if (parent != NULL) {
+                Actor_SpawnAsChild(&gGlobalCtx->actorCtx, parent, gGlobalCtx, newActor.id, newActor.pos.x,
+                                   newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z,
+                                   newActor.params);
+            }
+            
         }
 
         ImGui::TreePop();
