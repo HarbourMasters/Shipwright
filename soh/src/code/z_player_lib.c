@@ -746,23 +746,34 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
 #endif
 
     Color_RGB8 sTemp;
+    Color_RGB8 sOriginalTunicColors[] = {
+        { 30, 105, 27 },
+        { 100, 20, 0 },
+        { 0, 60, 100 },
+    };
     color = &sTemp;
-    if (tunic == PLAYER_TUNIC_KOKIRI) {
+    if (tunic == PLAYER_TUNIC_KOKIRI && CVar_GetS32("gUseTunicsCol",0)) {
         color->r = CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
         color->g = CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
         color->b = CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
-    } else if (tunic == PLAYER_TUNIC_GORON) {
+    } else if (tunic == PLAYER_TUNIC_GORON && CVar_GetS32("gUseTunicsCol",0)) {
         color->r = CVar_GetS32("gTunic_Goron_R", sTunicColors[PLAYER_TUNIC_GORON].r);
         color->g = CVar_GetS32("gTunic_Goron_G", sTunicColors[PLAYER_TUNIC_GORON].g);
         color->b = CVar_GetS32("gTunic_Goron_B", sTunicColors[PLAYER_TUNIC_GORON].b);
-    } else if (tunic == PLAYER_TUNIC_ZORA) {
+    } else if (tunic == PLAYER_TUNIC_ZORA && CVar_GetS32("gUseTunicsCol",0)) {
         color->r = CVar_GetS32("gTunic_Zora_R", sTunicColors[PLAYER_TUNIC_ZORA].r);
         color->g = CVar_GetS32("gTunic_Zora_G", sTunicColors[PLAYER_TUNIC_ZORA].g);
         color->b = CVar_GetS32("gTunic_Zora_B", sTunicColors[PLAYER_TUNIC_ZORA].b);
-    } else {
-        color->r = CVar_GetS32("gTunic_Kokiri_R", sTunicColors[PLAYER_TUNIC_KOKIRI].r);
-        color->g = CVar_GetS32("gTunic_Kokiri_G", sTunicColors[PLAYER_TUNIC_KOKIRI].g);
-        color->b = CVar_GetS32("gTunic_Kokiri_B", sTunicColors[PLAYER_TUNIC_KOKIRI].b);
+    } else if (!CVar_GetS32("gUseTunicsCol",0)){
+        if (tunic >= 3) {
+            color->r = sOriginalTunicColors[0].r;
+            color->g = sOriginalTunicColors[0].g;
+            color->b = sOriginalTunicColors[0].b;
+        } else {
+            color->r = sOriginalTunicColors[tunic].r;
+            color->g = sOriginalTunicColors[tunic].g;
+            color->b = sOriginalTunicColors[tunic].b;   
+        }
     }
 
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 0);

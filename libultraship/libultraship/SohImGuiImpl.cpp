@@ -90,6 +90,15 @@ namespace SohImGui {
     ImVec4 navi_prop_i_col;
     ImVec4 navi_prop_o_col;
 
+    const char* RainbowColorCvarList[] = {
+    //This is the list of possible CVars that has rainbow effect.
+        "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
+        "gCCHeartsPrim","gDDCCHeartsPrim",
+        "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
+        "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"        
+    };
+
     const char* filters[3] = {
         "Three-Point",
         "Linear",
@@ -98,6 +107,15 @@ namespace SohImGui {
 
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
+
+    int ClampFloatToInt(float value, int min, int max){
+        return fmin(fmax(value,min),max);
+    }
+
+    void Tooltip(std::string text) {
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("%s", text.c_str());
+    }
 
     void ImGuiWMInit() {
         switch (impl.backend) {
@@ -238,6 +256,49 @@ namespace SohImGui {
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
+    }
+
+    void LoadRainbowColor() {
+        for (uint16_t s=0; s <= sizeof(RainbowColorCvarList); s++) {
+            std::string cvarName = RainbowColorCvarList[s];
+            std::string Cvar_Red = cvarName;
+            Cvar_Red += "R";
+            std::string Cvar_Green = cvarName;
+            Cvar_Green += "G";
+            std::string Cvar_Blue = cvarName;
+            Cvar_Blue += "B";
+            std::string Cvar_RBM = cvarName;
+            Cvar_RBM += "RBM";
+            std::string RBM_HUE = cvarName;
+            RBM_HUE+="Hue";
+            f32 Canon = 10.f*s;
+            ImVec4 NewColor;
+            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
+            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
+            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
+            if (newHue >= 360)
+                newHue = 0;
+            CVar_SetFloat(RBM_HUE.c_str(), newHue);
+            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
+            u8 i = current_hue / 60 + 1;
+            u8 a = (-current_hue / 60.0f + i) * 255;
+            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
+            
+            switch (i) {
+                case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+                case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+                case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+                case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+                case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+                case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+            }
+
+            if(CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x,0,255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y,0,255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z,0,255));
+            }
+        }
     }
 
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
@@ -468,11 +529,49 @@ namespace SohImGui {
         }
     }
 
-    int ClampFloatToInt(float value, int min, int max){
-        return fmin(fmax(value,min),max);
+    void RandomizeColor(const char* cvarName, ImVec4* colors) {
+        std::string Cvar_Red = cvarName;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarName;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarName;
+        Cvar_Blue += "B";
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Random";
+        std::string FullName = "Random";
+        FullName+=MakeInvisible;
+        if (ImGui::Button(FullName.c_str())) {
+            s16 RND_R = rand() % (255 - 0);
+            s16 RND_G = rand() % (255 - 0);
+            s16 RND_B = rand() % (255 - 0);
+            colors->x = (float)RND_R/255;
+            colors->y = (float)RND_G/255;
+            colors->z = (float)RND_B/255;
+            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x*255,0,255));
+            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y*255,0,255));
+            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z*255,0,255));
+            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+            needs_save = true;
+        }
+        Tooltip("Clicking this button will make a random color for the colors at it's right.\nPrevious color will be overwrite and will not be recoverable");
     }
 
-    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool has_alpha, bool TitleSameLine) {
+    void RainbowColor(const char* cvarName, ImVec4* colors) {
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Rainbow";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Rainbow";
+
+        EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
+        Tooltip("Clicking this button will make color cycling\nPrevious color will be overwrite and will not be recoverable");
+    }
+
+    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
         std::string Cvar_Red = cvarName;
         Cvar_Red += "R";
         std::string Cvar_Green = cvarName;
@@ -481,9 +580,42 @@ namespace SohImGui {
         Cvar_Blue += "B";
         std::string Cvar_Alpha = cvarName;
         Cvar_Alpha += "A";
-        LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Reset";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Reset";
+        if (ImGui::Button(MakeInvisible.c_str())) {
+            colors->x = defaultcolors.x/255;
+            colors->y = defaultcolors.y/255;
+            colors->z = defaultcolors.z/255;
+            if (has_alpha) { colors->w = defaultcolors.w/255;};
+            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x*255,0,255));
+            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y*255,0,255));
+            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z*255,0,255));
+            if (has_alpha) { CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(colors->w*255,0,255)); };
+            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+            needs_save = true;
+        }
+        Tooltip("Clicking this button will to the game original color (GameCube version)\nPrevious color will be overwrite and will not be recoverable");
+    }
 
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
+        std::string Cvar_Red = cvarName;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarName;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarName;
+        Cvar_Blue += "B";
+        std::string Cvar_Alpha = cvarName;
+        Cvar_Alpha += "A";
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+
+        LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
         ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
+
         if (!TitleSameLine){
             ImGui::Text("%s", text);
             flags = ImGuiColorEditFlags_NoLabel;
@@ -504,11 +636,16 @@ namespace SohImGui {
                 needs_save = true;
             }
         }
-    }
 
-    void Tooltip(std::string text) {
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text.c_str());
+        ImGui::SameLine();
+        ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
+        ImGui::SameLine();
+        RandomizeColor(cvarName, &ColorRGBA);
+        if (allow_rainbow) {
+        //Not all draw support rainbow, like Navi.
+            ImGui::SameLine();
+            RainbowColor(cvarName, &ColorRGBA);
+        }
     }
 
     void DrawMainMenuAndCalculateGameSize() {
@@ -824,24 +961,24 @@ namespace SohImGui {
                     if (ImGui::BeginTabItem("Navi")) {
                         EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
                         Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
-                        EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255,255,255,255));
+                        EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255,255,255,255), false);
                         Tooltip("Inner color for Navi (idle flying around)");
-                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(115,230,255,255));
+                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(115,230,255,255), false);
                         Tooltip("Outer color for Navi (idle flying around)");
                         ImGui::Separator();
-                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(100,100,255,255));
+                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(100,100,255,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around NPCs)");
-                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(90,90,255,255));
+                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(90,90,255,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around NPCs)");
                         ImGui::Separator();
-                        EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255,255,0,255));
+                        EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,220,0,255));
+                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,220,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
                         ImGui::Separator();
-                        EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0,255,0,255));
+                        EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
-                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,220,0,255));
+                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,220,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
                         ImGui::EndTabItem();
                     }
@@ -1065,6 +1202,8 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
+        //Placed here so it does the rainbow effects even if menu is not on.
+        LoadRainbowColor();
     }
 
     void CancelFrame() {

@@ -68,7 +68,7 @@ namespace SohImGui {
     void EnhancementCheckbox(std::string text, std::string cvarName);
     void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format);
     void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue);
-    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool has_alpha=false, bool TitleSameLine=false);
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
 
     void DrawMainMenuAndCalculateGameSize(void);
     
@@ -80,6 +80,9 @@ namespace SohImGui {
     void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
+    void RandomizeColor(const char* cvarName, ImVec4* colors);
+    void RainbowColor(const char* cvarName, ImVec4* colors);
+    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
 }
