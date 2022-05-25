@@ -446,6 +446,46 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconEnvR = 0;
     static s16 sIconEnvG = 0;
     static s16 sIconEnvB = 0;
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        sIconPrimColors[0][0] = 4;
+        sIconPrimColors[0][1] = 84;
+        sIconPrimColors[0][2] = 204;
+        sIconPrimColors[1][0] = 45;
+        sIconPrimColors[1][1] = 125;
+        sIconPrimColors[1][2] = 255;
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 70;
+        sIconEnvColors[1][2] = 255;
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        sIconPrimColors[0][0] = 4;
+        sIconPrimColors[0][1] = 200;
+        sIconPrimColors[0][2] = 80;
+        sIconPrimColors[1][0] = 50;
+        sIconPrimColors[1][1] = 255;
+        sIconPrimColors[1][2] = 130;
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 255;
+        sIconEnvColors[1][2] = 130;
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 50)/255)*95;
+        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 255)/255)*95;
+        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 130)/255)*95;
+        sIconPrimColors[1][0] = CVar_GetS32("gCCABtnPrimR", 50);
+        sIconPrimColors[1][1] = CVar_GetS32("gCCABtnPrimG", 255);
+        sIconPrimColors[1][2] = CVar_GetS32("gCCABtnPrimB", 130);
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 10;
+        sIconEnvColors[1][1] = 10;
+        sIconEnvColors[1][2] = 10;
+    }
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &msgCtx->font;
     Gfx* gfx = *p;
@@ -1841,6 +1881,7 @@ void Message_DrawTextBox(GlobalContext* globalCtx, Gfx** p) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Gfx* gfx = *p;
 
+    gSPInvalidateTexCache(gfx++, msgCtx->textboxSegment);
     gDPPipeSync(gfx++);
     gDPSetPrimColor(gfx++, 0, 0, msgCtx->textboxColorRed, msgCtx->textboxColorGreen, msgCtx->textboxColorBlue,
                     msgCtx->textboxColorAlphaCurrent);
@@ -2826,12 +2867,22 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                     gDPPipeSync(gfx++);
                     if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { //A buttons :)
+                            gDPSetPrimColor(gfx++, 0, 0, 80, 150, 255, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCABtnPrimR", 0), CVar_GetS32("gCCABtnPrimG", 0), CVar_GetS32("gCCABtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        }
                         gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
                     } else {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { //C buttons :)
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 0), CVar_GetS32("gCCCBtnPrimG", 0), CVar_GetS32("gCCCBtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        }
                         gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
                     }
 

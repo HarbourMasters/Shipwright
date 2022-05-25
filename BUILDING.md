@@ -41,9 +41,9 @@ cp /usr/local/lib/libGLEW.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
-make setup -j$(nproc) OPTFLAGS=-O0 DEBUG=0
+make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
 # Compile the code
-make -j $(nproc) OPTFLAGS=-O0 DEBUG=0
+make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 ```
 
 # Compatible Roms

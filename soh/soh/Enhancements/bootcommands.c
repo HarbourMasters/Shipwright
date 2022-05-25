@@ -28,10 +28,14 @@ void BootCommands_Init()
     CVar_RegisterS32("gRumbleEnabled", 0);
     CVar_RegisterS32("gUniformLR", 1);
     CVar_RegisterS32("gTwoHandedIdle", 0);
+    CVar_RegisterS32("gDekuNutUpgradeFix", 1);
     CVar_RegisterS32("gNewDrops", 0);
     CVar_RegisterS32("gVisualAgony", 0);
     CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
     CVar_RegisterS32("gSOHSplashscreen", 0);
+    CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
+    CVar_RegisterS32("gUseNaviCol", 0);
+    CVar_RegisterS32("gUseTunicsCol", 0);
 }
 
 //void BootCommands_ParseBootArgs(char* str)
