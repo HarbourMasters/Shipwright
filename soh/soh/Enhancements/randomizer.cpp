@@ -594,6 +594,65 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
+        // todo implement dungeon-specific keys
+        case BOSS_KEY_FIRE_TEMPLE:
+            return GI_KEY_BOSS;
+        case SMALL_KEY_FIRE_TEMPLE:
+            return GI_KEY_SMALL;
+        case MAGIC_METER:
+            // todo make it progressive
+            return GI_MAGIC_LARGE;
+        case PROGRESSIVE_WALLET:
+            // todo make it progressive
+            return GI_WALLET_GIANT;
+        case RECOVERY_HEART:
+            return GI_HEART;
+        case RUPEES_5:
+            return GI_RUPEE_BLUE;
+        case RUPEES_20:
+            return GI_RUPEE_RED;
+        case RUPEES_50:
+            return GI_RUPEE_PURPLE;
+        case RUPEES_200:
+            return GI_RUPEE_GOLD;
+        case FIRE_ARROWS:
+            return GI_ARROW_FIRE;
+        case ICE_ARROWS:
+            return GI_ARROW_ICE;
+        case LIGHT_ARROWS:
+            return GI_ARROW_LIGHT;
+        case DINS_FIRE:
+            return GI_DINS_FIRE;
+        case FARORES_WIND:
+            return GI_FARORES_WIND;
+        case NAYRUS_LOVE:
+            return GI_NAYRUS_LOVE;
+        case DEKU_NUTS_10:
+            return GI_NUTS_10;
+        case BOMBS_10:
+            return GI_BOMBS_10;
+        case BOMBS_20:
+            return GI_BOMBS_20;
+        case DEKU_SEEDS_30:
+            return GI_SEEDS_30;
+        case BOTTLE_WITH_BIG_POE:
+            return GI_BIG_POE;
+        case PIECE_OF_HEART_TREASURE_CHEST_GAME:
+            return GI_HEART_PIECE_WIN;
+        case DEKU_STICK_CAPACITY:
+            // todo make it progressive
+            return GI_STICK_UPGRADE_30;
+        case DEKU_NUT_CAPACITY:
+            // todo make it progressive
+            return GI_NUT_UPGRADE_40;
+        case RUTOS_LETTER:
+            return GI_LETTER_RUTO;
+        case ARROWS_5:
+            return GI_ARROWS_SMALL;
+        case ARROWS_10:
+            return GI_ARROWS_MEDIUM;
+        case ARROWS_30:
+            return GI_ARROWS_LARGE;
         default:
             return GI_NONE;
     }
