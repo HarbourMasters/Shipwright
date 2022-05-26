@@ -594,10 +594,25 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case HEART_CONTAINER:
             // todo figure out what GI_HEART_CONTAINER_2 is
             return GI_HEART_CONTAINER;
-        // todo implement dungeon-specific keys
+        // todo implement dungeon-specific keys/keyrings
+        case BOSS_KEY:
         case BOSS_KEY_FIRE_TEMPLE:
+        case BOSS_KEY_FOREST_TEMPLE:
+        case BOSS_KEY_GANONS_CASTLE:
+        case BOSS_KEY_SHADOW_TEMPLE:
+        case BOSS_KEY_SPIRIT_TEMPLE:
+        case BOSS_KEY_WATER_TEMPLE:
             return GI_KEY_BOSS;
+        case SMALL_KEY:
+        case SMALL_KEY_BOTTOM_OF_THE_WELL:
         case SMALL_KEY_FIRE_TEMPLE:
+        case SMALL_KEY_FOREST_TEMPLE:
+        case SMALL_KEY_GANONS_CASTLE:
+        case SMALL_KEY_GERUDO_TRAINING_GROUND:
+        case SMALL_KEY_SHADOW_TEMPLE:
+        case SMALL_KEY_SPIRIT_TEMPLE:
+        case SMALL_KEY_THIEVES_HIDEOUT:
+        case SMALL_KEY_WATER_TEMPLE:
             return GI_KEY_SMALL;
         case MAGIC_METER:
             // todo make it progressive
@@ -653,6 +668,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
             return GI_ARROWS_MEDIUM;
         case ARROWS_30:
             return GI_ARROWS_LARGE;
+        case DEKU_STICK_1:
+            return GI_STICKS_1;
         default:
             return GI_NONE;
     }
@@ -793,6 +810,35 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                     return JABU_JABUS_BELLY_MAP_CHEST;
                 case -18428:
                     return JABU_JABUS_BELLY_COMPASS_CHEST;
+            }
+        case 8:
+            switch(actorParams) {
+                case 22600:
+                    return BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
+                case 20578:
+                    return BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST;
+                case 23684:
+                    return BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST;
+                case 22793:
+                    return BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST;
+                case 2049:
+                    return BOTTOM_OF_THE_WELL_COMPASS_CHEST;
+                case 20558:
+                    return BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST;
+                case 22597:
+                    return BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST;
+                case 21802:
+                    return BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST;
+                case 21836:
+                    return BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST;
+                case 2087:
+                    return BOTTOM_OF_THE_WELL_MAP_CHEST;
+                case 23760:
+                    return BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST;
+                case 4419:
+                    return BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST;
+                case 27348:
+                    return BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
             }
     }
 
