@@ -543,6 +543,57 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
             return GI_ICE_TRAP;
         case PIECE_OF_HEART:
             return GI_HEART_PIECE;
+        case BOMBS_5:
+            return GI_BOMBS_5;
+        case DEKU_NUTS_5:
+            return GI_NUTS_5;
+        case BOMBCHUS_10:
+            return GI_BOMBCHUS_10;
+        case BOW:
+            return GI_BOW;
+        case SLINGSHOT:
+            return GI_SLINGSHOT;
+        case BOOMERANG:
+            return GI_BOOMERANG;
+        case PROGRESSIVE_HOOKSHOT:
+            // todo actually make it progressive
+            return GI_LONGSHOT;
+        case LENS_OF_TRUTH:
+            return GI_LENS;
+        case ZELDAS_LETTER:
+            return GI_LETTER_ZELDA;
+        case MEGATON_HAMMER:
+            return GI_HAMMER;
+        case PRESCRIPTION:
+            return GI_PRESCRIPTION;
+        case HYLIAN_SHIELD:
+            return GI_SHIELD_HYLIAN;
+        case MIRROR_SHIELD:
+            return GI_SHIELD_MIRROR;
+        case GORON_TUNIC:
+            return GI_TUNIC_GORON;
+        case ZORA_TUNIC:
+            return GI_TUNIC_ZORA;
+        case IRON_BOOTS:
+            return GI_BOOTS_IRON;
+        case HOVER_BOOTS:
+            return GI_BOOTS_HOVER;
+        case BOMB_BAG:
+            // todo make it progressive
+            return GI_BOMB_BAG_40;
+        case PROGRESSIVE_STRENGTH_UPGRADE:
+            // todo make it progressive
+            return GI_GAUNTLETS_GOLD;
+        case PROGRESSIVE_SCALE:
+            // todo make it progressive
+            return GI_SCALE_GOLD;
+        case STONE_OF_AGONY:
+            return GI_STONE_OF_AGONY;
+        case GERUDO_MEMBERSHIP_CARD:
+            return GI_GERUDO_CARD;
+        case HEART_CONTAINER:
+            // todo figure out what GI_HEART_CONTAINER_2 is
+            return GI_HEART_CONTAINER;
         default:
             return GI_NONE;
     }
