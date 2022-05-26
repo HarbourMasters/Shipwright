@@ -665,6 +665,7 @@ namespace SohImGui {
                 {
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
@@ -754,7 +755,6 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
-                EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
