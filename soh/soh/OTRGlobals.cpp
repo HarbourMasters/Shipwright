@@ -43,6 +43,7 @@ OTRGlobals::OTRGlobals() {
 
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
+    gRandomizer = std::make_shared<Randomizer>();
     context->GetWindow()->Init();
 }
 
@@ -993,4 +994,12 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     }
 
     return 0;
+}
+
+extern "C" void PopulateItemLocations(const char* spoilerfilename) {
+    OTRGlobals::Instance->gRandomizer->PopulateItemLocations(spoilerfilename);
+}
+
+extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams) {
+    OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams);
 }

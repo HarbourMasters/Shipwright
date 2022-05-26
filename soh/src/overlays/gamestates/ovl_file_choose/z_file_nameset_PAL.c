@@ -1,6 +1,7 @@
 #include "file_choose.h"
 #include "textures/title_static/title_static.h"
 #include "assets/overlays/ovl_File_Choose/ovl_file_choose.h"
+#include "../../../../soh/OTRGlobals.h"
 
 static s16 D_808124C0[] = {
     0x0002, 0x0003, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0002, 0x0001, 0x0002, 0x0000, 0x0001,
@@ -438,6 +439,9 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             gSaveContext.fileNum = this->buttonIndex;
                             dayTime = ((void)0, gSaveContext.dayTime);
                             Sram_InitSave(this, &this->sramCtx);
+                            // todo: load spoilerfile data
+                            PopulateItemLocations("blarg");
+                            // todo: fill link's pocket here
                             gSaveContext.dayTime = dayTime;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;

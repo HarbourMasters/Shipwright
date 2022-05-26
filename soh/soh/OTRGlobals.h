@@ -7,6 +7,7 @@
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
+#include "Enhancements/randomizer.h"
 class OTRGlobals
 {
 public:
@@ -14,6 +15,7 @@ public:
 
     std::shared_ptr<Ship::GlobalCtx2> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
     ~OTRGlobals();
@@ -72,6 +74,8 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void PopulateItemLocations(const char* spoilerfilename);
+GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams);
 #endif
 
 #endif
