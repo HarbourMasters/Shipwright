@@ -27,6 +27,13 @@ typedef struct {
     Vec3s rot;
 } ActorInfo;
 
+typedef enum {
+    LIST,
+    TARGET,
+    HELD,
+    INTERACT
+} RetrievalMethod;
+
 std::vector<std::string> acMapping = { 
     "Switch",
     "Background (Prop type 1)",
@@ -41,6 +48,31 @@ std::vector<std::string> acMapping = {
     "Door",
     "Chest"
 };
+
+template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
+    // First group encapsulates the inner portion and border
+    ImGui::BeginGroup();
+
+    ImVec2 padding = ImGui::GetStyle().FramePadding;
+    ImVec2 p0 = ImGui::GetCursorScreenPos();
+    ImGui::SetCursorScreenPos(ImVec2(p0.x + padding.x, p0.y + padding.y));
+
+    // Second group encapsulates just the inner portion
+    ImGui::BeginGroup();
+
+    drawFunc();
+
+    ImGui::Dummy(padding);
+    ImGui::EndGroup();
+
+    ImVec2 p1 = ImGui::GetItemRectMax();
+    p1.x += padding.x;
+    ImVec4 borderCol = ImGui::GetStyle().Colors[ImGuiCol_Border];
+    ImGui::GetWindowDrawList()->AddRect(
+        p0, p1, IM_COL32(borderCol.x * 255, borderCol.y * 255, borderCol.z * 255, borderCol.w * 255));
+
+    ImGui::EndGroup();
+}
 
 std::vector<Actor*> PopulateActorDropdown(int i, std::vector<Actor*> data) {
     if (gGlobalCtx == nullptr) {
@@ -74,8 +106,10 @@ void DrawActorViewer(bool& open) {
     static int category = 0;
     static ImU16 one = 1;
     static int actor;
+    static RetrievalMethod rm;
     static std::vector<Actor*> list;
     static Actor display;
+    static Actor* fetch = NULL;
     static ActorInfo newActor = {0,0, {0, 0, 0}, {0, 0, 0}};
     static ActorOverlay* dispOverlay;
     static std::string filler = "Please select";
@@ -95,6 +129,7 @@ void DrawActorViewer(bool& open) {
         for (int i = 0; i < list.size(); i++) {
             std::string label = acMapping[category] + " Actor " + std::to_string(i);
             if (ImGui::Selectable(label.c_str())) {
+                rm = LIST;
                 display = *list[i];
                 actor = i;
                 filler = label;
@@ -106,23 +141,32 @@ void DrawActorViewer(bool& open) {
 
     if (ImGui::TreeNode("Selected Actor")) {
         dispOverlay = display.overlayEntry;
-        ImGui::Text("Name: %s", dispOverlay != nullptr ? dispOverlay->name : "???");
-        ImGui::Text("ID: %d", display.id);
-        ImGui::Text("Parameters: %d", display.params);
-        ImGui::Text("Actor Position");
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Name: %s", dispOverlay != nullptr ? dispOverlay->name : "???");
+            ImGui::Text("Category: %s", dispOverlay != nullptr ? acMapping[display.category].c_str() : "???");
+            ImGui::Text("ID: %d", display.id);
+            ImGui::Text("Parameters: %d", display.params);
+        });
+        
         ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
-        ImGui::InputScalar("x pos", ImGuiDataType_Float, &display.world.pos.x);
-        ImGui::SameLine();
-        ImGui::InputScalar("y pos", ImGuiDataType_Float, &display.world.pos.y);
-        ImGui::SameLine();
-        ImGui::InputScalar("z pos", ImGuiDataType_Float, &display.world.pos.z);
 
-        ImGui::Text("Actor Rotation");
-        ImGui::InputScalar("x rot", ImGuiDataType_S16, &display.world.rot.x);
-        ImGui::SameLine();
-        ImGui::InputScalar("y rot", ImGuiDataType_S16, &display.world.rot.y);
-        ImGui::SameLine();
-        ImGui::InputScalar("z rot", ImGuiDataType_S16, &display.world.rot.z);
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Actor Position");
+            ImGui::InputScalar("x pos", ImGuiDataType_Float, &display.world.pos.x);
+            ImGui::SameLine();
+            ImGui::InputScalar("y pos", ImGuiDataType_Float, &display.world.pos.y);
+            ImGui::SameLine();
+            ImGui::InputScalar("z pos", ImGuiDataType_Float, &display.world.pos.z);
+        });        
+
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("Actor Rotation");
+            ImGui::InputScalar("x rot", ImGuiDataType_S16, &display.world.rot.x);
+            ImGui::SameLine();
+            ImGui::InputScalar("y rot", ImGuiDataType_S16, &display.world.rot.y);
+            ImGui::SameLine();
+            ImGui::InputScalar("z rot", ImGuiDataType_S16, &display.world.rot.z);
+        });        
 
         if (display.category == ACTORCAT_BOSS || display.category == ACTORCAT_ENEMY) {
             ImGui::InputScalar("Enemy Health", ImGuiDataType_U8, &display.colChkInfo.health);
@@ -132,13 +176,24 @@ void DrawActorViewer(bool& open) {
         if (ImGui::Button("Kill")) {
             Actor_Delete(&gGlobalCtx->actorCtx, &display, gGlobalCtx);
             PopulateActorDropdown(category, list);
-            dispOverlay = NULL;
             filler = "Please select";
         }
 
         if (ImGui::Button("Refresh")) {
             PopulateActorDropdown(category, list);
-            display = *list[actor];
+            switch (rm) { 
+                case INTERACT:
+                case HELD:
+                case TARGET: 
+                    display = *fetch;
+                    break;
+                case LIST:
+                    display = *list[actor];
+                    break;
+                default:
+                    break;
+            }
+            //display = *list[actor];
         }
 
         if (ImGui::Button("Go to Actor")) {
@@ -147,25 +202,68 @@ void DrawActorViewer(bool& open) {
             Math_Vec3f_Copy(&player->actor.home.pos, &player->actor.world.pos);
         }
 
+        if (ImGui::Button("Fetch from Target")) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            fetch = player->targetActor;
+            if (fetch != NULL) {
+                display = *fetch;
+                category = fetch->category;
+                PopulateActorDropdown(category, list);
+                rm = TARGET;
+            }
+        }
+        InsertHelpHoverText("Grabs actor with target arrow above it. You might need C-Up for enemies");
+        if (ImGui::Button("Fetch from Held")) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            fetch = player->heldActor;
+            if (fetch != NULL) {
+                display = *fetch;
+                category = fetch->category;
+                PopulateActorDropdown(category, list);
+                rm = HELD;
+            }
+        }
+        InsertHelpHoverText("Grabs actor that Link is holding");
+        if (ImGui::Button("Fetch from Interaction")) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            fetch = player->interactRangeActor;
+            if (fetch != NULL) {
+                display = *fetch;
+                category = fetch->category;
+                PopulateActorDropdown(category, list);
+                rm = INTERACT;
+            }
+        }
+        InsertHelpHoverText("Grabs actor from \"interaction range\"");
+
         ImGui::TreePop();
     }
     
     if (ImGui::TreeNode("New...")) {
         ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
-        ImGui::InputScalar("ID", ImGuiDataType_U16, &newActor.id, &one);
-        ImGui::InputScalar("params", ImGuiDataType_U16, &newActor.params, &one);
-        ImGui::InputScalar("posX", ImGuiDataType_Float, &newActor.pos.x);
-        ImGui::SameLine();
-        ImGui::InputScalar("posY", ImGuiDataType_Float, &newActor.pos.y);
-        ImGui::SameLine();
-        ImGui::InputScalar("posZ", ImGuiDataType_Float, &newActor.pos.z);
+        ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one);
+        ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
 
-        ImGui::InputScalar("rotX", ImGuiDataType_S16, &newActor.rot.x);
-        ImGui::SameLine();
-        ImGui::InputScalar("rotY", ImGuiDataType_S16, &newActor.rot.y);
-        ImGui::SameLine();
-        ImGui::InputScalar("rotZ", ImGuiDataType_S16, &newActor.rot.z);
+        ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
+
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("New Actor Position");
+            ImGui::InputScalar("posX", ImGuiDataType_Float, &newActor.pos.x);
+            ImGui::SameLine();
+            ImGui::InputScalar("posY", ImGuiDataType_Float, &newActor.pos.y);
+            ImGui::SameLine();
+            ImGui::InputScalar("posZ", ImGuiDataType_Float, &newActor.pos.z);
+        });
+
+        DrawGroupWithBorder([&]() {
+            ImGui::Text("New Actor Rotation");
+            ImGui::InputScalar("rotX", ImGuiDataType_S16, &newActor.rot.x);
+            ImGui::SameLine();
+            ImGui::InputScalar("rotY", ImGuiDataType_S16, &newActor.rot.y);
+            ImGui::SameLine();
+            ImGui::InputScalar("rotZ", ImGuiDataType_S16, &newActor.rot.z);
+        });
 
         if (ImGui::Button("Fetch from Link")) {
             Player* player = GET_PLAYER(gGlobalCtx);
