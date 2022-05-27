@@ -528,13 +528,18 @@ void Randomizer::PopulateItemLocations(std::string spoilerFileName) {
     }
 }
 
-GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)]);
+GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
 }
 
-GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
-    // todo update this to handle progressive upgrades (need to pass in more than just randoGet)
+GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)], ogItemId);
+}
+
+GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch(randoGet) {
+        case UNKNOWN_GET:
+            return ogItemId;
         case KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
         case DEKU_SHIELD:
@@ -725,11 +730,33 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case DEKU_STICK_1:
             return GI_STICKS_1;
         default:
-            return GI_NONE;
+            return ogItemId;
     }
 }
 
+RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
+    if (!gSaveContext.randomizerFlag) {
+        return UNKNOWN_CHECK;
+    }
+
+    switch (actorId) {
+        case 316:
+            switch (ogItemId) {
+                case GI_BOTTLE:
+                    return KAK_ANJU_AS_CHILD;
+                case GI_POCKET_EGG:
+                    return KAK_ANJU_AS_ADULT;
+            }
+    }
+
+    return UNKNOWN_CHECK;
+}
+
 RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams) {
+    if (!gSaveContext.randomizerFlag) {
+        return UNKNOWN_CHECK;
+    }
+
     switch(sceneNum) {
         case 40:
             switch(actorParams) {

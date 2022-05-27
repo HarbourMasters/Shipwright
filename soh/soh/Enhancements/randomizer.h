@@ -278,6 +278,7 @@ typedef enum {
 
 // based on https://github.com/TestRunnerSRL/OoT-Randomizer/blob/e337d7f603b91a6bacb618fb32cc7fd70ed9ffca/ItemList.py
 typedef enum {
+    UNKNOWN_GET = 0,
     BOMBS_5,
     DEKU_NUTS_5,
     BOMBCHUS_10,
@@ -499,14 +500,14 @@ typedef enum {
     WATER_MEDALLION,
     SPIRIT_MEDALLION,
     SHADOW_MEDALLION,
-    LIGHT_MEDALLION,
-    UNKNOWN_GET
+    LIGHT_MEDALLION
 } RandomizerGet;
 
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
-    GetItemID GetItemFromGet(RandomizerGet randoGet);
+    GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
+    RandomizerCheck GetCheckFromActor(s16 actorId, GetItemID ogItemId);
     RandomizerCheck GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams);
 
   public:
@@ -514,7 +515,8 @@ class Randomizer {
     ~Randomizer();
 
     void PopulateItemLocations(std::string spoilerfilename);
-    GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams);
+    GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId);
+    GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId);
 };
 
 #endif
