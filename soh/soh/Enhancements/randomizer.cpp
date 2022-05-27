@@ -840,6 +840,35 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 27348:
                     return BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
             }
+        case 3:
+            switch(actorParams) {
+                case 22595:
+                    return FOREST_TEMPLE_FIRST_ROOM_CHEST;
+                case 30784:
+                    return FOREST_TEMPLE_FIRST_STALFOS_CHEST;
+                case 22789:
+                    return FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST;
+                case 6177:
+                    return FOREST_TEMPLE_MAP_CHEST;
+                case 22601:
+                    return FOREST_TEMPLE_WELL_CHEST;
+                case -30364:
+                    return FOREST_TEMPLE_EYE_SWITCH_CHEST;
+                case 10222:
+                    return FOREST_TEMPLE_BOSS_KEY_CHEST;
+                case 30786:
+                    return FOREST_TEMPLE_FLOORMASTER_CHEST;
+                case 30797:
+                    return FOREST_TEMPLE_RED_POE_CHEST;
+                case -20340:
+                    return FOREST_TEMPLE_BOW_CHEST;
+                case 6159:
+                    return FOREST_TEMPLE_BLUE_POE_CHEST;
+                case 22855:
+                    return FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST;
+                case 22827:
+                    return FOREST_TEMPLE_BASEMENT_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
