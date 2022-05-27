@@ -1,6 +1,8 @@
 #include "randomizer.h"
 #include "json.hpp"
 #include <fstream>
+#include <variables.h>
+#include <macros.h>
 
 using json = nlohmann::json;
 
@@ -556,8 +558,12 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case BOOMERANG:
             return GI_BOOMERANG;
         case PROGRESSIVE_HOOKSHOT:
-            // todo actually make it progressive
-            return GI_LONGSHOT;
+            switch (gSaveContext.inventory.items[SLOT_HOOKSHOT]) {
+            case ITEM_NONE:
+                return GI_HOOKSHOT;
+            case ITEM_HOOKSHOT:
+                return GI_LONGSHOT;
+            }
         case LENS_OF_TRUTH:
             return GI_LENS;
         case ZELDAS_LETTER:
@@ -579,14 +585,30 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case HOVER_BOOTS:
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
-            // todo make it progressive
-            return GI_BOMB_BAG_40;
+            switch (CUR_UPG_VALUE(1)) {
+                case ITEM_NONE:
+                    return GI_BOMB_BAG_20;
+                case ITEM_BOMB_BAG_20:
+                    return GI_BOMB_BAG_30;
+                case ITEM_BOMB_BAG_30:
+                    return GI_BOMB_BAG_40;
+            }
         case PROGRESSIVE_STRENGTH_UPGRADE:
-            // todo make it progressive
-            return GI_GAUNTLETS_GOLD;
+            switch (CUR_UPG_VALUE(3)) {
+                case 0:
+                    return GI_BRACELET;
+                case 1:
+                    return GI_GAUNTLETS_SILVER;
+                case 2:
+                    return GI_GAUNTLETS_GOLD;
+            }
         case PROGRESSIVE_SCALE:
-            // todo make it progressive
-            return GI_SCALE_GOLD;
+            switch (CUR_UPG_VALUE(2)) {
+                case 0:
+                    return GI_SCALE_SILVER;
+                case 1:
+                    return GI_SCALE_GOLD;
+            }
         case STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
         case GERUDO_MEMBERSHIP_CARD:
@@ -615,13 +637,23 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case SMALL_KEY_WATER_TEMPLE:
             return GI_KEY_SMALL;
         case MAGIC_METER:
-            // todo make it progressive
-            return GI_MAGIC_LARGE;
+            switch (gSaveContext.magicLevel) {
+                case 0:
+                    return GI_MAGIC_SMALL;
+                case 1:
+                    return GI_MAGIC_LARGE;
+            }
         case PROGRESSIVE_WALLET:
-            // todo make it progressive
-            return GI_WALLET_GIANT;
+            switch (CUR_UPG_VALUE(4)) {
+                case 0:
+                    return GI_WALLET_ADULT;
+                case 1:
+                    return GI_WALLET_GIANT;
+            }
         case RECOVERY_HEART:
             return GI_HEART;
+        case RUPEE_1:
+            return GI_RUPEE_GREEN;
         case RUPEES_5:
             return GI_RUPEE_BLUE;
         case RUPEES_20:
@@ -655,11 +687,19 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case PIECE_OF_HEART_TREASURE_CHEST_GAME:
             return GI_HEART_PIECE_WIN;
         case DEKU_STICK_CAPACITY:
-            // todo make it progressive
-            return GI_STICK_UPGRADE_30;
+            switch (CUR_UPG_VALUE(6)) {
+                case 0:
+                    return GI_STICK_UPGRADE_20;
+                case 1:
+                    return GI_STICK_UPGRADE_30;
+            }
         case DEKU_NUT_CAPACITY:
-            // todo make it progressive
-            return GI_NUT_UPGRADE_40;
+            switch (CUR_UPG_VALUE(7)) {
+                case 0:
+                    return GI_NUT_UPGRADE_30;
+                case 1:
+                    return GI_NUT_UPGRADE_40;
+            }
         case RUTOS_LETTER:
             return GI_LETTER_RUTO;
         case ARROWS_5:
