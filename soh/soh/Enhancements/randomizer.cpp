@@ -529,13 +529,18 @@ void Randomizer::PopulateItemLocations(std::string spoilerFileName) {
     }
 }
 
-GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)]);
+GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
 }
 
-GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
-    // todo update this to handle progressive upgrades (need to pass in more than just randoGet)
+GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)], ogItemId);
+}
+
+GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch(randoGet) {
+        case UNKNOWN_GET:
+            return ogItemId;
         case KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
         case DEKU_SHIELD:
@@ -553,9 +558,23 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case BOMBCHUS_10:
             return GI_BOMBCHUS_10;
         case BOW:
-            return GI_BOW;
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                case 0:
+                    return GI_BOW;
+                case 1:
+                    return GI_QUIVER_40;
+                case 2:
+                    return GI_QUIVER_50;
+            }
         case SLINGSHOT:
-            return GI_SLINGSHOT;
+            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+                case 0:
+                    return GI_SLINGSHOT;
+                case 1:
+                    return GI_BULLET_BAG_40;
+                case 2:
+                    return GI_BULLET_BAG_50;
+            }
         case BOOMERANG:
             return GI_BOOMERANG;
         case PROGRESSIVE_HOOKSHOT:
@@ -586,7 +605,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case HOVER_BOOTS:
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
-            switch (CUR_UPG_VALUE(1)) {
+            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
                 case ITEM_NONE:
                     return GI_BOMB_BAG_20;
                 case ITEM_BOMB_BAG_20:
@@ -595,7 +614,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_BOMB_BAG_40;
             }
         case PROGRESSIVE_STRENGTH_UPGRADE:
-            switch (CUR_UPG_VALUE(3)) {
+            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
                     return GI_BRACELET;
                 case 1:
@@ -604,7 +623,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_GAUNTLETS_GOLD;
             }
         case PROGRESSIVE_SCALE:
-            switch (CUR_UPG_VALUE(2)) {
+            switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
                 case 1:
@@ -645,7 +664,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_MAGIC_LARGE;
             }
         case PROGRESSIVE_WALLET:
-            switch (CUR_UPG_VALUE(4)) {
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     return GI_WALLET_ADULT;
                 case 1:
@@ -688,14 +707,14 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case PIECE_OF_HEART_TREASURE_CHEST_GAME:
             return GI_HEART_PIECE_WIN;
         case DEKU_STICK_CAPACITY:
-            switch (CUR_UPG_VALUE(6)) {
+            switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
                     return GI_STICK_UPGRADE_20;
                 case 1:
                     return GI_STICK_UPGRADE_30;
             }
         case DEKU_NUT_CAPACITY:
-            switch (CUR_UPG_VALUE(7)) {
+            switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
                     return GI_NUT_UPGRADE_30;
                 case 1:
@@ -712,11 +731,33 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case DEKU_STICK_1:
             return GI_STICKS_1;
         default:
-            return GI_NONE;
+            return ogItemId;
     }
 }
 
+RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
+    if (!gSaveContext.n64ddFlag) {
+        return UNKNOWN_CHECK;
+    }
+
+    switch (actorId) {
+        case 316:
+            switch (ogItemId) {
+                case GI_BOTTLE:
+                    return KAK_ANJU_AS_CHILD;
+                case GI_POCKET_EGG:
+                    return KAK_ANJU_AS_ADULT;
+            }
+    }
+
+    return UNKNOWN_CHECK;
+}
+
 RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams) {
+    if (!gSaveContext.n64ddFlag) {
+        return UNKNOWN_CHECK;
+    }
+
     switch(sceneNum) {
         case 40:
             switch(actorParams) {

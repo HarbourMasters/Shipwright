@@ -506,7 +506,8 @@ typedef enum {
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
-    GetItemID GetItemFromGet(RandomizerGet randoGet);
+    GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
+    RandomizerCheck GetCheckFromActor(s16 actorId, GetItemID ogItemId);
     RandomizerCheck GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams);
 
   public:
@@ -514,7 +515,8 @@ class Randomizer {
     ~Randomizer();
 
     void PopulateItemLocations(std::string spoilerfilename);
-    GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams);
+    GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId);
+    GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId);
 };
 
 #endif

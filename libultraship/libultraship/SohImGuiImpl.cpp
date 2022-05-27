@@ -813,6 +813,12 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            if (ImGui::BeginMenu("Randomizer"))
+            {
+                EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+                ImGui::EndMenu();
+            }
+
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");

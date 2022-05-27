@@ -198,15 +198,24 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
                 this->nameEntryBoxPosX = 120;
                 this->nameEntryBoxAlpha = 0;
                 memcpy(&this->fileNames[this->buttonIndex][0], &emptyName, 8);
-            } else if (this->n64ddFlags[this->buttonIndex] == this->n64ddFlag) {
+            } else if (this->n64ddFlags[this->buttonIndex] == 0 && CVar_GetS32("gRandomizer", 0) == 0) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->actionTimer = 8;
                 this->selectMode = SM_FADE_MAIN_TO_SELECT;
                 this->selectedFileIndex = this->buttonIndex;
                 this->menuMode = FS_MENU_MODE_SELECT;
                 this->nextTitleLabel = FS_TITLE_OPEN_FILE;
-            } else if (!this->n64ddFlags[this->buttonIndex]) {
+            } else if (this->n64ddFlags[this->buttonIndex] == 0 && CVar_GetS32("gRandomizer", 0) != 0) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else if (this->n64ddFlags[this->buttonIndex] != 0 && CVar_GetS32("gRandomizer", 0) == 0) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+            } else if (this->n64ddFlags[this->buttonIndex] != 0 && CVar_GetS32("gRandomizer", 0) != 0) {
+                Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+                this->actionTimer = 8;
+                this->selectMode = SM_FADE_MAIN_TO_SELECT;
+                this->selectedFileIndex = this->buttonIndex;
+                this->menuMode = FS_MENU_MODE_SELECT;
+                this->nextTitleLabel = FS_TITLE_OPEN_FILE;
             }
         } else {
             if (this->warningLabel == FS_WARNING_NONE) {
@@ -990,7 +999,11 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // draw file button
         gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
-        isActive = ((this->n64ddFlag == this->n64ddFlags[i]) || (this->nameBoxAlpha[i] == 0)) ? 0 : 1;
+        isActive =
+            (((this->n64ddFlags[i] == 0 && CVar_GetS32("gRandomizer", 0) == 0) ||
+                      (this->n64ddFlags[i] != 0 && CVar_GetS32("gRandomizer", 0) != 0) || (this->nameBoxAlpha[i] == 0)
+                  ? 0
+                  : 1));
 
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
                         sWindowContentColors[isActive][2], this->fileButtonAlpha[i]);
@@ -1032,7 +1045,12 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw file info
     for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-        isActive = ((this->n64ddFlag == this->n64ddFlags[fileIndex]) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
+        isActive =
+            (((this->n64ddFlags[fileIndex] == 0 && CVar_GetS32("gRandomizer", 0) == 0) ||
+                             (this->n64ddFlags[fileIndex] != 0 && CVar_GetS32("gRandomizer", 0) != 0) ||
+                             (this->nameBoxAlpha[fileIndex] == 0)
+                  ? 0
+                  : 1));
         FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
     }
 
@@ -1598,8 +1616,6 @@ void FileChoose_Main(GameState* thisx) {
 
     OPEN_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2898);
 
-    this->n64ddFlag = 0;
-
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
     gSPSegment(POLY_OPA_DISP++, 0x02, this->parameterSegment);
@@ -1852,8 +1868,10 @@ void FileChoose_InitContext(GameState* thisx) {
     gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
         gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
 
+    /*
     this->n64ddFlags[0] = this->n64ddFlags[1] = this->n64ddFlags[2] = this->defense[0] = this->defense[1] =
         this->defense[2] = 0;
+    */
 
     SsSram_ReadWrite(OS_K1_TO_PHYSICAL(0xA8000000), sramCtx->readBuff, SRAM_SIZE, OS_READ);
 
