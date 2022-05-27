@@ -436,8 +436,11 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                         if (validName) {
                             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                                    &D_801333E8);
+
                             gSaveContext.fileNum = this->buttonIndex;
-                            gSaveContext.randomizerFlag = (CVar_GetS32("gRandomizer", 0) == 1);
+
+                            this->n64ddFlags[this->buttonIndex] = CVar_GetS32("gRandomizer", 0) != 0;
+                            gSaveContext.n64ddFlag = CVar_GetS32("gRandomizer", 0) != 0;
 
                             dayTime = ((void)0, gSaveContext.dayTime);
                             Sram_InitSave(this, &this->sramCtx);

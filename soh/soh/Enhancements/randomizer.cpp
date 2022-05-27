@@ -736,7 +736,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
 }
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
-    if (!gSaveContext.randomizerFlag) {
+    if (!gSaveContext.n64ddFlag) {
         return UNKNOWN_CHECK;
     }
 
@@ -754,7 +754,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
 }
 
 RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams) {
-    if (!gSaveContext.randomizerFlag) {
+    if (!gSaveContext.n64ddFlag) {
         return UNKNOWN_CHECK;
     }
 
