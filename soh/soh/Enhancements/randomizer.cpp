@@ -552,9 +552,23 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case BOMBCHUS_10:
             return GI_BOMBCHUS_10;
         case BOW:
-            return GI_BOW;
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                case 0:
+                    return GI_BOW;
+                case 1:
+                    return GI_QUIVER_40;
+                case 2:
+                    return GI_QUIVER_50;
+            }
         case SLINGSHOT:
-            return GI_SLINGSHOT;
+            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+                case 0:
+                    return GI_SLINGSHOT;
+                case 1:
+                    return GI_BULLET_BAG_40;
+                case 2:
+                    return GI_BULLET_BAG_50;
+            }
         case BOOMERANG:
             return GI_BOOMERANG;
         case PROGRESSIVE_HOOKSHOT:
@@ -585,7 +599,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case HOVER_BOOTS:
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
-            switch (CUR_UPG_VALUE(1)) {
+            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
                 case ITEM_NONE:
                     return GI_BOMB_BAG_20;
                 case ITEM_BOMB_BAG_20:
@@ -594,7 +608,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_BOMB_BAG_40;
             }
         case PROGRESSIVE_STRENGTH_UPGRADE:
-            switch (CUR_UPG_VALUE(3)) {
+            switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
                     return GI_BRACELET;
                 case 1:
@@ -603,7 +617,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_GAUNTLETS_GOLD;
             }
         case PROGRESSIVE_SCALE:
-            switch (CUR_UPG_VALUE(2)) {
+            switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
                     return GI_SCALE_SILVER;
                 case 1:
@@ -644,7 +658,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
                     return GI_MAGIC_LARGE;
             }
         case PROGRESSIVE_WALLET:
-            switch (CUR_UPG_VALUE(4)) {
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
                 case 0:
                     return GI_WALLET_ADULT;
                 case 1:
@@ -687,14 +701,14 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet) {
         case PIECE_OF_HEART_TREASURE_CHEST_GAME:
             return GI_HEART_PIECE_WIN;
         case DEKU_STICK_CAPACITY:
-            switch (CUR_UPG_VALUE(6)) {
+            switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
                     return GI_STICK_UPGRADE_20;
                 case 1:
                     return GI_STICK_UPGRADE_30;
             }
         case DEKU_NUT_CAPACITY:
-            switch (CUR_UPG_VALUE(7)) {
+            switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
                     return GI_NUT_UPGRADE_30;
                 case 1:
