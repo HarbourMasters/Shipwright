@@ -1001,5 +1001,5 @@ extern "C" void PopulateItemLocations(const char* spoilerfilename) {
 }
 
 extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams) {
-    OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams);
+    return OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams);
 }
