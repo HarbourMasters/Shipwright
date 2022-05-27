@@ -510,6 +510,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
 void Randomizer::PopulateItemLocations(std::string spoilerFileName) {
     // todo pull this in from cvar or something
     std::ifstream spoilerFileStream("spoiler.json");
+    if (!spoilerFileStream) return;
     json spoilerFileJson;
     spoilerFileStream >> spoilerFileJson;
     json locationsJson = spoilerFileJson["locations"];
