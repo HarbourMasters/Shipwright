@@ -439,8 +439,13 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                             gSaveContext.fileNum = this->buttonIndex;
 
-                            this->n64ddFlags[this->buttonIndex] = CVar_GetS32("gRandomizer", 0) != 0;
-                            gSaveContext.n64ddFlag = CVar_GetS32("gRandomizer", 0) != 0;
+                            this->n64ddFlag = 0;
+
+                            if (CVar_GetS32("gRandomizer", 0) != 0) {
+                                this->n64ddFlags[this->buttonIndex] = 1;
+                                this->n64ddFlag = 1;
+                                gSaveContext.n64ddFlag = 1;
+                            }
 
                             dayTime = ((void)0, gSaveContext.dayTime);
                             Sram_InitSave(this, &this->sramCtx);
