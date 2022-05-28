@@ -72,7 +72,7 @@ namespace SohImGui {
     
     void Tooltip(const char* text);
 
-    void EnhancementColor3(const char* text, const char* cvarName, float defaultColors[3]);
+    void EnhancementColor3(const char* text, const char* cvarName, float defaultColors[3], bool TitleSameLine);
 
     void DrawMainMenuAndCalculateGameSize(void);
     

@@ -534,29 +534,23 @@ namespace SohImGui {
         return fmin(fmax(value, min), max);
     }
 
-    void EnhancementColor3(const char* text, const char* cvarName, float defaultColors[3])
-    {
-        std::string cVarNameStr(cvarName);
-        const int r = CVar_GetS32((cVarNameStr + "_Red").c_str(), (int32_t)(defaultColors[0] * 255.0f));
-        const int g = CVar_GetS32((cVarNameStr + "_Green").c_str(), (int32_t)(defaultColors[1] * 255.0f));
-        const int b = CVar_GetS32((cVarNameStr + "_Blue").c_str(), (int32_t)(defaultColors[2] * 255.0f));
+    void EnhancementColor3(const char* text, const char* cvarName, float ColorRGB[3], bool TitleSameLine) {
+        //Simplified.
+        std::string cvarNameString(cvarName);
+        ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
 
-
-        float colors[3];
-        colors[0] = r / 255.0f;
-        colors[1] = g / 255.0f;
-        colors[2] = b / 255.0f;
-
-        {
-            if (ImGui::ColorEdit3(text, colors))
-            {
-                CVar_SetS32((cVarNameStr + "_Red").c_str(), (int)(colors[0] * 255));
-                CVar_SetS32((cVarNameStr + "_Green").c_str(), (int)(colors[1] * 255));
-                CVar_SetS32((cVarNameStr + "_Blue").c_str(), (int)(colors[2] * 255));
-                needs_save = true;
-            }
+        if (!TitleSameLine) {
+            ImGui::Text("%s", text);
+            flags = ImGuiColorEditFlags_NoLabel;
+        }
+        if (ImGui::ColorEdit3(text, ColorRGB, flags)) {
+            CVar_SetS32((cvarNameString + "R").c_str(), ClampFloatToInt(ColorRGB[0] * 255, 0, 255));
+            CVar_SetS32((cvarNameString + "G").c_str(), ClampFloatToInt(ColorRGB[1] * 255, 0, 255));
+            CVar_SetS32((cvarNameString + "B").c_str(), ClampFloatToInt(ColorRGB[2] * 255, 0, 255));
+            needs_save = true;
         }
     }
+
 
     void Tooltip(const char* text) {
         if (ImGui::IsItemHovered())
