@@ -346,6 +346,8 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     s16 spawnParam8000 = this->actor.params & 0x8000;
     s32 pad1;
 
+    this->ogParams = this->actor.params;
+
     this->collectibleFlag = (this->actor.params & 0x3F00) >> 8;
 
     this->actor.params &= 0xFF;
@@ -695,7 +697,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        getItemId = Item00_GetRandomizedItemId(this, globalCtx->sceneNum, this->actor.params);
+        getItemId = Item00_GetRandomizedItemId(this, globalCtx->sceneNum, this->ogParams);
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
@@ -1056,7 +1058,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = Item00_GetRandomizedItemId(this, globalCtx->sceneNum, this->actor.params);
+            getItemId = Item00_GetRandomizedItemId(this, globalCtx->sceneNum, this->ogParams);
         }
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
@@ -1325,17 +1327,24 @@ void EnItem00_DrawHeartContainer(EnItem00* this, GlobalContext* globalCtx) {
  * Draw Function used for the Piece of Heart type of En_Item00.
  */
 void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
-    s32 pad;
+    if (gSaveContext.n64ddFlag) {
+        f32 mtxScale = 16.0f;
+        Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+        GetItem_Draw(globalCtx, GetItemModelFromId(Item00_GetRandomizedItemId(this, gGlobalCtx->sceneNum, this->actor.params)));
+    } else {
+        s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1658);
+        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1658);
 
-    func_80093D84(globalCtx->state.gfxCtx);
-    func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1670),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
+        func_80093D84(globalCtx->state.gfxCtx);
+        func_8002ED80(&this->actor, globalCtx, 0);
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1670),
+                  G_MTX_MODELVIEW | G_MTX_LOAD);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1673);
+        gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
+
+        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1673);
+    }
 }
 
 /**
