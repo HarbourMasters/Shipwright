@@ -308,7 +308,10 @@ void Sram_OpenSave(SramContext* sramCtx) {
     i = gSramSlotOffsets[gSaveContext.fileNum];
     osSyncPrintf("ぽいんと＝%x(%d)\n", i, gSaveContext.fileNum); // "Point="
 
+    SaveContext tempContext;
+
     memcpy(&gSaveContext, sramCtx->readBuff + i, sizeof(Save));
+    memcpy(&tempContext, sramCtx->readBuff + i, sizeof(SaveContext));
 
     osSyncPrintf(VT_FGCOL(YELLOW));
     osSyncPrintf("SCENE_DATA_ID = %d   SceneNo = %d\n", gSaveContext.savedSceneNum,
@@ -442,6 +445,8 @@ void Sram_OpenSave(SramContext* sramCtx) {
             }
         }
     }
+
+    memcpy(&gSaveContext.itemLocations, &tempContext.itemLocations, sizeof(tempContext.itemLocations));
 
     gSaveContext.magicLevel = 0;
 }

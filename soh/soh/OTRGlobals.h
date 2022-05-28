@@ -74,7 +74,7 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
-void PopulateItemLocations(const char* spoilerfilename);
+void ParseItemLocations(const char* spoilerfilename);
 GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId);
 GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId);
 #endif

@@ -507,25 +507,38 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     {"Light Medallion", LIGHT_MEDALLION}
 };
 
-void Randomizer::PopulateItemLocations(std::string spoilerFileName) {
+void Randomizer::LoadItemLocations() {
+    for(auto itemLocation : gSaveContext.itemLocations) {
+        this->itemLocations[itemLocation.check] = itemLocation.get;
+    }
+}
+
+void Randomizer::ParseItemLocations(std::string spoilerFileName) {
     // todo pull this in from cvar or something
     std::ifstream spoilerFileStream("spoiler.json");
-    if (!spoilerFileStream) return;
+    if (!spoilerFileStream)
+        return;
     json spoilerFileJson;
     spoilerFileStream >> spoilerFileJson;
     json locationsJson = spoilerFileJson["locations"];
-    for(auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-        if(it->is_structured()) {
+    int index = 0;
+    for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+        if (it->is_structured()) {
             json itemJson = *it;
-            for(auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                //todo handle prices
-                if(itemit.key() == "item") {
-                    this->itemLocations[SpoilerfileCheckNameToEnum[it.key()]] = SpoilerfileGetNameToEnum[itemit.value()];
+            for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
+                // todo handle prices
+                if (itemit.key() == "item") {
+
+                    gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+                    gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
                 }
             }
         } else {
-            this->itemLocations[SpoilerfileCheckNameToEnum[it.key()]] = SpoilerfileGetNameToEnum[it.value()];
+            gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+            gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
         }
+
+        index++;
     }
 }
 
