@@ -1012,7 +1012,7 @@ extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, Ge
     return OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams, ogItemId);
 }
 
+// use an explicit (s32) cast on the position values from the Vec3f when calling
 extern "C" GetItemID GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
-    // the position values are broken here
     return OTRGlobals::Instance->gRandomizer->GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogItemId);
 }

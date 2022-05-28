@@ -388,17 +388,6 @@ s32 EnBox_GetRandomizedItemId(s16 actorParams, s16 sceneNum) {
     return 0 - itemId;
 }
 
-s32 EnBox_GetRandomizedItemIdTestDefinitelyDeleteThis(s16 actorParams, s16 sceneNum, Vec3f homePos) {
-    // KF_MIDOS_TOP_LEFT_CHEST
-    if(actorParams == 22944) {
-        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, (s32)homePos.x, (s32)homePos.y, (s32)homePos.z, actorParams >> 5 & 0x7F);
-        return 0 - itemId;
-    } else {
-        s32 itemId = GetItemFromSceneAndParams(sceneNum, actorParams, actorParams >> 5 & 0x7F);
-        return 0 - itemId;
-    }
-}
-
 /**
  * Chest is ready to be open
  */
@@ -440,11 +429,8 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            // func_8002F554(&this->dyna.actor, globalCtx,
-            //               EnBox_GetRandomizedItemId(this->dyna.actor.params, globalCtx->sceneNum));
             func_8002F554(&this->dyna.actor, globalCtx,
-                          EnBox_GetRandomizedItemIdTestDefinitelyDeleteThis(this->dyna.actor.params, globalCtx->sceneNum, this->dyna.actor.home.pos));
- 
+                          EnBox_GetRandomizedItemId(this->dyna.actor.params, globalCtx->sceneNum)); 
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
