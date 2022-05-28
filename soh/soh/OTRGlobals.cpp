@@ -1004,15 +1004,28 @@ extern "C" void ParseItemLocations(const char* spoilerfilename) {
     OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerfilename);
 }
 
-extern "C" GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, ogItemId);
+extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 sceneNum, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, -1, sceneNum, actorParams);
 }
 
-extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams, ogItemId);
+// the lack of optional params in c is frustrating
+extern "C" s32 GetRandomizedItemIdFromActor(GetItemID ogId, s16 actorId ) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId);
 }
 
-// use an explicit (s32) cast on the position values from the Vec3f when calling
-extern "C" GetItemID GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogItemId);
+extern "C" s32 GetRandomizedItemIdFromPosition(GetItemID ogId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, -1, sceneNum, actorParams, homePosX, homePosY, homePosZ);
 }
+
+// extern "C" GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId) {
+//     return OTRGlobals::Instance->gRandomizer->GetItemFromActor(actorId, ogItemId);
+// }
+
+// extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
+//     return OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams, ogItemId);
+// }
+
+// // use an explicit (s32) cast on the position values from the Vec3f when calling
+// extern "C" GetItemID GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
+//     return OTRGlobals::Instance->gRandomizer->GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogItemId);
+// }

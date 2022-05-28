@@ -545,12 +545,18 @@ void Randomizer::ParseItemLocations(std::string spoilerFileName) {
     }
 }
 
-GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
+s32 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
+    if (actorId != -1) {
+        s32 itemId = GetItemFromActor(actorId, ogId);
+        return itemId;    
+    } else {
+        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogId);
+        return itemId;
+    }
 }
 
-GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)], ogItemId);
+GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
 }
 
 GetItemID Randomizer::GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
