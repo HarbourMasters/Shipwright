@@ -692,7 +692,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        getItemId = GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->actor.params);
+        getItemId = GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->ogParams);
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
@@ -1053,7 +1053,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->actor.params);
+            getItemId = GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->ogParams);
         }
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
@@ -1325,7 +1325,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        GetItem_Draw(globalCtx, GetItemModelFromId(Item00_GetRandomizedItemId(this, gGlobalCtx->sceneNum, this->actor.params)));
+        GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->ogParams)));
     } else {
         s32 pad;
 
