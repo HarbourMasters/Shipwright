@@ -707,7 +707,6 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark_data.c" />
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
     <ClCompile Include="soh\Enhancements\randomizer.h" />
-    <ClCompile Include="src\overlays\actors\ovl_Obj_RandoGetItem\z_rando_get_item.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="soh\frame_interpolation.h" />
@@ -1232,7 +1231,6 @@
     <ClInclude Include="src\overlays\effects\ovl_Effect_Ss_Stone1\z_eff_ss_stone1.h" />
     <ClInclude Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_scope.h" />
     <ClInclude Include="randomizerTypes.h" />
-    <ClInclude Include="src\overlays\actors\ovl_Obj_RandoGetItem\z_rando_get_item.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
