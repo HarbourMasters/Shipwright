@@ -997,11 +997,11 @@ extern "C" int Controller_ShouldRumble(size_t i) {
 }
 
 extern "C" void LoadItemLocations() {
-    return OTRGlobals::Instance->gRandomizer->LoadItemLocations();
+    OTRGlobals::Instance->gRandomizer->LoadItemLocations();
 }
 
 extern "C" void ParseItemLocations(const char* spoilerfilename) {
-    return OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerfilename);
+    OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerfilename);
 }
 
 extern "C" GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId) {
@@ -1010,4 +1010,9 @@ extern "C" GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId) {
 
 extern "C" GetItemID GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemFromSceneAndParams(sceneNum, actorParams, ogItemId);
+}
+
+extern "C" GetItemID GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, f32 homePosX, f32 homePosY, f32 homePosZ, GetItemID ogItemId) {
+    // the position values are broken here
+    return OTRGlobals::Instance->gRandomizer->GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogItemId);
 }
