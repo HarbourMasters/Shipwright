@@ -1065,6 +1065,7 @@ void DrawActorViewer(bool& open) {
     static ActorInfo newActor = {0,0, {0, 0, 0}, {0, 0, 0}};
     static ActorOverlay* dispOverlay;
     static std::string filler = "Please select";
+    static u16 lastSceneId = 0;
 
     if (ImGui::BeginCombo("Actor Type", acMapping[category].c_str())) {
         for (int i = 0; i < acMapping.size(); i++) {
@@ -1078,6 +1079,10 @@ void DrawActorViewer(bool& open) {
     }
 
     if (ImGui::BeginCombo("Actor", filler.c_str())) {
+        if (gGlobalCtx != nullptr && lastSceneId != gGlobalCtx->sceneNum) {
+            list = PopulateActorDropdown(category, list);
+            lastSceneId = gGlobalCtx->sceneNum;
+        }
         for (int i = 0; i < list.size(); i++) { 
             std::string label = std::to_string(i) + ": " + list[i]->overlayEntry->name;
             std::string description = GetActorDescription(list[i]->id);
