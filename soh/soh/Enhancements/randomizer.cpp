@@ -989,7 +989,7 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
             }
         case 96:
             switch(actorParams) {
-                case 6:
+                case 7686:
                     return DMT_FREESTANDING_POH;
                 case 23201:
                     return DMT_CHEST;
