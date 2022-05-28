@@ -127,11 +127,7 @@ void func_80ABBBA8(EnNutsball* this, GlobalContext* globalCtx) {
 
                 this->collider.info.toucher.dmgFlags = 2;
                 Matrix_MtxFToYXZRotS(&player->shieldMf, &sp4C, 0);
-                if (CVar_GetS32("gNewDrops", 0) != 0) {
-                    this->actor.world.rot.z = sp4C.y + 0x8000;
-                } else {
-                    this->actor.world.rot.y = sp4C.y + 0x8000;
-                }
+                this->actor.world.rot.y = sp4C.y + 0x8000;
                 this->timer = 30;
                 return;
             }
