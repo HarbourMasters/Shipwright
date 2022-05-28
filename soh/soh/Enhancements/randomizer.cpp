@@ -964,6 +964,95 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 22827:
                     return FOREST_TEMPLE_BASEMENT_CHEST;
             }
+        case 4:
+            switch(actorParams) {
+                case 22593:
+                    return FIRE_TEMPLE_NEAR_BOSS_CHEST;
+                case 31936:
+                    return FIRE_TEMPLE_FLARE_DANCER_CHEST;
+                case 10220:
+                    return FIRE_TEMPLE_BOSS_KEY_CHEST;
+                case 22596:
+                    return FIRE_TEMPLE_BIG_LAVA_ROOM_LOWER_OPEN_DOOR_CHEST;
+                case 22594:
+                    return FIRE_TEMPLE_BIG_LAVA_ROOM_BLOCKED_DOOR_CHEST;
+                case 22595:
+                    return FIRE_TEMPLE_BOULDER_MAZE_LOWER_CHEST;
+                case 22600:
+                    return FIRE_TEMPLE_BOULDER_MAZE_SIDE_ROOM_CHEST;
+                case 2090:
+                    return FIRE_TEMPLE_MAP_CHEST;
+                case 22603:
+                    return FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST;
+                case 22598:
+                    return FIRE_TEMPLE_BOULDER_MAZE_UPPER_CHEST;
+                case 23245:
+                    return FIRE_TEMPLE_SCARECROW_CHEST;
+                case 2055:
+                    return FIRE_TEMPLE_COMPASS_CHEST;
+                case 421:
+                    return; FIRE_TEMPLE_MEGATON_HAMMER_CHEST;
+                case 22601:
+                    return FIRE_TEMPLE_HIGHEST_GORON_CHEST;
+            }
+        case 5:
+            switch(actorParams) {
+                case 2057:
+                    return WATER_TEMPLE_COMPASS_CHEST;
+                case 6178:
+                    return WATER_TEMPLE_MAP_CHEST;
+                case 22592:
+                    return WATER_TEMPLE_CRACKED_WALL_CHEST;
+                case 30785:
+                    return WATER_TEMPLE_TORCHES_CHEST;
+                case 10213:
+                    return WATER_TEMPLE_BOSS_KEY_CHEST;
+                case 22598:
+                    return WATER_TEMPLE_CENTRAL_PILLAR_CHEST;
+                case 22600:
+                    return WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST;
+                case 295:
+                    return WATER_TEMPLE_LONGSHOT_CHEST;
+                case 22595:
+                    return WATER_TEMPLE_RIVER_CHEST;
+                case 22602:
+                    return WATER_TEMPLE_DRAGON_CHEST;
+            }
+        case 7:
+            switch(actorParams) {
+                case 6177:
+                    return SHADOW_TEMPLE_MAP_CHEST;
+                case 5607:
+                    return SHADOW_TEMPLE_HOVER_BOOTS_CHEST;
+                case 6147:
+                    return SHADOW_TEMPLE_COMPASS_CHEST;
+                case 22594:
+                    return SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST;
+                case 22668:
+                    return SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST;
+                case 26998:
+                    return SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST;
+                case 22853:
+                    return SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST;
+                case 22662:
+                    return SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST;
+                case -30652:
+                    return SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST;
+                case 30857:
+                    return SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST;
+                case 26965:
+                    return SHADOW_TEMPLE_WIND_HINT_CHEST;
+                case 30856:
+                    return SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST;
+                case 26708:
+                    return SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST;
+                case 22666:
+                    return SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST;
+                case 10219:
+                    return SHADOW_TEMPLE_BOSS_KEY_CHEST;
+                case 30797:
+                    return SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
