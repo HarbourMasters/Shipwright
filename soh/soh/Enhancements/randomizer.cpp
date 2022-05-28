@@ -1060,6 +1060,26 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 30797:
                     return SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
             }
+        case 6:
+            switch(actorParams) {
+                case 21800:
+                    return SPIRIT_TEMPLE_CHILD_BRIDGE_CHEST;
+                case -30656:
+                    return SPIRIT_TEMPLE_CHILD_EARLY_TORCHES_CHEST;
+                case -32666:
+                    return SPIRIT_TEMPLE_CHILD_CLIMB_NORTH_CHEST;
+                case -31444:
+                    return SPIRIT_TEMPLE_CHILD_CLIMB_EAST_CHEST;
+                case -18397:
+                    return SPIRIT_TEMPLE_MAP_CHEST;
+                case -30655:
+                    return SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST;
+            }
+        case 92:
+            switch(actorParams) {
+                case 1707:
+                    return SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
