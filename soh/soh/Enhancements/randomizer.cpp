@@ -553,6 +553,10 @@ GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, G
     return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)], ogItemId);
 }
 
+GetItemID Randomizer::GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams, homePosX, homePosY, homePosZ)], ogItemId);
+}
+
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     switch(randoGet) {
         case UNKNOWN_GET:
@@ -769,7 +773,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
     return UNKNOWN_CHECK;
 }
 
-RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams) {
+RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
     if (!gSaveContext.n64ddFlag) {
         return UNKNOWN_CHECK;
     }
