@@ -1051,7 +1051,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = GetRandomizedItemId(globalCtx->sceneNum, this->actor.params, this->getItemId);
+            getItemId = GetRandomizedItemId(this->getItemId, globalCtx->sceneNum, this->actor.params);
         }
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
