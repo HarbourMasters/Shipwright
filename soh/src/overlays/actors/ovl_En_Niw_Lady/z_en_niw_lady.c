@@ -393,7 +393,8 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
             case 0:
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
+                func_8002F434(&this->actor, globalCtx, NiwLady_GetRandomizedItemId(this, GI_POCKET_EGG), 200.0f,
+                              100.0f);
                 this->actionFunc = func_80ABAC00;
                 break;
             case 1:
