@@ -508,6 +508,9 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
 };
 
 void Randomizer::LoadItemLocations() {
+    // bandaid until new save stuff happens
+    ParseItemLocations("");
+
     for(auto itemLocation : gSaveContext.itemLocations) {
         this->itemLocations[itemLocation.check] = itemLocation.get;
     }
@@ -991,7 +994,7 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 2055:
                     return FIRE_TEMPLE_COMPASS_CHEST;
                 case 421:
-                    return; FIRE_TEMPLE_MEGATON_HAMMER_CHEST;
+                    return FIRE_TEMPLE_MEGATON_HAMMER_CHEST;
                 case 22601:
                     return FIRE_TEMPLE_HIGHEST_GORON_CHEST;
             }
