@@ -18,6 +18,7 @@ class Randomizer {
     Randomizer();
     ~Randomizer();
 
+    s16 GetItemModelFromId(s16 itemId);
     void LoadItemLocations();
     void ParseItemLocations(std::string spoilerfilename);
     GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId);
