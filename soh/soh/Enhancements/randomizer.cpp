@@ -936,6 +936,8 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
             switch (actorParams) {
                 case 0x0406:
                     return ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
+                case 2822:
+                    return ZR_NEAR_DOMAIN_FREESTANDING_POH;
             }
         case 85:
             switch(actorParams) {
