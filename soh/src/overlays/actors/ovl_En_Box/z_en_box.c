@@ -391,11 +391,7 @@ s32 EnBox_GetRandomizedItemId(s16 actorParams, s16 sceneNum) {
 s32 EnBox_GetRandomizedItemIdTestDefinitelyDeleteThis(s16 actorParams, s16 sceneNum, Vec3f homePos) {
     // KF_MIDOS_TOP_LEFT_CHEST
     if(actorParams == 22944) {
-        f32 blargX = homePos.x;
-        f32 blargY = homePos.y;
-        f32 blargZ = homePos.z;
-        // all the position values are fine here
-        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, blargX, blargY, blargZ, actorParams >> 5 & 0x7F);
+        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, (s32)homePos.x, (s32)homePos.y, (s32)homePos.z, actorParams >> 5 & 0x7F);
         return 0 - itemId;
     } else {
         s32 itemId = GetItemFromSceneAndParams(sceneNum, actorParams, actorParams >> 5 & 0x7F);
