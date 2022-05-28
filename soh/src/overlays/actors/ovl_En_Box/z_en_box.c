@@ -430,7 +430,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
             func_8002F554(&this->dyna.actor, globalCtx,
-                          EnBox_GetRandomizedItemId(this->dyna.actor.params, globalCtx->sceneNum)); 
+                          EnBox_GetRandomizedItemId(this->dyna.actor.params, globalCtx->sceneNum));
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
             EnBox_SetupAction(this, EnBox_Open);
