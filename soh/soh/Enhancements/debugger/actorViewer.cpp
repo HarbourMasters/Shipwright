@@ -1102,7 +1102,7 @@ void DrawActorViewer(bool& open) {
 
     if (ImGui::TreeNode("Selected Actor")) {
         dispOverlay = display.overlayEntry;
-        DrawGroupWithBorder([&]() {          
+        DrawGroupWithBorder([&]() {
             ImGui::Text("Name: %s", dispOverlay != nullptr ? dispOverlay->name : "???");
             ImGui::Text("Description: %s", GetActorDescription(display.id).c_str());
             ImGui::Text("Category: %s", dispOverlay != nullptr ? acMapping[display.category].c_str() : "???");
