@@ -995,6 +995,29 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 22601:
                     return FIRE_TEMPLE_HIGHEST_GORON_CHEST;
             }
+        case 5:
+            switch(actorParams) {
+                case 2057:
+                    return WATER_TEMPLE_COMPASS_CHEST;
+                case 6178:
+                    return WATER_TEMPLE_MAP_CHEST;
+                case 22592:
+                    return WATER_TEMPLE_CRACKED_WALL_CHEST;
+                case 30785:
+                    return WATER_TEMPLE_TORCHES_CHEST;
+                case 10213:
+                    return WATER_TEMPLE_BOSS_KEY_CHEST;
+                case 22598:
+                    return WATER_TEMPLE_CENTRAL_PILLAR_CHEST;
+                case 22600:
+                    return WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST;
+                case 295:
+                    return WATER_TEMPLE_LONGSHOT_CHEST;
+                case 22595:
+                    return WATER_TEMPLE_RIVER_CHEST;
+                case 22602:
+                    return WATER_TEMPLE_DRAGON_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
