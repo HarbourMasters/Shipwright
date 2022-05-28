@@ -500,7 +500,50 @@ void EnOkuta_ProjectileFly(EnOkuta* this, GlobalContext* globalCtx) {
             pos.x = this->actor.world.pos.x;
             pos.y = this->actor.world.pos.y + 11.0f;
             pos.z = this->actor.world.pos.z;
-            EffectSsHahen_SpawnBurst(globalCtx, &pos, 6.0f, 0, 1, 2, 15, 7, 10, gOctorokProjectileDL);
+            if (CVar_GetS32("gNewProjectiles", 0) != 0) {
+                static s16 sEffectScales[] = {
+                    145, 135, 115, 85, 75, 53, 45, 40, 35,
+                };
+                s32 pad;
+                Vec3f velocity;
+                Vec3f pos;
+                s16 phi_s0 = 500;
+                s16 gravity;
+                s16 phi_v0;
+                f32 temp_f20;
+                f32 temp_f22;
+                s32 i;
+                for (s16 i = 0; i < ARRAY_COUNT(sEffectScales); i++) {
+                    phi_s0 += 10000;
+
+                    temp_f20 = Rand_ZeroOne() * 5.0f;
+                    pos.x = (Math_SinS(phi_s0) * temp_f20) + this->actor.world.pos.x;
+                    pos.y = (Rand_ZeroOne() * 40.0f) + this->actor.world.pos.y + 5.0f;
+                    pos.z = (Math_CosS(phi_s0) * temp_f20) + this->actor.world.pos.z;
+
+                    temp_f20 = (Rand_ZeroOne() * 5.0f) + 2.0f;
+                    velocity.x = Math_SinS(phi_s0) * temp_f20;
+                    temp_f22 = Rand_ZeroOne();
+                    velocity.y = (Rand_ZeroOne() * i * 2.5f) + (temp_f22 * 5.0f);
+                    velocity.z = Math_CosS(phi_s0) * temp_f20;
+
+                    if (i == 0) {
+                        phi_v0 = 41;
+                        gravity = -450;
+                    } else if (i < 4) {
+                        phi_v0 = 37;
+                        gravity = -380;
+                    } else {
+                        phi_v0 = 69;
+                        gravity = -320;
+                    }
+                    EffectSsKakera_Spawn(globalCtx, &pos, &velocity, &this->actor.world.pos, gravity, phi_v0, 30, 5, 0,
+                                        sEffectScales[i]/5, 3, 0, 70, 1, OBJECT_GAMEPLAY_FIELD_KEEP, gSilverRockFragmentsDL);
+                }
+            } else {
+                EffectSsHahen_SpawnBurst(globalCtx, &pos, 6.0f, 0, 1, 2, 15, 7, 10, gOctorokProjectileDL);
+            }
+
             SoundSource_PlaySfxAtFixedWorldPos(globalCtx, &this->actor.world.pos, 20, NA_SE_EN_OCTAROCK_ROCK);
             Actor_Kill(&this->actor);
         }
