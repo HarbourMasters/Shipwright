@@ -881,6 +881,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="soh\Enhancements\randomizer.h" />
+    <ClInclude Include="randomizerTypes.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />

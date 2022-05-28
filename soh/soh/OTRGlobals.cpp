@@ -996,8 +996,12 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     return 0;
 }
 
-extern "C" void PopulateItemLocations(const char* spoilerfilename) {
-    OTRGlobals::Instance->gRandomizer->PopulateItemLocations(spoilerfilename);
+extern "C" void LoadItemLocations() {
+    return OTRGlobals::Instance->gRandomizer->LoadItemLocations();
+}
+
+extern "C" void ParseItemLocations(const char* spoilerfilename) {
+    return OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerfilename);
 }
 
 extern "C" GetItemID GetItemFromActor(s16 actorId, GetItemID ogItemId) {

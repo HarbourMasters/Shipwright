@@ -448,11 +448,10 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             }
 
                             dayTime = ((void)0, gSaveContext.dayTime);
+
+                            ParseItemLocations("blarg");
+
                             Sram_InitSave(this, &this->sramCtx);
-
-                            // todo: load spoilerfile data
-
-                            PopulateItemLocations("blarg");
 
                             // todo: fill link's pocket here
 
