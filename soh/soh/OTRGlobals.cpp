@@ -996,6 +996,10 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     return 0;
 }
 
+extern "C" s16 GetItemModelFromId(s16 itemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
+}
+
 extern "C" void LoadItemLocations() {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations();
 }
