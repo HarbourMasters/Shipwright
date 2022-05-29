@@ -175,8 +175,6 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(CVar_GetS32("g60FPS", 0) == 0 ? R_UPDATE_RATE : 1);
-
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -226,14 +224,44 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     audio.cv_to_thread.notify_one();
 
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
-    if (CVar_GetS32("g60FPS", 0) != 0) {
-        int to = R_UPDATE_RATE;
-        for (int i = 1; i < to; i++) {
-            mtx_replacements.push_back(FrameInterpolation_Interpolate(i / (float)to));
+    int target_fps = CVar_GetS32("gInterpolationFPS", 20);
+    static int last_fps;
+    static int last_update_rate;
+    static int time;
+    int fps = target_fps;
+    int original_fps = 60 / R_UPDATE_RATE;
+
+    if (target_fps == 20 || original_fps > target_fps) {
+        fps = original_fps;
+    }
+
+    if (last_fps != fps || last_update_rate != R_UPDATE_RATE) {
+        time = 0;
+    }
+
+    // time_base = fps * original_fps (one second)
+    int next_original_frame = fps;
+
+    while (time + original_fps <= next_original_frame) {
+        time += original_fps;
+        if (time != next_original_frame) {
+            mtx_replacements.push_back(FrameInterpolation_Interpolate((float)time / next_original_frame));
+        } else {
+            mtx_replacements.emplace_back();
         }
     }
 
+    time -= fps;
+
+    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+
+    int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
+    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+
     OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
+
+    last_fps = fps;
+    last_update_rate = R_UPDATE_RATE;
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
