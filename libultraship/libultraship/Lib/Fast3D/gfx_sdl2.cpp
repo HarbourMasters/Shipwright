@@ -105,8 +105,7 @@ static void set_fullscreen(bool on, bool call_callback) {
         window_width = mode.w;
         window_height = mode.h;
         SDL_ShowCursor(false);
-    }
-    else {
+    } else {
         window_width = DESIRED_SCREEN_WIDTH;
         window_height = DESIRED_SCREEN_HEIGHT;
     }
@@ -210,8 +209,7 @@ static void gfx_sdl_get_dimensions(uint32_t* width, uint32_t* height) {
 static int translate_scancode(int scancode) {
     if (scancode < 512) {
         return inverted_scancode_table[scancode];
-    }
-    else {
+    } else {
         return 0;
     }
 }
@@ -241,26 +239,27 @@ static void gfx_sdl_handle_events(void) {
         switch (event.type) {
 #ifndef TARGET_WEB
             // Scancodes are broken in Emscripten SDL2: https://bugzilla.libsdl.org/show_bug.cgi?id=3259
-        case SDL_KEYDOWN:
-            gfx_sdl_onkeydown(event.key.keysym.scancode);
-            break;
-        case SDL_KEYUP:
-            gfx_sdl_onkeyup(event.key.keysym.scancode);
-            break;
+            case SDL_KEYDOWN:
+                gfx_sdl_onkeydown(event.key.keysym.scancode);
+                break;
+            case SDL_KEYUP:
+                gfx_sdl_onkeyup(event.key.keysym.scancode);
+                break;
 #endif
-        case SDL_WINDOWEVENT:
-            if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                window_width = event.window.data1;
-                window_height = event.window.data2;
-            }
-            break;
-        case SDL_DROPFILE:
-            #ifndef __linux__
-            LoadItemLocations(event.drop.file);
-            #endif
-            break;
-        case SDL_QUIT:
-            exit(0);
+            case SDL_WINDOWEVENT:
+                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                    window_width = event.window.data1;
+                    window_height = event.window.data2;
+                }
+                break;
+            case SDL_DROPFILE:
+                #ifndef __linux__
+                LoadItemLocations(event.drop.file);
+                #endif
+                break;
+            case SDL_QUIT:
+                SDL_Quit(); // bandaid fix for linux window closing issue
+                exit(0);
         }
     }
 }
