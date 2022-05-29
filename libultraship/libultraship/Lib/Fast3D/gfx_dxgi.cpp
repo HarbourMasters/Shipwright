@@ -281,8 +281,10 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
         else {
             return DefWindowProcW(h_wnd, message, w_param, l_param);
         }
-        return 0;
+    default:
+        return DefWindowProcW(h_wnd, message, w_param, l_param);
     }
+    return 0;
 }
 
 void gfx_dxgi_init(const char* game_name, bool start_in_fullscreen) {
