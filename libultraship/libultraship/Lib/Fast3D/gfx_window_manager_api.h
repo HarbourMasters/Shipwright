@@ -17,7 +17,9 @@ struct GfxWindowManagerAPI {
     void (*swap_buffers_begin)(void);
     void (*swap_buffers_end)(void);
     double (*get_time)(void); // For debug
-    void (*set_frame_divisor)(int);
+    void (*set_target_fps)(int fps);
+    void (*set_maximum_frame_latency)(int latency);
+    float (*get_detected_hz)(void);
 };
 
 #endif

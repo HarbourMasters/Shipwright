@@ -2710,9 +2710,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
         //gfx_lookup_or_create_shader_program(precomp_shaders[i]);
     }
 
-    ModInternal::bindHook(GFX_INIT);
-    ModInternal::initBindHook(0);
-    ModInternal::callBindHook(0);
+    ModInternal::ExecuteHooks<ModInternal::GfxInit>();
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {
@@ -2791,6 +2789,9 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     gfx_rapi->start_frame();
     gfx_rapi->start_draw_to_framebuffer(game_renders_to_framebuffer ? game_framebuffer : 0, (float)gfx_current_dimensions.height / SCREEN_HEIGHT);
     gfx_rapi->clear_framebuffer();
+    rdp.viewport_or_scissor_changed = true;
+    rendering_state.viewport = {};
+    rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
     SohUtils::saveEnvironmentVar("framebuffer", string());
@@ -2827,8 +2828,16 @@ void gfx_end_frame(void) {
     }
 }
 
-void gfx_set_framedivisor(int divisor) {
-    gfx_wapi->set_frame_divisor(divisor);
+void gfx_set_target_fps(int fps) {
+    gfx_wapi->set_target_fps(fps);
+}
+
+void gfx_set_maximum_frame_latency(int latency) {
+    gfx_wapi->set_maximum_frame_latency(latency);
+}
+
+float gfx_get_detected_hz(void) {
+    return gfx_wapi->get_detected_hz();
 }
 
 int gfx_create_framebuffer(uint32_t width, uint32_t height) {
