@@ -451,7 +451,7 @@ void FrameInterpolation_StartRecord(void) {
     current_recording = {};
     current_path.clear();
     current_path.push_back(&current_recording.root_path);
-    if (CVar_GetS32("g60FPS", 0) != 0) {
+    if (CVar_GetS32("gInterpolationFPS", 20) != 20) {
         is_recording = true;
     }
 }

@@ -680,6 +680,34 @@ namespace SohImGui {
                 Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
+                if (impl.backend == Backend::DX11)
+                {
+                    const char* cvar = "gExtraLatencyThreshold";
+                    int val = CVar_GetS32(cvar, 80);
+                    val = MAX(MIN(val, 250), 0);
+                    int fps = val;
+
+                    if (fps == 0)
+                    {
+                        ImGui::Text("Jitter fix: Off");
+                    }
+                    else
+                    {
+                        ImGui::Text("Jitter fix: >= %d FPS", fps);
+                    }
+
+                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    {
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
+
+                    Tooltip("When Interpolation FPS setting is at least this threshold,\n"
+                            "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
+                            "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
+                            "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                }
+
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
@@ -764,7 +792,46 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
 
-                EnhancementCheckbox("60FPS Interpolation", "g60FPS");
+                const char* fps_cvar = "gInterpolationFPS";
+                {
+                    int val = CVar_GetS32(fps_cvar, 20);
+                    val = MAX(MIN(val, 250), 20);
+                    int fps = val;
+
+                    if (fps == 20)
+                    {
+                        ImGui::Text("Frame interpolation: Off");
+                    }
+                    else
+                    {
+                        ImGui::Text("Frame interpolation: %d FPS", fps);
+                    }
+
+                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    {
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
+
+                    Tooltip("Interpolate extra frames to get smoother graphics.\n"
+                        "Set to match your monitor's refresh rate, or a divisor of it.\n"
+                        "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
+                        "and might give a worse result.\n"
+                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.\n"
+                        "Ctrl+Click for keyboard input.");
+                }
+                if (impl.backend == Backend::DX11)
+                {
+                    if (ImGui::Button("Match Refresh Rate"))
+                    {
+                        int hz = roundf(gfx_get_detected_hz());
+                        if (hz >= 20 && hz <= 250)
+                        {
+                            CVar_SetS32(fps_cvar, hz);
+                            needs_save = true;
+                        }
+                    }
+                }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
 
