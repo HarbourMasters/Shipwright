@@ -6,11 +6,46 @@
 #include <objects/gameplay_keep/gameplay_keep.h>
 #include <functions.h>
 #include <Cvar.h>
+#include <textures/icon_item_static/icon_item_static.h>
+#include <textures/icon_item_24_static/icon_item_24_static.h>
 
 using json = nlohmann::json;
 
+std::unordered_map<std::string, Sprite> gSeedTextures;
+
 Randomizer::Randomizer() {
-    //todo something?
+    gSeedTextures["Deku Stick"] = Sprite({ gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Deku Nut"] = Sprite({ gDekuNutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Bow"] = Sprite({ gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Slingshot"] = Sprite({ gFairySlingshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Fairy Ocarina"] = Sprite({ gFairyOcarinaIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Bombchu"] = Sprite({ gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Longshot"] = Sprite({ gLongshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Boomerang"] = Sprite({ gBoomerangIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Lens of Truth"] = Sprite({ gLensofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Beans"] = Sprite({ gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Megaton Hammer"] = Sprite({ gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Bottled Fish"] = Sprite({ gFishIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Bottled Milk"] = Sprite({ gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Mask of Truth"] = Sprite({ gMaskofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["SOLD OUT"] = Sprite({ gSoldOutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Cucco"] = Sprite({ gCuccoIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Mushroom"] = Sprite({ gOddMushroomIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Saw"] = Sprite({ gPoachersSawIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Frog"] = Sprite({ gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Master Sword"] = Sprite({ gMasterSwordIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Mirror Shield"] = Sprite({ gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Kokiri Tunic"] = Sprite({ gKokiriTunicIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Hover Boots"] = Sprite({ gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Silver Gauntlets"] = Sprite({ gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Gold Scale"] = Sprite({ gGoldenScaleIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Stone of Agony"] = Sprite({ gStoneOfAgonyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Skull Token"] = Sprite({ gGoldSkulltulaIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Heart Container"] = Sprite({ gHeartContainerIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Boss Key"] = Sprite({ gBossKeyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Compass"] = Sprite({ gCompassIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Map"] = Sprite({ gDungeonMapIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    gSeedTextures["Big Magic"] = Sprite({ gBigMagicJarIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
 }
 Randomizer::~Randomizer() { 
     this->itemLocations.clear();
@@ -668,7 +703,7 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
 
         int index = 0;
         for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
-            //gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
+            gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
             index++;
         }
 

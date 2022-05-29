@@ -240,6 +240,11 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
+    // thought this might be a way to work around the LoadItemLocations not defined issue
+    // void LoadItemLocations(const char* spoilerFileName) {
+    //     CVar_SetString("gSpoilerFileName", spoilerFileName);
+    // } 
+
     void LoadInterfaceEditor(){//This function is necessary as without it IMGui wont load the updated float array.
         hearts_colors[0] = (float)CVar_GetS32("gCCHeartsPrimR", 255)/255;
         hearts_colors[1] = (float)CVar_GetS32("gCCHeartsPrimG", 70)/255;
