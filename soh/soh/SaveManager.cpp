@@ -13,305 +13,11 @@
 
 extern "C" SaveContext gSaveContext;
 
-static const std::filesystem::path sSavePath("Save");
+static const std::filesystem::path sSavePath("Save"); // TODO maybe let this be user-configurable?
 static const std::filesystem::path sGlobalPath = sSavePath / "global.sav";
 
-typedef struct {
-    /* 0x00 */ u8 buttonItems[4];
-    /* 0x04 */ u8 cButtonSlots[3];
-    /* 0x08 */ u16 equipment;
-} ItemEquips_v0; // size = 0x0A
-
-typedef struct {
-    /* 0x00 */ u8 items[24];
-    /* 0x18 */ s8 ammo[16];
-    /* 0x28 */ u16 equipment;
-    /* 0x2C */ u32 upgrades;
-    /* 0x30 */ u32 questItems;
-    /* 0x34 */ u8 dungeonItems[20];
-    /* 0x48 */ s8 dungeonKeys[19];
-    /* 0x5B */ s8 defenseHearts;
-    /* 0x5C */ s16 gsTokens;
-} Inventory_v0; // size = 0x5E
-
-typedef struct {
-    /* 0x00 */ u32 chest;
-    /* 0x04 */ u32 swch;
-    /* 0x08 */ u32 clear;
-    /* 0x0C */ u32 collect;
-    /* 0x10 */ u32 unk;
-    /* 0x14 */ u32 rooms;
-    /* 0x18 */ u32 floors;
-} SavedSceneFlags_v0; // size = 0x1C
-
-typedef struct {
-    s32 x, y, z;
-} Vec3i_v0; // size = 0x0C
-
-typedef struct {
-    /* 0x00 */ Vec3i_v0 pos;
-    /* 0x0C */ s32 yaw;
-    /* 0x10 */ s32 playerParams;
-    /* 0x14 */ s32 entranceIndex;
-    /* 0x18 */ s32 roomIndex;
-    /* 0x1C */ s32 set;
-    /* 0x20 */ s32 tempSwchFlags;
-    /* 0x24 */ s32 tempCollectFlags;
-} FaroresWindData_v0; // size = 0x28
-
-typedef struct {
-    s16 x, y, z;
-} Vec3s_v0; // size = 0x06
-
-typedef struct {
-    /* 0x00 */ s16 scene;
-    /* 0x02 */ Vec3s_v0 pos;
-    /* 0x08 */ s16 angle;
-} HorseData_v0; // size = 0x0A
-
-typedef struct {
-    f32 x, y, z;
-} Vec3f_v0; // size = 0x0C
-
-typedef struct {
-    /* 0x00 */ Vec3f_v0 pos;
-    /* 0x0C */ s16 yaw;
-    /* 0x0E */ s16 playerParams;
-    /* 0x10 */ s16 entranceIndex;
-    /* 0x12 */ u8 roomIndex;
-    /* 0x13 */ s8 data;
-    /* 0x14 */ u32 tempSwchFlags;
-    /* 0x18 */ u32 tempCollectFlags;
-} RespawnData_v0; // size = 0x1C
-
-typedef struct {
-    /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
-    /* 0x0004 */ s32 linkAge;       // 0: Adult; 1: Child
-    /* 0x0008 */ s32 cutsceneIndex;
-    /* 0x000C */ u16 dayTime; // "zelda_time"
-    /* 0x0010 */ s32 nightFlag;
-    /* 0x0014 */ s32 totalDays;
-    /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
-    /* 0x001C */ char newf[6];    // string "ZELDAZ". start of `info` substruct, originally called "information"
-    /* 0x0022 */ u16 deaths;
-    /* 0x0024 */ char playerName[8];
-    /* 0x002C */ s16 n64ddFlag;
-    /* 0x002E */ s16 healthCapacity; // "max_life"
-    /* 0x0030 */ s16 health;         // "now_life"
-    /* 0x0032 */ s8 magicLevel;
-    /* 0x0033 */ s8 magic;
-    /* 0x0034 */ s16 rupees;
-    /* 0x0036 */ u16 swordHealth;
-    /* 0x0038 */ u16 naviTimer;
-    /* 0x003A */ u8 magicAcquired;
-    /* 0x003B */ char unk_3B[0x01];
-    /* 0x003C */ u8 doubleMagic;
-    /* 0x003D */ u8 doubleDefense;
-    /* 0x003E */ u8 bgsFlag;
-    /* 0x003F */ u8 ocarinaGameRoundNum;
-    /* 0x0040 */ ItemEquips_v0 childEquips;
-    /* 0x004A */ ItemEquips_v0 adultEquips;
-    /* 0x0054 */ u32 unk_54; // this may be incorrect, currently used for alignement
-    /* 0x0058 */ char unk_58[0x0E];
-    /* 0x0066 */ s16 savedSceneNum;
-    /* 0x0068 */ ItemEquips_v0 equips;
-    /* 0x0074 */ Inventory_v0 inventory;
-    /* 0x00D4 */ SavedSceneFlags_v0 sceneFlags[124];
-    /* 0x0E64 */ FaroresWindData_v0 fw;
-    /* 0x0E8C */ char unk_E8C[0x10];
-    /* 0x0E9C */ s32 gsFlags[6];
-    /* 0x0EB4 */ char unk_EB4[0x4];
-    /* 0x0EB8 */ s32 highScores[7];
-    /* 0x0ED4 */ u16 eventChkInf[14]; // "event_chk_inf"
-    /* 0x0EF0 */ u16 itemGetInf[4];   // "item_get_inf"
-    /* 0x0EF8 */ u16 infTable[30];    // "inf_table"
-    /* 0x0F34 */ char unk_F34[0x04];
-    /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
-    /* 0x0F3C */ char unk_F3C[0x4];
-    /* 0x0F40 */ u8 scarecrowCustomSongSet;
-    /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
-    /* 0x12A1 */ char unk_12A1[0x24];
-    /* 0x12C5 */ u8 scarecrowSpawnSongSet;
-    /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
-    /* 0x1346 */ char unk_1346[0x02];
-    /* 0x1348 */ HorseData_v0 horseData;
-    /* 0x1352 */ u16 checksum; // "check_sum"
-    /* 0x1354 */ s32 fileNum;  // "file_no"
-    /* 0x1358 */ char unk_1358[0x0004];
-    /* 0x135C */ s32 gameMode;
-    /* 0x1360 */ s32 sceneSetupIndex;
-    /* 0x1364 */ s32 respawnFlag;        // "restart_flag"
-    /* 0x1368 */ RespawnData_v0 respawn[3]; // "restart_data"
-    /* 0x13BC */ f32 entranceSpeed;
-    /* 0x13C0 */ u16 entranceSound;
-    /* 0x13C2 */ char unk_13C2[0x0001];
-    /* 0x13C3 */ u8 unk_13C3;
-    /* 0x13C4 */ s16 dogParams;
-    /* 0x13C6 */ u8 textTriggerFlags;
-    /* 0x13C7 */ u8 showTitleCard;
-    /* 0x13C8 */ s16 nayrusLoveTimer;
-    /* 0x13CA */ char unk_13CA[0x0002];
-    /* 0x13CC */ s16 rupeeAccumulator;
-    /* 0x13CE */ s16 timer1State;
-    /* 0x13D0 */ s16 timer1Value;
-    /* 0x13D2 */ s16 timer2State;
-    /* 0x13D4 */ s16 timer2Value;
-    /* 0x13D6 */ s16 timerX[2];
-    /* 0x13DA */ s16 timerY[2];
-    /* 0x13DE */ char unk_13DE[0x0002];
-    /* 0x13E0 */ u8 seqId;
-    /* 0x13E1 */ u8 natureAmbienceId;
-    /* 0x13E2 */ u8 buttonStatus[5];
-    /* 0x13E7 */ u8 unk_13E7;     // alpha related
-    /* 0x13E8 */ u16 unk_13E8;    // alpha type?
-    /* 0x13EA */ u16 unk_13EA;    // also alpha type?
-    /* 0x13EC */ u16 unk_13EC;    // alpha type counter?
-    /* 0x13EE */ u16 unk_13EE;    // previous alpha type?
-    /* 0x13F0 */ s16 unk_13F0;    // magic related
-    /* 0x13F2 */ s16 unk_13F2;    // magic related
-    /* 0x13F4 */ s16 unk_13F4;    // magic related
-    /* 0x13F6 */ s16 unk_13F6;    // magic related
-    /* 0x13F8 */ s16 unk_13F8;    // magic related
-    /* 0x13FA */ u16 eventInf[4]; // "event_inf"
-    /* 0x1402 */ u16 mapIndex;    // intended for maps/minimaps but commonly used as the dungeon index
-    /* 0x1404 */ u16 minigameState;
-    /* 0x1406 */ u16 minigameScore; // "yabusame_total"
-    /* 0x1408 */ char unk_1408[0x0001];
-    /* 0x1409 */ u8 language; // NTSC 0: Japanese; 1: English | PAL 0: English; 1: German; 2: French
-    /* 0x140A */ u8 audioSetting;
-    /* 0x140B */ char unk_140B[0x0001];
-    /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
-    /* 0x140E */ u16 forcedSeqId;   // immediately start playing the sequence if set
-    /* 0x1410 */ u8 unk_1410;       // transition related
-    /* 0x1411 */ char unk_1411[0x0001];
-    /* 0x1412 */ u16 nextCutsceneIndex;
-    /* 0x1414 */ u8 cutsceneTrigger;
-    /* 0x1415 */ u8 chamberCutsceneNum;
-    /* 0x1416 */ u16 nextDayTime; // "next_zelda_time"
-    /* 0x1418 */ u8 fadeDuration;
-    /* 0x1419 */ u8 unk_1419; // transition related
-    /* 0x141A */ u16 skyboxTime;
-    /* 0x141C */ u8 dogIsLost;
-    /* 0x141D */ u8 nextTransition;
-    /* 0x141E */ char unk_141E[0x0002];
-    /* 0x1420 */ s16 worldMapArea;
-    /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
-    /* 0x1424 */ s16 healthAccumulator;
-} SaveContext_v0; // size = 0x1428
-
-void CopyV0Save(SaveContext_v0& src,  SaveContext& dst) {
-    dst.entranceIndex = src.entranceIndex;
-    dst.linkAge = src.linkAge;
-    dst.cutsceneIndex = src.cutsceneIndex;
-    dst.dayTime = src.dayTime;
-    dst.nightFlag = src.nightFlag;
-    dst.totalDays = src.totalDays;
-    dst.bgsDayCount = src.bgsDayCount;
-    dst.deaths = src.deaths;
-    for (size_t i = 0; i < ARRAY_COUNT(src.playerName); i++) {
-        dst.playerName[i] = src.playerName[i];
-    }
-    dst.n64ddFlag = src.n64ddFlag;
-    dst.healthCapacity = src.healthCapacity;
-    dst.health = src.health;
-    dst.magicLevel = src.magicLevel;
-    dst.magic = src.magic;
-    dst.rupees = src.rupees;
-    dst.swordHealth = src.swordHealth;
-    dst.naviTimer = src.naviTimer;
-    dst.magicAcquired = src.magicAcquired;
-    dst.doubleMagic = src.doubleMagic;
-    dst.doubleDefense = src.doubleDefense;
-    dst.bgsFlag = src.bgsFlag;
-    dst.ocarinaGameRoundNum = src.ocarinaGameRoundNum;
-    for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.buttonItems); i++) {
-        dst.childEquips.buttonItems[i] = src.childEquips.buttonItems[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.cButtonSlots); i++) {
-        dst.childEquips.cButtonSlots[i] = src.childEquips.cButtonSlots[i];
-    }
-    dst.childEquips.equipment = src.childEquips.equipment;
-    for (size_t i = 0; i < ARRAY_COUNT(src.adultEquips.buttonItems); i++) {
-        dst.adultEquips.buttonItems[i] = src.adultEquips.buttonItems[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.adultEquips.cButtonSlots); i++) {
-        dst.adultEquips.cButtonSlots[i] = src.adultEquips.cButtonSlots[i];
-    }
-    dst.adultEquips.equipment = src.adultEquips.equipment;
-    dst.unk_54 = src.unk_54;
-    dst.savedSceneNum = src.savedSceneNum;
-    for (size_t i = 0; i < ARRAY_COUNT(src.equips.buttonItems); i++) {
-        dst.equips.buttonItems[i] = src.equips.buttonItems[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.equips.cButtonSlots); i++) {
-        dst.equips.cButtonSlots[i] = src.equips.cButtonSlots[i];
-    }
-    dst.equips.equipment = src.equips.equipment;
-    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.items); i++) {
-        dst.inventory.items[i] = src.inventory.items[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.ammo); i++) {
-        dst.inventory.ammo[i] = src.inventory.ammo[i];
-    }
-    dst.inventory.equipment = src.inventory.equipment;
-    dst.inventory.upgrades = src.inventory.upgrades;
-    dst.inventory.questItems = src.inventory.questItems;
-    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.dungeonItems); i++) {
-        dst.inventory.dungeonItems[i] = src.inventory.dungeonItems[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.dungeonKeys); i++) {
-        dst.inventory.dungeonKeys[i] = src.inventory.dungeonKeys[i];
-    }
-    dst.inventory.defenseHearts = src.inventory.defenseHearts;
-    dst.inventory.gsTokens = src.inventory.gsTokens;
-    for (size_t i = 0; i < ARRAY_COUNT(src.sceneFlags); i++) {
-        dst.sceneFlags[i].chest = src.sceneFlags[i].chest;
-        dst.sceneFlags[i].swch = src.sceneFlags[i].swch;
-        dst.sceneFlags[i].clear = src.sceneFlags[i].clear;
-        dst.sceneFlags[i].collect = src.sceneFlags[i].collect;
-        dst.sceneFlags[i].unk = src.sceneFlags[i].unk;
-        dst.sceneFlags[i].rooms = src.sceneFlags[i].rooms;
-        dst.sceneFlags[i].floors = src.sceneFlags[i].floors;
-    }
-    dst.fw.pos.x = src.fw.pos.x;
-    dst.fw.pos.y = src.fw.pos.y;
-    dst.fw.pos.z = src.fw.pos.z;
-    dst.fw.yaw = src.fw.yaw;
-    dst.fw.playerParams = src.fw.playerParams;
-    dst.fw.entranceIndex = src.fw.entranceIndex;
-    dst.fw.roomIndex = src.fw.roomIndex;
-    dst.fw.set = src.fw.set;
-    dst.fw.tempSwchFlags = src.fw.tempSwchFlags;
-    dst.fw.tempCollectFlags = src.fw.tempCollectFlags;
-    for (size_t i = 0; i < ARRAY_COUNT(src.gsFlags); i++) {
-        dst.gsFlags[i] = src.gsFlags[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.highScores); i++) {
-        dst.highScores[i] = src.highScores[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.eventChkInf); i++) {
-        dst.eventChkInf[i] = src.eventChkInf[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.itemGetInf); i++) {
-        dst.itemGetInf[i] = src.itemGetInf[i];
-    }
-    for (size_t i = 0; i < ARRAY_COUNT(src.infTable); i++) {
-        dst.infTable[i] = src.infTable[i];
-    }
-    dst.worldMapAreaData = src.worldMapAreaData;
-    dst.scarecrowCustomSongSet = src.scarecrowCustomSongSet;
-    for (size_t i = 0; i < ARRAY_COUNT(src.scarecrowCustomSong); i++) {
-        dst.scarecrowCustomSong[i] = src.scarecrowCustomSong[i];
-    }
-    dst.scarecrowSpawnSongSet = src.scarecrowSpawnSongSet;
-    for (size_t i = 0; i < ARRAY_COUNT(src.scarecrowSpawnSong); i++) {
-        dst.scarecrowSpawnSong[i] = src.scarecrowSpawnSong[i];
-    }
-    dst.horseData.scene = src.horseData.scene;
-    dst.horseData.pos.x = src.horseData.pos.x;
-    dst.horseData.pos.y = src.horseData.pos.y;
-    dst.horseData.pos.z = src.horseData.pos.z;
-    dst.horseData.angle = src.horseData.angle;
+std::filesystem::path SaveManager::GetFileName(int fileNum) {
+    return sSavePath / (std::string("file") + std::to_string(fileNum + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
@@ -327,14 +33,17 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::Init() {
+    // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
         std::filesystem::create_directory(sSavePath);
     }
 
+    // If there is a lingering unversioned save, convert it
     if (std::filesystem::exists("oot_save.sav")) {
         ConvertFromUnversioned();
     }
 
+    // If the global save file exist, load it. Otherwise, create it.
     if (std::filesystem::exists(sGlobalPath)) {
         std::ifstream input(sGlobalPath);
         nlohmann::json globalBlock;
@@ -363,9 +72,9 @@ void SaveManager::Init() {
     }
     
     // Load files to initialize metadata
-    for (int slotNum = 0; slotNum < MaxFiles; slotNum++) {
-        if (std::filesystem::exists(GetFileName(slotNum))) {
-            LoadFile(slotNum);
+    for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
+        if (std::filesystem::exists(GetFileName(fileNum))) {
+            LoadFile(fileNum);
         }
 
     }
@@ -746,53 +455,6 @@ void SaveManager::CreateDefaultGlobal() {
     SaveGlobal();
 }
 
-void SaveManager::CreateDefaultSlot(int slotNum) {
-    InitFile(false);
-    gSaveContext.fileNum = slotNum;
-}
-
-void SaveManager::ConvertFromUnversioned() {
-    static char sZeldaMagic[] = { '\0', '\0', '\0', '\x98', '\x09', '\x10', '\x21', 'Z', 'E', 'L', 'D', 'A' };
-#define SLOT_SIZE (sizeof(SaveContext_v0) + 0x28)
-#define SLOT_OFFSET(index) (SRAM_HEADER_SIZE + 0x10 + (index * SLOT_SIZE))
-
-    std::ifstream input("oot_save.sav", std::ios::binary);
-    std::vector<char> data(std::istreambuf_iterator<char>(input), {});
-    input.close();
-
-    for (size_t i = 0; i < ARRAY_COUNT(sZeldaMagic) - 3; i++) {
-        if (sZeldaMagic[i + SRAM_HEADER_MAGIC] != data[i + SRAM_HEADER_MAGIC]) {
-            CreateDefaultGlobal();
-            return;
-        }
-    }
-
-    gSaveContext.audioSetting = data[SRAM_HEADER_SOUND] & 3;
-    gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
-    gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
-    if (gSaveContext.language >= LANGUAGE_MAX) {
-        gSaveContext.language = LANGUAGE_ENG;
-    }
-    SaveGlobal();
-
-    for (int slotNum = 0; slotNum < 3; slotNum++) {
-        SaveContext_v0* slot = reinterpret_cast<SaveContext_v0*>(&data[SLOT_OFFSET(slotNum)]);
-        if ((slot->newf[0] == 'Z') && (slot->newf[1] == 'E') && (slot->newf[2] == 'L') && (slot->newf[3] == 'D') && (slot->newf[4] == 'A') && (slot->newf[5] == 'Z')) {
-            static SaveContext saveContextSave = gSaveContext;
-            InitFile(false);
-            CopyV0Save(*slot, gSaveContext);
-            SaveFile(slotNum);
-            InitMeta(slotNum);
-            gSaveContext = saveContextSave;
-        }
-    }
-
-    std::filesystem::rename("oot_save.sav", "oot_save.bak");
-
-#undef SLOT_SIZE
-#undef SLOT_OFFSET
-}
-
 void SaveManager::LoadBaseVersion1() {
     SaveManager::Instance->LoadData("entranceIndex", gSaveContext.entranceIndex);
     SaveManager::Instance->LoadData("linkAge", gSaveContext.linkAge);
@@ -1060,6 +722,7 @@ void SaveManager::SaveBase() {
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
+    // Create an empty array and set it as the current save context, then call the function that saves an array entry.
     nlohmann::json* saveJsonContext = currentJsonContext;
     currentJsonContext = &(*currentJsonContext)[name.c_str()];
     *currentJsonContext = nlohmann::json::array();
@@ -1070,6 +733,8 @@ void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArra
 }
 
 void SaveManager::SaveStruct(const std::string& name, SaveStructFunc func) {
+    // Create an empty struct and set it as the current save context, then call the function that saves the sruct.
+    // If it is an array entry, save it to the array instead.
     if (name == "") {
         nlohmann::json* saveJsonContext = currentJsonContext;
         nlohmann::json object = nlohmann::json::object();
@@ -1087,6 +752,7 @@ void SaveManager::SaveStruct(const std::string& name, SaveStructFunc func) {
 }
 
 void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArrayFunc func) {
+    // Create an empty array and set it as the current save context, then call the function that loads an array entry.
     nlohmann::json* saveJsonContext = currentJsonContext;
     currentJsonContext = &(*currentJsonContext)[name.c_str()];
     currentJsonArrayContext = currentJsonContext->begin();
@@ -1104,14 +770,16 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
    
 
 void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
+    // Create an empty struct and set it as the current load context, then call the function that loads the sruct.
+    // If it is an array entry, load it from the array instead.
     if (name == "") {
         nlohmann::json* saveJsonContext = currentJsonContext;
         nlohmann::json emptyObject = nlohmann::json::object();
         if (currentJsonArrayContext != currentJsonContext->end()) {
             currentJsonContext = &currentJsonArrayContext.value();
         } else {
-            // This array member is past the data in the json file. Therefor, default construct it.
-            // By assigning an empty object here, all attempts to load data member of it will default.
+            // This array member is past the data in the json file. Therefore, default construct it.
+            // By assigning an empty object here, all attempts to load data members of it will default construct them.
             currentJsonContext = &emptyObject;
         }
         func();
@@ -1139,16 +807,362 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].health = fileMetaInfo[from].health;
 }
 
-std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    return sSavePath / (std::string("slot") + std::to_string(fileNum + 1) + ".sav");
-}
-
 void SaveManager::DeleteZeldaFile(int fileNum) {
     if (std::filesystem::exists(GetFileName(fileNum))) {
         std::filesystem::remove(GetFileName(fileNum));
     }
     fileMetaInfo[fileNum].valid = false;
 }
+
+// Functionality required to convert old saves into versioned saves
+
+// DO NOT EDIT ANY OF THE FOLLOWING STRUCTS
+// They MUST remain unchanged to handle parsing the binary saves of old
+
+typedef struct {
+    /* 0x00 */ u8 buttonItems[4];
+    /* 0x04 */ u8 cButtonSlots[3];
+    /* 0x08 */ u16 equipment;
+} ItemEquips_v0; // size = 0x0A
+
+typedef struct {
+    /* 0x00 */ u8 items[24];
+    /* 0x18 */ s8 ammo[16];
+    /* 0x28 */ u16 equipment;
+    /* 0x2C */ u32 upgrades;
+    /* 0x30 */ u32 questItems;
+    /* 0x34 */ u8 dungeonItems[20];
+    /* 0x48 */ s8 dungeonKeys[19];
+    /* 0x5B */ s8 defenseHearts;
+    /* 0x5C */ s16 gsTokens;
+} Inventory_v0; // size = 0x5E
+
+typedef struct {
+    /* 0x00 */ u32 chest;
+    /* 0x04 */ u32 swch;
+    /* 0x08 */ u32 clear;
+    /* 0x0C */ u32 collect;
+    /* 0x10 */ u32 unk;
+    /* 0x14 */ u32 rooms;
+    /* 0x18 */ u32 floors;
+} SavedSceneFlags_v0; // size = 0x1C
+
+typedef struct {
+    s32 x, y, z;
+} Vec3i_v0; // size = 0x0C
+
+typedef struct {
+    /* 0x00 */ Vec3i_v0 pos;
+    /* 0x0C */ s32 yaw;
+    /* 0x10 */ s32 playerParams;
+    /* 0x14 */ s32 entranceIndex;
+    /* 0x18 */ s32 roomIndex;
+    /* 0x1C */ s32 set;
+    /* 0x20 */ s32 tempSwchFlags;
+    /* 0x24 */ s32 tempCollectFlags;
+} FaroresWindData_v0; // size = 0x28
+
+typedef struct {
+    s16 x, y, z;
+} Vec3s_v0; // size = 0x06
+
+typedef struct {
+    /* 0x00 */ s16 scene;
+    /* 0x02 */ Vec3s_v0 pos;
+    /* 0x08 */ s16 angle;
+} HorseData_v0; // size = 0x0A
+
+typedef struct {
+    f32 x, y, z;
+} Vec3f_v0; // size = 0x0C
+
+typedef struct {
+    /* 0x00 */ Vec3f_v0 pos;
+    /* 0x0C */ s16 yaw;
+    /* 0x0E */ s16 playerParams;
+    /* 0x10 */ s16 entranceIndex;
+    /* 0x12 */ u8 roomIndex;
+    /* 0x13 */ s8 data;
+    /* 0x14 */ u32 tempSwchFlags;
+    /* 0x18 */ u32 tempCollectFlags;
+} RespawnData_v0; // size = 0x1C
+
+typedef struct {
+    /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
+    /* 0x0004 */ s32 linkAge;       // 0: Adult; 1: Child
+    /* 0x0008 */ s32 cutsceneIndex;
+    /* 0x000C */ u16 dayTime; // "zelda_time"
+    /* 0x0010 */ s32 nightFlag;
+    /* 0x0014 */ s32 totalDays;
+    /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
+    /* 0x001C */ char newf[6];    // string "ZELDAZ". start of `info` substruct, originally called "information"
+    /* 0x0022 */ u16 deaths;
+    /* 0x0024 */ char playerName[8];
+    /* 0x002C */ s16 n64ddFlag;
+    /* 0x002E */ s16 healthCapacity; // "max_life"
+    /* 0x0030 */ s16 health;         // "now_life"
+    /* 0x0032 */ s8 magicLevel;
+    /* 0x0033 */ s8 magic;
+    /* 0x0034 */ s16 rupees;
+    /* 0x0036 */ u16 swordHealth;
+    /* 0x0038 */ u16 naviTimer;
+    /* 0x003A */ u8 magicAcquired;
+    /* 0x003B */ char unk_3B[0x01];
+    /* 0x003C */ u8 doubleMagic;
+    /* 0x003D */ u8 doubleDefense;
+    /* 0x003E */ u8 bgsFlag;
+    /* 0x003F */ u8 ocarinaGameRoundNum;
+    /* 0x0040 */ ItemEquips_v0 childEquips;
+    /* 0x004A */ ItemEquips_v0 adultEquips;
+    /* 0x0054 */ u32 unk_54; // this may be incorrect, currently used for alignement
+    /* 0x0058 */ char unk_58[0x0E];
+    /* 0x0066 */ s16 savedSceneNum;
+    /* 0x0068 */ ItemEquips_v0 equips;
+    /* 0x0074 */ Inventory_v0 inventory;
+    /* 0x00D4 */ SavedSceneFlags_v0 sceneFlags[124];
+    /* 0x0E64 */ FaroresWindData_v0 fw;
+    /* 0x0E8C */ char unk_E8C[0x10];
+    /* 0x0E9C */ s32 gsFlags[6];
+    /* 0x0EB4 */ char unk_EB4[0x4];
+    /* 0x0EB8 */ s32 highScores[7];
+    /* 0x0ED4 */ u16 eventChkInf[14]; // "event_chk_inf"
+    /* 0x0EF0 */ u16 itemGetInf[4];   // "item_get_inf"
+    /* 0x0EF8 */ u16 infTable[30];    // "inf_table"
+    /* 0x0F34 */ char unk_F34[0x04];
+    /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
+    /* 0x0F3C */ char unk_F3C[0x4];
+    /* 0x0F40 */ u8 scarecrowCustomSongSet;
+    /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
+    /* 0x12A1 */ char unk_12A1[0x24];
+    /* 0x12C5 */ u8 scarecrowSpawnSongSet;
+    /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
+    /* 0x1346 */ char unk_1346[0x02];
+    /* 0x1348 */ HorseData_v0 horseData;
+    /* 0x1352 */ u16 checksum; // "check_sum"
+    /* 0x1354 */ s32 fileNum;  // "file_no"
+    /* 0x1358 */ char unk_1358[0x0004];
+    /* 0x135C */ s32 gameMode;
+    /* 0x1360 */ s32 sceneSetupIndex;
+    /* 0x1364 */ s32 respawnFlag;           // "restart_flag"
+    /* 0x1368 */ RespawnData_v0 respawn[3]; // "restart_data"
+    /* 0x13BC */ f32 entranceSpeed;
+    /* 0x13C0 */ u16 entranceSound;
+    /* 0x13C2 */ char unk_13C2[0x0001];
+    /* 0x13C3 */ u8 unk_13C3;
+    /* 0x13C4 */ s16 dogParams;
+    /* 0x13C6 */ u8 textTriggerFlags;
+    /* 0x13C7 */ u8 showTitleCard;
+    /* 0x13C8 */ s16 nayrusLoveTimer;
+    /* 0x13CA */ char unk_13CA[0x0002];
+    /* 0x13CC */ s16 rupeeAccumulator;
+    /* 0x13CE */ s16 timer1State;
+    /* 0x13D0 */ s16 timer1Value;
+    /* 0x13D2 */ s16 timer2State;
+    /* 0x13D4 */ s16 timer2Value;
+    /* 0x13D6 */ s16 timerX[2];
+    /* 0x13DA */ s16 timerY[2];
+    /* 0x13DE */ char unk_13DE[0x0002];
+    /* 0x13E0 */ u8 seqId;
+    /* 0x13E1 */ u8 natureAmbienceId;
+    /* 0x13E2 */ u8 buttonStatus[5];
+    /* 0x13E7 */ u8 unk_13E7;     // alpha related
+    /* 0x13E8 */ u16 unk_13E8;    // alpha type?
+    /* 0x13EA */ u16 unk_13EA;    // also alpha type?
+    /* 0x13EC */ u16 unk_13EC;    // alpha type counter?
+    /* 0x13EE */ u16 unk_13EE;    // previous alpha type?
+    /* 0x13F0 */ s16 unk_13F0;    // magic related
+    /* 0x13F2 */ s16 unk_13F2;    // magic related
+    /* 0x13F4 */ s16 unk_13F4;    // magic related
+    /* 0x13F6 */ s16 unk_13F6;    // magic related
+    /* 0x13F8 */ s16 unk_13F8;    // magic related
+    /* 0x13FA */ u16 eventInf[4]; // "event_inf"
+    /* 0x1402 */ u16 mapIndex;    // intended for maps/minimaps but commonly used as the dungeon index
+    /* 0x1404 */ u16 minigameState;
+    /* 0x1406 */ u16 minigameScore; // "yabusame_total"
+    /* 0x1408 */ char unk_1408[0x0001];
+    /* 0x1409 */ u8 language; // NTSC 0: Japanese; 1: English | PAL 0: English; 1: German; 2: French
+    /* 0x140A */ u8 audioSetting;
+    /* 0x140B */ char unk_140B[0x0001];
+    /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
+    /* 0x140E */ u16 forcedSeqId;   // immediately start playing the sequence if set
+    /* 0x1410 */ u8 unk_1410;       // transition related
+    /* 0x1411 */ char unk_1411[0x0001];
+    /* 0x1412 */ u16 nextCutsceneIndex;
+    /* 0x1414 */ u8 cutsceneTrigger;
+    /* 0x1415 */ u8 chamberCutsceneNum;
+    /* 0x1416 */ u16 nextDayTime; // "next_zelda_time"
+    /* 0x1418 */ u8 fadeDuration;
+    /* 0x1419 */ u8 unk_1419; // transition related
+    /* 0x141A */ u16 skyboxTime;
+    /* 0x141C */ u8 dogIsLost;
+    /* 0x141D */ u8 nextTransition;
+    /* 0x141E */ char unk_141E[0x0002];
+    /* 0x1420 */ s16 worldMapArea;
+    /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
+    /* 0x1424 */ s16 healthAccumulator;
+} SaveContext_v0; // size = 0x1428
+
+void CopyV0Save(SaveContext_v0& src, SaveContext& dst) {
+    dst.entranceIndex = src.entranceIndex;
+    dst.linkAge = src.linkAge;
+    dst.cutsceneIndex = src.cutsceneIndex;
+    dst.dayTime = src.dayTime;
+    dst.nightFlag = src.nightFlag;
+    dst.totalDays = src.totalDays;
+    dst.bgsDayCount = src.bgsDayCount;
+    dst.deaths = src.deaths;
+    for (size_t i = 0; i < ARRAY_COUNT(src.playerName); i++) {
+        dst.playerName[i] = src.playerName[i];
+    }
+    dst.n64ddFlag = src.n64ddFlag;
+    dst.healthCapacity = src.healthCapacity;
+    dst.health = src.health;
+    dst.magicLevel = src.magicLevel;
+    dst.magic = src.magic;
+    dst.rupees = src.rupees;
+    dst.swordHealth = src.swordHealth;
+    dst.naviTimer = src.naviTimer;
+    dst.magicAcquired = src.magicAcquired;
+    dst.doubleMagic = src.doubleMagic;
+    dst.doubleDefense = src.doubleDefense;
+    dst.bgsFlag = src.bgsFlag;
+    dst.ocarinaGameRoundNum = src.ocarinaGameRoundNum;
+    for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.buttonItems); i++) {
+        dst.childEquips.buttonItems[i] = src.childEquips.buttonItems[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.childEquips.cButtonSlots); i++) {
+        dst.childEquips.cButtonSlots[i] = src.childEquips.cButtonSlots[i];
+    }
+    dst.childEquips.equipment = src.childEquips.equipment;
+    for (size_t i = 0; i < ARRAY_COUNT(src.adultEquips.buttonItems); i++) {
+        dst.adultEquips.buttonItems[i] = src.adultEquips.buttonItems[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.adultEquips.cButtonSlots); i++) {
+        dst.adultEquips.cButtonSlots[i] = src.adultEquips.cButtonSlots[i];
+    }
+    dst.adultEquips.equipment = src.adultEquips.equipment;
+    dst.unk_54 = src.unk_54;
+    dst.savedSceneNum = src.savedSceneNum;
+    for (size_t i = 0; i < ARRAY_COUNT(src.equips.buttonItems); i++) {
+        dst.equips.buttonItems[i] = src.equips.buttonItems[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.equips.cButtonSlots); i++) {
+        dst.equips.cButtonSlots[i] = src.equips.cButtonSlots[i];
+    }
+    dst.equips.equipment = src.equips.equipment;
+    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.items); i++) {
+        dst.inventory.items[i] = src.inventory.items[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.ammo); i++) {
+        dst.inventory.ammo[i] = src.inventory.ammo[i];
+    }
+    dst.inventory.equipment = src.inventory.equipment;
+    dst.inventory.upgrades = src.inventory.upgrades;
+    dst.inventory.questItems = src.inventory.questItems;
+    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.dungeonItems); i++) {
+        dst.inventory.dungeonItems[i] = src.inventory.dungeonItems[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.inventory.dungeonKeys); i++) {
+        dst.inventory.dungeonKeys[i] = src.inventory.dungeonKeys[i];
+    }
+    dst.inventory.defenseHearts = src.inventory.defenseHearts;
+    dst.inventory.gsTokens = src.inventory.gsTokens;
+    for (size_t i = 0; i < ARRAY_COUNT(src.sceneFlags); i++) {
+        dst.sceneFlags[i].chest = src.sceneFlags[i].chest;
+        dst.sceneFlags[i].swch = src.sceneFlags[i].swch;
+        dst.sceneFlags[i].clear = src.sceneFlags[i].clear;
+        dst.sceneFlags[i].collect = src.sceneFlags[i].collect;
+        dst.sceneFlags[i].unk = src.sceneFlags[i].unk;
+        dst.sceneFlags[i].rooms = src.sceneFlags[i].rooms;
+        dst.sceneFlags[i].floors = src.sceneFlags[i].floors;
+    }
+    dst.fw.pos.x = src.fw.pos.x;
+    dst.fw.pos.y = src.fw.pos.y;
+    dst.fw.pos.z = src.fw.pos.z;
+    dst.fw.yaw = src.fw.yaw;
+    dst.fw.playerParams = src.fw.playerParams;
+    dst.fw.entranceIndex = src.fw.entranceIndex;
+    dst.fw.roomIndex = src.fw.roomIndex;
+    dst.fw.set = src.fw.set;
+    dst.fw.tempSwchFlags = src.fw.tempSwchFlags;
+    dst.fw.tempCollectFlags = src.fw.tempCollectFlags;
+    for (size_t i = 0; i < ARRAY_COUNT(src.gsFlags); i++) {
+        dst.gsFlags[i] = src.gsFlags[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.highScores); i++) {
+        dst.highScores[i] = src.highScores[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.eventChkInf); i++) {
+        dst.eventChkInf[i] = src.eventChkInf[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.itemGetInf); i++) {
+        dst.itemGetInf[i] = src.itemGetInf[i];
+    }
+    for (size_t i = 0; i < ARRAY_COUNT(src.infTable); i++) {
+        dst.infTable[i] = src.infTable[i];
+    }
+    dst.worldMapAreaData = src.worldMapAreaData;
+    dst.scarecrowCustomSongSet = src.scarecrowCustomSongSet;
+    for (size_t i = 0; i < ARRAY_COUNT(src.scarecrowCustomSong); i++) {
+        dst.scarecrowCustomSong[i] = src.scarecrowCustomSong[i];
+    }
+    dst.scarecrowSpawnSongSet = src.scarecrowSpawnSongSet;
+    for (size_t i = 0; i < ARRAY_COUNT(src.scarecrowSpawnSong); i++) {
+        dst.scarecrowSpawnSong[i] = src.scarecrowSpawnSong[i];
+    }
+    dst.horseData.scene = src.horseData.scene;
+    dst.horseData.pos.x = src.horseData.pos.x;
+    dst.horseData.pos.y = src.horseData.pos.y;
+    dst.horseData.pos.z = src.horseData.pos.z;
+    dst.horseData.angle = src.horseData.angle;
+}
+
+void SaveManager::ConvertFromUnversioned() {
+    static char sZeldaMagic[] = { '\0', '\0', '\0', '\x98', '\x09', '\x10', '\x21', 'Z', 'E', 'L', 'D', 'A' };
+#define SLOT_SIZE (sizeof(SaveContext_v0) + 0x28)
+#define SLOT_OFFSET(index) (SRAM_HEADER_SIZE + 0x10 + (index * SLOT_SIZE))
+
+    std::ifstream input("oot_save.sav", std::ios::binary);
+    std::vector<char> data(std::istreambuf_iterator<char>(input), {});
+    input.close();
+
+    for (size_t i = 0; i < ARRAY_COUNT(sZeldaMagic) - 3; i++) {
+        if (sZeldaMagic[i + SRAM_HEADER_MAGIC] != data[i + SRAM_HEADER_MAGIC]) {
+            CreateDefaultGlobal();
+            return;
+        }
+    }
+
+    gSaveContext.audioSetting = data[SRAM_HEADER_SOUND] & 3;
+    gSaveContext.zTargetSetting = data[SRAM_HEADER_ZTARGET] & 1;
+    gSaveContext.language = data[SRAM_HEADER_LANGUAGE];
+    if (gSaveContext.language >= LANGUAGE_MAX) {
+        gSaveContext.language = LANGUAGE_ENG;
+    }
+    SaveGlobal();
+
+    for (int fileNum = 0; fileNum < 3; fileNum++) {
+        SaveContext_v0* file = reinterpret_cast<SaveContext_v0*>(&data[SLOT_OFFSET(fileNum)]);
+        if ((file->newf[0] == 'Z') && (file->newf[1] == 'E') && (file->newf[2] == 'L') && (file->newf[3] == 'D') &&
+            (file->newf[4] == 'A') && (file->newf[5] == 'Z')) {
+            // If a save is valid, convert the save by storing the current save context, converting the file, loading
+            // it, saving it, then restoring the save context.
+            static SaveContext saveContextSave = gSaveContext;
+            InitFile(false);
+            CopyV0Save(*file, gSaveContext);
+            SaveFile(fileNum);
+            InitMeta(fileNum);
+            gSaveContext = saveContextSave;
+        }
+    }
+
+    std::filesystem::rename("oot_save.sav", "oot_save.bak");
+
+#undef SLOT_SIZE
+#undef SLOT_OFFSET
+}
+
+// C to C++ bridge
 
 extern "C" void Save_Init(void) {
     SaveManager::Instance->Init();
