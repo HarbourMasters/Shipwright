@@ -4,6 +4,7 @@
 
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
+#include <textures/icon_item_static/icon_item_static.h>
 
 static s16 sUnused = 106;
 
@@ -63,6 +64,7 @@ void FileChoose_InitModeUpdate(GameState* thisx) {
         this->configMode = CM_FADE_IN_START;
         this->nextTitleLabel = FS_TITLE_OPEN_FILE;
         osSyncPrintf("Ｓｒａｍ Ｓｔａｒｔ─Ｌｏａｄ  》》》》》  ");
+        CVar_SetS32("gRandomizer", 0);
         Sram_VerifyAndLoadAllSaves(this, &this->sramCtx);
         osSyncPrintf("終了！！！\n");
     }
@@ -161,6 +163,65 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
         this->windowAlpha = 200;
         this->configMode = CM_MAIN_MENU;
     }
+}
+
+typedef struct {
+    char tex[512];
+    uint16_t width;
+    uint16_t height;
+    uint8_t im_fmt;
+    uint8_t im_siz;
+} Sprite;
+
+Sprite sprDPad = { gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b }; 
+
+void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
+    OPEN_DISPS(this->state.gfxCtx, "gfx.c", 12);
+
+    if (sprite->im_siz == G_IM_SIZ_16b) {
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
+                            G_IM_SIZ_16b, // @TEMP until I figure out how to use sprite->im_siz
+                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    } else {
+        gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
+                            G_IM_SIZ_32b, // @TEMP until I figure out how to use sprite->im_siz
+                            sprite->width, sprite->height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
+                            G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    }
+
+    CLOSE_DISPS(this->state.gfxCtx, "gfx.c", 40);
+}
+
+void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int width, int height) {
+    int width_factor = (1 << 10) * sprite->width / width;
+    int height_factor = (1 << 10) * sprite->height / height;
+
+    OPEN_DISPS(this->state.gfxCtx, "gfx.c", 51);
+
+    gSPWideTextureRectangle(POLY_OPA_DISP++, left << 2, top << 2, (left + width) << 2, (top + height) << 2,
+                            G_TX_RENDERTILE,
+                            0, 0, width_factor, height_factor);
+
+    CLOSE_DISPS(this->state.gfxCtx, "gfx.c", 62);
+}
+
+void DrawSeedHashSprites(FileChooseContext* this) {
+    OPEN_DISPS(this->state.gfxCtx, "dpad.c", 60);
+    gDPPipeSync(POLY_OPA_DISP++);
+    gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    // Draw Seed Icons
+    u16 xStart = 64;
+    for (u8 i = 0; i < 5; i++) {
+        SpriteLoad(this, &sprDPad);
+        SpriteDraw(this, &sprDPad, xStart + (40 * i), 10, 24, 24);
+    }
+
+    gDPPipeSync(POLY_OPA_DISP++);
+
+    CLOSE_DISPS(this->state.gfxCtx, "dpad.c", 113);
 }
 
 /**
@@ -814,6 +875,8 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
+    DrawSeedHashSprites(this);
+
     if (1) {}
 
     OPEN_DISPS(this->state.gfxCtx, "../z_file_choose.c", 1709);
@@ -1458,7 +1521,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
         Sram_OpenSave(&this->sramCtx);
-        LoadItemLocations();
+        // LoadItemLocations();
         gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         this->state.running = false;
@@ -1466,7 +1529,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         gSaveContext.fileNum = this->buttonIndex;
         Sram_OpenSave(&this->sramCtx);
-        LoadItemLocations();
+        // LoadItemLocations();
         gSaveContext.gameMode = 0;
         SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
         this->state.running = false;

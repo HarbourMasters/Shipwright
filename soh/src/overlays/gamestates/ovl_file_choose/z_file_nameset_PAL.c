@@ -449,7 +449,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                             dayTime = ((void)0, gSaveContext.dayTime);
 
-                            ParseItemLocations("blarg");
+                            // ParseItemLocations("blarg");
 
                             Sram_InitSave(this, &this->sramCtx);
 

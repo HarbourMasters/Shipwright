@@ -132,6 +132,8 @@ static int frameDivisor = 1;
 static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_Init(SDL_INIT_VIDEO);
 
+    SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
@@ -227,8 +229,11 @@ static void gfx_sdl_onkeyup(int scancode) {
     }
 }
 
+extern "C" void LoadItemLocations(const char* spoilerFileName);
+
 static void gfx_sdl_handle_events(void) {
     SDL_Event event;
+    char* dropped_filedir;
     while (SDL_PollEvent(&event)) {
         SohImGui::EventImpl event_impl;
         event_impl.sdl = { &event };
@@ -249,6 +254,11 @@ static void gfx_sdl_handle_events(void) {
                     window_height = event.window.data2;
                 }
                 break;
+            case SDL_DROPFILE:
+            {
+                LoadItemLocations(event.drop.file);
+                break;
+            }
             case SDL_QUIT:
                 exit(0);
         }

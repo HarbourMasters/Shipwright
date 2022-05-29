@@ -4,8 +4,8 @@
 #include <variables.h>
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
-#include <objects/object_gi_bomb_1/object_gi_bomb_1.h>
-#include <objects/object_gi_letter/object_gi_letter.h>
+#include <functions.h>
+#include <Cvar.h>
 
 using json = nlohmann::json;
 
@@ -643,41 +643,64 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
 }
 
-void Randomizer::LoadItemLocations() {
+void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     // bandaid until new save stuff happens
-    ParseItemLocations("");
+    ParseItemLocations(spoilerFileName);
 
     for(auto itemLocation : gSaveContext.itemLocations) {
         this->itemLocations[itemLocation.check] = itemLocation.get;
     }
 }
 
-void Randomizer::ParseItemLocations(std::string spoilerFileName) {
+void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     // todo pull this in from cvar or something
-    std::ifstream spoilerFileStream("spoiler.json");
+    std::ifstream spoilerFileStream(spoilerFileName);
     if (!spoilerFileStream)
         return;
-    json spoilerFileJson;
-    spoilerFileStream >> spoilerFileJson;
-    json locationsJson = spoilerFileJson["locations"];
-    int index = 0;
-    for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-        if (it->is_structured()) {
-            json itemJson = *it;
-            for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                // todo handle prices
-                if (itemit.key() == "item") {
 
-                    gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                    gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
-                }
-            }
-        } else {
-            gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-            gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+        bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json locationsJson = spoilerFileJson["locations"];
+        json hashJson = spoilerFileJson["file_hash"];
+
+        int index = 0;
+        for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
+            //gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
+            index++;
         }
 
-        index++;
+        index = 0;
+        for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            if (it->is_structured()) {
+                json itemJson = *it;
+                for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
+                    // todo handle prices
+                    if (itemit.key() == "item") {
+
+                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                    }
+                }
+            } else {
+                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+            }
+
+            index++;
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        success = true;
+    } catch (const std::exception& e) {
+        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        return;    
+    }
+
+    if (success) {
+        CVar_SetS32("gRandomizer", 1);
     }
 }
 
