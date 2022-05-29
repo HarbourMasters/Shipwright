@@ -1,6 +1,6 @@
 <Root>
     <File Name="object_triforce_spot" Segment="6">
-        <Array Name="gTriforceVtx" Count="32" Offset="0x0000">
+        <Array Name="gTriforceVtx" Count="96" Offset="0x0000">
             <Vtx/>
         </Array>
 
