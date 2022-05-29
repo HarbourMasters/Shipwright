@@ -29,6 +29,14 @@ SaveManager::SaveManager() {
 
     for (SaveFileMetaInfo& info : fileMetaInfo) {
         info.valid = false;
+        info.deaths = 0;
+        for (int i = 0; i < ARRAY_COUNT(info.playerName); i++) {
+            info.playerName[i] = '\0';
+        }
+        info.healthCapacity = 0;
+        info.questItems = 0;
+        info.defense = 0;
+        info.health = 0;
     }
 }
 

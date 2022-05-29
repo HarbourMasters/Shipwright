@@ -240,7 +240,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         }
 
         if (this->buttonIndex == FS_BTN_MAIN_COPY) {
-            if (!Save_GetSaveMetaInfo(0)->valid && !Save_GetSaveMetaInfo(1)->valid && !Save_GetSaveMetaInfo(3)->valid) {
+            if (!Save_GetSaveMetaInfo(0)->valid && !Save_GetSaveMetaInfo(1)->valid && !Save_GetSaveMetaInfo(2)->valid) {
                 this->warningButtonIndex = this->buttonIndex;
                 this->warningLabel = FS_WARNING_NO_FILE_COPY;
                 this->emptyFileTextAlpha = 255;
