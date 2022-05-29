@@ -233,26 +233,26 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     event_impl.win32 = { h_wnd, static_cast<int>(message), static_cast<int>(w_param), static_cast<int>(l_param) };
     SohImGui::Update(event_impl);
     switch (message) {
-        case WM_SIZE:
-            dxgi.current_width = (uint32_t)(l_param & 0xffff);
-            dxgi.current_height = (uint32_t)(l_param >> 16);
-            break;
-        case WM_DESTROY:
-            exit(0);
-        case WM_PAINT:
-            if (dxgi.in_paint) {
-                dxgi.recursive_paint_detected = true;
-                return DefWindowProcW(h_wnd, message, w_param, l_param);
-            } else {
-                if (dxgi.run_one_game_iter != nullptr) {
-                    dxgi.in_paint = true;
-                    dxgi.run_one_game_iter();
-                    dxgi.in_paint = false;
-                    if (dxgi.recursive_paint_detected) {
-                        dxgi.recursive_paint_detected = false;
-                        InvalidateRect(h_wnd, nullptr, false);
-                        UpdateWindow(h_wnd);
-                    }
+    case WM_SIZE:
+        dxgi.current_width = (uint32_t)(l_param & 0xffff);
+        dxgi.current_height = (uint32_t)(l_param >> 16);
+        break;
+    case WM_DESTROY:
+        exit(0);
+    case WM_PAINT:
+        if (dxgi.in_paint) {
+            dxgi.recursive_paint_detected = true;
+            return DefWindowProcW(h_wnd, message, w_param, l_param);
+        }
+        else {
+            if (dxgi.run_one_game_iter != nullptr) {
+                dxgi.in_paint = true;
+                dxgi.run_one_game_iter();
+                dxgi.in_paint = false;
+                if (dxgi.recursive_paint_detected) {
+                    dxgi.recursive_paint_detected = false;
+                    InvalidateRect(h_wnd, nullptr, false);
+                    UpdateWindow(h_wnd);
                 }
             }
         }
@@ -280,8 +280,9 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
         }
         else {
             return DefWindowProcW(h_wnd, message, w_param, l_param);
+        }
+        return 0;
     }
-    return 0;
 }
 
 void gfx_dxgi_init(const char* game_name, bool start_in_fullscreen) {

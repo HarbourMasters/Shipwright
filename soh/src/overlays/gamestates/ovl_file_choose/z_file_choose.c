@@ -8,8 +8,6 @@
 
 #include "soh/frame_interpolation.h"
 
-#include "soh/frame_interpolation.h"
-
 static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
@@ -169,8 +167,6 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
     }
 }
 
-Sprite sprDPad = { gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b }; 
-
 void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
     OPEN_DISPS(this->state.gfxCtx, "gfx.c", 12);
 
@@ -211,14 +207,11 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     // Draw Seed Icons
     u16 xStart = 64;
     for (u8 i = 0; i < 5; i++) {
-        // gSaveContext.seedIcons[i];
         // hacky check to make sure we leaded the icons
-        if(gSaveContext.seedIcons[i].height) {
+        if (gSaveContext.seedIcons[i].height) {
             SpriteLoad(this, &gSaveContext.seedIcons[i]);
             SpriteDraw(this, &gSaveContext.seedIcons[i], xStart + (40 * i), 10, 24, 24);
         }
-        // SpriteLoad(this, &sprDPad);
-        // SpriteDraw(this, &sprDPad, xStart + (40 * i), 10, 24, 24);
     }
 
     gDPPipeSync(POLY_OPA_DISP++);

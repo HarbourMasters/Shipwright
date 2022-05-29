@@ -234,7 +234,6 @@ extern "C" void LoadItemLocations(const char* spoilerFileName);
 
 static void gfx_sdl_handle_events(void) {
     SDL_Event event;
-    char* dropped_filedir;
     while (SDL_PollEvent(&event)) {
         SohImGui::EventImpl event_impl;
         event_impl.sdl = { &event };
@@ -256,12 +255,8 @@ static void gfx_sdl_handle_events(void) {
             }
             break;
         case SDL_DROPFILE:
-        {
-            #ifndef __linux__
             LoadItemLocations(event.drop.file);
-            #endif
             break;
-        }
         case SDL_QUIT:
             exit(0);
         }
