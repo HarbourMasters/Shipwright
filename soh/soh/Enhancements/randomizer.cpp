@@ -782,22 +782,13 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     }
 }
 
-s32 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
-    if (actorId != -1) {
-        s32 itemId = GetItemFromActor(actorId, ogId);
-        return itemId;    
-    } else {
-        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogId);
-        return itemId;
-    }
+s32 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    s32 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
+    return itemId;
 }
 
-GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
-}
-
-GetItemID Randomizer::GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams, homePosX, homePosY, homePosZ)], ogItemId);
+GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
+    return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
@@ -998,30 +989,21 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
     }
 }
 
-RandomizerCheck Randomizer::GetCheckFromActor(s16 actorId, GetItemID ogItemId) {
-    if (!gSaveContext.n64ddFlag) {
-        return UNKNOWN_CHECK;
-    }
-
-    switch (actorId) {
-        case 316:
-            switch (ogItemId) {
-                case GI_BOTTLE:
-                    return KAK_ANJU_AS_CHILD;
-                case GI_POCKET_EGG:
-                    return KAK_ANJU_AS_ADULT;
-            }
-    }
-
-    return UNKNOWN_CHECK;
-}
-
-RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
+RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
         return UNKNOWN_CHECK;
     }
 
     switch(sceneNum) {
+        case 82:
+            switch (actorId) {
+                case 316:
+                    if (LINK_IS_ADULT) {
+                        return KAK_ANJU_AS_ADULT;
+                    } else {
+                        return KAK_ANJU_AS_CHILD;
+                    }
+            }
         case 17:
             switch (actorParams) {
                 case 0x1F:
