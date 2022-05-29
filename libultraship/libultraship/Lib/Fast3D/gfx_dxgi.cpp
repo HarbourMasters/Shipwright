@@ -54,8 +54,8 @@ static struct {
     std::string game_name;
 
     HMODULE dxgi_module;
-    HRESULT (__stdcall *CreateDXGIFactory1)(REFIID riid, void **factory);
-    HRESULT (__stdcall *CreateDXGIFactory2)(UINT flags, REFIID iid, void **factory);
+    HRESULT(__stdcall* CreateDXGIFactory1)(REFIID riid, void** factory);
+    HRESULT(__stdcall* CreateDXGIFactory2)(UINT flags, REFIID iid, void** factory);
 
     bool process_dpi_awareness_done;
 
@@ -87,8 +87,8 @@ static struct {
 
 static void load_dxgi_library(void) {
     dxgi.dxgi_module = LoadLibraryW(L"dxgi.dll");
-    *(FARPROC *)&dxgi.CreateDXGIFactory1 = GetProcAddress(dxgi.dxgi_module, "CreateDXGIFactory1");
-    *(FARPROC *)&dxgi.CreateDXGIFactory2 = GetProcAddress(dxgi.dxgi_module, "CreateDXGIFactory2");
+    *(FARPROC*)&dxgi.CreateDXGIFactory1 = GetProcAddress(dxgi.dxgi_module, "CreateDXGIFactory1");
+    *(FARPROC*)&dxgi.CreateDXGIFactory2 = GetProcAddress(dxgi.dxgi_module, "CreateDXGIFactory2");
 }
 
 template <typename Fun>
@@ -106,25 +106,26 @@ static void run_as_dpi_aware(Fun f) {
 
     // From windef.h, missing in MinGW.
     DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
-    #define DPI_AWARENESS_CONTEXT_UNAWARE               ((DPI_AWARENESS_CONTEXT)-1)
-    #define DPI_AWARENESS_CONTEXT_SYSTEM_AWARE          ((DPI_AWARENESS_CONTEXT)-2)
-    #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE     ((DPI_AWARENESS_CONTEXT)-3)
-    #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
-    #define DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED     ((DPI_AWARENESS_CONTEXT)-5)
+#define DPI_AWARENESS_CONTEXT_UNAWARE               ((DPI_AWARENESS_CONTEXT)-1)
+#define DPI_AWARENESS_CONTEXT_SYSTEM_AWARE          ((DPI_AWARENESS_CONTEXT)-2)
+#define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE     ((DPI_AWARENESS_CONTEXT)-3)
+#define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
+#define DPI_AWARENESS_CONTEXT_UNAWARE_GDISCALED     ((DPI_AWARENESS_CONTEXT)-5)
 
-    DPI_AWARENESS_CONTEXT (WINAPI *SetThreadDpiAwarenessContext)(DPI_AWARENESS_CONTEXT dpiContext);
-    *(FARPROC *)&SetThreadDpiAwarenessContext = GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetThreadDpiAwarenessContext");
+    DPI_AWARENESS_CONTEXT(WINAPI * SetThreadDpiAwarenessContext)(DPI_AWARENESS_CONTEXT dpiContext);
+    *(FARPROC*)&SetThreadDpiAwarenessContext = GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetThreadDpiAwarenessContext");
     DPI_AWARENESS_CONTEXT old_awareness_context = nullptr;
     if (SetThreadDpiAwarenessContext != nullptr) {
         old_awareness_context = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
-    } else {
+    }
+    else {
         // Solution for Windows 8.1 and newer, but before Windows 10 1607.
         // SetProcessDpiAwareness must be called before any drawing related API is called.
         if (!dxgi.process_dpi_awareness_done) {
             HMODULE shcore_module = LoadLibraryW(L"SHCore.dll");
             if (shcore_module != nullptr) {
-                HRESULT (WINAPI *SetProcessDpiAwareness)(PROCESS_DPI_AWARENESS value);
-                *(FARPROC *)&SetProcessDpiAwareness = GetProcAddress(shcore_module, "SetProcessDpiAwareness");
+                HRESULT(WINAPI * SetProcessDpiAwareness)(PROCESS_DPI_AWARENESS value);
+                *(FARPROC*)&SetProcessDpiAwareness = GetProcAddress(shcore_module, "SetProcessDpiAwareness");
                 if (SetProcessDpiAwareness != nullptr) {
                     SetProcessDpiAwareness(PROCESS_PER_MONITOR_DPI_AWARE);
                     // Ignore result, will fail if already called or manifest already specifies dpi awareness.
@@ -162,13 +163,15 @@ static void toggle_borderless_window_full_screen(bool enable, bool call_callback
         if (dxgi.last_maximized_state) {
             SetWindowPos(dxgi.h_wnd, NULL, 0, 0, 0, 0, SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE);
             ShowWindow(dxgi.h_wnd, SW_MAXIMIZE);
-        } else {
+        }
+        else {
             SetWindowPos(dxgi.h_wnd, NULL, r.left, r.top, r.right - r.left, r.bottom - r.top, SWP_FRAMECHANGED);
             ShowWindow(dxgi.h_wnd, SW_RESTORE);
         }
 
         dxgi.is_full_screen = false;
-    } else {
+    }
+    else {
         // Save if window is maximized or not
         WINDOWPLACEMENT window_placement;
         window_placement.length = sizeof(WINDOWPLACEMENT);
@@ -212,59 +215,68 @@ static void onkeyup(WPARAM w_param, LPARAM l_param) {
     }
 }
 
+extern "C" void LoadItemLocations(const char* spoilerFileName);
+
 static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_param, LPARAM l_param) {
     SohImGui::EventImpl event_impl;
     event_impl.win32 = { h_wnd, static_cast<int>(message), static_cast<int>(w_param), static_cast<int>(l_param) };
     SohImGui::Update(event_impl);
     switch (message) {
-        case WM_SIZE:
-            dxgi.current_width = (uint32_t)(l_param & 0xffff);
-            dxgi.current_height = (uint32_t)(l_param >> 16);
-            break;
-        case WM_DESTROY:
-            exit(0);
-        case WM_PAINT:
-            if (dxgi.in_paint) {
-                dxgi.recursive_paint_detected = true;
-                return DefWindowProcW(h_wnd, message, w_param, l_param);
-            } else {
-                if (dxgi.run_one_game_iter != nullptr) {
-                    dxgi.in_paint = true;
-                    dxgi.run_one_game_iter();
-                    dxgi.in_paint = false;
-                    if (dxgi.recursive_paint_detected) {
-                        dxgi.recursive_paint_detected = false;
-                        InvalidateRect(h_wnd, nullptr, false);
-                        UpdateWindow(h_wnd);
-                    }
+    case WM_SIZE:
+        dxgi.current_width = (uint32_t)(l_param & 0xffff);
+        dxgi.current_height = (uint32_t)(l_param >> 16);
+        break;
+    case WM_DESTROY:
+        exit(0);
+    case WM_PAINT:
+        if (dxgi.in_paint) {
+            dxgi.recursive_paint_detected = true;
+            return DefWindowProcW(h_wnd, message, w_param, l_param);
+        }
+        else {
+            if (dxgi.run_one_game_iter != nullptr) {
+                dxgi.in_paint = true;
+                dxgi.run_one_game_iter();
+                dxgi.in_paint = false;
+                if (dxgi.recursive_paint_detected) {
+                    dxgi.recursive_paint_detected = false;
+                    InvalidateRect(h_wnd, nullptr, false);
+                    UpdateWindow(h_wnd);
                 }
             }
+        }
+        break;
+    case WM_ACTIVATEAPP:
+        if (dxgi.on_all_keys_up != nullptr) {
+            dxgi.on_all_keys_up();
+        }
+        break;
+    case WM_KEYDOWN:
+        onkeydown(w_param, l_param);
+        break;
+    case WM_KEYUP:
+        onkeyup(w_param, l_param);
+        break;
+    case WM_DROPFILES:
+        char fileName[256];
+        DragQueryFileA((HDROP)w_param, 0, fileName, 256);
+        LoadItemLocations(fileName);
+        break;
+    case WM_SYSKEYDOWN:
+        if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {
+            toggle_borderless_window_full_screen(!dxgi.is_full_screen, true);
             break;
-        case WM_ACTIVATEAPP:
-            if (dxgi.on_all_keys_up != nullptr) {
-                dxgi.on_all_keys_up();
-            }
-            break;
-        case WM_KEYDOWN:
-            onkeydown(w_param, l_param);
-            break;
-        case WM_KEYUP:
-            onkeyup(w_param, l_param);
-            break;
-        case WM_SYSKEYDOWN:
-            if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {
-                toggle_borderless_window_full_screen(!dxgi.is_full_screen, true);
-                break;
-            } else {
-                return DefWindowProcW(h_wnd, message, w_param, l_param);
-            }
-        default:
+        }
+        else {
             return DefWindowProcW(h_wnd, message, w_param, l_param);
+        }
+    default:
+        return DefWindowProcW(h_wnd, message, w_param, l_param);
     }
     return 0;
 }
 
-void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
+void gfx_dxgi_init(const char* game_name, bool start_in_fullscreen) {
     LARGE_INTEGER qpc_init, qpc_freq;
     QueryPerformanceCounter(&qpc_init);
     QueryPerformanceFrequency(&qpc_freq);
@@ -287,29 +299,29 @@ void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style          = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc    = gfx_dxgi_wnd_proc;
-    wcex.cbClsExtra     = 0;
-    wcex.cbWndExtra     = 0;
-    wcex.hInstance      = nullptr;
-    wcex.hIcon          = nullptr;
-    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground  = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    wcex.lpszMenuName   = nullptr;
-    wcex.lpszClassName  = WINCLASS_NAME;
-    wcex.hIconSm        = nullptr;
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = gfx_dxgi_wnd_proc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = nullptr;
+    wcex.hIcon = nullptr;
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    wcex.lpszMenuName = nullptr;
+    wcex.lpszClassName = WINCLASS_NAME;
+    wcex.hIconSm = nullptr;
 
     ATOM winclass = RegisterClassExW(&wcex);
 
 
-    run_as_dpi_aware([&] () {
+    run_as_dpi_aware([&]() {
         // We need to be dpi aware when calculating the size
-        RECT wr = {0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT};
+        RECT wr = { 0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT };
         AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
         dxgi.h_wnd = CreateWindowW(WINCLASS_NAME, w_title, WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, 0, wr.right - wr.left, wr.bottom - wr.top, nullptr, nullptr, nullptr, nullptr);
-    });
+        });
 
     load_dxgi_library();
 
@@ -319,6 +331,8 @@ void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
     if (start_in_fullscreen) {
         toggle_borderless_window_full_screen(true, false);
     }
+
+    DragAcceptFiles(dxgi.h_wnd, TRUE);
 }
 
 static void gfx_dxgi_set_fullscreen_changed_callback(void (*on_fullscreen_changed)(bool is_now_fullscreen)) {
@@ -354,7 +368,7 @@ static void gfx_dxgi_main_loop(void (*run_one_game_iter)(void)) {
     }
 }
 
-static void gfx_dxgi_get_dimensions(uint32_t *width, uint32_t *height) {
+static void gfx_dxgi_get_dimensions(uint32_t* width, uint32_t* height) {
     *width = dxgi.current_width;
     *height = dxgi.current_height;
 }
@@ -409,8 +423,8 @@ static bool gfx_dxgi_start_frame(void) {
     dxgi.frame_timestamp += FRAME_INTERVAL_US_NUMERATOR;
 
     if (dxgi.frame_stats.size() >= 2) {
-        DXGI_FRAME_STATISTICS *first = &dxgi.frame_stats.begin()->second;
-        DXGI_FRAME_STATISTICS *last = &dxgi.frame_stats.rbegin()->second;
+        DXGI_FRAME_STATISTICS* first = &dxgi.frame_stats.begin()->second;
+        DXGI_FRAME_STATISTICS* last = &dxgi.frame_stats.rbegin()->second;
         uint64_t sync_qpc_diff = last->SyncQPCTime.QuadPart - first->SyncQPCTime.QuadPart;
         UINT sync_vsync_diff = last->SyncRefreshCount - first->SyncRefreshCount;
         UINT present_vsync_diff = last->PresentRefreshCount - first->PresentRefreshCount;
@@ -455,7 +469,8 @@ static bool gfx_dxgi_start_frame(void) {
                     vsyncs_to_wait = 1;
                 }
                 dxgi.frame_timestamp = FRAME_INTERVAL_US_DENOMINATOR * (last_end_us + vsyncs_to_wait * estimated_vsync_interval_us);
-            } else {
+            }
+            else {
                 // Drop frame
                 //printf("Dropping frame\n");
                 dxgi.dropped_frame = true;
@@ -477,7 +492,8 @@ static bool gfx_dxgi_start_frame(void) {
             }
             if (diff_left < diff_right) {
                 vsyncs_to_wait = floor(vsyncs_to_wait);
-            } else {
+            }
+            else {
                 vsyncs_to_wait = ceil(vsyncs_to_wait);
             }
             if (vsyncs_to_wait == 0) {
@@ -493,7 +509,8 @@ static bool gfx_dxgi_start_frame(void) {
             dxgi.use_timer = true;
         }
         dxgi.length_in_vsync_frames = vsyncs_to_wait;
-    } else {
+    }
+    else {
         dxgi.length_in_vsync_frames = 1;
         dxgi.use_timer = true;
     }
@@ -558,10 +575,11 @@ static void gfx_dxgi_set_frame_divisor(int divisor) {
     dxgi.frame_divisor = divisor;
 }
 
-void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*create_device_fn)(IDXGIAdapter1 *adapter, bool test_only)) {
+void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*create_device_fn)(IDXGIAdapter1* adapter, bool test_only)) {
     if (dxgi.CreateDXGIFactory2 != nullptr) {
         ThrowIfFailed(dxgi.CreateDXGIFactory2(debug ? DXGI_CREATE_FACTORY_DEBUG : 0, __uuidof(IDXGIFactory2), &dxgi.factory));
-    } else {
+    }
+    else {
         ThrowIfFailed(dxgi.CreateDXGIFactory1(__uuidof(IDXGIFactory2), &dxgi.factory));
     }
 
@@ -592,7 +610,7 @@ void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*crea
     SetWindowTextW(dxgi.h_wnd, w_title);
 }
 
-ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
+ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown* device) {
     bool win8 = IsWindows8OrGreater(); // DXGI_SCALING_NONE is only supported on Win8 and beyond
     bool dxgi_13 = dxgi.CreateDXGIFactory2 != nullptr; // DXGI 1.3 introduced waitable object
 
@@ -609,12 +627,12 @@ ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
     swap_chain_desc.Flags = dxgi_13 ? DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT : 0;
     swap_chain_desc.SampleDesc.Count = 1;
 
-    run_as_dpi_aware([&] () {
+    run_as_dpi_aware([&]() {
         // When setting size for the buffers, the values that DXGI puts into the desc (that can later be retrieved by GetDesc1)
         // have been divided by the current scaling factor. By making this call dpi aware, no division will be performed.
         // The same goes for IDXGISwapChain::ResizeBuffers(), however that function is currently only called from the message handler.
         ThrowIfFailed(dxgi.factory->CreateSwapChainForHwnd(device, dxgi.h_wnd, &swap_chain_desc, nullptr, nullptr, &dxgi.swap_chain));
-    });
+        });
     ThrowIfFailed(dxgi.factory->MakeWindowAssociation(dxgi.h_wnd, DXGI_MWA_NO_ALT_ENTER));
 
     ComPtr<IDXGISwapChain2> swap_chain2;
@@ -622,7 +640,8 @@ ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
         ThrowIfFailed(swap_chain2->SetMaximumFrameLatency(1));
         dxgi.waitable_object = swap_chain2->GetFrameLatencyWaitableObject();
         WaitForSingleObject(dxgi.waitable_object, INFINITE);
-    } else {
+    }
+    else {
         ComPtr<IDXGIDevice1> device1;
         ThrowIfFailed(device->QueryInterface(IID_PPV_ARGS(&device1)));
         ThrowIfFailed(device1->SetMaximumFrameLatency(1));
@@ -646,7 +665,7 @@ void ThrowIfFailed(HRESULT res) {
     }
 }
 
-void ThrowIfFailed(HRESULT res, HWND h_wnd, const char *message) {
+void ThrowIfFailed(HRESULT res, HWND h_wnd, const char* message) {
     if (FAILED(res)) {
         char full_message[256];
         sprintf(full_message, "%s\n\nHRESULT: 0x%08X", message, res);
