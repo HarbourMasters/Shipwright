@@ -1247,6 +1247,60 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                 case 13673:
                     return SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
             }
+        case 9:
+            switch(actorParams) {
+                case 2080:
+                    return ICE_CAVERN_MAP_CHEST;
+                case 2049:
+                    return ICE_CAVERN_COMPASS_CHEST;
+                case 5570:
+                    return ICE_CAVERN_IRON_BOOTS_CHEST;
+            }
+        case 11:
+            switch(actorParams) {
+                case -30573:
+                    return GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST;
+                case -30393:
+                    return GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST;
+                case -30656:
+                    return GERUDO_TRAINING_GROUND_STALFOS_CHEST;
+                case 31089:
+                    return GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST;
+                case 31439:
+                    return GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST;
+                case 30862:
+                    return GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST;
+                case 26708:
+                    return GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST;
+                case 24450:
+                    return GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST;
+                case -30653:
+                    return GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST;
+                case 22596:
+                    return GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST;
+                case 31058:
+                    return GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST;
+                case 22608:
+                    return GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST;
+                case 23877:
+                    return GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST;
+                case 22888:
+                    return GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST;
+                case -30643:
+                    return GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST;
+                case -30655:
+                    return GERUDO_TRAINING_GROUND_BEAMOS_CHEST;
+                case 22603:
+                    return GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST;
+                case 23206:
+                    return GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST;
+                case 22986:
+                    return GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST;
+                case 22889:
+                    return GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST;
+                case 2860:
+                    return GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
