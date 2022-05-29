@@ -626,7 +626,7 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
 
             EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
             if (this->currentReward == 4) {
-                reward->collectibleFlag = 0x19;
+                reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
             }
         }
     }
