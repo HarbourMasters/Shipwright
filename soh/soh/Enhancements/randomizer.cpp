@@ -14,39 +14,73 @@ using json = nlohmann::json;
 std::unordered_map<std::string, Sprite> gSeedTextures;
 
 Randomizer::Randomizer() {
-    gSeedTextures["Deku Stick"] = Sprite({ gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Deku Nut"] = Sprite({ gDekuNutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Bow"] = Sprite({ gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Slingshot"] = Sprite({ gFairySlingshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Fairy Ocarina"] = Sprite({ gFairyOcarinaIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Bombchu"] = Sprite({ gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Longshot"] = Sprite({ gLongshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Boomerang"] = Sprite({ gBoomerangIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Lens of Truth"] = Sprite({ gLensofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Beans"] = Sprite({ gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Megaton Hammer"] = Sprite({ gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Bottled Fish"] = Sprite({ gFishIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Bottled Milk"] = Sprite({ gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Mask of Truth"] = Sprite({ gMaskofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["SOLD OUT"] = Sprite({ gSoldOutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Cucco"] = Sprite({ gCuccoIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Mushroom"] = Sprite({ gOddMushroomIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Saw"] = Sprite({ gPoachersSawIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Frog"] = Sprite({ gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Master Sword"] = Sprite({ gMasterSwordIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Mirror Shield"] = Sprite({ gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Kokiri Tunic"] = Sprite({ gKokiriTunicIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Hover Boots"] = Sprite({ gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Silver Gauntlets"] = Sprite({ gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Gold Scale"] = Sprite({ gGoldenScaleIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Stone of Agony"] = Sprite({ gStoneOfAgonyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Skull Token"] = Sprite({ gGoldSkulltulaIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Heart Container"] = Sprite({ gHeartContainerIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Boss Key"] = Sprite({ gBossKeyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Compass"] = Sprite({ gCompassIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Map"] = Sprite({ gDungeonMapIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
-    gSeedTextures["Big Magic"] = Sprite({ gBigMagicJarIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b });
+    // this isn't as clean as i'd like it to be but it's working
+    Sprite dekuStickSprite = { gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Deku Stick"] = dekuStickSprite;
+    Sprite dekuNutSprite = { gDekuNutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Deku Nut"] = dekuNutSprite;
+    Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bow"] = bowSprite; 
+    Sprite slingshotSprite = { gFairySlingshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Slingshot"] = slingshotSprite; 
+    Sprite fairyOcarinaSprite = { gFairyOcarinaIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Fairy Ocarina"] = fairyOcarinaSprite;
+    Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bombchu"] = bombchuSprite;
+    Sprite longshotSprite = { gLongshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Longshot"] = longshotSprite;
+    Sprite boomerangSprite = { gBoomerangIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Boomerang"] = boomerangSprite;
+    Sprite lensOfTruthSprite = { gLensofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Lens of Truth"] = lensOfTruthSprite;
+    Sprite magicBeansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Beans"] = magicBeansSprite; 
+    Sprite megatonHammerSprite = { gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Megaton Hammer"] = megatonHammerSprite;
+    Sprite fishSprite = { gFishIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bottled Fish"] = fishSprite;
+    Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bottled Milk"] = milkSprite;
+    Sprite maskOfTruthSprite = { gMaskofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mask of Truth"] = maskOfTruthSprite;
+    Sprite soldOutSprite = { gSoldOutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["SOLD OUT"] = soldOutSprite;
+    Sprite cuccoSprite = { gCuccoIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Cucco"] = cuccoSprite;
+    Sprite oddMushroomSprite = { gOddMushroomIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mushroom"] = oddMushroomSprite;
+    Sprite sawSprite = { gPoachersSawIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Saw"] = sawSprite;
+    Sprite frogSprite = { gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Frog"] = frogSprite;
+    Sprite masterSwordSprite = { gMasterSwordIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Master Sword"] = masterSwordSprite;
+    Sprite mirrorShieldSprite = { gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mirror Shield"] = mirrorShieldSprite;
+    Sprite kokiriTunicSprite = { gKokiriTunicIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Kokiri Tunic"] = kokiriTunicSprite;
+    Sprite hoverBootsSprite = { gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Hover Boots"] = hoverBootsSprite;
+    Sprite silverGauntletsSprite = { gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Silver Gauntlets"] = silverGauntletsSprite;
+    Sprite goldenScaleSprite = { gGoldenScaleIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Gold Scale"] = goldenScaleSprite;
+    Sprite stoneOfAgonySprite = { gStoneOfAgonyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Stone of Agony"] = stoneOfAgonySprite;
+    Sprite skullTokenSprite = { gGoldSkulltulaIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Skull Token"] = skullTokenSprite;
+    Sprite heartContainerSprite = { gHeartContainerIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Heart Container"] = heartContainerSprite;
+    Sprite bossKeySprite = { gBossKeyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Boss Key"] = bossKeySprite;
+    Sprite compassSprite = { gCompassIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Compass"] = compassSprite;
+    Sprite mapSprite = { gDungeonMapIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Map"] = mapSprite;
+    Sprite bigMagicSprite = { gBigMagicJarIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Big Magic"] = bigMagicSprite;
 }
+
 Randomizer::~Randomizer() { 
     this->itemLocations.clear();
 }
@@ -693,7 +727,7 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     if (!spoilerFileStream)
         return;
 
-        bool success = false;
+    bool success = false;
 
     try {
         json spoilerFileJson;
