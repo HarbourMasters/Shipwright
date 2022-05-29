@@ -8,6 +8,8 @@
 
 #include "soh/frame_interpolation.h"
 
+#include "soh/frame_interpolation.h"
+
 static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
