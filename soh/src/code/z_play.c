@@ -193,11 +193,67 @@ void Gameplay_Destroy(GameState* thisx) {
     gGlobalCtx = NULL;
 }
 
+void GiveLinksPocketMedallion(GlobalContext* globalCtx) {
+    if (gSaveContext.n64ddFlag) {
+        RandomizerGet get = gSaveContext.itemLocations[LINKS_POCKET].get;
+
+        s16 item;
+
+        u8 medallion = 0;
+
+        switch (get) {
+            case FOREST_MEDALLION:
+                item = ITEM_MEDALLION_FOREST;
+                medallion = 1;
+                break;
+            case FIRE_MEDALLION:
+                item = ITEM_MEDALLION_FIRE;
+                medallion = 1;
+                break;
+            case WATER_MEDALLION:
+                item = ITEM_MEDALLION_WATER;
+                medallion = 1;
+                break;
+            case SHADOW_MEDALLION:
+                item = ITEM_MEDALLION_SHADOW;
+                medallion = 1;
+                break;
+            case SPIRIT_MEDALLION:
+                item = ITEM_MEDALLION_SPIRIT;
+                medallion = 1;
+                break;
+            case LIGHT_MEDALLION:
+                item = ITEM_MEDALLION_LIGHT;
+                medallion = 1;
+                break;
+            case KOKIRI_EMERALD:
+                item = ITEM_KOKIRI_EMERALD;
+                break;
+            case GORON_RUBY:
+                item = ITEM_GORON_RUBY;
+                break;
+            case ZORA_SAPPHIRE:
+                item = ITEM_ZORA_SAPPHIRE;
+                break;
+        }
+
+        if (medallion == 1) {
+            gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
+
+            if (item == ITEM_MEDALLION_WATER) {
+                func_8006D0AC(globalCtx);
+            }
+        } else {
+            gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
+        }
+    }
+}
+
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     gGlobalCtx = globalCtx;
-    //globalCtx->state.gfxCtx = NULL;
+    // globalCtx->state.gfxCtx = NULL;
     u32 zAlloc;
     u32 zAllocAligned;
     size_t zAllocSize;
@@ -206,6 +262,8 @@ void Gameplay_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+
+    GiveLinksPocketMedallion(globalCtx);
 
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;

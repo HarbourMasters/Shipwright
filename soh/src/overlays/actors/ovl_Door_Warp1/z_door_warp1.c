@@ -515,8 +515,13 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 Flags_SetEventChkInf(7);
                 Flags_SetEventChkInf(9);
                 Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
-                globalCtx->nextEntranceIndex = 0xEE;
-                gSaveContext.nextCutsceneIndex = 0xFFF1;
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x0457;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    globalCtx->nextEntranceIndex = 0xEE;
+                    gSaveContext.nextCutsceneIndex = 0xFFF1;
+                }
             } else {
                 globalCtx->nextEntranceIndex = 0x457;
                 gSaveContext.nextCutsceneIndex = 0;
