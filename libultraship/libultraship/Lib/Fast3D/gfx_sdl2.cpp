@@ -255,7 +255,9 @@ static void gfx_sdl_handle_events(void) {
             }
             break;
         case SDL_DROPFILE:
+            #ifndef __linux__
             LoadItemLocations(event.drop.file);
+            #endif
             break;
         case SDL_QUIT:
             exit(0);
