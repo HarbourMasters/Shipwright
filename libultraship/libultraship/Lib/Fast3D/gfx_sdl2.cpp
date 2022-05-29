@@ -30,7 +30,7 @@
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
-static SDL_Window *wnd;
+static SDL_Window* wnd;
 static SDL_GLContext ctx;
 static int inverted_scancode_table[512];
 static int vsync_enabled = 0;
@@ -105,7 +105,8 @@ static void set_fullscreen(bool on, bool call_callback) {
         window_width = mode.w;
         window_height = mode.h;
         SDL_ShowCursor(false);
-    } else {
+    }
+    else {
         window_width = DESIRED_SCREEN_WIDTH;
         window_height = DESIRED_SCREEN_HEIGHT;
     }
@@ -129,7 +130,7 @@ static int frameDivisor = 1;
 #define FRAME_INTERVAL_US_DENOMINATOR 3
 #define FRAME_INTERVAL_US_NUMERATOR (FRAME_INTERVAL_US_NUMERATOR_ * frameDivisor)
 
-static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
+static void gfx_sdl_init(const char* game_name, bool start_in_fullscreen) {
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
@@ -148,7 +149,7 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+        window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
 
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
@@ -202,7 +203,7 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
     }
 }
 
-static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
+static void gfx_sdl_get_dimensions(uint32_t* width, uint32_t* height) {
     *width = window_width;
     *height = window_height;
 }
@@ -210,7 +211,8 @@ static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
 static int translate_scancode(int scancode) {
     if (scancode < 512) {
         return inverted_scancode_table[scancode];
-    } else {
+    }
+    else {
         return 0;
     }
 }
@@ -241,28 +243,26 @@ static void gfx_sdl_handle_events(void) {
         switch (event.type) {
 #ifndef TARGET_WEB
             // Scancodes are broken in Emscripten SDL2: https://bugzilla.libsdl.org/show_bug.cgi?id=3259
-            case SDL_KEYDOWN:
-                gfx_sdl_onkeydown(event.key.keysym.scancode);
-                break;
-            case SDL_KEYUP:
-                gfx_sdl_onkeyup(event.key.keysym.scancode);
-                break;
+        case SDL_KEYDOWN:
+            gfx_sdl_onkeydown(event.key.keysym.scancode);
+            break;
+        case SDL_KEYUP:
+            gfx_sdl_onkeyup(event.key.keysym.scancode);
+            break;
 #endif
-            case SDL_WINDOWEVENT:
-                if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    window_width = event.window.data1;
-                    window_height = event.window.data2;
-                }
-                break;
-            case SDL_DROPFILE:
-            {
-                #ifndef __linux__
-                LoadItemLocations(event.drop.file);
-                #endif
-                break;
+        case SDL_WINDOWEVENT:
+            if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                window_width = event.window.data1;
+                window_height = event.window.data2;
             }
-            case SDL_QUIT:
-                exit(0);
+            break;
+        case SDL_DROPFILE:
+        {
+            LoadItemLocations(event.drop.file);
+            break;
+        }
+        case SDL_QUIT:
+            exit(0);
         }
     }
 }
