@@ -606,7 +606,6 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
-            this->currentReward = 3;
             if (this->currentReward == 3) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
@@ -615,10 +614,12 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
                 // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
                 // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
                 // If true, spawn the heart piece isntead of the purple rupee and set the vanilla itemGetInf flag.
-                if (!(gSaveContext.itemGetInf[1] & 0x1000)
-                        || CVar_GetS32("gGravediggingTourFix", 0) && !Flags_GetCollectible(globalCtx, 0x19)) {
+                if (!Flags_GetTempClear(globalCtx, 0x1f) &&
+                    (!(gSaveContext.itemGetInf[1] & 0x1000) ||
+                     CVar_GetS32("gGravediggingTourFix", 0) && !Flags_GetCollectible(globalCtx, 0x19))) {
                     this->currentReward = 4;
                     gSaveContext.itemGetInf[1] |= 0x1000;
+                    Flags_SetTempClear(globalCtx, 0x1f);
                 }
             }
 
