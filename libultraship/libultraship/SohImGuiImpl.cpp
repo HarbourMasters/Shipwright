@@ -46,9 +46,9 @@ bool oldCursorState = true;
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
-	ImGui::Text("Experimental"); \
-	ImGui::PopStyleColor(); \
-	ImGui::Separator();
+    ImGui::Text("Experimental"); \
+    ImGui::PopStyleColor(); \
+    ImGui::Separator();
 #define TOGGLE_BTN ImGuiKey_F1
 #define HOOK(b) if(b) needs_save = true;
 OSContPad* pads;
@@ -348,10 +348,10 @@ namespace SohImGui {
         }
 
         for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= tint.x;
-            texBuffer[pixel * 4 + 1] *= tint.y;
-            texBuffer[pixel * 4 + 2] *= tint.z;
-            texBuffer[pixel * 4 + 3] *= tint.w;
+            texBuffer[pixel * 4 + 0] *= (uint8_t)tint.x;
+            texBuffer[pixel * 4 + 1] *= (uint8_t)tint.y;
+            texBuffer[pixel * 4 + 2] *= (uint8_t)tint.z;
+            texBuffer[pixel * 4 + 3] *= (uint8_t)tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
@@ -436,7 +436,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+    void EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
         First arg is the visible name of the Radio button
@@ -447,113 +447,117 @@ namespace SohImGui {
             EnhancementRadioButton("German", "gLanguages", 1);
             EnhancementRadioButton("French", "gLanguages", 2);
         */
-        int val = CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::RadioButton(text.c_str(), id == val)) {
-            CVar_SetS32(cvarName.c_str(), (int)id);
+        int val = CVar_GetS32(cvarName, 0);
+        if (ImGui::RadioButton(text, id == val)) {
+            CVar_SetS32(cvarName, id);
             needs_save = true;
         }
     }
 
-    void EnhancementCheckbox(std::string text, std::string cvarName)
+    void EnhancementCheckbox(const char* text, const char* cvarName)
     {
-        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::Checkbox(text.c_str(), &val)) {
-            CVar_SetS32(cvarName.c_str(), val);
+        bool val = (bool)CVar_GetS32(cvarName, 0);
+        if (ImGui::Checkbox(text, &val)) {
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
     }
 
-    void EnhancementButton(std::string text, std::string cvarName)
+    void EnhancementButton(const char* text, const char* cvarName)
     {
-        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::Button(text.c_str())) {
-            CVar_SetS32(cvarName.c_str(), !val);
+        bool val = (bool)CVar_GetS32(cvarName, 0);
+        if (ImGui::Button(text)) {
+            CVar_SetS32(cvarName, !val);
+            CVar_SetS32(cvarName, !val);
             needs_save = true;
         }
     }
 
-    void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format)
     {
-        int val = CVar_GetS32(cvarName.c_str(), 0);
+        int val = CVar_GetS32(cvarName, 0);
 
-        ImGui::Text(text.c_str(), val);
+        ImGui::Text(text, val);
 
-        if (ImGui::SliderInt(id.c_str(), &val, min, max, format.c_str()))
+        if (ImGui::SliderInt(id, &val, min, max, format))
         {
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
 
         if (val < min)
         {
             val = min;
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
 
         if (val > max)
         {
             val = max;
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
     }
 
-    void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue, bool isPercentage)
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage)
     {
-        float val = CVar_GetFloat(cvarName.c_str(), defaultValue);
+        float val = CVar_GetFloat(cvarName, defaultValue);
 
         if (!isPercentage)
-            ImGui::Text(text.c_str(), val);
+            ImGui::Text(text, val);
         else
-            ImGui::Text(text.c_str(), static_cast<int>(100 * val));
+            ImGui::Text(text, static_cast<int>(100 * val));
 
-        if (ImGui::SliderFloat(id.c_str(), &val, min, max, format.c_str()))
+        if (ImGui::SliderFloat(id, &val, min, max, format))
         {
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
 
         if (val < min)
         {
             val = min;
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
 
         if (val > max)
         {
             val = max;
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
     }
 
-    int ClampFloatToInt(float value, int min, int max){
-        return fmin(fmax(value,min),max);
+    int ClampFloatToInt(float value, int min, int max) {
+        return fmin(fmax(value, min), max);
     }
 
-    void EnhancementColor3(std::string text, std::string cvarName, float ColorRGB[3], bool TitleSameLine) {
+    void EnhancementColor3(const char* text, const char* cvarName, float ColorRGB[3], bool TitleSameLine) {
         //Simplified.
+        std::string cvarNameString(cvarName);
         ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
-        if (!TitleSameLine){
-            ImGui::Text("%s", text.c_str());
+
+        if (!TitleSameLine) {
+            ImGui::Text("%s", text);
             flags = ImGuiColorEditFlags_NoLabel;
         }
-        if (ImGui::ColorEdit3(text.c_str(), ColorRGB, flags)) {
-            CVar_SetS32((cvarName+"R").c_str(), ClampFloatToInt(ColorRGB[0]*255,0,255));
-            CVar_SetS32((cvarName+"G").c_str(), ClampFloatToInt(ColorRGB[1]*255,0,255));
-            CVar_SetS32((cvarName+"B").c_str(), ClampFloatToInt(ColorRGB[2]*255,0,255));
+        if (ImGui::ColorEdit3(text, ColorRGB, flags)) {
+            CVar_SetS32((cvarNameString + "R").c_str(), ClampFloatToInt(ColorRGB[0] * 255, 0, 255));
+            CVar_SetS32((cvarNameString + "G").c_str(), ClampFloatToInt(ColorRGB[1] * 255, 0, 255));
+            CVar_SetS32((cvarNameString + "B").c_str(), ClampFloatToInt(ColorRGB[2] * 255, 0, 255));
             needs_save = true;
         }
     }
 
-    void Tooltip(std::string text) {
+
+    void Tooltip(const char* text) {
         if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text.c_str());
+            ImGui::SetTooltip("%s", text);
     }
 
-    void DrawMainMenuAndCalculateGameSize() {
+    void DrawMainMenuAndCalculateGameSize(void) {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
@@ -633,7 +637,7 @@ namespace SohImGui {
                         auto menuLabel = "Controller " + std::to_string(i + 1);
                         if (ImGui::BeginMenu(menuLabel.c_str()))
                         {
-                            EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i), 0.0f, 1.0f, "", 1.0f, true);
+                            EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
 
                             if (ImGui::Button("Recalibrate Gyro"))
                             {
@@ -644,7 +648,7 @@ namespace SohImGui {
 
                             ImGui::Separator();
 
-                            EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i), 0.0f, 1.0f, "", 1.0f, true);
+                            EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
 
                             ImGui::EndMenu();
                         }
@@ -960,7 +964,7 @@ namespace SohImGui {
                         varName.erase(std::ranges::remove_if(varName, isspace).begin(), varName.end());
                         std::string toggleName = "g" + varName + "Enabled";
 
-                        EnhancementCheckbox(name, toggleName);
+                        EnhancementCheckbox(name.c_str(), toggleName.c_str());
                         customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
                     }
                     ImGui::EndMenu();
@@ -1011,19 +1015,19 @@ namespace SohImGui {
         main_pos.y -= top_left_pos.y;
         ImVec2 size = ImGui::GetContentRegionAvail();
         ImVec2 pos = ImVec2(0, 0);
-        gfx_current_dimensions.width = size.x * gfx_current_dimensions.internal_mul;
-        gfx_current_dimensions.height = size.y * gfx_current_dimensions.internal_mul;
-        gfx_current_game_window_viewport.x = main_pos.x;
-        gfx_current_game_window_viewport.y = main_pos.y;
-        gfx_current_game_window_viewport.width = size.x;
-        gfx_current_game_window_viewport.height = size.y;
+        gfx_current_dimensions.width = (uint32_t)(size.x * gfx_current_dimensions.internal_mul);
+        gfx_current_dimensions.height = (uint32_t)(size.y * gfx_current_dimensions.internal_mul);
+        gfx_current_game_window_viewport.x = (int16_t)main_pos.x;
+        gfx_current_game_window_viewport.y = (int16_t)main_pos.y;
+        gfx_current_game_window_viewport.width = (int16_t)size.x;
+        gfx_current_game_window_viewport.height = (int16_t)size.y;
 
         if (CVar_GetS32("gN64Mode", 0))
         {
             gfx_current_dimensions.width = 320;
             gfx_current_dimensions.height = 240;
             const int sw = size.y * 320 / 240;
-            gfx_current_game_window_viewport.x += (size.x - sw) / 2;
+            gfx_current_game_window_viewport.x += ((int)size.x - sw) / 2;
             gfx_current_game_window_viewport.width = sw;
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
@@ -1032,12 +1036,12 @@ namespace SohImGui {
         overlay->Draw();
     }
 
-    void DrawFramebufferAndGameInput() {
-        ImVec2 main_pos = ImGui::GetWindowPos();
+    void DrawFramebufferAndGameInput(void) {
+        const ImVec2 main_pos = ImGui::GetWindowPos();
         ImVec2 size = ImGui::GetContentRegionAvail();
         ImVec2 pos = ImVec2(0, 0);
         if (CVar_GetS32("gN64Mode", 0)) {
-            const int sw = size.y * 320 / 240;
+            const float sw = size.y * 320.0f / 240.0f;
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
