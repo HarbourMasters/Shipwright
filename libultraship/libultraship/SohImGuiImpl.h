@@ -65,10 +65,14 @@ namespace SohImGui {
     void Update(EventImpl event);
 
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
-    void EnhancementCheckbox(std::string text, std::string cvarName);
-    void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format);
-    void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue);
-    void EnhancementColor3(std::string text, std::string cvarName, float ColorRGB[3], bool TitleSameLine);
+    void EnhancementCheckbox(const char* text, const char* cvarName);
+    void EnhancementButton(const char* text, const char* cvarName);
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format);
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage);
+    
+    void Tooltip(const char* text);
+
+    void EnhancementColor3(const char* text, const char* cvarName, float defaultColors[3], bool TitleSameLine);
 
     void DrawMainMenuAndCalculateGameSize(void);
     
