@@ -3,7 +3,14 @@
 
 #include <stdint.h>
 
-typedef enum CVarType { CVAR_TYPE_S32, CVAR_TYPE_FLOAT, CVAR_TYPE_STRING } CVarType;
+#ifdef __cplusplus
+typedef enum class CVarType 
+{ 
+    S32, 
+    Float, 
+    String,
+    RGBA
+} CVarType;
 
 typedef struct CVar {
     const char* name;
@@ -15,6 +22,9 @@ typedef struct CVar {
         const char* valueStr;
     } value;
 } CVar;
+
+CVar* CVar_Get(char* name);
+#endif
 
 #ifdef __cplusplus
 extern "C"

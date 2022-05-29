@@ -426,11 +426,11 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
 
     if (cvar != nullptr)
     {
-        if (cvar->type == CVAR_TYPE_S32)
+        if (cvar->type == CVarType::S32)
             INFO("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
-        else if (cvar->type == CVAR_TYPE_FLOAT)
+        else if (cvar->type == CVarType::Float)
             INFO("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
-        else if (cvar->type == CVAR_TYPE_STRING)
+        else if (cvar->type == CVarType::String)
             INFO("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
     }
     else

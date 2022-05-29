@@ -23,6 +23,7 @@ Globals::Globals()
 	singleThreaded = true;
 	verbosity = VerbosityLevel::VERBOSITY_SILENT;
 	outputPath = Directory::GetCurrentDirectory();
+	singleThreaded = true;
 }
 
 Globals::~Globals()
