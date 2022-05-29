@@ -259,7 +259,8 @@ namespace SohImGui {
     }
 
     void LoadRainbowColor() {
-        for (uint16_t s=0; s <= sizeof(RainbowColorCvarList); s++) {
+        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
+        for (u8 s = 0; s < arrayLength; s++) {
             std::string cvarName = RainbowColorCvarList[s];
             std::string Cvar_Red = cvarName;
             Cvar_Red += "R";
