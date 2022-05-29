@@ -8,6 +8,6 @@ void cryptoRandomTearDown(void);
 unsigned long cryptoRandomUint32(unsigned long);
 #endif // _WIN32
 
-extern bool CSPRNG_INITIALIZED;
+extern bool gCsprngInitialized;
 extern unsigned long (*randomUint32)(unsigned long);
 unsigned long standardRandomUint32(unsigned long);

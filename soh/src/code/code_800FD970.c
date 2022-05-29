@@ -19,7 +19,7 @@ u32 Rand_Next(void) {
  * Seeds the pseudo-random number generator by providing a starting value.
  */
 void Rand_Seed(u32 seed) {
-    if (CSPRNG_INITIALIZED) {
+    if (gCsprngInitialized) {
         sRandInt = randomUint32(seed);
     } else {
         sRandInt = seed;
@@ -51,7 +51,7 @@ f32 Rand_Centered(void) {
  * Seeds a pseudo-random number at rndNum with a provided seed.
  */
 void Rand_Seed_Variable(u32* rndNum, u32 seed) {
-    if (CSPRNG_INITIALIZED) {
+    if (gCsprngInitialized) {
         *rndNum = randomUint32(seed);
     } else {
         *rndNum = seed;

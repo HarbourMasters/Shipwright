@@ -1,7 +1,7 @@
 #include "random_experiment.h"
 
 unsigned long (*randomUint32)(unsigned long) = &standardRandomUint32;
-bool CSPRNG_INITIALIZED = false;
+bool gCsprngInitialized = false;
 
 #if defined(_WIN32)
 #include <medparam.h>
@@ -13,7 +13,7 @@ bool cryptoRandomInit()
     bool success = CryptAcquireContext(&cryptProvider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
     if (success) {
         randomUint32 = &cryptoRandomUint32;
-        CSPRNG_INITIALIZED = true;
+        gCsprngInitialized = true;
     }
     return success;
 }

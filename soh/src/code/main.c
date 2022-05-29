@@ -145,7 +145,7 @@ void Main(void* arg) {
 
     Heaps_Free();
 #if defined(_WIN32)
-    if (CSPRNG_INITIALIZED) {
+    if (gCsprngInitialized) {
         cryptoRandomTearDown();
     }
 #endif
