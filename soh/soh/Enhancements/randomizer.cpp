@@ -1217,11 +1217,35 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
                     return SPIRIT_TEMPLE_MAP_CHEST;
                 case -30655:
                     return SPIRIT_TEMPLE_SUN_BLOCK_ROOM_CHEST;
+                case 14340:
+                    return SPIRIT_TEMPLE_COMPASS_CHEST;
+                case 22599:
+                    return SPIRIT_TEMPLE_EARLY_ADULT_RIGHT_CHEST;
+                case -30451:
+                    return SPIRIT_TEMPLE_FIRST_MIRROR_LEFT_CHEST;
+                case -28786:
+                    return SPIRIT_TEMPLE_FIRST_MIRROR_RIGHT_CHEST;
+                case -30577:
+                    return SPIRIT_TEMPLE_STATUE_ROOM_NORTHEAST_CHEST;
+                case -30654:
+                    return SPIRIT_TEMPLE_STATUE_ROOM_HAND_CHEST;
+                case 22597:
+                    return SPIRIT_TEMPLE_NEAR_FOUR_ARMOS_CHEST;
+                case 26900:
+                    return SPIRIT_TEMPLE_HALLWAY_RIGHT_INVISIBLE_CHEST;
+                case 26901:
+                    return SPIRIT_TEMPLE_HALLWAY_LEFT_INVISIBLE_CHEST;
+                case 10218:
+                    return SPIRIT_TEMPLE_BOSS_KEY_CHEST;
+                case -29454:
+                    return SPIRIT_TEMPLE_TOPMOST_CHEST;
             }
         case 92:
             switch(actorParams) {
                 case 1707:
                     return SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
+                case 13673:
+                    return SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
             }
     }
 
