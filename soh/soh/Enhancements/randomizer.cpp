@@ -713,11 +713,20 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
-    // bandaid until new save stuff happens
-    ParseItemLocations(spoilerFileName);
+    if (strcmp(spoilerFileName, "") != 0) {
+        // bandaid until new save stuff happens
+        ParseItemLocations(spoilerFileName);
 
-    for(auto itemLocation : gSaveContext.itemLocations) {
-        this->itemLocations[itemLocation.check] = itemLocation.get;
+        for (auto itemLocation : gSaveContext.itemLocations) {
+            this->itemLocations[itemLocation.check] = itemLocation.get;
+        }
+    } else {
+        u16 index = 0;
+        for (auto itemLocation : this->itemLocations) {
+            gSaveContext.itemLocations[index].check = itemLocation.first;
+            gSaveContext.itemLocations[index].get = itemLocation.second;
+            index++;
+        }
     }
 }
 
@@ -1026,7 +1035,7 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
             }
         case 84:
             switch (actorParams) {
-                case 0x0406:
+                case 1030:
                     return ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
                 case 2822:
                     return ZR_NEAR_DOMAIN_FREESTANDING_POH;
