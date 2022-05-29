@@ -112,9 +112,9 @@ namespace SohImGui {
         return fmin(fmax(value,min),max);
     }
 
-    void Tooltip(std::string text) {
+    void Tooltip(const char* text) {
         if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text.c_str());
+            ImGui::SetTooltip("%s", text);
     }
 
     void ImGuiWMInit() {
