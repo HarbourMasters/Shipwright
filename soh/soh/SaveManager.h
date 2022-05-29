@@ -39,16 +39,23 @@ public:
     void SaveFile(int fileNum);
     void SaveGlobal();
     void LoadFile(int fileNum);
+
+    // Adds a function that is called when we are intializing a save, including when we are loading a save.
     void AddInitFunction(InitFunc func);
+
+    // Adds a function to handling loading a section
     void AddLoadFunction(const std::string& name, int version, LoadFunc func);
+
+    // Adds a function that is called when saving. This should only be called once for each function, the version is filled in automatically.
     void AddSaveFunction(const std::string& name, int version, SaveFunc func);
+
+    // Adds a function tyo be called after loading is complete. This is to handle any cleanup required from loading old versions.
     void AddPostFunction(const std::string& name, PostFunc func);
 
     void CopyZeldaFile(int from, int to);
     void DeleteZeldaFile(int fileNum);
 
-    std::filesystem::path GetFileName(int fileNum);
-
+    // Use a name of "" to save to an array. You must be in a SaveArray callback.
     template<typename T>
     void SaveData(const std::string& name, const T& data) {
         if (name == "") {
@@ -59,12 +66,14 @@ public:
         }
     }
     
+    // In the SaveArrayFunc func, the name must be "" to save to the array.
     using SaveArrayFunc = std::function<void(size_t)>;
     void SaveArray(const std::string& name, const size_t size, SaveArrayFunc func);
     
     using SaveStructFunc = std::function<void()>;
     void SaveStruct(const std::string& name, SaveStructFunc func);
 
+    // Use a name of "" to load from an array. You must be in a SavLoadArrayeArray callback.
     template<typename T> void LoadData(const std::string& name, T& data, const T& defaultValue = T{}) {
         if (name == "") {
             if (currentJsonArrayContext == currentJsonContext->end()) {
@@ -80,6 +89,7 @@ public:
         }
     }
 
+    // In the LoadArrayFunc func, the name must be "" to loaf from the array.
     using LoadArrayFunc = std::function<void(size_t)>;
     void LoadArray(const std::string& name, const size_t size, LoadArrayFunc func);
 
@@ -89,10 +99,11 @@ public:
     static const int MaxFiles = 3;
     std::array<SaveFileMetaInfo, MaxFiles> fileMetaInfo;
 
-private:
+  private:
+    std::filesystem::path GetFileName(int fileNum);
+
     void ConvertFromUnversioned();
     void CreateDefaultGlobal();
-    void CreateDefaultSlot(int slotNum);
 
     void InitMeta(int slotNum);
     static void InitFileImpl(bool isDebug);
@@ -117,6 +128,8 @@ private:
 };
 
 #else
+
+// TODO feature parity to the C++ interface. We need Save_AddInitFunction and Save_AddPostFunction at least
 
 typedef void (*Save_LoadFunc)(void);
 typedef void (*Save_SaveFunc)(void);
