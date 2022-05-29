@@ -82,4 +82,5 @@ namespace SohImGui {
     void LoadInterfaceEditor();
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
+    // void LoadItemLocations(const char* spoilerFileName);
 }

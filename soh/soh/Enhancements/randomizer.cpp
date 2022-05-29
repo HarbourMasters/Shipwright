@@ -4,14 +4,83 @@
 #include <variables.h>
 #include <macros.h>
 #include <objects/gameplay_keep/gameplay_keep.h>
-#include <objects/object_gi_bomb_1/object_gi_bomb_1.h>
-#include <objects/object_gi_letter/object_gi_letter.h>
+#include <functions.h>
+#include <Cvar.h>
+#include <textures/icon_item_static/icon_item_static.h>
+#include <textures/icon_item_24_static/icon_item_24_static.h>
 
 using json = nlohmann::json;
 
+std::unordered_map<std::string, Sprite> gSeedTextures;
+
 Randomizer::Randomizer() {
-    //todo something?
+    // this isn't as clean as i'd like it to be but it's working
+    Sprite dekuStickSprite = { gHookshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Deku Stick"] = dekuStickSprite;
+    Sprite dekuNutSprite = { gDekuNutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Deku Nut"] = dekuNutSprite;
+    Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bow"] = bowSprite; 
+    Sprite slingshotSprite = { gFairySlingshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Slingshot"] = slingshotSprite; 
+    Sprite fairyOcarinaSprite = { gFairyOcarinaIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Fairy Ocarina"] = fairyOcarinaSprite;
+    Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bombchu"] = bombchuSprite;
+    Sprite longshotSprite = { gLongshotIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Longshot"] = longshotSprite;
+    Sprite boomerangSprite = { gBoomerangIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Boomerang"] = boomerangSprite;
+    Sprite lensOfTruthSprite = { gLensofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Lens of Truth"] = lensOfTruthSprite;
+    Sprite magicBeansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Beans"] = magicBeansSprite; 
+    Sprite megatonHammerSprite = { gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Megaton Hammer"] = megatonHammerSprite;
+    Sprite fishSprite = { gFishIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bottled Fish"] = fishSprite;
+    Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Bottled Milk"] = milkSprite;
+    Sprite maskOfTruthSprite = { gMaskofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mask of Truth"] = maskOfTruthSprite;
+    Sprite soldOutSprite = { gSoldOutIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["SOLD OUT"] = soldOutSprite;
+    Sprite cuccoSprite = { gCuccoIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Cucco"] = cuccoSprite;
+    Sprite oddMushroomSprite = { gOddMushroomIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mushroom"] = oddMushroomSprite;
+    Sprite sawSprite = { gPoachersSawIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Saw"] = sawSprite;
+    Sprite frogSprite = { gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Frog"] = frogSprite;
+    Sprite masterSwordSprite = { gMasterSwordIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Master Sword"] = masterSwordSprite;
+    Sprite mirrorShieldSprite = { gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Mirror Shield"] = mirrorShieldSprite;
+    Sprite kokiriTunicSprite = { gKokiriTunicIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Kokiri Tunic"] = kokiriTunicSprite;
+    Sprite hoverBootsSprite = { gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Hover Boots"] = hoverBootsSprite;
+    Sprite silverGauntletsSprite = { gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Silver Gauntlets"] = silverGauntletsSprite;
+    Sprite goldenScaleSprite = { gGoldenScaleIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Gold Scale"] = goldenScaleSprite;
+    Sprite stoneOfAgonySprite = { gStoneOfAgonyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Stone of Agony"] = stoneOfAgonySprite;
+    Sprite skullTokenSprite = { gGoldSkulltulaIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Skull Token"] = skullTokenSprite;
+    Sprite heartContainerSprite = { gHeartContainerIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Heart Container"] = heartContainerSprite;
+    Sprite bossKeySprite = { gBossKeyIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Boss Key"] = bossKeySprite;
+    Sprite compassSprite = { gCompassIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Compass"] = compassSprite;
+    Sprite mapSprite = { gDungeonMapIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Map"] = mapSprite;
+    Sprite bigMagicSprite = { gBigMagicJarIconTex, 24, 24, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures["Big Magic"] = bigMagicSprite;
 }
+
 Randomizer::~Randomizer() { 
     this->itemLocations.clear();
 }
@@ -643,50 +712,88 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
 }
 
-void Randomizer::LoadItemLocations() {
-    // bandaid until new save stuff happens
-    ParseItemLocations("");
+void Randomizer::LoadItemLocations(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        // bandaid until new save stuff happens
+        ParseItemLocations(spoilerFileName);
 
-    for(auto itemLocation : gSaveContext.itemLocations) {
-        this->itemLocations[itemLocation.check] = itemLocation.get;
+        for (auto itemLocation : gSaveContext.itemLocations) {
+            this->itemLocations[itemLocation.check] = itemLocation.get;
+        }
+    } else {
+        u16 index = 0;
+        for (auto itemLocation : this->itemLocations) {
+            gSaveContext.itemLocations[index].check = itemLocation.first;
+            gSaveContext.itemLocations[index].get = itemLocation.second;
+            index++;
+        }
     }
 }
 
-void Randomizer::ParseItemLocations(std::string spoilerFileName) {
+void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     // todo pull this in from cvar or something
-    std::ifstream spoilerFileStream("spoiler.json");
+    std::ifstream spoilerFileStream(spoilerFileName);
     if (!spoilerFileStream)
         return;
-    json spoilerFileJson;
-    spoilerFileStream >> spoilerFileJson;
-    json locationsJson = spoilerFileJson["locations"];
-    int index = 0;
-    for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-        if (it->is_structured()) {
-            json itemJson = *it;
-            for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                // todo handle prices
-                if (itemit.key() == "item") {
 
-                    gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                    gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
-                }
-            }
-        } else {
-            gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-            gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+    bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json locationsJson = spoilerFileJson["locations"];
+        json hashJson = spoilerFileJson["file_hash"];
+
+        int index = 0;
+        for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
+            gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
+            index++;
         }
 
-        index++;
+        index = 0;
+        for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
+            if (it->is_structured()) {
+                json itemJson = *it;
+                for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
+                    // todo handle prices
+                    if (itemit.key() == "item") {
+
+                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
+                    }
+                }
+            } else {
+                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
+            }
+
+            index++;
+        }
+
+        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        success = true;
+    } catch (const std::exception& e) {
+        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        return;    
+    }
+
+    if (success) {
+        CVar_SetS32("gRandomizer", 1);
+    }
+}
+
+s32 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
+    if (actorId != -1) {
+        s32 itemId = GetItemFromActor(actorId, ogId);
+        return itemId;    
+    } else {
+        s32 itemId = GetItemFromSceneParamsAndHomePos(sceneNum, actorParams, homePosX, homePosY, homePosZ, ogId);
+        return itemId;
     }
 }
 
 GetItemID Randomizer::GetItemFromActor(s16 actorId, GetItemID ogItemId) {
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(actorId, ogItemId)], ogItemId);
-}
-
-GetItemID Randomizer::GetItemFromSceneAndParams(s16 sceneNum, s16 actorParams, GetItemID ogItemId) {
-    return GetItemFromGet(this->itemLocations[GetCheckFromSceneAndParams(sceneNum, actorParams)], ogItemId);
 }
 
 GetItemID Randomizer::GetItemFromSceneParamsAndHomePos(s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ, GetItemID ogItemId) {
@@ -915,6 +1022,11 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
     }
 
     switch(sceneNum) {
+        case 17:
+            switch (actorParams) {
+                case 0x1F:
+                    return DEKU_TREE_QUEEN_GOHMA_HEART;
+            }
         case 40:
             switch(actorParams) {
                 case 22944:
@@ -928,8 +1040,10 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
             }
         case 84:
             switch (actorParams) {
-                case 0x0406:
+                case 1030:
                     return ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
+                case 2822:
+                    return ZR_NEAR_DOMAIN_FREESTANDING_POH;
             }
         case 85:
             switch(actorParams) {
@@ -983,7 +1097,7 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
             }
         case 96:
             switch(actorParams) {
-                case 6:
+                case 7686:
                     return DMT_FREESTANDING_POH;
                 case 23201:
                     return DMT_CHEST;
