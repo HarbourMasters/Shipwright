@@ -76,9 +76,7 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
 void LoadItemLocations(const char* spoilerFileName);
 void ParseItemLocations(const char* spoilerfilename);
-s32 GetRandomizedItemId(GetItemID ogId, s16 sceneNum, s16 actorParams);
-s32 GetRandomizedItemIdFromActor(GetItemID ogId, s16 actorId);
-s32 GetRandomizedItemIdFromPosition(GetItemID ogId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ);
+s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 
 #endif
 

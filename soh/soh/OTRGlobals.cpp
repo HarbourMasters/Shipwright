@@ -1036,16 +1036,6 @@ extern "C" void ParseItemLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerFileName);
 }
 
-extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 sceneNum, s16 actorParams) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, -1, sceneNum, actorParams);
-}
-
-// the lack of optional params in c is frustrating
-extern "C" s32 GetRandomizedItemIdFromActor(GetItemID ogId, s16 actorId ) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId);
-}
-
-// use an explicit (s32) cast on the position values from the Vec3f when calling
-extern "C" s32 GetRandomizedItemIdFromPosition(GetItemID ogId, s16 sceneNum, s16 actorParams, s32 homePosX, s32 homePosY, s32 homePosZ) {
-    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, -1, sceneNum, actorParams, homePosX, homePosY, homePosZ);
+extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
