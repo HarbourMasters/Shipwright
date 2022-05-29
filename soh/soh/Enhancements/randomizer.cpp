@@ -1022,6 +1022,11 @@ RandomizerCheck Randomizer::GetCheckFromSceneAndParams(s16 sceneNum, s16 actorPa
     }
 
     switch(sceneNum) {
+        case 17:
+            switch (actorParams) {
+                case 0x1F:
+                    return DEKU_TREE_QUEEN_GOHMA_HEART;
+            }
         case 40:
             switch(actorParams) {
                 case 22944:
