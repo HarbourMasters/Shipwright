@@ -613,7 +613,7 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
                  */
                 // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
                 // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
-                // If true, spawn the heart piece isntead of the purple rupee and set the vanilla itemGetInf flag.
+                // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
                 if (!Flags_GetTempClear(globalCtx, TEMPCLEARFLAG_GRAVEDIGGING_HEART_PIECE) &&
                     (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
                      CVar_GetS32("gGravediggingTourFix", 0) &&
