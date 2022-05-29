@@ -54,14 +54,12 @@ namespace Game {
     }
 
     void InitSettings() {
-        ModInternal::registerHookListener({ AUDIO_INIT, [](HookEvent ev) {
-            UpdateAudio();
-        }});
-        ModInternal::registerHookListener({ GFX_INIT, [](HookEvent ev) {
+        ModInternal::RegisterHook<ModInternal::AudioInit>(UpdateAudio);
+        ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode) CVar_GetS32("gTextureFilter", THREE_POINT));
             SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
             UpdateAudio();
-        }});
+        });
     }
 
     void SetSeqPlayerVolume(SeqPlayers playerId, float volume) {
