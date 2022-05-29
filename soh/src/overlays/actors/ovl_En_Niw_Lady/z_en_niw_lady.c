@@ -294,11 +294,6 @@ void func_80ABA244(EnNiwLady* this, GlobalContext* globalCtx) {
     }
 }
 
-s32 NiwLady_GetRandomizedItemId(EnNiwLady* this, GetItemID ogId) {
-    s32 itemId = GetItemFromActor(this->actor.id, ogId);
-    return itemId;
-}
-
 void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
     if (this->unk_262 == Message_GetState(&globalCtx->msgCtx) && Message_ShouldAdvance(globalCtx)) {
         Message_CloseTextbox(globalCtx);
@@ -309,9 +304,8 @@ void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
         if (!(gSaveContext.itemGetInf[0] & 0x1000)) {
             this->actor.parent = NULL;
 
-            this->getItemId = NiwLady_GetRandomizedItemId(this, GI_BOTTLE);
-
-            func_8002F434(&this->actor, globalCtx, NiwLady_GetRandomizedItemId(this, GI_BOTTLE), 100.0f, 50.0f);
+            this->getItemId = GetRandomizedItemIdFromActor(GI_BOTTLE, this->actor.id);
+            func_8002F434(&this->actor, globalCtx, GetRandomizedItemIdFromActor(GI_BOTTLE, this->actor.id), 100.0f, 50.0f); //not sure if calling again makes sense here or if we should just use this->getItemId
             this->actionFunc = func_80ABAC00;
             return;
         }
@@ -393,7 +387,7 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
             case 0:
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, NiwLady_GetRandomizedItemId(this, GI_POCKET_EGG), 200.0f,
+                func_8002F434(&this->actor, globalCtx, GetRandomizedItemIdFromActor(GI_POCKET_EGG, this->actor.id), 200.0f,
                               100.0f);
                 this->actionFunc = func_80ABAC00;
                 break;
@@ -447,7 +441,7 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
             getItemId =
-                !(gSaveContext.itemGetInf[2] & 0x1000) ? NiwLady_GetRandomizedItemId(this, GI_POCKET_EGG) : GI_COJIRO;
+                !(gSaveContext.itemGetInf[2] & 0x1000) ? GetRandomizedItemIdFromActor(GI_POCKET_EGG, this->actor.id) : GI_COJIRO;
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);
     }
