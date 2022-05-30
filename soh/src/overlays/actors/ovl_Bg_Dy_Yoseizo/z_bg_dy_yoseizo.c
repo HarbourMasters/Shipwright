@@ -211,19 +211,37 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
             // todo ensure we're seting givingReward based on if the check has been checked,
             // not based on if the spell is in inventory 
             case FAIRY_SPELL_FARORES_WIND:
-                if (!(gSaveContext.itemGetInf[1] & 0x100)) {
-                    givingReward = true;
-                }
+                // if (gSaveContext.n64ddFlag) {
+                //     s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                //     return;
+                // } else {
+                    if (!(gSaveContext.itemGetInf[1] & 0x100)) {
+                        givingReward = true;
+                    }
+                // }
                 break;
             case FAIRY_SPELL_DINS_FIRE:
-                if (!(gSaveContext.itemGetInf[1] & 0x200)) {
-                    givingReward = true;
-                }
+                // if (gSaveContext.n64ddFlag) {
+                //     s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                //     return;
+                // } else {
+                    if (!(gSaveContext.itemGetInf[1] & 0x200)) {
+                        givingReward = true;
+                    }
+                // }
                 break;
             case FAIRY_SPELL_NAYRUS_LOVE:
-                if (!(gSaveContext.itemGetInf[1] & 0x400)) {
-                    givingReward = true;
-                }
+                // if (gSaveContext.n64ddFlag) {
+                //     s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                //     return;
+                // } else {
+                    if (!(gSaveContext.itemGetInf[1] & 0x400)) {
+                        givingReward = true;
+                    }
+                // }
                 break;
         }
     } else {
@@ -262,14 +280,29 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
             if (globalCtx->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:
+                        if (gSaveContext.n64ddFlag) {
+                            s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                            return;
+                        }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyFaroresWindCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_DINS_FIRE:
+                        if (gSaveContext.n64ddFlag) {
+                            s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                            return;
+                        }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyDinsFireCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_NAYRUS_LOVE:
+                        if (gSaveContext.n64ddFlag) {
+                            s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                            return;
+                        }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyNayrusLoveCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;

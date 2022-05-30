@@ -1828,6 +1828,11 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return ZF_ICEBERG_FREESTANDING_POH;
             }
+        case 61:
+            switch(actorId) {
+                case 11:
+                    return HC_GREAT_FAIRY_REWARD;
+            }
     }
 
     return UNKNOWN_CHECK;
