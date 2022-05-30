@@ -27,6 +27,7 @@
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
 #include "../../SohImGuiImpl.h"
+#include "../../Cvar.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
@@ -271,7 +272,8 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     case WM_DROPFILES:
         char fileName[256];
         DragQueryFileA((HDROP)w_param, 0, fileName, 256);
-        LoadItemLocations(fileName);
+        CVar_SetString("gDroppedFile", fileName);
+        CVar_SetS32("gDroppedNewSpoilerFile", 1);
         break;
     case WM_SYSKEYDOWN:
         if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {

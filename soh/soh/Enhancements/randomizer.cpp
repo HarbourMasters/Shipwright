@@ -8,6 +8,7 @@
 #include <Cvar.h>
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
+#include <GameSettings.h>
 
 using json = nlohmann::json;
 
@@ -779,6 +780,8 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
 
     if (success) {
         CVar_SetS32("gRandomizer", 1);
+        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        Game::SaveSettings();
     }
 }
 
