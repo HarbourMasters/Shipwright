@@ -1231,6 +1231,26 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_SEEDS_30;
         case BOTTLE_WITH_BIG_POE:
             return GI_BIG_POE;
+        case BOTTLE:
+            return GI_BOTTLE;
+        case BOTTLE_WITH_BLUE_FIRE:
+            return GI_BLUE_FIRE;
+        case BOTTLE_WITH_BLUE_POTION:
+            return GI_POTION_BLUE;
+        case BOTTLE_WITH_BUGS:
+            return GI_BUGS;
+        case BOTTLE_WITH_FAIRY:
+            return GI_FAIRY;
+        case BOTTLE_WITH_FISH:
+            return GI_FISH;
+        case BOTTLE_WITH_GREEN_POTION:
+            return GI_POTION_GREEN;
+        case BOTTLE_WITH_MILK:
+            return GI_MILK_BOTTLE;
+        case BOTTLE_WITH_POE:
+            return GI_POE;
+        case BOTTLE_WITH_RED_POTION:
+            return GI_POTION_RED;
         case PIECE_OF_HEART_TREASURE_CHEST_GAME:
             return GI_HEART_PIECE_WIN;
         case DEKU_STICK_CAPACITY:
@@ -1828,10 +1848,25 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return ZF_ICEBERG_FREESTANDING_POH;
             }
+        case 59:
+            // using fountainType as actorParams 
+            switch(actorParams) {
+                case 1:
+                    return DMT_GREAT_FAIRY_REWARD;
+                case 2:
+                    return DMC_GREAT_FAIRY_REWARD;
+                case 3:
+                    return OGC_GREAT_FAIRY_REWARD;
+            }
         case 61:
-            switch(actorId) {
-                case 11:
+            // using fountainType as actorParams
+            switch(actorParams) {
+                case 1:
+                    return ZF_GREAT_FAIRY_REWARD;
+                case 2:
                     return HC_GREAT_FAIRY_REWARD;
+                case 3:
+                    return COLOSSUS_GREAT_FAIRY_REWARD;
             }
     }
 

@@ -72,7 +72,8 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
 u8 successGreatFairy;
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
+    GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
+    // GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
 
     if (successGreatFairy && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         Flags_SetTreasure(globalCtx, this->fountainType + 1);
