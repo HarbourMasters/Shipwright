@@ -449,6 +449,19 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                             dayTime = ((void)0, gSaveContext.dayTime);
 
+                            // hacky function for testing 
+                            // while drag and drop is broken on linux
+                            // enter "rando" as file name
+                            // if(this->fileNames[1][0] == '5' &&
+                            //    this->fileNames[1][1] == '$' &&
+                            //    this->fileNames[1][2] == '1' &&
+                            //    this->fileNames[1][3] == '\'' &&
+                            //    this->fileNames[1][4] == '2')
+                            // {
+                                ParseItemLocations("spoiler.json");
+                                LoadItemLocations("spoiler.json");
+                            // }
+
                             Sram_InitSave(this, &this->sramCtx);
 
                             // todo: fill link's pocket here
