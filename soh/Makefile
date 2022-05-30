@@ -80,9 +80,7 @@ ifeq ($(UNAME), Linux) #LINUX
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
-	INC_DIRS += $(addprefix -I, \
-		/opt/homebrew/Cellar/libx11/1.8/include \
-)
+	INC_DIRS += $(shell pkg-config --cflags x11)
 endif
 
 LDDIRS := $(addprefix -L, \
@@ -97,9 +95,7 @@ ifeq ($(UNAME), Linux) #LINUX
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
-	LDDIRS += $(addprefix -L, \
-		/opt/homebrew/Cellar/libx11/1.8/lib \
-)
+	LDDIRS += $(shell pkg-config --libs x11)
 endif
 
 LDLIBS := \
