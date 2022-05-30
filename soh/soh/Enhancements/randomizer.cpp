@@ -1516,6 +1516,11 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 7686:
                     return LH_FREESTANDING_POH;
             }
+        case 76:
+            switch(actorParams) {
+                case 262:
+                    return LLR_FREESTANDING_POH;
+            }
     }
 
     return UNKNOWN_CHECK;
