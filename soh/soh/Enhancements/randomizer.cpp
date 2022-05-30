@@ -1143,11 +1143,15 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST;
             }
         case 72:
+            // todo make sure dampe gives the PoH when the chest is opened
+            // default logic seems to be give PoH when hookshot in inventory
             switch(actorParams) {
                 case 4352:
                     return GRAVEYARD_HOOKSHOT_CHEST;
                 case 262:
                     return KAK_WINDMILL_FREESTANDING_POH;
+                case 1798:
+                    return GRAVEYARD_DAMPE_RACE_FREESTANDING_POH;
             }
         case 96:
             switch(actorParams) {
