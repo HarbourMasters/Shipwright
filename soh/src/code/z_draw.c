@@ -105,6 +105,10 @@ void GetItem_DrawSmallRupee(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawScale(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawBulletBag(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawWallet(GlobalContext* globalCtx, s16 drawId);
+void GetItem_DrawJewel(GlobalContext* globalCtx, s16 drawId);
+void GetItem_DrawJewelKokiri(GlobalContext* globalCtx, s16 drawId);
+void GetItem_DrawJewelGoron(GlobalContext* globalCtx, s16 drawId);
+void GetItem_DrawJewelZora(GlobalContext* globalCtx, s16 drawId);
 
 typedef struct {
     /* 0x00 */ void (*drawFunc)(GlobalContext*, s16);
@@ -368,11 +372,9 @@ DrawItemTableEntry sDrawItemTable[] = {
     // gold skulltula token, OBJECT_ST
     { GetItem_DrawSkullToken, { object_st_DL_004DB0, object_st_DL_004EB8 } },
 
-    { GetItem_DrawOpa0Xlu1, { gGiKokiriEmeraldGemDL, gGiKokiriEmeraldSettingDL } },
-    // fire medallion, OBJECT_GI_MEDAL
-    { GetItem_DrawOpa0Xlu1, { gGiGoronRubySettingDL, gGiGoronRubyGemDL } },
-    // water medallion, OBJECT_GI_MEDAL
-    { GetItem_DrawOpa0Xlu1, { gGiZoraSapphireSettingDL, gGiZoraSapphireGemDL,  } },
+    { GetItem_DrawJewelKokiri, { gGiKokiriEmeraldGemDL, gGiKokiriEmeraldSettingDL } },
+    { GetItem_DrawJewelGoron, { gGiGoronRubyGemDL, gGiGoronRubySettingDL } },
+    { GetItem_DrawJewelZora, { gGiZoraSapphireGemDL, gGiZoraSapphireSettingDL } },
 };
 
 /**
@@ -384,6 +386,96 @@ void GetItem_Draw(GlobalContext* globalCtx, s16 drawId) {
 }
 
 // All remaining functions in this file are draw functions referenced in the table and called by the function above
+
+/* 0x0178 */ u8 primXluColor[3];
+/* 0x017B */ u8 envXluColor[3];
+/* 0x017E */ u8 primOpaColor[3];
+/* 0x0181 */ u8 envOpaColor[3];
+
+void GetItem_DrawJewelKokiri(GlobalContext* globalCtx, s16 drawId) {
+    primXluColor[2] = 160;
+    primXluColor[0] = 255;
+    primXluColor[1] = 255;
+    envXluColor[0] = 0;
+    envXluColor[1] = 255;
+    envXluColor[2] = 0;
+    primOpaColor[2] = 170;
+    primOpaColor[0] = 255;
+    primOpaColor[1] = 255;
+    envOpaColor[1] = 120;
+    envOpaColor[0] = 150;
+    envOpaColor[2] = 0;
+
+    GetItem_DrawJewel(globalCtx, drawId);
+}
+
+void GetItem_DrawJewelGoron(GlobalContext* globalCtx, s16 drawId) {
+    primXluColor[1] = 170;
+    primXluColor[0] = 255;
+    primXluColor[2] = 255;
+    envXluColor[2] = 100;
+    envXluColor[0] = 255;
+    envXluColor[1] = 0;
+    primOpaColor[2] = 170;
+    primOpaColor[0] = 255;
+    primOpaColor[1] = 255;
+    envOpaColor[1] = 120;
+    envOpaColor[0] = 150;
+    envOpaColor[2] = 0;
+
+    GetItem_DrawJewel(globalCtx, drawId);
+}
+
+void GetItem_DrawJewelZora(GlobalContext* globalCtx, s16 drawId) {
+    primXluColor[0] = 50;
+    primXluColor[1] = 255;
+    primXluColor[2] = 255;
+    envXluColor[2] = 150;
+    envXluColor[0] = 50;
+    envXluColor[1] = 0;
+    primOpaColor[2] = 170;
+    primOpaColor[0] = 255;
+    primOpaColor[1] = 255;
+    envOpaColor[1] = 120;
+    envOpaColor[0] = 150;
+    envOpaColor[2] = 0;
+
+    GetItem_DrawJewel(globalCtx, drawId);
+}
+
+void GetItem_DrawJewel(GlobalContext* globalCtx, s16 drawId) {
+    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2543);
+
+    gSPSegment(POLY_XLU_DISP++, 9,
+               Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0 % 256, (256 - (0 % 256)) - 1, 64, 64, 1, 0 % 256,
+                                (256 - (0 % 256)) - 1, 16, 16));
+
+    gSPSegment(POLY_OPA_DISP++, 8, Gfx_TexScroll(globalCtx->state.gfxCtx, (u8)0, (u8)0, 16, 16));
+
+    Matrix_Push();
+    Matrix_RotateZYX(0, -0x4000, 0x4000, MTXMODE_APPLY);
+
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2597),
+              G_MTX_NOPUSH | G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2599),
+              G_MTX_NOPUSH | G_MTX_LOAD);
+
+    func_80093D84(globalCtx->state.gfxCtx);
+
+    // func_8002ED80(&this->actor, globalCtx, 0);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, primXluColor[0], primXluColor[1], primXluColor[2], 255);
+    gDPSetEnvColor(POLY_XLU_DISP++, envXluColor[0], envXluColor[1], envXluColor[2], 255);
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+    func_80093D18(globalCtx->state.gfxCtx);
+    // func_8002EBCC(&this->actor, globalCtx, 0);
+    gDPSetPrimColor(POLY_OPA_DISP++, 0, 128, primOpaColor[0], primOpaColor[1], primOpaColor[2], 255);
+    gDPSetEnvColor(POLY_OPA_DISP++, envOpaColor[0], envOpaColor[1], envOpaColor[2], 255);
+    gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[1]);
+
+    Matrix_Pop();
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2620);
+}
 
 void GetItem_DrawMaskOrBombchu(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;

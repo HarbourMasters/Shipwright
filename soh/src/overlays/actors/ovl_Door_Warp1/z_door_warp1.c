@@ -463,19 +463,36 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
 
 u8 success = 0;
 
-void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx) {
+void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx, u8 ruto, u8 adult) {
     GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
 
     if (success && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
-                               &D_801333E8);
-        OnePointCutscene_Init(globalCtx, 0x25E7, 999, &this->actor, MAIN_CAM);
-        func_8002DF54(globalCtx, &this->actor, 10);
+        if (adult) {
+            OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
+            func_8002DF54(globalCtx, &this->actor, 10);
+            player->unk_450.x = this->actor.world.pos.x;
+            player->unk_450.z = this->actor.world.pos.z;
+            this->unk_1B2 = 20;
+            DoorWarp1_SetupAction(this, func_8099A508);
+        } else {
+            if (ruto) {
+                this->rutoWarpState = WARP_BLUE_RUTO_STATE_ENTERED;
+                func_8002DF54(globalCtx, &this->actor, 10);
+                this->unk_1B2 = 1;
+                DoorWarp1_SetupAction(this, func_80999EE0);
+            } else {
+                Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
+                                       &D_801333E8);
+                OnePointCutscene_Init(globalCtx, 0x25E7, 999, &this->actor, MAIN_CAM);
+                func_8002DF54(globalCtx, &this->actor, 10);
 
-        player->unk_450.x = this->actor.world.pos.x;
-        player->unk_450.z = this->actor.world.pos.z;
-        this->unk_1B2 = 1;
-        DoorWarp1_SetupAction(this, DoorWarp1_ChildWarpOut);
+                player->unk_450.x = this->actor.world.pos.x;
+                player->unk_450.z = this->actor.world.pos.z;
+                this->unk_1B2 = 1;
+
+                DoorWarp1_SetupAction(this, DoorWarp1_ChildWarpOut);
+            }
+        }
 
         success = 0;
     } else if (!success) {
@@ -492,7 +509,7 @@ void DoorWarp1_ChildWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
         player = GET_PLAYER(globalCtx);
         
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoReward(this, player, globalCtx);
+            GivePlayerRandoReward(this, player, globalCtx, 0, 0);
             return;
         }
 
@@ -583,6 +600,12 @@ void DoorWarp1_RutoWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
     if (this->rutoWarpState != WARP_BLUE_RUTO_STATE_INITIAL && DoorWarp1_PlayerInRange(this, globalCtx)) {
+
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, GET_PLAYER(globalCtx), globalCtx, 1, 0);
+            return;
+        }
+
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_ENTERED;
         func_8002DF54(globalCtx, &this->actor, 10);
         this->unk_1B2 = 1;
@@ -696,6 +719,11 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
     if (DoorWarp1_PlayerInRange(this, globalCtx)) {
         player = GET_PLAYER(globalCtx);
 
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, player, globalCtx, 0, 1);
+            return;
+        }
+
         OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
         func_8002DF54(globalCtx, &this->actor, 10);
         player->unk_450.x = this->actor.world.pos.x;
@@ -753,10 +781,16 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
-                Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x608;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x600;
@@ -768,9 +802,15 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_FIRE_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x200)) {
                 gSaveContext.eventChkInf[4] |= 0x200;
-                Item_Give(globalCtx, ITEM_MEDALLION_FIRE);
-                globalCtx->nextEntranceIndex = 0xDB;
-                gSaveContext.nextCutsceneIndex = 0xFFF3;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x564;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_FIRE);
+                    globalCtx->nextEntranceIndex = 0xDB;
+                    gSaveContext.nextCutsceneIndex = 0xFFF3;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x4F6;
@@ -782,10 +822,16 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_MIZUSIN_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x400)) {
                 gSaveContext.eventChkInf[4] |= 0x400;
-                Item_Give(globalCtx, ITEM_MEDALLION_WATER);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x60C;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_WATER);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x604;
@@ -796,10 +842,16 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
             }
         } else if (globalCtx->sceneNum == SCENE_JYASINBOSS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-                Item_Give(globalCtx, ITEM_MEDALLION_SPIRIT);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x610;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_SPIRIT);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x1F1;
@@ -810,10 +862,15 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
             }
         } else if (globalCtx->sceneNum == SCENE_HAKADAN_BS) {
             if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                Item_Give(globalCtx, ITEM_MEDALLION_SHADOW);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x580;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_SHADOW);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x568;
