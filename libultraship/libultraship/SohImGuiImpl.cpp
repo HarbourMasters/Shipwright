@@ -804,7 +804,11 @@ namespace SohImGui {
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
 #else
+#ifdef __APPLE__
+            ImGui::Text("Platform: MacOS");
+#else
             ImGui::Text("Platform: Linux");
+#endif
 #endif
             ImGui::Text("Status: %.3f ms/frame (%.1f FPS)", 1000.0f / framerate, framerate);
             ImGui::End();
