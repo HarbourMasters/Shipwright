@@ -9,7 +9,12 @@ LLD ?= 0
 WERROR ?= 0
 UNAME := $(shell uname)
 
-CXX ?= g++
+# Use clang++ if available, else use g++
+ifeq ($(shell command -v clang++ >/dev/null 2>&1; echo $$?),0)
+  CXX ?= clang++
+else
+  CXX ?= g++
+endif
 
 INC := -I ZAPD -I lib/elfio -I lib/libgfxd -I lib/tinyxml2 -I ZAPDUtils
 CXXFLAGS := -fpic -std=c++17 -Wall -Wextra -fno-omit-frame-pointer
