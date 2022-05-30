@@ -9,7 +9,7 @@ LLD ?= 0
 WERROR ?= 0
 UNAME := $(shell uname)
 
-CXX := g++-12
+CXX ?= g++
 
 INC := -I ZAPD -I lib/elfio -I lib/libgfxd -I lib/tinyxml2 -I ZAPDUtils
 CXXFLAGS := -fpic -std=c++17 -Wall -Wextra -fno-omit-frame-pointer

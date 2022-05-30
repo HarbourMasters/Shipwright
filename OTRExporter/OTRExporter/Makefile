@@ -1,6 +1,6 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++-12
+CXX ?= g++
 AR	:= ar
 FORMAT := clang-format-11
 

@@ -1,7 +1,7 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++-12
-CC := gcc-12
+CXX ?= g++
+CC ?= gcc
 AR	:= ar
 FORMAT := clang-format-11
 UNAME := $(shell uname)

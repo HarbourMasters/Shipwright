@@ -1,5 +1,5 @@
-CXX := g++-12
-CC := gcc-12
+CXX ?= g++
+CC ?= gcc
 LD := lld
 AR	:= ar
 FORMAT := clang-format-11
