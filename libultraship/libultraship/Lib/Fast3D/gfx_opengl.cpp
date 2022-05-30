@@ -562,17 +562,23 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     gfx_opengl_load_shader(prg);
 
+	int ctex = opengl_curtex;
     if (cc_features.used_textures[0]) {
         GLint sampler_location = glGetUniformLocation(shader_program, "uTex0");
         GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
         glUniform1i(sampler_location, 0);
-        glUniform2f(uniform_location_0, opengl_tex[opengl_curtex].size[0], opengl_tex[opengl_curtex].size[1]);
+
+		int mtex = ctex;
+		if (cc_features.used_textures[1]) {
+			mtex = ctex - 1;
+		}
+        glUniform2f(uniform_location_0, opengl_tex[mtex].size[0], opengl_tex[mtex].size[1]);
     }
     if (cc_features.used_textures[1]) {
         GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
         GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
         GL_CHECK(glUniform1i(sampler_location, 1));
-        GL_CHECK(glUniform2f(uniform_location_1, opengl_tex[opengl_curtex - 1].size[0], opengl_tex[opengl_curtex - 1].size[1]));
+        GL_CHECK(glUniform2f(uniform_location_1, opengl_tex[ctex].size[0], opengl_tex[ctex].size[1]));
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
