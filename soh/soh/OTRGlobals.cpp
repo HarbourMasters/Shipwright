@@ -1039,3 +1039,11 @@ extern "C" void ParseItemLocations(const char* spoilerFileName) {
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
+
+extern "C" ItemID GetItemIdFromGetItem(GetItemID getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemIdFromGetItem(getItemId);
+}
+
+extern "C" ItemID GetItemFromGetItem(GetItemID getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemFromGetItem(getItemId);
+}

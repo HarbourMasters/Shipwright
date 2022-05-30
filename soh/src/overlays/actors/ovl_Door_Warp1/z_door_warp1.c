@@ -461,6 +461,28 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
     return ret;
 }
 
+u8 success = 0;
+
+void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx) {
+    GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+
+    if (success && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
+                               &D_801333E8);
+        OnePointCutscene_Init(globalCtx, 0x25E7, 999, &this->actor, MAIN_CAM);
+        func_8002DF54(globalCtx, &this->actor, 10);
+
+        player->unk_450.x = this->actor.world.pos.x;
+        player->unk_450.z = this->actor.world.pos.z;
+        this->unk_1B2 = 1;
+        DoorWarp1_SetupAction(this, DoorWarp1_ChildWarpOut);
+
+        success = 0;
+    } else if (!success) {
+        success = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void DoorWarp1_ChildWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
     Player* player;
 
@@ -468,6 +490,11 @@ void DoorWarp1_ChildWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (DoorWarp1_PlayerInRange(this, globalCtx)) {
         player = GET_PLAYER(globalCtx);
+        
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, player, globalCtx);
+            return;
+        }
 
         Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
@@ -503,9 +530,14 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_DDAN_BOSS) {
             if (!Flags_GetEventChkInf(0x25)) {
                 Flags_SetEventChkInf(0x25);
-                Item_Give(globalCtx, ITEM_GORON_RUBY);
-                globalCtx->nextEntranceIndex = 0x13D;
-                gSaveContext.nextCutsceneIndex = 0xFFF1;
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x47A;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_GORON_RUBY);
+                    globalCtx->nextEntranceIndex = 0x13D;
+                    gSaveContext.nextCutsceneIndex = 0xFFF1;
+                }
             } else {
                 globalCtx->nextEntranceIndex = 0x47A;
                 gSaveContext.nextCutsceneIndex = 0;
@@ -514,11 +546,11 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
             if (!Flags_GetEventChkInf(7)) {
                 Flags_SetEventChkInf(7);
                 Flags_SetEventChkInf(9);
-                Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x0457;
                     gSaveContext.nextCutsceneIndex = 0;
                 } else {
+                    Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
                     globalCtx->nextEntranceIndex = 0xEE;
                     gSaveContext.nextCutsceneIndex = 0xFFF1;
                 }
@@ -613,9 +645,16 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         gSaveContext.eventChkInf[3] |= 0x80;
-        Item_Give(globalCtx, ITEM_ZORA_SAPPHIRE);
-        globalCtx->nextEntranceIndex = 0x10E;
-        gSaveContext.nextCutsceneIndex = 0xFFF0;
+
+        if (gSaveContext.n64ddFlag) {
+            globalCtx->nextEntranceIndex = 0x10E;
+            gSaveContext.nextCutsceneIndex = 0;
+        } else {
+            Item_Give(globalCtx, ITEM_ZORA_SAPPHIRE);
+            globalCtx->nextEntranceIndex = 0x10E;
+            gSaveContext.nextCutsceneIndex = 0xFFF0;
+        }
+
         globalCtx->sceneLoadFlag = 0x14;
         globalCtx->fadeTransition = 7;
     }

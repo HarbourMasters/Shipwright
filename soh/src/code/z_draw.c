@@ -367,6 +367,12 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawOpa0, { gGiKokiriSwordDL } },
     // gold skulltula token, OBJECT_ST
     { GetItem_DrawSkullToken, { object_st_DL_004DB0, object_st_DL_004EB8 } },
+
+    { GetItem_DrawOpa0Xlu1, { gGiKokiriEmeraldGemDL, gGiKokiriEmeraldSettingDL } },
+    // fire medallion, OBJECT_GI_MEDAL
+    { GetItem_DrawOpa0Xlu1, { gGiGoronRubySettingDL, gGiGoronRubyGemDL } },
+    // water medallion, OBJECT_GI_MEDAL
+    { GetItem_DrawOpa0Xlu1, { gGiZoraSapphireSettingDL, gGiZoraSapphireGemDL,  } },
 };
 
 /**

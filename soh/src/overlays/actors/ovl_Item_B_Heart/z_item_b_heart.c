@@ -60,7 +60,7 @@ void ItemBHeart_Update(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     } else {
         if (gSaveContext.n64ddFlag) {
-            s16 getItemId = GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            s32 getItemId = GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum);
             func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 40.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
