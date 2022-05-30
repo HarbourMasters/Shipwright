@@ -1509,6 +1509,11 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 10219:
                     return GANONS_TOWER_BOSS_KEY_CHEST;
             }
+        case 87:
+            switch(actorParams) {
+                case 7686:
+                    return LH_FREESTANDING_POH;
+            }
     }
 
     return UNKNOWN_CHECK;
