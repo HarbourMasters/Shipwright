@@ -109,6 +109,7 @@ void GetItem_DrawJewel(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawJewelKokiri(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawJewelGoron(GlobalContext* globalCtx, s16 drawId);
 void GetItem_DrawJewelZora(GlobalContext* globalCtx, s16 drawId);
+void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId);
 
 typedef struct {
     /* 0x00 */ void (*drawFunc)(GlobalContext*, s16);
@@ -375,6 +376,8 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawJewelKokiri, { gGiKokiriEmeraldGemDL, gGiKokiriEmeraldSettingDL } },
     { GetItem_DrawJewelGoron, { gGiGoronRubyGemDL, gGiGoronRubySettingDL } },
     { GetItem_DrawJewelZora, { gGiZoraSapphireGemDL, gGiZoraSapphireSettingDL } },
+
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },
 };
 
 /**
@@ -786,6 +789,19 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 991);
+}
+
+void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId) {
+    s32 pad;
+
+    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 998);
+
+    func_80093D84(globalCtx->state.gfxCtx);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_draw.c", 1002),
+              G_MTX_MODELVIEW | G_MTX_LOAD);
+    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 1008);
 }
 
 void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {

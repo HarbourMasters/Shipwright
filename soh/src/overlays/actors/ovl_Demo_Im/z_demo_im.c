@@ -910,7 +910,7 @@ void GivePlayerRandoRewardImpa(Actor* actor, GlobalContext* globalCtx, Randomize
         globalCtx->nextEntranceIndex = 0x0594;
         gSaveContext.nextCutsceneIndex = 0;
     } else if (!successImpa) {
-        successImpa = func_8002F434(&actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        successImpa = GiveItem_Impa(&actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
 }
 
