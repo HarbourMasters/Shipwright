@@ -714,6 +714,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, GlobalContext* globalCtx) {
         (globalCtx->csCtx.npcActions[0]->action < 13)) {
         actionIndex = globalCtx->csCtx.npcActions[0]->action - 10;
 
+        // todo figure out which checks to use here 
         switch (actionIndex) {
             case FAIRY_UPGRADE_MAGIC:
                 gSaveContext.magicAcquired = true;
