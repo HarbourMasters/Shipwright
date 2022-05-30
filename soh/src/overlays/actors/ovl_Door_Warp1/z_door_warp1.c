@@ -461,12 +461,11 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
     return ret;
 }
 
-u8 success = 0;
-
+u8 successWarp = 0;
 void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx, u8 ruto, u8 adult) {
     GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
 
-    if (success && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+    if (successWarp && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         if (adult) {
             OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
             func_8002DF54(globalCtx, &this->actor, 10);
@@ -494,9 +493,9 @@ void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globa
             }
         }
 
-        success = 0;
-    } else if (!success) {
-        success = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        successWarp = 0;
+    } else if (!successWarp) {
+        successWarp = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
 }
 

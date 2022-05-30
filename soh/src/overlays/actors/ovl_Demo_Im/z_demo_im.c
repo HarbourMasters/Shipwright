@@ -898,13 +898,33 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
     }
 }
 
+u8 successImpa;
+void GivePlayerRandoRewardImpa(Actor* actor, GlobalContext* globalCtx, RandomizerCheck check) {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NONE);
+
+    if (successImpa && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        gSaveContext.eventChkInf[5] |= 0x200;
+        globalCtx->sceneLoadFlag = 0x14;
+        globalCtx->fadeTransition = 7;
+        gSaveContext.nextTransition = 3;
+        globalCtx->nextEntranceIndex = 0x0594;
+        gSaveContext.nextCutsceneIndex = 0;
+    } else if (!successImpa) {
+        successImpa = func_8002F434(&actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void func_80986C30(DemoIm* this, GlobalContext* globalCtx) {
     if (func_80986A5C(this, globalCtx)) {
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
-        gSaveContext.cutsceneTrigger = 1;
-        gSaveContext.eventChkInf[5] |= 0x200;
-        Item_Give(globalCtx, ITEM_SONG_LULLABY);
-        func_80985F54(this);
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoRewardImpa(this, globalCtx, SONG_FROM_IMPA);
+        } else {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
+            gSaveContext.cutsceneTrigger = 1;
+            gSaveContext.eventChkInf[5] |= 0x200;
+            Item_Give(globalCtx, ITEM_SONG_LULLABY);
+            func_80985F54(this);
+        }
     }
 }
 
