@@ -1124,6 +1124,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return DMC_UPPER_GROTTO_CHEST;
                 case 22985:
                     return ZR_OPEN_GROTTO_CHEST;
+                case 262:
+                    return HF_TEKTITE_GROTTO_FREESTANDING_POH;
             }
         case 64:
             switch(actorParams) {
