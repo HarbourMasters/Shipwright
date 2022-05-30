@@ -20,6 +20,7 @@
 #endif
 
 #include "../../SohImGuiImpl.h"
+#include "../../Cvar.h"
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
@@ -228,8 +229,6 @@ static void gfx_sdl_onkeyup(int scancode) {
     }
 }
 
-extern "C" void LoadItemLocations(const char* spoilerFileName);
-
 static void gfx_sdl_handle_events(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -253,9 +252,8 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_DROPFILE:
-                #ifndef __linux__
-                LoadItemLocations(event.drop.file);
-                #endif
+                CVar_SetString("gDroppedFile", event.drop.file);
+                CVar_SetS32("gDroppedNewSpoilerFile", 1);
                 break;
             case SDL_QUIT:
                 SDL_Quit(); // bandaid fix for linux window closing issue
