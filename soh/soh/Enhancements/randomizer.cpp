@@ -1442,6 +1442,44 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 2860:
                     return GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST;
             }
+        case 13:
+            switch(actorParams) {
+                case 30857:
+                    return GANONS_CASTLE_FOREST_TRIAL_CHEST;
+                case 24455:
+                    return GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST;
+                case 22790:
+                    return GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST;
+                case 22664:
+                    return GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST;
+                case 14021:
+                    return GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST;
+                case 22668:
+                    return GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST;
+                case 24459:
+                    return GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST;
+                case 22797:
+                    return GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST;
+                case 24462:
+                    return GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST;
+                case 22890:
+                    return GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST;
+                case 24463:
+                    return GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST;
+                case 30800:
+                    return GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST;
+                case -30639:
+                    return GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST;
+                case -29326:
+                    return GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST;
+                case 26964:
+                    return GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST;
+            }
+        case 10:
+            switch(actorParams) {
+                case 10219:
+                    return GANONS_TOWER_BOSS_KEY_CHEST;
+            }
     }
 
     return UNKNOWN_CHECK;
