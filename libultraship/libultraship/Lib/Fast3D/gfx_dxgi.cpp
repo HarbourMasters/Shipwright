@@ -227,7 +227,7 @@ static void onkeyup(WPARAM w_param, LPARAM l_param) {
     }
 }
 
-extern "C" void LoadItemLocations(const char* spoilerFileName);
+char fileName[256];
 
 static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_param, LPARAM l_param) {
     SohImGui::EventImpl event_impl;
@@ -270,7 +270,6 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
         onkeyup(w_param, l_param);
         break;
     case WM_DROPFILES:
-        char fileName[256];
         DragQueryFileA((HDROP)w_param, 0, fileName, 256);
         CVar_SetString("gDroppedFile", fileName);
         CVar_SetS32("gDroppedNewSpoilerFile", 1);
