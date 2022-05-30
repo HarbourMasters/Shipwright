@@ -1077,6 +1077,36 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 93:
                     return BARINADE;
             }
+        case 20:
+            switch (actorId) {
+                case 95:
+                    return FOREST_TEMPLE_PHANTOM_GANON_HEART;
+                // todo PHANTOM_GANON
+            }
+        case 21:
+            switch (actorId) {
+                case 95:
+                    return FIRE_TEMPLE_VOLVAGIA_HEART;
+                // todo VOLVAGIA
+            }
+        case 22:
+            switch (actorId) {
+                case 95:
+                    return WATER_TEMPLE_MORPHA_HEART;
+                // todo MORPHA
+            }
+        case 23:
+            switch (actorId) {
+                case 95:
+                    return SPIRIT_TEMPLE_TWINROVA_HEART;
+                // todo TWINROVA
+            }
+        case 24:
+            switch (actorId) {
+                case 95:
+                    return SHADOW_TEMPLE_BONGO_BONGO_HEART;
+                // todo BONGO_BONGO
+            }
         case 40:
             switch(actorParams) {
                 case 22944:
