@@ -49,7 +49,7 @@ LDFLAGS := -lm -ldl \
   -L../external -L../libultraship -lbz2 -pthread -lpulse -lultraship -lstorm
 
 ifeq ($(UNAME), Darwin)
-  LDFLAGS += $(shell pkg-config --libs glew x11 libpng) $(shell sdl2-config --libs) -framework OpenGL
+  LDFLAGS += $(shell pkg-config --libs glew x11 libpng zlib) $(shell sdl2-config --libs) -framework OpenGL
 else
   LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2
 endif
