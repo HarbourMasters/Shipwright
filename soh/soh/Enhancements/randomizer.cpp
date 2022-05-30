@@ -921,6 +921,29 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case SMALL_KEY_THIEVES_HIDEOUT:
         case SMALL_KEY_WATER_TEMPLE:
             return GI_KEY_SMALL;
+        // todo implement dungeon-specific maps/compasses
+        case MAP_DEKU_TREE:
+        case MAP_DODONGOS_CAVERN:
+        case MAP_JABU_JABUS_BELLY:
+        case MAP_FOREST_TEMPLE:
+        case MAP_FIRE_TEMPLE:
+        case MAP_WATER_TEMPLE:
+        case MAP_SPIRIT_TEMPLE:
+        case MAP_SHADOW_TEMPLE:
+        case MAP_BOTTOM_OF_THE_WELL:
+        case MAP_ICE_CAVERN:
+            return GI_MAP;
+        case COMPASS_DEKU_TREE:
+        case COMPASS_DODONGOS_CAVERN:
+        case COMPASS_JABU_JABUS_BELLY:
+        case COMPASS_FOREST_TEMPLE:
+        case COMPASS_FIRE_TEMPLE:
+        case COMPASS_WATER_TEMPLE:
+        case COMPASS_SPIRIT_TEMPLE:
+        case COMPASS_SHADOW_TEMPLE:
+        case COMPASS_BOTTOM_OF_THE_WELL:
+        case COMPASS_ICE_CAVERN:
+            return GI_COMPASS;
         case MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
