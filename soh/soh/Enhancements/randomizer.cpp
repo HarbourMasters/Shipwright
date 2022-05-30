@@ -1146,6 +1146,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch(actorParams) {
                 case 4352:
                     return GRAVEYARD_HOOKSHOT_CHEST;
+                case 262:
+                    return KAK_WINDMILL_FREESTANDING_POH;
             }
         case 96:
             switch(actorParams) {
@@ -1520,6 +1522,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch(actorParams) {
                 case 262:
                     return LLR_FREESTANDING_POH;
+            }
+        case 55:
+            switch(actorParams) {
+                case 262:
+                    return KAK_IMPAS_HOUSE_FREESTANDING_POH;
+            }
+        case 83:
+            switch(actorParams) {
+                case 1030:
+                    return GRAVEYARD_FREESTANDING_POH;
             }
     }
 
