@@ -56,6 +56,7 @@ CXX_FILES := \
 	$(shell find libultraship/Lib/Fast3D -name *.cpp) \
 	$(shell find libultraship -maxdepth 1 -name *.cpp) \
 	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name *.cpp) \
+	libultraship/Lib/ImGui/backends/imgui_impl_opengl2.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -80,6 +81,7 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/Fast3D/U64 \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
+	libultraship/Lib/ImGui \
 	libultraship \
 )
 

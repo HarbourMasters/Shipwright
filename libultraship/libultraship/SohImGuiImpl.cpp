@@ -27,8 +27,13 @@
 #include "Utils/StringHelper.h"
 
 #ifdef ENABLE_OPENGL
+#ifdef __APPLE__
+#include "Lib/ImGui/backends/imgui_impl_opengl2.h"
+#include "Lib/ImGui/backends/imgui_impl_sdl.h"
+#else
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
+#endif
 
 #endif
 
@@ -153,7 +158,11 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
+#ifdef __APPLE__
+            ImGui_ImplOpenGL2_Init();
+#else
             ImGui_ImplOpenGL3_Init("#version 120");
+#endif
             break;
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -199,7 +208,11 @@ namespace SohImGui {
     void ImGuiBackendNewFrame() {
         switch (impl.backend) {
         case Backend::SDL:
+#ifdef __APPLE__
+            ImGui_ImplOpenGL2_NewFrame();
+#else
             ImGui_ImplOpenGL3_NewFrame();
+#endif
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -214,7 +227,11 @@ namespace SohImGui {
     void ImGuiRenderDrawData(ImDrawData* data) {
         switch (impl.backend) {
         case Backend::SDL:
+#ifdef __APPLE__
+            ImGui_ImplOpenGL2_RenderDrawData(data);
+#else
             ImGui_ImplOpenGL3_RenderDrawData(data);
+#endif
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:

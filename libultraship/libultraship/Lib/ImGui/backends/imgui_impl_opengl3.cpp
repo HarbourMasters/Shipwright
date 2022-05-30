@@ -220,9 +220,9 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
     if (imgl3wInit() != 0)
     {
         fprintf(stderr, "Failed to initialize OpenGL loader!\n");
-#ifndef __APPLE__ // this is ok due to shared library cache
+//#ifndef __APPLE__ // this is ok due to shared library cache
         return false;
-#endif
+//#endif
     }
 #endif
 
