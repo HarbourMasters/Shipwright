@@ -105,7 +105,7 @@ static bool current_depth_mask;
 
 static uint32_t frame_count;
 
-static std::vector<Framebuffer> framebuffers;
+static vector<Framebuffer> framebuffers;
 static size_t current_framebuffer;
 static float current_noise_scale;
 static FilteringMode current_filter_mode = THREE_POINT;
@@ -637,7 +637,7 @@ static uint32_t gfx_cm_to_opengl(uint32_t val) {
 
 static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
     const GLint filter = linear_filter && current_filter_mode == LINEAR ? GL_LINEAR : GL_NEAREST;
-    glActiveTexture(GL_TEXTURE0 + tile);
+    GL_CHECK(glActiveTexture(GL_TEXTURE0 + tile));
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
@@ -750,7 +750,6 @@ static int gfx_opengl_create_framebuffer() {
     glGenFramebuffers(1, &fbo);
 
     size_t i = framebuffers.size();
-    printf("framebuffers size %ld\n", i);
     framebuffers.resize(i + 1);
 
     framebuffers[i].fbo = fbo;
@@ -893,7 +892,7 @@ static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(in
         }
 
         glBindFramebuffer(GL_READ_FRAMEBUFFER, pixel_depth_fb);
-        std::vector<uint32_t> depth_stencil_values(coordinates.size());
+        vector<uint32_t> depth_stencil_values(coordinates.size());
         glReadPixels(0, 0, coordinates.size(), 1, GL_DEPTH_STENCIL, GL_UNSIGNED_INT_24_8, depth_stencil_values.data());
 
         {
