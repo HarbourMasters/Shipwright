@@ -1,5 +1,5 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
-CXX := g++-mp-devel
+CXX ?= g++
 CXXFLAGS ?= -Wall -Wextra -O2 -g -std=c++17
 
 SRC_DIRS  := $(shell find . -type d -not -path "*build*")

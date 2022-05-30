@@ -7,15 +7,14 @@ DEBUG ?= 0
 COPYCHECK_ARGS ?=
 LLD ?= 0
 WERROR ?= 0
+UNAME := $(shell uname)
 
 # Use clang++ if available, else use g++
 ifeq ($(shell command -v clang++ >/dev/null 2>&1; echo $$?),0)
-  CXX := clang++
+  CXX ?= clang++
 else
-  CXX := g++
+  CXX ?= g++
 endif
-
-CXX := g++-mp-devel
 
 INC := -I ZAPD -I lib/elfio -I lib/libgfxd -I lib/tinyxml2 -I ZAPDUtils
 CXXFLAGS := -fpic -std=c++17 -Wall -Wextra -fno-omit-frame-pointer
@@ -46,11 +45,14 @@ ifneq ($(DEPRECATION_ON),0)
 endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
-LDFLAGS := -lm -ldl -lpng \
-  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm $(shell pkg-config --libs glew x11 libpng) $(shell sdl2-config --libs)
+LDFLAGS := -lm -ldl \
+  -L../external -L../libultraship -lbz2 -pthread -lpulse -lultraship -lstorm
 
-
-
+ifeq ($(UNAME), Darwin)
+  LDFLAGS += $(shell pkg-config --libs glew x11 libpng) $(shell sdl2-config --libs) -framework OpenGL
+else
+  LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2
+endif
 
 # Use LLD if available. Set LLD=0 to not use it
 ifeq ($(shell command -v ld.lld >/dev/null 2>&1; echo $$?),0)
@@ -61,7 +63,6 @@ ifneq ($(LLD),0)
   LDFLAGS += -fuse-ld=lld
 endif
 
-UNAME := $(shell uname)
 UNAMEM := $(shell uname -m)
 ifneq ($(UNAME), Darwin)
   LDFLAGS += -Wl,-export-dynamic -lstdc++fs
@@ -69,8 +70,8 @@ ifneq ($(UNAME), Darwin)
 else
   EXPORTERS := -Wl,-force_load ../OTRExporter/OTRExporter/OTRExporter.a
   ifeq ($(UNAMEM),arm64)
-	LDFLAGS += $(shell pkg-config --libs libpng)
-	INC += $(shell pkg-config --cflags libpng)
+    LDFLAGS += $(shell pkg-config --libs libpng)
+    INC += $(shell pkg-config --cflags libpng)
   endif
 endif
 

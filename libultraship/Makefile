@@ -1,9 +1,10 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++-mp-devel
-CC := gcc-mp-devel
+CXX ?= g++
+CC ?= gcc
 AR	:= ar
 FORMAT := clang-format-11
+UNAME := $(shell uname)
 
 ASAN ?= 0
 DEBUG ?= 1
@@ -18,9 +19,20 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -Wno-deprecated-enum-enum-conversion
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
-CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
+CPPFLAGS := -MMD
+
+ifeq ($(UNAME), Linux) #LINUX
+	CXXFLAGS += -m32
+	CFLAGS += -m32
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+	CXXFLAGS += -Wno-deprecated-enum-enum-conversion
+	CPPFLAGS += -framework OpenGL
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew)
+endif
 
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g -D_DEBUG

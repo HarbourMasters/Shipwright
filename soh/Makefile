@@ -1,9 +1,11 @@
-CXX := g++-mp-devel
-CC := gcc-mp-devel
+CXX ?= g++
+CC ?= gcc
 LD := lld
 AR	:= ar
 FORMAT := clang-format-11
 ZAPD := ../ZAPDTR/ZAPD.out
+UNAME := $(shell uname)
+UNAMEM := $(shell uname -m)
 
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
@@ -18,18 +20,27 @@ WARN := \
 	-funsigned-char \
 	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags sdl2 x11)
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags sdl2 x11)
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
 LDFLAGS :=
+
+ifeq ($(UNAME), Linux) #LINUX
+	CXXFLAGS += -march=i386 -m32 -mhard-float
+	CFLAGS += $(WARN) -march=i386
+	LDFLAGS += -m32
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+	CXXFLAGS += $(shell pkg-config --cflags sdl2 x11) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
+	CFLAGS += $(shell pkg-config --cflags sdl2 x11) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
+endif
+
 CPPFLAGS := -MMD
 
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g
 	CFLAGS += -g
 endif
-
-CXXFLAGS += -g
-CFLAGS += -g
 
 ifneq ($(ASAN),0)
 	CXXFLAGS += -fsanitize=address
@@ -41,7 +52,13 @@ ifneq ($(LTO),0)
 	LDFLAGS += -flto
 endif
 
-TARGET := soh.arm64
+ifeq ($(UNAME), Linux) #LINUX
+TARGET := soh.elf
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+TARGET := soh.$(UNAMEM)
+endif
 
 INC_DIRS := $(addprefix -I, \
 	. \
@@ -54,33 +71,62 @@ INC_DIRS := $(addprefix -I, \
 	../libultraship/libultraship/Lib/spdlog/include \
 	../libultraship/libultraship/Lib/Fast3D/U64 \
 	../libultraship/libultraship/Lib/Fast3D/U64/PR \
-	/opt/X11/include \
 )
-CFLAGS := $(CFLAGS) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew)
-CXXFLAGS := $(CXXFLAGS) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew)
 
+ifeq ($(UNAME), Linux) #LINUX
+	INC_DIRS += $(addprefix -I, \
+		/opt/X11/include \
+)
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+	INC_DIRS += $(shell pkg-config --cflags x11)
+endif
 
 LDDIRS := $(addprefix -L, \
 	../external \
 	../libultraship/ \
-	/opt/X11/lib \
 )
+
+ifeq ($(UNAME), Linux) #LINUX
+	LDDIRS += $(addprefix -L, \
+		/opt/X11/lib \
+)
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+	LDDIRS += $(shell pkg-config --libs x11)
+endif
 
 LDLIBS := \
 	$(ZAPDUTILS) \
 	$(addprefix -l, \
-	X11 \
 	dl \
 	bz2 \
 	z \
 	pthread \
 	atomic \
-	GL \
 	storm \
 	ultraship \
-) \
+)
 
-LDLIBS := $(LDLIBS) $(shell sdl2-config --libs) $(shell pkg-config --libs glew)
+ifeq ($(UNAME), Linux) #LINUX
+LDLIBS += \
+	$(addprefix -l, \
+	X11 \
+	GL \
+	pulse \
+)
+endif
+
+ifeq ($(UNAME), Darwin) #APPLE
+LDLIBS += \
+	$(addprefix -framework, \
+	OpenGL \
+	CoreFoundation \
+) \
+	$(shell sdl2-config --libs) $(shell pkg-config --libs glew)
+endif
 
 ASSET_BIN_DIRS := $(shell find assets/* -type d -not -path "assets/xml*")
 ASSET_FILES_XML := $(foreach dir,$(ASSET_BIN_DIRS),$(wildcard $(dir)/*.xml))
