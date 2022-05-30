@@ -384,12 +384,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         if (cc_features.used_textures[i]) {
             bool s = cc_features.clamp[i][0], t = cc_features.clamp[i][1];
 
-#ifdef __APPLE__
-			// we used the uniform earlier
-            //fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = vec2(1/192.0, 1/32.0);\n", i);
-#else
-            fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
-#endif
+            #ifndef __APPLE__
+                fs_len += sprintf(fs_buf + fs_len, "vec2 texSize%d = textureSize(uTex%d, 0);\n", i, i);
+            #endif
 
             if (!s && !t) {
                 fs_len += sprintf(fs_buf + fs_len, "vec4 texVal%d = hookTexture2D(uTex%d, vTexCoord%d, texSize%d);\n", i, i, i, i);
@@ -568,10 +565,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
         glUniform1i(sampler_location, 0);
 
-		int mtex = ctex;
-		if (cc_features.used_textures[1]) {
-			mtex = ctex - 1;
-		}
+		int mtex = cc_features.used_textures[1] ? ctex - 1 : ctex;
         glUniform2f(uniform_location_0, opengl_tex[mtex].size[0], opengl_tex[mtex].size[1]);
     }
     if (cc_features.used_textures[1]) {
