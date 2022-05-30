@@ -380,7 +380,13 @@ typedef enum {
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
     /* 0x7D */ GI_TEXT_0, // no model appears over Link, shows text id 0 (pocket egg)
-    /* 0x7E */ GI_MAX
+    /* 0x7E */ GI_MEDALLION_LIGHT,
+    /* 0x7F */ GI_MEDALLION_FOREST,
+    /* 0x80 */ GI_MEDALLION_FIRE,
+    /* 0x81 */ GI_MEDALLION_WATER,
+    /* 0x82 */ GI_MEDALLION_SHADOW,
+    /* 0x83 */ GI_MEDALLION_SPIRIT,
+    /* 0x84 */ GI_MAX
 } GetItemID;
 
 typedef enum {

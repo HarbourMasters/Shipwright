@@ -782,13 +782,24 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     }
 }
 
-s32 Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
-    s32 itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
+GetItemID Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    GetItemID itemId = GetItemFromActor(actorId, actorParams, sceneNum, ogId);
     return itemId;
 }
 
 GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId) {
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
+}
+
+ItemID Randomizer::GetItemIdFromGetItem(GetItemID getItemId) {
+    return GetItemFromGetItem(getItemId);
+}
+
+ItemID Randomizer::GetItemFromGetItem(GetItemID getItemId) {
+    switch (getItemId) {
+        case GI_MEDALLION_FIRE:
+            return ITEM_MEDALLION_FIRE;
+    }
 }
 
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
@@ -984,6 +995,18 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_ARROWS_LARGE;
         case DEKU_STICK_1:
             return GI_STICKS_1;
+        case LIGHT_MEDALLION:
+            return GI_MEDALLION_LIGHT;
+        case FOREST_MEDALLION:
+            return GI_MEDALLION_FOREST;
+        case FIRE_MEDALLION:
+            return GI_MEDALLION_FIRE;
+        case WATER_MEDALLION:
+            return GI_MEDALLION_WATER;
+        case SHADOW_MEDALLION:
+            return GI_MEDALLION_SHADOW;
+        case SPIRIT_MEDALLION:
+            return GI_MEDALLION_SPIRIT;
         default:
             return ogItemId;
     }
@@ -1005,9 +1028,11 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     }
             }
         case 17:
-            switch (actorParams) {
-                case 0x1F:
+            switch (actorId) {
+                case 95:
                     return DEKU_TREE_QUEEN_GOHMA_HEART;
+                case 93:
+                    return QUEEN_GOHMA;
             }
         case 40:
             switch(actorParams) {

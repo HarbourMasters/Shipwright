@@ -214,7 +214,7 @@ void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_809DF730;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
+        func_8002F434(&this->actor, globalCtx, GID_MEDALLION_FIRE, 10000.0f, 100.0f);
     }
 }
 
