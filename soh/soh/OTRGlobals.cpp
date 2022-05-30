@@ -1043,7 +1043,3 @@ extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams,
 extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
-
-extern "C" ItemID GetItemidFromGetitemid(GetItemID getItemId) {
-    return OTRGlobals::Instance->gRandomizer->GetItemidFromGetitemid(getItemId);
-}
