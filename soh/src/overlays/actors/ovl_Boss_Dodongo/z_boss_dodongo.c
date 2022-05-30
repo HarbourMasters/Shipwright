@@ -225,12 +225,10 @@ void BossDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_BG_BREAKWALL, -890.0f, -1523.76f, -3304.0f, 0, 0, 0, 0x6000);
         Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_B_HEART, -690.0f, -1523.76f, -3304.0f, 0, 0, 0, 0);
 
-        /*
         for (i = 0; i < 2048; i++) {
             temp_v0 = i;
             temp_s1_3[temp_v0] = temp_s2[temp_v0];
         }
-        */
     }
 
     this->actor.flags &= ~ACTOR_FLAG_0;
