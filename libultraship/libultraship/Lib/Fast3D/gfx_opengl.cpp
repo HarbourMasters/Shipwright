@@ -1,7 +1,5 @@
 #include "../../Window.h"
 #ifdef ENABLE_OPENGL
-#endif
-#if 1
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -460,12 +458,11 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     vs_buf[vs_len] = '\0';
     fs_buf[fs_len] = '\0';
 
-    /*puts("Vertex shader:");
+   /*puts("Vertex shader:");
     puts(vs_buf);
     puts("Fragment shader:");
     puts(fs_buf);
     puts("End");*/
-
 
     const GLchar *sources[2] = { vs_buf, fs_buf };
     const GLint lengths[2] = { (GLint) vs_len, (GLint) fs_len };
@@ -479,9 +476,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint max_length = 0;
         glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
-        fprintf(stderr, "Vertex shader compilation failed\n");
+        //fprintf(stderr, "Vertex shader compilation failed\n");
         glGetShaderInfoLog(vertex_shader, max_length, &max_length, &error_log[0]);
-        fprintf(stderr, "%s\n", &error_log[0]);
+        //fprintf(stderr, "%s\n", &error_log[0]);
         abort();
     }
 
