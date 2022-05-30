@@ -249,7 +249,7 @@ void AudioHeap_PopCache(s32 tableType) {
     persistent->numEntries--;
 }
 
-void AudioHeap_InitMainPools(ptrdiff_t initPoolSize) {
+void AudioHeap_InitMainPools(size_t initPoolSize) {
     AudioHeap_AllocPoolInit(&gAudioContext.audioInitPool, gAudioContext.audioHeap, initPoolSize);
     AudioHeap_AllocPoolInit(&gAudioContext.audioSessionPool, gAudioContext.audioHeap + initPoolSize,
                             gAudioContext.audioHeapSize - initPoolSize);
@@ -1266,18 +1266,18 @@ void AudioHeap_DiscardSampleCaches(void) {
 }
 
 typedef struct {
-    u32 oldAddr;
-    u32 newAddr;
+    uintptr_t oldAddr;
+    uintptr_t newAddr;
     size_t size;
     u8 newMedium;
 } StorageChange;
 
 void AudioHeap_ChangeStorage(StorageChange* change, SoundFontSample* sample) {
     if (sample != NULL) {
-        u32 start = change->oldAddr;
-        u32 end = change->oldAddr + change->size;
+        uintptr_t start = change->oldAddr;
+        uintptr_t end = change->oldAddr + change->size;
 
-        if (start <= (u32)sample->sampleAddr && (u32)sample->sampleAddr < end) {
+        if (start <= sample->sampleAddr && sample->sampleAddr < end) {
             sample->sampleAddr = sample->sampleAddr - start + change->newAddr;
             sample->medium = change->newMedium;
         }
