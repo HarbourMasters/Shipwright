@@ -31,8 +31,6 @@ void BgDyYoseizo_Update(Actor* thisx, GlobalContext* globalCtx);
 void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx);
 
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx);
-// void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx);
-
 void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx);
 void BgDyYoseizo_SetupSpinGrow_NoReward(BgDyYoseizo* this, GlobalContext* globalCtx);
 void BgDyYoseizo_SpinGrow_NoReward(BgDyYoseizo* this, GlobalContext* globalCtx);
@@ -73,19 +71,11 @@ u8 successGreatFairy;
 void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
-    // GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
 
     if (successGreatFairy && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         Flags_SetTreasure(globalCtx, this->fountainType + 1);
         successGreatFairy = 0;
         Actor_Kill(&this->actor);
-        // globalCtx->sceneLoadFlag = 0x14;
-        // globalCtx->fadeTransition = 7;
-        // gSaveContext.nextTransition = 3;
-
-        // // gSaveContext.eventChkInf[5] |= 0x200;
-        // globalCtx->nextEntranceIndex = 0x0594;
-        // gSaveContext.nextCutsceneIndex = 0; 
     } else if (!successGreatFairy) {
         successGreatFairy = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
@@ -95,21 +85,6 @@ void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx
 void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
-
-    // if(gSaveContext.n64ddFlag) {
-    //     GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
-    //     return;
-    // }
-    // if(gSaveContext.n64ddFlag) {
-    //     if(Flags_GetCollectible(globalCtx, this->fountainType)) {
-    //         gSaveContext.healthAccumulator = 0x140;
-    //         Magic_Fill(globalCtx);
-    //         Actor_Kill(&this->actor);
-    //     } else {
-    //         this->actionFunc = GivePlayerBlargRandoReward;
-    //     }
-    //     return;
-    // } 
 
     this->fountainType = globalCtx->curSpawn;
 
