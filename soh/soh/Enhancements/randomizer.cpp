@@ -921,6 +921,29 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case SMALL_KEY_THIEVES_HIDEOUT:
         case SMALL_KEY_WATER_TEMPLE:
             return GI_KEY_SMALL;
+        // todo implement dungeon-specific maps/compasses
+        case MAP_DEKU_TREE:
+        case MAP_DODONGOS_CAVERN:
+        case MAP_JABU_JABUS_BELLY:
+        case MAP_FOREST_TEMPLE:
+        case MAP_FIRE_TEMPLE:
+        case MAP_WATER_TEMPLE:
+        case MAP_SPIRIT_TEMPLE:
+        case MAP_SHADOW_TEMPLE:
+        case MAP_BOTTOM_OF_THE_WELL:
+        case MAP_ICE_CAVERN:
+            return GI_MAP;
+        case COMPASS_DEKU_TREE:
+        case COMPASS_DODONGOS_CAVERN:
+        case COMPASS_JABU_JABUS_BELLY:
+        case COMPASS_FOREST_TEMPLE:
+        case COMPASS_FIRE_TEMPLE:
+        case COMPASS_WATER_TEMPLE:
+        case COMPASS_SPIRIT_TEMPLE:
+        case COMPASS_SHADOW_TEMPLE:
+        case COMPASS_BOTTOM_OF_THE_WELL:
+        case COMPASS_ICE_CAVERN:
+            return GI_COMPASS;
         case MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
@@ -1136,6 +1159,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return DMC_UPPER_GROTTO_CHEST;
                 case 22985:
                     return ZR_OPEN_GROTTO_CHEST;
+                case 262:
+                    return HF_TEKTITE_GROTTO_FREESTANDING_POH;
             }
         case 64:
             switch(actorParams) {
@@ -1153,9 +1178,15 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST;
             }
         case 72:
+            // todo make sure dampe gives the PoH when the chest is opened
+            // default logic seems to be give PoH when hookshot in inventory
             switch(actorParams) {
                 case 4352:
                     return GRAVEYARD_HOOKSHOT_CHEST;
+                case 262:
+                    return KAK_WINDMILL_FREESTANDING_POH;
+                case 1798:
+                    return GRAVEYARD_DAMPE_RACE_FREESTANDING_POH;
             }
         case 96:
             switch(actorParams) {
@@ -1172,6 +1203,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GC_MAZE_RIGHT_CHEST;
                 case 23202:
                     return GC_MAZE_CENTER_CHEST;
+                case 7942:
+                    return GC_POT_FREESTANDING_POH;
             }
         case 88:
             switch(actorParams) {
@@ -1182,6 +1215,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch(actorParams) {
                 case 23200:
                     return GV_CHEST;
+                case 262:
+                    return GV_WATERFALL_FREESTANDING_POH;
+                case 518:
+                    return GV_CRATE_FREESTANDING_POH;
             }
         case 93:
             switch(actorParams) {
@@ -1422,6 +1459,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
                 case 13673:
                     return SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
+                case 3334:
+                    return COLOSSUS_FREESTANDING_POH;
             }
         case 9:
             switch(actorParams) {
@@ -1431,6 +1470,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return ICE_CAVERN_COMPASS_CHEST;
                 case 5570:
                     return ICE_CAVERN_IRON_BOOTS_CHEST;
+                case 262:
+                    return ICE_CAVERN_FREESTANDING_POH;
             }
         case 11:
             switch(actorParams) {
@@ -1476,6 +1517,78 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST;
                 case 2860:
                     return GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST;
+            }
+        case 13:
+            switch(actorParams) {
+                case 30857:
+                    return GANONS_CASTLE_FOREST_TRIAL_CHEST;
+                case 24455:
+                    return GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST;
+                case 22790:
+                    return GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST;
+                case 22664:
+                    return GANONS_CASTLE_SHADOW_TRIAL_FRONT_CHEST;
+                case 14021:
+                    return GANONS_CASTLE_SHADOW_TRIAL_GOLDEN_GAUNTLETS_CHEST;
+                case 22668:
+                    return GANONS_CASTLE_LIGHT_TRIAL_FIRST_LEFT_CHEST;
+                case 24459:
+                    return GANONS_CASTLE_LIGHT_TRIAL_SECOND_LEFT_CHEST;
+                case 22797:
+                    return GANONS_CASTLE_LIGHT_TRIAL_THIRD_LEFT_CHEST;
+                case 24462:
+                    return GANONS_CASTLE_LIGHT_TRIAL_FIRST_RIGHT_CHEST;
+                case 22890:
+                    return GANONS_CASTLE_LIGHT_TRIAL_SECOND_RIGHT_CHEST;
+                case 24463:
+                    return GANONS_CASTLE_LIGHT_TRIAL_THIRD_RIGHT_CHEST;
+                case 30800:
+                    return GANONS_CASTLE_LIGHT_TRIAL_INVISIBLE_ENEMIES_CHEST;
+                case -30639:
+                    return GANONS_CASTLE_LIGHT_TRIAL_LULLABY_CHEST;
+                case -29326:
+                    return GANONS_CASTLE_SPIRIT_TRIAL_CRYSTAL_SWITCH_CHEST;
+                case 26964:
+                    return GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST;
+            }
+        case 10:
+            switch(actorParams) {
+                case 10219:
+                    return GANONS_TOWER_BOSS_KEY_CHEST;
+            }
+        case 87:
+            switch(actorParams) {
+                case 7686:
+                    return LH_FREESTANDING_POH;
+            }
+        case 76:
+            switch(actorParams) {
+                case 262:
+                    return LLR_FREESTANDING_POH;
+            }
+        case 55:
+            switch(actorParams) {
+                case 262:
+                    return KAK_IMPAS_HOUSE_FREESTANDING_POH;
+            }
+        case 83:
+            switch(actorParams) {
+                case 1030:
+                    return GRAVEYARD_FREESTANDING_POH;
+            }
+        case 97:
+            switch(actorParams) {
+                case 2054:
+                    return DMC_VOLCANO_FREESTANDING_POH;
+                case 518:
+                    return DMC_WALL_FREESTANDING_POH;
+            }
+        case 89:
+            switch(actorParams) {
+                case 5126:
+                    return ZF_BOTTOM_FREESTANDING_POH;
+                case 262:
+                    return ZF_ICEBERG_FREESTANDING_POH;
             }
     }
 
