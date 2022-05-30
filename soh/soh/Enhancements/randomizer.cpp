@@ -1007,6 +1007,12 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_MEDALLION_SHADOW;
         case SPIRIT_MEDALLION:
             return GI_MEDALLION_SPIRIT;
+        case KOKIRI_EMERALD:
+            return GI_STONE_KOKIRI;
+        case GORON_RUBY:
+            return GI_STONE_GORON;
+        case ZORA_SAPPHIRE:
+            return GI_STONE_ZORA;
         default:
             return ogItemId;
     }
@@ -1033,6 +1039,20 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return DEKU_TREE_QUEEN_GOHMA_HEART;
                 case 93:
                     return QUEEN_GOHMA;
+            }
+        case 18:
+            switch (actorId) {
+                case 95:
+                    return DODONGOS_CAVERN_KING_DODONGO_HEART;
+                case 93:
+                    return KING_DODONGO;
+            }
+        case 19:
+            switch (actorId) {
+                case 95:
+                    return JABU_JABUS_BELLY_BARINADE_HEART;
+                case 93:
+                    return BARINADE;
             }
         case 40:
             switch(actorParams) {

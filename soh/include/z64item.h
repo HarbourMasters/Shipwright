@@ -386,6 +386,9 @@ typedef enum {
     /* 0x81 */ GI_MEDALLION_WATER,
     /* 0x82 */ GI_MEDALLION_SHADOW,
     /* 0x83 */ GI_MEDALLION_SPIRIT,
+    /* 0x81 */ GI_STONE_KOKIRI,
+    /* 0x82 */ GI_STONE_GORON,
+    /* 0x83 */ GI_STONE_ZORA,
     /* 0x84 */ GI_MAX
 } GetItemID;
 
@@ -507,6 +510,9 @@ typedef enum {
     /* 0x72 */ GID_BULLET_BAG_50,
     /* 0x73 */ GID_SWORD_KOKIRI,
     /* 0x74 */ GID_SKULL_TOKEN_2,
+    /* 0x74 */ GID_KOKIRI_EMERALD,
+    /* 0x74 */ GID_GORON_RUBY,
+    /* 0x74 */ GID_ZORA_SAPPHIRE,
     /* 0x75 */ GID_MAX
 } GetItemDrawID;
 
