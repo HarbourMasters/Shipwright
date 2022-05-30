@@ -304,8 +304,14 @@ void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
         if (!(gSaveContext.itemGetInf[0] & 0x1000)) {
             this->actor.parent = NULL;
 
-            this->getItemId = GetRandomizedItemId(GI_BOTTLE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, this->getItemId, 100.0f, 50.0f);
+            if (gSaveContext.n64ddFlag) {
+                s32 itemId = GetRandomizedItemIdFromKnownCheck(GI_BOTTLE, KAK_ANJU_AS_CHILD);
+                func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 50.0f);
+            } else {
+                this->getItemId = GI_BOTTLE;
+                func_8002F434(&this->actor, globalCtx, GI_BOTTLE, 100.0f, 50.0f);
+            }
+
             this->actionFunc = func_80ABAC00;
             return;
         }
@@ -387,9 +393,14 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
             case 0:
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
-                s32 itemId =
-                    GetRandomizedItemId(GI_POCKET_EGG, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                func_8002F434(&this->actor, globalCtx, itemId, 200.0f, 100.0f);
+
+                if (gSaveContext.n64ddFlag) {
+                    s32 itemId = GetRandomizedItemIdFromKnownCheck(GI_POCKET_EGG, KAK_ANJU_AS_ADULT);
+                    func_8002F434(&this->actor, globalCtx, itemId, 200.0f, 100.0f);
+                } else {
+                    func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
+                }
+
                 this->actionFunc = func_80ABAC00;
                 break;
             case 1:
@@ -441,8 +452,11 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
     } else {
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
-            getItemId = !(gSaveContext.itemGetInf[2] & 0x1000)
-                ? GetRandomizedItemId(GI_POCKET_EGG, this->actor.id, this->actor.params, globalCtx->sceneNum) : GI_COJIRO;
+            getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
+
+            if (gSaveContext.n64ddFlag && getItemId == GI_POCKET_EGG) {
+                getItemId = GetRandomizedItemIdFromKnownCheck(GI_POCKET_EGG, KAK_ANJU_AS_ADULT);
+            }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);
     }
