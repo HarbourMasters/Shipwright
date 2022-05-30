@@ -195,12 +195,6 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, GlobalContext* globalCtx) {
 }
 
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx) {
-    // if(gSaveContext.n64ddFlag) {
-    //     GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
-    //     return;
-    // }
-
-    
     if (Flags_GetSwitch(globalCtx, 0x38)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
 
@@ -226,7 +220,6 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx)
                 return;
             }
         }
-
         func_8002DF54(globalCtx, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
     }
