@@ -1539,6 +1539,13 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 1030:
                     return GRAVEYARD_FREESTANDING_POH;
             }
+        case 97:
+            switch(actorParams) {
+                case 2054:
+                    return DMC_VOLCANO_FREESTANDING_POH;
+                case 518:
+                    return DMC_WALL_FREESTANDING_POH;
+            }
     }
 
     return UNKNOWN_CHECK;
