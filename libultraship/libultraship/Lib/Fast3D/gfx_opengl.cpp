@@ -572,7 +572,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
         GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
         GL_CHECK(glUniform1i(sampler_location, 1));
-        GL_CHECK(glUniform2f(uniform_location_1, opengl_tex[1].size[0], opengl_tex[1].size[1]));
+        GL_CHECK(glUniform2f(uniform_location_1, opengl_tex[opengl_curtex].size[0], opengl_tex[opengl_curtex].size[1]));
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
