@@ -74,26 +74,6 @@ struct GLTexture {
     bool filter;
 };
 
-void CheckOpenGLError(const char* stmt, const char* fname, int line)
-{
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR)
-    {
-        printf("OpenGL error %08x, at %s:%i - for %s\n", err, fname, line, stmt);
-        abort();
-    }
-}
-
-#ifdef NOOOOOOOOO
-    #define GL_CHECK(stmt) do { \
-            stmt; \
-            CheckOpenGLError(#stmt, __FILE__, __LINE__); \
-        } while (0)
-#else
-    #define GL_CHECK(stmt) stmt
-#endif
-
-
 static struct GLTexture opengl_tex[0x1000000];
 static GLint opengl_curtex = 0;
 
@@ -469,9 +449,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     GLint success;
 
     GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    GL_CHECK(glShaderSource(vertex_shader, 1, &sources[0], &lengths[0]));
-    GL_CHECK(glCompileShader(vertex_shader));
-    GL_CHECK(glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success));
+    glShaderSource(vertex_shader, 1, &sources[0], &lengths[0]);
+    glCompileShader(vertex_shader);
+    glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
     if (!success) {
         GLint max_length = 0;
         glGetShaderiv(vertex_shader, GL_INFO_LOG_LENGTH, &max_length);
@@ -483,12 +463,12 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
 
     GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    GL_CHECK(glShaderSource(fragment_shader, 1, &sources[1], &lengths[1]));
-    GL_CHECK(glCompileShader(fragment_shader));
-    GL_CHECK(glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success));
+    glShaderSource(fragment_shader, 1, &sources[1], &lengths[1]);
+    glCompileShader(fragment_shader);
+    glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
     if (!success) {
         GLint max_length = 0;
-        GL_CHECK(glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length));
+        glGetShaderiv(fragment_shader, GL_INFO_LOG_LENGTH, &max_length);
         char error_log[1024];
         fprintf(stderr, "Fragment shader compilation failed\n");
         glGetShaderInfoLog(fragment_shader, max_length, &max_length, &error_log[0]);
@@ -497,9 +477,9 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
 
     GLuint shader_program = glCreateProgram();
-    GL_CHECK(glAttachShader(shader_program, vertex_shader));
-    GL_CHECK(glAttachShader(shader_program, fragment_shader));
-    GL_CHECK(glLinkProgram(shader_program));
+    glAttachShader(shader_program, vertex_shader);
+    glAttachShader(shader_program, fragment_shader);
+    glLinkProgram(shader_program);
 
     size_t cnt = 0;
 
@@ -568,8 +548,8 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     if (cc_features.used_textures[1]) {
         GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
         GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
-        GL_CHECK(glUniform1i(sampler_location, 1));
-        GL_CHECK(glUniform2f(uniform_location_1, opengl_tex[ctex].size[0], opengl_tex[ctex].size[1]));
+        glUniform1i(sampler_location, 1);
+        glUniform2f(uniform_location_1, opengl_tex[ctex].size[0], opengl_tex[ctex].size[1]);
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
@@ -595,7 +575,6 @@ static void gfx_opengl_shader_get_info(struct ShaderProgram *prg, uint8_t *num_i
 }
 
 static GLuint gfx_opengl_new_texture(void) {
-    
     GLuint ret;
     glGenTextures(1, &ret);
     return ret;
@@ -612,7 +591,6 @@ static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
     glBindTexture(GL_TEXTURE_2D, texture_id);
 }
 static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
-    //printf("SHIT: texture %d: %d x %d\n", opengl_curtex, width, height);
     opengl_tex[opengl_curtex].size[0] = width;
     opengl_tex[opengl_curtex].size[1] = height;
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
@@ -634,7 +612,7 @@ static uint32_t gfx_cm_to_opengl(uint32_t val) {
 
 static void gfx_opengl_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
     const GLint filter = linear_filter && current_filter_mode == LINEAR ? GL_LINEAR : GL_NEAREST;
-    GL_CHECK(glActiveTexture(GL_TEXTURE0 + tile));
+    glActiveTexture(GL_TEXTURE0 + tile);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, gfx_cm_to_opengl(cms));
