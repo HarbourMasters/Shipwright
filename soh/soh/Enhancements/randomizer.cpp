@@ -1435,6 +1435,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return ICE_CAVERN_COMPASS_CHEST;
                 case 5570:
                     return ICE_CAVERN_IRON_BOOTS_CHEST;
+                case 262:
+                    return ICE_CAVERN_FREESTANDING_POH;
             }
         case 11:
             switch(actorParams) {
