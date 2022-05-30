@@ -5,6 +5,7 @@ AR	:= ar
 FORMAT := clang-format-11
 ZAPD := ../ZAPDTR/ZAPD.out
 UNAME := $(shell uname)
+UNAMEM := $(shell uname -m)
 
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
@@ -51,15 +52,13 @@ ifneq ($(LTO),0)
 	LDFLAGS += -flto
 endif
 
-TARGET := soh.arm64
+ifeq ($(UNAME), Linux) #LINUX
+TARGET := soh.elf
+endif
 
-# ifeq ($(UNAME), Linux) #LINUX
-# 	TARGET := soh.elf
-# endif
-
-# ifeq ($(UNAME), Darwin) #APPLE
-# 	TARGET := soh.arm64
-# endif
+ifeq ($(UNAME), Darwin) #APPLE
+TARGET := soh.$(UNAMEM)
+endif
 
 INC_DIRS := $(addprefix -I, \
 	. \
