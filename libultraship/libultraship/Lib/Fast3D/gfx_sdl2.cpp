@@ -249,6 +249,7 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_QUIT:
+                SDL_Quit(); // bandaid fix for linux window closing issue
                 exit(0);
         }
     }

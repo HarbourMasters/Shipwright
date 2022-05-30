@@ -1661,26 +1661,118 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3288);
 }
 
+uintptr_t SelectedAnim = 0; // Current Animaiton on the menu
+s16 EquipedStance; // Link's current mode (Two handed, One handed...)
+s16 FrameCountSinceLastAnim = 0; // Time since last animation
+s16 MinFrameCount; // Frame to wait before checking if we need to change the animation
+
 void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, Vec3f* pos, Vec3s* rot, f32 scale,
                    s32 sword, s32 tunic, s32 shield, s32 boots) {
+    Input* p1Input = &globalCtx->state.input[0];
     Vec3f eye = { 0.0f, 0.0f, -400.0f };
     Vec3f at = { 0.0f, 0.0f, 0.0f };
     Vec3s* destTable;
     Vec3s* srcTable;
     s32 i;
+    bool canswitchrnd = false;
+    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 1);
+    MinFrameCount = CVar_GetS32("gMinFrameCount", 200);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(segment + 0x8800);
 
-    if (CVar_GetS32("gPauseLiveLink", 0) || CVar_GetS32("gPauseTriforce", 0)) {
-        uintptr_t anim = gPlayerAnim_003238; // idle
+    uintptr_t* PauseMenuAnimSet[15][4] = {
+        { 0, 0, 0, 0 }, // 0 = none
+        // IDLE               // Two Handed       // No shield        // Kid Hylian Shield
+        { gPlayerAnim_003238, gPlayerAnim_002BE0, gPlayerAnim_003240, gPlayerAnim_003240 }, // Idle
+        { gPlayerAnim_003200, gPlayerAnim_003200, gPlayerAnim_003200, gPlayerAnim_003200 }, // Idle look around
+        { gPlayerAnim_0033E0, gPlayerAnim_0033E0, gPlayerAnim_0033E0, gPlayerAnim_0033E0 }, // Idle Belt
+        { gPlayerAnim_003418, gPlayerAnim_003418, gPlayerAnim_003418, gPlayerAnim_003418 }, // Idle shield adjust
+        { gPlayerAnim_003420, gPlayerAnim_003428, gPlayerAnim_003420, gPlayerAnim_003420 }, // Idle test sword
+        { gPlayerAnim_0033F0, gPlayerAnim_0033F0, gPlayerAnim_0033F0, gPlayerAnim_0033F0 }, // Idle yawn
+        { gPlayerAnim_0025D0, gPlayerAnim_002BD0, gPlayerAnim_0025D0, gPlayerAnim_0025D0 }, // Battle Stance
+        { gPlayerAnim_003290, gPlayerAnim_002BF8, gPlayerAnim_003290, gPlayerAnim_003290 }, // Walking (No shield)
+        { gPlayerAnim_003268, gPlayerAnim_002BF8, gPlayerAnim_003268, gPlayerAnim_003268 }, // Walking (Holding shield)
+        { gPlayerAnim_003138, gPlayerAnim_002B40, gPlayerAnim_003138, gPlayerAnim_003138 }, // Running (No shield)
+        { gPlayerAnim_003140, gPlayerAnim_002B40, gPlayerAnim_003140, gPlayerAnim_003140 }, // Running (Holding shield)
+        { gPlayerAnim_0031A8, gPlayerAnim_0031A8, gPlayerAnim_0031A8, gPlayerAnim_0031A8 }, // Hand on hip
+        { gPlayerAnim_002AF0, gPlayerAnim_002928, gPlayerAnim_002AF0, gPlayerAnim_002AF0 }, // Spin Charge
+        { gPlayerAnim_002820, gPlayerAnim_002820, gPlayerAnim_002820, gPlayerAnim_002820 }, // Look at hand
+    };
+    s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-        if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3)
-            anim = gPlayerAnim_002BE0; // Two Handed Anim
-        else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0)
-            anim = gPlayerAnim_003240;
-        else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD)
-            anim = gPlayerAnim_003240;
+    if (CVar_GetS32("gPauseLiveLink", !0) || CVar_GetS32("gPauseTriforce", 0)) {
+        uintptr_t anim = 0; // Initialise anim
+
+        if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3) {
+            EquipedStance = 1;
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 0) {
+            EquipedStance = 2;
+        } else if (CUR_EQUIP_VALUE(EQUIP_SHIELD) == 2 && LINK_AGE_IN_YEARS == YEARS_CHILD) {
+            EquipedStance = 3;
+        } else {
+            // Link is idle so revert to 0
+            EquipedStance = 0;
+        }
+
+        if (SelectedMode == 16) {
+            // Apply Random function
+            s16 SwitchAtFrame = 0;
+            s16 CurAnimDuration = 0;
+            if (FrameCountSinceLastAnim == 0) {
+                // When opening Kaleido this will be passed one time
+                SelectedAnim = rand() % (AnimArraySize - 0);
+                if (SelectedAnim == 0) {
+                    // prevent loading 0 that would result to a crash.
+                    SelectedAnim = 1;
+                }
+            } else if (FrameCountSinceLastAnim >= 1) {
+                SwitchAtFrame = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                CurAnimDuration = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                if (SwitchAtFrame < MinFrameCount) {
+                    // Animation frame count is lower than minimal wait time then we wait for another round.
+                    // This will be looped to always add current animation time if that still lower than minimum time
+                    while (SwitchAtFrame < MinFrameCount) {
+                        SwitchAtFrame = SwitchAtFrame + CurAnimDuration;
+                    }
+                } else if (CurAnimDuration >= MinFrameCount) {
+                    // Since we have more (or same) animation time than min duration we set the wait time to animation
+                    // time.
+                    SwitchAtFrame = CurAnimDuration;
+                }
+                if (FrameCountSinceLastAnim >= SwitchAtFrame) {
+                    SelectedAnim = rand() % (AnimArraySize - 0);
+                    if (SelectedAnim == 0) {
+                        // prevent loading 0 that would result to a crash.
+                        SelectedAnim = 1;
+                    }
+                    FrameCountSinceLastAnim = 1;
+                }
+                anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
+            }
+            FrameCountSinceLastAnim++;
+        } else if (SelectedMode == 15) {
+            // When opening Kaleido this will be passed one time
+            if (FrameCountSinceLastAnim < 1) {
+                SelectedAnim = rand() % (AnimArraySize - 0);
+                FrameCountSinceLastAnim++;
+                if (SelectedAnim == 0) {
+                    // prevent loading 0 that would result to a crash.
+                    SelectedAnim = 1;
+                }
+                FrameCountSinceLastAnim = 1;
+            }
+            if (CHECK_BTN_ALL(p1Input->press.button, BTN_B) || CHECK_BTN_ALL(p1Input->press.button, BTN_START)) {
+                FrameCountSinceLastAnim = 0;
+            }
+            anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
+        } else if (SelectedMode < 16) {
+            // Not random so we place our CVar as SelectedAnim
+            SelectedAnim = SelectedMode;
+            anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
+        }
+
+        anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
 
         //anim = gPlayerAnim_003428; // Use for biggoron sword?
 
