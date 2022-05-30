@@ -193,15 +193,40 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx)
                 return;
             }
         }
+
+        if(gSaveContext.n64ddFlag) {
+            GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
+            return;
+        }
+
         func_8002DF54(globalCtx, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
+    }
+}
+
+u8 blargSuccess;
+void GivePlayerBlargRandoReward(BgDyYoseizo* this, Player* player, GlobalContext* globalCtx) {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
+
+    if (blargSuccess && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        globalCtx->sceneLoadFlag = 0x14;
+        globalCtx->fadeTransition = 7;
+        gSaveContext.nextTransition = 3;
+
+        // gSaveContext.eventChkInf[5] |= 0x200;
+        globalCtx->nextEntranceIndex = 0x0594;
+        gSaveContext.nextCutsceneIndex = 0; //Actor_Kill(&this->actor);
+    } else if (!blargSuccess) {
+        blargSuccess = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
 }
 
 void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
     s32 givingReward;
 
+    // if(!gSaveContext.n64ddFlag) {
     func_8002DF54(globalCtx, &this->actor, 1);
+    // }
     // "Mode"
     osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ もうど ☆☆☆☆☆ %d\n" VT_RST, globalCtx->msgCtx.ocarinaMode);
     givingReward = false;
@@ -216,9 +241,11 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
                 //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
                 //     return;
                 // } else {
+                if (gSaveContext.n64ddFlag) {
                     if (!(gSaveContext.itemGetInf[1] & 0x100)) {
                         givingReward = true;
                     }
+                }
                 // }
                 break;
             case FAIRY_SPELL_DINS_FIRE:
@@ -275,34 +302,37 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (givingReward) {
+    if (givingReward && !gSaveContext.n64ddFlag) {
         if (gSaveContext.sceneSetupIndex < 4) {
             if (globalCtx->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:
-                        if (gSaveContext.n64ddFlag) {
-                            s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                            return;
-                        }
+                        // if (gSaveContext.n64ddFlag) {
+                        //     givingReward = false;
+                        //     s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                        //     return;
+                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyFaroresWindCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_DINS_FIRE:
-                        if (gSaveContext.n64ddFlag) {
-                            s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                            return;
-                        }
+                        // if (gSaveContext.n64ddFlag) {
+                        //     givingReward = false;
+                        //     s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                        //     return;
+                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyDinsFireCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_NAYRUS_LOVE:
-                        if (gSaveContext.n64ddFlag) {
-                            s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                            return;
-                        }
+                        // if (gSaveContext.n64ddFlag) {
+                        //     givingReward = false;
+                        //     s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+                        //     return;
+                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyNayrusLoveCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
@@ -329,12 +359,20 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
     }
 
     globalCtx->envCtx.unk_BF = 2;
-
-    if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
-        OnePointCutscene_Init(globalCtx, 8603, -99, NULL, MAIN_CAM);
+    if(!gSaveContext.n64ddFlag) {
+        if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
+            OnePointCutscene_Init(globalCtx, 8603, -99, NULL, MAIN_CAM);
+        } else {
+            OnePointCutscene_Init(globalCtx, 8604, -99, NULL, MAIN_CAM);
+        };
     } else {
-        OnePointCutscene_Init(globalCtx, 8604, -99, NULL, MAIN_CAM);
-    };
+        if (gSaveContext.n64ddFlag) {
+            givingReward = false;
+            s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
+            return;
+        }
+    }
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_GREAT_FAIRY_APPEAR);
     this->actor.draw = BgDyYoseizo_Draw;
