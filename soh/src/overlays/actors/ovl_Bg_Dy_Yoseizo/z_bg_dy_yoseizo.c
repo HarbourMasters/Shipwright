@@ -225,61 +225,34 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx)
     }
 }
 
-
 void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
     s32 givingReward;
 
-    // if(!gSaveContext.n64ddFlag) {
     func_8002DF54(globalCtx, &this->actor, 1);
-    // }
     // "Mode"
     osSyncPrintf(VT_FGCOL(YELLOW) "☆☆☆☆☆ もうど ☆☆☆☆☆ %d\n" VT_RST, globalCtx->msgCtx.ocarinaMode);
     givingReward = false;
 
     if (globalCtx->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
         switch (this->fountainType) {
-            // todo ensure we're seting givingReward based on if the check has been checked,
-            // not based on if the spell is in inventory 
             case FAIRY_SPELL_FARORES_WIND:
-                // if (gSaveContext.n64ddFlag) {
-                //     s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                //     return;
-                // } else {
-                if (gSaveContext.n64ddFlag) {
-                    if (!(gSaveContext.itemGetInf[1] & 0x100)) {
-                        givingReward = true;
-                    }
+                if (!(gSaveContext.itemGetInf[1] & 0x100)) {
+                    givingReward = true;
                 }
-                // }
                 break;
             case FAIRY_SPELL_DINS_FIRE:
-                // if (gSaveContext.n64ddFlag) {
-                //     s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                //     return;
-                // } else {
-                    if (!(gSaveContext.itemGetInf[1] & 0x200)) {
-                        givingReward = true;
-                    }
-                // }
+                if (!(gSaveContext.itemGetInf[1] & 0x200)) {
+                    givingReward = true;
+                }
                 break;
             case FAIRY_SPELL_NAYRUS_LOVE:
-                // if (gSaveContext.n64ddFlag) {
-                //     s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                //     return;
-                // } else {
-                    if (!(gSaveContext.itemGetInf[1] & 0x400)) {
-                        givingReward = true;
-                    }
-                // }
+                if (!(gSaveContext.itemGetInf[1] & 0x400)) {
+                    givingReward = true;
+                }
                 break;
         }
     } else {
         switch (this->fountainType) {
-            // todo ensure we're setting givingReward based on if the check has been checked,
-            // not based on magic meter 
             case FAIRY_UPGRADE_MAGIC:
                 if (!gSaveContext.magicAcquired || BREG(2)) {
                     // "Spin Attack speed UP"
@@ -307,37 +280,19 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
         }
     }
 
-    if (givingReward && !gSaveContext.n64ddFlag) {
+    if (givingReward) {
         if (gSaveContext.sceneSetupIndex < 4) {
             if (globalCtx->sceneNum != SCENE_DAIYOUSEI_IZUMI) {
                 switch (this->fountainType) {
                     case FAIRY_SPELL_FARORES_WIND:
-                        // if (gSaveContext.n64ddFlag) {
-                        //     givingReward = false;
-                        //     s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                        //     return;
-                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyFaroresWindCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_DINS_FIRE:
-                        // if (gSaveContext.n64ddFlag) {
-                        //     givingReward = false;
-                        //     s32 getItemId = GetRandomizedItemId(GI_DINS_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                        //     return;
-                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyDinsFireCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
                     case FAIRY_SPELL_NAYRUS_LOVE:
-                        // if (gSaveContext.n64ddFlag) {
-                        //     givingReward = false;
-                        //     s32 getItemId = GetRandomizedItemId(GI_NAYRUS_LOVE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                        //     func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-                        //     return;
-                        // }
                         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGreatFairyNayrusLoveCs);
                         gSaveContext.cutsceneTrigger = 1;
                         break;
@@ -364,20 +319,12 @@ void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
     }
 
     globalCtx->envCtx.unk_BF = 2;
-    if(!gSaveContext.n64ddFlag) {
-        if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
-            OnePointCutscene_Init(globalCtx, 8603, -99, NULL, MAIN_CAM);
-        } else {
-            OnePointCutscene_Init(globalCtx, 8604, -99, NULL, MAIN_CAM);
-        };
+
+    if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
+        OnePointCutscene_Init(globalCtx, 8603, -99, NULL, MAIN_CAM);
     } else {
-        if (gSaveContext.n64ddFlag) {
-            givingReward = false;
-            s32 getItemId = GetRandomizedItemId(GI_FARORES_WIND, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            func_8002F434(&this->actor, globalCtx, getItemId, 100.0f, 50.0f);
-            return;
-        }
-    }
+        OnePointCutscene_Init(globalCtx, 8604, -99, NULL, MAIN_CAM);
+    };
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_GREAT_FAIRY_APPEAR);
     this->actor.draw = BgDyYoseizo_Draw;
