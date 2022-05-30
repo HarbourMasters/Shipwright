@@ -566,7 +566,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         GLint sampler_location = glGetUniformLocation(shader_program, "uTex0");
         GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
         glUniform1i(sampler_location, 0);
-        glUniform2f(uniform_location_0, opengl_tex[0].size[0], opengl_tex[0].size[1]);
+        glUniform2f(uniform_location_0, opengl_tex[opengl_curtex].size[0], opengl_tex[opengl_curtex].size[1]);
     }
     if (cc_features.used_textures[1]) {
         GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
