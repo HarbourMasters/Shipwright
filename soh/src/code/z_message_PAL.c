@@ -272,6 +272,13 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     const char** languageSegmentTable;
     Font* font;
     const char* seg;
+    u16 bufferId = textId;
+    // Use the better owl message if better owl is enabled
+    if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
+        bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
+    {
+        bufferId = 0x71B3;
+    }
 
     if (gSaveContext.language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
@@ -287,7 +294,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     while (messageTableEntry->textId != 0xFFFF) {
         font = &globalCtx->msgCtx.font;
 
-        if (messageTableEntry->textId == textId) {
+        if (messageTableEntry->textId == bufferId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
 
@@ -298,14 +305,14 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
             // "Message found!!!"
             osSyncPrintf(" メッセージが,見つかった！！！ = %x  "
                          "(data=%x) (data0=%x) (data1=%x) (data2=%x) (data3=%x)\n",
-                         textId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
+                         bufferId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
             return;
         }
         messageTableEntry++;
     }
 
     // "Message not found!!!"
-    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", textId);
+    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", bufferId);
     font = &globalCtx->msgCtx.font;
     messageTableEntry = sNesMessageEntryTablePtr;
 

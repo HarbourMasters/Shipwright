@@ -5,6 +5,8 @@
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "soh/frame_interpolation.h"
+
 static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
@@ -1136,6 +1138,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     FileChoose_SetWindowVtx(&this->state);
     FileChoose_SetWindowContentVtx(&this->state);
 
+    FrameInterpolation_RecordOpenChild(this, this->configMode);
+
     if ((this->configMode != CM_NAME_ENTRY) && (this->configMode != CM_START_NAME_ENTRY)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -1226,6 +1230,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
+
+    FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2352);
 }
@@ -1669,7 +1675,9 @@ void FileChoose_Main(GameState* thisx) {
 
     FileChoose_PulsateCursor(&this->state);
     gFileSelectUpdateFuncs[this->menuMode](&this->state);
+    FrameInterpolation_StartRecord();
     gFileSelectDrawFuncs[this->menuMode](&this->state);
+    FrameInterpolation_StopRecord();
 
     // do not draw controls text in the options menu
     if ((this->configMode <= CM_NAME_ENTRY_TO_MAIN) || (this->configMode >= CM_UNUSED_DELAY)) {
