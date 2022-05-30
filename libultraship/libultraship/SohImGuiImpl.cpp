@@ -50,6 +50,7 @@ bool oldCursorState = true;
     ImGui::PopStyleColor(); \
     ImGui::Separator();
 #define TOGGLE_BTN ImGuiKey_F1
+#define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
 #define HOOK(b) if(b) needs_save = true;
 OSContPad* pads;
 
@@ -259,7 +260,8 @@ namespace SohImGui {
     }
 
     void LoadRainbowColor() {
-        for (uint16_t s=0; s <= sizeof(RainbowColorCvarList); s++) {
+        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
+        for (u8 s = 0; s < arrayLength; s++) {
             std::string cvarName = RainbowColorCvarList[s];
             std::string Cvar_Red = cvarName;
             Cvar_Red += "R";
@@ -692,7 +694,7 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
+        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyPressed(TOGGLE_PAD_BTN))) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -722,7 +724,25 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller"))
-            {
+	    {
+		ImGuiIO& io = ImGui::GetIO();
+		ImGui::CheckboxFlags("Use Controller Navigation",     &io.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad);      
+
+		ImGui::Separator();
+
+                EnhancementCheckbox("Dpad Support on Pause and File Select", "gDpadPauseName");
+                EnhancementCheckbox("DPad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("DPad Support for Browsing Shop Items", "gDpadShop");
+		    
+		ImGui::Separator();
+
+                EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
+
+                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);  
+
+		ImGui::Separator();  
+		    
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
@@ -751,19 +771,6 @@ namespace SohImGui {
                         }
                         ImGui::Separator();
                 }
-
-                EnhancementCheckbox("Show Inputs", "gInputEnabled");
-                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
-
-                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");
-
-                ImGui::Separator();
-
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
 
                 ImGui::EndMenu();
             }
