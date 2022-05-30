@@ -1546,6 +1546,13 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 518:
                     return DMC_WALL_FREESTANDING_POH;
             }
+        case 89:
+            switch(actorParams) {
+                case 5126:
+                    return ZF_BOTTOM_FREESTANDING_POH;
+                case 262:
+                    return ZF_ICEBERG_FREESTANDING_POH;
+            }
     }
 
     return UNKNOWN_CHECK;
