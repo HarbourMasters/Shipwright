@@ -737,7 +737,6 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, GlobalContext* globalCtx) {
         (globalCtx->csCtx.npcActions[0]->action < 13)) {
         actionIndex = globalCtx->csCtx.npcActions[0]->action - 10;
 
-        // todo figure out which checks to use here 
         switch (actionIndex) {
             case FAIRY_UPGRADE_MAGIC:
                 gSaveContext.magicAcquired = true;
@@ -792,20 +791,7 @@ void BgDyYoseizo_Give_Reward(BgDyYoseizo* this, GlobalContext* globalCtx) {
                 gSaveContext.healthAccumulator = 0x140;
                 Interface_ChangeAlpha(9);
                 gSaveContext.itemGetInf[1] |= sItemGetFlags[actionIndex];
-                if(gSaveContext.n64ddFlag) {
-                    switch(sItemIds[actionIndex]) {
-                        case ITEM_DINS_FIRE:
-                            Item_Give(globalCtx, GetItemidFromGetitemid(GetRandomizedItemIdFromKnownCheck(OGC_GREAT_FAIRY_REWARD, GI_DINS_FIRE)));
-                            break;
-                        case ITEM_FARORES_WIND:
-                            Item_Give(globalCtx, GetItemidFromGetitemid(GetRandomizedItemIdFromKnownCheck(ZF_GREAT_FAIRY_REWARD, GI_FARORES_WIND)));
-                            break;
-                        case ITEM_NAYRUS_LOVE:
-                            Item_Give(globalCtx, GetItemidFromGetitemid(GetRandomizedItemIdFromKnownCheck(COLOSSUS_GREAT_FAIRY_REWARD, GI_NAYRUS_LOVE)));
-                    }
-                } else {
-                    Item_Give(globalCtx, sItemIds[actionIndex]);
-                }
+                Item_Give(globalCtx, sItemIds[actionIndex]);
             }
         } else {
             this->item->actor.world.pos.x = player->actor.world.pos.x;
