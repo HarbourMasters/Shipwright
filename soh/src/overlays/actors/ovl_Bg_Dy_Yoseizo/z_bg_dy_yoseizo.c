@@ -107,9 +107,7 @@ void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
         SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGreatFairySkel, &gGreatFairyLayingDownTransitionAnim,
                            this->jointTable, this->morphTable, 28);
     }
-
     this->actionFunc = BgDyYoseizo_CheckMagicAcquired;
-    
 }
 
 void BgDyYoseizo_Destroy(Actor* this, GlobalContext* globalCtx) {
