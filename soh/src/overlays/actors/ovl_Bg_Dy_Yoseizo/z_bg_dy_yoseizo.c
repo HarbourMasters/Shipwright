@@ -31,6 +31,8 @@ void BgDyYoseizo_Update(Actor* thisx, GlobalContext* globalCtx);
 void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx);
 
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx);
+// void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx);
+
 void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx);
 void BgDyYoseizo_SetupSpinGrow_NoReward(BgDyYoseizo* this, GlobalContext* globalCtx);
 void BgDyYoseizo_SpinGrow_NoReward(BgDyYoseizo* this, GlobalContext* globalCtx);
@@ -67,9 +69,46 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
     NULL,
 };
 
+u8 successGreatFairy;
+void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
+
+    if (successGreatFairy && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Flags_SetTreasure(globalCtx, this->fountainType + 1);
+        successGreatFairy = 0;
+        Actor_Kill(&this->actor);
+        // globalCtx->sceneLoadFlag = 0x14;
+        // globalCtx->fadeTransition = 7;
+        // gSaveContext.nextTransition = 3;
+
+        // // gSaveContext.eventChkInf[5] |= 0x200;
+        // globalCtx->nextEntranceIndex = 0x0594;
+        // gSaveContext.nextCutsceneIndex = 0; 
+    } else if (!successGreatFairy) {
+        successGreatFairy = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
+
 void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
+
+    // if(gSaveContext.n64ddFlag) {
+    //     GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
+    //     return;
+    // }
+    // if(gSaveContext.n64ddFlag) {
+    //     if(Flags_GetCollectible(globalCtx, this->fountainType)) {
+    //         gSaveContext.healthAccumulator = 0x140;
+    //         Magic_Fill(globalCtx);
+    //         Actor_Kill(&this->actor);
+    //     } else {
+    //         this->actionFunc = GivePlayerBlargRandoReward;
+    //     }
+    //     return;
+    // } 
 
     this->fountainType = globalCtx->curSpawn;
 
@@ -92,7 +131,9 @@ void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
         SkelAnime_InitFlex(globalCtx, &this->skelAnime, &gGreatFairySkel, &gGreatFairyLayingDownTransitionAnim,
                            this->jointTable, this->morphTable, 28);
     }
+
     this->actionFunc = BgDyYoseizo_CheckMagicAcquired;
+    
 }
 
 void BgDyYoseizo_Destroy(Actor* this, GlobalContext* globalCtx) {
@@ -180,8 +221,26 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, GlobalContext* globalCtx) {
 }
 
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx) {
+    // if(gSaveContext.n64ddFlag) {
+    //     GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
+    //     return;
+    // }
+
+    
     if (Flags_GetSwitch(globalCtx, 0x38)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+
+        if(gSaveContext.n64ddFlag) {
+            gSaveContext.healthAccumulator = 0x140;
+            Magic_Fill(globalCtx);
+            if(Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+                Actor_Kill(&this->actor);
+            } else {
+                GivePlayerRandoRewardGreatFairy(this, globalCtx);
+            }
+            return;
+        } 
+
         if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
             if (!gSaveContext.magicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
                 Actor_Kill(&this->actor);
@@ -194,32 +253,11 @@ void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx)
             }
         }
 
-        if(gSaveContext.n64ddFlag) {
-            GivePlayerBlargRandoReward(this, GET_PLAYER(globalCtx), globalCtx);
-            return;
-        }
-
         func_8002DF54(globalCtx, &this->actor, 1);
         this->actionFunc = BgDyYoseizo_ChooseType;
     }
 }
 
-u8 blargSuccess;
-void GivePlayerBlargRandoReward(BgDyYoseizo* this, Player* player, GlobalContext* globalCtx) {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_NONE);
-
-    if (blargSuccess && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        globalCtx->sceneLoadFlag = 0x14;
-        globalCtx->fadeTransition = 7;
-        gSaveContext.nextTransition = 3;
-
-        // gSaveContext.eventChkInf[5] |= 0x200;
-        globalCtx->nextEntranceIndex = 0x0594;
-        gSaveContext.nextCutsceneIndex = 0; //Actor_Kill(&this->actor);
-    } else if (!blargSuccess) {
-        blargSuccess = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
-    }
-}
 
 void BgDyYoseizo_ChooseType(BgDyYoseizo* this, GlobalContext* globalCtx) {
     s32 givingReward;
