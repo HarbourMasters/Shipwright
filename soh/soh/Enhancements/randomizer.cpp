@@ -1168,6 +1168,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GC_MAZE_RIGHT_CHEST;
                 case 23202:
                     return GC_MAZE_CENTER_CHEST;
+                case 7942:
+                    return GC_POT_FREESTANDING_POH;
             }
         case 88:
             switch(actorParams) {
