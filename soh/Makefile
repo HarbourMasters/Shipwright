@@ -106,7 +106,6 @@ endif
 LDLIBS := \
 	$(ZAPDUTILS) \
 	$(addprefix -l, \
-	X11 \
 	dl \
 	bz2 \
 	z \
@@ -119,6 +118,7 @@ LDLIBS := \
 ifeq ($(UNAME), Linux) #LINUX
 LDLIBS += \
 	$(addprefix -l, \
+	X11 \
 	GL \
 	pulse \
 )

@@ -45,13 +45,13 @@ ifneq ($(DEPRECATION_ON),0)
 endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
-LDFLAGS := -lm -ldl -lpng \
-  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 -lGLEW -lX11
+LDFLAGS := -lm -ldl \
+  -L../external -L../libultraship -lbz2 -pthread -lpulse -lultraship -lstorm
 
 ifeq ($(UNAME), Darwin)
   LDFLAGS += $(shell pkg-config --libs glew x11 libpng) $(shell sdl2-config --libs) -framework OpenGL
 else
-  LDFLAGS += -lGL
+  LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2
 endif
 
 # Use LLD if available. Set LLD=0 to not use it
