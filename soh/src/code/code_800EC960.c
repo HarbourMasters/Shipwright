@@ -4256,6 +4256,7 @@ void Audio_ClearSariaBgmAtPos(Vec3f* pos) {
  * equally between the two bgm channels. Split based on note priority
  */
 void Audio_SplitBgmChannels(s8 volSplit) {
+    return;
     u8 volume;
     u8 notePriority;
     u16 channelBits;
