@@ -1410,6 +1410,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
                 case 13673:
                     return SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
+                case 3334:
+                    return COLOSSUS_FREESTANDING_POH;
             }
         case 9:
             switch(actorParams) {
