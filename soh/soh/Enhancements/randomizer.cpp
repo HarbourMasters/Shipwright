@@ -1170,6 +1170,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch(actorParams) {
                 case 23200:
                     return GV_CHEST;
+                case 262:
+                    return GV_WATERFALL_FREESTANDING_POH;
+                case 518:
+                    return GV_CRATE_FREESTANDING_POH;
             }
         case 93:
             switch(actorParams) {
