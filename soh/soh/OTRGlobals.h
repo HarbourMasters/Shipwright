@@ -78,9 +78,8 @@ void LoadItemLocations(const char* spoilerFileName);
 void ParseItemLocations(const char* spoilerfilename);
 ItemID GetItemIdFromGetItem(GetItemID getItemId);
 s16 GetItemModelFromId(s16 itemId);
-ItemID GetItemFromGetItem(GetItemID getItemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-
+s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif
