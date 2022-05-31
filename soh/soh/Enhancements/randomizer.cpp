@@ -1164,11 +1164,7 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
 
         int index = 0;
         for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
-            std::string blarg = it.value();
-            Sprite seedSprite = gSeedTextures[blarg];
-            int indexBlarg = index;
-            blarg = indexBlarg;
-            gSaveContext.seedIcons[indexBlarg] = seedSprite;
+            gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
             index++;
         }
 
