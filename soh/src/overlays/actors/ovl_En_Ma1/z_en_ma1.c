@@ -346,7 +346,7 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
     }
 }
 
-void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
+void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Key check) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!Flags_GetTreasure(globalCtx, 0x1F) &&

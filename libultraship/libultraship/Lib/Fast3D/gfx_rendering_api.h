@@ -16,9 +16,9 @@ struct GfxClipParameters {
 };
 
 enum FilteringMode {
-    THREE_POINT,
-    LINEAR,
-    NONE
+    FILTER_THREE_POINT,
+    FILTER_LINEAR,
+    FILTER_NONE
 };
 
 struct GfxRenderingAPI {

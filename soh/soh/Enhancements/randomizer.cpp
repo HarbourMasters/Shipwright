@@ -9,6 +9,7 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <GameSettings.h>
+#include <randomizer/spoiler_log.hpp>
 
 using json = nlohmann::json;
 
@@ -86,7 +87,7 @@ Randomizer::~Randomizer() {
     this->itemLocations.clear();
 }
 
-std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
+std::unordered_map<std::string, Key> SpoilerfileCheckNameToEnum = {
     {"Links Pocket", LINKS_POCKET},
     {"Queen Gohma", QUEEN_GOHMA},
     {"King Dodongo", KING_DODONGO},
@@ -99,7 +100,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"Song from Impa", SONG_FROM_IMPA},
     {"Song from Malon", SONG_FROM_MALON},
     {"Song from Saria", SONG_FROM_SARIA},
-    {"Song from Royal Familys Tomb", SONG_FROM_ROYAL_FAMILYS_TOMB},
+    {"Song from Royal Familys Tomb", SONG_FROM_COMPOSERS_GRAVE},
     {"Song from Ocarina of Time", SONG_FROM_OCARINA_OF_TIME},
     {"Song from Windmill", SONG_FROM_WINDMILL},
     {"Sheik in Forest", SHEIK_IN_FOREST},
@@ -153,7 +154,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"Kak 50 Gold Skulltula Reward", KAK_50_GOLD_SKULLTULA_REWARD},
     {"Graveyard Shield Grave Chest", GRAVEYARD_SHIELD_GRAVE_CHEST},
     {"Graveyard Heart Piece Grave Chest", GRAVEYARD_HEART_PIECE_GRAVE_CHEST},
-    {"Graveyard Royal Familys Tomb Chest", GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST},
+    { "Graveyard Royal Familys Tomb Chest", GRAVEYARD_COMPOSERS_GRAVE_CHEST },
     {"Graveyard Freestanding PoH", GRAVEYARD_FREESTANDING_POH},
     {"Graveyard Dampe Gravedigging Tour", GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR},
     {"Graveyard Hookshot Chest", GRAVEYARD_HOOKSHOT_CHEST},
@@ -162,7 +163,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"DMT Chest", DMT_CHEST},
     {"DMT Storms Grotto Chest", DMT_STORMS_GROTTO_CHEST},
     {"DMT Great Fairy Reward", DMT_GREAT_FAIRY_REWARD},
-    {"DMT Biggoron", DMT_BIGGORON},
+    {"DMT Biggoron", DMT_TRADE_CLAIM_CHECK},
     {"GC Darunias Joy", GC_DARUNIAS_JOY},
     {"GC Pot Freestanding PoH", GC_POT_FREESTANDING_POH},
     {"GC Rolling Goron as Child", GC_ROLLING_GORON_AS_CHILD},
@@ -316,28 +317,28 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"Ice Cavern Compass Chest", ICE_CAVERN_COMPASS_CHEST},
     {"Ice Cavern Freestanding PoH", ICE_CAVERN_FREESTANDING_POH},
     {"Ice Cavern Iron Boots Chest", ICE_CAVERN_IRON_BOOTS_CHEST},
-    {"Gerudo Training Ground Lobby Left Chest", GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST},
-    {"Gerudo Training Ground Lobby Right Chest", GERUDO_TRAINING_GROUND_LOBBY_RIGHT_CHEST},
-    {"Gerudo Training Ground Stalfos Chest", GERUDO_TRAINING_GROUND_STALFOS_CHEST},
-    {"Gerudo Training Ground Before Heavy Block Chest", GERUDO_TRAINING_GROUND_BEFORE_HEAVY_BLOCK_CHEST},
-    {"Gerudo Training Ground Heavy Block First Chest", GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FIRST_CHEST},
-    {"Gerudo Training Ground Heavy Block Second Chest", GERUDO_TRAINING_GROUND_HEAVY_BLOCK_SECOND_CHEST},
-    {"Gerudo Training Ground Heavy Block Third Chest", GERUDO_TRAINING_GROUND_HEAVY_BLOCK_THIRD_CHEST},
-    {"Gerudo Training Ground Heavy Block Fourth Chest", GERUDO_TRAINING_GROUND_HEAVY_BLOCK_FOURTH_CHEST},
-    {"Gerudo Training Ground Eye Statue Chest", GERUDO_TRAINING_GROUND_EYE_STATUE_CHEST},
-    {"Gerudo Training Ground Near Scarecrow Chest", GERUDO_TRAINING_GROUND_NEAR_SCARECROW_CHEST},
-    {"Gerudo Training Ground Hammer Room Clear Chest", GERUDO_TRAINING_GROUND_HAMMER_ROOM_CLEAR_CHEST},
-    {"Gerudo Training Ground Hammer Room Switch Chest", GERUDO_TRAINING_GROUND_HAMMER_ROOM_SWITCH_CHEST},
-    {"Gerudo Training Ground Freestanding Key", GERUDO_TRAINING_GROUND_FREESTANDING_KEY},
-    {"Gerudo Training Ground Maze Right Central Chest", GERUDO_TRAINING_GROUND_MAZE_RIGHT_CENTRAL_CHEST},
-    {"Gerudo Training Ground Maze Right Side Chest", GERUDO_TRAINING_GROUND_MAZE_RIGHT_SIDE_CHEST},
-    {"Gerudo Training Ground Underwater Silver Rupee Chest", GERUDO_TRAINING_GROUND_UNDERWATER_SILVER_RUPEE_CHEST},
-    {"Gerudo Training Ground Beamos Chest", GERUDO_TRAINING_GROUND_BEAMOS_CHEST},
-    {"Gerudo Training Ground Hidden Ceiling Chest", GERUDO_TRAINING_GROUND_HIDDEN_CEILING_CHEST},
-    {"Gerudo Training Ground Maze Path First Chest", GERUDO_TRAINING_GROUND_MAZE_PATH_FIRST_CHEST},
-    {"Gerudo Training Ground Maze Path Second Chest", GERUDO_TRAINING_GROUND_MAZE_PATH_SECOND_CHEST},
-    {"Gerudo Training Ground Maze Path Third Chest", GERUDO_TRAINING_GROUND_MAZE_PATH_THIRD_CHEST},
-    {"Gerudo Training Ground Maze Path Final Chest", GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST},
+    {"Gerudo Training Ground Lobby Left Chest", GERUDO_TRAINING_GROUNDS_LOBBY_LEFT_CHEST},
+    {"Gerudo Training Ground Lobby Right Chest", GERUDO_TRAINING_GROUNDS_LOBBY_RIGHT_CHEST},
+    {"Gerudo Training Ground Stalfos Chest", GERUDO_TRAINING_GROUNDS_STALFOS_CHEST},
+    {"Gerudo Training Ground Before Heavy Block Chest", GERUDO_TRAINING_GROUNDS_BEFORE_HEAVY_BLOCK_CHEST},
+    {"Gerudo Training Ground Heavy Block First Chest", GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FIRST_CHEST},
+    {"Gerudo Training Ground Heavy Block Second Chest", GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_SECOND_CHEST},
+    {"Gerudo Training Ground Heavy Block Third Chest", GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_THIRD_CHEST},
+    {"Gerudo Training Ground Heavy Block Fourth Chest", GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FOURTH_CHEST},
+    {"Gerudo Training Ground Eye Statue Chest", GERUDO_TRAINING_GROUNDS_EYE_STATUE_CHEST},
+    {"Gerudo Training Ground Near Scarecrow Chest", GERUDO_TRAINING_GROUNDS_NEAR_SCARECROW_CHEST},
+    {"Gerudo Training Ground Hammer Room Clear Chest", GERUDO_TRAINING_GROUNDS_HAMMER_ROOM_CLEAR_CHEST},
+    {"Gerudo Training Ground Hammer Room Switch Chest", GERUDO_TRAINING_GROUNDS_HAMMER_ROOM_SWITCH_CHEST},
+    {"Gerudo Training Ground Freestanding Key", GERUDO_TRAINING_GROUNDS_FREESTANDING_KEY},
+    {"Gerudo Training Ground Maze Right Central Chest", GERUDO_TRAINING_GROUNDS_MAZE_RIGHT_CENTRAL_CHEST},
+    {"Gerudo Training Ground Maze Right Side Chest", GERUDO_TRAINING_GROUNDS_MAZE_RIGHT_SIDE_CHEST},
+    {"Gerudo Training Ground Underwater Silver Rupee Chest", GERUDO_TRAINING_GROUNDS_UNDERWATER_SILVER_RUPEE_CHEST},
+    {"Gerudo Training Ground Beamos Chest", GERUDO_TRAINING_GROUNDS_BEAMOS_CHEST},
+    {"Gerudo Training Ground Hidden Ceiling Chest", GERUDO_TRAINING_GROUNDS_HIDDEN_CEILING_CHEST},
+    {"Gerudo Training Ground Maze Path First Chest", GERUDO_TRAINING_GROUNDS_MAZE_PATH_FIRST_CHEST},
+    {"Gerudo Training Ground Maze Path Second Chest", GERUDO_TRAINING_GROUNDS_MAZE_PATH_SECOND_CHEST},
+    {"Gerudo Training Ground Maze Path Third Chest", GERUDO_TRAINING_GROUNDS_MAZE_PATH_THIRD_CHEST},
+    {"Gerudo Training Ground Maze Path Final Chest", GERUDO_TRAINING_GROUNDS_MAZE_PATH_FINAL_CHEST},
     {"Ganons Castle Forest Trial Chest", GANONS_CASTLE_FOREST_TRIAL_CHEST},
     {"Ganons Castle Water Trial Left Chest", GANONS_CASTLE_WATER_TRIAL_LEFT_CHEST},
     {"Ganons Castle Water Trial Right Chest", GANONS_CASTLE_WATER_TRIAL_RIGHT_CHEST},
@@ -485,20 +486,20 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_ICE_TRAP, GID_MAX },
                                                { GI_TEXT_0, GID_MAX } };
 
-std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
+std::unordered_map<std::string, Key> SpoilerfileGetNameToEnum = {
     {"Bombs (5)", BOMBS_5},
     {"Deku Nuts (5)", DEKU_NUTS_5},
-    {"Bombchus (10)", BOMBCHUS_10},
+    {"Bombchus (10)", BOMBCHU_10},
     {"Boomerang", BOOMERANG},
     {"Deku Stick (1)", DEKU_STICK_1},
     {"Lens of Truth", LENS_OF_TRUTH},
     {"Megaton Hammer", MEGATON_HAMMER},
     {"Cojiro", COJIRO},
-    {"Bottle", BOTTLE},
+    {"Bottle", EMPTY_BOTTLE},
     {"Bottle with Milk", BOTTLE_WITH_MILK},
     {"Rutos Letter", RUTOS_LETTER},
     {"Deliver Letter", DELIVER_LETTER},
-    {"Sell Big Poe", SELL_BIG_POE},
+    {"Sell Big Poe", BOTTLE_WITH_BIG_POE},
     {"Magic Bean", MAGIC_BEAN},
     {"Skull Mask", SKULL_MASK},
     {"Spooky Mask", SPOOKY_MASK},
@@ -525,7 +526,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     {"Iron Boots", IRON_BOOTS},
     {"Hover Boots", HOVER_BOOTS},
     {"Stone of Agony", STONE_OF_AGONY},
-    {"Gerudo Membership Card", GERUDO_MEMBERSHIP_CARD},
+    {"Gerudo Membership Card", GERUDO_CARD},
     {"Heart Container", HEART_CONTAINER},
     {"Piece of Heart", PIECE_OF_HEART},
     {"Boss Key", BOSS_KEY},
@@ -714,93 +715,16 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
 }
 
-void Randomizer::LoadItemLocations(const char* spoilerFileName) {
-    if (strcmp(spoilerFileName, "") != 0) {
-        // bandaid until new save stuff happens
-        ParseItemLocations(spoilerFileName);
-
-        for (auto itemLocation : gSaveContext.itemLocations) {
-            this->itemLocations[itemLocation.check] = itemLocation.get;
-        }
-    } else {
-        u16 index = 0;
-        for (auto itemLocation : this->itemLocations) {
-            gSaveContext.itemLocations[index].check = itemLocation.first;
-            gSaveContext.itemLocations[index].get = itemLocation.second;
-            index++;
-        }
-    }
-}
-
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
-                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
-                      stringValue.end());
-
-    return stringValue;
-}
-
-void Randomizer::ParseItemLocations(const char* spoilerFileName) {
-    // todo pull this in from cvar or something
-    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
-    if (!spoilerFileStream)
-        return;
-
-    bool success = false;
-
-    try {
-        json spoilerFileJson;
-        spoilerFileStream >> spoilerFileJson;
-        json locationsJson = spoilerFileJson["locations"];
-        json hashJson = spoilerFileJson["file_hash"];
-
-        int index = 0;
-        for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
-            gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
-            index++;
-        }
-
-        index = 0;
-        for (auto it = locationsJson.begin(); it != locationsJson.end(); ++it) {
-            if (it->is_structured()) {
-                json itemJson = *it;
-                for (auto itemit = itemJson.begin(); itemit != itemJson.end(); ++itemit) {
-                    // todo handle prices
-                    if (itemit.key() == "item") {
-
-                        gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                        gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[itemit.value()];
-                    }
-                }
-            } else {
-                gSaveContext.itemLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
-                gSaveContext.itemLocations[index].get = SpoilerfileGetNameToEnum[it.value()];
-            }
-
-            index++;
+void Randomizer::ParseItemLocations(SpoilerData spoilerData) {
+    if (spoilerData.ItemLocationsCount > 0) {
+        for (int i = 0; i < spoilerData.ItemLocationsCount; i++) {
+            gSaveContext.itemLocations[i].check = SpoilerfileCheckNameToEnum[spoilerData.ItemLocations[i].LocationStr];
+            gSaveContext.itemLocations[i].get = SpoilerfileGetNameToEnum[spoilerData.ItemLocations[i].ItemStr];
         }
 
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        success = true;
-    } catch (const std::exception& e) {
-        Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        return;    
-    }
 
-    if (success) {
         CVar_SetS32("gRandomizer", 1);
-        CVar_SetS32("gDroppedNewSpoilerFile", 0);
         Game::SaveSettings();
     }
 }
@@ -1102,13 +1026,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
     }
 }
 
-GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(Key randomizerCheck, GetItemID ogId) {
     return GetItemFromGet(this->itemLocations[randomizerCheck], ogId);
 }
 
-RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+Key Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
-        return UNKNOWN_CHECK;
+        return NONE;
     }
 
     switch(sceneNum) {
