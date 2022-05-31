@@ -899,18 +899,23 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
 }
 
 u8 successImpa;
-void GivePlayerRandoRewardImpa(Actor* actor, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NONE);
+void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (successImpa == 0 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
+            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
 
-    if (successImpa && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        gSaveContext.eventChkInf[5] |= 0x200;
-        globalCtx->sceneLoadFlag = 0x14;
-        globalCtx->fadeTransition = 7;
-        gSaveContext.nextTransition = 3;
-        globalCtx->nextEntranceIndex = 0x0594;
-        gSaveContext.nextCutsceneIndex = 0;
-    } else if (!successImpa) {
-        successImpa = func_8002F434(&actor, globalCtx, getItemId, 10000.0f, 100.0f);
+            if (func_8002F434(impa, globalCtx, getItemId, 100.0f, 50.0f) == true) {
+                successImpa = 1;
+            }
+        } else if (successImpa == 1) {
+            gSaveContext.eventChkInf[5] |= 0x200;
+            globalCtx->sceneLoadFlag = 0x14;
+            globalCtx->fadeTransition = 3;
+            gSaveContext.nextTransition = 3;
+            globalCtx->nextEntranceIndex = 0x0594;
+            gSaveContext.nextCutsceneIndex = 0;
+        }
     }
 }
 

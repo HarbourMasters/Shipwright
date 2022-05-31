@@ -380,15 +380,32 @@ typedef enum {
     /* 0x7B */ GI_BULLET_BAG_50,
     /* 0x7C */ GI_ICE_TRAP, // freezes link when opened from a chest
     /* 0x7D */ GI_TEXT_0, // no model appears over Link, shows text id 0 (pocket egg)
+
     /* 0x7E */ GI_MEDALLION_LIGHT,
     /* 0x7F */ GI_MEDALLION_FOREST,
     /* 0x80 */ GI_MEDALLION_FIRE,
     /* 0x81 */ GI_MEDALLION_WATER,
     /* 0x82 */ GI_MEDALLION_SHADOW,
     /* 0x83 */ GI_MEDALLION_SPIRIT,
+
     /* 0x81 */ GI_STONE_KOKIRI,
     /* 0x82 */ GI_STONE_GORON,
     /* 0x83 */ GI_STONE_ZORA,
+
+    /* 0x81 */ GI_ZELDAS_LULLABY,
+    /* 0x82 */ GI_SUNS_SONG,
+    /* 0x83 */ GI_EPONAS_SONG,
+    /* 0x81 */ GI_SONG_OF_STORMS,
+    /* 0x82 */ GI_SONG_OF_TIME,
+    /* 0x83 */ GI_SARIAS_SONG,
+
+    /* 0x81 */ GI_MINUET_OF_FOREST,
+    /* 0x82 */ GI_BOLERO_OF_FIRE,
+    /* 0x83 */ GI_SERENADE_OF_WATER,
+    /* 0x81 */ GI_NOCTURNE_OF_SHADOW,
+    /* 0x82 */ GI_REQUIEM_OF_SPIRIT,
+    /* 0x83 */ GI_PRELUDE_OF_LIGHT,
+
     /* 0x84 */ GI_MAX
 } GetItemID;
 
@@ -513,7 +530,8 @@ typedef enum {
     /* 0x74 */ GID_KOKIRI_EMERALD,
     /* 0x74 */ GID_GORON_RUBY,
     /* 0x74 */ GID_ZORA_SAPPHIRE,
-    /* 0x75 */ GID_MAX
+    /* 0x75 */ GID_SONG_GENERIC,
+    /* 0x76 */ GID_MAX
 } GetItemDrawID;
 
 typedef enum {

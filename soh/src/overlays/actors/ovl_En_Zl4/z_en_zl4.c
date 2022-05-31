@@ -227,10 +227,30 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
+void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (!Flags_GetTreasure(globalCtx, 0x1F) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
+            gSaveContext.eventChkInf[4] != 1 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
+            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+
+            if (func_8002F434(&zelda->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        } else if (Flags_GetTreasure(globalCtx, 0x1F)) {
+            gSaveContext.unk_13EE = 0x32;
+            gSaveContext.eventChkInf[4] |= 1;
+        }
+    }
+}
+
 s16 func_80B5B9B0(GlobalContext* globalCtx, Actor* thisx) {
+    EnZl4* this = (EnZl4*)thisx;
+
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
         return false;
     }
+
     return true;
 }
 
@@ -372,6 +392,12 @@ void EnZl4_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
+    if (gSaveContext.n64ddFlag) {
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
+        this->actionFunc = EnZl4_Idle;
+        return;
+    }
+
     if (gSaveContext.sceneSetupIndex >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
@@ -389,6 +415,7 @@ void EnZl4_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->csState = ZL4_CS_LEGEND;
             this->talkState = 0;
         }
+
         this->actionFunc = EnZl4_Cutscene;
     }
 }
@@ -434,6 +461,7 @@ s32 EnZl4_CsWaitForPlayer(EnZl4* this, GlobalContext* globalCtx) {
             return false;
         }
     }
+
     playerx->world.pos = this->actor.world.pos;
     rotY = this->actor.shape.rot.y;
     playerx->world.pos.x += 56.0f * Math_SinS(rotY);
@@ -1196,7 +1224,13 @@ void EnZl4_Cutscene(EnZl4* this, GlobalContext* globalCtx) {
 void EnZl4_Idle(EnZl4* this, GlobalContext* globalCtx) {
     func_800343CC(globalCtx, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 60.0f, EnZl4_GetText,
                   func_80B5B9B0);
+
     func_80B5BB78(this, globalCtx);
+    
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardZeldaChild(this, globalCtx, HC_ZELDAS_LETTER);
+        return;
+    }
 }
 
 void EnZl4_TheEnd(EnZl4* this, GlobalContext* globalCtx) {

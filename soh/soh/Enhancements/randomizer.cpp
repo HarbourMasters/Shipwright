@@ -1148,9 +1148,28 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     }
 }
 
+std::string sanitize(std::string stringValue) {
+    // Add backslashes.
+    for (auto i = stringValue.begin();;) {
+        auto const pos =
+            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
+        if (pos == stringValue.end()) {
+            break;
+        }
+        i = std::next(stringValue.insert(pos, '\\'), 2);
+    }
+
+    // Removes others.
+    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
+                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
+                      stringValue.end());
+
+    return stringValue;
+}
+
 void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     // todo pull this in from cvar or something
-    std::ifstream spoilerFileStream(spoilerFileName);
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
 
@@ -1447,6 +1466,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_ARROWS_LARGE;
         case DEKU_STICK_1:
             return GI_STICKS_1;
+
         case LIGHT_MEDALLION:
             return GI_MEDALLION_LIGHT;
         case FOREST_MEDALLION:
@@ -1459,12 +1479,40 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_MEDALLION_SHADOW;
         case SPIRIT_MEDALLION:
             return GI_MEDALLION_SPIRIT;
+
         case KOKIRI_EMERALD:
             return GI_STONE_KOKIRI;
         case GORON_RUBY:
             return GI_STONE_GORON;
         case ZORA_SAPPHIRE:
             return GI_STONE_ZORA;
+
+        case ZELDAS_LULLABY:
+            return GI_ZELDAS_LULLABY;
+        case SUNS_SONG:
+            return GI_SUNS_SONG;
+        case EPONAS_SONG:
+            return GI_EPONAS_SONG;
+        case SONG_OF_STORMS:
+            return GI_SONG_OF_STORMS;
+        case SONG_OF_TIME:
+            return GI_SONG_OF_TIME;
+        case SARIAS_SONG:
+            return GI_SARIAS_SONG;
+
+        case MINUET_OF_FOREST:
+            return GI_MINUET_OF_FOREST;
+        case BOLERO_OF_FIRE:
+            return GI_BOLERO_OF_FIRE;
+        case SERENADE_OF_WATER:
+            return GI_SERENADE_OF_WATER;
+        case NOCTURNE_OF_SHADOW:
+            return GI_NOCTURNE_OF_SHADOW;
+        case REQUIEM_OF_SPIRIT:
+            return GI_REQUIEM_OF_SPIRIT;
+        case PRELUDE_OF_LIGHT:
+            return GI_PRELUDE_OF_LIGHT;
+
         default:
             return ogItemId;
     }

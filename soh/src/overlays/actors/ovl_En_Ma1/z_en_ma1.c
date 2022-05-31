@@ -271,6 +271,10 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
+    if (gSaveContext.n64ddFlag) {
+        gSaveContext.infTable[8] |= 0x800;
+    }
+
     if (!func_80AA08C4(this, globalCtx)) {
         Actor_Kill(&this->actor);
         return;
@@ -285,6 +289,10 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.eventChkInf[1] |= 0x40;
+        }
+
         this->actionFunc = func_80AA0F44;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     }
@@ -324,7 +332,12 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_MALON_EGG, GI_WEIRD_EGG);
+            func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        }
     }
 }
 
@@ -334,6 +347,23 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0D88;
         gSaveContext.eventChkInf[1] |= 4;
         globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
+    }
+}
+
+void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!Flags_GetTreasure(globalCtx, 0x1F) &&
+        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE) &&
+        Actor_TextboxIsClosing(&malon->actor, globalCtx)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+
+        if (func_8002F434(&malon->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
+            Flags_SetTreasure(globalCtx, 0x1F);
+        }
+    } else if (Flags_GetTreasure(globalCtx, 0x1F) && !Player_InBlockingCsMode(globalCtx, player)) {
+        gSaveContext.unk_13EE = 0x32;
+        gSaveContext.eventChkInf[4] |= 1;
     }
 }
 
@@ -348,6 +378,11 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
         if (this->skelAnime.animation != &gMalonChildSingAnim) {
             EnMa1_ChangeAnim(this, ENMA1_ANIM_3);
         }
+    }
+
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardMalon(this, globalCtx, HC_ZELDAS_LETTER);
+        return;
     }
 
     if (gSaveContext.eventChkInf[1] & 0x40) {
