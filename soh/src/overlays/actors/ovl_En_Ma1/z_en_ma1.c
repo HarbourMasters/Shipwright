@@ -289,6 +289,10 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.eventChkInf[1] |= 0x40;
+        }
+
         this->actionFunc = func_80AA0F44;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     }
@@ -329,7 +333,7 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0EFC;
     } else {
         if (gSaveContext.n64ddFlag) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_LETTER_ZELDA);
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_MALON_EGG, GI_WEIRD_EGG);
             func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
@@ -352,7 +356,7 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Randomiz
     if (!Flags_GetTreasure(globalCtx, 0x1F) &&
         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE) &&
         Actor_TextboxIsClosing(&malon->actor, globalCtx)) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
 
         if (func_8002F434(&malon->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
             Flags_SetTreasure(globalCtx, 0x1F);
