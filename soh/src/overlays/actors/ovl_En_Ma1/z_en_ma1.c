@@ -381,7 +381,7 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardMalon(this, globalCtx, HC_ZELDAS_LETTER);
+        GivePlayerRandoRewardMalon(this, globalCtx, SONG_FROM_MALON);
         return;
     }
 
