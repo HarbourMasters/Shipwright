@@ -387,6 +387,9 @@ s32 func_80AF5DFC(EnSa* this, GlobalContext* globalCtx) {
         return 1;
     }
     if (globalCtx->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
+        if (Flags_GetTreasure(globalCtx, 0x1F)) {
+            return 2;
+        }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
     }
     if (globalCtx->sceneNum == SCENE_SPOT04 && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -614,10 +617,30 @@ void func_80AF67D0(EnSa* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (!Flags_GetTreasure(globalCtx, 0x1F) &&
+            gSaveContext.eventChkInf[4] & 1) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SARIAS_SONG);
+
+            if (func_8002F434(&saria->actor, globalCtx, getItemId, 100000.0f, 100000.0f) == true) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        }
+    }
+}
+
 void func_80AF683C(EnSa* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Gameplay_InCsMode(globalCtx)) {
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoRewardSaria(this, globalCtx, SONG_FROM_SARIA);
+            return;
+        }
+
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(spot05_scene_Cs_005730);
         gSaveContext.cutsceneTrigger = 1;
         this->actionFunc = func_80AF68E4;
