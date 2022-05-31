@@ -271,6 +271,10 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
+    if (gSaveContext.n64ddFlag) {
+        gSaveContext.infTable[8] |= 0x800;
+    }
+
     if (!func_80AA08C4(this, globalCtx)) {
         Actor_Kill(&this->actor);
         return;
@@ -324,7 +328,13 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+
+        if (gSaveContext.n64ddFlag) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_GREAT_FAIRY_REWARD, GI_LETTER_ZELDA);
+            func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        }
     }
 }
 
@@ -334,6 +344,22 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0D88;
         gSaveContext.eventChkInf[1] |= 4;
         globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
+    }
+}
+
+u8 malonSuccess;
+void GivePlayerRandoRewardMalon(EnMa1* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (malonSuccess == 0) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+
+            if (func_8002F434(&zelda->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
+                malonSuccess = 1;
+            }
+        } else if (malonSuccess == 1) {
+            gSaveContext.unk_13EE = 0x32;
+            gSaveContext.eventChkInf[4] |= 1;
+        }
     }
 }
 
@@ -393,6 +419,13 @@ void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = EnMa1_DoNothing;
     }
 }
+
+/*
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoRewardMalon(this, globalCtx, HC_ZELDAS_LETTER);
+            return;
+        }
+*/
 
 void EnMa1_DoNothing(EnMa1* this, GlobalContext* globalCtx) {
 }

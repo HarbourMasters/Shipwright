@@ -197,6 +197,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"GF Chest", GF_CHEST},
     {"GF HBA 1000 Points", GF_HBA_1000_POINTS},
     {"GF HBA 1500 Points", GF_HBA_1500_POINTS},
+    {"HC Zeldas Letter", HC_ZELDAS_LETTER},
     {"Wasteland Chest", WASTELAND_CHEST},
     {"Colossus Great Fairy Reward", COLOSSUS_GREAT_FAIRY_REWARD},
     {"Colossus Freestanding PoH", COLOSSUS_FREESTANDING_POH},
@@ -1095,6 +1096,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_REQUIEM_OF_SPIRIT;
         case PRELUDE_OF_LIGHT:
             return GI_PRELUDE_OF_LIGHT;
+
         default:
             return ogItemId;
     }
