@@ -1,6 +1,13 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+typedef float  f32;
+
 typedef struct {
     u8 r, g, b;
 } Color_RGB8;
@@ -30,5 +37,9 @@ typedef union {
     };
     u16 rgba;
 } Color_RGBA16;
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

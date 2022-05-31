@@ -162,13 +162,13 @@ void Ship::GameOverlay::Draw() {
 			ImVec4 color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 			switch (var->type) {
-			case CVAR_TYPE_FLOAT:
+			case CVarType::Float:
 				this->TextDraw(30, textY, true, color, "%s %.2f", text, var->value.valueFloat);
 				break;
-			case CVAR_TYPE_S32:
+			case CVarType::S32:
 				this->TextDraw(30, textY, true, color, "%s %d", text, var->value.valueS32);
 				break;
-			case CVAR_TYPE_STRING:
+			case CVarType::String:
 				this->TextDraw(30, textY, true, color, "%s %s", text, var->value.valueStr);
 				break;
 			}
