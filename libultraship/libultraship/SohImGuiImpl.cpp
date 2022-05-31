@@ -730,16 +730,18 @@ namespace SohImGui {
 
 		ImGui::Separator();
 
-                EnhancementCheckbox("Dpad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("DPad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("DPad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
 		    
 		ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
-                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);  
+                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
 
 		ImGui::Separator();  
 		    
