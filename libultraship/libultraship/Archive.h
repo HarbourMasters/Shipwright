@@ -34,9 +34,9 @@ namespace Ship
 		bool AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize);
 		bool RemoveFile(const std::string& path);
 		bool RenameFile(const std::string& oldPath, const std::string& newPath);
-		std::vector<SFILE_FIND_DATA> ListFiles(const std::string& searchMask);
-		bool HasFile(const std::string& searchMask);
-		std::string HashToString(uint64_t hash);
+		std::vector<SFILE_FIND_DATA> ListFiles(const std::string& searchMask) const;
+		bool HasFile(const std::string& searchMask) const;
+		const std::string* HashToString(uint64_t hash) const;
 	protected:
 		bool Load(bool enableWriting, bool genCRCMap);
 		bool Unload();

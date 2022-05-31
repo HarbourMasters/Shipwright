@@ -112,24 +112,19 @@ extern "C" {
             }
         }
 
-        ModInternal::bindHook(CONTROLLER_READ);
-        ModInternal::initBindHook(1,
-            HookParameter({ .name = "cont_pad", .parameter = (void*)pad })
-        );
-        ModInternal::callBindHook(0);
+        ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
     }
 
-    char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc) {
-        std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
-        strcpy(alloc, hashStr.c_str());
-        return (char*)hashStr.c_str();
+    const char* ResourceMgr_GetNameByCRC(uint64_t crc) {
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        return hashStr != nullptr ? hashStr->c_str() : nullptr;
     }
 
     Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc) {
-        std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
-        if (hashStr != "") {
-            auto res = std::static_pointer_cast<Ship::Array>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr));
+        if (hashStr != nullptr) {
+            auto res = std::static_pointer_cast<Ship::Array>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
 
             //if (res != nullptr)
                 return (Vtx*)res->vertices.data();
@@ -142,10 +137,10 @@ extern "C" {
     }
 
     int32_t* ResourceMgr_LoadMtxByCRC(uint64_t crc) {
-        std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
-        if (hashStr != "") {
-            auto res = std::static_pointer_cast<Ship::Matrix>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr));
+        if (hashStr != nullptr) {
+            auto res = std::static_pointer_cast<Ship::Matrix>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (int32_t*)res->mtx.data();
         } else {
             return nullptr;
@@ -153,10 +148,10 @@ extern "C" {
     }
 
     Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc) {
-        std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
-        if (hashStr != "") {
-            auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr));
+        if (hashStr != nullptr) {
+            auto res = std::static_pointer_cast<Ship::DisplayList>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (Gfx*)&res->instructions[0];
         } else {
             return nullptr;
@@ -164,17 +159,12 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByCRC(uint64_t crc)  {
-        const std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
-        if (!hashStr.empty())  {
-            const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr).get());
+        if (hashStr != nullptr)  {
+            const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get());
 
-            ModInternal::bindHook(LOAD_TEXTURE);
-            ModInternal::initBindHook(2,
-                HookParameter({.name = "path", .parameter = (void*)hashStr.c_str() }),
-                HookParameter({.name = "texture", .parameter = static_cast<void*>(&res->imageData) })
-            );
-            ModInternal::callBindHook(0);
+            ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
         } else {
@@ -184,11 +174,11 @@ extern "C" {
 
     void ResourceMgr_RegisterResourcePatch(uint64_t hash, uint32_t instrIndex, uintptr_t origData)
     {
-        std::string hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(hash);
+        const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(hash);
 
-        if (hashStr != "")
+        if (hashStr != nullptr)
         {
-            auto res = (Ship::Texture*)Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr).get();
+            auto res = (Ship::Texture*)Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get();
 
             Ship::Patch patch;
             patch.crc = hash;
@@ -201,12 +191,7 @@ extern "C" {
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
         const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
-        ModInternal::bindHook(LOAD_TEXTURE);
-        ModInternal::initBindHook(2,
-            HookParameter({ .name = "path", .parameter = (void*)texPath }),
-            HookParameter({ .name = "texture", .parameter = static_cast<void*>(&res->imageData) })
-        );
-        ModInternal::callBindHook(0);
+        ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
@@ -287,13 +272,14 @@ namespace Ship {
             gfx_run(Commands, m);
             gfx_end_frame();
         }
-        gfx_run(Commands, {});
-        gfx_end_frame();
     }
 
-    void Window::SetFrameDivisor(int divisor) {
-        gfx_set_framedivisor(divisor);
-        //gfx_set_framedivisor(0);
+    void Window::SetTargetFps(int fps) {
+        gfx_set_target_fps(fps);
+    }
+
+    void Window::SetMaximumFrameLatency(int latency) {
+        gfx_set_maximum_frame_latency(latency);
     }
 
     void Window::GetPixelDepthPrepare(float x, float y) {

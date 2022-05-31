@@ -46,12 +46,11 @@ struct TextureCacheValue {
     uint8_t cms, cmt;
     bool linear_filter;
 
-    // Old versions of libstdc++ fail to compile this
-#ifdef _MSC_VER
-    std::list<TextureCacheMap::iterator>::iterator lru_location;
-#else
-    std::list<int>::iterator lru_location;
-#endif
+    std::list<struct TextureCacheMapIter>::iterator lru_location;
+};
+
+struct TextureCacheMapIter {
+    TextureCacheMap::iterator it;
 };
 
 extern "C" {
@@ -68,7 +67,9 @@ struct GfxRenderingAPI* gfx_get_current_rendering_api(void);
 void gfx_start_frame(void);
 void gfx_run(Gfx* commands, const std::unordered_map<Mtx*, MtxF>& mtx_replacements);
 void gfx_end_frame(void);
-void gfx_set_framedivisor(int);
+void gfx_set_target_fps(int);
+void gfx_set_maximum_frame_latency(int latency);
+float gfx_get_detected_hz(void);
 void gfx_texture_cache_clear();
 extern "C" int gfx_create_framebuffer(uint32_t width, uint32_t height);
 void gfx_get_pixel_depth_prepare(float x, float y);
