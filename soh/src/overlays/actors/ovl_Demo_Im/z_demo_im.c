@@ -901,7 +901,8 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
 u8 successImpa;
 void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
     if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        if (successImpa == 0) {
+        if (successImpa == 0 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
+            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
             GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
 
             if (func_8002F434(impa, globalCtx, getItemId, 100.0f, 50.0f) == true) {

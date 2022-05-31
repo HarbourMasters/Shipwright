@@ -227,16 +227,17 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
-u8 zeldaSuccess;
 void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
     if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        if (zeldaSuccess == 0) {
+        if (!Flags_GetTreasure(globalCtx, 0x1F) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
+            gSaveContext.eventChkInf[4] != 1 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
+            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
             GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
 
             if (func_8002F434(&zelda->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
-                zeldaSuccess = 1;
+                Flags_SetTreasure(globalCtx, 0x1F);
             }
-        } else if (zeldaSuccess == 1) {
+        } else if (Flags_GetTreasure(globalCtx, 0x1F)) {
             gSaveContext.unk_13EE = 0x32;
             gSaveContext.eventChkInf[4] |= 1;
         }
