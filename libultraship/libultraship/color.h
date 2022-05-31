@@ -37,4 +37,8 @@ typedef union {
     u16 rgba;
 } Color_RGBA16;
 
+#ifdef __cplusplus
+};
+#endif
+
 #endif
