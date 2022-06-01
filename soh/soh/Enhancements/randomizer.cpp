@@ -1242,6 +1242,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOMBCHUS_5;
         case BOMBCHUS_20:
             return GI_BOMBCHUS_20;
+        case POCKET_EGG:
+            return GI_POCKET_EGG;
         case ICE_TRAP:
             return GI_ICE_TRAP;
         case PIECE_OF_HEART:
@@ -1538,6 +1540,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     } else {
                         return KAK_ANJU_AS_CHILD;
                     }
+                case 359:
+                    return KAK_MAN_ON_ROOF;
             }
         case 17:
             switch (actorId) {
@@ -2046,6 +2050,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GANONS_TOWER_BOSS_KEY_CHEST;
             }
         case 87:
+            switch (actorId) {
+                case 271:
+                    if (LINK_IS_ADULT) {
+                        return LH_SUN;
+                    } else {
+                        return LH_UNDERWATER_ITEM;
+                    }
+            }
             switch(actorParams) {
                 case 7686:
                     return LH_FREESTANDING_POH;
