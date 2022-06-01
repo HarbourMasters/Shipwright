@@ -24,8 +24,8 @@ private:
 #endif
 
 #ifndef __cplusplus
-void InitOTR();
-void Graph_ProcessFrame(void (*run_one_game_iter)(void));
+void OTRAudio_Init();
+void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
 void OTRLogString(const char* src);

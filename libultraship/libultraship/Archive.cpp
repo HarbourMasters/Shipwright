@@ -142,7 +142,7 @@ namespace Ship {
 		return FileToLoad;
 	}
 
-	bool Archive::AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize) {
+	bool Archive::AddFile(const std::string& oPath, uintptr_t fileData, DWORD dwFileSize) {
 		HANDLE hFile;
 #ifdef _WIN32
 		SYSTEMTIME sysTime;
@@ -154,6 +154,11 @@ namespace Ship {
 		time_t stupidHack;
 		time(&stupidHack);
 #endif
+
+		std::string path = oPath;
+
+		StringHelper::ReplaceOriginal(path, "\\", "/");
+
 		if (!SFileCreateFile(mainMPQ, path.c_str(), stupidHack, dwFileSize, 0, MPQ_FILE_COMPRESS, &hFile)) {
 			SPDLOG_ERROR("({}) Failed to create file of {} bytes {} in archive {}", GetLastError(), dwFileSize, path.c_str(), MainPath.c_str());
 			return false;
