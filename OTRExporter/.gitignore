@@ -341,6 +341,7 @@ build/
 ZAPDUtils/build/
 ZAPD/BuildInfo.h
 baserom/
+baserom_ntsc/
 *.vtx.inc
 *.otr
 *.swp
