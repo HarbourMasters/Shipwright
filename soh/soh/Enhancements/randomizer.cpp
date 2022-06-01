@@ -1306,15 +1306,15 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case HOVER_BOOTS:
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
-            // todo: test this, getting 0 from CUR_UPG_VALUE happens in the bomb checks
-            // i'm assuming it happens here (where it isn't handled).
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case ITEM_NONE: 
+                case 0: 
                     return GI_BOMB_BAG_20;
-                case ITEM_BOMB_BAG_20:
+                case 1:
                     return GI_BOMB_BAG_30;
-                case ITEM_BOMB_BAG_30:
+                case 2:
                     return GI_BOMB_BAG_40;
+                case 3:
+                    return GI_RUPEE_BLUE;
             }
         case PROGRESSIVE_STRENGTH_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
