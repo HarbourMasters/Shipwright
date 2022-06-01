@@ -727,13 +727,14 @@ namespace SohImGui {
 	    {
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::CheckboxFlags("Use Controller Navigation",     &io.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad);      
-
+		Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+ 
 		ImGui::Separator();
 
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-		    
+
 		ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
