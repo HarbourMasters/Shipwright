@@ -713,6 +713,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx, SramContext* sramCtx) {
     osSyncPrintf("newf=%x,%x,%x,%x,%x,%x\n", gSaveContext.newf[0], gSaveContext.newf[1], gSaveContext.newf[2],
                  gSaveContext.newf[3], gSaveContext.newf[4], gSaveContext.newf[5]);
     osSyncPrintf("\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+    
+    if (gSaveContext.n64ddFlag) {
+        GiveLinksPocketMedallion();
+        gSaveContext.cutsceneIndex = 0;
+    }
 
     ptr = (u16*)&gSaveContext;
     j = 0;

@@ -2050,6 +2050,11 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx) {
     u8 requiredAge;
     s16 i;
 
+    if (gSaveContext.n64ddFlag) {
+        gSaveContext.showTitleCard = false;
+        return;
+    }
+
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
 
