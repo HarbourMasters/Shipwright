@@ -568,6 +568,10 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset)
     if (cachedCustomSFs.find(str) != cachedCustomSFs.end())
         return cachedCustomSFs[str];
 
+    if (romOffset == 0x14f0) {
+        int bp = 0;
+    }
+
     // Check if our file is actually a wav...
     auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(str);
     uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
