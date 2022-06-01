@@ -5,7 +5,7 @@
 #include "Archive.h"
 #include "GameVersions.h"
 #include <Utils/StringHelper.h>
-#include "Lib/StormLib/StormLib.h"
+#include "StormLib.h"
 
 namespace Ship {
 
