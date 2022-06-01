@@ -195,6 +195,8 @@
     <ClCompile Include="WarningHandler.cpp" />
     <ClCompile Include="yaz0\yaz0.cpp" />
     <ClCompile Include="ZArray.cpp" />
+    <ClCompile Include="ZAudio.cpp" />
+    <ClCompile Include="ZAudioDecode.cpp" />
     <ClCompile Include="ZBackground.cpp" />
     <ClCompile Include="ZCutsceneMM.cpp" />
     <ClCompile Include="ZLimb.cpp" />
@@ -288,6 +290,7 @@
     <ClInclude Include="yaz0\yaz0.h" />
     <ClInclude Include="ZAnimation.h" />
     <ClInclude Include="ZArray.h" />
+    <ClInclude Include="ZAudio.h" />
     <ClInclude Include="ZBackground.h" />
     <ClInclude Include="ZBlob.h" />
     <ClInclude Include="ZCollision.h" />

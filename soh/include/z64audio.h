@@ -120,7 +120,8 @@ typedef struct {
     /* 0x08 */ s16 book[1]; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
-typedef struct {
+typedef struct 
+{
     union {
         struct {
             /* 0x00 */ u32 codec : 4;
