@@ -1,6 +1,8 @@
 #include "global.h"
 #include "Cvar.h"
 
+extern bool gUseLegacySD;
+
 void Audio_InitNoteSub(Note* note, NoteSubEu* sub, NoteSubAttributes* attrs) {
     f32 volRight, volLeft;
     s32 smallPanIndex;
@@ -307,7 +309,7 @@ SoundFontSound* Audio_InstrumentGetSound(Instrument* instrument, s32 semitone) {
 
 Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
     Instrument* inst;
-
+    
     if (fontId == 0xFF) {
         return NULL;
     }
@@ -317,16 +319,31 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
         return NULL;
     }
 
-    if (instId >= gAudioContext.soundFonts[fontId].numInstruments) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x3000000;
-        return NULL;
+    int instCnt = 0;
+
+    if (gUseLegacySD) {
+        instCnt = gAudioContext.soundFonts[fontId].numInstruments;
+        inst = gAudioContext.soundFonts[fontId].instruments[instId];
+
+        if (instId >= gAudioContext.soundFonts[fontId].numInstruments)
+            if (instId >= instCnt) {
+                gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x3000000;
+                return NULL;
+            }
+    } else {
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+
+        if (instId >= sf->numInstruments)
+            return NULL;
+
+        inst = sf->instruments[instId];
     }
 
-    inst = gAudioContext.soundFonts[fontId].instruments[instId];
     if (inst == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x1000000;
         return inst;
     }
+    
 
     return inst;
 }
@@ -343,12 +360,17 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
         return NULL;
     }
 
-    if (drumId >= gAudioContext.soundFonts[fontId].numDrums) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x4000000;
-        return NULL;
-    }
+    if (gUseLegacySD) {
+         if (drumId >= gAudioContext.soundFonts[fontId].numDrums) {
+         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x4000000;
+         return NULL;
+        }
 
-    drum = gAudioContext.soundFonts[fontId].drums[drumId];
+         drum = gAudioContext.soundFonts[fontId].drums[drumId];
+    } else {
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        drum = sf->drums[drumId];
+    }
 
     if (drum == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + drumId) + 0x5000000;
@@ -369,12 +391,17 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
         return NULL;
     }
 
-    if (sfxId >= gAudioContext.soundFonts[fontId].numSfx) {
-        gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x4000000;
-        return NULL;
-    }
+    if (gUseLegacySD) {
+         if (sfxId >= gAudioContext.soundFonts[fontId].numSfx) {
+         gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x4000000;
+         return NULL;
+        }
 
-    sfx = &gAudioContext.soundFonts[fontId].soundEffects[sfxId];
+         sfx = &gAudioContext.soundFonts[fontId].soundEffects[sfxId];
+    } else {
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        sfx = &sf->soundEffects[sfxId];
+    }
 
     if (sfx == NULL) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + sfxId) + 0x5000000;

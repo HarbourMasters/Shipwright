@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayExporter.h" />
+    <ClInclude Include="AudioExporter.h" />
     <ClInclude Include="BackgroundExporter.h" />
     <ClInclude Include="BlobExporter.h" />
     <ClInclude Include="CollisionExporter.h" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArrayExporter.cpp" />
+    <ClCompile Include="AudioExporter.cpp" />
     <ClCompile Include="BackgroundExporter.cpp" />
     <ClCompile Include="BlobExporter.cpp" />
     <ClCompile Include="CollisionExporter.cpp" />
