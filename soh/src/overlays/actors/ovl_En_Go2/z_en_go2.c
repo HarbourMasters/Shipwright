@@ -586,7 +586,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
         case TEXT_STATE_DONE:
             if (this->actor.textId == 0x305E) {
                 if (!gSaveContext.bgsFlag) {
-                    EnGo2_GetItem(this, globalCtx, GI_SWORD_BGS);
+                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemFromKnownCheck(DMT_BIGGORON, GI_SWORD_BGS) : GI_SWORD_BGS);
                     this->actionFunc = EnGo2_SetupGetItem;
                     return 2;
                 } else {
