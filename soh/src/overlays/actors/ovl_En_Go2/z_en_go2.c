@@ -513,7 +513,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x3036:
-                    EnGo2_GetItem(this, globalCtx, GI_TUNIC_GORON);
+                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON) : GI_TUNIC_GORON);
                     this->actionFunc = EnGo2_SetupGetItem;
                     return 2;
                 case 0x3037:
