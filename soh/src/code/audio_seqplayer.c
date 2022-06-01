@@ -938,8 +938,16 @@ u8 AudioSeq_GetInstrument(SequenceChannel* channel, u8 instId, Instrument** inst
         *instOut = NULL;
         return 0;
     }
-    adsr->envelope = inst->envelope;
-    adsr->releaseRate = inst->releaseRate;
+
+    if (inst->envelope != NULL) 
+    {
+        adsr->envelope = inst->envelope;
+        adsr->releaseRate = (inst->releaseRate);
+    }
+    else {
+        adsr->envelope = gDefaultEnvelope;
+    }
+
     *instOut = inst;
     instId += 2;
     return instId;

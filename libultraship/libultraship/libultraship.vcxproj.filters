@@ -345,6 +345,12 @@
     <ClCompile Include="GameOverlay.cpp">
       <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\Resources\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\AudioFactory.cpp">
+      <Filter>Source Files\Resources\Factories</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -637,6 +643,12 @@
     </ClInclude>
     <ClInclude Include="GameOverlay.h">
       <Filter>Source Files\CustomImpl\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files\Resources\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Factories\AudioFactory.h">
+      <Filter>Header Files\Resources\Factories</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

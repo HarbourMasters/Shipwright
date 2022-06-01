@@ -36,6 +36,7 @@
 #include <Utils/StringHelper.h>
 
 #include <SDL2/SDL_scancode.h>
+#include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
 
@@ -57,8 +58,15 @@ extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
+extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 
 // C->C++ Bridge
+extern "C" void OTRAudio_Init() 
+{
+    // Precache all our samples, sequences, etc...
+    ResourceMgr_CacheDirectory("audio");
+}
+
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
@@ -72,6 +80,7 @@ extern "C" void InitOTR() {
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
+    OTRAudio_Init();
     DebugConsole_Init();
     Debug_Init();
 }
@@ -530,10 +539,233 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
     return (CollisionHeader*)colHeader;
 }
 
-extern "C" Vtx * ResourceMgr_LoadVtxByName(const char* path)
+extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 {
 	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 	return (Vtx*)res->vertices.data();
+}
+
+extern "C" char* ResourceMgr_LoadSeqByID(int seqID) 
+{
+    std::string fmtStr = "audio/sequences/seq_%02X";
+    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(StringHelper::Sprintf(fmtStr.c_str(), seqID)).get()->buffer.get();
+}
+
+extern "C" int ResourceMgr_GetSeqSizeByID(int seqID) 
+{
+    return OTRGlobals::Instance->context->GetResourceManager()
+        ->LoadFile(StringHelper::Sprintf("audio/sequences/seq_%02X", seqID))
+        .get()
+        ->dwBufferSize;
+}
+
+std::map<std::string, SoundFontSample*> cachedCustomSFs;
+
+extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset) 
+{
+    auto str = StringHelper::Sprintf("audio/samples/sample_%08X", romOffset);
+
+    if (cachedCustomSFs.find(str) != cachedCustomSFs.end())
+        return cachedCustomSFs[str];
+
+    // Check if our file is actually a wav...
+    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(str);
+    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
+    uint8_t* strem2 = (uint8_t*)strem;
+
+    if (strem2[0] == 'R' && strem2[1] == 'I' && strem2[2] == 'F' && strem2[3] == 'F') 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+
+        *strem++; // RIFF
+        *strem++; // size
+        *strem++; // WAVE
+
+        *strem++; // fmt
+        int fmtChunkSize = *strem++;
+        // OTRTODO: Make sure wav format is what the audio driver wants!
+
+        strem = (uint32_t*)&strem2[0x0C + fmtChunkSize + 8 + 4];
+        sampleC->size = *strem++;
+        sampleC->sampleAddr = (uint8_t*)strem;
+        sampleC->codec = CODEC_S16;
+
+        // OTRTODO: Grab loop data from wav
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size / 2;
+        sampleC->loop->count = 0;
+        
+        cachedCustomSFs[str] = sampleC;
+        return sampleC;
+    }
+
+    auto sample = std::static_pointer_cast<Ship::AudioSample>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(str));
+    
+    if (sample == nullptr)
+        return NULL;
+
+    if (sample->cachedGameAsset != nullptr) 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)sample->cachedGameAsset;
+
+        return (SoundFontSample*)sample->cachedGameAsset;
+    }
+    else 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+
+        sampleC->sampleAddr = sample->data.data();
+
+        sampleC->size = sample->data.size();
+        sampleC->codec = sample->codec;
+        sampleC->medium = sample->medium;
+        sampleC->unk_bit26 = sample->unk_bit26;
+        sampleC->unk_bit25 = sample->unk_bit25;
+
+        sampleC->book = (AdpcmBook*)malloc(sizeof(AdpcmBook) + (sample->book.books.size() * sizeof(int16_t)));
+        sampleC->book->npredictors = sample->book.npredictors;
+        sampleC->book->order = sample->book.order;
+
+        for (int i = 0; i < sample->book.books.size(); i++)
+            sampleC->book->book[i] = sample->book.books[i];
+
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = sample->loop.start;
+        sampleC->loop->end = sample->loop.end;
+        sampleC->loop->count = sample->loop.count;
+
+        for (int i = 0; i < sample->loop.states.size(); i++)
+            sampleC->loop->state[i] = sample->loop.states[i];
+
+        sample->cachedGameAsset = sampleC;
+        return sampleC;
+    }
+}
+
+extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
+    auto soundFont =
+        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(
+            StringHelper::Sprintf("audio/fonts/font_%02X", fontIndex)));
+
+    if (soundFont == nullptr)
+        return NULL;
+
+    if (soundFont->cachedGameAsset != nullptr) 
+    {
+        return (SoundFont*)soundFont->cachedGameAsset;
+    }
+    else 
+    {
+        SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
+
+        soundFontC->numDrums = soundFont->drums.size();
+        soundFontC->numInstruments = soundFont->instruments.size();
+        soundFontC->numSfx = soundFont->soundEffects.size();
+        soundFontC->sampleBankId1 = soundFont->data1 >> 8;
+        soundFontC->sampleBankId2 = soundFont->data1 & 0xFF;
+
+        soundFontC->drums = (Drum**)malloc(sizeof(Drum*) * soundFont->drums.size());
+
+        for (int i = 0; i < soundFont->drums.size(); i++)
+        {
+            Drum* drum = (Drum*)malloc(sizeof(Drum));
+
+            drum->releaseRate = soundFont->drums[i].releaseRate;
+            drum->pan = soundFont->drums[i].pan;
+            drum->loaded = 0;
+
+            if (soundFont->drums[i].env.size() == 0)
+                drum->envelope = NULL;
+            else
+            {
+                drum->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->drums[i].env.size());
+
+                for (int k = 0; k < soundFont->drums[i].env.size(); k++) 
+                {
+                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                }
+            }
+
+            drum->sound.sample = ResourceMgr_LoadAudioSample(soundFont->drums[i].offset);
+            drum->sound.tuning = soundFont->drums[i].tuning;
+
+            soundFontC->drums[i] = drum;
+        }
+
+        soundFontC->instruments = (Instrument**)malloc(sizeof(Instrument*) * soundFont->instruments.size());
+
+        for (int i = 0; i < soundFont->instruments.size(); i++) {
+
+            if (soundFont->instruments[i].isValidEntry) 
+            {
+                Instrument* inst = (Instrument*)malloc(sizeof(Instrument));
+
+                inst->loaded = 0;
+                inst->releaseRate = soundFont->instruments[i].releaseRate;
+                inst->normalRangeLo = soundFont->instruments[i].normalRangeLo;
+                inst->normalRangeHi = soundFont->instruments[i].normalRangeHi;
+
+                if (soundFont->instruments[i].env.size() == 0)
+                    inst->envelope = NULL;
+                else 
+                {
+                    inst->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->instruments[i].env.size());
+                    
+                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++) 
+                    {
+                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                    }
+                }
+                if (soundFont->instruments[i].lowNotesSound != nullptr) 
+                {
+                    inst->lowNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleOffset);
+                    inst->lowNotesSound.tuning = soundFont->instruments[i].lowNotesSound->tuning;
+                } else {
+                    inst->lowNotesSound.sample = NULL;
+                    inst->lowNotesSound.tuning = 0;
+                }
+
+                if (soundFont->instruments[i].normalNotesSound != nullptr) {
+                    inst->normalNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleOffset);
+                    inst->normalNotesSound.tuning = soundFont->instruments[i].normalNotesSound->tuning;
+
+                } else {
+                    inst->normalNotesSound.sample = NULL;
+                    inst->normalNotesSound.tuning = 0;
+                }
+
+                if (soundFont->instruments[i].highNotesSound != nullptr) {
+                    inst->highNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleOffset);
+                    inst->highNotesSound.tuning = soundFont->instruments[i].highNotesSound->tuning;
+                } else {
+                    inst->highNotesSound.sample = NULL;
+                    inst->highNotesSound.tuning = 0;
+                }
+
+                soundFontC->instruments[i] = inst;
+            } else 
+            {
+                soundFontC->instruments[i] = nullptr;
+            }
+        }
+
+        soundFontC->soundEffects = (SoundFontSound*)malloc(sizeof(SoundFontSound) * soundFont->soundEffects.size());
+
+        for (int i = 0; i < soundFont->soundEffects.size(); i++)
+        {
+            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleOffset);
+            soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
+        }
+
+        soundFont->cachedGameAsset = soundFontC;
+        return soundFontC;
+    }
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
