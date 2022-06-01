@@ -25,8 +25,8 @@ CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
 LDFLAGS :=
 
 ifeq ($(UNAME), Linux) #LINUX
-	CXXFLAGS += -march=i386 -m32 -mhard-float
-	CFLAGS += $(WARN) -march=i386
+	CXXFLAGS += -march=i386 -msse2 -mfpmath=sse
+	CFLAGS += $(WARN) -march=i386 -msse2 -mfpmath=sse
 	LDFLAGS += -m32
 endif
 
