@@ -125,7 +125,14 @@ void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
         }
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = GetRandomizedItemId(GI_ARROW_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            if (func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f)) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        }
     }
 }
 
@@ -138,7 +145,17 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     } else {
         if (0) {} // Necessary to match
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId =
+                GetRandomizedItemId(GI_ARROW_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            if (func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f)) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        }
+
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
         }
@@ -211,6 +228,12 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
 
 void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
+    s32 type = this->actor.params & 0xFF;
+
+    if (gSaveContext.n64ddFlag && type == ITEM_ETC_ARROW_FIRE) {
+        this->giDrawId = GetItemModelFromId(
+            GetRandomizedItemId(this->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum));
+    }
 
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_8002ED80(&this->actor, globalCtx, 0);

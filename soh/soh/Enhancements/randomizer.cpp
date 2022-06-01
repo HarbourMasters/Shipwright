@@ -1242,6 +1242,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOMBCHUS_5;
         case BOMBCHUS_20:
             return GI_BOMBCHUS_20;
+        case POCKET_EGG:
+            return GI_POCKET_EGG;
         case ICE_TRAP:
             return GI_ICE_TRAP;
         case PIECE_OF_HEART:
@@ -2048,6 +2050,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return GANONS_TOWER_BOSS_KEY_CHEST;
             }
         case 87:
+            switch (actorId) {
+                case 271:
+                    return LH_SUN;
+            }
             switch(actorParams) {
                 case 7686:
                     return LH_FREESTANDING_POH;
