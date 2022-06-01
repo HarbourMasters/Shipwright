@@ -74,7 +74,7 @@ struct GLTexture {
     bool filter;
 };
 
-static struct GLTexture opengl_tex[0x1000000];
+static std::map<int, GLTexture> opengl_tex;
 static GLint opengl_curtex = 0;
 
 static map<pair<uint64_t, uint32_t>, struct ShaderProgram> shader_program_pool;
