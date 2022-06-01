@@ -227,7 +227,7 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
-void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
+void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, Key check) {
     if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         if (!Flags_GetTreasure(globalCtx, 0x1F) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
             gSaveContext.eventChkInf[4] != 1 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&

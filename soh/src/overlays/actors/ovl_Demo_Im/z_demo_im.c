@@ -899,7 +899,7 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
 }
 
 u8 successImpa;
-void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
+void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, Key check) {
     if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         if (successImpa == 0 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
             (globalCtx->actorCtx.titleCtx.alpha == 0)) {

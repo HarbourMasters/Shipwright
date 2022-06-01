@@ -8,6 +8,7 @@
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer.h"
+
 class OTRGlobals
 {
 public:
@@ -74,8 +75,7 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
-void LoadItemLocations(const char* spoilerFileName);
-void ParseItemLocations(const char* spoilerfilename);
+void ParseItemLocations(SpoilerData spoilerData);
 ItemID GetItemIdFromGetItem(GetItemID getItemId);
 s16 GetItemModelFromId(s16 itemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);

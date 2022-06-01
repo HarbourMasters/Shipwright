@@ -67,12 +67,6 @@ void FileChoose_InitModeUpdate(GameState* thisx) {
         this->nextTitleLabel = FS_TITLE_OPEN_FILE;
         osSyncPrintf("Ｓｒａｍ Ｓｔａｒｔ─Ｌｏａｄ  》》》》》  ");
 
-        if (strcmp(CVar_GetString("gDroppedFile", ""), "") != 0 && CVar_GetS32("gRandomizer", 0) != 0) {
-            LoadItemLocations(CVar_GetString("gDroppedFile", ""));            
-        } else {
-            CVar_SetS32("gRandomizer", 0);
-        }
-
         Sram_VerifyAndLoadAllSaves(this, &this->sramCtx);
         osSyncPrintf("終了！！！\n");
     }
@@ -239,9 +233,6 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
-    if (strcmp(CVar_GetString("gDroppedFile", ""), "") != 0 && CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0) {
-        LoadItemLocations(CVar_GetString("gDroppedFile", ""));
-    }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
@@ -1541,8 +1532,6 @@ void FileChoose_LoadGame(GameState* thisx) {
         SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
         this->state.running = false;
     }
-
-    LoadItemLocations("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

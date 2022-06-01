@@ -40,6 +40,8 @@
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 #endif
+#include "../../soh/include/randomizer/main.cpp"
+#include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
 bool oldCursorState = true;
@@ -54,6 +56,8 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+
+SpoilerData gSpoilerData;
 
 namespace SohImGui {
 
@@ -810,7 +814,7 @@ namespace SohImGui {
                 ImGui::Text("Texture Filter (Needs reload)");
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
                 if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::NONE; fId++) {
+                    for (int fId = 0; fId <= FilteringMode::FILTER_NONE; fId++) {
                         if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
                             INFO("New Filter: %s", filters[fId]);
                             gapi->set_texture_filter((FilteringMode)fId);
@@ -1027,6 +1031,13 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Randomizer"))
             {
                 EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+
+                if (ImGui::Button("Generate Seed") && CVar_GetS32("gRandomizer", 0) != 0) {
+                    GenerateRando();
+                    gSpoilerData = GetSpoilerData();
+                    ParseItemLocations(gSpoilerData);
+                }
+
                 ImGui::EndMenu();
             }
 
