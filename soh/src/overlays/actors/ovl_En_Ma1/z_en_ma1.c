@@ -350,7 +350,7 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
     }
 }
 
-void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Key check) {
+void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!Flags_GetTreasure(globalCtx, 0x1F) &&
@@ -381,7 +381,7 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardMalon(this, globalCtx, SONG_FROM_MALON);
+        GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
         return;
     }
 

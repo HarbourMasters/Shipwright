@@ -899,7 +899,7 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
 }
 
 u8 successImpa;
-void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, Key check) {
+void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
     if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         if (successImpa == 0 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
             (globalCtx->actorCtx.titleCtx.alpha == 0)) {
@@ -922,7 +922,7 @@ void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, Key check)
 void func_80986C30(DemoIm* this, GlobalContext* globalCtx) {
     if (func_80986A5C(this, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardImpa(this, globalCtx, SONG_FROM_IMPA);
+            GivePlayerRandoRewardImpa(this, globalCtx, RC_SONG_FROM_IMPA);
         } else {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;
