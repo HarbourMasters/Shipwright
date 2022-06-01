@@ -239,20 +239,42 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, GlobalContext* globalCtx) {
 
 void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
     u16 getItemId = sGetItemIds[this->actor.params];
+    
+    if (gSaveContext.n64ddFlag) {
+        switch (getItemId) {
+            case GI_RUPEE_GOLD:
+                break;
+            case GI_WALLET_ADULT:
+                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);
+                break;
+            case GI_STONE_OF_AGONY:
+                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY);
+                break;
+            case GI_WALLET_GIANT:
+                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT);
+                break;
+            case GI_BOMBCHUS_10:
+                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10);
+                break;
+            case GI_HEART_PIECE:
+                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE);
+                break;
+        }
+    } else {
+        switch (this->actor.params) {
+            case 1:
+            case 3:
+                switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                    case 0:
+                        getItemId = GI_WALLET_ADULT;
+                        break;
 
-    switch (this->actor.params) {
-        case 1:
-        case 3:
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                case 0:
-                    getItemId = GI_WALLET_ADULT;
-                    break;
-
-                case 1:
-                    getItemId = GI_WALLET_GIANT;
-                    break;
-            }
-            break;
+                    case 1:
+                        getItemId = GI_WALLET_GIANT;
+                        break;
+                }
+                break;
+        }
     }
 
     func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
