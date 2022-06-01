@@ -1238,6 +1238,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_SWORD_KOKIRI;
         case DEKU_SHIELD:
             return GI_SHIELD_DEKU;
+        case BOMBCHUS_5:
+            return GI_BOMBCHUS_5;
         case BOMBCHUS_20:
             return GI_BOMBCHUS_20;
         case ICE_TRAP:
@@ -1752,6 +1754,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             }
         case 8:
             switch(actorParams) {
+                case 273:
+                    return BOTTOM_OF_THE_WELL_FREESTANDING_KEY;
                 case 22600:
                     return BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
                 case 20578:
@@ -1864,6 +1868,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             }
         case 7:
             switch(actorParams) {
+                case 273:
+                    return SHADOW_TEMPLE_FREESTANDING_KEY;
                 case 6177:
                     return SHADOW_TEMPLE_MAP_CHEST;
                 case 5607:
@@ -1956,6 +1962,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             }
         case 11:
             switch(actorParams) {
+                case 273:
+                    return GERUDO_TRAINING_GROUND_FREESTANDING_KEY;
                 case -30573:
                     return GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST;
                 case -30393:
