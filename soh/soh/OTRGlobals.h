@@ -79,7 +79,7 @@ void ParseItemLocations(SpoilerData spoilerData);
 ItemID GetItemIdFromGetItem(GetItemID getItemId);
 s16 GetItemModelFromId(s16 itemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-s32 GetRandomizedItemIdFromKnownCheck(Key randomizerCheck, GetItemID ogId);
+s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif

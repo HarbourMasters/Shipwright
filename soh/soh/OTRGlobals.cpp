@@ -1038,6 +1038,6 @@ extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams,
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
 
-extern "C" s32 GetRandomizedItemIdFromKnownCheck(Key randomizerCheck, GetItemID ogId) {
+extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }

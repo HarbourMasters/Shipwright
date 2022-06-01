@@ -9,7 +9,6 @@
 #include <vector>
 #include "spoiler_log.hpp"
 #include "item_list.hpp"
-#include "randomizerTypes.h"
 
 enum ItemOverride_Type {
     OVR_BASE_ITEM = 0,

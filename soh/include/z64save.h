@@ -63,8 +63,8 @@ typedef struct {
 } FaroresWindData; // size = 0x28
 
 typedef struct {
-    Key check;
-    Key get;
+    RandomizerCheck check;
+    RandomizerGet get;
 } ItemLocation;
 
 typedef struct {

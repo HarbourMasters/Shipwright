@@ -5,14 +5,15 @@
 #include <string>
 #include "../../include/ultra64.h"
 #include "../../include/z64item.h"
-#include <randomizerTypes.h>
 #include "randomizer/keys.hpp"
+#include <randomizer/spoiler_log.hpp>
+#include <randomizerTypes.h>
 
 class Randomizer {
   private:
-    std::unordered_map<Key, Key> itemLocations;
-    GetItemID GetItemFromGet(Key randoGet, GetItemID ogItemId);
-    Key GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+    std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
+    GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
+    RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
     GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
 
   public:
@@ -21,7 +22,7 @@ class Randomizer {
 
     s16 GetItemModelFromId(s16 itemId);
     void ParseItemLocations(SpoilerData spoilerData);
-    GetItemID GetRandomizedItemIdFromKnownCheck(Key randomizerCheck, GetItemID ogId);
+    GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 };
 
