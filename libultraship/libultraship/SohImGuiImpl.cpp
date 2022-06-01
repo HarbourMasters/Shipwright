@@ -41,8 +41,10 @@ IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPAR
 
 #endif
 // #include "../../soh/include/randomizer/main.cpp"
-#include "../../soh/include/randomizer/menu.hpp"
-#include "../../soh/soh/OTRGlobals.h"
+// #include "../../soh/include/randomizer/main.hpp"
+#include "../../soh/include/randomizer/rando_main.hpp"
+#include "../../soh/include/randomizer/spoiler_log.hpp"
+// #include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
 bool oldCursorState = true;
@@ -1034,9 +1036,9 @@ namespace SohImGui {
                 EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
                 if (ImGui::Button("Generate Seed") && CVar_GetS32("gRandomizer", 0) != 0) {
-                    GenerateRandomizer();
-                    gSpoilerData = GetSpoilerData();
-                    ParseItemLocations(gSpoilerData);
+                    RandoMain::GenerateRando();
+                    // gSpoilerData = GetSpoilerData();
+                    // ParseItemLocations(gSpoilerData);
                 }
 
                 ImGui::EndMenu();
