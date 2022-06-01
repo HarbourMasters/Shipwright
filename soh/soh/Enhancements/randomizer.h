@@ -21,7 +21,8 @@ class Randomizer {
     ~Randomizer();
 
     s16 GetItemModelFromId(s16 itemId);
-    void ParseItemLocations(SpoilerData spoilerData);
+    void LoadItemLocations(const char* spoilerFileName);
+    void ParseItemLocationsFile(const char* spoilerFileName);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 };

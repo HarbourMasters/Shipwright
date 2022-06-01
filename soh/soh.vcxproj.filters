@@ -719,7 +719,6 @@
     <ClCompile Include="include\randomizer\item_pool.cpp" />
     <ClCompile Include="include\randomizer\location_access.cpp" />
     <ClCompile Include="include\randomizer\logic.cpp" />
-    <ClCompile Include="include\randomizer\main.cpp" />
     <ClCompile Include="include\randomizer\menu.cpp" />
     <ClCompile Include="include\randomizer\music.cpp" />
     <ClCompile Include="include\randomizer\patch.cpp" />
@@ -737,6 +736,7 @@
     <ClCompile Include="include\randomizer\utils.cpp" />
     <ClCompile Include="include\randomizer\cosmetics.cpp" />
     <ClCompile Include="include\randomizer\custom_messages.cpp" />
+    <ClCompile Include="include\randomizer\rando_main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="soh\frame_interpolation.h" />
@@ -1295,6 +1295,7 @@
     <ClInclude Include="include\randomizer\category.hpp" />
     <ClInclude Include="include\randomizer\cosmetics.hpp" />
     <ClInclude Include="include\randomizer\custom_messages.hpp" />
+    <ClInclude Include="include\randomizer\rando_main.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />

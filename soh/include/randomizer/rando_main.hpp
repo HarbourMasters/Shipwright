@@ -1,5 +1,5 @@
 #pragma once
 
 namespace RandoMain {
-    int GenerateRando();
+    void GenerateRando();
 }

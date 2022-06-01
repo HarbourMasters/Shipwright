@@ -323,7 +323,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"ZD Shop Item 7", RC_ZD_SHOP_ITEM_7},
     {"ZD Shop Item 8", RC_ZD_SHOP_ITEM_8},
     {"ZF Great Fairy Reward", RC_ZF_GREAT_FAIRY_REWARD},
-    {"ZF Iceberg Freestanding PoH", RC_ZF_ICEBERG_FREESTANDING_POH},
+    {"ZF Iceberg Freestanding PoH", RC_ZF_ICEBERC_FREESTANDING_POH},
     {"ZF Bottom Freestanding PoH", RC_ZF_BOTTOM_FREESTANDING_POH},
     {"ZF GS Above the Log", RC_ZF_GS_ABOVE_THE_LOG},
     {"ZF GS Tree", RC_ZF_GS_TREE},
@@ -1133,7 +1133,7 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         // bandaid until new save stuff happens
-        ParseItemLocations(spoilerFileName);
+        ParseItemLocationsFile(spoilerFileName);
 
         for (auto itemLocation : gSaveContext.itemLocations) {
             this->itemLocations[itemLocation.check] = itemLocation.get;
@@ -1167,7 +1167,7 @@ std::string sanitize(std::string stringValue) {
     return stringValue;
 }
 
-void Randomizer::ParseItemLocations(const char* spoilerFileName) {
+void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
     // todo pull this in from cvar or something
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1217,20 +1217,6 @@ void Randomizer::ParseItemLocations(const char* spoilerFileName) {
     if (success) {
         CVar_SetS32("gRandomizer", 1);
         CVar_SetS32("gDroppedNewSpoilerFile", 0);
-        Game::SaveSettings();
-    }
-}
-
-void Randomizer::ParseItemLocations(SpoilerData spoilerData) {
-    if (spoilerData.ItemLocationsCount > 0) {
-        for (int i = 0; i < spoilerData.ItemLocationsCount; i++) {
-            gSaveContext.itemLocations[i].check = SpoilerfileCheckNameToEnum[spoilerData.ItemLocations[i].LocationStr];
-            gSaveContext.itemLocations[i].get = SpoilerfileGetNameToEnum[spoilerData.ItemLocations[i].ItemStr];
-        }
-
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-
-        CVar_SetS32("gRandomizer", 1);
         Game::SaveSettings();
     }
 }
@@ -1432,10 +1418,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_NAYRUS_LOVE;
         case RG_DEKU_NUTS_10:
             return GI_NUTS_10;
-        case RG_BOMBS_10:
-            return GI_BOMBS_10;
-        case RG_BOMBS_20:
-            return GI_BOMBS_20;
         case RG_DEKU_SEEDS_30:
             return GI_SEEDS_30;
         case RG_BOTTLE_WITH_BIG_POE:
@@ -1544,7 +1526,7 @@ GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomiz
 
 RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
-        return UNKNOWN_CHECK;
+        return RC_UNKNOWN_CHECK;
     }
 
     switch(sceneNum) {

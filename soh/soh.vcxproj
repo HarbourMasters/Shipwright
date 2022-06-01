@@ -187,13 +187,13 @@
     <ClCompile Include="include\randomizer\item_pool.cpp" />
     <ClCompile Include="include\randomizer\location_access.cpp" />
     <ClCompile Include="include\randomizer\logic.cpp" />
-    <ClCompile Include="include\randomizer\main.cpp" />
     <ClCompile Include="include\randomizer\menu.cpp" />
     <ClCompile Include="include\randomizer\music.cpp" />
     <ClCompile Include="include\randomizer\patch.cpp" />
     <ClCompile Include="include\randomizer\playthrough.cpp" />
     <ClCompile Include="include\randomizer\preset.cpp" />
     <ClCompile Include="include\randomizer\random.cpp" />
+    <ClCompile Include="include\randomizer\rando_main.cpp" />
     <ClCompile Include="include\randomizer\settings.cpp" />
     <ClCompile Include="include\randomizer\setting_descriptions.cpp" />
     <ClCompile Include="include\randomizer\shops.cpp" />
@@ -935,6 +935,7 @@
     <ClInclude Include="include\randomizer\preset.hpp" />
     <ClInclude Include="include\randomizer\random.hpp" />
     <ClInclude Include="include\randomizer\randomizer.hpp" />
+    <ClInclude Include="include\randomizer\rando_main.hpp" />
     <ClInclude Include="include\randomizer\settings.hpp" />
     <ClInclude Include="include\randomizer\setting_descriptions.hpp" />
     <ClInclude Include="include\randomizer\shops.hpp" />
