@@ -1538,6 +1538,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     } else {
                         return KAK_ANJU_AS_CHILD;
                     }
+                case 359:
+                    return KAK_MAN_ON_ROOF;
             }
         case 17:
             switch (actorId) {
