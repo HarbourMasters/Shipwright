@@ -82,7 +82,8 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
-            if (gSaveContext.eventChkInf[3] & 2) {
+            if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
+                (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -122,14 +123,16 @@ void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
+
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1E);
+            }
         }
         Actor_Kill(&this->actor);
     } else {
         if (gSaveContext.n64ddFlag) {
             s32 getItemId = GetRandomizedItemId(GI_ARROW_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f)) {
-                Flags_SetTreasure(globalCtx, 0x1F);
-            }
+            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
         }
@@ -141,17 +144,18 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
+
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
         }
         Actor_Kill(&this->actor);
     } else {
         if (0) {} // Necessary to match
 
         if (gSaveContext.n64ddFlag) {
-            s32 getItemId =
-                GetRandomizedItemId(GI_ARROW_FIRE, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f)) {
-                Flags_SetTreasure(globalCtx, 0x1F);
-            }
+            s32 getItemId = GetRandomizedItemId(GI_LETTER_RUTO, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
         }
@@ -230,7 +234,7 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
-    if (gSaveContext.n64ddFlag && type == ITEM_ETC_ARROW_FIRE) {
+    if (gSaveContext.n64ddFlag && (type == ITEM_ETC_ARROW_FIRE || type == ITEM_ETC_LETTER)) {
         this->giDrawId = GetItemModelFromId(
             GetRandomizedItemId(this->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum));
     }

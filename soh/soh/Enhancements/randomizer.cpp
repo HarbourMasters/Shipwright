@@ -2052,7 +2052,11 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
         case 87:
             switch (actorId) {
                 case 271:
-                    return LH_SUN;
+                    if (LINK_IS_ADULT) {
+                        return LH_SUN;
+                    } else {
+                        return LH_UNDERWATER_ITEM;
+                    }
             }
             switch(actorParams) {
                 case 7686:
