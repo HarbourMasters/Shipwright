@@ -1249,7 +1249,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case PIECE_OF_HEART:
             return GI_HEART_PIECE;
         case BOMBS_5:
-            return GI_BOMBS_5;
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
+        case BOMBS_10:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
+        case BOMBS_20:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
         case DEKU_NUTS_5:
             return GI_NUTS_5;
         case BOMBCHUS_10:
@@ -1302,8 +1306,10 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case HOVER_BOOTS:
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
+            // todo: test this, getting 0 from CUR_UPG_VALUE happens in the bomb checks
+            // i'm assuming it happens here (where it isn't handled).
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case ITEM_NONE:
+                case ITEM_NONE: 
                     return GI_BOMB_BAG_20;
                 case ITEM_BOMB_BAG_20:
                     return GI_BOMB_BAG_30;
@@ -1416,10 +1422,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_NAYRUS_LOVE;
         case DEKU_NUTS_10:
             return GI_NUTS_10;
-        case BOMBS_10:
-            return GI_BOMBS_10;
-        case BOMBS_20:
-            return GI_BOMBS_20;
         case DEKU_SEEDS_30:
             return GI_SEEDS_30;
         case BOTTLE_WITH_BIG_POE:
