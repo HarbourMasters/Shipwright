@@ -9,7 +9,6 @@
 #include <Lib/spdlog/include/spdlog/spdlog.h>
 
 //Location definitions
-static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;
 
 void LocationTable_Init() {
     locationTable[NONE]                                  = ItemLocation::Base       (0xFF, 0xFF, "Invalid Location",                     NONE,                                  NONE,                      {},                                                                                                                   SpoilerCollectionCheck::None());
@@ -911,8 +910,8 @@ void LocationTable_Init() {
     locationTable[DMC_UPPER_GROTTO_GOSSIP_STONE]                 = ItemLocation::HintStone(0x00, 0x3A, "DMC Upper Grotto Gossip Stone",               {});
 
     locationTable[GANONDORF_HINT]                                = ItemLocation::OtherHint(0x00, 0x00, "Ganondorf Hint",                              {});
-
 }
+
 std::vector<uint32_t> KF_ShopLocations = {
   KF_SHOP_ITEM_1,
   KF_SHOP_ITEM_2,

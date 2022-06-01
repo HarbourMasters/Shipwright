@@ -43,7 +43,7 @@ void PrintResetToDefaultsMenu();
 void PrintGenerateMenu();
 void ClearDescription();
 void PrintOptionDescription();
-void GenerateRandomizer();
+std::string GenerateRandomizer();
 std::string GetInput(const char* hintText);
 
 extern void MenuInit();

@@ -1511,6 +1511,7 @@ void FileChoose_FadeOut(GameState* thisx) {
  * Note: On Debug ROM, File 1 will go to Map Select.
  * Update function for `SM_LOAD_GAME`
  */
+
 void FileChoose_LoadGame(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     u16 swordEquipMask;
@@ -1532,6 +1533,9 @@ void FileChoose_LoadGame(GameState* thisx) {
         SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
         this->state.running = false;
     }
+
+    const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+    LoadItemLocations(fileLoc);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;

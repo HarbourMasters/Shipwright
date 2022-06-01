@@ -88,6 +88,7 @@ Randomizer::~Randomizer() {
 
 std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     {"Links Pocket", RC_LINKS_POCKET},
+    {"Link's Pocket", RC_LINKS_POCKET },
     {"Queen Gohma", RC_QUEEN_GOHMA},
     {"King Dodongo", RC_KING_DODONGO},
     {"Barinade", RC_BARINADE},
@@ -1169,6 +1170,7 @@ std::string sanitize(std::string stringValue) {
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
     // todo pull this in from cvar or something
+
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -1211,7 +1213,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
         success = true;
     } catch (const std::exception& e) {
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        return;    
+        return;
     }
 
     if (success) {

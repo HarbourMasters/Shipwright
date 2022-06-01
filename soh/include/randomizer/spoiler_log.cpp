@@ -19,6 +19,11 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <json.hpp>
+#include <iostream>
+#include <fstream>
+
+using json = nlohmann::json;
 
 namespace {
   std::string placementtxt;
@@ -572,19 +577,22 @@ static void WriteHints(tinyxml2::XMLDocument& spoilerLog) {
     spoilerLog.RootElement()->InsertEndChild(parentNode);
 }
 
-static void WriteAllLocations(tinyxml2::XMLDocument& spoilerLog) {
-    auto parentNode = spoilerLog.NewElement("all-locations");
+static void WriteAllLocations() {
+    json jsonLocations;
 
     for (const uint32_t key : allLocations) {
-        if (!Location(key)->IsHidden()) {
-            WriteLocation(parentNode, key, true);
-        }
+        ItemLocation* location = Location(key);
+        jsonLocations["locations"][location->GetName()] = location->GetPlacedItemName().english;
     }
 
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
+    std::string jsonString = jsonLocations.dump();
+
+    std::ofstream jsonFile("./randomizer/" + Settings::seed + ".json");
+    jsonFile << std::setw(4) << jsonString << std::endl;
+    jsonFile.close();
 }
 
-bool SpoilerLog_Write() {
+const char* SpoilerLog_Write() {
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
 
@@ -613,10 +621,11 @@ bool SpoilerLog_Write() {
 
     WriteHints(spoilerLog);
     WriteShuffledEntrances(spoilerLog);
-    WriteAllLocations(spoilerLog);
+    WriteAllLocations();
 
     auto e = spoilerLog.SaveFile(GetSpoilerLogPath());
-    return e == tinyxml2::XML_SUCCESS;
+
+    return Settings::seed.c_str();
 }
 
 void PlacementLog_Msg(std::string_view msg) {

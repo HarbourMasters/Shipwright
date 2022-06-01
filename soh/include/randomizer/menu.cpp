@@ -515,14 +515,14 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-void GenerateRandomizer() {
+std::string GenerateRandomizer() {
     // if a blank seed was entered, make a random one
     if (Settings::seed.empty()) {
         Settings::seed = std::to_string(rand());
     } else if (Settings::seed.rfind("seed_testing_count", 0) == 0) {
         const int count = std::stoi(Settings::seed.substr(18), nullptr);
         Playthrough::Playthrough_Repeat(count);
-        return;
+        return "";
     }
 
     int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed));
@@ -531,10 +531,10 @@ void GenerateRandomizer() {
             printf("\n\nFailed to generate after 5 tries.\nPress B to go back to the menu.\nA different seed might be "
                    "successful.");
             SPDLOG_INFO("\nRANDOMIZATION FAILED COMPLETELY. PLZ FIX\n");
-            return;
+            return "";
         } else {
             printf("\n\nError %d with fill.\nPress Select to exit or B to go back to the menu.\n", ret);
-            return;
+            return "";
         }
     }
 
@@ -545,6 +545,8 @@ void GenerateRandomizer() {
         }
         Settings::Keysanity.RestoreDelayedOption();
     }
+
+    return "./randomizer/" + Settings::seed + ".json";
 }
 
 std::string GetInput(const char* hintText) {
