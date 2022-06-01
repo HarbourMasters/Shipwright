@@ -839,6 +839,8 @@ namespace SohImGui {
                 {
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
