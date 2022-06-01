@@ -9,6 +9,7 @@
 #include <Lib/spdlog/include/spdlog/spdlog.h>
 
 //Location definitions
+static std::array<ItemLocation, KEY_ENUM_MAX> locationTable;
 
 void LocationTable_Init() {
     locationTable[NONE]                                  = ItemLocation::Base       (0xFF, 0xFF, "Invalid Location",                     NONE,                                  NONE,                      {},                                                                                                                   SpoilerCollectionCheck::None());
