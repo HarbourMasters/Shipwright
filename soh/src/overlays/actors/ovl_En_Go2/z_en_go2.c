@@ -324,7 +324,7 @@ u16 EnGo2_GoronFireGenericGetTextId(EnGo2* this) {
 u16 EnGo2_GetTextIdGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
     if (gSaveContext.infTable[17] & 0x4000) {
         return 0x3013;
-    } else if (CUR_CAPACITY(UPG_BOMB_BAG) >= 20 && this->waypoint > 7 && this->waypoint < 12) {
+    } else if ((CUR_CAPACITY(UPG_BOMB_BAG) >= 20 || gSaveContext.n64ddFlag) && this->waypoint > 7 && this->waypoint < 12) {
         return 0x3012;
     } else {
         return 0x3011;
@@ -341,7 +341,11 @@ s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
             if (Message_ShouldAdvance(globalCtx)) {
                 if (this->actor.textId == 0x3012) {
                     this->actionFunc = EnGo2_SetupGetItem;
-                    bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;
+                    if(!gSaveContext.n64ddFlag) {
+                        bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;    
+                    } else {
+                        bombBagUpgrade = GetRandomizedItemIdFromKnownCheck(GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
+                    }
                     EnGo2_GetItem(this, globalCtx, bombBagUpgrade);
                     Message_CloseTextbox(globalCtx);
                     gSaveContext.infTable[17] |= 0x4000;
@@ -509,7 +513,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x3036:
-                    EnGo2_GetItem(this, globalCtx, GI_TUNIC_GORON);
+                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON) : GI_TUNIC_GORON);
                     this->actionFunc = EnGo2_SetupGetItem;
                     return 2;
                 case 0x3037:

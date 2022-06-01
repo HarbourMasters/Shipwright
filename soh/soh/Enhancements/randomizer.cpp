@@ -1249,7 +1249,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case PIECE_OF_HEART:
             return GI_HEART_PIECE;
         case BOMBS_5:
-            return GI_BOMBS_5;
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
+        case BOMBS_10:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
+        case BOMBS_20:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
         case DEKU_NUTS_5:
             return GI_NUTS_5;
         case BOMBCHUS_10:
@@ -1303,12 +1307,14 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BOOTS_HOVER;
         case BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case ITEM_NONE:
+                case 0: 
                     return GI_BOMB_BAG_20;
-                case ITEM_BOMB_BAG_20:
+                case 1:
                     return GI_BOMB_BAG_30;
-                case ITEM_BOMB_BAG_30:
+                case 2:
                     return GI_BOMB_BAG_40;
+                case 3:
+                    return GI_RUPEE_BLUE;
             }
         case PROGRESSIVE_STRENGTH_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
@@ -1416,10 +1422,6 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_NAYRUS_LOVE;
         case DEKU_NUTS_10:
             return GI_NUTS_10;
-        case BOMBS_10:
-            return GI_BOMBS_10;
-        case BOMBS_20:
-            return GI_BOMBS_20;
         case DEKU_SEEDS_30:
             return GI_SEEDS_30;
         case BOTTLE_WITH_BIG_POE:
