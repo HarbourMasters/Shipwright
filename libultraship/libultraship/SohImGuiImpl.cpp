@@ -50,6 +50,8 @@ IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPAR
 using namespace Ship;
 bool oldCursorState = true;
 
+u8 generated;
+
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     ImGui::Text("Experimental"); \
@@ -423,7 +425,6 @@ namespace SohImGui {
         });
         Game::InitSettings();
 
-        CVar_SetS32("gRandomizer", 0);
         CVar_SetS32("gRandoGenerating", 0);
         CVar_SetS32("gDroppedNewSpoilerFile", 0);
         Game::SaveSettings();
@@ -434,6 +435,12 @@ namespace SohImGui {
             Game::SaveSettings();
             needs_save = false;
         }
+
+        if (generated) {
+            generated = 0;
+            randoThread.join();
+        }
+
         ImGuiProcessEvent(event);
     }
 
@@ -1041,6 +1048,8 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Randomizer"))
             {
+                EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+
                 if (ImGui::Button("Generate Seed")) {
                     if (CVar_GetS32("gRandoGenerating", 0) == 0) {
                         randoThread = std::thread(&SohImGui::GenerateRandomizerImgui);
@@ -1278,6 +1287,8 @@ namespace SohImGui {
         Game::SaveSettings();
 
         Game::LoadSettings();
+
+        generated = 1;
     }
 
     void DrawFramebufferAndGameInput(void) {

@@ -1157,11 +1157,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         return;
     }
-
-    if (success) {
-        CVar_SetS32("gRandomizer", 1);
-        Game::SaveSettings();
-    }
 }
 
 GetItemID Randomizer::GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
