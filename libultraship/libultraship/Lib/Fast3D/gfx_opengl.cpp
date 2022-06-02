@@ -68,14 +68,15 @@ struct Framebuffer {
     GLuint fbo, clrbuf, clrbuf_msaa, rbo;
 };
 
+#ifdef __APPLE__
 struct GLTexture {
-    GLuint gltex;
-    GLfloat size[2];
-    bool filter;
-};
+    uint16_t width;
+    uint16_t height;
+} textures[1024];
 
-static std::map<int, GLTexture> opengl_tex;
-static GLint opengl_curtex = 0;
+static GLuint current_texture_ids[2];
+static uint8_t current_tile;
+#endif
 
 static map<pair<uint64_t, uint32_t>, struct ShaderProgram> shader_program_pool;
 static GLuint opengl_vbo;
@@ -536,20 +537,25 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 
     gfx_opengl_load_shader(prg);
 
-	int ctex = opengl_curtex;
     if (cc_features.used_textures[0]) {
         GLint sampler_location = glGetUniformLocation(shader_program, "uTex0");
-        GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
         glUniform1i(sampler_location, 0);
 
-		int mtex = cc_features.used_textures[1] ? ctex - 1 : ctex;
-        glUniform2f(uniform_location_0, opengl_tex[mtex].size[0], opengl_tex[mtex].size[1]);
+        #if __APPLE__
+        GLint uniform_location_0 = glGetUniformLocation(shader_program, "texSize0");
+        GLTexture currentTexture = textures[current_texture_ids[current_tile]];
+        glUniform2f(uniform_location_0, currentTexture.width, currentTexture.height);
+        #endif
     }
     if (cc_features.used_textures[1]) {
         GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
-        GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
         glUniform1i(sampler_location, 1);
-        glUniform2f(uniform_location_1, opengl_tex[ctex].size[0], opengl_tex[ctex].size[1]);
+
+        #if __APPLE__
+        GLint uniform_location_1 = glGetUniformLocation(shader_program, "texSize1");
+        GLTexture currentTexture = textures[current_texture_ids[current_tile]];
+        glUniform2f(uniform_location_1, currentTexture.width, currentTexture.height);
+        #endif
     }
 
     if (cc_features.opt_alpha && cc_features.opt_noise) {
@@ -585,15 +591,27 @@ static void gfx_opengl_delete_texture(uint32_t texID) {
 }
 
 static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
-    //printf("CURTEX: %d\n", texture_id);
-    opengl_curtex = texture_id;
+    //printf("select texture: %d - %d\n", tile, texture_id);
     glActiveTexture(GL_TEXTURE0 + tile);
     glBindTexture(GL_TEXTURE_2D, texture_id);
+
+#if __APPLE__
+    current_texture_ids[tile] = texture_id;
+    current_tile = tile;
+#endif
 }
 static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
-    opengl_tex[opengl_curtex].size[0] = width;
-    opengl_tex[opengl_curtex].size[1] = height;
+    //printf("upload texture: %d - size: %d, %d\n", current_tile, width, height);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+    
+#if __APPLE__
+    float wdpi_scale = 0;
+    float hdpi_scale = 0;
+    SDL_GetDisplayDPI(0, NULL, &hdpi_scale, &wdpi_scale);
+    //printf("dpi_scale: %f\n", dpi_scale);
+    textures[current_texture_ids[current_tile]].width = width * (wdpi_scale / 32.0);
+    textures[current_texture_ids[current_tile]].height = height * (hdpi_scale / 32.0);
+#endif
 }
 
 static uint32_t gfx_cm_to_opengl(uint32_t val) {
