@@ -1272,7 +1272,7 @@ namespace SohImGui {
         CVar_SetS32("gRandoGenerating", 1);
         Game::SaveSettings();
 
-        RandoMain::GenerateRando();
+        // RandoMain::GenerateRando();
 
         CVar_SetS32("gRandoGenerating", 0);
         Game::SaveSettings();
