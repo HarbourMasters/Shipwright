@@ -976,14 +976,23 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
     temp = pauseCtx->unk_1E4;
 
     if (CVar_GetS32("gHudColors", 1) == 0) {
+        sCursorColors[1][0] = 255;
+        sCursorColors[1][1] = 255;
+        sCursorColors[1][2] = 0;
         sCursorColors[2][0] = 0;
         sCursorColors[2][1] = 50;
         sCursorColors[2][2] = 255;
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        sCursorColors[1][0] = 255;
+        sCursorColors[1][1] = 255;
+        sCursorColors[1][2] = 0;
         sCursorColors[2][0] = 0;
         sCursorColors[2][1] = 255;
         sCursorColors[2][2] = 50;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        sCursorColors[1][0] = CVar_GetS32("gCCCBtnPrimR", 255);
+        sCursorColors[1][1] = CVar_GetS32("gCCCBtnPrimG", 255);
+        sCursorColors[1][2] = CVar_GetS32("gCCCBtnPrimB", 0);
         sCursorColors[2][0] = CVar_GetS32("gCCABtnPrimR", 0);
         sCursorColors[2][1] = CVar_GetS32("gCCABtnPrimG", 255);
         sCursorColors[2][2] = CVar_GetS32("gCCABtnPrimB", 50);
@@ -1060,6 +1069,12 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         { 0, 0, 0 }, { 255, 255, 0 }, { 0, 255, 50 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 255, 50 },
     };
     if (CVar_GetS32("gHudColors", 1) == 0) {
+        D_8082ACF4[4][0] = 255;
+        D_8082ACF4[4][1] = 255;
+        D_8082ACF4[4][2] = 0;
+        D_8082ACF4[7][0] = 255;
+        D_8082ACF4[7][1] = 255;
+        D_8082ACF4[7][2] = 0;
         D_8082ACF4[8][0] = 0;
         D_8082ACF4[8][1] = 50;
         D_8082ACF4[8][2] = 255;
@@ -1067,6 +1082,12 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         D_8082ACF4[11][1] = 50;
         D_8082ACF4[11][2] = 255;
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        D_8082ACF4[4][0] = 255;
+        D_8082ACF4[4][1] = 255;
+        D_8082ACF4[4][2] = 0;
+        D_8082ACF4[7][0] = 255;
+        D_8082ACF4[7][1] = 255;
+        D_8082ACF4[7][2] = 0;
         D_8082ACF4[8][0] = 0;
         D_8082ACF4[8][1] = 255;
         D_8082ACF4[8][2] = 50;
@@ -1074,6 +1095,12 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         D_8082ACF4[11][1] = 255;
         D_8082ACF4[11][2] = 50;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        D_8082ACF4[4][0] = CVar_GetS32("gCCCBtnPrimR", 255);
+        D_8082ACF4[4][1] = CVar_GetS32("gCCCBtnPrimG", 255);
+        D_8082ACF4[4][2] = CVar_GetS32("gCCCBtnPrimB", 0);
+        D_8082ACF4[7][0] = CVar_GetS32("gCCCBtnPrimR", 255);
+        D_8082ACF4[7][1] = CVar_GetS32("gCCCBtnPrimG", 255);
+        D_8082ACF4[7][2] = CVar_GetS32("gCCCBtnPrimB", 0);
         D_8082ACF4[8][0] = CVar_GetS32("gCCABtnPrimR", 0);
         D_8082ACF4[8][1] = CVar_GetS32("gCCABtnPrimG", 255);
         D_8082ACF4[8][2] = CVar_GetS32("gCCABtnPrimB", 50);

@@ -2290,8 +2290,8 @@ void Actor_DrawFaroresWindPointer(GlobalContext* globalCtx) {
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.y) + yOffset,
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.z), 255, 255, 255, lightRadius);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5474);
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5474);
 }
 
 void func_80030488(GlobalContext* globalCtx) {
