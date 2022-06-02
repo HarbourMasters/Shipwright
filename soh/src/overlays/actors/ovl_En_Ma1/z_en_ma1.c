@@ -337,7 +337,7 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0EFC;
     } else {
         if (gSaveContext.n64ddFlag) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(HC_MALON_EGG, GI_WEIRD_EGG);
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
             func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
