@@ -1441,11 +1441,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_RUTOS_LETTER:
             return GI_LETTER_RUTO;
         case RG_ARROWS_5:
-            return GI_ARROWS_SMALL;
+            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_SMALL : GI_RUPEE_BLUE;
         case RG_ARROWS_10:
-            return GI_ARROWS_MEDIUM;
+            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_MEDIUM : GI_RUPEE_BLUE;
         case RG_ARROWS_30:
-            return GI_ARROWS_LARGE;
+            return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_LARGE : GI_RUPEE_BLUE;
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
 
