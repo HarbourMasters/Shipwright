@@ -1316,6 +1316,9 @@ void DrawPlayerTab() {
             case ITEM_SWORD_BGS:
                 curSword = "Biggoron's Sword";
                 break;
+            case ITEM_FISHING_POLE:
+                curSword = "Fishing Pole";
+                break;
             case ITEM_NONE:
                 curSword = "None";
                 break;
@@ -1462,6 +1465,11 @@ void DrawPlayerTab() {
                 }
                 
                 Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_BGS);
+            }
+            if (ImGui::Selectable("Fishing Pole")) {
+                player->currentSwordItem = ITEM_FISHING_POLE;
+                gSaveContext.equips.buttonItems[0] = ITEM_FISHING_POLE;
+                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_MASTER);
             }
             ImGui::EndCombo();
 
