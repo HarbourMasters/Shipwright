@@ -1159,7 +1159,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
     }
 
     if (success) {
-        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        CVar_SetS32("gRandomizer", 1);
         Game::SaveSettings();
     }
 }

@@ -227,6 +227,9 @@ void DrawSeedHashSprites(FileChooseContext* this) {
  * Lastly, set any warning labels if appropriate.
  * Update function for `CM_MAIN_MENU`
  */
+
+u8 generating;
+
 void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
@@ -234,7 +237,21 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
-    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0) {
+    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
+        generating = 1;
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
+        return;
+    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
+        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        return;
+    } else if (generating) {
+        return;
+    }
+
+    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0 && !generating) {
+        CVar_SetS32("gDroppedNewSpoilerFile", 0);
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadItemLocations(fileLoc);
     }

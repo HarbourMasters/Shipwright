@@ -17,6 +17,7 @@ void RandoMain::GenerateRando() {
 
     std::string fileName = GenerateRandomizer();
     CVar_SetString("gSpoilerLog", fileName.c_str());
-    CVar_SetS32("gDroppedNewSpoilerFile", 1);
     Game::SaveSettings();
+    Game::LoadSettings();
+    CVar_SetS32("gDroppedNewSpoilerFile", 1);
 }

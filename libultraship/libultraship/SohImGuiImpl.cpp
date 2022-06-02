@@ -25,6 +25,7 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
+#include <thread>
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -59,6 +60,8 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+
+std::thread randoThread;
 
 SpoilerData gSpoilerData;
 
@@ -419,6 +422,11 @@ namespace SohImGui {
             pads = cont_pad;
         });
         Game::InitSettings();
+
+        CVar_SetS32("gRandomizer", 0);
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -1033,11 +1041,10 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Randomizer"))
             {
-                EnhancementCheckbox("Enable Randomizer", "gRandomizer");
-
                 if (ImGui::Button("Generate Seed")) {
-                    RandoMain::GenerateRando();
-                    Game::LoadSettings();
+                    if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+                        randoThread = std::thread(&SohImGui::GenerateRandomizerImgui);
+                    }
                 }
 
                 ImGui::EndMenu();
@@ -1259,6 +1266,18 @@ namespace SohImGui {
         }
 
         overlay->Draw();
+    }
+
+    void GenerateRandomizerImgui() {
+        CVar_SetS32("gRandoGenerating", 1);
+        Game::SaveSettings();
+
+        RandoMain::GenerateRando();
+
+        CVar_SetS32("gRandoGenerating", 0);
+        Game::SaveSettings();
+
+        Game::LoadSettings();
     }
 
     void DrawFramebufferAndGameInput(void) {
