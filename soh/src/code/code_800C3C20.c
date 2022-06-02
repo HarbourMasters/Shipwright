@@ -7,8 +7,6 @@ u8 D_8012D200[] = {
 void func_800C3C20(void) {
     s32 i;
 
-    return; // OTRTODO64
-
     for (i = 0; (i < ARRAY_COUNT(D_8012D200)) & 0xFFFFFFFF; i++) {
         Audio_StopSfxByBank(D_8012D200[i]);
     }
