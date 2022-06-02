@@ -43,8 +43,8 @@ IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPAR
 #endif
 // #include "../../soh/include/randomizer/main.cpp"
 // #include "../../soh/include/randomizer/main.hpp"
-#include "../../soh/include/randomizer/rando_main.hpp"
-#include "../../soh/include/randomizer/spoiler_log.hpp"
+// #include "../../soh/include/randomizer/rando_main.hpp"
+// #include "../../soh/include/randomizer/spoiler_log.hpp"
 // #include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
@@ -63,7 +63,7 @@ std::map<std::string, GameAsset*> DefaultAssets;
 
 std::thread randoThread;
 
-SpoilerData gSpoilerData;
+// SpoilerData gSpoilerData;
 
 namespace SohImGui {
 
