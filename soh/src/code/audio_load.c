@@ -373,7 +373,7 @@ void AudioLoad_InitTable(AudioTable* table, uintptr_t romAddr, u16 unkMediumPara
 SoundFontData* AudioLoad_SyncLoadSeqFonts(s32 seqId, u32* outDefaultFontId) {
     char pad[0x8];
     s32 index;
-    SoundFontData* font;
+    SoundFontData* font = NULL;
     s32 numFonts;
     s32 fontId;
     s32 i;
@@ -575,7 +575,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     while (numFonts > 0) {
         fontId = gAudioContext.sequenceFontTable[index++];
 
-        //if (gUseLegacySD)
+        if (gUseLegacySD)
             AudioLoad_SyncLoadFont(fontId);
 
         numFonts--;
