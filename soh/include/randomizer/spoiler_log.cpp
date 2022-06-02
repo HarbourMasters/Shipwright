@@ -26,56 +26,20 @@
 using json = nlohmann::json;
 
 namespace {
-  std::string placementtxt;
-
-  constexpr std::array<std::string_view, 32> hashIcons = {
-      "Deku Stick",
-      "Deku Nut",
-      "Bow",
-      "Slingshot",
-      "Fairy Ocarina",
-      "Bombchu",
-      "Longshot",
-      "Boomerang",
-      "Lens of Truth",
-      "Beans",
-      "Megaton Hammer",
-      "Bottled Fish",
-      "Bottled Milk",
-      "Mask of Truth",
-      "SOLD OUT",
-      "Cucco",
-      "Mushroom",
-      "Saw",
-      "Frog",
-      "Master Sword",
-      "Mirror Shield",
-      "Kokiri Tunic",
-      "Hover Boots",
-      "Silver Gauntlets",
-      "Gold Scale",
-      "Shard of Agony",
-      "Skull Token",
-      "Heart Container",
-      "Boss Key",
-      "Compass",
-      "Map",
-      "Big Magic",
-  };
-}
+std::string placementtxt;
+} // namespace
 
 static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-  for (size_t i = 0; i < randomizerHash.size(); i++) {
-    const auto iconIndex = static_cast<uint8_t>(Random(0, hashIcons.size()));
-    Settings::hashIconIndexes[i] = iconIndex;
-    randomizerHash[i] = hashIcons[iconIndex];
-  }
+    for (size_t i = 0; i < Settings::seed.size(); i++) {
+        int number = Settings::seed[i] - '0';
+        Settings::hashIconIndexes[i] = number;
+    }
 
-  // Clear out spoiler log data here, in case we aren't going to re-generate it
-  spoilerData = { 0 };
+    // Clear out spoiler log data here, in case we aren't going to re-generate it
+    // spoilerData = { 0 };
 }
 
 const RandomizerHash& GetRandomizerHash() {
@@ -577,19 +541,13 @@ static void WriteHints(tinyxml2::XMLDocument& spoilerLog) {
     spoilerLog.RootElement()->InsertEndChild(parentNode);
 }
 
-static void WriteAllLocations() {
-    json jsonLocations;
+json jsonData;
 
+static void WriteAllLocations() {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
-        jsonLocations["locations"][location->GetName()] = location->GetPlacedItemName().english;
+        jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
     }
-
-    std::string jsonString = jsonLocations.dump();
-
-    std::ofstream jsonFile("./randomizer/" + Settings::seed + ".json");
-    jsonFile << std::setw(4) << jsonString << std::endl;
-    jsonFile.close();
 }
 
 const char* SpoilerLog_Write() {
@@ -603,27 +561,37 @@ const char* SpoilerLog_Write() {
     rootNode->SetAttribute("seed", Settings::seed.c_str());
     rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
-    WriteSettings(spoilerLog);
-    WriteExcludedLocations(spoilerLog);
-    WriteStartingInventory(spoilerLog);
-    WriteEnabledTricks(spoilerLog);
-    if (Settings::Logic.Is(LOGIC_GLITCHED)) {
-        WriteEnabledGlitches(spoilerLog);
+    // Write Hash
+    int index = 0;
+    for (uint8_t seed_value : Settings::hashIconIndexes) {
+        jsonData["file_hash"][index] = seed_value;
+        index++;
     }
-    WriteMasterQuestDungeons(spoilerLog);
-    WriteRequiredTrials(spoilerLog);
-    WritePlaythrough(spoilerLog);
-    WriteWayOfTheHeroLocation(spoilerLog);
+
+    //WriteSettings(spoilerLog);
+    //WriteExcludedLocations(spoilerLog);
+    //WriteStartingInventory(spoilerLog);
+    //WriteEnabledTricks(spoilerLog);
+    //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
+    //    WriteEnabledGlitches(spoilerLog);
+    //}
+    //WriteMasterQuestDungeons(spoilerLog);
+    //WriteRequiredTrials(spoilerLog);
+    //WritePlaythrough(spoilerLog);
+    //WriteWayOfTheHeroLocation(spoilerLog);
 
     playthroughLocations.clear();
     playthroughBeatable = false;
     wothLocations.clear();
 
-    WriteHints(spoilerLog);
-    WriteShuffledEntrances(spoilerLog);
+    //WriteHints(spoilerLog);
+    //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations();
 
-    auto e = spoilerLog.SaveFile(GetSpoilerLogPath());
+    std::string jsonString = jsonData.dump(4);
+    std::ofstream jsonFile("./randomizer/" + Settings::seed + ".json");
+    jsonFile << std::setw(4) << jsonString << std::endl;
+    jsonFile.close();
 
     return Settings::seed.c_str();
 }
@@ -661,6 +629,5 @@ bool PlacementLog_Write() {
     auto contentNode = node->InsertNewText(placementtxt.c_str());
     contentNode->SetCData(true);
 
-    auto e = placementLog.SaveFile(GetPlacementLogPath());
-    return e == tinyxml2::XML_SUCCESS;
+    return true;
 }

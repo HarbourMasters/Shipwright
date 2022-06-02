@@ -180,7 +180,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
-    ItemLocationRando itemLocations[499];
+    ItemLocationRando itemLocations[500];
     Sprite seedIcons[5];
 } SaveContext; // size = 0x1428
 
