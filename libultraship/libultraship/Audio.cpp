@@ -13,26 +13,26 @@ namespace Ship
 		entry->unk_bit26 = reader->ReadByte();
 		entry->unk_bit25 = reader->ReadByte();
 
-		int dataSize = reader->ReadInt32();
+		uint32_t dataSize = reader->ReadInt32();
 		
-		for (size_t i = 0; i < dataSize; i++)
+		for (uint32_t i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
 		entry->loop.start = reader->ReadUInt32();
 		entry->loop.end = reader->ReadUInt32();
 		entry->loop.count = reader->ReadUInt32();
 
-		int loopStateCnt = reader->ReadUInt32();
+		uint32_t loopStateCnt = reader->ReadUInt32();
 
-		for (size_t i = 0; i < loopStateCnt; i++)
+		for (uint32_t i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
 
 		entry->book.order = reader->ReadInt32();
 		entry->book.npredictors = reader->ReadInt32();
 
-		int bookSize = reader->ReadInt32();
+		uint32_t bookSize = reader->ReadInt32();
 
-		for (size_t i = 0; i < bookSize; i++)
+		for (uint32_t i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
