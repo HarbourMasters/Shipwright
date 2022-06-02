@@ -96,7 +96,7 @@ namespace SohImGui {
         "gCCHeartsPrim","gDDCCHeartsPrim",
         "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
         "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"        
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
     };
 
     const char* filters[3] = {
@@ -533,6 +533,20 @@ namespace SohImGui {
             val = max;
             CVar_SetFloat(cvarName, val);
             needs_save = true;
+        }
+    }
+
+    void EnhancementCombo(const std::string& name, const char* cvarName, std::vector<std::string> items, int defaultValue) {
+      
+        if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
+            for (int settingIndex = 0; settingIndex < items.size(); settingIndex++) {
+                if (ImGui::Selectable(items[settingIndex].c_str())) {
+                    CVar_SetS32(cvarName, settingIndex);
+                    needs_save = true;
+
+                }
+            }
+            ImGui::EndCombo();
         }
     }
 
