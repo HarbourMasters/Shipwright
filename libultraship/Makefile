@@ -17,7 +17,8 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-unused-function \
 	-Wno-parentheses \
 	-Wno-narrowing \
-	-Wno-missing-field-initializers
+	-Wno-missing-field-initializers \
+	-Wno-error=multichar
 
 CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
@@ -77,6 +78,7 @@ LIB       := libultraship.a
 
 INC_DIRS := $(addprefix -I, \
 	../ZAPDTR/ZAPDUtils \
+	../StormLib/src \
 	libultraship/Lib/Fast3D/U64 \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \

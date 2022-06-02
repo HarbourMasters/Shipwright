@@ -575,7 +575,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     while (numFonts > 0) {
         fontId = gAudioContext.sequenceFontTable[index++];
 
-        // if (gUseLegacySD)
+        if (gUseLegacySD)
             AudioLoad_SyncLoadFont(fontId);
 
         numFonts--;
