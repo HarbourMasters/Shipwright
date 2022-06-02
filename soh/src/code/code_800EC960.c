@@ -4420,8 +4420,6 @@ void func_800F5918(void) {
 void func_800F595C(u16 arg0) {
     u8 arg0b = arg0 & 0xFF;
 
-    return; // OTRTODO60
-
     if (sSeqFlags[arg0b] & 2) {
         Audio_PlayFanfare(arg0);
     } else if (sSeqFlags[arg0b] & 4) {

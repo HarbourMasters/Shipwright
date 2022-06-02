@@ -575,7 +575,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     while (numFonts > 0) {
         fontId = gAudioContext.sequenceFontTable[index++];
 
-        if (gUseLegacySD)
+        // if (gUseLegacySD)
             AudioLoad_SyncLoadFont(fontId);
 
         numFonts--;
@@ -890,7 +890,7 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
 
     void** ptrs = (void**)mem;
 
-#define BASE_OFFSET(x) (void*)((u32)(x) + (u32)(mem))
+#define BASE_OFFSET(x) (void*)((uintptr_t)(x) + (uintptr_t)(mem))
 
     reloc2 = ptrs[0];
     if (1) {}
