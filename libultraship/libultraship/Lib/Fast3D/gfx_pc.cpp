@@ -36,7 +36,7 @@
 
 // OTRTODO: fix header files for these
 extern "C" {
-    char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
+    const char* ResourceMgr_GetNameByCRC(uint64_t crc);
     int32_t* ResourceMgr_LoadMtxByCRC(uint64_t crc);
     Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
     Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
@@ -88,7 +88,7 @@ struct LoadedVertex {
 
 static struct {
     TextureCacheMap map;
-    list<TextureCacheMap::iterator> lru;
+    list<TextureCacheMapIter> lru;
     vector<uint32_t> free_texture_ids;
 } gfx_texture_cache;
 
@@ -134,14 +134,14 @@ static struct RDP {
         const uint8_t *addr;
         uint8_t siz;
         uint32_t width;
-        char* otr_path;
+        const char* otr_path;
     } texture_to_load;
     struct {
         const uint8_t *addr;
         uint32_t size_bytes;
         uint32_t full_image_line_size_bytes;
         uint32_t line_size_bytes;
-        char* otr_path;
+        const char* otr_path;
     } loaded_texture[2];
     struct {
         uint8_t fmt;
@@ -527,18 +527,18 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
         key = { orig_addr, { }, fmt, siz, palette_index };
     }
 
-    auto it = gfx_texture_cache.map.find(key);
+    TextureCacheMap::iterator it = gfx_texture_cache.map.find(key);
 
     if (it != gfx_texture_cache.map.end()) {
         gfx_rapi->select_texture(i, it->second.texture_id);
         *n = &*it;
-        gfx_texture_cache.lru.splice(gfx_texture_cache.lru.end(), gfx_texture_cache.lru, *(list<TextureCacheMap::iterator>::iterator*)&it->second.lru_location); // move to back
+        gfx_texture_cache.lru.splice(gfx_texture_cache.lru.end(), gfx_texture_cache.lru, it->second.lru_location); // move to back
         return true;
     }
 
     if (gfx_texture_cache.map.size() >= TEXTURE_CACHE_MAX_SIZE) {
         // Remove the texture that was least recently used
-        it = gfx_texture_cache.lru.front();
+        it = gfx_texture_cache.lru.front().it;
         gfx_texture_cache.free_texture_ids.push_back(it->second.texture_id);
         gfx_texture_cache.map.erase(it);
         gfx_texture_cache.lru.pop_front();
@@ -555,7 +555,7 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
     it = gfx_texture_cache.map.insert(make_pair(key, TextureCacheValue())).first;
     TextureCacheNode* node = &*it;
     node->second.texture_id = texture_id;
-    *(list<TextureCacheMap::iterator>::iterator*)&node->second.lru_location = gfx_texture_cache.lru.insert(gfx_texture_cache.lru.end(), it);
+    node->second.lru_location = gfx_texture_cache.lru.insert(gfx_texture_cache.lru.end(), { it });
 
     gfx_rapi->select_texture(i, texture_id);
     gfx_rapi->set_sampler_parameters(i, false, 0, 0);
@@ -571,7 +571,7 @@ static void gfx_texture_cache_delete(const uint8_t* orig_addr)
         bool again = false;
         for (auto it = gfx_texture_cache.map.begin(bucket); it != gfx_texture_cache.map.end(bucket); ++it) {
             if (it->first.texture_addr == orig_addr) {
-                gfx_texture_cache.lru.erase(*(list<TextureCacheMap::iterator>::iterator*)&it->second.lru_location);
+                gfx_texture_cache.lru.erase(it->second.lru_location);
                 gfx_texture_cache.free_texture_ids.push_back(it->second.texture_id);
                 gfx_texture_cache.map.erase(it->first);
                 again = true;
@@ -1636,11 +1636,11 @@ static void gfx_dp_set_scissor(uint32_t mode, uint32_t ulx, uint32_t uly, uint32
     rdp.viewport_or_scissor_changed = true;
 }
 
-static void gfx_dp_set_texture_image(uint32_t format, uint32_t size, uint32_t width, const void* addr, char* otr_path) {
+static void gfx_dp_set_texture_image(uint32_t format, uint32_t size, uint32_t width, const void* addr, const char* otr_path) {
     rdp.texture_to_load.addr = (const uint8_t*)addr;
     rdp.texture_to_load.siz = size;
     rdp.texture_to_load.width = width;
-    if ( otr_path != nullptr && !strncmp(otr_path, "__OTR__", 7)) otr_path = otr_path + 7;
+    if (otr_path != nullptr && !strncmp(otr_path, "__OTR__", 7)) otr_path = otr_path + 7;
     rdp.texture_to_load.otr_path = otr_path;
 }
 
@@ -2114,7 +2114,7 @@ static void gfx_run_dl(Gfx* cmd) {
     //puts("dl");
     int dummy = 0;
     char dlName[128];
-    char fileName[128];
+    const char* fileName;
 
     Gfx* dListStart = cmd;
     uint64_t ourHash = -1;
@@ -2437,7 +2437,7 @@ static void gfx_run_dl(Gfx* cmd) {
                 uintptr_t addr = cmd->words.w1;
                 cmd++;
                 uint64_t hash = ((uint64_t)cmd->words.w0 << 32) + (uint64_t)cmd->words.w1;
-                ResourceMgr_GetNameByCRC(hash, fileName);
+                fileName = ResourceMgr_GetNameByCRC(hash);
 #if _DEBUG && 0
                 char* tex = ResourceMgr_LoadTexByCRC(hash);
                 ResourceMgr_GetNameByCRC(hash, fileName);
@@ -2710,9 +2710,7 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
         //gfx_lookup_or_create_shader_program(precomp_shaders[i]);
     }
 
-    ModInternal::bindHook(GFX_INIT);
-    ModInternal::initBindHook(0);
-    ModInternal::callBindHook(0);
+    ModInternal::ExecuteHooks<ModInternal::GfxInit>();
 }
 
 struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {
@@ -2791,6 +2789,9 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     gfx_rapi->start_frame();
     gfx_rapi->start_draw_to_framebuffer(game_renders_to_framebuffer ? game_framebuffer : 0, (float)gfx_current_dimensions.height / SCREEN_HEIGHT);
     gfx_rapi->clear_framebuffer();
+    rdp.viewport_or_scissor_changed = true;
+    rendering_state.viewport = {};
+    rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
     SohUtils::saveEnvironmentVar("framebuffer", string());
@@ -2827,8 +2828,16 @@ void gfx_end_frame(void) {
     }
 }
 
-void gfx_set_framedivisor(int divisor) {
-    gfx_wapi->set_frame_divisor(divisor);
+void gfx_set_target_fps(int fps) {
+    gfx_wapi->set_target_fps(fps);
+}
+
+void gfx_set_maximum_frame_latency(int latency) {
+    gfx_wapi->set_maximum_frame_latency(latency);
+}
+
+float gfx_get_detected_hz(void) {
+    return gfx_wapi->get_detected_hz();
 }
 
 int gfx_create_framebuffer(uint32_t width, uint32_t height) {

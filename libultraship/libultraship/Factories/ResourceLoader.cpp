@@ -15,6 +15,7 @@
 #include "TextureFactory.h"
 #include "BlobFactory.h"
 #include "MtxFactory.h"
+#include "AudioFactory.h"
 #include <Utils/MemoryStream.h>
 
 namespace Ship
@@ -83,6 +84,15 @@ namespace Ship
             break;
         case ResourceType::Matrix:
             result = MtxFactory::ReadMtx(reader.get());
+            break;
+        case ResourceType::Audio:
+            result = AudioFactory::ReadAudio(reader.get());
+            break;
+        case ResourceType::AudioSample:
+            result = AudioSampleFactory::ReadAudioSample(reader.get());
+            break;
+        case ResourceType::AudioSoundFont:
+            result = AudioSoundFontFactory::ReadAudioSoundFont(reader.get());
             break;
         default:
             // RESOURCE TYPE NOT SUPPORTED

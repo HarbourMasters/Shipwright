@@ -24,8 +24,8 @@ private:
 #endif
 
 #ifndef __cplusplus
-void InitOTR();
-void Graph_ProcessFrame(void (*run_one_game_iter)(void));
+void OTRAudio_Init();
+void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
 void OTRLogString(const char* src);
@@ -76,6 +76,10 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+char* ResourceMgr_LoadSeqByID(int seqID);
+int ResourceMgr_GetSeqSizeByID(int seqID);
+SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex);
+SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset);
 #endif
 
 #endif

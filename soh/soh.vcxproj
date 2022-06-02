@@ -74,13 +74,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\Win32\DebugUS\;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\Win32\ReleaseUS\;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -100,7 +100,7 @@
       <PreprocessorDefinitions>NOINCLUDE_GAME_PRINTF;WIN32;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;ENABLE_OPENGL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
     </ClCompile>

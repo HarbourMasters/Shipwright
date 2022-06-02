@@ -1250,7 +1250,7 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
     if (dpad) {
-        sOcarinaAllowedBtnMask = 
+        sOcarinaAllowedBtnMask =
             (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaABtnMap = BTN_A;
         sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
@@ -3502,7 +3502,6 @@ void func_800F4A70(void);
 void func_800F5CF8(void);
 
 void func_800F3054(void) {
-    return; // OTRTODO64
     if (func_800FAD34() == 0) {
         sAudioUpdateTaskStart = gAudioContext.totalTaskCnt;
         sAudioUpdateStartTime = osGetTime();
@@ -4096,7 +4095,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol) 
+s32 Audio_SetGanonDistVol(u8 targetVol)
 {
     u8 phi_v0;
     u16 phi_v0_2;
@@ -4256,7 +4255,6 @@ void Audio_ClearSariaBgmAtPos(Vec3f* pos) {
  * equally between the two bgm channels. Split based on note priority
  */
 void Audio_SplitBgmChannels(s8 volSplit) {
-    return;
     u8 volume;
     u8 notePriority;
     u16 channelBits;
@@ -4422,8 +4420,6 @@ void func_800F5918(void) {
 void func_800F595C(u16 arg0) {
     u8 arg0b = arg0 & 0xFF;
 
-    return; // OTRTODO60
-
     if (sSeqFlags[arg0b] & 2) {
         Audio_PlayFanfare(arg0);
     } else if (sSeqFlags[arg0b] & 4) {
@@ -4521,14 +4517,12 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId) 
+void Audio_PlayFanfare(u16 seqId)
 {
     u16 sp26;
     u32 sp20;
     u8* sp1C;
     u8* sp18;
-
-    return; // OTRTODO64
 
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
