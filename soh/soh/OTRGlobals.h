@@ -79,6 +79,7 @@ int Controller_ShouldRumble(size_t i);
 char* ResourceMgr_LoadSeqByID(int seqID);
 int ResourceMgr_GetSeqSizeByID(int seqID);
 SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex);
+SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset);
 #endif
 
 #endif
