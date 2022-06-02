@@ -193,53 +193,14 @@ void Gameplay_Destroy(GameState* thisx) {
     gGlobalCtx = NULL;
 }
 
-void GiveLinksPocketMedallion() {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
-    s16 item;
-
-    u8 medallion = 0;
-
-    switch (getItemId) {
-        case GI_MEDALLION_FOREST:
-            item = ITEM_MEDALLION_FOREST;
-            medallion = 1;
-            break;
-        case GI_MEDALLION_FIRE:
-            item = ITEM_MEDALLION_FIRE;
-            medallion = 1;
-            break;
-        case GI_MEDALLION_WATER:
-            item = ITEM_MEDALLION_WATER;
-            medallion = 1;
-            break;
-        case GI_MEDALLION_SHADOW:
-            item = ITEM_MEDALLION_SHADOW;
-            medallion = 1;
-            break;
-        case GI_MEDALLION_SPIRIT:
-            item = ITEM_MEDALLION_SPIRIT;
-            medallion = 1;
-            break;
-        case GI_MEDALLION_LIGHT:
-            item = ITEM_MEDALLION_LIGHT;
-            medallion = 1;
-            break;
-        case GI_STONE_KOKIRI:
-            item = ITEM_KOKIRI_EMERALD;
-            break;
-        case GI_STONE_GORON:
-            item = ITEM_GORON_RUBY;
-            break;
-        case GI_STONE_ZORA:
-            item = ITEM_ZORA_SAPPHIRE;
-            break;
-    }
-
-    if (medallion == 1) {
-        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
-    } else {
-        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
+    if (gSaveContext.entranceIndex == 0x05E0 && !Flags_GetEventChkInf(0xC1) && player != NULL &&
+        !Player_InBlockingCsMode(globalCtx, player)) {
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetEventChkInf(0xC1);
     }
 }
 
@@ -1095,6 +1056,8 @@ skip:
 
     Environment_Update(globalCtx, &globalCtx->envCtx, &globalCtx->lightCtx, &globalCtx->pauseCtx, &globalCtx->msgCtx,
                        &globalCtx->gameOverCtx, globalCtx->state.gfxCtx);
+
+    GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
 }
 
 void Gameplay_DrawOverlayElements(GlobalContext* globalCtx) {

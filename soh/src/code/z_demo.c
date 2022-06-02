@@ -2090,10 +2090,12 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
             Flags_SetEventChkInf(0xAA);
             gSaveContext.cutsceneIndex = 0xFFF0;
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
-            Flags_SetEventChkInf(0xC1);
-            Item_Give(globalCtx, ITEM_OCARINA_FAIRY);
-            gSaveContext.entranceIndex = 0x011E;
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xC1);
+                Item_Give(globalCtx, ITEM_OCARINA_FAIRY);
+                gSaveContext.entranceIndex = 0x011E;
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                    LINK_IS_ADULT && !Flags_GetEventChkInf(0xC4) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {

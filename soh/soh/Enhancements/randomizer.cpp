@@ -1119,14 +1119,14 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName) {
         for (auto itemLocation : gSaveContext.itemLocations) {
             this->itemLocations[itemLocation.check] = itemLocation.get;
         }
-    } else {
+    } /* else {
         u16 index = 0;
         for (auto itemLocation : this->itemLocations) {
             gSaveContext.itemLocations[index].check = itemLocation.first;
             gSaveContext.itemLocations[index].get = itemLocation.second;
             index++;
         }
-    }
+    }*/
 }
 
 std::string sanitize(std::string stringValue) {
@@ -1149,8 +1149,6 @@ std::string sanitize(std::string stringValue) {
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
-    // todo pull this in from cvar or something
-
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -1197,7 +1195,6 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
     }
 
     if (success) {
-        CVar_SetS32("gRandomizer", 1);
         CVar_SetS32("gDroppedNewSpoilerFile", 0);
         Game::SaveSettings();
     }
@@ -1371,6 +1368,13 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
                     return GI_WALLET_ADULT;
                 case 1:
                     return GI_WALLET_GIANT;
+            }
+        case RG_PROGRESSIVE_OCARINA:
+            switch (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_NONE) {
+                case 1:
+                    return GI_OCARINA_FAIRY;
+                case 0:
+                    return GI_OCARINA_OOT;
             }
         case RG_RECOVERY_HEART:
             return GI_HEART;

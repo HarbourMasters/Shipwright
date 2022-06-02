@@ -234,6 +234,11 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
+    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0) {
+        const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+        LoadItemLocations(fileLoc);
+    }
+
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
             osSyncPrintf("REGCK_ALL[%x]=%x,%x,%x,%x,%x,%x\n", this->buttonIndex,
@@ -1534,9 +1539,6 @@ void FileChoose_LoadGame(GameState* thisx) {
         this->state.running = false;
     }
 
-    const char* fileLoc = CVar_GetString("gSpoilerLog", "");
-    LoadItemLocations(fileLoc);
-
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
     gSaveContext.seqId = (u8)NA_BGM_DISABLED;
@@ -1958,6 +1960,9 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
+
+    const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+    LoadItemLocations(fileLoc);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

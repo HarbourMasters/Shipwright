@@ -273,8 +273,10 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
-    if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag) { // Skip Malon's multiple textboxes before getting an item
         gSaveContext.infTable[8] |= 0x800;
+        gSaveContext.infTable[8] |= 0x10;
+        gSaveContext.eventChkInf[1] |= 1;
     }
 
     if (!func_80AA08C4(this, globalCtx)) {
@@ -287,11 +289,11 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
-        if (gSaveContext.n64ddFlag) { // Straight to singing textbox
+        if (gSaveContext.n64ddFlag) { // Skip straight to "let's sing it together" textbox in the ranch
             gSaveContext.eventChkInf[1] |= 0x40;
         }
 
@@ -320,8 +322,7 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
 
     if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10)) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA) ||
-               (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
+    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
             globalCtx->msgCtx.stateTimer = 4;

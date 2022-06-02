@@ -441,17 +441,9 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
 
                             this->n64ddFlag = 0;
 
-                            if (CVar_GetS32("gRandomizer", 0) != 0) {
-                                this->n64ddFlags[this->buttonIndex] = 1;
-                                this->n64ddFlag = 1;
-                                gSaveContext.n64ddFlag = 1;
-                            }
-
                             dayTime = ((void)0, gSaveContext.dayTime);
 
                             Sram_InitSave(this, &this->sramCtx);
-
-                            // todo: fill link's pocket here
 
                             gSaveContext.dayTime = dayTime;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;

@@ -1035,10 +1035,9 @@ namespace SohImGui {
             {
                 EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
-                if (ImGui::Button("Generate Seed") && CVar_GetS32("gRandomizer", 0) != 0) {
+                if (ImGui::Button("Generate Seed")) {
                     RandoMain::GenerateRando();
-                    // gSpoilerData = GetSpoilerData();
-                    // ParseItemLocations(gSpoilerData);
+                    Game::LoadSettings();
                 }
 
                 ImGui::EndMenu();
