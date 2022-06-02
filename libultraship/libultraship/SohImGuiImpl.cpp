@@ -1016,6 +1016,8 @@ namespace SohImGui {
                 Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 Tooltip("Allows you to use any item at any location");
+                EnhancementCheckbox("No Item Age Limits", "gNoItemAgeLimits");
+                Tooltip("Allows you to use any item at any age");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
 

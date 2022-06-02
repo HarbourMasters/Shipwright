@@ -727,18 +727,24 @@ static u16 D_8082ABEC[] = {
     PAUSE_MAP, PAUSE_EQUIP, PAUSE_QUEST, PAUSE_ITEM, PAUSE_EQUIP, PAUSE_MAP, PAUSE_ITEM, PAUSE_QUEST,
 };
 
-u8 gSlotAgeReqs[] = {
+u8 gSlotAgeReqs[24];
+
+u8 gSlotAgeReqsClean[] = {
     1, 9, 9, 0, 0, 9, 1, 9, 9, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 0, 1,
 };
 
-u8 gEquipAgeReqs[][4] = {
+u8 gEquipAgeReqs[4][4];
+
+u8 gEquipAgeReqsClean[][4] = {
     { 0, 1, 0, 0 },
     { 9, 1, 9, 0 },
     { 0, 9, 0, 0 },
     { 9, 9, 0, 0 },
 };
 
-u8 gItemAgeReqs[] = {
+u8 gItemAgeReqs[86];
+
+u8 gItemAgeReqsClean[] = {
     1, 9, 9, 0, 0, 9, 1, 9, 9, 9, 0, 0, 0, 9, 1, 9, 1, 0, 0, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
     9, 9, 9, 9, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 1, 0, 0, 1, 9, 0, 9, 0, 0, 9, 0, 0, 1, 1, 1, 0, 0, 0, 9, 9, 9, 1, 0, 0, 9, 9, 0,
@@ -1027,6 +1033,16 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_scope_PAL.c", 985);
+
+    if(CVar_GetS32("gNoItemAgeLimits", 0) == 1) {
+        memset(gSlotAgeReqs, 9, sizeof(gSlotAgeReqs));
+        memset(gEquipAgeReqs, 9, sizeof(gEquipAgeReqs));
+        memset(gItemAgeReqs, 9, sizeof(gItemAgeReqs));
+    } else {
+        memcpy(gSlotAgeReqs, gSlotAgeReqsClean, sizeof(gSlotAgeReqs));
+        memcpy(gEquipAgeReqs, gEquipAgeReqsClean, sizeof(gEquipAgeReqs));
+        memcpy(gItemAgeReqs, gItemAgeReqsClean, sizeof(gItemAgeReqs));
+    }
 }
 
 Gfx* KaleidoScope_DrawPageSections(Gfx* gfx, Vtx* vertices, void** textures) {
