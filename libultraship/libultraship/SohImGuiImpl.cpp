@@ -1078,22 +1078,22 @@ namespace SohImGui {
                         Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
                         EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255,255,255,255), false);
                         Tooltip("Inner color for Navi (idle flying around)");
-                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(115,230,255,255), false);
+                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0,0,255,255), false);
                         Tooltip("Outer color for Navi (idle flying around)");
                         ImGui::Separator();
-                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(100,100,255,255), false);
+                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150,150,255,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around NPCs)");
-                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(90,90,255,255), false);
+                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150,150,255,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around NPCs)");
                         ImGui::Separator();
                         EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,220,0,255), false);
+                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,155,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
                         ImGui::Separator();
                         EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
-                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,220,0,255), false);
+                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,255,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
                         ImGui::EndTabItem();
                     }
