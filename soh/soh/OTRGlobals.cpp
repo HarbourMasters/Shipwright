@@ -36,7 +36,7 @@
 #include <Utils/StringHelper.h>
 
 #include <SDL2/SDL_scancode.h>
-#include <randomizer/spoiler_log.hpp>
+// #include <randomizer/spoiler_log.hpp>
 
 OTRGlobals* OTRGlobals::Instance;
 

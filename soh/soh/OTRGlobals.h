@@ -8,7 +8,7 @@
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer.h"
-#include "randomizer/spoiler_log.hpp"
+// #include "randomizer/spoiler_log.hpp"
 
 class OTRGlobals
 {
