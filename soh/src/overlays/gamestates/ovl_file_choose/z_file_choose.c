@@ -229,6 +229,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
  */
 
 u8 generating;
+u8 changedSeed;
 
 void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
@@ -245,13 +246,15 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
         func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
         generating = 0;
+        changedSeed = 1;
         return;
     } else if (generating) {
         return;
     }
 
-    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0 && !generating) {
+    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0 || changedSeed) {
         CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        changedSeed = 0;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadItemLocations(fileLoc);
     }
@@ -892,7 +895,9 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
-    DrawSeedHashSprites(this);
+    if (CVar_GetS32("gRandomizer", 0) != 0) {
+        DrawSeedHashSprites(this);
+    }
 
     if (1) {}
 

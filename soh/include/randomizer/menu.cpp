@@ -517,13 +517,8 @@ void PrintOptionDescription() {
 
 std::string GenerateRandomizer() {
     // if a blank seed was entered, make a random one
-    if (Settings::seed.empty()) {
-        Settings::seed = std::to_string(rand());
-    } else if (Settings::seed.rfind("seed_testing_count", 0) == 0) {
-        const int count = std::stoi(Settings::seed.substr(18), nullptr);
-        Playthrough::Playthrough_Repeat(count);
-        return "";
-    }
+    srand(time(NULL));
+    Settings::seed = std::to_string(rand());
 
     int ret = Playthrough::Playthrough_Init(std::hash<std::string>{}(Settings::seed));
     if (ret < 0) {
