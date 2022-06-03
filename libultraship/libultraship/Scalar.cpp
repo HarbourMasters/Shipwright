@@ -41,6 +41,7 @@ namespace Ship
 		case ScalarType::ZSCALAR_F64:
 			scal->scalar.f64 = reader->ReadDouble();
 			break;
+		default:
 		}
 	}
 }
