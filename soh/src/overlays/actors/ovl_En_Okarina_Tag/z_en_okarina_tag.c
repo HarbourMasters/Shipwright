@@ -288,7 +288,7 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.world.rot.y;
         this->unk_15A++;
         if (!(this->actor.xzDistToPlayer > 120.0f)) {
-            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN) || gSaveContext.n64ddFlag) {
                 this->actor.textId = 0x5021;
             }
             yawDiffNew = ABS(yawDiff);
@@ -300,15 +300,31 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (song->actor.parent != NULL && song->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+        func_8002F434(&song->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
     // "Open sesame sesame!"
     osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 開けゴマゴマゴマ！ ☆☆☆☆☆ %d\n" VT_RST, Message_GetState(&globalCtx->msgCtx));
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
         Message_CloseTextbox(globalCtx);
-        if (!CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
-            gSaveContext.cutsceneTrigger = 1;
+        if (!gSaveContext.n64ddFlag) {
+            if (!CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
+                gSaveContext.cutsceneTrigger = 1;
+            }
+        } else {
+            if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+                GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
+            }
         }
         this->actionFunc = func_80ABF708;
     }
