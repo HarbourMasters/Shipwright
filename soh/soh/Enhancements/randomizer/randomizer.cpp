@@ -2108,7 +2108,7 @@ void DrawRandoEditor(bool& open) {
 }
 
 void InitRando() {
-    SohImGui::AddWindow("Developer Tools", "Rando Editor", DrawRandoEditor);
+    SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
 }
 
 extern "C" {
