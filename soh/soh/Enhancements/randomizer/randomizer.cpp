@@ -2071,6 +2071,11 @@ void GenerateRandomizerImgui() {
 }
 
 void DrawRandoEditor(bool& open) {
+    if (generated) {
+        generated = 0;
+        randoThread.join();
+    }
+
     if (!open) {
         return;
     }
@@ -2088,13 +2093,11 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (ImGui::Button("Generate")) {
-        GenerateRandomizerImgui();
+        if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+            randoThread = std::thread(&GenerateRandomizerImgui);
+        }
+        // GenerateRandomizerImgui();
     }
-
-    // if (generated) {
-    //     generated = 0;
-    //     randoThread.join();
-    // }
 
     ImGui::End();
 }
