@@ -1018,6 +1018,8 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
+                Tooltip("Prevents the Deku Shield from burning on contact with fire");
 
                 ImGui::EndMenu();
             }
