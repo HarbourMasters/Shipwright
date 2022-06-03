@@ -50,5 +50,7 @@ Ship::ResourceType OTRExporter::GetResourceType(ZResourceType zResType)
 	case ZResourceType::Texture:				return Ship::ResourceType::Texture;
 	case ZResourceType::Vector:					return Ship::ResourceType::Vector;
 	case ZResourceType::Vertex:					return Ship::ResourceType::Vertex;
+	case ZResourceType::Scalar:					return Ship::ResourceType::Scalar;
+	default:									return Ship::ResourceType::Archive;
 	}
 }
