@@ -5,8 +5,6 @@
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
-// #include "randomizer/keys.hpp"
-// #include <randomizer/spoiler_log.hpp>
 #include <randomizerTypes.h>
 
 class Randomizer {
