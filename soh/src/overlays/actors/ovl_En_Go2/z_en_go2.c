@@ -587,7 +587,7 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
             if (this->actor.textId == 0x305E) {
                 // todo fix the bgsFlag checks for rando
                 if (!gSaveContext.bgsFlag) {
-                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(DMT_BIGGORON, GI_SWORD_BGS) : GI_SWORD_BGS);
+                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_DMT_BIGGORON, GI_SWORD_BGS) : GI_SWORD_BGS);
                     this->actionFunc = EnGo2_SetupGetItem;
                     return 2;
                 } else {
