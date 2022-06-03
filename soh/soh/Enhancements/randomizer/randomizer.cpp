@@ -2056,6 +2056,20 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
 
 std::thread randoThread;
 
+void GenerateRandomizerImgui() {
+    CVar_SetS32("gRandoGenerating", 1);
+    Game::SaveSettings();
+
+    RandoMain::GenerateRando();
+
+    CVar_SetS32("gRandoGenerating", 0);
+    Game::SaveSettings();
+
+    Game::LoadSettings();
+
+    generated = 1;
+}
+
 void DrawRandoEditor(bool& open) {
     if (!open) {
         return;
@@ -2074,7 +2088,7 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (ImGui::Button("Generate")) {
-        // GenerateRandomizerImgui();
+        GenerateRandomizerImgui();
     }
 
     // if (generated) {
@@ -2083,21 +2097,6 @@ void DrawRandoEditor(bool& open) {
     // }
 
     ImGui::End();
-}
-
-void GenerateRandomizerImgui() {
-    CVar_SetS32("gRandoGenerating", 1);
-    Game::SaveSettings();
-
-    // WHY CAN'T I FIND THIS??????????????????
-    RandoMain::GenerateRando();
-
-    CVar_SetS32("gRandoGenerating", 0);
-    Game::SaveSettings();
-
-    Game::LoadSettings();
-
-    generated = 1;
 }
 
 // void EnhancementCheckbox(const char* text, const char* cvarName)

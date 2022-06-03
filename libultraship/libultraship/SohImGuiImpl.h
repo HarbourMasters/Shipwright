@@ -74,7 +74,6 @@ namespace SohImGui {
 
     void DrawMainMenuAndCalculateGameSize(void);
     
-    void GenerateRandomizerImgui();
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);

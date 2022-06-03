@@ -4,6 +4,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <stdint.h>
 
 class ItemLocation;
 

@@ -1,6 +1,7 @@
 #include "sound_effects.hpp"
 #include "settings.hpp"
 #include <cstdlib>
+#include <stdint.h>
 
 namespace SFX {
     const std::array<SeqType, SFX_COUNT> seqTypesSFX = {

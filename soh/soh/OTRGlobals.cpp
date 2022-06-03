@@ -29,7 +29,7 @@
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
-#include "Enhancements/randomizer.h"
+#include "Enhancements/randomizer/randomizer.h"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"

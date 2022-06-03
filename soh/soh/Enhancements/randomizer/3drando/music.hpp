@@ -2,7 +2,7 @@
 
 #include <array>
 #include <vector>
-
+#include <stdint.h>
 
 namespace Music {
     const uint32_t BGM_BASE  = 0x1000585;

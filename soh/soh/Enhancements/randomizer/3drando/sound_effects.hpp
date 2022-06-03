@@ -2,6 +2,7 @@
 
 #include <array>
 #include <vector>
+#include <stdint.h>
 
 #define SFX_BASE 0x1000001
 #define SFX_COUNT 1388

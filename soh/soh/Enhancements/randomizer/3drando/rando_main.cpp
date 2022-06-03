@@ -4,7 +4,7 @@
 #include "item_location.hpp"
 #include "location_access.hpp"
 #include "rando_main.hpp"
-#include <soh/Enhancements/randomizer.h>
+// #include <soh/Enhancements/randomizer.h>
 #include <Cvar.h>
 #include <GameSettings.h>
 
