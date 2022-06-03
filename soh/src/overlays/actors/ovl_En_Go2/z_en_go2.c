@@ -344,7 +344,7 @@ s16 EnGo2_GetStateGoronCityRollingBig(GlobalContext* globalCtx, EnGo2* this) {
                     if(!gSaveContext.n64ddFlag) {
                         bombBagUpgrade = CUR_CAPACITY(UPG_BOMB_BAG) == 30 ? GI_BOMB_BAG_40 : GI_BOMB_BAG_30;    
                     } else {
-                        bombBagUpgrade = GetRandomizedItemIdFromKnownCheck(GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
+                        bombBagUpgrade = GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_CHILD, GI_BOMB_BAG_40);
                     }
                     EnGo2_GetItem(this, globalCtx, bombBagUpgrade);
                     Message_CloseTextbox(globalCtx);
@@ -513,7 +513,7 @@ s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
         case TEXT_STATE_CLOSING:
             switch (this->actor.textId) {
                 case 0x3036:
-                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON) : GI_TUNIC_GORON);
+                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON) : GI_TUNIC_GORON);
                     this->actionFunc = EnGo2_SetupGetItem;
                     return 2;
                 case 0x3037:

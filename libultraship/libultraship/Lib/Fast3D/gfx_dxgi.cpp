@@ -31,6 +31,7 @@
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
+#include "../../GameSettings.h"
 
 #define WINCLASS_NAME L"N64GAME"
 #define GFX_API_NAME "DirectX"
@@ -271,8 +272,9 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
         break;
     case WM_DROPFILES:
         DragQueryFileA((HDROP)w_param, 0, fileName, 256);
-        CVar_SetString("gDroppedFile", fileName);
+        CVar_SetString("gSpoilerLog", fileName);
         CVar_SetS32("gDroppedNewSpoilerFile", 1);
+        Game::SaveSettings();
         break;
     case WM_SYSKEYDOWN:
         if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {

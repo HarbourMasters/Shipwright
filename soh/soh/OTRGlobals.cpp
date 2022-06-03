@@ -29,6 +29,7 @@
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer/randomizer.h"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
@@ -36,6 +37,7 @@
 #include <Utils/StringHelper.h>
 
 #include <SDL2/SDL_scancode.h>
+// #include <randomizer/spoiler_log.hpp>
 
 OTRGlobals* OTRGlobals::Instance;
 
@@ -75,6 +77,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     DebugConsole_Init();
     Debug_Init();
+    Rando_Init();
 }
 
 #ifdef _WIN32
@@ -1032,8 +1035,8 @@ extern "C" void LoadItemLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName);
 }
 
-extern "C" void ParseItemLocations(const char* spoilerFileName) {
-    OTRGlobals::Instance->gRandomizer->ParseItemLocations(spoilerFileName);
+extern "C" void ParseItemLocationsFile(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->ParseItemLocationsFile(spoilerFileName);
 }
 
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {

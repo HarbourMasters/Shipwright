@@ -676,6 +676,56 @@ void Sram_VerifyAndLoadAllSaves(FileChooseContext* fileChooseCtx, SramContext* s
     osSyncPrintf("now_life=%d, %d, %d\n", fileChooseCtx->health[0], fileChooseCtx->health[1], fileChooseCtx->health[2]);
 }
 
+void GiveLinksPocketMedallion() {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+
+    s16 item;
+
+    u8 medallion = 0;
+
+    switch (getItemId) {
+        case GI_MEDALLION_FOREST:
+            item = ITEM_MEDALLION_FOREST;
+            medallion = 1;
+            break;
+        case GI_MEDALLION_FIRE:
+            item = ITEM_MEDALLION_FIRE;
+            medallion = 1;
+            break;
+        case GI_MEDALLION_WATER:
+            item = ITEM_MEDALLION_WATER;
+            medallion = 1;
+            break;
+        case GI_MEDALLION_SHADOW:
+            item = ITEM_MEDALLION_SHADOW;
+            medallion = 1;
+            break;
+        case GI_MEDALLION_SPIRIT:
+            item = ITEM_MEDALLION_SPIRIT;
+            medallion = 1;
+            break;
+        case GI_MEDALLION_LIGHT:
+            item = ITEM_MEDALLION_LIGHT;
+            medallion = 1;
+            break;
+        case GI_STONE_KOKIRI:
+            item = ITEM_KOKIRI_EMERALD;
+            break;
+        case GI_STONE_GORON:
+            item = ITEM_GORON_RUBY;
+            break;
+        case GI_STONE_ZORA:
+            item = ITEM_ZORA_SAPPHIRE;
+            break;
+    }
+
+    if (medallion == 1) {
+        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
+    } else {
+        gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
+    }
+}
+
 void Sram_InitSave(FileChooseContext* fileChooseCtx, SramContext* sramCtx) {
     u16 offset;
     u16 j;
@@ -713,6 +763,22 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx, SramContext* sramCtx) {
     osSyncPrintf("newf=%x,%x,%x,%x,%x,%x\n", gSaveContext.newf[0], gSaveContext.newf[1], gSaveContext.newf[2],
                  gSaveContext.newf[3], gSaveContext.newf[4], gSaveContext.newf[5]);
     osSyncPrintf("\n$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n");
+                                
+    // If the save file is a randomizer one
+    if (CVar_GetS32("gRandomizer", 0) != 0) {
+        // Set N64DD Flags for save file
+        fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
+        fileChooseCtx->n64ddFlag = 1;
+        gSaveContext.n64ddFlag = 1;
+
+        // Set Cutscene flags to skip them
+        gSaveContext.infTable[0] |= 1;
+        gSaveContext.cutsceneIndex = 0;
+        Flags_SetEventChkInf(5);
+
+        // Give Link's pocket item
+        GiveLinksPocketMedallion();
+    }
 
     ptr = (u16*)&gSaveContext;
     j = 0;

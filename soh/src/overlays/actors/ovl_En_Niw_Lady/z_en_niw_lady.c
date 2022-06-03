@@ -305,7 +305,7 @@ void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
             this->actor.parent = NULL;
 
             if (gSaveContext.n64ddFlag) {
-                s32 itemId = GetRandomizedItemIdFromKnownCheck(KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                s32 itemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
                 func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 50.0f);
             } else {
                 this->getItemId = GI_BOTTLE;
@@ -395,7 +395,7 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
                 this->actor.parent = NULL;
 
                 if (gSaveContext.n64ddFlag) {
-                    s32 itemId = GetRandomizedItemIdFromKnownCheck(KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    s32 itemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
                     func_8002F434(&this->actor, globalCtx, itemId, 200.0f, 100.0f);
                 } else {
                     func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
@@ -455,7 +455,7 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
             getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
 
             if (gSaveContext.n64ddFlag && getItemId == GI_POCKET_EGG) {
-                getItemId = GetRandomizedItemIdFromKnownCheck(KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
             }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);

@@ -898,31 +898,28 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
     }
 }
 
-u8 successImpa;
 void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
-    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        if (successImpa == 0 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
-            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
-            if (func_8002F434(impa, globalCtx, getItemId, 100.0f, 50.0f) == true) {
-                successImpa = 1;
-            }
-        } else if (successImpa == 1) {
-            gSaveContext.eventChkInf[5] |= 0x200;
-            globalCtx->sceneLoadFlag = 0x14;
-            globalCtx->fadeTransition = 3;
-            gSaveContext.nextTransition = 3;
-            globalCtx->nextEntranceIndex = 0x0594;
-            gSaveContext.nextCutsceneIndex = 0;
-        }
+    if (impa->parent != NULL && impa->parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        func_8002F434(impa, globalCtx, getItemId, 75.0f, 50.0f);
+    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        gSaveContext.eventChkInf[5] |= 0x200;
+        globalCtx->sceneLoadFlag = 0x14;
+        globalCtx->fadeTransition = 3;
+        gSaveContext.nextTransition = 3;
+        globalCtx->nextEntranceIndex = 0x0594;
+        gSaveContext.nextCutsceneIndex = 0;
     }
 }
 
 void func_80986C30(DemoIm* this, GlobalContext* globalCtx) {
     if (func_80986A5C(this, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardImpa(this, globalCtx, SONG_FROM_IMPA);
+            GivePlayerRandoRewardImpa(this, globalCtx, RC_SONG_FROM_IMPA);
         } else {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
             gSaveContext.cutsceneTrigger = 1;

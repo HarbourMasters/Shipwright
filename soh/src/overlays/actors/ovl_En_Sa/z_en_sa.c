@@ -618,17 +618,16 @@ void func_80AF67D0(EnSa* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, RandomizerCheck check) {
-    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId =
+        GetRandomizedItemIdFromKnownCheck(check, GI_SARIAS_SONG);
 
-    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        if (!Flags_GetTreasure(globalCtx, 0x1F) &&
-            gSaveContext.eventChkInf[4] & 1) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SARIAS_SONG);
-
-            if (func_8002F434(&saria->actor, globalCtx, getItemId, 100000.0f, 100000.0f) == true) {
-                Flags_SetTreasure(globalCtx, 0x1F);
-            }
-        }
+    if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        func_8002F434(&saria->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Flags_SetTreasure(globalCtx, 0x1F);
     }
 }
 
@@ -637,7 +636,7 @@ void func_80AF683C(EnSa* this, GlobalContext* globalCtx) {
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Gameplay_InCsMode(globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            GivePlayerRandoRewardSaria(this, globalCtx, SONG_FROM_SARIA);
+            GivePlayerRandoRewardSaria(this, globalCtx, RC_SONG_FROM_SARIA);
             return;
         }
 

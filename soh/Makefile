@@ -87,14 +87,14 @@ TEXTURE_FILES_OUT := $(foreach f,$(TEXTURE_FILES_PNG:.png=.inc.c),build/$f) \
 					 $(foreach f,$(TEXTURE_FILES_JPG:.jpg=.jpg.inc.c),build/$f) \
 
 CXX_FILES := \
-	$(shell find soh -type f -name *.cpp)
+	$(shell find soh -type f -name '*.cpp')
 
 C_FILES := \
-	$(shell find soh -type f -name *.c) \
-	$(shell find src/boot -type f -name *.c) \
-	$(shell find src/buffers -type f -name *.c) \
-	$(shell find src/code -type f -name *.c) \
-	$(shell find src/overlays -type f -name *.c) \
+	$(shell find soh -type f -name '*.c') \
+	$(shell find src/boot -type f -name '*.c') \
+	$(shell find src/buffers -type f -name '*.c') \
+	$(shell find src/code -type f -name '*.c') \
+	$(shell find src/overlays -type f -name '*.c') \
 	src/libultra/gu/coss.c \
 	src/libultra/gu/guLookAt.c \
 	src/libultra/gu/guLookAtHilite.c \

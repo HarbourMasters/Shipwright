@@ -67,12 +67,6 @@ void FileChoose_InitModeUpdate(GameState* thisx) {
         this->nextTitleLabel = FS_TITLE_OPEN_FILE;
         osSyncPrintf("Ｓｒａｍ Ｓｔａｒｔ─Ｌｏａｄ  》》》》》  ");
 
-        if (strcmp(CVar_GetString("gDroppedFile", ""), "") != 0 && CVar_GetS32("gRandomizer", 0) != 0) {
-            LoadItemLocations(CVar_GetString("gDroppedFile", ""));            
-        } else {
-            CVar_SetS32("gRandomizer", 0);
-        }
-
         Sram_VerifyAndLoadAllSaves(this, &this->sramCtx);
         osSyncPrintf("終了！！！\n");
     }
@@ -233,14 +227,36 @@ void DrawSeedHashSprites(FileChooseContext* this) {
  * Lastly, set any warning labels if appropriate.
  * Update function for `CM_MAIN_MENU`
  */
+
+u8 generating;
+u8 changedSeed;
+
 void FileChoose_UpdateMainMenu(GameState* thisx) {
     static u8 emptyName[] = { 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E, 0x3E };
     FileChooseContext* this = (FileChooseContext*)thisx;
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
-    if (strcmp(CVar_GetString("gDroppedFile", ""), "") != 0 && CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0) {
-        LoadItemLocations(CVar_GetString("gDroppedFile", ""));
+
+    if (CVar_GetS32("gRandoGenerating", 0) != 0 && generating == 0) {
+        generating = 1;
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_HORSE, 0, 7, 1);
+        return;
+    } else if (CVar_GetS32("gRandoGenerating", 0) == 0 && generating) {
+        Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
+        func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
+        generating = 0;
+        changedSeed = 1;
+        return;
+    } else if (generating) {
+        return;
+    }
+
+    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0 || changedSeed) {
+        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        changedSeed = 0;
+        const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+        LoadItemLocations(fileLoc);
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -879,7 +895,9 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
-    DrawSeedHashSprites(this);
+    if (CVar_GetS32("gRandomizer", 0) != 0) {
+        DrawSeedHashSprites(this);
+    }
 
     if (1) {}
 
@@ -1520,6 +1538,7 @@ void FileChoose_FadeOut(GameState* thisx) {
  * Note: On Debug ROM, File 1 will go to Map Select.
  * Update function for `SM_LOAD_GAME`
  */
+
 void FileChoose_LoadGame(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     u16 swordEquipMask;
@@ -1541,8 +1560,6 @@ void FileChoose_LoadGame(GameState* thisx) {
         SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
         this->state.running = false;
     }
-
-    LoadItemLocations("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -1965,6 +1982,9 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
+
+    const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+    LoadItemLocations(fileLoc);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

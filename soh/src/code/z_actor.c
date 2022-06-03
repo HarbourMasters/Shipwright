@@ -339,19 +339,19 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
     if (CVar_GetS32("gUseNaviCol",0) != 1 ) {
         if (actorCategory == ACTORCAT_PLAYER) {
             naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
-            naviColor->outer.r = 115; naviColor->outer.g = 230; naviColor->outer.b = 255;
+            naviColor->outer.r = 0; naviColor->outer.g = 0; naviColor->outer.b = 255;
         }
         if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner.r = 100; naviColor->inner.g = 100; naviColor->inner.b = 255;
-            naviColor->outer.r = 90; naviColor->outer.g = 90; naviColor->outer.b = 255;
+            naviColor->inner.r = 150; naviColor->inner.g = 150; naviColor->inner.b = 255;
+            naviColor->outer.r = 150; naviColor->outer.g = 150; naviColor->outer.b = 255;
         }
         if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
             naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 0;
-            naviColor->outer.r = 220; naviColor->outer.g = 220; naviColor->outer.b = 0;
+            naviColor->outer.r = 220; naviColor->outer.g = 155; naviColor->outer.b = 0;
         }
         if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 90;
-            naviColor->outer.r = 0; naviColor->outer.g = 220; naviColor->outer.b = 0;
+            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 0;
+            naviColor->outer.r = 0; naviColor->outer.g = 255; naviColor->outer.b = 0;
         }
     } else {
         if (actorCategory == ACTORCAT_PLAYER) {
@@ -1921,6 +1921,24 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     } else {
         return false;
     }
+}
+
+s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if (((player->heldActor != NULL) && (getItemId > GI_NONE) && (getItemId < GI_MAX)) ||
+            (!(player->stateFlags1 & 0x20000800))) {
+            if ((getItemId != GI_NONE)) {
+                player->getItemId = getItemId;
+                player->interactRangeActor = &player->actor;
+                player->getItemDirection = player->actor.shape.rot.y;
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange) {

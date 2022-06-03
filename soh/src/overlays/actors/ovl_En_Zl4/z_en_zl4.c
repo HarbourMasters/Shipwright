@@ -228,19 +228,17 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
 }
 
 void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
-    if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        if (!Flags_GetTreasure(globalCtx, 0x1F) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
-            gSaveContext.eventChkInf[4] != 1 && (globalCtx->actorCtx.titleCtx.delayTimer == 0) &&
-            (globalCtx->actorCtx.titleCtx.alpha == 0)) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
 
-            if (func_8002F434(&zelda->actor, globalCtx, getItemId, 100.0f, 50.0f) == true) {
-                Flags_SetTreasure(globalCtx, 0x1F);
-            }
-        } else if (Flags_GetTreasure(globalCtx, 0x1F)) {
-            gSaveContext.unk_13EE = 0x32;
-            gSaveContext.eventChkInf[4] |= 1;
-        }
+    if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1E)) {
+        Flags_SetTreasure(globalCtx, 0x1E);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1E) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
+               globalCtx->msgCtx.textId == 0x703C) {
+        func_8002F434(&zelda->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        gSaveContext.unk_13EE = 0x32;
+        gSaveContext.eventChkInf[4] |= 1;
     }
 }
 
@@ -1228,7 +1226,7 @@ void EnZl4_Idle(EnZl4* this, GlobalContext* globalCtx) {
     func_80B5BB78(this, globalCtx);
     
     if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardZeldaChild(this, globalCtx, HC_ZELDAS_LETTER);
+        GivePlayerRandoRewardZeldaChild(this, globalCtx, RC_HC_ZELDAS_LETTER);
         return;
     }
 }
