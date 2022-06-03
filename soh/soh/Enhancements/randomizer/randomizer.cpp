@@ -2086,46 +2086,28 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
+    std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
+    // todo something fancy for full path maybe?
+    ImGui::Text("Spoilerfile: %s", spoilerfilepath.c_str());
     bool randoEnabled = (bool)CVar_GetS32("gRandomizer", 0);
     if (ImGui::Checkbox("Enable Randomizer", &randoEnabled)) {
         CVar_SetS32("gRandomizer", randoEnabled);
         Game::SaveSettings();
     }
 
-    if (ImGui::Button("Generate")) {
-        if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-            randoThread = std::thread(&GenerateRandomizerImgui);
+    if(randoEnabled) {
+        if (ImGui::Button("Generate")) {
+            if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+                randoThread = std::thread(&GenerateRandomizerImgui);
+            }
         }
-        // GenerateRandomizerImgui();
     }
 
     ImGui::End();
 }
 
-// void EnhancementCheckbox(const char* text, const char* cvarName)
-// {
-//     bool val = (bool)CVar_GetS32(cvarName, 0);
-//     if (ImGui::Checkbox(text, &val)) {
-//         CVar_SetS32(cvarName, val);
-//         needs_save = true;
-//     }
-// }
-
 void InitRando() {
     SohImGui::AddWindow("Developer Tools", "Rando Editor", DrawRandoEditor);
-
-    // if (ImGui::BeginMenu("Randomizer"))
-    // {
-    //     // EnhancementCheckbox("Enable Randomizer", "gRandomizer");
-
-    //     if (ImGui::Button("Generate Seed")) {
-    //         if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-    //             randoThread = std::thread(&SohImGui::GenerateRandomizerImgui);
-    //         }
-    //     }
-
-    //     ImGui::EndMenu();
-    // }
 }
 
 extern "C" {
