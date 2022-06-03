@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-	void VertexV1::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
+	void VertexV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		Vertex* vtx = (Vertex*)res;
 		ResourceFile::ParseFileBinary(reader, res, readFullHeader);

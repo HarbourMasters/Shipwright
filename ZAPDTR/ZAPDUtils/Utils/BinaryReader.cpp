@@ -87,6 +87,14 @@ int32_t BinaryReader::ReadInt32()
 	return result;
 }
 
+int64_t BinaryReader::ReadInt64()
+{
+	int64_t result = 0;
+
+	stream->Read((char*)&result, sizeof(int64_t));
+	return result;
+}
+
 uint16_t BinaryReader::ReadUInt16()
 {
 	uint16_t result = 0;

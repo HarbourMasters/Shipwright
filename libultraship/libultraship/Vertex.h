@@ -13,7 +13,7 @@ namespace Ship
 		uint8_t r, g, b, a;
 	};
 
-	class VertexV1 : public ResourceFile
+	class VertexV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;

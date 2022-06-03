@@ -7,9 +7,9 @@ namespace Ship
 		uint32_t version = reader->ReadUInt32();
 		switch (version)
 		{
-		case (uint32_t)Version::Roy:
+		case (uint32_t)Version::Rachael:
 		{
-			VertexV1 Vtx = VertexV1();
+			VertexV2 Vtx = VertexV2();
 			Vtx.ParseFileBinary(reader, vtx, readFullHeader);
 		}
 		break;

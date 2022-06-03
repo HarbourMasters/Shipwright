@@ -15,6 +15,7 @@
 #include "TextureFactory.h"
 #include "BlobFactory.h"
 #include "MtxFactory.h"
+#include "ScalarFactory.h"
 #include "AudioFactory.h"
 #include <Utils/MemoryStream.h>
 
@@ -115,6 +116,9 @@ namespace Ship
             break;
         case ResourceType::AudioSequence:
             result = AudioSequenceFactory::ReadAudioSequence(reader.get());
+            break;
+        case ResourceType::Scalar:
+            result = ScalarFactory::ReadScalar(reader, readFullHeader);
             break;
         default:
             // RESOURCE TYPE NOT SUPPORTED

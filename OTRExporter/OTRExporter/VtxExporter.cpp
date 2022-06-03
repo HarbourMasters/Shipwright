@@ -18,7 +18,7 @@ void OTRExporter_Vtx::WriteVtx(ZVtx* vtx, BinaryWriter* writer)
 
 void OTRExporter_Vtx::SaveArr(ZResource* res, const fs::path& outPath, const std::vector<ZResource*>& vec, BinaryWriter* writer, bool writeFullHeader)
 {
-	WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Roy, writeFullHeader);
+	WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Rachael, writeFullHeader);
 	
 	writer->Write((uint32_t)vec.size());
 	
@@ -32,7 +32,7 @@ void OTRExporter_Vtx::Save(ZResource* res, const fs::path& outPath, BinaryWriter
 {
 	ZVtx* vtx = (ZVtx*)res;
 
-	WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Roy, writeFullHeader);
+	WriteHeader(res, writer, Ship::ResourceType::Vertex, Ship::Version::Rachael, writeFullHeader);
 
 	WriteVtx(vtx, writer);
 

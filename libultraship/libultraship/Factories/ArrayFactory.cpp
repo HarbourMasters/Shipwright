@@ -9,9 +9,9 @@ namespace Ship
 
         switch (version)
         {
-        case Version::Roy:
+        case Version::Rachael:
         {
-            ArrayV1 arrayObj = ArrayV1();
+            ArrayV2 arrayObj = ArrayV2();
             arrayObj.ParseFileBinary(reader, arr, readFullHeader);
         }
         break;

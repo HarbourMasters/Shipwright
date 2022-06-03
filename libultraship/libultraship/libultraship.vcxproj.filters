@@ -336,14 +336,11 @@
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
     </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Source Files\GUI</Filter>
+    <ClCompile Include="Scalar.cpp">
+      <Filter>Source Files\Resources\Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameOverlay.cpp">
-      <Filter>Source Files\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="ImGuiImpl.cpp">
-      <Filter>Source Files\GUI</Filter>
+    <ClCompile Include="Factories\ScalarFactory.cpp">
+      <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -644,14 +641,11 @@
     <ClInclude Include="VirtualController.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Source Files\GUI</Filter>
+    <ClInclude Include="Scalar.h">
+      <Filter>Header Files\Resources\Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameOverlay.h">
-      <Filter>Source Files\GUI</Filter>
-    </ClInclude>
-    <ClInclude Include="ImGuiImpl.h">
-      <Filter>Source Files\GUI</Filter>
+    <ClInclude Include="Factories\ScalarFactory.h">
+      <Filter>Header Files\Resources\Factories</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

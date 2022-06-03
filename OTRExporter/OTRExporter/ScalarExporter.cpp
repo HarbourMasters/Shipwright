@@ -6,7 +6,7 @@ void OTRExporter_Scalar::Save(ZResource* res, const fs::path& outPath, BinaryWri
 {
 	ZScalar* scalar = (ZScalar*)res;
 
-	WriteHeader(res, writer, Ship::ResourceType::Scalar, Ship::Version::Roy, writeFullHeader);
+	WriteHeader(res, writer, Ship::ResourceType::Scalar, Ship::Version::Rachael, writeFullHeader);
 
 	writer->Write((uint32_t)scalar->scalarType);
 

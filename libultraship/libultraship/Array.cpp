@@ -4,7 +4,7 @@
 
 namespace Ship
 {
-	void ArrayV1::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
+	void ArrayV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		Array* arr = (Array*)res;
 
@@ -20,53 +20,26 @@ namespace Ship
 				Vertex* vtx = (Vertex*)ResourceLoader::LoadResource(reader, resType, false);
 				arr->vertices.push_back(vtx->vtx);
 			}
-			else if (resType == ResourceType::Vector || resType == ResourceType::Scalar)
+			else if (resType == ResourceType::Vector)
 			{
-				ScalarType scalType = (ScalarType)reader->ReadUInt32();
-
-				int iter = 1;
-
-				if (resType == ResourceType::Vertex)
-					iter = reader->ReadUInt32();
+				int iter = reader->ReadUInt32();
 
 				for (int k = 0; k < iter; k++)
 				{
-					ScalarData data;
-
-					switch (scalType)
-					{
-					case ScalarType::ZSCALAR_S8:
-						data.s8 = reader->ReadByte();
-						break;
-					case ScalarType::ZSCALAR_U8:
-						data.u8 = reader->ReadUByte();
-						break;
-					case ScalarType::ZSCALAR_S16:
-						data.s16 = reader->ReadInt16();
-						break;
-					case ScalarType::ZSCALAR_U16:
-						data.u16 = reader->ReadUInt16();
-						break;
-					case ScalarType::ZSCALAR_S32:
-						data.s32 = reader->ReadInt32();
-						break;
-					case ScalarType::ZSCALAR_U32:
-						data.u32 = reader->ReadUInt32();
-						break;
-					case ScalarType::ZSCALAR_F32:
-						data.f32 = reader->ReadSingle();
-						break;
-					case ScalarType::ZSCALAR_F64:
-						data.f64 = reader->ReadDouble();
-						break;
-					}
-
-					arr->scalars.push_back(data);
+ 					Scalar* scal = (Scalar*)ResourceLoader::LoadResource(reader, ResourceType::Scalar, false);
+					arr->scalars.push_back(scal->scalar);
 				}
 			}
 			else
 			{
 				Resource* childRes = ResourceLoader::LoadResource(reader, resType, false);
+
+				if (resType == ResourceType::Scalar)
+				{
+					Scalar* scal = (Scalar*)childRes;
+					arr->scalars.push_back(scal->scalar);
+				}
+
 				arr->resources.push_back(childRes);
 			}
 		}
