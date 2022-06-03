@@ -585,14 +585,18 @@ s16 EnGo2_GetStateGoronDmtBiggoron(GlobalContext* globalCtx, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, globalCtx)) {
         case TEXT_STATE_DONE:
             if (this->actor.textId == 0x305E) {
-                // todo fix the bgsFlag checks for rando
-                if (!gSaveContext.bgsFlag) {
-                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_DMT_BIGGORON, GI_SWORD_BGS) : GI_SWORD_BGS);
-                    this->actionFunc = EnGo2_SetupGetItem;
-                    return 2;
-                } else {
+                if((!gSaveContext.n64ddFlag && gSaveContext.bgsFlag) || (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
                     return 0;
                 }
+                
+                if(gSaveContext.n64ddFlag) {
+                    EnGo2_GetItem(this, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS));
+                    Flags_SetTreasure(globalCtx, 0x1F);
+                } else {
+                    EnGo2_GetItem(this, globalCtx, GI_SWORD_BGS);
+                }
+                this->actionFunc = EnGo2_SetupGetItem;
+                return 2;
             } else {
                 return 0;
             }
