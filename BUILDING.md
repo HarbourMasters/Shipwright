@@ -46,6 +46,30 @@ make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
 make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 ```
 
+## macOS
+
+1. Requires `gcc@12, sdl2, libpng, glew, spdlog, pulseaudio, x11` (can be installed via brew, etc)
+```bash
+# Clone the repo
+git clone git@github.com:HarbourMasters/ShipWright.git
+cd ShipWright
+# Copy the baserom to the OTRExporter folder
+cp <path to your ROM> OTRExporter
+# Clone and build StormLib
+git clone https://github.com/ladislav-zezula/StormLib external/StormLib
+cmake -B external/StormLib/build -S external/StormLib
+cmake --build external/StormLib/build
+cp external/StormLib/build/libstorm.a external
+# Copy glew lib to external (path might be different depending on how you installed it)
+cp /usr/local/lib/libGLEW.a external
+
+cd soh
+# Extract the assets/Compile the exporter/Run the exporter
+make setup -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+# Compile the code
+make -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+```
+
 # Compatible Roms
 ```
 OOT_PAL_GC      checksum 0x09465AC3
