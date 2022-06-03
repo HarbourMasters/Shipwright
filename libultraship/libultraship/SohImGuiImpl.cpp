@@ -437,6 +437,28 @@ namespace SohImGui {
         }
     }
 
+
+    void EnhancementCombobox(const char* name, const char* ComboArray[], uint8_t FirstTimeValue = 0){
+        if (FirstTimeValue <= 0){
+            FirstTimeValue = 0;
+        }
+        uint8_t selected=CVar_GetS32(name, FirstTimeValue);
+        uint8_t DefaultValue=selected;
+        if (ImGui::BeginCombo("##name", ComboArray[DefaultValue])) {
+            uint8_t ComboxSize = sizeof(&ComboArray);
+            for (uint8_t i = 0; i <= ComboxSize; i++) {
+                if (strlen(ComboArray[i]) > 1) {
+                    if (ImGui::Selectable(ComboArray[i], i==selected)) {
+                    CVar_SetS32(name, i);
+                    selected=i;
+                    needs_save = true;
+                    }
+                }
+            }
+            ImGui::EndCombo();
+        }
+    }
+
     void EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
@@ -808,20 +830,9 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
+                EnhancementCombobox("gTextureFilter", filters);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::NONE; fId++) {
-                        if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
-                            INFO("New Filter: %s", filters[fId]);
-                            gapi->set_texture_filter((FilteringMode)fId);
-
-                            CVar_SetS32("gTextureFilter", (int)fId);
-                            needs_save = true;
-                        }
-
-                    }
-                    ImGui::EndCombo();
-                }
+                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
