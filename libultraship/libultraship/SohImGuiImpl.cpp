@@ -50,8 +50,6 @@ IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPAR
 using namespace Ship;
 bool oldCursorState = true;
 
-u8 generated;
-
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
     ImGui::Text("Experimental"); \
@@ -432,11 +430,6 @@ namespace SohImGui {
         if (needs_save) {
             Game::SaveSettings();
             needs_save = false;
-        }
-
-        if (generated) {
-            generated = 0;
-            // randoThread.join();
         }
 
         ImGuiProcessEvent(event);
@@ -1260,20 +1253,6 @@ namespace SohImGui {
         }
 
         overlay->Draw();
-    }
-
-    void GenerateRandomizerImgui() {
-        CVar_SetS32("gRandoGenerating", 1);
-        Game::SaveSettings();
-
-        // RandoMain::GenerateRando();
-
-        CVar_SetS32("gRandoGenerating", 0);
-        Game::SaveSettings();
-
-        Game::LoadSettings();
-
-        generated = 1;
     }
 
     void DrawFramebufferAndGameInput(void) {

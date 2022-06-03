@@ -16,6 +16,8 @@ using json = nlohmann::json;
 
 std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
+u8 generated;
+
 Randomizer::Randomizer() {
     Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
     gSeedTextures[0] = bowSprite;
@@ -2064,18 +2066,37 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-    bool doubleDefense = gSaveContext.doubleDefense != 0;
-    if (ImGui::Checkbox("Double Defense", &doubleDefense)) {
-        gSaveContext.doubleDefense = doubleDefense;
-        gSaveContext.inventory.defenseHearts =
-            gSaveContext.doubleDefense ? 20 : 0; // Set to get the border drawn in the UI
+    bool randoEnabled = (bool)CVar_GetS32("gRandomizer", 0);
+    if (ImGui::Checkbox("Enable Randomizer", &randoEnabled)) {
+        CVar_SetS32("gRandomizer", randoEnabled);
+        Game::SaveSettings();
     }
 
-    if (ImGui::Button("Noon")) {
-        gSaveContext.dayTime = 0x8000;
+    if (ImGui::Button("Generate")) {
+        // GenerateRandomizerImgui();
     }
+
+    // if (generated) {
+    //     generated = 0;
+    //     randoThread.join();
+    // }
 
     ImGui::End();
+}
+
+void GenerateRandomizerImgui() {
+    CVar_SetS32("gRandoGenerating", 1);
+    Game::SaveSettings();
+
+    // WHY CAN'T I FIND THIS??????????????????
+    // RandoMain::GenerateRando();
+
+    CVar_SetS32("gRandoGenerating", 0);
+    Game::SaveSettings();
+
+    Game::LoadSettings();
+
+    generated = 1;
 }
 
 // void EnhancementCheckbox(const char* text, const char* cvarName)
