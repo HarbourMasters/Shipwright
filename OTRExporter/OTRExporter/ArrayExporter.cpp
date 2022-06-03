@@ -22,7 +22,7 @@ void OTRExporter_Array::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			ZVector* vec = (ZVector*)arr->resList[i];
 			writer->Write((uint32_t)vec->dimensions);
 
-			for (int k = 0; k < vec->dimensions; k++)
+			for (uint32_t k = 0; k < vec->dimensions; k++)
 				expSet->exporters[vec->scalars[k].GetResourceType()]->Save(&vec->scalars[k], outPath, writer, false);
 		}
 		else
