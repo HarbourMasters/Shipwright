@@ -9,6 +9,8 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <GameSettings.h>
+#include "../libultraship/SohImGuiImpl.h"
+#include <thread>
 
 using json = nlohmann::json;
 
@@ -2047,4 +2049,54 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
     }
 
     return RC_UNKNOWN_CHECK;
+}
+
+std::thread randoThread;
+
+void DrawRandoEditor(bool& open) {
+    if (!open) {
+        return;
+    }
+
+    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    if (!ImGui::Begin("Rando Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::End();
+        return;
+    }
+
+    ImGui::End();
+}
+
+// void EnhancementCheckbox(const char* text, const char* cvarName)
+// {
+//     bool val = (bool)CVar_GetS32(cvarName, 0);
+//     if (ImGui::Checkbox(text, &val)) {
+//         CVar_SetS32(cvarName, val);
+//         needs_save = true;
+//     }
+// }
+
+void InitRando() {
+    SohImGui::AddWindow("Developer Tools", "Rando Editor", DrawRandoEditor);
+
+    // if (ImGui::BeginMenu("Randomizer"))
+    // {
+    //     // EnhancementCheckbox("Enable Randomizer", "gRandomizer");
+
+    //     if (ImGui::Button("Generate Seed")) {
+    //         if (CVar_GetS32("gRandoGenerating", 0) == 0) {
+    //             randoThread = std::thread(&SohImGui::GenerateRandomizerImgui);
+    //         }
+    //     }
+
+    //     ImGui::EndMenu();
+    // }
+}
+
+extern "C" {
+
+void Rando_Init(void) {
+    InitRando();
+}
+
 }

@@ -27,4 +27,15 @@ class Randomizer {
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+void Rando_Init(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+
 #endif

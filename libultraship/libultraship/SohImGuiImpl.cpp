@@ -63,8 +63,6 @@ OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
 
-std::thread randoThread;
-
 // SpoilerData gSpoilerData;
 
 namespace SohImGui {
@@ -438,7 +436,7 @@ namespace SohImGui {
 
         if (generated) {
             generated = 0;
-            randoThread.join();
+            // randoThread.join();
         }
 
         ImGuiProcessEvent(event);
@@ -1042,19 +1040,6 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
-
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Randomizer"))
-            {
-                EnhancementCheckbox("Enable Randomizer", "gRandomizer");
-
-                if (ImGui::Button("Generate Seed")) {
-                    if (CVar_GetS32("gRandoGenerating", 0) == 0) {
-                        randoThread = std::thread(&SohImGui::GenerateRandomizerImgui);
-                    }
-                }
 
                 ImGui::EndMenu();
             }

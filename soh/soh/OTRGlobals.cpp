@@ -29,6 +29,7 @@
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer.h"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
@@ -76,6 +77,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     DebugConsole_Init();
     Debug_Init();
+    Rando_Init();
 }
 
 #ifdef _WIN32
