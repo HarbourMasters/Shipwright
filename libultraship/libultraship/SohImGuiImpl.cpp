@@ -25,7 +25,6 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
-#include <thread>
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -41,11 +40,6 @@
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 #endif
-// #include "../../soh/include/randomizer/main.cpp"
-// #include "../../soh/include/randomizer/main.hpp"
-// #include "../../soh/include/randomizer/rando_main.hpp"
-// #include "../../soh/include/randomizer/spoiler_log.hpp"
-// #include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
 bool oldCursorState = true;
@@ -60,8 +54,6 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
-
-// SpoilerData gSpoilerData;
 
 namespace SohImGui {
 
@@ -98,13 +90,13 @@ namespace SohImGui {
     ImVec4 navi_prop_i_col;
     ImVec4 navi_prop_o_col;
 
+    //This is the list of possible CVars that has rainbow effect.
     const char* RainbowColorCvarList[] = {
-        //This is the list of possible CVars that has rainbow effect.
-            "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
-            "gCCHeartsPrim","gDDCCHeartsPrim",
-            "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
-            "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-            "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
+        "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
+        "gCCHeartsPrim","gDDCCHeartsPrim",
+        "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
+        "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
     };
 
     const char* filters[3] = {
@@ -294,12 +286,12 @@ namespace SohImGui {
             u8 b = (current_hue / 60.0f + (1 - i)) * 255;
 
             switch (i) {
-            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+                case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+                case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+                case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+                case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+                case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+                case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
             }
 
             if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
@@ -431,7 +423,6 @@ namespace SohImGui {
             Game::SaveSettings();
             needs_save = false;
         }
-
         ImGuiProcessEvent(event);
     }
 
