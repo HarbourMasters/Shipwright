@@ -60,8 +60,6 @@ git clone https://github.com/ladislav-zezula/StormLib external/StormLib
 cmake -B external/StormLib/build -S external/StormLib
 cmake --build external/StormLib/build
 cp external/StormLib/build/libstorm.a external
-# Copy glew lib to external (path might be different depending on how you installed it)
-cp /usr/local/lib/libGLEW.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
