@@ -521,7 +521,11 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     }
 
     for (int i = 0; i < cc_features.num_inputs; i++) {
+        #if __APPLE__
         char name[32];
+        #else
+        char name[16];
+        #endif
         sprintf(name, "aInput%d", i + 1);
         prg->attrib_locations[cnt] = glGetAttribLocation(shader_program, name);
         prg->attrib_sizes[cnt] = cc_features.opt_alpha ? 4 : 3;
@@ -548,7 +552,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         #endif
     }
     if (cc_features.used_textures[1]) {
-        GLint sampler_location =  glGetUniformLocation(shader_program, "uTex1");
+        GLint sampler_location = glGetUniformLocation(shader_program, "uTex1");
         glUniform1i(sampler_location, 1);
 
         #if __APPLE__
