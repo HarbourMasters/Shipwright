@@ -11,6 +11,7 @@
 #include <GameSettings.h>
 #include "../libultraship/SohImGuiImpl.h"
 #include <thread>
+#include "3drando/rando_main.hpp"
 
 using json = nlohmann::json;
 
@@ -2089,7 +2090,7 @@ void GenerateRandomizerImgui() {
     Game::SaveSettings();
 
     // WHY CAN'T I FIND THIS??????????????????
-    // RandoMain::GenerateRando();
+    RandoMain::GenerateRando();
 
     CVar_SetS32("gRandoGenerating", 0);
     Game::SaveSettings();
