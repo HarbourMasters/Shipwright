@@ -26,8 +26,8 @@ Randomizer::Randomizer() {
     Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
     gSeedTextures[1] = bombchuSprite;
 
-    Sprite lensOfTruthSprite = { gLensofTruthIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
-    gSeedTextures[2] = lensOfTruthSprite;
+    Sprite beansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    gSeedTextures[2] = beansSprite;
 
     Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
     gSeedTextures[3] = milkSprite;
@@ -1462,7 +1462,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_REQUIEM_OF_SPIRIT;
         case RG_PRELUDE_OF_LIGHT:
             return GI_PRELUDE_OF_LIGHT;
-
+        case RG_MAGIC_BEAN:
+            return GI_BEAN;
         default:
             return ogItemId;
     }
