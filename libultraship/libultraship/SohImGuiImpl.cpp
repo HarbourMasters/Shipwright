@@ -41,11 +41,6 @@
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 #endif
-// #include "../../soh/include/randomizer/main.cpp"
-// #include "../../soh/include/randomizer/main.hpp"
-// #include "../../soh/include/randomizer/rando_main.hpp"
-// #include "../../soh/include/randomizer/spoiler_log.hpp"
-// #include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
 bool oldCursorState = true;
@@ -60,8 +55,6 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
-
-// SpoilerData gSpoilerData;
 
 namespace SohImGui {
 
@@ -98,13 +91,13 @@ namespace SohImGui {
     ImVec4 navi_prop_i_col;
     ImVec4 navi_prop_o_col;
 
+    //This is the list of possible CVars that has rainbow effect.
     const char* RainbowColorCvarList[] = {
-        //This is the list of possible CVars that has rainbow effect.
-            "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
-            "gCCHeartsPrim","gDDCCHeartsPrim",
-            "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
-            "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-            "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
+        "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
+        "gCCHeartsPrim","gDDCCHeartsPrim",
+        "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
+        "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
     };
 
     const char* filters[3] = {
@@ -279,8 +272,8 @@ namespace SohImGui {
             std::string Cvar_RBM = cvarName;
             Cvar_RBM += "RBM";
             std::string RBM_HUE = cvarName;
-            RBM_HUE += "Hue";
-            f32 Canon = 10.f * s;
+            RBM_HUE+="Hue";
+            f32 Canon = 10.f*s;
             ImVec4 NewColor;
             const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
             f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
@@ -292,20 +285,20 @@ namespace SohImGui {
             u8 i = current_hue / 60 + 1;
             u8 a = (-current_hue / 60.0f + i) * 255;
             u8 b = (current_hue / 60.0f + (1 - i)) * 255;
-
+            
             switch (i) {
-            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+                case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+                case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+                case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+                case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+                case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+                case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
             }
 
-            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
+            if(CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x,0,255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y,0,255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z,0,255));
             }
         }
     }
@@ -431,7 +424,6 @@ namespace SohImGui {
             Game::SaveSettings();
             needs_save = false;
         }
-
         ImGuiProcessEvent(event);
     }
 
@@ -447,6 +439,28 @@ namespace SohImGui {
             CVar_SetFloat(key, volume);
             needs_save = true;
             Game::SetSeqPlayerVolume(playerId, volume);
+        }
+    }
+
+
+    void EnhancementCombobox(const char* name, const char* ComboArray[], uint8_t FirstTimeValue = 0){
+        if (FirstTimeValue <= 0){
+            FirstTimeValue = 0;
+        }
+        uint8_t selected=CVar_GetS32(name, FirstTimeValue);
+        uint8_t DefaultValue=selected;
+        if (ImGui::BeginCombo("##name", ComboArray[DefaultValue])) {
+            uint8_t ComboxSize = sizeof(&ComboArray);
+            for (uint8_t i = 0; i <= ComboxSize; i++) {
+                if (strlen(ComboArray[i]) > 1) {
+                    if (ImGui::Selectable(ComboArray[i], i==selected)) {
+                    CVar_SetS32(name, i);
+                    selected=i;
+                    needs_save = true;
+                    }
+                }
+            }
+            ImGui::EndCombo();
         }
     }
 
@@ -821,20 +835,9 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
+                EnhancementCombobox("gTextureFilter", filters);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::FILTER_NONE; fId++) {
-                        if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
-                            INFO("New Filter: %s", filters[fId]);
-                            gapi->set_texture_filter((FilteringMode)fId);
-
-                            CVar_SetS32("gTextureFilter", (int)fId);
-                            needs_save = true;
-                        }
-
-                    }
-                    ImGui::EndCombo();
-                }
+                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
@@ -1093,22 +1096,22 @@ namespace SohImGui {
                         Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
                         EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255,255,255,255), false);
                         Tooltip("Inner color for Navi (idle flying around)");
-                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(115,230,255,255), false);
+                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0,0,255,255), false);
                         Tooltip("Outer color for Navi (idle flying around)");
                         ImGui::Separator();
-                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(100,100,255,255), false);
+                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150,150,255,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around NPCs)");
-                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(90,90,255,255), false);
+                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150,150,255,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around NPCs)");
                         ImGui::Separator();
                         EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,220,0,255), false);
+                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220,155,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
                         ImGui::Separator();
                         EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0,255,0,255), false);
                         Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
-                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,220,0,255), false);
+                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0,255,0,255), false);
                         Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
                         ImGui::EndTabItem();
                     }
