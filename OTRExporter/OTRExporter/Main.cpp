@@ -163,7 +163,7 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 			files[fName] = strem->ToVector();
 		}
 		else
-			File::WriteAllBytes("Extract/" + fName, strem->ToVector());
+			File::WriteAllBytes("Extract/" + fName, stream->ToVector());
 	}
 }
 

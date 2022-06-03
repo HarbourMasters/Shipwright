@@ -451,7 +451,9 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 			MemoryStream* csStream = new MemoryStream();
 			BinaryWriter csWriter = BinaryWriter(csStream);
 			OTRExporter_Cutscene cs;
-			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
+			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter, true);
+			
+			AddFile(fName, csStream->ToVector());
 
 			AddFile(fName, csStream->ToVector());
 		}

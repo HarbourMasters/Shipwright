@@ -814,9 +814,6 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						}
 
 						AddFile(fName, vtxStream->ToVector());
-
-						auto end = std::chrono::steady_clock::now();
-						size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 					}
 				}
 				else
