@@ -25,6 +25,7 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
+#include <thread>
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -40,6 +41,11 @@
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 #endif
+// #include "../../soh/include/randomizer/main.cpp"
+// #include "../../soh/include/randomizer/main.hpp"
+// #include "../../soh/include/randomizer/rando_main.hpp"
+// #include "../../soh/include/randomizer/spoiler_log.hpp"
+// #include "../../soh/soh/OTRGlobals.h"
 
 using namespace Ship;
 bool oldCursorState = true;
@@ -54,6 +60,8 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+
+// SpoilerData gSpoilerData;
 
 namespace SohImGui {
 
@@ -412,6 +420,10 @@ namespace SohImGui {
             pads = cont_pad;
         });
         Game::InitSettings();
+
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -419,6 +431,7 @@ namespace SohImGui {
             Game::SaveSettings();
             needs_save = false;
         }
+
         ImGuiProcessEvent(event);
     }
 
@@ -810,7 +823,7 @@ namespace SohImGui {
                 ImGui::Text("Texture Filter (Needs reload)");
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
                 if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::NONE; fId++) {
+                    for (int fId = 0; fId <= FilteringMode::FILTER_NONE; fId++) {
                         if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
                             INFO("New Filter: %s", filters[fId]);
                             gapi->set_texture_filter((FilteringMode)fId);
@@ -1021,12 +1034,6 @@ namespace SohImGui {
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
 
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Randomizer"))
-            {
-                EnhancementCheckbox("Enable Randomizer", "gRandomizer");
                 ImGui::EndMenu();
             }
 

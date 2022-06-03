@@ -28,6 +28,7 @@
 #include <WTypesbase.h>
 #endif
 #include <time.h>
+#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
@@ -252,8 +253,9 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_DROPFILE:
-                CVar_SetString("gDroppedFile", event.drop.file);
+                CVar_SetString("gSpoilerLog", event.drop.file);
                 CVar_SetS32("gDroppedNewSpoilerFile", 1);
+                Game::SaveSettings();
                 break;
             case SDL_QUIT:
                 SDL_Quit(); // bandaid fix for linux window closing issue

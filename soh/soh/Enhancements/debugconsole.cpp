@@ -4,6 +4,7 @@
 
 #include "debugconsole.h"
 #include "../libultraship/SohImGuiImpl.h"
+// #include "include/randomizer/rando_main.hpp"
 #include "savestates.h"
 
 #include <vector>
@@ -441,6 +442,13 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
     return CMD_SUCCESS;
 }
 
+// static bool GenerateRandoHandler(const std::vector<std::string>& args) {
+//     RandoMain::GenerateRando();
+    
+//     INFO("[SOH] Randomized?");
+//     return CMD_SUCCESS;
+// }
+
 void DebugConsole_Init(void) {
     CMD_REGISTER("kill", { KillPlayerHandler, "Commit suicide." });
     CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
@@ -490,6 +498,7 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
         { "Slot number", ArgumentType::NUMBER, }
         } });
+    // CMD_REGISTER("generate_rando", { GenerateRandoHandler, "Generate Rando." });
     DebugConsole_LoadCVars();
 }
 

@@ -193,59 +193,14 @@ void Gameplay_Destroy(GameState* thisx) {
     gGlobalCtx = NULL;
 }
 
-void GiveLinksPocketMedallion(GlobalContext* globalCtx) {
-    if (gSaveContext.n64ddFlag) {
-        RandomizerGet get = gSaveContext.itemLocations[LINKS_POCKET].get;
+void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
-        s16 item;
-
-        u8 medallion = 0;
-
-        switch (get) {
-            case FOREST_MEDALLION:
-                item = ITEM_MEDALLION_FOREST;
-                medallion = 1;
-                break;
-            case FIRE_MEDALLION:
-                item = ITEM_MEDALLION_FIRE;
-                medallion = 1;
-                break;
-            case WATER_MEDALLION:
-                item = ITEM_MEDALLION_WATER;
-                medallion = 1;
-                break;
-            case SHADOW_MEDALLION:
-                item = ITEM_MEDALLION_SHADOW;
-                medallion = 1;
-                break;
-            case SPIRIT_MEDALLION:
-                item = ITEM_MEDALLION_SPIRIT;
-                medallion = 1;
-                break;
-            case LIGHT_MEDALLION:
-                item = ITEM_MEDALLION_LIGHT;
-                medallion = 1;
-                break;
-            case KOKIRI_EMERALD:
-                item = ITEM_KOKIRI_EMERALD;
-                break;
-            case GORON_RUBY:
-                item = ITEM_GORON_RUBY;
-                break;
-            case ZORA_SAPPHIRE:
-                item = ITEM_ZORA_SAPPHIRE;
-                break;
-        }
-
-        if (medallion == 1) {
-            gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
-
-            if (item == ITEM_MEDALLION_WATER) {
-                func_8006D0AC(globalCtx);
-            }
-        } else {
-            gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
-        }
+    if (gSaveContext.entranceIndex == 0x05E0 && !Flags_GetEventChkInf(0xC1) && player != NULL &&
+        !Player_InBlockingCsMode(globalCtx, player)) {
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetEventChkInf(0xC1);
     }
 }
 
@@ -1101,6 +1056,8 @@ skip:
 
     Environment_Update(globalCtx, &globalCtx->envCtx, &globalCtx->lightCtx, &globalCtx->pauseCtx, &globalCtx->msgCtx,
                        &globalCtx->gameOverCtx, globalCtx->state.gfxCtx);
+
+    GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
 }
 
 void Gameplay_DrawOverlayElements(GlobalContext* globalCtx) {

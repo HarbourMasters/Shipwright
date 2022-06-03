@@ -1923,6 +1923,24 @@ u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx) {
     }
 }
 
+s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (!(player->stateFlags1 & 0x3C7080) && Player_GetExplosiveHeld(player) < 0) {
+        if (((player->heldActor != NULL) && (getItemId > GI_NONE) && (getItemId < GI_MAX)) ||
+            (!(player->stateFlags1 & 0x20000800))) {
+            if ((getItemId != GI_NONE)) {
+                player->getItemId = getItemId;
+                player->interactRangeActor = &player->actor;
+                player->getItemDirection = player->actor.shape.rot.y;
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange) {
     Player* player = GET_PLAYER(globalCtx);
 
