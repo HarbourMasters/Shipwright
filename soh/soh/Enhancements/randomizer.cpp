@@ -2064,6 +2064,17 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
+    bool doubleDefense = gSaveContext.doubleDefense != 0;
+    if (ImGui::Checkbox("Double Defense", &doubleDefense)) {
+        gSaveContext.doubleDefense = doubleDefense;
+        gSaveContext.inventory.defenseHearts =
+            gSaveContext.doubleDefense ? 20 : 0; // Set to get the border drawn in the UI
+    }
+
+    if (ImGui::Button("Noon")) {
+        gSaveContext.dayTime = 0x8000;
+    }
+
     ImGui::End();
 }
 
