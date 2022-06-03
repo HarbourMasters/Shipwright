@@ -42,6 +42,7 @@ namespace Ship
 			scal->scalar.f64 = reader->ReadDouble();
 			break;
 		default:
+			break;
 		}
 	}
 }
