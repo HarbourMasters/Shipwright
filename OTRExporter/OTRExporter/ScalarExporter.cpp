@@ -47,5 +47,7 @@ void OTRExporter_Scalar::WriteScalarType(ZScalar* scalar, BinaryWriter* writer)
 	case ZScalarType::ZSCALAR_F64:
 		writer->Write(scalar->scalarData.f64);
 		break;
+	default:
+		break;
 	}
 }
