@@ -1630,6 +1630,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
         	-Wno-narrowing
         	$<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
                 -pthread
+		-msse2 -mfpmath=sse
 	)
 
        target_link_options(${PROJECT_NAME} PRIVATE
@@ -1653,12 +1654,20 @@ endif()
 ################################################################################
 # Dependencies
 ################################################################################
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+add_dependencies(${PROJECT_NAME}
+    ZAPDUtils
+    libultraship
+)
+else()
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
     storm
     glew_s
 )
+endif()
+
 find_library(SDL2_LIB SDL2)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
