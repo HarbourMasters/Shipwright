@@ -228,15 +228,14 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
 }
 
 void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
-
     if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1E)) {
         Flags_SetTreasure(globalCtx, 0x1E);
     } else if (!Flags_GetTreasure(globalCtx, 0x1E) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
                globalCtx->msgCtx.textId == 0x703C) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
         func_8002F434(&zelda->actor, globalCtx, getItemId, 10000.0f, 100.0f);
-    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+    } else if (Flags_GetTreasure(globalCtx, 0x1E) && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
         gSaveContext.unk_13EE = 0x32;
         gSaveContext.eventChkInf[4] |= 1;
     }

@@ -193,6 +193,17 @@ void Gameplay_Destroy(GameState* thisx) {
     gGlobalCtx = NULL;
 }
 
+void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetTreasure(globalCtx, 0x1F);
+    }
+}
+
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -436,7 +447,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
 
     input = globalCtx->state.input;
 
-        if ((SREG(1) < 0) || (DREG(0) != 0)) {
+    if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
     }
@@ -1057,7 +1068,10 @@ skip:
     Environment_Update(globalCtx, &globalCtx->envCtx, &globalCtx->lightCtx, &globalCtx->pauseCtx, &globalCtx->msgCtx,
                        &globalCtx->gameOverCtx, globalCtx->state.gfxCtx);
 
-    GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
+        GivePlayerRandoRewardSongOfTime(globalCtx, RC_SONG_FROM_OCARINA_OF_TIME);
+    }
 }
 
 void Gameplay_DrawOverlayElements(GlobalContext* globalCtx) {
