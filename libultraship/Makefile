@@ -18,8 +18,11 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
+CWARN :=
+CXXWARN := -Wno-deprecated-enum-enum-conversion
+
+CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
 ifneq ($(DEBUG),0)
@@ -40,10 +43,10 @@ endif
 SRC_DIRS  := $(shell find -type d -not -path "*build*")
 
 CXX_FILES := \
-	$(shell find libultraship/Factories -name *.cpp) \
-	$(shell find libultraship/Lib/Fast3D -name *.cpp) \
-	$(shell find libultraship -maxdepth 1 -name *.cpp) \
-	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name *.cpp) \
+	$(shell find libultraship/Factories -name "*.cpp") \
+	$(shell find libultraship/Lib/Fast3D -name *.cpp") \
+	$(shell find libultraship -maxdepth 1 -name "*.cpp") \
+	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name "*.cpp") \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -53,7 +56,7 @@ C_FILES := \
 	libultraship/mixer.c \
 	libultraship/Lib/stb/stb_impl.c
 
-FMT_FILES := $(shell find libultraship/ -type f \( -name *.cpp -o -name *.h \) -a -not -path "libultraship/Lib/*")
+FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
 O_FILES   := \
 	$(CXX_FILES:%.cpp=build/%.o) \
@@ -69,6 +72,7 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
 	libultraship \
+	../StormLib/src \
 )
 
 # create build directories
