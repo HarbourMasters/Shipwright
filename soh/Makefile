@@ -30,11 +30,13 @@ endif
 
 ifneq ($(ASAN),0)
 	CXXFLAGS += -fsanitize=address
+	CFLAGS += -fsanitize=address
 	LDFLAGS += -fsanitize=address
 endif
 
 ifneq ($(LTO),0)
 	CXXFLAGS += -flto
+	CFLAGS += -flto
 	LDFLAGS += -flto
 endif
 

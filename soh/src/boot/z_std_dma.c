@@ -312,7 +312,7 @@ void DmaMgr_ThreadEntry(void* arg0) {
     osSyncPrintf("ＤＭＡマネージャスレッド実行開始\n");
     while (true) {
         osRecvMesg(&sDmaMgrMsgQueue, &msg, OS_MESG_BLOCK);
-        req = (DmaRequest*)msg;
+        req = (DmaRequest*)msg.ptr;
         if (req == NULL) {
             break;
         }
@@ -360,7 +360,7 @@ s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_
         }
     }
 
-    osSendMesg(&sDmaMgrMsgQueue, req, OS_MESG_BLOCK);
+    osSendMesgPtr(&sDmaMgrMsgQueue, req, OS_MESG_BLOCK);
     return 0;
 }
 
@@ -371,7 +371,7 @@ s32 DmaMgr_SendRequest0(uintptr_t ram, uintptr_t vrom, size_t size) {
     s32 ret;
 
     osCreateMesgQueue(&queue, &msg, 1);
-    ret = DmaMgr_SendRequestImpl(&req, ram, vrom, size, 0, &queue, NULL);
+    ret = DmaMgr_SendRequestImpl(&req, ram, vrom, size, 0, &queue, OS_MESG_PTR(NULL));
     if (ret == -1) {
         return ret;
     }
@@ -413,7 +413,7 @@ void DmaMgr_Init(void) {
     }
 
 #if 0
-    if ((uintptr_t)_bootSegmentRomStart != gDmaDataTable[0].vromEnd) 
+    if ((uintptr_t)_bootSegmentRomStart != gDmaDataTable[0].vromEnd)
     {
         osSyncPrintf("_bootSegmentRomStart(%08x) != dma_rom_ad[0].rom_b(%08x)\n", _bootSegmentRomStart,
                      gDmaDataTable[0].vromEnd);

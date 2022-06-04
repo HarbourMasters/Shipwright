@@ -84,12 +84,12 @@ void Sched_HandleReset(SchedContext* sc) {
             if (sc->curRSPTask != NULL) {
                 LOG_TIME("(((u64)(now - graph_rsp_start_time)*(1000000LL/15625LL))/((62500000LL*3/4)/15625LL))",
                          OS_CYCLES_TO_USEC(now - sRSPGFXStartTime), "../sched.c", 427);
-                osSendMesg(&sc->interruptQ, RSP_DONE_MSG, OS_MESG_NOBLOCK);
+                osSendMesg32(&sc->interruptQ, RSP_DONE_MSG, OS_MESG_NOBLOCK);
             }
             if (sc->curRDPTask != NULL) {
                 LOG_TIME("(((u64)(now - rdp_start_time)*(1000000LL/15625LL))/((62500000LL*3/4)/15625LL))",
                          OS_CYCLES_TO_USEC(now - sRDPStartTime), "../sched.c", 431);
-                osSendMesg(&sc->interruptQ, RDP_DONE_MSG, OS_MESG_NOBLOCK);
+                osSendMesg32(&sc->interruptQ, RDP_DONE_MSG, OS_MESG_NOBLOCK);
             }
         }
     }
@@ -294,10 +294,10 @@ void Sched_HandleEntry(SchedContext* sc) {
     OSScTask* nextRSP = NULL;
     OSScTask* nextRDP = NULL;
     s32 state;
-    OSMesg msg = NULL;
+    OSMesg msg = OS_MESG_PTR(NULL);
 
     while (osRecvMesg(&sc->cmdQ, &msg, OS_MESG_NOBLOCK) != -1) {
-        Sched_QueueTask(sc, msg);
+        Sched_QueueTask(sc, msg.ptr);
     }
 
     if (sc->doAudio != 0 && sc->curRSPTask != NULL) {
@@ -427,14 +427,14 @@ void Sched_SendEntryMsg(SchedContext* sc) {
         osSyncPrintf("osScKickEntryMsg\n");
     }
 
-    osSendMesg(&sc->interruptQ, ENTRY_MSG, OS_MESG_BLOCK);
+    osSendMesg32(&sc->interruptQ, ENTRY_MSG, OS_MESG_BLOCK);
 }
 
 void Sched_ThreadEntry(void* arg) {
-    void* msg;
+    OSMesg msg;
     SchedContext* sc = (SchedContext*)arg;
 
-    msg = NULL;
+    msg.ptr = NULL;
 
     while (true) {
         if (sLogScheduler) {
@@ -444,7 +444,7 @@ void Sched_ThreadEntry(void* arg) {
 
         osRecvMesg(&sc->interruptQ, &msg, OS_MESG_BLOCK);
 
-        switch ((s32)msg) {
+        switch (msg.data32) {
             case ENTRY_MSG:
                 if (sLogScheduler) {
                     osSyncPrintf("%08d:ENTRY_MSG\n", (u32)OS_CYCLES_TO_USEC(osGetTime()));
@@ -466,7 +466,7 @@ void Sched_ThreadEntry(void* arg) {
             default:
                 break;
         }
-        switch (((OSScMsg*)msg)->type) {
+        switch (((OSScMsg*)msg.ptr)->type) {
             case 1:
                 Sched_HandleRetrace(sc);
                 continue;
@@ -485,8 +485,8 @@ void Sched_Init(SchedContext* sc, void* stack, OSPri priority, UNK_TYPE arg3, UN
     sc->unk_24C = 1;
     osCreateMesgQueue(&sc->interruptQ, sc->intBuf, 8);
     osCreateMesgQueue(&sc->cmdQ, sc->cmdMsgBuf, 8);
-    osSetEventMesg(OS_EVENT_SP, &sc->interruptQ, RSP_DONE_MSG);
-    osSetEventMesg(OS_EVENT_DP, &sc->interruptQ, RDP_DONE_MSG);
+    osSetEventMesg(OS_EVENT_SP, &sc->interruptQ, OS_MESG_32(RSP_DONE_MSG));
+    osSetEventMesg(OS_EVENT_DP, &sc->interruptQ, OS_MESG_32(RDP_DONE_MSG));
     IrqMgr_AddClient(irqMgr, &sc->irqClient, &sc->interruptQ);
     osCreateThread(&sc->thread, 5, Sched_ThreadEntry, sc, stack, priority);
     osStartThread(&sc->thread);
