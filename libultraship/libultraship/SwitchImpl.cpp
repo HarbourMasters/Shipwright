@@ -61,8 +61,10 @@ void UpdateKeyboard() {
 
 void Ship::Switch::Init(){
     appletInitializeGamePlayRecording();
+#ifdef DEBUG
     socketInitializeDefault();
     nxlinkStdio();
+#endif
     appletSetGamePlayRecordingState(true);
     padConfigureInput(1, HidNpadStyleSet_NpadStandard);
     padInitializeDefault(&pad);

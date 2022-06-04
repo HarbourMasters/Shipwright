@@ -69,11 +69,13 @@ SOURCEFILES_CPP :=	\
 		libultraship/Factories/CutsceneFactory.cpp \
 		libultraship/Factories/MtxFactory.cpp \
 		libultraship/Factories/PathFactory.cpp \
+		libultraship/Factories/AudioFactory.cpp \
 		libultraship/Animation.cpp \
 		libultraship/Factories/TextFactory.cpp \
 		libultraship/Factories/TextureFactory.cpp \
 		libultraship/Factories/VtxFactory.cpp \
 		libultraship/Array.cpp \
+		libultraship/Audio.cpp \
 		libultraship/ConfigFile.cpp \
 		libultraship/Controller.cpp \
 		libultraship/SohHooks.cpp \
@@ -138,10 +140,10 @@ SOURCEFILES_CPP :=	\
 #---------------------------------------------------------------------------------
 ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
-CFLAGS	:=	-g -Wall -O2 -ffunction-sections \
+CFLAGS	:=	-g -Wall -ffunction-sections \
 			$(ARCH) $(DEFINES) \
             -DSPDLOG_NO_THREAD_ID -DSPDLOG_NO_TLS \
-		    -DSTBI_NO_THREAD_LOCALS
+		    -DSTBI_NO_THREAD_LOCALS -DDEBUG
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -DENABLE_OPENGL -DSDL_BYTEORDER
 

@@ -42,7 +42,7 @@ void main(int argc, char** argv)
     InitOTR();
     BootCommands_Init();
 
-    BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
+    // BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
     Main(0);
 }
 

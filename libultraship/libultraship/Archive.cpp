@@ -68,7 +68,7 @@ namespace Ship {
 		}*/
 
 		if (!attempt) {
-			printf("({%i}) Failed to open file {%s} from mpq archive {%s}", GetLastError(), filePath.c_str(), MainPath.c_str());
+			printf("(%i) Failed to open file { %s } from mpq archive { %s }\n", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
 			return FileToLoad;
