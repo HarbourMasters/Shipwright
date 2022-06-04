@@ -19,6 +19,7 @@ baserom/
 docs/doxygen/
 *.elf
 *.arm64
+*.x86_64
 *.sra
 *.z64
 *.n64
