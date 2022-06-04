@@ -1150,9 +1150,9 @@ void AudioHeap_UnapplySampleCacheForFont(SampleCacheEntry* entry, s32 fontId) {
     Drum* drum;
     Instrument* inst;
     SoundFontSound* sfx;
-    s32 instId;
-    s32 drumId;
-    s32 sfxId;
+    size_t instId;
+    size_t drumId;
+    size_t sfxId;
 
     for (instId = 0; instId < gAudioContext.soundFonts[fontId].numInstruments; instId++) {
         inst = Audio_GetInstrumentInner(fontId, instId);
@@ -1203,7 +1203,7 @@ void AudioHeap_DiscardSampleCacheEntry(SampleCacheEntry* entry) {
     }
 }
 
-void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample) 
+void AudioHeap_UnapplySampleCache(SampleCacheEntry* entry, SoundFontSample* sample)
 {
     if (!gUseLegacySD)
         return;
@@ -1306,7 +1306,7 @@ void AudioHeap_ApplySampleBankCacheInternal(s32 apply, s32 sampleBankId) {
     s32 numFonts;
     s32 instId;
     s32 drumId;
-    s32 sfxId;
+    size_t sfxId;
     StorageChange change;
     s32 sampleBankId1;
     s32 sampleBankId2;

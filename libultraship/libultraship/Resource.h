@@ -30,9 +30,9 @@ namespace Ship
         Array            =   0x4F415252,     // OARR
         Text             =   0x4F545854,     // OTXT
         Blob             =   0x4F424C42,     // OBLB
-        Audio            =   'OAUD',
-        AudioSample      =   'OSMP',
-        AudioSoundFont   =   'OSFT',
+        Audio            =   0x4F415544,     // OAUD
+        AudioSample      =   0x4F534D50,     // OSMP
+        AudioSoundFont   =   0x4F534654,     // OSFT
     };
 
     enum class DataType
