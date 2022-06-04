@@ -85,10 +85,11 @@ u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
 u16 EnKz_GetTextNoMaskAdult(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
+    // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!(gSaveContext.infTable[19] & 0x200)) {
-            if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2)) {
-                return 0x401F;
+            if (!gSaveContext.n64ddFlag) {
+                return CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
             } else {
                 return 0x4012;
             }
@@ -250,11 +251,13 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
         if (LINK_IS_ADULT) {
             if ((INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_PRESCRIPTION) &&
                 (func_8002F368(globalCtx) == EXCH_ITEM_PRESCRIPTION)) {
-                this->actor.textId = 0x4014;
-                this->sfxPlayed = false;
-                player->actor.textId = this->actor.textId;
-                this->isTrading = true;
-                return;
+                if (!gSaveContext.n64ddFlag || !Flags_GetTreasure(globalCtx, 0x1F)) {
+                    this->actor.textId = 0x4014;
+                    this->sfxPlayed = false;
+                    player->actor.textId = this->actor.textId;
+                    this->isTrading = true;
+                    return;
+                }
             }
 
             this->isTrading = false;
@@ -262,7 +265,12 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
                 this->actor.textId = CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? 0x4045 : 0x401A;
                 player->actor.textId = this->actor.textId;
             } else {
-                this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                if (!gSaveContext.n64ddFlag) {
+                    this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                } else {
+                    this->actor.textId = 0x4012;
+                }
+
                 player->actor.textId = this->actor.textId;
             }
         }
@@ -435,6 +443,7 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             if (this->isTrading) {
                 getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                Flags_SetTreasure(globalCtx, 0x1F);
             } else {
                 getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
             }
