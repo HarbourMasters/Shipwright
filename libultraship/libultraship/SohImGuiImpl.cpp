@@ -1190,7 +1190,7 @@ namespace SohImGui {
             ImGui::Text("Platform: Windows");
 #else
 #ifdef __APPLE__
-            ImGui::Text("Platform: MacOS");
+            ImGui::Text("Platform: macOS");
 #else
             ImGui::Text("Platform: Linux");
 #endif
