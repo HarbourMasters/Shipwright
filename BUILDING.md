@@ -51,7 +51,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 1. Requires `gcc@12, sdl2, libpng, glew, spdlog, pulseaudio, x11` (can be installed via brew, etc)
 ```bash
 # Clone the repo
-git clone git@github.com:HarbourMasters/ShipWright.git
+git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
