@@ -114,7 +114,9 @@ ifeq ($(UNAME), Linux) #LINUX
 LDLIBS += \
 	$(addprefix -l, \
 	X11 \
+	SDL2 \
 	GL \
+	GLEW \
 	pulse \
 )
 endif
