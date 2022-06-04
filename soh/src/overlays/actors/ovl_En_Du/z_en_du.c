@@ -351,8 +351,10 @@ void func_809FE4A4(EnDu* this, GlobalContext* globalCtx) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
-        gSaveContext.cutsceneTrigger = 1;
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
+            gSaveContext.cutsceneTrigger = 1;
+        }
         this->unk_1E8 = 0;
         EnDu_SetupAction(this, func_809FE890);
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -438,7 +440,10 @@ void func_809FE890(EnDu* this, GlobalContext* globalCtx) {
     Vec3f velocity = { 0.0f, 0.0f, 0.0f };
     CsCmdActorAction* csAction;
 
-    if (globalCtx->csCtx.state == CS_STATE_IDLE) {
+    if (globalCtx->csCtx.state == CS_STATE_IDLE || gSaveContext.n64ddFlag) {
+        if (gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.state = CS_STATE_IDLE;
+        }
         func_8002DF54(globalCtx, &this->actor, 1);
         EnDu_SetupAction(this, func_809FEB08);
         return;
@@ -537,7 +542,7 @@ void func_809FEC70(EnDu* this, GlobalContext* globalCtx) {
         EnDu_SetupAction(this, func_809FECE4);
     } else {
         f32 xzRange = this->actor.xzDistToPlayer + 1.0f;
-        func_8002F434(&this->actor, globalCtx, GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET) : GI_BRACELET, xzRange, fabsf(this->actor.yDistToPlayer) + 1.0f);
     }
 }
 
