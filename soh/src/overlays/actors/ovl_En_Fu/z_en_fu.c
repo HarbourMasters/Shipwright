@@ -148,11 +148,30 @@ void EnFu_WaitChild(EnFu* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (windmillGuy->actor.parent != NULL && windmillGuy->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+        windmillGuy->actionFunc = func_80A1DBD4;
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_STORMS);
+        func_8002F434(&windmillGuy->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
+void func_WaitForSongGive(EnFu* this, GlobalContext* globalCtx) {
+    GivePlayerRandoRewardSongOfStorms(this, globalCtx, RC_SONG_FROM_WINDMILL);
+}
+
 void func_80A1DB60(EnFu* this, GlobalContext* globalCtx) {
     if (globalCtx->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
         gSaveContext.eventChkInf[5] |= 0x800;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+    }
+
+    if (gSaveContext.n64ddFlag) {
+        this->actionFunc = func_WaitForSongGive;
     }
 }
 
@@ -173,9 +192,13 @@ void func_80A1DBD4(EnFu* this, GlobalContext* globalCtx) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
         this->actor.flags &= ~ACTOR_FLAG_16;
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
-        gSaveContext.cutsceneTrigger = 1;
-        Item_Give(globalCtx, ITEM_SONG_STORMS);
+
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
+            gSaveContext.cutsceneTrigger = 1;
+            Item_Give(globalCtx, ITEM_SONG_STORMS);
+        }
+
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
         gSaveContext.eventChkInf[6] |= 0x20;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_02) {

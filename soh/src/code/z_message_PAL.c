@@ -2515,7 +2515,11 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                                  msgCtx->ocarinaStaff->state);
                     msgCtx->lastPlayedSong = msgCtx->ocarinaStaff->state;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_SUCCESS;
-                    Item_Give(globalCtx, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
+
+                    if (!gSaveContext.n64ddFlag) {
+                        Item_Give(globalCtx, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
+                    }
+
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     // "z_message.c Song Acquired"
                     osSyncPrintf("z_message.c 取得メロディ＝%d\n", ITEM_SONG_MINUET + msgCtx->ocarinaStaff->state);
