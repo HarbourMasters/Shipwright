@@ -361,7 +361,7 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
         Math_SmoothStepToS(&this->actor.shape.rot.y, -0x4000, 5, 0x1000, 0);
     }
 
-    if (this->timer != 0) {
+    if (!gSaveContext.n64ddFlag && this->timer != 0) {
         if (this->prizeRotateTimer != 0) {
             tmpf1 = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
             tmpf2 = globalCtx->view.lookAt.y - 10.0f - globalCtx->view.eye.y;
@@ -386,10 +386,14 @@ void EnExItem_TargetPrizeApproach(EnExItem* this, GlobalContext* globalCtx) {
         this->actor.draw = NULL;
         func_8002DF54(globalCtx, NULL, 7);
         this->actor.parent = NULL;
-        if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
-            getItemId = GI_BULLET_BAG_40;
+        if (gSaveContext.n64ddFlag) {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
         } else {
-            getItemId = GI_BULLET_BAG_50;
+            if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
+                getItemId = GI_BULLET_BAG_40;
+            } else {
+                getItemId = GI_BULLET_BAG_50;
+            }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
         this->actionFunc = EnExItem_TargetPrizeGive;
@@ -402,7 +406,11 @@ void EnExItem_TargetPrizeGive(EnExItem* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = EnExItem_TargetPrizeFinish;
     } else {
-        getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+        if (gSaveContext.n64ddFlag) {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_LW_TARGET_IN_WOODS, GI_BULLET_BAG_50);
+        } else {
+            getItemId = (CUR_UPG_VALUE(UPG_BULLET_BAG) == 2) ? GI_BULLET_BAG_50 : GI_BULLET_BAG_40;
+        }
 
         func_8002F434(&this->actor, globalCtx, getItemId, 2000.0f, 1000.0f);
     }
