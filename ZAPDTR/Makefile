@@ -115,7 +115,6 @@ rebuild: clean all
 format:
 	clang-format-11 -i $(ZAPD_CPP_FILES) $(ZAPD_H_FILES)
 	$(MAKE) -C ZAPDUtils format
-	$(MAKE) -C ExporterTest format
 
 .PHONY: all build/ZAPD/BuildInfo.o copycheck clean rebuild format
 
