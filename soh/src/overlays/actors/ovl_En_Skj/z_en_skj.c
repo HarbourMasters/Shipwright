@@ -1528,7 +1528,12 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, GlobalContext* globalCtx) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        func_8002F434(&this->actor, globalCtx,
+                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
+                          ? GetRandomizedItemIdFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE)
+                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
+                      26.0f, 26.0f);
+
         this->actionFunc = EnSkj_GiveOcarinaGameReward;
     }
 }
@@ -1538,7 +1543,11 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        func_8002F434(&this->actor, globalCtx,
+                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
+                          ? GetRandomizedItemIdFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE)
+                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
+                      26.0f, 26.0f);
     }
 }
 
@@ -1550,7 +1559,11 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, GlobalContext* globalCtx) {
             gSaveContext.ocarinaGameRoundNum++;
         }
 
-        if (ocarinaGameRoundNum == 2) {
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.ocarinaGameRoundNum = 3;
+        }
+
+        if (ocarinaGameRoundNum == 2 || gSaveContext.n64ddFlag) {
             gSaveContext.itemGetInf[1] |= 0x80;
             this->actionFunc = EnSkj_CleanupOcarinaGame;
         } else {
