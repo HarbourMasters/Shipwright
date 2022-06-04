@@ -3390,8 +3390,9 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
                 sp11C *= 5.0f;
             }
 
-            if (((this->unk_17A[0] == 1) || (Rand_ZeroOne() < sp11C)) &&
-                ((Rand_ZeroOne() < (this->unk_1A8 * multiplier)) || ((this->unk_150 + 1) == KREG(69)))) {
+            if (gSaveContext.n64ddFlag ||
+                ((this->unk_17A[0] == 1) || (Rand_ZeroOne() < sp11C)) &&
+                    ((Rand_ZeroOne() < (this->unk_1A8 * multiplier)) || ((this->unk_150 + 1) == KREG(69)))) {
                 if (this->unk_150 == 0) {
                     this->unk_158 = 3;
                     this->unk_190 = 1.2f;
@@ -3833,7 +3834,7 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
                 D_80B7E0A6 = 50;
                 D_80B7E11C = 0.5f;
                 this->unk_152 = 0;
-            } else if (this->actor.xzDistToPlayer < (KREG(59) + 50.0f)) {
+            } else if (this->actor.xzDistToPlayer < (KREG(59) + 50.0f) || gSaveContext.n64ddFlag) {
                 this->unk_158 = 6;
                 this->unk_17A[0] = 100;
                 player->unk_860 = 3;
@@ -3912,9 +3913,17 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
             sp10C.y = -10.0f;
             sp10C.z = 5.0f;
             Matrix_MultVec3f(&sp10C, &sp100);
-            Math_ApproachF(&this->actor.world.pos.x, player->bodyPartsPos[15].x + sp100.x, 1.0f, 6.0f);
-            Math_ApproachF(&this->actor.world.pos.y, player->bodyPartsPos[15].y + sp100.y, 1.0f, 6.0f);
-            Math_ApproachF(&this->actor.world.pos.z, player->bodyPartsPos[15].z + sp100.z, 1.0f, 6.0f);
+
+            if (!gSaveContext.n64ddFlag) {
+                Math_ApproachF(&this->actor.world.pos.x, player->bodyPartsPos[15].x + sp100.x, 1.0f, 6.0f);
+                Math_ApproachF(&this->actor.world.pos.y, player->bodyPartsPos[15].y + sp100.y, 1.0f, 6.0f);
+                Math_ApproachF(&this->actor.world.pos.z, player->bodyPartsPos[15].z + sp100.z, 1.0f, 6.0f);
+            }
+            else {
+                this->actor.world.pos.x = player->bodyPartsPos[15].x + sp100.x;
+                this->actor.world.pos.y = player->bodyPartsPos[15].y + sp100.y;
+                this->actor.world.pos.z = player->bodyPartsPos[15].z + sp100.z;
+            }
 
             D_80B7E144 = 188.0f;
 
@@ -4891,7 +4900,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                             if (D_80B7A670 == 0.0f) {
                                 this->actor.textId = 0x408C;
                                 this->unk_15C = 20;
-                            } else if (D_80B7E07C == 0) {
+                            } else if (D_80B7E07C == 0 && !gSaveContext.n64ddFlag) {
                                 D_80B7A678 = D_80B7A670;
                                 if ((s16)D_80B7E078 < (s16)D_80B7A670) {
                                     if (D_80B7E07E == 2) {
@@ -4904,8 +4913,12 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                                     this->actor.textId = 0x408B;
                                     this->unk_15C = 20;
                                 }
-                            } else {
+                            } else if (!gSaveContext.n64ddFlag) {
                                 this->actor.textId = 0x409B;
+                                this->unk_15C = 11;
+                            }
+                            else {
+                                this->actor.textId = 0x4086;
                                 this->unk_15C = 11;
                             }
                             Message_ContinueTextbox(globalCtx, this->actor.textId);
@@ -5009,15 +5022,21 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                     }
 
                     if (sLinkAge == 1) {
-                        if ((D_80B7E078 >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & 0x400)) {
+                        if (((D_80B7E078 >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
+                            (gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400))) {
                             HIGH_SCORE(HS_FISHING) |= 0x400;
-                            getItemId = GI_HEART_PIECE;
+                            getItemId = gSaveContext.n64ddFlag
+                                            ? GetRandomizedItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE)
+                                            : GI_HEART_PIECE;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     } else {
-                        if ((D_80B7E078 >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & 0x800)) {
+                        if (((D_80B7E078 >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
+                            (gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800))) {
                             HIGH_SCORE(HS_FISHING) |= 0x800;
-                            getItemId = GI_SCALE_GOLD;
+                            getItemId = gSaveContext.n64ddFlag
+                                            ? GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD)
+                                            : GI_SCALE_GOLD;
                             sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                         }
                     }
@@ -5078,7 +5097,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
             if (Actor_HasParent(&this->actor, globalCtx)) {
                 this->unk_15C = 24;
             } else {
-                func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                if (!gSaveContext.n64ddFlag) {
+                    func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
+                } else {
+                    func_8002F434(&this->actor, globalCtx,
+                                  GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD), 2000.0f,
+                                  1000.0f);
+                }
             }
             break;
 
