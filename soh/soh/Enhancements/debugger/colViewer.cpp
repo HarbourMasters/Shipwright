@@ -588,11 +588,11 @@ void DrawColCheckCollision() {
     dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorOCR", 255), CVar_GetS32("gColViewerColorOCG", 255),
                                   CVar_GetS32("gColViewerColorOCB", 255), 255));
     DrawColCheckList(dl, col.colOC, col.colOCCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorACR", 255), CVar_GetS32("gColViewerColorACG", 255),
+    dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorACR", 0), CVar_GetS32("gColViewerColorACG", 0),
                                   CVar_GetS32("gColViewerColorACB", 255), 255));
     DrawColCheckList(dl, col.colAC, col.colACCount);
-    dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorATR", 255), CVar_GetS32("gColViewerColorATG", 255),
-                                  CVar_GetS32("gColViewerColorATB", 255), 255));
+    dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorATR", 255), CVar_GetS32("gColViewerColorATG", 0),
+                                  CVar_GetS32("gColViewerColorATB", 0), 255));
 
     DrawColCheckList(dl, col.colAT, col.colATCount);
 }
@@ -638,7 +638,7 @@ void DrawWaterboxList() {
 
     dl.push_back(gsDPSetPrimColor(0, 0, CVar_GetS32("gColViewerColorWaterboxR", 0),
                                   CVar_GetS32("gColViewerColorWaterboxG", 0),
-                                  CVar_GetS32("gColViewerColorWaterboxG", 0), 255));
+                                  CVar_GetS32("gColViewerColorWaterboxB", 255), 255));
 
     CollisionHeader* col = gGlobalCtx->colCtx.colHeader;
     for (int32_t waterboxIndex = 0; waterboxIndex < col->numWaterBoxes; waterboxIndex++) {
