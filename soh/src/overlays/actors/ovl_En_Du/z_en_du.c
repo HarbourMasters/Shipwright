@@ -318,8 +318,34 @@ void EnDu_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void func_809FE3B4(EnDu* this, GlobalContext* globalCtx) {
 }
 
+u8 successDarunia;
+void GivePlayerRandoRewardDarunia(EnDu* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if(!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (successDarunia) {
+            // Flags_SetTreasure(globalCtx, this->fountainType + 1);
+            Flags_SetTreasure(globalCtx, 0x1F);
+            successDarunia = 0;
+            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+            // player->stateFlags2 |= 0x2000000;
+            // globalCtx->msgCtx.ocarinaAction = OCARINA_ACTION_FREE_PLAY;
+            // globalCtx->csCtx.segment = 0;
+            // gSaveContext.cutsceneTrigger = 0;
+            Actor_Kill(&this->actor);
+        } else if (!successDarunia) {
+            // player->stateFlags1 &= 0xDFFFF7FF;
+            successDarunia = func_8002F434(&this->actor, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET), 90.0f, 10.0f);
+            // successDarunia = func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        }
+    }
+}
+
 void func_809FE3C0(EnDu* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
+
+    // func_8002F434(&this->actor, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_GC_DARUNIAS_JOY, GI_BRACELET), 90.0f, 10.0f);
+    
 
     if (player->stateFlags2 & 0x1000000) {
         func_8010BD88(globalCtx, OCARINA_ACTION_CHECK_SARIA);
@@ -340,6 +366,11 @@ void func_809FE3C0(EnDu* this, GlobalContext* globalCtx) {
 void func_809FE4A4(EnDu* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
+    if(gSaveContext.n64ddFlag && globalCtx->msgCtx.ocarinaAction == OCARINA_ACTION_CHECK_NOWARP_DONE) {
+        GivePlayerRandoRewardDarunia(this, globalCtx);
+        return;
+    }
+    
     if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
@@ -351,6 +382,20 @@ void func_809FE4A4(EnDu* this, GlobalContext* globalCtx) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
         Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        if(gSaveContext.n64ddFlag) {
+            if(!Flags_GetTreasure(globalCtx, 0x1F)) {
+            //     Actor_Kill(&this->actor);
+            // } else {
+                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+                globalCtx->msgCtx.ocarinaAction = OCARINA_ACTION_CHECK_NOWARP_DONE;
+            }
+        // return;
+        // globalCtx->csCtx.state = CS_STATE_IDLE;
+            // player->stateFlags2 |= 0x800000;
+            // globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
+            return;
+        }
+        
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaCorrectCs);
         gSaveContext.cutsceneTrigger = 1;
         this->unk_1E8 = 0;
