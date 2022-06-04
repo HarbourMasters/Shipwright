@@ -432,7 +432,15 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
         this->unk_1E0.unk_00 = 1;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        getItemId = this->isTrading == true ? GI_FROG : GI_TUNIC_ZORA;
+        if (gSaveContext.n64ddFlag) {
+            if (this->isTrading) {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+            }
+        } else {
+            getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
+        }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
         func_8002F434(&this->actor, globalCtx, getItemId, xzRange, yRange);
