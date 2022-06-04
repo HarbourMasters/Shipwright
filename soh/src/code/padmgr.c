@@ -20,7 +20,7 @@ OSMesgQueue* PadMgr_LockSerialMesgQueue(PadMgr* padMgr) {
                      padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, &ctrlrQ);
     }
 
-    osRecvMesg(&padMgr->serialMsgQ, (OSMesg)&ctrlrQ, OS_MESG_BLOCK);
+    osRecvMesg(&padMgr->serialMsgQ, (OSMesg*)&ctrlrQ, OS_MESG_BLOCK);
 
     if (D_8012D280 > 2) {
         // "serialMsgQ Locked"
@@ -38,7 +38,7 @@ void PadMgr_UnlockSerialMesgQueue(PadMgr* padMgr, OSMesgQueue* ctrlrQ) {
                      padMgr->serialMsgQ.validCount, padMgr, &padMgr->serialMsgQ, ctrlrQ);
     }
 
-    osSendMesg(&padMgr->serialMsgQ, ctrlrQ, OS_MESG_BLOCK);
+    osSendMesgPtr(&padMgr->serialMsgQ, ctrlrQ, OS_MESG_BLOCK);
 
     if (D_8012D280 > 2) {
         // "serialMsgQ Unlocked"
@@ -52,7 +52,7 @@ void PadMgr_LockPadData(PadMgr* padMgr) {
 }
 
 void PadMgr_UnlockPadData(PadMgr* padMgr) {
-    osSendMesg(&padMgr->lockMsgQ, NULL, OS_MESG_BLOCK);
+    osSendMesgPtr(&padMgr->lockMsgQ, NULL, OS_MESG_BLOCK);
 }
 
 void PadMgr_RumbleControl(PadMgr* padMgr) {
@@ -174,7 +174,7 @@ void PadMgr_RumbleStop(PadMgr* padMgr) {
     for (i = 0; i < 4; i++) {
         if (osMotorInit(ctrlrQ, &padMgr->pfs[i], i) == 0) {
 #if 0
-            if ((gFaultStruct.msgId == 0) && (padMgr->rumbleOnFrames != 0)) 
+            if ((gFaultStruct.msgId == 0) && (padMgr->rumbleOnFrames != 0))
             {
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Stop vibration pack"
@@ -399,7 +399,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
             osSyncPrintf("コントローラスレッドイベント待ち %lld\n", OS_CYCLES_TO_USEC(osGetTime()));
         }
 
-        osRecvMesg(&padMgr->interruptMsgQ, (OSMesg)&mesg, OS_MESG_BLOCK);
+        osRecvMesg(&padMgr->interruptMsgQ, (OSMesg*)&mesg, OS_MESG_BLOCK);
         //LogUtils_CheckNullPointer("msg", mesg, "../padmgr.c", 563);
 
         PadMgr_HandleRetraceMsg(padMgr);

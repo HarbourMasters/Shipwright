@@ -461,7 +461,7 @@ s32 AudioLoad_SyncLoadInstrument(s32 fontId, s32 instId, s32 drumId) {
 
 void AudioLoad_AsyncLoad(s32 tableType, s32 id, s32 nChunks, s32 retData, OSMesgQueue* retQueue) {
     if (AudioLoad_AsyncLoadInner(tableType, id, nChunks, retData, retQueue) == NULL) {
-        osSendMesg(retQueue, 0xFFFFFFFF, OS_MESG_NOBLOCK);
+        osSendMesg32(retQueue, 0xFFFFFFFF, OS_MESG_NOBLOCK);
     }
 }
 
@@ -1079,7 +1079,7 @@ void* AudioLoad_AsyncLoadInner(s32 tableType, s32 id, s32 nChunks, s32 retData, 
     ret = AudioLoad_SearchCaches(tableType, realId);
     if (ret != NULL) {
         status = 2;
-        osSendMesg(retQueue, MK_ASYNC_MSG(retData, 0, 0, 0), OS_MESG_NOBLOCK);
+        osSendMesg32(retQueue, MK_ASYNC_MSG(retData, 0, 0, 0), OS_MESG_NOBLOCK);
     } else {
         sp50 = AudioLoad_GetLoadTable(tableType);
         size = sp50->entries[realId].size;
@@ -1312,19 +1312,12 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
     void* temp_v0_3;
     s32 i;
     u64* heapP;
-    u8* ctxP;
     s16* u2974p;
 
     D_801755D0 = NULL;
     gAudioContext.resetTimer = 0;
 
-    {
-        s32 i;
-        u8* ctxP = (u8*)&gAudioContext;
-        for (i = sizeof(gAudioContext); i >= 0; i--) {
-            *ctxP++ = 0;
-        }
-    }
+    memset(&gAudioContext, 0, sizeof(gAudioContext));
 
     switch (osTvType) {
         case OS_TV_PAL:
@@ -1421,7 +1414,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
 
     AudioHeap_AllocPoolInit(&gAudioContext.permanentPool, temp_v0_3, D_8014A6C4.permanentPoolSize);
     gAudioContextInitalized = true;
-    osSendMesg(gAudioContext.taskStartQueueP, (void*)gAudioContext.totalTaskCnt, OS_MESG_NOBLOCK);
+    osSendMesg32(gAudioContext.taskStartQueueP, gAudioContext.totalTaskCnt, OS_MESG_NOBLOCK);
 }
 
 void AudioLoad_InitSlowLoads(void) {
@@ -1649,7 +1642,7 @@ AudioAsyncLoad* AudioLoad_StartAsyncLoadUnkMedium(s32 unkMediumParam, uintptr_t 
         return NULL;
     }
 
-    osSendMesg(&gAudioContext.asyncLoadUnkMediumQueue, asyncLoad, OS_MESG_NOBLOCK);
+    osSendMesgPtr(&gAudioContext.asyncLoadUnkMediumQueue, asyncLoad, OS_MESG_NOBLOCK);
     asyncLoad->unkMediumParam = unkMediumParam;
     return asyncLoad;
 }
@@ -1765,7 +1758,7 @@ void AudioLoad_FinishAsyncLoad(AudioAsyncLoad* asyncLoad) {
             break;
     }
 
-    doneMsg = asyncLoad->retMsg;
+    doneMsg.data32 = asyncLoad->retMsg;
     if (1) {}
     asyncLoad->status = LOAD_STATUS_WAITING;
     osSendMesg(asyncLoad->retQueue, doneMsg, OS_MESG_NOBLOCK);

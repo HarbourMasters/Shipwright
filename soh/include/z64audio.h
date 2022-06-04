@@ -120,7 +120,7 @@ typedef struct {
     /* 0x08 */ s16 book[1]; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
-typedef struct 
+typedef struct
 {
     union {
         struct {
@@ -143,7 +143,7 @@ typedef struct {
     /* 0x04 */ union {
         u32 tuningAsU32;
         f32 tuning;// frequency scale factor
-    };            
+    };
 } SoundFontSound; // size = 0x8
 
 typedef struct {
@@ -689,7 +689,7 @@ typedef struct {
         };
     };
     union {
-        void* data;
+        u32 data;
         f32 asFloat;
         s32 asInt;
         struct {
