@@ -1,5 +1,8 @@
 set(PROJECT_NAME ZAPD)
 
+set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
+set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
+
 ################################################################################
 # Source groups
 ################################################################################
@@ -341,7 +344,6 @@ if(MSVC)
                 /Gy
             >
             /permissive-;
-            /std:c++17;
             /sdl;
             /W3;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -350,7 +352,6 @@ if(MSVC)
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
         target_compile_options(${PROJECT_NAME} PRIVATE
             $<$<CONFIG:Debug>:
-                /std:c++17;
                 /Od
             >
             $<$<CONFIG:Release>:
@@ -427,14 +428,16 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"ZAPDUtils;"
 			"-WHOLEARCHIVE:${PROJECT_SOURCE_DIR}/x64/Release/OTRExporter.lib"
 			"libultraship;"
-			PNG::PNG
 			${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS64.lib
+			PNG::PNG
 		)
 	endif()
 else()
 	find_package(BZip2 REQUIRED)
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
 	find_package(Threads REQUIRED)
+	find_package(X11 REQUIRED)
+	find_package(SDL2)
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
 		-Wl,--whole-archive ${PROJECT_BINARY_DIR}/OTRExporter/libOTRExporter.a -Wl,--no-whole-archive
