@@ -58,4 +58,9 @@ cmake --build build-cmake
 cd ../soh
 cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE=CMake/Linux32bit-toolchain.cmake
 cmake --build build-cmake 
+
+cd ../OTRGui
+cmake -H. -Bbuild-cmake -GNinja -DOpenGL_GL_PREFERENCE="GLVND" -DCMAKE_BUILD_TYPE="Release"
+cmake --build build-cmake  
+cp build-cmake/ZAPD/ZAPD.out build-cmake/assets/extractor
 ~~~
