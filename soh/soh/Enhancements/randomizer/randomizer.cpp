@@ -2065,6 +2065,17 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
             if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
             if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+        case 12:
+            switch(actorParams) {
+                case 3089:
+                    return RC_GF_NORTH_F1_CARPENTER;
+                case 3857:
+                    return RC_GF_SOUTH_F2_CARPENTER;
+                case 3601:
+                    return RC_GF_SOUTH_F1_CARPENTER;
+                case 2577:
+                    return RC_GF_NORTH_F2_CARPENTER;
+            }
     }
 
     return RC_UNKNOWN_CHECK;
