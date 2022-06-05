@@ -402,6 +402,10 @@ s32 EnTk_ChooseReward(EnTk* this) {
     f32 luck;
     s32 reward;
 
+    if (gSaveContext.n64ddFlag && !Flags_GetCollectible(gGlobalCtx, 0x1F) && this->heartPieceSpawned == 0) {
+        return 3;
+    }
+
     luck = Rand_ZeroOne();
 
     if (luck < 0.4f) {
@@ -509,7 +513,6 @@ void EnTk_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void EnTk_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     EnTk* this = (EnTk*)thisx;
-
     Collider_DestroyCylinder(globalCtx, &this->collider);
 }
 
@@ -593,7 +596,7 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
 
         this->rewardTimer = 0;
 
-        if (this->validDigHere == 1) {
+        if (this->validDigHere == 1 || gSaveContext.n64ddFlag) {
             rewardOrigin.x = 0.0f;
             rewardOrigin.y = 0.0f;
             rewardOrigin.z = -40.0f;
@@ -606,18 +609,27 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
+
             if (this->currentReward == 3) {
                 /*
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (!(gSaveContext.itemGetInf[1] & 0x1000)) {
+                if (!(gSaveContext.itemGetInf[1] & 0x1000) && !gSaveContext.n64ddFlag) {
                     gSaveContext.itemGetInf[1] |= 0x1000;
+                    this->currentReward = 4;
+                } else if (gSaveContext.n64ddFlag && !Flags_GetCollectible(gGlobalCtx, 0x1F) && this->heartPieceSpawned == 0) {
                     this->currentReward = 4;
                 }
             }
 
-            Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            if (gSaveContext.n64ddFlag && this->currentReward == 4) {
+                Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
+                            0, 0, 0x1F06);
+                this->heartPieceSpawned = 1;
+            } else {
+                Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            }
         }
     }
 
