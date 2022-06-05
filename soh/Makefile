@@ -25,8 +25,8 @@ CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
 LDFLAGS :=
 
 ifeq ($(UNAME), Linux) #LINUX
-	CXXFLAGS += -msse2 -mfpmath=sse
-	CFLAGS += $(WARN) -msse2 -mfpmath=sse
+	CXXFLAGS += -mhard-float -msse2 -mfpmath=sse
+	CFLAGS += -mhard-float -msse2 -mfpmath=sse
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
@@ -126,7 +126,6 @@ ifeq ($(UNAME), Darwin) #APPLE
 LDLIBS += \
 	$(addprefix -framework, \
 	OpenGL \
-	CoreFoundation \
 ) \
 	$(shell sdl2-config --libs) $(shell pkg-config --libs glew)
 endif

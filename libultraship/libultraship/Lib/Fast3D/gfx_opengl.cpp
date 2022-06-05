@@ -439,7 +439,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
     vs_buf[vs_len] = '\0';
     fs_buf[fs_len] = '\0';
 
-   /*puts("Vertex shader:");
+    /*puts("Vertex shader:");
     puts(vs_buf);
     puts("Fragment shader:");
     puts(fs_buf);
@@ -595,7 +595,6 @@ static void gfx_opengl_delete_texture(uint32_t texID) {
 }
 
 static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
-    //printf("select texture: %d - %d\n", tile, texture_id);
     glActiveTexture(GL_TEXTURE0 + tile);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 
@@ -612,7 +611,6 @@ static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width,
     float wdpi_scale = 0;
     float hdpi_scale = 0;
     SDL_GetDisplayDPI(0, NULL, &hdpi_scale, &wdpi_scale);
-    //printf("dpi_scale: %f\n", dpi_scale);
     textures[current_texture_ids[current_tile]].width = width * (wdpi_scale / 32.0);
     textures[current_texture_ids[current_tile]].height = height * (hdpi_scale / 32.0);
 #endif

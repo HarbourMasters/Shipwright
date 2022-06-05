@@ -20,10 +20,11 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-missing-field-initializers \
 	-Wno-error=multichar
 
+CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
 ifeq ($(UNAME), Darwin) #APPLE

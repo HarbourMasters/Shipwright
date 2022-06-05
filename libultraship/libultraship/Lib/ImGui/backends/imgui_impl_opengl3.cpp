@@ -261,7 +261,7 @@ bool    ImGui_ImplOpenGL3_Init(const char* glsl_version)
 #elif defined(IMGUI_IMPL_OPENGL_ES3)
         glsl_version = "#version 300 es";
 #elif defined(__APPLE__)
-		glsl_version = "#version 120";
+        glsl_version = "#version 120";
 #else
         glsl_version = "#version 130";
 #endif
