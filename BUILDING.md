@@ -55,11 +55,6 @@ git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
-# Clone and build StormLib
-git clone https://github.com/ladislav-zezula/StormLib external/StormLib
-cmake -B external/StormLib/build -S external/StormLib
-cmake --build external/StormLib/build
-cp external/StormLib/build/libstorm.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
