@@ -1088,6 +1088,8 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName) {
         for (auto itemLocation : gSaveContext.itemLocations) {
             this->itemLocations[itemLocation.check] = itemLocation.get;
         }
+
+        itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
     } /* else {
         u16 index = 0;
         for (auto itemLocation : this->itemLocations) {
@@ -2050,6 +2052,19 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 3:
                     return RC_COLOSSUS_GREAT_FAIRY_REWARD;
             }
+        case 16:
+            if(actorParams == 20170) return RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+
+            // keep keys og
+            if ((actorParams & 0x60) == 0x20) {
+                return RC_UNKNOWN_CHECK;
+            }
+
+            if((actorParams & 0xF) < 2) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+            if((actorParams & 0xF) < 4) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+            if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+            if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+            if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
     }
 
     return RC_UNKNOWN_CHECK;
