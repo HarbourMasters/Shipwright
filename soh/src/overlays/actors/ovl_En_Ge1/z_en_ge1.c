@@ -498,9 +498,7 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
-        if (!gSaveContext.n64ddFlag) {
-            this->actionFunc = EnGe1_SetupWait_Archery;
-        } else if (gSaveContext.minigameScore >= 1500 && !(gSaveContext.infTable[25] & 1)) {
+        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !(gSaveContext.infTable[25] & 1)) {
             gSaveContext.itemGetInf[0] |= 0x8000;
             gSaveContext.infTable[25] |= 1;
             this->stateFlags |= GE1_STATE_GIVE_QUIVER;
