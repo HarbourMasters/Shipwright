@@ -2076,7 +2076,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 2577:
                     return RC_GF_NORTH_F2_CARPENTER;
             }
-
     }
 
     return RC_UNKNOWN_CHECK;
