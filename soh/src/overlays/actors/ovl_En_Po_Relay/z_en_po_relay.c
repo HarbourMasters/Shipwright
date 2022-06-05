@@ -206,6 +206,10 @@ void EnPoRelay_Race(EnPoRelay* this, GlobalContext* globalCtx) {
             }
             speed = 30.0f * multiplier;
             
+            Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_HONOTRAP,
+                        Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
+                        Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
+                        (this->unk_19A + 0x8000) - (0x2000 * multiplier), 0, HONOTRAP_FLAME_DROP);
         }
     }
     Math_SmoothStepToS(&this->actor.world.rot.y, this->unk_19A, 2, 0x1000, 0x100);
