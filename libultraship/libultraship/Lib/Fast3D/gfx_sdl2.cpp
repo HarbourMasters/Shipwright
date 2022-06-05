@@ -121,10 +121,8 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
-#ifndef __linux__
-#ifndef __APPLE__
+#ifdef _WIN32
 static HANDLE timer;
-#endif
 #endif
 
 static int target_fps = 60;
@@ -138,10 +136,8 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#ifndef __linux
-#ifndef __APPLE__
+#ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
-#endif
 #endif
 
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);

@@ -4,10 +4,8 @@
 #include "Utils/Directory.h"
 #include "yaz0/yaz0.h"
 
-#ifndef _MSC_VER
-#ifndef __APPLE__
+#ifdef __linux__
 #include <byteswap.h>
-#endif
 #endif
 #include <Globals.h>
 
