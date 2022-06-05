@@ -2099,9 +2099,11 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                    LINK_IS_ADULT && !Flags_GetEventChkInf(0xC4) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {
-            Flags_SetEventChkInf(0xC4);
-            gSaveContext.entranceIndex = 0x0053;
-            gSaveContext.cutsceneIndex = 0xFFF8;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xC4);
+                gSaveContext.entranceIndex = 0x0053;
+                gSaveContext.cutsceneIndex = 0xFFF8;
+            }
         } else if (!Flags_GetEventChkInf(0xC7) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO)) {
             Flags_SetEventChkInf(0xC7);

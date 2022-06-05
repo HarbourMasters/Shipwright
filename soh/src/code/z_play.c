@@ -204,6 +204,18 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     }
 }
 
+void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
+        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
+        !Flags_GetEventChkInf(0xC4) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetEventChkInf(0xC4);
+    }
+}
+
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -1071,6 +1083,7 @@ skip:
     if (gSaveContext.n64ddFlag) {
         GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
         GivePlayerRandoRewardSongOfTime(globalCtx, RC_SONG_FROM_OCARINA_OF_TIME);
+        GivePlayerRandoRewardZeldaLightArrowsGift(globalCtx, RC_TOT_LIGHT_ARROWS_CUTSCENE);
     }
 }
 
