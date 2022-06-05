@@ -26,6 +26,9 @@ void EnGe1_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnGe1_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnGe1_Draw(Actor* thisx, GlobalContext* globalCtx);
 
+void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx);
+void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx);
+
 s32 EnGe1_CheckCarpentersFreed(void);
 void EnGe1_WatchForPlayerFrontOnly(EnGe1* this, GlobalContext* globalCtx);
 void EnGe1_SetNormalText(EnGe1* this, GlobalContext* globalCtx);
@@ -495,7 +498,16 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
-        this->actionFunc = EnGe1_SetupWait_Archery;
+        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !(gSaveContext.infTable[25] & 1)) {
+            gSaveContext.itemGetInf[0] |= 0x8000;
+            gSaveContext.infTable[25] |= 1;
+            this->stateFlags |= GE1_STATE_GIVE_QUIVER;
+            this->actor.parent = NULL;
+            return;
+        } else {
+            this->actionFunc = EnGe1_SetupWait_Archery;
+        }
+
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             gSaveContext.itemGetInf[0] |= 0x8000;
         } else {
@@ -503,17 +515,26 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                //! @bug Asschest. See next function for details
-                case 1:
-                    getItemId = GI_QUIVER_40;
-                    break;
-                case 2:
-                    getItemId = GI_QUIVER_50;
-                    break;
+            if (!gSaveContext.n64ddFlag) {
+                switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                    //! @bug Asschest. See next function for details
+                    case 1:
+                        getItemId = GI_QUIVER_40;
+                        break;
+                    case 2:
+                        getItemId = GI_QUIVER_50;
+                        break;
+                }
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(
+                    RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
             }
         } else {
-            getItemId = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                getItemId = GI_HEART_PIECE;
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+            }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
     }
@@ -528,20 +549,26 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx) {
     }
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-        switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-            //! @bug Asschest: the compiler inserts a default assigning *(sp+0x24) to getItemId, which is junk data left
-            //! over from the previous function run in EnGe1_Update, namely EnGe1_CueUpAnimation. The top stack variable
-            //! in that function is &this->skelAnime = thisx + 198, and depending on where this loads in memory, the
-            //! getItemId changes.
-            case 1:
-                getItemId = GI_QUIVER_40;
-                break;
-            case 2:
-                getItemId = GI_QUIVER_50;
-                break;
+        if (!gSaveContext.n64ddFlag) {
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                //! @bug Asschest. See next function for details
+                case 1:
+                    getItemId = GI_QUIVER_40;
+                    break;
+                case 2:
+                    getItemId = GI_QUIVER_50;
+                    break;
+            }
+        } else {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1500_POINTS,
+                                                          CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
         }
     } else {
-        getItemId = GI_HEART_PIECE;
+        if (!gSaveContext.n64ddFlag) {
+            getItemId = GI_HEART_PIECE;
+        } else {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+        }
     }
 
     func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
