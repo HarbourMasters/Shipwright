@@ -2784,6 +2784,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                     Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == 2 ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
@@ -2795,6 +2796,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                     Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
