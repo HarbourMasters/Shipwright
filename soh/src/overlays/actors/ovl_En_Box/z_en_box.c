@@ -419,12 +419,61 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         }
         osSyncPrintf("Actor_Environment_Tbox_On() %d\n", this->dyna.actor.params & 0x1F);
         Flags_SetTreasure(globalCtx, this->dyna.actor.params & 0x1F);
+
+        // treasure chest game rando
+        if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+            if((this->dyna.actor.params & 0xF) < 2) {
+                Flags_SetCollectible(globalCtx, 0x1B);
+            }
+            if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                Flags_SetCollectible(globalCtx, 0x1C);
+            }
+            if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                Flags_SetCollectible(globalCtx, 0x1D);
+            }
+            if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                Flags_SetCollectible(globalCtx, 0x1E);
+            }
+            if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                Flags_SetCollectible(globalCtx, 0x1F);
+            }
+        }
     } else {
         player = GET_PLAYER(globalCtx);
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
             int32_t item = GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            
+            // treasure chest game rando
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if((this->dyna.actor.params & 0xF) < 2) {
+                    if(Flags_GetCollectible(globalCtx, 0x1B)) {
+                        item = GI_RUPEE_BLUE;
+                    }
+                }
+                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                    if(Flags_GetCollectible(globalCtx, 0x1C)) {
+                        item = GI_RUPEE_BLUE;
+                    }
+                }
+                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                    if(Flags_GetCollectible(globalCtx, 0x1D)) {
+                        item = GI_RUPEE_BLUE;
+                    }
+                }
+                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                    if(Flags_GetCollectible(globalCtx, 0x1E)) {
+                        item = GI_RUPEE_BLUE;
+                    }
+                }
+                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                    if(Flags_GetCollectible(globalCtx, 0x1F)) {
+                        item = GI_RUPEE_BLUE;
+                    }
+                }
+            }
+
             func_8002F554(&this->dyna.actor, globalCtx, 0 - item);
         }
         if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
