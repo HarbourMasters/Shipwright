@@ -141,7 +141,8 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
     func_80088B34(0);
-    this->hookshotSlotFull = INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE;
+    this->hookshotSlotFull = (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !gSaveContext.n64ddFlag) ||
+                             (gSaveContext.n64ddFlag && Flags_GetTreasure(gGlobalCtx, 0x1F));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
     this->actor.flags |= ACTOR_FLAG_27;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
@@ -204,6 +205,7 @@ void EnPoRelay_Race(EnPoRelay* this, GlobalContext* globalCtx) {
                 multiplier = 0.0f;
             }
             speed = 30.0f * multiplier;
+            
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_HONOTRAP,
                         Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
                         Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
@@ -341,6 +343,11 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, GlobalContext* globalCtx) {
             }
         } else {
             Flags_SetTempClear(globalCtx, 4);
+
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(gGlobalCtx, 0x1F);
+            }
+
             HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
         }
         Actor_Kill(&this->actor);

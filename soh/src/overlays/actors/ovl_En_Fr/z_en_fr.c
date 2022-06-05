@@ -941,7 +941,7 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {
-                this->reward = GetRandomizedItemIdFromKnownCheck(globalCtx, RC_ZR_FROGS_IN_THE_RAIN);
+                this->reward = GetRandomizedItemIdFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
             }
         } else {
             this->reward = GI_RUPEE_BLUE;
@@ -952,7 +952,7 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
             if (!gSaveContext.n64ddFlag) {
                 this->reward = GI_HEART_PIECE;
             } else {
-                this->reward = GetRandomizedItemIdFromKnownCheck(globalCtx, RC_ZR_FROGS_OCARINA_GAME);
+                this->reward = GetRandomizedItemIdFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
             }
         } else {
             this->reward = GI_RUPEE_PURPLE;
