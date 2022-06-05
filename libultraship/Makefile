@@ -20,17 +20,13 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-missing-field-initializers \
 	-Wno-error=multichar
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CXXWARN := -Wno-deprecated-enum-enum-conversion
+
+CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
-ifeq ($(UNAME), Linux) #LINUX
-	CXXFLAGS += -m32
-	CFLAGS += -m32
-endif
-
 ifeq ($(UNAME), Darwin) #APPLE
-	CXXFLAGS += -Wno-deprecated-enum-enum-conversion
 	CPPFLAGS += -framework OpenGL
 	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew)
 endif
@@ -53,10 +49,10 @@ endif
 SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 
 CXX_FILES := \
-	$(shell find libultraship/Factories -name *.cpp) \
-	$(shell find libultraship/Lib/Fast3D -name *.cpp) \
-	$(shell find libultraship -maxdepth 1 -name *.cpp) \
-	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name *.cpp) \
+	$(shell find libultraship/Factories -name "*.cpp") \
+	$(shell find libultraship/Lib/Fast3D -name "*.cpp") \
+	$(shell find libultraship -maxdepth 1 -name "*.cpp") \
+	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name "*.cpp") \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -66,7 +62,7 @@ C_FILES := \
 	libultraship/mixer.c \
 	libultraship/Lib/stb/stb_impl.c
 
-FMT_FILES := $(shell find libultraship/ -type f \( -name *.cpp -o -name *.h \) -a -not -path "libultraship/Lib/*")
+FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
 O_FILES   := \
 	$(CXX_FILES:%.cpp=build/%.o) \
@@ -78,12 +74,12 @@ LIB       := libultraship.a
 
 INC_DIRS := $(addprefix -I, \
 	../ZAPDTR/ZAPDUtils \
-	../StormLib/src \
 	libultraship/Lib/Fast3D/U64 \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
 	libultraship/Lib/ImGui \
 	libultraship \
+	../StormLib/src \
 )
 
 # create build directories

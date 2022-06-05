@@ -46,7 +46,7 @@ endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
 LDFLAGS := -lm -ldl \
-  -L../external -L../libultraship -lbz2 -pthread -lpulse -lultraship -lstorm
+  -L../StormLib/build -L../libultraship -lbz2 -pthread -lpulse -lultraship -lstorm
 
 ifeq ($(UNAME), Darwin)
   LDFLAGS += $(shell pkg-config --libs glew x11 libpng zlib) $(shell sdl2-config --libs) -framework OpenGL

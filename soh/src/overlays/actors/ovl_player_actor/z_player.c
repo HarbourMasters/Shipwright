@@ -4855,7 +4855,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
-            size, 0, &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
+            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), "../z_player.c", 9099);
     }
 }
 
@@ -10798,7 +10798,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
 
 void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
-    static Vec3f sDogSpawnPos; 
+    static Vec3f sDogSpawnPos;
     Player* this = (Player*)thisx;
     s32 dogParams;
     s32 pad;

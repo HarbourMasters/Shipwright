@@ -461,8 +461,8 @@ char* OldMain(char* infilename)
 			else
 			{
 				char comprType[5] = {
-					CommChunk.compressionTypeH >> 8, CommChunk.compressionTypeH & 0xFF,
-					CommChunk.compressionTypeL >> 8, CommChunk.compressionTypeL & 0xFF, 0};
+					static_cast<char>(CommChunk.compressionTypeH >> 8), static_cast<char>(CommChunk.compressionTypeH & 0xFF),
+					static_cast<char>(CommChunk.compressionTypeL >> 8), static_cast<char>(CommChunk.compressionTypeL & 0xFF), 0};
 				fail_parse("file is of the wrong compression type [got %s (%08x)]", &comprType,
 				           cType);
 			}
@@ -603,8 +603,8 @@ char* OldMain(char* infilename)
 	{
 		s32 startPos = aloops[0].start, endPos = aloops[0].end;
 		const char* markerNames[2] = {"start", "end"};
-		Marker markers[2] = {{1, startPos >> 16, startPos & 0xffff},
-		                     {2, endPos >> 16, endPos & 0xffff}};
+		Marker markers[2] = {{1, static_cast<u16>(startPos >> 16), static_cast<u16>(startPos & 0xffff)},
+		                     {2, static_cast<u16>(endPos >> 16), static_cast<u16>(endPos & 0xffff)}};
 		write_header(ofile, "MARK", 2 + 2 * sizeof(Marker) + 1 + 5 + 1 + 3);
 		s16 numMarkers = bswap16(2);
 		fwrite(&numMarkers, sizeof(s16), 1, ofile);
