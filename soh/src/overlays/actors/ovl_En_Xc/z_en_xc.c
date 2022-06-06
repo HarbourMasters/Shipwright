@@ -283,12 +283,12 @@ void func_80B3CA38(EnXc* this, GlobalContext* globalCtx) {
     }
 }
 
-void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, RandomizerCheck check, int sheikType) {
+void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, RandomizerCheck check, int sheikType, GetItemID ogSongId) {
     if (sheik->actor.parent != NULL && sheik->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !(gSaveContext.eventChkInf[5] & sheikType)) {
         gSaveContext.eventChkInf[5] |= sheikType;
     } else if (!(gSaveContext.eventChkInf[5] & sheikType)) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_MINUET_OF_FOREST);
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, ogSongId);
         func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
 }
@@ -306,7 +306,7 @@ s32 EnXc_MinuetCS(EnXc* this, GlobalContext* globalCtx) {
                     gSaveContext.eventChkInf[5] |= 1;
                     Item_Give(globalCtx, ITEM_SONG_MINUET);
                 } else {
-                    GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_FOREST, 1);
+                    GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_FOREST, 1, GI_MINUET_OF_FOREST);
                     return false;
                 }
                 return true;
@@ -342,7 +342,7 @@ s32 EnXc_BoleroCS(EnXc* this, GlobalContext* globalCtx) {
                 gSaveContext.eventChkInf[5] |= 2;
                 Item_Give(globalCtx, ITEM_SONG_BOLERO);
             } else {
-                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_CRATER, 2);
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_CRATER, 2, GI_BOLERO_OF_FIRE);
                 return false;
             }
             return true;
@@ -383,7 +383,7 @@ s32 EnXc_SerenadeCS(EnXc* this, GlobalContext* globalCtx) {
                 gSaveContext.eventChkInf[5] |= 4; // Learned Serenade of Water Flag
                 Item_Give(globalCtx, ITEM_SONG_SERENADE);
             } else {
-                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_ICE_CAVERN, 4);
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_ICE_CAVERN, 4, GI_SERENADE_OF_WATER);
                 return false;
             }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
@@ -2194,7 +2194,7 @@ void EnXc_InitTempleOfTime(EnXc* this, GlobalContext* globalCtx) {
                 gSaveContext.cutsceneTrigger = 1;
                 this->action = SHEIK_ACTION_30;
             } else {
-                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20);
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20, GI_PRELUDE_OF_LIGHT);
             }
         } else if (!(gSaveContext.eventChkInf[5] & 0x20)) {
             func_80B3C9EC(this);
