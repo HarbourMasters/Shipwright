@@ -100,7 +100,9 @@ void func_808BAF40(BgTokiSwd* this, GlobalContext* globalCtx) {
         globalCtx->csCtx.segment = D_808BBD90;
         gSaveContext.cutsceneTrigger = 1;
     }
-    if (!LINK_IS_ADULT || ((gSaveContext.eventChkInf[5] & 0x20))) {
+
+    if (!LINK_IS_ADULT || (gSaveContext.eventChkInf[5] & 0x20 && !gSaveContext.n64ddFlag) ||
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && gSaveContext.n64ddFlag) {
         if (Actor_HasParent(&this->actor, globalCtx)) {
             if (!LINK_IS_ADULT) {
                 Item_Give(globalCtx, ITEM_SWORD_MASTER);
