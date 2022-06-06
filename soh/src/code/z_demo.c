@@ -2081,14 +2081,18 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC)) {
-            Flags_SetEventChkInf(0xAC);
-            gSaveContext.entranceIndex = 0x0123;
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xAC);
+                gSaveContext.entranceIndex = 0x0123;
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
                    (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) &&
                    !Flags_GetEventChkInf(0xAA)) {
-            Flags_SetEventChkInf(0xAA);
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xAA);
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
             if (!gSaveContext.n64ddFlag) {
                 Flags_SetEventChkInf(0xC1);
