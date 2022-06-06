@@ -1459,7 +1459,7 @@ void func_8090109C(BossGanon2* this, GlobalContext* globalCtx) {
     static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
     static Color_RGBA8 sEnvColor = { 0, 120, 0, 255 };
 
-    if(CVar_GetS32("gRedGanonBlood", 0) == 1) {
+    if(CVar_GetS32("gRedGanonBlood", 0)) {
         sPrimColor.r = 120;
         sPrimColor.g = 0;
 
