@@ -137,7 +137,12 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 onCounter = true;
             case EXITEM_BOMB_BAG_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                this->giDrawId = GID_BOMB_BAG_30;
+                if (gSaveContext.n64ddFlag) {
+                    this->giDrawId = GetItemModelFromId(
+                        GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20));
+                } else {
+                    this->giDrawId = GID_BOMB_BAG_30;
+                }
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
@@ -145,7 +150,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                     this->actionFunc = EnExItem_BowlPrize;
                 } else {
                     this->actionFunc = EnExItem_SetupBowlCounter;
-                    this->actor.shape.yOffset = -18.0f;
+                    this->actor.shape.yOffset = gSaveContext.n64ddFlag ? -10.0f : -18.0f;
                 }
                 break;
             case EXITEM_HEART_PIECE_COUNTER:
@@ -493,7 +498,13 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
 
 void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
     func_8002ED80(&this->actor, globalCtx, 0);
-    GetItem_Draw(globalCtx, GID_HEART_PIECE);
+
+    if (gSaveContext.n64ddFlag) {
+        GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(
+                                    RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE)));
+    } else {
+        GetItem_Draw(globalCtx, GID_HEART_PIECE);
+    }
 }
 
 void EnExItem_DrawMagic(EnExItem* this, GlobalContext* globalCtx, s16 magicIndex) {
