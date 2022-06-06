@@ -172,7 +172,12 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 onCounter = true;
             case EXITEM_BOMBCHUS_BOWLING:
                 this->unk_17C = func_8002EBCC;
-                this->giDrawId = GID_BOMBCHU;
+                if (gSaveContext.n64ddFlag) {
+                    this->giDrawId = GetItemModelFromId(
+                        GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10));
+                } else {
+                    this->giDrawId = GID_BOMBCHU;
+                }
                 this->timer = 65;
                 this->prizeRotateTimer = 35;
                 this->scale = 0.5f;
