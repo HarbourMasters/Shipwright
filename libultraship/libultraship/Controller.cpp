@@ -84,6 +84,8 @@ namespace Ship {
 		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKLEFT)])] = BTN_STICKLEFT;
 		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKDOWN)])] = BTN_STICKDOWN;
 		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKUP)])] = BTN_STICKUP;
+		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_MODIFIER1)])] = BTN_MODIFIER1;
+		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_MODIFIER2)])] = BTN_MODIFIER2;
 	}
 
 	std::string Controller::GetConfSection() {

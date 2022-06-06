@@ -92,6 +92,8 @@ namespace Ship {
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_STICKLEFT)] = std::to_string(0x01E);
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_STICKDOWN)] = std::to_string(0x01F);
 		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_STICKUP)] = std::to_string(0x011);
+		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_MODIFIER1)] = std::to_string(0x02A);
+		(*this)["KEYBOARD CONTROLLER BINDING 1"][STR(BTN_MODIFIER2)] = std::to_string(0x036);
 
 		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_CRIGHT)] = std::to_string(0x14D);
 		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_CLEFT)] = std::to_string(0x14B);
@@ -111,6 +113,8 @@ namespace Ship {
 		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_STICKLEFT)] = std::to_string(0x01E);
 		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_STICKDOWN)] = std::to_string(0x01F);
 		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_STICKUP)] = std::to_string(0x011);
+		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_MODIFIER1)] = std::to_string(0x02A);
+		(*this)["KEYBOARD CONTROLLER BINDING 2"][STR(BTN_MODIFIER2)] = std::to_string(0x036);
 
 		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_CRIGHT)] = std::to_string(0x14D);
 		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_CLEFT)] = std::to_string(0x14B);
@@ -130,6 +134,8 @@ namespace Ship {
 		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_STICKLEFT)] = std::to_string(0x01E);
 		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_STICKDOWN)] = std::to_string(0x01F);
 		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_STICKUP)] = std::to_string(0x011);
+		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_MODIFIER1)] = std::to_string(0x02A);
+		(*this)["KEYBOARD CONTROLLER BINDING 3"][STR(BTN_MODIFIER2)] = std::to_string(0x036);
 
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_CRIGHT)] = std::to_string(0x14D);
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_CLEFT)] = std::to_string(0x14B);
@@ -149,6 +155,8 @@ namespace Ship {
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKLEFT)] = std::to_string(0x01E);
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKDOWN)] = std::to_string(0x01F);
 		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_STICKUP)] = std::to_string(0x011);
+		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_MODIFIER1)] = std::to_string(0x02A);
+		(*this)["KEYBOARD CONTROLLER BINDING 4"][STR(BTN_MODIFIER2)] = std::to_string(0x036);
 
 		(*this)["ENHANCEMENT SETTINGS"]["TEXT_SPEED"] = "1";
 

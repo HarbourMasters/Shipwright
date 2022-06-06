@@ -787,6 +787,13 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
+                Tooltip("Hold the assigned button to limit walking speed");
+
+                if (CVar_GetS32("gEnableWalkModify", 0)) {
+                    EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
+                    EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
+                }
 
                 ImGui::EndMenu();
             }

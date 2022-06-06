@@ -401,6 +401,8 @@ namespace Ship {
         Conf[ConfSection][STR(BTN_STICKLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT));
         Conf[ConfSection][STR(BTN_STICKDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
         Conf[ConfSection][STR(BTN_STICKUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
+        Conf[ConfSection][STR(BTN_MODIFIER1)] = std::to_string(SDL_CONTROLLER_BUTTON_LEFTSTICK);
+        Conf[ConfSection][STR(BTN_MODIFIER2)] = std::to_string(SDL_CONTROLLER_BUTTON_BACK);
 
         Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTX) + "_threshold"] = std::to_string(16.0);
         Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTY) + "_threshold"] = std::to_string(16.0);
