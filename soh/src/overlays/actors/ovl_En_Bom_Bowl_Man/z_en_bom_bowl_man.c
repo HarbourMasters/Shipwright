@@ -79,7 +79,7 @@ void EnBomBowlMan_Init(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    this->prizeSelect = (s16)Rand_ZeroFloat(4.99f);
+    this->prizeSelect = gSaveContext.n64ddFlag ? 0 : (s16)Rand_ZeroFloat(4.99f);
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
@@ -395,14 +395,25 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, GlobalContext* globalCtx) {
                 }
                 break;
             case 1:
-                prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                } else {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                }
                 break;
             case 2:
                 prizeTemp = EXITEM_BOMBCHUS_BOWLING;
                 break;
             case 3:
-                prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                if (gSaveContext.itemGetInf[1] & 4) {
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                } else {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 }
                 break;

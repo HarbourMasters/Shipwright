@@ -182,6 +182,19 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, GlobalContext* globalCtx) {
         this->getItemId = GI_BOMB_BAG_40;
     }
 
+    if (gSaveContext.n64ddFlag) {
+        switch (this->prizeIndex) {
+            case EXITEM_BOMB_BAG_BOWLING:
+                this->getItemId =
+                    GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                break;
+            case EXITEM_HEART_PIECE_BOWLING:
+                this->getItemId =
+                    GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+                break;
+        }
+    }
+
     player->stateFlags1 &= ~0x20000000;
     this->actor.parent = NULL;
     func_8002F434(&this->actor, globalCtx, this->getItemId, 2000.0f, 1000.0f);
