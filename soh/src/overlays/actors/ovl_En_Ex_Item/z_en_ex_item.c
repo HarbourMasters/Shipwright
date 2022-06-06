@@ -118,6 +118,48 @@ void EnExItem_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
+// todo this is copypasta'd from z_item_etcetera.c, would be good to not copypasta
+s16 GetExItemChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+    if (ogDrawId == GID_RUPEE_GREEN ||
+        ogDrawId == GID_RUPEE_BLUE ||
+        ogDrawId == GID_RUPEE_RED)
+    {
+        switch(room) {
+            case 1:
+                if(!Flags_GetCollectible(globalCtx, 0x1B)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN));
+                }
+                break;
+            case 2:
+                if(!Flags_GetCollectible(globalCtx, 0x1C)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN));
+                }
+                break;
+            case 3:
+                if(!Flags_GetCollectible(globalCtx, 0x1D)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE));
+                }
+                break;
+            case 4:
+                if(!Flags_GetCollectible(globalCtx, 0x1E)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE));
+                }
+                break;
+            case 5:
+                if(!Flags_GetCollectible(globalCtx, 0x1F)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED));
+                }
+                break;
+        }
+    }
+
+    if(ogDrawId == GID_HEART_PIECE) {
+        return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE));
+    }
+
+    return ogDrawId;
+}
+
 void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
     s32 onCounter;
 
@@ -219,19 +261,25 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                switch (this->type) {
-                    case EXITEM_GREEN_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_GREEN;
-                        break;
-                    case EXITEM_BLUE_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_BLUE;
-                        break;
-                    case EXITEM_RED_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_RED;
-                        break;
-                    case EXITEM_14:
-                        this->giDrawId = GID_RUPEE_PURPLE;
-                        break;
+                if (!gSaveContext.n64ddFlag) {
+                    switch (this->type) {
+                        case EXITEM_GREEN_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_GREEN;
+                            break;
+                        case EXITEM_BLUE_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_BLUE;
+                            break;
+                        case EXITEM_RED_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_RED;
+                            break;
+                        case EXITEM_14:
+                            this->giDrawId = GID_RUPEE_PURPLE;
+                            break;
+                    }
+                } else {
+                    if (globalCtx->sceneNum == 16) {
+                        this->giDrawId = GetExItemChestGameRandoGiDrawId(globalCtx->roomCtx.curRoom.num, GID_RUPEE_GREEN, globalCtx);
+                    }
                 }
                 this->actionFunc = EnExItem_ExitChest;
                 break;
