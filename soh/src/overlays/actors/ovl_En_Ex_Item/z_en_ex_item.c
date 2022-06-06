@@ -118,48 +118,6 @@ void EnExItem_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
-// todo this is copypasta'd from z_item_etcetera.c, would be good to not copypasta
-s16 GetExItemChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
-    if (ogDrawId == GID_RUPEE_GREEN ||
-        ogDrawId == GID_RUPEE_BLUE ||
-        ogDrawId == GID_RUPEE_RED)
-    {
-        switch(room) {
-            case 1:
-                if(!Flags_GetCollectible(globalCtx, 0x1B)) {
-                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN));
-                }
-                break;
-            case 2:
-                if(!Flags_GetCollectible(globalCtx, 0x1C)) {
-                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN));
-                }
-                break;
-            case 3:
-                if(!Flags_GetCollectible(globalCtx, 0x1D)) {
-                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE));
-                }
-                break;
-            case 4:
-                if(!Flags_GetCollectible(globalCtx, 0x1E)) {
-                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE));
-                }
-                break;
-            case 5:
-                if(!Flags_GetCollectible(globalCtx, 0x1F)) {
-                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED));
-                }
-                break;
-        }
-    }
-
-    if(ogDrawId == GID_HEART_PIECE) {
-        return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE));
-    }
-
-    return ogDrawId;
-}
-
 void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
     s32 onCounter;
 
@@ -278,7 +236,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                     }
                 } else {
                     if (globalCtx->sceneNum == 16) {
-                        this->giDrawId = GetExItemChestGameRandoGiDrawId(globalCtx->roomCtx.curRoom.num, GID_RUPEE_GREEN, globalCtx);
+                        this->giDrawId = GetChestGameRandoGiDrawId(globalCtx->roomCtx.curRoom.num, GID_RUPEE_GREEN, globalCtx);
                     }
                 }
                 this->actionFunc = EnExItem_ExitChest;
