@@ -11087,8 +11087,22 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
     s16 temp3;
 
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
-        temp2 = sControlInput->rel.stick_y * 240.0f;
-        Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+        if (CVar_GetS32("gAutoCenterView", 0) != 0) {
+            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gUninvertAim", 0) ? -1 : 1);
+            Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+        } else {
+            temp2 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gUninvertAim", 0) ? -1 : 1));
+            this->actor.focus.rot.x += temp2;
+        }
+
+        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+            this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+        }
+
+        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+        }
 
         temp2 = sControlInput->rel.stick_x * -16.0f;
         temp2 = CLAMP(temp2, -3000, 3000);
@@ -11097,7 +11111,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
     else {
         temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
         temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * (CVar_GetS32("gUninvertAim", 0) != 0 ? -1500.0f : 1500.0f));
+            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gUninvertAim", 0) ? -1 : 1));
         this->actor.focus.rot.x += temp3;
 
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {

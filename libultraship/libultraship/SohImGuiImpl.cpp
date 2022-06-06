@@ -788,7 +788,9 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("Uninvert Y axis aiming", "gUninvertAim");
-                Tooltip("When aiming with first person weapons, the game no longer inverts the Y axis, allowing for more modern aiming");
+                Tooltip("When aiming with first-person weapons, the game no longer inverts the Y axis, allowing for more modern aiming");
+                EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
+                Tooltip("When in the C-Up first person view, auto center the camera");
 
                 ImGui::EndMenu();
             }
