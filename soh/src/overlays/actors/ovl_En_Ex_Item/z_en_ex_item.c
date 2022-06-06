@@ -219,19 +219,25 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                switch (this->type) {
-                    case EXITEM_GREEN_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_GREEN;
-                        break;
-                    case EXITEM_BLUE_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_BLUE;
-                        break;
-                    case EXITEM_RED_RUPEE_CHEST:
-                        this->giDrawId = GID_RUPEE_RED;
-                        break;
-                    case EXITEM_14:
-                        this->giDrawId = GID_RUPEE_PURPLE;
-                        break;
+                if (!gSaveContext.n64ddFlag) {
+                    switch (this->type) {
+                        case EXITEM_GREEN_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_GREEN;
+                            break;
+                        case EXITEM_BLUE_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_BLUE;
+                            break;
+                        case EXITEM_RED_RUPEE_CHEST:
+                            this->giDrawId = GID_RUPEE_RED;
+                            break;
+                        case EXITEM_14:
+                            this->giDrawId = GID_RUPEE_PURPLE;
+                            break;
+                    }
+                } else {
+                    if (globalCtx->sceneNum == 16) {
+                        this->giDrawId = GetChestGameRandoGiDrawId(globalCtx->roomCtx.curRoom.num, GID_RUPEE_GREEN, globalCtx);
+                    }
                 }
                 this->actionFunc = EnExItem_ExitChest;
                 break;

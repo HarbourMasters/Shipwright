@@ -223,6 +223,12 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
     if (globalCtx->actorCtx.unk_03 != 0) {
         func_8002EBCC(&this->actor, globalCtx, 0);
         func_8002ED80(&this->actor, globalCtx, 0);
+
+        if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
+            GetItem_Draw(globalCtx, GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx));
+            return;
+        }
+        
         GetItem_Draw(globalCtx, this->giDrawId);
     }
 }
@@ -231,10 +237,12 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
-    if (gSaveContext.n64ddFlag && (type == ITEM_ETC_ARROW_FIRE)) {
-        this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
-    } else if (gSaveContext.n64ddFlag && (type == ITEM_ETC_ARROW_FIRE)) {
-        this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
+    if (gSaveContext.n64ddFlag) {
+        if (type == ITEM_ETC_ARROW_FIRE) {
+            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
+        } else if (type == ITEM_ETC_ARROW_FIRE) {
+            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
+        }
     }
 
     func_8002EBCC(&this->actor, globalCtx, 0);
