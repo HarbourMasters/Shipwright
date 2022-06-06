@@ -2779,22 +2779,24 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
             if (actionParam >= PLAYER_AP_BOOTS_KOKIRI) {
                 u16 bootsValue = actionParam - PLAYER_AP_BOOTS_KOKIRI + 1;
                 if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, 1);
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
                 } else {
                     Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
             if (actionParam >= PLAYER_AP_TUNIC_KOKIRI) {
                 u16 tunicValue = actionParam - PLAYER_AP_TUNIC_KOKIRI + 1;
                 if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, 1);
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
                 } else {
                     Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
