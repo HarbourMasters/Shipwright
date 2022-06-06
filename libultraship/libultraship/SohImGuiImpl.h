@@ -70,7 +70,7 @@ namespace SohImGui {
     void EnhancementButton(const char* text, const char* cvarName);
     void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format);
     void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage);
-    void EnhancementCombobox(const char* name, std::vector<std::string> ComboArray, uint8_t FirstTimeValue);
+    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue);
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow = true, bool has_alpha=false, bool TitleSameLine=false);
 
     void DrawMainMenuAndCalculateGameSize(void);

@@ -99,7 +99,7 @@ namespace SohImGui {
         "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"        
     };
 
-    std::vector<std::string> filters = {
+    const char* filters[3] = {
         "Three-Point",
         "Linear",
         "None"
@@ -438,18 +438,17 @@ namespace SohImGui {
     }
 
 
-    void EnhancementCombobox(const char* name, std::vector<std::string> ComboArray, uint8_t FirstTimeValue = 0) {
+    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
         if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }
         uint8_t selected = CVar_GetS32(name, FirstTimeValue);
         uint8_t DefaultValue = selected;
         std::string comboName = std::string("##") + std::string(name);
-        if (ImGui::BeginCombo(comboName.c_str(), ComboArray[DefaultValue].c_str())) {
-            uint8_t ComboxSize = ComboArray.size();
-            for (uint8_t i = 0; i < ComboxSize; i++) {
-                if (strlen(ComboArray[i].c_str()) > 1) {
-                    if (ImGui::Selectable(ComboArray[i].c_str(), i == selected)) {
+        if (ImGui::BeginCombo(comboName.c_str(), ComboArray[DefaultValue])) {
+            for (uint8_t i = 0; i < arraySize; i++) {
+                if (strlen(ComboArray[i]) > 1) {
+                    if (ImGui::Selectable(ComboArray[i], i == selected)) {
                         CVar_SetS32(name, i);
                         selected = i;
                         needs_save = true;
@@ -831,7 +830,7 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
-                EnhancementCombobox("gTextureFilter", filters);
+                EnhancementCombobox("gTextureFilter", filters, 0, 3);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
                 gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
