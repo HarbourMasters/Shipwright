@@ -124,7 +124,7 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
-#if !defined(__linux__) && !defined(__SWITCH__)
+#ifdef _WIN32
 static HANDLE timer;
 #endif
 
@@ -139,7 +139,7 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#if !defined(__linux__) && !defined(__SWITCH__)
+#ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
@@ -300,7 +300,7 @@ static inline void sync_framerate_with_timer(void) {
     const int64_t next = previous_time + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
     const int64_t left = next - t;
     if (left > 0) {
-#if defined(__linux__) || defined(__SWITCH__)
+#ifndef _WIN32
         const timespec spec = { 0, left * 100 };
         nanosleep(&spec, nullptr);
 #else

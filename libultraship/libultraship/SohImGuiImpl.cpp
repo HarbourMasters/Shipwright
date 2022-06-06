@@ -1213,6 +1213,8 @@ namespace SohImGui {
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
+#elif defined(__SWITCH__)
+            ImGui::Text("Platform: Nintendo Switch");
 #else
             ImGui::Text("Platform: Linux");
 #endif
