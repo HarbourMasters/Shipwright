@@ -11095,10 +11095,17 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         this->actor.focus.rot.y += temp2;
     }
     else {
-        temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f);
-        this->actor.focus.rot.x += temp3;
+        if (CVar_GetS32("gUninvertAim", 0) != 0) {
+            temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+            temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * -1500.0f);
+            this->actor.focus.rot.x += temp3;
+        } else {
+            temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+            temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f);
+            this->actor.focus.rot.x += temp3;
+        }
 
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;

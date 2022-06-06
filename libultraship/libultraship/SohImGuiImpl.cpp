@@ -787,6 +787,7 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("Uninvert Y axis aiming", "gUninvertAim");
 
                 ImGui::EndMenu();
             }
