@@ -65,7 +65,7 @@ namespace SohImGui {
     bool needs_save = false;
     std::vector<const char*> CustomTexts;
     int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
-    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to Gamecube.
+    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to GameCube.
     ImVec4 hearts_colors;
     ImVec4 hearts_dd_colors;
     ImVec4 a_btn_colors;
@@ -942,6 +942,14 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
+                if (ImGui::BeginMenu("Restoration"))
+                {
+                    EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                    Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
+
+                    ImGui::EndMenu();
+                }
+
                 EXPERIMENTAL();
 
                 const char* fps_cvar = "gInterpolationFPS";
@@ -996,8 +1004,8 @@ namespace SohImGui {
                 EnhancementCheckbox("HUD Margins editor", "gUseMargins");
                 EnhancementRadioButton("N64 interface", "gHudColors", 0);
                 Tooltip("Change interface color to N64 style.");
-                EnhancementRadioButton("Gamecube interface", "gHudColors", 1);
-                Tooltip("Change interface color to Gamecube style.");
+                EnhancementRadioButton("GameCube interface", "gHudColors", 1);
+                Tooltip("Change interface color to GameCube style.");
                 EnhancementRadioButton("Custom interface", "gHudColors", 2);
                 Tooltip("Change interface color to your own made style.");
                 if (CVar_GetS32("gHudColors", 1) == 2) {
@@ -1143,13 +1151,13 @@ namespace SohImGui {
                     }
                     if (ImGui::BeginTabItem("Buttons")) {
                         EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(90,90,255,255));
-                        Tooltip("A Buttons colors (Green in original Gamecube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
+                        Tooltip("A Buttons colors (Green in original GameCube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
                         EnhancementColor("B Buttons", "gCCBBtnPrim", b_btn_colors, ImVec4(0,150,0,255));
-                        Tooltip("B Button colors (Red in original Gamecube)\nAffect B button colors on interface");
+                        Tooltip("B Button colors (Red in original GameCube)\nAffect B button colors on interface");
                         EnhancementColor("C Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255,160,0,255));
                         Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
                         EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(120,120,120,255));
-                        Tooltip("Start Button colors (gray in Gamecube)\nAffect Start button colors in inventory");
+                        Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
                         ImGui::EndTabItem();
                     }
                     if (ImGui::BeginTabItem("Magic Bar")) {
