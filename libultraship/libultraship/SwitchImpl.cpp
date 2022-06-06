@@ -4,6 +4,8 @@
 #include <SDL2/SDL.h>
 #include "Lib/ImGui/imgui.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "SwitchPerformanceProfiles.h"
+#include "Cvar.h"
 
 extern "C" s32 CVar_GetS32(const char* name, s32 defaultValue);
 extern "C" void CVar_SetS32(const char* name, s32 value);
@@ -16,6 +18,10 @@ static int WaitFramesToUpdate;
 static HidTouchScreenState TouchState = {0};
 static SwkbdConfig kbd;
 static PadState pad;
+static float internalMultiplier = 1.0f;
+static AppletHookCookie applet_hook_cookie;
+static bool isRunning = true;
+static bool hasFocus  = true;
 
 void InitKeyboard(){
     Result rc = 0;
@@ -59,6 +65,56 @@ void UpdateKeyboard() {
     }
 }
 
+void Ship::Switch::ApplyOverclock(void) {
+    SwitchProfiles perfMode = (SwitchProfiles) CVar_GetS32("gSwitchPerfMode", (int) Ship::STOCK);
+
+    if (perfMode >= 0 && perfMode <= Ship::POWERSAVINGM3) {
+        if (hosversionBefore(8, 0, 0)) {
+            pcvSetClockRate(PcvModule_CpuBus, SWITCH_CPU_SPEEDS_VALUES[ perfMode ]);
+        } else {
+            ClkrstSession session = {0};
+            clkrstOpenSession(&session, PcvModuleId_CpuBus, 3);
+            clkrstSetClockRate(&session, SWITCH_CPU_SPEEDS_VALUES[ perfMode ]);
+            clkrstCloseSession(&session);
+        }
+   }
+}
+
+static void on_applet_hook(AppletHookType hook, void *param) {
+   AppletFocusState focus_state;
+
+   /* Exit request */
+   switch (hook) {
+        case AppletHookType_OnExitRequest:
+            isRunning = false;
+            break;
+
+         /* Focus state*/
+        case AppletHookType_OnFocusState:
+            focus_state = appletGetFocusState();
+            hasFocus = focus_state == AppletFocusState_InFocus;
+
+            if (!hasFocus) {
+                if (hosversionBefore(8, 0, 0)) {
+                    pcvSetClockRate(PcvModule_CpuBus, 1020000000);
+                } else {
+                    ClkrstSession session = {0};
+                    clkrstOpenSession(&session, PcvModuleId_CpuBus, 3);
+                    clkrstSetClockRate(&session, 1020000000);
+                    clkrstCloseSession(&session);
+                }
+            } else
+                Ship::Switch::ApplyOverclock();
+            break;
+
+         /* Performance mode */
+        case AppletHookType_OnPerformanceMode:
+            Ship::Switch::ApplyOverclock();
+            break;
+        default: break;
+   }
+}
+
 void Ship::Switch::Init(){
     appletInitializeGamePlayRecording();
 #ifdef DEBUG
@@ -70,6 +126,8 @@ void Ship::Switch::Init(){
     padInitializeDefault(&pad);
     hidInitializeTouchScreen();
     InitKeyboard();
+    appletHook(&applet_hook_cookie, on_applet_hook, NULL);
+    appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
 }
 
 void PushSDLEvent(Uint32 type, Uint8 button){
@@ -96,8 +154,8 @@ void Ship::Switch::Update(){
         }
 
         for(s32 i = 0; i < TouchState.count; i++) {
-            MouseX = TouchState.touches[0].x;
-            MouseY = TouchState.touches[0].y;
+            MouseX = TouchState.touches[0].x * internalMultiplier;
+            MouseY = TouchState.touches[0].y * internalMultiplier;
         }
 
         if(TouchState.count == 1) {
@@ -117,7 +175,7 @@ void Ship::Switch::Exit(){
 }
 
 bool Ship::Switch::IsRunning(){
-    return appletMainLoop();
+    return isRunning;
 }
 
 void Ship::Switch::GetDisplaySize(uint32_t *width, uint32_t *height) {
@@ -127,8 +185,8 @@ void Ship::Switch::GetDisplaySize(uint32_t *width, uint32_t *height) {
             *height = 1080;
             break;
         case HANDHELD_MODE:
-            *width  = 1280;
-            *height = 720;
+            *width  = 1280 * internalMultiplier;
+            *height = 720  * internalMultiplier;
             break;
     }
 }

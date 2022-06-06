@@ -97,7 +97,7 @@ namespace SohImGui {
         "gCCHeartsPrim","gDDCCHeartsPrim",
         "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
         "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"        
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
     };
 
     const char* filters[3] = {
@@ -285,7 +285,7 @@ namespace SohImGui {
             u8 i = current_hue / 60 + 1;
             u8 a = (-current_hue / 60.0f + i) * 255;
             u8 b = (current_hue / 60.0f + (1 - i)) * 255;
-            
+
             switch (i) {
                 case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
                 case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
@@ -460,7 +460,7 @@ namespace SohImGui {
         std::string make_invisible = "##";
         make_invisible += text;
         make_invisible += cvarName;
-        
+
         int val = CVar_GetS32(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVar_SetS32(cvarName, id);
@@ -908,7 +908,7 @@ namespace SohImGui {
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
                         }
-                        
+
                         ImGui::EndMenu();
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
@@ -980,6 +980,22 @@ namespace SohImGui {
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
+
+            #ifdef __SWITCH__
+                int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
+                ImGui::Text("Switch performance mode");
+                if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
+                    for (int sId = 0; sId <= SwitchProfiles::POWERSAVINGM3; sId++) {
+                        if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
+                            INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                            CVar_SetS32("gSwitchPerfMode", sId);
+                            needs_save = true;
+                        }
+
+                    }
+                    ImGui::EndCombo();
+                }
+            #endif
 
                 ImGui::EndMenu();
             }
