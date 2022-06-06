@@ -218,11 +218,58 @@ void ItemEtcetera_Update(Actor* thisx, GlobalContext* globalCtx) {
     this->actionFunc(this, globalCtx);
 }
 
+s16 GetChestGameRandoGiDrawId(s8 room, s16 ogDrawId, GlobalContext* globalCtx) {
+    if (ogDrawId == GID_RUPEE_GREEN ||
+        ogDrawId == GID_RUPEE_BLUE ||
+        ogDrawId == GID_RUPEE_RED)
+    {
+        switch(room) {
+            case 1:
+                if(!Flags_GetCollectible(globalCtx, 0x1B)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_1, GI_RUPEE_GREEN));
+                }
+                break;
+            case 2:
+                if(!Flags_GetCollectible(globalCtx, 0x1C)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_2, GI_RUPEE_GREEN));
+                }
+                break;
+            case 3:
+                if(!Flags_GetCollectible(globalCtx, 0x1D)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_3, GI_RUPEE_BLUE));
+                }
+                break;
+            case 4:
+                if(!Flags_GetCollectible(globalCtx, 0x1E)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_4, GI_RUPEE_BLUE));
+                }
+                break;
+            case 5:
+                if(!Flags_GetCollectible(globalCtx, 0x1F)) {
+                    return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_ITEM_5, GI_RUPEE_RED));
+                }
+                break;
+        }
+    }
+
+    if(ogDrawId == GID_HEART_PIECE) {
+        return GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_MARKET_TREASURE_CHEST_GAME_REWARD, GI_HEART_PIECE));
+    }
+
+    return ogDrawId;
+}
+
 void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     if (globalCtx->actorCtx.unk_03 != 0) {
         func_8002EBCC(&this->actor, globalCtx, 0);
         func_8002ED80(&this->actor, globalCtx, 0);
+
+        if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
+            GetItem_Draw(globalCtx, GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx));
+            return;
+        }
+        
         GetItem_Draw(globalCtx, this->giDrawId);
     }
 }
@@ -231,10 +278,19 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
-    if (gSaveContext.n64ddFlag && (type == ITEM_ETC_ARROW_FIRE)) {
-        this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
-    } else if (gSaveContext.n64ddFlag && (type == ITEM_ETC_ARROW_FIRE)) {
-        this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
+    if (gSaveContext.n64ddFlag) {
+        if (type == ITEM_ETC_ARROW_FIRE) {
+            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
+        } else if (type == ITEM_ETC_ARROW_FIRE) {
+            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
+        } 
+        // i thought this might replace the model on treasure chest items
+        // when they pop up and spins when you pick the other item, but that
+        // does not seem to be the case...
+        // 
+        // else if (globalCtx->sceneNum == 16) {
+        //     this->giDrawId = GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx);
+        // }
     }
 
     func_8002EBCC(&this->actor, globalCtx, 0);
