@@ -204,6 +204,31 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
     }
 }
 
+void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
+        (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) && player != NULL &&
+        !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetEventChkInf(0xAA);
+    }
+}
+
+void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
+            !Player_InBlockingCsMode(globalCtx, player)) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+            GiveItemWithoutActor(globalCtx, getItemId);
+            Flags_SetEventChkInf(0xAC);
+        }
+    }
+}
+
 void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
@@ -1084,6 +1109,8 @@ skip:
         GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
         GivePlayerRandoRewardSongOfTime(globalCtx, RC_SONG_FROM_OCARINA_OF_TIME);
         GivePlayerRandoRewardZeldaLightArrowsGift(globalCtx, RC_TOT_LIGHT_ARROWS_CUTSCENE);
+        GivePlayerRandoRewardNocturne(globalCtx, RC_SHEIK_IN_KAKARIKO);
+        GivePlayerRandoRewardRequiem(globalCtx, RC_SHEIK_AT_COLOSSUS);
     }
 }
 
