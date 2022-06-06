@@ -22,8 +22,10 @@ std::filesystem::path SaveManager::GetFileName(int fileNum) {
 
 SaveManager::SaveManager() {
     AddLoadFunction("base", 1, LoadBaseVersion1);
-
     AddSaveFunction("base", 1, SaveBase);
+
+    AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
+    AddSaveFunction("randomizer", 1, SaveRandomizer);
 
     AddInitFunction(InitFileImpl);
 
@@ -38,6 +40,14 @@ SaveManager::SaveManager() {
         info.defense = 0;
         info.health = 0;
     }
+}
+
+void SaveManager::LoadRandomizerVersion1() {
+    SaveManager::Instance->LoadData("itemLocations", gSaveContext.itemLocations);
+}
+
+void SaveManager::SaveRandomizer() {
+    SaveManager::Instance->SaveData("itemLocations", gSaveContext.itemLocations);
 }
 
 void SaveManager::Init() {
@@ -231,6 +241,8 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
 void SaveManager::InitFileDebug() {

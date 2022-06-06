@@ -110,6 +110,9 @@ public:
     static void InitFileNormal();
     static void InitFileDebug();
 
+    static void LoadRandomizerVersion1();
+    static void SaveRandomizer();
+
     static void LoadBaseVersion1();
     static void SaveBase();
 

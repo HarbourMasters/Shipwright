@@ -174,8 +174,6 @@ void Sram_OpenSave() {
         }
     }
 
-    memcpy(&gSaveContext.itemLocations, &tempContext.itemLocations, sizeof(tempContext.itemLocations));
-
     gSaveContext.magicLevel = 0;
 }
 
