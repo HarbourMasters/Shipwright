@@ -40,6 +40,7 @@
 // #include <randomizer/spoiler_log.hpp>
 
 OTRGlobals* OTRGlobals::Instance;
+SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
 
@@ -64,6 +65,7 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 // C->C++ Bridge
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
