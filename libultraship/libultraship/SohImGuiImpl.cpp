@@ -830,7 +830,7 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
-                EnhancementCombobox("gTextureFilter", filters, 0, 3);
+                EnhancementCombobox("gTextureFilter", filters, 3, 0);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
                 gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
