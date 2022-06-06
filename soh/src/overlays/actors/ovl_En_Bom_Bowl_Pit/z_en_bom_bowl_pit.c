@@ -193,7 +193,7 @@ void EnBomBowlPit_GivePrize(EnBomBowlPit* this, GlobalContext* globalCtx) {
                     GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
                 break;
             case EXITEM_BOMBCHUS_BOWLING:
-                this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_HEART_PIECE);
+                this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
                 break;
         }
     }
