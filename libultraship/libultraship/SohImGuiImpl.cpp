@@ -936,6 +936,8 @@ namespace SohImGui {
                     Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
+                    EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
+                    Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
 
                     ImGui::EndMenu();
                 }
