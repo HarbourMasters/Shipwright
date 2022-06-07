@@ -6,6 +6,7 @@ typedef struct {
     uint16_t height;
     uint8_t im_fmt;
     uint8_t im_siz;
+    uint8_t id;
 } Sprite;
 
 typedef enum {

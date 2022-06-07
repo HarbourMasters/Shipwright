@@ -40,6 +40,7 @@
 // #include <randomizer/spoiler_log.hpp>
 
 OTRGlobals* OTRGlobals::Instance;
+SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
 
@@ -64,6 +65,7 @@ extern "C" int AudioPlayer_GetDesiredBuffered(void);
 // C->C++ Bridge
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -388,6 +390,10 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else
         return ResourceMgr_LoadTexByName(filePath);
+}
+
+extern "C" Sprite* GetSeedTexture(uint8_t index) {
+    return Randomizer::GetSeedTexture(index);
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
