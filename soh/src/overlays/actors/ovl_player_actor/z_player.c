@@ -12507,7 +12507,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     }
     else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER) {
+            if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
                 globalCtx->nextEntranceIndex = 0x0123;
                 globalCtx->sceneLoadFlag = 0x14;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
