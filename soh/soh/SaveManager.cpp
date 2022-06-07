@@ -851,6 +851,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
+    fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
@@ -858,6 +859,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
         std::filesystem::remove(GetFileName(fileNum));
     }
     fileMetaInfo[fileNum].valid = false;
+    fileMetaInfo[fileNum].randoSave = false;
 }
 
 // Functionality required to convert old saves into versioned saves
