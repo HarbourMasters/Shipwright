@@ -1,8 +1,10 @@
 ﻿#include "OTRGlobals.h"
+#include "OTRAudio.h"
 #include <iostream>
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
+#include "GameSettings.h"
 #include "ResourceMgr.h"
 #include "DisplayList.h"
 #include "PlayerAnimation.h"
@@ -10,10 +12,14 @@
 #include "Window.h"
 #include "z64animation.h"
 #include "z64bgcheck.h"
-#include "../soh/enhancements/gameconsole.h"
+#include "Enhancements/gameconsole.h"
 #include <ultra64/gbi.h>
 #include <Animation.h>
+#ifdef _WIN32
 #include <Windows.h>
+#else
+#include <time.h>
+#endif
 #include <Vertex.h>
 #include <CollisionHeader.h>
 #include <Array.h>
@@ -21,22 +27,22 @@
 #include <Texture.h>
 #include "Lib/stb/stb_image.h"
 #include "AudioPlayer.h"
-#include "../soh/Enhancements/debugconsole.h"
-#include "../soh/Enhancements/debugger/debugger.h"
+#include "Enhancements/debugconsole.h"
+#include "Enhancements/debugger/debugger.h"
+#include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
+#include "macros.h"
+#include <Utils/StringHelper.h>
+
+#include <SDL2/SDL_scancode.h>
 
 OTRGlobals* OTRGlobals::Instance;
 
-static struct {
-    std::condition_variable cv_to_thread, cv_from_thread;
-    std::mutex mutex;
-    bool initialized;
-    bool processing;
-} audio;
-
 OTRGlobals::OTRGlobals() {
+
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
+    gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
 }
 
@@ -57,7 +63,7 @@ extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
-    if (!t->bHasLoadError) 
+    if (!t->bHasLoadError)
     {
         //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
         uint32_t gameVersion = *((uint32_t*)t->buffer.get());
@@ -70,6 +76,7 @@ extern "C" void InitOTR() {
     Debug_Init();
 }
 
+#ifdef _WIN32
 extern "C" uint64_t GetFrequency() {
     LARGE_INTEGER nFreq;
 
@@ -84,16 +91,90 @@ extern "C" uint64_t GetPerfCounter() {
 
     return ticks.QuadPart;
 }
+#else
+extern "C" uint64_t GetFrequency() {
+    return 1000; // sec -> ms
+}
+
+extern "C" uint64_t GetPerfCounter() {
+    struct timespec monotime;
+    clock_gettime(CLOCK_MONOTONIC, &monotime);
+
+    uint64_t remainingMs = (monotime.tv_nsec / 1000000);
+
+    // in milliseconds
+    return monotime.tv_sec * 1000 + remainingMs;
+}
+#endif
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessFrame(void (*run_one_game_iter)(void)) {
     OTRGlobals::Instance->context->GetWindow()->MainLoop(run_one_game_iter);
 }
 
+extern "C" void Graph_StartFrame() {
+    // Why -1?
+    int32_t dwScancode = OTRGlobals::Instance->context->GetWindow()->lastScancode;
+    OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
+
+    switch (dwScancode - 1) {
+        case SDL_SCANCODE_F5: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Saved state to slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+            break;
+        }
+        case SDL_SCANCODE_F6: {
+            unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            slot++;
+            if (slot > 5) {
+                slot = 0;
+            }
+            OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+            SPDLOG_INFO("Set SaveState slot to {}.", slot);
+            break;
+        }
+        case SDL_SCANCODE_F7: {
+            const unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+            const SaveStateReturn stateReturn =
+                OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+
+            switch (stateReturn) {
+                case SaveStateReturn::SUCCESS:
+                    SPDLOG_INFO("[SOH] Loaded state from slot {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_INVALID_SLOT:
+                    SPDLOG_ERROR("[SOH] Invalid State Slot Number {}", slot);
+                    break;
+                case SaveStateReturn::FAIL_STATE_EMPTY:
+                    SPDLOG_ERROR("[SOH] State Slot {} is empty", slot);
+                    break;
+                case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+                    SPDLOG_ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+                    break;
+                [[unlikely]] default:
+                    break;
+            }
+
+            break;
+        }
+    }
+    OTRGlobals::Instance->context->GetWindow()->StartFrame();
+}
+
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
-    OTRGlobals::Instance->context->GetWindow()->SetFrameDivisor(R_UPDATE_RATE);
-
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -104,6 +185,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                         audio.cv_to_thread.wait(Lock);
                     }
                 }
+                std::unique_lock<std::mutex> Lock(audio.mutex);
                 //AudioMgr_ThreadEntry(&gAudioMgr);
                 // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
                 // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
@@ -129,10 +211,7 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                 // printf("Audio samples before submitting: %d\n", audio_api->buffered());
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
-                {
-                    std::unique_lock<std::mutex> Lock(audio.mutex);
-                    audio.processing = false;
-                }
+                audio.processing = false;
                 audio.cv_from_thread.notify_one();
             }
         }).detach();
@@ -144,7 +223,45 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     }
     audio.cv_to_thread.notify_one();
 
-    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands);
+    std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
+    int target_fps = CVar_GetS32("gInterpolationFPS", 20);
+    static int last_fps;
+    static int last_update_rate;
+    static int time;
+    int fps = target_fps;
+    int original_fps = 60 / R_UPDATE_RATE;
+
+    if (target_fps == 20 || original_fps > target_fps) {
+        fps = original_fps;
+    }
+
+    if (last_fps != fps || last_update_rate != R_UPDATE_RATE) {
+        time = 0;
+    }
+
+    // time_base = fps * original_fps (one second)
+    int next_original_frame = fps;
+
+    while (time + original_fps <= next_original_frame) {
+        time += original_fps;
+        if (time != next_original_frame) {
+            mtx_replacements.push_back(FrameInterpolation_Interpolate((float)time / next_original_frame));
+        } else {
+            mtx_replacements.emplace_back();
+        }
+    }
+
+    time -= fps;
+
+    OTRGlobals::Instance->context->GetWindow()->SetTargetFps(fps);
+
+    int threshold = CVar_GetS32("gExtraLatencyThreshold", 80);
+    OTRGlobals::Instance->context->GetWindow()->SetMaximumFrameLatency(threshold > 0 && target_fps >= threshold ? 2 : 1);
+
+    OTRGlobals::Instance->context->GetWindow()->RunCommands(commands, mtx_replacements);
+
+    last_fps = fps;
+    last_update_rate = R_UPDATE_RATE;
 
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
@@ -179,7 +296,7 @@ extern "C" void OTRResetScancode()
     OTRGlobals::Instance->context->GetWindow()->lastScancode = -1;
 }
 
-extern "C" uint32_t ResourceMgr_GetGameVersion() 
+extern "C" uint32_t ResourceMgr_GetGameVersion()
 {
     return OTRGlobals::Instance->context->GetResourceManager()->GetGameVersion();
 }
@@ -283,6 +400,13 @@ extern "C" Gfx* ResourceMgr_LoadGfxByName(const char* path)
     return (Gfx*)&res->instructions[0];
 }
 
+extern "C" Gfx* ResourceMgr_PatchGfxByName(const char* path, int size) {
+    auto res = std::static_pointer_cast<Ship::DisplayList>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    res->instructions.resize(res->instructions.size() + size);
+    return (Gfx*)&res->instructions[0];
+}
+
 extern "C" char* ResourceMgr_LoadArrayByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
@@ -296,7 +420,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
 
     if (res->cachedGameAsset != nullptr)
         return (char*)res->cachedGameAsset;
-    else 
+    else
     {
         Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
 
@@ -416,7 +540,7 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
 	uintptr_t i = (uintptr_t)(imgData);
 
-    if (i == 0xD9000000 || i == 0xE7000000 || (i & 0xF0000000) == 0xF0000000)
+    if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
         return 0;
 
     if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
@@ -810,24 +934,24 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)_byteswap_ulong((u32)swappable->sample);
-    swappable->tuningAsU32 = _byteswap_ulong((u32)swappable->tuningAsU32);
+    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)swappable->sample);
+    swappable->tuningAsU32 = BOMSWAP32((u32)swappable->tuningAsU32);
 }
 
 extern "C" void bswapDrum(Drum* swappable) {
     bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)_byteswap_ulong((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
 }
 
 extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)_byteswap_ulong((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
     bswapSoundFontSound(&swappable->lowNotesSound);
     bswapSoundFontSound(&swappable->normalNotesSound);
     bswapSoundFontSound(&swappable->highNotesSound);
 }
 
 extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
-    u32 origBitfield = _byteswap_ulong(swappable->asU32);
+    u32 origBitfield = BOMSWAP32(swappable->asU32);
 
     swappable->codec = (origBitfield >> 28) & 0x0F;
     swappable->medium = (origBitfield >> 24) & 0x03;
@@ -835,29 +959,29 @@ extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
     swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
     swappable->size = (origBitfield) & 0x00FFFFFF;
 
-    swappable->sampleAddr = (u8*)_byteswap_ulong((u32)swappable->sampleAddr);
-    swappable->loop = (AdpcmLoop*)_byteswap_ulong((u32)swappable->loop);
-    swappable->book = (AdpcmBook*)_byteswap_ulong((u32)swappable->book);
+    swappable->sampleAddr = (u8*)BOMSWAP32((u32)swappable->sampleAddr);
+    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)swappable->loop);
+    swappable->book = (AdpcmBook*)BOMSWAP32((u32)swappable->book);
 }
 
 extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
-    swappable->start = (u32)_byteswap_ulong((u32)swappable->start);
-    swappable->end = (u32)_byteswap_ulong((u32)swappable->end);
-    swappable->count = (u32)_byteswap_ulong((u32)swappable->count);
+    swappable->start = (u32)BOMSWAP32((u32)swappable->start);
+    swappable->end = (u32)BOMSWAP32((u32)swappable->end);
+    swappable->count = (u32)BOMSWAP32((u32)swappable->count);
 
     if (swappable->count != 0) {
         for (int i = 0; i < 16; i++) {
-            swappable->state[i] = (s16)_byteswap_ushort(swappable->state[i]);
+            swappable->state[i] = (s16)BOMSWAP16(swappable->state[i]);
         }
     }
 }
 
 extern "C" void bswapAdpcmBook(AdpcmBook* swappable) {
-    swappable->order = (u32)_byteswap_ulong((u32)swappable->order);
-    swappable->npredictors = (u32)_byteswap_ulong((u32)swappable->npredictors);
+    swappable->order = (u32)BOMSWAP32((u32)swappable->order);
+    swappable->npredictors = (u32)BOMSWAP32((u32)swappable->npredictors);
 
     for (int i = 0; i < swappable->npredictors * swappable->order * sizeof(s16) * 4; i++)
-        swappable->book[i] = (s16)_byteswap_ushort(swappable->book[i]);
+        swappable->book[i] = (s16)BOMSWAP16(swappable->book[i]);
 }
 
 extern "C" bool AudioPlayer_Init(void) {
@@ -884,4 +1008,17 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
     if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
         OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Play(buf, len);
     }
+}
+
+extern "C" int Controller_ShouldRumble(size_t i) {
+    for (const auto& controller : Ship::Window::Controllers.at(i))
+    {
+        float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 1.0f);
+
+        if (controller->CanRumble() && rumble_strength > 0.001f) {
+            return 1;
+        }
+    }
+
+    return 0;
 }

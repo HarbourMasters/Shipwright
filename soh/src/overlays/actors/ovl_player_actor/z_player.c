@@ -898,6 +898,15 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_SWORD_KOKIRI,
     PLAYER_AP_SWORD_MASTER,
     PLAYER_AP_SWORD_BGS,
+    PLAYER_AP_SHIELD_DEKU,
+    PLAYER_AP_SHIELD_HYLIAN,
+    PLAYER_AP_SHIELD_MIRROR,
+    PLAYER_AP_TUNIC_KOKIRI,
+    PLAYER_AP_TUNIC_GORON,
+    PLAYER_AP_TUNIC_ZORA,
+    PLAYER_AP_BOOTS_KOKIRI,
+    PLAYER_AP_BOOTS_IRON,
+    PLAYER_AP_BOOTS_HOVER,
 };
 
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
@@ -910,7 +919,8 @@ static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
     func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
-    func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
+    func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C, func_8083485C,
 };
 
 static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
@@ -923,7 +933,8 @@ static void (*D_80853FE8[])(GlobalContext* globalCtx, Player* this) = {
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
     func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
-    func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
+    func_80833770, func_80833770, func_80833770, func_80833770, func_80833770, func_80833770,
 };
 
 typedef enum {
@@ -2752,7 +2763,8 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
 
         if ((actionParam == PLAYER_AP_NONE) || !(this->stateFlags1 & PLAYER_STATE1_27) ||
             ((this->actor.bgCheckFlags & 1) &&
-                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT)))) {
+                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT))) ||
+            ((actionParam >= PLAYER_AP_SHIELD_DEKU) && (actionParam <= PLAYER_AP_BOOTS_HOVER))) {
 
             if ((globalCtx->bombchuBowlingStatus == 0) &&
                 (((actionParam == PLAYER_AP_STICK) && (AMMO(ITEM_STICK) == 0)) ||
@@ -2761,6 +2773,35 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                         ((temp >= 0) && ((AMMO(sExplosiveInfos[temp].itemId) == 0) ||
                             (globalCtx->actorCtx.actorLists[ACTORCAT_EXPLOSIVE].length >= 3)))))) {
                 func_80078884(NA_SE_SY_ERROR);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_BOOTS_KOKIRI) {
+                u16 bootsValue = actionParam - PLAYER_AP_BOOTS_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_TUNIC_KOKIRI) {
+                u16 tunicValue = actionParam - PLAYER_AP_TUNIC_KOKIRI + 1;
+                if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
+                } else {
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
+                }
+                Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+                return;
+            }
+
+            if (actionParam >= PLAYER_AP_SHIELD_DEKU) {
+                // Changing shields through action commands is unimplemented
                 return;
             }
 
@@ -3668,7 +3709,7 @@ s32 func_8083816C(s32 arg0) {
 }
 
 void func_8083819C(Player* this, GlobalContext* globalCtx) {
-    if (this->currentShield == PLAYER_SHIELD_DEKU) {
+    if (this->currentShield == PLAYER_SHIELD_DEKU && (CVar_GetS32("gFireproofDekuShield", 0) == 0)) {
         Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_SHIELD, this->actor.world.pos.x,
             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
         Inventory_DeleteEquipment(globalCtx, EQUIP_SHIELD);
@@ -4804,7 +4845,7 @@ s32 func_8083ADD4(GlobalContext* globalCtx, Player* this) {
 
 void func_8083AE40(Player* this, s16 objectId) {
     s32 pad;
-    u32 size;
+    size_t size;
 
     if (objectId != OBJECT_INVALID) {
         this->giObjectLoading = true;
@@ -4815,7 +4856,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         LOG_HEX("size", size, "../z_player.c", 9090);
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
-        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (u32)this->giObjectSegment, gObjectTable[objectId].vromStart,
+        DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
             size, 0, &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
     }
 }
@@ -6981,7 +7022,7 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
                 if (sp34 < 4) {
                     if (((sp34 != 0) && (sp34 != 3)) || ((this->rightHandType == PLAYER_MODELTYPE_RH_SHIELD) &&
                         ((sp34 == 3) || Player_GetSwordHeld(this)))) {
-                        if ((sp34 == 0) && Player_HoldsTwoHandedWeapon(this)) {
+                        if ((sp34 == 1) && Player_HoldsTwoHandedWeapon(this) && CVar_GetS32("gTwoHandedIdle", 1) == 1) {
                             sp34 = 4;
                         }
                         sp38 = sp34 + 9;
@@ -10285,6 +10326,14 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             int rectHeight  = 24; //Texture Heigh
             int DefaultIconA= 50; //Default icon alphe (55 on 255)
 
+            if (CVar_GetS32("gHUDMargins", 0) != 0) {
+                rectLeft = OTRGetRectDimensionFromLeftEdge(26+(CVar_GetS32("gHUDMargin_L", 0)*-1));
+                rectTop = 60+(CVar_GetS32("gHUDMargin_T", 0)*-1);
+            } else {
+                rectTop = 60;
+                rectLeft = OTRGetRectDimensionFromLeftEdge(26);
+            }
+
             OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
@@ -10751,7 +10800,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
 
 void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
-    static Vec3f sDogSpawnPos;
+    static Vec3f sDogSpawnPos; 
     Player* this = (Player*)thisx;
     s32 dogParams;
     s32 pad;

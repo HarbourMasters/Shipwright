@@ -20,7 +20,7 @@
 #include "ZRoom/Commands/SetTimeSettings.h"
 #include "ZRoom/Commands/SetWind.h"
 
-void ExporterExample_Room::Save(ZResource* res, fs::path outPath, BinaryWriter* writer)
+void ExporterExample_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
 {
 	ZRoom* room = dynamic_cast<ZRoom*>(res);
 

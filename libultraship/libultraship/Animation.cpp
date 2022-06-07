@@ -21,7 +21,7 @@ void Ship::AnimationV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 
 		uint32_t rotIndCnt = reader->ReadUInt32();
 		anim->rotationIndices.reserve(rotIndCnt);
-		for (int i = 0; i < rotIndCnt; i++)
+		for (size_t i = 0; i < rotIndCnt; i++)
 		{
 			uint16_t x = reader->ReadUInt16();
 			uint16_t y = reader->ReadUInt16();

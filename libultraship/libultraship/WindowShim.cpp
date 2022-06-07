@@ -23,7 +23,9 @@ void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI
 #ifdef ENABLE_OPENGL
     *RenderingApi = &gfx_opengl_api;
     #if defined(__linux__)
-        *WmApi = &gfx_glx;
+        // LINUX_TODO:
+        // *WmApi = &gfx_glx;
+        *WmApi = &gfx_sdl;
     #else
         *WmApi = &gfx_sdl;
     #endif

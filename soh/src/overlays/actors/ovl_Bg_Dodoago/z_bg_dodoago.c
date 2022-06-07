@@ -74,13 +74,13 @@ static ColliderCylinderInit sColCylinderInitLeftRight = {
     { 50, 60, 280, { 0, 0, 0 } },
 };
 
-static s16 sFirstExplosiveFlag = false;
+s16 sBgDodoagoFirstExplosiveFlag = false;
 
-static u8 sDisableBombCatcher;
+u8 sBgDodoagoDisableBombCatcher;
 
-static u8 sUnused[90]; // unknown length
+//static u8 sUnused[90]; // unknown length
 
-static s32 sTimer;
+s32 sBgDodoagoTimer;
 
 void BgDodoago_SetupAction(BgDodoago* this, BgDodoagoActionFunc actionFunc) {
     this->actionFunc = actionFunc;
@@ -135,7 +135,7 @@ void BgDodoago_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->colliderRight, &this->dyna.actor, &sColCylinderInitLeftRight);
 
     BgDodoago_SetupAction(this, BgDodoago_WaitExplosives);
-    sDisableBombCatcher = false;
+    sBgDodoagoDisableBombCatcher = false;
 }
 
 void BgDodoago_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -170,16 +170,16 @@ void BgDodoago_WaitExplosives(BgDodoago* this, GlobalContext* globalCtx) {
         } else {
             OnePointCutscene_Init(globalCtx, 3065, 20, &this->dyna.actor, MAIN_CAM);
             Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
-            sTimer += 30;
+            sBgDodoagoTimer += 30;
             return;
         }
 
         // the flag is never set back to false, so this only runs once
-        if (!sFirstExplosiveFlag) {
+        if (!sBgDodoagoFirstExplosiveFlag) {
             // this disables the bomb catcher (see BgDodoago_Update) for a few seconds
             this->dyna.actor.parent = explosive;
-            sFirstExplosiveFlag = true;
-            sTimer = 50;
+            sBgDodoagoFirstExplosiveFlag = true;
+            sBgDodoagoTimer = 50;
         }
     } else if (Flags_GetEventChkInf(0xB0)) {
         Collider_UpdateCylinder(&this->dyna.actor, &this->colliderMain);
@@ -219,11 +219,11 @@ void BgDodoago_OpenJaw(BgDodoago* this, GlobalContext* globalCtx) {
     }
 
     if (globalCtx->roomCtx.unk_74[BGDODOAGO_EYE_LEFT] != 255 || globalCtx->roomCtx.unk_74[BGDODOAGO_EYE_RIGHT] != 255) {
-        sTimer--;
+        sBgDodoagoTimer--;
         return;
     }
 
-    if (sTimer == 108) {
+    if (sBgDodoagoTimer == 108) {
         for (i = ARRAY_COUNT(dustOffsets) - 1; i >= 0; i--) {
             pos.x = dustOffsets[i].x + this->dyna.actor.world.pos.x;
             pos.y = dustOffsets[i].y + this->dyna.actor.world.pos.y;
@@ -290,16 +290,16 @@ void BgDodoago_Update(Actor* thisx, GlobalContext* globalCtx) {
                 this->dyna.actor.parent = &bomb->actor;
                 bomb->timer = 50;
                 bomb->actor.speedXZ = 0.0f;
-                sTimer = 0;
+                sBgDodoagoTimer = 0;
             }
         }
     } else {
-        sTimer++;
+        sBgDodoagoTimer++;
         Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F);
-        if (!sDisableBombCatcher && sTimer > 140) {
+        if (!sBgDodoagoDisableBombCatcher && sBgDodoagoTimer > 140) {
             if (Flags_GetSwitch(globalCtx, this->dyna.actor.params & 0x3F)) {
                 // this prevents clearing the actor's parent pointer, effectively disabling the bomb catcher
-                sDisableBombCatcher++;
+                sBgDodoagoDisableBombCatcher++;
             } else {
                 this->dyna.actor.parent = NULL;
             }
@@ -322,7 +322,7 @@ void BgDodoago_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgDodoago_Reset(void) {
-    sFirstExplosiveFlag = false;
-    sDisableBombCatcher = 0;
-    sTimer = 0;
+    sBgDodoagoFirstExplosiveFlag = false;
+    sBgDodoagoDisableBombCatcher = 0;
+    sBgDodoagoTimer = 0;
 }

@@ -52,7 +52,7 @@ static MapMarkDataOverlay sMapMarkDataOvl = {
     gMapMarkDataTable,
 };
 
-static MapMarkData** sLoadedMarkDataTable;
+MapMarkData** sLoadedMarkDataTable;
 
 void MapMark_Init(GlobalContext* globalCtx) {
     MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
@@ -108,6 +108,22 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->minimapAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, interfaceCtx->minimapAlpha);
 
+        s16 Top_MC_Margin = 0;
+        s16 Left_MC_Margin = 0;
+        s16 Right_MC_Margin = 0;
+        s16 Bottom_MC_Margin = 0;
+        if (CVar_GetS32("gHUDMargins", 0) != 0) {
+            Top_MC_Margin = CVar_GetS32("gHUDMargin_T", 0);
+            Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0);
+            Right_MC_Margin = CVar_GetS32("gHUDMargin_R", 0);
+            Bottom_MC_Margin = CVar_GetS32("gHUDMargin_B", 0);
+        } else {
+            Top_MC_Margin = 0;
+            Left_MC_Margin = 0;
+            Right_MC_Margin = 0;
+            Bottom_MC_Margin = 0;
+        }
+
         markPoint = &mapMarkIconData->points[0];
         for (i = 0; i < mapMarkIconData->count; i++) {
             if ((mapMarkIconData->markType != MAP_MARK_CHEST) || !Flags_GetTreasure(globalCtx, markPoint->chestFlag)) {
@@ -118,8 +134,8 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                rectLeft = (GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x) + 204) << 2;
-                rectTop = (GREG(95) + markPoint->y + 140) << 2;
+                rectLeft = (GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+Right_MC_Margin) + 204) << 2;
+                rectTop = (GREG(95) + markPoint->y + Bottom_MC_Margin + 140) << 2;
                 gSPTextureRectangle(OVERLAY_DISP++, rectLeft, rectTop, markInfo->rectWidth + rectLeft,
                                     rectTop + markInfo->rectHeight, G_TX_RENDERTILE, 0, 0, markInfo->dsdx,
                                     markInfo->dtdy);

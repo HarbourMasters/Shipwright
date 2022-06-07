@@ -421,8 +421,12 @@ void GameState_Update(GameState* gameState) {
 
         int32_t prevTime = CVar_GetS32("gPrevTime", gSaveContext.dayTime);
         gSaveContext.dayTime = prevTime;
+    } else {
+        CVar_SetS32("gPrevTime", -1);
     }
-        
+   
+    //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
+    gSaveContext.language = CVar_GetS32("gLanguages", 0);
 
     gameState->frames++;
 }

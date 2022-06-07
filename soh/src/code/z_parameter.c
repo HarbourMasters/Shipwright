@@ -15,6 +15,11 @@
 #define DO_ACTION_TEX_HEIGHT 16
 #define DO_ACTION_TEX_SIZE ((DO_ACTION_TEX_WIDTH * DO_ACTION_TEX_HEIGHT) / 2) // (sizeof(gCheckDoActionENGTex))
 
+s16 Top_HUD_Margin = 0;
+s16 Left_HUD_Margin = 0;
+s16 Right_HUD_Margin = 0;
+s16 Bottom_HUD_Margin = 0;
+
 typedef struct {
     /* 0x00 */ u8 scene;
     /* 0x01 */ u8 flags1;
@@ -753,7 +758,15 @@ void func_80083108(GlobalContext* globalCtx) {
                 gSaveContext.buttonStatus[0] = BTN_DISABLED;
 
                 for (i = 1; i < 4; i++) {
-                    if (func_8008F2F8(globalCtx) == 2) {
+                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
+                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
+                        // Equipment on c-buttons is always enabled
+                        if (gSaveContext.buttonStatus[i] == BTN_DISABLED) {
+                            sp28 = 1;
+                        }
+
+                        gSaveContext.buttonStatus[i] = BTN_ENABLED;
+                    } else if (func_8008F2F8(globalCtx) == 2) {
                         if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
                             (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
                             if (gSaveContext.buttonStatus[i] == BTN_ENABLED) {
@@ -1795,7 +1808,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             }
         }
     } else if ((item >= ITEM_WEIRD_EGG) && (item <= ITEM_CLAIM_CHECK)) {
-        if (item == ITEM_SAW) {
+        if ((item == ITEM_SAW) && CVar_GetS32("gDekuNutUpgradeFix", 0) == 0) {
             gSaveContext.itemGetInf[1] |= 0x8000;
         }
 
@@ -2151,13 +2164,15 @@ void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState) {
 
     if (((naviCallState == 0x1D) || (naviCallState == 0x1E)) && !interfaceCtx->naviCalling &&
         (globalCtx->csCtx.state == CS_STATE_IDLE)) {
-        // clang-format off
-        if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
-                                                            &D_801333E0, &D_801333E0, &D_801333E8); }
-        // clang-format on
+        if (!CVar_GetS32("gDisableNaviCallAudio", 0)) {            
+            // clang-format off
+            if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
+                                                                &D_801333E0, &D_801333E0, &D_801333E8); }
+            // clang-format on
 
-        if (naviCallState == 0x1D) {
-            func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+            if (naviCallState == 0x1D) {
+                func_800F4524(&D_801333D4, NA_SE_VO_NA_HELLO_2, 32);
+            }
         }
 
         interfaceCtx->naviCalling = 1;
@@ -2433,6 +2448,25 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
         { 255, 255, 150 },
         { 255, 255, 50 },
     };
+
+    if (CVar_GetS32("gHudColors", 1) == 2) { //This will make custom color based on users selected colors.
+        sMagicBorderColors[0][0] = CVar_GetS32("gCCMagicBorderPrimR", 255);
+        sMagicBorderColors[0][1] = CVar_GetS32("gCCMagicBorderPrimG", 255);
+        sMagicBorderColors[0][2] = CVar_GetS32("gCCMagicBorderPrimB", 255);
+
+        sMagicBorderColors[1][0] = CVar_GetS32("gCCMagicBorderPrimR", 255)/2;
+        sMagicBorderColors[1][1] = CVar_GetS32("gCCMagicBorderPrimG", 255)/2;
+        sMagicBorderColors[1][2] = CVar_GetS32("gCCMagicBorderPrimB", 255)/2;
+
+        sMagicBorderColors[2][0] = CVar_GetS32("gCCMagicBorderPrimR", 255)/3;
+        sMagicBorderColors[2][1] = CVar_GetS32("gCCMagicBorderPrimG", 255)/3;
+        sMagicBorderColors[2][2] = CVar_GetS32("gCCMagicBorderPrimB", 255)/3;
+
+        sMagicBorderColors[3][0] = CVar_GetS32("gCCMagicBorderPrimR", 255)/2;
+        sMagicBorderColors[3][1] = CVar_GetS32("gCCMagicBorderPrimG", 255)/2;
+        sMagicBorderColors[3][2] = CVar_GetS32("gCCMagicBorderPrimB", 255)/2;
+    }
+
     static s16 sMagicBorderIndexes[] = { 0, 1, 1, 0 };
     static s16 sMagicBorderRatio = 2;
     static s16 sMagicBorderStep = 1;
@@ -2623,27 +2657,31 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
 
     if (gSaveContext.magicLevel != 0) {
         if (gSaveContext.healthCapacity > 0xA0) {
-            magicBarY = R_MAGIC_BAR_LARGE_Y;
+            magicBarY = R_MAGIC_BAR_LARGE_Y + (Top_HUD_Margin*-1);
         } else {
-            magicBarY = R_MAGIC_BAR_SMALL_Y;
+            magicBarY = R_MAGIC_BAR_SMALL_Y + (Top_HUD_Margin*-1);
         }
 
         func_80094520(globalCtx->state.gfxCtx);
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, sMagicBorderR, sMagicBorderG, sMagicBorderB, interfaceCtx->magicAlpha);
-        gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
+        if (CVar_GetS32("gHudColors", 1) == 2) {//Original game add color there so to prevent miss match we make it all white :)
+            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+        } else {
+            gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
+        }
 
         OVERLAY_DISP =
-            Gfx_TextureIA8(OVERLAY_DISP, gMagicBarEndTex, 8, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X),
+            Gfx_TextureIA8(OVERLAY_DISP, gMagicBarEndTex, 8, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1)),
                                       magicBarY, 8, 16, 1 << 10, 1 << 10);
 
-        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicBarMidTex, 24, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X) + 8, magicBarY,
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicBarMidTex, 24, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1)) + 8, magicBarY,
                                       gSaveContext.unk_13F4, 16, 1 << 10, 1 << 10);
 
         gDPLoadTextureBlock(OVERLAY_DISP++, gMagicBarEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0,
                             G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        const s16 rMagicBarX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X);
+        const s16 rMagicBarX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1));
 
         gSPWideTextureRectangle(OVERLAY_DISP++, ((rMagicBarX + gSaveContext.unk_13F4) + 8) << 2, magicBarY << 2,
                             ((rMagicBarX + gSaveContext.unk_13F4) + 16) << 2, (magicBarY + 16) << 2, G_TX_RENDERTILE,
@@ -2654,11 +2692,15 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
                           ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
-        const s16 rMagicFillX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_FILL_X);
+        const s16 rMagicFillX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_FILL_X + (Left_HUD_Margin*-1));
 
         if (gSaveContext.unk_13F0 == 4) {
             // Yellow part of the bar indicating the amount of magic to be subtracted
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 250, 250, 0, interfaceCtx->magicAlpha);
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMagicUsePrimR", 250), CVar_GetS32("gCCMagicUsePrimG", 250), CVar_GetS32("gCCMagicUsePrimB", 0), interfaceCtx->magicAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 250, 250, 0, interfaceCtx->magicAlpha);
+            }
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -2670,16 +2712,22 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
 
             // Fill the rest of the bar with the normal magic color
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MAGIC_FILL_COLOR(0), R_MAGIC_FILL_COLOR(1), R_MAGIC_FILL_COLOR(2),
-                            interfaceCtx->magicAlpha);
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMagicPrimR", 0), CVar_GetS32("gCCMagicPrimG", 200), CVar_GetS32("gCCMagicPrimB", 0), interfaceCtx->magicAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MAGIC_FILL_COLOR(0), R_MAGIC_FILL_COLOR(1), R_MAGIC_FILL_COLOR(2), interfaceCtx->magicAlpha);
+            }
 
             gSPWideTextureRectangle(OVERLAY_DISP++, rMagicFillX << 2, (magicBarY + 3) << 2,
                                 (rMagicFillX + gSaveContext.unk_13F8) << 2, (magicBarY + 10) << 2, G_TX_RENDERTILE,
                                 0, 0, 1 << 10, 1 << 10);
         } else {
             // Fill the whole bar with the normal magic color
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MAGIC_FILL_COLOR(0), R_MAGIC_FILL_COLOR(1), R_MAGIC_FILL_COLOR(2),
-                            interfaceCtx->magicAlpha);
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMagicPrimR", 0), CVar_GetS32("gCCMagicPrimG", 200), CVar_GetS32("gCCMagicPrimB", 0), interfaceCtx->magicAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MAGIC_FILL_COLOR(0), R_MAGIC_FILL_COLOR(1), R_MAGIC_FILL_COLOR(2), interfaceCtx->magicAlpha);
+            }
 
             gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -2753,58 +2801,109 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     s16 width;
     s16 height;
 
+    s16 C_Left_BTN_Pos[]  = { C_LEFT_BUTTON_X+Right_HUD_Margin, C_LEFT_BUTTON_Y+(Top_HUD_Margin*-1) }; //(X,Y)
+    s16 C_Right_BTN_Pos[] = { C_RIGHT_BUTTON_X+Right_HUD_Margin, C_RIGHT_BUTTON_Y+(Top_HUD_Margin*-1) };
+    s16 C_Up_BTN_Pos[]    = { C_UP_BUTTON_X+Right_HUD_Margin, C_UP_BUTTON_Y+(Top_HUD_Margin*-1) };
+    s16 C_Down_BTN_Pos[]  = { C_DOWN_BUTTON_X+Right_HUD_Margin, C_DOWN_BUTTON_Y+(Top_HUD_Margin*-1) };
+
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 2900);
 
     // B Button Color & Texture
     // Also loads the Item Button Texture reused by other buttons afterwards
     gDPPipeSync(OVERLAY_DISP++);
     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_B_BTN_COLOR(0), R_B_BTN_COLOR(1), R_B_BTN_COLOR(2), interfaceCtx->bAlpha);
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 150, 0, interfaceCtx->bAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_B_BTN_COLOR(0), R_B_BTN_COLOR(1), R_B_BTN_COLOR(2), interfaceCtx->bAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCBBtnPrimR", R_B_BTN_COLOR(0)), CVar_GetS32("gCCBBtnPrimG", R_B_BTN_COLOR(1)), CVar_GetS32("gCCBBtnPrimB", R_B_BTN_COLOR(2)), interfaceCtx->bAlpha);
+    }
     gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
     OVERLAY_DISP =
-        Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, 32, 32, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(0)), R_ITEM_BTN_Y(0),
+        Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, 32, 32, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(0)+Right_HUD_Margin), R_ITEM_BTN_Y(0)+(Top_HUD_Margin*-1),
                        R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_DD(0) << 1, R_ITEM_BTN_DD(0) << 1);
 
     // C-Left Button Color & Texture
     gDPPipeSync(OVERLAY_DISP++);
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
-                    interfaceCtx->cLeftAlpha);
-    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(1)) << 2, R_ITEM_BTN_Y(1) << 2,
-                        (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(1)) + R_ITEM_BTN_WIDTH(1)) << 2,
-                        (R_ITEM_BTN_Y(1) + R_ITEM_BTN_WIDTH(1)) << 2,
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cLeftAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cLeftAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cLeftAlpha);
+    }
+    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos[0]) << 2, C_Left_BTN_Pos[1] << 2,
+                        (OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(1)) << 2,
+                        (C_Left_BTN_Pos[1] + R_ITEM_BTN_WIDTH(1)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(1) << 1, R_ITEM_BTN_DD(1) << 1);
 
     // C-Down Button Color & Texture
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
-                    interfaceCtx->cDownAlpha);
-    gSPWideTextureRectangle(OVERLAY_DISP++,  OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(2)) << 2, R_ITEM_BTN_Y(2) << 2,
-                        (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(2)) + R_ITEM_BTN_WIDTH(2)) << 2,
-                        (R_ITEM_BTN_Y(2) + R_ITEM_BTN_WIDTH(2)) << 2,
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cDownAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cDownAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cDownAlpha);
+    }
+    gSPWideTextureRectangle(OVERLAY_DISP++,  OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos[0]) << 2, C_Down_BTN_Pos[1] << 2,
+                        (OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(2)) << 2,
+                        (C_Down_BTN_Pos[1] + R_ITEM_BTN_WIDTH(2)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
 
     // C-Right Button Color & Texture
-    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
-                    interfaceCtx->cRightAlpha);
-    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(3)) << 2, R_ITEM_BTN_Y(3) << 2,
-                        (OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(3)) + R_ITEM_BTN_WIDTH(3)) << 2,
-                        (R_ITEM_BTN_Y(3) + R_ITEM_BTN_WIDTH(3)) << 2,
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
+    }
+    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos[0]) << 2, C_Right_BTN_Pos[1] << 2,
+                        (OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(3)) << 2,
+                        (C_Right_BTN_Pos[1] + R_ITEM_BTN_WIDTH(3)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(3) << 1, R_ITEM_BTN_DD(3) << 1);
 
     if ((pauseCtx->state < 8) || (pauseCtx->state >= 18)) {
         if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
             // Start Button Texture, Color & Label
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 120, 120, interfaceCtx->startAlpha);
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]) << 2, 68,
-                                (OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]) + 22) << 2, 156, 
+            if (CVar_GetS32("gHudColors", 1) == 0) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 0, 0, interfaceCtx->startAlpha);
+            } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 120, 120, interfaceCtx->startAlpha);
+            } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCStartBtnPrimR", 120), CVar_GetS32("gCCStartBtnPrimG", 120), CVar_GetS32("gCCStartBtnPrimB", 120), interfaceCtx->startAlpha);
+            }
+            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+Right_HUD_Margin) << 2, 68+((Top_HUD_Margin*-1)*4),
+                                (OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+Right_HUD_Margin) + 22) << 2, 156+((Top_HUD_Margin*-1)*4),
                                 G_TX_RENDERTILE, 0, 0, 1462, 1462);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->startAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-
+            
+            //There is probably a more elegant way to do it.
+            char* doAction = actionsTbl[3];
+            char newName[512];
+            if (gSaveContext.language != LANGUAGE_ENG) {
+                size_t length = strlen(doAction);
+                strcpy(newName, doAction);
+                if (gSaveContext.language == LANGUAGE_FRA) {
+                    newName[length - 6] = 'F';
+                    newName[length - 5] = 'R';
+                    newName[length - 4] = 'A';
+                } else if (gSaveContext.language == LANGUAGE_GER) {
+                    newName[length - 6] = 'G';
+                    newName[length - 5] = 'E';
+                    newName[length - 4] = 'R';
+                }
+                doAction = newName;
+            }
+            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
+            
             gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -2812,11 +2911,11 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             dxdy = (1 << 10) / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
             width = DO_ACTION_TEX_WIDTH / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
             height = DO_ACTION_TEX_HEIGHT / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
-            const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language));
+            const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
             gSPWideTextureRectangle(
                 OVERLAY_DISP++, rStartLabelX << 2,
-                R_START_LABEL_Y(gSaveContext.language) << 2, (rStartLabelX + width) << 2,
-                (R_START_LABEL_Y(gSaveContext.language) + height) << 2, G_TX_RENDERTILE, 0, 0, dxdy, dxdy);
+                R_START_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) << 2, (rStartLabelX + width) << 2,
+                (R_START_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) + height) << 2, G_TX_RENDERTILE, 0, 0, dxdy, dxdy);
         }
     }
 
@@ -2835,12 +2934,18 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 temp = interfaceCtx->healthAlpha;
             }
 
-            const s16 rCUpBtnX  = OTRGetRectDimensionFromRightEdge(R_C_UP_BTN_X);
-            const s16 rCUPIconX = OTRGetRectDimensionFromRightEdge(R_C_UP_ICON_X);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
+            const s16 rCUpBtnX  = OTRGetRectDimensionFromRightEdge(R_C_UP_BTN_X+Right_HUD_Margin);
+            const s16 rCUPIconX = OTRGetRectDimensionFromRightEdge(R_C_UP_ICON_X+Right_HUD_Margin-!!CVar_GetS32("gNaviTextFix", 0));
+            if (CVar_GetS32("gHudColors", 1) == 0) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
+            } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
+            } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), temp);
+            }
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rCUpBtnX << 2, R_C_UP_BTN_Y << 2, (rCUpBtnX + 16) << 2,
-                                (R_C_UP_BTN_Y + 16) << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rCUpBtnX << 2, R_C_UP_BTN_Y+(Top_HUD_Margin*-1) << 2, (rCUpBtnX + 16) << 2,
+                                (R_C_UP_BTN_Y+(Top_HUD_Margin*-1) + 16) << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, temp);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -2851,8 +2956,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rCUPIconX << 2, R_C_UP_ICON_Y << 2, (rCUPIconX + 32) << 2,
-                                (R_C_UP_ICON_Y + 8) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rCUPIconX << 2, R_C_UP_ICON_Y+(Top_HUD_Margin*-1) << 2, (rCUPIconX + 32) << 2,
+                                (R_C_UP_ICON_Y+(Top_HUD_Margin*-1) + 8) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 
         sCUpTimer--;
@@ -2878,8 +2983,13 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                 interfaceCtx->cRightAlpha);
             }
 
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                //This later will feature color per C button right now that it.
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
+            }
+            
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32, 
-                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)), R_ITEM_BTN_Y(temp), R_ITEM_BTN_WIDTH(temp),
+                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)+Right_HUD_Margin), R_ITEM_BTN_Y(temp)+(Top_HUD_Margin*-1), R_ITEM_BTN_WIDTH(temp),
                                           R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
 
             const char* cButtonIcons[] = { gButtonBackgroundTex, gEquippedItemOutlineTex, gEmptyCLeftArrowTex,
@@ -2887,7 +2997,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             };
 
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, cButtonIcons[(temp + 1)], 32, 32,
-                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)), R_ITEM_BTN_Y(temp), R_ITEM_BTN_WIDTH(temp),
+                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)+Right_HUD_Margin), R_ITEM_BTN_Y(temp)+(Top_HUD_Margin*-1), R_ITEM_BTN_WIDTH(temp),
                                           R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
         }
     }
@@ -2901,9 +3011,9 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_ICON_X(button)) << 2, R_ITEM_ICON_Y(button) << 2,
-                        (OTRGetRectDimensionFromRightEdge(R_ITEM_ICON_X(button)) + R_ITEM_ICON_WIDTH(button)) << 2,
-                        (R_ITEM_ICON_Y(button) + R_ITEM_ICON_WIDTH(button)) << 2, G_TX_RENDERTILE, 0, 0,
+    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(R_ITEM_ICON_X(button)+Right_HUD_Margin) << 2, R_ITEM_ICON_Y(button)+(Top_HUD_Margin*-1) << 2,
+                        (OTRGetRectDimensionFromRightEdge(R_ITEM_ICON_X(button)+Right_HUD_Margin) + R_ITEM_ICON_WIDTH(button)) << 2,
+                        (R_ITEM_ICON_Y(button)+(Top_HUD_Margin*-1) + R_ITEM_ICON_WIDTH(button)) << 2, G_TX_RENDERTILE, 0, 0,
                         R_ITEM_ICON_DD(button) << 1, R_ITEM_ICON_DD(button) << 1);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3094);
@@ -2964,11 +3074,11 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
 
         if (i != 0) {
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8, 
-                                          OTRGetRectDimensionFromRightEdge(R_ITEM_AMMO_X(button)), R_ITEM_AMMO_Y(button), 8, 8, 1 << 10, 1 << 10);
+                                          OTRGetRectDimensionFromRightEdge(R_ITEM_AMMO_X(button)+Right_HUD_Margin), R_ITEM_AMMO_Y(button)+(Top_HUD_Margin*-1), 8, 8, 1 << 10, 1 << 10);
         }
 
         OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8,
-                                      OTRGetRectDimensionFromRightEdge(R_ITEM_AMMO_X(button)) + 6, R_ITEM_AMMO_Y(button), 8, 8, 1 << 10, 1 << 10);
+                                      OTRGetRectDimensionFromRightEdge(R_ITEM_AMMO_X(button)+Right_HUD_Margin) + 6, R_ITEM_AMMO_Y(button)+(Top_HUD_Margin*-1), 8, 8, 1 << 10, 1 << 10);
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3158);
@@ -3187,10 +3297,16 @@ void Interface_Draw(GlobalContext* globalCtx) {
               rColor = &rupeeWalletColors[0];
             }
 
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor[0], rColor[1], rColor[2], interfaceCtx->magicAlpha);
-            gDPSetEnvColor(OVERLAY_DISP++, 0, 80, 0, 255);
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26),
-                                          206, 16, 16, 1 << 10, 1 << 10);
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCRupeePrimR", rColor[0]), CVar_GetS32("gCCRupeePrimG", rColor[1]), CVar_GetS32("gCCRupeePrimB", rColor[2]), interfaceCtx->magicAlpha);
+                gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255); //We reset this here so it match user color :)
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor[0], rColor[1], rColor[2], interfaceCtx->magicAlpha);
+                gDPSetEnvColor(OVERLAY_DISP++, 0, 80, 0, 255);
+            }
+
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26+(Left_HUD_Margin*-1)),
+                                          206+(Bottom_HUD_Margin), 16, 16, 1 << 10, 1 << 10);
 
             switch (globalCtx->sceneNum) {
                 case SCENE_BMORI1:
@@ -3210,9 +3326,15 @@ void Interface_Draw(GlobalContext* globalCtx) {
                     if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
                         // Small Key Icon
                         gDPPipeSync(OVERLAY_DISP++);
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 230, 255, interfaceCtx->magicAlpha);
-                        gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255);
-                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26), 190, 16, 16,
+
+                        if (CVar_GetS32("gHudColors", 1) == 2) {
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCKeysPrimR", 200), CVar_GetS32("gCCKeysPrimG", 230), CVar_GetS32("gCCKeysPrimB", 255), interfaceCtx->magicAlpha);
+                            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255); //We reset this here so it match user color :)
+                        } else {
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 230, 255, interfaceCtx->magicAlpha);
+                            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255);
+                        }
+                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26+(Left_HUD_Margin*-1)), 190+(Bottom_HUD_Margin), 16, 16,
                                                       1 << 10, 1 << 10);
 
                         // Small Key Counter
@@ -3229,17 +3351,17 @@ void Interface_Draw(GlobalContext* globalCtx) {
                             interfaceCtx->counterDigits[3] -= 10;
                         }
 
-                        svar3 = OTRGetRectDimensionFromLeftEdge(42);
+                        svar3 = OTRGetRectDimensionFromLeftEdge(42+(Left_HUD_Margin*-1));
 
                         if (interfaceCtx->counterDigits[2] != 0) {
                             OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8,
-                                              16, svar3, 190, 8, 16, 1 << 10, 1 << 10);
+                                              16, svar3, 190+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
                             svar3 += 8;
                         }
 
                         OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP,
                                                     ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
-                                          svar3, 190, 8, 16, 1 << 10, 1 << 10);
+                                          svar3, 190+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
                     }
                     break;
                 default:
@@ -3283,7 +3405,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
             for (svar1 = 0, svar3 = 42; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                 OVERLAY_DISP =
                     Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                        OTRGetRectDimensionFromLeftEdge(svar3), 206, 8, 16, 1 << 10, 1 << 10);
+                        OTRGetRectDimensionFromLeftEdge(svar3+(Left_HUD_Margin*-1)), 206+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
             }
         }
         else {
@@ -3345,8 +3467,8 @@ void Interface_Draw(GlobalContext* globalCtx) {
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             R_B_LABEL_DD = (1 << 10) / (WREG(37 + gSaveContext.language) / 100.0f);
-            const s16 rBLabelX = OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gSaveContext.language));
-            gSPWideTextureRectangle(OVERLAY_DISP++, rBLabelX << 2, R_B_LABEL_Y(gSaveContext.language) << 2,
+            const s16 rBLabelX = OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
+            gSPWideTextureRectangle(OVERLAY_DISP++, rBLabelX << 2, R_B_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) << 2,
                                 (rBLabelX + DO_ACTION_TEX_WIDTH) << 2,
                                 (R_B_LABEL_Y(gSaveContext.language) + DO_ACTION_TEX_HEIGHT) << 2, G_TX_RENDERTILE, 0, 0,
                                 R_B_LABEL_DD, R_B_LABEL_DD);
@@ -3393,24 +3515,29 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         // A Button
         func_80094A14(globalCtx->state.gfxCtx);
-        const f32 rABtnX = OTRGetDimensionFromRightEdge(R_A_BTN_X);
+        const f32 rABtnX = OTRGetDimensionFromRightEdge(R_A_BTN_X+Right_HUD_Margin);
         //func_8008A8B8(globalCtx, R_A_BTN_Y, R_A_BTN_Y + 45, rABtnX, rABtnX + 45);
         gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BOTH);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2),
-                        interfaceCtx->aAlpha);
+        if (CVar_GetS32("gHudColors", 1) == 0) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 90, 90, 255, interfaceCtx->aAlpha);
+        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_A_BTN_COLOR(0), R_A_BTN_COLOR(1), R_A_BTN_COLOR(2), interfaceCtx->aAlpha);
+        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", R_A_BTN_COLOR(0)), CVar_GetS32("gCCABtnPrimG", R_A_BTN_COLOR(1)), CVar_GetS32("gCCABtnPrimB", R_A_BTN_COLOR(2)), interfaceCtx->aAlpha);
+        }
         if (fullUi) {
-            Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y);
+            Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y+(Top_HUD_Margin*-1));
         }
         gDPPipeSync(OVERLAY_DISP++);
-        const f32 rAIconX = OTRGetDimensionFromRightEdge(R_A_ICON_X);
+        const f32 rAIconX = OTRGetDimensionFromRightEdge(R_A_ICON_X+Right_HUD_Margin);
         //func_8008A8B8(globalCtx, R_A_ICON_Y, R_A_ICON_Y + 45, rAIconX, rAIconX + 45);
         gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-        Matrix_Translate(-138.0f + rAIconX, 98.0f - R_A_ICON_Y, WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
+        Matrix_Translate(-138.0f + rAIconX, 98.0f - (R_A_ICON_Y+(Top_HUD_Margin*-1)), WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
         gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_parameter.c", 3701),
@@ -3978,6 +4105,18 @@ void Interface_Update(GlobalContext* globalCtx) {
     s16 alpha1;
     u16 action;
     Input* debugInput = &globalCtx->state.input[2];
+
+    if (CVar_GetS32("gHUDMargins", 0) != 0) {
+        Top_HUD_Margin = CVar_GetS32("gHUDMargin_T", 0);
+        Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
+        Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
+        Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
+    } else {
+        Top_HUD_Margin = 0;
+        Left_HUD_Margin = 0;
+        Right_HUD_Margin = 0;
+        Bottom_HUD_Margin = 0;
+    }
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;

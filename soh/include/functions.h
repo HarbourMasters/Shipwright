@@ -14,7 +14,7 @@ extern "C"
 #if defined(INCLUDE_GAME_PRINTF) && !defined(NDEBUG)
 #define osSyncPrintf(fmt, ...) lusprintf(__FILE__, __LINE__, 0, fmt, __VA_ARGS__)
 #else
-#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, __VA_ARGS__)
+#define osSyncPrintf(fmt, ...) osSyncPrintfUnused(fmt, ##__VA_ARGS__)
 #endif
 
 f32 fabsf(f32 f);
@@ -29,6 +29,7 @@ void gDPSetTextureImage(Gfx* pkt, u32 f, u32 s, u32 w, uintptr_t i);
 void gSPDisplayList(Gfx* pkt, Gfx* dl);
 void gSPDisplayListOffset(Gfx* pkt, Gfx* dl, int offset);
 void gSPVertex(Gfx* pkt, uintptr_t v, int n, int v0);
+void gSPInvalidateTexCache(Gfx* pkt, uintptr_t texAddr);
 
 void cleararena(void);
 void bootproc(void);
@@ -381,7 +382,7 @@ void Flags_UnsetTempClear(GlobalContext* globalCtx, s32 flag);
 s32 Flags_GetCollectible(GlobalContext* globalCtx, s32 flag);
 void Flags_SetCollectible(GlobalContext* globalCtx, s32 flag);
 void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s16 x, s16 y, u8 width,
-                            u8 height);
+                            u8 height, s16 hastranslation);
 void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay);
 s32 func_8002D53C(GlobalContext* globalCtx, TitleCardContext* titleCtx);
@@ -656,10 +657,12 @@ Vec3s* SurfaceType_GetCamPosData(CollisionContext* colCtx, CollisionPoly* poly, 
 u32 SurfaceType_GetSceneExitIndex(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041D4C(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041D70(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+u32 func_80041D94(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041DB8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041DE4(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041E18(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 s32 func_80041E4C(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
+s32 func_80041E80(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041EA4(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 func_80041EC8(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
 u32 SurfaceType_IsHorseBlocked(CollisionContext* colCtx, CollisionPoly* poly, s32 bgId);
@@ -2402,7 +2405,9 @@ void Heaps_Alloc(void);
 void Heaps_Free(void);
 
 #ifdef __cplusplus
+#undef this
 };
+#undef this
 #endif
 
 #endif

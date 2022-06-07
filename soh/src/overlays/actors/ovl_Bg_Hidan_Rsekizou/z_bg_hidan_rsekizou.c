@@ -240,7 +240,8 @@ void BgHidanRsekizou_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
 
-    if ((s16)((Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) - this->dyna.actor.shape.rot.y) - 0x2E6C) >= 0) {
+    // Strange original code. Add || 1 for frame interpolation to get correct.
+    if ((s16)((Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) - this->dyna.actor.shape.rot.y) - 0x2E6C) >= 0 || 1) {
         for (i = 3; i >= 0; i--) {
             POLY_XLU_DISP = BgHidanRsekizou_DrawFireball(globalCtx, this, i, &mf, 0, POLY_XLU_DISP);
         }

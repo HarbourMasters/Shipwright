@@ -128,7 +128,16 @@ typedef enum {
     /* 0x40 */ PLAYER_AP_MASK_GERUDO,
     /* 0x41 */ PLAYER_AP_MASK_TRUTH,
     /* 0x42 */ PLAYER_AP_LENS,
-    /* 0x43 */ PLAYER_AP_MAX
+    /* 0x43 */ PLAYER_AP_SHIELD_DEKU,
+    /* 0x44 */ PLAYER_AP_SHIELD_HYLIAN,
+    /* 0x45 */ PLAYER_AP_SHIELD_MIRROR,
+    /* 0x46 */ PLAYER_AP_TUNIC_KOKIRI,
+    /* 0x47 */ PLAYER_AP_TUNIC_GORON,
+    /* 0x48 */ PLAYER_AP_TUNIC_ZORA,
+    /* 0x49 */ PLAYER_AP_BOOTS_KOKIRI,
+    /* 0x4A */ PLAYER_AP_BOOTS_IRON,
+    /* 0x4B */ PLAYER_AP_BOOTS_HOVER,
+    /* 0x4C */ PLAYER_AP_MAX
 } PlayerActionParam;
 
 typedef enum {

@@ -1,12 +1,22 @@
+#ifdef _MSC_VER
+#define NOGDI
+#endif
+
 #include "debugconsole.h"
 #include "../libultraship/SohImGuiImpl.h"
+#include "savestates.h"
+
 #include <vector>
 #include <string>
+#include "soh/OTRGlobals.h"
+
 
 #define Path _Path
 #define PATH_HACK
 #include <Utils/StringHelper.h>
 #include <Utils/File.h>
+
+#include "Lib/ImGui/imgui_internal.h"
 #undef PATH_HACK
 #undef Path
 
@@ -18,7 +28,7 @@ extern "C" {
 extern GlobalContext* gGlobalCtx;
 }
 
-#include "cvar.h"
+#include "Cvar.h"
 
 #define CMD_REGISTER SohImGui::BindCmd
 
@@ -122,7 +132,7 @@ static bool RuppeHandler(const std::vector<std::string>& args) {
     try {
         rupeeAmount = std::stoi(args[1]);
     }
-    catch (std::invalid_argument const& ex) { 
+    catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Rupee count must be an integer.");
         return CMD_FAILED;
     }
@@ -168,13 +178,13 @@ static bool ResetHandler(std::vector<std::string> args) {
         ERROR("GlobalCtx == nullptr");
         return CMD_FAILED;
     }
-    
+
     SET_NEXT_GAMESTATE(&gGlobalCtx->state, TitleSetup_Init, GameState);
     gGlobalCtx->state.running = false;
     return CMD_SUCCESS;
 }
 
-const static std::map<std::string, uint16_t> ammoItems{ 
+const static std::map<std::string, uint16_t> ammoItems{
     { "sticks", ITEM_STICK }, { "deku_sticks", ITEM_STICK },
     { "nuts", ITEM_NUT },     { "deku_nuts", ITEM_NUT },
     { "bombs", ITEM_BOMB },      { "arrows", ITEM_BOW },
@@ -194,7 +204,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     try {
         count = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("Ammo count must be an integer");
         return CMD_FAILED;
     }
@@ -203,7 +213,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
         ERROR("Ammo count must be positive");
         return CMD_FAILED;
     }
-    
+
     const auto& it = ammoItems.find(args[1]);
 
     if (it == ammoItems.end()) {
@@ -213,7 +223,7 @@ static bool AmmoHandler(const std::vector<std::string>& args) {
 
     // I dont think you can do OOB with just this
     AMMO(it->second) = count;
-    
+
     //To use a change by uncomment this
     //Inventory_ChangeAmmo(it->second, count);
 }
@@ -236,7 +246,7 @@ static bool BottleHandler(const std::vector<std::string>& args) {
     unsigned int slot;
     try {
         slot = std::stoi(args[2]);
-    } catch (std::invalid_argument const& ex) { 
+    } catch (std::invalid_argument const& ex) {
         ERROR("[SOH] Bottle slot must be an integer.");
         return CMD_FAILED;
     }
@@ -275,7 +285,7 @@ static bool ItemHandler(const std::vector<std::string>& args) {
         return CMD_FAILED;
     }
 
-    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]); 
+    gSaveContext.inventory.items[std::stoi(args[1])] = std::stoi(args[2]);
 
     return CMD_SUCCESS;
 }
@@ -299,6 +309,66 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     gGlobalCtx->sceneLoadFlag = 0x14;
     gGlobalCtx->fadeTransition = 11;
     gSaveContext.nextTransition = 11;
+}
+
+static bool SaveStateHandler(const std::vector<std::string>& args) {
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
+
+    switch (rtn) { 
+        case SaveStateReturn::SUCCESS:
+            INFO("[SOH] Saved state to slot %u", slot);
+            return CMD_SUCCESS;
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not save a state outside of \"GamePlay\"");
+            return CMD_FAILED;
+
+    }
+}
+
+static bool LoadStateHandler(const std::vector<std::string>& args) {
+    unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
+    const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
+    
+    switch (rtn) {
+        case SaveStateReturn::SUCCESS:
+            INFO("[SOH] Loaded state from slot %u", slot);
+            return CMD_SUCCESS;
+        case SaveStateReturn::FAIL_INVALID_SLOT:
+            ERROR("[SOH] Invalid State Slot Number (%u)", slot);
+            return CMD_FAILED;
+        case SaveStateReturn::FAIL_STATE_EMPTY:
+            ERROR("[SOH] State Slot (%u) is empty", slot);
+            return CMD_FAILED;
+        case SaveStateReturn::FAIL_WRONG_GAMESTATE:
+            ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
+            return CMD_FAILED;            
+    }
+
+}
+
+static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
+    if (args.size() != 2) {
+        ERROR("[SOH] Unexpected arguments passed");
+        return CMD_FAILED;
+    }
+    int slot;
+
+    try {
+        slot = std::stoi(args[1], nullptr, 10);
+    } catch (std::invalid_argument const& ex) {
+        ERROR("[SOH] SaveState slot value must be a number.");
+        return CMD_FAILED;
+    }
+    
+    if (slot < 0) {
+        ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
+        return CMD_FAILED;
+    }
+
+    OTRGlobals::Instance->gSaveStateMgr->SetCurrentSlot(slot);
+    INFO("[SOH] Slot %u selected", OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot());
+    return CMD_SUCCESS;
 }
 
 #define VARTYPE_INTEGER 0
@@ -327,9 +397,6 @@ static int CheckVarType(const std::string& input)
     return result;
 }
 
-void DebugConsole_LoadCVars();
-void DebugConsole_SaveCVars();
-
 static bool SetCVarHandler(const std::vector<std::string>& args) {
     if (args.size() < 3)
         return CMD_FAILED;
@@ -337,11 +404,11 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
     int vType = CheckVarType(args[2]);
 
     if (vType == VARTYPE_STRING)
-        CVar_SetString((char*)args[1].c_str(), (char*)args[2].c_str());
+        CVar_SetString(args[1].c_str(), args[2].c_str());
     else if (vType == VARTYPE_FLOAT)
-        CVar_SetFloat((char*)args[1].c_str(), std::stof(args[2]));
+        CVar_SetFloat(args[1].c_str(), std::stof(args[2]));
     else
-        CVar_SetS32((char*)args[1].c_str(), std::stoi(args[2]));
+        CVar_SetS32(args[1].c_str(), std::stoi(args[2]));
 
     DebugConsole_SaveCVars();
 
@@ -354,7 +421,7 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
     if (args.size() < 2)
         return CMD_FAILED;
 
-    CVar* cvar = CVar_GetVar((char*) args[1].c_str());
+    CVar* cvar = CVar_Get(args[1].c_str());
 
     if (cvar != nullptr)
     {
@@ -418,7 +485,17 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("entrance",
                  { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
 
+    CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
+    CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
+    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
+        { "Slot number", ArgumentType::NUMBER, }
+        } });
     DebugConsole_LoadCVars();
+}
+
+template <typename Numeric> bool is_number(const std::string& s) {
+    Numeric n;
+    return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
 void DebugConsole_LoadCVars()
@@ -427,7 +504,20 @@ void DebugConsole_LoadCVars()
         const auto lines = File::ReadAllLines("cvars.cfg");
 
         for (const std::string& line : lines) {
-            SohImGui::console->Dispatch(line);
+            std::vector<std::string> cfg = StringHelper::Split(line, " = ");
+            if (line.empty()) continue;
+            if (cfg.size() < 2) continue;
+            if (cfg[1].find("\"") != std::string::npos) {
+                std::string value(cfg[1]);
+                value.erase(std::ranges::remove(value, '\"').begin(), value.end());
+                CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
+            }
+            if (is_number<float>(cfg[1])) {
+                CVar_SetFloat(cfg[0].c_str(), std::stof(cfg[1]));
+            }
+            if (is_number<int>(cfg[1])) {
+                CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
+            }
         }
     }
 }
@@ -438,11 +528,11 @@ void DebugConsole_SaveCVars()
 
     for (const auto &cvar : cvars) {
         if (cvar.second->type == CVAR_TYPE_STRING)
-            output += StringHelper::Sprintf("set %s %s\n", cvar.first.c_str(), cvar.second->value.valueStr);
+            output += StringHelper::Sprintf("%s = \"%s\"\n", cvar.first.c_str(), cvar.second->value.valueStr);
         else if (cvar.second->type == CVAR_TYPE_S32)
-            output += StringHelper::Sprintf("set %s %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
+            output += StringHelper::Sprintf("%s = %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            output += StringHelper::Sprintf("set %s %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
+            output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
     }
 
     File::WriteAllText("cvars.cfg", output);

@@ -1,6 +1,6 @@
 #include "CollisionExporter.h"
 
-void ExporterExample_Collision::Save(ZResource* res, [[maybe_unused]] fs::path outPath,
+void ExporterExample_Collision::Save(ZResource* res, [[maybe_unused]] const fs::path& outPath,
                                      BinaryWriter* writer)
 {
 	ZCollisionHeader* col = (ZCollisionHeader*)res;
