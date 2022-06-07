@@ -2454,16 +2454,6 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-    void DrawRandoEditor(bool& open) {
-        if (generated) {
-            generated = 0;
-            randoThread.join();
-        }
-
-        if (!open) {
-            return;
-        }
-
         ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
