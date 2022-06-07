@@ -48,6 +48,9 @@ Other shortcuts:
 | Keys | Action |
 | - | - |
 | F1 | Toggle menubar |
+| F5 | Save state |
+| F6 | Change state |
+| F7 | Load state |
 | F10 | Fullscreen (OpenGL) |
 | Alt+Enter | Fullscreen (DirectX) |
 
