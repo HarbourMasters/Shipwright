@@ -2236,12 +2236,6 @@ void DrawRandoEditor(bool& open) {
         return;
     }
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Rando Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
-        ImGui::End();
-        return;
-    }
-
 // Randomizer settings
     // Open Settings
     const char* randoForest[3] = { "Open", "Closed Deku", "Closed" };
