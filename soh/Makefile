@@ -18,8 +18,8 @@ WARN := \
 	-funsigned-char \
 	-m32 -mhard-float -fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib -march=i386
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib -march=i386
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib -march=i386 -msse2 -mfpmath=sse
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib -march=i386 -msse2 -mfpmath=sse
 LDFLAGS := -m32
 CPPFLAGS := -MMD
 
