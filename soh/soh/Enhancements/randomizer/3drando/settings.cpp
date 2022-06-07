@@ -2461,8 +2461,17 @@ namespace Settings {
   //Function to set flags depending on settings
   void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
 
-    // from OpenForest definition: {"Closed", "Open", "Closed Deku"}
-    OpenForest.SetSelectedIndex(cvarSettings[RSK_OPEN_FOREST]);
+    OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
+    OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
+    GerudoFortress.SetSelectedIndex(cvarSettings[RSK_GERUDO_FORTRESS]);
+    Bridge.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE]);
+    BridgeStoneCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT]);
+    BridgeMedallionCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT]);
+    BridgeRewardCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT]);
+    BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
+    BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
+    RandomGanonsTrials.SetSelectedIndex(cvarSettings[RSK_RANDOM_TRIALS]);
+    GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
 
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
