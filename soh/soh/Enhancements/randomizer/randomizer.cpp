@@ -1179,46 +1179,98 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
+
         case RG_KOKIRI_SWORD:
             return GI_SWORD_KOKIRI;
+        case RG_GIANTS_KNIFE:
+            return GI_SWORD_KNIFE;
+        case RG_BIGGORON_SWORD:
+            return GI_SWORD_BGS;
+
         case RG_DEKU_SHIELD:
             return GI_SHIELD_DEKU;
-        case RG_BOMBCHU_20:
-            return GI_BOMBCHUS_20;
-        case RG_ICE_TRAP:
-            return GI_ICE_TRAP;
-        case RG_PIECE_OF_HEART:
-            return GI_HEART_PIECE;
-        case RG_BOMBS_5:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
-        case RG_BOMBS_10:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
-        case RG_BOMBS_20:
-            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
-        case RG_DEKU_NUTS_5:
-            return GI_NUTS_5;
-        case RG_BOMBCHU_10:
-            return GI_BOMBCHUS_10;
-        case RG_PROGRESSIVE_BOW:
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                case 0:
-                    return GI_BOW;
-                case 1:
-                    return GI_QUIVER_40;
-                case 2:
-                    return GI_QUIVER_50;
-            }
-        case RG_PROGRESSIVE_SLINGSHOT:
-            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
-                case 0:
-                    return GI_SLINGSHOT;
-                case 1:
-                    return GI_BULLET_BAG_40;
-                case 2:
-                    return GI_BULLET_BAG_50;
-            }
+        case RG_HYLIAN_SHIELD:
+            return GI_SHIELD_HYLIAN;
+        case RG_MIRROR_SHIELD:
+            return GI_SHIELD_MIRROR;
+
+        case RG_GORON_TUNIC:
+            return GI_TUNIC_GORON;
+        case RG_ZORA_TUNIC:
+            return GI_TUNIC_ZORA;
+
+        case RG_IRON_BOOTS:
+            return GI_BOOTS_IRON;
+        case RG_HOVER_BOOTS:
+            return GI_BOOTS_HOVER;
+
         case RG_BOOMERANG:
             return GI_BOOMERANG;
+
+        case RG_LENS_OF_TRUTH:
+            return GI_LENS;
+
+        case RG_MEGATON_HAMMER:
+            return GI_HAMMER;
+
+        case RG_SHARD_OF_AGONY:
+            return GI_STONE_OF_AGONY;
+
+        case RG_DINS_FIRE:
+            return GI_DINS_FIRE;
+        case RG_FARORES_WIND:
+            return GI_FARORES_WIND;
+        case RG_NAYRUS_LOVE:
+            return GI_NAYRUS_LOVE;
+
+        case RG_FIRE_ARROWS:
+            return GI_ARROW_FIRE;
+        case RG_ICE_ARROWS:
+            return GI_ARROW_ICE;
+        case RG_LIGHT_ARROWS:
+            return GI_ARROW_LIGHT;
+
+        case RG_GERUDO_TOKEN:
+            return GI_GERUDO_CARD;
+
+        case RG_MAGIC_BEAN:
+            return GI_BEAN;
+        case RG_MAGIC_BEAN_PACK:
+            return GI_BEAN; //todo make it 10 of them
+
+        case RG_DOUBLE_DEFENSE:
+            return GI_NONE; //todo figure out GI for this        
+
+        case RG_WEIRD_EGG:
+            return GI_WEIRD_EGG;
+
+        case RG_ZELDAS_LETTER:
+            return GI_LETTER_ZELDA;
+
+        case RG_POCKET_EGG:
+            return GI_POCKET_EGG;
+        case RG_COJIRO:
+            return GI_COJIRO;
+        case RG_ODD_MUSHROOM:
+            return GI_ODD_MUSHROOM;
+        case RG_ODD_POULTICE:
+            return GI_ODD_POTION;
+        case RG_POACHERS_SAW:
+            return GI_SAW;
+        case RG_BROKEN_SWORD:
+            return GI_SWORD_BROKEN;
+        case RG_PRESCRIPTION:
+            return GI_PRESCRIPTION;
+        case RG_EYEBALL_FROG:
+            return GI_FROG;
+        case RG_EYEDROPS:
+            return GI_EYEDROPS;
+        case RG_CLAIM_CHECK:
+            return GI_CLAIM_CHECK;
+        
+        case RG_GOLD_SKULLTULA_TOKEN:
+            return GI_SKULL_TOKEN;
+
         case RG_PROGRESSIVE_HOOKSHOT:
             switch (gSaveContext.inventory.items[SLOT_HOOKSHOT]) {
                 case ITEM_NONE:
@@ -1226,37 +1278,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
                 case ITEM_HOOKSHOT:
                     return GI_LONGSHOT;
             }
-        case RG_LENS_OF_TRUTH:
-            return GI_LENS;
-        case RG_ZELDAS_LETTER:
-            return GI_LETTER_ZELDA;
-        case RG_MEGATON_HAMMER:
-            return GI_HAMMER;
-        case RG_PRESCRIPTION:
-            return GI_PRESCRIPTION;
-        case RG_HYLIAN_SHIELD:
-            return GI_SHIELD_HYLIAN;
-        case RG_MIRROR_SHIELD:
-            return GI_SHIELD_MIRROR;
-        case RG_GORON_TUNIC:
-            return GI_TUNIC_GORON;
-        case RG_ZORA_TUNIC:
-            return GI_TUNIC_ZORA;
-        case RG_IRON_BOOTS:
-            return GI_BOOTS_IRON;
-        case RG_HOVER_BOOTS:
-            return GI_BOOTS_HOVER;
-        case RG_PROGRESSIVE_BOMB_BAG:
-            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case ITEM_NONE:
-                    return GI_BOMB_BAG_20;
-                case ITEM_BOMB_BAG_20:
-                    return GI_BOMB_BAG_30;
-                case ITEM_BOMB_BAG_30:
-                    return GI_BOMB_BAG_40;
-                case 3:
-                    return GI_RUPEE_BLUE;
-            }
+            return GI_RUPEE_BLUE;
+
         case RG_PROGRESSIVE_STRENGTH:
             switch (CUR_UPG_VALUE(UPG_STRENGTH)) {
                 case 0:
@@ -1266,6 +1289,50 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
                 case 2:
                     return GI_GAUNTLETS_GOLD;
             }
+            return GI_RUPEE_BLUE;
+        
+        case RG_PROGRESSIVE_BOMB_BAG:
+            switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+                case 0:
+                    return GI_BOMB_BAG_20;
+                case 1:
+                    return GI_BOMB_BAG_30;
+                case 2:
+                    return GI_BOMB_BAG_40;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_BOW:
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                case 0:
+                    return GI_BOW;
+                case 1:
+                    return GI_QUIVER_40;
+                case 2:
+                    return GI_QUIVER_50;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_SLINGSHOT:
+            switch (CUR_UPG_VALUE(UPG_BULLET_BAG)) {
+                case 0:
+                    return GI_SLINGSHOT;
+                case 1:
+                    return GI_BULLET_BAG_40;
+                case 2:
+                    return GI_BULLET_BAG_50;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_WALLET:
+            switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                case 0:
+                    return GI_WALLET_ADULT;
+                case 1:
+                    return GI_WALLET_GIANT;
+            }
+            return GI_RUPEE_BLUE;
+
         case RG_PROGRESSIVE_SCALE:
             switch (CUR_UPG_VALUE(UPG_SCALE)) {
                 case 0:
@@ -1273,31 +1340,101 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
                 case 1:
                     return GI_SCALE_GOLD;
             }
-        case RG_SHARD_OF_AGONY:
-            return GI_STONE_OF_AGONY;
-        case RG_GERUDO_TOKEN:
-            return GI_GERUDO_CARD;
-        case RG_HEART_CONTAINER:
-            // todo figure out what GI_HEART_CONTAINER_2 is
-            return GI_HEART_CONTAINER;
-        // todo implement dungeon-specific keys/keyrings
-        case RG_FIRE_TEMPLE_BOSS_KEY:
-        case RG_FOREST_TEMPLE_BOSS_KEY:
-        case RG_GANONS_CASTLE_BOSS_KEY:
-        case RG_SHADOW_TEMPLE_BOSS_KEY:
-        case RG_SPIRIT_TEMPLE_BOSS_KEY:
-        case RG_WATER_TEMPLE_BOSS_KEY:
-            return GI_KEY_BOSS;
-        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
-        case RG_FIRE_TEMPLE_SMALL_KEY:
-        case RG_FOREST_TEMPLE_SMALL_KEY:
-        case RG_GANONS_CASTLE_SMALL_KEY:
-        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
-        case RG_SHADOW_TEMPLE_SMALL_KEY:
-        case RG_SPIRIT_TEMPLE_SMALL_KEY:
-        case RG_GERUDO_FORTRESS_SMALL_KEY:
-        case RG_WATER_TEMPLE_SMALL_KEY:
-            return GI_KEY_SMALL;
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_NUT_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_NUTS)) {
+                case 0:
+                    return GI_NUT_UPGRADE_30;
+                case 1:
+                    return GI_NUT_UPGRADE_40;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_STICK_UPGRADE:
+            switch (CUR_UPG_VALUE(UPG_STICKS)) {
+                case 0:
+                    return GI_STICK_UPGRADE_20;
+                case 1:
+                    return GI_STICK_UPGRADE_30;
+            }
+            return GI_RUPEE_BLUE;
+        
+        case RG_PROGRESSIVE_BOMBCHUS:
+            return GI_BOMBCHUS_20; //todo progressive?
+        
+        case RG_PROGRESSIVE_MAGIC_METER:
+            switch (gSaveContext.magicLevel) {
+                case 0:
+                    return GI_MAGIC_SMALL;
+                case 1:
+                    return GI_MAGIC_LARGE;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_OCARINA:
+            switch (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_NONE) {
+                case 1:
+                    return GI_OCARINA_FAIRY;
+                case 0:
+                    return GI_OCARINA_OOT;
+            }
+            return GI_RUPEE_BLUE;
+
+        case RG_PROGRESSIVE_GORONSWORD:
+            return GI_SWORD_BGS; //todo progressive?
+
+        case RG_EMPTY_BOTTLE:
+            return GI_BOTTLE;
+        case RG_BOTTLE_WITH_MILK:
+            return GI_MILK_BOTTLE;
+        case RG_BOTTLE_WITH_RED_POTION:
+            return GI_POTION_RED;
+        case RG_BOTTLE_WITH_GREEN_POTION:
+            return GI_POTION_GREEN;
+        case RG_BOTTLE_WITH_BLUE_POTION:
+            return GI_POTION_BLUE;
+        case RG_BOTTLE_WITH_FAIRY:
+            return GI_FAIRY;
+        case RG_BOTTLE_WITH_FISH:
+            return GI_FISH;
+        case RG_BOTTLE_WITH_BLUE_FIRE:
+            return GI_BLUE_FIRE;
+        case RG_BOTTLE_WITH_BUGS:
+            return GI_BUGS;
+        case RG_BOTTLE_WITH_POE:
+            return GI_POE;
+        case RG_RUTOS_LETTER:
+            return GI_LETTER_RUTO;
+        case RG_BOTTLE_WITH_BIG_POE:
+            return GI_BIG_POE;
+
+        case RG_ZELDAS_LULLABY:
+            return GI_ZELDAS_LULLABY;
+        case RG_EPONAS_SONG:
+            return GI_EPONAS_SONG;
+        case RG_SARIAS_SONG:
+            return GI_SARIAS_SONG;
+        case RG_SUNS_SONG:
+            return GI_SUNS_SONG;
+        case RG_SONG_OF_TIME:
+            return GI_SONG_OF_TIME;
+        case RG_SONG_OF_STORMS:
+            return GI_SONG_OF_STORMS;
+
+        case RG_MINUET_OF_FOREST:
+            return GI_MINUET_OF_FOREST;
+        case RG_BOLERO_OF_FIRE:
+            return GI_BOLERO_OF_FIRE;
+        case RG_SERENADE_OF_WATER:
+            return GI_SERENADE_OF_WATER;
+        case RG_REQUIEM_OF_SPIRIT:
+            return GI_REQUIEM_OF_SPIRIT;
+        case RG_NOCTURNE_OF_SHADOW:
+            return GI_NOCTURNE_OF_SHADOW;
+        case RG_PRELUDE_OF_LIGHT:
+            return GI_PRELUDE_OF_LIGHT;
+
         // todo implement dungeon-specific maps/compasses
         case RG_DEKU_TREE_MAP:
         case RG_DODONGOS_CAVERN_MAP:
@@ -1310,6 +1447,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_BOTTOM_OF_THE_WELL_MAP:
         case RG_ICE_CAVERN_MAP:
             return GI_MAP;
+
         case RG_DEKU_TREE_COMPASS:
         case RG_DODONGOS_CAVERN_COMPASS:
         case RG_JABU_JABUS_BELLY_COMPASS:
@@ -1321,29 +1459,66 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_BOTTOM_OF_THE_WELL_COMPASS:
         case RG_ICE_CAVERN_COMPASS:
             return GI_COMPASS;
-        case RG_PROGRESSIVE_MAGIC_METER:
-            switch (gSaveContext.magicLevel) {
-                case 0:
-                    return GI_MAGIC_SMALL;
-                case 1:
-                    return GI_MAGIC_LARGE;
-            }
-        case RG_PROGRESSIVE_WALLET:
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                case 0:
-                    return GI_WALLET_ADULT;
-                case 1:
-                    return GI_WALLET_GIANT;
-            }
-        case RG_PROGRESSIVE_OCARINA:
-            switch (INV_CONTENT(ITEM_OCARINA_FAIRY) == ITEM_NONE) {
-                case 1:
-                    return GI_OCARINA_FAIRY;
-                case 0:
-                    return GI_OCARINA_OOT;
-            }
+
+        // todo implement dungeon-specific keys/keyrings
+        case RG_FOREST_TEMPLE_BOSS_KEY:
+        case RG_FIRE_TEMPLE_BOSS_KEY:
+        case RG_WATER_TEMPLE_BOSS_KEY:
+        case RG_SPIRIT_TEMPLE_BOSS_KEY:
+        case RG_SHADOW_TEMPLE_BOSS_KEY:
+        case RG_GANONS_CASTLE_BOSS_KEY:
+            return GI_KEY_BOSS;
+
+        case RG_FOREST_TEMPLE_SMALL_KEY:
+        case RG_FIRE_TEMPLE_SMALL_KEY:
+        case RG_WATER_TEMPLE_SMALL_KEY:
+        case RG_SPIRIT_TEMPLE_SMALL_KEY:
+        case RG_SHADOW_TEMPLE_SMALL_KEY:
+        case RG_BOTTOM_OF_THE_WELL_SMALL_KEY:
+        case RG_GERUDO_TRAINING_GROUNDS_SMALL_KEY:
+        case RG_GERUDO_FORTRESS_SMALL_KEY:
+        case RG_GANONS_CASTLE_SMALL_KEY:
+            return GI_KEY_SMALL;
+            
+        // todo test this with keys in own dungeon
+        case RG_TREASURE_GAME_SMALL_KEY:
+            return GI_DOOR_KEY;
+
+        // todo keyrings
+        case RG_FOREST_TEMPLE_KEY_RING:
+        case RG_FIRE_TEMPLE_KEY_RING:
+        case RG_WATER_TEMPLE_KEY_RING:
+        case RG_SPIRIT_TEMPLE_KEY_RING:
+        case RG_SHADOW_TEMPLE_KEY_RING:
+        case RG_BOTTOM_OF_THE_WELL_KEY_RING:
+        case RG_GERUDO_TRAINING_GROUNDS_KEY_RING:
+        case RG_GERUDO_FORTRESS_KEY_RING:
+        case RG_GANONS_CASTLE_KEY_RING:
+            return GI_RUPEE_BLUE;
+
+        case RG_KOKIRI_EMERALD:
+            return GI_STONE_KOKIRI;
+        case RG_GORON_RUBY:
+            return GI_STONE_GORON;
+        case RG_ZORA_SAPPHIRE:
+            return GI_STONE_ZORA;
+
+        case RG_FOREST_MEDALLION:
+            return GI_MEDALLION_FOREST;
+        case RG_FIRE_MEDALLION:
+            return GI_MEDALLION_FIRE;
+        case RG_WATER_MEDALLION:
+            return GI_MEDALLION_WATER;
+        case RG_SPIRIT_MEDALLION:
+            return GI_MEDALLION_SPIRIT;
+        case RG_SHADOW_MEDALLION:
+            return GI_MEDALLION_SHADOW;
+        case RG_LIGHT_MEDALLION:
+            return GI_MEDALLION_LIGHT;
+
         case RG_RECOVERY_HEART:
             return GI_HEART;
+
         case RG_GREEN_RUPEE:
             return GI_RUPEE_GREEN;
         case RG_BLUE_RUPEE:
@@ -1354,118 +1529,71 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_RUPEE_PURPLE;
         case RG_HUGE_RUPEE:
             return GI_RUPEE_GOLD;
-        case RG_FIRE_ARROWS:
-            return GI_ARROW_FIRE;
-        case RG_ICE_ARROWS:
-            return GI_ARROW_ICE;
-        case RG_LIGHT_ARROWS:
-            return GI_ARROW_LIGHT;
-        case RG_DINS_FIRE:
-            return GI_DINS_FIRE;
-        case RG_FARORES_WIND:
-            return GI_FARORES_WIND;
-        case RG_NAYRUS_LOVE:
-            return GI_NAYRUS_LOVE;
-        case RG_DEKU_NUTS_10:
-            return GI_NUTS_10;
-        case RG_DEKU_SEEDS_30:
-            return GI_SEEDS_30;
-        case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BIG_POE;
-        case RG_EMPTY_BOTTLE:
-            return GI_BOTTLE;
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BLUE_FIRE;
-        case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_POTION_BLUE;
-        case RG_BOTTLE_WITH_BUGS:
-            return GI_BUGS;
-        case RG_BOTTLE_WITH_FAIRY:
-            return GI_FAIRY;
-        case RG_BOTTLE_WITH_FISH:
-            return GI_FISH;
-        case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_POTION_GREEN;
-        case RG_BOTTLE_WITH_MILK:
-            return GI_MILK_BOTTLE;
-        case RG_BOTTLE_WITH_POE:
-            return GI_POE;
-        case RG_BOTTLE_WITH_RED_POTION:
-            return GI_POTION_RED;
-        case RG_TREASURE_GAME_HEART:
-            return GI_HEART_PIECE_WIN;
-        case RG_PROGRESSIVE_STICK_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_STICKS)) {
-                case 0:
-                    return GI_STICK_UPGRADE_20;
-                case 1:
-                    return GI_STICK_UPGRADE_30;
-            }
-        case RG_PROGRESSIVE_NUT_UPGRADE:
-            switch (CUR_UPG_VALUE(UPG_NUTS)) {
-                case 0:
-                    return GI_NUT_UPGRADE_30;
-                case 1:
-                    return GI_NUT_UPGRADE_40;
-            }
-        case RG_RUTOS_LETTER:
-            return GI_LETTER_RUTO;
+
+        case RG_PIECE_OF_HEART:
+            return GI_HEART_PIECE;
+        case RG_HEART_CONTAINER:
+            // todo figure out what GI_HEART_CONTAINER_2 is
+            return GI_HEART_CONTAINER;
+
+        case RG_ICE_TRAP:
+            return GI_ICE_TRAP;
+
+        case RG_MILK:
+            return GI_MILK; //todo logic around needing a bottle?
+
+        case RG_BOMBS_5:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_5 : GI_RUPEE_BLUE;
+        case RG_BOMBS_10:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_10 : GI_RUPEE_BLUE;
+        case RG_BOMBS_20:
+            return CUR_UPG_VALUE(UPG_BOMB_BAG) ? GI_BOMBS_20 : GI_RUPEE_BLUE;
+
+        case RG_BOMBCHU_5:
+            return GI_BOMBCHUS_5;
+        case RG_BOMBCHU_10:
+            return GI_BOMBCHUS_10;
+        case RG_BOMBCHU_20:
+            return GI_BOMBCHUS_20;
+        case RG_BOMBCHU_DROP:
+            return GI_BOMBCHUS_5; //todo figure out what we want to do for chu drops
+
         case RG_ARROWS_5:
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_SMALL : GI_RUPEE_BLUE;
         case RG_ARROWS_10:
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_MEDIUM : GI_RUPEE_BLUE;
         case RG_ARROWS_30:
             return CUR_UPG_VALUE(UPG_QUIVER) ? GI_ARROWS_LARGE : GI_RUPEE_BLUE;
+
+        case RG_DEKU_NUTS_5:
+            return GI_NUTS_5;
+        case RG_DEKU_NUTS_10:
+            return GI_NUTS_10;
+
+        case RG_DEKU_SEEDS_30:
+            return GI_SEEDS_30;
+
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
 
-        case RG_LIGHT_MEDALLION:
-            return GI_MEDALLION_LIGHT;
-        case RG_FOREST_MEDALLION:
-            return GI_MEDALLION_FOREST;
-        case RG_FIRE_MEDALLION:
-            return GI_MEDALLION_FIRE;
-        case RG_WATER_MEDALLION:
-            return GI_MEDALLION_WATER;
-        case RG_SHADOW_MEDALLION:
-            return GI_MEDALLION_SHADOW;
-        case RG_SPIRIT_MEDALLION:
-            return GI_MEDALLION_SPIRIT;
+        case RG_RED_POTION_REFILL:
+            return GI_POTION_RED; //todo logic around needing a bottle?
+        case RG_GREEN_POTION_REFILL:
+            return GI_POTION_GREEN; //todo logic around needing a bottle?
+        case RG_BLUE_POTION_REFILL:
+            return GI_POTION_BLUE; //todo logic around needing a bottle?
 
-        case RG_KOKIRI_EMERALD:
-            return GI_STONE_KOKIRI;
-        case RG_GORON_RUBY:
-            return GI_STONE_GORON;
-        case RG_ZORA_SAPPHIRE:
-            return GI_STONE_ZORA;
+        case RG_TREASURE_GAME_HEART:
+            return GI_HEART_PIECE_WIN;
+        case RG_TREASURE_GAME_GREEN_RUPEE:
+            return GI_RUPEE_GREEN_LOSE; //todo figure out how this works outside of the game
 
-        case RG_ZELDAS_LULLABY:
-            return GI_ZELDAS_LULLABY;
-        case RG_SUNS_SONG:
-            return GI_SUNS_SONG;
-        case RG_EPONAS_SONG:
-            return GI_EPONAS_SONG;
-        case RG_SONG_OF_STORMS:
-            return GI_SONG_OF_STORMS;
-        case RG_SONG_OF_TIME:
-            return GI_SONG_OF_TIME;
-        case RG_SARIAS_SONG:
-            return GI_SARIAS_SONG;
+        case RG_TRIFORCE:
+            return GI_RUPEE_BLUE; //todo figure out what this is/does
 
-        case RG_MINUET_OF_FOREST:
-            return GI_MINUET_OF_FOREST;
-        case RG_BOLERO_OF_FIRE:
-            return GI_BOLERO_OF_FIRE;
-        case RG_SERENADE_OF_WATER:
-            return GI_SERENADE_OF_WATER;
-        case RG_NOCTURNE_OF_SHADOW:
-            return GI_NOCTURNE_OF_SHADOW;
-        case RG_REQUIEM_OF_SPIRIT:
-            return GI_REQUIEM_OF_SPIRIT;
-        case RG_PRELUDE_OF_LIGHT:
-            return GI_PRELUDE_OF_LIGHT;
-        case RG_MAGIC_BEAN:
-            return GI_BEAN;
+        case RG_HINT:
+            return GI_RUPEE_BLUE; //todo
+
         default:
             return ogItemId;
     }
