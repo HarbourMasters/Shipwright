@@ -1209,19 +1209,15 @@ void BossGanon_ShatterWindows(u8 windowShatterState) {
 }
 
 void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) {
-    const bool originalBlood = CVar_GetS32("gOriginalBlood", 1);
+    static Color_RGBA8 bloodPrimColor = { 0, 120, 0, 255 };
+    static Color_RGBA8 bloodEnvColor = { 0, 120, 0, 255 };
 
-    static Color_RGBA8 bloodPrimColor = { 120, 0, 0, 255 };
-    static Color_RGBA8 bloodEnvColor = { 120, 0, 0, 255 };
+    if(CVar_GetS32("gRedGanonBlood", 0)) {
+        bloodPrimColor.r = 120;
+        bloodPrimColor.g = 0;
 
-    if(!originalBlood) {
-        bloodPrimColor.r = 0;
-        bloodPrimColor.g = 120;
-        bloodPrimColor.b = 0;
-
-        bloodEnvColor.r = 0;
-        bloodEnvColor.g = 120;
-        bloodEnvColor.b = 0;
+        bloodEnvColor.r = 120;
+        bloodEnvColor.g = 0;
     }
 
     s16 i;

@@ -63,8 +63,8 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Troubleshooting The Exporter
-- Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
-- Affirm that `zapd.exe` exists in the `/assets/extractor` folder
+- Confirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
+- Confirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 ## Nightly Builds
 Nightly builds of Ship of Harkinian are available [here](https://builds.shipofharkinian.com/job/SoH_Multibranch/job/develop)
