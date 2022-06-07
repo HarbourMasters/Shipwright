@@ -945,7 +945,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_CUP) && CVar_GetS32("gKaleidoProgress", 0)) {
+    if (CHECK_BTN_ALL(input->press.button, BTN_A) && CVar_GetS32("gKaleidoProgress", 0) && D_8082ABEC[pauseCtx->mode] != PAUSE_EQUIP && D_8082ABEC[pauseCtx->mode] != 7) {//this should not open while being in equipement section or save menu.
         //debug state 99 should be unique, if someone find it is bot please tell me :)
         pauseCtx->debugState = 99;
         return;
