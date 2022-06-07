@@ -39,6 +39,12 @@ SaveManager::SaveManager() {
         info.questItems = 0;
         info.defense = 0;
         info.health = 0;
+
+        for (int i = 0; i < ARRAY_COUNT(info.seedHash); i++) {
+            info.seedHash[i] = 0;
+        }
+
+        info.randoSave = 0;
     }
 }
 
@@ -122,6 +128,12 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].questItems = gSaveContext.inventory.questItems;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
+
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
+        fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
+    }
+
+    fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
 }
 
 void SaveManager::InitFile(bool isDebug) {

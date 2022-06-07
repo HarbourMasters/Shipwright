@@ -194,15 +194,42 @@ void DrawSeedHashSprites(FileChooseContext* this) {
     OPEN_DISPS(this->state.gfxCtx, "dpad.c", 60);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, 0xFF);
 
-    // Draw Seed Icons
-    u16 xStart = 64;
-    for (u8 i = 0; i < 5; i++) {
-        // hacky check to make sure we leaded the icons
-        if (gSaveContext.seedIcons[i]) {
-            SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
-            SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
+    if (this->windowRot == 0) {
+        if (this->selectMode == SM_CONFIRM_FILE) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileInfoAlpha[this->buttonIndex]);
+
+            u16 xStart = 64;
+            // Draw Seed Icons
+            for (u8 i = 0; i < 5; i++) {
+                if (Save_GetSaveMetaInfo(this->selectedFileIndex)->randoSave == 1) {
+                    SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]));
+                    SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(this->selectedFileIndex)->seedHash[i]),
+                               xStart + (18 * i), 136, 16, 16);
+                }
+            }
+        } else if (this->titleLabel == FS_TITLE_SELECT_FILE) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0xFF, 0xFF, 0xFF, this->fileButtonAlpha[this->buttonIndex]);
+
+            if (CVar_GetS32("gRandomizer", 0) != 0 && CVar_GetString("gSpoilerLog", "") != "") {
+                u16 xStart = 64;
+                for (u8 i = 0; i < 5; i++) {
+                    SpriteLoad(this, GetSeedTexture(gSaveContext.seedIcons[i]));
+                    SpriteDraw(this, GetSeedTexture(gSaveContext.seedIcons[i]), xStart + (40 * i), 10, 24, 24);
+                }
+            }
+
+            u16 xStart = 232;
+            for (int s = 0; s < 3; s++) {
+                // Draw Seed Icons
+                for (u8 i = 0; i < 5; i++) {
+                    if (Save_GetSaveMetaInfo(s)->valid && Save_GetSaveMetaInfo(s)->randoSave == 1) {
+                        SpriteLoad(this, GetSeedTexture(Save_GetSaveMetaInfo(s)->seedHash[i]));
+                        SpriteDraw(this, GetSeedTexture(Save_GetSaveMetaInfo(s)->seedHash[i]), xStart + (16 * i),
+                                   74 + (16 * s), 16, 16);
+                    }
+                }
+            }
         }
     }
 
@@ -828,10 +855,6 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
-    if (CVar_GetS32("gRandomizer", 0) != 0) {
-        DrawSeedHashSprites(this);
-    }
-
     if (1) {}
 
     OPEN_DISPS(this->state.gfxCtx, "../z_file_choose.c", 1709);
@@ -1237,6 +1260,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
+    
+    DrawSeedHashSprites(this);
 
     CLOSE_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2352);
 }
@@ -1582,6 +1607,8 @@ void FileChoose_SelectModeDraw(GameState* thisx) {
     FileChoose_DrawWindowContents(&this->state);
     gDPPipeSync(POLY_OPA_DISP++);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
+
+    DrawSeedHashSprites(this);
 
     CLOSE_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2834);
 }

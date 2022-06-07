@@ -11,6 +11,7 @@ typedef struct {
     s8 defense;
     u16 health;
     u8 seedHash[5];
+    u8 randoSave;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
