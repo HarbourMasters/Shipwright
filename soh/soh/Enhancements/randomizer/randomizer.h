@@ -18,6 +18,7 @@ class Randomizer {
     Randomizer();
     ~Randomizer();
 
+    static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
     void LoadItemLocations(const char* spoilerFileName);
     void ParseItemLocationsFile(const char* spoilerFileName);

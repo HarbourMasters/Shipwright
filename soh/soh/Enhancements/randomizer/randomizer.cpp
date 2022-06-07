@@ -20,35 +20,39 @@ std::unordered_map<uint8_t, Sprite> gSeedTextures;
 u8 generated;
 
 Randomizer::Randomizer() {
-    Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
     gSeedTextures[0] = bowSprite;
 
-    Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 1 };
     gSeedTextures[1] = bombchuSprite;
 
-    Sprite beansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite beansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 2 };
     gSeedTextures[2] = beansSprite;
 
-    Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 3 };
     gSeedTextures[3] = milkSprite;
 
-    Sprite frogSprite = { gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite frogSprite = { gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 4 };
     gSeedTextures[4] = frogSprite;
 
-    Sprite mirrorShieldSprite = { gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite mirrorShieldSprite = { gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 5 };
     gSeedTextures[5] = mirrorShieldSprite;
 
-    Sprite hoverBootsSprite = { gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite hoverBootsSprite = { gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 6 };
     gSeedTextures[6] = hoverBootsSprite;
 
-    Sprite megatonHammerSprite = { gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite megatonHammerSprite = { gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 7 };
     gSeedTextures[7] = megatonHammerSprite;
 
-    Sprite silverGauntletsSprite = { gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite silverGauntletsSprite = { gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 8 };
     gSeedTextures[8] = silverGauntletsSprite;
 
-    Sprite ootOcarinaSprite = { gOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b };
+    Sprite ootOcarinaSprite = { gOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
+}
+
+Sprite* Randomizer::GetSeedTexture(uint8_t index) {
+    return &gSeedTextures[index];
 }
 
 Randomizer::~Randomizer() { 
@@ -1082,22 +1086,14 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
-        // bandaid until new save stuff happens
         ParseItemLocationsFile(spoilerFileName);
+    }
 
-        for (auto itemLocation : gSaveContext.itemLocations) {
-            this->itemLocations[itemLocation.check] = itemLocation.get;
-        }
+    for (auto itemLocation : gSaveContext.itemLocations) {
+        this->itemLocations[itemLocation.check] = itemLocation.get;
+    }
 
-        itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
-    } /* else {
-        u16 index = 0;
-        for (auto itemLocation : this->itemLocations) {
-            gSaveContext.itemLocations[index].check = itemLocation.first;
-            gSaveContext.itemLocations[index].get = itemLocation.second;
-            index++;
-        }
-    }*/
+    itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
 }
 
 std::string sanitize(std::string stringValue) {
@@ -1134,7 +1130,7 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
 
         int index = 0;
         for (auto it = hashJson.begin(); it != hashJson.end(); ++it) {
-            gSaveContext.seedIcons[index] = gSeedTextures[it.value()];
+            gSaveContext.seedIcons[index] = gSeedTextures[it.value()].id;
             index++;
         }
 

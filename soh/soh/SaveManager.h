@@ -10,6 +10,7 @@ typedef struct {
     u32 questItems;
     s8 defense;
     u16 health;
+    u8 seedHash[5];
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus

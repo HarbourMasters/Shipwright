@@ -392,6 +392,10 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
         return ResourceMgr_LoadTexByName(filePath);
 }
 
+extern "C" Sprite* GetSeedTexture(uint8_t index) {
+    return Randomizer::GetSeedTexture(index);
+}
+
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
