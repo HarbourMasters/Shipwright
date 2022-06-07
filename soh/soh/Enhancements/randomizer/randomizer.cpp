@@ -2250,15 +2250,6 @@ void DrawRandoEditor(bool& open) {
         Game::SaveSettings();
     }
 
-    switch(CVar_GetS32("gRandomizer", 0)) {
-        case 0:
-            ImGui::Text("blarg");
-            break;
-        case 1:
-            ImGui::Text("blarg2");
-            break;
-    }
-
     if(randoEnabled) {
         if (ImGui::Button("Generate")) {
             if (CVar_GetS32("gRandoGenerating", 0) == 0) {
