@@ -1293,11 +1293,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         
         case RG_PROGRESSIVE_BOMB_BAG:
             switch (CUR_UPG_VALUE(UPG_BOMB_BAG)) {
-                case ITEM_NONE:
+                case 0:
                     return GI_BOMB_BAG_20;
-                case ITEM_BOMB_BAG_20:
+                case 1:
                     return GI_BOMB_BAG_30;
-                case ITEM_BOMB_BAG_30:
+                case 2:
                     return GI_BOMB_BAG_40;
             }
             return GI_RUPEE_BLUE;
