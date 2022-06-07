@@ -106,7 +106,7 @@ static void set_fullscreen(bool on, bool call_callback) {
         SDL_GetDesktopDisplayMode(0, &mode);
         window_width = mode.w;
         window_height = mode.h;
-        SDL_ShowCursor(false);
+        //SDL_ShowCursor(false);
     } else {
         window_width = DESIRED_SCREEN_WIDTH;
         window_height = DESIRED_SCREEN_HEIGHT;
