@@ -98,8 +98,8 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     f32 scale;
     Input* input = &globalCtx->state.input[0];
     s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
-    bool AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? true : false;
-    bool AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? true : false;
+    u8 AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? 1 : 0;
+    u8 AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? 1 : 0;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
@@ -120,19 +120,19 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
 
     link_kaleido_rot.x = link_kaleido_rot.z = 0;
 
-    if (AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT) ||
-        AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT)) {
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) ||
+        (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT))) {
         link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
-    } else if (AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT) ||
-               AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT)) {
+    } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
+               (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
         link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
     }
 
-    if (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP) ||
-        AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) ||
+        (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         link_kaleido_rot.y = 32300;
-    } else if (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP) ||
-               AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
+    } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
+               (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
         link_kaleido_rot.y = 32300;
     }
 
