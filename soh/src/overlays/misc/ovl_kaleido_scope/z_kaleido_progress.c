@@ -451,7 +451,7 @@ void KaleidoScope_ProgressPage(GlobalContext* globalCtx){
     KeleidoScope_DungeonContainerDraw(globalCtx);
 
     if (FrameSinceOpen >= 10) { //Wait 10 frames before being able to close the menu
-        if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_CUP) || CHECK_BTN_ALL(input->press.button, BTN_B)) { 
+        if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A) || CHECK_BTN_ALL(input->press.button, BTN_B)) { 
             //Un pause game and close menu
             KaleidoScope_ProgressClose(pauseCtx);
         }
