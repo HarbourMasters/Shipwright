@@ -950,6 +950,8 @@ namespace SohImGui {
                 {
                     EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                     Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
+                    EnhancementCheckbox("Fish while hovering", "gHoverFishing");
+                    Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
 
                     ImGui::EndMenu();
                 }
