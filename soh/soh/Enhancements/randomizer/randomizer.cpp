@@ -2459,8 +2459,12 @@ void DrawRandoEditor(bool& open) {
                 }
             }
             std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
-            // todo something fancy for full path maybe?
-            ImGui::Text("Spoilerfile: %s", spoilerfilepath.c_str());
+            // todo make sure we make the "randomizer" folder if it doesn't exist
+            ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
+
+            std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+            // todo make sure we make the "randomizer" folder if it doesn't exist
+            ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
         ImGui::Separator();
 
@@ -3226,98 +3230,110 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
+                    // ImGui::TableNextColumn();
                     // COLUMN 1 - TIME SAVERS
-                    ImGui::NewLine();
-                    // Skip child stealth
-                    SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
-                    InsertHelpHoverText(
-                        "The crawlspace into Hyrule Castle goes straight to\nZelda, skipping the guards.");
-                    ImGui::Separator();
+                    // ImGui::NewLine();
+                    // todo implement child stealth skip
+                    // // Skip child stealth
+                    // SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
+                    // InsertHelpHoverText(
+                    //     "The crawlspace into Hyrule Castle goes straight to\nZelda, skipping the guards.");
+                    // ImGui::Separator();
 
-                    // Skip tower escape
-                    SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
-                    InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
-                    ImGui::Separator();
+                    // todo implement tower escape skip
+                    // // Skip tower escape
+                    // SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
+                    // InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
+                    // ImGui::Separator();
 
-                    // Skip Epona race
-                    SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
-                    InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
-                    ImGui::Separator();
+                    // todo implement epona race skip
+                    // // Skip Epona race
+                    // SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
+                    // InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
+                    // ImGui::Separator();
 
-                    // Sjip Minigame repetition
-                    SohImGui::EnhancementCheckbox("Skip Minigame Repetition", "gRandomizeSkipMinigameRepetition");
-                    InsertHelpHoverText("Completing the second objective in the Dampe Race\nand Gerudo Archery on the "
-                                        "first attempt will give\nboth rewards at once for that minigame.");
-                    ImGui::Separator();
+                    // todo implement minigame repeat skip
+                    // // Skip Minigame repetition
+                    // SohImGui::EnhancementCheckbox("Skip Minigame Repetition", "gRandomizeSkipMinigameRepetition");
+                    // InsertHelpHoverText("Completing the second objective in the Dampe Race\nand Gerudo Archery on the "
+                    //                     "first attempt will give\nboth rewards at once for that minigame.");
+                    // ImGui::Separator();
 
-                    // Free scarecrow
-                    SohImGui::EnhancementCheckbox("Free Scarecrow", "gRandomizeFreeScarecrow");
-                    InsertHelpHoverText(
-                        "Pulling the Ocarina near a spot at which\nPierre can spawn will do so, without "
-                        "needing\nthe song.");
-                    ImGui::Separator();
+                    // todo implement free scarecrow (is this already in?)
+                    // // Free scarecrow
+                    // SohImGui::EnhancementCheckbox("Free Scarecrow", "gRandomizeFreeScarecrow");
+                    // InsertHelpHoverText(
+                    //     "Pulling the Ocarina near a spot at which\nPierre can spawn will do so, without "
+                    //     "needing\nthe song.");
+                    // ImGui::Separator();
 
-                    // Ski pFour Poes cutscene
-                    SohImGui::EnhancementCheckbox("Skip Four Poes Cutscene", "gRandomizeSkipFourPoesCutscene");
-                    InsertHelpHoverText(
-                        "The cutscene with the 4 poes in Forest Temple will\nbe skipped. If the cutscene "
-                        "is not skipped, it can\nbe exploited to reach the basement early.");
-                    ImGui::Separator();
+                    // todo implement skip poes (did we already?)
+                    // // Skip Four Poes cutscene
+                    // SohImGui::EnhancementCheckbox("Skip Four Poes Cutscene", "gRandomizeSkipFourPoesCutscene");
+                    // InsertHelpHoverText(
+                    //     "The cutscene with the 4 poes in Forest Temple will\nbe skipped. If the cutscene "
+                    //     "is not skipped, it can\nbe exploited to reach the basement early.");
+                    // ImGui::Separator();
 
-                    // Skip Lake Hylia owl
-                    SohImGui::EnhancementCheckbox("Skip Lake Hylia Owl Cutscene", "gRandomizeSkipLakeHyliaOwl");
-                    InsertHelpHoverText(
-                        "The owl flight cutscene in Lake Hylia will be\nskipped. This cutscene lets you "
-                        "see what item\nis on top of the laboratory roof.");
-                    ImGui::Separator();
+                    // todo implement skip lake hylia owl
+                    // // Skip Lake Hylia owl
+                    // SohImGui::EnhancementCheckbox("Skip Lake Hylia Owl Cutscene", "gRandomizeSkipLakeHyliaOwl");
+                    // InsertHelpHoverText(
+                    //     "The owl flight cutscene in Lake Hylia will be\nskipped. This cutscene lets you "
+                    //     "see what item\nis on top of the laboratory roof.");
+                    // ImGui::Separator();
 
-                    // Big Poe Target Count
-                    SohImGui::EnhancementCheckbox("Big Poe Target Count", "gRandomizeEnableBigPoeTargetCount");
-                    InsertHelpHoverText(
-                        "The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
-                    if (CVar_GetS32("gRandomizeEnableBigPoeTargetCount", 0) == 1) {
-                        SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                                       "gRandomizeBigPoeTargetCount", 0, 100, "");
-                    }
-                    ImGui::Separator();
+                    // todo implement big poe count
+                    // // Big Poe Target Count
+                    // SohImGui::EnhancementCheckbox("Big Poe Target Count", "gRandomizeEnableBigPoeTargetCount");
+                    // InsertHelpHoverText(
+                    //     "The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
+                    // if (CVar_GetS32("gRandomizeEnableBigPoeTargetCount", 0) == 1) {
+                    //     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                    //                                    "gRandomizeBigPoeTargetCount", 0, 100, "");
+                    // }
+                    // ImGui::Separator();
 
-                    // Cuccos to return
-                    SohImGui::EnhancementCheckbox("Cuccos To Return", "gRandomizeEnableCuccosToReturn");
-                    InsertHelpHoverText(
-                        "The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
-                    if (CVar_GetS32("gRandomizeEnableCuccosToReturn", 0) == 1) {
-                        SohImGui::EnhancementSliderInt("Cuccos to return Count: %d", "##RandoCuccosToReturn",
-                                                       "gRandomizeCuccosToReturn", 0, 100, "");
-                    }
-                    ImGui::Separator();
+                    // todo implement cuccos to return
+                    // // Cuccos to return
+                    // SohImGui::EnhancementCheckbox("Cuccos To Return", "gRandomizeEnableCuccosToReturn");
+                    // InsertHelpHoverText(
+                    //     "The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
+                    // if (CVar_GetS32("gRandomizeEnableCuccosToReturn", 0) == 1) {
+                    //     SohImGui::EnhancementSliderInt("Cuccos to return Count: %d", "##RandoCuccosToReturn",
+                    //                                    "gRandomizeCuccosToReturn", 0, 100, "");
+                    // }
+                    // ImGui::Separator();
 
-                    // Complete Mask Quest
-                    SohImGui::EnhancementCheckbox("Complete Mask Quest", "gRandomizeCompleteMaskQuest");
-                    InsertHelpHoverText(
-                        "Once the Happy Mask Shop is opened, all masks\nwill be available to be borrowed.");
-                    ImGui::Separator();
+                    // todo implement complete mask quest
+                    // // Complete Mask Quest
+                    // SohImGui::EnhancementCheckbox("Complete Mask Quest", "gRandomizeCompleteMaskQuest");
+                    // InsertHelpHoverText(
+                    //     "Once the Happy Mask Shop is opened, all masks\nwill be available to be borrowed.");
+                    // ImGui::Separator();
 
-                    // Keep Farore's Wind Warp Point
-                    SohImGui::EnhancementCheckbox("Keep Farore's Wind Warp Point", "gRandomizeKeepFaroresWindWarp");
-                    InsertHelpHoverText(
-                        "The Farore's Wind warp point will stay active\nafter having been warped to. The "
-                        "old point will\nneed to be dispelled before setting a new one.");
-                    ImGui::Separator();
+                    // todo implement keep farores (in soh)
+                    // // Keep Farore's Wind Warp Point
+                    // SohImGui::EnhancementCheckbox("Keep Farore's Wind Warp Point", "gRandomizeKeepFaroresWindWarp");
+                    // InsertHelpHoverText(
+                    //     "The Farore's Wind warp point will stay active\nafter having been warped to. The "
+                    //     "old point will\nneed to be dispelled before setting a new one.");
+                    // ImGui::Separator();
 
-                    // Skip Song Replays
-                    ImGui::Text("Skip Song Replays");
-                    InsertHelpHoverText(
-                        "The automatic replay after you play a song will\nbe skipped.\nYou can choose to "
-                        "keep the SFX anyway, but you\nwill have control of Link  during it.");
-                    SohImGui::EnhancementCombobox("gRandomizeSkipSongReplays", randoSkipSongReplays, 3, 0);
-                    ImGui::Separator();
+                    // todo implement skip song replays (in soh)
+                    // // Skip Song Replays
+                    // ImGui::Text("Skip Song Replays");
+                    // InsertHelpHoverText(
+                    //     "The automatic replay after you play a song will\nbe skipped.\nYou can choose to "
+                    //     "keep the SFX anyway, but you\nwill have control of Link  during it.");
+                    // SohImGui::EnhancementCombobox("gRandomizeSkipSongReplays", randoSkipSongReplays, 3, 0);
+                    // ImGui::Separator();
 
                     ImGui::TableNextColumn();
 
@@ -3379,61 +3395,51 @@ void DrawRandoEditor(bool& open) {
                     }
                     ImGui::Separator();
 
-                    // Damage Multipier
-                    ImGui::Text("Damage Multipier");
-                    InsertHelpHoverText("Change the amount of damage taken.\nIf set to OHKO Link will die in one hit.");
-                    SohImGui::EnhancementCombobox("gRandomizeDamageMultiplier", randoDamageMultiplier, 7, 0);
-                    ImGui::Separator();
+                    // todo implement damage multiplier (as soh setting)
+                    // // Damage Multipier
+                    // ImGui::Text("Damage Multipier");
+                    // InsertHelpHoverText("Change the amount of damage taken.\nIf set to OHKO Link will die in one hit.");
+                    // SohImGui::EnhancementCombobox("gRandomizeDamageMultiplier", randoDamageMultiplier, 7, 0);
+                    // ImGui::Separator();
 
-                    // Starting Time
-                    ImGui::Text("Starting Time");
-                    InsertHelpHoverText("Change up Link's sleep  routine.");
-                    SohImGui::EnhancementCombobox("gRandomizeStartingTime", randoStartingTime, 2, 0);
-                    ImGui::Separator();
+                    // todo implement starting time
+                    // // Starting Time
+                    // ImGui::Text("Starting Time");
+                    // InsertHelpHoverText("Change up Link's sleep  routine.");
+                    // SohImGui::EnhancementCombobox("gRandomizeStartingTime", randoStartingTime, 2, 0);
+                    // ImGui::Separator();
 
-                    // Chest Animations
-                    ImGui::Text("Chest Animations");
-                    InsertHelpHoverText(
-                        "Choose if you want the slow animation to play\nif a chest contains a major item.");
-                    SohImGui::EnhancementCombobox("gRandomizeChestAnimations", randoChestAnimations, 2, 0);
-                    ImGui::Separator();
+                    // todo implement chest size/color options
+                    // // Chest Size and Color
+                    // ImGui::Text("Chest Size and Color");
+                    // InsertHelpHoverText(
+                    //     "This option will change the appearance of all\nregular chests depending on their "
+                    //     "contents:\nMajor Items = Big Wooden Chests\nLesser Items = Small Wooden "
+                    //     "Chests\nBoss Keys = Big Fancy Chests\nSmall Keys = Small Fancy Chests");
+                    // SohImGui::EnhancementCombobox("gRandomizeChestSizeAndColor", randoChestSizeAndColor, 2, 0);
 
-                    // Chest Size and Color
-                    ImGui::Text("Chest Size and Color");
-                    InsertHelpHoverText(
-                        "This option will change the appearance of all\nregular chests depending on their "
-                        "contents:\nMajor Items = Big Wooden Chests\nLesser Items = Small Wooden "
-                        "Chests\nBoss Keys = Big Fancy Chests\nSmall Keys = Small Fancy Chests");
-                    SohImGui::EnhancementCombobox("gRandomizeChestSizeAndColor", randoChestSizeAndColor, 2, 0);
-
-                    ImGui::Separator();
-                    // Open Info Menu with
-                    ImGui::Text("Open Info Menu with");
-                    InsertHelpHoverText("Choose which button will bring up the Dungeon\nInformation Menu.");
-                    SohImGui::EnhancementCombobox("gRandomizeOpenInfoMenuWith", randoOpenInfoMenuWith, 6, 0);
-                    ImGui::Separator();
-
-                    // Random Trap Damage
-                    ImGui::Text("Random Trap Damage");
-                    switch (CVar_GetS32("gRandomize", 0)) {
-                        case 0:
-                            InsertHelpHoverText(
-                                "All alternative traps will cause a small damage\nand no other negative effets.");
-                            break;
-                        case 1:
-                            InsertHelpHoverText("Some chest traps will burn your Deku Shield or\ncause a lot of damage "
-                                                "(with one-hit protection).");
-                            break;
-                        case 2:
-                            InsertHelpHoverText("All traps will be the base game ice trap.");
-                            break;
-                    }
-                    SohImGui::EnhancementCombobox("gRandomizeRandomTrapDamage", randoRandomTrapDamage, 3, 0);
-                    ImGui::Separator();
+                    // todo implement trap damage
+                    // // Random Trap Damage
+                    // ImGui::Text("Random Trap Damage");
+                    // switch (CVar_GetS32("gRandomize", 0)) {
+                    //     case 0:
+                    //         InsertHelpHoverText(
+                    //             "All alternative traps will cause a small damage\nand no other negative effets.");
+                    //         break;
+                    //     case 1:
+                    //         InsertHelpHoverText("Some chest traps will burn your Deku Shield or\ncause a lot of damage "
+                    //                             "(with one-hit protection).");
+                    //         break;
+                    //     case 2:
+                    //         InsertHelpHoverText("All traps will be the base game ice trap.");
+                    //         break;
+                    // }
+                    // SohImGui::EnhancementCombobox("gRandomizeRandomTrapDamage", randoRandomTrapDamage, 3, 0);
+                    // ImGui::Separator();
 
                     ImGui::TableNextColumn();
 
-                    // COLUMN 3 - ITEM POOL SETTINGS
+                    // // COLUMN 3 - ITEM POOL SETTINGS
                     ImGui::NewLine();
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 0)) {
@@ -3453,7 +3459,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 0);
                     ImGui::Separator();
 
-                    // Ice Traps
+                    // // Ice Traps
                     ImGui::Text("Ice Traps");
                     switch (CVar_GetS32("gRandomizeIceTraps", 0)) {
                         case 0:
@@ -3477,18 +3483,20 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 0);
                     ImGui::Separator();
 
-                    // Remove Double Defense
-                    SohImGui::EnhancementCheckbox("Remove Double Defense", "gRandomizeRemoveDoubleDefense");
-                    InsertHelpHoverText("If set the double defense item will be removed\nfrom the item pool for "
-                                        "balanced and plentiful.");
-                    ImGui::Separator();
+                    // todo implement double defense getitem
+                    // // Remove Double Defense
+                    // SohImGui::EnhancementCheckbox("Remove Double Defense", "gRandomizeRemoveDoubleDefense");
+                    // InsertHelpHoverText("If set the double defense item will be removed\nfrom the item pool for "
+                    //                     "balanced and plentiful.");
+                    // ImGui::Separator();
 
-                    // Prog Goron Sword
-                    SohImGui::EnhancementCheckbox("Prog Goron Sword", "gRandomizeProgGoronSword");
-                    InsertHelpHoverText(
-                        "Giant's Knife will walays be found before Biggoron's\nSword. Medigoron only "
-                        "starts selling new knives\nonce the Giant's Knife has been found\nand broken.");
-                    ImGui::Separator();
+                    // todo implement prog goron sword
+                    // // Prog Goron Sword
+                    // SohImGui::EnhancementCheckbox("Prog Goron Sword", "gRandomizeProgGoronSword");
+                    // InsertHelpHoverText(
+                    //     "Giant's Knife will walays be found before Biggoron's\nSword. Medigoron only "
+                    //     "starts selling new knives\nonce the Giant's Knife has been found\nand broken.");
+                    // ImGui::Separator();
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
@@ -3524,90 +3532,90 @@ void DrawRandoEditor(bool& open) {
 
                 ImGui::EndTabItem();
             }
-            if (ImGui::BeginTabItem("SFX")) {
-                if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("General", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Menu", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("NPC", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableHeadersRow();
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    // COLUMN 1 - GENERAL
-                    ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("Randomize All General SFX Settings",
-                                                  "gRandomizeAllGeneralSFXSettings");
-                    InsertHelpHoverText("Randomize all General SFX Settings.");
-                    ImGui::Separator();
+            // todo: figure out sfx rando stuff
+            // if (ImGui::BeginTabItem("SFX")) {
+            //     if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            //         ImGui::TableSetupColumn("General", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Menu", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("NPC", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableHeadersRow();
+            //         ImGui::TableNextRow();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 1 - GENERAL
+            //         ImGui::NewLine();
+            //         SohImGui::EnhancementCheckbox("Randomize All General SFX Settings",
+            //                                       "gRandomizeAllGeneralSFXSettings");
+            //         InsertHelpHoverText("Randomize all General SFX Settings.");
+            //         ImGui::Separator();
 
-                    if (CVar_GetS32("gRandomizeAllGeneralSFXSettings", 0) != 1) {
-                        ImGui::Text("Background Music");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXBackgroundMusic", randoSFXBackgroundMusic, 3, 0);
-                        ImGui::Separator();
+            //         if (CVar_GetS32("gRandomizeAllGeneralSFXSettings", 0) != 1) {
+            //             ImGui::Text("Background Music");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXBackgroundMusic", randoSFXBackgroundMusic, 3, 0);
+            //             ImGui::Separator();
 
-                        // Fanfares
-                        ImGui::Text("Fanfares");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXFanfares", randoSFXFanfares, 3, 0);
-                        ImGui::Separator();
-                        // Low HP
-                        ImGui::Text("Low HP");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXLowHP", randoSFXLowHP, 29, 0);
-                        ImGui::Separator();
+            //             // Fanfares
+            //             ImGui::Text("Fanfares");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXFanfares", randoSFXFanfares, 3, 0);
+            //             ImGui::Separator();
+            //             // Low HP
+            //             ImGui::Text("Low HP");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXLowHP", randoSFXLowHP, 29, 0);
+            //             ImGui::Separator();
 
-                        // Horse
-                        ImGui::Text("Horse");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXHorse", randoSFXHorse, 13, 0);
-                        ImGui::Separator();
+            //             // Horse
+            //             ImGui::Text("Horse");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXHorse", randoSFXHorse, 13, 0);
+            //             ImGui::Separator();
 
-                        // Nightfall
-                        ImGui::Text("Nightfall");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXNightfall", randoSFXNightfall, 13, 0);
-                        ImGui::Separator();
+            //             // Nightfall
+            //             ImGui::Text("Nightfall");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXNightfall", randoSFXNightfall, 13, 0);
+            //             ImGui::Separator();
 
-                        // Hover Boots
-                        ImGui::Text("Hover Boots");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXHoverBoots", randoSFXHoverBoots, 11, 0);
-                        ImGui::Separator();
+            //             // Hover Boots
+            //             ImGui::Text("Hover Boots");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXHoverBoots", randoSFXHoverBoots, 11, 0);
+            //             ImGui::Separator();
 
-                        // Ocarina
-                        ImGui::Text("Ocarina");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXOcarina", randoSFXOcarina, 7, 0);
-                        ImGui::Separator();
-                    }
-                    ImGui::TableNextColumn();
-                    // COLUMN 2 - MENU
-                    ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("Randomize All Menu SFX Settings", "gRandomizeAllMenuSFXSettings");
-                    InsertHelpHoverText("Randomize all Menu SFX Settings.");
-                    ImGui::Separator();
+            //             // Ocarina
+            //             ImGui::Text("Ocarina");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXOcarina", randoSFXOcarina, 7, 0);
+            //             ImGui::Separator();
+            //         }
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 2 - MENU
+            //         ImGui::NewLine();
+            //         SohImGui::EnhancementCheckbox("Randomize All Menu SFX Settings", "gRandomizeAllMenuSFXSettings");
+            //         InsertHelpHoverText("Randomize all Menu SFX Settings.");
+            //         ImGui::Separator();
 
-                    if (CVar_GetS32("gRandomizeAllMenuSFXSettings", 0) != 1) {
-                        ImGui::Text("Menu Cursor");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXMenuCursor", randoSFXMenu, 65, 0);
-                        ImGui::Separator();
-                        ImGui::Text("Menu Select");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXMenuSelect", randoSFXMenu, 65, 0);
-                        ImGui::Separator();
-                    }
-                    ImGui::TableNextColumn();
-                    // COLUMN 3 - NPC
-                    ImGui::NewLine();
-                    SohImGui::EnhancementCheckbox("Randomize All NPCs SFX Settings", "gRandomizeAllNPCsSFXSettings");
-                    InsertHelpHoverText("Randomize all All NPCs SFX Settings.");
-                    ImGui::Separator();
+            //         if (CVar_GetS32("gRandomizeAllMenuSFXSettings", 0) != 1) {
+            //             ImGui::Text("Menu Cursor");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXMenuCursor", randoSFXMenu, 65, 0);
+            //             ImGui::Separator();
+            //             ImGui::Text("Menu Select");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXMenuSelect", randoSFXMenu, 65, 0);
+            //             ImGui::Separator();
+            //         }
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 3 - NPC
+            //         ImGui::NewLine();
+            //         SohImGui::EnhancementCheckbox("Randomize All NPCs SFX Settings", "gRandomizeAllNPCsSFXSettings");
+            //         InsertHelpHoverText("Randomize all All NPCs SFX Settings.");
+            //         ImGui::Separator();
 
-                    if (CVar_GetS32("gRandomizeAllNPCsSFXSettings", 0) != 1) {
-                        ImGui::Text("Navi Overworld");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXNaviOverworld", randoSFXNavi, 32, 0);
-                        ImGui::Separator();
-                        ImGui::Text("Navi Enemy");
-                        SohImGui::EnhancementCombobox("gRandomizeSFXNaviEnnemy", randoSFXNavi, 32, 0);
-                    }
-                    ImGui::Separator();
+            //         if (CVar_GetS32("gRandomizeAllNPCsSFXSettings", 0) != 1) {
+            //             ImGui::Text("Navi Overworld");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXNaviOverworld", randoSFXNavi, 32, 0);
+            //             ImGui::Separator();
+            //             ImGui::Text("Navi Enemy");
+            //             SohImGui::EnhancementCombobox("gRandomizeSFXNaviEnnemy", randoSFXNavi, 32, 0);
+            //         }
+            //         ImGui::Separator();
 
-                    ImGui::EndTable();
-                }
-                ImGui::EndTabItem();
-            }
+            //         ImGui::EndTable();
+            //     }
+            //     ImGui::EndTabItem();
             ImGui::EndTabBar();
         }
         ImGui::End();
