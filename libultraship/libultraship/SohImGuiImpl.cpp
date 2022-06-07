@@ -65,7 +65,7 @@ namespace SohImGui {
     bool needs_save = false;
     std::vector<const char*> CustomTexts;
     int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
-    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to Gamecube.
+    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to GameCube.
     ImVec4 hearts_colors;
     ImVec4 hearts_dd_colors;
     ImVec4 a_btn_colors;
@@ -442,20 +442,20 @@ namespace SohImGui {
     }
 
 
-    void EnhancementCombobox(const char* name, const char* ComboArray[], uint8_t FirstTimeValue = 0){
-        if (FirstTimeValue <= 0){
+    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
+        if (FirstTimeValue <= 0) {
             FirstTimeValue = 0;
         }
-        uint8_t selected=CVar_GetS32(name, FirstTimeValue);
-        uint8_t DefaultValue=selected;
-        if (ImGui::BeginCombo("##name", ComboArray[DefaultValue])) {
-            uint8_t ComboxSize = sizeof(&ComboArray);
-            for (uint8_t i = 0; i <= ComboxSize; i++) {
+        uint8_t selected = CVar_GetS32(name, FirstTimeValue);
+        uint8_t DefaultValue = selected;
+        std::string comboName = std::string("##") + std::string(name);
+        if (ImGui::BeginCombo(comboName.c_str(), ComboArray[DefaultValue])) {
+            for (uint8_t i = 0; i < arraySize; i++) {
                 if (strlen(ComboArray[i]) > 1) {
-                    if (ImGui::Selectable(ComboArray[i], i==selected)) {
-                    CVar_SetS32(name, i);
-                    selected=i;
-                    needs_save = true;
+                    if (ImGui::Selectable(ComboArray[i], i == selected)) {
+                        CVar_SetS32(name, i);
+                        selected = i;
+                        needs_save = true;
                     }
                 }
             }
@@ -834,7 +834,7 @@ namespace SohImGui {
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
-                EnhancementCombobox("gTextureFilter", filters);
+                EnhancementCombobox("gTextureFilter", filters, 3, 0);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
                 gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
@@ -870,10 +870,14 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("Fast Chests", "gFastChests");
+                    Tooltip("Kick open every chest");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
                     Tooltip("Disables the voice audio when Navi calls you");
+                    EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
+                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     ImGui::EndMenu();
                 }
 
@@ -940,6 +944,16 @@ namespace SohImGui {
                     Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
+                    EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
+                    Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
+
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("Restoration"))
+                {
+                    EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                    Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
 
                     ImGui::EndMenu();
                 }
@@ -998,8 +1012,8 @@ namespace SohImGui {
                 EnhancementCheckbox("HUD Margins editor", "gUseMargins");
                 EnhancementRadioButton("N64 interface", "gHudColors", 0);
                 Tooltip("Change interface color to N64 style.");
-                EnhancementRadioButton("Gamecube interface", "gHudColors", 1);
-                Tooltip("Change interface color to Gamecube style.");
+                EnhancementRadioButton("GameCube interface", "gHudColors", 1);
+                Tooltip("Change interface color to GameCube style.");
                 EnhancementRadioButton("Custom interface", "gHudColors", 2);
                 Tooltip("Change interface color to your own made style.");
                 if (CVar_GetS32("gHudColors", 1) == 2) {
@@ -1035,6 +1049,8 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
+                Tooltip("Prevents the Deku Shield from burning on contact with fire");
 
                 ImGui::EndMenu();
             }
@@ -1145,13 +1161,13 @@ namespace SohImGui {
                     }
                     if (ImGui::BeginTabItem("Buttons")) {
                         EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(90,90,255,255));
-                        Tooltip("A Buttons colors (Green in original Gamecube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
+                        Tooltip("A Buttons colors (Green in original GameCube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
                         EnhancementColor("B Buttons", "gCCBBtnPrim", b_btn_colors, ImVec4(0,150,0,255));
-                        Tooltip("B Button colors (Red in original Gamecube)\nAffect B button colors on interface");
+                        Tooltip("B Button colors (Red in original GameCube)\nAffect B button colors on interface");
                         EnhancementColor("C Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255,160,0,255));
                         Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
                         EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(120,120,120,255));
-                        Tooltip("Start Button colors (gray in Gamecube)\nAffect Start button colors in inventory");
+                        Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
                         ImGui::EndTabItem();
                     }
                     if (ImGui::BeginTabItem("Magic Bar")) {
