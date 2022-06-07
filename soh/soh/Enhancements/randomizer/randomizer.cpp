@@ -1466,6 +1466,8 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_PRELUDE_OF_LIGHT;
         case RG_MAGIC_BEAN:
             return GI_BEAN;
+        case RG_BIGGORON_SWORD:
+            return GI_SWORD_BGS;
         default:
             return ogItemId;
     }
@@ -2120,6 +2122,15 @@ void DrawRandoEditor(bool& open) {
     if (ImGui::Checkbox("Enable Randomizer", &randoEnabled)) {
         CVar_SetS32("gRandomizer", randoEnabled);
         Game::SaveSettings();
+    }
+
+    switch(CVar_GetS32("gRandomizer", 0)) {
+        case 0:
+            ImGui::Text("blarg");
+            break;
+        case 1:
+            ImGui::Text("blarg2");
+            break;
     }
 
     if(randoEnabled) {
