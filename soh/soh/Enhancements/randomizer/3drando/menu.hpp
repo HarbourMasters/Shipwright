@@ -45,7 +45,7 @@ void PrintResetToDefaultsMenu();
 void PrintGenerateMenu();
 void ClearDescription();
 void PrintOptionDescription();
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings);
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings);
 std::string GetInput(const char* hintText);
 
 extern void MenuInit();

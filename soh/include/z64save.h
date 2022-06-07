@@ -67,6 +67,11 @@ typedef struct {
 } ItemLocationRando;
 
 typedef struct {
+    RandomizerSettingKey key;
+    u8 value;
+} RandoSettings;
+
+typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
     /* 0x0004 */ s32 linkAge; // 0: Adult; 1: Child
     /* 0x0008 */ s32 cutsceneIndex;
@@ -163,6 +168,7 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
+    RandoSettings randoSettings[300];
     ItemLocationRando itemLocations[500];
     u8 seedIcons[5];
 } SaveContext; // size = 0x1428

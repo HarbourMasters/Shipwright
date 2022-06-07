@@ -2459,20 +2459,10 @@ namespace Settings {
   }
 
   //Function to set flags depending on settings
-  void UpdateSettings(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
+  void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
 
     // from OpenForest definition: {"Closed", "Open", "Closed Deku"}
-    switch(cvarSettings[RSK_OPEN_FOREST]) {
-      case RSV_OPEN_FOREST_CLOSED:
-        OpenForest.SetSelectedIndex(0);
-        break;
-      case RSV_OPEN_FOREST_OPEN:
-        OpenForest.SetSelectedIndex(1);
-        break;
-      case RSV_OPEN_FOREST_CLOSED_DEKU:
-        OpenForest.SetSelectedIndex(2);
-        break;
-    }
+    OpenForest.SetSelectedIndex(cvarSettings[RSK_OPEN_FOREST]);
 
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
