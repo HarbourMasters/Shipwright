@@ -506,9 +506,9 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue)
     {
-        int val = CVar_GetS32(cvarName, 0);
+        int val = CVar_GetS32(cvarName, defaultValue);
 
         ImGui::Text(text, val);
 

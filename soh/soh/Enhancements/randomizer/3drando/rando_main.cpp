@@ -10,7 +10,7 @@
 
 #define TICKS_PER_SEC 268123480.0
 
-void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
+void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, u8> cvarSettings) {
     HintTable_Init();
     ItemTable_Init();
     LocationTable_Init();

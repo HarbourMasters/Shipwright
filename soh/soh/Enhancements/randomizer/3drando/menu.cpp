@@ -516,7 +516,7 @@ void PrintOptionDescription() {
   printf("\x1b[22;0H%s", description.data());
 }
 
-std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
     // if a blank seed was entered, make a random one
     srand(time(NULL));
     Settings::seed = std::to_string(rand());

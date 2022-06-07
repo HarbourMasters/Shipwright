@@ -22,6 +22,7 @@
 #include <json.hpp>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 using json = nlohmann::json;
 
@@ -597,9 +598,13 @@ const char* SpoilerLog_Write() {
     //WriteHints(spoilerLog);
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations();
+    
+    if (!std::filesystem::exists("./Randomizer")) {
+        std::filesystem::create_directory("./Randomizer");
+    }
 
     std::string jsonString = jsonData.dump(4);
-    std::ofstream jsonFile("./randomizer/" + Settings::seed + ".json");
+    std::ofstream jsonFile("./Randomizer/" + Settings::seed + ".json");
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 

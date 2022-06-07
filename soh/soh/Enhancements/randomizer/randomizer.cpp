@@ -2212,18 +2212,8 @@ void GenerateRandomizerImgui() {
     CVar_SetS32("gRandoGenerating", 1);
     Game::SaveSettings();
 
-    std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings;
-    switch(CVar_GetS32("gRandomizeForest", 0)) {
-        case 0:
-            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_OPEN;
-            break;
-        case 1:
-            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_CLOSED_DEKU;
-            break;
-        case 2:
-            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_CLOSED;
-            break;
-    }
+    std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
+    cvarSettings[RSK_OPEN_FOREST] = CVar_GetS32("gRandomizeForest", 1);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2247,13 +2237,13 @@ void DrawRandoEditor(bool& open) {
 
 // Randomizer settings
     // Open Settings
-    const char* randoForest[3] = { "Open", "Closed Deku", "Closed" };
+    const char* randoForest[3] = { "Closed", "Open", "Closed Deku" };
     const char* randoKakarikoGate[2] = { "Closed", "Open" };
     const char* randoDoorOfTime[3] = { "Open", "Closed", "Intended" };
     const char* randoZorasFountain[3] = { "Normal", "Adult", "Open" };
     const char* randoGerudoFortress[3] = { "Normal", "Fast", "Open" };
-    const char* randoRainbowBridge[7] = { "Vanilla", "Stones", "Medallions", "Rewards", "Dungeons", "Tokens", "Open" };
-    const char* randoGanonsTrial[2] = { "On", "Off" };
+    const char* randoRainbowBridge[7] = { "Open", "Vanilla", "Stones", "Medallions", "Rewards", "Dungeons", "Tokens" };
+    const char* randoGanonsTrial[2] = { "Off", "On" };
 
     // World Settings
     const char* randoStartingAge[3] = { "Child", "Adult", "Random" };
@@ -2268,7 +2258,7 @@ void DrawRandoEditor(bool& open) {
 
     // Shuffle Settings
     const char* randoShuffleDungeonRewards[4] = { "End of Dungeons", "Any Dungeon", "Overworld", "Anywhere" };
-    const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anytime", "Nothing" };
+    const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
     const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
@@ -2492,7 +2482,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
                     // COLUMN 1 - OPEN SETTINGS
-                    ImGui::NewLine();
+                    //ImGui::NewLine();
                     // SohImGui::EnhancementCheckbox("Randomize All Open Settings", "gRandomizeAllOpenSettings");
                     // InsertHelpHoverText("Randomize all Open Settings except for Logic rules");
                     // ImGui::Separator();
@@ -2500,18 +2490,18 @@ void DrawRandoEditor(bool& open) {
                     if (CVar_GetS32("gRandomizeAllOpenSettings", 0) != 1) {
                         // Forest
                         ImGui::Text("Forest");
-                        switch (CVar_GetS32("gRandomizeForest", 0)) {
-                            case 0:
+                        switch (CVar_GetS32("gRandomizeForest", 1)) {
+                            case 1:
                                 InsertHelpHoverText("Mido no longer blocks the path to the Deku Tree\n"
                                                     "The Kokiri boy no longer blocks the path\nout of the forest.");
                                 break;
-                            case 1:
+                            case 2:
                                 InsertHelpHoverText(
                                     "The Kokiri boy no longer blocks the path out of the forest\nMido "
                                     "still blocks the path to the Deku\nTree, requiring the Kokiri Sword "
                                     "and a Deku Shield to\naccess the Deku Tree.");
                                 break;
-                            case 2:
+                            case 0:
                                 InsertHelpHoverText(
                                     "Beating Deku Tree is logically required to leave\nthe forest area "
                                     "(Kokiri Forest / Loost Woods / Sacred\nForest Meadow / Deku Tree) "
@@ -2520,7 +2510,7 @@ void DrawRandoEditor(bool& open) {
                                     "forest area.\nThis settins is incompatible with starting as adult.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
+                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
                         ImGui::Separator();
                         // Kakariko Gate
                         ImGui::Text("Kakariko Gate");
@@ -2536,7 +2526,7 @@ void DrawRandoEditor(bool& open) {
                                     "opens upon obtaining \n Zelda's Letter without needing to show\nit to the guard.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
+                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
                         ImGui::Separator();
 
                         // Door of Time
@@ -2597,18 +2587,18 @@ void DrawRandoEditor(bool& open) {
                                     "the\ninventory allowing access to Gerudo Training\nGrounds.");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
+                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
                         ImGui::Separator();
 
                         // Rainbow Bridge
                         ImGui::Text("Rainbow Bridge");
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
-                        switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
-                            case 0:
+                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
+                        switch (CVar_GetS32("gRandomizeRainbowBridge", 3)) {
+                            case 1:
                                 InsertHelpHoverText("The Rainbow Bridge requires Shadow and Spirit\nMedallions as well "
                                                     "as Light Arrows.");
                                 break;
-                            case 1:
+                            case 2:
                                 InsertHelpHoverText("The Rainbow Bridge requires collecting a\nconfigurable number of "
                                                     "Spiritual Stones.");
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
@@ -2616,19 +2606,19 @@ void DrawRandoEditor(bool& open) {
                                 SetLastItemHoverText(
                                     "Sets the number of Spiritual Stones required to\nspawn the Rainbow Bridge.");
                                 break;
-                            case 2:
+                            case 3:
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                               "gRandomizeMedallionCount", 0, 6, "");
+                                                               "gRandomizeMedallionCount", 0, 6, "", 6);
                                 SetLastItemHoverText(
                                     "The Rainbow Bridge requires collecting a\nconfigurable number of Medallions.");
                                 break;
-                            case 3:
+                            case 4:
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                "gRandomizeRewardCount", 0, 9, "");
                                 SetLastItemHoverText("The Rainbow Bridge requires collecting a\nconfigurable number of "
                                                      "Dungeon Rewards.");
                                 break;
-                            case 4:
+                            case 5:
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                "gRandomizeDungeonCount", 0, 8, "");
                                 SetLastItemHoverText(
@@ -2636,7 +2626,7 @@ void DrawRandoEditor(bool& open) {
                                     "Dungeons.\n\nDungeons "
                                     "are considered complete when Link steps\ninto the blue warp at the end of them.");
                                 break;
-                            case 5:
+                            case 6:
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                "gRandomizeTokenCount", 0, 100, "");
                                 SetLastItemHoverText("The Rainbow Bridge requires collecting a\nconfigurable number of "
@@ -2646,16 +2636,17 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Separator();
 
                         // Random Ganon's Trials
+                        /*
                         ImGui::Text("Random Ganon's Trials");
                         InsertHelpHoverText("Sets a random number or required trials to enter\nGanon's Tower.");
                         SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 2, 0);
-                        if (CVar_GetS32("gRandomizeGanonTrial", 0) == 1) {
-                            SohImGui::EnhancementSliderInt("Trial Count: %d", "##RandoTrialCount",
+                        if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
+                        */
+                            SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                                                            "gRandomizeGanonTrialCount", 0, 6, "");
-                            InsertHelpHoverText(
-                                "Set the number of trials required to enter\nGanon's Tower. Trials will be "
-                                "randomly selected.");
-                        }
+                            InsertHelpHoverText("Set the number of trials required to enter\nGanon's Tower.");
+
+                        // }
                         ImGui::Separator();
                     }
                     ImGui::TableNextColumn();
@@ -2787,7 +2778,7 @@ void DrawRandoEditor(bool& open) {
 
                     // COLUMN 3
                     // Randomize Settings
-                    ImGui::NewLine();
+                    //ImGui::NewLine();
                     // SohImGui::EnhancementCheckbox("Randomize All Shuffle Settings", "gRandomizeAllShuffleSettings");
                     // InsertHelpHoverText("Randomize all Shuffle Settings");
                     // ImGui::Separator();

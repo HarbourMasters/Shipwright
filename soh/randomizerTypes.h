@@ -913,9 +913,3 @@ typedef enum {
 typedef enum {
     RSK_OPEN_FOREST
 } RandomizerSettingKey;
-
-typedef enum {
-    RSV_OPEN_FOREST_OPEN,
-    RSV_OPEN_FOREST_CLOSED_DEKU,
-    RSV_OPEN_FOREST_CLOSED
-} RandomizerSettingValue;

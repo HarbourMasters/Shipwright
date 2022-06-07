@@ -10,7 +10,7 @@
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
+int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
