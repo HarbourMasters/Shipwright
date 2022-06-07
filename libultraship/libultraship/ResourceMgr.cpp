@@ -95,7 +95,7 @@ namespace Ship {
 
 			//Lock.unlock();
 
-			SPDLOG_DEBUG("Loaded File {} on ResourceMgr thread", ToLoad->path.c_str());
+			SPDLOG_DEBUG("Loaded File {} on ResourceMgr thread", ToLoad->path);
 
 			ToLoad->FileLoadNotifier.notify_all();
 		}
