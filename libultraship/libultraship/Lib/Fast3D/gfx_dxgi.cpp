@@ -360,7 +360,7 @@ static void gfx_dxgi_show_cursor(bool hide) {
       * ShowCursor no longer responds. Debugging shows the bool to be correct.
     **/
     INFO("renderer: %s", hide ? "true" : "false");
-    ShowCursor(hide);
+    //ShowCursor(hide);
 }
 
 static void gfx_dxgi_set_fullscreen(bool enable) {
