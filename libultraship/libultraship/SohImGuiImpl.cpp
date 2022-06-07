@@ -994,7 +994,10 @@ namespace SohImGui {
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
-
+#if defined(_WIN32)
+                EnhancementCheckbox("Use CSPRNG random", "gCryptoRandom");
+                Tooltip("Uses cryptographic RNG for better randomness and non-manipulable RNG (Requires restart)");
+#endif
                 ImGui::EndMenu();
             }
 
