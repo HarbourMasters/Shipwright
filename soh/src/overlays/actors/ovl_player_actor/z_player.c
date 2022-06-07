@@ -6181,6 +6181,9 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             if (this->getItemId != GI_NONE) {
                 GetItemEntry* giEntry = &sGetItemTable[-this->getItemId - 1];
                 EnBox* chest = (EnBox*)interactedActor;
+                if(CVar_GetS32("gFastChests", 0) != 0) {
+                    giEntry->gi = -1 * abs(giEntry->gi);
+                }
 
                 if (giEntry->itemId != ITEM_NONE) {
                     if (((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) && (giEntry->field & 0x40)) ||
