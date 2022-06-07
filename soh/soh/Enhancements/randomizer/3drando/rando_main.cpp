@@ -10,13 +10,17 @@
 
 #define TICKS_PER_SEC 268123480.0
 
-void RandoMain::GenerateRando() {
+void RandoMain::GenerateRando(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
     HintTable_Init();
     ItemTable_Init();
     LocationTable_Init();
 
-    std::string fileName = GenerateRandomizer();
+    // std::string settingsFileName = "./randomizer/latest_settings.json";
+    // CVar_SetString("gLoadedPreset", settingsFileName.c_str());
+
+    std::string fileName = GenerateRandomizer(cvarSettings);
     CVar_SetString("gSpoilerLog", fileName.c_str());
+
     Game::SaveSettings();
     Game::LoadSettings();
     CVar_SetS32("gDroppedNewSpoilerFile", 1);

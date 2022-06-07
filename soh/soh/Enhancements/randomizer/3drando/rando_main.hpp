@@ -1,5 +1,5 @@
 #pragma once
 
 namespace RandoMain {
-    void GenerateRando();
+    void GenerateRando(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings);
 }

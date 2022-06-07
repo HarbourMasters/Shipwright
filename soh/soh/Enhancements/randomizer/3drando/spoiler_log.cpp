@@ -313,9 +313,11 @@ static void WriteShuffledEntrance(
   }
 }
 
+json jsonData;
+
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
-static void WriteSettings(tinyxml2::XMLDocument& spoilerLog, const bool printAll = false) {
-  auto parentNode = spoilerLog.NewElement("settings");
+static void WriteSettings(const bool printAll = false) {
+  // auto parentNode = spoilerLog.NewElement("settings");
 
   std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
 
@@ -323,15 +325,25 @@ static void WriteSettings(tinyxml2::XMLDocument& spoilerLog, const bool printAll
     //This is a menu of settings, write them
     if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
       for (const Option* setting : *menu->settingsList) {
-        if (printAll || (!setting->IsHidden() && setting->IsCategory(OptionCategory::Setting))) {
-          auto node = parentNode->InsertNewChildElement("setting");
-          node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
-          node->SetText(setting->GetSelectedOptionText().c_str());
-        }
+        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
+
+
+      // for (const Option* setting : *menu->settingsList) {
+      //   if (printAll || (!setting->IsHidden() && setting->IsCategory(OptionCategory::Setting))) {
+      //     auto node = parentNode->InsertNewChildElement("setting");
+      //     node->SetAttribute("name", RemoveLineBreaks(setting->GetName()).c_str());
+      //     node->SetText(setting->GetSelectedOptionText().c_str());
+      //   }
+      // }
     }
   }
-  spoilerLog.RootElement()->InsertEndChild(parentNode);
+  // spoilerLog.RootElement()->InsertEndChild(parentNode);
+
+  //     for (const uint32_t key : allLocations) {
+  //       ItemLocation* location = Location(key);
+  //       settingsJsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+  //   }
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
@@ -541,8 +553,6 @@ static void WriteHints(tinyxml2::XMLDocument& spoilerLog) {
     spoilerLog.RootElement()->InsertEndChild(parentNode);
 }
 
-json jsonData;
-
 static void WriteAllLocations() {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
@@ -568,7 +578,7 @@ const char* SpoilerLog_Write() {
         index++;
     }
 
-    //WriteSettings(spoilerLog);
+    WriteSettings();
     //WriteExcludedLocations(spoilerLog);
     //WriteStartingInventory(spoilerLog);
     //WriteEnabledTricks(spoilerLog);
@@ -615,7 +625,7 @@ bool PlacementLog_Write() {
     rootNode->SetAttribute("seed", Settings::seed.c_str());
     rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
-    WriteSettings(placementLog, true); // Include hidden settings.
+    // WriteSettings(placementLog, true); // Include hidden settings.
     WriteExcludedLocations(placementLog);
     WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);

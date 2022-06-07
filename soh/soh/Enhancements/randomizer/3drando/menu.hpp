@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+#include "randomizerTypes.h"
 
 #define MAIN_MENU 0
 #define OPTION_SUB_MENU 1
@@ -43,7 +45,7 @@ void PrintResetToDefaultsMenu();
 void PrintGenerateMenu();
 void ClearDescription();
 void PrintOptionDescription();
-std::string GenerateRandomizer();
+std::string GenerateRandomizer(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings);
 std::string GetInput(const char* hintText);
 
 extern void MenuInit();

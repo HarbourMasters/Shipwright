@@ -848,7 +848,7 @@ class Menu {
 };
 
 namespace Settings {
-  void UpdateSettings();
+  void UpdateSettings(std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings);
   SettingsContext FillContext();
   void InitSettings();
   void SetDefaultSettings();

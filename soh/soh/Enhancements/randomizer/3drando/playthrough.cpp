@@ -6,10 +6,11 @@
 #include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
+#include "randomizerTypes.h"
 
 namespace Playthrough {
 
-int Playthrough_Init(uint32_t seed) {
+int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings) {
     // initialize the RNG with just the seed incase any settings need to be
     // resolved to something random
     Random_Init(seed);
@@ -20,7 +21,7 @@ int Playthrough_Init(uint32_t seed) {
     HintReset();
     Areas::AccessReset();
 
-    Settings::UpdateSettings();
+    Settings::UpdateSettings(cvarSettings);
     // once the settings have been finalized turn them into a string for hashing
     std::string settingsStr;
     for (Menu* menu : Settings::GetAllOptionMenus()) {
@@ -87,7 +88,7 @@ int Playthrough_Repeat(int count /*= 1*/) {
         Settings::seed = std::to_string(repeatedSeed);
         CitraPrint("testing seed: " + Settings::seed);
         ClearProgress();
-        Playthrough_Init(std::hash<std::string>{}(Settings::seed));
+        // Playthrough_Init(std::hash<std::string>{}(Settings::seed));
         printf("\x1b[15;15HSeeds Generated: %d\n", i + 1);
     }
 
