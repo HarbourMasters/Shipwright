@@ -2212,7 +2212,20 @@ void GenerateRandomizerImgui() {
     CVar_SetS32("gRandoGenerating", 1);
     Game::SaveSettings();
 
-    RandoMain::GenerateRando();
+    std::unordered_map<RandomizerSettingKey, RandomizerSettingValue> cvarSettings;
+    switch(CVar_GetS32("gRandomizeForest", 0)) {
+        case 0:
+            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_OPEN;
+            break;
+        case 1:
+            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_CLOSED_DEKU;
+            break;
+        case 2:
+            cvarSettings[RSK_OPEN_FOREST] = RSV_OPEN_FOREST_CLOSED;
+            break;
+    }
+
+    RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
     Game::SaveSettings();
