@@ -1096,7 +1096,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "  Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "  Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Random Ganon's Trials", RSK_RANDOM_TRIALS },
-    { "  Trial Count", RSK_TRIAL_COUNT }
+    { "  Trial Count", RSK_TRIAL_COUNT },
+    { "Start With Deku Shield", RSK_STARTING_DEKU_SHIELD },
+    { "Start With Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
+    { "Start With Ocarina", RSK_STARTING_OCARINA },
+    { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES }
 };
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
@@ -1242,6 +1246,34 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_MAPS_COMPASSES:
+                        if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 0; 
+                        } else if (it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 1; 
+                        }
+                        break;
+                    case RSK_STARTING_DEKU_SHIELD:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_KOKIRI_SWORD:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_OCARINA:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Fairy Ocarina") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;

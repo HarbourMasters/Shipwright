@@ -270,8 +270,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
-        // todo delete this it's only here to show things are working
-        int blarg = GetRandoSettingValue(RSK_FOREST);
+        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) {
+            uint32_t bitMask = 1 << 4;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
     }
 
     Save_SaveFile();
