@@ -20,7 +20,8 @@ namespace Ship {
 			void Init();
 			void StartFrame();
 			void RunCommands(Gfx* Commands, const std::vector<std::unordered_map<Mtx*, MtxF>>& mtx_replacements);
-			void SetFrameDivisor(int divisor);
+			void SetTargetFps(int fps);
+			void SetMaximumFrameLatency(int latency);
 			void GetPixelDepthPrepare(float x, float y);
 			uint16_t GetPixelDepth(float x, float y);
 			void ToggleFullscreen();

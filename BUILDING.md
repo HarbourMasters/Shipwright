@@ -21,7 +21,7 @@
 
 ```bash
 # Clone the repo
-git clone git@github.com:HarbourMasters/ShipWright.git
+git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
@@ -41,9 +41,9 @@ cp /usr/local/lib/libGLEW.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
-make setup -j$(nproc) OPTFLAGS=-O0 DEBUG=0
+make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
 # Compile the code
-make -j $(nproc) OPTFLAGS=-O0 DEBUG=0
+make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 ```
 
 # Compatible Roms

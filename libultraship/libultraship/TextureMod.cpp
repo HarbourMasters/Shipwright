@@ -1,5 +1,7 @@
 #include "TextureMod.h"
 
+#if 0
+
 #include <map>
 #include <string>
 #include <iostream>
@@ -122,3 +124,5 @@ namespace Ship {
 		LoadedOTRS.clear();
 	}
 }
+
+#endif

@@ -3,6 +3,8 @@
 #include <PR/ultra64/gbi.h>
 #include "Lib/Fast3D/gfx_pc.h"
 
+#if 0
+
 namespace Ship {
 	enum TextureMod {
 		GRAYSCALE,
@@ -49,3 +51,5 @@ namespace Ship {
 		}
 	}
 }
+
+#endif
