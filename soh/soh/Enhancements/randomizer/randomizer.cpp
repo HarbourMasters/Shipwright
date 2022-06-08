@@ -1606,189 +1606,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
     }
 
     switch(sceneNum) {
-        case 82:
-            switch (actorId) {
-                case 316:
-                    if (LINK_IS_ADULT) {
-                        return RC_KAK_ANJU_AS_ADULT;
-                    } else {
-                        return RC_KAK_ANJU_AS_CHILD;
-                    }
-            }
-        case 17:
-            switch (actorId) {
-                case 95:
-                    return RC_DEKU_TREE_QUEEN_GOHMA_HEART;
-                case 93:
-                    return RC_QUEEN_GOHMA;
-            }
-        case 18:
-            switch (actorId) {
-                case 95:
-                    return RC_DODONGOS_CAVERN_KING_DODONGO_HEART;
-                case 93:
-                    return RC_KING_DODONGO;
-            }
-        case 19:
-            switch (actorId) {
-                case 95:
-                    return RC_JABU_JABUS_BELLY_BARINADE_HEART;
-                case 93:
-                    return RC_BARINADE;
-            }
-        case 20:
-            switch (actorId) {
-                case 95:
-                    return RC_FOREST_TEMPLE_PHANTOM_GANON_HEART;
-                case 93:
-                    return RC_PHANTOM_GANON;
-            }
-        case 21:
-            switch (actorId) {
-                case 95:
-                    return RC_FIRE_TEMPLE_VOLVAGIA_HEART;
-                case 93:
-                    return RC_VOLVAGIA;
-            }
-        case 22:
-            switch (actorId) {
-                case 95:
-                    return RC_WATER_TEMPLE_MORPHA_HEART;
-                case 93:
-                    return RC_MORPHA;
-            }
-        case 23:
-            switch (actorId) {
-                case 95:
-                    return RC_SPIRIT_TEMPLE_TWINROVA_HEART;
-                case 93:
-                    return RC_TWINROVA;
-            }
-        case 24:
-            switch (actorId) {
-                case 95:
-                    return RC_SHADOW_TEMPLE_BONGO_BONGO_HEART;
-                case 93:
-                    return RC_BONGO_BONGO;
-            }
-        case 40:
-            switch (actorParams) {
-                case 22944:
-                    return RC_KF_MIDOS_TOP_LEFT_CHEST;
-                case 22945:
-                    return RC_KF_MIDOS_TOP_RIGHT_CHEST;
-                case 22914:
-                    return RC_KF_MIDOS_BOTTOM_LEFT_CHEST;
-                case 22787:
-                    return RC_KF_MIDOS_BOTTOM_RIGHT_CHEST;
-            }
-        case 84:
-            switch (actorParams) {
-                case 1030:
-                    return RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
-                case 2822:
-                    return RC_ZR_NEAR_DOMAIN_FREESTANDING_POH;
-            }
-        case 85:
-            switch (actorParams) {
-                case 1248:
-                    return RC_KF_KOKIRI_SWORD_CHEST;
-            }
-        case 62:
-            switch (actorParams) {
-                case 22988:
-                    return RC_KF_STORMS_GROTTO_CHEST;
-                case 22964:
-                    return RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST;
-                case 31409:
-                    return RC_SFM_WOLFOS_GROTTO_CHEST;
-                case 22944:
-                    return RC_HF_NEAR_MARKET_GROTTO_CHEST;
-                case 22978:
-                    return RC_HF_SOUTHEAST_GROTTO_CHEST;
-                case 22947:
-                    return RC_HF_OPEN_GROTTO_CHEST;
-                case 22984:
-                    return RC_KAK_OPEN_GROTTO_CHEST;
-                case 31434:
-                    return RC_KAK_REDEAD_GROTTO_CHEST;
-                case 23255:
-                    return RC_DMT_STORMS_GROTTO_CHEST;
-                case 23802:
-                    return RC_DMC_UPPER_GROTTO_CHEST;
-                case 22985:
-                    return RC_ZR_OPEN_GROTTO_CHEST;
-                case 262:
-                    return RC_HF_TEKTITE_GROTTO_FREESTANDING_POH;
-            }
-        case 64:
-            switch (actorParams) {
-                case 21824:
-                    return RC_GRAVEYARD_SHIELD_GRAVE_CHEST;
-            }
-        case 63:
-            switch (actorParams) {
-                case -22592:
-                    return RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST;
-            }
-        case 65:
-            switch (actorParams) {
-                case -32736:
-                    return RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST;
-            }
-        case 72:
-            // todo make sure dampe gives the PoH when the chest is opened
-            // default logic seems to be give PoH when hookshot in inventory
-            switch (actorParams) {
-                case 4352:
-                    return RC_GRAVEYARD_HOOKSHOT_CHEST;
-                case 262:
-                    return RC_KAK_WINDMILL_FREESTANDING_POH;
-                case 1798:
-                    return RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH;
-            }
-        case 96:
-            switch (actorParams) {
-                case 7686:
-                    return RC_DMT_FREESTANDING_POH;
-                case 23201:
-                    return RC_DMT_CHEST;
-            }
-        case 98:
-            switch (actorParams) {
-                case 23232:
-                    return RC_GC_MAZE_LEFT_CHEST;
-                case 23201:
-                    return RC_GC_MAZE_RIGHT_CHEST;
-                case 23202:
-                    return RC_GC_MAZE_CENTER_CHEST;
-                case 7942:
-                    return RC_GC_POT_FREESTANDING_POH;
-            }
-        case 88:
-            switch (actorParams) {
-                case -18496:
-                    return RC_ZD_CHEST;
-            }
-        case 90:
-            switch (actorParams) {
-                case 23200:
-                    return RC_GV_CHEST;
-                case 262:
-                    return RC_GV_WATERFALL_FREESTANDING_POH;
-                case 518:
-                    return RC_GV_CRATE_FREESTANDING_POH;
-            }
-        case 93:
-            switch (actorParams) {
-                case 1984:
-                    return RC_GF_CHEST;
-            }
-        case 94:
-            switch (actorParams) {
-                case -30048:
-                    return RC_WASTELAND_CHEST;
-            }
         case 0:
             switch (actorParams) {
                 case 2083:
@@ -1804,6 +1621,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 22788:
                     return RC_DEKU_TREE_BASEMENT_CHEST;
             }
+            break;
         case 1:
             switch (actorParams) {
                 case 2088:
@@ -1819,6 +1637,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 20512:
                     return RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST;
             }
+            break;
         case 2:
             switch (actorParams) {
                 case 4289:
@@ -1828,35 +1647,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case -18428:
                     return RC_JABU_JABUS_BELLY_COMPASS_CHEST;
             }
-        case 8:
-            switch (actorParams) {
-                case 22600:
-                    return RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
-                case 20578:
-                    return RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST;
-                case 23684:
-                    return RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST;
-                case 22793:
-                    return RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST;
-                case 2049:
-                    return RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST;
-                case 20558:
-                    return RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST;
-                case 22597:
-                    return RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST;
-                case 21802:
-                    return RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST;
-                case 21836:
-                    return RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST;
-                case 2087:
-                    return RC_BOTTOM_OF_THE_WELL_MAP_CHEST;
-                case 23760:
-                    return RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST;
-                case 4419:
-                    return RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST;
-                case 27348:
-                    return RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
-            }
+            break;
         case 3:
             switch (actorParams) {
                 case 22595:
@@ -1886,6 +1677,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 22827:
                     return RC_FOREST_TEMPLE_BASEMENT_CHEST;
             }
+            break;
         case 4:
             switch (actorParams) {
                 case 22593:
@@ -1917,6 +1709,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 22601:
                     return RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST;
             }
+            break;
         case 5:
             switch (actorParams) {
                 case 2057:
@@ -1940,41 +1733,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 22602:
                     return RC_WATER_TEMPLE_DRAGON_CHEST;
             }
-        case 7:
-            switch (actorParams) {
-                case 6177:
-                    return RC_SHADOW_TEMPLE_MAP_CHEST;
-                case 5607:
-                    return RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST;
-                case 6147:
-                    return RC_SHADOW_TEMPLE_COMPASS_CHEST;
-                case 22594:
-                    return RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST;
-                case 22668:
-                    return RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST;
-                case 26998:
-                    return RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST;
-                case 22853:
-                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST;
-                case 22662:
-                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST;
-                case -30652:
-                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST;
-                case 30857:
-                    return RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST;
-                case 26965:
-                    return RC_SHADOW_TEMPLE_WIND_HINT_CHEST;
-                case 30856:
-                    return RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST;
-                case 26708:
-                    return RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST;
-                case 22666:
-                    return RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST;
-                case 10219:
-                    return RC_SHADOW_TEMPLE_BOSS_KEY_CHEST;
-                case 30797:
-                    return RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
-            }
+            break;
         case 6:
             switch (actorParams) {
                 case 21800:
@@ -2012,15 +1771,73 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case -29454:
                     return RC_SPIRIT_TEMPLE_TOPMOST_CHEST;
             }
-        case 92:
+            break;
+        case 7:
             switch (actorParams) {
-                case 1707:
-                    return RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
-                case 13673:
-                    return RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
-                case 3334:
-                    return RC_COLOSSUS_FREESTANDING_POH;
+                case 6177:
+                    return RC_SHADOW_TEMPLE_MAP_CHEST;
+                case 5607:
+                    return RC_SHADOW_TEMPLE_HOVER_BOOTS_CHEST;
+                case 6147:
+                    return RC_SHADOW_TEMPLE_COMPASS_CHEST;
+                case 22594:
+                    return RC_SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST;
+                case 22668:
+                    return RC_SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST;
+                case 26998:
+                    return RC_SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST;
+                case 22853:
+                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST;
+                case 22662:
+                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_UPPER_CHEST;
+                case -30652:
+                    return RC_SHADOW_TEMPLE_FALLING_SPIKES_SWITCH_CHEST;
+                case 30857:
+                    return RC_SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST;
+                case 26965:
+                    return RC_SHADOW_TEMPLE_WIND_HINT_CHEST;
+                case 30856:
+                    return RC_SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST;
+                case 26708:
+                    return RC_SHADOW_TEMPLE_AFTER_WIND_HIDDEN_CHEST;
+                case 22666:
+                    return RC_SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST;
+                case 10219:
+                    return RC_SHADOW_TEMPLE_BOSS_KEY_CHEST;
+                case 30797:
+                    return RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
             }
+            break;
+        case 8:
+            switch (actorParams) {
+                case 22600:
+                    return RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
+                case 20578:
+                    return RC_BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST;
+                case 23684:
+                    return RC_BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST;
+                case 22793:
+                    return RC_BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST;
+                case 2049:
+                    return RC_BOTTOM_OF_THE_WELL_COMPASS_CHEST;
+                case 20558:
+                    return RC_BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST;
+                case 22597:
+                    return RC_BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST;
+                case 21802:
+                    return RC_BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST;
+                case 21836:
+                    return RC_BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST;
+                case 2087:
+                    return RC_BOTTOM_OF_THE_WELL_MAP_CHEST;
+                case 23760:
+                    return RC_BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST;
+                case 4419:
+                    return RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST;
+                case 27348:
+                    return RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
+            }
+            break;
         case 9:
             switch (actorParams) {
                 case 2080:
@@ -2032,6 +1849,13 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return RC_ICE_CAVERN_FREESTANDING_POH;
             }
+            break;
+        case 10:
+            switch (actorParams) {
+                case 10219:
+                    return RC_GANONS_TOWER_BOSS_KEY_CHEST;
+            }
+            break;
         case 11:
             switch (actorParams) {
                 case -30573:
@@ -2077,6 +1901,19 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 2860:
                     return RC_GERUDO_TRAINING_GROUND_MAZE_PATH_FINAL_CHEST;
             }
+            break;
+        case 12:
+            switch(actorParams) {
+                case 3089:
+                    return RC_GF_NORTH_F1_CARPENTER;
+                case 3857:
+                    return RC_GF_SOUTH_F2_CARPENTER;
+                case 3601:
+                    return RC_GF_SOUTH_F1_CARPENTER;
+                case 2577:
+                    return RC_GF_NORTH_F2_CARPENTER;
+            }
+            break;
         case 13:
             switch (actorParams) {
                 case 30857:
@@ -2110,11 +1947,216 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 26964:
                     return RC_GANONS_CASTLE_SPIRIT_TRIAL_INVISIBLE_CHEST;
             }
-        case 10:
-            switch (actorParams) {
-                case 10219:
-                    return RC_GANONS_TOWER_BOSS_KEY_CHEST;
+            break;
+        case 16:
+            if(actorParams == 20170) return RC_MARKET_TREASURE_CHEST_GAME_REWARD;
+
+            // keep keys og
+            if ((actorParams & 0x60) == 0x20) break;
+
+            if((actorParams & 0xF) < 2) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+            if((actorParams & 0xF) < 4) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+            if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+            if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+            if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+            
+            break;
+        case 17:
+            switch (actorId) {
+                case 95:
+                    return RC_DEKU_TREE_QUEEN_GOHMA_HEART;
+                case 93:
+                    return RC_QUEEN_GOHMA;
             }
+            break;
+        case 18:
+            switch (actorId) {
+                case 95:
+                    return RC_DODONGOS_CAVERN_KING_DODONGO_HEART;
+                case 93:
+                    return RC_KING_DODONGO;
+            }
+            break;
+        case 19:
+            switch (actorId) {
+                case 95:
+                    return RC_JABU_JABUS_BELLY_BARINADE_HEART;
+                case 93:
+                    return RC_BARINADE;
+            }
+            break;
+        case 20:
+            switch (actorId) {
+                case 95:
+                    return RC_FOREST_TEMPLE_PHANTOM_GANON_HEART;
+                case 93:
+                    return RC_PHANTOM_GANON;
+            }
+            break;
+        case 21:
+            switch (actorId) {
+                case 95:
+                    return RC_FIRE_TEMPLE_VOLVAGIA_HEART;
+                case 93:
+                    return RC_VOLVAGIA;
+            }
+            break;
+        case 22:
+            switch (actorId) {
+                case 95:
+                    return RC_WATER_TEMPLE_MORPHA_HEART;
+                case 93:
+                    return RC_MORPHA;
+            }
+            break;
+        case 23:
+            switch (actorId) {
+                case 95:
+                    return RC_SPIRIT_TEMPLE_TWINROVA_HEART;
+                case 93:
+                    return RC_TWINROVA;
+            }
+            break;
+        case 24:
+            switch (actorId) {
+                case 95:
+                    return RC_SHADOW_TEMPLE_BONGO_BONGO_HEART;
+                case 93:
+                    return RC_BONGO_BONGO;
+            }
+            break;
+        case 40:
+            switch (actorParams) {
+                case 22944:
+                    return RC_KF_MIDOS_TOP_LEFT_CHEST;
+                case 22945:
+                    return RC_KF_MIDOS_TOP_RIGHT_CHEST;
+                case 22914:
+                    return RC_KF_MIDOS_BOTTOM_LEFT_CHEST;
+                case 22787:
+                    return RC_KF_MIDOS_BOTTOM_RIGHT_CHEST;
+            }
+            break;
+        case 55:
+            switch (actorParams) {
+                case 262:
+                    return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
+            }
+            break;
+        case 59:
+            // using fountainType as actorParams
+            switch (actorParams) {
+                case 1:
+                    return RC_DMT_GREAT_FAIRY_REWARD;
+                case 2:
+                    return RC_DMC_GREAT_FAIRY_REWARD;
+                case 3:
+                    return RC_OGC_GREAT_FAIRY_REWARD;
+            }
+            break;
+        case 61:
+            // using fountainType as actorParams
+            switch (actorParams) {
+                case 1:
+                    return RC_ZF_GREAT_FAIRY_REWARD;
+                case 2:
+                    return RC_HC_GREAT_FAIRY_REWARD;
+                case 3:
+                    return RC_COLOSSUS_GREAT_FAIRY_REWARD;
+            }
+            break;
+        case 62:
+            switch (actorParams) {
+                case 22988:
+                    return RC_KF_STORMS_GROTTO_CHEST;
+                case 22964:
+                    return RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST;
+                case 31409:
+                    return RC_SFM_WOLFOS_GROTTO_CHEST;
+                case 22944:
+                    return RC_HF_NEAR_MARKET_GROTTO_CHEST;
+                case 22978:
+                    return RC_HF_SOUTHEAST_GROTTO_CHEST;
+                case 22947:
+                    return RC_HF_OPEN_GROTTO_CHEST;
+                case 22984:
+                    return RC_KAK_OPEN_GROTTO_CHEST;
+                case 31434:
+                    return RC_KAK_REDEAD_GROTTO_CHEST;
+                case 23255:
+                    return RC_DMT_STORMS_GROTTO_CHEST;
+                case 23802:
+                    return RC_DMC_UPPER_GROTTO_CHEST;
+                case 22985:
+                    return RC_ZR_OPEN_GROTTO_CHEST;
+                case 262:
+                    return RC_HF_TEKTITE_GROTTO_FREESTANDING_POH;
+            }
+            break;
+        case 63:
+            switch (actorParams) {
+                case -22592:
+                    return RC_GRAVEYARD_HEART_PIECE_GRAVE_CHEST;
+            }
+            break;
+        case 64:
+            switch (actorParams) {
+                case 21824:
+                    return RC_GRAVEYARD_SHIELD_GRAVE_CHEST;
+            }
+            break;
+        case 65:
+            switch (actorParams) {
+                case -32736:
+                    return RC_GRAVEYARD_ROYAL_FAMILYS_TOMB_CHEST;
+            }
+            break;
+        case 72:
+            switch (actorParams) {
+                case 4352:
+                    return RC_GRAVEYARD_HOOKSHOT_CHEST;
+                case 262:
+                    return RC_KAK_WINDMILL_FREESTANDING_POH;
+                case 1798:
+                    return RC_GRAVEYARD_DAMPE_RACE_FREESTANDING_POH;
+            }
+            break;
+        case 76:
+            switch (actorParams) {
+                case 262:
+                    return RC_LLR_FREESTANDING_POH;
+            }
+            break;
+        case 82:
+            switch (actorId) {
+                case 316:
+                    if (LINK_IS_ADULT) {
+                        return RC_KAK_ANJU_AS_ADULT;
+                    } else {
+                        return RC_KAK_ANJU_AS_CHILD;
+                    }
+            }
+            break;
+        case 83:
+            switch (actorParams) {
+                case 1030:
+                    return RC_GRAVEYARD_FREESTANDING_POH;
+            }
+            break;
+        case 84:
+            switch (actorParams) {
+                case 1030:
+                    return RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
+                case 2822:
+                    return RC_ZR_NEAR_DOMAIN_FREESTANDING_POH;
+            }
+            break;
+        case 85:
+            switch (actorParams) {
+                case 1248:
+                    return RC_KF_KOKIRI_SWORD_CHEST;
+            }
+            break;
         case 87:
             switch (actorId) {
                 case 271:
@@ -2128,28 +2170,13 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 7686:
                     return RC_LH_FREESTANDING_POH;
             }
-        case 76:
+            break;
+        case 88:
             switch (actorParams) {
-                case 262:
-                    return RC_LLR_FREESTANDING_POH;
+                case -18496:
+                    return RC_ZD_CHEST;
             }
-        case 55:
-            switch (actorParams) {
-                case 262:
-                    return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
-            }
-        case 83:
-            switch (actorParams) {
-                case 1030:
-                    return RC_GRAVEYARD_FREESTANDING_POH;
-            }
-        case 97:
-            switch (actorParams) {
-                case 2054:
-                    return RC_DMC_VOLCANO_FREESTANDING_POH;
-                case 518:
-                    return RC_DMC_WALL_FREESTANDING_POH;
-            }
+            break;
         case 89:
             switch (actorParams) {
                 case 5126:
@@ -2157,50 +2184,67 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return RC_ZF_ICEBERC_FREESTANDING_POH;
             }
-        case 59:
-            // using fountainType as actorParams
+            break;
+        case 90:
             switch (actorParams) {
-                case 1:
-                    return RC_DMT_GREAT_FAIRY_REWARD;
-                case 2:
-                    return RC_DMC_GREAT_FAIRY_REWARD;
-                case 3:
-                    return RC_OGC_GREAT_FAIRY_REWARD;
+                case 23200:
+                    return RC_GV_CHEST;
+                case 262:
+                    return RC_GV_WATERFALL_FREESTANDING_POH;
+                case 518:
+                    return RC_GV_CRATE_FREESTANDING_POH;
             }
-        case 61:
-            // using fountainType as actorParams
+            break;
+        case 92:
             switch (actorParams) {
-                case 1:
-                    return RC_ZF_GREAT_FAIRY_REWARD;
-                case 2:
-                    return RC_HC_GREAT_FAIRY_REWARD;
-                case 3:
-                    return RC_COLOSSUS_GREAT_FAIRY_REWARD;
+                case 1707:
+                    return RC_SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST;
+                case 13673:
+                    return RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
+                case 3334:
+                    return RC_COLOSSUS_FREESTANDING_POH;
             }
-        case 16:
-            if(actorParams == 20170) return RC_MARKET_TREASURE_CHEST_GAME_REWARD;
-
-            // keep keys og
-            if ((actorParams & 0x60) == 0x20) {
-                return RC_UNKNOWN_CHECK;
+            break;
+        case 93:
+            switch (actorParams) {
+                case 1984:
+                    return RC_GF_CHEST;
             }
-
-            if((actorParams & 0xF) < 2) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
-            if((actorParams & 0xF) < 4) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
-            if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
-            if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
-            if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
-        case 12:
-            switch(actorParams) {
-                case 3089:
-                    return RC_GF_NORTH_F1_CARPENTER;
-                case 3857:
-                    return RC_GF_SOUTH_F2_CARPENTER;
-                case 3601:
-                    return RC_GF_SOUTH_F1_CARPENTER;
-                case 2577:
-                    return RC_GF_NORTH_F2_CARPENTER;
+            break;
+        case 94:
+            switch (actorParams) {
+                case -30048:
+                    return RC_WASTELAND_CHEST;
             }
+            break;
+        case 96:
+            switch (actorParams) {
+                case 7686:
+                    return RC_DMT_FREESTANDING_POH;
+                case 23201:
+                    return RC_DMT_CHEST;
+            }
+            break;
+        case 97:
+            switch (actorParams) {
+                case 2054:
+                    return RC_DMC_VOLCANO_FREESTANDING_POH;
+                case 518:
+                    return RC_DMC_WALL_FREESTANDING_POH;
+            }
+            break;
+        case 98:
+            switch (actorParams) {
+                case 23232:
+                    return RC_GC_MAZE_LEFT_CHEST;
+                case 23201:
+                    return RC_GC_MAZE_RIGHT_CHEST;
+                case 23202:
+                    return RC_GC_MAZE_CENTER_CHEST;
+                case 7942:
+                    return RC_GC_POT_FREESTANDING_POH;
+            }
+            break;
     }
 
     return RC_UNKNOWN_CHECK;
