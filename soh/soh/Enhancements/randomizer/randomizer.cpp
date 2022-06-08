@@ -2452,6 +2452,12 @@ void GenerateRandomizerImgui() {
                                              CVar_GetS32("gRandomizeStartingKokiriSword", 0);
     cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
+    cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
+    cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
+    cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
+    cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 0);
+    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3051,30 +3057,31 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4,
                                                       0);
 
-                        // Link's Pocket
-                        if (CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0) {
-                            ImGui::Indent();
-                            ImGui::Text("Link's Pocket");
-                            switch (CVar_GetS32("gRandomizeLinksPocket", 0)) {
-                                case 0:
-                                    InsertHelpHoverText("Link will start with a Dungeon Reward in his\ninventory.");
-                                    break;
-                                case 1:
-                                    InsertHelpHoverText("Link will receive a random advancement item at the\nbeginning "
-                                                        "of the playtrough.");
-                                    break;
-                                case 2:
-                                    InsertHelpHoverText(
-                                        "Link will recieve a random item from the item pool\nat the beginning "
-                                        "of the playthrought.");
-                                    break;
-                                case 3:
-                                    InsertHelpHoverText("Link will start with a very useful green rupee.");
-                                    break;
-                            }
-                            SohImGui::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, 0);
-                            ImGui::Unindent();
-                        }
+                        // todo: support non dungeon rewards for link's pocket
+                        // // Link's Pocket
+                        // if (CVar_GetS32("gRandomizeShuffleDungeonReward", 0) != 0) {
+                        //     ImGui::Indent();
+                        //     ImGui::Text("Link's Pocket");
+                        //     switch (CVar_GetS32("gRandomizeLinksPocket", 0)) {
+                        //         case 0:
+                        //             InsertHelpHoverText("Link will start with a Dungeon Reward in his\ninventory.");
+                        //             break;
+                        //         case 1:
+                        //             InsertHelpHoverText("Link will receive a random advancement item at the\nbeginning "
+                        //                                 "of the playtrough.");
+                        //             break;
+                        //         case 2:
+                        //             InsertHelpHoverText(
+                        //                 "Link will recieve a random item from the item pool\nat the beginning "
+                        //                 "of the playthrought.");
+                        //             break;
+                        //         case 3:
+                        //             InsertHelpHoverText("Link will start with a very useful green rupee.");
+                        //             break;
+                        //     }
+                        //     SohImGui::EnhancementCombobox("gRandomizeLinksPocket", randoLinksPocket, 4, 0);
+                        //     ImGui::Unindent();
+                        // }
                         ImGui::Separator();
 
                         // Shuffle Song
