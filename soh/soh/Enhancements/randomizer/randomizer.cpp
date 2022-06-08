@@ -13,6 +13,7 @@
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
+#include "Lib/ImGui/imgui_internal.h"
 
 using json = nlohmann::json;
 
@@ -2650,6 +2651,10 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandoGenerating", 0));
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                            ImGui::GetStyle().Alpha * CVar_GetS32("gRandoGenerating", 0) ? 0.5f : 1.0f);
+
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
@@ -2668,7 +2673,7 @@ void DrawRandoEditor(bool& open) {
         }
         ImGui::Separator();
 
-        if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
                 if (ImGui::BeginTable("tableRandoMainRules", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3836,6 +3841,8 @@ void DrawRandoEditor(bool& open) {
             //     ImGui::EndTabItem();
             ImGui::EndTabBar();
         }
+        ImGui::PopItemFlag();
+        ImGui::PopStyleVar();
         ImGui::End();
     }
 
