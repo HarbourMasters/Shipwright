@@ -380,12 +380,15 @@ static void WriteStartingInventory() {
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-      //Ignore no starting bottles and the Choose/All On toggles
-      if (setting->IsDefaultSelected()) {
-        continue;
-      }
 
-      jsonData["starting_inventory"][setting->GetName()] = setting->GetSelectedOptionText();
+      // we need to write these every time because we're not clearing jsondata, so
+      // the default logic of only writing it when we aren't using the default value
+      // doesn't work, and because it'd be bad to set every single possible starting
+      // inventory item as "false" in the json, we're just going to check
+      // to see if the name is one of the 3 we're using rn
+      if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
+        jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
+      }
     }
   }
 }
