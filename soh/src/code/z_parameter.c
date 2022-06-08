@@ -3,6 +3,7 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
+#include <soh/Enhancements/dpad.h>
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -2164,7 +2165,7 @@ void Interface_SetNaviCall(GlobalContext* globalCtx, u16 naviCallState) {
 
     if (((naviCallState == 0x1D) || (naviCallState == 0x1E)) && !interfaceCtx->naviCalling &&
         (globalCtx->csCtx.state == CS_STATE_IDLE)) {
-        if (!CVar_GetS32("gDisableNaviCallAudio", 0)) {            
+        if (!CVar_GetS32("gDisableNaviCallAudio", 0)) {
             // clang-format off
             if (naviCallState == 0x1E) { Audio_PlaySoundGeneral(NA_SE_VO_NAVY_CALL, &D_801333D4, 4,
                                                                 &D_801333E0, &D_801333E0, &D_801333E8); }
@@ -2869,6 +2870,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
             // Start Button Texture, Color & Label
             gDPPipeSync(OVERLAY_DISP++);
+
             if (CVar_GetS32("gHudColors", 1) == 0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 0, 0, interfaceCtx->startAlpha);
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
@@ -2884,7 +2886,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            
+
             //There is probably a more elegant way to do it.
             char* doAction = actionsTbl[3];
             char newName[512];
@@ -2903,7 +2905,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 doAction = newName;
             }
             memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
-            
+
             gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -2987,8 +2989,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 //This later will feature color per C button right now that it.
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
             }
-            
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32, 
+
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32,
                                           OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)+Right_HUD_Margin), R_ITEM_BTN_Y(temp)+(Top_HUD_Margin*-1), R_ITEM_BTN_WIDTH(temp),
                                           R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
 
@@ -3073,7 +3075,7 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
         }
 
         if (i != 0) {
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8, 
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8,
                                           OTRGetRectDimensionFromRightEdge(R_ITEM_AMMO_X(button)+Right_HUD_Margin), R_ITEM_AMMO_Y(button)+(Top_HUD_Margin*-1), 8, 8, 1 << 10, 1 << 10);
         }
 
@@ -3428,6 +3430,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             Interface_DrawItemButtons(globalCtx);
+            draw_dpad();
         }
 
         gDPPipeSync(OVERLAY_DISP++);
@@ -3444,11 +3447,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
                 if ((player->stateFlags1 & 0x00800000) || (globalCtx->shootingGalleryStatus > 1) ||
                     ((globalCtx->sceneNum == SCENE_BOWLING) && Flags_GetSwitch(globalCtx, 0x38))) {
-                    
+
                     if (!fullUi) {
                         Interface_DrawItemIconTexture(globalCtx, gItemIcons[gSaveContext.equips.buttonItems[0]], 0);
                     }
-                    
+
                     gDPPipeSync(OVERLAY_DISP++);
                     gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE,
                                       0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -4070,7 +4073,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
                 for (svar1 = 0; svar1 < 5; svar1++) {
                     // clang-format off
-                    svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]); 
+                    svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]);
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, digitTextures[timerDigits[svar1]], 8, 16,
                                       svar5 + timerDigitLeftPos[svar1],
                                       svar2 = gSaveContext.timerY[svar6], digitWidth[svar1], VREG(42), VREG(43) << 1,
@@ -4477,4 +4480,6 @@ void Interface_Update(GlobalContext* globalCtx) {
             gSaveContext.sunsSongState = SUNSSONG_SPECIAL;
         }
     }
+
+    handle_dpad();
 }
