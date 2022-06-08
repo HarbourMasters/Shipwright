@@ -269,6 +269,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         // Give Link's pocket item
         GiveLinksPocketMedallion();
+
+        // todo delete this it's only here to show things are working
+        int blarg = GetRandoSettingValue(RSK_FOREST);
     }
 
     Save_SaveFile();

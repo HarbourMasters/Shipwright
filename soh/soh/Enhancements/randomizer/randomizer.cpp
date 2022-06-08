@@ -13,6 +13,7 @@
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
+#include "Lib/ImGui/imgui_internal.h"
 
 using json = nlohmann::json;
 
@@ -57,6 +58,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 }
 
 Randomizer::~Randomizer() { 
+    this->randoSettings.clear();
     this->itemLocations.clear();
 }
 
@@ -1081,8 +1083,35 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Hint", RG_HINT }
 };
 
+std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
+    { "Forest", RSK_FOREST },
+    { "Kakariko Gate", RSK_KAK_GATE },
+    { "Door of Time", RSK_DOOR_OF_TIME },
+    { "Zora's Fountain", RSK_ZORAS_FOUNTAIN },
+    { "Gerudo Fortress", RSK_GERUDO_FORTRESS },
+    { "Rainbow Bridge", RSK_RAINBOW_BRIDGE },
+    { "  Stone Count", RSK_RAINBOW_BRIDGE_STONE_COUNT },
+    { "  Medallion Count", RSK_RAINBOW_BRIDGE_MEDALLION_COUNT },
+    { "  Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
+    { "  Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
+    { "  Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
+    { "Random Ganon's Trials", RSK_RANDOM_TRIALS },
+    { "  Trial Count", RSK_TRIAL_COUNT }
+};
+
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
+}
+
+void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseRandomizerSettingsFile(spoilerFileName);
+    }
+
+    for(auto randoSetting : gSaveContext.randoSettings) {
+        if(randoSetting.key == RSK_NONE) break;
+        this->randoSettings[randoSetting.key] = randoSetting.value;
+    }
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
@@ -1114,6 +1143,117 @@ std::string sanitize(std::string stringValue) {
                       stringValue.end());
 
     return stringValue;
+}
+
+void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream)
+        return;
+
+    bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json settingsJson = spoilerFileJson["settings"];
+
+        int index = 0;
+
+        for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
+            // todo load into cvars for UI
+            
+            std::string numericValueString;
+            if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
+                // this is annoying but the same strings are used in different orders
+                // and i don't want the spoilerfile to just have numbers instead of
+                // human readable settings values so it'll have to do for now
+                switch(gSaveContext.randoSettings[index].key) {
+                    case RSK_FOREST:
+                        if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Closed Deku") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_KAK_GATE:
+                        if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_DOOR_OF_TIME:
+                        if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Intended") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_ZORAS_FOUNTAIN:
+                        if(it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Adult") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_GERUDO_FORTRESS:
+                        if(it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Fast") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_RAINBOW_BRIDGE:
+                        if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Stones") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Medallions") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Rewards") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Dungeons") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        } else if(it.value() == "Tokens") {
+                            gSaveContext.randoSettings[index].value = 6;
+                        }
+                        break;
+                    case RSK_RAINBOW_BRIDGE_STONE_COUNT:
+                    case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
+                    case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
+                    case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
+                    case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
+                    case RSK_TRIAL_COUNT:
+                        numericValueString = it.value();
+                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_RANDOM_TRIALS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                }
+                index++;        
+            }
+        }
+
+        success = true;
+    } catch (const std::exception& e) {
+        return;
+    }
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
@@ -1594,6 +1734,10 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+    return this->randoSettings[randoSettingKey];
 }
 
 GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
@@ -2507,6 +2651,10 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandoGenerating", 0));
+        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                            ImGui::GetStyle().Alpha * CVar_GetS32("gRandoGenerating", 0) ? 0.5f : 1.0f);
+
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
@@ -2519,13 +2667,13 @@ void DrawRandoEditor(bool& open) {
             // todo make sure we make the "randomizer" folder if it doesn't exist
             ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
-            std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-            // todo make sure we make the "randomizer" folder if it doesn't exist
-            ImGui::Text("Settings File: %s", presetfilepath.c_str());
+            // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+            // // todo make sure we make the "randomizer" folder if it doesn't exist
+            // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
         ImGui::Separator();
 
-        if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
                 if (ImGui::BeginTable("tableRandoMainRules", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -3305,9 +3453,9 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                if (ImGui::BeginTable("tableRandoOthers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -3410,65 +3558,66 @@ void DrawRandoEditor(bool& open) {
                     // SohImGui::EnhancementCombobox("gRandomizeSkipSongReplays", randoSkipSongReplays, 3, 0);
                     // ImGui::Separator();
 
-                    ImGui::TableNextColumn();
+                    // todo hints
+                    // ImGui::TableNextColumn();
 
-                    // COLUMN 2 - MISC SETTINGS
-                    ImGui::NewLine();
+                    // // COLUMN 2 - MISC SETTINGS
+                    // ImGui::NewLine();
 
-                    // Gossip Stone Hints
-                    ImGui::Text("Gossip Stone Hints");
-                    InsertHelpHoverText(
-                        "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
-                        "can "
-                        "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
-                        "the "
-                        "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
-                        "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 0);
+                    // // Gossip Stone Hints
+                    // ImGui::Text("Gossip Stone Hints");
+                    // InsertHelpHoverText(
+                    //     "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
+                    //     "can "
+                    //     "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
+                    //     "the "
+                    //     "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
+                    //     "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
+                    // SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 0);
 
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 3) {
-                        // Hint Clarity
-                        ImGui::Indent();
-                        ImGui::Text("Hint Clarity");
-                        switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
-                            case 0:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
-                                    "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
-                                break;
-                            case 1:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
-                                    "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
-                                break;
-                            case 2:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nClear: Hints are clearly written and "
-                                    "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
-                                break;
-                        }
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
+                    // if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 3) {
+                    //     // Hint Clarity
+                    //     ImGui::Indent();
+                    //     ImGui::Text("Hint Clarity");
+                    //     switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
+                    //         case 0:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
+                    //                 "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
+                    //             break;
+                    //         case 1:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
+                    //                 "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
+                    //             break;
+                    //         case 2:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nClear: Hints are clearly written and "
+                    //                 "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
+                    //             break;
+                    //     }
+                    //     SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
 
-                        // Hint Disctribution
-                        ImGui::Text("Hint Distribution");
-                        switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
-                            case 0:
-                                InsertHelpHoverText("Recommended hint spread.");
-                                break;
-                            case 1:
-                                InsertHelpHoverText("More useful hints.");
-                                break;
-                            case 2:
-                                InsertHelpHoverText("Many powerful hints.");
-                                break;
-                            case 3:
-                                InsertHelpHoverText("Only junk hints.");
-                                break;
-                        }
-                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 0);
-                        ImGui::Unindent();
-                    }
-                    ImGui::Separator();
+                    //     // Hint Disctribution
+                    //     ImGui::Text("Hint Distribution");
+                    //     switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
+                    //         case 0:
+                    //             InsertHelpHoverText("Recommended hint spread.");
+                    //             break;
+                    //         case 1:
+                    //             InsertHelpHoverText("More useful hints.");
+                    //             break;
+                    //         case 2:
+                    //             InsertHelpHoverText("Many powerful hints.");
+                    //             break;
+                    //         case 3:
+                    //             InsertHelpHoverText("Only junk hints.");
+                    //             break;
+                    //     }
+                    //     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 0);
+                    //     ImGui::Unindent();
+                    // }
+                    // ImGui::Separator();
 
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier
@@ -3577,36 +3726,36 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Detailed Logic Settings")) {
-                if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
-                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableHeadersRow();
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    // COLUMN 1 - LOGIC OPTIONS
-                    ImGui::NewLine();
+            // if (ImGui::BeginTabItem("Detailed Logic Settings")) {
+            //     if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
+            //                           ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            //         ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableHeadersRow();
+            //         ImGui::TableNextRow();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 1 - LOGIC OPTIONS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 2 - OPEN EXCLUDE LOCATIONS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 2 - OPEN EXCLUDE LOCATIONS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 3 - LOGICAL TRICKS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 3 - LOGICAL TRICKS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 4 - GLITCH OPTIONS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 4 - GLITCH OPTIONS
+            //         ImGui::NewLine();
 
-                    ImGui::EndTable();
-                }
+            //         ImGui::EndTable();
+            //     }
 
-                ImGui::EndTabItem();
-            }
+            //     ImGui::EndTabItem();
+            // }
             // todo: figure out sfx rando stuff
             // if (ImGui::BeginTabItem("SFX")) {
             //     if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
@@ -3693,6 +3842,8 @@ void DrawRandoEditor(bool& open) {
             //     ImGui::EndTabItem();
             ImGui::EndTabBar();
         }
+        ImGui::PopItemFlag();
+        ImGui::PopStyleVar();
         ImGui::End();
     }
 

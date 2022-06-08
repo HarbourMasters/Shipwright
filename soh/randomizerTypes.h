@@ -911,8 +911,11 @@ typedef enum {
 } RandomizerGet;
 
 typedef enum {
+    RSK_NONE,
     RSK_FOREST,
     RSK_KAK_GATE,
+    RSK_DOOR_OF_TIME,
+    RSK_ZORAS_FOUNTAIN,
     RSK_GERUDO_FORTRESS,
     RSK_RAINBOW_BRIDGE,
     RSK_RAINBOW_BRIDGE_STONE_COUNT,

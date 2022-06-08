@@ -404,6 +404,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
         generating = 0;
         changedSeed = 1;
+        LoadRandomizerSettings("");
         LoadItemLocations("");
         return;
     } else if (generating) {
@@ -414,6 +415,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         CVar_SetS32("gDroppedNewSpoilerFile", 0);
         changedSeed = 0;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
+        LoadRandomizerSettings(fileLoc);
         LoadItemLocations(fileLoc);
     }
 
@@ -1640,6 +1642,7 @@ void FileChoose_LoadGame(GameState* thisx) {
         this->state.running = false;
     }
 
+    LoadRandomizerSettings("");
     LoadItemLocations("");
 
     gSaveContext.respawn[0].entranceIndex = -1;
