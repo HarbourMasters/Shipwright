@@ -545,6 +545,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_DDAN_BOSS) {
             if (!Flags_GetEventChkInf(0x25)) {
                 Flags_SetEventChkInf(0x25);
+                gSaveContext.dungeonsDone[0] = 1;
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x47A;
                     gSaveContext.nextCutsceneIndex = 0;
@@ -561,6 +562,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
             if (!Flags_GetEventChkInf(7)) {
                 Flags_SetEventChkInf(7);
                 Flags_SetEventChkInf(9);
+                gSaveContext.dungeonsDone[1] = 1;
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x0457;
                     gSaveContext.nextCutsceneIndex = 0;
@@ -666,6 +668,7 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         gSaveContext.eventChkInf[3] |= 0x80;
+        gSaveContext.dungeonsDone[2] = 1;
 
         if (gSaveContext.n64ddFlag) {
             globalCtx->nextEntranceIndex = 0x10E;
@@ -779,6 +782,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
+                gSaveContext.dungeonsDone[3] = 1;
 
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x608;
@@ -800,6 +804,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_FIRE_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x200)) {
                 gSaveContext.eventChkInf[4] |= 0x200;
+                gSaveContext.dungeonsDone[4] = 1;
 
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x564;
@@ -820,6 +825,7 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_MIZUSIN_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x400)) {
                 gSaveContext.eventChkInf[4] |= 0x400;
+                gSaveContext.dungeonsDone[5] = 1;
 
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x60C;
@@ -839,7 +845,8 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_JYASINBOSS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) || gSaveContext.n64ddFlag) {
+                gSaveContext.dungeonsDone[6] = 1;
 
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x610;
@@ -859,7 +866,9 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_HAKADAN_BS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) || gSaveContext.n64ddFlag) {
+                gSaveContext.dungeonsDone[7] = 1;
+
                 if (gSaveContext.n64ddFlag) {
                     globalCtx->nextEntranceIndex = 0x580;
                     gSaveContext.nextCutsceneIndex = 0;

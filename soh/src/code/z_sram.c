@@ -283,6 +283,20 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
+        int doorOfTime = GetRandoSettingValue(RSK_DOOR_OF_TIME);
+        switch (doorOfTime) {
+            case 0: // open
+                gSaveContext.eventChkInf[4] |= 0x800;
+                break;
+        }
+
+        int kakGate = GetRandoSettingValue(RSK_KAK_GATE);
+        switch (kakGate) {
+            case 1: // open
+                gSaveContext.infTable[7] |= 0x40;
+                break;
+        }
+      
         if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
             uint32_t bitMask = 1 << 0;
             gSaveContext.inventory.equipment |= bitMask;

@@ -338,8 +338,29 @@ void EnKz_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_1E0.unk_00 = 0;
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
-    if (gSaveContext.eventChkInf[3] & 8) {
-        EnKz_SetMovedPos(this, globalCtx);
+    if (!gSaveContext.n64ddFlag) {
+        if (gSaveContext.eventChkInf[3] & 8) {
+            EnKz_SetMovedPos(this, globalCtx);
+        }
+    } else {
+        int zorasFountain = GetRandoSettingValue(RSK_ZORAS_FOUNTAIN);
+        switch (zorasFountain) {
+            case 0:
+                if (gSaveContext.eventChkInf[3] & 8) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                }
+                break;
+            case 1:
+                if (LINK_IS_ADULT) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                } else if (gSaveContext.eventChkInf[3] & 8) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                }
+                break;
+            case 2:
+                EnKz_SetMovedPos(this, globalCtx);
+                break;
+        }
     }
 
     if (LINK_IS_ADULT) {
