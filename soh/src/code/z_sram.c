@@ -271,7 +271,18 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         GiveLinksPocketMedallion();
 
         // todo delete this it's only here to show things are working
-        int blarg = GetRandoSettingValue(RSK_FOREST);
+        int openForest = GetRandoSettingValue(RSK_FOREST);
+        switch (openForest) {
+            case 0: // closed
+                break;
+            case 1: // open
+                Flags_SetEventChkInf(7);
+                gSaveContext.eventChkInf[0] |= 0x10;
+                break;
+            case 2: // closed deku
+                Flags_SetEventChkInf(7);
+                break;
+        }
     }
 
     Save_SaveFile();
