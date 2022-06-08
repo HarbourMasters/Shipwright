@@ -2667,9 +2667,9 @@ void DrawRandoEditor(bool& open) {
             // todo make sure we make the "randomizer" folder if it doesn't exist
             ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
-            std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-            // todo make sure we make the "randomizer" folder if it doesn't exist
-            ImGui::Text("Settings File: %s", presetfilepath.c_str());
+            // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
+            // // todo make sure we make the "randomizer" folder if it doesn't exist
+            // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
         ImGui::Separator();
 
