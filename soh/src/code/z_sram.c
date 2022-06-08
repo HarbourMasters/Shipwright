@@ -296,6 +296,29 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 gSaveContext.infTable[7] |= 0x40;
                 break;
         }
+      
+        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
+            uint32_t bitMask = 1 << 0;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) {
+            uint32_t bitMask = 1 << 4;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
+            INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+            uint32_t mapBitMask = 1 << 1;
+            uint32_t compassBitMask = 1 << 2;
+            uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
+            for(int scene = 0; scene <= 9; scene++) {
+                gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
+            }
+        }
     }
 
     Save_SaveFile();

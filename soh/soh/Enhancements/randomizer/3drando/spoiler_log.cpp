@@ -369,9 +369,7 @@ static void WriteExcludedLocations(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
-static void WriteStartingInventory(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("starting-inventory");
-
+static void WriteStartingInventory() {
   std::vector<std::vector<Option *>*> startingInventoryOptions = {
     &Settings::startingItemsOptions,
     &Settings::startingSongsOptions,
@@ -382,19 +380,16 @@ static void WriteStartingInventory(tinyxml2::XMLDocument& spoilerLog) {
   for (std::vector<Option *>* menu : startingInventoryOptions) {
     for (size_t i = 0; i < menu->size(); ++i) {
       const auto setting = menu->at(i);
-      //Ignore no starting bottles and the Choose/All On toggles
-      if (setting->IsDefaultSelected()) {
-        continue;
+
+      // we need to write these every time because we're not clearing jsondata, so
+      // the default logic of only writing it when we aren't using the default value
+      // doesn't work, and because it'd be bad to set every single possible starting
+      // inventory item as "false" in the json, we're just going to check
+      // to see if the name is one of the 3 we're using rn
+      if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
+        jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
       }
-
-      auto node = parentNode->InsertNewChildElement("item");
-      node->SetAttribute("name", setting->GetName().c_str());
-      node->SetText(setting->GetSelectedOptionText().c_str());
     }
-  }
-
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
   }
 }
 
@@ -581,7 +576,7 @@ const char* SpoilerLog_Write() {
 
     WriteSettings();
     //WriteExcludedLocations(spoilerLog);
-    //WriteStartingInventory(spoilerLog);
+    WriteStartingInventory();
     //WriteEnabledTricks(spoilerLog);
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
@@ -632,7 +627,7 @@ bool PlacementLog_Write() {
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     WriteExcludedLocations(placementLog);
-    WriteStartingInventory(placementLog);
+    // WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);
     WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
