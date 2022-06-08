@@ -930,6 +930,12 @@ typedef enum {
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_SHUFFLE_KOKIRI_SWORD,
-    RSK_STARTING_MAPS_COMPASSES //todo more options for this, rn it's just start with or own dungeon
+    RSK_STARTING_MAPS_COMPASSES, //todo more options for this, rn it's just start with or own dungeon
+    RSK_SHUFFLE_DUNGEON_REWARDS,
+    RSK_SHUFFLE_SONGS,
+    RSK_SHUFFLE_WEIRD_EGG,
+    RSK_SHUFFLE_GERUDO_TOKEN,
+    RSK_ITEM_POOL,
+    RSK_ICE_TRAPS
     // todo RSK_STARTING_CONSUMABLES
 } RandomizerSettingKey;
