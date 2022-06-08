@@ -129,48 +129,6 @@ u8 CheckMedallionCount() {
     return medallionCount;
 }
 
-u8 CheckRewardCount() {
-    u8 rewardCount = 0;
-
-    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-        rewardCount++;
-    }
-
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
-        rewardCount++;
-    }
-
-    return rewardCount;
-}
-
 u8 CheckDungeonCount() {
     u8 dungeonCount = 0;
 
@@ -244,7 +202,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
                     }
                     break;
                 case 4:
-                    if (CheckRewardCount() >= bridgeRewardCount) {
+                    if ((CheckMedallionCount() + CheckDungeonCount()) >= bridgeRewardCount) {
                         LaunchBridgeCutscene(this, globalCtx);
                     }
                     break;
