@@ -283,6 +283,15 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
+
+        if(GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+            uint32_t mapBitMask = 1 << 1;
+            uint32_t compassBitMask = 1 << 2;
+            uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
+            for(int scene = 0; scene <= 9; scene++) {
+                gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
+            }
+        }
     }
 
     Save_SaveFile();
