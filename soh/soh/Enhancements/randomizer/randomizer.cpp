@@ -57,6 +57,7 @@ Sprite* Randomizer::GetSeedTexture(uint8_t index) {
 }
 
 Randomizer::~Randomizer() { 
+    this->randoSettings.clear();
     this->itemLocations.clear();
 }
 
@@ -1081,8 +1082,35 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Hint", RG_HINT }
 };
 
+std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEnum = {
+    { "Forest", RSK_FOREST },
+    { "Kakariko Gate", RSK_KAK_GATE },
+    { "Door of Time", RSK_DOOR_OF_TIME },
+    { "Zora's Fountain", RSK_ZORAS_FOUNTAIN },
+    { "Gerudo Fortress", RSK_GERUDO_FORTRESS },
+    { "Rainbow Bridge", RSK_RAINBOW_BRIDGE },
+    { "  Stone Count", RSK_RAINBOW_BRIDGE_STONE_COUNT },
+    { "  Medallion Count", RSK_RAINBOW_BRIDGE_MEDALLION_COUNT },
+    { "  Reward Count", RSK_RAINBOW_BRIDGE_REWARD_COUNT },
+    { "  Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
+    { "  Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
+    { "Random Ganon's Trials", RSK_RANDOM_TRIALS },
+    { "  Trial Count", RSK_TRIAL_COUNT }
+};
+
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
+}
+
+void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseRandomizerSettingsFile(spoilerFileName);
+    }
+
+    for(auto randoSetting : gSaveContext.randoSettings) {
+        if(randoSetting.key == RSK_NONE) break;
+        this->randoSettings[randoSetting.key] = randoSetting.value;
+    }
 }
 
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
@@ -1114,6 +1142,117 @@ std::string sanitize(std::string stringValue) {
                       stringValue.end());
 
     return stringValue;
+}
+
+void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream)
+        return;
+
+    bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json settingsJson = spoilerFileJson["settings"];
+
+        int index = 0;
+
+        for (auto it = settingsJson.begin(); it != settingsJson.end(); ++it) {
+            // todo load into cvars for UI
+            
+            std::string numericValueString;
+            if(SpoilerfileSettingNameToEnum.count(it.key())) {
+                gSaveContext.randoSettings[index].key = SpoilerfileSettingNameToEnum[it.key()];
+                // this is annoying but the same strings are used in different orders
+                // and i don't want the spoilerfile to just have numbers instead of
+                // human readable settings values so it'll have to do for now
+                switch(gSaveContext.randoSettings[index].key) {
+                    case RSK_FOREST:
+                        if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Closed Deku") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_KAK_GATE:
+                        if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_DOOR_OF_TIME:
+                        if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Intended") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_ZORAS_FOUNTAIN:
+                        if(it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Adult") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_GERUDO_FORTRESS:
+                        if(it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Fast") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_RAINBOW_BRIDGE:
+                        if(it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Stones") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Medallions") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        } else if(it.value() == "Rewards") {
+                            gSaveContext.randoSettings[index].value = 4;
+                        } else if(it.value() == "Dungeons") {
+                            gSaveContext.randoSettings[index].value = 5;
+                        } else if(it.value() == "Tokens") {
+                            gSaveContext.randoSettings[index].value = 6;
+                        }
+                        break;
+                    case RSK_RAINBOW_BRIDGE_STONE_COUNT:
+                    case RSK_RAINBOW_BRIDGE_MEDALLION_COUNT:
+                    case RSK_RAINBOW_BRIDGE_REWARD_COUNT:
+                    case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
+                    case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
+                    case RSK_TRIAL_COUNT:
+                        numericValueString = it.value();
+                        gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_RANDOM_TRIALS:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                }
+                index++;        
+            }
+        }
+
+        success = true;
+    } catch (const std::exception& e) {
+        return;
+    }
 }
 
 void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
@@ -1594,6 +1733,10 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+    return this->randoSettings[randoSettingKey];
 }
 
 GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
