@@ -211,9 +211,9 @@ typedef enum {
     /* 0x78 */ ITEM_MAGIC_SMALL,
     /* 0x79 */ ITEM_MAGIC_LARGE,
     /* 0x7A */ ITEM_HEART_PIECE_2,
-    /* 0x7B */ ITEM_INVALID_1,
-    /* 0x7C */ ITEM_INVALID_2,
-    /* 0x7D */ ITEM_INVALID_3,
+    /* 0x7B */ ITEM_SINGLE_MAGIC,
+    /* 0x7C */ ITEM_DOUBLE_MAGIC,
+    /* 0x7D */ ITEM_DOUBLE_DEFENSE,
     /* 0x7E */ ITEM_INVALID_4,
     /* 0x7F */ ITEM_INVALID_5,
     /* 0x80 */ ITEM_INVALID_6,
@@ -405,6 +405,10 @@ typedef enum {
     /* 0x81 */ GI_NOCTURNE_OF_SHADOW,
     /* 0x82 */ GI_REQUIEM_OF_SPIRIT,
     /* 0x83 */ GI_PRELUDE_OF_LIGHT,
+
+    GI_SINGLE_MAGIC,
+    GI_DOUBLE_MAGIC,
+    GI_DOUBLE_DEFENSE,
 
     /* 0x84 */ GI_MAX
 } GetItemID;
