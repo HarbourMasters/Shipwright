@@ -1377,6 +1377,29 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
+    if (item == ITEM_SINGLE_MAGIC) {
+        gSaveContext.magicAcquired = true;
+        gSaveContext.unk_13F6 = 0x30;
+        Magic_Fill(globalCtx);
+        return ITEM_NONE;
+    } else if (item == ITEM_DOUBLE_MAGIC) {
+        if (!gSaveContext.magicAcquired) {
+            gSaveContext.magicAcquired = true;
+        }
+        gSaveContext.doubleMagic = true;
+        gSaveContext.unk_13F6 = 0x60;
+        gSaveContext.magicLevel = 0;
+        Magic_Fill(globalCtx);
+        return ITEM_NONE;
+    }
+
+    if (item == ITEM_DOUBLE_DEFENSE) {
+        gSaveContext.doubleDefense = true;
+        gSaveContext.inventory.defenseHearts = 20;
+        gSaveContext.healthAccumulator = 0x140;
+        return ITEM_NONE;
+    }
+
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
 
@@ -1852,6 +1875,12 @@ u8 Item_CheckObtainability(u8 item) {
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
+
+    if (gSaveContext.n64ddFlag) {
+        if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
+            return ITEM_NONE;
+        }
+    }
 
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         return ITEM_NONE;

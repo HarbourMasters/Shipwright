@@ -270,6 +270,19 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
+        int openForest = GetRandoSettingValue(RSK_FOREST);
+        switch (openForest) {
+            case 0: // closed
+                break;
+            case 1: // open
+                Flags_SetEventChkInf(7);
+                gSaveContext.eventChkInf[0] |= 0x10;
+                break;
+            case 2: // closed deku
+                Flags_SetEventChkInf(7);
+                break;
+        }
+
         if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
             uint32_t bitMask = 1 << 0;
             gSaveContext.inventory.equipment |= bitMask;

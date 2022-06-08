@@ -1408,7 +1408,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_BEAN; //todo make it 10 of them
 
         case RG_DOUBLE_DEFENSE:
-            return GI_NONE; //todo figure out GI for this        
+            return GI_DOUBLE_DEFENSE;
 
         case RG_WEIRD_EGG:
             return GI_WEIRD_EGG;
@@ -1535,9 +1535,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_MAGIC_METER:
             switch (gSaveContext.magicLevel) {
                 case 0:
-                    return GI_MAGIC_SMALL;
+                    return GI_SINGLE_MAGIC;
                 case 1:
-                    return GI_MAGIC_LARGE;
+                    return GI_DOUBLE_MAGIC;
             }
             return GI_RUPEE_BLUE;
 
