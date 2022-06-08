@@ -771,7 +771,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
-                            if (CVar_GetS32("gFixDungeonMinimapIcon", 0) != 0 ? !Map0 : 1 ) {
+                            if (!Map0 || !CVar_GetS32("gFixDungeonMinimapIcon", 0)) {
                                 gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                     IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
