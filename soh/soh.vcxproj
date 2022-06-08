@@ -173,6 +173,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\Enhancements\dpad.c" />
+    <ClCompile Include="soh\Enhancements\gfx.c" />
     <ClCompile Include="soh\Enhancements\randomizer\3drando\cosmetics.cpp" />
     <ClCompile Include="soh\Enhancements\randomizer\3drando\custom_messages.cpp" />
     <ClCompile Include="soh\Enhancements\randomizer\3drando\debug.cpp" />
@@ -912,6 +914,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h" />
+    <ClInclude Include="soh\Enhancements\dpad.h" />
+    <ClInclude Include="soh\Enhancements\gfx.h" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\category.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\cosmetics.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\custom_messages.hpp" />
