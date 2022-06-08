@@ -270,7 +270,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
-        // todo delete this it's only here to show things are working
         int openForest = GetRandoSettingValue(RSK_FOREST);
         switch (openForest) {
             case 0: // closed
@@ -281,6 +280,20 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
             case 2: // closed deku
                 Flags_SetEventChkInf(7);
+                break;
+        }
+
+        int doorOfTime = GetRandoSettingValue(RSK_DOOR_OF_TIME);
+        switch (doorOfTime) {
+            case 0: // open
+                gSaveContext.eventChkInf[4] |= 0x800;
+                break;
+        }
+
+        int kakGate = GetRandoSettingValue(RSK_KAK_GATE);
+        switch (kakGate) {
+            case 1: // open
+                gSaveContext.infTable[7] |= 0x40;
                 break;
         }
     }

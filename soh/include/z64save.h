@@ -171,6 +171,7 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[500];
     u8 seedIcons[5];
+    u8 dungeonsDone[8];
 } SaveContext; // size = 0x1428
 
 typedef enum {

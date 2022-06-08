@@ -632,6 +632,10 @@ void SaveManager::LoadBaseVersion1() {
         });
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
+
+    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
+    });
 }
 
 void SaveManager::SaveBase() {
@@ -764,6 +768,10 @@ void SaveManager::SaveBase() {
             SaveManager::Instance->SaveData("z", gSaveContext.horseData.pos.z);
         });
         SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
+    });
+
+    SaveManager::Instance->SaveArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.dungeonsDone[i]);
     });
 }
 
