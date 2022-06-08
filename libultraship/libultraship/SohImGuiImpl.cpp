@@ -477,7 +477,7 @@ namespace SohImGui {
         std::string make_invisible = "##";
         make_invisible += text;
         make_invisible += cvarName;
-        
+
         int val = CVar_GetS32(cvarName, 0);
         if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
             CVar_SetS32(cvarName, id);
@@ -868,6 +868,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
+                    EnhancementCheckbox("DPad Item Shortcuts", "gDPadShortcuts");
+                    Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
@@ -922,7 +924,7 @@ namespace SohImGui {
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
                         }
-                        
+
                         ImGui::EndMenu();
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
