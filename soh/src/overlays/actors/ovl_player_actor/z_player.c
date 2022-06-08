@@ -554,7 +554,7 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_SCALE_GOLDEN, OBJECT_GI_SCALE, GID_SCALE_GOLDEN, 0xCE, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_STONE_OF_AGONY, OBJECT_GI_MAP, GID_STONE_OF_AGONY, 0x68, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_GERUDO_CARD, OBJECT_GI_GERUDO, GID_GERUDO_CARD, 0x7B, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x3A, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_SEEDS, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xC2, 0x80, CHEST_ANIM_LONG),
@@ -6184,6 +6184,13 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 }
 
                 iREG(67) = false;
+
+                if (gSaveContext.n64ddFlag && this->getItemId == GI_ICE_TRAP) {
+                    this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                    this->actor.colChkInfo.damage = 0;
+                    func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                    return;
+                }
 
                 if ((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) || (globalCtx->sceneNum == SCENE_BOWLING)) {
                     func_808323B4(globalCtx, this);
