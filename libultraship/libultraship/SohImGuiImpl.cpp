@@ -872,6 +872,8 @@ namespace SohImGui {
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
                     Tooltip("Kick open every chest");
+                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                    Tooltip("Prevent forced Navi conversations");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
