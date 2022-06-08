@@ -270,9 +270,18 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
+        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
+            uint32_t bitMask = 1 << 0;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
+
         if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) {
             uint32_t bitMask = 1 << 4;
             gSaveContext.inventory.equipment |= bitMask;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
+            INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
     }
 
