@@ -2473,6 +2473,31 @@ namespace Settings {
     RandomGanonsTrials.SetSelectedIndex(cvarSettings[RSK_RANDOM_TRIALS]);
     GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
 
+    ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
+    ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
+
+    // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
+    StartingOcarina.SetSelectedIndex(cvarSettings[RSK_STARTING_OCARINA]);
+    
+    // the checkboxes work because 0 is "Off" and 1 is "On"
+    StartingDekuShield.SetSelectedIndex(cvarSettings[RSK_STARTING_DEKU_SHIELD]);
+    StartingKokiriSword.SetSelectedIndex(cvarSettings[RSK_STARTING_KOKIRI_SWORD]);
+
+    if(cvarSettings[RSK_STARTING_MAPS_COMPASSES]) {
+      // "Start With" is index 0
+      MapsAndCompasses.SetSelectedIndex(0); 
+    } else {
+      // We don't support maps/compasses outside of their own dungeon yet
+      // "Own Dungeon" is index 2
+      MapsAndCompasses.SetSelectedIndex(2);
+    }
+
+    // todo this will take some logic because of capacity etc.
+    // but it's defaulted to on in standard weekly so we should get to it soon
+    // {"No",               "Yes"}
+    // StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
+    
+
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
     //shuffle the dungeons and then set MQ for as many as necessary

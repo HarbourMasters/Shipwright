@@ -369,9 +369,7 @@ static void WriteExcludedLocations(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
-static void WriteStartingInventory(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("starting-inventory");
-
+static void WriteStartingInventory() {
   std::vector<std::vector<Option *>*> startingInventoryOptions = {
     &Settings::startingItemsOptions,
     &Settings::startingSongsOptions,
@@ -387,14 +385,8 @@ static void WriteStartingInventory(tinyxml2::XMLDocument& spoilerLog) {
         continue;
       }
 
-      auto node = parentNode->InsertNewChildElement("item");
-      node->SetAttribute("name", setting->GetName().c_str());
-      node->SetText(setting->GetSelectedOptionText().c_str());
+      jsonData["starting_inventory"][setting->GetName()] = setting->GetSelectedOptionText();
     }
-  }
-
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
   }
 }
 
@@ -581,7 +573,7 @@ const char* SpoilerLog_Write() {
 
     WriteSettings();
     //WriteExcludedLocations(spoilerLog);
-    //WriteStartingInventory(spoilerLog);
+    WriteStartingInventory();
     //WriteEnabledTricks(spoilerLog);
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
     //    WriteEnabledGlitches(spoilerLog);
@@ -632,7 +624,7 @@ bool PlacementLog_Write() {
 
     // WriteSettings(placementLog, true); // Include hidden settings.
     WriteExcludedLocations(placementLog);
-    WriteStartingInventory(placementLog);
+    // WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);
     WriteEnabledGlitches(placementLog);
     WriteMasterQuestDungeons(placementLog);
