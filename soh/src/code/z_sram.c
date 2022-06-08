@@ -270,7 +270,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
-        // todo delete this it's only here to show things are working
         int openForest = GetRandoSettingValue(RSK_FOREST);
         switch (openForest) {
             case 0: // closed
@@ -282,6 +281,29 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             case 2: // closed deku
                 Flags_SetEventChkInf(7);
                 break;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
+            uint32_t bitMask = 1 << 0;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) {
+            uint32_t bitMask = 1 << 4;
+            gSaveContext.inventory.equipment |= bitMask;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
+            INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
+        }
+
+        if(GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+            uint32_t mapBitMask = 1 << 1;
+            uint32_t compassBitMask = 1 << 2;
+            uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
+            for(int scene = 0; scene <= 9; scene++) {
+                gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
+            }
         }
     }
 

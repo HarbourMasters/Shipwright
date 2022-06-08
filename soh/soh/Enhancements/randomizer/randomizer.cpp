@@ -1096,7 +1096,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "  Dungeon Count", RSK_RAINBOW_BRIDGE_DUNGEON_COUNT },
     { "  Token Count", RSK_RAINBOW_BRIDGE_TOKEN_COUNT },
     { "Random Ganon's Trials", RSK_RANDOM_TRIALS },
-    { "  Trial Count", RSK_TRIAL_COUNT }
+    { "  Trial Count", RSK_TRIAL_COUNT },
+    { "Start With Deku Shield", RSK_STARTING_DEKU_SHIELD },
+    { "Start With Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
+    { "Start With Ocarina", RSK_STARTING_OCARINA },
+    { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES }
 };
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
@@ -1242,6 +1246,34 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         if(it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_MAPS_COMPASSES:
+                        if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 0; 
+                        } else if (it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 1; 
+                        }
+                        break;
+                    case RSK_STARTING_DEKU_SHIELD:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_KOKIRI_SWORD:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_STARTING_OCARINA:
+                        if(it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Fairy Ocarina") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
@@ -2412,6 +2444,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 1);
     cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
     cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 0);
+    cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
+    cvarSettings[RSK_SHUFFLE_OCARINA] = CVar_GetS32("gRandomizeShuffleOcarinas", 0) ||
+                                        CVar_GetS32("gRandomizeStartingOcarina", 0);
+    cvarSettings[RSK_STARTING_KOKIRI_SWORD] = CVar_GetS32("gRandomizeStartingKokiriSword", 0);
+    cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD] = CVar_GetS32("gRandomizeShuffleKokiriSword", 0) ||
+                                             CVar_GetS32("gRandomizeStartingKokiriSword", 0);
+    cvarSettings[RSK_STARTING_DEKU_SHIELD] = CVar_GetS32("gRandomizeStartingDekuShield", 0);
+    cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2675,10 +2715,11 @@ void DrawRandoEditor(bool& open) {
 
         if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
-                if (ImGui::BeginTable("tableRandoMainRules", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     // ImGui::TableSetupColumn("World Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Starting Inventory Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     // ImGui::TableSetupColumn("Shuffle Dungeon Items Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -3154,20 +3195,24 @@ void DrawRandoEditor(bool& open) {
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
                         // ImGui::Separator();
 
-                        // Shuffle Kokiri Sword
-                        ImGui::Text("Shuffle Kokiri Sword");
-                        InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\n\nThis will "
-                                            "require extensive use of sticks until\nthe sword is found.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
-                        ImGui::Separator();
+                        if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
+                            // Shuffle Kokiri Sword
+                            ImGui::Text("Shuffle Kokiri Sword");
+                            InsertHelpHoverText("Enabling this shuffles the Kokiri Sword into the item pool.\n\nThis will "
+                                                "require extensive use of sticks until\nthe sword is found.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleKokiriSword", randoShuffleKokiriSword, 2, 0);
+                            ImGui::Separator();
+                        }
 
-                        // Shuffle Ocarinas
-                        ImGui::Text("Shuffle Ocarinas");
-                        InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the\nOcarina of time into "
-                                            "the item pool.\n\nThis "
-                                            "will require finding an Ocarina before being\nable to play songs.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
-                        ImGui::Separator();
+                        if(CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
+                            // Shuffle Ocarinas
+                            ImGui::Text("Shuffle Ocarinas");
+                            InsertHelpHoverText("Enabling this shuffles the Fairy Ocarina and the\nOcarina of time into "
+                                                "the item pool.\n\nThis "
+                                                "will require finding an Ocarina before being\nable to play songs.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleOcarinas", randoShuffleOcarinas, 2, 0);
+                            ImGui::Separator();
+                        }
 
                         // Shuffle Weird Egg
                         ImGui::Text("Shuffle Weird Egg");
@@ -3226,6 +3271,13 @@ void DrawRandoEditor(bool& open) {
                         //     "only the Claim\nCheck will be found in the pool.");
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleAdultTrade", randoShuffleAdultTrade, 2, 0);
                     }
+
+                    ImGui::TableNextColumn();
+                    SohImGui::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
+                    SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
+                    SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
+                    SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
+                    
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
 
