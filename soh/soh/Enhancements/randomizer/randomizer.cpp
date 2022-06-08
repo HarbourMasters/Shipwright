@@ -3453,9 +3453,9 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                if (ImGui::BeginTable("tableRandoOthers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -3558,65 +3558,66 @@ void DrawRandoEditor(bool& open) {
                     // SohImGui::EnhancementCombobox("gRandomizeSkipSongReplays", randoSkipSongReplays, 3, 0);
                     // ImGui::Separator();
 
-                    ImGui::TableNextColumn();
+                    // todo hints
+                    // ImGui::TableNextColumn();
 
-                    // COLUMN 2 - MISC SETTINGS
-                    ImGui::NewLine();
+                    // // COLUMN 2 - MISC SETTINGS
+                    // ImGui::NewLine();
 
-                    // Gossip Stone Hints
-                    ImGui::Text("Gossip Stone Hints");
-                    InsertHelpHoverText(
-                        "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
-                        "can "
-                        "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
-                        "the "
-                        "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
-                        "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 0);
+                    // // Gossip Stone Hints
+                    // ImGui::Text("Gossip Stone Hints");
+                    // InsertHelpHoverText(
+                    //     "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
+                    //     "can "
+                    //     "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
+                    //     "the "
+                    //     "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
+                    //     "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
+                    // SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 0);
 
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 3) {
-                        // Hint Clarity
-                        ImGui::Indent();
-                        ImGui::Text("Hint Clarity");
-                        switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
-                            case 0:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
-                                    "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
-                                break;
-                            case 1:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
-                                    "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
-                                break;
-                            case 2:
-                                InsertHelpHoverText(
-                                    "Sets the difficulty of hints.\nClear: Hints are clearly written and "
-                                    "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
-                                break;
-                        }
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
+                    // if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 3) {
+                    //     // Hint Clarity
+                    //     ImGui::Indent();
+                    //     ImGui::Text("Hint Clarity");
+                    //     switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
+                    //         case 0:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
+                    //                 "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
+                    //             break;
+                    //         case 1:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
+                    //                 "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
+                    //             break;
+                    //         case 2:
+                    //             InsertHelpHoverText(
+                    //                 "Sets the difficulty of hints.\nClear: Hints are clearly written and "
+                    //                 "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
+                    //             break;
+                    //     }
+                    //     SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
 
-                        // Hint Disctribution
-                        ImGui::Text("Hint Distribution");
-                        switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
-                            case 0:
-                                InsertHelpHoverText("Recommended hint spread.");
-                                break;
-                            case 1:
-                                InsertHelpHoverText("More useful hints.");
-                                break;
-                            case 2:
-                                InsertHelpHoverText("Many powerful hints.");
-                                break;
-                            case 3:
-                                InsertHelpHoverText("Only junk hints.");
-                                break;
-                        }
-                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 0);
-                        ImGui::Unindent();
-                    }
-                    ImGui::Separator();
+                    //     // Hint Disctribution
+                    //     ImGui::Text("Hint Distribution");
+                    //     switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
+                    //         case 0:
+                    //             InsertHelpHoverText("Recommended hint spread.");
+                    //             break;
+                    //         case 1:
+                    //             InsertHelpHoverText("More useful hints.");
+                    //             break;
+                    //         case 2:
+                    //             InsertHelpHoverText("Many powerful hints.");
+                    //             break;
+                    //         case 3:
+                    //             InsertHelpHoverText("Only junk hints.");
+                    //             break;
+                    //     }
+                    //     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 0);
+                    //     ImGui::Unindent();
+                    // }
+                    // ImGui::Separator();
 
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier
@@ -3725,36 +3726,36 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Detailed Logic Settings")) {
-                if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
-                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableHeadersRow();
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    // COLUMN 1 - LOGIC OPTIONS
-                    ImGui::NewLine();
+            // if (ImGui::BeginTabItem("Detailed Logic Settings")) {
+            //     if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
+            //                           ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            //         ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+            //         ImGui::TableHeadersRow();
+            //         ImGui::TableNextRow();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 1 - LOGIC OPTIONS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 2 - OPEN EXCLUDE LOCATIONS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 2 - OPEN EXCLUDE LOCATIONS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 3 - LOGICAL TRICKS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 3 - LOGICAL TRICKS
+            //         ImGui::NewLine();
 
-                    ImGui::TableNextColumn();
-                    // COLUMN 4 - GLITCH OPTIONS
-                    ImGui::NewLine();
+            //         ImGui::TableNextColumn();
+            //         // COLUMN 4 - GLITCH OPTIONS
+            //         ImGui::NewLine();
 
-                    ImGui::EndTable();
-                }
+            //         ImGui::EndTable();
+            //     }
 
-                ImGui::EndTabItem();
-            }
+            //     ImGui::EndTabItem();
+            // }
             // todo: figure out sfx rando stuff
             // if (ImGui::BeginTabItem("SFX")) {
             //     if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
