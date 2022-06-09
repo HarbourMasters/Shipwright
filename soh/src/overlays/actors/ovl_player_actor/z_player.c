@@ -6174,7 +6174,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
 
     if (iREG(67) || (((interactedActor = this->interactRangeActor) != NULL) &&
-        func_8002D53C(globalCtx, &globalCtx->actorCtx.titleCtx))) {
+                     func_8002D53C(globalCtx, &globalCtx->actorCtx.titleCtx))) {
         if (iREG(67) || (this->getItemId > GI_NONE)) {
             if (iREG(67)) {
                 this->getItemId = iREG(68);
@@ -6196,7 +6196,18 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     return;
                 }
 
-                if ((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) || (globalCtx->sceneNum == SCENE_BOWLING)) {
+                if ((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) || (globalCtx->sceneNum == SCENE_BOWLING) ||
+                    gSaveContext.n64ddFlag) {
+
+                    if (gSaveContext.n64ddFlag &&
+                        ((interactedActor->id == ACTOR_EN_ITEM00 &&
+                          (interactedActor->params != 6 && interactedActor->params != 17)) ||
+                         (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA))) {
+                        func_8083E4C4(globalCtx, this, giEntry);
+                        this->getItemId = GI_NONE;
+                        return 0;
+                    }
+
                     func_808323B4(globalCtx, this);
                     func_8083AE40(this, giEntry->objectId);
 
@@ -6214,13 +6225,12 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 func_8083E4C4(globalCtx, this, giEntry);
                 this->getItemId = GI_NONE;
             }
-        }
-        else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
-            !(this->stateFlags2 & PLAYER_STATE2_10)) {
+        } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
+                   !(this->stateFlags2 & PLAYER_STATE2_10)) {
             if (this->getItemId != GI_NONE) {
                 GetItemEntry* giEntry = &sGetItemTable[-this->getItemId - 1];
                 EnBox* chest = (EnBox*)interactedActor;
-                if(CVar_GetS32("gFastChests", 0) != 0) {
+                if (CVar_GetS32("gFastChests", 0) != 0) {
                     giEntry->gi = -1 * abs(giEntry->gi);
                 }
 
@@ -6248,8 +6258,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     func_80832F54(globalCtx, this, 0x28F);
                     chest->unk_1F4 = 1;
                     Camera_ChangeSetting(Gameplay_GetCamera(globalCtx, 0), CAM_SET_SLOW_CHEST_CS);
-                }
-                else {
+                } else {
                     func_80832264(globalCtx, this, &gPlayerAnim_002DF8);
                     chest->unk_1F4 = -1;
                 }
@@ -6269,12 +6278,10 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     if (sp24 == PLAYER_AP_SWORD_MASTER) {
                         this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_AP_LAST_USED);
                         func_8083399C(globalCtx, this, PLAYER_AP_LAST_USED);
-                    }
-                    else {
+                    } else {
                         func_80835F44(globalCtx, this, ITEM_LAST_USED);
                     }
-                }
-                else {
+                } else {
                     s32 strength = Player_GetStrength();
 
                     if ((interactedActor->id == ACTOR_EN_ISHI) && ((interactedActor->params & 0xF) == 1) &&
