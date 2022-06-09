@@ -108,7 +108,7 @@ Nightly builds of Ship of Harkinian are available [here](https://builds.shipofha
 ## Video Credits
     Kenix | Producer / Writer
 	rainbow_fash | Executive Producer
-    TheLegendOfXela | Editor
+    ReveriePass | Editor
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link
     AceHeart | Zelda
