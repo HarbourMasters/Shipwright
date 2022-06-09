@@ -5502,8 +5502,8 @@ s32 func_8083C6B8(GlobalContext* globalCtx, Player* this) {
             sp24 = this->actor.world.pos;
             sp24.y += 50.0f;
 
-            if (!(this->actor.bgCheckFlags & 1) || (this->actor.world.pos.z > 1300.0f) ||
-                BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &sp24, 20.0f)) {
+            if (CVar_GetS32("gHoverFishing", 0) ? 0 : !(this->actor.bgCheckFlags & 1) ||
+                (this->actor.world.pos.z > 1300.0f) || BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &sp24, 20.0f)) {
                 func_80078884(NA_SE_SY_ERROR);
                 return 0;
             }
