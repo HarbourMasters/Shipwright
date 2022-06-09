@@ -2655,7 +2655,9 @@ void DrawRandoEditor(bool& open) {
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
+    // todo - get hints working fully (forcing no hints for now)
+    // const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
+    const char* randoGossipStoneHints[4] = {"No Hints" };
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = {"Useless", "Balanced", "Strong", "Very Strong"};
     const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
@@ -3752,9 +3754,12 @@ void DrawRandoEditor(bool& open) {
                         "the "
                         "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
                         "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
-
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
+                    // todo get hints working fully, forcing no hints for now
+                    // SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
+                    // if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
+                    
+                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 1, 0);
+                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 0) {
                         // Hint Clarity
                         ImGui::Indent();
                         ImGui::Text("Hint Clarity");
