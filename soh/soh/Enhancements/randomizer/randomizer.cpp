@@ -1100,7 +1100,10 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start With Deku Shield", RSK_STARTING_DEKU_SHIELD },
     { "Start With Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start With Ocarina", RSK_STARTING_OCARINA },
-    { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES }
+    { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
+    { "Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
+    { "  Hint Clarity", RSK_HINT_CLARITY},
+    { "  Hint Distribution", RSK_HINT_DISTRIBUTION}
 };
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
@@ -1275,6 +1278,37 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "Fairy Ocarina") {
                             gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_GOSSIP_STONE_HINTS:
+                        if(it.value() == "No Hints") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Need Nothing") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Mask of Truth") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Shard of Agony") {
+                            gSaveContext.randoSettings[index].value = 3;
+                        }
+                        break;
+                    case RSK_HINT_CLARITY:
+                        if(it.value() == "Obscure") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Ambiguous") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Clear") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_HINT_DISTRIBUTION:
+                        if(it.value() == "Useless") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Balanced") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Strong") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        } else if(it.value() == "Very Strong") {
+                            gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
                 }
@@ -2460,6 +2494,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 0);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 0);
+    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 0);
+    cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 0);
+    cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2534,9 +2571,9 @@ void DrawRandoEditor(bool& open) {
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = { "Need nothing", "Mask of Truth", "Shard of Agony", "No hints" };
+    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
-    const char* randoHintDistribution[4] = { "Balanced", "Strong", "Very strong", "Useless" };
+    const char* randoHintDistribution[4] = {"Useless", "Balanced", "Strong", "Very Strong"};
     const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
     const char* randoStartingTime[2] = { "Day", "Night" };
     const char* randoChestAnimations[2] = { "Always Fast", "Match contents" };
@@ -3514,9 +3551,9 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    // ImGui::TableSetupColumn("Miscellaneous Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -3619,66 +3656,63 @@ void DrawRandoEditor(bool& open) {
                     // SohImGui::EnhancementCombobox("gRandomizeSkipSongReplays", randoSkipSongReplays, 3, 0);
                     // ImGui::Separator();
 
-                    // todo hints
-                    // ImGui::TableNextColumn();
+                    ImGui::TableNextColumn();
 
-                    // // COLUMN 2 - MISC SETTINGS
-                    // ImGui::NewLine();
+                    // COLUMN 1 - HINT SETTINGS
+                    // Gossip Stone Hints
+                    ImGui::Text("Gossip Stone Hints");
+                    InsertHelpHoverText(
+                        "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
+                        "can "
+                        "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
+                        "the "
+                        "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
+                        "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
+                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
 
-                    // // Gossip Stone Hints
-                    // ImGui::Text("Gossip Stone Hints");
-                    // InsertHelpHoverText(
-                    //     "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
-                    //     "can "
-                    //     "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
-                    //     "the "
-                    //     "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
-                    //     "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
-                    // SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 0);
+                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 0) {
+                        // Hint Clarity
+                        ImGui::Indent();
+                        ImGui::Text("Hint Clarity");
+                        switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
+                            case 0:
+                                InsertHelpHoverText(
+                                    "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
+                                    "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
+                                break;
+                            case 1:
+                                InsertHelpHoverText(
+                                    "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
+                                    "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
+                                break;
+                            case 2:
+                                InsertHelpHoverText(
+                                    "Sets the difficulty of hints.\nClear: Hints are clearly written and "
+                                    "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
+                                break;
+                        }
+                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
 
-                    // if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 3) {
-                    //     // Hint Clarity
-                    //     ImGui::Indent();
-                    //     ImGui::Text("Hint Clarity");
-                    //     switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
-                    //         case 0:
-                    //             InsertHelpHoverText(
-                    //                 "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
-                    //                 "writing may be confusing.\nEx: Kokiri Sword > a butter knife");
-                    //             break;
-                    //         case 1:
-                    //             InsertHelpHoverText(
-                    //                 "Sets the difficulty of hints.\nAmbiguous: Hints are clearly written, "
-                    //                 "but may\nrefer to more than one thing.\nEx: Kokiri Sword > a sword");
-                    //             break;
-                    //         case 2:
-                    //             InsertHelpHoverText(
-                    //                 "Sets the difficulty of hints.\nClear: Hints are clearly written and "
-                    //                 "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
-                    //             break;
-                    //     }
-                    //     SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
-
-                    //     // Hint Disctribution
-                    //     ImGui::Text("Hint Distribution");
-                    //     switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
-                    //         case 0:
-                    //             InsertHelpHoverText("Recommended hint spread.");
-                    //             break;
-                    //         case 1:
-                    //             InsertHelpHoverText("More useful hints.");
-                    //             break;
-                    //         case 2:
-                    //             InsertHelpHoverText("Many powerful hints.");
-                    //             break;
-                    //         case 3:
-                    //             InsertHelpHoverText("Only junk hints.");
-                    //             break;
-                    //     }
-                    //     SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 0);
-                    //     ImGui::Unindent();
-                    // }
-                    // ImGui::Separator();
+                        // Hint Distribution
+                        ImGui::Text("Hint Distribution");
+                        switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
+                            case 0:
+                                InsertHelpHoverText("Recommended hint spread.");
+                                break;
+                            case 1:
+                                InsertHelpHoverText("More useful hints.");
+                                break;
+                            case 2:
+                                InsertHelpHoverText("Many powerful hints.");
+                                break;
+                            case 3:
+                                InsertHelpHoverText("Only junk hints.");
+                                break;
+                        }
+                        SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
+                        ImGui::Unindent();
+                    }
+                    ImGui::Separator();
 
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier
@@ -3724,8 +3758,7 @@ void DrawRandoEditor(bool& open) {
 
                     ImGui::TableNextColumn();
 
-                    // // COLUMN 3 - ITEM POOL SETTINGS
-                    ImGui::NewLine();
+                    // // COLUMN 2 - ITEM POOL SETTINGS
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 0)) {
                         case 0:

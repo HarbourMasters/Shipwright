@@ -2501,6 +2501,10 @@ namespace Settings {
     // {"No",               "Yes"}
     // StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     
+    GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
+    ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
+    HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
+
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
 

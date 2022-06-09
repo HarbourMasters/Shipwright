@@ -1628,7 +1628,14 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     } else {
         Message_FindMessage(globalCtx, textId);
         // if we're rando'd and talking to a gossip stone
-        if (gSaveContext.n64ddFlag && textId == 0x2053) {
+        if (gSaveContext.n64ddFlag &&
+            textId == 0x2053 &&
+            GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+                (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+                   (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+                    Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+                   (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
+                   CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
             char randoMessage[] = "blarg\002";
             msgCtx->msgLength = font->msgLength = sizeof(randoMessage);
             memcpy(font->msgBuf, randoMessage, font->msgLength);
