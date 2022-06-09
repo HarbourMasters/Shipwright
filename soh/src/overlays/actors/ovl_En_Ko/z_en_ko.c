@@ -1053,7 +1053,7 @@ void func_80A98CD8(EnKo* this) {
     this->actor.targetMode = info->targetMode;
     this->lookDist = info->lookDist;
     this->lookDist += this->collider.dim.radius;
-    this->appearDist = info->appearDist;
+    this->appearDist = CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0 ? 32767 : info->appearDist;
 }
 
 // Used to fetch actor animation?
