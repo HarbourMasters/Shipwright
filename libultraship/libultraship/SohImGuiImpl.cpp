@@ -861,7 +861,7 @@ namespace SohImGui {
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
-                    Tooltip("Allows equiping the tunic and boots to c-buttons");
+                    Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
