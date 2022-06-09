@@ -1636,9 +1636,20 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                     Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
                    (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
                    CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
-            char randoMessage[] = "blarg\002";
-            msgCtx->msgLength = font->msgLength = sizeof(randoMessage);
-            memcpy(font->msgBuf, randoMessage, font->msgLength);
+            // char randoMessage[] = "blarg\002";
+
+            // todo this is not how i want to do it but i'm fighting string/char* stuff
+            for(int i = 0; i < 50; i++) {
+                HintLocationRando hintLocation = gSaveContext.hintLocations[i];
+                if (hintLocation.check == RC_COLOSSUS_GOSSIP_STONE) {
+                    msgCtx->msgLength = font->msgLength = sizeof(hintLocation.hintText);
+                    memcpy(font->msgBuf, hintLocation.hintText, font->msgLength);
+                }
+            }
+
+            // char* randoMessage = GetHintFromCheck(RC_COLOSSUS_GOSSIP_STONE);
+            // msgCtx->msgLength = font->msgLength = sizeof(randoMessage);
+            // memcpy(font->msgBuf, randoMessage, font->msgLength);
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

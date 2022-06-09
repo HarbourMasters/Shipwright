@@ -405,6 +405,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         generating = 0;
         changedSeed = 1;
         LoadRandomizerSettings("");
+        LoadHintLocations("");
         LoadItemLocations("");
         return;
     } else if (generating) {
@@ -416,6 +417,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         changedSeed = 0;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadRandomizerSettings(fileLoc);
+        LoadHintLocations(fileLoc);
         LoadItemLocations(fileLoc);
     }
 
@@ -1643,6 +1645,7 @@ void FileChoose_LoadGame(GameState* thisx) {
     }
 
     LoadRandomizerSettings("");
+    LoadHintLocations("");
     LoadItemLocations("");
 
     gSaveContext.respawn[0].entranceIndex = -1;

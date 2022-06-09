@@ -757,7 +757,47 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "GC Shop Item 5", RC_GC_SHOP_ITEM_5 },
     { "GC Shop Item 6", RC_GC_SHOP_ITEM_6 },
     { "GC Shop Item 7", RC_GC_SHOP_ITEM_7 },
-    { "GC Shop Item 8", RC_GC_SHOP_ITEM_8 }
+    { "GC Shop Item 8", RC_GC_SHOP_ITEM_8 },
+    { "Colossus Gossip Stone", RC_COLOSSUS_GOSSIP_STONE },
+    { "DMC Gossip Stone", RC_DMC_GOSSIP_STONE },
+    { "DMC Upper Grotto Gossip Stone", RC_DMC_UPPER_GROTTO_GOSSIP_STONE },
+    { "DMT Gossip Stone", RC_DMT_GOSSIP_STONE },
+    { "DMT Storms Grotto Gossip Stone", RC_DMT_STORMS_GROTTO_GOSSIP_STONE },
+    { "Dodongo's Cavern Gossip Stone", RC_DODONGOS_CAVERN_GOSSIP_STONE },
+    { "Fairy Gossip Stone", RC_FAIRY_GOSSIP_STONE },
+    { "GC Maze Gossip Stone", RC_GC_MAZE_GOSSIP_STONE },
+    { "GC Medigoron Gossip Stone", RC_GC_MEDIGORON_GOSSIP_STONE },
+    { "GV Gossip Stone", RC_GV_GOSSIP_STONE },
+    { "GY Gossip Stone", RC_GY_GOSSIP_STONE },
+    { "HC Malon Gossip Stone", RC_HC_MALON_GOSSIP_STONE },
+    { "HC Rock Wall Gossip Stone", RC_HC_ROCK_WALL_GOSSIP_STONE },
+    { "HC Storms Grotto Gossip Stone", RC_HC_STORMS_GROTTO_GOSSIP_STONE },
+    { "HF Cow Grotto Gossip Stone", RC_HF_COW_GROTTO_GOSSIP_STONE },
+    { "HF Near Market Gossip Stone", RC_HF_NEAR_MARKET_GOSSIP_STONE },
+    { "HF Open Grotto Gossip Stone", RC_HF_OPEN_GROTTO_GOSSIP_STONE },
+    { "HF Southeast Gossip Stone", RC_HF_SOUTHEAST_GOSSIP_STONE },
+    { "Jabu Gossip Stone", RC_JABU_GOSSIP_STONE },
+    { "KF Deku Tree Left Gossip Stone", RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE },
+    { "KF Deku Tree Right Gossip Stone", RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE },
+    { "KF Gossip Stone", RC_KF_GOSSIP_STONE },
+    { "KF Storms Gossip Stone", RC_KF_STORMS_GOSSIP_STONE },
+    { "Kak Open Grotto Gossip Stone", RC_KAK_OPEN_GROTTO_GOSSIP_STONE },
+    { "LH Lab Gossip Stone", RC_LH_LAB_GOSSIP_STONE },
+    { "LH Southeast Gossip Stone", RC_LH_SOUTHEAST_GOSSIP_STONE },
+    { "LH Southwest Gossip Stone", RC_LH_SOUTHWEST_GOSSIP_STONE },
+    { "LW Gossip Stone", RC_LW_GOSSIP_STONE },
+    { "LW Near Shortcuts Gossip Stone", RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE },
+    { "SFM Maze Lower Gossip Stone", RC_SFM_MAZE_LOWER_GOSSIP_STONE },
+    { "SFM Maze Upper Gossip Stone", RC_SFM_MAZE_UPPER_GOSSIP_STONE },
+    { "SFM Saria Gossip Stone", RC_SFM_SARIA_GOSSIP_STONE },
+    { "ToT Left Center Gossip Stone", RC_TOT_LEFT_CENTER_GOSSIP_STONE },
+    { "ToT Left Gossip Stone", RC_TOT_LEFT_GOSSIP_STONE },
+    { "ToT Right Center Gossip Stone", RC_TOT_RIGHT_CENTER_GOSSIP_STONE },
+    { "ToT Right Gossip Stone", RC_TOT_RIGHT_GOSSIP_STONE },
+    { "ZD Gossip Stone", RC_ZD_GOSSIP_STONE },
+    { "ZR Near Domain Gossip Stone", RC_ZR_NEAR_DOMAIN_GOSSIP_STONE },
+    { "ZR Near Grottos Gossip Stone", RC_ZR_NEAR_GROTTOS_GOSSIP_STONE },
+    { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
 std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
@@ -1121,6 +1161,17 @@ void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     }
 }
 
+void Randomizer::LoadHintLocations(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        ParseHintLocationsFile(spoilerFileName);
+    }
+
+    for (auto hintLocation : gSaveContext.hintLocations) {
+        if(hintLocation.check == RC_LINKS_POCKET) break;
+        this->hintLocations[hintLocation.check] = hintLocation.hintText;
+    }
+}
+
 void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseItemLocationsFile(spoilerFileName);
@@ -1314,6 +1365,35 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                 }
                 index++;        
             }
+        }
+
+        success = true;
+    } catch (const std::exception& e) {
+        return;
+    }
+}
+
+void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
+    std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+    if (!spoilerFileStream)
+        return;
+
+    bool success = false;
+
+    try {
+        json spoilerFileJson;
+        spoilerFileStream >> spoilerFileJson;
+        json hintsJson = spoilerFileJson["hints"];
+
+        int index = 0;
+        for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
+            gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
+
+            std::string hintMessage = it.value();
+            hintMessage += "\002";
+            memcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), hintMessage.length());
+
+            index++;
         }
 
         success = true;
@@ -1800,6 +1880,10 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {
+    return this->hintLocations[check];
 }
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
