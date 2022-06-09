@@ -28,8 +28,7 @@ CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIV
 CPPFLAGS := -MMD
 
 ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += -framework OpenGL
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew)
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
 endif
 
 ifneq ($(DEBUG),0)
