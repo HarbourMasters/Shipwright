@@ -1881,8 +1881,10 @@ u8 Item_CheckObtainability(u8 item) {
             return ITEM_NONE;
         }
     }
-
-    if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
+    
+    if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
+        return ITEM_NONE;
+    } else if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         return ITEM_NONE;
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_SKULL_TOKEN)) {
         return ITEM_NONE;
