@@ -2317,6 +2317,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch (actorParams) {
                 case 1030:
                     return RC_GRAVEYARD_FREESTANDING_POH;
+                case 7942:
+                    return RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR;
             }
             break;
         case 84:
