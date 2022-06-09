@@ -527,26 +527,20 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints(tinyxml2::XMLDocument& spoilerLog) {
+static void WriteHints() {
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
     }
 
-    auto parentNode = spoilerLog.NewElement("hints");
-
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
-
-        auto node = parentNode->InsertNewChildElement("hint");
-        node->SetAttribute("location", location->GetName().c_str());
 
         auto text = location->GetPlacedItemName().GetEnglish();
         std::replace(text.begin(), text.end(), '&', ' ');
         std::replace(text.begin(), text.end(), '^', ' ');
-        node->SetText(text.c_str());
+        
+        jsonData["hints"][location->GetName()] = text;
     }
-
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
 }
 
 static void WriteAllLocations() {
@@ -590,7 +584,7 @@ const char* SpoilerLog_Write() {
     playthroughBeatable = false;
     wothLocations.clear();
 
-    //WriteHints(spoilerLog);
+    WriteHints();
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations();
     

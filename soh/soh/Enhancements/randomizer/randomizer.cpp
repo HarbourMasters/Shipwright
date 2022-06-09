@@ -2492,11 +2492,11 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
     cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
-    cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 0);
-    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 0);
-    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 0);
-    cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 0);
-    cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 0);
+    cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
+    cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
+    cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
+    cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
+    cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2582,8 +2582,8 @@ void DrawRandoEditor(bool& open) {
     const char* randoRandomTrapDamage[3] = { "Basic", "Advanced", "Off" };
 
     // Item Pool Settings
-    const char* randoItemPool[4] = { "Balanced", "Scarce", "Minimal", "Plentiful" };
-    const char* randoIceTraps[5] = { "Normal", "Extra", "Mayhem", "Onslaught", "Off" };
+    const char* randoItemPool[4] = { "Plentiful", "Balanced", "Scarce", "Minimal" };
+    const char* randoIceTraps[5] =  {"Off", "Normal", "Extra", "Mayhem", "Onslaught"};
 
     // SFX Settings
     const char* randoSFXBackgroundMusic[3] = { "Normal", "No Music", "Random" };
@@ -3670,11 +3670,11 @@ void DrawRandoEditor(bool& open) {
                         "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
                     SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
 
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 0) {
+                    if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                         // Hint Clarity
                         ImGui::Indent();
                         ImGui::Text("Hint Clarity");
-                        switch (CVar_GetS32("gRandomizeHintClarity", 0)) {
+                        switch (CVar_GetS32("gRandomizeHintClarity", 2)) {
                             case 0:
                                 InsertHelpHoverText(
                                     "Sets the difficulty of hints.\nObscure: Hints are unique for each thing, but\nthe "
@@ -3691,22 +3691,22 @@ void DrawRandoEditor(bool& open) {
                                     "are unique\nfor each thing.\nEx: Kokiri Sword > the Kokiri Sword");
                                 break;
                         }
-                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 0);
+                        SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                         // Hint Distribution
                         ImGui::Text("Hint Distribution");
-                        switch (CVar_GetS32("gRandomizeHintDistribution", 0)) {
+                        switch (CVar_GetS32("gRandomizeHintDistribution", 1)) {
                             case 0:
-                                InsertHelpHoverText("Recommended hint spread.");
+                                InsertHelpHoverText("Only junk hints.");
                                 break;
                             case 1:
-                                InsertHelpHoverText("More useful hints.");
+                                InsertHelpHoverText("Recommended hint spread.");
                                 break;
                             case 2:
-                                InsertHelpHoverText("Many powerful hints.");
+                                InsertHelpHoverText("More useful hints.");
                                 break;
                             case 3:
-                                InsertHelpHoverText("Only junk hints.");
+                                InsertHelpHoverText("Many powerful hints.");
                                 break;
                         }
                         SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
@@ -3760,45 +3760,45 @@ void DrawRandoEditor(bool& open) {
 
                     // // COLUMN 2 - ITEM POOL SETTINGS
                     ImGui::Text("Item Pool");
-                    switch (CVar_GetS32("gRandomizeItemPool", 0)) {
+                    switch (CVar_GetS32("gRandomizeItemPool", 1)) {
                         case 0:
-                            InsertHelpHoverText("Original item pool.");
-                            break;
-                        case 1:
-                            InsertHelpHoverText("Some excess items are removed, including health\nupgrades.");
-                            break;
-                        case 2:
-                            InsertHelpHoverText("Most excess items are removed.");
-                            break;
-                        case 3:
                             InsertHelpHoverText("Extra major items are added to the pool.");
                             break;
+                        case 1:
+                            InsertHelpHoverText("Original item pool.");
+                            break;
+                        case 2:
+                            InsertHelpHoverText("Some excess items are removed, including health\nupgrades.");
+                            break;
+                        case 3:
+                            InsertHelpHoverText("Most excess items are removed.");
+                            break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 0);
+                    SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
                     ImGui::Separator();
 
                     // // Ice Traps
                     ImGui::Text("Ice Traps");
-                    switch (CVar_GetS32("gRandomizeIceTraps", 0)) {
+                    switch (CVar_GetS32("gRandomizeIceTraps", 1)) {
                         case 0:
-                            InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
+                            InsertHelpHoverText("All Ice Traps are removed.");
                             break;
                         case 1:
+                            InsertHelpHoverText("Only Ice Traps from the base item pool are placed.");
+                            break;
+                        case 2:
                             InsertHelpHoverText(
                                 "Chance to add extra Ice Traps when junk items are\nadded to the item pool.");
                             break;
-                        case 2:
+                        case 3:
                             InsertHelpHoverText("All added junk items will be Ice Traps.");
                             break;
-                        case 3:
+                        case 4:
                             InsertHelpHoverText(
                                 "All junk items will be replaced by Ice Traps, even\nthose in the base pool.");
                             break;
-                        case 4:
-                            InsertHelpHoverText("All Ice Traps are removed.");
-                            break;
                     }
-                    SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 0);
+                    SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
                     ImGui::Separator();
 
                     // todo implement double defense getitem
