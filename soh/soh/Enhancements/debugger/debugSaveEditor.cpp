@@ -17,6 +17,7 @@ extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
+#include <Cvar.h>
 }
 
 typedef struct {
@@ -1544,6 +1545,7 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
+        CVar_SetS32("gSaveEditorEnabled", 0);
         return;
     }
 

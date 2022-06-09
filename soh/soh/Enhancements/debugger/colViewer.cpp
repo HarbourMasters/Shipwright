@@ -12,6 +12,7 @@ extern "C" {
 #include "variables.h"
 #include "functions.h"
 #include "macros.h"
+#include <Cvar.h>
 extern GlobalContext* gGlobalCtx;
 }
 
@@ -94,6 +95,7 @@ void DrawColorPicker(const std::string& name, uint32_t& color) {
 // Draws the ImGui window for the collision viewer
 void DrawColViewerWindow(bool& open) {
     if (!open) {
+        CVar_SetS32("gCollisionViewerEnabled", 0);
         return;
     }
 

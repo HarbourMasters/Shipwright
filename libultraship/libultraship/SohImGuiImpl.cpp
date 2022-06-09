@@ -1011,7 +1011,7 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Cosmetics"))  {
-                EnhancementCheckbox("Cosmetics editor", "gCosmticsEditor");
+                EnhancementCheckbox("Cosmetics editor", "gCosmeticEditor");
                 Tooltip("Edit Navi and Link's Tunics color.");
                 EnhancementCheckbox("HUD Margins editor", "gUseMargins");
                 EnhancementRadioButton("N64 interface", "gHudColors", 0);
@@ -1068,7 +1068,7 @@ namespace SohImGui {
                 if (CVar_GetS32("gSkipLogoTitle",0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
-		ImGui::Separator();
+                ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
@@ -1079,15 +1079,16 @@ namespace SohImGui {
             }
 
             bool Margins_isOpen = CVar_GetS32("gUseMargins", 0);
-            bool Cosmetics_isOpen = CVar_GetS32("gCosmticsEditor", 0);
+            bool Cosmetics_isOpen = CVar_GetS32("gCosmeticEditor", 0);
             bool Interface_isOpen = CVar_GetS32("gColorsEditor", 0);
 
             if (Margins_isOpen) {
                 if (!Margins_isOpen) {
+                    CVar_SetS32("gHUDMargins", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-                ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+                ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+                ImGui::Begin("Margins Editor", &Margins_isOpen, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Interface margins")) {
                         EnhancementCheckbox("Use margins", "gHUDMargins");
@@ -1100,14 +1101,14 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Cosmetics_isOpen) {
                 if (!Cosmetics_isOpen) {
+                    CVar_SetS32("gCosmeticEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(500, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Cosmetics Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Cosmetics Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Navi")) {
@@ -1146,14 +1147,14 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Interface_isOpen) {
                 if (!Interface_isOpen) {
+                    CVar_SetS32("gColorsEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(215, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Interface Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Interface Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Hearts")) {
@@ -1194,7 +1195,6 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
 
