@@ -1627,9 +1627,16 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, "../z_message_PAL.c", 1954);
     } else {
         Message_FindMessage(globalCtx, textId);
-        msgCtx->msgLength = font->msgLength;
-        char* src = (uintptr_t)font->msgOffset;
-        memcpy(font->msgBuf, src, font->msgLength);
+        // if we're rando'd and talking to a gossip stone
+        if (gSaveContext.n64ddFlag && textId == 0x2053) {
+            char randoMessage[] = "blarg\002";
+            msgCtx->msgLength = font->msgLength = sizeof(randoMessage);
+            memcpy(font->msgBuf, randoMessage, font->msgLength);
+        } else {
+            msgCtx->msgLength = font->msgLength;
+            char* src = (uintptr_t)font->msgOffset;
+            memcpy(font->msgBuf, src, font->msgLength);
+        }
     }
 
     msgCtx->textBoxProperties = font->charTexBuf[0];
