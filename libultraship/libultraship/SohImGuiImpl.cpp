@@ -872,6 +872,7 @@ namespace SohImGui {
                     Tooltip("Disables the voice audio when Navi calls you");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     ImGui::EndMenu();
                 }
 
