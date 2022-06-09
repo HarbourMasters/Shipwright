@@ -58,7 +58,7 @@ cp <path to your ROM> OTRExporter
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
-# -jX defines number of cores to use for compilation - lower or remove entierly on older machines
+# -jX defines number of cores to use for compilation - lower or remove entirely if having issues
 make setup -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
 # Compile the code (watch the -j parameter as above)
 make -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
