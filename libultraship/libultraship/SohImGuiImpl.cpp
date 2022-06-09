@@ -1088,7 +1088,7 @@ namespace SohImGui {
                     return;
                 }
                 ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Margins Editor", &Margins_isOpen, ImGuiWindowFlags_NoFocusOnAppearing);
+                ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Interface margins")) {
                         EnhancementCheckbox("Use margins", "gHUDMargins");
