@@ -1041,12 +1041,23 @@ extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
 
+extern "C" void LoadHintLocations(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+}
+
 extern "C" void LoadItemLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName);
 }
 
 extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
+}
+
+extern "C" char* GetHintFromCheck(RandomizerCheck check) {
+    // // std::string hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
+    // char* hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).data();
+    return OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).c_str();
+    // return hintText;
 }
 
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {

@@ -67,6 +67,11 @@ typedef struct {
 } ItemLocationRando;
 
 typedef struct {
+    RandomizerCheck check;
+    char hintText[100];
+} HintLocationRando;
+
+typedef struct {
     RandomizerSettingKey key;
     u8 value;
 } RandoSetting;
@@ -170,6 +175,7 @@ typedef struct {
     /* 0x1424 */ s16 healthAccumulator;
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[500];
+    HintLocationRando hintLocations[50];
     u8 seedIcons[5];
     u8 dungeonsDone[8];
 } SaveContext; // size = 0x1428

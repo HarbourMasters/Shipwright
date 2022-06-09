@@ -80,6 +80,8 @@ int Controller_ShouldRumble(size_t i);
 Sprite* GetSeedTexture(uint8_t index);
 void LoadRandomizerSettings(const char* spoilerFileName);
 u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
+char* GetHintFromCheck(RandomizerCheck check);
+void LoadHintLocations(const char* spoilerFileName);
 void LoadItemLocations(const char* spoilerFileName);
 s16 GetItemModelFromId(s16 itemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);

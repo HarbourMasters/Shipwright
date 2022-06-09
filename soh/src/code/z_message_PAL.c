@@ -1627,9 +1627,34 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, "../z_message_PAL.c", 1954);
     } else {
         Message_FindMessage(globalCtx, textId);
-        msgCtx->msgLength = font->msgLength;
-        char* src = (uintptr_t)font->msgOffset;
-        memcpy(font->msgBuf, src, font->msgLength);
+        // if we're rando'd and talking to a gossip stone
+        if (gSaveContext.n64ddFlag &&
+            textId == 0x2053 &&
+            GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+                (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+                   (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+                    Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+                   (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
+                   CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+            // char randoMessage[] = "blarg\002";
+
+            // todo this is not how i want to do it but i'm fighting string/char* stuff
+            for(int i = 0; i < 50; i++) {
+                HintLocationRando hintLocation = gSaveContext.hintLocations[i];
+                if (hintLocation.check == RC_COLOSSUS_GOSSIP_STONE) {
+                    msgCtx->msgLength = font->msgLength = sizeof(hintLocation.hintText);
+                    memcpy(font->msgBuf, hintLocation.hintText, font->msgLength);
+                }
+            }
+
+            // char* randoMessage = GetHintFromCheck(RC_COLOSSUS_GOSSIP_STONE);
+            // msgCtx->msgLength = font->msgLength = sizeof(randoMessage);
+            // memcpy(font->msgBuf, randoMessage, font->msgLength);
+        } else {
+            msgCtx->msgLength = font->msgLength;
+            char* src = (uintptr_t)font->msgOffset;
+            memcpy(font->msgBuf, src, font->msgLength);
+        }
     }
 
     msgCtx->textBoxProperties = font->charTexBuf[0];
