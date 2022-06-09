@@ -495,6 +495,10 @@ s16 EnGo2_GetStateGoronCityLowestFloor(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
+    if(gSaveContext.n64ddFlag) {
+        return 0x3036;
+    }
+
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
         return gSaveContext.infTable[16] & 0x8000 ? 0x3042 : 0x3041;
     } else if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 1)) {
@@ -511,16 +515,29 @@ u16 EnGo2_GetTextIdGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
 s16 EnGo2_GetStateGoronCityLink(GlobalContext* globalCtx, EnGo2* this) {
     switch (EnGo2_GetDialogState(this, globalCtx)) {
         case TEXT_STATE_CLOSING:
-            switch (this->actor.textId) {
-                case 0x3036:
-                    EnGo2_GetItem(this, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON) : GI_TUNIC_GORON);
-                    this->actionFunc = EnGo2_SetupGetItem;
-                    return 2;
-                case 0x3037:
-                    gSaveContext.infTable[16] |= 0x4000;
-                default:
+            if(!gSaveContext.n64ddFlag) {
+                switch (this->actor.textId) {
+                    case 0x3036:
+                        EnGo2_GetItem(this, globalCtx, GI_TUNIC_GORON);
+                        this->actionFunc = EnGo2_SetupGetItem;
+                        return 2;
+                    case 0x3037:
+                        gSaveContext.infTable[16] |= 0x4000;
+                    default:
+                        return 0;
+                }
+            } else {
+                if (Flags_GetTreasure(globalCtx, 0x1F)) {
                     return 0;
+                }
+                
+                gSaveContext.infTable[16] |= 0x200;
+                EnGo2_GetItem(this, globalCtx, GetRandomizedItemIdFromKnownCheck(RC_GC_ROLLING_GORON_AS_ADULT, GI_TUNIC_GORON));
+                this->actionFunc = EnGo2_SetupGetItem;
+                Flags_SetTreasure(globalCtx, 0x1F);
+                return 2;
             }
+
         case TEXT_STATE_CHOICE:
             if (Message_ShouldAdvance(globalCtx)) {
                 if (this->actor.textId == 0x3034) {
