@@ -537,7 +537,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementCombo(const std::string& name, const char* cvarName, std::vector<std::string> items, int defaultValue) {
+    void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
       
         if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
             for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
