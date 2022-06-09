@@ -387,8 +387,8 @@ s32 func_80AF5DFC(EnSa* this, GlobalContext* globalCtx) {
         return 1;
     }
     if (globalCtx->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
-        if (Flags_GetTreasure(globalCtx, 0x1F)) {
-            return 2;
+        if (gSaveContext.n64ddFlag) {
+            return 5;
         }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
     }
@@ -626,8 +626,6 @@ void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, Randomize
         Flags_SetTreasure(globalCtx, 0x1F);
     } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
         func_8002F434(&saria->actor, globalCtx, getItemId, 10000.0f, 100.0f);
-    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
-        Flags_SetTreasure(globalCtx, 0x1F);
     }
 }
 
