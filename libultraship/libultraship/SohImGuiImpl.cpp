@@ -726,9 +726,14 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Controller"))
 	    {
 		ImGuiIO& io = ImGui::GetIO();
-		ImGui::CheckboxFlags("Use Controller Navigation",     &io.ConfigFlags, ImGuiConfigFlags_NavEnableGamepad);      
+		EnhancementCheckbox("Use Controller Navigation", "gControllerNav");
 		Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
- 
+		
+		if (CVar_GetS32("gControllerNav", 0) == 1) 
+		{
+        		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+        	}
+
 		ImGui::Separator();
 
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
