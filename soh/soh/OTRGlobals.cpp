@@ -639,7 +639,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         // OTRTODO: Grab loop data from wav
         sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
         sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size / 2;
+        sampleC->loop->end = sampleC->size / 2; // OTRTODO: This calculation is probably incorrect... Sometimes it goes past the sample, sometimes it stops too early...
         sampleC->loop->count = 0;
         sampleC->sampleRateMagicValue = 'RIFF';
         sampleC->sampleRate = sampleRate;
