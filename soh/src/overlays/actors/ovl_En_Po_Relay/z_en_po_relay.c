@@ -329,26 +329,42 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, GlobalContext* globalCtx) {
         }
     }
     if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if (this->hookshotSlotFull != 0) {
+        if(!gSaveContext.n64ddFlag) {
+            if (this->hookshotSlotFull != 0) {
+                sp60.x = this->actor.world.pos.x;
+                sp60.y = this->actor.floorHeight;
+                sp60.z = this->actor.world.pos.z;
+                if (gSaveContext.timer1Value < HIGH_SCORE(HS_DAMPE_RACE)) {
+                    HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+                }
+                if (Flags_GetCollectible(globalCtx, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
+                    Item_DropCollectible2(globalCtx, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
+                } else {
+                    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
+                }
+            } else {
+                Flags_SetTempClear(globalCtx, 4);
+                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+            }            
+        } else {
             sp60.x = this->actor.world.pos.x;
             sp60.y = this->actor.floorHeight;
             sp60.z = this->actor.world.pos.z;
+
+            if (this->hookshotSlotFull == 0) {
+                Flags_SetTempClear(globalCtx, 4);
+                Flags_SetTreasure(gGlobalCtx, 0x1F);
+                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+            }
+
             if (gSaveContext.timer1Value < HIGH_SCORE(HS_DAMPE_RACE)) {
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
             }
             if (Flags_GetCollectible(globalCtx, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
                 Item_DropCollectible2(globalCtx, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-            } else {
+            } else if (Flags_GetCollectible(globalCtx, this->actor.params) != 0) {
                 Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
             }
-        } else {
-            Flags_SetTempClear(globalCtx, 4);
-
-            if (gSaveContext.n64ddFlag) {
-                Flags_SetTreasure(gGlobalCtx, 0x1F);
-            }
-
-            HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
         }
         Actor_Kill(&this->actor);
     }
