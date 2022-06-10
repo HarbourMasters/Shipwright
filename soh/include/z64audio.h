@@ -18,7 +18,9 @@
 
 #define AIBUF_LEN 0x580
 
-#define CALC_RESAMPLE_FREQ(sampleRate) (sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
+#define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
+
+extern bool gUseLegacySD;
 
 typedef enum {
     /* 0 */ ADSR_STATE_DISABLED,
