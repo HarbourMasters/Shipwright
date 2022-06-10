@@ -327,19 +327,19 @@ void ZAudio::ParseRawData()
 	//int gSoundFontTableOffset = 0x138270;		// OTRTODO: Make this an XML Param
 	//int gSequenceTableOffset = 0x1386A0;   // OTRTODO: Make this an XML Param
 	//int gSampleBankTableOffset = 0x138D90;      // OTRTODO: Make this an XML Param
-	// int gSequenceFontTableOffset = 0x1384E0;  // OTRTODO: Make this an XML Param
+	//int gSequenceFontTableOffset = 0x1384E0;  // OTRTODO: Make this an XML Param
 
 	// NMQ DBG ROM
-	//int gSoundFontTableOffset = 0x138290;       // OTRTODO: Make this an XML Param
-	//int gSequenceTableOffset = 0x1386C0;   // OTRTODO: Make this an XML Param
-	//int gSampleBankTableOffset = 0x138DB0;      // OTRTODO: Make this an XML Param
-	//int gSequenceFontTableOffset = 0x138500;      // OTRTODO: Make this an XML Param
+	int gSoundFontTableOffset = 0x138290;       // OTRTODO: Make this an XML Param
+	int gSequenceTableOffset = 0x1386C0;   // OTRTODO: Make this an XML Param
+	int gSampleBankTableOffset = 0x138DB0;      // OTRTODO: Make this an XML Param
+	int gSequenceFontTableOffset = 0x138500;      // OTRTODO: Make this an XML Param
 	
 	// NTSC 1.0
-	int gSoundFontTableOffset = 0x1026A0;     // OTRTODO: Make this an XML Param
-	int gSequenceTableOffset = 0x102AD0;      // OTRTODO: Make this an XML Param
-	int gSampleBankTableOffset = 0x1031C0;    // OTRTODO: Make this an XML Param
-	int gSequenceFontTableOffset = 0x102910;  // OTRTODO: Make this an XML Param
+	//int gSoundFontTableOffset = 0x1026A0;     // OTRTODO: Make this an XML Param
+	//int gSequenceTableOffset = 0x102AD0;      // OTRTODO: Make this an XML Param
+	//int gSampleBankTableOffset = 0x1031C0;    // OTRTODO: Make this an XML Param
+	//int gSequenceFontTableOffset = 0x102910;  // OTRTODO: Make this an XML Param
 
 	soundFontTable = ParseAudioTable(codeData, gSoundFontTableOffset);
 	sequenceTable = ParseAudioTable(codeData, gSequenceTableOffset);
