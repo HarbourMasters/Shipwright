@@ -57,6 +57,18 @@ void SaveManager::LoadRandomizerVersion1() {
     for (int i = 0; i < 5; i++) {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
     }
+
+    for (int i = 0; i < 300; i++) {
+        SaveManager::Instance->LoadData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
+        SaveManager::Instance->LoadData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
+    }
+
+    for (int i = 0; i < 50; i++) {
+        SaveManager::Instance->LoadData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
+        for (int j = 0; j < 100; j++) {
+            SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
+        }
+    }
 }
 
 void SaveManager::SaveRandomizer() {
@@ -67,6 +79,18 @@ void SaveManager::SaveRandomizer() {
 
     for (int i = 0; i < 5; i++) {
         SaveManager::Instance->SaveData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
+    }
+
+    for (int i = 0; i < 300; i++) {
+        SaveManager::Instance->SaveData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
+        SaveManager::Instance->SaveData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
+    }
+
+    for (int i = 0; i < 50; i++) {
+        SaveManager::Instance->SaveData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
+        for (int j = 0; j < 100; j++) {
+            SaveManager::Instance->SaveData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
+        }
     }
 }
 
