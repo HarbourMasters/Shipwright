@@ -7,6 +7,7 @@
 #include <bit>
 #include <map>
 #include <string>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -17,8 +18,8 @@ extern GlobalContext* gGlobalCtx;
 
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
-#include <Cvar.h>
 }
+
 
 typedef struct {
     uint32_t id;
