@@ -100,11 +100,14 @@ void ZResource::ParseXML(tinyxml2::XMLElement* reader)
 			attrs = attrs->Next();
 		}
 
-		if (!canHaveInner && !reader->NoChildren())
+		if (!Globals::Instance->otrMode)
 		{
-			std::string errorHeader = StringHelper::Sprintf(
-				"resource '%s' with inner element/child detected", reader->Name());
-			HANDLE_ERROR_PROCESS(WarningType::InvalidXML, errorHeader, "");
+			if (!canHaveInner && !reader->NoChildren())
+			{
+				std::string errorHeader = StringHelper::Sprintf(
+					"resource '%s' with inner element/child detected", reader->Name());
+				HANDLE_ERROR_PROCESS(WarningType::InvalidXML, errorHeader, "");
+			}
 		}
 
 		for (const auto& attr : registeredAttributes)
@@ -120,7 +123,6 @@ void ZResource::ParseXML(tinyxml2::XMLElement* reader)
 		}
 
 		name = registeredAttributes.at("Name").value;
-
 
 		// Disable this check for OTR file generation for now since it takes up a considerable amount of CPU time
 		if (!Globals::Instance->otrMode)
