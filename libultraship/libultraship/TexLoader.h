@@ -1,0 +1,8 @@
+#pragma once
+#include <PR/ultra64/gbi.h>
+#include "Lib/Fast3D/gfx_pc.h"
+
+class TexLoader {
+public:
+	static bool LoadReplacement(int tile, const char* path, GfxRenderingAPI* api, TextureCacheNode** node, uint32_t fmt, uint32_t siz, uint32_t palette, const uint8_t* orig_addr);
+};

@@ -558,8 +558,26 @@ static void gfx_opengl_select_texture(int tile, GLuint texture_id) {
     glBindTexture(GL_TEXTURE_2D, texture_id);
 }
 
+static void gfx_opengl_select_compressed_texture(uint32_t tile, uint32_t mipMapCount, uint32_t texture_id) {
+    glActiveTexture(GL_TEXTURE0 + tile);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+}
+
 static void gfx_opengl_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, rgba32_buf);
+}
+
+static void gfx_opengl_upload_compressed_texture( uint32_t level, uint32_t format, const uint8_t* rgba32_buf, uint32_t width, uint32_t height, uint32_t imageSize ) {
+    glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 0, imageSize, rgba32_buf);
+}
+
+static void gfx_opengl_finish_compressed_texture(uint32_t mipMapCount) {
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, mipMapCount - 1);
 }
 
 static uint32_t gfx_cm_to_opengl(uint32_t val) {
@@ -890,7 +908,10 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_select_texture_fb,
     gfx_opengl_delete_texture,
     gfx_opengl_set_texture_filter,
-    gfx_opengl_get_texture_filter
+    gfx_opengl_get_texture_filter,
+    gfx_opengl_select_compressed_texture,
+	gfx_opengl_upload_compressed_texture,
+    gfx_opengl_finish_compressed_texture
 };
 
 #endif

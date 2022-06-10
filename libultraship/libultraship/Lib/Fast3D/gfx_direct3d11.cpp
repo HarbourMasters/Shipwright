@@ -1011,6 +1011,18 @@ ImTextureID gfx_d3d11_get_texture_by_id(int id) {
     return d3d.textures[id].resource_view.Get();
 }
 
+static void gfx_d3d11_select_compressed_texture(uint32_t tile, uint32_t mipMapCount, uint32_t texture_id) {
+
+}
+
+static void gfx_d3d11_upload_compressed_texture(uint32_t level, uint32_t format, const uint8_t* rgba32_buf, uint32_t width, uint32_t height, uint32_t imageSize) {
+
+}
+
+static void gfx_d3d11_finish_compressed_texture(uint32_t mipMapCount) {
+
+}
+
 struct GfxRenderingAPI gfx_direct3d11_api = {
     gfx_d3d11_get_clip_parameters,
     gfx_d3d11_unload_shader,
@@ -1043,7 +1055,10 @@ struct GfxRenderingAPI gfx_direct3d11_api = {
     gfx_d3d11_select_texture_fb,
     gfx_d3d11_delete_texture,
     gfx_d3d11_set_texture_filter,
-    gfx_d3d11_get_texture_filter
+    gfx_d3d11_get_texture_filter,
+    gfx_d3d11_select_compressed_texture,
+	gfx_d3d11_upload_compressed_texture,
+	gfx_d3d11_finish_compressed_texture
 };
 
 #endif

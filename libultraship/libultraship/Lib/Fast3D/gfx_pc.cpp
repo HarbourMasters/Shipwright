@@ -33,6 +33,7 @@
 #include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
+#include "../../TexLoader.h"
 
 // OTRTODO: fix header files for these
 extern "C" {
@@ -834,9 +835,12 @@ static void import_texture(int i, int tile) {
     uint8_t fmt = rdp.texture_tile[tile].fmt;
     uint8_t siz = rdp.texture_tile[tile].siz;
     uint32_t tmem_index = rdp.texture_tile[tile].tmem_index;
-
-    if (gfx_texture_cache_lookup(i, tile))
-    {
+	
+    if (gfx_texture_cache_lookup(i, tile)) {
+        return;
+    }
+	
+    if (TexLoader::LoadReplacement(tile, rdp.loaded_texture[tmem_index].otr_path, gfx_get_current_rendering_api(), &rendering_state.textures[i], fmt, siz, rdp.texture_tile[tile].palette, rdp.loaded_texture[tmem_index].addr)) {
         return;
     }
 
@@ -847,7 +851,7 @@ static void import_texture(int i, int tile) {
         } else if (siz == G_IM_SIZ_32b) {
             import_texture_rgba32(tile);
         } else {
-            //abort(); // OTRTODO: Sometimes, seemingly randomly, we end up here. Could be a bad dlist, could be something F3D does not have supported. Further investigation is needed.
+            // abort(); // OTRTODO: Sometimes, seemingly randomly, we end up here. Could be a bad dlist, could be something F3D does not have supported. Further investigation is needed.
         }
     } else if (fmt == G_IM_FMT_IA) {
         if (siz == G_IM_SIZ_4b) {
@@ -1733,8 +1737,11 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
     rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].full_image_line_size_bytes = size_bytes;
     //assert(size_bytes <= 4096 && "bug: too big texture");
     rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].addr = rdp.texture_to_load.addr;
-    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = rdp.texture_to_load.otr_path;
     rdp.textures_changed[rdp.texture_tile[tile].tmem_index] = true;
+	
+    if (rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path)
+        free((void*) rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path);
+    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = _strdup(rdp.texture_to_load.otr_path);
 }
 
 static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t lrs, uint32_t lrt) {
@@ -1766,13 +1773,16 @@ static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t 
 
     assert(size_bytes <= 4096 && "bug: too big texture");
     rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].addr = rdp.texture_to_load.addr + start_offset;
-    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = rdp.texture_to_load.otr_path;
     rdp.texture_tile[tile].uls = uls;
     rdp.texture_tile[tile].ult = ult;
     rdp.texture_tile[tile].lrs = lrs;
     rdp.texture_tile[tile].lrt = lrt;
 
     rdp.textures_changed[rdp.texture_tile[tile].tmem_index] = true;
+
+	if(rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path)
+        free((void*) rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path);
+    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = _strdup(rdp.texture_to_load.otr_path);
 }
 
 
@@ -2422,14 +2432,17 @@ static void gfx_run_dl(Gfx* cmd) {
             // RDP Commands:
             case G_SETTIMG: {
                 uintptr_t i = (uintptr_t) seg_addr(cmd->words.w1);
-
+                   
                 char* imgData = (char*)i;
+                char* otrPath = nullptr;
 
                 if ((i & 1) != 1)
-                    if (ResourceMgr_OTRSigCheck(imgData) == 1)
+                    if (ResourceMgr_OTRSigCheck(imgData) == 1) {
+                        otrPath = imgData;
                         i = (uintptr_t)ResourceMgr_LoadTexByName(imgData);
+                    }
 
-                gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, imgData);
+                gfx_dp_set_texture_image(C0(21, 3), C0(19, 2), C0(0, 10), (void*) i, otrPath);
                 break;
             }
             case G_SETTIMG_OTR:
