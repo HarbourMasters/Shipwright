@@ -222,6 +222,10 @@ static void draw_ico_sphere(Gfx** p_gfx_p, Gfx** p_gfx_d, f32 x, f32 y, f32 z, f
 }
 
 void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
+    if (CVar_GetS32("gGuardVision", 0) == 0) {
+        return;
+    }
+    
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     u32 rm;
     u32 blc1;
@@ -240,18 +244,18 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
 
     gm = G_ZBUFFER | G_SHADE | G_LIGHTING;
 
-    gSPLoadGeometryMode(POLY_OPA_DISP++, gm);
-    gSPTexture(POLY_OPA_DISP++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
-    gDPPipeSync(POLY_OPA_DISP++);
-    gDPSetCycleType(POLY_OPA_DISP++, G_CYC_1CYCLE);
-    gDPSetRenderMode(POLY_OPA_DISP++, rm | blc1, rm | blc2);
-    gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0,
+    gSPLoadGeometryMode(POLY_XLU_DISP++, gm);
+    gSPTexture(POLY_XLU_DISP++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
+    gDPPipeSync(POLY_XLU_DISP++);
+    gDPSetCycleType(POLY_XLU_DISP++, G_CYC_1CYCLE);
+    gDPSetRenderMode(POLY_XLU_DISP++, rm | blc1, rm | blc2);
+    gDPSetCombineLERP(POLY_XLU_DISP++, PRIMITIVE, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, PRIMITIVE, 0, SHADE, 0, 0, 0,
                       0, ENVIRONMENT);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+    gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     if (*seenLink) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 0, 0, 255);
+        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);
     }
-    draw_ico_sphere(&POLY_OPA_DISP, &gfxCtx->polyXlu.d, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
+    draw_ico_sphere(&POLY_XLU_DISP, &gfxCtx->polyXlu.d, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
