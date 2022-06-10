@@ -440,11 +440,11 @@ void func_800DBE64(void) {
 void func_800DBE6C(void) {
 }
 
-void AudioSynth_LoadFilter(Acmd* cmd, s32 flags, s32 countOrBuf, s32 addr) {
+void AudioSynth_LoadFilter(Acmd* cmd, s32 flags, s32 countOrBuf, uintptr_t addr) {
     aFilter(cmd, flags, countOrBuf, addr);
 }
 
-void AudioSynth_LoadFilterCount(Acmd* cmd, s32 count, s32 addr) {
+void AudioSynth_LoadFilterCount(Acmd* cmd, s32 count, uintptr_t addr) {
     aFilter(cmd, 2, count, addr);
 }
 
@@ -560,6 +560,9 @@ Acmd* AudioSynth_DoOneAudioUpdate(s16* aiBuf, s32 aiBufLen, Acmd* cmd, s32 updat
     NoteSubEu* noteSubEu;
     NoteSubEu* noteSubEu2;
     s32 unk14;
+
+    if (aiBufLen == 0)
+        return;
 
     t = gAudioContext.numNotes * updateIndex;
     count = 0;

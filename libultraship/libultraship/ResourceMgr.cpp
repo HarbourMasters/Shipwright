@@ -339,6 +339,18 @@ namespace Ship {
 		return LoadedList;
 	}
 
+	std::shared_ptr<std::vector<std::string>> ResourceMgr::ListFiles(std::string SearchMask)
+	{
+		auto result = std::make_shared<std::vector<std::string>>();
+		auto fileList = OTR->ListFiles(SearchMask);
+
+		for (DWORD i = 0; i < fileList.size(); i++) {
+			result->push_back(fileList[i].cFileName);
+		}
+
+		return result;
+	}
+
 	void ResourceMgr::InvalidateResourceCache() {
 		ResourceCache.clear();
 	}

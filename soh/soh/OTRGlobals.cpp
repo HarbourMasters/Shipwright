@@ -59,6 +59,7 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_CacheDirectory(const char* resName);
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 
 // C->C++ Bridge
 extern "C" void OTRAudio_Init() 
@@ -198,11 +199,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                 //AudioMgr_ThreadEntry(&gAudioMgr);
                 // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
                 // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-                #define SAMPLES_HIGH 560
-                #define SAMPLES_LOW 528
+                //#define SAMPLES_HIGH 560
+                //#define SAMPLES_LOW 528
                 // PAL values
                 //#define SAMPLES_HIGH 656
                 //#define SAMPLES_LOW 624
+
+                // 44KHZ values
+                #define SAMPLES_HIGH 752
+                #define SAMPLES_LOW 720
+
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
                 int samples_left = AudioPlayer_Buffered();
@@ -321,6 +327,22 @@ extern "C" void ResourceMgr_InvalidateCache() {
     OTRGlobals::Instance->context->GetResourceManager()->InvalidateResourceCache();
 }
 
+// OTRTODO: There is probably a more elegant way to go about this...
+extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
+    auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
+    char** result = (char**)malloc(lst->size() * sizeof(char*));
+
+    for (int i = 0; i < lst->size(); i++) {
+        char* str = (char*)malloc(lst.get()[0][i].size() + 1);
+        memcpy(str, lst.get()[0][i].data(), lst.get()[0][i].size());
+        str[lst.get()[0][i].size()] = '\0';
+        result[i] = str;
+    }
+    
+    *resultSize = lst->size();
+
+    return result;
+}
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
@@ -545,35 +567,53 @@ extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 	return (Vtx*)res->vertices.data();
 }
 
-extern "C" char* ResourceMgr_LoadSeqByID(int seqID) 
-{
+extern "C" SequenceData ResourceMgr_LoadSeqByID(int seqID) {
+    if (seqID == 0xFF) {
+        SequenceData sDat;
+        sDat.numFonts = 0;
+
+        return sDat;
+    }
+
     std::string fmtStr = "audio/sequences/seq_%02X";
-    return OTRGlobals::Instance->context->GetResourceManager()->LoadFile(StringHelper::Sprintf(fmtStr.c_str(), seqID)).get()->buffer.get();
+    return ResourceMgr_LoadSeqByName(StringHelper::Sprintf(fmtStr.c_str(), seqID).c_str());
 }
 
-extern "C" int ResourceMgr_GetSeqSizeByID(int seqID) 
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) 
 {
-    return OTRGlobals::Instance->context->GetResourceManager()
-        ->LoadFile(StringHelper::Sprintf("audio/sequences/seq_%02X", seqID))
-        .get()
-        ->dwBufferSize;
+    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path).get();
+
+    char* data = file->buffer.get();
+
+    SequenceData seqData;
+    seqData.seqNumber = data[1];
+    seqData.medium = data[2];
+    seqData.cachePolicy = data[3];
+    seqData.numFonts = data[4];
+
+    for (int i = 0; i < seqData.numFonts; i++)
+        seqData.fonts[i] = data[5 + i];
+
+    seqData.seqData = &data[5 + seqData.numFonts];
+    seqData.seqDataSize = file->dwBufferSize - 5 - seqData.numFonts;
+
+    return seqData;
 }
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
-extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset) 
+extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) 
 {
-    auto str = StringHelper::Sprintf("audio/samples/sample_%08X", romOffset);
+    //auto str = StringHelper::Sprintf("audio/samples/sample_%08X", romOffset);
 
-    if (cachedCustomSFs.find(str) != cachedCustomSFs.end())
-        return cachedCustomSFs[str];
+    if (std::string(path) == "")
+        return nullptr;
 
-    if (romOffset == 0x14f0) {
-        int bp = 0;
-    }
+    if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
+        return cachedCustomSFs[path];
 
     // Check if our file is actually a wav...
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(str);
+    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path);
     uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 
@@ -587,6 +627,8 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset)
 
         *strem++; // fmt
         int fmtChunkSize = *strem++;
+        *strem++; // wFormatTag + wChannels
+        int32_t sampleRate = *strem++; // dwSamplesPerSec
         // OTRTODO: Make sure wav format is what the audio driver wants!
 
         strem = (uint32_t*)&strem2[0x0C + fmtChunkSize + 8 + 4];
@@ -599,12 +641,15 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset)
         sampleC->loop->start = 0;
         sampleC->loop->end = sampleC->size / 2;
         sampleC->loop->count = 0;
-        
-        cachedCustomSFs[str] = sampleC;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = sampleRate;
+
+        cachedCustomSFs[path] = sampleC;
         return sampleC;
     }
 
-    auto sample = std::static_pointer_cast<Ship::AudioSample>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(str));
+    auto sample = std::static_pointer_cast<Ship::AudioSample>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     
     if (sample == nullptr)
         return NULL;
@@ -612,7 +657,6 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset)
     if (sample->cachedGameAsset != nullptr) 
     {
         SoundFontSample* sampleC = (SoundFontSample*)sample->cachedGameAsset;
-
         return (SoundFontSample*)sample->cachedGameAsset;
     }
     else 
@@ -692,7 +736,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
                 }
             }
 
-            drum->sound.sample = ResourceMgr_LoadAudioSample(soundFont->drums[i].offset);
+            drum->sound.sample = ResourceMgr_LoadAudioSample(soundFont->drums[i].sampleFileName.c_str());
             drum->sound.tuning = soundFont->drums[i].tuning;
 
             soundFontC->drums[i] = drum;
@@ -726,7 +770,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
                 if (soundFont->instruments[i].lowNotesSound != nullptr) 
                 {
                     inst->lowNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleOffset);
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleFileName.c_str());
                     inst->lowNotesSound.tuning = soundFont->instruments[i].lowNotesSound->tuning;
                 } else {
                     inst->lowNotesSound.sample = NULL;
@@ -735,7 +779,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
 
                 if (soundFont->instruments[i].normalNotesSound != nullptr) {
                     inst->normalNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleOffset);
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleFileName.c_str());
                     inst->normalNotesSound.tuning = soundFont->instruments[i].normalNotesSound->tuning;
 
                 } else {
@@ -745,7 +789,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
 
                 if (soundFont->instruments[i].highNotesSound != nullptr) {
                     inst->highNotesSound.sample =
-                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleOffset);
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleFileName.c_str());
                     inst->highNotesSound.tuning = soundFont->instruments[i].highNotesSound->tuning;
                 } else {
                     inst->highNotesSound.sample = NULL;
@@ -763,7 +807,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
 
         for (int i = 0; i < soundFont->soundEffects.size(); i++)
         {
-            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleOffset);
+            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleFileName.c_str());
             soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
         }
 
