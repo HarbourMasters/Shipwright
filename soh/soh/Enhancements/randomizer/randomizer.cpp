@@ -1403,7 +1403,11 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
 
             std::string hintMessage = it.value();
-            hintMessage += "\002";
+            char newLine = 0x01;
+            char playerName = 0x0F;
+            std::replace(hintMessage.begin(), hintMessage.end(), '&', newLine);
+            std::replace(hintMessage.begin(), hintMessage.end(), '@', playerName);
+            hintMessage += 0x02;
             memcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), hintMessage.length());
 
             index++;
@@ -1943,6 +1947,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST;
                 case 20512:
                     return RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST;
+                case 4372:
+                    return RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
             break;
         case 2:
@@ -2332,6 +2338,18 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_BONGO_BONGO;
             }
             break;
+        case 35:
+            switch (actorParams) {
+                case 14342:
+                    return RC_TOT_LEFT_GOSSIP_STONE;
+                case 14599:
+                    return RC_TOT_LEFT_CENTER_GOSSIP_STONE;
+                case 14862:
+                    return RC_TOT_RIGHT_CENTER_GOSSIP_STONE;
+                case 15120:
+                    return RC_TOT_RIGHT_GOSSIP_STONE;
+            }
+            break;
         case 40:
             switch (actorParams) {
                 case 22944:
@@ -2376,28 +2394,50 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch (actorParams) {
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
+                case -22988:
+                    return RC_KF_STORMS_GOSSIP_STONE;
                 case 22964:
                     return RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST;
+                case -22964:
+                    return RC_LW_NEAR_SHORTCUTS_GOSSIP_STONE;
                 case 31409:
                     return RC_SFM_WOLFOS_GROTTO_CHEST;
                 case 22944:
                     return RC_HF_NEAR_MARKET_GROTTO_CHEST;
+                case -22944:
+                    return RC_HF_NEAR_MARKET_GOSSIP_STONE;
                 case 22978:
                     return RC_HF_SOUTHEAST_GROTTO_CHEST;
+                case -22978:
+                    return RC_HF_SOUTHEAST_GOSSIP_STONE;
                 case 22947:
                     return RC_HF_OPEN_GROTTO_CHEST;
+                case -22947:
+                    return RC_HF_OPEN_GROTTO_GOSSIP_STONE;
                 case 22984:
                     return RC_KAK_OPEN_GROTTO_CHEST;
+                case -22984:
+                    return RC_KAK_OPEN_GROTTO_GOSSIP_STONE;
                 case 31434:
                     return RC_KAK_REDEAD_GROTTO_CHEST;
                 case 23255:
                     return RC_DMT_STORMS_GROTTO_CHEST;
+                case -23255:
+                    return RC_DMT_STORMS_GROTTO_GOSSIP_STONE;
                 case 23802:
                     return RC_DMC_UPPER_GROTTO_CHEST;
+                case -23802:
+                    return RC_DMC_UPPER_GROTTO_GOSSIP_STONE;
                 case 22985:
                     return RC_ZR_OPEN_GROTTO_CHEST;
+                case -22985:
+                    return RC_ZR_OPEN_GROTTO_GOSSIP_STONE;
                 case 262:
                     return RC_HF_TEKTITE_GROTTO_FREESTANDING_POH;
+                case 14363:
+                    return RC_HF_COW_GROTTO_GOSSIP_STONE;
+                case 14355:
+                    return RC_HC_STORMS_GROTTO_GOSSIP_STONE;
             }
             break;
         case 63:
@@ -2450,6 +2490,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GRAVEYARD_FREESTANDING_POH;
                 case 7942:
                     return RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR;
+                case 14346:
+                    return RC_GY_GOSSIP_STONE;
             }
             break;
         case 84:
@@ -2458,12 +2500,32 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZR_NEAR_OPEN_GROTTO_FREESTANDING_POH;
                 case 2822:
                     return RC_ZR_NEAR_DOMAIN_FREESTANDING_POH;
+                case 14605:
+                    return RC_ZR_NEAR_GROTTOS_GOSSIP_STONE;
+                case 14860:
+                    return RC_ZR_NEAR_DOMAIN_GOSSIP_STONE;
             }
             break;
         case 85:
             switch (actorParams) {
                 case 1248:
                     return RC_KF_KOKIRI_SWORD_CHEST;
+                case 14366:
+                    return RC_KF_GOSSIP_STONE;
+                case 14880:
+                    return RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE;
+                case 14623:
+                    return RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE;
+            }
+            break;
+        case 86:
+            switch (actorParams) {
+                case 14358:
+                    return RC_SFM_MAZE_LOWER_GOSSIP_STONE;
+                case 14615:
+                    return RC_SFM_MAZE_UPPER_GOSSIP_STONE;
+                case 14876:
+                    return RC_SFM_SARIA_GOSSIP_STONE;
             }
             break;
         case 87:
@@ -2478,12 +2540,20 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch(actorParams) {
                 case 7686:
                     return RC_LH_FREESTANDING_POH;
+                case 14339:
+                    return RC_LH_LAB_GOSSIP_STONE;
+                case 14600:
+                    return RC_LH_SOUTHWEST_GOSSIP_STONE;
+                case 14863:
+                    return RC_LH_SOUTHEAST_GOSSIP_STONE;
             }
             break;
         case 88:
             switch (actorParams) {
                 case -18496:
                     return RC_ZD_CHEST;
+                case 14345:
+                    return RC_ZD_GOSSIP_STONE;
             }
             break;
         case 89:
@@ -2492,6 +2562,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZF_BOTTOM_FREESTANDING_POH;
                 case 262:
                     return RC_ZF_ICEBERC_FREESTANDING_POH;
+                case 15362:
+                    return RC_JABU_GOSSIP_STONE;
+                case 14849:
+                    return RC_FAIRY_GOSSIP_STONE;
             }
             break;
         case 90:
@@ -2502,6 +2576,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GV_WATERFALL_FREESTANDING_POH;
                 case 518:
                     return RC_GV_CRATE_FREESTANDING_POH;
+                case 14353:
+                    return RC_GV_GOSSIP_STONE;
+            }
+            break;
+        case 91:
+            switch (actorParams) {
+                case 14365:
+                    return RC_LW_GOSSIP_STONE;
             }
             break;
         case 92:
@@ -2512,6 +2594,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SPIRIT_TEMPLE_MIRROR_SHIELD_CHEST;
                 case 3334:
                     return RC_COLOSSUS_FREESTANDING_POH;
+                case 14362:
+                    return RC_COLOSSUS_GOSSIP_STONE;
             }
             break;
         case 93:
@@ -2526,12 +2610,22 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_WASTELAND_CHEST;
             }
             break;
+        case 95:
+            switch (actorParams) {
+                case 14610:
+                    return RC_HC_MALON_GOSSIP_STONE;
+                case 14347:
+                    return RC_HC_ROCK_WALL_GOSSIP_STONE;
+            }
+            break;
         case 96:
             switch (actorParams) {
                 case 7686:
                     return RC_DMT_FREESTANDING_POH;
                 case 23201:
                     return RC_DMT_CHEST;
+                case 14340:
+                    return RC_DMT_GOSSIP_STONE;
             }
             break;
         case 97:
@@ -2540,6 +2634,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DMC_VOLCANO_FREESTANDING_POH;
                 case 518:
                     return RC_DMC_WALL_FREESTANDING_POH;
+                case 14341:
+                    return RC_DMC_GOSSIP_STONE;
             }
             break;
         case 98:
@@ -2552,6 +2648,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GC_MAZE_CENTER_CHEST;
                 case 7942:
                     return RC_GC_POT_FREESTANDING_POH;
+                case 14357:
+                    return RC_GC_MAZE_GOSSIP_STONE;
+                case 14873:
+                    return RC_GC_MEDIGORON_GOSSIP_STONE;
             }
             break;
     }
@@ -2668,9 +2768,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
 
     // Misc Settings
-    // todo - get hints working fully (forcing no hints for now)
-    // const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
-    const char* randoGossipStoneHints[4] = {"No Hints" };
+    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = {"Useless", "Balanced", "Strong", "Very Strong"};
     const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
@@ -3767,12 +3865,9 @@ void DrawRandoEditor(bool& open) {
                         "the "
                         "Mask of Trutj will make the\nhints very difficult to obtain.\nHints for \"on the way of the "
                         "hero\" are locations\ntaht contain items that are required to beat the\ngame.");
-                    // todo get hints working fully, forcing no hints for now
-                    // SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
-                    // if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
-                    
-                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 1, 0);
-                    if (CVar_GetS32("gRandomizeGossipStoneHints", 0) != 0) {
+
+                    SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
+                    if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                         // Hint Clarity
                         ImGui::Indent();
                         ImGui::Text("Hint Clarity");
