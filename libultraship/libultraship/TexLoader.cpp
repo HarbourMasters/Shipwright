@@ -54,7 +54,7 @@ bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api
 
 	uint32_t textureId = loader->UploadTexture(tile, texPath, api);
 
-	if (textureId == -1) return false;
+	if (textureId == (uint32_t) -1) return false;
 
 	if (!TextureCache.contains(path)) TextureCache[path].resize(10);
 
