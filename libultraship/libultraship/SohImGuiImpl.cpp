@@ -15,7 +15,6 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
-#include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
 #include "GameOverlay.h"
@@ -91,13 +90,12 @@ namespace SohImGui {
     ImVec4 navi_prop_o_col;
 
     const char* RainbowColorCvarList[] = {
-        //This is the list of possible CVars that has rainbow effect.
-            "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
-            "gCCHeartsPrim","gDDCCHeartsPrim",
-            "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
-            "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-            "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim",
-            "gCCFileChoosePrim", "gCCFileChooseTextPrim"
+    //This is the list of possible CVars that has rainbow effect.
+        "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
+        "gCCHeartsPrim","gDDCCHeartsPrim",
+        "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
+        "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
+        "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim"
     };
 
     const char* filters[3] = {
@@ -561,7 +559,7 @@ namespace SohImGui {
     }
 
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
-      
+
         if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
             for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
                 if (ImGui::Selectable(items[settingIndex].c_str())) {
@@ -690,7 +688,7 @@ namespace SohImGui {
         ImGui::SameLine();
         RandomizeColor(cvarName, &ColorRGBA);
         if (allow_rainbow) {
-            
+
             if (ImGui::GetWindowSize().x > 560) {
                 ImGui::SameLine();
             }
@@ -740,7 +738,7 @@ namespace SohImGui {
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
         ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
         if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
@@ -783,10 +781,10 @@ namespace SohImGui {
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
+                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");
 
-		ImGui::Separator();  
-		    
+		ImGui::Separator();
+
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {

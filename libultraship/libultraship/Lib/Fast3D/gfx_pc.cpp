@@ -49,8 +49,11 @@ extern "C" {
 
 using namespace std;
 
-#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
 
+#define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 #define SUPPORT_CHECK(x) assert(x)
 
 // SCALE_M_N: upscale/downscale M-bit integer to N-bit
@@ -835,11 +838,11 @@ static void import_texture(int i, int tile) {
     uint8_t fmt = rdp.texture_tile[tile].fmt;
     uint8_t siz = rdp.texture_tile[tile].siz;
     uint32_t tmem_index = rdp.texture_tile[tile].tmem_index;
-	
+
     if (gfx_texture_cache_lookup(i, tile)) {
         return;
     }
-	
+
     if (TexLoader::LoadReplacement(tile, rdp.loaded_texture[tmem_index].otr_path, gfx_get_current_rendering_api(), &rendering_state.textures[i], fmt, siz, rdp.texture_tile[tile].palette, rdp.loaded_texture[tmem_index].addr)) {
         return;
     }
@@ -1738,10 +1741,10 @@ static void gfx_dp_load_block(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t
     //assert(size_bytes <= 4096 && "bug: too big texture");
     rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].addr = rdp.texture_to_load.addr;
     rdp.textures_changed[rdp.texture_tile[tile].tmem_index] = true;
-	
+
     if (rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path)
         free((void*) rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path);
-    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = _strdup(rdp.texture_to_load.otr_path);
+    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = strdup(rdp.texture_to_load.otr_path);
 }
 
 static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t lrs, uint32_t lrt) {
@@ -1782,7 +1785,7 @@ static void gfx_dp_load_tile(uint8_t tile, uint32_t uls, uint32_t ult, uint32_t 
 
 	if(rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path)
         free((void*) rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path);
-    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = _strdup(rdp.texture_to_load.otr_path);
+    rdp.loaded_texture[rdp.texture_tile[tile].tmem_index].otr_path = strdup(rdp.texture_to_load.otr_path);
 }
 
 
@@ -2432,7 +2435,7 @@ static void gfx_run_dl(Gfx* cmd) {
             // RDP Commands:
             case G_SETTIMG: {
                 uintptr_t i = (uintptr_t) seg_addr(cmd->words.w1);
-                   
+
                 char* imgData = (char*)i;
                 char* otrPath = nullptr;
 
