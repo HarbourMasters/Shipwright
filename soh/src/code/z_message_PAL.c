@@ -1665,11 +1665,12 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                 }
             }
 
-            // const char* randoMessage = GetHintFromCheck(hintCheck);
-            // if (randoMessage != NULL) {
-            //     msgCtx->msgLength = font->msgLength = strlen(randoMessage);
-            //     memcpy(font->msgBuf, randoMessage, font->msgLength);
-            // }
+            const char* randoMessage = GetHintFromCheck(hintCheck);
+            if (randoMessage != NULL) {
+                msgCtx->msgLength = font->msgLength = strlen(randoMessage);
+                memcpy(font->msgBuf, randoMessage, font->msgLength);
+            }
+
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
