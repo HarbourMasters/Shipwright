@@ -1057,7 +1057,7 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" char* GetHintFromCheck(RandomizerCheck check) {
+extern "C" const char* GetHintFromCheck(RandomizerCheck check) {
     // // std::string hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     // char* hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).data();
     return OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).c_str();
