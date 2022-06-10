@@ -20,7 +20,6 @@ extern GlobalContext* gGlobalCtx;
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 }
 
-
 typedef struct {
     uint32_t id;
     std::string name;
