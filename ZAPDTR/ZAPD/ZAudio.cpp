@@ -299,21 +299,16 @@ void ZAudio::ParseRawData()
 	else
 		codeData = Globals::Instance->GetBaseromFile(Globals::Instance->baseRomPath.string() + "code");
 
-	codeData = File::ReadAllBytes("baserom/code_ntsc");
-
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 		audioTableData = Globals::Instance->GetBaseromFile("Audiotable");
 	else
 		audioTableData = Globals::Instance->GetBaseromFile(Globals::Instance->baseRomPath.string() + "Audiotable");
-
-	audioTableData = File::ReadAllBytes("baserom/Audiotable_ntsc");
 
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 		audioBankData = Globals::Instance->GetBaseromFile("Audiobank");
 	else
 		audioBankData = Globals::Instance->GetBaseromFile(Globals::Instance->baseRomPath.string() + "Audiobank");
 
-	audioBankData = File::ReadAllBytes("baserom/Audiobank_ntsc");
 
 	if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 		audioSeqData = Globals::Instance->GetBaseromFile("Audioseq");
@@ -321,7 +316,10 @@ void ZAudio::ParseRawData()
 		audioSeqData = Globals::Instance->GetBaseromFile(Globals::Instance->baseRomPath.string() +
 		                                                  "Audioseq");
 
-	audioSeqData = File::ReadAllBytes("baserom/Audioseq_ntsc");
+	//codeData = File::ReadAllBytes("baserom/code_ntsc");
+	//audioTableData = File::ReadAllBytes("baserom/Audiotable_ntsc");
+	//audioSeqData = File::ReadAllBytes("baserom/Audioseq_ntsc");
+	//audioBankData = File::ReadAllBytes("baserom/Audiobank_ntsc");
 
 	// TABLE PARSING
 	
