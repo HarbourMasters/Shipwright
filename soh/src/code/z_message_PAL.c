@@ -1636,12 +1636,30 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                     Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
                    (GetRandoSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
                    CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
-            // char randoMessage[] = "blarg\002";
+
+            s16 actorParams = msgCtx->talkActor->params;
+
+            // if we're in a generic grotto
+            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+                // look for the chest in the actorlist to determine
+                // which grotto we're in
+                int numOfActorLists = sizeof(globalCtx->actorCtx.actorLists)/sizeof(globalCtx->actorCtx.actorLists[0]);
+                for(int i = 0; i < numOfActorLists; i++) {
+                    if(globalCtx->actorCtx.actorLists[i].length) {
+                        if(globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                            // set the params for the hint check to be negative chest params
+                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                        }
+                    }
+                }
+            }
+
+            RandomizerCheck hintCheck = GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
 
             // todo this is not how i want to do it but i'm fighting string/char* stuff
             for(int i = 0; i < 50; i++) {
                 HintLocationRando hintLocation = gSaveContext.hintLocations[i];
-                if (hintLocation.check == RC_COLOSSUS_GOSSIP_STONE) {
+                if (hintLocation.check == hintCheck) {
                     msgCtx->msgLength = font->msgLength = sizeof(hintLocation.hintText);
                     memcpy(font->msgBuf, hintLocation.hintText, font->msgLength);
                 }
@@ -1704,8 +1722,15 @@ void Message_StartTextbox(GlobalContext* globalCtx, u16 textId, Actor* actor) {
     osSyncPrintf(VT_RST);
 
     msgCtx->ocarinaAction = 0xFFFF;
-    Message_OpenText(globalCtx, textId);
-    msgCtx->talkActor = actor;
+    // we need the talkActor for gossip stones in rando
+    // so we need to switch the order of these lines
+    if (gSaveContext.n64ddFlag && textId == 0x2053) {
+        msgCtx->talkActor = actor;
+        Message_OpenText(globalCtx, textId);        
+    } else {
+        Message_OpenText(globalCtx, textId);
+        msgCtx->talkActor = actor;
+    }
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;
     msgCtx->textDelayTimer = 0;
