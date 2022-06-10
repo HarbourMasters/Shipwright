@@ -41,6 +41,7 @@ namespace Ship
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> DirtyDirectory(std::string SearchMask);
+		std::shared_ptr<std::vector<std::string>> ListFiles(std::string SearchMask);
 
 	protected:
 		void Start();

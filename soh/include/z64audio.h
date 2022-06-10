@@ -18,6 +18,8 @@
 
 #define AIBUF_LEN 0x580
 
+#define CALC_RESAMPLE_FREQ(sampleRate) (sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
+
 typedef enum {
     /* 0 */ ADSR_STATE_DISABLED,
     /* 1 */ ADSR_STATE_INITIAL,
@@ -136,6 +138,8 @@ typedef struct
     /* 0x04 */ u8* sampleAddr;
     /* 0x08 */ AdpcmLoop* loop;
     /* 0x0C */ AdpcmBook* book;
+    u32 sampleRateMagicValue; // For wav samples only...
+    s32 sampleRate;           // For wav samples only...
 } SoundFontSample; // size = 0x10
 
 typedef struct {
@@ -1061,6 +1065,16 @@ typedef enum {
     /*  4 */ OCARINA_NOTE_C_UP,
     /* -1 */ OCARINA_NOTE_INVALID = 0xFF
 } OcarinaNoteIdx;
+
+typedef struct {
+    char* seqData;
+    int32_t seqDataSize;
+    uint8_t seqNumber;
+    uint8_t medium;
+    uint8_t cachePolicy;
+    int32_t numFonts;
+    uint8_t fonts[16];
+} SequenceData;
 
 #ifdef __cplusplus
 extern "C" {
