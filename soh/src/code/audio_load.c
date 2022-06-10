@@ -1421,6 +1421,10 @@ void AudioLoad_Init(void* heap, u32 heapSize) {
     uintptr_t bankStart = ResourceMgr_LoadFileRaw(_AudiobankSegmentRomStart);
     uintptr_t tableStart = ResourceMgr_LoadFileRaw(_AudiotableSegmentRomStart);
 
+    // If we have the old audioseq files present (and this is a 32-bit build), use the legacy audio system
+    if (seqStart != NULL && bankStart != NULL && tableStart != NULL)
+        gUseLegacySD = true;
+
     fontStart = bankStart;
 
     AudioLoad_InitTable(gAudioContext.sequenceTable, seqStart, 0);
