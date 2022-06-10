@@ -286,7 +286,18 @@ void Audio_ProcessNotes(void) {
             }
 
             subAttrs.frequency *= playbackState->vibratoFreqScale * playbackState->portamentoFreqScale;
-            subAttrs.frequency *= gAudioContext.audioBufferParameters.resampleRate;
+            
+            f32 resampRate = gAudioContext.audioBufferParameters.resampleRate;
+
+            if (!gUseLegacySD && !noteSubEu2->bitField1.isSyntheticWave && noteSubEu2->sound.soundFontSound != NULL &&
+                noteSubEu2->sound.soundFontSound->sample != NULL && 
+                noteSubEu2->sound.soundFontSound->sample->sampleRateMagicValue == 'RIFF') {
+                resampRate = CALC_RESAMPLE_FREQ(noteSubEu2->sound.soundFontSound->sample->sampleRate);
+            }
+
+            subAttrs.frequency *= resampRate;
+
+
             subAttrs.velocity *= scale;
             Audio_InitNoteSub(note, noteSubEu2, &subAttrs);
             noteSubEu->bitField1.bookOffset = bookOffset;
