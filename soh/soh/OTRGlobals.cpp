@@ -1080,6 +1080,28 @@ extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int 
     return 0;
 }
 
+extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBufferSize) {
+    if (src != NULL) {
+        std::string str(src);
+        if (!str.empty()) {
+            str.replace(0, str.length(),
+                        "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                        "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
+            // I have observed that buffer is sometimes not clean, so just go ahead and clear it.
+            // if this is deemed too destructive, just make sure that the null terminator is marked.
+            memset(buffer, 0, maxBufferSize);
+
+            // Figure out how many letters we are going to copy over, either the full hint (if fits) or up to max buffer
+            // size (-1 to account for null terminator)
+            const int copiedCharLen = std::min<int>(maxBufferSize - 1, str.length());
+
+            memcpy(buffer, str.c_str(), copiedCharLen);
+            return copiedCharLen;
+        }
+    }
+    return 0;
+}
+
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }

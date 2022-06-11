@@ -1659,7 +1659,13 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
             // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
             msgCtx->msgLength = font->msgLength = CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
-        } else {
+        } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            strcpy(font->msgBuf, "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                                 "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
+
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } 
+        else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
             memcpy(font->msgBuf, src, font->msgLength);
