@@ -684,14 +684,21 @@ namespace SohImGui {
         }
         //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
         ImGui::NewLine();
+        ImGui::PushItemWidth(-FLT_MIN);
         ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
         ImGui::SameLine();
         RandomizeColor(cvarName, &ColorRGBA);
         if (allow_rainbow) {
-            //Not all draw support rainbow, like Navi.
-            ImGui::SameLine();
+            
+            if (ImGui::GetWindowSize().x > 560) {
+                ImGui::SameLine();
+            }
+            else {
+                ImGui::NewLine();
+            }
             RainbowColor(cvarName, &ColorRGBA);
         }
+        ImGui::PopItemWidth();
     }
 
     void DrawMainMenuAndCalculateGameSize(void) {
@@ -1202,11 +1209,13 @@ namespace SohImGui {
                             ImGui::TableNextRow();
                             ImGui::TableNextColumn();
                             // COLUMN 1.1 - HEARTS
+                            ImGui::PushItemWidth(-FLT_MIN);
                             EnhancementColor("Hearts inner", "gCCHeartsPrim", hearts_colors, ImVec4(255, 70, 50, 255));
                             Tooltip("Hearts inner color (red in original)\nAffect both Normal Hearts and the ones in Double Defense");
                             ImGui::Separator();
                             EnhancementColor("Hearts double def", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255, 255, 255, 255));
                             Tooltip("Hearts outline color (white in original)\nAffect Double Defense outline only.");
+                            ImGui::PopItemWidth();
                             ImGui::Separator();
                             if (ImGui::BeginTable("tableMisc", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                                 ImGui::TableSetupColumn("Misc", ImGuiTableColumnFlags_WidthStretch, 600.0f);
@@ -1214,6 +1223,7 @@ namespace SohImGui {
                                 ImGui::TableNextRow();
                                 ImGui::TableNextColumn();
                                 // COLUMN 1.2 - MISC
+                                ImGui::PushItemWidth(-FLT_MIN);
                                 EnhancementColor("Minimap color", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
                                 Tooltip("Affect the Dungeon and Overworld minimaps.");
                                 ImGui::Separator();
@@ -1222,11 +1232,12 @@ namespace SohImGui {
                                 ImGui::Separator();
                                 EnhancementColor("Small Keys icon color", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
                                 Tooltip("Affect the Small keys icon on interface\nGray by default.");
-                                ImGui::Separator();
+                                ImGui::PopItemWidth();
                                 ImGui::EndTable();
                             }
                             ImGui::TableNextColumn();
                             // COLUMN 2 - MAGIC BAR
+                            ImGui::PushItemWidth(-FLT_MIN);
                             EnhancementColor("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255, 255, 255, 255));
                             Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game.");
                             ImGui::Separator();
@@ -1236,8 +1247,10 @@ namespace SohImGui {
                             EnhancementColor("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, ImVec4(250, 250, 0, 255));
                             Tooltip("Affect the magic bar when being used\nYellow in original game.");
                             ImGui::Separator();
+                            ImGui::PopItemWidth();
                             ImGui::TableNextColumn();
                             // COLUMN 3 - BUTTON
+                            ImGui::PushItemWidth(-FLT_MIN);
                             EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(90, 90, 255, 255));
                             Tooltip("A Buttons colors (Green in original GameCube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
                             ImGui::Separator();
@@ -1250,7 +1263,7 @@ namespace SohImGui {
                             EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(120, 120, 120, 255));
                             Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
                             ImGui::Separator();
-
+                            ImGui::PopItemWidth();
                             ImGui::EndTable();
                             ImGui::EndTabItem();
                         }
