@@ -10,6 +10,7 @@
 #include "tinyxml2.h"
 #include "utils.hpp"
 #include "shops.hpp"
+#include "hints.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -528,6 +529,11 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints() {
+    jsonData["ganonText"] = GetGanonText().GetEnglish();
+    jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
+    jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
+    jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
     }
