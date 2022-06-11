@@ -1659,6 +1659,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
             // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
             msgCtx->msgLength = font->msgLength = CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
+        } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7040)) {
+            // rando hints at altar
+            msgCtx->msgLength = font->msgLength = CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

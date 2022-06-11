@@ -1058,6 +1058,69 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
+extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+    std::string altarText = "";
+    // if(LINK_IS_ADULT) {
+    //     altarText += "blargadult";
+    // } else {
+    //     altarText += "blargkid";
+    // }
+    // Kokiri Emerald
+    altarText += 0x13;
+    altarText += 0x6C;
+    altarText += 0x04;
+
+    // Goron Ruby
+    altarText += 0x13;
+    altarText += 0x6D;
+    altarText += 0x04;
+
+    // Zora Sapphire
+    altarText += 0x13;
+    altarText += 0x6E;
+    altarText += 0x04;
+
+    // Forest Medallion
+    altarText += 0x13;
+    altarText += 0x66;
+    altarText += 0x04;
+
+    // Fire Medallion
+    altarText += 0x13;
+    altarText += 0x67;
+    altarText += 0x04;
+
+    // Water Medallion
+    altarText += 0x13;
+    altarText += 0x68;
+    altarText += 0x04;
+
+    // Spirit Medallion
+    altarText += 0x13;
+    altarText += 0x69;
+    altarText += 0x04;
+
+    // Shadow Medallion
+    altarText += 0x13;
+    altarText += 0x6A;
+    altarText += 0x04;
+
+    // Light Medallion
+    altarText += 0x13;
+    altarText += 0x6B;
+    // altarText += 0x04;
+
+    altarText += 0x02;
+
+    if (!altarText.empty()) {
+        memset(buffer, 0, maxBufferSize);
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, altarText.length());
+        memcpy(buffer, altarText.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
+}
+
 extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
