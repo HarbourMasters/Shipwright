@@ -1,6 +1,7 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <algorithm>
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
@@ -1058,10 +1059,25 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
 }
 
 extern "C" const char* GetHintFromCheck(RandomizerCheck check) {
-    // // std::string hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
-    // char* hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).data();
     return OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).c_str();
-    // return hintText;
+}
+
+extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // so we're just going to let RVO take care of it
+    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
+    if (!hintText.empty()) {
+        // I have observed that buffer is sometimes not clean, so just go ahead and clear it.
+        // if this is deemed too destructive, just make sure that the null terminator is marked.
+        memset(buffer, 0, maxBufferSize);
+
+        // Figure out how many letters we are going to copy over, either the full hint (if fits) or up to max buffer size (-1 to account for null terminator)
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, hintText.length());
+
+        memcpy(buffer, hintText.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
 }
 
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
