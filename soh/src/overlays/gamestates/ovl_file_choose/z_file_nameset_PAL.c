@@ -133,7 +133,14 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
 
     phi_s0 = 0x10;
     for (phi_t1 = 0; phi_t1 < 2; phi_t1++, phi_s0 += 4) {
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2], 255);
+
+        if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
+                            CVar_GetS32("gCCFileChoosePrimB", 255), 255);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                            255);
+        }
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 0);
         gDPLoadTextureBlock(POLY_OPA_DISP++, sBackspaceEndTextures[gSaveContext.language][phi_t1], G_IM_FMT_IA,
                             G_IM_SIZ_16b, sBackspaceEndWidths[phi_t1], 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
@@ -195,8 +202,15 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
-                    this->nameEntryBoxAlpha);
+
+    if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100),
+                        CVar_GetS32("gCCFileChoosePrimG", 150), CVar_GetS32("gCCFileChoosePrimB", 255),
+                        this->nameEntryBoxAlpha);
+    } else {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->windowColor[0], this->windowColor[1], this->windowColor[2],
+                        this->nameEntryBoxAlpha);
+    }
     gSPVertex(POLY_OPA_DISP++, this->nameEntryVtx, 4, 0);
     gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -318,8 +332,15 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineLERP(POLY_OPA_DISP++, 1, 0, PRIMITIVE, 0, TEXEL0, 0, PRIMITIVE, 0, 1, 0, PRIMITIVE, 0, TEXEL0, 0,
                       PRIMITIVE, 0);
-    gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1], this->highlightColor[2],
-                    this->highlightColor[3]);
+
+    if (CVar_GetS32("gHudColors", 1) == 2) {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100),
+                        CVar_GetS32("gCCFileChoosePrimG", 150), CVar_GetS32("gCCFileChoosePrimB", 255),
+                        this->highlightColor[3]);
+    } else {
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, this->highlightColor[0], this->highlightColor[1],
+                        this->highlightColor[2], this->highlightColor[3]);
+    }
     gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelCharHighlightTex, G_IM_FMT_I, G_IM_SIZ_8b, 24, 24, 0,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                         G_TX_NOLOD);
