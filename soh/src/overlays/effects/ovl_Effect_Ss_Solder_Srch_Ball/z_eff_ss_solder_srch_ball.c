@@ -76,7 +76,7 @@ static void ico_sph_subdivide_edge(Vec3f* r, Vec3f* a, Vec3f* b) {
     Math_Vec3f_Scale(r, (1.0f / Math3D_Vec3fMagnitude(r)));
 }
 
-static void draw_ico_sphere(Gfx** p_gfx_p, Gfx** p_gfx_d, f32 x, f32 y, f32 z, f32 radius, GraphicsContext* gfxCtx) {
+static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, GraphicsContext* gfxCtx) {
     static Gfx* p_sph_gfx = NULL;
     static Vtx sph_vtx[42];
     static Gfx sph_gfx[45];
@@ -230,21 +230,14 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     u32 rm;
     u32 blc1;
     u32 blc2;
-    u8 alpha;
-    u32 gm;
     s16* seenLink = this->actor;
 
     OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
-    rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL;
+    rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL | ZMODE_XLU;
     blc1 = GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
     blc2 = GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
-    alpha = 0x80;
 
-    rm |= ZMODE_XLU;
-
-    gm = G_ZBUFFER | G_SHADE | G_LIGHTING;
-
-    gSPLoadGeometryMode(POLY_XLU_DISP++, gm);
+    gSPLoadGeometryMode(POLY_XLU_DISP++, G_ZBUFFER | G_SHADE | G_LIGHTING);
     gSPTexture(POLY_XLU_DISP++, 0, 0, 0, G_TX_RENDERTILE, G_OFF);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetCycleType(POLY_XLU_DISP++, G_CYC_1CYCLE);
@@ -255,7 +248,7 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     if (*seenLink) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 0, 0, 255);
     }
-    draw_ico_sphere(&POLY_XLU_DISP, &gfxCtx->polyXlu.d, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
+    draw_ico_sphere(&POLY_XLU_DISP, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
