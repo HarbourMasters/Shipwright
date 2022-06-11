@@ -141,7 +141,7 @@ void func_80B3943C(EnWonderTalk* this, GlobalContext* globalCtx) {
     if (this->switchFlag < 0 || !Flags_GetSwitch(globalCtx, this->switchFlag)) {
         if ((Actor_ProcessTalkRequest(&this->actor, globalCtx))) {
             if (this->unk_156 != TEXT_STATE_DONE) {
-                this->actionFunc = func_80B395F0;
+                if(!gSaveContext.n64ddFlag) this->actionFunc = func_80B395F0;
             } else {
                 if (this->switchFlag >= 0) {
                     this->actor.flags &= ~ACTOR_FLAG_0;
