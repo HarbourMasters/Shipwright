@@ -1108,7 +1108,12 @@ extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
     // Light Medallion
     altarText += 0x13;
     altarText += 0x6B;
-    // altarText += 0x04;
+    altarText += 0x04;
+
+    // Light Arrow (this will be useful for ganondorf hint text
+    // i'm just putting it here for now)
+    altarText += 0x13;
+    altarText += 0x12;
 
     altarText += 0x02;
 
