@@ -68,7 +68,7 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    char hintText[100];
+    char hintText[200];
 } HintLocationRando;
 
 typedef struct {

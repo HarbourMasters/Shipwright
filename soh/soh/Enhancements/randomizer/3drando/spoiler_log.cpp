@@ -566,9 +566,6 @@ static void WriteHints() {
           }
         }
 
-        // we're only using & for newline so replace ^
-        std::replace(textStr.begin(), textStr.end(), '^', '&');
-
         // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
         textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
         
