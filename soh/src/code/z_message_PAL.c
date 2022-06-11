@@ -1656,20 +1656,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
 
             RandomizerCheck hintCheck = GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
 
-            // todo this is not how i want to do it but i'm fighting string/char* stuff
-            for(int i = 0; i < 50; i++) {
-                HintLocationRando hintLocation = gSaveContext.hintLocations[i];
-                if (hintLocation.check == hintCheck) {
-                    msgCtx->msgLength = font->msgLength = sizeof(hintLocation.hintText);
-                    memcpy(font->msgBuf, hintLocation.hintText, font->msgLength);
-                }
-            }
-
-            // const char* randoMessage = GetHintFromCheck(hintCheck);
-            // if (randoMessage != NULL) {
-            //     msgCtx->msgLength = font->msgLength = strlen(randoMessage);
-            //     memcpy(font->msgBuf, randoMessage, font->msgLength);
-            // }
+            // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
+            // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
+            msgCtx->msgLength = font->msgLength = CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

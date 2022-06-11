@@ -82,6 +82,7 @@ void LoadRandomizerSettings(const char* spoilerFileName);
 u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 const char* GetHintFromCheck(RandomizerCheck check);
+int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
 void LoadHintLocations(const char* spoilerFileName);
 void LoadItemLocations(const char* spoilerFileName);
 s16 GetItemModelFromId(s16 itemId);
