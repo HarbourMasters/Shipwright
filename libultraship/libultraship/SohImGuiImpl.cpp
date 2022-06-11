@@ -873,8 +873,6 @@ namespace SohImGui {
                     Tooltip("Kick open every chest");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
-                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
-                    Tooltip("Disables the voice audio when Navi calls you");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     ImGui::EndMenu();
