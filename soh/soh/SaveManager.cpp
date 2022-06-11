@@ -69,6 +69,14 @@ void SaveManager::LoadRandomizerVersion1() {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
         }
     }
+
+    for (int i = 0; i < 250; i++) {
+        SaveManager::Instance->LoadData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < 750; i++) {
+        SaveManager::Instance->LoadData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
+    }
 }
 
 void SaveManager::SaveRandomizer() {
@@ -91,6 +99,14 @@ void SaveManager::SaveRandomizer() {
         for (int j = 0; j < 100; j++) {
             SaveManager::Instance->SaveData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
         }
+    }
+
+    for (int i = 0; i < 250; i++) {
+        SaveManager::Instance->SaveData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < 750; i++) {
+        SaveManager::Instance->SaveData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
     }
 }
 
