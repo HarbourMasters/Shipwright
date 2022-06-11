@@ -267,6 +267,16 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.cutsceneIndex = 0;
         Flags_SetEventChkInf(5);
 
+        // Skip boss cutscenes
+        gSaveContext.eventChkInf[7] |= 1;
+        gSaveContext.eventChkInf[7] |= 2;
+        gSaveContext.eventChkInf[7] |= 4;
+        gSaveContext.eventChkInf[7] |= 8;
+        gSaveContext.eventChkInf[7] |= 0x10;
+        gSaveContext.eventChkInf[7] |= 0x20;
+        gSaveContext.eventChkInf[7] |= 0x40;
+        gSaveContext.eventChkInf[7] |= 0x80;
+
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
