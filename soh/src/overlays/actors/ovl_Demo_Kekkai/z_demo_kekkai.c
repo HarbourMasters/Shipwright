@@ -129,7 +129,7 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
 
             if (gSaveContext.n64ddFlag) {
                 int trialsToComplete = GetRandoSettingValue(RSK_TRIAL_COUNT);
-                if (trialsToComplete >= TrialsDoneCount()) {
+                if (trialsToComplete <= TrialsDoneCount()) {
                     Actor_Kill(thisx);
                     return;
                 }
