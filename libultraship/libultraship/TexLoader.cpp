@@ -17,7 +17,7 @@ namespace fs = std::filesystem;
 
 struct TexEntry {
 	Ship::TexIOLoader* loader;
-	std::string ext;
+	std::string path;
 };
 
 std::unordered_map<std::string, TexEntry> QueryCache;
@@ -33,13 +33,15 @@ void TexLoader::Init() {
 		std::vector<std::string> raw = StringHelper::Split(rPath, ".");
 		std::string ext = raw[raw.size() - 1];
 		std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
+
+		// OTRTODO:Remove this when the new audio system get merged!
 		replace(nPath.begin(), nPath.end(), '\\', '/');
-		QueryCache[nPath] = { IOLoaders[ext == "dds" ? "dds" : "stb"], ext };
+		QueryCache[nPath] = { IOLoaders[ext == "dds" ? "dds" : "stb"], rPath };
 	}
 }
 
 bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api, TextureCacheNode** node, uint32_t fmt, uint32_t siz, uint32_t palette, const uint8_t* orig_addr) {
-	
+
 	if (path == nullptr || FileCache.contains(path)) return false;
 
 	FileCache[path] = 0;
@@ -47,7 +49,7 @@ bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api
 	if (!QueryCache.contains(path)) return false;
 
 	TexEntry tEntry = QueryCache[path];
-	uint32_t textureId = tEntry.loader->UploadTexture(tile, StringHelper::Sprintf("%s.%s", path, tEntry.ext.c_str()), api);
+	uint32_t textureId = tEntry.loader->UploadTexture(tile, tEntry.path.c_str(), api);
 
 	if (textureId == (uint32_t) -1) return false;
 
