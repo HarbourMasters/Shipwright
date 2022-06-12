@@ -870,6 +870,8 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("DPad Item Shortcuts", "gDPadShortcuts");
                     Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
+                    EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                    Tooltip("All fish will be caught instantly");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
