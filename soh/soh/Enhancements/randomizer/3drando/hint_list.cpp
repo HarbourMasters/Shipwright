@@ -7014,7 +7014,7 @@ void HintTable_Init() {
 
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be #given from the start#.",
+                     Text{"And the evil one's key will&be given from the start.",
                 /*french*/"Aussi, la clé du #Malin# sera #possession même du héros#.",
                /*spanish*/"Y obtendrás la llave del #señor del mal# desde el #inicio#."},
     });
