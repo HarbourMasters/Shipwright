@@ -69,7 +69,7 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             file->messages[i].msg.copy(goldSkullPatch, file->messages[i].msg.size(), 0);
 
             // Print entire message instantly (0x08)
-            memmove(goldSkullPatch+1, goldSkullPatch, file->messages[i].msg.size() + 3);
+            memmove(goldSkullPatch+1, goldSkullPatch, file->messages[i].msg.size());
             goldSkullPatch[00] = 0x08;
 
             // Auto-dismiss (0x0E) message after 60 frames
