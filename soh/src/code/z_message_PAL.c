@@ -273,11 +273,15 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     Font* font;
     const char* seg;
     u16 bufferId = textId;
-    // Use the better owl message if better owl is enabled
+    // Use the better owl/skulltula messages if respective CVars are enabled
     if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
         bufferId = 0x71B3;
+    }
+    else if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 && (bufferId == 0xB4 || bufferId == 0xB5))
+    {
+        bufferId = 0x71B4;
     }
 
     if (gSaveContext.language == LANGUAGE_GER)
