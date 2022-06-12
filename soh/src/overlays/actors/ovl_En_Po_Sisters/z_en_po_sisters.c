@@ -179,6 +179,7 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 pad;
 
+    // Skip Poe Intro Cutscene
     if (gSaveContext.n64ddFlag && thisx->params == 4124) {
         Flags_SetSwitch(globalCtx, 0x1B);
         Actor_Kill(thisx);
@@ -856,6 +857,7 @@ void func_80ADB338(EnPoSisters* this, GlobalContext* globalCtx) {
         if (Actor_WorldDistXZToPoint(&player->actor, &this->actor.home.pos) < 600.0f) {
             if (this->unk_19C != 0) {
                 this->unk_19C--;
+                // Force Meg to respawn instantly after getting hit
                 if (gSaveContext.n64ddFlag) {
                     this->unk_19C = 0;
                 }
