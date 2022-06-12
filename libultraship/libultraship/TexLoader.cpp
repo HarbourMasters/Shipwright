@@ -2,6 +2,7 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "TexIOLoader.h"
 
+#include <Utils/StringHelper.h>
 #include "Archive.h"
 #include "File.h"
 #include "Utils.h"
@@ -14,17 +15,33 @@
 
 namespace fs = std::filesystem;
 
-std::unordered_map<std::string, int> FileCache;
+struct TexEntry {
+	Ship::TexIOLoader* loader;
+	std::string ext;
+};
 
 std::unordered_map<std::string, std::vector<TextureCacheNode*>> TextureCache;
+std::unordered_map<std::string, TexEntry> QueryCache;
+std::unordered_map<std::string, int> FileCache;
 std::unordered_map<std::string, Ship::TexIOLoader*> IOLoaders = {
 	{ "dds", new Ship::DDSTexLoader },
 	{ "stb", new Ship::DefaultTexLoader },
 };
 
+void TexLoader::Init() {
+	for (auto &path : Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive()->ListFiles("*.*")) {
+		std::string rPath = path.cFileName;
+		std::vector<std::string> raw = StringHelper::Split(rPath, ".");
+		std::string ext = raw[raw.size() - 1];
+		std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
+		replace(nPath.begin(), nPath.end(), '\\', '/');
+		QueryCache[nPath] = { IOLoaders[ext == "dds" ? "dds" : "stb"], ext };
+	}
+}
+
 bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api, TextureCacheNode** node, uint32_t fmt, uint32_t siz, uint32_t palette, const uint8_t* orig_addr) {
-	if (path == nullptr) return false;
-	if (FileCache.contains(path)) return false;
+	
+	if (path == nullptr || FileCache.contains(path)) return false;
 
 	FileCache[path] = 0;
 
@@ -34,28 +51,12 @@ bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api
 		return true;
 	}
 
-	Ship::TexIOLoader* loader = IOLoaders["stb"];
+	if (!QueryCache.contains(path)) return false;
 
-	/*  // OTRTEXTODO: Select loader based on file extension
-		for (auto& file : Ship::GlobalCtx2::GetInstance()->GetResourceManager()->GetArchive()->ListFiles(path)) {
-			fs::path fPath = file.szPlainName;
-			std::string ext = fPath.extension().string();
-
-			if (IOLoaders.contains(ext)) {
-				texFile = file.cFileName;
-				loader =
-				break;
-			}
-		}
-	*/
-
-	std::string texPath = path;
-	texPath.append(".png");
-
-	uint32_t textureId = loader->UploadTexture(tile, texPath, api);
+	TexEntry tEntry = QueryCache[path];
+	uint32_t textureId = tEntry.loader->UploadTexture(tile, StringHelper::Sprintf("%s.%s", path, tEntry.ext.c_str()), api);
 
 	if (textureId == (uint32_t) -1) return false;
-
 	if (!TextureCache.contains(path)) TextureCache[path].resize(10);
 
 	TextureCacheKey key = { orig_addr, { }, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
