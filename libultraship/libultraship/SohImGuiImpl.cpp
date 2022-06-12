@@ -872,6 +872,8 @@ namespace SohImGui {
                     Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
+                    Tooltip("Injects Golden Skulltula total count in pickup messages");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
                     Tooltip("Kick open every chest");
                     EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");

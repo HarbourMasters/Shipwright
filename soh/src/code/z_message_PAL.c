@@ -1662,6 +1662,11 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
             // rando hints at altar
             msgCtx->msgLength = font->msgLength = CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
+        } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            strcpy(font->msgBuf, "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                                 "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
+
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

@@ -134,11 +134,23 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        // Check for beaten Dodongo's Cavern
-        if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
-            this->actor.textId = 0xBF;
-        } else {
-            this->actor.textId = 0x7058;
+        // Check for beaten Dodongo's Cavern if Rando is disabled
+        if (!gSaveContext.n64ddFlag) {
+            if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
+                this->actor.textId = 0xBF;
+            } else {
+                this->actor.textId = 0x7058;
+            }
+        }
+
+        // Check for Bomb Bag if Rando is enabled
+        // RANDOTODO: Check for bombchu pack instead of bomb bag if bombchus are in logic
+        if (gSaveContext.n64ddFlag) {
+            if (INV_CONTENT(ITEM_BOMB) != ITEM_NONE) {
+                this->actor.textId = 0xBF;
+            } else {
+                this->actor.textId = 0x7058;
+            }
         }
     }
     Message_ContinueTextbox(globalCtx, this->actor.textId);
