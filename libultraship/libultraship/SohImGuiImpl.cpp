@@ -913,7 +913,7 @@ namespace SohImGui {
                         EnhancementRadioButton("Random", "gPauseLiveLink", 15);
                         Tooltip("Randomize the animation played each time you open the menu");
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
-                        Tooltip("andomize the animation played on hte menu after a certain time");
+                        Tooltip("Randomize the animation played on the menu after a certain time");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
                         }
