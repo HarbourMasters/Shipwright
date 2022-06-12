@@ -12,6 +12,7 @@ class Randomizer {
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
     std::string childAltarText;
+    std::string adultAltarText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
     GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
     GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
@@ -31,6 +32,7 @@ class Randomizer {
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
     std::string GetChildAltarText();
+    std::string GetAdultAltarText();
     std::string GetHintFromCheck(RandomizerCheck check);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);

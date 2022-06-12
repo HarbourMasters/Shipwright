@@ -540,41 +540,8 @@ static Text BuildDungeonRewardText(const uint32_t itemKey) {
   uint32_t location = FilterFromPool(allLocations, [itemKey](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == itemKey;})[0];
   Location(location)->SetAsHinted();
 
-  // std::string rewardString = "";
-  // rewardString += 0x13;
-  std::string rewardString = "|" + std::to_string(itemKey - KOKIRI_EMERALD);
+  std::string rewardString = "$" + std::to_string(itemKey - KOKIRI_EMERALD);
 
-  // switch (itemKey) {
-  //   case KOKIRI_EMERALD:
-  //     rewardString += "|1";
-  //     break;
-  //   case GORON_RUBY:
-  //     rewardString += "|2";
-  //     break;
-  //   case ZORA_SAPPHIRE:
-  //     rewardString += "|3";
-  //     break;
-  //   case FOREST_MEDALLION:
-  //     rewardString += "|4";
-  //     break;
-  //   case FIRE_MEDALLION:
-  //     rewardString += "|5";
-  //     break;
-  //   case WATER_MEDALLION:
-  //     rewardString += "|6";
-  //     break;
-  //   case SPIRIT_MEDALLION:
-  //     rewardString += "|7";
-  //     break;
-  //   case SHADOW_MEDALLION:
-  //     rewardString += "|8";
-  //     break;
-  //   case LIGHT_MEDALLION:
-  //     rewardString += "|9";
-  //     break;
-  // }
-
-  //Calling ITEM_OBTAINED draws the passed in itemID to the left side of the textbox
   // RANDOTODO implement colors for locations
   return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText()+"...^";
 }
@@ -584,15 +551,15 @@ static Text BuildDoorOfTimeText() {
   Text doorOfTimeText;
 
   if (OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN)) {
-    itemObtained = "|o";
+    itemObtained = "$o";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
   } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
-    itemObtained = "|c";
+    itemObtained = "$c";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
 
   } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED)) {
-    itemObtained = "|i";
+    itemObtained = "$i";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTINTENDED).GetText();
   }
 
@@ -636,7 +603,7 @@ static Text BuildBridgeReqsText() {
     bridgeText = BuildCountReq(BRIDGE_TOKENS_HINT, BridgeTokenCount);
   }
 
-  return Text()+ITEM_OBTAINED(ITEM_ARROW_LIGHT)+bridgeText+"^";
+  return Text()+"$l"+bridgeText+"^";
 }
 
 static Text BuildGanonBossKeyText() {
@@ -679,7 +646,7 @@ static Text BuildGanonBossKeyText() {
     ganonBossKeyText = BuildCountReq(LACS_TOKENS_HINT, LACSTokenCount);
   }
 
-  return Text()+ITEM_OBTAINED(ITEM_KEY_BOSS)+ganonBossKeyText+"^";
+  return Text()+"$b"+ganonBossKeyText+"^";
 }
 
 static void CreateAltarText() {
@@ -720,7 +687,7 @@ static void CreateAltarText() {
   BuildGanonBossKeyText()+
 
   //End
-  Hint(ADULT_ALTAR_TEXT_END).GetText()+EVENT_TRIGGER();
+  Hint(ADULT_ALTAR_TEXT_END).GetText();
   CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
 }
 

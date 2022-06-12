@@ -6982,7 +6982,7 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_MEDALLIONS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular  plural
-                     Text{"The awakened ones will await for the&Hero to collect #%d |Medallion|Medallions|#.",
+                     Text{"The awakened ones will await&for the Hero to collect&%d |Medallion|Medallions|.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |médaillon|médaillons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |medallón|medallones|#."},
     });
@@ -7028,7 +7028,7 @@ void HintTable_Init() {
 
     hintTable[GANON_BK_OWN_DUNGEON_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be hidden somewhere #inside its castle#.",
+                     Text{"And the evil one's key will&be hidden somewhere inside&its castle.",
                 /*french*/"Aussi, la clé du #Malin# sera cachée #dans son vaste château#.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en #algún lugar de su castillo#."},
     });
@@ -7164,14 +7164,14 @@ void HintTable_Init() {
 
     hintTable[ADULT_ALTAR_TEXT_START] = HintText::Altar({
                      //obscure text
-                     Text{"When evil rules all, an awakening voice from the Sacred Realm will call those destined to be Sages, who dwell in the #five temples#.",
+                     Text{"An awakening voice from the Sacred&Realm will call those destined to be&Sages, who dwell in the five temples.",
                 /*french*/"Quand le mal aura triomphé, une voix du Saint Royaume appellera ceux cachés dans les #cinq temples#, destinés à être Sages.",
                /*spanish*/"Cuando el mal lo impregne todo, desde el Reino Sagrado surgirá una voz que hará despertar a los sabios que moran en los #cinco templos#."},
     });
 
     hintTable[ADULT_ALTAR_TEXT_END] = HintText::Altar({
                      //obscure text
-                     Text{"Together with the Hero of Time, the&awakened ones will bind the evil and&return the light of peace to the world...",
+                     Text{"Together with the Hero of Time,&the awakened ones will return the&light of peace to the world...",
                 /*french*/"Ensemble avec le Héros du Temps,&ces Sages emprisonneront le mal et&réinstaureront la lumière de paix dans&le monde...",
                /*spanish*/"Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la paz..."},
     });

@@ -1180,6 +1180,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     }
 
     this->childAltarText = gSaveContext.childAltarText;
+    this->adultAltarText = gSaveContext.adultAltarText;
 
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
@@ -1406,52 +1407,61 @@ std::string AltarIconString(char iconChar) {
             iconString += 0x13;
             iconString += 0x6E;
             break;
+        case '3':
+            // Forest Medallion
+            iconString += 0x13;
+            iconString += 0x66;
+            break;
+        case '4':
+            // Fire Medallion
+            iconString += 0x13;
+            iconString += 0x67;
+            break;
+        case '5':
+            // Water Medallion
+            iconString += 0x13;
+            iconString += 0x68;
+            break;
+        case '6':
+            // Spirit Medallion
+            iconString += 0x13;
+            iconString += 0x69;
+            break;
+        case '7':
+            // Shadow Medallion
+            iconString += 0x13;
+            iconString += 0x6A;
+            break;
+        case '8':
+            // Light Medallion
+            iconString += 0x13;
+            iconString += 0x6B;
+            break;
         case 'o':
-            // Open DOT
+            // Open DOT (master sword)
             iconString += 0x13;
             iconString += 0x3C;
             break;
         case 'c':
-            // Closed DOT
+            // Closed DOT (fairy ocarina)
             iconString += 0x13;
             iconString += 0x07;
             break;
         case 'i':
-            // Closed DOT
+            // Intended DOT (oot)
             iconString += 0x13;
             iconString += 0x08;
             break;
-
-    // // Forest Medallion
-    // altarText += 0x13;
-    // altarText += 0x66;
-    // altarText += 0x04;
-
-    // // Fire Medallion
-    // altarText += 0x13;
-    // altarText += 0x67;
-    // altarText += 0x04;
-
-    // // Water Medallion
-    // altarText += 0x13;
-    // altarText += 0x68;
-    // altarText += 0x04;
-
-    // // Spirit Medallion
-    // altarText += 0x13;
-    // altarText += 0x69;
-    // altarText += 0x04;
-
-    // // Shadow Medallion
-    // altarText += 0x13;
-    // altarText += 0x6A;
-    // altarText += 0x04;
-
-    // // Light Medallion
-    // altarText += 0x13;
-    // altarText += 0x6B;
-    // altarText += 0x04;
-
+        case 'l':
+            // Light Arrow (for bridge reqs)
+            iconString += 0x13;
+            iconString += 0x12;
+            break;
+        case 'b':
+            // Boss Key (ganon boss key location)
+            iconString += 0x13;
+            iconString += 0x74;
+            break;
     }
     return iconString;
 }
@@ -1466,8 +1476,8 @@ std::string FormatJsonHintText(std::string jsonHint) {
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
     
     // add icons to altar text
-    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i'}) {
-        std::string textToReplace = "|";
+    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b'}) {
+        std::string textToReplace = "$";
         textToReplace += iconChar;
         size_t start_pos = formattedHintMessage.find(textToReplace);
         if(!(start_pos == std::string::npos)) {
@@ -1495,6 +1505,10 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
         std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
         memcpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), formattedChildAltarText.length());
+
+        std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
+        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
+        memcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), formattedAdultAltarText.length());
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -1991,6 +2005,10 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+std::string Randomizer::GetAdultAltarText() {
+    return this->adultAltarText;
 }
 
 std::string Randomizer::GetChildAltarText() {

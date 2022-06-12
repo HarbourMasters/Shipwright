@@ -1059,65 +1059,12 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
 }
 
 extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
-    // std::string altarText = "";
     std::string altarText;
     if(LINK_IS_ADULT) {
-        altarText += "blargadult";
+        altarText = OTRGlobals::Instance->gRandomizer->GetAdultAltarText();
     } else {
-        // altarText += "blargkid";
         altarText = OTRGlobals::Instance->gRandomizer->GetChildAltarText();
     }
-    // // Kokiri Emerald
-    // altarText += 0x13;
-    // altarText += 0x6C;
-    // altarText += 0x04;
-
-    // // Goron Ruby
-    // altarText += 0x13;
-    // altarText += 0x6D;
-    // altarText += 0x04;
-
-    // // Zora Sapphire
-    // altarText += 0x13;
-    // altarText += 0x6E;
-    // altarText += 0x04;
-
-    // // Forest Medallion
-    // altarText += 0x13;
-    // altarText += 0x66;
-    // altarText += 0x04;
-
-    // // Fire Medallion
-    // altarText += 0x13;
-    // altarText += 0x67;
-    // altarText += 0x04;
-
-    // // Water Medallion
-    // altarText += 0x13;
-    // altarText += 0x68;
-    // altarText += 0x04;
-
-    // // Spirit Medallion
-    // altarText += 0x13;
-    // altarText += 0x69;
-    // altarText += 0x04;
-
-    // // Shadow Medallion
-    // altarText += 0x13;
-    // altarText += 0x6A;
-    // altarText += 0x04;
-
-    // // Light Medallion
-    // altarText += 0x13;
-    // altarText += 0x6B;
-    // altarText += 0x04;
-
-    // // Light Arrow (this will be useful for ganondorf hint text
-    // // i'm just putting it here for now)
-    // altarText += 0x13;
-    // altarText += 0x12;
-
-    // altarText += 0x02;
 
     if (!altarText.empty()) {
         memset(buffer, 0, maxBufferSize);
