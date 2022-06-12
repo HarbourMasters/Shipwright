@@ -1058,8 +1058,21 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" const char* GetHintFromCheck(RandomizerCheck check) {
-    return OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check).c_str();
+extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+    std::string altarText;
+    if(LINK_IS_ADULT) {
+        altarText = OTRGlobals::Instance->gRandomizer->GetAdultAltarText();
+    } else {
+        altarText = OTRGlobals::Instance->gRandomizer->GetChildAltarText();
+    }
+
+    if (!altarText.empty()) {
+        memset(buffer, 0, maxBufferSize);
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, altarText.length());
+        memcpy(buffer, altarText.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
 }
 
 extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {

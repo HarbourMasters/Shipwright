@@ -1179,6 +1179,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
+    this->childAltarText = gSaveContext.childAltarText;
+    this->adultAltarText = gSaveContext.adultAltarText;
+
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
@@ -1395,6 +1398,118 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     }
 }
 
+std::string AltarIconString(char iconChar) {
+    std::string iconString = "";
+    switch (iconChar) {
+        case '0':
+            // Kokiri Emerald
+            iconString += 0x13;
+            iconString += 0x6C;
+            break;
+        case '1':
+            // Goron Ruby
+            iconString += 0x13;
+            iconString += 0x6D;
+            break;
+        case '2':
+            // Zora Sapphire
+            iconString += 0x13;
+            iconString += 0x6E;
+            break;
+        case '3':
+            // Forest Medallion
+            iconString += 0x13;
+            iconString += 0x66;
+            break;
+        case '4':
+            // Fire Medallion
+            iconString += 0x13;
+            iconString += 0x67;
+            break;
+        case '5':
+            // Water Medallion
+            iconString += 0x13;
+            iconString += 0x68;
+            break;
+        case '6':
+            // Spirit Medallion
+            iconString += 0x13;
+            iconString += 0x69;
+            break;
+        case '7':
+            // Shadow Medallion
+            iconString += 0x13;
+            iconString += 0x6A;
+            break;
+        case '8':
+            // Light Medallion
+            iconString += 0x13;
+            iconString += 0x6B;
+            break;
+        case 'o':
+            // Open DOT (master sword)
+            iconString += 0x13;
+            iconString += 0x3C;
+            break;
+        case 'c':
+            // Closed DOT (fairy ocarina)
+            iconString += 0x13;
+            iconString += 0x07;
+            break;
+        case 'i':
+            // Intended DOT (oot)
+            iconString += 0x13;
+            iconString += 0x08;
+            break;
+        case 'l':
+            // Light Arrow (for bridge reqs)
+            iconString += 0x13;
+            iconString += 0x12;
+            break;
+        case 'b':
+            // Boss Key (ganon boss key location)
+            iconString += 0x13;
+            iconString += 0x74;
+            break;
+        case 'L':
+            // Bow with Light Arrow
+            iconString += 0x13;
+            iconString += 0x3A;
+            break;
+        case 'k':
+            // Kokiri Tunic
+            iconString += 0x13;
+            iconString += 0x41;
+            break;
+    }
+    return iconString;
+}
+
+std::string FormatJsonHintText(std::string jsonHint) {
+    std::string formattedHintMessage = jsonHint;
+    char newLine = 0x01;
+    char playerName = 0x0F;
+    char nextBox = 0x04;
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '&', newLine);
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '^', nextBox);
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
+    
+    // add icons to altar text
+    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
+        std::string textToReplace = "$";
+        textToReplace += iconChar;
+        size_t start_pos = formattedHintMessage.find(textToReplace);
+        if(!(start_pos == std::string::npos)) {
+            std::string iconString = AltarIconString(iconChar);
+            formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
+        }
+    }
+
+    formattedHintMessage += 0x02;
+
+    return formattedHintMessage;
+}
+
 void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
@@ -1405,18 +1520,21 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
-        json hintsJson = spoilerFileJson["hints"];
 
+        std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
+        std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
+        memcpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), formattedChildAltarText.length());
+
+        std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
+        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
+        memcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), formattedAdultAltarText.length());
+
+        json hintsJson = spoilerFileJson["hints"];
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
 
-            std::string hintMessage = it.value();
-            char newLine = 0x01;
-            char playerName = 0x0F;
-            std::replace(hintMessage.begin(), hintMessage.end(), '&', newLine);
-            std::replace(hintMessage.begin(), hintMessage.end(), '@', playerName);
-            hintMessage += 0x02;
+            std::string hintMessage = FormatJsonHintText(it.value());
             memcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), hintMessage.length());
 
             index++;
@@ -1906,6 +2024,14 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+std::string Randomizer::GetAdultAltarText() {
+    return this->adultAltarText;
+}
+
+std::string Randomizer::GetChildAltarText() {
+    return this->childAltarText;
 }
 
 std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {

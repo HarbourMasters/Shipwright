@@ -49,48 +49,64 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
-    for (int i = 0; i < 500; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->LoadData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
         SaveManager::Instance->LoadData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
     }
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
         SaveManager::Instance->LoadData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
         SaveManager::Instance->LoadData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
     }
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.hintLocations); i++) {
         SaveManager::Instance->LoadData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < ARRAY_COUNT(gSaveContext.hintLocations[i].hintText); j++) {
             SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
         }
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.childAltarText); i++) {
+        SaveManager::Instance->LoadData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
+        SaveManager::Instance->LoadData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
     }
 }
 
 void SaveManager::SaveRandomizer() {
-    for (int i = 0; i < 500; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
     }
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
         SaveManager::Instance->SaveData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
     }
 
-    for (int i = 0; i < 300; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
         SaveManager::Instance->SaveData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
         SaveManager::Instance->SaveData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
     }
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.hintLocations); i++) {
         SaveManager::Instance->SaveData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
-        for (int j = 0; j < 100; j++) {
+        for (int j = 0; j < ARRAY_COUNT(gSaveContext.hintLocations[i].hintText); j++) {
             SaveManager::Instance->SaveData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
         }
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.childAltarText); i++) {
+        SaveManager::Instance->SaveData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
+        SaveManager::Instance->SaveData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
     }
 }
 
