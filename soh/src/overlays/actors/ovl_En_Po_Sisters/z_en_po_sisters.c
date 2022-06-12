@@ -857,6 +857,7 @@ void func_80ADB338(EnPoSisters* this, GlobalContext* globalCtx) {
         if (Actor_WorldDistXZToPoint(&player->actor, &this->actor.home.pos) < 600.0f) {
             if (this->unk_19C != 0) {
                 this->unk_19C--;
+
                 // Force Meg to respawn instantly after getting hit
                 if (gSaveContext.n64ddFlag) {
                     this->unk_19C = 0;
@@ -992,7 +993,7 @@ void func_80ADB770(EnPoSisters* this, GlobalContext* globalCtx) {
             func_80AD95D8(this);
         }
     } else if (this->unk_19C == 0) {
-        this->unk_19C = gSaveContext.n64ddFlag ? 0 : -15;
+        this->unk_19C = -15;
     } else if (this->unk_19C < 0) {
         this->unk_19C++;
         if (this->unk_19C == 0) {
