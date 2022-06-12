@@ -73,6 +73,36 @@ s32 DemoKekkai_CheckEventFlag(s32 params) {
     return Flags_GetEventChkInf(eventFlags[params]);
 }
 
+u32 TrialsDoneCount() {
+    u8 trialCount = 0;
+
+    if (gSaveContext.trialsDone[0] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[1] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[2] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[3] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[4] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[5] == 1) {
+        trialCount++;
+    }
+
+    return trialCount;
+}
+
 void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
@@ -96,6 +126,14 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->collider2.dim.radius = thisx->scale.x * 6100.0f;
             this->collider2.dim.height = thisx->scale.y * 5000.0f;
             this->collider2.dim.yShift = 300;
+
+            if (gSaveContext.n64ddFlag) {
+                int trialsToComplete = GetRandoSettingValue(RSK_TRIAL_COUNT);
+                if (trialsToComplete >= TrialsDoneCount()) {
+                    Actor_Kill(thisx);
+                    return;
+                }
+            }
             break;
         case KEKKAI_WATER:
         case KEKKAI_LIGHT:
@@ -206,6 +244,29 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
     static u16 csFrames[] = { 0, 280, 280, 280, 280, 280, 280 };
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
+
+    if (gSaveContext.n64ddFlag) {
+        switch (thisx->params) {
+            case KEKKAI_WATER:
+                gSaveContext.trialsDone[2] = 1;
+                break;
+            case KEKKAI_LIGHT:
+                gSaveContext.trialsDone[5] = 1;
+                break;
+            case KEKKAI_FIRE:
+                gSaveContext.trialsDone[1] = 1;
+                break;
+            case KEKKAI_SHADOW:
+                gSaveContext.trialsDone[3] = 1;
+                break;
+            case KEKKAI_SPIRIT:
+                gSaveContext.trialsDone[4] = 1;
+                break;
+            case KEKKAI_FOREST:
+                gSaveContext.trialsDone[0] = 1;
+                break;
+        }
+    }
 
     if (globalCtx->csCtx.frames == csFrames[this->actor.params]) {
         func_800F3F3C(0xA);

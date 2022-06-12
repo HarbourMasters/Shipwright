@@ -178,6 +178,7 @@ typedef struct {
     HintLocationRando hintLocations[50];
     u8 seedIcons[5];
     u8 dungeonsDone[8];
+    u8 trialsDone[6];
 } SaveContext; // size = 0x1428
 
 typedef enum {
