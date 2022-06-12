@@ -20,7 +20,6 @@ struct TexEntry {
 	std::string ext;
 };
 
-std::unordered_map<std::string, std::vector<TextureCacheNode*>> TextureCache;
 std::unordered_map<std::string, TexEntry> QueryCache;
 std::unordered_map<std::string, int> FileCache;
 std::unordered_map<std::string, Ship::TexIOLoader*> IOLoaders = {
@@ -45,25 +44,17 @@ bool TexLoader::LoadReplacement(int tile, const char* path, GfxRenderingAPI* api
 
 	FileCache[path] = 0;
 
-	if (TextureCache.contains(path) && TextureCache[path][tile] != nullptr) {
-		*node = TextureCache[path][tile];
-		api->select_texture(tile, (*node)->second.texture_id);
-		return true;
-	}
-
 	if (!QueryCache.contains(path)) return false;
 
 	TexEntry tEntry = QueryCache[path];
 	uint32_t textureId = tEntry.loader->UploadTexture(tile, StringHelper::Sprintf("%s.%s", path, tEntry.ext.c_str()), api);
 
 	if (textureId == (uint32_t) -1) return false;
-	if (!TextureCache.contains(path)) TextureCache[path].resize(10);
 
 	TextureCacheKey key = { orig_addr, { }, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
 	TextureCacheValue value = { textureId, 0, 0, false };
 	const auto entry = new TextureCacheNode(key, value);
 	*node = entry;
-	TextureCache[path][tile] = entry;
 
 	return true;
 }
