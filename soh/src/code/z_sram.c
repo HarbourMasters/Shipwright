@@ -329,6 +329,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
             }
         }
+
+        // For Ganon's boss key "Start With" is 0
+        if(GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
+            gSaveContext.inventory.dungeonItems[10] |= 1;
+        }
     }
 
     Save_SaveFile();

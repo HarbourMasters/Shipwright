@@ -970,7 +970,7 @@ typedef enum {
     RSK_STARTING_DEKU_SHIELD,
     RSK_STARTING_KOKIRI_SWORD,
     RSK_SHUFFLE_KOKIRI_SWORD,
-    RSK_STARTING_MAPS_COMPASSES, //todo more options for this, rn it's just start with or own dungeon
+    RSK_STARTING_MAPS_COMPASSES, //RANDOTODO more options for this, rn it's just start with or own dungeon
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
     RSK_SHUFFLE_WEIRD_EGG,
@@ -979,6 +979,7 @@ typedef enum {
     RSK_ICE_TRAPS,
     RSK_GOSSIP_STONE_HINTS,
     RSK_HINT_CLARITY,
-    RSK_HINT_DISTRIBUTION
-    // todo RSK_STARTING_CONSUMABLES
+    RSK_HINT_DISTRIBUTION,
+    RSK_GANONS_BOSS_KEY
+    // RANDOTODO RSK_STARTING_CONSUMABLES
 } RandomizerSettingKey;

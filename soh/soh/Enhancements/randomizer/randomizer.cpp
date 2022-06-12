@@ -1375,6 +1375,15 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_GANONS_BOSS_KEY:
+                        if(it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
                 }
                 index++;        
             }
@@ -2694,6 +2703,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2760,9 +2770,10 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
                                             "Anywhere",    "Start with",  "Vanilla" };
-    const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
-                                                  "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
-                                                  "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
+    // const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
+    //                                               "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
+    //                                               "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
+    const char* randoShuffleGanonsBossKey[3] = {"Start With", "Vanilla", "Own Dungeon"};
 
     // Timesaver Settings
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
@@ -3659,90 +3670,93 @@ void DrawRandoEditor(bool& open) {
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleBossKeys", randoShuffleBossKeys, 6, 0);
                         // ImGui::Separator();
 
-                    // todo implement ganon's boss key outside of ganon's castle
-                    //     // Ganon's Boss Key
-                    //     ImGui::Text("Ganon's Boss Key");
-                    //     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12,
-                    //                                   0);
-                    //     switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
-                    //         case 0:
-                    //             SetLastItemHoverText(
-                    //                 "Ganon's Castle Boss Key can only appear inside of\na dungeon, but not "
-                    //                 "necessarily Ganon's Castle.");
-                    //             break;
-                    //         case 1:
-                    //             SetLastItemHoverText("Ganon's Castle Boss Key can only appear outside of\ndungeons.");
-                    //             break;
-                    //         case 2:
-                    //             SetLastItemHoverText("Ganon's Castle Boss Key can appear anywhere in the\nworld.");
-                    //             break;
-                    //         case 3:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             break;
-                    //         case 4:
-                    //             SetLastItemHoverText("Ganon's Caslte Boss Key can appear anywhere in the\nworld.");
-                    //             break;
-                    //         case 5:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoGanonMedallionCount",
-                    //                                            "gRandomizeGanonMedallionCount", 0, 6, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of Medallions required to trigger\nthe Light Arrow Cutscene.");
-                    //             break;
-                    //         case 6:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoGanonStoneCount",
-                    //                                            "gRandomizeGanonStoneCount", 0, 3, "");
-                    //             InsertHelpHoverText("Set the number of Spiritual Stones required to trigger\nthe Light "
-                    //                                 "Arrow Cutscene.");
-                    //             break;
-                    //         case 7:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoGanonRewardCount",
-                    //                                            "gRandomizeGanonRewardCount", 0, 9, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of Dungeon Rewards (Spiritual\nStones and Medallions) "
-                    //                 "required to trigger the\nLight Arrow Cutscene.");
-                    //             break;
-                    //         case 8:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("MDungeon Count: %d", "##RandoGanonDungeonCount",
-                    //                                            "gRandomizeGanonDungeonCount", 0, 8, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of completed dungeons required to\ntrigger the Light Arrow "
-                    //                 "Cutscene.\n\nDungeons are considered complete when Link steps\ninto the "
-                    //                 "blue warp at the end of them.");
-                    //             break;
-                    //         case 9:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoGanonTokenCount",
-                    //                                            "gRandomizeGanonTokenCount", 0, 100, "");
-                    //             InsertHelpHoverText("Set the number of Gold Skulltula Tokens required\nto trigger the "
-                    //                                 "Light Arrow Cutscene.");
-                    //             break;
-                    //         case 10:
-                    //             SetLastItemHoverText(
-                    //                 "Ganon's Catle Boss Key is given to you from the\nstart and you don't "
-                    //                 "have to worry about finding it.");
-                    //             break;
-                    //         case 11:
-                    //             SetLastItemHoverText("Ganon's Calste Boss Key will appear in the vanilla\nlocation.");
-                    //             break;
-                    //     }
-                    //     ImGui::Separator();
-                    // }
+                    // RANDOTODO implement ganon's boss key outside of ganon's castle
+                        // Ganon's Boss Key
+                        ImGui::Text("Ganon's Boss Key");
+                        SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
+                                                      0);
+                        switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
+                            case 0:
+                                SetLastItemHoverText(
+                                    "Ganon's Boss Key is given to you from the\nstart and you don't "
+                                    "have to worry about finding it.");
+                                break;
+                            case 1:
+                                SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla\nlocation.");
+                                break;
+                            case 2:
+                                SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside\nGanon's Castle.");
+                                break;
+                            // case 0:
+                            //     SetLastItemHoverText(
+                            //         "Ganon's Castle Boss Key can only appear inside of\na dungeon, but not "
+                            //         "necessarily Ganon's Castle.");
+                            //     break;
+                            // case 1:
+                            //     SetLastItemHoverText("Ganon's Castle Boss Key can only appear outside of\ndungeons.");
+                            //     break;
+                            // case 2:
+                            //     SetLastItemHoverText("Ganon's Castle Boss Key can appear anywhere in the\nworld.");
+                            //     break;
+                            // case 3:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     break;
+                            // case 4:
+                            //     SetLastItemHoverText("Ganon's Caslte Boss Key can appear anywhere in the\nworld.");
+                            //     break;
+                            // case 5:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoGanonMedallionCount",
+                            //                                    "gRandomizeGanonMedallionCount", 0, 6, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of Medallions required to trigger\nthe Light Arrow Cutscene.");
+                            //     break;
+                            // case 6:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoGanonStoneCount",
+                            //                                    "gRandomizeGanonStoneCount", 0, 3, "");
+                            //     InsertHelpHoverText("Set the number of Spiritual Stones required to trigger\nthe Light "
+                            //                         "Arrow Cutscene.");
+                            //     break;
+                            // case 7:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoGanonRewardCount",
+                            //                                    "gRandomizeGanonRewardCount", 0, 9, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of Dungeon Rewards (Spiritual\nStones and Medallions) "
+                            //         "required to trigger the\nLight Arrow Cutscene.");
+                            //     break;
+                            // case 8:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("MDungeon Count: %d", "##RandoGanonDungeonCount",
+                            //                                    "gRandomizeGanonDungeonCount", 0, 8, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of completed dungeons required to\ntrigger the Light Arrow "
+                            //         "Cutscene.\n\nDungeons are considered complete when Link steps\ninto the "
+                            //         "blue warp at the end of them.");
+                            //     break;
+                            // case 9:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoGanonTokenCount",
+                            //                                    "gRandomizeGanonTokenCount", 0, 100, "");
+                            //     InsertHelpHoverText("Set the number of Gold Skulltula Tokens required\nto trigger the "
+                            //                         "Light Arrow Cutscene.");
+                            //     break;
+                        }
+                        ImGui::Separator();
+                    
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
