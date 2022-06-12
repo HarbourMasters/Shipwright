@@ -1462,6 +1462,16 @@ std::string AltarIconString(char iconChar) {
             iconString += 0x13;
             iconString += 0x74;
             break;
+        case 'L':
+            // Bow with Light Arrow
+            iconString += 0x13;
+            iconString += 0x3A;
+            break;
+        case 'k':
+            // Kokiri Tunic
+            iconString += 0x13;
+            iconString += 0x41;
+            break;
     }
     return iconString;
 }
@@ -1476,7 +1486,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
     
     // add icons to altar text
-    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b'}) {
+    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
         std::string textToReplace = "$";
         textToReplace += iconChar;
         size_t start_pos = formattedHintMessage.find(textToReplace);

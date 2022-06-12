@@ -7171,7 +7171,7 @@ void HintTable_Init() {
 
     hintTable[ADULT_ALTAR_TEXT_END] = HintText::Altar({
                      //obscure text
-                     Text{"Together with the Hero of Time,&the awakened ones will return the&light of peace to the world...",
+                     Text{"$kTogether with the Hero of Time,&the awakened ones will return&the light of peace to the world...",
                 /*french*/"Ensemble avec le Héros du Temps,&ces Sages emprisonneront le mal et&réinstaureront la lumière de paix dans&le monde...",
                /*spanish*/"Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la paz..."},
     });
