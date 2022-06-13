@@ -741,7 +741,7 @@ void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArra
 }
 
 void SaveManager::SaveStruct(const std::string& name, SaveStructFunc func) {
-    // Create an empty struct and set it as the current save context, then call the function that saves the sruct.
+    // Create an empty struct and set it as the current save context, then call the function that saves the struct.
     // If it is an array entry, save it to the array instead.
     if (name == "") {
         nlohmann::json* saveJsonContext = currentJsonContext;
@@ -778,7 +778,7 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
    
 
 void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
-    // Create an empty struct and set it as the current load context, then call the function that loads the sruct.
+    // Create an empty struct and set it as the current load context, then call the function that loads the struct.
     // If it is an array entry, load it from the array instead.
     if (name == "") {
         nlohmann::json* saveJsonContext = currentJsonContext;

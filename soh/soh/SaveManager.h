@@ -49,7 +49,7 @@ public:
     // Adds a function that is called when saving. This should only be called once for each function, the version is filled in automatically.
     void AddSaveFunction(const std::string& name, int version, SaveFunc func);
 
-    // Adds a function tyo be called after loading is complete. This is to handle any cleanup required from loading old versions.
+    // Adds a function to be called after loading is complete. This is to handle any cleanup required from loading old versions.
     void AddPostFunction(const std::string& name, PostFunc func);
 
     void CopyZeldaFile(int from, int to);
@@ -73,11 +73,11 @@ public:
     using SaveStructFunc = std::function<void()>;
     void SaveStruct(const std::string& name, SaveStructFunc func);
 
-    // Use a name of "" to load from an array. You must be in a SavLoadArrayeArray callback.
+    // Use a name of "" to load from an array. You must be in a LoadArray callback.
     template<typename T> void LoadData(const std::string& name, T& data, const T& defaultValue = T{}) {
         if (name == "") {
             if (currentJsonArrayContext == currentJsonContext->end()) {
-                // This array member is past the data in the json file. Therefor, default construct it
+                // This array member is past the data in the json file. Therefore, default construct it
                 data = defaultValue;
             } else {
                 currentJsonArrayContext.value().get_to(data);
@@ -89,7 +89,7 @@ public:
         }
     }
 
-    // In the LoadArrayFunc func, the name must be "" to loaf from the array.
+    // In the LoadArrayFunc func, the name must be "" to load from the array.
     using LoadArrayFunc = std::function<void(size_t)>;
     void LoadArray(const std::string& name, const size_t size, LoadArrayFunc func);
 
