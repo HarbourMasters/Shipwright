@@ -266,8 +266,6 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    GiveLinksPocketMedallion(globalCtx);
-
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
         globalCtx->state.running = false;

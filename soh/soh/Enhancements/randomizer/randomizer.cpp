@@ -2830,7 +2830,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
+    
+    cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
+                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    
     cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
@@ -3602,16 +3609,19 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();
                         }
 
-                        // Shuffle Weird Egg
-                        ImGui::Text("Shuffle Weird Egg");
-                        InsertHelpHoverText(
-                            "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
-                            "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
-                            "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
-                            "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
-                            "unlock the\nKakariko Gate as child which can lock some\nprogression.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
-                        ImGui::Separator();
+                        // hide this option if we're skipping child zelda
+                        if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
+                            // Shuffle Weird Egg
+                            ImGui::Text("Shuffle Weird Egg");
+                            InsertHelpHoverText(
+                                "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
+                                "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
+                                "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
+                                "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
+                                "unlock the\nKakariko Gate as child which can lock some\nprogression.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
+                            ImGui::Separator();                            
+                        }
 
                         // Shuffle Gerudo Token
                         ImGui::Text("Shuffle Gerudo Token");
@@ -3665,7 +3675,9 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
                     SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
-                    
+                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+ 
+
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
 
