@@ -9,7 +9,7 @@ namespace Ship {
             }
             SDL_AudioSpec want, have;
             SDL_zero(want);
-            want.freq = 32000;
+            want.freq = 44000;
             want.format = AUDIO_S16;
             want.channels = 2;
             want.samples = 1024;
