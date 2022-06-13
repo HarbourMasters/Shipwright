@@ -153,7 +153,6 @@
       <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -173,7 +172,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
