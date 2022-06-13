@@ -35,6 +35,7 @@ uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
+char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
@@ -49,6 +50,10 @@ Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
+SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex);
+SequenceData ResourceMgr_LoadSeqByID(int seqID);
+SequenceData ResourceMgr_LoadSeqByName(const char* path);
+SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
@@ -76,10 +81,6 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
-char* ResourceMgr_LoadSeqByID(int seqID);
-int ResourceMgr_GetSeqSizeByID(int seqID);
-SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex);
-SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset);
 #endif
 
 #endif

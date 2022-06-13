@@ -6,7 +6,7 @@
 #include <Utils/File.h>
 #include "DisplayListExporter.h"
 
-void OTRExporter_Audio::WriteSampleEntryReference(SampleEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer)
+void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer)
 {
 	writer->Write((uint8_t)(entry != nullptr ? 1 : 0));
 
@@ -21,7 +21,17 @@ void OTRExporter_Audio::WriteSampleEntryReference(SampleEntry* entry, std::map<u
 		}
 	}
 
-	writer->Write(addr);
+	if (entry != nullptr)
+	{
+		if (audio->sampleOffsets[entry->bankId].find(entry->sampleDataOffset) != audio->sampleOffsets[entry->bankId].end())
+		{
+			writer->Write(StringHelper::Sprintf("audio/samples/%s", audio->sampleOffsets[entry->bankId][entry->sampleDataOffset].c_str()));
+		}
+		else
+			writer->Write(entry->fileName);
+	}
+	else
+		writer->Write("");
 }
 
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
@@ -52,13 +62,13 @@ void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* write
 		writer->Write((entry->book.books[i]));
 }
 
-void OTRExporter_Audio::WriteSoundFontEntry(SoundFontEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer)
+void OTRExporter_Audio::WriteSoundFontEntry(ZAudio* audio, SoundFontEntry* entry, std::map<uint32_t, SampleEntry*> samples, BinaryWriter* writer)
 {
 	writer->Write((uint8_t)(entry != nullptr ? 1 : 0));
 
 	if (entry != nullptr)
 	{
-		WriteSampleEntryReference(entry->sampleEntry, samples, writer);
+		WriteSampleEntryReference(audio, entry->sampleEntry, samples, writer);
 		writer->Write(entry->tuning);
 	}
 }
@@ -86,21 +96,21 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* sampleStream = new MemoryStream();
 		BinaryWriter sampleWriter = BinaryWriter(sampleStream);
 
+		writer->Write((uint32_t)pair.first);
 		WriteSampleEntry(pair.second, &sampleWriter);
 
-		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("samples/sample_%08X", pair.first));
+		std::string basePath = "";
+
+		if (audio->sampleOffsets[pair.second->bankId].find(pair.second->sampleDataOffset) != audio->sampleOffsets[pair.second->bankId].end())
+			basePath = StringHelper::Sprintf("samples/%s", audio->sampleOffsets[pair.second->bankId][pair.second->sampleDataOffset].c_str());
+		else
+			basePath = StringHelper::Sprintf("samples/sample_%08X", pair.first);
+
+		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, basePath);
 		AddFile(fName, sampleStream->ToVector());
 	}
 
-	// Write the samplebank table
-	//writer->Write((uint32_t)audio->sampleBankTable.size());
-	//for (size_t i = 0; i < audio->sampleBankTable.size(); i++)
-	//{
-	//}
-
 	// Write the soundfont table
-	//writer->Write((uint32_t)audio->soundFontTable.size());
-
 	for (size_t i = 0; i < audio->soundFontTable.size(); i++)
 	{
 		MemoryStream* fntStream = new MemoryStream();
@@ -108,6 +118,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 
 		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::AudioSoundFont);
 
+		fntWriter.Write((uint32_t)i);
 		fntWriter.Write(audio->soundFontTable[i].medium);
 		fntWriter.Write(audio->soundFontTable[i].cachePolicy);
 		fntWriter.Write(audio->soundFontTable[i].data1);
@@ -126,7 +137,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 
 			WriteEnvData(audio->soundFontTable[i].drums[k].env, &fntWriter);
 
-			WriteSampleEntryReference(audio->soundFontTable[i].drums[k].sample, audio->samples, &fntWriter);
+			WriteSampleEntryReference(audio, audio->soundFontTable[i].drums[k].sample, audio->samples, &fntWriter);
 			fntWriter.Write(audio->soundFontTable[i].drums[k].tuning);
 		}
 
@@ -141,14 +152,14 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 
 			WriteEnvData(audio->soundFontTable[i].instruments[k].env, &fntWriter);
 
-			WriteSoundFontEntry(audio->soundFontTable[i].instruments[k].lowNotesSound, audio->samples, &fntWriter);
-			WriteSoundFontEntry(audio->soundFontTable[i].instruments[k].normalNotesSound, audio->samples, &fntWriter);
-			WriteSoundFontEntry(audio->soundFontTable[i].instruments[k].highNotesSound, audio->samples, &fntWriter);
+			WriteSoundFontEntry(audio, audio->soundFontTable[i].instruments[k].lowNotesSound, audio->samples, &fntWriter);
+			WriteSoundFontEntry(audio, audio->soundFontTable[i].instruments[k].normalNotesSound, audio->samples, &fntWriter);
+			WriteSoundFontEntry(audio, audio->soundFontTable[i].instruments[k].highNotesSound, audio->samples, &fntWriter);
 		}
 
 		for (size_t k = 0; k < audio->soundFontTable[i].soundEffects.size(); k++)
 		{
-			WriteSoundFontEntry(audio->soundFontTable[i].soundEffects[k], audio->samples, &fntWriter);
+			WriteSoundFontEntry(audio, audio->soundFontTable[i].soundEffects[k], audio->samples, &fntWriter);
 		}
 
 		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("fonts/font_%02X", i));
@@ -163,12 +174,18 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* seqStream = new MemoryStream();
 		BinaryWriter seqWriter = BinaryWriter(seqStream);
 
+		seqWriter.Write((uint8_t)0); // Version 0 of format...
+		seqWriter.Write((uint8_t)i);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].medium);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
+		seqWriter.Write((uint8_t)audio->fontIndices[i].size());
+		
+		for (int k = 0; k < audio->fontIndices[i].size(); k++)
+			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
 
 		seqWriter.Write(seq.data(), seq.size());
 
-		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("sequences/seq_%02X", i));
+		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("sequences/%s", audio->seqNames[i].c_str()));
 		AddFile(fName, seqStream->ToVector());
 	}
 }

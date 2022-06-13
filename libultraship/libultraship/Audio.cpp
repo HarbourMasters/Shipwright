@@ -42,6 +42,7 @@ namespace Ship
 
 		ResourceFile::ParseFileBinary(reader, res);
 
+		soundFont->id = reader->ReadInt32();
 		soundFont->medium = reader->ReadByte();
 		soundFont->cachePolicy = reader->ReadByte();
 		soundFont->data1 = reader->ReadInt16();
@@ -62,7 +63,7 @@ namespace Ship
 			drum.env = ReadEnvelopeData(reader);
 			
 			bool hasSample = reader->ReadByte();
-			drum.offset = reader->ReadInt32();
+			drum.sampleFileName = reader->ReadString();
 			drum.tuning = reader->ReadSingle();
 
 			soundFont->drums.push_back(drum);
@@ -87,7 +88,7 @@ namespace Ship
 				{
 					entry.lowNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.lowNotesSound->sampleOffset = reader->ReadInt32();
+					entry.lowNotesSound->sampleFileName = reader->ReadString();
 					entry.lowNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -99,7 +100,7 @@ namespace Ship
 				{
 					entry.normalNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.normalNotesSound->sampleOffset = reader->ReadInt32();
+					entry.normalNotesSound->sampleFileName = reader->ReadString();
 					entry.normalNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -111,7 +112,7 @@ namespace Ship
 				{
 					entry.highNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.highNotesSound->sampleOffset = reader->ReadInt32();
+					entry.highNotesSound->sampleFileName = reader->ReadString();
 					entry.highNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -128,7 +129,7 @@ namespace Ship
 			if (hasSFEntry)
 			{
 				bool hasSampleRef = reader->ReadByte();
-				entry->sampleOffset = reader->ReadInt32();
+				entry->sampleFileName = reader->ReadString();
 				entry->tuning = reader->ReadSingle();
 			}
 
@@ -159,10 +160,5 @@ namespace Ship
 		Audio* audio = (Audio*)res;
 
 		ResourceFile::ParseFileBinary(reader, res);
-
-		//int sampleCnt = reader->ReadInt32();
-
-		//for (size_t i = 0; i < sampleCnt; i++)
-			//audio->samples.push_back(ReadSampleEntry(reader));
 	}
 }

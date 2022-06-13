@@ -9,7 +9,7 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, std::string MainPath, std::string PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
+	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, const std::string& MainPath, const std::string& PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
 		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
 
 		gameVersion = OOT_UNKNOWN;
@@ -186,7 +186,7 @@ namespace Ship {
 		gameVersion = newGameVersion;
 	}
 
-	std::shared_ptr<File> ResourceMgr::LoadFileAsync(std::string FilePath) {
+	std::shared_ptr<File> ResourceMgr::LoadFileAsync(const std::string& FilePath) {
 		const std::lock_guard<std::mutex> Lock(FileLoadMutex);
 		// File NOT already loaded...?
 		auto fileCacheFind = FileCache.find(FilePath);
@@ -204,8 +204,7 @@ namespace Ship {
 		return fileCacheFind->second;
 	}
 
-	std::shared_ptr<File> ResourceMgr::LoadFile(std::string FilePath) 
-	{
+	std::shared_ptr<File> ResourceMgr::LoadFile(const std::string& FilePath) {
 		auto ToLoad = LoadFileAsync(FilePath);
 		// Wait for the File to actually be loaded if we are told to block.
 		std::unique_lock<std::mutex> Lock(ToLoad->FileLoadMutex);
@@ -281,7 +280,7 @@ namespace Ship {
 		}
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> ResourceMgr::CacheDirectoryAsync(std::string SearchMask) {
+	std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> ResourceMgr::CacheDirectoryAsync(const std::string& SearchMask) {
 		auto loadedList = std::make_shared<std::vector<std::shared_ptr<ResourcePromise>>>();
 		auto fileList = OTR->ListFiles(SearchMask);
 
@@ -300,7 +299,7 @@ namespace Ship {
 		return loadedList;
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::CacheDirectory(std::string SearchMask) {
+	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::CacheDirectory(const std::string& SearchMask) {
 		auto PromiseList = CacheDirectoryAsync(SearchMask);
 		auto LoadedList = std::make_shared<std::vector<std::shared_ptr<Resource>>>();
 
@@ -338,6 +337,18 @@ namespace Ship {
 		}
 
 		return LoadedList;
+	}
+
+	std::shared_ptr<std::vector<std::string>> ResourceMgr::ListFiles(std::string SearchMask)
+	{
+		auto result = std::make_shared<std::vector<std::string>>();
+		auto fileList = OTR->ListFiles(SearchMask);
+
+		for (DWORD i = 0; i < fileList.size(); i++) {
+			result->push_back(fileList[i].cFileName);
+		}
+
+		return result;
 	}
 
 	void ResourceMgr::InvalidateResourceCache() {

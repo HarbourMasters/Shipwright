@@ -1456,6 +1456,17 @@ void func_80901020(BossGanon2* this, GlobalContext* globalCtx) {
 void func_8090109C(BossGanon2* this, GlobalContext* globalCtx) {
     u8 i;
 
+    static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
+    static Color_RGBA8 sEnvColor = { 0, 120, 0, 255 };
+
+    if(CVar_GetS32("gRedGanonBlood", 0)) {
+        sPrimColor.r = 120;
+        sPrimColor.g = 0;
+
+        sEnvColor.r = 120;
+        sEnvColor.g = 0;
+    }
+
     for (i = 0; i < 70; i++) {
         Vec3f velocity;
         Vec3f accel;

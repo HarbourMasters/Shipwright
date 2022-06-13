@@ -1157,7 +1157,7 @@ typedef struct {
 } CamColChk; // size = 0x28
 
 typedef struct {
-    /* 0x000 */ char paramData[0xFF];
+    /* 0x000 */ char paramData[0x14 * sizeof(void*)];
     /* 0x050 */ Vec3f at;
     /* 0x05C */ Vec3f eye;
     /* 0x068 */ Vec3f up;

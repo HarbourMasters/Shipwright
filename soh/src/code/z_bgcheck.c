@@ -1516,7 +1516,11 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         if (globalCtx->sceneNum == SCENE_MALON_STABLE) {
             // "/* BGCheck LonLon Size %dbyte */\n"
             osSyncPrintf("/* BGCheck LonLonサイズ %dbyte */\n", 0x3520);
-            colCtx->memSize = 0x3520 * (sizeof(void*) / 4); // 64-bit build needs more memory
+        #ifdef _SOH64
+            colCtx->memSize = 0x3520 * (sizeof(void*) / 4);
+        #else
+            colCtx->memSize = 0x3520;
+        #endif
         } else {
             // "/* BGCheck Mini Size %dbyte */\n"
             osSyncPrintf("/* BGCheck ミニサイズ %dbyte */\n", 0x4E20);
@@ -3787,7 +3791,7 @@ void CollisionHeader_SegmentedToVirtual(CollisionHeader* colHeader) {
 /**
  * Convert CollisionHeader Segmented to Virtual addressing
  */
-void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest) 
+void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest)
 {
     if (ResourceMgr_OTRSigCheck(colHeader))
         colHeader = ResourceMgr_LoadColByName(colHeader);

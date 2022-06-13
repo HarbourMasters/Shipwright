@@ -21,12 +21,14 @@ struct AdpcmLoop
 	/* 0x00 */ uint32_t start;
 	/* 0x04 */ uint32_t end;
 	/* 0x08 */ uint32_t count;
-	///* 0x10 */ int16_t state[16];  // only exists if count != 0. 8-byte aligned
 	/* 0x10 */ std::vector<int16_t> states;
 };
 
 struct SampleEntry
 {
+	std::string fileName;
+	uint8_t bankId;
+	uint32_t sampleDataOffset;
 	uint8_t codec;
 	uint8_t medium;
 	uint8_t unk_bit26;
@@ -51,7 +53,6 @@ struct DrumEntry
 	uint32_t offset;
 	float tuning;
 	std::vector<AdsrEnvelope*> env;
-	//AdsrEnvelope* env = nullptr;
 	SampleEntry* sample = nullptr;
 };
 
@@ -63,7 +64,6 @@ struct InstrumentEntry
 	uint8_t normalRangeHi;
 	uint8_t releaseRate;
 	std::vector<AdsrEnvelope*> env;
-	//AdsrEnvelope* env = nullptr;
 	SoundFontEntry* lowNotesSound = nullptr;
 	SoundFontEntry* normalNotesSound = nullptr;
 	SoundFontEntry* highNotesSound = nullptr;
@@ -92,8 +92,13 @@ public:
 	std::vector<AudioTableEntry> sampleBankTable;
 	std::vector<std::vector<char>> sequences;
 	std::map<uint32_t, SampleEntry*> samples;
+	std::vector<std::vector<uint32_t>> fontIndices;
+	std::vector<std::string> seqNames;
+	std::map<uint32_t, std::map<uint32_t, std::string>> sampleOffsets;
 
 	ZAudio(ZFile* nParent);
+
+	void ParseXML(tinyxml2::XMLElement* reader) override;
 
 	void DecodeADPCMSample(SampleEntry* sample);
 	std::vector<AdsrEnvelope*> ParseEnvelopeData(std::vector<uint8_t> audioBank, std::vector<uint8_t> audioTable,
@@ -101,12 +106,12 @@ public:
 
 	SoundFontEntry* ParseSoundFontEntry(std::vector<uint8_t> audioBank,
 	                                    std::vector<uint8_t> audioTable,
-	                                    AudioTableEntry audioSampleBankEntry,
+	                                    AudioTableEntry audioSampleBankEntry, int bankIndex,
 	                                    int soundFontOffset,
 	                                    int baseOffset);
 
 	SampleEntry* ParseSampleEntry(std::vector<uint8_t> audioBank, std::vector<uint8_t> audioTable,
-	                              AudioTableEntry audioSampleBankEntry, 
+	                              AudioTableEntry audioSampleBankEntry, int bankIndex,
 	                              int sampleOffset, int baseOffset);
 
 	std::vector<AudioTableEntry> ParseAudioTable(std::vector<uint8_t> codeData, int baseOffset);
