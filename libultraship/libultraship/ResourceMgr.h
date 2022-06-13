@@ -32,7 +32,7 @@ namespace Ship
 
 		uint32_t GetGameVersion();
 		void SetGameVersion(uint32_t newGameVersion);
-		std::shared_ptr<File> LoadFileAsync(std::string FilePath);
+		std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
 		std::shared_ptr<File> LoadFile(const std::string& FilePath);
 		std::shared_ptr<Ship::Resource> GetCachedFile(const char* FilePath) const;
 		std::shared_ptr<Resource> LoadResource(const char* FilePath);

@@ -186,7 +186,7 @@ namespace Ship {
 		gameVersion = newGameVersion;
 	}
 
-	std::shared_ptr<File> ResourceMgr::LoadFileAsync(std::string FilePath) {
+	std::shared_ptr<File> ResourceMgr::LoadFileAsync(const std::string& FilePath) {
 		const std::lock_guard<std::mutex> Lock(FileLoadMutex);
 		// File NOT already loaded...?
 		auto fileCacheFind = FileCache.find(FilePath);
