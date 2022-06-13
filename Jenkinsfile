@@ -113,5 +113,33 @@ pipeline {
                 }
             }
         }
+        stage ('Build macOS') {
+            agent {
+                label "SoH-Mac-Builders"
+            }
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: scm.branches,
+                    doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                    extensions: scm.extensions,
+                    userRemoteConfigs: scm.userRemoteConfigs
+                ])
+                catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                    sh '''
+                    cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+
+                    cd soh
+                    make setup -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
+                    make -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
+                    '''
+                }
+            }
+            post {
+                always {
+                    step([$class: 'WsCleanup']) // Clean workspace
+                }
+            }
+        }
     }
 }
