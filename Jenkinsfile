@@ -126,7 +126,7 @@ pipeline {
                     userRemoteConfigs: scm.userRemoteConfigs
                 ])
                 catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                    zsh '''
+                    sh '''
                     cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
                     cd soh
