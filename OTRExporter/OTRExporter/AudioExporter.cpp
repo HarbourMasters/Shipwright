@@ -10,13 +10,10 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 {
 	writer->Write((uint8_t)(entry != nullptr ? 1 : 0));
 
-	uint32_t addr = 0;
-
 	for (auto pair : samples)
 	{
 		if (pair.second == entry)
 		{
-			addr = pair.first;
 			break;
 		}
 	}
@@ -180,7 +177,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
 		seqWriter.Write((uint8_t)audio->fontIndices[i].size());
 		
-		for (int k = 0; k < audio->fontIndices[i].size(); k++)
+		for (size_t k = 0; k < audio->fontIndices[i].size(); k++)
 			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
 
 		seqWriter.Write(seq.data(), seq.size());
