@@ -800,6 +800,181 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
+std::unordered_map<s16, s16> getItemIdToItemId = {
+    { GI_BOW, ITEM_BOW },
+    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
+    { GI_DINS_FIRE, ITEM_DINS_FIRE },
+    { GI_SLINGSHOT, ITEM_SLINGSHOT },
+    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
+    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+    { GI_HOOKSHOT, ITEM_HOOKSHOT },
+    { GI_LONGSHOT, ITEM_LONGSHOT },
+    { GI_ARROW_ICE, ITEM_ARROW_ICE },
+    { GI_FARORES_WIND, ITEM_FARORES_WIND },
+    { GI_BOOMERANG, ITEM_BOOMERANG },
+    { GI_LENS, ITEM_LENS },
+    { GI_HAMMER, ITEM_HAMMER },
+    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
+    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
+    // bottle stuff
+    { GI_BOTTLE, ITEM_BOTTLE },
+    { GI_POTION_RED, ITEM_POTION_RED },
+    { GI_POTION_GREEN, ITEM_POTION_GREEN },
+    { GI_POTION_BLUE, ITEM_POTION_BLUE },
+    { GI_FAIRY, ITEM_FAIRY },
+    { GI_FISH, ITEM_FISH },
+    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
+    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
+    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
+    { GI_BUGS, ITEM_BUG },
+    { GI_BIG_POE, ITEM_BIG_POE },
+    { GI_MILK, ITEM_MILK_HALF },
+    { GI_POE, ITEM_POE },
+    // trade quest stuff
+    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
+    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+    { GI_POCKET_EGG, ITEM_POCKET_EGG },
+    { GI_COJIRO, ITEM_COJIRO },
+    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
+    { GI_ODD_POTION, ITEM_ODD_POTION },
+    { GI_SAW, ITEM_SAW },
+    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
+    { GI_FROG, ITEM_FROG },
+    { GI_EYEDROPS, ITEM_EYEDROPS },
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
+// these need to just update the amount in inventory
+// { GI_ , ITEM_STICK }
+// { GI_ , ITEM_NUT }
+// { GI_BEAN, ITEM_BEAN }
+// { GI_ , ITEM_STICKS_5 }
+// { GI_ , ITEM_STICKS_10 }
+// { GI_ , ITEM_NUTS_5 }
+// { GI_ , ITEM_NUTS_10 }
+// { GI_ , ITEM_BOMBCHUS_5 }
+// { GI_ , ITEM_BOMBCHUS_20 }
+// these need to update amount of rupees in wallet
+// { GI_ , ITEM_RUPEE_GREEN }
+// { GI_RUPEE_BLUE, ITEM_RUPEE_BLUE }
+// { GI_ , ITEM_RUPEE_RED }
+// { GI_ , ITEM_RUPEE_PURPLE }
+// { GI_ , ITEM_RUPEE_GOLD }
+// songs
+// { GI_MINUET_OF_FOREST, ITEM_SONG_MINUET }
+// { GI_BOLERO_OF_FIRE, ITEM_SONG_BOLERO }
+// { GI_SERENADE_OF_WATER, ITEM_SONG_SERENADE }
+// { GI_REQUIEM_OF_SPIRIT, ITEM_SONG_REQUIEM }
+// { GI_NOCTURNE_OF_SHADOW, ITEM_SONG_NOCTURNE }
+// { GI_PRELUDE_OF_LIGHT, ITEM_SONG_PRELUDE }
+// { GI_ZELDAS_LULLABY, ITEM_SONG_LULLABY }
+// { GI_EPONAS_SONG, ITEM_SONG_EPONA }
+// { GI_SARIAS_SONG, ITEM_SONG_SARIA }
+// { GI_SUNS_SONG, ITEM_SONG_SUN }
+// { GI_SONG_OF_TIME, ITEM_SONG_TIME }
+// { GI_SONG_OF_STORMS, ITEM_SONG_STORMS }
+// dungeon rewards
+// { GI_MEDALLION_FOREST, ITEM_MEDALLION_FOREST }
+// { GI_MEDALLION_FIRE, ITEM_MEDALLION_FIRE }
+// { GI_MEDALLION_WATER, ITEM_MEDALLION_WATER }
+// { GI_MEDALLION_SPIRIT, ITEM_MEDALLION_SPIRIT }
+// { GI_MEDALLION_SHADOW, ITEM_MEDALLION_SHADOW }
+// { GI_MEDALLION_LIGHT, ITEM_MEDALLION_LIGHT }
+// { GI_STONE_KOKIRI, ITEM_KOKIRI_EMERALD }
+// { GI_STONE_GORON, ITEM_GORON_RUBY }
+// { GI_STONE_ZORA, ITEM_ZORA_SAPPHIRE }
+// equipment
+// { GI_SWORD_KOKIRI, ITEM_SWORD_KOKIRI } 
+// { GI_ , ITEM_SWORD_MASTER }
+// { GI_SWORD_BGS, ITEM_SWORD_BGS }
+// { GI_SHIELD_DEKU, ITEM_SHIELD_DEKU }
+// { GI_SHIELD_HYLIAN, ITEM_SHIELD_HYLIAN }
+// { GI_SHIELD_MIRROR, ITEM_SHIELD_MIRROR }
+// { GI_ , ITEM_TUNIC_KOKIRI }
+// { GI_TUNIC_GORON, ITEM_TUNIC_GORON }
+// { GI_TUNIC_ZORA, ITEM_TUNIC_ZORA }
+// { GI_ , ITEM_BOOTS_KOKIRI }
+// { GI_BOOTS_IRON, ITEM_BOOTS_IRON }
+// { GI_BOOTS_HOVER, ITEM_BOOTS_HOVER }
+// { GI_ , ITEM_BULLET_BAG_30 }
+// { GI_BULLET_BAG_40, ITEM_BULLET_BAG_40 }
+// { GI_BULLET_BAG_50, ITEM_BULLET_BAG_50 }
+// { GI_ , ITEM_QUIVER_30 }
+// { GI_QUIVER_40, ITEM_QUIVER_40 }
+// { GI_QUIVER_50, ITEM_QUIVER_50 }
+// { GI_BOMB_BAG_20, ITEM_BOMB_BAG_20 }
+// { GI_BOMB_BAG_30, ITEM_BOMB_BAG_30 }
+// { GI_BOMB_BAG_40, ITEM_BOMB_BAG_40 }
+// { GI_BRACELET, ITEM_BRACELET }
+// { GI_GAUNTLETS_SILVER, ITEM_GAUNTLETS_SILVER }
+// { GI_GAUNTLETS_GOLD, ITEM_GAUNTLETS_GOLD }
+// { GI_SCALE_SILVER, ITEM_SCALE_SILVER }
+// { GI_SCALE_GOLD, ITEM_SCALE_GOLDEN }
+// { GI_SWORD_KNIFE, ITEM_SWORD_KNIFE }
+// { GI_WALLET_ADULT, ITEM_WALLET_ADULT }
+// { GI_WALLET_GIANT, ITEM_WALLET_GIANT }
+// { GI_STONE_OF_AGONY, ITEM_STONE_OF_AGONY }
+// { GI_GERUDO_CARD, ITEM_GERUDO_CARD }
+// { GI_HEART_PIECE, ITEM_HEART_CONTAINER }
+// { GI_HEART_CONTAINER, ITEM_HEART_PIECE }
+// { GI_HEART_PIECE_WIN, ITEM_HEART_PIECE_2 }
+// { GI_ , ITEM_STICK_UPGRADE_20 }
+// { GI_ , ITEM_STICK_UPGRADE_30 }
+// { GI_ , ITEM_NUT_UPGRADE_30 }
+// { GI_ , ITEM_NUT_UPGRADE_40 }
+// magic/double defense
+// { GI_SINGLE_MAGIC, ITEM_SINGLE_MAGIC }
+// { GI_DOUBLE_MAGIC, ITEM_DOUBLE_MAGIC }
+// { GI_DOUBLE_DEFENSE, ITEM_DOUBLE_DEFENSE }
+// no GIs for masks? or maybe just go RGs
+// { GI_ , ITEM_MASK_KEATON }
+// { GI_ , ITEM_MASK_SKULL }
+// { GI_ , ITEM_MASK_SPOOKY }
+// { GI_ , ITEM_MASK_BUNNY }
+// { GI_ , ITEM_MASK_GORON }
+// { GI_ , ITEM_MASK_ZORA }
+// { GI_ , ITEM_MASK_GERUDO }
+// { GI_ , ITEM_MASK_TRUTH }
+// { GI_ , ITEM_SOLD_OUT }
+// { GI_ , ITEM_POCKET_CUCCO }
+// RANDOTODO implement with tokensanity
+// { GI_SKULL_TOKEN, ITEM_SKULL_TOKEN }
+// RANDOTODO implement with keysanity
+// { GI_KEY_BOSS, ITEM_KEY_BOSS }
+// { GI_COMPASS, ITEM_COMPASS }
+// { GI_MAP, ITEM_DUNGEON_MAP }
+// { GI_KEY_SMALL, ITEM_KEY_SMALL }
+// don't worry about these, if we got the container we'll have them
+// { GI_ , ITEM_BOMB }
+// { GI_ , ITEM_BOMBCHU }
+// { GI_ , ITEM_MAGIC_SMALL }
+// { GI_ , ITEM_MAGIC_LARGE }
+// { GI_ , ITEM_BOMBS_5 }
+// { GI_ , ITEM_BOMBS_10 }
+// { GI_ , ITEM_BOMBS_20 }
+// { GI_ , ITEM_BOMBS_30 }
+// { GI_ , ITEM_ARROWS_SMALL }
+// { GI_ , ITEM_ARROWS_MEDIUM }
+// { GI_ , ITEM_ARROWS_LARGE }
+// { GI_ , ITEM_SEEDS_30 }
+// ???
+// { GI_ , ITEM_BOW_ARROW_FIRE }
+// { GI_ , ITEM_BOW_ARROW_ICE }
+// { GI_ , ITEM_BOW_ARROW_LIGHT }
+// { GI_ , ITEM_SEEDS }
+// { GI_ , ITEM_FISHING_POLE }
+// { GI_, ITEM_CHICKEN }
+// { GI_ , ITEM_INVALID_4 }
+// { GI_ , ITEM_INVALID_5 }
+// { GI_ , ITEM_INVALID_6 }
+// { GI_ , ITEM_INVALID_7 }
+// { GI_ , ITEM_MILK }
+// { GI_ , ITEM_HEART }
+// { GI_ , ITEM_INVALID_8 }
+// { GI_ , ITEM_NONE_FE }
+// { GI_ , ITEM_NONE }
+// { GI_ , ITEM_LAST_USED }
+};
+
 std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_BOMBS_5, GID_BOMB },
                                                { GI_NUTS_5, GID_NUTS },
@@ -1156,8 +1331,18 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "  Hint Clarity", RSK_HINT_CLARITY},
-    { "  Hint Distribution", RSK_HINT_DISTRIBUTION}
+    { "  Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA }
 };
+
+s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
+    try {
+        return getItemIdToItemId[getItemId];
+    } catch(const std::exception& e) {
+        // RANDOTODO don't use pokemon exceptions
+        return -1;
+    }
+}
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
@@ -1386,6 +1571,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Own Dungeon") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
+                        break;
+                    case RSK_SKIP_CHILD_ZELDA:
+                        gSaveContext.randoSettings[index].value = it.value();
                         break;
                 }
                 index++;        

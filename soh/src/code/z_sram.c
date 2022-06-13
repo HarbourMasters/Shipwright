@@ -24,9 +24,7 @@ void Sram_InitDebugSave(void) {
     Save_InitFile(true);
 }
 
-void GiveLinksPocketMedallion() {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
-
+void GiveLinkDungeonReward(GetItemID getItemId) {
     s16 item;
 
     u8 medallion = 0;
@@ -72,6 +70,12 @@ void GiveLinksPocketMedallion() {
     } else {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_KOKIRI_EMERALD + QUEST_KOKIRI_EMERALD];
     }
+}
+
+void GiveLinksPocketMedallion() {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+
+    GiveLinkDungeonReward(getItemId);
 }
 
 /**
@@ -328,6 +332,39 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             for(int scene = 0; scene <= 9; scene++) {
                 gSaveContext.inventory.dungeonItems[scene] |= startingDungeonItemsBitMask;
             }
+        }
+
+        if(GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA)) {
+            INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+            s32 giid = GetRandomizedItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
+            
+            if(giid >= GI_ZELDAS_LULLABY && giid <= GI_PRELUDE_OF_LIGHT) {
+                char blarg1 = 's';
+            } else if (giid == GI_RUPEE_GREEN ||
+                       giid == GI_RUPEE_BLUE ||
+                       giid == GI_RUPEE_RED ||
+                       giid == GI_RUPEE_PURPLE ||
+                       giid == GI_RUPEE_GOLD) {
+                char blarg2 = 'r';
+            } else if (giid == GI_BOMBCHUS_10 ||
+                       giid == GI_BOMBCHUS_5 ||
+                       giid == GI_BOMBCHUS_20) {
+                char blarg3 = 'c';
+            } else if (giid == GI_STICKS_1 ||
+                       giid == GI_STICKS_5 ||
+                       giid == GI_STICKS_10) {
+                char blarg4 = 's';
+            } else if (giid == GI_NUTS_5 ||
+                       giid == GI_NUTS_10) {
+
+            } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {
+                GiveLinkDungeonReward(giid);
+            }
+
+
+            s32 iid = GetItemIDFromGetItemID(giid);
+
+            int blarg = 3;
         }
 
         // For Ganon's boss key "Start With" is 0
