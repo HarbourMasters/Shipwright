@@ -718,8 +718,7 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
     if (ret != NULL) {
         *didAllocate = false;
         status = 2;
-    } else
-    {
+    } else {
         char* seqData = 0;
         SoundFont* fnt;
 

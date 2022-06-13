@@ -10,7 +10,11 @@ const s16 D_8014A6C0[] = {
     0x0030, // gTatumsPerBeat
 };
 
+#ifdef _SOH64
 const AudioContextInitSizes D_8014A6C4 = { 0x57F00, 0x2E0E0, 0xFCE0 };
+#else
+const AudioContextInitSizes D_8014A6C4 = { 0x37F00, 0xE0E0,  0xBCE0 };
+#endif
 
 ReverbSettings D_80133420[][3] = {
     {

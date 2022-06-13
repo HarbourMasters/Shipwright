@@ -579,7 +579,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset)
 
     if (strem2[0] == 'R' && strem2[1] == 'I' && strem2[2] == 'F' && strem2[3] == 'F')
     {
-        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+        SoundFontSample* sampleC = new SoundFontSample;
 
         *strem++; // RIFF
         *strem++; // size
