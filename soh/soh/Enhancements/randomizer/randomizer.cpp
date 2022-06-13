@@ -2527,6 +2527,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 62:
             switch (actorParams) {
+                case 2:
+                    return RC_HF_DEKU_SCRUB_GROTTO;
+                case 10:
+                    return RC_LW_DEKU_SCRUB_GROTTO_FRONT;
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
                 case -22988:
@@ -2573,6 +2577,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_COW_GROTTO_GOSSIP_STONE;
                 case 14355:
                     return RC_HC_STORMS_GROTTO_GOSSIP_STONE;
+                default:
+                    return RC_UNKNOWN_CHECK;
             }
             break;
         case 63:
@@ -2717,6 +2723,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 91:
             switch (actorParams) {
+                case 9:
+                    return RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                 case 14365:
                     return RC_LW_GOSSIP_STONE;
             }
