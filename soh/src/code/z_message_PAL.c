@@ -273,15 +273,11 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     Font* font;
     const char* seg;
     u16 bufferId = textId;
-    // Use the better owl/skulltula messages if respective CVars are enabled
+    // Use the better owl message if better owl is enabled
     if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
         bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
     {
         bufferId = 0x71B3;
-    }
-    else if (CVar_GetS32("gSkulltulaFreeze", 0) != 0 && (bufferId == 0xB4 || bufferId == 0xB5))
-    {
-        bufferId = 0x71B4;
     }
 
     if (gSaveContext.language == LANGUAGE_GER)
@@ -1629,6 +1625,22 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, "../z_message_PAL.c", 1954);
+    } else if (textId == 0x00b4 || textId == 0x00b5 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+        int32_t language = CVar_GetS32("gLanguages", 0);
+        if (language == 2) {
+            // French
+            strcpy(font->msgBuf, "\x08\x13\x71Vous venez de d\x96truire une\x01\x05\x41Skulltula d'or\x05\x40! "
+                                 "Vous avez\x01\x05\x41\x19\x05\x40 jetons au total!\x0E\x3C\x2");
+        } else if (language == 1) {
+            // German
+            strcpy(font->msgBuf, "\x08\x13\x71\x44u hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
+                                 "insgesamt\x01\x05\x41\x19\x05\x40 Skulltula-Symbol!\x0E\x3C\x2");
+        } else {
+            // English
+            strcpy(font->msgBuf, "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                                 "\x05\x41\x19\x05\x40 tokens\x01in total!\x0E\x3C\x02");
+        }
+        msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;

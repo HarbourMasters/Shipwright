@@ -19,8 +19,8 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     if (file == nullptr)
         return nullptr;
     
-    // Allocate room for additional messages
-    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 2));
+    // Allocate room for an additional message
+    MessageTableEntry* table = (MessageTableEntry*)malloc(sizeof(MessageTableEntry) * (file->messages.size() + 1));
 
     for (int i = 0; i < file->messages.size(); i++) {
         // Look for Owl Text
@@ -61,36 +61,6 @@ MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
             table[file->messages.size()].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
             table[file->messages.size()].segment = kaeporaPatch;
             table[file->messages.size()].msgSize = file->messages[i].msg.size();
-        }
-
-        // As above but for Gold Skulltula token prompt
-        if(file->messages[i].id == 0xB5) {
-            char* goldSkullPatch = (char*)malloc(sizeof(char) * (file->messages[i].msg.size() + 3));
-            file->messages[i].msg.copy(goldSkullPatch, file->messages[i].msg.size(), 0);
-
-            // Print entire message instantly (0x08)
-            memmove(goldSkullPatch+1, goldSkullPatch, file->messages[i].msg.size());
-            goldSkullPatch[00] = 0x08;
-
-            // Auto-dismiss (0x0E) message after 60 frames
-            if (filePath == "text/nes_message_data_static/nes_message_data_static") {
-                goldSkullPatch[79] = 0x0E;
-                goldSkullPatch[80] = 60;
-                goldSkullPatch[81] = 0x02;
-            } else if (filePath == "text/ger_message_data_static/ger_message_data_static") {
-                goldSkullPatch[96] = 0x0E;
-                goldSkullPatch[97] = 60;
-                goldSkullPatch[98] = 0x02;
-            } else {
-                goldSkullPatch[82] = 0x0E;
-                goldSkullPatch[83] = 60;
-                goldSkullPatch[84] = 0x02;
-            }
-
-            table[file->messages.size()+1].textId = 0x71B4;
-            table[file->messages.size()+1].typePos = (file->messages[i].textboxType << 4) | file->messages[i].textboxYPos;
-            table[file->messages.size()+1].segment = goldSkullPatch;
-            table[file->messages.size()+1].msgSize = file->messages[i].msg.size() + 3;
         }
 
         table[i].textId = file->messages[i].id;
