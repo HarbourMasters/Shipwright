@@ -1339,13 +1339,13 @@
 				<Sample Name="Koto" SampleRate="28508">
 					<Offset Version="MQDebug" At="0x3926D0"/>
 				</Sample>
-				<Sample Name="Some Manner of Drum?" SampleRate="32000">
+				<Sample Name="Some Manner of Drum" SampleRate="32000">
 					<Offset Version="MQDebug" At="0x396F80"/>
 				</Sample>
-				<Sample Name="Another Type of Drum?" SampleRate="32000">
+				<Sample Name="Another Type of Drum" SampleRate="32000">
 					<Offset Version="MQDebug" At="0x397FA0"/>
 				</Sample>
-				<Sample Name="Quick Drum?" SampleRate="32000">
+				<Sample Name="Quick Drum" SampleRate="32000">
 					<Offset Version="MQDebug" At="0x399790"/>
 				</Sample>
 				<Sample Name="Gong" SampleRate="32000">
@@ -1435,13 +1435,13 @@
 				<Sample Name="Low Rumbling">
 					<Offset Version="MQDebug" At="0"/>
 				</Sample>
-				<Sample Name="Drum Sidestick?">
+				<Sample Name="Drum Sidestick">
 					<Offset Version="MQDebug" At="0xA590"/>
 				</Sample>
-				<Sample Name="Low Drum?">
+				<Sample Name="Low Drum">
 					<Offset Version="MQDebug" At="0x8BC0"/>
 				</Sample>
-				<Sample Name="Sweep Pad?">
+				<Sample Name="Sweep Pad">
 					<Offset Version="MQDebug" At="0xB3B0"/>
 				</Sample>
 				<Sample Name="Organic Gurgling">
@@ -1470,7 +1470,7 @@
 		<Sample Name="Goron Drum">
 			<Offset Version="MQDebug" At="0"/>
 		</Sample>
-		<Sample Name="Bass Slap?">
+		<Sample Name="Bass Slap">
 			<Offset Version="MQDebug" At="0x2540"/>
 		</Sample>
 		<Sample Name="Goron Ooh">
@@ -1503,7 +1503,7 @@
 		<Sample Name="Gong">
 			<Offset Version="MQDebug" At="0x12EB0"/>
 		</Sample>
-		<Sample Name="Bass Slap?">
+		<Sample Name="Bass Slap">
 			<Offset Version="MQDebug" At="0x1D3E0"/>
 		</Sample>
 		<Sample Name="Windchimes">
