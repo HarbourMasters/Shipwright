@@ -30,7 +30,7 @@
 #include "ichain.h"
 #include "regs.h"
 
-#if defined(_WIN64) || defined(__x86_64__)
+#if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
 #define _SOH64
 #define AUDIO_HEAP_SIZE 0xF0000
 #else
