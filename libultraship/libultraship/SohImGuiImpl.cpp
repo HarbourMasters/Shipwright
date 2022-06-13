@@ -64,8 +64,6 @@ namespace SohImGui {
     bool p_open = false;
     bool needs_save = false;
     std::vector<const char*> CustomTexts;
-    int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
-    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to GameCube.
     ImVec4 hearts_colors;
     ImVec4 hearts_dd_colors;
     ImVec4 a_btn_colors;

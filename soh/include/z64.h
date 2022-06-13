@@ -32,7 +32,7 @@
 
 #if defined(_WIN64) || defined(__x86_64__)
 #define _SOH64
-#define AUDIO_HEAP_SIZE 0x70000
+#define AUDIO_HEAP_SIZE 0xF0000
 #else
 #define AUDIO_HEAP_SIZE 0x38000
 #endif
