@@ -94,6 +94,7 @@
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
     <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
