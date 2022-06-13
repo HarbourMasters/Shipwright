@@ -850,6 +850,7 @@ namespace SohImGui {
                 {
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
@@ -864,12 +865,14 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
+                    Tooltip("Disables the voice audio when Navi calls you");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
                     Tooltip("Kick open every chest");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
-                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
-                    Tooltip("Disables the voice audio when Navi calls you");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     ImGui::EndMenu();
@@ -879,13 +882,13 @@ namespace SohImGui {
                 {
                     if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                         ImGui::Text("Rotation");
-                        EnhancementRadioButton("Disabled", "gPauseLiveRotation", 0);
-                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveRotation", 1);
+                        EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
+                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveLinkRotation", 1);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
-                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveRotation", 2);
+                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
 
-                        if (CVar_GetS32("gPauseLiveRotation", 0) != 0) {
+                        if (CVar_GetS32("gPauseLiveLinkRotation", 0) != 0) {
                             EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
                         }
                         ImGui::Separator();
@@ -910,7 +913,7 @@ namespace SohImGui {
                         EnhancementRadioButton("Random", "gPauseLiveLink", 15);
                         Tooltip("Randomize the animation played each time you open the menu");
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
-                        Tooltip("andomize the animation played on hte menu after a certain time");
+                        Tooltip("Randomize the animation played on the menu after a certain time");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
                         }
@@ -919,6 +922,8 @@ namespace SohImGui {
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
@@ -1055,6 +1060,8 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
+                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
 
