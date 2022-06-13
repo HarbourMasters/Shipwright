@@ -77,6 +77,7 @@ namespace SohImGui {
     ImVec4 rupee_colors;
     ImVec4 smolekey_colors;
     ImVec4 fileselect_colors;
+    ImVec4 fileselect_text_colors;
     ImVec4 kokiri_col;
     ImVec4 goron_col;
     ImVec4 zora_col;
@@ -96,7 +97,7 @@ namespace SohImGui {
             "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
             "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
             "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim",
-            "gCCFileChoosePrim"
+            "gCCFileChoosePrim", "gCCFileChooseTextPrim"
     };
 
     const char* filters[3] = {
@@ -1273,6 +1274,8 @@ namespace SohImGui {
                         EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255));
                         Tooltip("Affect the File Select.");
                         ImGui::Separator();
+                        EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(0, 100, 255, 255));
+                        Tooltip("Affect the File Select.");
                         ImGui::EndTabItem();
                     }
                     ImGui::EndTabBar();
