@@ -683,6 +683,9 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         sampleC->loop->end = sample->loop.end;
         sampleC->loop->count = sample->loop.count;
 
+        for (int i = 0; i < 16; i++)
+            sampleC->loop->state[i] = 0;
+
         for (int i = 0; i < sample->loop.states.size(); i++)
             sampleC->loop->state[i] = sample->loop.states[i];
 
