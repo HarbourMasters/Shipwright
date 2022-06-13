@@ -5020,22 +5020,44 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                     }
 
                     if (sLinkAge == 1) {
-                        if (((D_80B7E078 >= 50.0f) && !(HIGH_SCORE(HS_FISHING) & 0x400)) ||
-                            (gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x400))) {
-                            HIGH_SCORE(HS_FISHING) |= 0x400;
-                            getItemId = gSaveContext.n64ddFlag
-                                            ? GetRandomizedItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE)
-                                            : GI_HEART_PIECE;
-                            sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                        if (!(HIGH_SCORE(HS_FISHING) & 0x400)) {
+                            if (gSaveContext.n64ddFlag) {
+                                int32_t weight = GetRandoSettingValue(RSK_CHILD_FISH_WEIGHT);
+                                f32 score = Fishing_GetMinimumRequiredScore(weight);
+                                if (D_80B7E078 >= score) {
+                                    HIGH_SCORE(HS_FISHING) |= 0x400;
+                                    getItemId = GetRandomizedItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE);
+                                    sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                                }
+                            } else {
+                                int32_t weight = CVar_GetS32("gChildMinimumWeightFish", 10);
+                                f32 score = Fishing_GetMinimumRequiredScore(weight);
+                                if (D_80B7E078 >= score) {
+                                    HIGH_SCORE(HS_FISHING) |= 0x400;
+                                    getItemId = GI_HEART_PIECE;
+                                    sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                                }
+                            }
                         }
                     } else {
-                        if (((D_80B7E078 >= 60.0f) && !(HIGH_SCORE(HS_FISHING) & 0x800)) ||
-                            (gSaveContext.n64ddFlag && !(HIGH_SCORE(HS_FISHING) & 0x800))) {
-                            HIGH_SCORE(HS_FISHING) |= 0x800;
-                            getItemId = gSaveContext.n64ddFlag
-                                            ? GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD)
-                                            : GI_SCALE_GOLD;
-                            sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                        if (!(HIGH_SCORE(HS_FISHING) & 0x800)) {
+                            if (gSaveContext.n64ddFlag) {
+                                int32_t weight = GetRandoSettingValue(RSK_ADULT_FISH_WEIGHT);
+                                f32 score = Fishing_GetMinimumRequiredScore(weight);
+                                if (D_80B7E078 >= score) {
+                                    HIGH_SCORE(HS_FISHING) |= 0x800;
+                                    getItemId = GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD);
+                                    sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                                }
+                            } else {
+                                int32_t weight = CVar_GetS32("gAdultMinimumWeightFish", 13);
+                                f32 score = Fishing_GetMinimumRequiredScore(weight);
+                                if (D_80B7E078 >= score) {
+                                    HIGH_SCORE(HS_FISHING) |= 0x800;
+                                    getItemId = GI_SCALE_GOLD;
+                                    sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
+                                }
+                            }
                         }
                     }
                 } else {
@@ -5118,6 +5140,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
             break;
     }
 }
+
+
 
 static s16 D_80B7AFC4[] = { 0, 1, 2, 2, 1 };
 
@@ -5738,6 +5762,10 @@ void Fishing_UpdateOwner(Actor* thisx, GlobalContext* globalCtx2) {
     }
 
     osSyncPrintf("HI_SCORE = %x\n", HIGH_SCORE(HS_FISHING));
+}
+
+f32 Fishing_GetMinimumRequiredScore(uint16_t weight) {
+    return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 s32 Fishing_OwnerOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,

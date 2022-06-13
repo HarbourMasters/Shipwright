@@ -1156,7 +1156,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "  Hint Clarity", RSK_HINT_CLARITY},
-    { "  Hint Distribution", RSK_HINT_DISTRIBUTION}
+    { "  Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Child Min Fish Weight", RSK_CHILD_FISH_WEIGHT },
+    { "Adult Min Fish Weight", RSK_ADULT_FISH_WEIGHT }
 };
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
@@ -1306,6 +1308,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
+                    case RSK_CHILD_FISH_WEIGHT:
+                    case RSK_ADULT_FISH_WEIGHT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -2694,6 +2698,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
+    // There is no zero indexing, so we pass the default as the value
+    cvarSettings[RSK_CHILD_FISH_WEIGHT] = CVar_GetS32("gRandomizeChildFishWeight", 8);
+    cvarSettings[RSK_ADULT_FISH_WEIGHT] = CVar_GetS32("gRandomizeAdultFishWeight", 10);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3859,7 +3866,7 @@ void DrawRandoEditor(bool& open) {
                     // Gossip Stone Hints
                     ImGui::Text("Gossip Stone Hints");
                     InsertHelpHoverText(
-                        "Gossip Stones can be made to give hints about\n<here items can be found.\nDifferent settings "
+                        "Gossip Stones can be made to give hints about\nwhere items can be found.\nDifferent settings "
                         "can "
                         "be chosen to decide which\nitem is needed to speak to Gossip Stones. Choosing\nto sticl with "
                         "the "
@@ -3910,6 +3917,15 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Unindent();
                     }
                     ImGui::Separator();
+
+                    SohImGui::EnhancementSliderInt("Child Min Fish Weight: %d", "##RandoChildFishWeight",
+                                                   "gRandomizeChildFishWeight", 6, 10, "", 8);
+                    InsertHelpHoverText("Set the minimum weight for the unique prize from\nthe fishing minigame as a child");
+                    SohImGui::EnhancementSliderInt("Adult Min Fish Weight: %d", "##RandoAdultFishWeight",
+                                                   "gRandomizeAdultFishWeight", 8, 13, "", 10);
+                    InsertHelpHoverText(
+                        "Set the minimum weight for the unique prize from\nthe fishing minigame as an adult");
+
 
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier

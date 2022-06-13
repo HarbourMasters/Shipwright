@@ -572,6 +572,16 @@ string_view bigPoeTargetCountDesc     = "The Poe buyer will give a reward for tu
 string_view numRequiredCuccosDesc     = "The cucco lady will give a reward for returning\n"//
                                         "this many of her cuccos to the pen.";             //
 /*------------------------------                                                           //
+|     MIN CHILD FISH WEIGHT    |                                                           //
+------------------------------*/                                                           //
+string_view minChildFishWeightDesc    = "Changes the minimum weight required as a child\n" //
+                                        "for the unique reward in the fishing minigame.";  //
+/*------------------------------                                                           //
+|     MIN ADULT FISH WEIGHT    |                                                           //
+------------------------------*/                                                           //
+string_view minAdultFishWeightDesc    = "Changes the minimum weight required as an adult\n"//
+                                        "for the unique reward in the fishing minigame.";  //
+/*------------------------------                                                           //
 |        KING ZORA SPEED        |                                                          //
 -------------------------------*/                                                          //
 string_view kingZoraSpeedFast         = "King Zora will move out of the way in 1 shuffle"; //
