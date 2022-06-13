@@ -9,7 +9,7 @@
 
 namespace Ship {
 
-	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, std::string MainPath, std::string PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
+	ResourceMgr::ResourceMgr(std::shared_ptr<GlobalCtx2> Context, const std::string& MainPath, const std::string& PatchesPath) : Context(Context), bIsRunning(false), FileLoadThread(nullptr) {
 		OTR = std::make_shared<Archive>(MainPath, PatchesPath, false);
 
 		gameVersion = OOT_UNKNOWN;
@@ -280,7 +280,7 @@ namespace Ship {
 		}
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> ResourceMgr::CacheDirectoryAsync(std::string SearchMask) {
+	std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> ResourceMgr::CacheDirectoryAsync(const std::string& SearchMask) {
 		auto loadedList = std::make_shared<std::vector<std::shared_ptr<ResourcePromise>>>();
 		auto fileList = OTR->ListFiles(SearchMask);
 
@@ -299,7 +299,7 @@ namespace Ship {
 		return loadedList;
 	}
 
-	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::CacheDirectory(std::string SearchMask) {
+	std::shared_ptr<std::vector<std::shared_ptr<Resource>>> ResourceMgr::CacheDirectory(const std::string& SearchMask) {
 		auto PromiseList = CacheDirectoryAsync(SearchMask);
 		auto LoadedList = std::make_shared<std::vector<std::shared_ptr<Resource>>>();
 

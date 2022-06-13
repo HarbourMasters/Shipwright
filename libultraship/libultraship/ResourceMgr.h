@@ -17,7 +17,7 @@ namespace Ship
 	// It works with the original game's assets because the entire ROM is 64MB and fits into RAM of any semi-modern PC.
 	class ResourceMgr {
 	public:
-		ResourceMgr(std::shared_ptr<GlobalCtx2> Context, std::string MainPath, std::string PatchesPath);
+		ResourceMgr(std::shared_ptr<GlobalCtx2> Context, const std::string& MainPath, const std::string& PatchesPath);
 		~ResourceMgr();
 
 		bool IsRunning();
@@ -38,8 +38,8 @@ namespace Ship
 		std::shared_ptr<Resource> LoadResource(const char* FilePath);
 		std::shared_ptr<Resource> LoadResource(const std::string& FilePath) { return LoadResource(FilePath.c_str()); }
 		std::variant<std::shared_ptr<Resource>, std::shared_ptr<ResourcePromise>> LoadResourceAsync(const char* FilePath);
-		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(std::string SearchMask);
-		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(std::string SearchMask);
+		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(const std::string& SearchMask);
+		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> DirtyDirectory(std::string SearchMask);
 
 	protected:
