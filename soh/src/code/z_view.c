@@ -2,6 +2,9 @@
 #include "vt.h"
 
 #include <string.h>
+#include <math.h>
+
+#include "soh/frame_interpolation.h"
 
 vu32 D_8012ABF0 = true;
 
@@ -277,6 +280,10 @@ void func_800AAA50(View* view, s32 arg1) {
     }
 }
 
+static float sqr(float a) {
+    return a * a;
+}
+
 s32 func_800AAA9C(View* view) {
     f32 aspect;
     s32 width;
@@ -306,6 +313,85 @@ s32 func_800AAA9C(View* view) {
     width = view->viewport.rightX - view->viewport.leftX;
     height = view->viewport.bottomY - view->viewport.topY;
     aspect = (f32)width / (f32)height;
+
+    viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
+    LogUtils_CheckNullPointer("viewing", viewing, "../z_view.c", 667);
+    view->viewingPtr = viewing;
+
+    if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
+        view->eye.x += 1.0f;
+        view->eye.y += 1.0f;
+        view->eye.z += 1.0f;
+    }
+
+    func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
+    MtxF viewingF;
+    guLookAtF(viewingF.mf, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
+             view->up.y, view->up.z);
+
+    // Some heuristics to identify instant camera movements and skip interpolation in that case
+
+    static View old_view;
+
+    float dirx = view->eye.x - view->lookAt.x;
+    float diry = view->eye.y - view->lookAt.y;
+    float dirz = view->eye.z - view->lookAt.z;
+    float dir_dist = sqrtf(sqr(dirx) + sqr(diry) + sqr(dirz));
+    dirx /= dir_dist;
+    diry /= dir_dist;
+    dirz /= dir_dist;
+
+    float odirx = old_view.eye.x - old_view.lookAt.x;
+    float odiry = old_view.eye.y - old_view.lookAt.y;
+    float odirz = old_view.eye.z - old_view.lookAt.z;
+    float odir_dist = sqrtf(sqr(odirx) + sqr(odiry) + sqr(odirz));
+    odirx /= odir_dist;
+    odiry /= odir_dist;
+    odirz /= odir_dist;
+
+    float eye_dist = sqrtf(sqr(view->eye.x - old_view.eye.x) + sqr(view->eye.y - old_view.eye.y) + sqr(view->eye.z - old_view.eye.z));
+    float look_dist = sqrtf(sqr(view->lookAt.x - old_view.lookAt.x) + sqr(view->lookAt.y - old_view.lookAt.y) + sqr(view->lookAt.z - old_view.lookAt.z));
+    float up_dist = sqrtf(sqr(view->up.x - old_view.up.x) + sqr(view->up.y - old_view.up.y) + sqr(view->up.z - old_view.up.z));
+    float d_dist = sqrtf(sqr(dirx - odirx) + sqr(diry - odiry) + sqr(dirz - odirz));
+
+    bool dont_interpolate = false;
+
+    if (up_dist < 0.01 && d_dist < 0.01) {
+        if (eye_dist + look_dist > 300) {
+            dont_interpolate = true;
+        }
+    } else {
+        if (eye_dist >= 400) {
+            dont_interpolate = true;
+        }
+        if (look_dist >= 100) {
+            dont_interpolate = true;
+        }
+        if (up_dist >= 1.50f) {
+            dont_interpolate = true;
+        }
+        if (d_dist >= 1.414f && look_dist >= 15) {
+            dont_interpolate = true;
+        }
+        if (d_dist >= 1.414f && up_dist >= 0.31f && look_dist >= 1 && eye_dist >= 300) {
+            dont_interpolate = true;
+        }
+        if (d_dist >= 0.5f && up_dist >= 0.31f && look_dist >= 3 && eye_dist >= 170) {
+            dont_interpolate = true;
+        }
+        if (look_dist >= 52 && eye_dist >= 52) {
+            dont_interpolate = true;
+        }
+        if (look_dist >= 30 && eye_dist >= 90) {
+            dont_interpolate = true;
+        }
+    }
+
+    if (dont_interpolate) {
+        FrameInterpolation_DontInterpolateCamera();
+    }
+
+    FrameInterpolation_RecordOpenChild(NULL, FrameInterpolation_GetCameraEpoch());
 
     if (HREG(80) == 11) {
         if (HREG(94) != 11) {
@@ -347,21 +433,16 @@ s32 func_800AAA9C(View* view) {
     gSPPerspNormalize(POLY_KAL_DISP++, view->normal);
     gSPMatrix(POLY_KAL_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("viewing", viewing, "../z_view.c", 667);
-    view->viewingPtr = viewing;
-
-    if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
-        view->eye.x += 1.0f;
-        view->eye.y += 1.0f;
-        view->eye.z += 1.0f;
-    }
-
-    func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
-    guLookAt(viewing, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z, view->up.x,
-             view->up.y, view->up.z);
+    Matrix_MtxFToMtx(viewingF.mf, viewing);
 
     view->viewing = *viewing;
+
+
+    /*if (eye_dist > 1 || look_dist > 1 || abs(up_dist) > 0.1 || abs(d_dist) > 0.1)
+        printf("%d %f %f %f, %f %f %f, %f %f %f, %f %f %f %f %d\n", (int)view->fovy, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
+           view->up.x, view->up.y, view->up.z, eye_dist, look_dist, up_dist, d_dist, dont_interpolate);*/
+
+    old_view = *view;
 
     if (QREG(88) & 2) {
         s32 i;
@@ -374,10 +455,10 @@ s32 func_800AAA9C(View* view) {
         }
         osSyncPrintf("\n");
     }
-
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_KAL_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
+    FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(gfxCtx, "../z_view.c", 711);
 

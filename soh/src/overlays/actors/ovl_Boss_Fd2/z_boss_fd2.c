@@ -87,6 +87,7 @@ void BossFd2_SpawnDebris(GlobalContext* globalCtx, BossFdEffect* effect, Vec3f* 
             effect->scale = scale / 1000.0f;
             effect->vFdFxRotX = Rand_ZeroFloat(100.0f);
             effect->vFdFxRotY = Rand_ZeroFloat(100.0f);
+            effect->epoch++;
             break;
         }
     }
@@ -112,6 +113,7 @@ void BossFd2_SpawnFireBreath(GlobalContext* globalCtx, BossFdEffect* effect, Vec
             effect->timer2 = 0;
             effect->scale = scale / 400.0f;
             effect->kbAngle = kbAngle;
+            effect->epoch++;
             break;
         }
     }
@@ -130,6 +132,7 @@ void BossFd2_SpawnEmber(GlobalContext* globalCtx, BossFdEffect* effect, Vec3f* p
             effect->scale = scale / 1000.0f;
             effect->alpha = 255;
             effect->timer1 = (s16)Rand_ZeroFloat(10.0f);
+            effect->epoch++;
             break;
         }
     }
@@ -148,6 +151,7 @@ void BossFd2_SpawnSkullPiece(GlobalContext* globalCtx, BossFdEffect* effect, Vec
             effect->scale = scale / 1000.0f;
             effect->vFdFxRotX = Rand_ZeroFloat(100.0f);
             effect->vFdFxRotY = Rand_ZeroFloat(100.0f);
+            effect->epoch++;
             break;
         }
     }
@@ -164,6 +168,7 @@ void BossFd2_SpawnDust(BossFdEffect* effect, Vec3f* position, Vec3f* velocity, V
             effect->accel = *acceleration;
             effect->timer2 = 0;
             effect->scale = scale / 400.0f;
+            effect->epoch++;
             break;
         }
     }

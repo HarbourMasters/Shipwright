@@ -1058,7 +1058,7 @@ void AudioLoad_InitSwapFontSampleHeaders(SoundFontSample* sample, uintptr_t romA
     size_t maxSoundFontSize = 0x3AA0; // soundFont 0 is the largest size at 0x3AA0
     AdpcmLoop* loop;
     AdpcmBook* book;
-    
+
     if (((uintptr_t)sample->loop > maxSoundFontSize) || ((uintptr_t)sample->book > maxSoundFontSize) ) {
         bswapSoundFontSample(sample);
 
@@ -1093,7 +1093,7 @@ void AudioLoad_InitSwapFont(void) {
     SoundFontSound* sfxList;
     SoundFontSound* sfx;
     Instrument** instList;
-    Instrument* inst;  
+    Instrument* inst;
 
     // Only up to (numFonts - 1) as final font has garbage data to prevent corruption and is never used
     for (fontId = 0; fontId < (numFonts - 1); fontId++) {
@@ -1110,12 +1110,12 @@ void AudioLoad_InitSwapFont(void) {
         numInstruments = font->numInstruments;
 
         // drums
-        ptrs[0] = (void*)_byteswap_ulong((uintptr_t)ptrs[0]);
+        ptrs[0] = (void*)BOMSWAP32((uintptr_t)ptrs[0]);
         if ((ptrs[0] != NULL) && (numDrums != 0)) {
             drumList = (Drum**)BASE_ROM_OFFSET(ptrs[0]);
 
             for (i = 0; i < numDrums; i++) {
-                drumList[i] = (Drum*)_byteswap_ulong((uintptr_t)drumList[i]);
+                drumList[i] = (Drum*)BOMSWAP32((uintptr_t)drumList[i]);
 
                 if (drumList[i] != NULL) {
                     drum = (Drum*)BASE_ROM_OFFSET(drumList[i]);
@@ -1128,7 +1128,7 @@ void AudioLoad_InitSwapFont(void) {
         }
 
         // sfxs
-        ptrs[1] = (void*)_byteswap_ulong((u32)ptrs[1]);
+        ptrs[1] = (void*)BOMSWAP32((u32)ptrs[1]);
         if ((ptrs[1] != NULL) && (numSfxs != 0)) {
             sfxList = (SoundFontSound*)BASE_ROM_OFFSET(ptrs[1]);
 
@@ -1151,7 +1151,7 @@ void AudioLoad_InitSwapFont(void) {
 
         instList = (Instrument**)(&ptrs[2]);
         for (i = 0; i < numInstruments; i++) {
-            instList[i] = (Instrument*)_byteswap_ulong((uintptr_t)instList[i]);
+            instList[i] = (Instrument*)BOMSWAP32((uintptr_t)instList[i]);
 
             if (instList[i] != NULL) {
                 inst = BASE_ROM_OFFSET(instList[i]);
@@ -1159,15 +1159,15 @@ void AudioLoad_InitSwapFont(void) {
 
                 if (inst->normalRangeLo != 0) {
                     sample = (SoundFontSample*)BASE_ROM_OFFSET(inst->lowNotesSound.sample);
-                    AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);  
+                    AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);
                 }
 
                 sample = (SoundFontSample*)BASE_ROM_OFFSET(inst->normalNotesSound.sample);
-                AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);  
-                
+                AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);
+
                 if (inst->normalRangeHi != 0x7F) {
                     sample = (SoundFontSample*)BASE_ROM_OFFSET(inst->highNotesSound.sample);
-                    AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);  
+                    AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);
                 }
             }
         }

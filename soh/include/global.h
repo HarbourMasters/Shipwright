@@ -4,8 +4,8 @@
 #include "functions.h"
 #include "variables.h"
 #include "macros.h"
-#include "soh\OTRGlobals.h"
-#include "soh\Enhancements\gameconsole.h"
+#include "soh/OTRGlobals.h"
+#include "soh/Enhancements/gameconsole.h"
 #include "Cvar.h"
 
 

@@ -3,7 +3,7 @@
 
 #include <ultra64.h>
 #include <z64.h>
-#include "cvar.h"
+#include "Cvar.h"
 
 #define MAX_CVARS 2048
 

@@ -354,3 +354,5 @@ MigrationBackup/
 
 !libultraship/Lib/**
 libultraship/DebugObj/*
+build/
+libultraship.a

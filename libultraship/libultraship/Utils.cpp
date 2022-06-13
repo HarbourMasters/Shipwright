@@ -1,9 +1,14 @@
 #include "Utils.h"
+#include <cstring>
+
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
 
 namespace Utils {
 	std::vector<std::string> SplitText(const std::string text, char separator = ' ', bool keep_quotes = false) {
 		std::vector<std::string> args;
-		char* input = _strdup(text.c_str());
+		char* input = strdup(text.c_str());
 		const size_t length = strlen(input);
 
 		bool inQuotes = false;

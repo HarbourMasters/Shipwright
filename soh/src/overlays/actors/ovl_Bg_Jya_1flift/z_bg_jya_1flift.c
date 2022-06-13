@@ -23,7 +23,7 @@ void BgJya1flift_SetupDoNothing(BgJya1flift* this);
 void BgJya1flift_ResetMoveDelay(BgJya1flift* this);
 void BgJya1flift_DelayMove(BgJya1flift* this, GlobalContext* globalCtx);
 
-static u8 sIsSpawned = false;
+static u8 sKankyoIsSpawned = false;
 
 const ActorInit Bg_Jya_1flift_InitVars = {
     ACTOR_BG_JYA_1FLIFT,
@@ -94,9 +94,9 @@ void BgJya1flift_InitCollision(Actor* thisx, GlobalContext* globalCtx) {
 void BgJya1flift_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgJya1flift* this = (BgJya1flift*)thisx;
     // "1 F lift"
-    osSyncPrintf("(１Ｆリフト)(flag %d)(room %d)\n", sIsSpawned, globalCtx->roomCtx.curRoom.num);
+    osSyncPrintf("(１Ｆリフト)(flag %d)(room %d)\n", sKankyoIsSpawned, globalCtx->roomCtx.curRoom.num);
     this->hasInitialized = false;
-    if (sIsSpawned) {
+    if (sKankyoIsSpawned) {
         Actor_Kill(thisx);
         return;
     }
@@ -109,7 +109,7 @@ void BgJya1flift_Init(Actor* thisx, GlobalContext* globalCtx) {
         BgJya1flift_SetupWaitForSwitch(this);
     }
     thisx->room = -1;
-    sIsSpawned = true;
+    sKankyoIsSpawned = true;
     this->hasInitialized = true;
 }
 
@@ -117,7 +117,7 @@ void BgJya1flift_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     BgJya1flift* this = (BgJya1flift*)thisx;
 
     if (this->hasInitialized) {
-        sIsSpawned = false;
+        sKankyoIsSpawned = false;
         Collider_DestroyCylinder(globalCtx, &this->collider);
         DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }

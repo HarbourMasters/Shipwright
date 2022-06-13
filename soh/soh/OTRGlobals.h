@@ -1,17 +1,22 @@
+#ifndef OTR_GLOBALS_H
+#define OTR_GLOBALS_H
+
 #pragma once
 
 #include "GlobalCtx2.h"
 
 #ifdef __cplusplus
+#include "Enhancements/savestates.h"
 class OTRGlobals
 {
 public:
-	static OTRGlobals* Instance;
+    static OTRGlobals* Instance;
 
-	std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<Ship::GlobalCtx2> context;
+    std::shared_ptr<SaveStateMgr> gSaveStateMgr;
 
-	OTRGlobals();
-	~OTRGlobals();
+    OTRGlobals();
+    ~OTRGlobals();
 
 private:
 
@@ -21,31 +26,35 @@ private:
 #ifndef __cplusplus
 void InitOTR();
 void Graph_ProcessFrame(void (*run_one_game_iter)(void));
+void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
 void OTRLogString(const char* src);
 void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char));
-void OTRSetFrameDivisor(int divisor);
+void OTRGetPixelDepthPrepare(float x, float y);
 uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
-char* ResourceMgr_LoadTexByName(char* texPath);
-char* ResourceMgr_LoadTexOrDListByName(char* filePath);
-char* ResourceMgr_LoadPlayerAnimByName(char* animPath);
+char* ResourceMgr_LoadTexByName(const char* texPath);
+char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
+char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
-Gfx* ResourceMgr_LoadGfxByName(char* path);
+Gfx* ResourceMgr_LoadGfxByName(const char* path);
+Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
-Vtx* ResourceMgr_LoadVtxByName(char* path);
-CollisionHeader* ResourceMgr_LoadColByName(char* path);
+
+Vtx* ResourceMgr_LoadVtxByName(const char* path);
+CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 char* Config_getValue(char* category, char* key);
 bool Config_setValue(char* category, char* key, char* value);
+
 uint64_t GetPerfCounter();
-struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(char* path);
+struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
@@ -68,4 +77,7 @@ int AudioPlayer_Buffered(void);
 int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
+int Controller_ShouldRumble(size_t i);
+#endif
+
 #endif

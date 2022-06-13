@@ -166,6 +166,10 @@ void BgSpot06Objects_Init(Actor* thisx, GlobalContext* globalCtx) {
                 }
             } else {
                 this->lakeHyliaWaterLevel = 0.0f;
+                WaterBox* water_boxes = globalCtx->colCtx.colHeader->waterBoxes;
+                water_boxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface = WATER_LEVEL_RIVER_RAISED;
+                water_boxes[LHWB_MAIN_1].ySurface = WATER_LEVEL_RAISED;
+                water_boxes[LHWB_MAIN_2].ySurface = WATER_LEVEL_RAISED;
                 this->actionFunc = BgSpot06Objects_DoNothing;
             }
             break;

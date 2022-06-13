@@ -24,6 +24,7 @@ typedef struct ObjectKankyoEffect {
     /* 0x4A */ u16 flightRadius;
     /* 0x4C */ f32 amplitude;
     /* 0x50 */ u16 timer;
+    u32 epoch;
 } ObjectKankyoEffect; // size = 0x54
 
 typedef struct ObjectKankyo {

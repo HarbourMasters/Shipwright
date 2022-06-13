@@ -823,6 +823,32 @@ void ZFile::GenerateSourceHeaderFiles()
 
 	if (Globals::Instance->fileMode != ZFileMode::ExtractDirectory)
 		File::WriteAllText(headerFilename, formatter.GetOutput());
+	else if (Globals::Instance->sourceOutputPath != "")
+	{
+		std::string xmlPath = xmlFilePath.string();
+		xmlPath = StringHelper::Replace(xmlPath, "\\", "/");
+		auto pathList = StringHelper::Split(xmlPath, "/");
+		std::string outPath = "";
+		
+		for (int i = 0; i < 3; i++)
+			outPath += pathList[i] + "/";
+
+		for (int i = 5; i < pathList.size(); i++)
+		{
+			if (i == pathList.size() - 1)
+			{
+				outPath += Path::GetFileNameWithoutExtension(pathList[i]) + "/";
+				outPath += outName.string() + ".h";
+			}
+			else
+				outPath += pathList[i];
+
+			if (i < pathList.size() - 1)
+				outPath += "/";
+		}
+
+		File::WriteAllText(outPath, formatter.GetOutput());
+	}
 }
 
 std::string ZFile::GetHeaderInclude() const

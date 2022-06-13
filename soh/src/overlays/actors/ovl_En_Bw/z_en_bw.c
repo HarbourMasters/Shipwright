@@ -122,7 +122,7 @@ static DamageTable sDamageTable = {
     /* Unknown 2     */ DMG_ENTRY(0, 0x0),
 };
 
-static s32 sSlugGroup = 0;
+s32 sSlugGroup = 0;
 
 void EnBw_SetupAction(EnBw* this, EnBwActionFunc actionFunc) {
     this->actionFunc = actionFunc;

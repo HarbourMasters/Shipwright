@@ -19,7 +19,7 @@ void BgMoriIdomizu_WaitForMoriTex(BgMoriIdomizu* this, GlobalContext* globalCtx)
 void BgMoriIdomizu_SetupMain(BgMoriIdomizu* this);
 void BgMoriIdomizu_Main(BgMoriIdomizu* this, GlobalContext* globalCtx);
 
-static s16 sIsSpawned = false;
+static s16 sKankyoIsSpawned = false;
 
 const ActorInit Bg_Mori_Idomizu_InitVars = {
     ACTOR_BG_MORI_IDOMIZU,
@@ -50,7 +50,7 @@ void BgMoriIdomizu_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriIdomizu* this = (BgMoriIdomizu*)thisx;
 
-    if (sIsSpawned) {
+    if (sKankyoIsSpawned) {
         Actor_Kill(&this->actor);
         return;
     }
@@ -76,7 +76,7 @@ void BgMoriIdomizu_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
     BgMoriIdomizu_SetupWaitForMoriTex(this);
-    sIsSpawned = true;
+    sKankyoIsSpawned = true;
     this->isLoaded = true;
     this->actor.room = -1;
     // "Forest Temple well water"
@@ -88,7 +88,7 @@ void BgMoriIdomizu_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     BgMoriIdomizu* this = (BgMoriIdomizu*)thisx;
 
     if (this->isLoaded) {
-        sIsSpawned = false;
+        sKankyoIsSpawned = false;
     }
 }
 

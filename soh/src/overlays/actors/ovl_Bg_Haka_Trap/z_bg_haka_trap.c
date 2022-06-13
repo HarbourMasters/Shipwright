@@ -28,7 +28,7 @@ void func_80880AE8(BgHakaTrap* this, GlobalContext* globalCtx);
 void func_80880C0C(BgHakaTrap* this, GlobalContext* globalCtx);
 void func_80880D68(BgHakaTrap* this);
 
-static UNK_TYPE D_80880F30 = 0;
+UNK_TYPE D_80880F30 = 0;
 
 const ActorInit Bg_Haka_Trap_InitVars = {
     ACTOR_BG_HAKA_TRAP,
@@ -107,7 +107,7 @@ static InitChainEntry sInitChain[] = {
     ICHAIN_VEC3F_DIV1000(scale, 100, ICHAIN_STOP),
 };
 
-static UNK_TYPE D_80881014 = 0;
+UNK_TYPE D_80881014 = 0;
 void BgHakaTrap_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgHakaTrap* this = (BgHakaTrap*)thisx;
     s32 pad;

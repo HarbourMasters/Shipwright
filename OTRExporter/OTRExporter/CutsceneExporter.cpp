@@ -29,7 +29,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			for (auto& e : ((CutsceneCommandSetCameraPos*)cs->commands[i])->entries)
 			{
 				writer->Write(CMD_BBH(e->continueFlag, e->cameraRoll, e->nextPointFrame));
-				writer->Write(CMD_F(e->viewAngle));
+				writer->Write(e->viewAngle);
 				writer->Write(CMD_HH(e->posX, e->posY));
 				writer->Write(CMD_HH(e->posZ, e->unused));
 			}
@@ -46,7 +46,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			for (auto& e : ((CutsceneCommandSetCameraPos*)cs->commands[i])->entries)
 			{
 				writer->Write(CMD_BBH(e->continueFlag, e->cameraRoll, e->nextPointFrame));
-				writer->Write(CMD_F(e->viewAngle));
+				writer->Write(e->viewAngle);
 				writer->Write(CMD_HH(e->posX, e->posY));
 				writer->Write(CMD_HH(e->posZ, e->unused));
 			}
@@ -105,7 +105,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			for (auto& e : ((CutsceneCommandSetCameraPos*)cs->commands[i])->entries)
 			{
 				writer->Write(CMD_BBH(e->continueFlag, e->cameraRoll, e->nextPointFrame));
-				writer->Write(CMD_F(e->viewAngle));
+				writer->Write(e->viewAngle);
 				writer->Write(CMD_HH(e->posX, e->posY));
 				writer->Write(CMD_HH(e->posZ, e->unused));
 			}
@@ -122,7 +122,7 @@ void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryW
 			for (auto& e : ((CutsceneCommandSetCameraPos*)cs->commands[i])->entries)
 			{
 				writer->Write(CMD_BBH(e->continueFlag, e->cameraRoll, e->nextPointFrame));
-				writer->Write(CMD_F(e->viewAngle));
+				writer->Write(e->viewAngle);
 				writer->Write(CMD_HH(e->posX, e->posY));
 				writer->Write(CMD_HH(e->posZ, e->unused));
 			}
