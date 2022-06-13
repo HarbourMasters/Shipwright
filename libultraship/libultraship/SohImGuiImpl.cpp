@@ -856,6 +856,7 @@ namespace SohImGui {
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
                     EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
                     Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
@@ -874,14 +875,16 @@ namespace SohImGui {
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
                     Tooltip("Injects Golden Skulltula total count in pickup messages");
-                    EnhancementCheckbox("Fast Chests", "gFastChests");
-                    Tooltip("Kick open every chest");
-                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
-                    Tooltip("Prevent forced Navi conversations");
-                    EnhancementCheckbox("Better Owl", "gBetterOwl");
-                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
                     Tooltip("Disables the voice audio when Navi calls you");
+                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                    Tooltip("Prevent forced Navi conversations");
+                    EnhancementCheckbox("Fast Chests", "gFastChests");
+                    Tooltip("Kick open every chest");
+                    EnhancementCheckbox("Better Owl", "gBetterOwl");
+                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     ImGui::EndMenu();
@@ -931,6 +934,8 @@ namespace SohImGui {
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
@@ -1065,6 +1070,8 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
+                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
 
