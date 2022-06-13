@@ -1058,6 +1058,50 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
+extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
+    std::string scrubText = "";
+    int price = 0;
+    switch (scrubTextId) {
+        case 0x10A2:
+            price = 10;
+            break;
+        case 0x10DC:
+        case 0x10DD:
+            price = 40;
+            break;
+    }
+
+    scrubText += 0x12; // add the sound
+    scrubText += 0x38; // sound id
+    scrubText += 0x82; // sound id
+    scrubText += "All right! You win! In return for";
+    scrubText += 0x01; // newline
+    scrubText += "sparing me, I will sell you a";
+    scrubText += 0x01; // newline
+    scrubText += 0x05; // change the color
+    scrubText += 0x42; // green
+    scrubText += "mysterious item";
+    scrubText += 0x05; // change the color
+    scrubText += 0x40; // white
+    scrubText += "!";
+    scrubText += 0x01; // newline
+    scrubText += 0x05; // change the color
+    scrubText += 0x41; // red
+    scrubText += std::to_string(price);
+    scrubText += price > 1 ? " Rupees" : " Rupee";
+    scrubText += 0x05; // change the color
+    scrubText += 0x40; // white
+    scrubText += " it is!";
+    scrubText += 0x07; // go to a new message
+    scrubText += 0x10; // message id
+    scrubText += 0xA3; // message id
+
+    memset(buffer, 0, maxBufferSize);
+    const int copiedCharLen = std::min<int>(maxBufferSize - 1, scrubText.length());
+    memcpy(buffer, scrubText.c_str(), copiedCharLen);
+    return copiedCharLen;
+}
+
 extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
     std::string altarText;
     if(LINK_IS_ADULT) {

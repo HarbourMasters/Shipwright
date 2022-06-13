@@ -1667,6 +1667,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                                  "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
 
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
+            msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
