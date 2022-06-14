@@ -339,17 +339,11 @@ void ZAudio::ParseRawData()
 
 	// TABLE PARSING
 	
-	// GC PAL
+	// MQ DBG ROM
 	//int gSoundFontTableOffset = 0x138270;
 	//int gSequenceTableOffset = 0x1386A0;
 	//int gSampleBankTableOffset = 0x138D90;
 	//int gSequenceFontTableOffset = 0x1384E0;
-
-	// NMQ DBG ROM
-	//int gSoundFontTableOffset = 0x138290;
-	//int gSequenceTableOffset = 0x1386C0;
-	//int gSampleBankTableOffset = 0x138DB0;
-	//int gSequenceFontTableOffset = 0x138500;
 	
 	// NTSC 1.0
 	//int gSoundFontTableOffset = 0x1026A0;
