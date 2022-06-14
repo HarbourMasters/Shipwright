@@ -68,6 +68,13 @@ void ZAudio::ParseXML(tinyxml2::XMLElement* reader)
 			}
 		}
 
+		if (std::string(child->Value()) == "Soundfont")
+		{
+			auto name = child->Attribute("Name");
+			auto index = child->IntAttribute("Index", 0);
+			soundFontNames[index] = name;
+		}
+
 		child = child->NextSiblingElement();
 	}
 }
@@ -154,14 +161,10 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 			int bp = 0;
 		}
 
-		if (/* sample->loop.count != 0xFFFFFFFF && */ sample->loop.count != 0)
+		if (sample->loop.count != 0)
 		{
-			//for (int i = 0; i < sample->loop.count; i++)
 			for (int i = 0; i < 16; i++)
 			{
-				//if ((loopOffset + 16 + (i * 2)) >= audioBank.size())
-					//break;
-
 				int16_t state = BitConverter::ToInt16BE(audioBank, loopOffset + 16 + (i * 2));
 				sample->loop.states.push_back(state);
 			}

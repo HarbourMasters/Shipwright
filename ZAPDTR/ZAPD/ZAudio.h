@@ -95,6 +95,7 @@ public:
 	std::map<uint32_t, SampleEntry*> samples;
 	std::vector<std::vector<uint32_t>> fontIndices;
 	std::vector<std::string> seqNames;
+	std::map<uint32_t, std::string> soundFontNames;
 
 	// First Key = Bank ID, Sec Key = LoopDataOffset, Third Key = Sample Data Offset
 	std::map<uint32_t, std::map<uint32_t, std::map<uint32_t, std::string>>> sampleOffsets;

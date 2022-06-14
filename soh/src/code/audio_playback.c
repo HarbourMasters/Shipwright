@@ -342,7 +342,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
                 return NULL;
             }
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
         if (instId >= sf->numInstruments)
             return NULL;
@@ -379,7 +379,7 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 
          drum = gAudioContext.soundFonts[fontId].drums[drumId];
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
         drum = sf->drums[drumId];
     }
 
@@ -410,7 +410,7 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
 
          sfx = &gAudioContext.soundFonts[fontId].soundEffects[sfxId];
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
         sfx = &sf->soundEffects[sfxId];
     }
 

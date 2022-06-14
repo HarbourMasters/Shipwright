@@ -567,18 +567,6 @@ extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 	return (Vtx*)res->vertices.data();
 }
 
-extern "C" SequenceData ResourceMgr_LoadSeqByID(int seqID) {
-    if (seqID == 0xFF) {
-        SequenceData sDat;
-        sDat.numFonts = 0;
-
-        return sDat;
-    }
-
-    std::string fmtStr = "audio/sequences/seq_%02X";
-    return ResourceMgr_LoadSeqByName(StringHelper::Sprintf(fmtStr.c_str(), seqID).c_str());
-}
-
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) 
 {
     auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path).get();
@@ -604,8 +592,6 @@ std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) 
 {
-    //auto str = StringHelper::Sprintf("audio/samples/sample_%08X", romOffset);
-
     if (std::string(path) == "")
         return nullptr;
 
@@ -694,10 +680,9 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     }
 }
 
-extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
+extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
     auto soundFont =
-        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(
-            StringHelper::Sprintf("audio/fonts/font_%02X", fontIndex)));
+        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 
     if (soundFont == nullptr)
         return NULL;
@@ -710,6 +695,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex) {
     {
         SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
 
+        soundFontC->fntIndex = soundFont->id;
         soundFontC->numDrums = soundFont->drums.size();
         soundFontC->numInstruments = soundFont->instruments.size();
         soundFontC->numSfx = soundFont->soundEffects.size();
