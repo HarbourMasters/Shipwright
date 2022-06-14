@@ -85,6 +85,11 @@ void GiveLinkDekuNuts(GetItemID giid) {
     }
 }
 
+void GiveLinkBeans() {
+    INV_CONTENT(ITEM_BEAN) = ITEM_BEAN;
+    AMMO(ITEM_BEAN)++;
+}
+
 void GiveLinkKokiriSword() {
     uint32_t bitMask = 1 << 0;
     gSaveContext.inventory.equipment |= bitMask;
@@ -616,6 +621,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (giid == GI_NUTS_5 ||
                        giid == GI_NUTS_10) {
                 GiveLinkDekuNuts(giid);
+            } else if (giid == GI_BEAN) {
+                GiveLinkBeans();
             } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {
                 GiveLinkDungeonReward(giid);
             } else if (giid == GI_SWORD_KOKIRI) {
