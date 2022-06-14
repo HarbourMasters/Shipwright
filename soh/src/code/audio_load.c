@@ -897,8 +897,8 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
     Drum* drum;
     SoundFontSound* sfx;
     s32 i;
-    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-
+    SoundFont* sf = NULL;
+    
     s32 numDrums = 0;
     s32 numInstruments = 0;
     s32 numSfx = 0;
@@ -908,6 +908,7 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
         numInstruments = gAudioContext.soundFonts[fontId].numInstruments;
         numSfx = gAudioContext.soundFonts[fontId].numSfx;
     } else {
+        sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
         numDrums = sf->numDrums;
         numInstruments = sf->numInstruments;
         numSfx = sf->numSfx;
@@ -1436,7 +1437,10 @@ void AudioLoad_Init(void* heap, u32 heapSize) {
     if (gUseLegacySD)
         numFonts = gAudioContext.soundFontTable->numEntries;
 
-    if (gUseLegacySD) {
+    if (gUseLegacySD) 
+    {
+        gAudioContext.soundFonts = AudioHeap_Alloc(&gAudioContext.audioInitPool, numFonts * sizeof(SoundFont));
+
         for (i = 0; i < numFonts; i++) {
             AudioLoad_InitSoundFontMeta(i);
         }
@@ -1474,11 +1478,10 @@ void AudioLoad_Init(void* heap, u32 heapSize) {
         numFonts = fntListSize;
 
         free(fntList);
+        gAudioContext.soundFonts = AudioHeap_Alloc(&gAudioContext.audioInitPool, numFonts * sizeof(SoundFont));
 
-        int bp = 0;
     }
 
-    gAudioContext.soundFonts = AudioHeap_Alloc(&gAudioContext.audioInitPool, numFonts * sizeof(SoundFont));
 
     if (temp_v0_3 = AudioHeap_Alloc(&gAudioContext.audioInitPool, D_8014A6C4.permanentPoolSize), temp_v0_3 == NULL) {
         // cast away const from D_8014A6C4
