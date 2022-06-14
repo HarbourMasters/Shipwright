@@ -2191,12 +2191,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
 
+        // RANDOTODO these won't be used until we implement shopsanity/scrub shuffle
         case RG_RED_POTION_REFILL:
-            return GI_POTION_RED; //todo logic around needing a bottle?
         case RG_GREEN_POTION_REFILL:
-            return GI_POTION_GREEN; //todo logic around needing a bottle?
         case RG_BLUE_POTION_REFILL:
-            return GI_POTION_BLUE; //todo logic around needing a bottle?
+            return GI_NONE;
 
         case RG_TREASURE_GAME_HEART:
             return GI_HEART_PIECE_WIN;
