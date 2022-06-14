@@ -209,7 +209,8 @@ void StringCat(TCHAR * szTarget, size_t cchTargetMax, const TCHAR * szSource);
 #define MPQ_HASH_KEY2_MIX       0x400
 
 DWORD HashString(const char * szFileName, DWORD dwHashType);
-DWORD HashStringSlash(const char * szFileName, DWORD dwHashType);
+DWORD HashStringSlash(const char* szFileName, DWORD dwHashType);
+DWORD HashStringSlash2(const char * szFileName, DWORD dwHashType);
 DWORD HashStringLower(const char * szFileName, DWORD dwHashType);
 
 void  InitializeMpqCryptography();
