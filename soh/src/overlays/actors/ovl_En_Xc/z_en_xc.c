@@ -272,6 +272,8 @@ void func_80B3C9EC(EnXc* this) {
     this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
+    Actor_Kill(&this->actor);
+    return;
 }
 
 void func_80B3CA38(EnXc* this, GlobalContext* globalCtx) {
