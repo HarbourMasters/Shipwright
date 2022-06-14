@@ -192,10 +192,8 @@ ZRom::ZRom(std::string romPath)
 		else
 			files[lines[i]] = outData;
 
-		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i]), files[lines[i]]);
+		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i].c_str()), files[lines[i]]);
 	}
-
-	int bp = 0;
 }
 
 std::vector<uint8_t> ZRom::GetFile(std::string fileName)
