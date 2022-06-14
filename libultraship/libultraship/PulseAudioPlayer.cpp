@@ -74,7 +74,7 @@ namespace Ship
         // Create stream
         pa_sample_spec ss;
         ss.format = PA_SAMPLE_S16LE;
-        ss.rate = 32000;
+        ss.rate = this->GetSampleRate();
         ss.channels = 2;
 
         pa_buffer_attr attr;
