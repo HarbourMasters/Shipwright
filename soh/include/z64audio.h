@@ -21,6 +21,7 @@
 #define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
 
 extern bool gUseLegacySD;
+extern char* fontMap[256];
 
 typedef enum {
     /* 0 */ ADSR_STATE_DISABLED,
@@ -233,6 +234,7 @@ typedef struct {
     /* 0x08 */ Instrument** instruments;
     /* 0x0C */ Drum** drums;
     /* 0x10 */ SoundFontSound* soundEffects;
+    s32 fntIndex;
 } SoundFont; // size = 0x14
 
 typedef struct {

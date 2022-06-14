@@ -1171,7 +1171,7 @@
 				</Sample>
 			</Samples>
 			<Samples Bank="1">
-				<Sample Name="Ocarina">
+				<Sample Name="Ocarina_Bank1">
 					<Offset Version="MQDebug" At="0xFAD40"/>
 				</Sample>
 				<Sample Name="Accordion">
@@ -1514,6 +1514,45 @@
 		</Sample>
 	</Samples>
 		
+
+		   <Soundfont Name="02_Ambient_Sounds" Index="2"/>
+		   <Soundfont Name="37_Unused_Deku_Tree" Index="37" OverrideSampleBank="2"/>
+		   <Soundfont Name="04_Deku_Tree" Index="4"/>
+			<Soundfont Name="11_Dodongos_Cavern" Index="11"/>
+			<Soundfont Name="33_Ending_1" Index="33"/>
+			<Soundfont Name="34_Ending_2" Index="34"/>
+			<Soundfont Name="09_Fairy_Fountain" Index="9"/>
+			<Soundfont Name="10_Fire_Temple" Index="10"/>
+			<Soundfont Name="12_Forest_Temple" Index="12"/>
+			<Soundfont Name="35_Game_Over" Index="35"/>
+			<Soundfont Name="30_Ganons_Castle_Organ" Index="30"/>
+			<Soundfont Name="31_Ganons_Castle" Index="31"/>
+			<Soundfont Name="32_Ganondorfs_Battle" Index="32"/>
+			<Soundfont Name="27_Gerudo_Valley" Index="27"/>
+			<Soundfont Name="14_Goron_City" Index="14"/>
+			<Soundfont Name="17_Horse_Race" Index="17"/>
+			<Soundfont Name="23_Ice_Cavern" Index="23"/>
+			<Soundfont Name="07_Jabu_Jabu" Index="7"/>
+			<Soundfont Name="36_Kaepora_Gaeboras_Theme" Index="36"/>
+			<Soundfont Name="08_Child_Kakariko_Village" Index="8"/>
+			<Soundfont Name="15_Kokiri_Forest" Index="15"/>
+			<Soundfont Name="29_Kotake_and_Koumes_Theme" Index="29"/>
+			<Soundfont Name="28_Lakeside_Laboratory" Index="28"/>
+			<Soundfont Name="19_Legends_of_Hyrule" Index="19"/>
+			<Soundfont Name="13_Lon_Lon_Ranch" Index="13"/>
+			<Soundfont Name="05_Market" Index="5"/>
+			<Soundfont Name="20_Minigames" Index="20"/>
+			<Soundfont Name="03_Orchestra" Index="3"/>
+			<Soundfont Name="24_Shadow_Temple" Index="24"/>
+			<Soundfont Name="22_Shops" Index="22"/>
+			<Soundfont Name="00_Sound_Effects_1" Index="0" Symbol="gSoundEffectsFont1"/>
+			<Soundfont Name="01_Sound_Effects_2" Index="1" Symbol="gSoundEffectsFont2"/>
+			<Soundfont Name="16_Spirit_Temple" Index="16"/>
+			<Soundfont Name="06_Title_Theme" Index="6"/>
+			<Soundfont Name="26_Unused" Index="26"/>
+			<Soundfont Name="18_Warp_Songs" Index="18"/>
+			<Soundfont Name="25_Water_Temple" Index="25"/>
+			<Soundfont Name="21_Zoras_Domain" Index="21"/>
 		
 		
 		</Audio>
