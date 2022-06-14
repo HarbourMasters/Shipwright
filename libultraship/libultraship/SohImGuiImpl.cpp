@@ -875,6 +875,10 @@ namespace SohImGui {
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
+                    Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                    EnhancementCheckbox("No Fixed Heart Drops", "gNoFixedHearts");
+                    Tooltip("Disables non-random heart drops, but not heart placements, like from a Deku Scrub running off");
                     ImGui::EndMenu();
                 }
 
