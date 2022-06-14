@@ -245,6 +245,51 @@ void GiveLinkDoubleDefense() {
     gSaveContext.inventory.defenseHearts = 20;
 }
 
+void GiveLinkSong(GetItemID getItemId) {
+    uint32_t bitMask;
+
+    switch (getItemId) {
+        case GI_ZELDAS_LULLABY:
+            bitMask = 1 << QUEST_SONG_LULLABY;
+            break;
+        case GI_SUNS_SONG:
+            bitMask = 1 << QUEST_SONG_SUN;
+            break;
+        case GI_EPONAS_SONG:
+            bitMask = 1 << QUEST_SONG_EPONA;
+            break;
+        case GI_SONG_OF_STORMS:
+            bitMask = 1 << QUEST_SONG_STORMS;
+            break;
+        case GI_SONG_OF_TIME:
+            bitMask = 1 << QUEST_SONG_TIME;
+            break;
+        case GI_SARIAS_SONG:
+            bitMask = 1 << QUEST_SONG_SARIA;
+            break;
+        case GI_MINUET_OF_FOREST:
+            bitMask = 1 << QUEST_SONG_MINUET;
+            break;
+        case GI_BOLERO_OF_FIRE:
+            bitMask = 1 << QUEST_SONG_BOLERO;
+            break;
+        case GI_SERENADE_OF_WATER:
+            bitMask = 1 << QUEST_SONG_SERENADE;
+            break;
+        case GI_NOCTURNE_OF_SHADOW:
+            bitMask = 1 << QUEST_SONG_NOCTURNE;
+            break;
+        case GI_REQUIEM_OF_SPIRIT:
+            bitMask = 1 << QUEST_SONG_REQUIEM;
+            break;
+        case GI_PRELUDE_OF_LIGHT:
+            bitMask = 1 << QUEST_SONG_PRELUDE;
+            break;
+    }
+
+    gSaveContext.inventory.questItems |= bitMask;
+}
+
 void GiveLinkDungeonReward(GetItemID getItemId) {
     s16 item;
 
@@ -553,7 +598,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             s32 giid = GetRandomizedItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
             
             if(giid >= GI_ZELDAS_LULLABY && giid <= GI_PRELUDE_OF_LIGHT) {
-                char blarg1 = 's';
+                GiveLinkSong(giid);
             } else if (giid == GI_RUPEE_GREEN ||
                        giid == GI_RUPEE_BLUE ||
                        giid == GI_RUPEE_RED ||
