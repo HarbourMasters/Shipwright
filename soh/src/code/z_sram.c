@@ -67,6 +67,7 @@ void GiveLinkBombchus(GetItemID giid) {
 
 void GiveLinkDekuSticks(GetItemID giid) {
     INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+    Inventory_ChangeUpgrade(UPG_STICKS, 1);
     if (giid == GI_STICKS_1) {
         AMMO(ITEM_STICK) += 1; 
     } else if (giid == GI_STICKS_5) {
@@ -78,6 +79,7 @@ void GiveLinkDekuSticks(GetItemID giid) {
 
 void GiveLinkDekuNuts(GetItemID giid) {
     INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+    Inventory_ChangeUpgrade(UPG_NUTS, 1);
     if (giid == GI_NUTS_5) {
         AMMO(ITEM_NUT) += 5; 
     } else if (giid == GI_NUTS_10) {
