@@ -1038,6 +1038,10 @@ extern "C" s16 GetItemModelFromId(s16 itemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
 }
 
+extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
+}
+
 extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }

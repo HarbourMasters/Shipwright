@@ -23,6 +23,8 @@ namespace Settings {
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
   std::array<uint8_t, 5> hashIconIndexes;
 
+  bool skipChildZelda = false;
+
   std::vector<std::string> NumOpts(int min, int max, int step = 1, std::string textBefore = {}, std::string textAfter = {}) {
     std::vector<std::string> options;
     options.reserve((max - min) / step + 1);
@@ -2477,7 +2479,16 @@ namespace Settings {
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
-    ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    if(cvarSettings[RSK_SKIP_CHILD_ZELDA]) {
+      skipChildZelda = true;
+      ShuffleWeirdEgg.SetSelectedIndex(0);
+    } else {
+      ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
+    }
+    
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"

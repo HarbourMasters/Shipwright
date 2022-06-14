@@ -800,6 +800,48 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
+std::unordered_map<s16, s16> getItemIdToItemId = {
+    { GI_BOW, ITEM_BOW },
+    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
+    { GI_DINS_FIRE, ITEM_DINS_FIRE },
+    { GI_SLINGSHOT, ITEM_SLINGSHOT },
+    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
+    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+    { GI_HOOKSHOT, ITEM_HOOKSHOT },
+    { GI_LONGSHOT, ITEM_LONGSHOT },
+    { GI_ARROW_ICE, ITEM_ARROW_ICE },
+    { GI_FARORES_WIND, ITEM_FARORES_WIND },
+    { GI_BOOMERANG, ITEM_BOOMERANG },
+    { GI_LENS, ITEM_LENS },
+    { GI_HAMMER, ITEM_HAMMER },
+    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
+    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
+    { GI_BOTTLE, ITEM_BOTTLE },
+    { GI_POTION_RED, ITEM_POTION_RED },
+    { GI_POTION_GREEN, ITEM_POTION_GREEN },
+    { GI_POTION_BLUE, ITEM_POTION_BLUE },
+    { GI_FAIRY, ITEM_FAIRY },
+    { GI_FISH, ITEM_FISH },
+    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
+    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
+    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
+    { GI_BUGS, ITEM_BUG },
+    { GI_BIG_POE, ITEM_BIG_POE },
+    { GI_POE, ITEM_POE },
+    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
+    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+    { GI_POCKET_EGG, ITEM_POCKET_EGG },
+    { GI_COJIRO, ITEM_COJIRO },
+    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
+    { GI_ODD_POTION, ITEM_ODD_POTION },
+    { GI_SAW, ITEM_SAW },
+    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
+    { GI_FROG, ITEM_FROG },
+    { GI_EYEDROPS, ITEM_EYEDROPS },
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
+};
+
 std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_BOMBS_5, GID_BOMB },
                                                { GI_NUTS_5, GID_NUTS },
@@ -1156,8 +1198,17 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
     { "Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "  Hint Clarity", RSK_HINT_CLARITY},
-    { "  Hint Distribution", RSK_HINT_DISTRIBUTION}
+    { "  Hint Distribution", RSK_HINT_DISTRIBUTION},
+    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA }
 };
+
+s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
+    if (getItemIdToItemId.count(getItemId) == 0) {
+        return -1;
+    }
+
+    return getItemIdToItemId[getItemId];
+}
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
@@ -1386,6 +1437,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         } else if(it.value() == "Own Dungeon") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
+                        break;
+                    case RSK_SKIP_CHILD_ZELDA:
+                        gSaveContext.randoSettings[index].value = it.value();
                         break;
                 }
                 index++;        
@@ -2003,12 +2057,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
 
+        // RANDOTODO these won't be used until we implement shopsanity/scrub shuffle
         case RG_RED_POTION_REFILL:
-            return GI_POTION_RED; //todo logic around needing a bottle?
         case RG_GREEN_POTION_REFILL:
-            return GI_POTION_GREEN; //todo logic around needing a bottle?
         case RG_BLUE_POTION_REFILL:
-            return GI_POTION_BLUE; //todo logic around needing a bottle?
+            return GI_NONE;
 
         case RG_TREASURE_GAME_HEART:
             return GI_HEART_PIECE_WIN;
@@ -2830,7 +2883,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
+    
+    cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
+                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    
     cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
@@ -3602,16 +3662,19 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();
                         }
 
-                        // Shuffle Weird Egg
-                        ImGui::Text("Shuffle Weird Egg");
-                        InsertHelpHoverText(
-                            "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
-                            "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
-                            "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
-                            "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
-                            "unlock the\nKakariko Gate as child which can lock some\nprogression.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
-                        ImGui::Separator();
+                        // hide this option if we're skipping child zelda
+                        if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
+                            // Shuffle Weird Egg
+                            ImGui::Text("Shuffle Weird Egg");
+                            InsertHelpHoverText(
+                                "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
+                                "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
+                                "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
+                                "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
+                                "unlock the\nKakariko Gate as child which can lock some\nprogression.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
+                            ImGui::Separator();                            
+                        }
 
                         // Shuffle Gerudo Token
                         ImGui::Text("Shuffle Gerudo Token");
@@ -3665,7 +3728,9 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
                     SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
-                    
+                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+ 
+
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
 

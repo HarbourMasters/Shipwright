@@ -86,6 +86,7 @@ int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSi
 void LoadHintLocations(const char* spoilerFileName);
 void LoadItemLocations(const char* spoilerFileName);
 s16 GetItemModelFromId(s16 itemId);
+s32 GetItemIDFromGetItemID(s32 getItemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
