@@ -65,25 +65,63 @@ void GiveLinkBombchus(GetItemID giid) {
     }
 }
 
-void GiveLinkDekuSticks(GetItemID giid) {
-    INV_CONTENT(ITEM_STICK) = ITEM_STICK;
-    Inventory_ChangeUpgrade(UPG_STICKS, 1);
-    if (giid == GI_STICKS_1) {
-        AMMO(ITEM_STICK) += 1; 
-    } else if (giid == GI_STICKS_5) {
-        AMMO(ITEM_STICK) += 5; 
-    } else if (giid == GI_STICKS_10) {
-        AMMO(ITEM_STICK) += 10; 
+void GiveLinkDekuSticks(int howManySticks) {
+    int maxStickCount;
+    if (CUR_UPG_VALUE(UPG_STICKS) == 0) {
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+        Inventory_ChangeUpgrade(UPG_STICKS, 1);
+        maxStickCount = 10;
+    } else if (CUR_UPG_VALUE(UPG_STICKS) == 1) {
+        maxStickCount = 10;
+    } else if (CUR_UPG_VALUE(UPG_STICKS) == 2) {
+        maxStickCount = 20;
+    } else if (CUR_UPG_VALUE(UPG_STICKS) == 3) {
+        maxStickCount = 30;
+    }
+
+    if ((AMMO(ITEM_STICK) + howManySticks) > maxStickCount) {
+        AMMO(ITEM_STICK) = maxStickCount;
+    } else {
+        AMMO(ITEM_STICK) += howManySticks;
     }
 }
 
-void GiveLinkDekuNuts(GetItemID giid) {
-    INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-    Inventory_ChangeUpgrade(UPG_NUTS, 1);
+void GiveLinkDekuSticksByGetItemId(GetItemID giid) {
+    if (giid == GI_STICKS_1) {
+        GiveLinkDekuSticks(1); 
+    } else if (giid == GI_STICKS_5) {
+        GiveLinkDekuSticks(5); 
+    } else if (giid == GI_STICKS_10) {
+        GiveLinkDekuSticks(10); 
+    }
+}
+
+void GiveLinkDekuNuts(int howManyNuts) {
+    int maxNutCount;
+    if (CUR_UPG_VALUE(UPG_NUTS) == 0) {
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+        Inventory_ChangeUpgrade(UPG_NUTS, 1);
+        maxNutCount = 20;
+    } else if (CUR_UPG_VALUE(UPG_NUTS) == 1) {
+        maxNutCount = 20;
+    } else if (CUR_UPG_VALUE(UPG_NUTS) == 2) {
+        maxNutCount = 30;
+    } else if (CUR_UPG_VALUE(UPG_NUTS) == 3) {
+        maxNutCount = 40;
+    }
+
+    if ((AMMO(ITEM_NUT) + howManyNuts) > maxNutCount) {
+        AMMO(ITEM_NUT) = maxNutCount;
+    } else {
+        AMMO(ITEM_NUT) += howManyNuts;
+    }
+}
+
+void GiveLinkDekuNutsByGetItemId(GetItemID giid) {
     if (giid == GI_NUTS_5) {
-        AMMO(ITEM_NUT) += 5; 
+        GiveLinkDekuNuts(5); 
     } else if (giid == GI_NUTS_10) {
-        AMMO(ITEM_NUT) += 10; 
+        GiveLinkDekuNuts(10); 
     }
 }
 
@@ -622,6 +660,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             }
         }
 
+        if (GetRandoSettingValue(RSK_STARTING_CONSUMABLES)) {
+            GiveLinkDekuSticks(10);
+            GiveLinkDekuNuts(20);
+        }
+
         if(GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA)) {
             s32 giid = GetRandomizedItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
             
@@ -640,10 +683,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (giid == GI_STICKS_1 ||
                        giid == GI_STICKS_5 ||
                        giid == GI_STICKS_10) {
-                GiveLinkDekuSticks(giid);
+                GiveLinkDekuSticksByGetItemId(giid);
             } else if (giid == GI_NUTS_5 ||
                        giid == GI_NUTS_10) {
-                GiveLinkDekuNuts(giid);
+                GiveLinkDekuNutsByGetItemId(giid);
             } else if (giid == GI_BEAN) {
                 GiveLinkBeans();
             } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {

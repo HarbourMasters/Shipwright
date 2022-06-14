@@ -379,6 +379,7 @@ static void WriteStartingInventory() {
     &Settings::startingSongsOptions,
     &Settings::startingEquipmentOptions,
     &Settings::startingStonesMedallionsOptions,
+    &Settings::startingOthersOptions
   };
 
   for (std::vector<Option *>* menu : startingInventoryOptions) {
@@ -392,6 +393,10 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
         jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
+      }
+
+      if (setting->GetName() == "Start with Consumables") {
+        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
   }
