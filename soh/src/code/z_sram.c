@@ -151,6 +151,39 @@ void GiveLinkWalletUpgrade(GetItemID giid) {
     }
 }
 
+void GiveLinkDekuStickUpgrade(GetItemID giid) {
+    if (giid == GI_STICK_UPGRADE_20) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 2);
+    } else if (giid == GI_STICK_UPGRADE_30) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 3);
+    }
+}
+
+void GiveLinkDekuNutUpgrade(GetItemID giid) {
+    if (giid == GI_NUT_UPGRADE_30) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 2);
+    } else if (giid == GI_NUT_UPGRADE_40) {
+        Inventory_ChangeUpgrade(UPG_STICKS, 3);
+    }
+}
+
+void GiveLinkMagic(GetItemID giid) {
+    if (giid == GI_SINGLE_MAGIC) {
+        gSaveContext.magicLevel = 1;
+        gSaveContext.magicAcquired = true;
+        gSaveContext.doubleMagic = false;
+    } else if (giid == GI_DOUBLE_MAGIC) {
+        gSaveContext.magicLevel = 2;
+        gSaveContext.magicAcquired = true;
+        gSaveContext.doubleMagic = true;
+    }
+}
+
+void GiveLinkDoubleDefense() {
+    gSaveContext.doubleDefense = 1;
+    gSaveContext.inventory.defenseHearts = 20;
+}
+
 void GiveLinkDungeonReward(GetItemID getItemId) {
     s16 item;
 
@@ -525,6 +558,17 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkPieceOfHeart();
             } else if (giid == GI_HEART_CONTAINER) {
                 GiveLinkHeartContainer();
+            } else if (giid == GI_STICK_UPGRADE_20 ||
+                       giid == GI_STICK_UPGRADE_30) {
+                GiveLinkDekuStickUpgrade(giid);
+            } else if (giid == GI_NUT_UPGRADE_30 ||
+                       giid == GI_NUT_UPGRADE_40) {
+                GiveLinkDekuNutUpgrade(giid);
+            } else if (giid == GI_SINGLE_MAGIC ||
+                       giid == GI_DOUBLE_MAGIC) {
+                GiveLinkMagic(giid);
+            } else if (giid == GI_DOUBLE_DEFENSE) {
+                GiveLinkDoubleDefense();
             }
 
             s32 iid = GetItemIDFromGetItemID(giid);
