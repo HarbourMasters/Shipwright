@@ -63,7 +63,6 @@ namespace SohImGui {
     GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
-    std::vector<const char*> CustomTexts;
     ImVec4 hearts_colors;
     ImVec4 hearts_dd_colors;
     ImVec4 a_btn_colors;
