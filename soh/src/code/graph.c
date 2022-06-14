@@ -5,6 +5,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
+#include "soh/Enhancements/debugger/debugger.h"
 
 #define GFXPOOL_HEAD_MAGIC 0x1234
 #define GFXPOOL_TAIL_MAGIC 0x5678
@@ -95,12 +96,14 @@ void Graph_InitTHGA(GraphicsContext* gfxCtx) {
     pool->tailMagic = GFXPOOL_TAIL_MAGIC;
     THGA_Ct(&gfxCtx->polyOpa, pool->polyOpaBuffer, sizeof(pool->polyOpaBuffer));
     THGA_Ct(&gfxCtx->polyXlu, pool->polyXluBuffer, sizeof(pool->polyXluBuffer));
+    THGA_Ct(&gfxCtx->worldOverlay, pool->worldOverlayBuffer, sizeof(pool->worldOverlayBuffer));
     THGA_Ct(&gfxCtx->polyKal, pool->polyKalBuffer, sizeof(pool->polyKalBuffer));
     THGA_Ct(&gfxCtx->overlay, pool->overlayBuffer, sizeof(pool->overlayBuffer));
     THGA_Ct(&gfxCtx->work, pool->workBuffer, sizeof(pool->workBuffer));
 
     gfxCtx->polyOpaBuffer = pool->polyOpaBuffer;
     gfxCtx->polyXluBuffer = pool->polyXluBuffer;
+    gfxCtx->worldOverlayBuffer = pool->worldOverlayBuffer;
     gfxCtx->polyKalBuffer = pool->polyKalBuffer;
     gfxCtx->overlayBuffer = pool->overlayBuffer;
     gfxCtx->workBuffer = pool->workBuffer;
@@ -280,6 +283,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
+    Debug_Draw();
 
     OPEN_DISPS(gfxCtx, "../graph.c", 987);
 
@@ -294,7 +298,8 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
-    gSPBranchList(POLY_XLU_DISP++, gfxCtx->polyKalBuffer);
+    gSPBranchList(POLY_XLU_DISP++, gfxCtx->worldOverlayBuffer);
+    gSPBranchList(WORLD_OVERLAY_DISP++, gfxCtx->polyKalBuffer);
     gSPBranchList(POLY_KAL_DISP++, gfxCtx->overlayBuffer);
     gDPPipeSync(OVERLAY_DISP++);
     gDPFullSync(OVERLAY_DISP++);
@@ -426,6 +431,8 @@ static struct RunFrameContext {
 
 extern AudioMgr gAudioMgr;
 
+extern void ProcessSaveStateRequests(void);
+
 static void RunFrame()
 {
     u32 size;
@@ -468,38 +475,13 @@ static void RunFrame()
         {
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
-
-            OTRSetFrameDivisor(R_UPDATE_RATE);
-            //OTRSetFrameDivisor(0);
-
             
-            //AudioMgr_ThreadEntry(&gAudioMgr);
-            // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
-            // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-            #define SAMPLES_HIGH 560
-            #define SAMPLES_LOW 528
-            // PAL values
-            //#define SAMPLES_HIGH 656
-            //#define SAMPLES_LOW 624
-            #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
-            #define NUM_AUDIO_CHANNELS 2
-            int samples_left = AudioPlayer_Buffered();
-            u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-            // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
+            Graph_StartFrame();
 
-            // 3 is the maximum authentic frame divisor.
-            s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
-            for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
-                AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
+            // TODO: Workaround for rumble being too long. Implement os thread functions.
+            for (int i = 0; i < 3; i++) {
+                PadMgr_ThreadEntry(&gPadMgr);
             }
-            //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-            //    audio_buffer[i] = Rand_Next() & 0xFF;
-            //}
-            // printf("Audio samples before submitting: %d\n", audio_api->buffered());
-            AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
-            
-
-            PadMgr_ThreadEntry(&gPadMgr);
             
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();
@@ -510,6 +492,7 @@ static void RunFrame()
             //uint64_t diff = (ticksB - ticksA) / (freq / 1000);
             //printf("Frame simulated in %ims\n", diff);
             runFrameContext.state = 1;
+            ProcessSaveStateRequests();
             return;
             nextFrame:;
         }

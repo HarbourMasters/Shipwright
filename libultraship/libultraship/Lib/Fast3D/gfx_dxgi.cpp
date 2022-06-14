@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <wrl/client.h>
 #include <dxgi1_3.h>
+#include <dxgi1_4.h>
 #include <versionhelpers.h>
 
 #include <shellscalingapi.h>
@@ -33,15 +34,8 @@
 #define WINCLASS_NAME L"N64GAME"
 #define GFX_API_NAME "DirectX"
 
-#ifdef VERSION_EU
-#define FRAME_INTERVAL_US_NUMERATOR_ 60000
-#define FRAME_INTERVAL_US_DENOMINATOR 3
-#else
-#define FRAME_INTERVAL_US_NUMERATOR_ 50000
-#define FRAME_INTERVAL_US_DENOMINATOR 3
-#endif
-
-#define FRAME_INTERVAL_US_NUMERATOR (FRAME_INTERVAL_US_NUMERATOR_ * dxgi.frame_divisor)
+#define FRAME_INTERVAL_NS_NUMERATOR 1000000000
+#define FRAME_INTERVAL_NS_DENOMINATOR (dxgi.target_fps)
 
 using namespace Microsoft::WRL; // For ComPtr
 
@@ -61,17 +55,23 @@ static struct {
     RECT last_window_rect;
     bool is_full_screen, last_maximized_state;
 
+    bool dxgi1_4;
     ComPtr<IDXGIFactory2> factory;
     ComPtr<IDXGISwapChain1> swap_chain;
     HANDLE waitable_object;
+    ComPtr<IUnknown> swap_chain_device; // D3D11 Device or D3D12 Command Queue
+    std::function<void()> before_destroy_swap_chain_fn;
     uint64_t qpc_init, qpc_freq;
-    uint64_t frame_timestamp; // in units of 1/FRAME_INTERVAL_US_DENOMINATOR microseconds
+    uint64_t frame_timestamp; // in units of 1/FRAME_INTERVAL_NS_DENOMINATOR nanoseconds
     std::map<UINT, DXGI_FRAME_STATISTICS> frame_stats;
     std::set<std::pair<UINT, UINT>> pending_frame_stats;
     bool dropped_frame;
     bool zero_latency;
+    float detected_hz;
     UINT length_in_vsync_frames;
-    uint32_t frame_divisor;
+    uint32_t target_fps;
+    uint32_t maximum_frame_latency;
+    uint32_t applied_maximum_frame_latency;
     HANDLE timer;
     bool use_timer;
     LARGE_INTEGER previous_present_time;
@@ -141,6 +141,22 @@ static void run_as_dpi_aware(Fun f) {
     }
 }
 
+static void apply_maximum_frame_latency(bool first) {
+    ComPtr<IDXGISwapChain2> swap_chain2;
+    if (dxgi.swap_chain->QueryInterface(__uuidof(IDXGISwapChain2), &swap_chain2) == S_OK) {
+        ThrowIfFailed(swap_chain2->SetMaximumFrameLatency(dxgi.maximum_frame_latency));
+        if (first) {
+            dxgi.waitable_object = swap_chain2->GetFrameLatencyWaitableObject();
+            WaitForSingleObject(dxgi.waitable_object, INFINITE);
+        }
+    } else {
+        ComPtr<IDXGIDevice1> device1;
+        ThrowIfFailed(dxgi.swap_chain->GetDevice(__uuidof(IDXGIDevice1), &device1));
+        ThrowIfFailed(device1->SetMaximumFrameLatency(dxgi.maximum_frame_latency));
+    }
+    dxgi.applied_maximum_frame_latency = dxgi.maximum_frame_latency;
+}
+
 static void toggle_borderless_window_full_screen(bool enable, bool call_callback) {
     // Windows 7 + flip mode + waitable object can't go to exclusive fullscreen,
     // so do borderless instead. If DWM is enabled, this means we get one monitor
@@ -197,17 +213,6 @@ static void toggle_borderless_window_full_screen(bool enable, bool call_callback
     }
 }
 
-static void gfx_dxgi_on_resize(void) {
-    if (dxgi.swap_chain.Get() != nullptr) {
-        gfx_get_current_rendering_api()->on_resize();
-
-        DXGI_SWAP_CHAIN_DESC1 desc1;
-        ThrowIfFailed(dxgi.swap_chain->GetDesc1(&desc1));
-        dxgi.current_width = desc1.Width;
-        dxgi.current_height = desc1.Height;
-    }
-}
-
 static void onkeydown(WPARAM w_param, LPARAM l_param) {
     int key = ((l_param >> 16) & 0x1ff);
     if (dxgi.on_key_down != nullptr) {
@@ -227,7 +232,8 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     SohImGui::Update(event_impl);
     switch (message) {
         case WM_SIZE:
-            gfx_dxgi_on_resize();
+            dxgi.current_width = (uint32_t)(l_param & 0xffff);
+            dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
             exit(0);
@@ -279,7 +285,8 @@ void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
     dxgi.qpc_init = qpc_init.QuadPart;
     dxgi.qpc_freq = qpc_freq.QuadPart;
 
-    dxgi.frame_divisor = 1;
+    dxgi.target_fps = 60;
+    dxgi.maximum_frame_latency = 1;
     dxgi.timer = CreateWaitableTimer(nullptr, false, nullptr);
 
     // Prepare window title
@@ -375,8 +382,8 @@ static void gfx_dxgi_handle_events(void) {
     }*/
 }
 
-static uint64_t qpc_to_us(uint64_t qpc) {
-    return qpc / dxgi.qpc_freq * 1000000 + qpc % dxgi.qpc_freq * 1000000 / dxgi.qpc_freq;
+static uint64_t qpc_to_ns(uint64_t qpc) {
+    return qpc / dxgi.qpc_freq * 1000000000 + qpc % dxgi.qpc_freq * 1000000000 / dxgi.qpc_freq;
 }
 
 static uint64_t qpc_to_100ns(uint64_t qpc) {
@@ -414,7 +421,7 @@ static bool gfx_dxgi_start_frame(void) {
 
     dxgi.use_timer = false;
 
-    dxgi.frame_timestamp += FRAME_INTERVAL_US_NUMERATOR;
+    dxgi.frame_timestamp += FRAME_INTERVAL_NS_NUMERATOR;
 
     if (dxgi.frame_stats.size() >= 2) {
         DXGI_FRAME_STATISTICS *first = &dxgi.frame_stats.begin()->second;
@@ -429,13 +436,15 @@ static bool gfx_dxgi_start_frame(void) {
         }
 
         double estimated_vsync_interval = (double)sync_qpc_diff / (double)sync_vsync_diff;
-        uint64_t estimated_vsync_interval_us = qpc_to_us(estimated_vsync_interval);
-        //printf("Estimated vsync_interval: %d\n", (int)estimated_vsync_interval_us);
-        if (estimated_vsync_interval_us < 2 || estimated_vsync_interval_us > 1000000) {
+        uint64_t estimated_vsync_interval_ns = qpc_to_ns(estimated_vsync_interval);
+        //printf("Estimated vsync_interval: %d\n", (int)estimated_vsync_interval_ns);
+        if (estimated_vsync_interval_ns < 2000 || estimated_vsync_interval_ns > 1000000000) {
             // Unreasonable, maybe a monitor change
-            estimated_vsync_interval_us = 16666;
-            estimated_vsync_interval = estimated_vsync_interval_us * dxgi.qpc_freq / 1000000;
+            estimated_vsync_interval_ns = 16666666;
+            estimated_vsync_interval = estimated_vsync_interval_ns * dxgi.qpc_freq / 1000000000;
         }
+
+        dxgi.detected_hz = (float)((double)1000000000 / (double)estimated_vsync_interval_ns);
 
         UINT queued_vsyncs = 0;
         bool is_first = true;
@@ -448,21 +457,21 @@ static bool gfx_dxgi_start_frame(void) {
         }
 
         uint64_t last_frame_present_end_qpc = (last->SyncQPCTime.QuadPart - dxgi.qpc_init) + estimated_vsync_interval * queued_vsyncs;
-        uint64_t last_end_us = qpc_to_us(last_frame_present_end_qpc);
+        uint64_t last_end_ns = qpc_to_ns(last_frame_present_end_qpc);
 
-        double vsyncs_to_wait = (double)(int64_t)(dxgi.frame_timestamp / FRAME_INTERVAL_US_DENOMINATOR - last_end_us) / estimated_vsync_interval_us;
-        //printf("ts: %llu, last_end_us: %llu, Init v: %f\n", dxgi.frame_timestamp / 3, last_end_us, vsyncs_to_wait);
+        double vsyncs_to_wait = (double)(int64_t)(dxgi.frame_timestamp / FRAME_INTERVAL_NS_DENOMINATOR - last_end_ns) / estimated_vsync_interval_ns;
+        //printf("ts: %llu, last_end_ns: %llu, Init v: %f\n", dxgi.frame_timestamp / 3, last_end_ns, vsyncs_to_wait);
 
         if (vsyncs_to_wait <= 0) {
             // Too late
 
-            if ((int64_t)(dxgi.frame_timestamp / FRAME_INTERVAL_US_DENOMINATOR - last_end_us) < -66666) {
+            if ((int64_t)(dxgi.frame_timestamp / FRAME_INTERVAL_NS_DENOMINATOR - last_end_ns) < -66666666) {
                 // The application must have been paused or similar
-                vsyncs_to_wait = round(((double)FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR) / estimated_vsync_interval_us);
+                vsyncs_to_wait = round(((double)FRAME_INTERVAL_NS_NUMERATOR / FRAME_INTERVAL_NS_DENOMINATOR) / estimated_vsync_interval_ns);
                 if (vsyncs_to_wait < 1) {
                     vsyncs_to_wait = 1;
                 }
-                dxgi.frame_timestamp = FRAME_INTERVAL_US_DENOMINATOR * (last_end_us + vsyncs_to_wait * estimated_vsync_interval_us);
+                dxgi.frame_timestamp = FRAME_INTERVAL_NS_DENOMINATOR * (last_end_ns + vsyncs_to_wait * estimated_vsync_interval_ns);
             } else {
                 // Drop frame
                 //printf("Dropping frame\n");
@@ -472,9 +481,9 @@ static bool gfx_dxgi_start_frame(void) {
         }
         double orig_wait = vsyncs_to_wait;
         if (floor(vsyncs_to_wait) != vsyncs_to_wait) {
-            uint64_t left = last_end_us + floor(vsyncs_to_wait) * estimated_vsync_interval_us;
-            uint64_t right = last_end_us + ceil(vsyncs_to_wait) * estimated_vsync_interval_us;
-            uint64_t adjusted_desired_time = dxgi.frame_timestamp / FRAME_INTERVAL_US_DENOMINATOR + (last_end_us + (FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR) > dxgi.frame_timestamp / FRAME_INTERVAL_US_DENOMINATOR ? 2000 : -2000);
+            uint64_t left = last_end_ns + floor(vsyncs_to_wait) * estimated_vsync_interval_ns;
+            uint64_t right = last_end_ns + ceil(vsyncs_to_wait) * estimated_vsync_interval_ns;
+            uint64_t adjusted_desired_time = dxgi.frame_timestamp / FRAME_INTERVAL_NS_DENOMINATOR + (last_end_ns + (FRAME_INTERVAL_NS_NUMERATOR / FRAME_INTERVAL_NS_DENOMINATOR) > dxgi.frame_timestamp / FRAME_INTERVAL_NS_DENOMINATOR ? 2000000 : -2000000);
             int64_t diff_left = adjusted_desired_time - left;
             int64_t diff_right = right - adjusted_desired_time;
             if (diff_left < 0) {
@@ -514,7 +523,7 @@ static void gfx_dxgi_swap_buffers_begin(void) {
     LARGE_INTEGER t;
     if (dxgi.use_timer) {
         QueryPerformanceCounter(&t);
-        int64_t next = qpc_to_100ns(dxgi.previous_present_time.QuadPart) + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
+        int64_t next = qpc_to_100ns(dxgi.previous_present_time.QuadPart) + FRAME_INTERVAL_NS_NUMERATOR / (FRAME_INTERVAL_NS_DENOMINATOR * 100);
         int64_t left = next - qpc_to_100ns(t.QuadPart);
         if (left > 0) {
             LARGE_INTEGER li;
@@ -539,6 +548,32 @@ static void gfx_dxgi_swap_buffers_end(void) {
     QueryPerformanceCounter(&t0);
     QueryPerformanceCounter(&t1);
 
+    if (dxgi.applied_maximum_frame_latency > dxgi.maximum_frame_latency) {
+        // There seems to be a bug that if latency is decreased, there is no effect of that operation, so recreate swap chain
+        if (dxgi.waitable_object != nullptr) {
+            if (!dxgi.dropped_frame) {
+                // Wait the last time on this swap chain
+                WaitForSingleObject(dxgi.waitable_object, INFINITE);
+            }
+            CloseHandle(dxgi.waitable_object);
+            dxgi.waitable_object = nullptr;
+        }
+
+        dxgi.before_destroy_swap_chain_fn();
+
+        dxgi.swap_chain.Reset();
+
+        gfx_dxgi_create_swap_chain(dxgi.swap_chain_device.Get(), move(dxgi.before_destroy_swap_chain_fn));
+
+        dxgi.frame_timestamp = 0;
+        dxgi.frame_stats.clear();
+        dxgi.pending_frame_stats.clear();
+
+        return; // Make sure we don't wait a second time on the waitable object, since that would hang the program
+    } else if (dxgi.applied_maximum_frame_latency != dxgi.maximum_frame_latency) {
+        apply_maximum_frame_latency(false);
+    }
+
     if (!dxgi.dropped_frame) {
         if (dxgi.waitable_object != nullptr) {
             WaitForSingleObject(dxgi.waitable_object, INFINITE);
@@ -562,8 +597,20 @@ static double gfx_dxgi_get_time(void) {
     return (double)(t.QuadPart - dxgi.qpc_init) / dxgi.qpc_freq;
 }
 
-static void gfx_dxgi_set_frame_divisor(int divisor) {
-    dxgi.frame_divisor = divisor;
+static void gfx_dxgi_set_target_fps(int fps) {
+    uint32_t old_fps = dxgi.target_fps;
+    uint64_t t0 = dxgi.frame_timestamp / old_fps;
+    uint32_t t1 = dxgi.frame_timestamp % old_fps;
+    dxgi.target_fps = fps;
+    dxgi.frame_timestamp = t0 * dxgi.target_fps + t1 * dxgi.target_fps / old_fps;
+}
+
+static void gfx_dxgi_set_maximum_frame_latency(int latency) {
+    dxgi.maximum_frame_latency = latency;
+}
+
+static float gfx_dxgi_get_detected_hz() {
+    return dxgi.detected_hz;
 }
 
 void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*create_device_fn)(IDXGIAdapter1 *adapter, bool test_only)) {
@@ -571,6 +618,13 @@ void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*crea
         ThrowIfFailed(dxgi.CreateDXGIFactory2(debug ? DXGI_CREATE_FACTORY_DEBUG : 0, __uuidof(IDXGIFactory2), &dxgi.factory));
     } else {
         ThrowIfFailed(dxgi.CreateDXGIFactory1(__uuidof(IDXGIFactory2), &dxgi.factory));
+    }
+
+    {
+        ComPtr<IDXGIFactory4> factory4;
+        if (dxgi.factory->QueryInterface(__uuidof(IDXGIFactory4), &factory4) == S_OK) {
+            dxgi.dxgi1_4 = true;
+        }
     }
 
     ComPtr<IDXGIAdapter1> adapter;
@@ -593,18 +647,20 @@ void gfx_dxgi_create_factory_and_device(bool debug, int d3d_version, bool (*crea
     SetWindowTextW(dxgi.h_wnd, w_title);
 }
 
-ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
+void gfx_dxgi_create_swap_chain(IUnknown *device, std::function<void()>&& before_destroy_fn) {
     bool win8 = IsWindows8OrGreater(); // DXGI_SCALING_NONE is only supported on Win8 and beyond
     bool dxgi_13 = dxgi.CreateDXGIFactory2 != nullptr; // DXGI 1.3 introduced waitable object
 
     DXGI_SWAP_CHAIN_DESC1 swap_chain_desc = {};
-    swap_chain_desc.BufferCount = 2;
+    swap_chain_desc.BufferCount = 3;
     swap_chain_desc.Width = 0;
     swap_chain_desc.Height = 0;
     swap_chain_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
     swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     swap_chain_desc.Scaling = win8 ? DXGI_SCALING_NONE : DXGI_SCALING_STRETCH;
-    swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // Apparently this was backported to Win 7 Platform Update
+    swap_chain_desc.SwapEffect = dxgi.dxgi1_4 ?
+        DXGI_SWAP_EFFECT_FLIP_DISCARD : // Introduced in DXGI 1.4 and Windows 10
+        DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL; // Apparently flip sequential was also backported to Win 7 Platform Update
     swap_chain_desc.Flags = dxgi_13 ? DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT : 0;
     swap_chain_desc.SampleDesc.Count = 1;
 
@@ -616,26 +672,22 @@ ComPtr<IDXGISwapChain1> gfx_dxgi_create_swap_chain(IUnknown *device) {
     });
     ThrowIfFailed(dxgi.factory->MakeWindowAssociation(dxgi.h_wnd, DXGI_MWA_NO_ALT_ENTER));
 
-    ComPtr<IDXGISwapChain2> swap_chain2;
-    if (dxgi.swap_chain->QueryInterface(__uuidof(IDXGISwapChain2), &swap_chain2) == S_OK) {
-        ThrowIfFailed(swap_chain2->SetMaximumFrameLatency(1));
-        dxgi.waitable_object = swap_chain2->GetFrameLatencyWaitableObject();
-        WaitForSingleObject(dxgi.waitable_object, INFINITE);
-    } else {
-        ComPtr<IDXGIDevice1> device1;
-        ThrowIfFailed(device->QueryInterface(IID_PPV_ARGS(&device1)));
-        ThrowIfFailed(device1->SetMaximumFrameLatency(1));
-    }
+    apply_maximum_frame_latency(true);
 
     ThrowIfFailed(dxgi.swap_chain->GetDesc1(&swap_chain_desc));
     dxgi.current_width = swap_chain_desc.Width;
     dxgi.current_height = swap_chain_desc.Height;
 
-    return dxgi.swap_chain;
+    dxgi.swap_chain_device = device;
+    dxgi.before_destroy_swap_chain_fn = std::move(before_destroy_fn);
 }
 
 HWND gfx_dxgi_get_h_wnd(void) {
     return dxgi.h_wnd;
+}
+
+IDXGISwapChain1* gfx_dxgi_get_swap_chain() {
+    return dxgi.swap_chain.Get();
 }
 
 void ThrowIfFailed(HRESULT res) {
@@ -667,7 +719,9 @@ extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_swap_buffers_begin,
     gfx_dxgi_swap_buffers_end,
     gfx_dxgi_get_time,
-    gfx_dxgi_set_frame_divisor,
+    gfx_dxgi_set_target_fps,
+    gfx_dxgi_set_maximum_frame_latency,
+    gfx_dxgi_get_detected_hz,
 };
 
 #endif

@@ -28,7 +28,7 @@ void BgMoriHineri_SpawnBossKeyChest(BgMoriHineri* this, GlobalContext* globalCtx
 void BgMoriHineri_DoNothing(BgMoriHineri* this, GlobalContext* globalCtx);
 void func_808A3D58(BgMoriHineri* this, GlobalContext* globalCtx);
 
-static s16 sNextCamIdx = SUBCAM_NONE;
+s16 sBgMoriHineriNextCamIdx = SUBCAM_NONE;
 
 const ActorInit Bg_Mori_Hineri_InitVars = {
     ACTOR_BG_MORI_HINERI,
@@ -194,28 +194,28 @@ void func_808A3D58(BgMoriHineri* this, GlobalContext* globalCtx) {
             OnePointCutscene_EndCutscene(globalCtx, mainCamChildIdx);
         }
         OnePointCutscene_Init(globalCtx, 3260, 40, &this->dyna.actor, MAIN_CAM);
-        sNextCamIdx = OnePointCutscene_Init(globalCtx, 3261, 40, &this->dyna.actor, MAIN_CAM);
+        sBgMoriHineriNextCamIdx = OnePointCutscene_Init(globalCtx, 3261, 40, &this->dyna.actor, MAIN_CAM);
     }
 }
 
 void func_808A3E54(BgMoriHineri* this, GlobalContext* globalCtx) {
     s8 objBankIndex;
 
-    if (globalCtx->activeCamera == sNextCamIdx) {
-        if (sNextCamIdx != MAIN_CAM) {
+    if (globalCtx->activeCamera == sBgMoriHineriNextCamIdx) {
+        if (sBgMoriHineriNextCamIdx != MAIN_CAM) {
             objBankIndex = this->dyna.actor.objBankIndex;
             this->dyna.actor.objBankIndex = this->moriHineriObjIdx;
             this->moriHineriObjIdx = objBankIndex;
             this->dyna.actor.params ^= 1;
-            sNextCamIdx = MAIN_CAM;
+            sBgMoriHineriNextCamIdx = MAIN_CAM;
             func_80078884(NA_SE_SY_TRE_BOX_APPEAR);
         } else {
             this->dyna.actor.draw = NULL;
             this->actionFunc = func_808A3D58;
-            sNextCamIdx = SUBCAM_NONE;
+            sBgMoriHineriNextCamIdx = SUBCAM_NONE;
         }
     }
-    if ((sNextCamIdx >= SUBCAM_FIRST) &&
+    if ((sBgMoriHineriNextCamIdx >= SUBCAM_FIRST) &&
         ((GET_ACTIVE_CAM(globalCtx)->eye.z - this->dyna.actor.world.pos.z) < 1100.0f)) {
         func_8002F948(&this->dyna.actor, NA_SE_EV_FLOOR_ROLLING - SFX_FLAG);
     }
@@ -283,5 +283,5 @@ void BgMoriHineri_DrawHallAndRoom(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgMoriHineri_Reset() {
-    sNextCamIdx = SUBCAM_NONE;
+    sBgMoriHineriNextCamIdx = SUBCAM_NONE;
 }

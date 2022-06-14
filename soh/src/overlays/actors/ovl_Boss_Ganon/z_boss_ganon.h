@@ -53,6 +53,25 @@ typedef enum {
     /* 2 */ GDF_TRIFORCE_DORF
 } GanondorfTriforceType;
 
+typedef struct {
+    /* 0x00 */ u8 type;
+    /* 0x01 */ u8 timer;
+    /* 0x04 */ Vec3f pos;
+    /* 0x10 */ Vec3f velocity;
+    /* 0x1C */ Vec3f accel;
+    /* 0x28 */ Color_RGB8 color;
+    /* 0x2C */ s16 alpha;
+    /* 0x2E */ s16 unk_2E;
+    /* 0x30 */ s16 unk_30;
+    /* 0x34 */ f32 scale;
+    /* 0x38 */ f32 unk_38; // scale target mostly, but used for other things
+    /* 0x3C */ f32 unk_3C; // mostly z rot
+    /* 0x40 */ f32 unk_40;
+    /* 0x44 */ f32 unk_44; // mostly x rot
+    /* 0x48 */ f32 unk_48; // mostly y rot
+    u32 epoch;
+} GanondorfEffect;         // size = 0x4C
+
 typedef struct BossGanon {
     /* 0x0000 */ Actor actor;
     /* 0x014C */ s32 animBankIndex;

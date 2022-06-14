@@ -84,6 +84,8 @@ void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     OVERLAY_DISP = func_80093F34(OVERLAY_DISP);
+    if (D_801614B0.a > 0)
+        gsSPGrayscale(OVERLAY_DISP++, false);
     gDPSetTextureLUT(OVERLAY_DISP++, G_TT_NONE);
     gDPSetEnvColor(OVERLAY_DISP++, 255, 120, 30, 0);
     gDPSetRenderMode(OVERLAY_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
@@ -108,7 +110,8 @@ void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx) {
                        G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 0, 0, 0, 0);
     gSPTextureRectangle(OVERLAY_DISP++, 104 << 2, 177 << 2, 216 << 2, 192 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
                         1 << 10);
-
+    if (D_801614B0.a > 0)
+        gsSPGrayscale(OVERLAY_DISP++, true);
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_end_title.c", 515);
 }
 

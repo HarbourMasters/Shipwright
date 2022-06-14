@@ -1,5 +1,7 @@
 #include "TextureMod.h"
 
+#if 0
+
 #include <map>
 #include <string>
 #include <iostream>
@@ -43,7 +45,7 @@ namespace Ship {
 		if (raw_path == nullptr) return;
 
 		const auto api = BIND_PTR("gfx_api", GfxRenderingAPI*);
-		const auto path = normalize(raw_path) + ".png";
+		const auto path = std::string(raw_path) + ".png";
 		const auto node = BIND_PTR("node", TextureCacheNode**);
 		const auto fmt = BIND_VAR("fmt", uint32_t*);
 		const auto siz = BIND_VAR("siz", uint32_t*);
@@ -80,7 +82,7 @@ namespace Ship {
 
 		if (!this->TextureCache.contains(path)) this->TextureCache[path].resize(10);
 
-		TextureCacheKey key = { orig_addr, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
+		TextureCacheKey key = { orig_addr, { }, static_cast<uint8_t>(fmt), static_cast<uint8_t>(siz), static_cast<uint8_t>(palette) };
 		TextureCacheValue value = { api->new_texture(), 0, 0, false };
 		const auto entry = new TextureCacheNode(key, value);
 		api->select_texture(tile, entry->second.texture_id);
@@ -122,3 +124,5 @@ namespace Ship {
 		LoadedOTRS.clear();
 	}
 }
+
+#endif

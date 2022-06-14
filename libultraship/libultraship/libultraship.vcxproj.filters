@@ -88,6 +88,9 @@
     <Filter Include="Source Files\Logging">
       <UniqueIdentifier>{bd6557f1-9480-413b-b0cd-843f8efc1939}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CustomImpl\Overlay">
+      <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">
@@ -338,6 +341,9 @@
     </ClCompile>
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files\CustomImpl</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverlay.cpp">
+      <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,6 +634,9 @@
     </ClInclude>
     <ClInclude Include="GameVersions.h">
       <Filter>Source Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverlay.h">
+      <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

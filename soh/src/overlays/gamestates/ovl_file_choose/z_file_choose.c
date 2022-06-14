@@ -5,6 +5,8 @@
 #include "textures/title_static/title_static.h"
 #include "textures/parameter_static/parameter_static.h"
 
+#include "soh/frame_interpolation.h"
+
 static s16 sUnused = 106;
 
 static s16 sScreenFillAlpha = 255;
@@ -45,11 +47,8 @@ void FileChoose_SetView(FileChooseContext* this, f32 eyeX, f32 eyeY, f32 eyeZ) {
     func_800AAA50(&this->view, 0x7F);
 }
 
-Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point) 
+Gfx* FileChoose_QuadTextureIA8(Gfx* gfx, void* texture, s16 width, s16 height, s16 point)
 {
-    if (ResourceMgr_OTRSigCheck(texture))
-        texture = ResourceMgr_LoadTexByName(texture);
-
     gDPLoadTextureBlock(gfx++, texture, G_IM_FMT_IA, G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
@@ -179,6 +178,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     SramContext* sramCtx = &this->sramCtx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
         if (this->buttonIndex <= FS_BTN_MAIN_FILE_3) {
@@ -237,10 +237,10 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             }
         }
     } else {
-        if (ABS(this->stickRelY) > 30) {
+        if ((ABS(this->stickRelY) > 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
-            if (this->stickRelY > 30) {
+            if ((this->stickRelY > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
                 this->buttonIndex--;
                 if (this->buttonIndex < FS_BTN_MAIN_FILE_1) {
                     this->buttonIndex = FS_BTN_MAIN_OPTIONS;
@@ -1138,6 +1138,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     FileChoose_SetWindowVtx(&this->state);
     FileChoose_SetWindowContentVtx(&this->state);
 
+    FrameInterpolation_RecordOpenChild(this, this->configMode);
+
     if ((this->configMode != CM_NAME_ENTRY) && (this->configMode != CM_START_NAME_ENTRY)) {
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -1229,6 +1231,8 @@ void FileChoose_ConfigModeDraw(GameState* thisx) {
     gDPPipeSync(POLY_OPA_DISP++);
     FileChoose_SetView(this, 0.0f, 0.0f, 64.0f);
 
+    FrameInterpolation_RecordCloseChild();
+
     CLOSE_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2352);
 }
 
@@ -1318,6 +1322,7 @@ void FileChoose_FadeInFileInfo(GameState* thisx) {
 void FileChoose_ConfirmFile(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
+    bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || (CHECK_BTN_ALL(input->press.button, BTN_A))) {
         if (this->confirmButtonIndex == FS_BTN_CONFIRM_YES) {
@@ -1332,7 +1337,7 @@ void FileChoose_ConfirmFile(GameState* thisx) {
     } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->selectMode++;
-    } else if (ABS(this->stickRelY) >= 30) {
+    } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CURSOR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->confirmButtonIndex ^= 1;
     }
@@ -1498,17 +1503,17 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.naviTimer = 0;
 
     // SWORDLESS LINK IS BACK BABY
-    if (CVar_GetS32("gSwordlessLink", 0) != 0) 
+    if (CVar_GetS32("gSwordlessLink", 0) != 0)
     {
         if ((gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KOKIRI) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_MASTER) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_BGS) &&
             (gSaveContext.equips.buttonItems[0] != ITEM_SWORD_KNIFE)) {
-            
+
             gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-            swordEquipMask = _byteswap_ushort(gEquipMasks[EQUIP_SWORD]) & gSaveContext.equips.equipment;
+            swordEquipMask = BOMSWAP16(gEquipMasks[EQUIP_SWORD]) & gSaveContext.equips.equipment;
             gSaveContext.equips.equipment &= gEquipNegMasks[EQUIP_SWORD];
-            gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << _byteswap_ushort(gEquipShifts[EQUIP_SWORD]));
+            gSaveContext.inventory.equipment ^= (gBitFlags[swordEquipMask - 1] << BOMSWAP16(gEquipShifts[EQUIP_SWORD]));
         }
     }
 }
@@ -1670,7 +1675,9 @@ void FileChoose_Main(GameState* thisx) {
 
     FileChoose_PulsateCursor(&this->state);
     gFileSelectUpdateFuncs[this->menuMode](&this->state);
+    FrameInterpolation_StartRecord();
     gFileSelectDrawFuncs[this->menuMode](&this->state);
+    FrameInterpolation_StopRecord();
 
     // do not draw controls text in the options menu
     if ((this->configMode <= CM_NAME_ENTRY_TO_MAIN) || (this->configMode >= CM_UNUSED_DELAY)) {

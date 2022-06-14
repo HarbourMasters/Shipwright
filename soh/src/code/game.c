@@ -381,6 +381,11 @@ void GameState_Update(GameState* gameState) {
             gSaveContext.magic = (gSaveContext.doubleMagic + 1) * 0x30;
         }
     }
+
+    // Inf Nayru's Love Timer
+    if (CVar_GetS32("gInfiniteNayru", 0) != 0) {
+        gSaveContext.nayrusLoveTimer = 0x44B;
+    }
     
     // Moon Jump On L
     if (CVar_GetS32("gMoonJumpOnL", 0) != 0) {
@@ -392,6 +397,36 @@ void GameState_Update(GameState* gameState) {
             }
         }
     }
+
+    // Permanent infinite sword glitch (ISG)
+    if (CVar_GetS32("gEzISG", 0) != 0) {
+        if (gGlobalCtx) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            player->swordState = 1;
+        }
+    }
+
+    // Unrestricted Items
+    if (CVar_GetS32("gNoRestrictItems", 0) != 0) {
+        if (gGlobalCtx) {
+            memset(&gGlobalCtx->interfaceCtx.restrictions, 0, sizeof(gGlobalCtx->interfaceCtx.restrictions));
+        }
+    }
+
+    // Freeze Time
+    if (CVar_GetS32("gFreezeTime", 0) != 0) {
+        if (CVar_GetS32("gPrevTime", -1) == -1) {
+            CVar_SetS32("gPrevTime", gSaveContext.dayTime);
+        }
+
+        int32_t prevTime = CVar_GetS32("gPrevTime", gSaveContext.dayTime);
+        gSaveContext.dayTime = prevTime;
+    } else {
+        CVar_SetS32("gPrevTime", -1);
+    }
+   
+    //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
+    gSaveContext.language = CVar_GetS32("gLanguages", 0);
 
     gameState->frames++;
 }

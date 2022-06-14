@@ -226,6 +226,9 @@ u16 Environment_GetPixelDepth(s32 x, s32 y) {
 void Environment_GraphCallback(GraphicsContext* gfxCtx, void* param) {
     GlobalContext* globalCtx = (GlobalContext*)param;
 
+    OTRGetPixelDepthPrepare(D_8015FD7E, D_8015FD80);
+    Lights_GlowCheckPrepare(globalCtx);
+
     D_8011FB44 = Environment_GetPixelDepth(D_8015FD7E, D_8015FD80);
     Lights_GlowCheck(globalCtx);
 }
@@ -677,7 +680,9 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 0, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+
+            Skybox_Update(skyboxCtx);
 
             envCtx->skybox1Index = newSkybox1Index;
 
@@ -695,7 +700,9 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
 
             for (int i = 0; i < 5; i++)
-                LoadSkyboxTex(globalCtx, skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+                LoadSkyboxTex(skyboxCtx, 1, i, entryA.textures[i], 128, i == 4 ? 128 : 64, 128, 64);
+
+            Skybox_Update(skyboxCtx);
 
             envCtx->skybox2Index = newSkybox2Index;
 
@@ -712,7 +719,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
             if ((newSkybox1Index & 1) ^ ((newSkybox1Index & 4) >> 2)) {
 
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 0, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 0, entryA.palettes[0], 16, 8);
 
                 //size = gSkyboxFiles[newSkybox1Index].palette.vromEnd - gSkyboxFiles[newSkybox1Index].palette.vromStart;
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -721,7 +728,7 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     //"../z_kankyo.c", 1307);
             } else {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox1Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 1, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 1, entryA.palettes[0], 16, 8);
 
                 //size = gSkyboxFiles[newSkybox1Index].palette.vromEnd - gSkyboxFiles[newSkybox1Index].palette.vromStart;
                 //osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -729,25 +736,27 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     //gSkyboxFiles[newSkybox1Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
                                     //"../z_kankyo.c", 1320);
             }
+
+            Skybox_Update(skyboxCtx);
         }
 
         if (envCtx->skyboxDmaState == SKYBOX_DMA_FILE2_DONE) {
             envCtx->skyboxDmaState = SKYBOX_DMA_PAL2_START;
 
-            if ((newSkybox2Index & 1) ^ ((newSkybox2Index & 4) >> 2)) 
+            if ((newSkybox2Index & 1) ^ ((newSkybox2Index & 4) >> 2))
             {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 0, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 0, entryA.palettes[0], 16, 8);
 
                 /*size = gSkyboxFiles[newSkybox2Index].palette.vromEnd - gSkyboxFiles[newSkybox2Index].palette.vromStart;
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
                 DmaMgr_SendRequest2(&envCtx->dmaRequest, (uintptr_t)skyboxCtx->palettes,
                                     gSkyboxFiles[newSkybox2Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
                                     "../z_kankyo.c", 1342);*/
-            } else 
+            } else
             {
                 SkyboxTableEntry entryA = sSkyboxTable[newSkybox2Index];
-                LoadSkyboxPalette(globalCtx, skyboxCtx, 1, entryA.palettes[0], 16, 8);
+                LoadSkyboxPalette(skyboxCtx, 1, entryA.palettes[0], 16, 8);
 
                 /*size = gSkyboxFiles[newSkybox2Index].palette.vromEnd - gSkyboxFiles[newSkybox2Index].palette.vromStart;
                 osCreateMesgQueue(&envCtx->loadQueue, &envCtx->loadMsg, 1);
@@ -755,15 +764,17 @@ void Environment_UpdateSkybox(GlobalContext* globalCtx, u8 skyboxId, Environment
                                     gSkyboxFiles[newSkybox2Index].palette.vromStart, size, 0, &envCtx->loadQueue, NULL,
                                     "../z_kankyo.c", 1355);*/
             }
+
+            Skybox_Update(skyboxCtx);
         }
 
         if ((envCtx->skyboxDmaState == SKYBOX_DMA_FILE1_START) || (envCtx->skyboxDmaState == SKYBOX_DMA_FILE2_START)) {
-            //if (osRecvMesg(&envCtx->loadQueue, 0, OS_MESG_NOBLOCK) == 0) 
+            //if (osRecvMesg(&envCtx->loadQueue, 0, OS_MESG_NOBLOCK) == 0)
             {
                 envCtx->skyboxDmaState++;
             }
         } else if (envCtx->skyboxDmaState >= SKYBOX_DMA_FILE1_DONE) {
-            //if (osRecvMesg(&envCtx->loadQueue, 0, OS_MESG_NOBLOCK) == 0) 
+            //if (osRecvMesg(&envCtx->loadQueue, 0, OS_MESG_NOBLOCK) == 0)
             {
                 envCtx->skyboxDmaState = SKYBOX_DMA_INACTIVE;
             }
@@ -2264,6 +2275,29 @@ Color_RGB8 sSandstormEnvColors[] = {
     { 50, 40, 0 },
 };
 
+Gfx* gFieldSandstormDL_Custom = NULL;
+
+void Environment_PatchSandstorm(GlobalContext* globalCtx) {
+    if (gFieldSandstormDL_Custom) return;
+
+    gFieldSandstormDL_Custom = ResourceMgr_PatchGfxByName(gFieldSandstormDL, -3);
+
+    const Gfx gFSPatchDL[2] = { gsSPEndDisplayList() };
+    bool patched = false;
+    Gfx* cmd = gFieldSandstormDL_Custom;
+    int id = 0;
+
+    while (!patched) {
+        const uint32_t opcode = cmd->words.w0 >> 24;
+        if (opcode == G_TEXRECT) {
+            gFieldSandstormDL_Custom[id] = gFSPatchDL[0];
+            patched = true;
+        }
+        ++cmd;
+        id++;
+    }
+}
+
 void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     s32 primA1;
     s32 envA1;
@@ -2276,6 +2310,8 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     u16 sp96;
     u16 sp94;
     u16 sp92;
+
+    Environment_PatchSandstorm(globalCtx);
 
     switch (sandstormState) {
         case 3:
@@ -2383,8 +2419,11 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (u32)sp96 % 0x1000, 0, 0x200, 0x20, 1, (u32)sp94 % 0x1000,
                                 0xFFF - ((u32)sp92 % 0x1000), 0x100, 0x40));
     gDPSetTextureLUT(POLY_XLU_DISP++, G_TT_NONE);
-    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL);
 
+    gSPDisplayList(POLY_XLU_DISP++, gFieldSandstormDL_Custom);
+    gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
+                            OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
+                            -0x008C);
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kankyo.c", 4068);
 
     D_8015FDB0 += (s32)sp98;
