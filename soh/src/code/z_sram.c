@@ -83,6 +83,22 @@ void GiveLinkStoneOfAgony() {
     gSaveContext.inventory.questItems |= bitMask;    
 }
 
+void GiveLinkGerudoCard() {
+    uint32_t bitMask = 1 << QUEST_GERUDO_CARD;
+    gSaveContext.inventory.questItems |= bitMask;    
+}
+
+void GiveLinkPieceOfHeart() {
+    int32_t pohCount = (gSaveContext.inventory.questItems & 0xF0000000) >> 28;
+    pohCount++;
+    gSaveContext.inventory.questItems |= (pohCount << 28);
+}
+
+void GiveLinkHeartContainer() {
+    gSaveContext.healthCapacity += 16;
+    gSaveContext.health += 16;
+}
+
 void GiveLinkBulletBagUpgrade(GetItemID giid) {
     if (giid == GI_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
@@ -503,6 +519,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkWalletUpgrade(giid);
             } else if (giid == GI_STONE_OF_AGONY) {
                 GiveLinkStoneOfAgony();
+            } else if (giid == GI_GERUDO_CARD) {
+                GiveLinkGerudoCard();
+            } else if (giid == GI_HEART_PIECE) {
+                GiveLinkPieceOfHeart();
+            } else if (giid == GI_HEART_CONTAINER) {
+                GiveLinkHeartContainer();
             }
 
             s32 iid = GetItemIDFromGetItemID(giid);
