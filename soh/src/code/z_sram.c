@@ -651,6 +651,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkKokiriSword();
             } else if (giid == GI_SWORD_BGS) {
                 GiveLinkBiggoronSword();
+            } else if (giid == GI_SWORD_KNIFE) {
+                GiveLinkGiantsKnife();
             } else if (giid == GI_SHIELD_DEKU) {
                 GiveLinkDekuShield();
             } else if (giid == GI_SHIELD_HYLIAN) {
