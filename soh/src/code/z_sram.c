@@ -682,11 +682,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkMagic(giid);
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
+            } else {
+                s32 iid = GetItemIDFromGetItemID(giid);
+                INV_CONTENT(iid) = iid;
             }
-
-            s32 iid = GetItemIDFromGetItemID(giid);
-
-            int blarg = 3;
         }
 
         // For Ganon's boss key "Start With" is 0
