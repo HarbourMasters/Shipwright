@@ -14,7 +14,7 @@ public:
 	~OTRGlobals();
 
 private:
-
+	void CheckSaveFile(size_t sramSize);
 };
 #endif
 

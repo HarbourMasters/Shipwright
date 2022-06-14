@@ -84,46 +84,15 @@ namespace Ship {
         }
     }
 
-    std::fstream GetSaveFile(std::shared_ptr<ConfigFile> config, std::ios_base::openmode additionalFlags = 0) {
-        std::string directory = (*config)["SAVE"]["Save File Directory"];
-        std::string fileName = (*config)["SAVE"]["Save Filename"];
-
-        if (fileName.empty()) {
-            fileName = "oot_save.sav";
-            (*config)["SAVE"]["Save Filename"] = fileName;
-            (*config).Save();
-        }
-        std::filesystem::path saveFile = std::filesystem::path(directory) / std::filesystem::path(fileName);
-
-        if (directory.length() && !std::filesystem::exists(directory)) {
-            std::filesystem::create_directories(directory);
-        }
-
-        std::fstream retval = std::fstream(saveFile, std::fstream::binary | additionalFlags);
-
-        return retval;
-    }
-
-    void GlobalCtx2::CheckSaveFile(size_t sramSize) {
-        std::fstream saveFile = GetSaveFile(Config);
-        if (saveFile.fail()) {
-            saveFile = GetSaveFile(Config, std::fstream::app);
-            for (int i = 0; i < sramSize; ++i) {
-                saveFile.write("\0", 1);
-            }
-        }
-        saveFile.close();
-    }
-
-    void GlobalCtx2::WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-        std::fstream saveFile = GetSaveFile(Config);
+    void GlobalCtx2::WriteSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+        std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
         saveFile.seekp(addr);
         saveFile.write((char*)dramAddr, size);
         saveFile.close();
     }
 
-    void GlobalCtx2::ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
-        std::fstream saveFile = GetSaveFile(Config);
+    void GlobalCtx2::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+        std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
 
         // If the file doesn't exist, initialize DRAM
         if (saveFile.good()) {
