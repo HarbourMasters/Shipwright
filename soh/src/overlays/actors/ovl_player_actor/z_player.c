@@ -351,6 +351,7 @@ s32 func_80852F38(GlobalContext* globalCtx, Player* this);
 s32 func_80852FFC(GlobalContext* globalCtx, Actor* actor, s32 csMode);
 void func_80853080(Player* this, GlobalContext* globalCtx);
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
+s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
 
 // .bss part 1
@@ -3516,12 +3517,18 @@ void func_80837AFC(Player* this, s32 timer) {
     this->unk_88F = 0;
 }
 
-s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
+s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
     if ((this->invincibilityTimer != 0) || (this->actor.category != ACTORCAT_PLAYER)) {
         return 1;
     }
 
-    return Health_ChangeBy(globalCtx, damage);
+    s32 modifiedDamage = damage;
+    if (modified)
+    {
+       modifiedDamage *= CVar_GetS32("gDamageMul", 1);
+    }
+
+    return Health_ChangeBy(globalCtx, modifiedDamage);
 }
 
 void func_80837B60(Player* this) {
@@ -3555,7 +3562,7 @@ void func_80837C0C(GlobalContext* globalCtx, Player* this, s32 arg2, f32 arg3, f
 
     func_8002F7DC(&this->actor, NA_SE_PL_DAMAGE);
 
-    if (!func_80837B18(globalCtx, this, 0 - this->actor.colChkInfo.damage)) {
+    if (!func_80837B18(globalCtx, this, 0 - this->actor.colChkInfo.damage, true)) {
         this->stateFlags2 &= ~PLAYER_STATE2_7;
         if (!(this->actor.bgCheckFlags & 1) && !(this->stateFlags1 & PLAYER_STATE1_27)) {
             func_80837B9C(this, globalCtx);
@@ -3747,7 +3754,7 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
 
     if (this->unk_A86 != 0) {
         if (!Player_InBlockingCsMode(globalCtx, this)) {
-            Player_InflictDamage(globalCtx, -16);
+            Player_InflictDamageModified(globalCtx, -16 * CVar_GetS32("gVoidDamageMul", 1), false);
             this->unk_A86 = 0;
         }
     }
@@ -8279,7 +8286,7 @@ s32 func_80843E64(GlobalContext* globalCtx, Player* this) {
 
         impactInfo = &D_80854600[impactIndex];
 
-        if (Player_InflictDamage(globalCtx, impactInfo->damage)) {
+        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * CVar_GetS32("gFallDamageMul", 1), false)) {
             return -1;
         }
 
@@ -13221,7 +13228,7 @@ void func_8084FBF4(Player* this, GlobalContext* globalCtx) {
     LinkAnimation_Update(globalCtx, &this->skelAnime);
     func_808382BC(this);
 
-    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
+    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1, true)) {
         if (DECR(this->unk_850) == 0) {
             func_80839F90(this, globalCtx);
         }
@@ -14829,9 +14836,13 @@ void func_80853080(Player* this, GlobalContext* globalCtx) {
 }
 
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage) {
+    return Player_InflictDamageModified(globalCtx, damage, true);
+}
+
+s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified) {
     Player* this = GET_PLAYER(globalCtx);
 
-    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18(globalCtx, this, damage)) {
+    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18(globalCtx, this, damage, modified)) {
         this->stateFlags2 &= ~PLAYER_STATE2_7;
         return 1;
     }
