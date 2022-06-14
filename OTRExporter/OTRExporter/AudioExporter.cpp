@@ -10,19 +10,16 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 {
 	writer->Write((uint8_t)(entry != nullptr ? 1 : 0));
 
-	for (auto pair : samples)
-	{
-		if (pair.second == entry)
-		{
-			break;
-		}
-	}
-
 	if (entry != nullptr)
 	{
-		if (audio->sampleOffsets[entry->bankId].find(entry->sampleDataOffset) != audio->sampleOffsets[entry->bankId].end())
+		if (audio->sampleOffsets[entry->bankId].find(entry->sampleLoopOffset) != audio->sampleOffsets[entry->bankId].end())
 		{
-			writer->Write(StringHelper::Sprintf("audio/samples/%s", audio->sampleOffsets[entry->bankId][entry->sampleDataOffset].c_str()));
+			if (audio->sampleOffsets[entry->bankId][entry->sampleLoopOffset].find(entry->sampleDataOffset) != audio->sampleOffsets[entry->bankId][entry->sampleLoopOffset].end())
+			{
+				writer->Write(StringHelper::Sprintf("audio/samples/%s", audio->sampleOffsets[entry->bankId][entry->sampleLoopOffset][entry->sampleDataOffset].c_str()));
+			}
+			else
+				writer->Write(entry->fileName);
 		}
 		else
 			writer->Write(entry->fileName);
@@ -34,7 +31,7 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
 {
 	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample);
-	
+
 	writer->Write(entry->codec);
 	writer->Write(entry->medium);
 	writer->Write(entry->unk_bit26);
@@ -98,8 +95,13 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 
 		std::string basePath = "";
 
-		if (audio->sampleOffsets[pair.second->bankId].find(pair.second->sampleDataOffset) != audio->sampleOffsets[pair.second->bankId].end())
-			basePath = StringHelper::Sprintf("samples/%s", audio->sampleOffsets[pair.second->bankId][pair.second->sampleDataOffset].c_str());
+		if (audio->sampleOffsets[pair.second->bankId].find(pair.second->sampleLoopOffset) != audio->sampleOffsets[pair.second->bankId].end())
+		{
+			if (audio->sampleOffsets[pair.second->bankId][pair.second->sampleLoopOffset].find(pair.second->sampleDataOffset) != audio->sampleOffsets[pair.second->bankId][pair.second->sampleLoopOffset].end())
+				basePath = StringHelper::Sprintf("samples/%s", audio->sampleOffsets[pair.second->bankId][pair.second->sampleLoopOffset][pair.second->sampleDataOffset].c_str());
+			else
+				basePath = StringHelper::Sprintf("samples/sample_%08X", pair.first);
+		}
 		else
 			basePath = StringHelper::Sprintf("samples/sample_%08X", pair.first);
 
@@ -176,7 +178,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].medium);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
 		seqWriter.Write((uint8_t)audio->fontIndices[i].size());
-		
+
 		for (size_t k = 0; k < audio->fontIndices[i].size(); k++)
 			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
 

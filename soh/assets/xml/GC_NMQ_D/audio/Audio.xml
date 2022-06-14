@@ -461,8 +461,11 @@
 				<Sample Name="Person Whistling">
 					<Offset Version="MQDebug" At="0xF72A0"/>
 				</Sample>
-				<Sample Name="Ocarina">
-					<Offset Version="MQDebug" At="0xFAD40"/>
+				<Sample Name="Ocarina_Looped">
+					<Offset Version="MQDebug" At="0xFAD40" LoopOffset="0x1550"/>
+				</Sample>
+				<Sample Name="Ocarina_NoLooped">
+					<Offset Version="MQDebug" At="0xFAD40" LoopOffset="0x77C0"/>
 				</Sample>
 				<Sample Name="Accordion">
 					<Offset Version="MQDebug" At="0xFDFC0"/>

@@ -73,11 +73,11 @@ namespace Ship
 		{
 			InstrumentEntry entry;
 
-			entry.isValidEntry = reader->ReadByte();
-			entry.loaded = reader->ReadByte();
-			entry.normalRangeLo = reader->ReadByte();
-			entry.normalRangeHi = reader->ReadByte();
-			entry.releaseRate = reader->ReadByte();
+			entry.isValidEntry = reader->ReadUByte();
+			entry.loaded = reader->ReadUByte();
+			entry.normalRangeLo = reader->ReadUByte();
+			entry.normalRangeHi = reader->ReadUByte();
+			entry.releaseRate = reader->ReadUByte();
 
 			entry.env = ReadEnvelopeData(reader);
 			
