@@ -828,7 +828,6 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
     { GI_BUGS, ITEM_BUG },
     { GI_BIG_POE, ITEM_BIG_POE },
-    { GI_MILK, ITEM_MILK_HALF },
     { GI_POE, ITEM_POE },
     // trade quest stuff
     { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
@@ -956,6 +955,8 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
 // { GI_ , ITEM_ARROWS_MEDIUM }
 // { GI_ , ITEM_ARROWS_LARGE }
 // { GI_ , ITEM_SEEDS_30 }
+// refills, don't get because we don't have a bottle
+// { GI_MILK,  },
 // ???
 // { GI_ , ITEM_BOW_ARROW_FIRE }
 // { GI_ , ITEM_BOW_ARROW_ICE }
