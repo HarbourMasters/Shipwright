@@ -2507,10 +2507,7 @@ namespace Settings {
       MapsAndCompasses.SetSelectedIndex(2);
     }
 
-    // todo this will take some logic because of capacity etc.
-    // but it's defaulted to on in standard weekly so we should get to it soon
-    // {"No",               "Yes"}
-    // StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
+    StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);

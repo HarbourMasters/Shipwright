@@ -1199,7 +1199,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "  Hint Clarity", RSK_HINT_CLARITY},
     { "  Hint Distribution", RSK_HINT_DISTRIBUTION},
-    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA }
+    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
+    { "Start with Consumables", RSK_STARTING_CONSUMABLES }
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1440,6 +1441,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
                         gSaveContext.randoSettings[index].value = it.value();
+                        break;
+                    case RSK_STARTING_CONSUMABLES:
+                        if(it.value() == "No") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Yes") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
                         break;
                 }
                 index++;        
@@ -2898,6 +2906,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_HINT_CLARITY] = CVar_GetS32("gRandomizeHintClarity", 2);
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
+    cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3729,7 +3738,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
- 
+                    SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
 
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
