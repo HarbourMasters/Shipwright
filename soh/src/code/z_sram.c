@@ -247,10 +247,10 @@ void GiveLinkDekuStickUpgrade(GetItemID giid) {
 void GiveLinkDekuNutUpgrade(GetItemID giid) {
     if (giid == GI_NUT_UPGRADE_30) {
         INV_CONTENT(ITEM_NUT) = ITEM_NUT;
-        Inventory_ChangeUpgrade(UPG_STICKS, 2);
+        Inventory_ChangeUpgrade(UPG_NUTS, 2);
         AMMO(ITEM_NUT) = 30;
     } else if (giid == GI_NUT_UPGRADE_40) {
-        Inventory_ChangeUpgrade(UPG_STICKS, 3);
+        Inventory_ChangeUpgrade(UPG_NUTS, 3);
         AMMO(ITEM_NUT) = 40;
     }
 }
