@@ -161,7 +161,8 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			WriteSoundFontEntry(audio, audio->soundFontTable[i].soundEffects[k], audio->samples, &fntWriter);
 		}
 
-		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("fonts/font_%02X", i));
+		//std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("fonts/font_%02X", i));
+		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("fonts/%s", audio->soundFontNames[i].c_str()));
 		AddFile(fName, fntStream->ToVector());
 	}
 
