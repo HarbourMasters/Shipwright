@@ -1633,13 +1633,15 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                                  "Vous avez\x01\x05\x41\x19\x05\x40 jetons au total!\x0E\x3C\x2");
         } else if (language == 1) {
             // German
-            strcpy(font->msgBuf, "\x08\x13\x71\x44u hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
+            strcpy(font->msgBuf, "\x08\x13\x71" "Du hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
                                  "insgesamt\x01\x05\x41\x19\x05\x40 Skulltula-Symbol!\x0E\x3C\x2");
         } else {
             // English
-            strcpy(font->msgBuf, "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+            strcpy(font->msgBuf, "\x08\x13\x71" "You got a \x05\x41" "Gold Skulltula Token\x05\x40!\x01You've collected "
                                  "\x05\x41\x19\x05\x40 tokens\x01in total!\x0E\x3C\x02");
         }
+        // Set this for the textBoxType to be inferred correctly as we do not use Message_FindMessage
+        font->charTexBuf[0] = 35;
         msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
     } else {
         Message_FindMessage(globalCtx, textId);
