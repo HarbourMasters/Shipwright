@@ -561,8 +561,8 @@ Acmd* AudioSynth_DoOneAudioUpdate(s16* aiBuf, s32 aiBufLen, Acmd* cmd, s32 updat
     NoteSubEu* noteSubEu2;
     s32 unk14;
 
-    if (aiBufLen == 0)
-        return;
+    //if (aiBufLen == 0)
+        //return;
 
     t = gAudioContext.numNotes * updateIndex;
     count = 0;
