@@ -24,6 +24,36 @@ void Sram_InitDebugSave(void) {
     Save_InitFile(true);
 }
 
+void GiveLinkRupees(GetItemID giid) {
+    int maxRupeeCount;
+    if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
+        maxRupeeCount = 99;
+    } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
+        maxRupeeCount = 200;
+    } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
+        maxRupeeCount = 500;
+    }
+
+    int newRupeeCount = gSaveContext.rupees;
+    if (giid == GI_RUPEE_GREEN) {
+        newRupeeCount += 1;
+    } else if (giid == GI_RUPEE_BLUE) {
+        newRupeeCount += 5;
+    } else if (giid == GI_RUPEE_RED) {
+        newRupeeCount += 20;
+    } else if (giid == GI_RUPEE_PURPLE) {
+        newRupeeCount += 50;
+    } else if (giid == GI_RUPEE_GOLD) {
+        newRupeeCount += 100;
+    }
+
+    if (newRupeeCount > maxRupeeCount) {
+        gSaveContext.rupees = maxRupeeCount;
+    } else {
+        gSaveContext.rupees = newRupeeCount;
+    }
+}
+
 void GiveLinkKokiriSword() {
     uint32_t bitMask = 1 << 0;
     gSaveContext.inventory.equipment |= bitMask;
@@ -145,9 +175,9 @@ void GiveLinkScaleUpgrade(GetItemID giid) {
 
 void GiveLinkWalletUpgrade(GetItemID giid) {
     if (giid == GI_WALLET_ADULT) {
-        Inventory_ChangeUpgrade(UPG_SCALE, 1);
+        Inventory_ChangeUpgrade(UPG_WALLET, 1);
     } else if (giid == GI_WALLET_GIANT) {
-        Inventory_ChangeUpgrade(UPG_SCALE, 2);
+        Inventory_ChangeUpgrade(UPG_WALLET, 2);
     }
 }
 
@@ -498,7 +528,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                        giid == GI_RUPEE_RED ||
                        giid == GI_RUPEE_PURPLE ||
                        giid == GI_RUPEE_GOLD) {
-                char blarg2 = 'r';
+                GiveLinkRupees(giid);
             } else if (giid == GI_BOMBCHUS_10 ||
                        giid == GI_BOMBCHUS_5 ||
                        giid == GI_BOMBCHUS_20) {
