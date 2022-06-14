@@ -24,6 +24,117 @@ void Sram_InitDebugSave(void) {
     Save_InitFile(true);
 }
 
+void GiveLinkKokiriSword() {
+    uint32_t bitMask = 1 << 0;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkGiantsKnife() {
+    gSaveContext.bgsFlag = 0;
+    gSaveContext.swordHealth = 8;
+    uint32_t bitMask = 1 << 2;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkBiggoronSword() {
+    gSaveContext.bgsFlag = 1;
+    gSaveContext.swordHealth = 8;
+    uint32_t bitMask = 1 << 2;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkDekuShield() {
+    uint32_t bitMask = 1 << 4;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkHylianShield() {
+    uint32_t bitMask = 1 << 5;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkMirrorShield() {
+    uint32_t bitMask = 1 << 6;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkGoronTunic() {
+    uint32_t bitMask = 1 << 9;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkZoraTunic() {
+    uint32_t bitMask = 1 << 10;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkIronBoots() {
+    uint32_t bitMask = 1 << 13;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkHoverBoots() {
+    uint32_t bitMask = 1 << 14;
+    gSaveContext.inventory.equipment |= bitMask;
+}
+
+void GiveLinkStoneOfAgony() {
+    uint32_t bitMask = 1 << QUEST_STONE_OF_AGONY;
+    gSaveContext.inventory.questItems |= bitMask;    
+}
+
+void GiveLinkBulletBagUpgrade(GetItemID giid) {
+    if (giid == GI_BULLET_BAG_40) {
+        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
+    } else if (giid == GI_BULLET_BAG_50) {
+        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
+    }
+}
+
+void GiveLinkQuiverUpgrade(GetItemID giid) {
+    if (giid == GI_QUIVER_40) {
+        Inventory_ChangeUpgrade(UPG_QUIVER, 2);
+    } else if (giid == GI_QUIVER_50) {
+        Inventory_ChangeUpgrade(UPG_QUIVER, 3);
+    }
+}
+
+void GiveLinkBombBagUpgrade(GetItemID giid) {
+    if (giid == GI_BOMB_BAG_20) {
+        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
+    } else if (giid == GI_BOMB_BAG_30) {
+        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
+    } else if (giid == GI_BOMB_BAG_40) {
+        Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
+    }
+}
+
+void GiveLinkStrengthUpgrade(GetItemID giid) {
+    if (giid == GI_BRACELET) {
+        Inventory_ChangeUpgrade(UPG_STRENGTH, 1);
+    } else if (giid == GI_GAUNTLETS_SILVER) {
+        Inventory_ChangeUpgrade(UPG_STRENGTH, 2);
+    } else if (giid == GI_GAUNTLETS_GOLD) {
+        Inventory_ChangeUpgrade(UPG_STRENGTH, 3);
+    }
+}
+
+void GiveLinkScaleUpgrade(GetItemID giid) {
+    if (giid == GI_SCALE_SILVER) {
+        Inventory_ChangeUpgrade(UPG_SCALE, 1);
+    } else if (giid == GI_SCALE_GOLD) {
+        Inventory_ChangeUpgrade(UPG_SCALE, 2);
+    }
+}
+
+void GiveLinkWalletUpgrade(GetItemID giid) {
+    if (giid == GI_WALLET_ADULT) {
+        Inventory_ChangeUpgrade(UPG_SCALE, 1);
+    } else if (giid == GI_WALLET_GIANT) {
+        Inventory_ChangeUpgrade(UPG_SCALE, 2);
+    }
+}
+
 void GiveLinkDungeonReward(GetItemID getItemId) {
     s16 item;
 
@@ -311,15 +422,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
       
-        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) {
-            uint32_t bitMask = 1 << 0;
-            gSaveContext.inventory.equipment |= bitMask;
-        }
-
-        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) {
-            uint32_t bitMask = 1 << 4;
-            gSaveContext.inventory.equipment |= bitMask;
-        }
+        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) GiveLinkKokiriSword();
+        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) GiveLinkDekuShield();
 
         if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
@@ -359,8 +463,47 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
             } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {
                 GiveLinkDungeonReward(giid);
+            } else if (giid == GI_SWORD_KOKIRI) {
+                GiveLinkKokiriSword();
+            } else if (giid == GI_SWORD_BGS) {
+                GiveLinkBiggoronSword();
+            } else if (giid == GI_SHIELD_DEKU) {
+                GiveLinkDekuShield();
+            } else if (giid == GI_SHIELD_HYLIAN) {
+                GiveLinkHylianShield();
+            } else if (giid == GI_SHIELD_MIRROR) {
+                GiveLinkMirrorShield();
+            } else if (giid == GI_TUNIC_GORON) {
+                GiveLinkGoronTunic();
+            } else if (giid == GI_TUNIC_ZORA) {
+                GiveLinkZoraTunic();
+            } else if (giid == GI_BOOTS_IRON) {
+                GiveLinkIronBoots();
+            } else if (giid == GI_BOOTS_HOVER) {
+                GiveLinkHoverBoots();
+            } else if (giid == GI_BULLET_BAG_40 ||
+                       giid == GI_BULLET_BAG_50) {
+                GiveLinkBulletBagUpgrade(giid);
+            } else if (giid == GI_QUIVER_40 ||
+                       giid == GI_QUIVER_50) {
+                GiveLinkQuiverUpgrade(giid);
+            } else if (giid == GI_BOMB_BAG_20 ||
+                       giid == GI_BOMB_BAG_30 ||
+                       giid == GI_BOMB_BAG_40) {
+                GiveLinkBombBagUpgrade(giid);
+            } else if (giid == GI_BRACELET ||
+                       giid == GI_GAUNTLETS_SILVER ||
+                       giid == GI_GAUNTLETS_GOLD) {
+                GiveLinkStrengthUpgrade(giid);
+            } else if (giid == GI_SCALE_SILVER ||
+                       giid == GI_SCALE_GOLD) {
+                GiveLinkScaleUpgrade(giid);
+            } else if (giid == GI_WALLET_ADULT ||
+                       giid == GI_WALLET_GIANT) {
+                GiveLinkWalletUpgrade(giid);
+            } else if (giid == GI_STONE_OF_AGONY) {
+                GiveLinkStoneOfAgony();
             }
-
 
             s32 iid = GetItemIDFromGetItemID(giid);
 
