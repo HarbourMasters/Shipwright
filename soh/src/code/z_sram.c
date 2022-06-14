@@ -54,6 +54,37 @@ void GiveLinkRupees(GetItemID giid) {
     }
 }
 
+void GiveLinkBombchus(GetItemID giid) {
+    INV_CONTENT(ITEM_BOMBCHU) = ITEM_BOMBCHU;
+    if (giid == GI_BOMBCHUS_5) {
+        AMMO(ITEM_BOMBCHU) += 5; 
+    } else if (giid == GI_BOMBCHUS_10) {
+        AMMO(ITEM_BOMBCHU) += 10; 
+    } else if (giid == GI_BOMBCHUS_20) {
+        AMMO(ITEM_BOMBCHU) += 20; 
+    }
+}
+
+void GiveLinkDekuSticks(GetItemID giid) {
+    INV_CONTENT(ITEM_STICK) = ITEM_STICK;
+    if (giid == GI_STICKS_1) {
+        AMMO(ITEM_STICK) += 1; 
+    } else if (giid == GI_STICKS_5) {
+        AMMO(ITEM_STICK) += 5; 
+    } else if (giid == GI_STICKS_10) {
+        AMMO(ITEM_STICK) += 10; 
+    }
+}
+
+void GiveLinkDekuNuts(GetItemID giid) {
+    INV_CONTENT(ITEM_NUT) = ITEM_NUT;
+    if (giid == GI_NUTS_5) {
+        AMMO(ITEM_NUT) += 5; 
+    } else if (giid == GI_NUTS_10) {
+        AMMO(ITEM_NUT) += 10; 
+    }
+}
+
 void GiveLinkKokiriSword() {
     uint32_t bitMask = 1 << 0;
     gSaveContext.inventory.equipment |= bitMask;
@@ -532,14 +563,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (giid == GI_BOMBCHUS_10 ||
                        giid == GI_BOMBCHUS_5 ||
                        giid == GI_BOMBCHUS_20) {
-                char blarg3 = 'c';
+                GiveLinkBombchus(giid);
             } else if (giid == GI_STICKS_1 ||
                        giid == GI_STICKS_5 ||
                        giid == GI_STICKS_10) {
-                char blarg4 = 's';
+                GiveLinkDekuSticks(giid);
             } else if (giid == GI_NUTS_5 ||
                        giid == GI_NUTS_10) {
-
+                GiveLinkDekuNuts(giid);
             } else if (giid >= GI_MEDALLION_LIGHT && giid <= GI_STONE_ZORA) {
                 GiveLinkDungeonReward(giid);
             } else if (giid == GI_SWORD_KOKIRI) {
