@@ -231,7 +231,7 @@ void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, Ran
     if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1E)) {
         Flags_SetTreasure(globalCtx, 0x1E);
-    } else if (!Flags_GetTreasure(globalCtx, 0x1E) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
+    } else if (!Flags_GetTreasure(globalCtx, 0x1E) && !GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
                globalCtx->msgCtx.textId == 0x703C) {
         GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
         func_8002F434(&zelda->actor, globalCtx, getItemId, 10000.0f, 100.0f);

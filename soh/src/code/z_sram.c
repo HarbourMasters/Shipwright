@@ -166,28 +166,44 @@ void GiveLinkHeartContainer() {
 }
 
 void GiveLinkBulletBagUpgrade(GetItemID giid) {
-    if (giid == GI_BULLET_BAG_40) {
+    if (giid == GI_SLINGSHOT) {
+        INV_CONTENT(ITEM_SLINGSHOT) = ITEM_SLINGSHOT;
+        AMMO(ITEM_SLINGSHOT) = 30;
+        Inventory_ChangeUpgrade(UPG_BULLET_BAG, 1);
+    } else if (giid == GI_BULLET_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 2);
+        AMMO(ITEM_SLINGSHOT) = 40;
     } else if (giid == GI_BULLET_BAG_50) {
         Inventory_ChangeUpgrade(UPG_BULLET_BAG, 3);
+        AMMO(ITEM_SLINGSHOT) = 50;
     }
 }
 
 void GiveLinkQuiverUpgrade(GetItemID giid) {
-    if (giid == GI_QUIVER_40) {
+    if (giid == GI_BOW) {
+        INV_CONTENT(ITEM_BOW) = ITEM_BOW;
+        Inventory_ChangeUpgrade(UPG_QUIVER, 1);
+        AMMO(ITEM_BOW) = 30;
+    } else if (giid == GI_QUIVER_40) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 2);
+        AMMO(ITEM_BOW) = 40;
     } else if (giid == GI_QUIVER_50) {
         Inventory_ChangeUpgrade(UPG_QUIVER, 3);
+        AMMO(ITEM_BOW) = 50;
     }
 }
 
 void GiveLinkBombBagUpgrade(GetItemID giid) {
     if (giid == GI_BOMB_BAG_20) {
+        INV_CONTENT(ITEM_BOMB) = ITEM_BOMB;
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 1);
+        AMMO(ITEM_BOMB) = 20;
     } else if (giid == GI_BOMB_BAG_30) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 2);
+        AMMO(ITEM_BOMB) = 30;
     } else if (giid == GI_BOMB_BAG_40) {
         Inventory_ChangeUpgrade(UPG_BOMB_BAG, 3);
+        AMMO(ITEM_BOMB) = 40;
     }
 }
 
@@ -219,17 +235,23 @@ void GiveLinkWalletUpgrade(GetItemID giid) {
 
 void GiveLinkDekuStickUpgrade(GetItemID giid) {
     if (giid == GI_STICK_UPGRADE_20) {
+        INV_CONTENT(ITEM_STICK) = ITEM_STICK;
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
+        AMMO(ITEM_STICK) = 20;
     } else if (giid == GI_STICK_UPGRADE_30) {
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
+        AMMO(ITEM_STICK) = 30;
     }
 }
 
 void GiveLinkDekuNutUpgrade(GetItemID giid) {
     if (giid == GI_NUT_UPGRADE_30) {
+        INV_CONTENT(ITEM_NUT) = ITEM_NUT;
         Inventory_ChangeUpgrade(UPG_STICKS, 2);
+        AMMO(ITEM_NUT) = 30;
     } else if (giid == GI_NUT_UPGRADE_40) {
         Inventory_ChangeUpgrade(UPG_STICKS, 3);
+        AMMO(ITEM_NUT) = 40;
     }
 }
 
@@ -643,10 +665,12 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkIronBoots();
             } else if (giid == GI_BOOTS_HOVER) {
                 GiveLinkHoverBoots();
-            } else if (giid == GI_BULLET_BAG_40 ||
+            } else if (giid == GI_SLINGSHOT ||
+                       giid == GI_BULLET_BAG_40 ||
                        giid == GI_BULLET_BAG_50) {
                 GiveLinkBulletBagUpgrade(giid);
-            } else if (giid == GI_QUIVER_40 ||
+            } else if (giid == GI_BOW ||
+                       giid == GI_QUIVER_40 ||
                        giid == GI_QUIVER_50) {
                 GiveLinkQuiverUpgrade(giid);
             } else if (giid == GI_BOMB_BAG_20 ||
@@ -684,8 +708,17 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 GiveLinkDoubleDefense();
             } else {
                 s32 iid = GetItemIDFromGetItemID(giid);
-                INV_CONTENT(iid) = iid;
+                if (iid != -1) INV_CONTENT(iid) = iid;
             }
+
+            // malon/talon back at ranch
+            gSaveContext.eventChkInf[1] |= (1 << 0);
+            gSaveContext.eventChkInf[1] |= (1 << 2);
+            gSaveContext.eventChkInf[1] |= (1 << 3);
+            gSaveContext.eventChkInf[1] |= (1 << 4);
+
+            // Got item from impa
+            gSaveContext.eventChkInf[5] |= 0x200;
         }
 
         // For Ganon's boss key "Start With" is 0

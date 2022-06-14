@@ -1336,12 +1336,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
-    try {
-        return getItemIdToItemId[getItemId];
-    } catch(const std::exception& e) {
-        // RANDOTODO don't use pokemon exceptions
+    if (getItemIdToItemId.count(getItemId) == 0) {
         return -1;
     }
+
+    return getItemIdToItemId[getItemId];
 }
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
