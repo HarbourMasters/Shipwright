@@ -687,7 +687,6 @@ typedef struct {
     union{
         u32 opArgs;
         struct {
-            // OTRTODO: struct members swapped for quick audio
             u8 arg2;
             u8 arg1;
             u8 arg0;

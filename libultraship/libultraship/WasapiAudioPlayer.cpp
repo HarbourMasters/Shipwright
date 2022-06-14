@@ -30,8 +30,8 @@ namespace Ship {
 			WAVEFORMATEX desired;
 			desired.wFormatTag = WAVE_FORMAT_PCM;
 			desired.nChannels = 2;
-			desired.nSamplesPerSec = 44100;
-			desired.nAvgBytesPerSec = 44100 * 2 * 2;
+			desired.nSamplesPerSec  = this->GetSampleRate();
+			desired.nAvgBytesPerSec = desired.nSamplesPerSec * 2 * 2;
 			desired.nBlockAlign = 4;
 			desired.wBitsPerSample = 16;
 			desired.cbSize = 0;

@@ -26,7 +26,6 @@ void ZAudio::ParseXML(tinyxml2::XMLElement* reader)
 
 	while (child != nullptr)
 	{
-		int bp = 0;
 		if (std::string(child->Value()) == "Sequences")
 		{
 			auto seqChild = child->FirstChildElement();
@@ -52,7 +51,17 @@ void ZAudio::ParseXML(tinyxml2::XMLElement* reader)
 				if (std::string(sampChild->Value()) == "Sample")
 				{
 					auto atStr = sampChild->FirstChildElement()->Attribute("At");
-					sampleOffsets[bankId][StringHelper::StrToL(atStr, 16)] = sampChild->Attribute("Name");
+					auto loopStr = sampChild->FirstChildElement()->Attribute("LoopOffset");
+					uint32_t loopOffset = 0xFFFFFFFF;
+					uint32_t atOffset = StringHelper::StrToL(atStr, 16);
+
+					if (loopStr != NULL)
+					{
+						loopOffset = StringHelper::StrToL(loopStr, 16);
+						specialLoopSamples[loopOffset] = atOffset;
+					}
+
+					sampleOffsets[bankId][loopOffset][atOffset] = sampChild->Attribute("Name");
 				}
 
 				sampChild = sampChild->NextSiblingElement();
@@ -140,11 +149,20 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 		sample->loop.end = BitConverter::ToInt32BE(audioBank, loopOffset + 4);
 		sample->loop.count = BitConverter::ToInt32BE(audioBank, loopOffset + 8);
 
-		if (sample->loop.count != 0xFFFFFFFF)
+		if (sample->loop.start == 0x3ADB)
 		{
-			for (int i = 0; i < sample->loop.count; i++)
+			int bp = 0;
+		}
+
+		if (/* sample->loop.count != 0xFFFFFFFF && */ sample->loop.count != 0)
+		{
+			//for (int i = 0; i < sample->loop.count; i++)
+			for (int i = 0; i < 16; i++)
 			{
-				int16_t state = BitConverter::ToInt16BE(sample->data, loopOffset + 16 + (i * 2));
+				//if ((loopOffset + 16 + (i * 2)) >= audioBank.size())
+					//break;
+
+				int16_t state = BitConverter::ToInt16BE(audioBank, loopOffset + 16 + (i * 2));
 				sample->loop.states.push_back(state);
 			}
 		}
@@ -159,6 +177,10 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 		}
 
 		sample->sampleDataOffset = sampleDataOffset;
+
+		if (specialLoopSamples.find(loopOffset) != specialLoopSamples.end())
+			sample->sampleLoopOffset = loopOffset;
+
 		sample->fileName = StringHelper::Sprintf("audio/samples/sample_%08X", sampleOffset);
 
 		samples[sampleOffset] = sample;

@@ -29,6 +29,7 @@ struct SampleEntry
 	std::string fileName;
 	uint8_t bankId;
 	uint32_t sampleDataOffset;
+	uint32_t sampleLoopOffset = 0xFFFFFFFF;
 	uint8_t codec;
 	uint8_t medium;
 	uint8_t unk_bit26;
@@ -94,7 +95,12 @@ public:
 	std::map<uint32_t, SampleEntry*> samples;
 	std::vector<std::vector<uint32_t>> fontIndices;
 	std::vector<std::string> seqNames;
-	std::map<uint32_t, std::map<uint32_t, std::string>> sampleOffsets;
+
+	// First Key = Bank ID, Sec Key = LoopDataOffset, Third Key = Sample Data Offset
+	std::map<uint32_t, std::map<uint32_t, std::map<uint32_t, std::string>>> sampleOffsets;
+
+	// Key = Loop Offset, Value = Sample Offset
+	std::map<uint32_t, uint32_t> specialLoopSamples;
 
 	ZAudio(ZFile* nParent);
 
