@@ -352,6 +352,9 @@
     <ClInclude Include="GameOverlay.h" />
     <ClInclude Include="GameSettings.h" />
     <ClInclude Include="GameVersions.h" />
+    <ClInclude Include="Lib\dr_libs\flac.h" />
+    <ClInclude Include="Lib\dr_libs\mp3.h" />
+    <ClInclude Include="Lib\dr_libs\wav.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h" />
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h" />
     <ClInclude Include="Lib\stb\stb_image_write.h" />
