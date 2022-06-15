@@ -3517,7 +3517,11 @@ void func_80837AFC(Player* this, s32 timer) {
     this->unk_88F = 0;
 }
 
-s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
+s32 func_80837B18(GlobalContext* globalCtx, Player* this) {
+    func_80837B18_modified(globalCtx, this, true);
+}
+
+s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
     if ((this->invincibilityTimer != 0) || (this->actor.category != ACTORCAT_PLAYER)) {
         return 1;
     }
@@ -3562,7 +3566,7 @@ void func_80837C0C(GlobalContext* globalCtx, Player* this, s32 arg2, f32 arg3, f
 
     func_8002F7DC(&this->actor, NA_SE_PL_DAMAGE);
 
-    if (!func_80837B18(globalCtx, this, 0 - this->actor.colChkInfo.damage, true)) {
+    if (!func_80837B18(globalCtx, this, 0 - this->actor.colChkInfo.damage)) {
         this->stateFlags2 &= ~PLAYER_STATE2_7;
         if (!(this->actor.bgCheckFlags & 1) && !(this->stateFlags1 & PLAYER_STATE1_27)) {
             func_80837B9C(this, globalCtx);
@@ -13228,7 +13232,7 @@ void func_8084FBF4(Player* this, GlobalContext* globalCtx) {
     LinkAnimation_Update(globalCtx, &this->skelAnime);
     func_808382BC(this);
 
-    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1, true)) {
+    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
         if (DECR(this->unk_850) == 0) {
             func_80839F90(this, globalCtx);
         }
@@ -14842,7 +14846,7 @@ s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage) {
 s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified) {
     Player* this = GET_PLAYER(globalCtx);
 
-    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18(globalCtx, this, damage, modified)) {
+    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18_modified(globalCtx, this, damage, modified)) {
         this->stateFlags2 &= ~PLAYER_STATE2_7;
         return 1;
     }
