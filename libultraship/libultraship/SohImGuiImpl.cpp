@@ -1066,7 +1066,7 @@ namespace SohImGui {
                     Tooltip("Water Currents / Whirlpool Currents don't affect (Push or Pull) Link around in water.");
                     ImGui::EndMenu();
                 }
-                ImGui::EndMenu();
+                
 
                 //End of Nitrous' Additions
 
@@ -1088,8 +1088,8 @@ namespace SohImGui {
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
-
-                
+                ImGui::EndMenu();
+               
             }
 
             if (ImGui::BeginMenu("Developer Tools"))
