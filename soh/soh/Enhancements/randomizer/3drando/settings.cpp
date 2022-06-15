@@ -2518,6 +2518,16 @@ namespace Settings {
 
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
+    AddExcludedOptions();
+    for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
+      for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
+        // RANDOTODO implement the ability to exclude any location
+        if (location->GetName() == "Deku Theater Mask of\n Truth") {
+          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH]);
+        }
+      }
+    }
+
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 
     //shuffle the dungeons and then set MQ for as many as necessary
