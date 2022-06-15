@@ -57,26 +57,43 @@ namespace Ship
 		SoundFontEntry* highNotesSound = nullptr;
 	};
 
-	class AudioSoundFontV1 : public ResourceFile
+	class AudioSequenceV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
 	};
 
-	class AudioSampleV1 : public ResourceFile
+	class AudioSoundFontV2 : public ResourceFile
+	{
+	public:
+		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
+	};
+
+	class AudioSampleV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 	};
 	
-	class AudioV1 : public ResourceFile
+	class AudioV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 	};
 
-	struct AudioSoundFont : public Resource
+	class AudioSequence : public Resource
+	{
+	public:
+		std::vector<char> seqData;
+		uint8_t seqNumber;
+		uint8_t medium;
+		uint8_t cachePolicy;
+		std::vector<uint8_t> fonts;
+	};
+
+	class AudioSoundFont : public Resource
 	{
 	public:
 		uint32_t ptr;
@@ -110,10 +127,5 @@ namespace Ship
 	class Audio : public Resource
 	{
 	public:
-		//std::vector<AudioTableEntry> soundFontTable;
-		//std::vector<AudioTableEntry> sequenceTable;
-		//std::vector<AudioTableEntry> sampleBankTable;
-		//std::vector<char*> sequences;
-		//std::vector<SampleEntry*> samples;
 	};
 }
