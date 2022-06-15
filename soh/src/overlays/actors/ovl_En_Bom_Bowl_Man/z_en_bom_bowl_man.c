@@ -160,6 +160,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeTextureIndex = 2;
         this->blinkCount++;
         if (this->blinkCount >= 3) {
+            // we're still making it in here when rando'd
             this->actionFunc = EnBomBowMan_CheckBeatenDC;
         }
     }
@@ -176,8 +177,11 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeMode = CHU_GIRL_EYES_AWAKE;
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
-        // Check for beaten Dodongo's Cavern
-        if (!((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) {
+        // Check for beaten Dodongo's Cavern if not rando'd
+        // check for bomb bag if rando'd
+        if ((!gSaveContext.n64ddFlag && 
+             !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) ||
+             (gSaveContext.n64ddFlag && (INV_CONTENT(ITEM_BOMB) == ITEM_NONE))) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
         } else {
             this->actor.textId = 0x18;
