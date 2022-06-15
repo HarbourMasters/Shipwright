@@ -614,10 +614,10 @@ std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
 extern "C" SoundFontSample* ReadCustomSample(const char* path) {
 
-	if (!ExtensionCache.contains(path))
+    if (!ExtensionCache.contains(path))
         return nullptr;
 
-	ExtensionEntry entry = ExtensionCache[path];
+    ExtensionEntry entry = ExtensionCache[path];
 
     auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
