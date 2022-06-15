@@ -11,9 +11,10 @@ REGISTER_ZFILENODE(Audio, ZAudio);
 
 ZAudio::ZAudio(ZFile* nParent) : ZResource(nParent)
 {
-	//RegisterRequiredAttribute("CodeOffset");
-	//RegisterOptionalAttribute("LangOffset", "0");
-	
+	RegisterRequiredAttribute("SoundFontTableOffset");
+	RegisterRequiredAttribute("SequenceTableOffset");
+	RegisterRequiredAttribute("SampleBankTableOffset");
+	RegisterRequiredAttribute("SequenceFontTableOffset");
 }
 
 void ZAudio::ParseXML(tinyxml2::XMLElement* reader)
@@ -66,6 +67,13 @@ void ZAudio::ParseXML(tinyxml2::XMLElement* reader)
 
 				sampChild = sampChild->NextSiblingElement();
 			}
+		}
+
+		if (std::string(child->Value()) == "Soundfont")
+		{
+			auto name = child->Attribute("Name");
+			auto index = child->IntAttribute("Index", 0);
+			soundFontNames[index] = name;
 		}
 
 		child = child->NextSiblingElement();
@@ -149,19 +157,10 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 		sample->loop.end = BitConverter::ToInt32BE(audioBank, loopOffset + 4);
 		sample->loop.count = BitConverter::ToInt32BE(audioBank, loopOffset + 8);
 
-		if (sample->loop.start == 0x3ADB)
+		if (sample->loop.count != 0)
 		{
-			int bp = 0;
-		}
-
-		if (/* sample->loop.count != 0xFFFFFFFF && */ sample->loop.count != 0)
-		{
-			//for (int i = 0; i < sample->loop.count; i++)
 			for (int i = 0; i < 16; i++)
 			{
-				//if ((loopOffset + 16 + (i * 2)) >= audioBank.size())
-					//break;
-
 				int16_t state = BitConverter::ToInt16BE(audioBank, loopOffset + 16 + (i * 2));
 				sample->loop.states.push_back(state);
 			}
@@ -189,7 +188,7 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 	}
 	else
 	{
-		return samples[sampleOffset];	
+		return samples[sampleOffset];
 	}
 }
 
@@ -338,30 +337,24 @@ void ZAudio::ParseRawData()
 		audioSeqData = Globals::Instance->GetBaseromFile(Globals::Instance->baseRomPath.string() +
 		                                                  "Audioseq");
 
-	//codeData = File::ReadAllBytes("baserom/code_ntsc");
-	//audioTableData = File::ReadAllBytes("baserom/Audiotable_ntsc");
-	//audioSeqData = File::ReadAllBytes("baserom/Audioseq_ntsc");
-	//audioBankData = File::ReadAllBytes("baserom/Audiobank_ntsc");
-
 	// TABLE PARSING
-	
-	// GC PAL
-	//int gSoundFontTableOffset = 0x138270;		// OTRTODO: Make this an XML Param
-	//int gSequenceTableOffset = 0x1386A0;   // OTRTODO: Make this an XML Param
-	//int gSampleBankTableOffset = 0x138D90;      // OTRTODO: Make this an XML Param
-	//int gSequenceFontTableOffset = 0x1384E0;  // OTRTODO: Make this an XML Param
 
-	// NMQ DBG ROM
-	int gSoundFontTableOffset = 0x138290;       // OTRTODO: Make this an XML Param
-	int gSequenceTableOffset = 0x1386C0;   // OTRTODO: Make this an XML Param
-	int gSampleBankTableOffset = 0x138DB0;      // OTRTODO: Make this an XML Param
-	int gSequenceFontTableOffset = 0x138500;      // OTRTODO: Make this an XML Param
-	
+	// MQ DBG ROM
+	//int gSoundFontTableOffset = 0x138270;
+	//int gSequenceTableOffset = 0x1386A0;
+	//int gSampleBankTableOffset = 0x138D90;
+	//int gSequenceFontTableOffset = 0x1384E0;
+
 	// NTSC 1.0
-	//int gSoundFontTableOffset = 0x1026A0;     // OTRTODO: Make this an XML Param
-	//int gSequenceTableOffset = 0x102AD0;      // OTRTODO: Make this an XML Param
-	//int gSampleBankTableOffset = 0x1031C0;    // OTRTODO: Make this an XML Param
-	//int gSequenceFontTableOffset = 0x102910;  // OTRTODO: Make this an XML Param
+	//int gSoundFontTableOffset = 0x1026A0;
+	//int gSequenceTableOffset = 0x102AD0;
+	//int gSampleBankTableOffset = 0x1031C0;
+	//int gSequenceFontTableOffset = 0x102910;
+
+	int gSoundFontTableOffset = StringHelper::StrToL(registeredAttributes.at("SoundFontTableOffset").value, 16);
+	int gSequenceTableOffset = StringHelper::StrToL(registeredAttributes.at("SequenceTableOffset").value, 16);
+	int gSampleBankTableOffset = StringHelper::StrToL(registeredAttributes.at("SampleBankTableOffset").value, 16);
+	int gSequenceFontTableOffset = StringHelper::StrToL(registeredAttributes.at("SequenceFontTableOffset").value, 16);
 
 	soundFontTable = ParseAudioTable(codeData, gSoundFontTableOffset);
 	sequenceTable = ParseAudioTable(codeData, gSequenceTableOffset);

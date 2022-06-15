@@ -286,11 +286,11 @@ void Audio_ProcessNotes(void) {
             }
 
             subAttrs.frequency *= playbackState->vibratoFreqScale * playbackState->portamentoFreqScale;
-            
+
             f32 resampRate = gAudioContext.audioBufferParameters.resampleRate;
 
             if (!gUseLegacySD && !noteSubEu2->bitField1.isSyntheticWave && noteSubEu2->sound.soundFontSound != NULL &&
-                noteSubEu2->sound.soundFontSound->sample != NULL && 
+                noteSubEu2->sound.soundFontSound->sample != NULL &&
                 noteSubEu2->sound.soundFontSound->sample->sampleRateMagicValue == 'RIFF') {
                 resampRate = CALC_RESAMPLE_FREQ(noteSubEu2->sound.soundFontSound->sample->sampleRate);
             }
@@ -320,7 +320,7 @@ SoundFontSound* Audio_InstrumentGetSound(Instrument* instrument, s32 semitone) {
 
 Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
     Instrument* inst;
-    
+
     if (fontId == 0xFF) {
         return NULL;
     }
@@ -342,7 +342,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
                 return NULL;
             }
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
         if (instId >= sf->numInstruments)
             return NULL;
@@ -354,7 +354,7 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
         gAudioContext.audioErrorFlags = ((fontId << 8) + instId) + 0x1000000;
         return inst;
     }
-    
+
 
     return inst;
 }
@@ -379,7 +379,7 @@ Drum* Audio_GetDrum(s32 fontId, s32 drumId) {
 
          drum = gAudioContext.soundFonts[fontId].drums[drumId];
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
         drum = sf->drums[drumId];
     }
 
@@ -410,7 +410,7 @@ SoundFontSound* Audio_GetSfx(s32 fontId, s32 sfxId) {
 
          sfx = &gAudioContext.soundFonts[fontId].soundEffects[sfxId];
     } else {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontId);
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
         sfx = &sf->soundEffects[sfxId];
     }
 

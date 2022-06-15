@@ -149,8 +149,7 @@ namespace Ship
 
     int PulseAudioPlayer::GetDesiredBuffered()
     {
-        // return 1100;
-        return 1680;
+        return 2480;
     }
 
     void PulseAudioPlayer::Play(const uint8_t* buff, uint32_t len)

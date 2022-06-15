@@ -81,7 +81,7 @@ namespace Ship {
 	}
 
 	int WasapiAudioPlayer::GetDesiredBuffered(void) {
-		return 1680;
+		return 2480;
 	}
 
 	void WasapiAudioPlayer::Play(const uint8_t* Buffer, uint32_t BufferLen) {
