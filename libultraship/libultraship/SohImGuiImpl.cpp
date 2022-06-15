@@ -1061,6 +1061,8 @@ namespace SohImGui {
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
+                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
+                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
 
                 ImGui::EndMenu();
             }
