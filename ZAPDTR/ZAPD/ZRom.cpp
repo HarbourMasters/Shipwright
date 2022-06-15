@@ -68,7 +68,7 @@ ZRom::ZRom(std::string romPath)
 	romData = File::ReadAllBytes(romPath);
 
 	version.crc = BitConverter::ToInt32BE(romData, 0x10);
-	
+
 	switch (version.crc)
 	{
 	case OOT_NTSC_10:
@@ -192,10 +192,8 @@ ZRom::ZRom(std::string romPath)
 		else
 			files[lines[i]] = outData;
 
-		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i]), files[lines[i]]);
+		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i].c_str()), files[lines[i]]);
 	}
-
-	int bp = 0;
 }
 
 std::vector<uint8_t> ZRom::GetFile(std::string fileName)

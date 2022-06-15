@@ -61,11 +61,11 @@ namespace Ship {
 
 		bool attempt = SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle);
 
-		/*if (!attempt)
-		{
-			std::string filePathAlt = StringHelper::Replace(filePath, "/", "\\");
-			attempt |= SFileOpenFileEx(mainMPQ, filePathAlt.c_str(), 0, &fileHandle);
-		}*/
+		//if (!attempt)
+		//{
+			//std::string filePathAlt = StringHelper::Replace(filePath, "/", "\\");
+			//attempt |= SFileOpenFileEx(mainMPQ, filePathAlt.c_str(), 0, &fileHandle);
+		//}
 
 		if (!attempt) {
 			printf("({%i}) Failed to open file {%s} from mpq archive {%s}", GetLastError(), filePath.c_str(), MainPath.c_str());

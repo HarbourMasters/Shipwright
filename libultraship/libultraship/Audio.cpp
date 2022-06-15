@@ -13,8 +13,8 @@ namespace Ship
 		entry->unk_bit26 = reader->ReadByte();
 		entry->unk_bit25 = reader->ReadByte();
 
-		uint32_t dataSize = reader->ReadInt32();
-		
+		int dataSize = reader->ReadInt32();
+
 		for (uint32_t i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
@@ -22,7 +22,7 @@ namespace Ship
 		entry->loop.end = reader->ReadUInt32();
 		entry->loop.count = reader->ReadUInt32();
 
-		uint32_t loopStateCnt = reader->ReadUInt32();
+		int loopStateCnt = reader->ReadUInt32();
 
 		for (uint32_t i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
@@ -30,7 +30,7 @@ namespace Ship
 		entry->book.order = reader->ReadInt32();
 		entry->book.npredictors = reader->ReadInt32();
 
-		uint32_t bookSize = reader->ReadInt32();
+		int bookSize = reader->ReadInt32();
 
 		for (uint32_t i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
@@ -61,7 +61,7 @@ namespace Ship
 			drum.loaded = reader->ReadUByte();
 
 			drum.env = ReadEnvelopeData(reader);
-			
+
 			bool hasSample = reader->ReadByte();
 			drum.sampleFileName = reader->ReadString();
 			drum.tuning = reader->ReadSingle();
@@ -80,7 +80,7 @@ namespace Ship
 			entry.releaseRate = reader->ReadUByte();
 
 			entry.env = ReadEnvelopeData(reader);
-			
+
 			{
 				bool hasSFEntry = reader->ReadByte();
 
