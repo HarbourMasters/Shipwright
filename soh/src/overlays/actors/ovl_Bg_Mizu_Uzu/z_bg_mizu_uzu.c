@@ -57,10 +57,8 @@ void BgMizuUzu_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void func_8089F788(BgMizuUzu* this, GlobalContext* globalCtx) {
     Actor* thisx = &this->dyna.actor;
 
-    if (GET_PLAYER(globalCtx)->currentBoots == PLAYER_BOOTS_IRON) {
-        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    }
-    if (CVar_GetS32("gNoCurrents", 0) == 1) {
+    if (GET_PLAYER(globalCtx)->currentBoots == PLAYER_BOOTS_IRON
+        || CVar_GetS32("gNoCurrents", 0) == 1) {
         func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
     else {

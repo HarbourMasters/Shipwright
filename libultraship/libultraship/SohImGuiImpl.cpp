@@ -872,8 +872,6 @@ namespace SohImGui {
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
-
-                    //Nitrous' additions
                     EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
                     Tooltip("Slight little 'enhancement' that stops the fire appearing on Link whenever he is hit by a fire attack, while wearing the Goron Tunic.");
                     ImGui::EndMenu();
@@ -1054,15 +1052,11 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
-                //Nitrous' Additions
-
                 if (ImGui::BeginMenu("Elemental")) {
                     EnhancementCheckbox("No Freeze", "gNoFreeze");
                     Tooltip("Prevents Link from being frozen by Ice Keese and Freezards. He will still take damage from their attacks making contact, though.");
                     EnhancementCheckbox("Fireproof", "gFireproof");
                     Tooltip("Prevents Link from being set on fire all together. He'll still take damage from the initial hit, though.");
-                    //EnhancementCheckbox("Grounded Link", "gLightningproof");  //On Hold for now, not having luck stopping the whole animation entirely... :/
-                    //Tooltip("Prevents Link from electrocuted and freaking out when being zapped.");
                     EnhancementCheckbox("Windproof Link", "gWindproof");
                     Tooltip("Prevents Link from being blown away by fans. Might cause softlocks?");
                     EnhancementCheckbox("No Current Influence (Partially works)", "gNoCurrents");
@@ -1072,14 +1066,11 @@ namespace SohImGui {
 
                 if (ImGui::BeginMenu("Fun")) {
                     EnhancementCheckbox("Super Bow", "gSuperBow");
-                    Tooltip("Improves your bow!");  //Seriously, give this a try. xD
+                    Tooltip("Improves your bow!");
                     EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
-                    Tooltip("Gives you some holy Deku Nuts!");  //Skilar (or was it MalonSpeedruns?) would love this one!
+                    Tooltip("Gives you some holy Deku Nuts!");
                     ImGui::EndMenu();
                 }
-                
-
-                //End of Nitrous' Additions
 
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");

@@ -3069,11 +3069,7 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
         }
 
         if (ammo == 0) {
-            if (CVar_GetS32("gInfiniteAmmo", 0) == 0 || CVar_GetS32("gHideInfiniteAmmo", 0) == 0) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, alpha);
-            } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 0);
-            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, alpha);
         }
 
         for (i = 0; ammo >= 10; i++) {
