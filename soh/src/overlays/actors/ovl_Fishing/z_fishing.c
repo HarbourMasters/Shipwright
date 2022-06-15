@@ -5109,7 +5109,8 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
 
         case 24:
             D_80B7A674 = false;
-            if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
+            if (((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) ||
+                (gSaveContext.n64ddFlag && GET_PLAYER(globalCtx)->getItemId == GI_ICE_TRAP)) {
                 if (D_80B7E07C == 0) {
                     this->unk_15C = 0;
                 } else {
