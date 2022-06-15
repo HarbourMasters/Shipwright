@@ -1625,23 +1625,15 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, "../z_message_PAL.c", 1954);
-    } else if ((textId == 0x00b4 || textId == 0x00b5) && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-        int32_t language = CVar_GetS32("gLanguages", 0);
-        if (language == 2) {
-            // French
-            strcpy(font->msgBuf, "\x08\x13\x71Vous venez de d\x96truire une\x01\x05\x41Skulltula d'or\x05\x40! "
-                                 "Vous avez\x01\x05\x41\x19\x05\x40 jetons au total!\x0E\x3C\x2");
-        } else if (language == 1) {
-            // German
-            strcpy(font->msgBuf, "\x08\x13\x71" "Du hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
-                                 "insgesamt\x01\x05\x41\x19\x05\x40 Skulltula-Symbol!\x0E\x3C\x2");
-        } else {
-            // English
-            strcpy(font->msgBuf, "\x08\x13\x71" "You got a \x05\x41" "Gold Skulltula Token\x05\x40!\x01You've collected "
-                                 "\x05\x41\x19\x05\x40 tokens\x01in total!\x0E\x3C\x02");
+    } else if (textId == 0x00b4 || textId == 0x00b5) {
+        char* msgBase = NULL;
+        Message_FindMessage(globalCtx, textId);
+        if (CVar_GetS32("gInjectSkulltulaCount", 0) == 0) 
+        {
+            msgBase = (uintptr_t)font->msgOffset;
         }
-        // Set this for the textBoxType to be inferred correctly as we do not use Message_FindMessage
-        font->charTexBuf[0] = 35;
+
+        GetSkulltulaCountMessage(font->msgBuf, msgBase, sizeof(font->msgBuf));
         msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
     } else {
         Message_FindMessage(globalCtx, textId);

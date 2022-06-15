@@ -1022,3 +1022,57 @@ extern "C" int Controller_ShouldRumble(size_t i) {
 
     return 0;
 }
+
+extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBufferSize) {
+    bool freeze = CVar_GetS32("gSkulltulaFreeze", 0);
+    std::string prefix(freeze ? "\x08" : "");
+    std::string postfix(freeze ? "\x0E\x3C\x02" : "\x02");
+    std::string str;
+
+    if (src == NULL) {
+        int32_t language = CVar_GetS32("gLanguages", 0);
+        if (language == 2) {
+            // French
+            str = prefix +
+                                "\x13\x71Vous venez de d\x96truire une\x01\x05\x41Skulltula d'or\x05\x40! "
+                                "Vous avez\x01\x05\x41\x19\x05\x40 jetons au total!" +
+                                postfix;
+        } else if (language == 1) {
+            // German
+            str = prefix +
+                                "\x13\x71"
+                                "Du hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
+                                "insgesamt\x01\x05\x41\x19\x05\x40 Skulltula-Symbol!" +
+                                postfix;
+        } else {
+            // English
+            str = prefix +
+                                "\x13\x71"
+                                "You got a \x05\x41"
+                                "Gold Skulltula Token\x05\x40!\x01You've collected "
+                                "\x05\x41\x19\x05\x40 tokens\x01in total!" +
+                                postfix;
+        }
+    } else {
+        std::string FixedBaseStr(src);
+        int RemoveControlChar = FixedBaseStr.find_last_of("\x02");
+        if (RemoveControlChar != std::string::npos) {
+            FixedBaseStr = FixedBaseStr.substr(0, RemoveControlChar);
+        }
+        str = prefix + FixedBaseStr + postfix;
+    }
+
+    if (!str.empty()) {
+        // I have observed that buffer is sometimes not clean, so just go ahead and clear it.
+        // if this is deemed too destructive, just make sure that the null terminator is marked.
+        memset(buffer, 0, maxBufferSize);
+
+        // Figure out how many letters we are going to copy over, either the full message (if fits) or up to max buffer
+        // size (-1 to account for null terminator)
+        const int copiedCharLen = std::min<int>(maxBufferSize - 1, str.length());
+
+        memcpy(buffer, str.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+    return 0;
+}
