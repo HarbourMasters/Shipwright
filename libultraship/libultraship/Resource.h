@@ -33,6 +33,7 @@ namespace Ship
         Audio            =   'OAUD',
         AudioSample      =   'OSMP',
         AudioSoundFont   =   'OSFT',
+        AudioSequence    =   'OSEQ',
     };
 
     enum class DataType

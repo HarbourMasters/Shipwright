@@ -569,21 +569,20 @@ extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) 
 {
-    auto file = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path).get();
-
-    char* data = file->buffer.get();
+    auto file = std::static_pointer_cast<Ship::AudioSequence>(OTRGlobals::Instance->context->GetResourceManager()
+                    ->LoadResource(path));
 
     SequenceData seqData;
-    seqData.seqNumber = data[1];
-    seqData.medium = data[2];
-    seqData.cachePolicy = data[3];
-    seqData.numFonts = data[4];
+    seqData.seqNumber = file->seqNumber;
+    seqData.medium = file->medium;
+    seqData.cachePolicy = file->cachePolicy;
+    seqData.numFonts = file->fonts.size();
 
     for (int i = 0; i < seqData.numFonts; i++)
-        seqData.fonts[i] = data[5 + i];
+        seqData.fonts[i] = file->fonts[i];
 
-    seqData.seqData = &data[5 + seqData.numFonts];
-    seqData.seqDataSize = file->dwBufferSize - 5 - seqData.numFonts;
+    seqData.seqData = file->seqData.data();
+    seqData.seqDataSize = file->seqData.size();
 
     return seqData;
 }

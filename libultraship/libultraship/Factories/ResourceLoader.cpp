@@ -94,6 +94,9 @@ namespace Ship
         case ResourceType::AudioSoundFont:
             result = AudioSoundFontFactory::ReadAudioSoundFont(reader.get());
             break;
+        case ResourceType::AudioSequence:
+            result = AudioSequenceFactory::ReadAudioSequence(reader.get());
+            break;
         default:
             // RESOURCE TYPE NOT SUPPORTED
             break;
