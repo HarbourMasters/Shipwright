@@ -3517,10 +3517,6 @@ void func_80837AFC(Player* this, s32 timer) {
     this->unk_88F = 0;
 }
 
-s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
-    return func_80837B18_modified(globalCtx, this, damage, true);
-}
-
 s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
     if ((this->invincibilityTimer != 0) || (this->actor.category != ACTORCAT_PLAYER)) {
         return 1;
@@ -3533,6 +3529,10 @@ s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u
     }
 
     return Health_ChangeBy(globalCtx, modifiedDamage);
+}
+
+s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
+    return func_80837B18_modified(globalCtx, this, damage, true);
 }
 
 void func_80837B60(Player* this) {
