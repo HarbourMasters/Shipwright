@@ -3517,8 +3517,8 @@ void func_80837AFC(Player* this, s32 timer) {
     this->unk_88F = 0;
 }
 
-s32 func_80837B18(GlobalContext* globalCtx, Player* this) {
-    func_80837B18_modified(globalCtx, this, true);
+s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
+    func_80837B18_modified(globalCtx, this, damage);
 }
 
 s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
