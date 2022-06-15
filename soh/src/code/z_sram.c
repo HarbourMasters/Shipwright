@@ -769,6 +769,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;
 
+            // make sure saria is at SFM
+            gSaveContext.eventChkInf[4] |= (1 << 0);
+
             // set this at the end to ensure we always start with the letter
             // this is for the off chance we got the weird egg from impa (which should never happen)
             INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
