@@ -875,6 +875,10 @@ namespace SohImGui {
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+
+                    //Nitrous' additions
+                    EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
+                    Tooltip("Slight little 'enhancement' that stops the fire appearing on Link whenever he is hit by a fire attack, while wearing the Goron Tunic.");
                     ImGui::EndMenu();
                 }
 
@@ -1041,8 +1045,31 @@ namespace SohImGui {
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
 
+                    if (CVar_GetS32("gInfiniteAmmo", 0) == 1)
+                    {
+                    }
+
                     ImGui::EndMenu();
                 }
+
+                //Nitrous' Additions
+
+                if (ImGui::BeginMenu("Elemental")) {
+                    EnhancementCheckbox("No Freeze", "gNoFreeze");
+                    Tooltip("Prevents Link from being frozen by Ice Keese and Freezards. He will still take damage from their attacks making contact, though.");
+                    EnhancementCheckbox("Fireproof", "gFireproof");
+                    Tooltip("Prevents Link from being set on fire all together. He'll still take damage from the initial hit, though.");
+                    EnhancementCheckbox("Grounded Link (N/A)", "gLightningproof");
+                    Tooltip("Prevents Link from electrocuted and freaking out when being zapped.");
+                    EnhancementCheckbox("Windproof Link (N/A)", "gWindproof");
+                    Tooltip("Prevents Link from being blown away by fans. Might cause softlocks?");
+                    EnhancementCheckbox("No Current Influence (N/A)", "gNoCurrents");
+                    Tooltip("Water Currents / Whirlpool Currents don't affect (Push or Pull) Link around in water.");
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenu();
+
+                //End of Nitrous' Additions
 
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");
@@ -1063,7 +1090,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
 
-                ImGui::EndMenu();
+                
             }
 
             if (ImGui::BeginMenu("Developer Tools"))

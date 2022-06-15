@@ -3061,11 +3061,19 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
                    ((i == ITEM_STICK) && (AMMO(i) == CUR_CAPACITY(UPG_STICKS))) ||
                    ((i == ITEM_NUT) && (AMMO(i) == CUR_CAPACITY(UPG_NUTS))) || ((i == ITEM_BOMBCHU) && (ammo == 50)) ||
                    ((i == ITEM_BEAN) && (ammo == 15))) {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
+            if (CVar_GetS32("gInfiniteAmmo", 0) == 0 || CVar_GetS32("gHideInfiniteAmmo", 0) == 0) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, alpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 0);
+            }
         }
 
         if (ammo == 0) {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, alpha);
+            if (CVar_GetS32("gInfiniteAmmo", 0) == 0 || CVar_GetS32("gHideInfiniteAmmo", 0) == 0) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 100, 100, alpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, 0);
+            }
         }
 
         for (i = 0; ammo >= 10; i++) {
