@@ -63,7 +63,6 @@ namespace SohImGui {
     GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
-    std::vector<const char*> CustomTexts;
     ImVec4 hearts_colors;
     ImVec4 hearts_dd_colors;
     ImVec4 a_btn_colors;
@@ -880,13 +879,13 @@ namespace SohImGui {
                 {
                     if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
                         ImGui::Text("Rotation");
-                        EnhancementRadioButton("Disabled", "gPauseLiveRotation", 0);
-                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveRotation", 1);
+                        EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
+                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveLinkRotation", 1);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
-                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveRotation", 2);
+                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
 
-                        if (CVar_GetS32("gPauseLiveRotation", 0) != 0) {
+                        if (CVar_GetS32("gPauseLiveLinkRotation", 0) != 0) {
                             EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
                         }
                         ImGui::Separator();
@@ -911,7 +910,7 @@ namespace SohImGui {
                         EnhancementRadioButton("Random", "gPauseLiveLink", 15);
                         Tooltip("Randomize the animation played each time you open the menu");
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
-                        Tooltip("andomize the animation played on hte menu after a certain time");
+                        Tooltip("Randomize the animation played on the menu after a certain time");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
                         }
@@ -1005,7 +1004,9 @@ namespace SohImGui {
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
                 Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
-                if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
+                if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
+                    CVar_SetS32("gDisableKokiriDrawDistance", 0);
+                } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
                     Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance\nNeeds to reload the map to take effect");
                 }
