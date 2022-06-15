@@ -2907,6 +2907,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
+    
+    cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -4239,36 +4241,36 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
-            // if (ImGui::BeginTabItem("Detailed Logic Settings")) {
-            //     if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
-            //                           ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            //         ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableHeadersRow();
-            //         ImGui::TableNextRow();
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 1 - LOGIC OPTIONS
-            //         ImGui::NewLine();
+            if (ImGui::BeginTabItem("Detailed Logic Settings")) {
+                if (ImGui::BeginTable("tableRandoDetailedLogic", 1,
+                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    // ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableHeadersRow();
+                    ImGui::TableNextRow();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 1 - LOGIC OPTIONS
+                    // ImGui::NewLine();
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 2 - OPEN EXCLUDE LOCATIONS
-            //         ImGui::NewLine();
+                    ImGui::TableNextColumn();
+                    // COLUMN 2 - OPEN EXCLUDE LOCATIONS
+                    ImGui::NewLine();
+                    SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 3 - LOGICAL TRICKS
-            //         ImGui::NewLine();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 3 - LOGICAL TRICKS
+                    // ImGui::NewLine();
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 4 - GLITCH OPTIONS
-            //         ImGui::NewLine();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 4 - GLITCH OPTIONS
+                    // ImGui::NewLine();
 
-            //         ImGui::EndTable();
-            //     }
-
-            //     ImGui::EndTabItem();
-            // }
+                    ImGui::EndTable();
+                }
+                ImGui::EndTabItem();
+            }
             // todo: figure out sfx rando stuff
             // if (ImGui::BeginTabItem("SFX")) {
             //     if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
