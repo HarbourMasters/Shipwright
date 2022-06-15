@@ -56,7 +56,6 @@ OTRGlobals::~OTRGlobals() {
 
 struct ExtensionEntry {
     std::string path;
-    std::string raw;
     std::string ext;
 };
 
@@ -81,14 +80,14 @@ extern "C" void OTRAudio_Init()
 
 extern "C" void OTRExtScanner() {
     auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
-	
+
     for (auto& rPath : lst) {
         std::vector<std::string> raw = StringHelper::Split(rPath, ".");
         std::string ext = raw[raw.size() - 1];
         std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
         replace(nPath.begin(), nPath.end(), '\\', '/');
-		
-        ExtensionCache[nPath] = { rPath, rPath, ext };
+
+        ExtensionCache[nPath] = { rPath, ext };
     }
 }
 
@@ -613,39 +612,40 @@ extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
-extern "C" SoundFontSample* ReadCustomSample(ExtensionEntry entry) {
-    
+extern "C" SoundFontSample* ReadCustomSample(const char* path) {
+
+	if (!ExtensionCache.contains(path))
+        return nullptr;
+
+	ExtensionEntry entry = ExtensionCache[path];
+
     auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
     uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
     uint8_t* strem2 = (uint8_t*)strem;
 
     SoundFontSample* sampleC = new SoundFontSample;
-    
-    if (entry.ext == "wav") {
-        drwav wav;
-        drwav_init_memory_with_metadata(&wav, strem2, sampleRaw->dwBufferSize, DRWAV_SEQUENTIAL, NULL);
 
+    if (entry.ext == "wav") {
         drwav_uint32 channels;
         drwav_uint32 sampleRate;
         drwav_uint64 totalPcm;
-        drmp3_int16* pcmData = drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &channels,
-                                                                         &sampleRate, &totalPcm, NULL);
-
+        drmp3_int16* pcmData = 
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &channels, &sampleRate, &totalPcm, NULL);
         sampleC->size = totalPcm;
         sampleC->sampleAddr = (uint8_t*)pcmData;
         sampleC->codec = CODEC_S16;
 
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = 0;
         sampleC->loop->end = sampleC->size - 1;
         sampleC->loop->count = 0;
         sampleC->sampleRateMagicValue = 'RIFF';
         sampleC->sampleRate = sampleRate;
 
-        cachedCustomSFs[entry.raw] = sampleC;
+        cachedCustomSFs[path] = sampleC;
         return sampleC;
     } else if (entry.ext == "mp3") {
-		
+
         drmp3_config mp3Info;
         drmp3_uint64 totalPcm;
         drmp3_int16* pcmData =
@@ -655,17 +655,17 @@ extern "C" SoundFontSample* ReadCustomSample(ExtensionEntry entry) {
         sampleC->sampleAddr = (uint8_t*)pcmData;
         sampleC->codec = CODEC_S16;
 
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = 0;
         sampleC->loop->end = sampleC->size;
         sampleC->loop->count = 0;
         sampleC->sampleRateMagicValue = 'RIFF';
         sampleC->sampleRate = mp3Info.sampleRate;
 
-        cachedCustomSFs[entry.raw] = sampleC;
+        cachedCustomSFs[path] = sampleC;
         return sampleC;
     }
-	
+
     return nullptr;
 }
 
@@ -676,13 +676,11 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 
     if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
         return cachedCustomSFs[path];
-	
-    if (ExtensionCache.contains(path)) {
-        SoundFontSample* sample = ReadCustomSample(ExtensionCache[path]);
-		
-        if (sample != nullptr)
-            return sample;
-    }
+
+    SoundFontSample* cSample = ReadCustomSample(path);
+
+    if (cSample != nullptr)
+        return cSample;
 
     auto sample = std::static_pointer_cast<Ship::AudioSample>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
@@ -697,7 +695,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     }
     else
     {
-        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+        SoundFontSample* sampleC = new SoundFontSample;
 
         sampleC->sampleAddr = sample->data.data();
 
@@ -707,14 +705,14 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         sampleC->unk_bit26 = sample->unk_bit26;
         sampleC->unk_bit25 = sample->unk_bit25;
 
-        sampleC->book = (AdpcmBook*)malloc(sizeof(AdpcmBook) + (sample->book.books.size() * sizeof(int16_t)));
+        sampleC->book = new AdpcmBook[sample->book.books.size() * sizeof(int16_t)];
         sampleC->book->npredictors = sample->book.npredictors;
         sampleC->book->order = sample->book.order;
 
         for (int i = 0; i < sample->book.books.size(); i++)
             sampleC->book->book[i] = sample->book.books[i];
 
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = sample->loop.start;
         sampleC->loop->end = sample->loop.end;
         sampleC->loop->count = sample->loop.count;
