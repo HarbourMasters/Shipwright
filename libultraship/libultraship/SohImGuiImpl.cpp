@@ -1008,7 +1008,7 @@ namespace SohImGui {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance\nNeeds to reload the map to take effect");
+                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
                 }
 
                 ImGui::EndMenu();
