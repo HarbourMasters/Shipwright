@@ -94,7 +94,9 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 Item_Give(globalCtx, ITEM_SKULL_TOKEN);
-                player->actor.freezeTimer = 10;
+                if (CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
+                    player->actor.freezeTimer = 20;
+                }
                 Message_StartTextbox(globalCtx, 0xB4, NULL);
                 Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 this->actionFunc = func_80AFB950;
@@ -116,7 +118,6 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         Item_Give(globalCtx, ITEM_SKULL_TOKEN);
-        player->actor.freezeTimer = 10;
         Message_StartTextbox(globalCtx, 0xB4, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
@@ -126,7 +127,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING) {
+    if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING && CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
