@@ -91,6 +91,9 @@
     <Filter Include="Source Files\CustomImpl\Overlay">
       <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lib\dr_libs">
+      <UniqueIdentifier>{db6e02cc-fc4c-4138-8219-1d281ad93ec2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">
@@ -649,6 +652,15 @@
     </ClInclude>
     <ClInclude Include="Factories\AudioFactory.h">
       <Filter>Header Files\Resources\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\dr_libs\flac.h">
+      <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\dr_libs\mp3.h">
+      <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\dr_libs\wav.h">
+      <Filter>Source Files\Lib\dr_libs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

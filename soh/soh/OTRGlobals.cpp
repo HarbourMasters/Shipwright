@@ -26,6 +26,10 @@
 #include <Cutscene.h>
 #include <Texture.h>
 #include "Lib/stb/stb_image.h"
+#define DRMP3_IMPLEMENTATION
+#include "Lib/dr_libs/mp3.h"
+#define DRWAV_IMPLEMENTATION
+#include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
@@ -50,6 +54,12 @@ OTRGlobals::OTRGlobals() {
 OTRGlobals::~OTRGlobals() {
 }
 
+struct ExtensionEntry {
+    std::string path;
+    std::string raw;
+    std::string ext;
+};
+
 extern uintptr_t clearMtx;
 extern "C" Mtx gMtxClear;
 extern "C" MtxF gMtxFClear;
@@ -60,12 +70,26 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 // C->C++ Bridge
 extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
     ResourceMgr_CacheDirectory("audio");
+}
+
+extern "C" void OTRExtScanner() {
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
+	
+    for (auto& rPath : lst) {
+        std::vector<std::string> raw = StringHelper::Split(rPath, ".");
+        std::string ext = raw[raw.size() - 1];
+        std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
+        replace(nPath.begin(), nPath.end(), '\\', '/');
+		
+        ExtensionCache[nPath] = { rPath, rPath, ext };
+    }
 }
 
 extern "C" void InitOTR() {
@@ -84,6 +108,7 @@ extern "C" void InitOTR() {
     OTRAudio_Init();
     DebugConsole_Init();
     Debug_Init();
+    OTRExtScanner();
 }
 
 #ifdef _WIN32
@@ -588,6 +613,62 @@ extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
+extern "C" SoundFontSample* ReadCustomSample(ExtensionEntry entry) {
+    
+    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
+    uint8_t* strem2 = (uint8_t*)strem;
+
+    SoundFontSample* sampleC = new SoundFontSample;
+    
+    if (entry.ext == "wav") {
+        drwav wav;
+        drwav_init_memory_with_metadata(&wav, strem2, sampleRaw->dwBufferSize, DRWAV_SEQUENTIAL, NULL);
+
+        drwav_uint32 channels;
+        drwav_uint32 sampleRate;
+        drwav_uint64 totalPcm;
+        drmp3_int16* pcmData = drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &channels,
+                                                                         &sampleRate, &totalPcm, NULL);
+
+        sampleC->size = totalPcm;
+        sampleC->sampleAddr = (uint8_t*)pcmData;
+        sampleC->codec = CODEC_S16;
+
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size - 1;
+        sampleC->loop->count = 0;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = sampleRate;
+
+        cachedCustomSFs[entry.raw] = sampleC;
+        return sampleC;
+    } else if (entry.ext == "mp3") {
+		
+        drmp3_config mp3Info;
+        drmp3_uint64 totalPcm;
+        drmp3_int16* pcmData =
+            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &mp3Info, &totalPcm, NULL);
+
+        sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
+        sampleC->sampleAddr = (uint8_t*)pcmData;
+        sampleC->codec = CODEC_S16;
+
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size;
+        sampleC->loop->count = 0;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = mp3Info.sampleRate;
+
+        cachedCustomSFs[entry.raw] = sampleC;
+        return sampleC;
+    }
+	
+    return nullptr;
+}
+
 extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 {
     if (std::string(path) == "")
@@ -595,41 +676,12 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 
     if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
         return cachedCustomSFs[path];
-
-    // Check if our file is actually a wav...
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path);
-    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
-    uint8_t* strem2 = (uint8_t*)strem;
-
-    if (strem2[0] == 'R' && strem2[1] == 'I' && strem2[2] == 'F' && strem2[3] == 'F')
-    {
-        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
-
-        *strem++; // RIFF
-        *strem++; // size
-        *strem++; // WAVE
-
-        *strem++; // fmt
-        int fmtChunkSize = *strem++;
-        *strem++; // wFormatTag + wChannels
-        int32_t sampleRate = *strem++; // dwSamplesPerSec
-        // OTRTODO: Make sure wav format is what the audio driver wants!
-
-        strem = (uint32_t*)&strem2[0x0C + fmtChunkSize + 8 + 4];
-        sampleC->size = *strem++;
-        sampleC->sampleAddr = (uint8_t*)strem;
-        sampleC->codec = CODEC_S16;
-
-        // OTRTODO: Grab loop data from wav
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size / 2; // OTRTODO: This calculation is probably incorrect... Sometimes it goes past the sample, sometimes it stops too early...
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
+	
+    if (ExtensionCache.contains(path)) {
+        SoundFontSample* sample = ReadCustomSample(ExtensionCache[path]);
+		
+        if (sample != nullptr)
+            return sample;
     }
 
     auto sample = std::static_pointer_cast<Ship::AudioSample>(
