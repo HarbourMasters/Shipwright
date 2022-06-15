@@ -653,9 +653,6 @@
     <ClInclude Include="Factories\AudioFactory.h">
       <Filter>Header Files\Resources\Factories</Filter>
     </ClInclude>
-    <ClInclude Include="Lib\dr_libs\flac.h">
-      <Filter>Source Files\Lib\dr_libs</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\dr_libs\mp3.h">
       <Filter>Source Files\Lib\dr_libs</Filter>
     </ClInclude>
