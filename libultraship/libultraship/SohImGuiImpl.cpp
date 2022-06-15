@@ -1046,6 +1046,9 @@ namespace SohImGui {
 
                     if (CVar_GetS32("gInfiniteAmmo", 0) == 1)
                     {
+                        ImGui::Separator();
+                        EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
+                        Tooltip("Hides the Ammo Counter, just like how in MM and other games, where no ammo counter usually means infinite ammo.");
                     }
 
                     ImGui::EndMenu();
