@@ -3793,15 +3793,16 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
         }
         else if ((this->unk_8A1 != 0) && ((this->unk_8A1 >= 2) || (this->invincibilityTimer == 0))) {
             u8 sp5C[] = { 2, 1, 1 };
-
+            if (CVar_GetS32("gLightningproof", 0) == 0) {
             func_80838280(this);
-
-            if (this->unk_8A1 == 3) {
-                this->shockTimer = 40;
-            }
+            
+                if (this->unk_8A1 == 3) {
+                    this->shockTimer = 40;
+                }
 
             this->actor.colChkInfo.damage += this->unk_8A0;
             func_80837C0C(globalCtx, this, sp5C[this->unk_8A1 - 1], this->unk_8A4, this->unk_8A8, this->unk_8A2, 20);
+            }
         }
         else {
             sp64 = (this->shieldQuad.base.acFlags & AC_BOUNCED) != 0;
@@ -8170,13 +8171,17 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
         if (this->unk_850 > 0) {
             this->unk_850--;
             if (this->unk_850 == 0) {
-                if (this->stateFlags1 & PLAYER_STATE1_27) {
-                    LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_003328, 1.0f, 0.0f,
-                        Animation_GetLastFrame(&gPlayerAnim_003328), ANIMMODE_ONCE, -16.0f);
-                }
-                else {
-                    LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
-                        Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
+                if (CVar_GetS32("gLightningProof", 0) == 0) {
+                    if (this->stateFlags1 & PLAYER_STATE1_27) {
+                        LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_003328, 1.0f, 0.0f,
+                                             Animation_GetLastFrame(&gPlayerAnim_003328), ANIMMODE_ONCE, -16.0f);
+                    } else {
+                        LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
+                                             Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
+                    }
+                } else {
+                        LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
+                                             Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
                 gSaveContext.healthAccumulator = 0x140;
                 this->unk_850 = -1;
@@ -10218,25 +10223,26 @@ void func_80848B44(GlobalContext* globalCtx, Player* this) {
     Vec3f shockPos;
     Vec3f* randBodyPart;
     s32 shockScale;
+    if (CVar_GetS32("gLightningproof", 0) == 0) {
+        this->shockTimer--;
+        this->unk_892 += this->shockTimer;
 
-    this->shockTimer--;
-    this->unk_892 += this->shockTimer;
+        if (this->unk_892 > 20) {
+            shockScale = this->shockTimer * 2;
+            this->unk_892 -= 20;
 
-    if (this->unk_892 > 20) {
-        shockScale = this->shockTimer * 2;
-        this->unk_892 -= 20;
+            if (shockScale > 40) {
+                shockScale = 40;
+            }
 
-        if (shockScale > 40) {
-            shockScale = 40;
+            randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(ARRAY_COUNT(this->bodyPartsPos) - 0.1f);
+            shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
+            shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
+            shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
+
+            EffectSsFhgFlash_SpawnShock(globalCtx, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
+            func_8002F8F0(&this->actor, NA_SE_PL_SPARK - SFX_FLAG);
         }
-
-        randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(ARRAY_COUNT(this->bodyPartsPos) - 0.1f);
-        shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
-        shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
-        shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
-
-        EffectSsFhgFlash_SpawnShock(globalCtx, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
-        func_8002F8F0(&this->actor, NA_SE_PL_SPARK - SFX_FLAG);
     }
 }
 
@@ -13232,17 +13238,18 @@ void func_8084FB10(Player* this, GlobalContext* globalCtx) {
 }
 
 void func_8084FBF4(Player* this, GlobalContext* globalCtx) {
-    LinkAnimation_Update(globalCtx, &this->skelAnime);
-    func_808382BC(this);
+    if (CVar_GetS32("gLightningproof", 0) == 0) {
+        LinkAnimation_Update(globalCtx, &this->skelAnime);
+        func_808382BC(this);
 
-    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
-        if (DECR(this->unk_850) == 0) {
-            func_80839F90(this, globalCtx);
+        if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
+            if (DECR(this->unk_850) == 0) {
+                func_80839F90(this, globalCtx);
+            }
         }
+        this->shockTimer = 40;
+        func_8002F8F0(&this->actor, NA_SE_VO_LI_TAKEN_AWAY - SFX_FLAG + this->ageProperties->unk_92);
     }
-
-    this->shockTimer = 40;
-    func_8002F8F0(&this->actor, NA_SE_VO_LI_TAKEN_AWAY - SFX_FLAG + this->ageProperties->unk_92);
 }
 
 s32 func_8084FCAC(Player* this, GlobalContext* globalCtx) {

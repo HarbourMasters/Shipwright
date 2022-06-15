@@ -1048,7 +1048,7 @@ namespace SohImGui {
                     {
                         ImGui::Separator();
                         EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
-                        Tooltip("Hides the Ammo Counter, just like how in MM and other games, where no ammo counter usually means infinite ammo.");
+                        Tooltip("Hides the Ammo Counter, just like how in MM and other games, no ammo counter usually means infinite ammo.");
                     }
 
                     ImGui::EndMenu();
@@ -1061,12 +1061,20 @@ namespace SohImGui {
                     Tooltip("Prevents Link from being frozen by Ice Keese and Freezards. He will still take damage from their attacks making contact, though.");
                     EnhancementCheckbox("Fireproof", "gFireproof");
                     Tooltip("Prevents Link from being set on fire all together. He'll still take damage from the initial hit, though.");
-                    EnhancementCheckbox("Grounded Link (N/A)", "gLightningproof");
-                    Tooltip("Prevents Link from electrocuted and freaking out when being zapped.");
-                    EnhancementCheckbox("Windproof Link (N/A)", "gWindproof");
+                    //EnhancementCheckbox("Grounded Link", "gLightningproof");  //On Hold for now, not having luck stopping the whole animation entirely... :/
+                    //Tooltip("Prevents Link from electrocuted and freaking out when being zapped.");
+                    EnhancementCheckbox("Windproof Link", "gWindproof");
                     Tooltip("Prevents Link from being blown away by fans. Might cause softlocks?");
-                    EnhancementCheckbox("No Current Influence (N/A)", "gNoCurrents");
-                    Tooltip("Water Currents / Whirlpool Currents don't affect (Push or Pull) Link around in water.");
+                    EnhancementCheckbox("No Current Influence (Partially works)", "gNoCurrents");
+                    Tooltip("Vortexes don't influence Link from a distance anymore. WARNING: Going over one won't pull you down, but also won't let you move away from them.");
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("Fun")) {
+                    EnhancementCheckbox("Super Bow", "gSuperBow");
+                    Tooltip("Improves your bow!");  //Seriously, give this a try. xD
+                    EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
+                    Tooltip("Gives you some holy Deku Nuts!");  //Skilar (or was it MalonSpeedruns?) would love this one!
                     ImGui::EndMenu();
                 }
                 

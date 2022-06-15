@@ -170,7 +170,11 @@ void EnArrow_Shoot(EnArrow* this, GlobalContext* globalCtx) {
             case ARROW_NORMAL_LIT:
             case ARROW_NORMAL_HORSE:
             case ARROW_NORMAL:
-                func_8002F7DC(&player->actor, NA_SE_IT_ARROW_SHOT);
+                if (CVar_GetS32("gSuperBow", 0) == 0) {
+                    func_8002F7DC(&player->actor, NA_SE_IT_ARROW_SHOT);
+                } else {
+                    func_8002F7DC(&player->actor, NA_SE_VO_KZ_MOVE);
+                }
                 break;
 
             case ARROW_FIRE:
@@ -275,6 +279,9 @@ void EnArrow_Fly(EnArrow* this, GlobalContext* globalCtx) {
                 Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_M_FIRE1, this->actor.world.pos.x,
                             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 0);
                 sfxId = NA_SE_IT_DEKU;
+                if (CVar_GetS32("gSuperDekuNuts", 0) == 1) {
+                    gSaveContext.health = 0;
+                }
             } else {
                 sfxId = NA_SE_IT_SLING_REFLECT;
             }

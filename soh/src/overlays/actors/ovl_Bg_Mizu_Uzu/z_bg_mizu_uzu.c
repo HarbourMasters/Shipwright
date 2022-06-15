@@ -59,7 +59,11 @@ void func_8089F788(BgMizuUzu* this, GlobalContext* globalCtx) {
 
     if (GET_PLAYER(globalCtx)->currentBoots == PLAYER_BOOTS_IRON) {
         func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    } else {
+    }
+    if (CVar_GetS32("gNoCurrents", 0) == 1) {
+        func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
+    }
+    else {
         func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
     Audio_PlayActorSound2(thisx, NA_SE_EV_WATER_CONVECTION - SFX_FLAG);
