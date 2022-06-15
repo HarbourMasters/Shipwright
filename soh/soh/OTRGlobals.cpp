@@ -1041,8 +1041,8 @@ extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBu
             // German
             str = prefix +
                                 "\x13\x71"
-                                "Du hast eine \x05\x41Goldene Skulltula\x05\x40\x01zerst\x9Brt! Sie haben "
-                                "insgesamt\x01\x05\x41\x19\x05\x40 Skulltula-Symbol!" +
+                                "Du erh\x93lst ein \x05\x41Skulltula-Symbol\x05\x40!\x01"
+                                "Insgesamt hast du \x05\x41\x19\x05\x40\x01Skulltula-Symbole gesammelt!" +
                                 postfix;
         } else {
             // English
