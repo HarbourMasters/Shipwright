@@ -864,8 +864,6 @@ namespace SohImGui {
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
                     Tooltip("Prevent forced Navi conversations");
-                    EnhancementCheckbox("Better Owl", "gBetterOwl");
-                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
                     Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
