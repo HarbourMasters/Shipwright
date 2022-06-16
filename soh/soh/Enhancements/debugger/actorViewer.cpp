@@ -561,7 +561,6 @@ void DrawActorViewer(bool& open) {
             display = empty;
             fetch = nullptr;
             dispOverlay = nullptr;
-            newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             actor = category = 0;
             filler = "Please Select";
             list.clear();
@@ -753,6 +752,10 @@ void DrawActorViewer(bool& open) {
                 }
             }
 
+            if (ImGui::Button("Reset")) {
+                newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
+            }
+
             ImGui::TreePop();
         }
     } else {
@@ -760,7 +763,6 @@ void DrawActorViewer(bool& open) {
         if (needs_reset) {
             fetch = nullptr;
             dispOverlay = nullptr;
-            newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             actor = category = 0;
             filler = "Please Select";
             list.clear();
