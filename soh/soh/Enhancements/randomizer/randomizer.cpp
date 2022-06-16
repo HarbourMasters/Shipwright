@@ -3926,7 +3926,6 @@ void DrawRandoEditor(bool& open) {
                     InsertHelpHoverText(
                         "Set the minimum weight for the unique prize from\nthe fishing minigame as an adult");
 
-
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier
                     // ImGui::Text("Damage Multipier");

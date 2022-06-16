@@ -2510,8 +2510,6 @@ namespace Settings {
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
     ChildMinFishWeight.SetSelectedIndexByString(std::to_string(cvarSettings[RSK_CHILD_FISH_WEIGHT]));
     AdultMinFishWeight.SetSelectedIndexByString(std::to_string(cvarSettings[RSK_ADULT_FISH_WEIGHT]));
-    //ChildMinFishWeight.SetSelectedIndex(cvarSettings[RSK_CHILD_FISH_WEIGHT]);
-    //AdultMinFishWeight.SetSelectedIndex(cvarSettings[RSK_ADULT_FISH_WEIGHT]);
 
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
