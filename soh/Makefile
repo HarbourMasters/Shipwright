@@ -10,6 +10,8 @@ UNAMEM := $(shell uname -m)
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
 
+LIBATOMICPATH ?= /opt/local/lib/gcc-devel/
+
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
@@ -166,6 +168,46 @@ O_FILES := \
 	$(C_FILES:%.c=build/%.o) \
 	$(CXX_FILES:%.cpp=build/%.o)
 D_FILES := $(O_FILES:%.o=%.d)
+
+# Apple App Bundle
+APPNAME=ShipOfHarkinian
+APPBUNDLE=$(APPNAME).app
+APPBUNDLECONTENTS=$(APPBUNDLE)/Contents
+APPBUNDLEEXE=$(APPBUNDLECONTENTS)/MacOS
+APPBUNDLERESOURCES=$(APPBUNDLECONTENTS)/Resources
+APPBUNDLEICON=$(APPBUNDLECONTENTS)/Resources
+appbundle: macosx/$(APPNAME).icns
+	rm -rf $(APPBUNDLE)
+	mkdir $(APPBUNDLE)
+	mkdir $(APPBUNDLE)/Contents
+	mkdir $(APPBUNDLE)/Contents/MacOS
+	mkdir $(APPBUNDLE)/Contents/Resources
+	cp macosx/Info.plist $(APPBUNDLECONTENTS)/
+	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
+	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
+	cp $(TARGET) $(APPBUNDLEEXE)/$(APPNAME)
+	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
+	echo ${LIBATOMICPATH} | dylibbundler -od -b -x  $(APPBUNDLEEXE)/$(APPNAME) -d $(APPBUNDLECONTENTS)/libs
+
+macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
+	rm -rf macosx/$(APPNAME).iconset
+	mkdir macosx/$(APPNAME).iconset
+	sips -z 16 16     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16.png
+	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16@2x.png
+	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32.png
+	sips -z 64 64     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32@2x.png
+	sips -z 128 128   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128.png
+	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128@2x.png
+	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256.png
+	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256@2x.png
+	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_512x512.png
+	cp macosx/$(APPNAME)Icon.png macosx/$(APPNAME).iconset/icon_512x512@2x.png
+	iconutil -c icns -o macosx/$(APPNAME).icns macosx/$(APPNAME).iconset
+	rm -r macosx/$(APPNAME).iconset
+
+filledappbundle: appbundle
+	cp ./oot.otr $(APPBUNDLEEXE)/oot.otr
+
 
 # create build directory
 SRC_DIRS := $(shell find . -type d -a -not -path "*build*")
