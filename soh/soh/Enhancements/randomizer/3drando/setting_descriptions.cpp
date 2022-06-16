@@ -582,6 +582,15 @@ string_view minChildFishWeightDesc    = "Changes the minimum weight required as 
 string_view minAdultFishWeightDesc    = "Changes the minimum weight required as an adult\n"//
                                         "for the unique reward in the fishing minigame.";  //
 /*------------------------------                                                           //
+|     Instant Fishing          |                                                           //
+------------------------------*/                                                           //
+string_view instantFishingDesc        = "Instantly reels in fish as long as they bite";    //
+/*------------------------------                                                           //
+|     GUARANTEE FISHING BITE   |                                                           //
+------------------------------*/                                                           //
+string_view guaranteeFishingBiteDesc =  "Guarantees Fish will bite if minimum conditions\n"//
+                                        "are met.";                                        //
+/*------------------------------                                                           //
 |        KING ZORA SPEED        |                                                          //
 -------------------------------*/                                                          //
 string_view kingZoraSpeedFast         = "King Zora will move out of the way in 1 shuffle"; //

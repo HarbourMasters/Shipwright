@@ -261,6 +261,8 @@ namespace Settings {
   Option NumRequiredCuccos   = Option::U8  ("Cuccos to return",       {NumOpts(0, 7)},                                          {numRequiredCuccosDesc});
   Option ChildMinFishWeight  = Option::U8  ("Child Min Fish Weight",  {NumOpts(6, 10)},                                         {minChildFishWeightDesc},                                                                                         OptionCategory::Setting,    2);
   Option AdultMinFishWeight  = Option::U8  ("Adult Min Fish Weight",  {NumOpts(8, 13)},                                         {minAdultFishWeightDesc},                                                                                         OptionCategory::Setting,    2);
+  Option InstantFishing      = Option::Bool ("Instant Fishing",       { "Off", "On" },                                                        {instantFishingDesc},                                                                                         OptionCategory::Setting, 1);
+  Option GuaranteeFishingBite = Option::Bool("Guarantee Fishing Bite",{ "Off", "On" },                                                        {guaranteeFishingBiteDesc},                                                                                       OptionCategory::Setting,     1);
   Option KingZoraSpeed       = Option::U8  ("King Zora Speed",        {"Fast", "Vanilla", "Random"},                                          {kingZoraSpeedFast, kingZoraSpeedVanilla, kingZoraSpeedRandom});
   Option CompleteMaskQuest   = Option::Bool("Complete Mask Quest",    {"Off", "On"},                                                          {completeMaskDesc});
   Option QuickText           = Option::U8  ("Quick Text",             {"0: Vanilla", "1: Skippable", "2: Instant", "3: Turbo"},               {quickTextDesc0, quickTextDesc1, quickTextDesc2, quickTextDesc3},                                                 OptionCategory::Setting,    QUICKTEXT_INSTANT);
@@ -279,6 +281,8 @@ namespace Settings {
     &NumRequiredCuccos,
     &ChildMinFishWeight,
     &AdultMinFishWeight,
+    &InstantFishing,
+    &GuaranteeFishingBite,
     &KingZoraSpeed,
     &CompleteMaskQuest,
     &QuickText,
@@ -2510,6 +2514,8 @@ namespace Settings {
     HintDistribution.SetSelectedIndex(cvarSettings[RSK_HINT_DISTRIBUTION]);
     ChildMinFishWeight.SetSelectedIndexByString(std::to_string(cvarSettings[RSK_CHILD_FISH_WEIGHT]));
     AdultMinFishWeight.SetSelectedIndexByString(std::to_string(cvarSettings[RSK_ADULT_FISH_WEIGHT]));
+    InstantFishing.SetSelectedIndex(cvarSettings[RSK_INSTANT_FISHING]);
+    GuaranteeFishingBite.SetSelectedIndex(cvarSettings[RSK_GUARANTEE_FISHING_BITE]);
 
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);

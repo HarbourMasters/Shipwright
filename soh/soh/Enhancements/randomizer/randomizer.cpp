@@ -1158,7 +1158,9 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "  Hint Clarity", RSK_HINT_CLARITY},
     { "  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Child Min Fish Weight", RSK_CHILD_FISH_WEIGHT },
-    { "Adult Min Fish Weight", RSK_ADULT_FISH_WEIGHT }
+    { "Adult Min Fish Weight", RSK_ADULT_FISH_WEIGHT },
+    { "Guarantee Fishing Bite", RSK_GUARANTEE_FISHING_BITE },
+    { "Instant Fishing", RSK_INSTANT_FISHING }
 };
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
@@ -1312,6 +1314,20 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_ADULT_FISH_WEIGHT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
+                        break;
+                    case RSK_INSTANT_FISHING:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
+                    case RSK_GUARANTEE_FISHING_BITE:
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
                         break;
                     case RSK_RANDOM_TRIALS:
                         if(it.value() == "Off") {
@@ -2701,6 +2717,8 @@ void GenerateRandomizerImgui() {
     // There is no zero indexing, so we pass the default as the value
     cvarSettings[RSK_CHILD_FISH_WEIGHT] = CVar_GetS32("gRandomizeChildFishWeight", 8);
     cvarSettings[RSK_ADULT_FISH_WEIGHT] = CVar_GetS32("gRandomizeAdultFishWeight", 10);
+    cvarSettings[RSK_INSTANT_FISHING] = CVar_GetS32("gRandomizeInstantFishing", 1);
+    cvarSettings[RSK_GUARANTEE_FISHING_BITE] = CVar_GetS32("gRandomizeGuaranteeFishingBite", 1);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3925,7 +3943,11 @@ void DrawRandoEditor(bool& open) {
                                                    "gRandomizeAdultFishWeight", 8, 13, "", 10);
                     InsertHelpHoverText(
                         "Set the minimum weight for the unique prize from\nthe fishing minigame as an adult");
-
+                    SohImGui::EnhancementCheckbox("Instant Fishing", "gRandomizeInstantFishing");
+                    InsertHelpHoverText("Instantly reels in hooked fish");
+                    SohImGui::EnhancementCheckbox("Guarantee Fishing Bite", "gRandomizeGuaranteeFishingBite");
+                    InsertHelpHoverText(
+                        "Guarantees fish will bite as long as minimum\nconditions are met");
                     // todo implement damage multiplier (as soh setting)
                     // // Damage Multipier
                     // ImGui::Text("Damage Multipier");
