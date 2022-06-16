@@ -874,6 +874,8 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
                     Tooltip("Stops Link from catching fire while wearing the Goron Tunic");
+                    EnhancementCheckbox("Super Bow", "gSuperBow");
+                    Tooltip("Improves your bow!");
                     ImGui::EndMenu();
                 }
 
@@ -928,7 +930,12 @@ namespace SohImGui {
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
                     Tooltip("Always shows dungeon entrance icons on the minimap");
-
+                    if (CVar_GetS32("gInfiniteAmmo", 0) == 1)
+                    {
+                        ImGui::Separator();
+                        EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
+                        Tooltip("Hides the Ammo Counter");
+                    }
                     ImGui::EndMenu();
                 }
 
@@ -1039,16 +1046,9 @@ namespace SohImGui {
                     EnhancementCheckbox("Money", "gInfiniteMoney");
                     EnhancementCheckbox("Health", "gInfiniteHealth");
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
+                    Tooltip("Check 'Enhancements' menu if you wish to hide ammo counter (when this is on)");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
-
-                    if (CVar_GetS32("gInfiniteAmmo", 0) == 1)
-                    {
-                        ImGui::Separator();
-                        EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
-                        Tooltip("Hides the Ammo Counter");
-                    }
-
                     ImGui::EndMenu();
                 }
                 EnhancementCheckbox("No Freeze", "gNoFreeze");
@@ -1058,9 +1058,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Windproof Link", "gWindproof");
                 Tooltip("Prevents Link from being blown away by fans.");
                 EnhancementCheckbox("No Current Influence (Use with Caution)", "gNoCurrents");
-                Tooltip("Vortexes don't influence Link from a distance\nWARNING: If Link enters a vortex in this state, he will become stuck");
-                EnhancementCheckbox("Super Bow", "gSuperBow");
-                Tooltip("Improves your bow!");
+     
                 EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
                 Tooltip("Makes your Deku Nuts deadly!");
                 EnhancementCheckbox("No Clip", "gNoClip");
