@@ -168,7 +168,7 @@ O_FILES := \
 D_FILES := $(O_FILES:%.o=%.d)
 
 # Apple App Bundle
-APPNAME=ShipOfHarkinian
+APPNAME=soh
 APPBUNDLE=$(APPNAME).app
 APPBUNDLECONTENTS=$(APPBUNDLE)/Contents
 APPBUNDLEEXE=$(APPBUNDLECONTENTS)/MacOS
@@ -233,7 +233,7 @@ appbundle: macosx/$(APPNAME).icns
 	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
 	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
 	cp $(TARGET) $(APPBUNDLEEXE)/soh
-	cp macosx/launcher.sh $(APPBUNDLEEXE)/ShipOfHarkinian
+	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
 	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
 
 macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png

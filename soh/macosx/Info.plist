@@ -4,12 +4,14 @@
 <dict>
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
+    <key>CFBundleName</key>
+    <string>Ship of Harkinian</string>
     <key>CFBundleExecutable</key>
-    <string>ShipOfHarkinian</string>
+    <string>launcher.sh</string>
     <key>CFBundleGetInfoString</key>
     <string>2.0.0</string>
     <key>CFBundleIconFile</key>
-    <string>ShipOfHarkinian.icns</string>
+    <string>soh.icns</string>
     <key>CFBundleIdentifier</key>
     <string>com.shipofharkinian.ShipOfHarkinian</string>
     <key>CFBundleDocumentTypes</key>

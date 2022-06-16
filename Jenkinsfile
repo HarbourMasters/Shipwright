@@ -132,6 +132,11 @@ pipeline {
                     cd soh
                     make setup -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
                     make -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
+
+                    make -j4 appbundle
+
+                    mv ../README.md readme.txt
+                    7z a soh-mac.7z soh.app readme.txt
                     '''
                 }
             }
