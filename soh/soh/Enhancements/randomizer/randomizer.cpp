@@ -3183,6 +3183,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
                     // COLUMN 1 - OPEN SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     //ImGui::NewLine();
                     // SohImGui::EnhancementCheckbox("Randomize All Open Settings", "gRandomizeAllOpenSettings");
                     // InsertHelpHoverText("Randomize all Open Settings except for Logic rules");
@@ -3350,6 +3351,7 @@ void DrawRandoEditor(bool& open) {
                         // }
                         ImGui::Separator();
                     }
+                    ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
 
                     // COLUMN 2 - WORLD SETTINGS
@@ -3483,7 +3485,7 @@ void DrawRandoEditor(bool& open) {
                     // SohImGui::EnhancementCheckbox("Randomize All Shuffle Settings", "gRandomizeAllShuffleSettings");
                     // InsertHelpHoverText("Randomize all Shuffle Settings");
                     // ImGui::Separator();
-
+                    ImGui::PushItemWidth(-FLT_MIN);
                     if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
                         // Shuffle Dungeon Rewards
                         ImGui::Text("Shuffle Dungeon Rewards");
@@ -3733,6 +3735,7 @@ void DrawRandoEditor(bool& open) {
                         //     "only the Claim\nCheck will be found in the pool.");
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleAdultTrade", randoShuffleAdultTrade, 2, 0);
                     }
+                    ImGui::PopItemWidth();
 
                     ImGui::TableNextColumn();
                     SohImGui::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
@@ -3882,6 +3885,7 @@ void DrawRandoEditor(bool& open) {
 
                     // RANDOTODO implement ganon's boss key outside of ganon's castle
                         // Ganon's Boss Key
+                    ImGui::PushItemWidth(-FLT_MIN);
                         ImGui::Text("Ganon's Boss Key");
                         SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
                                                       0);
@@ -3966,7 +3970,7 @@ void DrawRandoEditor(bool& open) {
                             //     break;
                         }
                         ImGui::Separator();
-                    
+                        ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
@@ -4080,6 +4084,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
 
                     // COLUMN 1 - HINT SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     // Gossip Stone Hints
                     ImGui::Text("Gossip Stone Hints");
                     InsertHelpHoverText(
@@ -4176,10 +4181,11 @@ void DrawRandoEditor(bool& open) {
                     // }
                     // SohImGui::EnhancementCombobox("gRandomizeRandomTrapDamage", randoRandomTrapDamage, 3, 0);
                     // ImGui::Separator();
-
+                    ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
 
                     // // COLUMN 2 - ITEM POOL SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 1)) {
                         case 0:
@@ -4236,6 +4242,7 @@ void DrawRandoEditor(bool& open) {
                     //     "Giant's Knife will walays be found before Biggoron's\nSword. Medigoron only "
                     //     "starts selling new knives\nonce the Giant's Knife has been found\nand broken.");
                     // ImGui::Separator();
+                    ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
