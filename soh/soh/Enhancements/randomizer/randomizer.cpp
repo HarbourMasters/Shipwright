@@ -2283,6 +2283,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 7:
             switch (actorParams) {
+                case 273:
+                    return RC_SHADOW_TEMPLE_FREESTANDING_KEY;
                 case 6177:
                     return RC_SHADOW_TEMPLE_MAP_CHEST;
                 case 5607:
@@ -2319,6 +2321,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 8:
             switch (actorParams) {
+                case 273:
+                    return RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY;
                 case 22600:
                     return RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
                 case 20578:
@@ -2367,6 +2371,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 11:
             switch (actorParams) {
+                case 273:
+                    return RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY;
                 case -30573:
                     return RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST;
                 case -30393:
