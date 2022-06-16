@@ -174,38 +174,6 @@ APPBUNDLECONTENTS=$(APPBUNDLE)/Contents
 APPBUNDLEEXE=$(APPBUNDLECONTENTS)/MacOS
 APPBUNDLERESOURCES=$(APPBUNDLECONTENTS)/Resources
 APPBUNDLEICON=$(APPBUNDLECONTENTS)/Resources
-appbundle: macosx/$(APPNAME).icns
-	rm -rf $(APPBUNDLE)
-	mkdir $(APPBUNDLE)
-	mkdir $(APPBUNDLE)/Contents
-	mkdir $(APPBUNDLE)/Contents/MacOS
-	mkdir $(APPBUNDLE)/Contents/Resources
-	cp macosx/Info.plist $(APPBUNDLECONTENTS)/
-	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
-	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
-	cp $(TARGET) $(APPBUNDLEEXE)/$(APPNAME)
-	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
-	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/$(APPNAME) -d $(APPBUNDLECONTENTS)/libs
-
-macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
-	rm -rf macosx/$(APPNAME).iconset
-	mkdir macosx/$(APPNAME).iconset
-	sips -z 16 16     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16.png
-	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16@2x.png
-	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32.png
-	sips -z 64 64     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32@2x.png
-	sips -z 128 128   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128.png
-	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128@2x.png
-	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256.png
-	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256@2x.png
-	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_512x512.png
-	cp macosx/$(APPNAME)Icon.png macosx/$(APPNAME).iconset/icon_512x512@2x.png
-	iconutil -c icns -o macosx/$(APPNAME).icns macosx/$(APPNAME).iconset
-	rm -r macosx/$(APPNAME).iconset
-
-filledappbundle: appbundle
-	cp ./oot.otr $(APPBUNDLEEXE)/oot.otr
-
 
 # create build directory
 SRC_DIRS := $(shell find . -type d -a -not -path "*build*")
@@ -254,3 +222,36 @@ $(TARGET): $(O_FILES)
 	$(CXX) $^ -o $@ $(LDFLAGS) -fuse-ld=$(LD) $(LDDIRS) $(LDLIBS)
 
 -include $(D_FILES)
+
+appbundle: macosx/$(APPNAME).icns
+	rm -rf $(APPBUNDLE)
+	mkdir $(APPBUNDLE)
+	mkdir $(APPBUNDLE)/Contents
+	mkdir $(APPBUNDLE)/Contents/MacOS
+	mkdir $(APPBUNDLE)/Contents/Resources
+	cp macosx/Info.plist $(APPBUNDLECONTENTS)/
+	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
+	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
+	cp $(TARGET) $(APPBUNDLEEXE)/soh
+	cp macosx/launcher.sh $(APPBUNDLEEXE)/ShipOfHarkinian
+	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
+
+macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
+	rm -rf macosx/$(APPNAME).iconset
+	mkdir macosx/$(APPNAME).iconset
+	sips -z 16 16     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16.png
+	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_16x16@2x.png
+	sips -z 32 32     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32.png
+	sips -z 64 64     macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_32x32@2x.png
+	sips -z 128 128   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128.png
+	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_128x128@2x.png
+	sips -z 256 256   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256.png
+	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_256x256@2x.png
+	sips -z 512 512   macosx/$(APPNAME)Icon.png --out macosx/$(APPNAME).iconset/icon_512x512.png
+	cp macosx/$(APPNAME)Icon.png macosx/$(APPNAME).iconset/icon_512x512@2x.png
+	iconutil -c icns -o macosx/$(APPNAME).icns macosx/$(APPNAME).iconset
+	rm -r macosx/$(APPNAME).iconset
+
+filledappbundle: appbundle
+	cp ./oot.otr $(APPBUNDLEEXE)/oot.otr
+

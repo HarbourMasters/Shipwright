@@ -5,7 +5,7 @@
     <key>CFBundleDevelopmentRegion</key>
     <string>English</string>
     <key>CFBundleExecutable</key>
-    <string>launcher.sh</string>
+    <string>ShipOfHarkinian</string>
     <key>CFBundleGetInfoString</key>
     <string>2.0.0</string>
     <key>CFBundleIconFile</key>
