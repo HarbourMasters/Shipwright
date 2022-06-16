@@ -2535,6 +2535,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             }
             break;
         case 35:
+        case 36:
+        case 37:
             switch (actorParams) {
                 case 14342:
                     return RC_TOT_LEFT_GOSSIP_STONE;
