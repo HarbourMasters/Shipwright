@@ -10,8 +10,6 @@ UNAMEM := $(shell uname -m)
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
 
-LIBATOMICPATH ?= /opt/local/lib/gcc-devel/
-
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
@@ -187,7 +185,7 @@ appbundle: macosx/$(APPNAME).icns
 	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
 	cp $(TARGET) $(APPBUNDLEEXE)/$(APPNAME)
 	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
-	echo ${LIBATOMICPATH} | dylibbundler -od -b -x  $(APPBUNDLEEXE)/$(APPNAME) -d $(APPBUNDLECONTENTS)/libs
+	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/$(APPNAME) -d $(APPBUNDLECONTENTS)/libs
 
 macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
 	rm -rf macosx/$(APPNAME).iconset
