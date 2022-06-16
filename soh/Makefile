@@ -30,8 +30,8 @@ ifeq ($(UNAME), Linux) #LINUX
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
-	CXXFLAGS += $(shell pkg-config --cflags sdl2 x11) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
-	CFLAGS += $(shell pkg-config --cflags sdl2 x11) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
+	CXXFLAGS += $(shell pkg-config --cflags sdl2) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
+	CFLAGS += $(shell pkg-config --cflags sdl2) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
 endif
 
 CPPFLAGS := -MMD
@@ -80,10 +80,6 @@ ifeq ($(UNAME), Linux) #LINUX
 )
 endif
 
-ifeq ($(UNAME), Darwin) #APPLE
-	INC_DIRS += $(shell pkg-config --cflags x11)
-endif
-
 LDDIRS := $(addprefix -L, \
 	../StormLib/build \
 	../libultraship/ \
@@ -93,10 +89,6 @@ ifeq ($(UNAME), Linux) #LINUX
 	LDDIRS += $(addprefix -L, \
 		/opt/X11/lib \
 )
-endif
-
-ifeq ($(UNAME), Darwin) #APPLE
-	LDDIRS += $(shell pkg-config --libs x11)
 endif
 
 LDLIBS := \

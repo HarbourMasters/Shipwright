@@ -48,7 +48,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 
 ## macOS
 
-1. Requires `gcc@12, sdl2, libpng, glew, x11` (can be installed via brew, etc)
+1. Requires `gcc@12, sdl2, libpng, glew` (can be installed via brew, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
