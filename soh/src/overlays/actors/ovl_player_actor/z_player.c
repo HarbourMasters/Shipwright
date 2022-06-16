@@ -3566,15 +3566,17 @@ void func_80837C0C(GlobalContext* globalCtx, Player* this, s32 arg2, f32 arg3, f
     func_80837AE0(this, arg6);
 
     if (arg2 == 3) {
-        func_80835C58(globalCtx, this, func_8084FB10, 0);
+        if (CVar_GetS32("gNoFreeze", 0) == 0) {
+            func_80835C58(globalCtx, this, func_8084FB10, 0);
 
-        sp2C = &gPlayerAnim_002FD0;
+            sp2C = &gPlayerAnim_002FD0;
 
-        func_80832224(this);
-        func_8083264C(this, 255, 10, 40, 0);
+            func_80832224(this);
+            func_8083264C(this, 255, 10, 40, 0);
 
-        func_8002F7DC(&this->actor, NA_SE_PL_FREEZE_S);
-        func_80832698(this, NA_SE_VO_LI_FREEZE);
+            func_8002F7DC(&this->actor, NA_SE_PL_FREEZE_S);
+            func_80832698(this, NA_SE_VO_LI_FREEZE);
+        }
     }
     else if (arg2 == 4) {
         func_80835C58(globalCtx, this, func_8084FBF4, 0);
@@ -3791,12 +3793,11 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
         }
         else if ((this->unk_8A1 != 0) && ((this->unk_8A1 >= 2) || (this->invincibilityTimer == 0))) {
             u8 sp5C[] = { 2, 1, 1 };
-
             func_80838280(this);
-
-            if (this->unk_8A1 == 3) {
-                this->shockTimer = 40;
-            }
+            
+                if (this->unk_8A1 == 3) {
+                    this->shockTimer = 40;
+                }
 
             this->actor.colChkInfo.damage += this->unk_8A0;
             func_80837C0C(globalCtx, this, sp5C[this->unk_8A1 - 1], this->unk_8A4, this->unk_8A8, this->unk_8A2, 20);
@@ -3896,8 +3897,8 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
                     ((sp48 >= 0) &&
                         SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId) &&
                         (this->unk_A79 >= D_808544F4[sp48])) ||
-                    ((sp48 >= 0) &&
-                        ((this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) || (this->unk_A79 >= D_808544F4[sp48])))) {
+                    ((sp48 >= 0) && ((this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) ||
+                                     CVar_GetS32("gFireproof", 0) || (this->unk_A79 >= D_808544F4[sp48])))) {
                     this->unk_A79 = 0;
                     this->actor.colChkInfo.damage = 4;
                     func_80837C0C(globalCtx, this, 0, 4.0f, 5.0f, this->actor.shape.rot.y, 20);
@@ -8170,11 +8171,10 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
             if (this->unk_850 == 0) {
                 if (this->stateFlags1 & PLAYER_STATE1_27) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_003328, 1.0f, 0.0f,
-                        Animation_GetLastFrame(&gPlayerAnim_003328), ANIMMODE_ONCE, -16.0f);
-                }
-                else {
+                                         Animation_GetLastFrame(&gPlayerAnim_003328), ANIMMODE_ONCE, -16.0f);
+                } else {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
-                        Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
+                                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
                 gSaveContext.healthAccumulator = 0x140;
                 this->unk_850 = -1;
@@ -8212,10 +8212,11 @@ static struct_80832924 D_808545F0[] = {
 };
 
 void func_80843CEC(Player* this, GlobalContext* globalCtx) {
-    if (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) {
+    if (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0 &&
+        CVar_GetS32("gFireproof", 0)) {
         if ((globalCtx->roomCtx.curRoom.unk_02 == 3) || (D_808535E4 == 9) ||
             ((func_80838144(D_808535E4) >= 0) &&
-                !SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
+             !SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
             func_8083821C(this);
         }
     }
@@ -10215,25 +10216,24 @@ void func_80848B44(GlobalContext* globalCtx, Player* this) {
     Vec3f shockPos;
     Vec3f* randBodyPart;
     s32 shockScale;
+        this->shockTimer--;
+        this->unk_892 += this->shockTimer;
 
-    this->shockTimer--;
-    this->unk_892 += this->shockTimer;
+        if (this->unk_892 > 20) {
+            shockScale = this->shockTimer * 2;
+            this->unk_892 -= 20;
 
-    if (this->unk_892 > 20) {
-        shockScale = this->shockTimer * 2;
-        this->unk_892 -= 20;
+            if (shockScale > 40) {
+                shockScale = 40;
+            }
 
-        if (shockScale > 40) {
-            shockScale = 40;
-        }
+            randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(ARRAY_COUNT(this->bodyPartsPos) - 0.1f);
+            shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
+            shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
+            shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
 
-        randBodyPart = this->bodyPartsPos + (s32)Rand_ZeroFloat(ARRAY_COUNT(this->bodyPartsPos) - 0.1f);
-        shockPos.x = (Rand_CenteredFloat(5.0f) + randBodyPart->x) - this->actor.world.pos.x;
-        shockPos.y = (Rand_CenteredFloat(5.0f) + randBodyPart->y) - this->actor.world.pos.y;
-        shockPos.z = (Rand_CenteredFloat(5.0f) + randBodyPart->z) - this->actor.world.pos.z;
-
-        EffectSsFhgFlash_SpawnShock(globalCtx, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
-        func_8002F8F0(&this->actor, NA_SE_PL_SPARK - SFX_FLAG);
+            EffectSsFhgFlash_SpawnShock(globalCtx, &this->actor, &shockPos, shockScale, FHGFLASH_SHOCK_PLAYER);
+            func_8002F8F0(&this->actor, NA_SE_PL_SPARK - SFX_FLAG);
     }
 }
 
@@ -10249,7 +10249,18 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     s32 sp54;
 
     if (this->currentTunic == PLAYER_TUNIC_GORON || CVar_GetS32("gSuperTunic", 0) != 0) {
-        sp54 = 20;
+        if (CVar_GetS32("gGoronNoFire", 0) != 0) {
+            sp54 = 0;
+            dmgCooldown = 10;
+            this->isBurning = false;
+        } else {
+            sp54 = 20;
+        }
+    }
+    else if (CVar_GetS32("gFireproof", 0) != 0) {
+        sp54 = 0;
+        dmgCooldown = 10;
+        this->isBurning = false;
     }
     else {
         sp54 = (s32)(this->linearVelocity * 0.4f) + 1;
@@ -13218,17 +13229,16 @@ void func_8084FB10(Player* this, GlobalContext* globalCtx) {
 }
 
 void func_8084FBF4(Player* this, GlobalContext* globalCtx) {
-    LinkAnimation_Update(globalCtx, &this->skelAnime);
-    func_808382BC(this);
+        LinkAnimation_Update(globalCtx, &this->skelAnime);
+        func_808382BC(this);
 
-    if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
-        if (DECR(this->unk_850) == 0) {
-            func_80839F90(this, globalCtx);
+        if (((this->unk_850 % 25) != 0) || func_80837B18(globalCtx, this, -1)) {
+            if (DECR(this->unk_850) == 0) {
+                func_80839F90(this, globalCtx);
+            }
         }
-    }
-
-    this->shockTimer = 40;
-    func_8002F8F0(&this->actor, NA_SE_VO_LI_TAKEN_AWAY - SFX_FLAG + this->ageProperties->unk_92);
+        this->shockTimer = 40;
+        func_8002F8F0(&this->actor, NA_SE_VO_LI_TAKEN_AWAY - SFX_FLAG + this->ageProperties->unk_92);
 }
 
 s32 func_8084FCAC(Player* this, GlobalContext* globalCtx) {

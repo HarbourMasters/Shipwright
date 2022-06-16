@@ -872,6 +872,8 @@ namespace SohImGui {
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
+                    Tooltip("Stops Link from catching fire while wearing the Goron Tunic");
                     ImGui::EndMenu();
                 }
 
@@ -926,7 +928,12 @@ namespace SohImGui {
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
                     Tooltip("Always shows dungeon entrance icons on the minimap");
-
+                    if (CVar_GetS32("gInfiniteAmmo", 0) == 1)
+                    {
+                        ImGui::Separator();
+                        EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
+                        Tooltip("Hides the Ammo Counter");
+                    }
                     ImGui::EndMenu();
                 }
 
@@ -1037,12 +1044,21 @@ namespace SohImGui {
                     EnhancementCheckbox("Money", "gInfiniteMoney");
                     EnhancementCheckbox("Health", "gInfiniteHealth");
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
+                    Tooltip("Check 'Enhancements' menu if you wish to hide ammo counter (when this is on)");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
-
                     ImGui::EndMenu();
                 }
-
+                EnhancementCheckbox("No Freeze", "gNoFreeze");
+                Tooltip("Prevents Link from being frozen by Ice Keese and Freezards (He still takes damage)");
+                EnhancementCheckbox("Fireproof", "gFireproof");
+                Tooltip("Stops Link from catching on fire (he still takes damage)");
+                EnhancementCheckbox("Windproof Link", "gWindproof");
+                Tooltip("Prevents Link from being blown away by fans.");
+                EnhancementCheckbox("No Current Influence (Use with Caution)", "gNoCurrents");
+     
+                EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
+                Tooltip("Makes your Deku Nuts deadly!");
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
@@ -1061,8 +1077,8 @@ namespace SohImGui {
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
-
                 ImGui::EndMenu();
+               
             }
 
             if (ImGui::BeginMenu("Developer Tools"))

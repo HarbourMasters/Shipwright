@@ -57,9 +57,11 @@ void BgMizuUzu_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void func_8089F788(BgMizuUzu* this, GlobalContext* globalCtx) {
     Actor* thisx = &this->dyna.actor;
 
-    if (GET_PLAYER(globalCtx)->currentBoots == PLAYER_BOOTS_IRON) {
+    if (GET_PLAYER(globalCtx)->currentBoots == PLAYER_BOOTS_IRON
+        || CVar_GetS32("gNoCurrents", 0) == 1) {
         func_8003EBF8(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
-    } else {
+    }
+    else {
         func_8003EC50(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
     Audio_PlayActorSound2(thisx, NA_SE_EV_WATER_CONVECTION - SFX_FLAG);
