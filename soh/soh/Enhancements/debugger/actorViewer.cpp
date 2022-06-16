@@ -7,6 +7,7 @@
 #include <bit>
 #include <map>
 #include <string>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -483,7 +484,7 @@ std::map<u16, const char*> actorDescriptions = {
 };
 
 const std::string GetActorDescription(u16 id) {
-    return actorDescriptions[id];
+    return actorDescriptions[id] != NULL ? actorDescriptions[id] : "???";
 }
 
 template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
@@ -530,6 +531,7 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 void DrawActorViewer(bool& open) {
     if (!open) {
+        CVar_SetS32("gActorViewerEnabled", 0);
         return;
     }
 
@@ -696,6 +698,7 @@ void DrawActorViewer(bool& open) {
         if (ImGui::TreeNode("New...")) {
             ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
+            ImGui::Text(GetActorDescription(newActor.id).c_str());
             ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one);
             ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
 
