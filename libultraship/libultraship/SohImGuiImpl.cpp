@@ -873,7 +873,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
-                    Tooltip("Slight little 'enhancement' that stops the fire appearing on Link whenever he is hit by a fire attack, while wearing the Goron Tunic.");
+                    Tooltip("Stops Link from catching fire while wearing the Goron Tunic");
                     ImGui::EndMenu();
                 }
 
@@ -1046,32 +1046,23 @@ namespace SohImGui {
                     {
                         ImGui::Separator();
                         EnhancementCheckbox("Hide Ammo Counter", "gHideInfiniteAmmo");
-                        Tooltip("Hides the Ammo Counter, just like how in MM and other games, no ammo counter usually means infinite ammo.");
+                        Tooltip("Hides the Ammo Counter");
                     }
 
                     ImGui::EndMenu();
                 }
-
-                if (ImGui::BeginMenu("Elemental")) {
-                    EnhancementCheckbox("No Freeze", "gNoFreeze");
-                    Tooltip("Prevents Link from being frozen by Ice Keese and Freezards. He will still take damage from their attacks making contact, though.");
-                    EnhancementCheckbox("Fireproof", "gFireproof");
-                    Tooltip("Prevents Link from being set on fire all together. He'll still take damage from the initial hit, though.");
-                    EnhancementCheckbox("Windproof Link", "gWindproof");
-                    Tooltip("Prevents Link from being blown away by fans. Might cause softlocks?");
-                    EnhancementCheckbox("No Current Influence (Partially works)", "gNoCurrents");
-                    Tooltip("Vortexes don't influence Link from a distance anymore. WARNING: Going over one won't pull you down, but also won't let you move away from them.");
-                    ImGui::EndMenu();
-                }
-
-                if (ImGui::BeginMenu("Fun")) {
-                    EnhancementCheckbox("Super Bow", "gSuperBow");
-                    Tooltip("Improves your bow!");
-                    EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
-                    Tooltip("Gives you some holy Deku Nuts!");
-                    ImGui::EndMenu();
-                }
-
+                EnhancementCheckbox("No Freeze", "gNoFreeze");
+                Tooltip("Prevents Link from being frozen by Ice Keese and Freezards (He still takes damage)");
+                EnhancementCheckbox("Fireproof", "gFireproof");
+                Tooltip("Stops Link from catching on fire (he still takes damage)");
+                EnhancementCheckbox("Windproof Link", "gWindproof");
+                Tooltip("Prevents Link from being blown away by fans.");
+                EnhancementCheckbox("No Current Influence (Use with Caution)", "gNoCurrents");
+                Tooltip("Vortexes don't influence Link from a distance\nWARNING: If Link enters a vortex in this state, he will become stuck");
+                EnhancementCheckbox("Super Bow", "gSuperBow");
+                Tooltip("Improves your bow!");
+                EnhancementCheckbox("Overpowered Deku Nuts", "gSuperDekuNuts");
+                Tooltip("Makes your Deku Nuts deadly!");
                 EnhancementCheckbox("No Clip", "gNoClip");
                 Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
