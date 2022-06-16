@@ -170,11 +170,7 @@ void EnArrow_Shoot(EnArrow* this, GlobalContext* globalCtx) {
             case ARROW_NORMAL_LIT:
             case ARROW_NORMAL_HORSE:
             case ARROW_NORMAL:
-                if (CVar_GetS32("gSuperBow", 0) == 0) {
-                    func_8002F7DC(&player->actor, NA_SE_IT_ARROW_SHOT);
-                } else {
-                    func_8002F7DC(&player->actor, NA_SE_VO_KZ_MOVE);
-                }
+                func_8002F7DC(&player->actor, NA_SE_IT_ARROW_SHOT);
                 break;
 
             case ARROW_FIRE:

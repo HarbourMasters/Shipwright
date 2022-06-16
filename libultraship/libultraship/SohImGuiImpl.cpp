@@ -874,8 +874,6 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Goron Tunic No Fire", "gGoronNoFire");
                     Tooltip("Stops Link from catching fire while wearing the Goron Tunic");
-                    EnhancementCheckbox("Super Bow", "gSuperBow");
-                    Tooltip("Improves your bow!");
                     ImGui::EndMenu();
                 }
 
