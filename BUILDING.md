@@ -48,7 +48,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 
 ## macOS
 
-1. Requires `gcc@12, sdl2, libpng, glew` (can be installed via brew, etc)
+1. Requires `gcc@12, sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
@@ -62,7 +62,10 @@ cd soh
 make setup -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
 # Compile the code (watch the -j parameter as above)
 make -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+# Create macOS app bundle
+make appbundle
 ```
+9. Launch soh app in the soh folder!
 
 # Compatible Roms
 ```
