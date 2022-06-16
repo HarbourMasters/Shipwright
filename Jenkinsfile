@@ -139,7 +139,7 @@ pipeline {
                     7z a soh-mac.7z soh.app readme.txt
                     '''
                 }
-                archiveArtifacts artifacts: 'soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
+                archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
             }
             post {
                 always {
