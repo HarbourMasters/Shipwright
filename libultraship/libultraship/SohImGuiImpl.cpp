@@ -666,7 +666,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -694,7 +694,9 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyPressed(TOGGLE_PAD_BTN))) {
+        ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
+        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -725,17 +727,6 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
-		ImGuiIO& io = ImGui::GetIO();
-		EnhancementCheckbox("Use Controller Navigation", "gControllerNav");
-		Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-		
-		if (CVar_GetS32("gControllerNav", 0) == 1) 
-		{
-        		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-        	}
-
-		ImGui::Separator();
-
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
