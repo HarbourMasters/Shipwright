@@ -68,7 +68,7 @@ typedef struct {
 
 typedef struct {
     RandomizerCheck check;
-    char hintText[100];
+    char hintText[200];
 } HintLocationRando;
 
 typedef struct {
@@ -176,8 +176,11 @@ typedef struct {
     RandoSetting randoSettings[300];
     ItemLocationRando itemLocations[500];
     HintLocationRando hintLocations[50];
+    char childAltarText[250];
+    char adultAltarText[750];
     u8 seedIcons[5];
     u8 dungeonsDone[8];
+    u8 trialsDone[6];
 } SaveContext; // size = 0x1428
 
 typedef enum {

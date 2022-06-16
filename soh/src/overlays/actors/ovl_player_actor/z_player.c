@@ -11672,7 +11672,7 @@ void func_8084BF1C(Player* this, GlobalContext* globalCtx) {
         phi_f2 = -1.0f;
     }
 
-    this->skelAnime.playSpeed = phi_f2 * phi_f0;
+    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVar_GetS32("gClimbSpeed", 0);
 
     if (this->unk_850 >= 0) {
         if ((this->actor.wallPoly != NULL) && (this->actor.wallBgId != BGCHECK_SCENE)) {
@@ -12506,6 +12506,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     if (this->unk_84F == 0) {
         giEntry = &sGetItemTable[this->getItemId - 1];
         this->unk_84F = 1;
+
+        // make sure we get the BGS instead of giant's knife
+        if(this->getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = 1;
+            gSaveContext.swordHealth = 8;       
+        }
 
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);

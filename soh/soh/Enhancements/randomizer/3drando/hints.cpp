@@ -111,6 +111,27 @@ constexpr std::array<HintSetting, 4> hintSettingTable{{
 
 std::array<DungeonInfo, 10> dungeonInfoData;
 
+Text childAltarText;
+Text adultAltarText;
+Text ganonText;
+Text ganonHintText;
+
+Text& GetChildAltarText() {
+  return childAltarText;
+}
+
+Text& GetAdultAltarText() {
+  return adultAltarText;
+}
+
+Text& GetGanonText() {
+  return ganonText;
+}
+
+Text& GetGanonHintText() {
+  return ganonHintText;
+}
+
 static Area* GetHintRegion(const uint32_t area) {
 
   std::vector<uint32_t> alreadyChecked = {};
@@ -497,30 +518,32 @@ static void CreateTrialHints() {
 static void CreateGanonText() {
 
   //funny ganon line
-  auto ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
+  ganonText = RandomElement(GetHintCategory(HintCategory::GanonLine)).GetText();
   CreateMessageFromTextObject(0x70CB, 0, 2, 3, AddColorsAndFormat(ganonText));
 
   //Get the location of the light arrows
   auto lightArrowLocation = FilterFromPool(allLocations, [](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == LIGHT_ARROWS;});
 
-  Text text;
   //If there is no light arrow location, it was in the player's inventory at the start
   if (lightArrowLocation.empty()) {
-    text = Hint(LIGHT_ARROW_LOCATION_HINT).GetText()+Hint(YOUR_POCKET).GetText();
+    ganonHintText = Hint(LIGHT_ARROW_LOCATION_HINT).GetText()+Hint(YOUR_POCKET).GetText();
   } else {
-    text = Hint(LIGHT_ARROW_LOCATION_HINT).GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
+    ganonHintText = Hint(LIGHT_ARROW_LOCATION_HINT).GetText()+GetHintRegion(Location(lightArrowLocation[0])->GetParentRegionKey())->GetHint().GetText();
   }
-  text = text + "!";
+  ganonHintText = ganonHintText + "!";
 
-  CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(text));
+  CreateMessageFromTextObject(0x70CC, 0, 2, 3, AddColorsAndFormat(ganonHintText));
 }
 
 //Find the location which has the given itemKey and create the generic altar text for the reward
-static Text BuildDungeonRewardText(ItemID itemID, const uint32_t itemKey) {
+static Text BuildDungeonRewardText(const uint32_t itemKey) {
   uint32_t location = FilterFromPool(allLocations, [itemKey](const uint32_t loc){return Location(loc)->GetPlaceduint32_t() == itemKey;})[0];
   Location(location)->SetAsHinted();
-  //Calling ITEM_OBTAINED draws the passed in itemID to the left side of the textbox
-  return Text()+ITEM_OBTAINED(itemID)+"#"+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText()+"#...^";
+
+  std::string rewardString = "$" + std::to_string(itemKey - KOKIRI_EMERALD);
+
+  // RANDOTODO implement colors for locations
+  return Text()+rewardString+GetHintRegion(Location(location)->GetParentRegionKey())->GetHint().GetText()+"...^";
 }
 
 static Text BuildDoorOfTimeText() {
@@ -528,15 +551,15 @@ static Text BuildDoorOfTimeText() {
   Text doorOfTimeText;
 
   if (OpenDoorOfTime.Is(OPENDOOROFTIME_OPEN)) {
-    itemObtained = ITEM_OBTAINED(ITEM_SWORD_MASTER);
+    itemObtained = "$o";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTOPEN).GetText();
 
   } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_CLOSED)) {
-    itemObtained = ITEM_OBTAINED(ITEM_OCARINA_FAIRY);
+    itemObtained = "$c";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTCLOSED).GetText();
 
   } else if (OpenDoorOfTime.Is(OPENDOOROFTIME_INTENDED)) {
-    itemObtained = ITEM_OBTAINED(ITEM_OCARINA_TIME);
+    itemObtained = "$i";
     doorOfTimeText = Hint(CHILD_ALTAR_TEXT_END_DOTINTENDED).GetText();
   }
 
@@ -580,7 +603,7 @@ static Text BuildBridgeReqsText() {
     bridgeText = BuildCountReq(BRIDGE_TOKENS_HINT, BridgeTokenCount);
   }
 
-  return Text()+ITEM_OBTAINED(ITEM_ARROW_LIGHT)+bridgeText+"^";
+  return Text()+"$l"+bridgeText+"^";
 }
 
 static Text BuildGanonBossKeyText() {
@@ -623,39 +646,39 @@ static Text BuildGanonBossKeyText() {
     ganonBossKeyText = BuildCountReq(LACS_TOKENS_HINT, LACSTokenCount);
   }
 
-  return Text()+ITEM_OBTAINED(ITEM_KEY_BOSS)+ganonBossKeyText+"^";
+  return Text()+"$b"+ganonBossKeyText+"^";
 }
 
 static void CreateAltarText() {
 
   //Child Altar Text
-  Text childText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
+  childAltarText = Hint(SPIRITUAL_STONE_TEXT_START).GetText()+"^"+
   //Spiritual Stones
       (StartingKokiriEmerald.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(ITEM_KOKIRI_EMERALD, KOKIRI_EMERALD)) +
+                                              : BuildDungeonRewardText(KOKIRI_EMERALD)) +
       (StartingGoronRuby.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                          : BuildDungeonRewardText(ITEM_GORON_RUBY, GORON_RUBY)) +
+                                          : BuildDungeonRewardText(GORON_RUBY)) +
       (StartingZoraSapphire.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                             : BuildDungeonRewardText(ITEM_ZORA_SAPPHIRE, ZORA_SAPPHIRE)) +
+                                             : BuildDungeonRewardText(ZORA_SAPPHIRE)) +
   //How to open Door of Time, the event trigger is necessary to read the altar multiple times
-  BuildDoorOfTimeText()+EVENT_TRIGGER();
-  CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childText, {QM_GREEN, QM_RED, QM_BLUE}));
+  BuildDoorOfTimeText();
+  CreateMessageFromTextObject(0x7040, 0, 2, 3, AddColorsAndFormat(childAltarText, {QM_GREEN, QM_RED, QM_BLUE}));
 
   //Adult Altar Text
-  Text adultText = Hint(ADULT_ALTAR_TEXT_START).GetText()+"^"+
+  adultAltarText = Hint(ADULT_ALTAR_TEXT_START).GetText()+"^"+
   //Medallion Areas
       (StartingLightMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                               : BuildDungeonRewardText(ITEM_MEDALLION_LIGHT, LIGHT_MEDALLION)) +
+                                               : BuildDungeonRewardText(LIGHT_MEDALLION)) +
       (StartingForestMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(ITEM_MEDALLION_FOREST, FOREST_MEDALLION)) +
+                                                : BuildDungeonRewardText(FOREST_MEDALLION)) +
       (StartingFireMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                              : BuildDungeonRewardText(ITEM_MEDALLION_FIRE, FIRE_MEDALLION)) +
+                                              : BuildDungeonRewardText(FIRE_MEDALLION)) +
       (StartingWaterMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                               : BuildDungeonRewardText(ITEM_MEDALLION_WATER, WATER_MEDALLION)) +
+                                               : BuildDungeonRewardText(WATER_MEDALLION)) +
       (StartingSpiritMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(ITEM_MEDALLION_SPIRIT, SPIRIT_MEDALLION)) +
+                                                : BuildDungeonRewardText(SPIRIT_MEDALLION)) +
       (StartingShadowMedallion.Value<uint8_t>() ? Text{ "##", "##", "##" }
-                                                : BuildDungeonRewardText(ITEM_MEDALLION_SHADOW, SHADOW_MEDALLION)) +
+                                                : BuildDungeonRewardText(SHADOW_MEDALLION)) +
 
   //Bridge requirement
   BuildBridgeReqsText()+
@@ -664,8 +687,8 @@ static void CreateAltarText() {
   BuildGanonBossKeyText()+
 
   //End
-  Hint(ADULT_ALTAR_TEXT_END).GetText()+EVENT_TRIGGER();
-  CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
+  Hint(ADULT_ALTAR_TEXT_END).GetText();
+  CreateMessageFromTextObject(0x7088, 0, 2, 3, AddColorsAndFormat(adultAltarText, {QM_RED, QM_YELLOW, QM_GREEN, QM_RED, QM_BLUE, QM_YELLOW, QM_PINK, QM_RED, QM_RED, QM_RED, QM_RED}));
 }
 
 void CreateMerchantsHints() {

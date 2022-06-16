@@ -23,6 +23,8 @@ namespace Settings {
   std::string version = RANDOMIZER_VERSION "-" COMMIT_NUMBER;
   std::array<uint8_t, 5> hashIconIndexes;
 
+  bool skipChildZelda = false;
+
   std::vector<std::string> NumOpts(int min, int max, int step = 1, std::string textBefore = {}, std::string textAfter = {}) {
     std::vector<std::string> options;
     options.reserve((max - min) / step + 1);
@@ -2485,7 +2487,16 @@ namespace Settings {
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
     ShuffleKokiriSword.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_KOKIRI_SWORD]);
     ShuffleOcarinas.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_OCARINA]);
-    ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    if(cvarSettings[RSK_SKIP_CHILD_ZELDA]) {
+      skipChildZelda = true;
+      ShuffleWeirdEgg.SetSelectedIndex(0);
+    } else {
+      ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
+    }
+    
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN]);
 
     // the  checkbox works because 0 is "Off" and 1 is "Fairy Ocarina"
@@ -2504,10 +2515,7 @@ namespace Settings {
       MapsAndCompasses.SetSelectedIndex(2);
     }
 
-    // todo this will take some logic because of capacity etc.
-    // but it's defaulted to on in standard weekly so we should get to it soon
-    // {"No",               "Yes"}
-    // StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
+    StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
     
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
@@ -2519,6 +2527,18 @@ namespace Settings {
 
     ItemPoolValue.SetSelectedIndex(cvarSettings[RSK_ITEM_POOL]);
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
+
+    GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+
+    AddExcludedOptions();
+    for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
+      for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
+        // RANDOTODO implement the ability to exclude any location
+        if (location->GetName() == "Deku Theater Mask of\n Truth") {
+          location->SetSelectedIndex(cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH]);
+        }
+      }
+    }
 
     RandomizeAllSettings(true); //now select any random options instead of just hiding them
 

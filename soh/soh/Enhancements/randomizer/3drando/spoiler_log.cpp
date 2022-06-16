@@ -10,6 +10,7 @@
 #include "tinyxml2.h"
 #include "utils.hpp"
 #include "shops.hpp"
+#include "hints.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -338,6 +339,9 @@ static void WriteSettings(const bool printAll = false) {
       //   }
       // }
     }
+
+    // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
+    jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
   }
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
@@ -375,6 +379,7 @@ static void WriteStartingInventory() {
     &Settings::startingSongsOptions,
     &Settings::startingEquipmentOptions,
     &Settings::startingStonesMedallionsOptions,
+    &Settings::startingOthersOptions
   };
 
   for (std::vector<Option *>* menu : startingInventoryOptions) {
@@ -388,6 +393,10 @@ static void WriteStartingInventory() {
       // to see if the name is one of the 3 we're using rn
       if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
         jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
+      }
+
+      if (setting->GetName() == "Start with Consumables") {
+        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
   }
@@ -528,6 +537,11 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints() {
+    jsonData["ganonText"] = GetGanonText().GetEnglish();
+    jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
+    jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
+    jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
     }
@@ -559,9 +573,6 @@ static void WriteHints() {
             lastNewline = lastSpace + 1;
           }
         }
-
-        // we're only using & for newline so replace ^
-        std::replace(textStr.begin(), textStr.end(), '^', '&');
 
         // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
         textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());

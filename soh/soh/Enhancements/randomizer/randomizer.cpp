@@ -800,6 +800,48 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "ZR Open Grotto Gossip Stone", RC_ZR_OPEN_GROTTO_GOSSIP_STONE }
 };
 
+std::unordered_map<s16, s16> getItemIdToItemId = {
+    { GI_BOW, ITEM_BOW },
+    { GI_ARROW_FIRE, ITEM_ARROW_FIRE },
+    { GI_DINS_FIRE, ITEM_DINS_FIRE },
+    { GI_SLINGSHOT, ITEM_SLINGSHOT },
+    { GI_OCARINA_FAIRY, ITEM_OCARINA_FAIRY },
+    { GI_OCARINA_OOT, ITEM_OCARINA_TIME },
+    { GI_HOOKSHOT, ITEM_HOOKSHOT },
+    { GI_LONGSHOT, ITEM_LONGSHOT },
+    { GI_ARROW_ICE, ITEM_ARROW_ICE },
+    { GI_FARORES_WIND, ITEM_FARORES_WIND },
+    { GI_BOOMERANG, ITEM_BOOMERANG },
+    { GI_LENS, ITEM_LENS },
+    { GI_HAMMER, ITEM_HAMMER },
+    { GI_ARROW_LIGHT, ITEM_ARROW_LIGHT },
+    { GI_NAYRUS_LOVE, ITEM_NAYRUS_LOVE },
+    { GI_BOTTLE, ITEM_BOTTLE },
+    { GI_POTION_RED, ITEM_POTION_RED },
+    { GI_POTION_GREEN, ITEM_POTION_GREEN },
+    { GI_POTION_BLUE, ITEM_POTION_BLUE },
+    { GI_FAIRY, ITEM_FAIRY },
+    { GI_FISH, ITEM_FISH },
+    { GI_MILK_BOTTLE, ITEM_MILK_BOTTLE },
+    { GI_LETTER_RUTO, ITEM_LETTER_RUTO },
+    { GI_BLUE_FIRE, ITEM_BLUE_FIRE },
+    { GI_BUGS, ITEM_BUG },
+    { GI_BIG_POE, ITEM_BIG_POE },
+    { GI_POE, ITEM_POE },
+    { GI_WEIRD_EGG, ITEM_WEIRD_EGG },
+    { GI_LETTER_ZELDA, ITEM_LETTER_ZELDA },
+    { GI_POCKET_EGG, ITEM_POCKET_EGG },
+    { GI_COJIRO, ITEM_COJIRO },
+    { GI_ODD_MUSHROOM, ITEM_ODD_MUSHROOM },
+    { GI_ODD_POTION, ITEM_ODD_POTION },
+    { GI_SAW, ITEM_SAW },
+    { GI_SWORD_BROKEN, ITEM_SWORD_BROKEN },
+    { GI_PRESCRIPTION, ITEM_PRESCRIPTION },
+    { GI_FROG, ITEM_FROG },
+    { GI_EYEDROPS, ITEM_EYEDROPS },
+    { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
+};
+
 std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_BOMBS_5, GID_BOMB },
                                                { GI_NUTS_5, GID_NUTS },
@@ -1161,7 +1203,17 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Adult Min Fish Weight", RSK_ADULT_FISH_WEIGHT },
     { "Guarantee Fishing Bite", RSK_GUARANTEE_FISHING_BITE },
     { "Instant Fishing", RSK_INSTANT_FISHING }
+    { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
+    { "Start with Consumables", RSK_STARTING_CONSUMABLES }
 };
+
+s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
+    if (getItemIdToItemId.count(getItemId) == 0) {
+        return -1;
+    }
+
+    return getItemIdToItemId[getItemId];
+}
 
 s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
@@ -1182,6 +1234,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseHintLocationsFile(spoilerFileName);
     }
+
+    this->childAltarText = gSaveContext.childAltarText;
+    this->adultAltarText = gSaveContext.adultAltarText;
 
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
@@ -1395,6 +1450,25 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
+                    case RSK_GANONS_BOSS_KEY:
+                        if(it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Vanilla") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        } else if(it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 2;
+                        }
+                        break;
+                    case RSK_SKIP_CHILD_ZELDA:
+                        gSaveContext.randoSettings[index].value = it.value();
+                        break;
+                    case RSK_STARTING_CONSUMABLES:
+                        if(it.value() == "No") {
+                            gSaveContext.randoSettings[index].value = 0;            
+                        } else if(it.value() == "Yes") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
+                        break;
                 }
                 index++;        
             }
@@ -1404,6 +1478,118 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     } catch (const std::exception& e) {
         return;
     }
+}
+
+std::string AltarIconString(char iconChar) {
+    std::string iconString = "";
+    switch (iconChar) {
+        case '0':
+            // Kokiri Emerald
+            iconString += 0x13;
+            iconString += 0x6C;
+            break;
+        case '1':
+            // Goron Ruby
+            iconString += 0x13;
+            iconString += 0x6D;
+            break;
+        case '2':
+            // Zora Sapphire
+            iconString += 0x13;
+            iconString += 0x6E;
+            break;
+        case '3':
+            // Forest Medallion
+            iconString += 0x13;
+            iconString += 0x66;
+            break;
+        case '4':
+            // Fire Medallion
+            iconString += 0x13;
+            iconString += 0x67;
+            break;
+        case '5':
+            // Water Medallion
+            iconString += 0x13;
+            iconString += 0x68;
+            break;
+        case '6':
+            // Spirit Medallion
+            iconString += 0x13;
+            iconString += 0x69;
+            break;
+        case '7':
+            // Shadow Medallion
+            iconString += 0x13;
+            iconString += 0x6A;
+            break;
+        case '8':
+            // Light Medallion
+            iconString += 0x13;
+            iconString += 0x6B;
+            break;
+        case 'o':
+            // Open DOT (master sword)
+            iconString += 0x13;
+            iconString += 0x3C;
+            break;
+        case 'c':
+            // Closed DOT (fairy ocarina)
+            iconString += 0x13;
+            iconString += 0x07;
+            break;
+        case 'i':
+            // Intended DOT (oot)
+            iconString += 0x13;
+            iconString += 0x08;
+            break;
+        case 'l':
+            // Light Arrow (for bridge reqs)
+            iconString += 0x13;
+            iconString += 0x12;
+            break;
+        case 'b':
+            // Boss Key (ganon boss key location)
+            iconString += 0x13;
+            iconString += 0x74;
+            break;
+        case 'L':
+            // Bow with Light Arrow
+            iconString += 0x13;
+            iconString += 0x3A;
+            break;
+        case 'k':
+            // Kokiri Tunic
+            iconString += 0x13;
+            iconString += 0x41;
+            break;
+    }
+    return iconString;
+}
+
+std::string FormatJsonHintText(std::string jsonHint) {
+    std::string formattedHintMessage = jsonHint;
+    char newLine = 0x01;
+    char playerName = 0x0F;
+    char nextBox = 0x04;
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '&', newLine);
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '^', nextBox);
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
+    
+    // add icons to altar text
+    for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
+        std::string textToReplace = "$";
+        textToReplace += iconChar;
+        size_t start_pos = formattedHintMessage.find(textToReplace);
+        if(!(start_pos == std::string::npos)) {
+            std::string iconString = AltarIconString(iconChar);
+            formattedHintMessage.replace(start_pos, textToReplace.length(), iconString);
+        }
+    }
+
+    formattedHintMessage += 0x02;
+
+    return formattedHintMessage;
 }
 
 void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
@@ -1416,18 +1602,21 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     try {
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
-        json hintsJson = spoilerFileJson["hints"];
 
+        std::string childAltarJsonText = spoilerFileJson["childAltarText"].get<std::string>();
+        std::string formattedChildAltarText = FormatJsonHintText(childAltarJsonText);
+        memcpy(gSaveContext.childAltarText, formattedChildAltarText.c_str(), formattedChildAltarText.length());
+
+        std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
+        std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
+        memcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), formattedAdultAltarText.length());
+
+        json hintsJson = spoilerFileJson["hints"];
         int index = 0;
         for (auto it = hintsJson.begin(); it != hintsJson.end(); ++it) {
             gSaveContext.hintLocations[index].check = SpoilerfileCheckNameToEnum[it.key()];
 
-            std::string hintMessage = it.value();
-            char newLine = 0x01;
-            char playerName = 0x0F;
-            std::replace(hintMessage.begin(), hintMessage.end(), '&', newLine);
-            std::replace(hintMessage.begin(), hintMessage.end(), '@', playerName);
-            hintMessage += 0x02;
+            std::string hintMessage = FormatJsonHintText(it.value());
             memcpy(gSaveContext.hintLocations[index].hintText, hintMessage.c_str(), hintMessage.length());
 
             index++;
@@ -1896,12 +2085,11 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
 
+        // RANDOTODO these won't be used until we implement shopsanity/scrub shuffle
         case RG_RED_POTION_REFILL:
-            return GI_POTION_RED; //todo logic around needing a bottle?
         case RG_GREEN_POTION_REFILL:
-            return GI_POTION_GREEN; //todo logic around needing a bottle?
         case RG_BLUE_POTION_REFILL:
-            return GI_POTION_BLUE; //todo logic around needing a bottle?
+            return GI_NONE;
 
         case RG_TREASURE_GAME_HEART:
             return GI_HEART_PIECE_WIN;
@@ -1917,6 +2105,14 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         default:
             return ogItemId;
     }
+}
+
+std::string Randomizer::GetAdultAltarText() {
+    return this->adultAltarText;
+}
+
+std::string Randomizer::GetChildAltarText() {
+    return this->childAltarText;
 }
 
 std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {
@@ -2107,6 +2303,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 7:
             switch (actorParams) {
+                case 273:
+                    return RC_SHADOW_TEMPLE_FREESTANDING_KEY;
                 case 6177:
                     return RC_SHADOW_TEMPLE_MAP_CHEST;
                 case 5607:
@@ -2143,6 +2341,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 8:
             switch (actorParams) {
+                case 273:
+                    return RC_BOTTOM_OF_THE_WELL_FREESTANDING_KEY;
                 case 22600:
                     return RC_BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST;
                 case 20578:
@@ -2191,6 +2391,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 11:
             switch (actorParams) {
+                case 273:
+                    return RC_GERUDO_TRAINING_GROUND_FREESTANDING_KEY;
                 case -30573:
                     return RC_GERUDO_TRAINING_GROUND_LOBBY_LEFT_CHEST;
                 case -30393:
@@ -2359,6 +2561,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             }
             break;
         case 35:
+        case 36:
+        case 37:
             switch (actorParams) {
                 case 14342:
                     return RC_TOT_LEFT_GOSSIP_STONE;
@@ -2412,6 +2616,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 62:
             switch (actorParams) {
+                case 2:
+                    return RC_HF_DEKU_SCRUB_GROTTO;
+                case 10:
+                    return RC_LW_DEKU_SCRUB_GROTTO_FRONT;
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
                 case -22988:
@@ -2458,6 +2666,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_COW_GROTTO_GOSSIP_STONE;
                 case 14355:
                     return RC_HC_STORMS_GROTTO_GOSSIP_STONE;
+                default:
+                    return RC_UNKNOWN_CHECK;
             }
             break;
         case 63:
@@ -2602,6 +2812,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 91:
             switch (actorParams) {
+                case 9:
+                    return RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                 case 14365:
                     return RC_LW_GOSSIP_STONE;
             }
@@ -2707,7 +2919,14 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
+    
+    cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
+                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    
     cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
@@ -2719,6 +2938,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_ADULT_FISH_WEIGHT] = CVar_GetS32("gRandomizeAdultFishWeight", 10);
     cvarSettings[RSK_INSTANT_FISHING] = CVar_GetS32("gRandomizeInstantFishing", 1);
     cvarSettings[RSK_GUARANTEE_FISHING_BITE] = CVar_GetS32("gRandomizeGuaranteeFishingBite", 1);
+    cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
+    cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
+    
+    cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -2785,9 +3008,10 @@ void DrawRandoEditor(bool& open) {
     const char* randoShuffleGerudoFortressKeys[4] = { "Vanilla", "Any Dungeon", "Overworld", "Anywhere" };
     const char* randoShuffleBossKeys[6] = { "Own Dungeon", "Any Dungeon", "Overworld",
                                             "Anywhere",    "Start with",  "Vanilla" };
-    const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
-                                                  "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
-                                                  "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
+    // const char* randoShuffleGanonsBossKey[12] = { "Own Dungeon",   "Any Dungeon",     "Overworld",   "Anywhere",
+    //                                               "LACS Vanilla",  "LACS Medallions", "LACS Stones", "LACS Rewards",
+    //                                               "LACS Dungeons", "LACS Tokens",     "Start with",  "Vanilla" };
+    const char* randoShuffleGanonsBossKey[3] = {"Start With", "Vanilla", "Own Dungeon"};
 
     // Timesaver Settings
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
@@ -2992,6 +3216,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextRow();
                     ImGui::TableNextColumn();
                     // COLUMN 1 - OPEN SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     //ImGui::NewLine();
                     // SohImGui::EnhancementCheckbox("Randomize All Open Settings", "gRandomizeAllOpenSettings");
                     // InsertHelpHoverText("Randomize all Open Settings except for Logic rules");
@@ -3159,6 +3384,7 @@ void DrawRandoEditor(bool& open) {
                         // }
                         ImGui::Separator();
                     }
+                    ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
 
                     // COLUMN 2 - WORLD SETTINGS
@@ -3292,7 +3518,7 @@ void DrawRandoEditor(bool& open) {
                     // SohImGui::EnhancementCheckbox("Randomize All Shuffle Settings", "gRandomizeAllShuffleSettings");
                     // InsertHelpHoverText("Randomize all Shuffle Settings");
                     // ImGui::Separator();
-
+                    ImGui::PushItemWidth(-FLT_MIN);
                     if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
                         // Shuffle Dungeon Rewards
                         ImGui::Text("Shuffle Dungeon Rewards");
@@ -3482,16 +3708,19 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();
                         }
 
-                        // Shuffle Weird Egg
-                        ImGui::Text("Shuffle Weird Egg");
-                        InsertHelpHoverText(
-                            "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
-                            "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
-                            "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
-                            "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
-                            "unlock the\nKakariko Gate as child which can lock some\nprogression.");
-                        SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
-                        ImGui::Separator();
+                        // hide this option if we're skipping child zelda
+                        if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
+                            // Shuffle Weird Egg
+                            ImGui::Text("Shuffle Weird Egg");
+                            InsertHelpHoverText(
+                                "Enabling this shuffles the Weird Egg from Malon\ninto the item pool.\nThis "
+                                "will require finding the Weird Egg to talk to\nZelda in Hyrule Castle which "
+                                "in turn locks\nrewards from Impa, Xaria, Malon and Talon as\nwell as the "
+                                "Happy Mask Sidequest. The Weird egg\nis also required for Zelda's Letter to "
+                                "unlock the\nKakariko Gate as child which can lock some\nprogression.");
+                            SohImGui::EnhancementCombobox("gRandomizeShuffleWeirdEgg", randoShuffleWeirdEgg, 2, 0);
+                            ImGui::Separator();                            
+                        }
 
                         // Shuffle Gerudo Token
                         ImGui::Text("Shuffle Gerudo Token");
@@ -3539,13 +3768,16 @@ void DrawRandoEditor(bool& open) {
                         //     "only the Claim\nCheck will be found in the pool.");
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleAdultTrade", randoShuffleAdultTrade, 2, 0);
                     }
+                    ImGui::PopItemWidth();
 
                     ImGui::TableNextColumn();
                     SohImGui::EnhancementCheckbox("Start with Fairy Ocarina", "gRandomizeStartingOcarina");
                     SohImGui::EnhancementCheckbox("Start with Kokiri Sword", "gRandomizeStartingKokiriSword");
                     SohImGui::EnhancementCheckbox("Start with Deku Shield", "gRandomizeStartingDekuShield");
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
-                    
+                    SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
+                    SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
+
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
 
@@ -3684,90 +3916,94 @@ void DrawRandoEditor(bool& open) {
                         // SohImGui::EnhancementCombobox("gRandomizeShuffleBossKeys", randoShuffleBossKeys, 6, 0);
                         // ImGui::Separator();
 
-                    // todo implement ganon's boss key outside of ganon's castle
-                    //     // Ganon's Boss Key
-                    //     ImGui::Text("Ganon's Boss Key");
-                    //     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 12,
-                    //                                   0);
-                    //     switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
-                    //         case 0:
-                    //             SetLastItemHoverText(
-                    //                 "Ganon's Castle Boss Key can only appear inside of\na dungeon, but not "
-                    //                 "necessarily Ganon's Castle.");
-                    //             break;
-                    //         case 1:
-                    //             SetLastItemHoverText("Ganon's Castle Boss Key can only appear outside of\ndungeons.");
-                    //             break;
-                    //         case 2:
-                    //             SetLastItemHoverText("Ganon's Castle Boss Key can appear anywhere in the\nworld.");
-                    //             break;
-                    //         case 3:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             break;
-                    //         case 4:
-                    //             SetLastItemHoverText("Ganon's Caslte Boss Key can appear anywhere in the\nworld.");
-                    //             break;
-                    //         case 5:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoGanonMedallionCount",
-                    //                                            "gRandomizeGanonMedallionCount", 0, 6, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of Medallions required to trigger\nthe Light Arrow Cutscene.");
-                    //             break;
-                    //         case 6:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoGanonStoneCount",
-                    //                                            "gRandomizeGanonStoneCount", 0, 3, "");
-                    //             InsertHelpHoverText("Set the number of Spiritual Stones required to trigger\nthe Light "
-                    //                                 "Arrow Cutscene.");
-                    //             break;
-                    //         case 7:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoGanonRewardCount",
-                    //                                            "gRandomizeGanonRewardCount", 0, 9, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of Dungeon Rewards (Spiritual\nStones and Medallions) "
-                    //                 "required to trigger the\nLight Arrow Cutscene.");
-                    //             break;
-                    //         case 8:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("MDungeon Count: %d", "##RandoGanonDungeonCount",
-                    //                                            "gRandomizeGanonDungeonCount", 0, 8, "");
-                    //             InsertHelpHoverText(
-                    //                 "Set the number of completed dungeons required to\ntrigger the Light Arrow "
-                    //                 "Cutscene.\n\nDungeons are considered complete when Link steps\ninto the "
-                    //                 "blue warp at the end of them.");
-                    //             break;
-                    //         case 9:
-                    //             SetLastItemHoverText(
-                    //                 "These settings put the boss key on the Light Arrow\nCutscene location, "
-                    //                 "from Zelda in Temple of Time as\nadult, with differing requirements.");
-                    //             SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoGanonTokenCount",
-                    //                                            "gRandomizeGanonTokenCount", 0, 100, "");
-                    //             InsertHelpHoverText("Set the number of Gold Skulltula Tokens required\nto trigger the "
-                    //                                 "Light Arrow Cutscene.");
-                    //             break;
-                    //         case 10:
-                    //             SetLastItemHoverText(
-                    //                 "Ganon's Catle Boss Key is given to you from the\nstart and you don't "
-                    //                 "have to worry about finding it.");
-                    //             break;
-                    //         case 11:
-                    //             SetLastItemHoverText("Ganon's Calste Boss Key will appear in the vanilla\nlocation.");
-                    //             break;
-                    //     }
-                    //     ImGui::Separator();
-                    // }
+                    // RANDOTODO implement ganon's boss key outside of ganon's castle
+                        // Ganon's Boss Key
+                    ImGui::PushItemWidth(-FLT_MIN);
+                        ImGui::Text("Ganon's Boss Key");
+                        SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
+                                                      0);
+                        switch (CVar_GetS32("gRandomizeShuffleGanonBossKey", 0)) {
+                            case 0:
+                                SetLastItemHoverText(
+                                    "Ganon's Boss Key is given to you from the\nstart and you don't "
+                                    "have to worry about finding it.");
+                                break;
+                            case 1:
+                                SetLastItemHoverText("Ganon's Boss Key will appear in the vanilla\nlocation.");
+                                break;
+                            case 2:
+                                SetLastItemHoverText("Ganon's Boss Key will appear somewhere inside\nGanon's Castle.");
+                                break;
+                            // case 0:
+                            //     SetLastItemHoverText(
+                            //         "Ganon's Castle Boss Key can only appear inside of\na dungeon, but not "
+                            //         "necessarily Ganon's Castle.");
+                            //     break;
+                            // case 1:
+                            //     SetLastItemHoverText("Ganon's Castle Boss Key can only appear outside of\ndungeons.");
+                            //     break;
+                            // case 2:
+                            //     SetLastItemHoverText("Ganon's Castle Boss Key can appear anywhere in the\nworld.");
+                            //     break;
+                            // case 3:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     break;
+                            // case 4:
+                            //     SetLastItemHoverText("Ganon's Caslte Boss Key can appear anywhere in the\nworld.");
+                            //     break;
+                            // case 5:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoGanonMedallionCount",
+                            //                                    "gRandomizeGanonMedallionCount", 0, 6, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of Medallions required to trigger\nthe Light Arrow Cutscene.");
+                            //     break;
+                            // case 6:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoGanonStoneCount",
+                            //                                    "gRandomizeGanonStoneCount", 0, 3, "");
+                            //     InsertHelpHoverText("Set the number of Spiritual Stones required to trigger\nthe Light "
+                            //                         "Arrow Cutscene.");
+                            //     break;
+                            // case 7:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoGanonRewardCount",
+                            //                                    "gRandomizeGanonRewardCount", 0, 9, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of Dungeon Rewards (Spiritual\nStones and Medallions) "
+                            //         "required to trigger the\nLight Arrow Cutscene.");
+                            //     break;
+                            // case 8:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("MDungeon Count: %d", "##RandoGanonDungeonCount",
+                            //                                    "gRandomizeGanonDungeonCount", 0, 8, "");
+                            //     InsertHelpHoverText(
+                            //         "Set the number of completed dungeons required to\ntrigger the Light Arrow "
+                            //         "Cutscene.\n\nDungeons are considered complete when Link steps\ninto the "
+                            //         "blue warp at the end of them.");
+                            //     break;
+                            // case 9:
+                            //     SetLastItemHoverText(
+                            //         "These settings put the boss key on the Light Arrow\nCutscene location, "
+                            //         "from Zelda in Temple of Time as\nadult, with differing requirements.");
+                            //     SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoGanonTokenCount",
+                            //                                    "gRandomizeGanonTokenCount", 0, 100, "");
+                            //     InsertHelpHoverText("Set the number of Gold Skulltula Tokens required\nto trigger the "
+                            //                         "Light Arrow Cutscene.");
+                            //     break;
+                        }
+                        ImGui::Separator();
+                        ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
@@ -3881,6 +4117,7 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
 
                     // COLUMN 1 - HINT SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     // Gossip Stone Hints
                     ImGui::Text("Gossip Stone Hints");
                     InsertHelpHoverText(
@@ -3989,10 +4226,11 @@ void DrawRandoEditor(bool& open) {
                     // }
                     // SohImGui::EnhancementCombobox("gRandomizeRandomTrapDamage", randoRandomTrapDamage, 3, 0);
                     // ImGui::Separator();
-
+                    ImGui::PopItemWidth();
                     ImGui::TableNextColumn();
 
                     // // COLUMN 2 - ITEM POOL SETTINGS
+                    ImGui::PushItemWidth(-FLT_MIN);
                     ImGui::Text("Item Pool");
                     switch (CVar_GetS32("gRandomizeItemPool", 1)) {
                         case 0:
@@ -4049,41 +4287,42 @@ void DrawRandoEditor(bool& open) {
                     //     "Giant's Knife will walays be found before Biggoron's\nSword. Medigoron only "
                     //     "starts selling new knives\nonce the Giant's Knife has been found\nand broken.");
                     // ImGui::Separator();
+                    ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
                 ImGui::EndTabItem();
             }
 
-            // if (ImGui::BeginTabItem("Detailed Logic Settings")) {
-            //     if (ImGui::BeginTable("tableRandoDetailedLogic", 4,
-            //                           ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            //         ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-            //         ImGui::TableHeadersRow();
-            //         ImGui::TableNextRow();
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 1 - LOGIC OPTIONS
-            //         ImGui::NewLine();
+            if (ImGui::BeginTabItem("Detailed Logic Settings")) {
+                if (ImGui::BeginTable("tableRandoDetailedLogic", 1,
+                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    // ImGui::TableSetupColumn("Logic Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Logical Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // ImGui::TableSetupColumn("Glitch Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableHeadersRow();
+                    ImGui::TableNextRow();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 1 - LOGIC OPTIONS
+                    // ImGui::NewLine();
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 2 - OPEN EXCLUDE LOCATIONS
-            //         ImGui::NewLine();
+                    ImGui::TableNextColumn();
+                    // COLUMN 2 - OPEN EXCLUDE LOCATIONS
+                    ImGui::NewLine();
+                    SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 3 - LOGICAL TRICKS
-            //         ImGui::NewLine();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 3 - LOGICAL TRICKS
+                    // ImGui::NewLine();
 
-            //         ImGui::TableNextColumn();
-            //         // COLUMN 4 - GLITCH OPTIONS
-            //         ImGui::NewLine();
+                    // ImGui::TableNextColumn();
+                    // // COLUMN 4 - GLITCH OPTIONS
+                    // ImGui::NewLine();
 
-            //         ImGui::EndTable();
-            //     }
-
-            //     ImGui::EndTabItem();
-            // }
+                    ImGui::EndTable();
+                }
+                ImGui::EndTabItem();
+            }
             // todo: figure out sfx rando stuff
             // if (ImGui::BeginTabItem("SFX")) {
             //     if (ImGui::BeginTable("tableRandoSFX", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {

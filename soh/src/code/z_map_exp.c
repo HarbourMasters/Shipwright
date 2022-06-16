@@ -755,22 +755,23 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&
                          (globalCtx->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                        bool Map0 = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 == 0;
                         s16 IconSize = 8;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex]+Right_MM_Margin;
-                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex]+Bottom_MM_Margin;
+                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + (Map0 ? 0 : Right_MM_Margin);
+                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + (Map0 ? 0 : Bottom_MM_Margin);
                         //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
-                        if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                        if (CVar_GetS32("gFixDungeonMinimapIcon", 0) != 0){
                             //No idea why and how Original value work but this does actually fix them all.
                             PosY = PosY+1024;
                         }
-                        s16 TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
+                        s16 TopLeftX = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX) : OTRGetRectDimensionFromRightEdge(PosX)) << 2;
                         s16 TopLeftY = PosY << 2;
-                        s16 TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
+                        s16 TopLeftW = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX + IconSize) : OTRGetRectDimensionFromRightEdge(PosX + IconSize)) << 2;
                         s16 TopLeftH = (PosY + IconSize) << 2;
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
-                            if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 != 0 && CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                            if (!Map0 || !CVar_GetS32("gFixDungeonMinimapIcon", 0)) {
                                 gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                     IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);

@@ -862,6 +862,8 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern std::string version;
   extern std::array<uint8_t, 5> hashIconIndexes;
 
+  extern bool skipChildZelda;
+
   extern Option OpenForest;
   extern Option OpenKakariko;
   extern Option OpenDoorOfTime;
@@ -1266,7 +1268,7 @@ void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettin
   extern std::vector<Option *> startingSongsOptions;
   extern std::vector<Option *> startingEquipmentOptions;
   extern std::vector<Option *> startingStonesMedallionsOptions;
-  extern std::vector<Option *> startingOtherOptions;
+  extern std::vector<Option *> startingOthersOptions;
   extern std::vector<Option *> trickOptions;
   extern std::vector<Option *> glitchCategories;
   extern std::vector<Option *> miscGlitches;

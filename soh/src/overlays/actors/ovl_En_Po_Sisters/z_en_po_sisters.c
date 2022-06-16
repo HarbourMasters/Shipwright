@@ -179,6 +179,12 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 pad;
 
+    // Skip Poe Intro Cutscene
+    if (gSaveContext.n64ddFlag && thisx->params == 4124) {
+        Flags_SetSwitch(globalCtx, 0x1B);
+        Actor_Kill(thisx);
+    }
+
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 50.0f);
     SkelAnime_Init(globalCtx, &this->skelAnime, &gPoeSistersSkel, &gPoeSistersSwayAnim, this->jointTable,
@@ -851,6 +857,11 @@ void func_80ADB338(EnPoSisters* this, GlobalContext* globalCtx) {
         if (Actor_WorldDistXZToPoint(&player->actor, &this->actor.home.pos) < 600.0f) {
             if (this->unk_19C != 0) {
                 this->unk_19C--;
+
+                // Force Meg to respawn instantly after getting hit
+                if (gSaveContext.n64ddFlag) {
+                    this->unk_19C = 0;
+                }
             }
         } else {
             this->unk_19C = 100;
