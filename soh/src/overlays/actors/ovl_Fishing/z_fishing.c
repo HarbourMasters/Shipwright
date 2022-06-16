@@ -5755,13 +5755,12 @@ f32 Fishing_GetMinimumRequiredScore(uint16_t weight) {
 }
 
 bool getInstantFish() {
-    return (!gSaveContext.n64ddFlag && CVar_GetS32("gInstantFishing", 0)) ||
-           (gSaveContext.n64ddFlag && CVar_GetS32("gRandomizeInstantFishing", 1));
+    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeInstantFishing", 1) : CVar_GetS32("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
-    return (!gSaveContext.n64ddFlag && CVar_GetS32("gGuaranteeFishingBite", 0)) ||
-           (gSaveContext.n64ddFlag && CVar_GetS32("gRandomizeGuaranteeFishingBite", 1));
+    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeGuaranteeFishingBite", 1)
+                                  : CVar_GetS32("gGuaranteeFishingBite", 0);
 }
 
 s32 Fishing_OwnerOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
