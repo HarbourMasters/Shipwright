@@ -881,6 +881,8 @@ namespace SohImGui {
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                    Tooltip("Prevent forced Navi conversations");
                     EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
                     Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
