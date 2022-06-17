@@ -24,8 +24,8 @@ private:
 #endif
 
 #ifndef __cplusplus
-void InitOTR();
-void Graph_ProcessFrame(void (*run_one_game_iter)(void));
+void OTRAudio_Init();
+void InitAudio();
 void Graph_StartFrame();
 void Graph_ProcessGfxCommands(Gfx* commands);
 void OTRLogString(const char* src);
@@ -35,6 +35,7 @@ uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
+char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadTexByName(const char* texPath);
@@ -46,6 +47,9 @@ Gfx* ResourceMgr_LoadGfxByName(const char* path);
 Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
+SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
+SequenceData ResourceMgr_LoadSeqByName(const char* path);
+SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
