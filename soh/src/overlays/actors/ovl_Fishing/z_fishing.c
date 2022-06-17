@@ -4811,9 +4811,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 switch (globalCtx->msgCtx.choiceIndex) {
                     case 0:
                         if (gSaveContext.rupees >= 20) {
-                            Player* player = GET_PLAYER(globalCtx);
-                            Rupees_ChangeBy(-20);
-
+                            Rupees_ChangeBy(-20);   
                             if (func_800AA148() == 0) {
                                 this->actor.textId = 0x407C;
                             } else {
