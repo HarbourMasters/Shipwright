@@ -684,3 +684,4 @@ bool WINAPI SListFileFindClose(HANDLE hFind)
 
     return FreeListFileCache(pCache);
 }
+

@@ -7,6 +7,7 @@
 #include <bit>
 #include <map>
 #include <string>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -1544,6 +1545,7 @@ void DrawPlayerTab() {
 
 void DrawSaveEditor(bool& open) {
     if (!open) {
+        CVar_SetS32("gSaveEditorEnabled", 0);
         return;
     }
 
