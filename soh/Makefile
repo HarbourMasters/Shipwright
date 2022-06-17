@@ -226,6 +226,8 @@ appbundle: macosx/$(APPNAME).icns
 	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
 	cp $(TARGET) $(APPBUNDLEEXE)/soh
 	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
+	clang -ObjC macosx/appsupport.m -arch arm64 -arch x86_64 -framework Foundation -o macosx/appsupport
+	cp macosx/appsupport $(APPBUNDLEEXE)/appsupport
 	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
 
 macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png

@@ -409,3 +409,6 @@ cvars.cfg
 
 DebugObj/*
 ReleaseObj/*
+
+# Junk from App Bundle
+appsupport
