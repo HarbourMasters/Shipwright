@@ -5091,6 +5091,13 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
 
             if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE) {
                 this->unk_15C = 0;
+
+                // Remove the fishing pole forcibly.
+                Player* player = GET_PLAYER(globalCtx);
+                player->heldItemActionParam = 0;
+                player->heldItemId = ITEM_NONE;
+                player->unk_860 = 0;
+
                 if (D_80B7A68C != 0) {
                     D_80B7A688 = 1;
                     D_80B7A68C = 0;
