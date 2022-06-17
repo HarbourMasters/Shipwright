@@ -29,7 +29,7 @@ namespace Ship {
 		}
 
 		int SDLAudioPlayer::GetDesiredBuffered(void) {
-            return 1680;
+            return 2480;
 		}
 
 		void SDLAudioPlayer::Play(const uint8_t* Buffer, uint32_t BufferLen) {

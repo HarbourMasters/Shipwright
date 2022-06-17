@@ -10,7 +10,7 @@
 #include <vector>
 #include "Resource.h"
 //#include "Lib/StrHash64.h"
-#include "Lib/StormLib/StormLib.h"
+#include "StormLib.h"
 
 
 namespace Ship
