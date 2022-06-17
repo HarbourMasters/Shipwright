@@ -20,4 +20,10 @@ namespace Ship
     public:
         static AudioSoundFont* ReadAudioSoundFont(BinaryReader* reader);
     };
+
+    class AudioSequenceFactory
+    {
+    public:
+        static AudioSequence* ReadAudioSequence(BinaryReader* reader);
+    };
 }

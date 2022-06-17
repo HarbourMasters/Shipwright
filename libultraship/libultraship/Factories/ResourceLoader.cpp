@@ -29,9 +29,9 @@ namespace Ship
 
         for (int i = 0; i < 3; i++)
             reader->ReadByte();
-        
+
         // OTRTODO: Setup the binaryreader to use the resource's endianess
-        
+
         ResourceType resourceType = (ResourceType)reader->ReadUInt32();
         Resource* result = nullptr;
 
@@ -93,6 +93,9 @@ namespace Ship
             break;
         case ResourceType::AudioSoundFont:
             result = AudioSoundFontFactory::ReadAudioSoundFont(reader.get());
+            break;
+        case ResourceType::AudioSequence:
+            result = AudioSequenceFactory::ReadAudioSequence(reader.get());
             break;
         default:
             // RESOURCE TYPE NOT SUPPORTED
