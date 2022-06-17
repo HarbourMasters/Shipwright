@@ -1939,15 +1939,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
     if (!(this->stateFlags1 & (PLAYER_STATE1_11 | PLAYER_STATE1_29)) && !func_8008F128(this)) {
         if (this->itemActionParam >= PLAYER_AP_FISHING_POLE) {
 
-            if (this->itemActionParam == PLAYER_AP_FISHING_POLE) 
-            {
-                if (CHECK_BTN_ALL(sControlInput->press.button, BTN_B)) {
-                    this->heldItemButton = 0;
-                    func_80835F44(globalCtx, this, ITEM_FISHING_POLE);
-                }
-
-                return;
-            } else if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, C_BTN_ITEM(0)) &&
+            if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, C_BTN_ITEM(0)) &&
                 !func_80833C50(this, C_BTN_ITEM(1)) && !func_80833C50(this, C_BTN_ITEM(2))) {
                 func_80835F44(globalCtx, this, ITEM_NONE);
                 return;
@@ -14846,10 +14838,16 @@ s32 Player_IsDroppingFish(GlobalContext* globalCtx) {
 
 s32 Player_StartFishing(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
+    u32 sanity = PLAYER_STATE4_0;
+
+    if (this->heldItemId == ITEM_NONE) {
+        this->stateFlags4 |= PLAYER_STATE4_0;
+        this->currentSwordItem = ITEM_SWORD_KOKIRI;
+        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+    }
 
     func_80832564(globalCtx, this);
-    this->heldItemId = ITEM_FISHING_POLE;
-    this->heldItemActionParam = 2;
     func_80835F44(globalCtx, this, ITEM_FISHING_POLE);
     return 1;
 }

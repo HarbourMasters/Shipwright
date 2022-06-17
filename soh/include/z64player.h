@@ -433,6 +433,9 @@ typedef struct {
 #define PLAYER_STATE3_6 (1 << 6)
 #define PLAYER_STATE3_7 (1 << 7)
 
+// OOTRANDO: Used to track if a sword was temporarily given for fishing
+#define PLAYER_STATE4_0 (1 << 0)
+
 typedef void (*PlayerFunc674)(struct Player*, struct GlobalContext*);
 typedef s32(*PlayerFunc82C)(struct Player*, struct GlobalContext*);
 typedef void (*PlayerFuncA74)(struct GlobalContext*, struct Player*);
@@ -612,6 +615,7 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-} Player; // size = 0xA94
+    /* 0x0A89 */ u8         stateFlags4; // OOTRando
+} Player; // size = 0xA95
 
 #endif

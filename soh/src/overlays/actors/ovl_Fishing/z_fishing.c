@@ -4811,7 +4811,9 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                 switch (globalCtx->msgCtx.choiceIndex) {
                     case 0:
                         if (gSaveContext.rupees >= 20) {
+                            Player* player = GET_PLAYER(globalCtx);
                             Rupees_ChangeBy(-20);
+
                             if (func_800AA148() == 0) {
                                 this->actor.textId = 0x407C;
                             } else {
@@ -5103,11 +5105,14 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
             if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_NONE) {
                 this->unk_15C = 0;
 
-                // Remove the fishing pole forcibly.
                 Player* player = GET_PLAYER(globalCtx);
-                player->heldItemActionParam = 0;
-                player->heldItemId = ITEM_NONE;
-                player->unk_860 = 0;
+
+                if (player->stateFlags4 & PLAYER_STATE4_0) {
+                    player->currentSwordItem = ITEM_NONE;
+                    gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                    Inventory_ChangeEquipment(EQUIP_SWORD, ITEM_NONE);
+                    player->stateFlags4 ^= PLAYER_STATE4_0;
+                }
 
                 if (D_80B7A68C != 0) {
                     D_80B7A688 = 1;
