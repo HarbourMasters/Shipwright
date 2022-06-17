@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soh", "soh.vcxproj", "{31348AA7-8DC5-4FA7-955F-E80855CADE9E}"
 	ProjectSection(ProjectDependencies) = postProject
+		{78424708-1F6E-4D4B-920C-FB6D26847055} = {78424708-1F6E-4D4B-920C-FB6D26847055}
 		{6DA9B521-65B7-41E2-8F8A-F0451CC18ED8} = {6DA9B521-65B7-41E2-8F8A-F0451CC18ED8}
 		{A2E01C3E-D647-45D1-9788-043DEBC1A908} = {A2E01C3E-D647-45D1-9788-043DEBC1A908}
 	EndProjectSection
@@ -12,6 +13,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libultraship", "..\libultraship\libultraship\libultraship.vcxproj", "{6DA9B521-65B7-41E2-8F8A-F0451CC18ED8}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZAPDUtils", "..\ZAPDTR\ZAPDUtils\ZAPDUtils.vcxproj", "{A2E01C3E-D647-45D1-9788-043DEBC1A908}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "StormLib", "..\StormLib\StormLib_vs19.vcxproj", "{78424708-1F6E-4D4B-920C-FB6D26847055}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +48,14 @@ Global
 		{A2E01C3E-D647-45D1-9788-043DEBC1A908}.Release|x64.Build.0 = Release|x64
 		{A2E01C3E-D647-45D1-9788-043DEBC1A908}.Release|x86.ActiveCfg = Release|Win32
 		{A2E01C3E-D647-45D1-9788-043DEBC1A908}.Release|x86.Build.0 = Release|Win32
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Debug|x64.ActiveCfg = DebugUS|x64
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Debug|x64.Build.0 = DebugUS|x64
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Debug|x86.ActiveCfg = DebugUS|Win32
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Debug|x86.Build.0 = DebugUS|Win32
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Release|x64.ActiveCfg = ReleaseUS|x64
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Release|x64.Build.0 = ReleaseUS|x64
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Release|x86.ActiveCfg = ReleaseUS|Win32
+		{78424708-1F6E-4D4B-920C-FB6D26847055}.Release|x86.Build.0 = ReleaseUS|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

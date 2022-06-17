@@ -16,6 +16,4 @@ void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 
 		cs->commands.push_back(data);
 	}
-
-	//int bp = 0;
 }
