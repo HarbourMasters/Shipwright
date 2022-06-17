@@ -703,7 +703,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
