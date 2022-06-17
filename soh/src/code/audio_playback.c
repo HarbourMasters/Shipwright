@@ -355,8 +355,6 @@ Instrument* Audio_GetInstrumentInner(s32 fontId, s32 instId) {
         return inst;
     }
 
-
-
     return inst;
 }
 

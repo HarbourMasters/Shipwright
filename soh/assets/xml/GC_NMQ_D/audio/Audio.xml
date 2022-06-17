@@ -1,7 +1,7 @@
 <Root>
 	<File Name="code" OutName="audio" RangeStart="0x0" RangeEnd="0x12CBB0">
 		<Audio Name="audio" Offset="0x00" SoundFontTableOffset="0x138290" SequenceTableOffset="0x1386C0" SampleBankTableOffset="0x138DB0" SequenceFontTableOffset="0x138500">
-			<Sequences>
+		<Sequences>
 				<Sequence Name="000_Sound_Effects"/>
 				<Sequence Name="001_Ambient_Effects"/>
 				<Sequence Name="002_Hyrule_Field_Program"/>
@@ -113,6 +113,8 @@
 				<Sequence Name="108_Timed_Minigame"/>
 				<Sequence Name="109_Cutscene_Effects"/>
 			</Sequences>
+		
+		
 			<Samples Bank="0">
 				<Sample Name="Bird Chirp 1">
 					<Offset Version="MQDebug" At="0"/>
@@ -1448,69 +1450,71 @@
 				<Sample Name="Organic Gurgling">
 					<Offset Version="MQDebug" At="0x16480"/>
 				</Sample>
-			</Samples>
-			<Samples Bank="4">
-				<Sample Name="Vocal Ohs">
-					<Offset Version="MQDebug" At="0"/>
-				</Sample>
-				<Sample Name="Flute and Voice">
-					<Offset Version="MQDebug" At="0x6410"/>
-				</Sample>
-				<Sample Name="Off-Kilter Flute">
-					<Offset Version="MQDebug" At="0x72D0"/>
-				</Sample>
-				<Sample Name="Voice">
-					<Offset Version="MQDebug" At="0x8230"/>
-				</Sample>
-				<Sample Name="Melodic Wooden Clacking">
-					<Offset Version="MQDebug" At="0x9030"/>
-				</Sample>
-			</Samples>
+		</Samples>
+		<Samples Bank="4">
+			<Sample Name="Vocal Ohs">
+				<Offset Version="MQDebug" At="0"/>
+			</Sample>
+			<Sample Name="Flute and Voice">
+				<Offset Version="MQDebug" At="0x6410"/>
+			</Sample>
+			<Sample Name="Off-Kilter Flute">
+				<Offset Version="MQDebug" At="0x72D0"/>
+			</Sample>
+			<Sample Name="Voice">
+				<Offset Version="MQDebug" At="0x8230"/>
+			</Sample>
+			<Sample Name="Melodic Wooden Clacking">
+				<Offset Version="MQDebug" At="0x9030"/>
+			</Sample>
+	</Samples>
 
-			<Samples Bank="5">
-				<Sample Name="Goron Drum">
-					<Offset Version="MQDebug" At="0"/>
-				</Sample>
-				<Sample Name="Bass Slap">
-					<Offset Version="MQDebug" At="0x2540"/>
-				</Sample>
-				<Sample Name="Goron Ooh">
-					<Offset Version="MQDebug" At="0x4800"/>
-				</Sample>
-				<Sample Name="Goron Ooh (High)">
-					<Offset Version="MQDebug" At="0x72D0"/>
-				</Sample>
-				<Sample Name="Tom Drum">
-					<Offset Version="MQDebug" At="0x7B70"/>
-				</Sample>
-				<Sample Name="Resonant Bass Marimba">
-					<Offset Version="MQDebug" At="0x8630"/>
-				</Sample>
-			</Samples>
+	<Samples Bank="5">
+		<Sample Name="Goron Drum">
+			<Offset Version="MQDebug" At="0"/>
+		</Sample>
+		<Sample Name="Bass Slap">
+			<Offset Version="MQDebug" At="0x2540"/>
+		</Sample>
+		<Sample Name="Goron Ooh">
+			<Offset Version="MQDebug" At="0x4800"/>
+		</Sample>
+		<Sample Name="Goron Ooh (High)">
+			<Offset Version="MQDebug" At="0x72D0"/>
+		</Sample>
+		<Sample Name="Tom Drum">
+			<Offset Version="MQDebug" At="0x7B70"/>
+		</Sample>
+		<Sample Name="Resonant Bass Marimba">
+			<Offset Version="MQDebug" At="0x8630"/>
+		</Sample>
+	</Samples>
 
-			<Samples Bank="6">
-				<Sample Name="Warm Synth Pad">
-					<Offset Version="MQDebug" At="0"/>
-				</Sample>
-				<Sample Name="Egyptian Flute">
-					<Offset Version="MQDebug" At="0xB0D0"/>
-				</Sample>
-				<Sample Name="Tom Drum">
-					<Offset Version="MQDebug" At="0xE120"/>
-				</Sample>
-				<Sample Name="Vocal Synth">
-					<Offset Version="MQDebug" At="0x103E0"/>
-				</Sample>
-				<Sample Name="Gong">
-					<Offset Version="MQDebug" At="0x12EB0"/>
-				</Sample>
-				<Sample Name="Bass Slap">
-					<Offset Version="MQDebug" At="0x1D3E0"/>
-				</Sample>
-				<Sample Name="Windchimes">
-					<Offset Version="MQDebug" At="0x22EE0"/>
-				</Sample>
-			</Samples>
+	<Samples Bank="6">
+		<Sample Name="Warm Synth Pad">
+			<Offset Version="MQDebug" At="0"/>
+		</Sample>
+		<Sample Name="Egyptian Flute">
+			<Offset Version="MQDebug" At="0xB0D0"/>
+		</Sample>
+		<Sample Name="Tom Drum">
+			<Offset Version="MQDebug" At="0xE120"/>
+		</Sample>
+		<Sample Name="Vocal Synth">
+			<Offset Version="MQDebug" At="0x103E0"/>
+		</Sample>
+		<Sample Name="Gong">
+			<Offset Version="MQDebug" At="0x12EB0"/>
+		</Sample>
+		<Sample Name="Bass Slap">
+			<Offset Version="MQDebug" At="0x1D3E0"/>
+		</Sample>
+		<Sample Name="Windchimes">
+			<Offset Version="MQDebug" At="0x22EE0"/>
+		</Sample>
+	</Samples>
+		
+
 			<Soundfont Name="02_Ambient_Sounds" Index="2"/>
 			<Soundfont Name="37_Unused_Deku_Tree" Index="37" OverrideSampleBank="2"/>
 			<Soundfont Name="04_Deku_Tree" Index="4"/>

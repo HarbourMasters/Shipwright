@@ -45,14 +45,14 @@ void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* write
 	writer->Write((uint32_t)(entry->loop.count));
 	writer->Write((uint32_t)entry->loop.states.size());
 
-	for (int i = 0; i < entry->loop.states.size(); i++)
+	for (size_t i = 0; i < entry->loop.states.size(); i++)
 		writer->Write((entry->loop.states[i]));
 
 	writer->Write((uint32_t)(entry->book.order));
 	writer->Write((uint32_t)(entry->book.npredictors));
 	writer->Write((uint32_t)entry->book.books.size());
 
-	for (int i = 0; i < entry->book.books.size(); i++)
+	for (size_t i = 0; i < entry->book.books.size(); i++)
 		writer->Write((entry->book.books[i]));
 }
 
@@ -128,7 +128,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		fntWriter.Write((uint32_t)audio->soundFontTable[i].instruments.size());
 		fntWriter.Write((uint32_t)audio->soundFontTable[i].soundEffects.size());
 
-		for (int k = 0; k < audio->soundFontTable[i].drums.size(); k++)
+		for (size_t k = 0; k < audio->soundFontTable[i].drums.size(); k++)
 		{
 			fntWriter.Write(audio->soundFontTable[i].drums[k].releaseRate);
 			fntWriter.Write(audio->soundFontTable[i].drums[k].pan);
@@ -140,7 +140,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			fntWriter.Write(audio->soundFontTable[i].drums[k].tuning);
 		}
 
-		for (int k = 0; k < audio->soundFontTable[i].instruments.size(); k++)
+		for (size_t k = 0; k < audio->soundFontTable[i].instruments.size(); k++)
 		{
 			fntWriter.Write((uint8_t)audio->soundFontTable[i].instruments[k].isValidInstrument);
 
@@ -156,7 +156,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 			WriteSoundFontEntry(audio, audio->soundFontTable[i].instruments[k].highNotesSound, audio->samples, &fntWriter);
 		}
 
-		for (int k = 0; k < audio->soundFontTable[i].soundEffects.size(); k++)
+		for (size_t k = 0; k < audio->soundFontTable[i].soundEffects.size(); k++)
 		{
 			WriteSoundFontEntry(audio, audio->soundFontTable[i].soundEffects[k], audio->samples, &fntWriter);
 		}
@@ -167,7 +167,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 	}
 
 	// Write Sequences
-	for (int i = 0; i < audio->sequences.size(); i++)
+	for (size_t i = 0; i < audio->sequences.size(); i++)
 	{
 		auto seq = audio->sequences[i];
 
@@ -183,7 +183,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
 		seqWriter.Write((uint32_t)audio->fontIndices[i].size());
 
-		for (int k = 0; k < audio->fontIndices[i].size(); k++)
+		for (size_t k = 0; k < audio->fontIndices[i].size(); k++)
 			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
 
 		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("sequences/%s", audio->seqNames[i].c_str()));
