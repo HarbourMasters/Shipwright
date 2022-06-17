@@ -11626,7 +11626,7 @@ void func_8084BF1C(Player* this, GlobalContext* globalCtx) {
         phi_f2 = -1.0f;
     }
 
-    this->skelAnime.playSpeed = phi_f2 * phi_f0;
+    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVar_GetS32("gClimbSpeed", 0);
 
     if (this->unk_850 >= 0) {
         if ((this->actor.wallPoly != NULL) && (this->actor.wallBgId != BGCHECK_SCENE)) {
