@@ -2,7 +2,30 @@
 
 namespace Ship
 {
-	void AudioSampleV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSequenceV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	{
+		AudioSequence* seq = (AudioSequence*)res;
+
+		ResourceFile::ParseFileBinary(reader, res);
+
+		int seqDataSize = reader->ReadInt32();
+
+		seq->seqData.reserve(seqDataSize);
+
+		for (int i = 0; i < seqDataSize; i++)
+			seq->seqData.push_back(reader->ReadUByte());
+
+		seq->seqNumber = reader->ReadUByte();
+		seq->medium = reader->ReadUByte();
+		seq->cachePolicy = reader->ReadUByte();
+
+		int numFonts = reader->ReadInt32();
+
+		for (int i = 0; i < numFonts; i++)
+			seq->fonts.push_back(reader->ReadUByte());
+	}
+
+	void AudioSampleV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		AudioSample* entry = (AudioSample*)res;
 
@@ -15,7 +38,7 @@ namespace Ship
 
 		int dataSize = reader->ReadInt32();
 
-		for (uint32_t i = 0; i < dataSize; i++)
+		for (int i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
 		entry->loop.start = reader->ReadUInt32();
@@ -24,7 +47,7 @@ namespace Ship
 
 		int loopStateCnt = reader->ReadUInt32();
 
-		for (uint32_t i = 0; i < loopStateCnt; i++)
+		for (int i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
 
 		entry->book.order = reader->ReadInt32();
@@ -32,11 +55,11 @@ namespace Ship
 
 		int bookSize = reader->ReadInt32();
 
-		for (uint32_t i = 0; i < bookSize; i++)
+		for (int i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
-	void AudioSoundFontV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSoundFontV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		AudioSoundFont* soundFont = (AudioSoundFont*)res;
 
@@ -137,7 +160,7 @@ namespace Ship
 		}
 	}
 
-	std::vector<AdsrEnvelope*> AudioSoundFontV1::ReadEnvelopeData(BinaryReader* reader)
+	std::vector<AdsrEnvelope*> AudioSoundFontV2::ReadEnvelopeData(BinaryReader* reader)
 	{
 		std::vector<AdsrEnvelope*> envelopes;
 
@@ -155,7 +178,7 @@ namespace Ship
 		return envelopes;
 	}
 
-	void AudioV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		Audio* audio = (Audio*)res;
 

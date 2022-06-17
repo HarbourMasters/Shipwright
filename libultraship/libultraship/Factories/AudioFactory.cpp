@@ -9,9 +9,9 @@ namespace Ship
 
         switch (version)
         {
-        case Version::Roy:
+        case Version::Rachael:
         {
-            AudioV1 audioFac = AudioV1();
+            AudioV2 audioFac = AudioV2();
             audioFac.ParseFileBinary(reader, audio);
         }
         break;
@@ -30,10 +30,9 @@ namespace Ship
 
         switch (version)
         {
-        case Version::Deckard: // OTRTODO: Remove this line after we merge in that refactor
-        case Version::Roy:
+        case Version::Rachael:
         {
-            AudioSampleV1 audioSampleFac = AudioSampleV1();
+            AudioSampleV2 audioSampleFac = AudioSampleV2();
             audioSampleFac.ParseFileBinary(reader, audioSample);
         }
         break;
@@ -52,10 +51,9 @@ namespace Ship
 
         switch (version)
         {
-        case Version::Deckard: // OTRTODO: Remove this line after we merge in that refactor
-        case Version::Roy:
+        case Version::Rachael:
         {
-            AudioSoundFontV1 audioSFFac = AudioSoundFontV1();
+            AudioSoundFontV2 audioSFFac = AudioSoundFontV2();
             audioSFFac.ParseFileBinary(reader, audioSF);
         }
         break;
@@ -65,5 +63,26 @@ namespace Ship
         }
 
         return audioSF;
+    }
+
+    AudioSequence* AudioSequenceFactory::ReadAudioSequence(BinaryReader* reader)
+    {
+        AudioSequence* audioSeq = new AudioSequence();
+        Version version = (Version)reader->ReadUInt32();
+
+        switch (version)
+        {
+        case Version::Rachael:
+        {
+            AudioSequenceV2 audioSeqFac = AudioSequenceV2();
+            audioSeqFac.ParseFileBinary(reader, audioSeq);
+        }
+        break;
+        default:
+            // VERSION NOT SUPPORTED
+            break;
+        }
+
+        return audioSeq;
     }
 };

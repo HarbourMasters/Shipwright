@@ -76,7 +76,8 @@ void* sUnusedHandler = NULL;
 
 s32 gAudioContextInitalized = false;
 
-char* sequenceMap[512];
+char* sequenceMap[256];
+char* fontMap[256];
 
 uintptr_t fontStart;
 uint32_t fontOffsets[8192];
@@ -389,6 +390,7 @@ SoundFontData* AudioLoad_SyncLoadSeqFonts(s32 seqId, u32* outDefaultFontId) {
 
     while (numFonts > 0) {
         fontId = gAudioContext.sequenceFontTable[index++];
+
         font = AudioLoad_SyncLoadFont(fontId);
         numFonts--;
     }
@@ -609,6 +611,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     }
 
     seqData = AudioLoad_SyncLoadSeq(seqId);
+
     if (seqData == NULL) {
         return 0;
     }
@@ -897,7 +900,6 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
     SoundFontSound* sfx;
     s32 i;
     SoundFont* sf = NULL;
-
     s32 numDrums = 0;
     s32 numInstruments = 0;
     s32 numSfx = 0;

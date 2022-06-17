@@ -5,7 +5,6 @@
 
 extern bool gUseLegacySD;
 extern char* sequenceMap[256];
-char* fontMap[256];
 
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
 #define PORTAMENTO_MODE(x) ((x).mode & ~0x80)

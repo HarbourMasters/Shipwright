@@ -30,7 +30,7 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
 {
-	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample);
+	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample, Ship::Version::Rachael);
 
 	writer->Write(entry->codec);
 	writer->Write(entry->medium);
@@ -82,7 +82,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 {
 	ZAudio* audio = (ZAudio*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Audio);
+	WriteHeader(res, outPath, writer, Ship::ResourceType::Audio, Ship::Version::Rachael);
 
 	// Write Samples as individual files
 	for (auto pair : audio->samples)
@@ -115,7 +115,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* fntStream = new MemoryStream();
 		BinaryWriter fntWriter = BinaryWriter(fntStream);
 
-		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::AudioSoundFont);
+		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::AudioSoundFont, Ship::Version::Rachael);
 
 		fntWriter.Write((uint32_t)i);
 		fntWriter.Write(audio->soundFontTable[i].medium);
@@ -174,16 +174,17 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* seqStream = new MemoryStream();
 		BinaryWriter seqWriter = BinaryWriter(seqStream);
 
-		seqWriter.Write((uint8_t)0); // Version 0 of format...
+		WriteHeader(nullptr, "", &seqWriter, Ship::ResourceType::AudioSequence, Ship::Version::Rachael);
+
+		seqWriter.Write((uint32_t)seq.size());
+		seqWriter.Write(seq.data(), seq.size());
 		seqWriter.Write((uint8_t)i);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].medium);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
-		seqWriter.Write((uint8_t)audio->fontIndices[i].size());
+		seqWriter.Write((uint32_t)audio->fontIndices[i].size());
 
 		for (int k = 0; k < audio->fontIndices[i].size(); k++)
 			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
-
-		seqWriter.Write(seq.data(), seq.size());
 
 		std::string fName = OTRExporter_DisplayList::GetPathToRes(res, StringHelper::Sprintf("sequences/%s", audio->seqNames[i].c_str()));
 		AddFile(fName, seqStream->ToVector());

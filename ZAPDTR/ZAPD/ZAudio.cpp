@@ -344,7 +344,6 @@ void ZAudio::ParseRawData()
 	//int gSequenceTableOffset = 0x1386A0;
 	//int gSampleBankTableOffset = 0x138D90;
 	//int gSequenceFontTableOffset = 0x1384E0;
-
 	// NTSC 1.0
 	//int gSoundFontTableOffset = 0x1026A0;
 	//int gSequenceTableOffset = 0x102AD0;
