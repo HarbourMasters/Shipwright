@@ -868,6 +868,17 @@ namespace SohImGui {
                     Tooltip("Allows equiping the tunic and boots to c-buttons");
                     EnhancementCheckbox("DPad Item Shortcuts", "gDPadShortcuts");
                     Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
+                    if (ImGui::BeginMenu("Fishing")) {
+                        EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                        Tooltip("All fish will be caught instantly");
+                        EnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite");
+                        Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
+                        EnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10);
+                        Tooltip("The minimum weight for the unique fishing reward as a child");
+                        EnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 1, 13, "", 13);
+                        Tooltip("The minimum weight for the unique fishing reward as an adult");
+                        ImGui::EndMenu();
+                    }
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
