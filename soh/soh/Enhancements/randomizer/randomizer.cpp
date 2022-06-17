@@ -2936,7 +2936,7 @@ void GenerateRandomizerImgui() {
     // There is no zero indexing, so we pass the default as the value
     cvarSettings[RSK_CHILD_FISH_WEIGHT] = CVar_GetS32("gRandomizeChildFishWeight", 8);
     cvarSettings[RSK_ADULT_FISH_WEIGHT] = CVar_GetS32("gRandomizeAdultFishWeight", 10);
-    cvarSettings[RSK_INSTANT_FISHING] = CVar_GetS32("gRandomizeInstantFishing", 1);
+    cvarSettings[RSK_INSTANT_FISHING] = CVar_GetS32("gRandomizeInstantFishing", 0);
     cvarSettings[RSK_GUARANTEE_FISHING_BITE] = CVar_GetS32("gRandomizeGuaranteeFishingBite", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
