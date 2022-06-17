@@ -38,7 +38,7 @@ namespace Ship
 
 		int dataSize = reader->ReadInt32();
 		
-		for (size_t i = 0; i < dataSize; i++)
+		for (int i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
 		entry->loop.start = reader->ReadUInt32();
@@ -47,7 +47,7 @@ namespace Ship
 
 		int loopStateCnt = reader->ReadUInt32();
 
-		for (size_t i = 0; i < loopStateCnt; i++)
+		for (int i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
 
 		entry->book.order = reader->ReadInt32();
@@ -55,7 +55,7 @@ namespace Ship
 
 		int bookSize = reader->ReadInt32();
 
-		for (size_t i = 0; i < bookSize; i++)
+		for (int i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
