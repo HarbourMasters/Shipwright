@@ -53,6 +53,7 @@ static std::vector<Vtx> sphereVtx;
 // Draws the ImGui window for the collision viewer
 void DrawColViewerWindow(bool& open) {
     if (!open) {
+        CVar_SetS32("gCollisionViewerEnabled", 0);
         return;
     }
 

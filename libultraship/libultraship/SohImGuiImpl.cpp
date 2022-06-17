@@ -878,7 +878,7 @@ namespace SohImGui {
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
-                    Tooltip("Allows equiping the tunic and boots to c-buttons");
+                    Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                     EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
@@ -893,6 +893,7 @@ namespace SohImGui {
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     ImGui::EndMenu();
                 }
 
@@ -1038,7 +1039,7 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Cosmetics"))  {
-                EnhancementCheckbox("Cosmetics editor", "gCosmticsEditor");
+                EnhancementCheckbox("Cosmetics editor", "gCosmeticEditor");
                 Tooltip("Edit Navi and Link's Tunics color.");
                 EnhancementCheckbox("HUD Margins editor", "gUseMargins");
                 EnhancementRadioButton("N64 interface", "gHudColors", 0);
@@ -1084,6 +1085,8 @@ namespace SohImGui {
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
+                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
+                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
 
                 ImGui::EndMenu();
             }
@@ -1097,7 +1100,7 @@ namespace SohImGui {
                 if (CVar_GetS32("gSkipLogoTitle",0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
-		ImGui::Separator();
+                ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
@@ -1108,14 +1111,15 @@ namespace SohImGui {
             }
 
             bool Margins_isOpen = CVar_GetS32("gUseMargins", 0);
-            bool Cosmetics_isOpen = CVar_GetS32("gCosmticsEditor", 0);
+            bool Cosmetics_isOpen = CVar_GetS32("gCosmeticEditor", 0);
             bool Interface_isOpen = CVar_GetS32("gColorsEditor", 0);
 
             if (Margins_isOpen) {
                 if (!Margins_isOpen) {
+                    CVar_SetS32("gHUDMargins", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Interface margins")) {
@@ -1129,14 +1133,14 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Cosmetics_isOpen) {
                 if (!Cosmetics_isOpen) {
+                    CVar_SetS32("gCosmeticEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(500, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Cosmetics Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Cosmetics Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Navi")) {
@@ -1175,14 +1179,14 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Interface_isOpen) {
                 if (!Interface_isOpen) {
+                    CVar_SetS32("gColorsEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(215, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Interface Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Interface Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Hearts")) {
@@ -1223,7 +1227,6 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
 
