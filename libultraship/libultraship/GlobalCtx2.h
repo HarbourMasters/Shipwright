@@ -4,6 +4,7 @@
 #pragma once
 
 #ifdef __cplusplus
+#include <filesystem>
 #include <memory>
 #include "spdlog/spdlog.h"
 #include "ConfigFile.h"
