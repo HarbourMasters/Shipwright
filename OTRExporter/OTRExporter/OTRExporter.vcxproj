@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayExporter.h" />
+    <ClInclude Include="AudioExporter.h" />
     <ClInclude Include="BackgroundExporter.h" />
     <ClInclude Include="BlobExporter.h" />
     <ClInclude Include="CollisionExporter.h" />
@@ -44,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArrayExporter.cpp" />
+    <ClCompile Include="AudioExporter.cpp" />
     <ClCompile Include="BackgroundExporter.cpp" />
     <ClCompile Include="BlobExporter.cpp" />
     <ClCompile Include="CollisionExporter.cpp" />
@@ -136,7 +138,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPD;$(ProjectDir)..\..\ZAPDTR\lib\tinyxml2;$(ProjectDir)..\..\ZAPDTR\lib\libgfxd;$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\..\libultraship\libultraship;$(ProjectDir)..\..\libultraship\libultraship\lib\spdlog\include;$(ProjectDir)..\..\libultraship\libultraship\Lib\Fast3D\U64;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPD;$(ProjectDir)..\..\ZAPDTR\lib\tinyxml2;$(ProjectDir)..\..\ZAPDTR\lib\libgfxd;$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\..\libultraship\libultraship;$(ProjectDir)..\..\libultraship\libultraship\lib\spdlog\include;$(ProjectDir)..\..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\..\libultraship\libultraship;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -144,7 +146,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPD;$(ProjectDir)..\..\ZAPDTR\lib\tinyxml2;$(ProjectDir)..\..\ZAPDTR\lib\libgfxd;$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\..\libultraship\libultraship;$(ProjectDir)..\..\libultraship\libultraship\lib\spdlog\include;$(ProjectDir)..\..\libultraship\libultraship\Lib\Fast3D\U64;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPD;$(ProjectDir)..\..\ZAPDTR\lib\tinyxml2;$(ProjectDir)..\..\ZAPDTR\lib\libgfxd;$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\..\libultraship\libultraship;$(ProjectDir)..\..\libultraship\libultraship\lib\spdlog\include;$(ProjectDir)..\..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)..\..\libultraship\libultraship;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
