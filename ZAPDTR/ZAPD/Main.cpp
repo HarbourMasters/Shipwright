@@ -39,7 +39,7 @@ extern "C" void Audio_SetGameVolume(int player_id, float volume)
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
-
+	return 0;
 }
 
 void DebugConsole_SaveCVars()

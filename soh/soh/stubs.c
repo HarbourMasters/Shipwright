@@ -445,7 +445,9 @@ void osViExtendVStart(u32 arg0)
 
 }
 
-
+#if 0
+AudioTable gSoundFontTable = { 0 };
+#else
 AudioTable gSoundFontTable = { 0x0026,
                                0x0000,
                                0x00000000,
@@ -795,7 +797,11 @@ AudioTable gSoundFontTable = { 0x0026,
                                    },
                                }
                             };
+#endif
 
+#if 0
+AudioTable gSequenceTable = { 0 };
+#else
 AudioTable gSequenceTable = { 0x006E,
                               0x0000,
                               0x00000000,
@@ -1585,7 +1591,7 @@ AudioTable gSequenceTable = { 0x006E,
                                       0x0000,
                                   },
                                   {
-                                      0x00000028,
+                                      0x00000028, 
                                       0x00000000,
                                       0x02,
                                       0x02,
@@ -1791,9 +1797,12 @@ AudioTable gSequenceTable = { 0x006E,
                                       0x0000,
                                       0x0000,
                                   },
-                              }
-                            };
+                              } };
+#endif
 
+#if 0
+AudioTable gSampleBankTable = { 0 };
+#else
 AudioTable gSampleBankTable = { 0x0007,
                                 0x0000,
                                 0x00000000,
@@ -1864,7 +1873,11 @@ AudioTable gSampleBankTable = { 0x0007,
                                     },
                                 }
                             };
+#endif
 
+#if 0
+u8 gSequenceFontTable[1] = { 0 };
+#else
 u8 gSequenceFontTable[0x1C0] = {
     0xDC,
     0x00,
@@ -2100,3 +2113,4 @@ u8 gSequenceFontTable[0x1C0] = {
     0x03, 0x01, 0x1F, 0x01, 0x20, 0x01, 0x20, 0x01, 0x09, 0x01, 0x21, 0x01, 0x22, 0x01, 0x21, 0x01, 0x09, 0x01, 0x20,
     0x01, 0x03, 0x02, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
+#endif

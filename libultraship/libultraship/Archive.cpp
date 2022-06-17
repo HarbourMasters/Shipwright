@@ -59,8 +59,16 @@ namespace Ship {
 			FileToLoad->path = filePath;
 		}
 
-		if (!SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle)) {
-			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive {}", GetLastError(), filePath.c_str(), MainPath.c_str());
+		bool attempt = SFileOpenFileEx(mainMPQ, filePath.c_str(), 0, &fileHandle);
+
+		//if (!attempt)
+		//{
+			//std::string filePathAlt = StringHelper::Replace(filePath, "/", "\\");
+			//attempt |= SFileOpenFileEx(mainMPQ, filePathAlt.c_str(), 0, &fileHandle);
+		//}
+
+		if (!attempt) {
+			printf("({%i}) Failed to open file {%s} from mpq archive {%s}", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
 			return FileToLoad;
@@ -142,7 +150,7 @@ namespace Ship {
 		return FileToLoad;
 	}
 
-	bool Archive::AddFile(const std::string& path, uintptr_t fileData, DWORD dwFileSize) {
+	bool Archive::AddFile(const std::string& oPath, uintptr_t fileData, DWORD dwFileSize) {
 		HANDLE hFile;
 #ifdef _WIN32
 		SYSTEMTIME sysTime;
@@ -154,6 +162,11 @@ namespace Ship {
 		time_t stupidHack;
 		time(&stupidHack);
 #endif
+
+		std::string path = oPath;
+
+		StringHelper::ReplaceOriginal(path, "\\", "/");
+
 		if (!SFileCreateFile(mainMPQ, path.c_str(), stupidHack, dwFileSize, 0, MPQ_FILE_COMPRESS, &hFile)) {
 			SPDLOG_ERROR("({}) Failed to create file of {} bytes {} in archive {}", GetLastError(), dwFileSize, path.c_str(), MainPath.c_str());
 			return false;
@@ -334,11 +347,13 @@ namespace Ship {
 			std::vector<std::string> lines = StringHelper::Split(std::string(listFile->buffer.get(), listFile->dwBufferSize), "\n");
 
 			for (size_t i = 0; i < lines.size(); i++) {
-				std::string line = StringHelper::Strip(lines[i], "\r");
-				//uint64_t hash = StringHelper::StrToL(lines[i], 16);
+				std::string line = StringHelper::Replace(StringHelper::Strip(lines[i], "\r"), "/", "\\");
+				std::string line2 = StringHelper::Replace(line, "\\", "/");
 
-				uint64_t hash = CRC64(line.c_str());
+				uint64_t hash = CRC64(StringHelper::Replace(line, "/", "\\").c_str());
+				uint64_t hash2 = CRC64(StringHelper::Replace(line, "\\", "/").c_str());
 				hashes[hash] = line;
+				hashes[hash2] = line2;
 			}
 		}
 
