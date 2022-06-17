@@ -1202,7 +1202,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Child Min Fish Weight", RSK_CHILD_FISH_WEIGHT },
     { "Adult Min Fish Weight", RSK_ADULT_FISH_WEIGHT },
     { "Guarantee Fishing Bite", RSK_GUARANTEE_FISHING_BITE },
-    { "Instant Fishing", RSK_INSTANT_FISHING }
+    { "Instant Fishing", RSK_INSTANT_FISHING },
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES }
 };
