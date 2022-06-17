@@ -5756,7 +5756,7 @@ f32 Fishing_GetMinimumRequiredScore(uint16_t weight) {
 }
 
 bool getInstantFish() {
-    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeInstantFishing", 1) : CVar_GetS32("gInstantFishing", 0);
+    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeInstantFishing", 0) : CVar_GetS32("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
