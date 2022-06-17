@@ -1377,6 +1377,8 @@ EnItem00* Item_DropCollectible(GlobalContext* globalCtx, Vec3f* spawnPos, s16 pa
 
     params &= 0x3FFF;
 
+    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoFixedHearts", 0)) { return NULL; }
+
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ELF, spawnPos->x,
@@ -1420,6 +1422,8 @@ EnItem00* Item_DropCollectible2(GlobalContext* globalCtx, Vec3f* spawnPos, s16 p
 
     params &= 0x3FFF;
 
+    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoFixedHearts", 0)) { return NULL; }
+    
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ELF, spawnPos->x,
@@ -1454,6 +1458,8 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
 
     param8000 = params & 0x8000;
     params &= 0x7FFF;
+
+    if (CVar_GetS32("gNoRandomDrops", 0)) { return; }
 
     if (fromActor != NULL) {
         if (fromActor->dropFlag) {
