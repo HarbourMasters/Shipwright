@@ -615,53 +615,53 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
             rewardPos.z += this->actor.world.pos.z;
 
             this->currentReward = EnTk_ChooseReward(this);
-/*
-copying in rando logic that conflicts with gravedigging tour fix logic
 
-if (this->currentReward == 3) {
-                /*
-                 * Upgrade the purple rupee reward to the heart piece if this
-                 * is the first grand prize dig.
-                 */
-                if (!(gSaveContext.itemGetInf[1] & 0x1000) && !gSaveContext.n64ddFlag) {
-                    gSaveContext.itemGetInf[1] |= 0x1000;
-                    this->currentReward = 4;
-                } else if (gSaveContext.n64ddFlag && !Flags_GetalCtx, Collectible(gGlob0x1F) && this->heartPieceSpawned == 0) {
-                    this->currentReward = 4;
+            // merging in dampe tour fix seems messy, so i'm just wrapping this whole thing
+            // in an n64dd check for now
+            if(gSaveContext.n64ddFlag) {
+                if (this->currentReward == 3) {
+                    /*
+                    * Upgrade the purple rupee reward to the heart piece if this
+                    * is the first grand prize dig.
+                    */
+                    if (!(gSaveContext.itemGetInf[1] & 0x1000) && !gSaveContext.n64ddFlag) {
+                        gSaveContext.itemGetInf[1] |= 0x1000;
+                        this->currentReward = 4;
+                    } else if (gSaveContext.n64ddFlag && !Flags_GetCollectible(gGlobalCtx, 0x1F) && this->heartPieceSpawned == 0) {
+                        this->currentReward = 4;
+                    }
                 }
-            }
 
-            if (gSaveContext.n64ddFlag && this->currentReward == 4) {
-                Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
-                            0, 0, 0x1F06);
-                this->heartPieceSpawned = 1;
+                if (gSaveContext.n64ddFlag && this->currentReward == 4) {
+                    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, rewardPos.x, rewardPos.y, rewardPos.z, 0,
+                                0, 0, 0x1F06);
+                    this->heartPieceSpawned = 1;
+                } else {
+                    Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+                }
             } else {
-                Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
-            }
-
-
-*/
-            if (this->currentReward == 3) {
-                /*
-                 * Upgrade the purple rupee reward to the heart piece if this
-                 * is the first grand prize dig.
-                 */
-                // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
-                // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
-                // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
-                if (!heartPieceSpawned &&
-                    (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
-                     CVar_GetS32("gGravediggingTourFix", 0) &&
-                         !Flags_GetCollectible(globalCtx, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
-                    this->currentReward = 4;
-                    gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
-                    heartPieceSpawned = true;
+                if (this->currentReward == 3) {
+                    /*
+                    * Upgrade the purple rupee reward to the heart piece if this
+                    * is the first grand prize dig.
+                    */
+                    // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
+                    // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
+                    // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
+                    if (!heartPieceSpawned &&
+                        (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
+                        CVar_GetS32("gGravediggingTourFix", 0) &&
+                            !Flags_GetCollectible(globalCtx, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
+                        this->currentReward = 4;
+                        gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
+                        heartPieceSpawned = true;
+                    }
                 }
-            }
 
-            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
-            if (this->currentReward == 4) {
-                reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
+                EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+                if (this->currentReward == 4) {
+                    reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
+                }
             }
         }
     }
