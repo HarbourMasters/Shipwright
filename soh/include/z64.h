@@ -284,7 +284,6 @@ typedef struct {
         /* 0x011C */ u32    tempClear;
         /* 0x0120 */ u32    collect;
         /* 0x0124 */ u32    tempCollect;
-        /* 0x0128 */ u32    tempWeapon;
     }                   flags;
     /* 0x0128 */ TitleCardContext titleCtx;
     /* 0x0138 */ char   unk_138[0x04];

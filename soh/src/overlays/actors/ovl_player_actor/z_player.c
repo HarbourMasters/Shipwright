@@ -14837,14 +14837,6 @@ s32 Player_IsDroppingFish(GlobalContext* globalCtx) {
 
 s32 Player_StartFishing(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
-    u32 sanity = PLAYER_STATE4_0;
-
-    if (this->heldItemId == ITEM_NONE) {
-        this->stateFlags4 |= PLAYER_STATE4_0;
-        this->currentSwordItem = ITEM_SWORD_KOKIRI;
-        gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-        Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-    }
 
     if (this->heldItemId == ITEM_NONE) {
         this->stateFlags4 |= PLAYER_STATE4_0;
