@@ -1601,6 +1601,10 @@ void FileChoose_Main(GameState* thisx) {
     };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
+    
+    if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
+        gSaveContext.skyboxTime += 0x10;
+    }
 
     OPEN_DISPS(this->state.gfxCtx, "../z_file_choose.c", 2898);
 
