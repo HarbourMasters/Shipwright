@@ -30,7 +30,8 @@
 #include "ichain.h"
 #include "regs.h"
 
-#define AUDIO_HEAP_SIZE 0x38000
+//#define AUDIO_HEAP_SIZE 0x38000
+#define AUDIO_HEAP_SIZE 0x3800000 // The original audio heap size was too small. The heap would exceed capacity and corrupt everything in its path.
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus

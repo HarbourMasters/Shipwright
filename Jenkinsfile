@@ -10,6 +10,9 @@ pipeline {
         stage('Build SoH') {
             parallel {
                 stage ('Build Windows') {
+                    options {
+                        timeout(time: 20)
+                    }
                     environment {
                         MSBUILD='C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\msbuild.exe'
                         CONFIG='Release'
@@ -73,6 +76,9 @@ pipeline {
                     }
                 }
                 stage ('Build Linux') {
+                    options {
+                        timeout(time: 20)
+                    }
                     agent {
                         label "SoH-Linux-Builders"
                     }
