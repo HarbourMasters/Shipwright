@@ -72,7 +72,8 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+    if ((gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[2]) ||
+        (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         return 0x402B;
     } else if (gSaveContext.eventChkInf[3] & 8) {
         return 0x401C;
@@ -237,7 +238,7 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (func_80A9C95C(globalCtx, this, &this->unk_1E0.unk_00, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if ((this->actor.textId == 0x401A) && !(gSaveContext.eventChkInf[3] & 8)) {
+        if ((gSaveContext.n64ddFlag || this->actor.textId == 0x401A) && !(gSaveContext.eventChkInf[3] & 8)) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
