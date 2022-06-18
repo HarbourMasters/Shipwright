@@ -14838,6 +14838,17 @@ s32 Player_IsDroppingFish(GlobalContext* globalCtx) {
 s32 Player_StartFishing(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
 
+    if (gSaveContext.linkAge == 1) {
+        if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 0)) {
+            gSaveContext.temporaryWeapon = true;
+        }
+        if (this->heldItemId == ITEM_NONE) {
+            this->currentSwordItem = ITEM_SWORD_KOKIRI;
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        }
+    }
+
     func_80832564(globalCtx, this);
     func_80835F44(globalCtx, this, ITEM_FISHING_POLE);
     return 1;
