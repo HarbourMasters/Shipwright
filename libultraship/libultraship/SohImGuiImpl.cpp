@@ -926,6 +926,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
+                    EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
+                    Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
                     ImGui::EndMenu();
                 }
 

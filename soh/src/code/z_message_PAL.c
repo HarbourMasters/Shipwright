@@ -2413,10 +2413,15 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 }
                 break;
             case MSGMODE_SETUP_DISPLAY_SONG_PLAYED:
-                Message_DrawText(globalCtx, &gfx);
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0) {
+                    Message_DrawText(globalCtx, &gfx);
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
+                } else {
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetInstrument(1);
+                }
                 if (msgCtx->lastPlayedSong != OCARINA_SONG_SCARECROW) {
                     Audio_PlayFanfare(sOcarinaSongFanfares[msgCtx->lastPlayedSong]);
                     Audio_SetSoundBanksMute(0x20);
@@ -2459,7 +2464,13 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 Message_ContinueTextbox(globalCtx, msgCtx->lastPlayedSong + 0x893); // You played [song name]
                 Message_Decode(globalCtx);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
-                msgCtx->stateTimer = 20;
+                
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0) {
+                    msgCtx->stateTimer = 20;
+                } else {
+                    msgCtx->stateTimer = 1;
+                }
+                
                 Message_DrawText(globalCtx, &gfx);
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED_TEXT:
