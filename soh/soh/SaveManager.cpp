@@ -38,6 +38,7 @@ SaveManager::SaveManager() {
         info.questItems = 0;
         info.defense = 0;
         info.health = 0;
+        info.n64ddFlag = 0;
     }
 }
 
@@ -99,6 +100,7 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].questItems = gSaveContext.inventory.questItems;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
+    fileMetaInfo[fileNum].n64ddFlag = gSaveContext.n64ddFlag;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -814,6 +816,7 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
+    fileMetaInfo[to].n64ddFlag = fileMetaInfo[from].n64ddFlag;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {

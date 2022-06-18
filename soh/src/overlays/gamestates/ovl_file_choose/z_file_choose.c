@@ -892,6 +892,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
     s16 temp;
     s16 i;
     s16 quadVtxIndex;
+    s16 isActive;
     s16 pad;
 
     OPEN_DISPS(this->state.gfxCtx, "../z_file_choose.c", 1940);
@@ -945,12 +946,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // draw file button
         gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
+        isActive = ((this->n64ddFlag == Save_GetSaveMetaInfo(i)->n64ddFlag) || (this->nameBoxAlpha[i] == 0)) ? 0 : 1;
+
         if (CVar_GetS32("gHudColors", 1) == 2) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
                             CVar_GetS32("gCCFileChoosePrimB", 255), this->fileButtonAlpha[i]);
         } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[0][0], sWindowContentColors[0][1],
-                            sWindowContentColors[0][2], this->fileButtonAlpha[i]);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                            sWindowContentColors[isActive][2], this->fileButtonAlpha[i]);
         }
 
         gDPLoadTextureBlock(POLY_OPA_DISP++, sFileButtonTextures[gSaveContext.language][i], G_IM_FMT_IA, G_IM_SIZ_16b,
@@ -963,8 +966,8 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
                             CVar_GetS32("gCCFileChoosePrimB", 255), this->nameBoxAlpha[i]);
         } else {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[0][0], sWindowContentColors[0][1],
-                            sWindowContentColors[0][2], this->nameBoxAlpha[i]);
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                            sWindowContentColors[isActive][2], this->nameBoxAlpha[i]);
         }
 
         gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelNameBoxTex, G_IM_FMT_IA, G_IM_SIZ_16b, 108, 16, 0,
@@ -972,18 +975,33 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
                             G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 4, 6, 7, 5, 0);
 
+        // draw disk label for 64DD
+        if (Save_GetSaveMetaInfo(i)->n64ddFlag) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                            sWindowContentColors[isActive][2], this->nameAlpha[i]);
+            gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelDISKButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
+                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
+                                G_TX_NOLOD, G_TX_NOLOD);
+            gSP1Quadrangle(POLY_OPA_DISP++, 8, 10, 11, 9, 0);
+        }
+
         // draw connectors
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[0][0], sWindowContentColors[0][1],
-                        sWindowContentColors[0][2], this->connectorAlpha[i]);
+        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                        sWindowContentColors[isActive][2], this->connectorAlpha[i]);
         gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelConnectorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
         gSP1Quadrangle(POLY_OPA_DISP++, 12, 14, 15, 13, 0);
+
+        if (Save_GetSaveMetaInfo(i)->n64ddFlag) {
+            gSP1Quadrangle(POLY_OPA_DISP++, 16, 18, 19, 17, 0);
+        }
     }
 
     // draw file info
     for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-        FileChoose_DrawFileInfo(&this->state, fileIndex, 0);
+        isActive = ((this->n64ddFlag == Save_GetSaveMetaInfo(fileIndex)->n64ddFlag) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
+        FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
     }
 
     gDPPipeSync(POLY_OPA_DISP++);
