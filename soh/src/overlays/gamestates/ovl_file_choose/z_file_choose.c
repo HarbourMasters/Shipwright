@@ -1196,7 +1196,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         // draw file button
         gSPVertex(POLY_OPA_DISP++, &this->windowContentVtx[temp], 20, 0);
 
-        isActive = ((Save_GetSaveMetaInfo(i)->randoSave) || (this->nameBoxAlpha[i] == 0)) ? 0 : 1;
+        isActive = 1;
 
         if (CVar_GetS32("gHudColors", 1) == 2) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
@@ -1263,7 +1263,7 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
     // draw file info
     for (fileIndex = 0; fileIndex < 3; fileIndex++) {
-        isActive = ((Save_GetSaveMetaInfo(i)->randoSave) || (this->nameBoxAlpha[fileIndex] == 0)) ? 0 : 1;
+        isActive = 1;
         FileChoose_DrawFileInfo(&this->state, fileIndex, isActive);
     }
 
