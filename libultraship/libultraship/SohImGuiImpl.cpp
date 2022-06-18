@@ -909,8 +909,8 @@ namespace SohImGui {
                             needs_save = true;
                         }
 
-                        Tooltip("Select a level of automation for tunic behavior.\n"
-                            "Off: No automation\n"
+                        Tooltip("Select a variety of upgrades for tunic behavior.\n"
+                            "Off: No upgrades\n"
                             "Auto-Switch: Automatically switch to your best tunic for the current situation\n"
                             "Permanent Upgrade: Treat owned tunics like upgrades that are always active once you have them\n"
                             "Super Tunic: Makes every tunic have the effects of every other tunic\n");
