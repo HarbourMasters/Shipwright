@@ -2944,6 +2944,9 @@ void GenerateRandomizerImgui() {
     
     cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
 
+    // RANDOTODO implement chest minigame shuffle with keysanity
+    cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
