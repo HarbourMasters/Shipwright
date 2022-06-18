@@ -58,7 +58,7 @@ TARGET := soh.elf
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
-TARGET := soh.$(UNAMEM)
+TARGET := soh-$(UNAMEM)
 endif
 
 INC_DIRS := $(addprefix -I, \
