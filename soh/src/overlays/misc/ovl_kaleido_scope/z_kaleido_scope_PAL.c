@@ -3732,7 +3732,17 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_SaveSceneFlags(globalCtx);
                             gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            Save_SaveFile();
+                            if (gSaveContext.temporaryWeapon) {
+                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                                player->currentSwordItem = ITEM_NONE;
+                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+                                Save_SaveFile();
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+                                player->currentSwordItem = ITEM_SWORD_KOKIRI;
+                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+                            } else {
+                                Save_SaveFile();
+                            }
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }

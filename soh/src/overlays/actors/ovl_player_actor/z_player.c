@@ -14839,7 +14839,7 @@ s32 Player_StartFishing(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
 
     if (this->heldItemId == ITEM_NONE) {
-        this->stateFlags4 |= PLAYER_STATE4_0;
+        gSaveContext.temporaryWeapon = true;
         this->currentSwordItem = ITEM_SWORD_KOKIRI;
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
         Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
