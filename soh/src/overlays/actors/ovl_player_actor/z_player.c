@@ -3897,7 +3897,11 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
                         SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId) &&
                         (this->unk_A79 >= D_808544F4[sp48])) ||
                     ((sp48 >= 0) &&
-                        ((this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) || (this->unk_A79 >= D_808544F4[sp48])))) {
+                        ((this->currentTunic != PLAYER_TUNIC_GORON && !(CVar_GetS32("gAutoTunics", 0) == 3 ||
+                         (CVar_GetS32("gAutoTunics", 0) == 2 && (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+                          (gSaveContext.inventory.equipment &
+                           gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])))) ||
+                         (this->unk_A79 >= D_808544F4[sp48])))) {
                     this->unk_A79 = 0;
                     this->actor.colChkInfo.damage = 4;
                     func_80837C0C(globalCtx, this, 0, 4.0f, 5.0f, this->actor.shape.rot.y, 20);
@@ -8212,7 +8216,10 @@ static struct_80832924 D_808545F0[] = {
 };
 
 void func_80843CEC(Player* this, GlobalContext* globalCtx) {
-    if (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) {
+    if (this->currentTunic != PLAYER_TUNIC_GORON && (!(CVar_GetS32("gAutoTunics", 0) == 3) ||
+        !(CVar_GetS32("gAutoTunics", 0) == 2 && (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+          (gSaveContext.inventory.equipment &
+           gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])))) {
         if ((globalCtx->roomCtx.curRoom.unk_02 == 3) || (D_808535E4 == 9) ||
             ((func_80838144(D_808535E4) >= 0) &&
                 !SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
@@ -10248,7 +10255,10 @@ void func_80848C74(GlobalContext* globalCtx, Player* this) {
     s32 sp58;
     s32 sp54;
 
-    if (this->currentTunic == PLAYER_TUNIC_GORON || CVar_GetS32("gSuperTunic", 0) != 0) {
+    if (this->currentTunic == PLAYER_TUNIC_GORON || CVar_GetS32("gAutoTunics", 0) == 3 ||
+        (CVar_GetS32("gAutoTunics", 0) == 2 && (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+         (gSaveContext.inventory.equipment &
+          gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC]))) {
         sp54 = 20;
     }
     else {

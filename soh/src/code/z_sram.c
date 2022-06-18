@@ -431,6 +431,11 @@ void Sram_OpenSave(SramContext* sramCtx) {
         gSaveContext.equips.equipment |= 2;
     }
 
+    if (CVar_GetS32("gAutoTunics", 0) == 1 && (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+        (gSaveContext.inventory.equipment & gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])) {
+        Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
+    }
+
     for (i = 0; i < ARRAY_COUNT(gSpoilingItems); i++) {
         if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
             INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];

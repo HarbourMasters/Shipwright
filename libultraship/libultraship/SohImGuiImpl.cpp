@@ -880,6 +880,44 @@ namespace SohImGui {
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
                     EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
+                    const char* autotunic_cvar = "gAutoTunics";
+                    {
+                        int val = CVar_GetS32(autotunic_cvar, 0);
+                        val = MAX(MIN(val, 3), 0);
+                        int fps = val;
+
+                        if (val == 0)
+                        {
+                            ImGui::Text("Tunic Upgrades: Off");
+                        }
+                        else if (val == 1)
+                        {
+                            ImGui::Text("Tunic Upgrades: Auto-Switch");
+                        }
+                        else if (val == 2)
+                        {
+                            ImGui::Text("Tunic Upgrades: Permanent Upgrade");
+                        }
+                        else if (val == 4)
+                        {
+                            ImGui::Text("Tunic Upgrades: Super Tunic");
+                        }
+
+                        if (ImGui::SliderInt("##AUTOTUNICS", &val, 0, 3, "", ImGuiSliderFlags_AlwaysClamp))
+                        {
+                            CVar_SetS32(autotunic_cvar, val);
+                            needs_save = true;
+                        }
+
+                        Tooltip("Select a level of automation for tunic behavior.\n"
+                            "Off: No automation\n"
+                            "Auto-Switch: Automatically switch to your best tunic for the current situation\n"
+                            "Permanent Upgrade: Treat owned tunics like upgrades that are always active once you have them\n"
+                            "Super Tunic: Makes every tunic have the effects of every other tunic\n");
+                    }
+
+                    EnhancementCheckbox("Auto-Equips", "gAutoEquips");
+                    Tooltip("New equipment (Swords, Shields, Tunics) is automatically equipped when you obtain it");
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
                     EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
@@ -1085,8 +1123,6 @@ namespace SohImGui {
                 Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
                 Tooltip("Holding L makes you float into the air");
-                EnhancementCheckbox("Super Tunic", "gSuperTunic");
-                Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
                 Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");

@@ -614,6 +614,7 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
     TextTriggerEntry* triggerEntry;
     s32 var;
+    static bool isSafe = true;
 
     if (globalCtx->roomCtx.curRoom.unk_02 == 3) { // Room is hot
         var = 0;
@@ -623,19 +624,56 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
     } else if (this->stateFlags1 & 0x8000000) { // Swimming
         var = 2;
     } else {
+        if (!Player_InCsMode(globalCtx)) {
+            if ((CVar_GetS32("gAutoTunics", 0) == 1) && (CVar_GetS32("gNoRestrictAge", 0) ||
+                LINK_IS_ADULT) && !isSafe && (this->currentTunic != PLAYER_TUNIC_GORON) &&
+                (gSaveContext.inventory.equipment &
+                 gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])) {
+                isSafe = true;
+                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
+                Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+            }
+        }
         return 0;
     }
 
-    // Trigger general textboxes under certain conditions, like "It's so hot in here!"
     if (!Player_InCsMode(globalCtx)) {
+        if (CVar_GetS32("gAutoTunics", 0) == 1 &&
+            (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) && isSafe &&
+            ((!var && (this->currentTunic != PLAYER_TUNIC_GORON) &&
+              (gSaveContext.inventory.equipment &
+               gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])) ||
+             (var && (this->currentTunic != PLAYER_TUNIC_ZORA) &&
+              (gSaveContext.inventory.equipment &
+               gBitFlags[PLAYER_TUNIC_ZORA] << gEquipShifts[EQUIP_TUNIC])))) {
+            isSafe = false;
+            Inventory_ChangeEquipment(EQUIP_TUNIC,
+                !var ? PLAYER_TUNIC_GORON + 1 : PLAYER_TUNIC_ZORA + 1);
+            Player_SetEquipmentData(globalCtx, this);
+            func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
+        }
+
+        // Trigger general textboxes under certain conditions, like "It's so hot in here!"
         triggerEntry = &sTextTriggers[var];
 
         if (0) {}
 
-        if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
-            (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
-             (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
-              (this->currentTunic != PLAYER_TUNIC_ZORA && CVar_GetS32("gSuperTunic", 0) == 0)))) {
+        if (CVar_GetS32("gAutoTunics", 0) != 3 && (triggerEntry->flag != 0) &&
+            !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
+            ((var == 0) &&
+                ((this->currentTunic != PLAYER_TUNIC_GORON) &&
+                 !((CVar_GetS32("gAutoTunics", 0) == 2) &&
+                    (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+                    (gSaveContext.inventory.equipment &
+                     gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC]))) ||
+            ((var == 1) || (var == 3)) &&
+            (this->currentBoots == PLAYER_BOOTS_IRON) &&
+            ((this->currentTunic != PLAYER_TUNIC_ZORA) &&
+             !((CVar_GetS32("gAutoTunics", 0) == 2) &&
+               (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+               (gSaveContext.inventory.equipment &
+                gBitFlags[PLAYER_TUNIC_ZORA] << gEquipShifts[EQUIP_TUNIC]))))) {
             Message_StartTextbox(globalCtx, triggerEntry->textId, NULL);
             gSaveContext.textTriggerFlags |= triggerEntry->flag;
         }
