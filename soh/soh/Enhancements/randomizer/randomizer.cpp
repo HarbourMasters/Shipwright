@@ -2486,6 +2486,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
         case 16:
             if(actorParams == 20170) return RC_MARKET_TREASURE_CHEST_GAME_REWARD;
 
+            // RANDOTODO update logic to match 3ds rando when we implement keysanity
             // keep keys og
             if ((actorParams & 0x60) == 0x20) break;
 
