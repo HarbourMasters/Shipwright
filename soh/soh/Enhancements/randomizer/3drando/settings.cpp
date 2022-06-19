@@ -2530,6 +2530,9 @@ namespace Settings {
 
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
+    // RANDOTODO implement chest shuffle with keysanity
+    // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
+
     AddExcludedOptions();
     for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
       for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {

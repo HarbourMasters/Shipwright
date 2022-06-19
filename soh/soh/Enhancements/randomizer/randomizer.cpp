@@ -2486,15 +2486,17 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
         case 16:
             if(actorParams == 20170) return RC_MARKET_TREASURE_CHEST_GAME_REWARD;
 
+            // RANDOTODO update logic to match 3ds rando when we implement keysanity
             // keep keys og
             if ((actorParams & 0x60) == 0x20) break;
 
-            if((actorParams & 0xF) < 2) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
-            if((actorParams & 0xF) < 4) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
-            if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
-            if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
-            if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
-            
+            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+                if((actorParams & 0xF) < 2) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_1;
+                if((actorParams & 0xF) < 4) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_2;
+                if((actorParams & 0xF) < 6) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_3;
+                if((actorParams & 0xF) < 8) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_4;
+                if((actorParams & 0xF) < 10) return RC_MARKET_TREASURE_CHEST_GAME_ITEM_5;
+            }
             break;
         case 17:
             switch (actorId) {
@@ -2943,6 +2945,9 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
     
     cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
+
+    // RANDOTODO implement chest minigame shuffle with keysanity
+    cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
     RandoMain::GenerateRando(cvarSettings);
 
