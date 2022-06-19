@@ -1661,6 +1661,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
+    storm
 )
 else()
 add_dependencies(${PROJECT_NAME}
@@ -1685,6 +1686,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"SDL2main;"
 				"glfw3dll;"
 				"glew32s;"
+				"storm;"
 				"winmm;"
 				"imm32;"
 				"version;"
@@ -1701,7 +1703,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"SDL2main;"
 			"glfw3dll;"
 			"glew32s;"
-			"StormLibRUS32;"
+			"storm;"
 			"winmm;"
 			"imm32;"
 			"version;"
