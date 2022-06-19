@@ -884,7 +884,6 @@ namespace SohImGui {
                     {
                         int val = CVar_GetS32(autotunic_cvar, 0);
                         val = MAX(MIN(val, 3), 0);
-                        int fps = val;
 
                         if (val == 0)
                         {
@@ -898,7 +897,7 @@ namespace SohImGui {
                         {
                             ImGui::Text("Tunic Upgrades: Permanent Upgrade");
                         }
-                        else if (val == 4)
+                        else if (val == 3)
                         {
                             ImGui::Text("Tunic Upgrades: Super Tunic");
                         }
