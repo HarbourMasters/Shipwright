@@ -915,6 +915,8 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
+                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
                     ImGui::EndMenu();
                 }
 
