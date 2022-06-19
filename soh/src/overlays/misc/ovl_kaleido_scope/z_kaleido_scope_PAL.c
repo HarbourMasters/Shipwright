@@ -954,7 +954,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
 
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 0);
@@ -963,7 +963,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
             pauseCtx->pageSwitchTimer = -1;
         }
     } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
-        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 2);
@@ -1122,6 +1122,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     static s16 D_8082AD4C = 0;
     static s16 D_8082AD50 = 0;
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    Input* input = &globalCtx->state.input[0];
     s16 stepR;
     s16 stepG;
     s16 stepB;
@@ -1159,6 +1160,52 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 D_8082AD40++;
                 if (D_8082AD40 >= 4) {
                     D_8082AD40 = 0;
+                }
+            }
+
+            if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPauseName", 0)) {
+                if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+                        D_8082AD44 = XREG(8);
+                        D_8082AD4C = -1;
+                    } else if (--D_8082AD44 < 0) {
+                        D_8082AD44 = XREG(6);
+                        input->press.button |= BTN_DLEFT;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DLEFT)) {
+                    D_8082AD4C = 0;
+                } else if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+                        D_8082AD44 = XREG(8);
+                        D_8082AD4C = 1;
+                    } else if (--D_8082AD44 < 0) {
+                        D_8082AD44 = XREG(6);
+                        input->press.button |= BTN_DRIGHT;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DRIGHT)) {
+                    D_8082AD4C = 0;
+                }
+
+                if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                        D_8082AD48 = XREG(8);
+                        D_8082AD50 = -1;
+                    } else if (--D_8082AD48 < 0) {
+                        D_8082AD48 = XREG(6);
+                        input->press.button |= BTN_DDOWN;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DDOWN)) {
+                    D_8082AD50 = 0;
+                } else if (CHECK_BTN_ALL(input->cur.button, BTN_DUP)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+                        D_8082AD48 = XREG(8);
+                        D_8082AD50 = 1;
+                    } else if (--D_8082AD48 < 0) {
+                        D_8082AD48 = XREG(6);
+                        input->press.button |= BTN_DUP;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DUP)) {
+                    D_8082AD50 = 0;
                 }
             }
 
