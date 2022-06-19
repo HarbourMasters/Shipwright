@@ -1673,8 +1673,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0 &&
                    gSaveContext.language == LANGUAGE_GER) {
             strcpy(font->msgBuf,
-                   "\x08\x13\x71\Du hast eine \x05\x41Goldene Skulltula\x01\erhalten\x05\x40! Du hast insgesamt\x01"
-                   "\x05\x41\x19\x05\x40 symbole gesammelt!\x02");
+                   "\x08\x13\x71\Du erhälst ein \x05\x41Goldene Skulltula-Symbol\x05\x40\x01\! Du hast insgesamt\x01"
+                   "\x05\x41\x19\x05\x40 symbol gesammelt!\x02");
 
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
