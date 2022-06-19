@@ -22,10 +22,7 @@ add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 add_subdirectory(../OTRExporter/OTRExporter ${CMAKE_BINARY_DIR}/OTRExporter)
-
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-add_subdirectory(../external/StormLib ${CMAKE_BINARY_DIR}/StormLib)
-endif()
+add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
 
 file(GLOB_RECURSE HEADERS src/*.h)
 file(GLOB_RECURSE SOURCES src/*.cpp)
