@@ -977,8 +977,15 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // draw disk label for 64DD
         if (Save_GetSaveMetaInfo(i)->n64ddFlag) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                            sWindowContentColors[isActive][2], this->nameAlpha[i]);
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 0),
+                                CVar_GetS32("gCCFileChoosePrimG", 200), CVar_GetS32("gCCFileChoosePrimB", 255),
+                                this->nameAlpha[i]);
+            } else {
+                gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0],
+                                sWindowContentColors[isActive][1], sWindowContentColors[isActive][2],
+                                this->nameAlpha[i]);
+            }
             gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelDISKButtonTex, G_IM_FMT_IA, G_IM_SIZ_16b, 44, 16, 0,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                 G_TX_NOLOD, G_TX_NOLOD);
@@ -986,8 +993,14 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         }
 
         // draw connectors
-        gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
-                        sWindowContentColors[isActive][2], this->connectorAlpha[i]);
+        if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100),
+                            CVar_GetS32("gCCFileChoosePrimG", 150), CVar_GetS32("gCCFileChoosePrimB", 255),
+                            this->connectorAlpha[i]);
+        } else {
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sWindowContentColors[isActive][0], sWindowContentColors[isActive][1],
+                            sWindowContentColors[isActive][2], this->connectorAlpha[i]);
+        }
         gDPLoadTextureBlock(POLY_OPA_DISP++, gFileSelConnectorTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0,
                             G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                             G_TX_NOLOD);
