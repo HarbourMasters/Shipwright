@@ -1585,8 +1585,8 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
     BgCheck_SetSubdivisionDimension(colCtx->minBounds.z, colCtx->subdivAmount.z, &colCtx->maxBounds.z,
                                     &colCtx->subdivLength.z, &colCtx->subdivLengthInv.z);
 
-#ifdef _SOH64
-    colCtx->memSize *= (sizeof(void*) / 4);
+#ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+    colCtx->memSize *= 2;
 #endif
 
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
