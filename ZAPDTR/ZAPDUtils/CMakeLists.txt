@@ -106,6 +106,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			">"
 			"_CONSOLE;"
 			"_CRT_SECURE_NO_WARNINGS"
+			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -120,6 +121,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
 endif()

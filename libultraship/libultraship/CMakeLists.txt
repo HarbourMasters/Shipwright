@@ -6,6 +6,7 @@ set(PROJECT_NAME libultraship)
 set(Header_Files__Resources__Factories
     "Factories/AnimationFactory.h"
     "Factories/ArrayFactory.h"
+    "Factories/AudioFactory.h"
     "Factories/BlobFactory.h"
     "Factories/CollisionHeaderFactory.h"
     "Factories/CutsceneFactory.h"
@@ -26,6 +27,7 @@ source_group("Header Files\\Resources\\Factories" FILES ${Header_Files__Resource
 set(Header_Files__Resources__Files
     "Animation.h"
     "Array.h"
+    "Audio.h"
     "Blob.h"
     "CollisionHeader.h"
     "Cutscene.h"
@@ -244,6 +246,7 @@ source_group("Source Files\\Resources" FILES ${Source_Files__Resources})
 set(Source_Files__Resources__Factories
     "Factories/AnimationFactory.cpp"
     "Factories/ArrayFactory.cpp"
+    "Factories/AudioFactory.cpp"
     "Factories/BlobFactory.cpp"
     "Factories/CollisionHeaderFactory.cpp"
     "Factories/CutsceneFactory.cpp"
@@ -265,6 +268,7 @@ source_group("Source Files\\Resources\\Factories" FILES ${Source_Files__Resource
 set(Source_Files__Resources__Files
     "Animation.cpp"
     "Array.cpp"
+    "Audio.cpp"
     "Blob.cpp"
     "CollisionHeader.cpp"
     "Cutscene.cpp"
@@ -389,6 +393,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"ENABLE_OPENGL;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -407,6 +412,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
 endif()
@@ -433,6 +439,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL
 	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/
 	${PROJECT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
+	${PROJECT_SOURCE_DIR}/../StormLib/src
 	.
 	)
 

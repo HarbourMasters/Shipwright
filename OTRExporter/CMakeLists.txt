@@ -80,9 +80,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
-add_subdirectory(../external/StormLib ${CMAKE_BINARY_DIR}/StormLib)
-endif()
+add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
 add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)

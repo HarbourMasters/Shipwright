@@ -59,6 +59,7 @@ set(Header_Files__Z64
     "OtherStructs/SkinLimbStructs.h"
     "Overlays/ZOverlay.h"
     "ZAnimation.h"
+    "ZAudio.h"
     "ZArray.h"
     "ZBackground.h"
     "ZBlob.h"
@@ -166,6 +167,8 @@ set(Source_Files__Z64
     "Overlays/ZOverlay.cpp"
     "ZAnimation.cpp"
     "ZArray.cpp"
+    "ZAudio.cpp"
+    "ZAudioDecode.cpp"
     "ZBackground.cpp"
     "ZBlob.cpp"
     "ZCollision.cpp"
@@ -307,6 +310,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
 			"_CRT_SECURE_NO_WARNINGS;"
 			"_MBCS"
+			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -314,6 +318,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"_CRT_SECURE_NO_WARNINGS"
 			">"
 			"_MBCS"
+			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
 endif()
@@ -418,6 +423,7 @@ add_dependencies(${PROJECT_NAME}
     OTRExporter
     ZAPDUtils
     libultraship
+    storm
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -428,7 +434,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"ZAPDUtils;"
 			"-WHOLEARCHIVE:${PROJECT_SOURCE_DIR}/x64/Release/OTRExporter.lib"
 			"libultraship;"
-			${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS64.lib
+			storm
 			PNG::PNG
 		)
 	endif()

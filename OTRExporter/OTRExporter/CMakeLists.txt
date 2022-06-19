@@ -5,6 +5,7 @@ set(PROJECT_NAME OTRExporter)
 ################################################################################
 set(Header_Files
     "AnimationExporter.h"
+    "AudioExporter.h"
     "ArrayExporter.h"
     "BackgroundExporter.h"
     "BlobExporter.h"
@@ -32,6 +33,7 @@ source_group("Header Files" FILES ${Header_Files})
 set(Source_Files
     "AnimationExporter.cpp"
     "ArrayExporter.cpp"
+    "AudioExporter.cpp"
     "BackgroundExporter.cpp"
     "BlobExporter.cpp"
     "CollisionExporter.cpp"
@@ -113,6 +115,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CRT_SECURE_NO_WARNINGS;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -127,6 +130,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CONSOLE;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
 endif()
@@ -156,6 +160,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${PROJECT_SOURCE_DIR}/../libultraship/libultraship
 	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include
 	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
+	${PROJECT_SOURCE_DIR}/../StormLib/src
 	.
 )
 

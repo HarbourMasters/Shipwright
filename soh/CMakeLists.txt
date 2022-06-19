@@ -85,10 +85,9 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
 add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew)
 set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL TRUE)
-
-add_subdirectory(../external/StormLib ${CMAKE_BINARY_DIR}/StormLib)
 endif()
 
+add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
 add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
 
@@ -163,6 +162,7 @@ set(Header_Files__soh__Enhancements
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
 set(Header_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
     "soh/Enhancements/debugger/debugger.h"
     "soh/Enhancements/debugger/debugSaveEditor.h"
@@ -196,6 +196,7 @@ set(Source_Files__soh__Enhancements
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
 
 set(Source_Files__soh__Enhancements__debugger
+    "soh/Enhancements/debugger/actorViewer.cpp"
     "soh/Enhancements/debugger/colViewer.cpp"
     "soh/Enhancements/debugger/debugger.cpp"
     "soh/Enhancements/debugger/debugSaveEditor.cpp"
@@ -1511,6 +1512,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -1529,6 +1531,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"_CONSOLE;"
 			"UNICODE;"
 			"_UNICODE"
+			STORMLIB_NO_AUTO_LINK
 		)
 	endif()
 endif()
