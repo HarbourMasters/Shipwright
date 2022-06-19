@@ -73,7 +73,6 @@ LDLIBS := \
 	SDL2 \
 	GL \
 	GLEW \
-	storm \
 	pulse\
 	ultraship \
 ) \
