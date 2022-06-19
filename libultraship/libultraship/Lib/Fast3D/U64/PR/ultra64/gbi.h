@@ -1646,8 +1646,6 @@ typedef struct {
 
 #ifdef __cplusplus
 static_assert(sizeof(Gwords) == 2 * sizeof(void*), "Display list size is bad");
-#else
-//_Static_assert(sizeof(Gwords) == 2 * sizeof(void*), "fail");
 #endif
 
 /*
