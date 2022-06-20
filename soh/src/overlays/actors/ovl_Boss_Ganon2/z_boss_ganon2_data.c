@@ -238,10 +238,6 @@ static ColliderJntSphInit sJntSphInit2 = {
     sJntSphItemsInit2,
 };
 
-static Color_RGBA8 sPrimColor = { 0, 120, 0, 255 };
-
-static Color_RGBA8 sEnvColor = { 0, 120, 0, 255 };
-
 static Vec3f D_8090702C[] = {
     { 10.0f, -10.0f, 0.0f },
     { 0.0f, 0.0f, -60.0f },
