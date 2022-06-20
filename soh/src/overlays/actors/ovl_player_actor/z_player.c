@@ -2106,10 +2106,10 @@ LinkAnimationHeader* func_808346C4(GlobalContext* globalCtx, Player* this) {
     func_808323B4(globalCtx, this);
 
     if (this->unk_870 < 0.5f) {
-        return D_808543A4[Player_HoldsTwoHandedWeapon(this)];
+        return D_808543A4[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
     else {
-        return D_808543AC[Player_HoldsTwoHandedWeapon(this)];
+        return D_808543AC[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
 }
 
@@ -2779,22 +2779,24 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
             if (actionParam >= PLAYER_AP_BOOTS_KOKIRI) {
                 u16 bootsValue = actionParam - PLAYER_AP_BOOTS_KOKIRI + 1;
                 if (CUR_EQUIP_VALUE(EQUIP_BOOTS) == bootsValue) {
-                    Inventory_ChangeEquipment(EQUIP_BOOTS, 1);
+                    Inventory_ChangeEquipment(EQUIP_BOOTS, PLAYER_BOOTS_KOKIRI + 1);
                 } else {
                     Inventory_ChangeEquipment(EQUIP_BOOTS, bootsValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, CUR_EQUIP_VALUE(EQUIP_BOOTS) == PLAYER_BOOTS_IRON + 1 ? NA_SE_PL_WALK_HEAVYBOOTS : NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
             if (actionParam >= PLAYER_AP_TUNIC_KOKIRI) {
                 u16 tunicValue = actionParam - PLAYER_AP_TUNIC_KOKIRI + 1;
                 if (CUR_EQUIP_VALUE(EQUIP_TUNIC) == tunicValue) {
-                    Inventory_ChangeEquipment(EQUIP_TUNIC, 1);
+                    Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_KOKIRI + 1);
                 } else {
                     Inventory_ChangeEquipment(EQUIP_TUNIC, tunicValue);
                 }
                 Player_SetEquipmentData(globalCtx, this);
+                func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
 
@@ -3707,7 +3709,7 @@ s32 func_8083816C(s32 arg0) {
 }
 
 void func_8083819C(Player* this, GlobalContext* globalCtx) {
-    if (this->currentShield == PLAYER_SHIELD_DEKU) {
+    if (this->currentShield == PLAYER_SHIELD_DEKU && (CVar_GetS32("gFireproofDekuShield", 0) == 0)) {
         Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_SHIELD, this->actor.world.pos.x,
             this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1);
         Inventory_DeleteEquipment(globalCtx, EQUIP_SHIELD);
@@ -5468,8 +5470,8 @@ s32 func_8083C6B8(GlobalContext* globalCtx, Player* this) {
             sp24 = this->actor.world.pos;
             sp24.y += 50.0f;
 
-            if (!(this->actor.bgCheckFlags & 1) || (this->actor.world.pos.z > 1300.0f) ||
-                BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &sp24, 20.0f)) {
+            if (CVar_GetS32("gHoverFishing", 0) ? 0 : !(this->actor.bgCheckFlags & 1) ||
+                (this->actor.world.pos.z > 1300.0f) || BgCheck_SphVsFirstPoly(&globalCtx->colCtx, &sp24, 20.0f)) {
                 func_80078884(NA_SE_SY_ERROR);
                 return 0;
             }
@@ -6179,6 +6181,9 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             if (this->getItemId != GI_NONE) {
                 GetItemEntry* giEntry = &sGetItemTable[-this->getItemId - 1];
                 EnBox* chest = (EnBox*)interactedActor;
+                if(CVar_GetS32("gFastChests", 0) != 0) {
+                    giEntry->gi = -1 * abs(giEntry->gi);
+                }
 
                 if (giEntry->itemId != ITEM_NONE) {
                     if (((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) && (giEntry->field & 0x40)) ||
@@ -11621,7 +11626,7 @@ void func_8084BF1C(Player* this, GlobalContext* globalCtx) {
         phi_f2 = -1.0f;
     }
 
-    this->skelAnime.playSpeed = phi_f2 * phi_f0;
+    this->skelAnime.playSpeed = phi_f2 * phi_f0 + phi_f2 * CVar_GetS32("gClimbSpeed", 0);
 
     if (this->unk_850 >= 0) {
         if ((this->actor.wallPoly != NULL) && (this->actor.wallBgId != BGCHECK_SCENE)) {

@@ -46,10 +46,11 @@ bool oldCursorState = true;
 
 #define EXPERIMENTAL() \
     ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
-	ImGui::Text("Experimental"); \
-	ImGui::PopStyleColor(); \
-	ImGui::Separator();
+    ImGui::Text("Experimental"); \
+    ImGui::PopStyleColor(); \
+    ImGui::Separator();
 #define TOGGLE_BTN ImGuiKey_F1
+#define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
 #define HOOK(b) if(b) needs_save = true;
 OSContPad* pads;
 
@@ -63,32 +64,41 @@ namespace SohImGui {
     GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
-    std::vector<const char*> CustomTexts;
-    int SelectedLanguage = CVar_GetS32("gLanguages", 0); //Default Language to 0=English 1=German 2=French
-    int SelectedHUD = CVar_GetS32("gHudColors", 1);      //Default colors to Gamecube.
-    float hearts_colors[3] = {0,0,0};
-    float hearts_dd_colors[3] = {0,0,0};
-    float a_btn_colors[3] = {0,0,0};
-    float b_btn_colors[3] = {0,0,0};
-    float c_btn_colors[3] = {0,0,0};
-    float start_btn_colors[3] = {0,0,0};
-    float magic_border_colors[3] = {0,0,0};
-    float magic_remaining_colors[3] = {0,0,0};
-    float magic_use_colors[3] = {0,0,0};
-    float minimap_colors[3] = {0,0,0};
-    float rupee_colors[3] = {0,0,0};
-    float smolekey_colors[3] = {0,0,0};
-    float kokiri_col[3] = { 0.118f, 0.41f, 0.106f };
-    float goron_col[3] = { 0.392f, 0.078f, 0.0f };
-    float zora_col[3] = { 0.0f, 0.235f, 0.392f };
-    float navi_idle_i_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_idle_o_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_npc_i_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_npc_o_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_enemy_i_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_enemy_o_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_prop_i_col[3] = { 0.0f, 0.0f, 0.0f };
-    float navi_prop_o_col[3] = { 0.0f, 0.0f, 0.0f };
+    ImVec4 hearts_colors;
+    ImVec4 hearts_dd_colors;
+    ImVec4 a_btn_colors;
+    ImVec4 b_btn_colors;
+    ImVec4 c_btn_colors;
+    ImVec4 start_btn_colors;
+    ImVec4 magic_border_colors;
+    ImVec4 magic_remaining_colors;
+    ImVec4 magic_use_colors;
+    ImVec4 minimap_colors;
+    ImVec4 rupee_colors;
+    ImVec4 smolekey_colors;
+    ImVec4 fileselect_colors;
+    ImVec4 fileselect_text_colors;
+    ImVec4 kokiri_col;
+    ImVec4 goron_col;
+    ImVec4 zora_col;
+    ImVec4 navi_idle_i_col;
+    ImVec4 navi_idle_o_col;
+    ImVec4 navi_npc_i_col;
+    ImVec4 navi_npc_o_col;
+    ImVec4 navi_enemy_i_col;
+    ImVec4 navi_enemy_o_col;
+    ImVec4 navi_prop_i_col;
+    ImVec4 navi_prop_o_col;
+
+    const char* RainbowColorCvarList[] = {
+        //This is the list of possible CVars that has rainbow effect.
+            "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
+            "gCCHeartsPrim","gDDCCHeartsPrim",
+            "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
+            "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
+            "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim",
+            "gCCFileChoosePrim", "gCCFileChooseTextPrim"
+    };
 
     const char* filters[3] = {
         "Three-Point",
@@ -98,6 +108,15 @@ namespace SohImGui {
 
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
+
+    int ClampFloatToInt(float value, int min, int max) {
+        return fmin(fmax(value, min), max);
+    }
+
+    void Tooltip(const char* text) {
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("%s", text);
+    }
 
     void ImGuiWMInit() {
         switch (impl.backend) {
@@ -240,82 +259,65 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadInterfaceEditor(){//This function is necessary as without it IMGui wont load the updated float array.
-        hearts_colors[0] = (float)CVar_GetS32("gCCHeartsPrimR", 255)/255;
-        hearts_colors[1] = (float)CVar_GetS32("gCCHeartsPrimG", 70)/255;
-        hearts_colors[2] = (float)CVar_GetS32("gCCHeartsPrimB", 50)/255;
-        hearts_dd_colors[0] = (float)CVar_GetS32("gDDCCHeartsPrimR", 255)/255;
-        hearts_dd_colors[1] = (float)CVar_GetS32("gDDCCHeartsPrimG", 255)/255;
-        hearts_dd_colors[2] = (float)CVar_GetS32("gDDCCHeartsPrimB", 255)/255;
-        a_btn_colors[0] = (float)CVar_GetS32("gCCABtnPrimR", 90)/255;
-        a_btn_colors[1] = (float)CVar_GetS32("gCCABtnPrimG", 90)/255;
-        a_btn_colors[2] = (float)CVar_GetS32("gCCABtnPrimB", 255)/255;
-        b_btn_colors[0] = (float)CVar_GetS32("gCCBBtnPrimR", 0)/255;
-        b_btn_colors[1] = (float)CVar_GetS32("gCCBBtnPrimG", 150)/255;
-        b_btn_colors[2] = (float)CVar_GetS32("gCCBBtnPrimB", 0)/255;
-        c_btn_colors[0] = (float)CVar_GetS32("gCCCBtnPrimR", 255)/255;
-        c_btn_colors[1] = (float)CVar_GetS32("gCCCBtnPrimG", 160)/255;
-        c_btn_colors[2] = (float)CVar_GetS32("gCCCBtnPrimB", 0)/255;
-        start_btn_colors[0] = (float)CVar_GetS32("gCCStartBtnPrimR", 120)/255;
-        start_btn_colors[1] = (float)CVar_GetS32("gCCStartBtnPrimG", 120)/255;
-        start_btn_colors[2] = (float)CVar_GetS32("gCCStartBtnPrimB", 120)/255;
-        magic_border_colors[0] = (float)CVar_GetS32("gCCMagicBorderPrimR", 255)/255;
-        magic_border_colors[1] = (float)CVar_GetS32("gCCMagicBorderPrimG", 255)/255;
-        magic_border_colors[2] = (float)CVar_GetS32("gCCMagicBorderPrimB", 255)/255;
-        magic_use_colors[0] = (float)CVar_GetS32("gCCMagicPrimR", 250)/255;
-        magic_use_colors[1] = (float)CVar_GetS32("gCCMagicPrimG", 250)/255;
-        magic_use_colors[2] = (float)CVar_GetS32("gCCMagicPrimB", 0)/255;
-        magic_remaining_colors[0] = (float)CVar_GetS32("gCCMagicUsePrimR", 0)/255;
-        magic_remaining_colors[1] = (float)CVar_GetS32("gCCMagicUsePrimG", 200)/255;
-        magic_remaining_colors[2] = (float)CVar_GetS32("gCCMagicUsePrimB", 0)/255;
-        minimap_colors[0] = (float)CVar_GetS32("gCCMinimapPrimR", 0)/255;
-        minimap_colors[1] = (float)CVar_GetS32("gCCMinimapPrimG", 255)/255;
-        minimap_colors[2] = (float)CVar_GetS32("gCCMinimapPrimB", 255)/255;
-        rupee_colors[0] = (float)CVar_GetS32("gCCRupeePrimR", 200)/255;
-        rupee_colors[1] = (float)CVar_GetS32("gCCRupeePrimG", 255)/255;
-        rupee_colors[2] = (float)CVar_GetS32("gCCRupeePrimB", 100)/255;
-        smolekey_colors[0] = (float)CVar_GetS32("gCCKeysPrimR", 200)/255;
-        smolekey_colors[1] = (float)CVar_GetS32("gCCKeysPrimG", 230)/255;
-        smolekey_colors[2] = (float)CVar_GetS32("gCCKeysPrimB", 255)/255;
-        kokiri_col[0] = (float)CVar_GetS32("gTunic_Kokiri_R", 30)/255;
-        kokiri_col[1] = (float)CVar_GetS32("gTunic_Kokiri_G", 105)/255;
-        kokiri_col[2] = (float)CVar_GetS32("gTunic_Kokiri_B", 27)/255;
-        goron_col[0] = (float)CVar_GetS32("gTunic_Goron_R", 100)/255;
-        goron_col[1] = (float)CVar_GetS32("gTunic_Goron_G", 20)/255;
-        goron_col[2] = (float)CVar_GetS32("gTunic_Goron_B", 0)/255;
-        zora_col[0] = (float)CVar_GetS32("gTunic_Zora_R", 0)/255;
-        zora_col[1] = (float)CVar_GetS32("gTunic_Zora_G", 60)/255;
-        zora_col[2] = (float)CVar_GetS32("gTunic_Zora_B", 100)/255;
-        navi_idle_i_col[0] = (float)CVar_GetS32("gNavi_Idle_Inner_R", 255)/255;
-        navi_idle_i_col[1] = (float)CVar_GetS32("gNavi_Idle_Inner_G", 255)/255;
-        navi_idle_i_col[2] = (float)CVar_GetS32("gNavi_Idle_Inner_B", 255)/255;
-        navi_idle_o_col[0] = (float)CVar_GetS32("gNavi_Idle_Outer_R", 115)/255;
-        navi_idle_o_col[1] = (float)CVar_GetS32("gNavi_Idle_Outer_G", 230)/255;
-        navi_idle_o_col[2] = (float)CVar_GetS32("gNavi_Idle_Outer_B", 255)/255;
-        navi_npc_i_col[0] = (float)CVar_GetS32("gNavi_NPC_Inner_R", 100)/255;
-        navi_npc_i_col[1] = (float)CVar_GetS32("gNavi_NPC_Inner_G", 100)/255;
-        navi_npc_i_col[2] = (float)CVar_GetS32("gNavi_NPC_Inner_B", 255)/255;
-        navi_npc_o_col[0] = (float)CVar_GetS32("gNavi_NPC_Outer_R", 90)/255;
-        navi_npc_o_col[1] = (float)CVar_GetS32("gNavi_NPC_Outer_G", 90)/255;
-        navi_npc_o_col[2] = (float)CVar_GetS32("gNavi_NPC_Outer_B", 255)/255;
-        navi_enemy_i_col[0] = (float)CVar_GetS32("gNavi_Enemy_Inner_R", 255)/255;
-        navi_enemy_i_col[1] = (float)CVar_GetS32("gNavi_Enemy_Inner_G", 255)/255;
-        navi_enemy_i_col[2] = (float)CVar_GetS32("gNavi_Enemy_Inner_B", 0)/255;
-        navi_enemy_o_col[0] = (float)CVar_GetS32("gNavi_Enemy_Outer_R", 220)/255;
-        navi_enemy_o_col[1] = (float)CVar_GetS32("gNavi_Enemy_Outer_G", 220)/255;
-        navi_enemy_o_col[2] = (float)CVar_GetS32("gNavi_Enemy_Outer_B", 0)/255;
-        navi_prop_i_col[0] = (float)CVar_GetS32("gNavi_Prop_Inner_R", 0)/255;
-        navi_prop_i_col[1] = (float)CVar_GetS32("gNavi_Prop_Inner_G", 255)/255;
-        navi_prop_i_col[2] = (float)CVar_GetS32("gNavi_Prop_Inner_B", 0)/255;
-        navi_prop_o_col[0] = (float)CVar_GetS32("gNavi_Prop_Outer_R", 0)/255;
-        navi_prop_o_col[1] = (float)CVar_GetS32("gNavi_Prop_Outer_G", 220)/255;
-        navi_prop_o_col[2] = (float)CVar_GetS32("gNavi_Prop_Outer_B", 0)/255;
-        if (CVar_GetS32("gHudColors", 1) ==0) {
-            SelectedHUD = 0;
-        } else if (CVar_GetS32("gHudColors", 1) == 1) {
-            SelectedHUD = 1;
-        } else if (CVar_GetS32("gHudColors", 1) == 2) {
-            SelectedHUD = 2;
+    void LoadRainbowColor() {
+        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
+        for (u8 s = 0; s < arrayLength; s++) {
+            std::string cvarName = RainbowColorCvarList[s];
+            std::string Cvar_Red = cvarName;
+            Cvar_Red += "R";
+            std::string Cvar_Green = cvarName;
+            Cvar_Green += "G";
+            std::string Cvar_Blue = cvarName;
+            Cvar_Blue += "B";
+            std::string Cvar_RBM = cvarName;
+            Cvar_RBM += "RBM";
+            std::string RBM_HUE = cvarName;
+            RBM_HUE += "Hue";
+            f32 Canon = 10.f * s;
+            ImVec4 NewColor;
+            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
+            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
+            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
+            if (newHue >= 360)
+                newHue = 0;
+            CVar_SetFloat(RBM_HUE.c_str(), newHue);
+            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
+            u8 i = current_hue / 60 + 1;
+            u8 a = (-current_hue / 60.0f + i) * 255;
+            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
+
+            switch (i) {
+            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+            }
+
+            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
+            }
+        }
+    }
+
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
+        std::string Cvar_Red = cvarname;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarname;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarname;
+        Cvar_Blue += "B";
+        std::string Cvar_Alpha = cvarname;
+        Cvar_Alpha += "A";
+
+        ColorArray.x = (float)CVar_GetS32(Cvar_Red.c_str(), default_colors.x) / 255;
+        ColorArray.y = (float)CVar_GetS32(Cvar_Green.c_str(), default_colors.y) / 255;
+        ColorArray.z = (float)CVar_GetS32(Cvar_Blue.c_str(), default_colors.z) / 255;
+        if (has_alpha) {
+            ColorArray.w = (float)CVar_GetS32(Cvar_Alpha.c_str(), default_colors.w) / 255;
         }
     }
 
@@ -348,10 +350,10 @@ namespace SohImGui {
         }
 
         for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= tint.x;
-            texBuffer[pixel * 4 + 1] *= tint.y;
-            texBuffer[pixel * 4 + 2] *= tint.z;
-            texBuffer[pixel * 4 + 3] *= tint.w;
+            texBuffer[pixel * 4 + 0] *= (uint8_t)tint.x;
+            texBuffer[pixel * 4 + 1] *= (uint8_t)tint.y;
+            texBuffer[pixel * 4 + 2] *= (uint8_t)tint.z;
+            texBuffer[pixel * 4 + 3] *= (uint8_t)tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
@@ -398,7 +400,7 @@ namespace SohImGui {
             LoadTexture("C-Right", "assets/ship_of_harkinian/buttons/CRight.png");
             LoadTexture("C-Up", "assets/ship_of_harkinian/buttons/CUp.png");
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
-        });
+            });
 
         for (const auto& [i, controllers] : Ship::Window::Controllers)
         {
@@ -409,7 +411,7 @@ namespace SohImGui {
 
         ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
-        });
+            });
         Game::InitSettings();
     }
 
@@ -436,7 +438,29 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementRadioButton(std::string text, std::string cvarName, int id) {
+
+    void EnhancementCombobox(const char* name, const char* ComboArray[], size_t arraySize, uint8_t FirstTimeValue = 0) {
+        if (FirstTimeValue <= 0) {
+            FirstTimeValue = 0;
+        }
+        uint8_t selected = CVar_GetS32(name, FirstTimeValue);
+        uint8_t DefaultValue = selected;
+        std::string comboName = std::string("##") + std::string(name);
+        if (ImGui::BeginCombo(comboName.c_str(), ComboArray[DefaultValue])) {
+            for (uint8_t i = 0; i < arraySize; i++) {
+                if (strlen(ComboArray[i]) > 1) {
+                    if (ImGui::Selectable(ComboArray[i], i == selected)) {
+                        CVar_SetS32(name, i);
+                        selected = i;
+                        needs_save = true;
+                    }
+                }
+            }
+            ImGui::EndCombo();
+        }
+    }
+
+    void EnhancementRadioButton(const char* text, const char* cvarName, int id) {
         /*Usage :
         EnhancementRadioButton("My Visible Name","gMyCVarName", MyID);
         First arg is the visible name of the Radio button
@@ -447,123 +471,247 @@ namespace SohImGui {
             EnhancementRadioButton("German", "gLanguages", 1);
             EnhancementRadioButton("French", "gLanguages", 2);
         */
-        int val = CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::RadioButton(text.c_str(), id == val)) {
-            CVar_SetS32(cvarName.c_str(), (int)id);
+        std::string make_invisible = "##";
+        make_invisible += text;
+        make_invisible += cvarName;
+
+        int val = CVar_GetS32(cvarName, 0);
+        if (ImGui::RadioButton(make_invisible.c_str(), id == val)) {
+            CVar_SetS32(cvarName, id);
+            needs_save = true;
+        }
+        ImGui::SameLine();
+        ImGui::Text("%s", text);
+    }
+
+    void EnhancementCheckbox(const char* text, const char* cvarName)
+    {
+        bool val = (bool)CVar_GetS32(cvarName, 0);
+        if (ImGui::Checkbox(text, &val)) {
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
     }
 
-    void EnhancementCheckbox(std::string text, std::string cvarName)
+    void EnhancementButton(const char* text, const char* cvarName)
     {
-        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::Checkbox(text.c_str(), &val)) {
-            CVar_SetS32(cvarName.c_str(), val);
+        bool val = (bool)CVar_GetS32(cvarName, 0);
+        if (ImGui::Button(text)) {
+            CVar_SetS32(cvarName, !val);
+            CVar_SetS32(cvarName, !val);
             needs_save = true;
         }
     }
 
-    void EnhancementButton(std::string text, std::string cvarName)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format)
     {
-        bool val = (bool)CVar_GetS32(cvarName.c_str(), 0);
-        if (ImGui::Button(text.c_str())) {
-            CVar_SetS32(cvarName.c_str(), !val);
-            needs_save = true;
-        }
-    }
+        int val = CVar_GetS32(cvarName, 0);
 
-    void EnhancementSliderInt(std::string text, std::string id, std::string cvarName, int min, int max, std::string format)
-    {
-        int val = CVar_GetS32(cvarName.c_str(), 0);
+        ImGui::Text(text, val);
 
-        ImGui::Text(text.c_str(), val);
-
-        if (ImGui::SliderInt(id.c_str(), &val, min, max, format.c_str()))
+        if (ImGui::SliderInt(id, &val, min, max, format))
         {
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
 
         if (val < min)
         {
             val = min;
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
 
         if (val > max)
         {
             val = max;
-            CVar_SetS32(cvarName.c_str(), val);
+            CVar_SetS32(cvarName, val);
             needs_save = true;
         }
     }
 
-    void EnhancementSliderFloat(std::string text, std::string id, std::string cvarName, float min, float max, std::string format, float defaultValue, bool isPercentage)
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage)
     {
-        float val = CVar_GetFloat(cvarName.c_str(), defaultValue);
+        float val = CVar_GetFloat(cvarName, defaultValue);
 
         if (!isPercentage)
-            ImGui::Text(text.c_str(), val);
+            ImGui::Text(text, val);
         else
-            ImGui::Text(text.c_str(), static_cast<int>(100 * val));
+            ImGui::Text(text, static_cast<int>(100 * val));
 
-        if (ImGui::SliderFloat(id.c_str(), &val, min, max, format.c_str()))
+        if (ImGui::SliderFloat(id, &val, min, max, format))
         {
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
 
         if (val < min)
         {
             val = min;
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
 
         if (val > max)
         {
             val = max;
-            CVar_SetFloat(cvarName.c_str(), val);
+            CVar_SetFloat(cvarName, val);
             needs_save = true;
         }
     }
 
-    int ClampFloatToInt(float value, int min, int max){
-        return fmin(fmax(value,min),max);
+    void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
+      
+        if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
+            for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
+                if (ImGui::Selectable(items[settingIndex].c_str())) {
+                    CVar_SetS32(cvarName, settingIndex);
+                    needs_save = true;
+
+                }
+            }
+            ImGui::EndCombo();
+        }
     }
 
-    void EnhancementColor3(std::string text, std::string cvarName, float ColorRGB[3], bool TitleSameLine) {
-        //Simplified.
+    void RandomizeColor(const char* cvarName, ImVec4* colors) {
+        std::string Cvar_Red = cvarName;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarName;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarName;
+        Cvar_Blue += "B";
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Random";
+        std::string FullName = "Random";
+        FullName += MakeInvisible;
+        if (ImGui::Button(FullName.c_str())) {
+            s16 RND_R = rand() % (255 - 0);
+            s16 RND_G = rand() % (255 - 0);
+            s16 RND_B = rand() % (255 - 0);
+            colors->x = (float)RND_R / 255;
+            colors->y = (float)RND_G / 255;
+            colors->z = (float)RND_B / 255;
+            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
+            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
+            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+            needs_save = true;
+        }
+        Tooltip("Clicking this button will make a random color for the colors at it's right.\nPrevious color will be overwrite and will not be recoverable");
+    }
+
+    void RainbowColor(const char* cvarName, ImVec4* colors) {
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Rainbow";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Rainbow";
+
+        EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
+        Tooltip("Clicking this button will make color cycling\nPrevious color will be overwrite and will not be recoverable");
+    }
+
+    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
+        std::string Cvar_Red = cvarName;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarName;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarName;
+        Cvar_Blue += "B";
+        std::string Cvar_Alpha = cvarName;
+        Cvar_Alpha += "A";
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+        std::string MakeInvisible = "Reset";
+        MakeInvisible += "##";
+        MakeInvisible += cvarName;
+        MakeInvisible += "Reset";
+        if (ImGui::Button(MakeInvisible.c_str())) {
+            colors->x = defaultcolors.x / 255;
+            colors->y = defaultcolors.y / 255;
+            colors->z = defaultcolors.z / 255;
+            if (has_alpha) { colors->w = defaultcolors.w / 255; };
+            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
+            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
+            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+            if (has_alpha) { CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(colors->w * 255, 0, 255)); };
+            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+            needs_save = true;
+        }
+        Tooltip("Clicking this button will to the game original color (GameCube version)\nPrevious color will be overwrite and will not be recoverable");
+    }
+
+    void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
+        std::string Cvar_Red = cvarName;
+        Cvar_Red += "R";
+        std::string Cvar_Green = cvarName;
+        Cvar_Green += "G";
+        std::string Cvar_Blue = cvarName;
+        Cvar_Blue += "B";
+        std::string Cvar_Alpha = cvarName;
+        Cvar_Alpha += "A";
+        std::string Cvar_RBM = cvarName;
+        Cvar_RBM += "RBM";
+
+        LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
         ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
-        if (!TitleSameLine){
-            ImGui::Text("%s", text.c_str());
+
+        if (!TitleSameLine) {
+            ImGui::Text("%s", text);
             flags = ImGuiColorEditFlags_NoLabel;
         }
-        if (ImGui::ColorEdit3(text.c_str(), ColorRGB, flags)) {
-            CVar_SetS32((cvarName+"R").c_str(), ClampFloatToInt(ColorRGB[0]*255,0,255));
-            CVar_SetS32((cvarName+"G").c_str(), ClampFloatToInt(ColorRGB[1]*255,0,255));
-            CVar_SetS32((cvarName+"B").c_str(), ClampFloatToInt(ColorRGB[2]*255,0,255));
-            needs_save = true;
+        if (!has_alpha) {
+            if (ImGui::ColorEdit3(text, (float*)&ColorRGBA, flags)) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
+                needs_save = true;
+            }
         }
+        else {
+            if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags)) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
+                CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(ColorRGBA.w * 255, 0, 255));
+                needs_save = true;
+            }
+
+        }
+        //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
+        ImGui::NewLine();
+        ImGui::PushItemWidth(-FLT_MIN);
+        ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
+        ImGui::SameLine();
+        RandomizeColor(cvarName, &ColorRGBA);
+        if (allow_rainbow) {
+            
+            if (ImGui::GetWindowSize().x > 560) {
+                ImGui::SameLine();
+            }
+            else {
+                ImGui::NewLine();
+            }
+            RainbowColor(cvarName, &ColorRGBA);
+        }
+        ImGui::PopItemWidth();
     }
 
-    void Tooltip(std::string text) {
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text.c_str());
-    }
-
-    void DrawMainMenuAndCalculateGameSize() {
+    void DrawMainMenuAndCalculateGameSize(void) {
         console->Update();
         ImGuiBackendNewFrame();
         ImGuiWMNewFrame();
         ImGui::NewFrame();
-        LoadInterfaceEditor();
 
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -591,7 +739,9 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
+        ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
+        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -621,7 +771,22 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller"))
-            {
+	    {
+                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+
+		ImGui::Separator();
+
+                EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
+                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
+
+                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
+
+		ImGui::Separator();  
+		    
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
@@ -633,7 +798,7 @@ namespace SohImGui {
                         auto menuLabel = "Controller " + std::to_string(i + 1);
                         if (ImGui::BeginMenu(menuLabel.c_str()))
                         {
-                            EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i), 0.0f, 1.0f, "", 1.0f, true);
+                            EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
 
                             if (ImGui::Button("Recalibrate Gyro"))
                             {
@@ -644,25 +809,12 @@ namespace SohImGui {
 
                             ImGui::Separator();
 
-                            EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i), 0.0f, 1.0f, "", 1.0f, true);
+                            EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
 
                             ImGui::EndMenu();
                         }
                         ImGui::Separator();
                 }
-
-                EnhancementCheckbox("Show Inputs", "gInputEnabled");
-                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
-
-                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");
-
-                ImGui::Separator();
-
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
 
                 ImGui::EndMenu();
             }
@@ -676,22 +828,39 @@ namespace SohImGui {
                 Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
+                if (impl.backend == Backend::DX11)
+                {
+                    const char* cvar = "gExtraLatencyThreshold";
+                    int val = CVar_GetS32(cvar, 80);
+                    val = MAX(MIN(val, 250), 0);
+                    int fps = val;
+
+                    if (fps == 0)
+                    {
+                        ImGui::Text("Jitter fix: Off");
+                    }
+                    else
+                    {
+                        ImGui::Text("Jitter fix: >= %d FPS", fps);
+                    }
+
+                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    {
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
+
+                    Tooltip("When Interpolation FPS setting is at least this threshold,\n"
+                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
+                        "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
+                        "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                }
+
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
+                EnhancementCombobox("gTextureFilter", filters, 3, 0);
                 GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                if (ImGui::BeginCombo("##filters", filters[gapi->get_texture_filter()])) {
-                    for (int fId = 0; fId <= FilteringMode::NONE; fId++) {
-                        if (ImGui::Selectable(filters[fId], fId == gapi->get_texture_filter())) {
-                            INFO("New Filter: %s", filters[fId]);
-                            gapi->set_texture_filter((FilteringMode)fId);
-
-                            CVar_SetS32("gTextureFilter", (int)fId);
-                            needs_save = true;
-                        }
-
-                    }
-                    ImGui::EndCombo();
-                }
+                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
@@ -711,6 +880,7 @@ namespace SohImGui {
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
                     EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
                     Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
@@ -722,20 +892,72 @@ namespace SohImGui {
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
-                    Tooltip("Allows equiping the tunic and boots to c-buttons");
+                    Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
                     Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                    Tooltip("Prevent forced Navi conversations");
+                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                     EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
                     Tooltip("Disables the voice audio when Navi calls you");
-                    
+                    EnhancementCheckbox("Fast Chests", "gFastChests");
+                    Tooltip("Kick open every chest");
+                    EnhancementCheckbox("Better Owl", "gBetterOwl");
+                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                    EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
+                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
+                    EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     ImGui::EndMenu();
                 }
 
                 if (ImGui::BeginMenu("Graphics"))
                 {
+                    if (ImGui::BeginMenu("Animated Link in Pause Menu")) {
+                        ImGui::Text("Rotation");
+                        EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
+                        EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveLinkRotation", 1);
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
+                        EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
+
+                        if (CVar_GetS32("gPauseLiveLinkRotation", 0) != 0) {
+                            EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
+                        }
+                        ImGui::Separator();
+                        ImGui::Text("Static loop");
+                        EnhancementRadioButton("Disabled", "gPauseLiveLink", 0);
+                        EnhancementRadioButton("Idle (standing)", "gPauseLiveLink", 1);
+                        EnhancementRadioButton("Idle (look around)", "gPauseLiveLink", 2);
+                        EnhancementRadioButton("Idle (belt)", "gPauseLiveLink", 3);
+                        EnhancementRadioButton("Idle (shield)", "gPauseLiveLink", 4);
+                        EnhancementRadioButton("Idle (test sword)", "gPauseLiveLink", 5);
+                        EnhancementRadioButton("Idle (yawn)", "gPauseLiveLink", 6);
+                        EnhancementRadioButton("Battle Stance", "gPauseLiveLink", 7);
+                        EnhancementRadioButton("Walking (no shield)", "gPauseLiveLink", 8);
+                        EnhancementRadioButton("Walking (holding shield)", "gPauseLiveLink", 9);
+                        EnhancementRadioButton("Running (no shield)", "gPauseLiveLink", 10);
+                        EnhancementRadioButton("Running (holding shield)", "gPauseLiveLink", 11);
+                        EnhancementRadioButton("Hand on hip", "gPauseLiveLink", 12);
+                        EnhancementRadioButton("Spin attack charge", "gPauseLiveLink", 13);
+                        EnhancementRadioButton("Look at hand", "gPauseLiveLink", 14);
+                        ImGui::Separator();
+                        ImGui::Text("Randomize");
+                        EnhancementRadioButton("Random", "gPauseLiveLink", 15);
+                        Tooltip("Randomize the animation played each time you open the menu");
+                        EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
+                        Tooltip("Randomize the animation played on the menu after a certain time");
+                        if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
+                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
+                        }
+
+                        ImGui::EndMenu();
+                    }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
-                    EnhancementCheckbox("Animated Link in Pause Menu", "gPauseLiveLink");
+                    EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
@@ -749,40 +971,103 @@ namespace SohImGui {
                 {
                     EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                     Tooltip("Makes the L and R buttons in the pause menu the same color");
+                    EnhancementCheckbox("Fix L&Z Page switch in Pause menu", "gNGCKaleidoSwitcher");
+                    Tooltip("Enabling it make L and R be your page switch like on Gamecube\nZ become the button to open Debug Menu");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
                     Tooltip("Show dungeon entrances icon only when it should be");
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
                     Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                    EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
+                    Tooltip("Fixes a bug where you can permanently miss the Gravedigging Tour Heart Piece");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
+                    EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
+                    Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
+
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("Restoration"))
+                {
+                    EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
+                    Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
+                    EnhancementCheckbox("Fish while hovering", "gHoverFishing");
+                    Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
 
                     ImGui::EndMenu();
                 }
 
                 EXPERIMENTAL();
 
-                EnhancementCheckbox("60FPS Interpolation", "g60FPS");
+                const char* fps_cvar = "gInterpolationFPS";
+                {
+                    int val = CVar_GetS32(fps_cvar, 20);
+                    val = MAX(MIN(val, 250), 20);
+                    int fps = val;
+
+                    if (fps == 20)
+                    {
+                        ImGui::Text("Frame interpolation: Off");
+                    }
+                    else
+                    {
+                        ImGui::Text("Frame interpolation: %d FPS", fps);
+                    }
+
+                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    {
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
+
+                    Tooltip("Interpolate extra frames to get smoother graphics.\n"
+                        "Set to match your monitor's refresh rate, or a divisor of it.\n"
+                        "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
+                        "and might give a worse result.\n"
+                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.\n"
+                        "Ctrl+Click for keyboard input.");
+                }
+                if (impl.backend == Backend::DX11)
+                {
+                    if (ImGui::Button("Match Refresh Rate"))
+                    {
+                        int hz = roundf(gfx_get_detected_hz());
+                        if (hz >= 20 && hz <= 250)
+                        {
+                            CVar_SetS32(fps_cvar, hz);
+                            needs_save = true;
+                        }
+                    }
+                }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
+                EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
+                Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
+                if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
+                    CVar_SetS32("gDisableKokiriDrawDistance", 0);
+                } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
+                    EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
+                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance\nNeeds to reload the map to take effect");
+                }
 
                 ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Cosmetics"))  {
-                EnhancementCheckbox("Cosmetics editor", "gCosmticsEditor");
+                EnhancementCheckbox("Cosmetics editor", "gCosmeticEditor");
                 Tooltip("Edit Navi and Link's Tunics color.");
                 EnhancementCheckbox("HUD Margins editor", "gUseMargins");
                 EnhancementRadioButton("N64 interface", "gHudColors", 0);
                 Tooltip("Change interface color to N64 style.");
-                EnhancementRadioButton("Gamecube interface", "gHudColors", 1);
-                Tooltip("Change interface color to Gamecube style.");
+                EnhancementRadioButton("GameCube interface", "gHudColors", 1);
+                Tooltip("Change interface color to GameCube style.");
                 EnhancementRadioButton("Custom interface", "gHudColors", 2);
                 Tooltip("Change interface color to your own made style.");
                 if (CVar_GetS32("gHudColors", 1) == 2) {
                     EnhancementCheckbox("Interface editor", "gColorsEditor");
                     Tooltip("Edit the colors used for your own interface");
                 }
-            ImGui::EndMenu();
+                ImGui::EndMenu();
             }
 
             if (ImGui::BeginMenu("Cheats"))
@@ -811,6 +1096,12 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
+                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
+                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
+                Tooltip("Prevents the Deku Shield from burning on contact with fire");
+                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
+                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
 
                 ImGui::EndMenu();
             }
@@ -821,10 +1112,10 @@ namespace SohImGui {
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
                 Tooltip("Directly load the game to selected slot bellow\nUse slot number 4 to load directly in Zelda Map Select\n(Do not require debug menu but you will be unable to save there)\n(you can also load Zelda map select with Debug mod + slot 0).\nWith Slot : 0 you can go directly in File Select menu\nAttention, Loading an empty save will result in crash");
-                if (CVar_GetS32("gSkipLogoTitle",0)) {
+                if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
-		ImGui::Separator();
+                ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
@@ -835,14 +1126,15 @@ namespace SohImGui {
             }
 
             bool Margins_isOpen = CVar_GetS32("gUseMargins", 0);
-            bool Cosmetics_isOpen = CVar_GetS32("gCosmticsEditor", 0);
+            bool Cosmetics_isOpen = CVar_GetS32("gCosmeticEditor", 0);
             bool Interface_isOpen = CVar_GetS32("gColorsEditor", 0);
 
             if (Margins_isOpen) {
                 if (!Margins_isOpen) {
+                    CVar_SetS32("gHUDMargins", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Interface margins")) {
@@ -856,101 +1148,141 @@ namespace SohImGui {
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Cosmetics_isOpen) {
                 if (!Cosmetics_isOpen) {
+                    CVar_SetS32("gCosmeticEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(500, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Cosmetics Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Cosmetics Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
                     if (ImGui::BeginTabItem("Navi")) {
                         EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
-                        Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets");
-                        EnhancementColor3("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, false);
+                        Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
+                        EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
                         Tooltip("Inner color for Navi (idle flying around)");
-                        EnhancementColor3("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, false);
+                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
                         Tooltip("Outer color for Navi (idle flying around)");
                         ImGui::Separator();
-                        EnhancementColor3("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, false);
+                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
                         Tooltip("Inner color for Navi (when Navi fly around NPCs)");
-                        EnhancementColor3("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, false);
+                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
                         Tooltip("Outer color for Navi (when Navi fly around NPCs)");
                         ImGui::Separator();
-                        EnhancementColor3("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, false);
+                        EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
                         Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-                        EnhancementColor3("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, false);
+                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
                         Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
                         ImGui::Separator();
-                        EnhancementColor3("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, false);
+                        EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
                         Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
-                        EnhancementColor3("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, false);
+                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
                         Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
                         ImGui::EndTabItem();
                     }
                     if (ImGui::BeginTabItem("Tunics")) {
                         EnhancementCheckbox("Custom colors on tunics", "gUseTunicsCol");
-                        Tooltip("Enable/Disable custom Link's tunics colors. \nIf disabled you will have original colors for Link's tunics");
-                        EnhancementColor3("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, false);
+                        Tooltip("Enable/Disable custom Link's tunics colors. \nIf disabled you will have original colors for Link's tunics.");
+                        EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255));
                         ImGui::Separator();
-                        EnhancementColor3("Goron Tunic", "gTunic_Goron_", goron_col, false);
+                        EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255));
                         ImGui::Separator();
-                        EnhancementColor3("Zora Tunic", "gTunic_Zora_", zora_col, false);
+                        EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255));
                         ImGui::EndTabItem();
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
             if (Interface_isOpen) {
                 if (!Interface_isOpen) {
+                    CVar_SetS32("gColorsEditor", 0);
                     return;
                 }
-                ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+                ImGui::SetNextWindowSize(ImVec2(215, 627), ImGuiCond_FirstUseEver);
                 ImGui::Begin("Interface Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
                 if (ImGui::BeginTabBar("Interface Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-                    if (ImGui::BeginTabItem("Hearts")) {
-                        EnhancementColor3("Hearts inner", "gCCHeartsPrim", hearts_colors, false);
-                        Tooltip("Hearts inner color (red in original)\nAffect both Normal Hearts and the ones in Double Defense");
-                        EnhancementColor3("Hearts double def", "gDDCCHeartsPrim", hearts_dd_colors, false);
-                        Tooltip("Hearts outline color (white in original)\nAffect Double Defense outline only");
-                        ImGui::EndTabItem();
+                    if (ImGui::BeginTabItem("HUD")) {
+                        if (ImGui::BeginTable("tableInterfaceEditor", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                            ImGui::TableSetupColumn("Hearts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                            ImGui::TableSetupColumn("Magic Bar", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                            ImGui::TableSetupColumn("Buttons", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                            ImGui::TableHeadersRow();
+                            ImGui::TableNextRow();
+                            ImGui::TableNextColumn();
+                            // COLUMN 1.1 - HEARTS
+                            ImGui::PushItemWidth(-FLT_MIN);
+                            EnhancementColor("Hearts inner", "gCCHeartsPrim", hearts_colors, ImVec4(255, 70, 50, 255));
+                            Tooltip("Hearts inner color (red in original)\nAffect both Normal Hearts and the ones in Double Defense");
+                            ImGui::Separator();
+                            EnhancementColor("Hearts double def", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255, 255, 255, 255));
+                            Tooltip("Hearts outline color (white in original)\nAffect Double Defense outline only.");
+                            ImGui::PopItemWidth();
+                            ImGui::Separator();
+                            if (ImGui::BeginTable("tableMisc", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                                ImGui::TableSetupColumn("Misc", ImGuiTableColumnFlags_WidthStretch, 600.0f);
+                                ImGui::TableHeadersRow();
+                                ImGui::TableNextRow();
+                                ImGui::TableNextColumn();
+                                // COLUMN 1.2 - MISC
+                                ImGui::PushItemWidth(-FLT_MIN);
+                                EnhancementColor("Minimap color", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
+                                Tooltip("Affect the Dungeon and Overworld minimaps.");
+                                ImGui::Separator();
+                                EnhancementColor("Rupee icon color", "gCCRupeePrim", rupee_colors, ImVec4(120, 120, 120, 255));
+                                Tooltip("Affect the Rupee icon on interface\nGreen by default.");
+                                ImGui::Separator();
+                                EnhancementColor("Small Keys icon color", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
+                                Tooltip("Affect the Small keys icon on interface\nGray by default.");
+                                ImGui::PopItemWidth();
+                                ImGui::EndTable();
+                            }
+                            ImGui::TableNextColumn();
+                            // COLUMN 2 - MAGIC BAR
+                            ImGui::PushItemWidth(-FLT_MIN);
+                            EnhancementColor("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255, 255, 255, 255));
+                            Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game.");
+                            ImGui::Separator();
+                            EnhancementColor("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0, 200, 0, 255));
+                            Tooltip("Affect the magic bar color\nGreen in original game.");
+                            ImGui::Separator();
+                            EnhancementColor("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, ImVec4(250, 250, 0, 255));
+                            Tooltip("Affect the magic bar when being used\nYellow in original game.");
+                            ImGui::Separator();
+                            ImGui::PopItemWidth();
+                            ImGui::TableNextColumn();
+                            // COLUMN 3 - BUTTON
+                            ImGui::PushItemWidth(-FLT_MIN);
+                            EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(90, 90, 255, 255));
+                            Tooltip("A Buttons colors (Green in original GameCube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
+                            ImGui::Separator();
+                            EnhancementColor("B Buttons", "gCCBBtnPrim", b_btn_colors, ImVec4(0, 150, 0, 255));
+                            Tooltip("B Button colors (Red in original GameCube)\nAffect B button colors on interface");
+                            ImGui::Separator();
+                            EnhancementColor("C Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255));
+                            Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
+                            ImGui::Separator();
+                            EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(120, 120, 120, 255));
+                            Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
+                            ImGui::Separator();
+                            ImGui::PopItemWidth();
+                            ImGui::EndTable();
+                            ImGui::EndTabItem();
+                        }
                     }
-                    if (ImGui::BeginTabItem("Buttons")) {
-                        EnhancementColor3("A Buttons", "gCCABtnPrim", a_btn_colors, false);
-                        Tooltip("A Buttons colors (Green in original Gamecube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors");
-                        EnhancementColor3("B Buttons", "gCCBBtnPrim", b_btn_colors, false);
-                        Tooltip("B Button colors (Red in original Gamecube)\nAffect B button colors on interface");
-                        EnhancementColor3("C Buttons", "gCCCBtnPrim", c_btn_colors, false);
-                        Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
-                        EnhancementColor3("Start Buttons", "gCCStartBtnPrim", start_btn_colors, false);
-                        Tooltip("Start Button colors (gray in Gamecube)\nAffect Start button colors in inventory");
-                        ImGui::EndTabItem();
-                    }
-                    if (ImGui::BeginTabItem("Magic Bar")) {
-                        EnhancementColor3("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, false);
-                        Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game");
-                        EnhancementColor3("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, false);
-                        Tooltip("Affect the magic bar color\nGreen in original game");
-                        EnhancementColor3("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, false);
-                        Tooltip("Affect the magic bar when being used\nYellow in original game");
-                        ImGui::EndTabItem();
-                    }
-                    if (ImGui::BeginTabItem("Misc")) {
-                        EnhancementColor3("Minimap color", "gCCMinimapPrim", minimap_colors, false);
-                        Tooltip("Affect the Dungeon and Overworld minimaps");
-                        EnhancementColor3("Rupee icon color", "gCCRupeePrim", rupee_colors, false);
-                        Tooltip("Affect the Rupee icon on interface\nGreen by default");
-                        EnhancementColor3("Small Keys icon color", "gCCKeysPrim", smolekey_colors, false);
-                        Tooltip("Affect the Small keys icon on interface\nGray by default");
+
+                    if (ImGui::BeginTabItem("File Choose")) {
+                        EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255));
+                        Tooltip("Affect the File Select.");
+                        ImGui::Separator();
+                        EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(0, 100, 255, 255));
+                        Tooltip("Affect the File Select.");
                         ImGui::EndTabItem();
                     }
                     ImGui::EndTabBar();
                 }
-                ImGui::PopStyleColor();
                 ImGui::End();
             }
 
@@ -961,7 +1293,7 @@ namespace SohImGui {
                         varName.erase(std::ranges::remove_if(varName, isspace).begin(), varName.end());
                         std::string toggleName = "g" + varName + "Enabled";
 
-                        EnhancementCheckbox(name, toggleName);
+                        EnhancementCheckbox(name.c_str(), toggleName.c_str());
                         customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
                     }
                     ImGui::EndMenu();
@@ -1012,19 +1344,19 @@ namespace SohImGui {
         main_pos.y -= top_left_pos.y;
         ImVec2 size = ImGui::GetContentRegionAvail();
         ImVec2 pos = ImVec2(0, 0);
-        gfx_current_dimensions.width = size.x * gfx_current_dimensions.internal_mul;
-        gfx_current_dimensions.height = size.y * gfx_current_dimensions.internal_mul;
-        gfx_current_game_window_viewport.x = main_pos.x;
-        gfx_current_game_window_viewport.y = main_pos.y;
-        gfx_current_game_window_viewport.width = size.x;
-        gfx_current_game_window_viewport.height = size.y;
+        gfx_current_dimensions.width = (uint32_t)(size.x * gfx_current_dimensions.internal_mul);
+        gfx_current_dimensions.height = (uint32_t)(size.y * gfx_current_dimensions.internal_mul);
+        gfx_current_game_window_viewport.x = (int16_t)main_pos.x;
+        gfx_current_game_window_viewport.y = (int16_t)main_pos.y;
+        gfx_current_game_window_viewport.width = (int16_t)size.x;
+        gfx_current_game_window_viewport.height = (int16_t)size.y;
 
         if (CVar_GetS32("gN64Mode", 0))
         {
             gfx_current_dimensions.width = 320;
             gfx_current_dimensions.height = 240;
             const int sw = size.y * 320 / 240;
-            gfx_current_game_window_viewport.x += (size.x - sw) / 2;
+            gfx_current_game_window_viewport.x += ((int)size.x - sw) / 2;
             gfx_current_game_window_viewport.width = sw;
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
@@ -1033,12 +1365,12 @@ namespace SohImGui {
         overlay->Draw();
     }
 
-    void DrawFramebufferAndGameInput() {
-        ImVec2 main_pos = ImGui::GetWindowPos();
+    void DrawFramebufferAndGameInput(void) {
+        const ImVec2 main_pos = ImGui::GetWindowPos();
         ImVec2 size = ImGui::GetContentRegionAvail();
         ImVec2 pos = ImVec2(0, 0);
         if (CVar_GetS32("gN64Mode", 0)) {
-            const int sw = size.y * 320 / 240;
+            const float sw = size.y * 320.0f / 240.0f;
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
@@ -1110,6 +1442,8 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
+        //Placed here so it does the rainbow effects even if menu is not on.
+        LoadRainbowColor();
     }
 
     void CancelFrame() {

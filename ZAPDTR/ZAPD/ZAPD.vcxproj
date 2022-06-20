@@ -72,15 +72,15 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
-    <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(ProjectDir)..\..\StormLib\bin\StormLib\x64\DebugUS\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
     <CodeAnalysisRuleAssemblies />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)..\ZAPDUtils;$(ProjectDir)..\lib\tinyxml2;$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\lib\elfio;$(ProjectDir)..\lib\stb;$(ProjectDir);$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\lib\libgfxd;$(ProjectDir)..\..\OTRExporter\packages\libpng-v142.1.6.37.2\build\native\lib\x64\v142\Debug\;$(ProjectDir)..\..\libultraship\libultraship\;$(ProjectDir)..\..\StormLib\bin\StormLib\x64\ReleaseUS\;$(LibraryPath)</LibraryPath>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -195,6 +195,8 @@
     <ClCompile Include="WarningHandler.cpp" />
     <ClCompile Include="yaz0\yaz0.cpp" />
     <ClCompile Include="ZArray.cpp" />
+    <ClCompile Include="ZAudio.cpp" />
+    <ClCompile Include="ZAudioDecode.cpp" />
     <ClCompile Include="ZBackground.cpp" />
     <ClCompile Include="ZCutsceneMM.cpp" />
     <ClCompile Include="ZLimb.cpp" />
@@ -288,6 +290,7 @@
     <ClInclude Include="yaz0\yaz0.h" />
     <ClInclude Include="ZAnimation.h" />
     <ClInclude Include="ZArray.h" />
+    <ClInclude Include="ZAudio.h" />
     <ClInclude Include="ZBackground.h" />
     <ClInclude Include="ZBlob.h" />
     <ClInclude Include="ZCollision.h" />
