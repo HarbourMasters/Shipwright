@@ -7,6 +7,7 @@ ZAPD := ../ZAPDTR/ZAPD.out
 
 LIBULTRASHIP := ../libultraship/libultraship.a
 ZAPDUTILS := ../ZAPDTR/ZAPDUtils/ZAPDUtils.a
+LIBSTORM := ../StormLib/build/libstorm.a
 
 ASAN ?= 0
 DEBUG ?= 1
@@ -56,12 +57,12 @@ INC_DIRS := $(addprefix -I, \
 )
 
 LDDIRS := $(addprefix -L, \
-	../StormLib/build \
 	../libultraship/ \
 )
 
 LDLIBS := \
 	$(ZAPDUTILS) \
+	$(LIBSTORM) \
 	$(addprefix -l, \
 	X11 \
 	dl \
@@ -72,7 +73,6 @@ LDLIBS := \
 	SDL2 \
 	GL \
 	GLEW \
-	storm \
 	pulse\
 	ultraship \
 ) \
@@ -127,8 +127,6 @@ setup:
 	$(MAKE) mpq
 
 mpq:
-	cmake -B ../StormLib/build -S ../StormLib
-	cmake --build ../StormLib/build
 	$(MAKE) -C ../libultraship
 	$(MAKE) -C ../OTRExporter/OTRExporter
 	$(MAKE) -C ../ZAPDTR
@@ -141,7 +139,6 @@ distclean: clean
 	$(MAKE) clean -C ../libultraship
 	$(MAKE) clean -C ../OTRExporter/OTRExporter
 	$(MAKE) clean -C ../ZAPDTR
-	rm -rf ../StormLib/build
 
 clean:
 	rm -rf build $(TARGET)
