@@ -102,7 +102,7 @@ LDLIBS := \
 	bz2 \
 	z \
 	pthread \
-	atomic \
+	storm \
 	ultraship \
 )
 
@@ -119,7 +119,7 @@ endif
 
 ifeq ($(UNAME), Darwin) #APPLE
 LDLIBS += \
-	$(addprefix -framework, \
+	$(addprefix -framework , \
 	OpenGL \
 ) \
 	$(shell sdl2-config --libs) $(shell pkg-config --libs glew)
@@ -211,7 +211,7 @@ build/%.o: %.c
 $(TARGET): $(LIBULTRASHIP)
 
 $(TARGET): $(O_FILES)
-	$(CXX) $^ -o $@ $(LDFLAGS) -fuse-ld=$(LD) $(LDDIRS) $(LDLIBS)
+	$(CXX) $^ -o $@ $(LDFLAGS) $(LDDIRS) $(LDLIBS)
 
 -include $(D_FILES)
 
