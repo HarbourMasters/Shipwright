@@ -500,7 +500,7 @@ void EnOkuta_ProjectileFly(EnOkuta* this, GlobalContext* globalCtx) {
             pos.x = this->actor.world.pos.x;
             pos.y = this->actor.world.pos.y + 11.0f;
             pos.z = this->actor.world.pos.z;
-            if (CVar_GetS32("gNewProjectiles", 0) != 0) {
+            if (CVar_GetS32("gNewDrops", 0) != 0) {
                 static s16 sEffectScales[] = {
                     145, 135, 115, 85, 75, 53, 45, 40, 35,
                 };
