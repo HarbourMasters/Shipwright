@@ -5,6 +5,7 @@
 #include <ultra64.h>
 #include <functions.h>
 #include <variables.h>
+#include <string.h>
 #include <stdarg.h>
 #include <z64.h>
 #include <ultra64/gbi.h>

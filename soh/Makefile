@@ -18,8 +18,11 @@ LTO ?= 0
 
 WARN := \
 	-Wno-return-type \
+	-Wno-unused-command-line-argument \
+	-Wno-implicit-function-declaration \
+	-Wno-c++11-narrowing \
 	-funsigned-char \
-	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
+	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
 CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
