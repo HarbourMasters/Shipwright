@@ -91,9 +91,6 @@
     <Filter Include="Source Files\Lib\Textures\Loaders">
       <UniqueIdentifier>{89726db4-c46b-4850-b002-aa2972123143}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Lib\AseImporter">
-      <UniqueIdentifier>{7134ca2d-e4c3-4169-87be-92de50c768c8}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">

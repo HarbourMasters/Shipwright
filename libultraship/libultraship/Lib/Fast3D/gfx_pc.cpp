@@ -843,7 +843,7 @@ static void import_texture(int i, int tile) {
         return;
     }
 
-    if (TexLoader::LoadReplacement(tile, rdp.loaded_texture[tmem_index].otr_path, gfx_get_current_rendering_api(), &rendering_state.textures[i], fmt, siz, rdp.texture_tile[tile].palette, rdp.loaded_texture[tmem_index].addr)) {
+    if (Ship::TexLoader::LoadReplacement(tile, rdp.loaded_texture[tmem_index].otr_path, gfx_get_current_rendering_api(), &rendering_state.textures[i], fmt, siz, rdp.texture_tile[tile].palette, rdp.loaded_texture[tmem_index].addr)) {
         return;
     }
 
