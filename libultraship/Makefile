@@ -69,6 +69,7 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
 	libultraship \
+	../StormLib/src \
 )
 
 # create build directories
