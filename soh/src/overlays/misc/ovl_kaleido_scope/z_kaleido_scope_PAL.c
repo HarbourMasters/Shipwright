@@ -930,7 +930,14 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
 }
 
 void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
-    if (CVar_GetS32("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, BTN_L)) {
+    s16 Debug_BTN = BTN_L;
+    s16 PageLeft_BTN = BTN_Z;
+    if (CVar_GetS32("gNGCKaleidoSwitcher", 0) != 0) {
+        Debug_BTN = BTN_Z;
+        PageLeft_BTN = BTN_L;
+    }
+
+    if (CVar_GetS32("gDebugEnabled", 0) && (pauseCtx->debugState == 0) && CHECK_BTN_ALL(input->press.button, Debug_BTN)) {
         pauseCtx->debugState = 1;
         return;
     }
@@ -940,7 +947,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_Z) && pauseCtx->debugState <= 0) {
+    if (CHECK_BTN_ALL(input->press.button, PageLeft_BTN) && pauseCtx->debugState <= 0) {
         KaleidoScope_SwitchPage(pauseCtx, 0);
         return;
     }
@@ -953,7 +960,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
 
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT && pauseCtx->debugState <= 0) {
-        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 0);
@@ -962,7 +969,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
             pauseCtx->pageSwitchTimer = -1;
         }
     } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT && pauseCtx->debugState <= 0) {
-        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 2);
@@ -1121,6 +1128,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
     static s16 D_8082AD4C = 0;
     static s16 D_8082AD50 = 0;
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
+    Input* input = &globalCtx->state.input[0];
     s16 stepR;
     s16 stepG;
     s16 stepB;
@@ -1158,6 +1166,52 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 D_8082AD40++;
                 if (D_8082AD40 >= 4) {
                     D_8082AD40 = 0;
+                }
+            }
+
+            if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPauseName", 0)) {
+                if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+                        D_8082AD44 = XREG(8);
+                        D_8082AD4C = -1;
+                    } else if (--D_8082AD44 < 0) {
+                        D_8082AD44 = XREG(6);
+                        input->press.button |= BTN_DLEFT;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DLEFT)) {
+                    D_8082AD4C = 0;
+                } else if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+                        D_8082AD44 = XREG(8);
+                        D_8082AD4C = 1;
+                    } else if (--D_8082AD44 < 0) {
+                        D_8082AD44 = XREG(6);
+                        input->press.button |= BTN_DRIGHT;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DRIGHT)) {
+                    D_8082AD4C = 0;
+                }
+
+                if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                        D_8082AD48 = XREG(8);
+                        D_8082AD50 = -1;
+                    } else if (--D_8082AD48 < 0) {
+                        D_8082AD48 = XREG(6);
+                        input->press.button |= BTN_DDOWN;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DDOWN)) {
+                    D_8082AD50 = 0;
+                } else if (CHECK_BTN_ALL(input->cur.button, BTN_DUP)) {
+                    if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+                        D_8082AD48 = XREG(8);
+                        D_8082AD50 = 1;
+                    } else if (--D_8082AD48 < 0) {
+                        D_8082AD48 = XREG(6);
+                        input->press.button |= BTN_DUP;
+                    }
+                } else if (CHECK_BTN_ALL(input->rel.button, BTN_DUP)) {
+                    D_8082AD50 = 0;
                 }
             }
 
@@ -3736,7 +3790,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_SaveSceneFlags(globalCtx);
                             gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            Sram_WriteSave(&globalCtx->sramCtx);
+                            Save_SaveFile();
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }
@@ -3976,7 +4030,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     pauseCtx->promptChoice = 0;
                     Gameplay_SaveSceneFlags(globalCtx);
                     gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                    Sram_WriteSave(&globalCtx->sramCtx);
+                    Save_SaveFile();
                     pauseCtx->state = 0xF;
                     D_8082B25C = 3;
                 }

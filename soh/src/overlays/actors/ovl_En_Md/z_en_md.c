@@ -613,10 +613,18 @@ void func_80AAB5A4(EnMd* this, GlobalContext* globalCtx) {
     f32 temp;
 
     if (globalCtx->sceneNum != SCENE_KOKIRI_HOME4) {
-        temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
-                (globalCtx->sceneNum == SCENE_SPOT04))
-                   ? 100.0f
-                   : 400.0f;
+        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+                    (globalCtx->sceneNum == SCENE_SPOT04))
+                       ? 100.0f
+                       : 32767.0f;
+        } else {
+            temp = (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && !(gSaveContext.eventChkInf[1] & 0x1000) &&
+                    (globalCtx->sceneNum == SCENE_SPOT04))
+                       ? 100.0f
+                       : 400.0f;
+        }
+        
         this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, temp);
         this->actor.shape.shadowAlpha = this->alpha;
     } else {

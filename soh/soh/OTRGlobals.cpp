@@ -1,6 +1,7 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <filesystem>
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
@@ -36,14 +37,17 @@
 #include <Utils/StringHelper.h>
 
 #include <SDL2/SDL_scancode.h>
+#include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
+SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
 
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
+    CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -57,10 +61,19 @@ extern "C" void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
+extern "C" void ResourceMgr_CacheDirectory(const char* resName);
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
 
 // C->C++ Bridge
+extern "C" void OTRAudio_Init() 
+{
+    // Precache all our samples, sequences, etc...
+    ResourceMgr_CacheDirectory("audio");
+}
+
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
+    SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -72,6 +85,7 @@ extern "C" void InitOTR() {
 
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
+    OTRAudio_Init();
     DebugConsole_Init();
     Debug_Init();
 }
@@ -189,11 +203,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                 //AudioMgr_ThreadEntry(&gAudioMgr);
                 // 528 and 544 relate to 60 fps at 32 kHz 32000/60 = 533.333..
                 // in an ideal world, one third of the calls should use num_samples=544 and two thirds num_samples=528
-                #define SAMPLES_HIGH 560
-                #define SAMPLES_LOW 528
+                //#define SAMPLES_HIGH 560
+                //#define SAMPLES_LOW 528
                 // PAL values
                 //#define SAMPLES_HIGH 656
                 //#define SAMPLES_LOW 624
+
+                // 44KHZ values
+                #define SAMPLES_HIGH 752
+                #define SAMPLES_LOW 720
+
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
                 int samples_left = AudioPlayer_Buffered();
@@ -312,6 +331,22 @@ extern "C" void ResourceMgr_InvalidateCache() {
     OTRGlobals::Instance->context->GetResourceManager()->InvalidateResourceCache();
 }
 
+// OTRTODO: There is probably a more elegant way to go about this...
+extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize) {
+    auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
+    char** result = (char**)malloc(lst->size() * sizeof(char*));
+
+    for (int i = 0; i < lst->size(); i++) {
+        char* str = (char*)malloc(lst.get()[0][i].size() + 1);
+        memcpy(str, lst.get()[0][i].data(), lst.get()[0][i].size());
+        str[lst.get()[0][i].size()] = '\0';
+        result[i] = str;
+    }
+    
+    *resultSize = lst->size();
+
+    return result;
+}
 
 extern "C" void ResourceMgr_LoadFile(const char* resName) {
     OTRGlobals::Instance->context->GetResourceManager()->LoadResource(resName);
@@ -530,10 +565,247 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
     return (CollisionHeader*)colHeader;
 }
 
-extern "C" Vtx * ResourceMgr_LoadVtxByName(const char* path)
+extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 {
 	auto res = std::static_pointer_cast<Ship::Array>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
 	return (Vtx*)res->vertices.data();
+}
+
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) 
+{
+    auto file = std::static_pointer_cast<Ship::AudioSequence>(OTRGlobals::Instance->context->GetResourceManager()
+                    ->LoadResource(path));
+
+    SequenceData seqData;
+    seqData.seqNumber = file->seqNumber;
+    seqData.medium = file->medium;
+    seqData.cachePolicy = file->cachePolicy;
+    seqData.numFonts = file->fonts.size();
+
+    for (int i = 0; i < seqData.numFonts; i++)
+        seqData.fonts[i] = file->fonts[i];
+
+    seqData.seqData = file->seqData.data();
+    seqData.seqDataSize = file->seqData.size();
+
+    return seqData;
+}
+
+std::map<std::string, SoundFontSample*> cachedCustomSFs;
+
+extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) 
+{
+    if (std::string(path) == "")
+        return nullptr;
+
+    if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
+        return cachedCustomSFs[path];
+
+    // Check if our file is actually a wav...
+    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path);
+    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
+    uint8_t* strem2 = (uint8_t*)strem;
+
+    if (strem2[0] == 'R' && strem2[1] == 'I' && strem2[2] == 'F' && strem2[3] == 'F') 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+
+        *strem++; // RIFF
+        *strem++; // size
+        *strem++; // WAVE
+
+        *strem++; // fmt
+        int fmtChunkSize = *strem++;
+        *strem++; // wFormatTag + wChannels
+        int32_t sampleRate = *strem++; // dwSamplesPerSec
+        // OTRTODO: Make sure wav format is what the audio driver wants!
+
+        strem = (uint32_t*)&strem2[0x0C + fmtChunkSize + 8 + 4];
+        sampleC->size = *strem++;
+        sampleC->sampleAddr = (uint8_t*)strem;
+        sampleC->codec = CODEC_S16;
+
+        // OTRTODO: Grab loop data from wav
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size / 2; // OTRTODO: This calculation is probably incorrect... Sometimes it goes past the sample, sometimes it stops too early...
+        sampleC->loop->count = 0;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = sampleRate;
+
+        cachedCustomSFs[path] = sampleC;
+        return sampleC;
+    }
+
+    auto sample = std::static_pointer_cast<Ship::AudioSample>(
+        OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+    
+    if (sample == nullptr)
+        return NULL;
+
+    if (sample->cachedGameAsset != nullptr) 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)sample->cachedGameAsset;
+        return (SoundFontSample*)sample->cachedGameAsset;
+    }
+    else 
+    {
+        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+
+        sampleC->sampleAddr = sample->data.data();
+
+        sampleC->size = sample->data.size();
+        sampleC->codec = sample->codec;
+        sampleC->medium = sample->medium;
+        sampleC->unk_bit26 = sample->unk_bit26;
+        sampleC->unk_bit25 = sample->unk_bit25;
+
+        sampleC->book = (AdpcmBook*)malloc(sizeof(AdpcmBook) + (sample->book.books.size() * sizeof(int16_t)));
+        sampleC->book->npredictors = sample->book.npredictors;
+        sampleC->book->order = sample->book.order;
+
+        for (int i = 0; i < sample->book.books.size(); i++)
+            sampleC->book->book[i] = sample->book.books[i];
+
+        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop->start = sample->loop.start;
+        sampleC->loop->end = sample->loop.end;
+        sampleC->loop->count = sample->loop.count;
+
+        for (int i = 0; i < 16; i++)
+            sampleC->loop->state[i] = 0;
+
+        for (int i = 0; i < sample->loop.states.size(); i++)
+            sampleC->loop->state[i] = sample->loop.states[i];
+
+        sample->cachedGameAsset = sampleC;
+        return sampleC;
+    }
+}
+
+extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
+    auto soundFont =
+        std::static_pointer_cast<Ship::AudioSoundFont>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
+
+    if (soundFont == nullptr)
+        return NULL;
+
+    if (soundFont->cachedGameAsset != nullptr) 
+    {
+        return (SoundFont*)soundFont->cachedGameAsset;
+    }
+    else 
+    {
+        SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
+
+        soundFontC->fntIndex = soundFont->id;
+        soundFontC->numDrums = soundFont->drums.size();
+        soundFontC->numInstruments = soundFont->instruments.size();
+        soundFontC->numSfx = soundFont->soundEffects.size();
+        soundFontC->sampleBankId1 = soundFont->data1 >> 8;
+        soundFontC->sampleBankId2 = soundFont->data1 & 0xFF;
+
+        soundFontC->drums = (Drum**)malloc(sizeof(Drum*) * soundFont->drums.size());
+
+        for (int i = 0; i < soundFont->drums.size(); i++)
+        {
+            Drum* drum = (Drum*)malloc(sizeof(Drum));
+
+            drum->releaseRate = soundFont->drums[i].releaseRate;
+            drum->pan = soundFont->drums[i].pan;
+            drum->loaded = 0;
+
+            if (soundFont->drums[i].env.size() == 0)
+                drum->envelope = NULL;
+            else
+            {
+                drum->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->drums[i].env.size());
+
+                for (int k = 0; k < soundFont->drums[i].env.size(); k++) 
+                {
+                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                }
+            }
+
+            drum->sound.sample = ResourceMgr_LoadAudioSample(soundFont->drums[i].sampleFileName.c_str());
+            drum->sound.tuning = soundFont->drums[i].tuning;
+
+            soundFontC->drums[i] = drum;
+        }
+
+        soundFontC->instruments = (Instrument**)malloc(sizeof(Instrument*) * soundFont->instruments.size());
+
+        for (int i = 0; i < soundFont->instruments.size(); i++) {
+
+            if (soundFont->instruments[i].isValidEntry) 
+            {
+                Instrument* inst = (Instrument*)malloc(sizeof(Instrument));
+
+                inst->loaded = 0;
+                inst->releaseRate = soundFont->instruments[i].releaseRate;
+                inst->normalRangeLo = soundFont->instruments[i].normalRangeLo;
+                inst->normalRangeHi = soundFont->instruments[i].normalRangeHi;
+
+                if (soundFont->instruments[i].env.size() == 0)
+                    inst->envelope = NULL;
+                else 
+                {
+                    inst->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->instruments[i].env.size());
+                    
+                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++) 
+                    {
+                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                    }
+                }
+                if (soundFont->instruments[i].lowNotesSound != nullptr) 
+                {
+                    inst->lowNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleFileName.c_str());
+                    inst->lowNotesSound.tuning = soundFont->instruments[i].lowNotesSound->tuning;
+                } else {
+                    inst->lowNotesSound.sample = NULL;
+                    inst->lowNotesSound.tuning = 0;
+                }
+
+                if (soundFont->instruments[i].normalNotesSound != nullptr) {
+                    inst->normalNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].normalNotesSound->sampleFileName.c_str());
+                    inst->normalNotesSound.tuning = soundFont->instruments[i].normalNotesSound->tuning;
+
+                } else {
+                    inst->normalNotesSound.sample = NULL;
+                    inst->normalNotesSound.tuning = 0;
+                }
+
+                if (soundFont->instruments[i].highNotesSound != nullptr) {
+                    inst->highNotesSound.sample =
+                        ResourceMgr_LoadAudioSample(soundFont->instruments[i].highNotesSound->sampleFileName.c_str());
+                    inst->highNotesSound.tuning = soundFont->instruments[i].highNotesSound->tuning;
+                } else {
+                    inst->highNotesSound.sample = NULL;
+                    inst->highNotesSound.tuning = 0;
+                }
+
+                soundFontC->instruments[i] = inst;
+            } else 
+            {
+                soundFontC->instruments[i] = nullptr;
+            }
+        }
+
+        soundFontC->soundEffects = (SoundFontSound*)malloc(sizeof(SoundFontSound) * soundFont->soundEffects.size());
+
+        for (int i = 0; i < soundFont->soundEffects.size(); i++)
+        {
+            soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleFileName.c_str());
+            soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
+        }
+
+        soundFont->cachedGameAsset = soundFontC;
+        return soundFontC;
+    }
 }
 
 extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
@@ -569,6 +841,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 
         for (int i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
+
 
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
@@ -812,6 +1085,71 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (s32*)res->commands.data();
+}
+
+std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
+    std::string fileName = Conf.get("SAVE").get("Save Filename");
+
+    if (fileName.empty()) {
+        Conf["SAVE"]["Save Filename"] = "oot_save.sav";
+        Conf.Save();
+    }
+    std::filesystem::path saveFile = std::filesystem::absolute(fileName);
+
+    if (!std::filesystem::exists(saveFile.parent_path())) {
+        std::filesystem::create_directories(saveFile.parent_path());
+    }
+
+    return saveFile;
+}
+
+std::filesystem::path GetSaveFile() {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    return GetSaveFile(Conf);
+}
+
+void OTRGlobals::CheckSaveFile(size_t sramSize) {
+    std::shared_ptr<Ship::ConfigFile> pConf = context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    std::filesystem::path savePath = GetSaveFile(Conf);
+    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    if (saveFile.fail()) {
+        saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
+        for (int i = 0; i < sramSize; ++i) {
+            saveFile.write("\0", 1);
+        }
+    }
+    saveFile.close();
+}
+
+extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
+extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
+/* Remember to free after use of value */
+extern "C" char* Config_getValue(char* category, char* key) {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    std::string data = Conf.get(std::string(category)).get(std::string(key));
+    char* retval = (char*)malloc(data.length()+1);
+    strcpy(retval, data.c_str());
+
+    return retval;
+}
+
+extern "C" bool Config_setValue(char* category, char* key, char* value)  {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+    Conf[std::string(category)][std::string(key)] = std::string(value);
+    return Conf.Save();
 }
 
 std::wstring StringToU16(const std::string& s) {

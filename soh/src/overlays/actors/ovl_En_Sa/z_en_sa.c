@@ -727,7 +727,12 @@ void EnSa_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->actionFunc != func_80AF68E4) {
-        this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 400.0f);
+        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 32767);
+        }
+        else {
+            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 400.0f);
+        }
     } else {
         this->alpha = 255;
     }
