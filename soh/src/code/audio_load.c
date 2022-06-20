@@ -1445,7 +1445,7 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         int seqListSize = 0;
         char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
 
-        for (int i = 0; i < seqListSize; i++)
+        for (size_t i = 0; i < seqListSize; i++)
         {
             SequenceData sDat = ResourceMgr_LoadSeqByName(seqList[i]);
 
