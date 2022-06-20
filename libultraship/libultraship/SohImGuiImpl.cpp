@@ -917,8 +917,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                     Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                    EnhancementCheckbox("No Fixed Heart Drops", "gNoFixedHearts");
-                    Tooltip("Disables non-random heart drops, but not heart placements, like from a Deku Scrub running off");
+                    EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
+                    Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off");
                     ImGui::EndMenu();
                 }
 
