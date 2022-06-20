@@ -7,6 +7,7 @@
 #include <bit>
 #include <map>
 #include <string>
+#include <Cvar.h>
 
 extern "C" {
 #include <z64.h>
@@ -483,7 +484,7 @@ std::map<u16, const char*> actorDescriptions = {
 };
 
 const std::string GetActorDescription(u16 id) {
-    return actorDescriptions[id];
+    return actorDescriptions[id] != NULL ? actorDescriptions[id] : "???";
 }
 
 template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
@@ -530,6 +531,7 @@ void PopulateActorDropdown(int i, std::vector<Actor*>& data) {
 
 void DrawActorViewer(bool& open) {
     if (!open) {
+        CVar_SetS32("gActorViewerEnabled", 0);
         return;
     }
 
@@ -559,7 +561,6 @@ void DrawActorViewer(bool& open) {
             display = empty;
             fetch = nullptr;
             dispOverlay = nullptr;
-            newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             actor = category = 0;
             filler = "Please Select";
             list.clear();
@@ -696,6 +697,7 @@ void DrawActorViewer(bool& open) {
         if (ImGui::TreeNode("New...")) {
             ImGui::PushItemWidth(ImGui::GetFontSize() * 10);
 
+            ImGui::Text(GetActorDescription(newActor.id).c_str());
             ImGui::InputScalar("ID", ImGuiDataType_S16, &newActor.id, &one);
             ImGui::InputScalar("params", ImGuiDataType_S16, &newActor.params, &one);
 
@@ -728,17 +730,30 @@ void DrawActorViewer(bool& open) {
             }
 
             if (ImGui::Button("Spawn")) {
-                Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, newActor.id, newActor.pos.x, newActor.pos.y,
-                            newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
+                if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX && gActorOverlayTable[newActor.id].initInfo != NULL) {
+                    Actor_Spawn(&gGlobalCtx->actorCtx, gGlobalCtx, newActor.id, newActor.pos.x, newActor.pos.y,
+                                newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z, newActor.params);
+                } else {
+                    func_80078884(NA_SE_SY_ERROR);
+                }
             }
 
             if (ImGui::Button("Spawn as Child")) {
                 Actor* parent = &display;
                 if (parent != NULL) {
-                    Actor_SpawnAsChild(&gGlobalCtx->actorCtx, parent, gGlobalCtx, newActor.id, newActor.pos.x,
-                                       newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y, newActor.rot.z,
-                                       newActor.params);
+                    if (newActor.id >= 0 && newActor.id < ACTOR_ID_MAX &&
+                        gActorOverlayTable[newActor.id].initInfo != NULL) {
+                        Actor_SpawnAsChild(&gGlobalCtx->actorCtx, parent, gGlobalCtx, newActor.id, newActor.pos.x,
+                                           newActor.pos.y, newActor.pos.z, newActor.rot.x, newActor.rot.y,
+                                           newActor.rot.z, newActor.params);
+                    } else {
+                        func_80078884(NA_SE_SY_ERROR);                    
+                    }
                 }
+            }
+
+            if (ImGui::Button("Reset")) {
+                newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             }
 
             ImGui::TreePop();
@@ -748,7 +763,6 @@ void DrawActorViewer(bool& open) {
         if (needs_reset) {
             fetch = nullptr;
             dispOverlay = nullptr;
-            newActor = { 0, 0, { 0, 0, 0 }, { 0, 0, 0 } };
             actor = category = 0;
             filler = "Please Select";
             list.clear();
