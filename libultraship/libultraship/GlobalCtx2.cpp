@@ -86,4 +86,25 @@ namespace Ship {
             std::cout << "Log initialization failed: " << ex.what() << std::endl;
         }
     }
+
+    void GlobalCtx2::WriteSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+        std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+        saveFile.seekp(addr);
+        saveFile.write((char*)dramAddr, size);
+        saveFile.close();
+    }
+
+    void GlobalCtx2::ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+        std::ifstream saveFile = std::ifstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+
+        // If the file doesn't exist, initialize DRAM
+        if (saveFile.good()) {
+            saveFile.seekg(addr);
+            saveFile.read((char*)dramAddr, size);
+        } else {
+            memset(dramAddr, 0, size);
+        }
+
+        saveFile.close();
+    }
 }

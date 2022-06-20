@@ -20,7 +20,7 @@ public:
     ~OTRGlobals();
 
 private:
-
+	void CheckSaveFile(size_t sramSize);
 };
 #endif
 
@@ -47,11 +47,17 @@ Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
 Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
+
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
 SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
 SequenceData ResourceMgr_LoadSeqByName(const char* path);
 SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
+void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+char* Config_getValue(char* category, char* key);
+bool Config_setValue(char* category, char* key, char* value);
+
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);

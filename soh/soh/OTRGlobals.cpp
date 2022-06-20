@@ -1,6 +1,7 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <filesystem>
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
@@ -46,6 +47,7 @@ OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
+    CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {
@@ -840,6 +842,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         for (int i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
 
+
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
         for (int i = 0; i < res->rotationIndices.size(); i++) {
@@ -1082,6 +1085,71 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
 {
     auto res = std::static_pointer_cast<Ship::Cutscene>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
     return (s32*)res->commands.data();
+}
+
+std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
+    std::string fileName = Conf.get("SAVE").get("Save Filename");
+
+    if (fileName.empty()) {
+        Conf["SAVE"]["Save Filename"] = "oot_save.sav";
+        Conf.Save();
+    }
+    std::filesystem::path saveFile = std::filesystem::absolute(fileName);
+
+    if (!std::filesystem::exists(saveFile.parent_path())) {
+        std::filesystem::create_directories(saveFile.parent_path());
+    }
+
+    return saveFile;
+}
+
+std::filesystem::path GetSaveFile() {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    return GetSaveFile(Conf);
+}
+
+void OTRGlobals::CheckSaveFile(size_t sramSize) {
+    std::shared_ptr<Ship::ConfigFile> pConf = context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    std::filesystem::path savePath = GetSaveFile(Conf);
+    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    if (saveFile.fail()) {
+        saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
+        for (int i = 0; i < sramSize; ++i) {
+            saveFile.write("\0", 1);
+        }
+    }
+    saveFile.close();
+}
+
+extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
+extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
+/* Remember to free after use of value */
+extern "C" char* Config_getValue(char* category, char* key) {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+
+    std::string data = Conf.get(std::string(category)).get(std::string(key));
+    char* retval = (char*)malloc(data.length()+1);
+    strcpy(retval, data.c_str());
+
+    return retval;
+}
+
+extern "C" bool Config_setValue(char* category, char* key, char* value)  {
+    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
+    Ship::ConfigFile& Conf = *pConf.get();
+    Conf[std::string(category)][std::string(key)] = std::string(value);
+    return Conf.Save();
 }
 
 std::wstring StringToU16(const std::string& s) {
