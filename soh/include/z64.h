@@ -32,9 +32,6 @@
 
 #if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
 #define _SOH64
-#define AUDIO_HEAP_SIZE 0x3800000
-#else
-#define AUDIO_HEAP_SIZE 0x3800000
 #endif
 
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
