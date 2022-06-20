@@ -85,6 +85,9 @@
     <Filter Include="Source Files\soh\Lib">
       <UniqueIdentifier>{dbcf07c4-80b1-4c88-ac54-2bbdd8f53ee4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\soh\Lib\nlohmann">
+      <UniqueIdentifier>{9c880c8e-492b-48f6-b230-1fd269ea74b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -2202,6 +2205,9 @@
     <ClCompile Include="soh\Enhancements\savestates.cpp">
       <Filter>Source Files\soh\Enhancements</Filter>
     </ClCompile>
+    <ClCompile Include="soh\SaveManager.cpp">
+      <Filter>Source Files\soh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -3768,6 +3774,12 @@
       <Filter>Source Files\soh\Enhancements</Filter>
     </ClInclude>
     <ClInclude Include="soh\OTRAudio.h">
+      <Filter>Source Files\soh</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Lib\nlohmann\json.hpp">
+      <Filter>Source Files\soh\Lib\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\SaveManager.h">
       <Filter>Source Files\soh</Filter>
     </ClInclude>
   </ItemGroup>

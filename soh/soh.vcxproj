@@ -186,6 +186,7 @@
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
+    <ClCompile Include="soh\SaveManager.cpp" />
     <ClCompile Include="soh\stubs.c" />
     <ClCompile Include="soh\util.cpp" />
     <ClCompile Include="soh\z_message_OTR.cpp" />
@@ -935,8 +936,10 @@
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
+    <ClInclude Include="soh\Lib\nlohmann\json.hpp" />
     <ClInclude Include="soh\OTRAudio.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
+    <ClInclude Include="soh\SaveManager.h" />
     <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />
