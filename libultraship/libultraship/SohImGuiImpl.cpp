@@ -901,6 +901,8 @@ namespace SohImGui {
                     Tooltip("Disables the voice audio when Navi calls you");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
                     Tooltip("Kick open every chest");
+                    EnhancementCheckbox("Fast Drops", "gFastDrops");
+                    Tooltip("Skip first-time pickup messages for consumable items");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
