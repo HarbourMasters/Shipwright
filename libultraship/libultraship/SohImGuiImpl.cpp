@@ -915,6 +915,10 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
+                    EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
+                    Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                    EnhancementCheckbox("No Fixed Heart Drops", "gNoFixedHearts");
+                    Tooltip("Disables non-random heart drops, but not heart placements, like from a Deku Scrub running off");
                     ImGui::EndMenu();
                 }
 
