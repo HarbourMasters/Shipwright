@@ -1,10 +1,8 @@
 #include "z_kaleido_scope.h"
 #include "z_kaleido_progress.h"
 #include "SohHooks.h"
-#include "textures/parameter_static/parameter_static.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
-
 #include "textures/title_static/title_static.h"
 #include "textures/place_title_cards/g_pn_01.h" // Forest Temple Title card
 #include "textures/place_title_cards/g_pn_02.h" // Shadow Temple Title card
@@ -21,36 +19,33 @@
 #include "textures/place_title_cards/g_pn_54.h" // Bottom of the well Title card
 /**
  * Textures
+ * Colors of the menu will be later on managed with Cosmetic Editor,
+ * Without that update I made a default color
  */
 //Background menu Top
-Kaleido_sprites Background_Win1_Kspr = { gFileSelWindow1Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win2_Kspr = { gFileSelWindow2Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win3_Kspr = { gFileSelWindow3Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win4_Kspr = { gFileSelWindow4Tex, 48, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
+Kaleido_sprites Background_Win1_Kspr = { gPauseSave00Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win2_Kspr = { gPauseGameOver10Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win3_Kspr = { gPauseSave20Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
 
 //Background middle top
-Kaleido_sprites Background_Win5_Kspr = { gFileSelWindow5Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win6_Kspr = { gFileSelWindow6Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win7_Kspr = { gFileSelWindow7Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win8_Kspr = { gFileSelWindow8Tex, 48, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
+Kaleido_sprites Background_Win4_Kspr = { gPauseSave01Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win5_Kspr = { gPauseSave11Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win6_Kspr = { gPauseSave21Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
 
 //Background middle middle
-Kaleido_sprites Background_Win9_Kspr = { gFileSelWindow9Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win10_Kspr = { gFileSelWindow10Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win11_Kspr = { gFileSelWindow11Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win12_Kspr = { gFileSelWindow12Tex, 48, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
+Kaleido_sprites Background_Win7_Kspr = { gPauseSave02Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win8_Kspr = { gPauseSave12Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win9_Kspr = { gPauseSave22Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
 
 //Background middle bottom
-Kaleido_sprites Background_Win13_Kspr = { gFileSelWindow13Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win14_Kspr = { gFileSelWindow14Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win15_Kspr = { gFileSelWindow15Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win16_Kspr = { gFileSelWindow16Tex, 48, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
+Kaleido_sprites Background_Win10_Kspr = { gPauseSave03Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win11_Kspr = { gPauseSave13Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win12_Kspr = { gPauseSave23Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
 
 //Background bottom
-Kaleido_sprites Background_Win17_Kspr = { gFileSelWindow17Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win18_Kspr = { gFileSelWindow18Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win19_Kspr = { gFileSelWindow19Tex, 64, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
-Kaleido_sprites Background_Win20_Kspr = { gFileSelWindow20Tex, 48, 32, 1.35f, 1.35f, G_IM_FMT_IA, { 100,150,255,150 }, false };
+Kaleido_sprites Background_Win13_Kspr = { gPauseSave04Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win14_Kspr = { gPauseSave14Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
+Kaleido_sprites Background_Win15_Kspr = { gPauseSave24Tex, 80, 32, 1.3f, 1.3f, G_IM_FMT_IA, { 100,150,255,255 }, false };
 
 //Dungeon stuffs like bosses keys, maps compass etc.
 Kaleido_sprites BossKey_Kspr = { gBossKeyIconTex, 24, 24, 0.5f, 0.5f, G_IM_FMT_RGBA, { 255,255,255,255 }, false };
@@ -159,11 +154,8 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 alpha = sprite->color.a;
 
-    s16 Size_W = BG_KAL_PROG_W; //Used to ajust script to the last image.
-    s16 Size_H = BG_KAL_PROG_H;
-    if(col == 3) {
-        Size_W = BG_KAL_PROG_W_L;
-    }
+    s16 Size_W = sprite->width; //Used to ajust script to the last image.
+    s16 Size_H = sprite->height;
 
     int height = Size_H * sprite->scale_h;
     int width = Size_W * sprite->scale_w;
@@ -177,14 +169,10 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
 
     s16 AjustXPos = width + (width * col);
     s16 AjustYPos = height + (height * line);
-    if(col == 3) {
-        AjustXPos = (BG_KAL_PROG_W*sprite->scale_w)+(BG_KAL_PROG_W * col) + (((BG_KAL_PROG_W-BG_KAL_PROG_W_L) * sprite->scale_w)*col+1);
-    }
-
     s16 PosX = MENU_POS_X + AjustXPos;
     s16 PosY = MENU_POS_Y + AjustYPos;
 
-    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_16b, Size_W, BG_KAL_PROG_H, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+    gDPLoadTextureBlock(POLY_KAL_DISP++, sprite->tex, sprite->im_fmt, G_IM_SIZ_8b, Size_W, Size_H, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     gSPWideTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
     
     gsSPGrayscale(POLY_KAL_DISP++, false);
@@ -240,31 +228,27 @@ void KaleidoScope_BackgroundDraw(GlobalContext* globalCtx){
     MenuBackground_Draw(globalCtx,&Background_Win1_Kspr,0,0);
     MenuBackground_Draw(globalCtx,&Background_Win2_Kspr,0,1);
     MenuBackground_Draw(globalCtx,&Background_Win3_Kspr,0,2);
-    MenuBackground_Draw(globalCtx,&Background_Win4_Kspr,0,3);
+    //MenuBackground_Draw(globalCtx,&Background_Win4_Kspr,0,3);
 
     //Middle top line
-    MenuBackground_Draw(globalCtx,&Background_Win5_Kspr,1,0);
-    MenuBackground_Draw(globalCtx,&Background_Win6_Kspr,1,1);
-    MenuBackground_Draw(globalCtx,&Background_Win7_Kspr,1,2);
-    MenuBackground_Draw(globalCtx,&Background_Win8_Kspr,1,3);
+    MenuBackground_Draw(globalCtx,&Background_Win4_Kspr,1,0);
+    MenuBackground_Draw(globalCtx,&Background_Win5_Kspr,1,1);
+    MenuBackground_Draw(globalCtx,&Background_Win6_Kspr,1,2);
 
     //Middle ... middle line
-    MenuBackground_Draw(globalCtx,&Background_Win9_Kspr,2,0);
-    MenuBackground_Draw(globalCtx,&Background_Win10_Kspr,2,1);
-    MenuBackground_Draw(globalCtx,&Background_Win11_Kspr,2,2);
-    MenuBackground_Draw(globalCtx,&Background_Win12_Kspr,2,3);
+    MenuBackground_Draw(globalCtx,&Background_Win7_Kspr,2,0);
+    MenuBackground_Draw(globalCtx,&Background_Win8_Kspr,2,1);
+    MenuBackground_Draw(globalCtx,&Background_Win9_Kspr,2,2);
 
     //Middle bottom line
-    MenuBackground_Draw(globalCtx,&Background_Win13_Kspr,3,0);
-    MenuBackground_Draw(globalCtx,&Background_Win14_Kspr,3,1);
-    MenuBackground_Draw(globalCtx,&Background_Win15_Kspr,3,2);
-    MenuBackground_Draw(globalCtx,&Background_Win16_Kspr,3,3);
+    MenuBackground_Draw(globalCtx,&Background_Win10_Kspr,3,0);
+    MenuBackground_Draw(globalCtx,&Background_Win11_Kspr,3,1);
+    MenuBackground_Draw(globalCtx,&Background_Win12_Kspr,3,2);
 
     //Bottom line
-    MenuBackground_Draw(globalCtx,&Background_Win17_Kspr,4,0);
-    MenuBackground_Draw(globalCtx,&Background_Win18_Kspr,4,1);
-    MenuBackground_Draw(globalCtx,&Background_Win19_Kspr,4,2);
-    MenuBackground_Draw(globalCtx,&Background_Win20_Kspr,4,3);
+    MenuBackground_Draw(globalCtx,&Background_Win13_Kspr,4,0);
+    MenuBackground_Draw(globalCtx,&Background_Win14_Kspr,4,1);
+    MenuBackground_Draw(globalCtx,&Background_Win15_Kspr,4,2);
 
     gDPPipeSync(POLY_KAL_DISP++);
     CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
