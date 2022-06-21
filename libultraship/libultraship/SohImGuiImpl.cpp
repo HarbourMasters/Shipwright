@@ -854,9 +854,9 @@ namespace SohImGui {
                     }
 
                     Tooltip("When Interpolation FPS setting is at least this threshold,\n"
-                            "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
-                            "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                            "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
+                        "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
+                        "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
                 }
 
                 EXPERIMENTAL();
@@ -884,6 +884,12 @@ namespace SohImGui {
                     EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
                     Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                     EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
+                    EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
+                    Tooltip("Modifies all sources of damage not affected by other sliders");
+                    EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
+                    Tooltip("Modifies all fall damage");
+                    EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
+                    Tooltip("Modifies all void out damage");
 
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
@@ -921,11 +927,16 @@ namespace SohImGui {
                     Tooltip("Prevent forced Navi conversations");
                     EnhancementCheckbox("Fast Chests", "gFastChests");
                     Tooltip("Kick open every chest");
+                    EnhancementCheckbox("Fast Drops", "gFastDrops");
+                    Tooltip("Skip first-time pickup messages for consumable items");
                     EnhancementCheckbox("Better Owl", "gBetterOwl");
                     Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
+                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
                     EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                     Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
                     ImGui::EndMenu();
@@ -1002,6 +1013,8 @@ namespace SohImGui {
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
+                    EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
 
                     ImGui::EndMenu();
                 }
@@ -1066,7 +1079,7 @@ namespace SohImGui {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance\nNeeds to reload the map to take effect");
+                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
                 }
 
                 ImGui::EndMenu();

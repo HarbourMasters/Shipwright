@@ -1211,7 +1211,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         gSP1Quadrangle(POLY_OPA_DISP++, 0, 2, 3, 1, 0);
 
         // draw file name box
-
         if (CVar_GetS32("gHudColors", 1) == 2) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
                             CVar_GetS32("gCCFileChoosePrimB", 255), this->nameBoxAlpha[i]);
@@ -1226,7 +1225,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
 
         // draw disk label for 64DD
         if (Save_GetSaveMetaInfo(i)->randoSave) {
-
             if (CVar_GetS32("gHudColors", 1) == 2) {
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 0),
                                 CVar_GetS32("gCCFileChoosePrimG", 200), CVar_GetS32("gCCFileChoosePrimB", 255),
@@ -1243,7 +1241,6 @@ void FileChoose_DrawWindowContents(GameState* thisx) {
         }
 
         // draw connectors
-
         if (CVar_GetS32("gHudColors", 1) == 2) {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChoosePrimR", 100), CVar_GetS32("gCCFileChoosePrimG", 150),
                             CVar_GetS32("gCCFileChoosePrimB", 255), this->connectorAlpha[i]);
@@ -1900,6 +1897,52 @@ void FileChoose_Main(GameState* thisx) {
     this->stickRelX = input->rel.stick_x;
     this->stickRelY = input->rel.stick_y;
 
+    if (CVar_GetS32("gDpadHoldChange", 1) && CVar_GetS32("gDpadPauseName", 0)) {
+        if (CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) {
+            if (CHECK_BTN_ALL(input->press.button, BTN_DLEFT)) {
+                this->inputTimerX = 10;
+                this->stickXDir = -1;
+            } else if (--(this->inputTimerX) < 0) {
+                this->inputTimerX = XREG(6);
+                input->press.button |= BTN_DLEFT;
+            }
+        } else if (CHECK_BTN_ALL(input->rel.button, BTN_DLEFT)) {
+            this->stickXDir = 0;
+        } else if (CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) {
+            if (CHECK_BTN_ALL(input->press.button, BTN_DRIGHT)) {
+                this->inputTimerX = 10;
+                this->stickXDir = 1;
+            } else if (--(this->inputTimerX) < 0) {
+                this->inputTimerX = XREG(6);
+                input->press.button |= BTN_DRIGHT;
+            }
+        } else if (CHECK_BTN_ALL(input->rel.button, BTN_DRIGHT)) {
+            this->stickXDir = 0;
+        }
+
+        if (CHECK_BTN_ALL(input->cur.button, BTN_DDOWN)) {
+            if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {
+                this->inputTimerY = 10;
+                this->stickYDir = -1;
+            } else if (--(this->inputTimerY) < 0) {
+                this->inputTimerY = XREG(6);
+                input->press.button |= BTN_DDOWN;
+            }
+        } else if (CHECK_BTN_ALL(input->rel.button, BTN_DDOWN)) {
+            this->stickYDir = 0;
+        } else if (CHECK_BTN_ALL(input->cur.button, BTN_DUP)) {
+            if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
+                this->inputTimerY = 10;
+                this->stickYDir = -1;
+            } else if (--(this->inputTimerY) < 0) {
+                this->inputTimerY = XREG(6);
+                input->press.button |= BTN_DUP;
+            }
+        } else if (CHECK_BTN_ALL(input->rel.button, BTN_DUP)) {
+            this->stickYDir = 0;
+        }
+    }
+
     if (this->stickRelX < -30) {
         if (this->stickXDir == -1) {
             this->inputTimerX--;
@@ -1930,7 +1973,7 @@ void FileChoose_Main(GameState* thisx) {
 
     if (this->stickRelY < -30) {
         if (this->stickYDir == -1) {
-            this->inputTimerY -= 1;
+            this->inputTimerY--;
             if (this->inputTimerY < 0) {
                 this->inputTimerY = 2;
             } else {
@@ -1942,7 +1985,7 @@ void FileChoose_Main(GameState* thisx) {
         }
     } else if (this->stickRelY > 30) {
         if (this->stickYDir == 1) {
-            this->inputTimerY -= 1;
+            this->inputTimerY--;
             if (this->inputTimerY < 0) {
                 this->inputTimerY = 2;
             } else {

@@ -954,7 +954,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
 
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
     if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
-        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DLEFT))) {
+        if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 0);
@@ -963,7 +963,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
             pauseCtx->pageSwitchTimer = -1;
         }
     } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
-        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DRIGHT))) {
+        if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
                 KaleidoScope_SwitchPage(pauseCtx, 2);

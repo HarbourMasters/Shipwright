@@ -1053,7 +1053,7 @@ void func_80A98CD8(EnKo* this) {
     this->actor.targetMode = info->targetMode;
     this->lookDist = info->lookDist;
     this->lookDist += this->collider.dim.radius;
-    this->appearDist = CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0 ? 32767 : info->appearDist;
+    this->appearDist = info->appearDist;
 }
 
 // Used to fetch actor animation?
@@ -1080,7 +1080,15 @@ void func_80A98DB4(EnKo* this, GlobalContext* globalCtx) {
         dist = this->actor.xzDistToPlayer;
     }
 
-    Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        this->appearDist = 32767.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+        f32 test = this->appearDist;
+    } else {
+        this->appearDist = 180.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    }
+    
     if (this->modelAlpha < 10.0f) {
         this->actor.flags &= ~ACTOR_FLAG_0;
     } else {

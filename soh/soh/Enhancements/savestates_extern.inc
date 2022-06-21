@@ -200,6 +200,9 @@ extern "C" s16 sPlayerInitialPosX;
 extern "C" s16 sPlayerInitialPosZ;
 extern "C" s16 sPlayerInitialDirection;
 
+// z_en_heishi1
+extern "C" s32 sHeishi1PlayerIsCaught;
+
 // code_800EC960
 // Related to ocarina
 extern "C" u8 sOcarinaInpEnabled;
