@@ -1428,7 +1428,8 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if ((item >= ITEM_SWORD_KOKIRI) && (item <= ITEM_SWORD_BGS)) {
         gSaveContext.inventory.equipment |= gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD];
-        if (CVar_GetS32("gAutoEquips", 0)) {
+        if (CVar_GetS32("gAutoEquips", 0) && ((gItemAgeReqs[item] == 9) ||
+            (gItemAgeReqs[item] == gSaveContext.linkAge) || CVar_GetS32("gNoRestrictAge", 0))) {
             gSaveContext.equips.buttonItems[0] = item;
             Inventory_ChangeEquipment(EQUIP_SWORD, item - ITEM_SWORD_KOKIRI + 1);
             Interface_LoadItemIcon1(globalCtx, 0);
@@ -1454,14 +1455,16 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]);
-        if (CVar_GetS32("gAutoEquips", 0)) {
+        if (CVar_GetS32("gAutoEquips", 0) && ((gItemAgeReqs[item] == 9) ||
+            (gItemAgeReqs[item] == gSaveContext.linkAge) || CVar_GetS32("gNoRestrictAge", 0))) {
             Inventory_ChangeEquipment(EQUIP_SHIELD, item - ITEM_SHIELD_DEKU + 1);
             Player_SetEquipmentData(globalCtx, player);
         }
         return ITEM_NONE;
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]);
-        if (CVar_GetS32("gAutoEquips", 0)) {
+        if (CVar_GetS32("gAutoEquips", 0) && ((gItemAgeReqs[item] == 9) ||
+            (gItemAgeReqs[item] == gSaveContext.linkAge) || CVar_GetS32("gNoRestrictAge", 0))) {
             Inventory_ChangeEquipment(EQUIP_TUNIC, item - ITEM_TUNIC_KOKIRI + 1);
             Player_SetEquipmentData(globalCtx, player);
         }
