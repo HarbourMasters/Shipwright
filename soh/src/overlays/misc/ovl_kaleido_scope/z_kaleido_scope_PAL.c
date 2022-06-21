@@ -1820,7 +1820,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) {
                 POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
             }
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
+
         }
 
         if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gDebugEnabled", 0) != 0) {
@@ -1903,7 +1903,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             gDPPipeSync(POLY_KAL_DISP++);
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
-POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSaveContext.language],
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSaveContext.language],
                                                         D_8082ADE0[gSaveContext.language], 16, 4);
         } else if (pauseCtx->cursorSpecialPos != 0) {
             if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
@@ -1951,13 +1951,16 @@ POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSa
                 } else if (CVar_GetS32("gHudColors", 1) == 2) {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
                 }
-                gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                if (gSaveContext.inventory.items[pauseCtx->cursorSlot[PAUSE_ITEM]] != ITEM_NONE) {
+                    //gSPDisplayList(POLY_KAL_DISP++, gCButtonIconsDL); //Same reason for every A button, to be able to recolor them.
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, 48, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
-                                                            D_8082ADD8[gSaveContext.language], 16, 4);
+                    gDPPipeSync(POLY_KAL_DISP++);
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
+                                                                D_8082ADD8[gSaveContext.language], 16, 4);
+                }
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
             } else if ((pauseCtx->pageIndex == PAUSE_QUEST) && (pauseCtx->cursorSlot[PAUSE_QUEST] >= 6) &&
@@ -2020,9 +2023,9 @@ POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSa
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                if (!(CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) && (pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
+                 if (!(CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) && (pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
                     return;
-                }
+                 }
 
                 //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
                 if (CVar_GetS32("gHudColors", 1) == 0) {//To equip A button
@@ -3786,17 +3789,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_SaveSceneFlags(globalCtx);
                             gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            if (gSaveContext.temporaryWeapon) {
-                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
-                                player->currentSwordItem = ITEM_NONE;
-                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
-                                Save_SaveFile();
-                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
-                                player->currentSwordItem = ITEM_SWORD_KOKIRI;
-                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
-                            } else {
-                                Save_SaveFile();
-                            }
+                            Save_SaveFile();
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }
