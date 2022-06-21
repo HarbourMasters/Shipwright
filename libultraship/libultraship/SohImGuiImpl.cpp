@@ -919,6 +919,8 @@ namespace SohImGui {
                     Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                     EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                     Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off");
+                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
                     ImGui::EndMenu();
                 }
 
@@ -993,6 +995,8 @@ namespace SohImGui {
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
+                    EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
 
                     ImGui::EndMenu();
                 }
