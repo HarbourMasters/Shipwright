@@ -1663,9 +1663,23 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             // rando hints at altar
             msgCtx->msgLength = font->msgLength = CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
         } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-            strcpy(font->msgBuf, "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
-                                 "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
-
+            switch (gSaveContext.language) {
+                case LANGUAGE_FRA:
+                    strcpy(font->msgBuf, "\x08\x13\x71Vous obtenez un \x05\x41Symbole de\x01Skulltula d'or\x05\x40! "
+                                         "Vous avez\x01\collect\x96 "
+                                         "\x05\x41\x19\x05\x40 symboles en tout!\x02");
+                    break;
+                case LANGUAGE_GER:
+                    strcpy(font->msgBuf, "\x08\x13\x71\Du erh\x93lst ein \x05\x41Goldene\x01Skulltula-Symbol\x05\x40\! "
+                                         "Du hast\x01insgesamt "
+                                         "\x05\x41\x19\x05\x40 symbol gesammelt!\x02");
+                        break;
+                    case LANGUAGE_ENG: default:
+                        strcpy(font->msgBuf,
+                               "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                               "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
+                        break;
+            }
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
             msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
