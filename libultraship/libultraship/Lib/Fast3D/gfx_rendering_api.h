@@ -54,6 +54,11 @@ struct GfxRenderingAPI {
     void (*delete_texture)(uint32_t texID);
     void (*set_texture_filter)(FilteringMode mode);
     FilteringMode(*get_texture_filter)(void);
+
+	
+    void (*select_compressed_texture)(uint32_t tile, uint32_t mipMapCount, uint32_t texture_id);
+    void (*upload_compressed_texture)(uint32_t level, uint32_t format, const uint8_t* rgba32_buf, uint32_t width, uint32_t height, uint32_t imageSize);
+    void (*finish_compressed_texture)(uint32_t mCount);
 };
 
 #endif
