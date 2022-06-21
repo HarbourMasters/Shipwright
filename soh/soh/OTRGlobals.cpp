@@ -1298,28 +1298,28 @@ extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBu
     std::string str;
 
     if (src == NULL) {
-        int32_t language = CVar_GetS32("gLanguages", 0);
-        if (language == 2) {
+        if (gSaveContext.language == LANGUAGE_FRA) {
             // French
             str = prefix +
-                                "\x13\x71Vous venez de d\x96truire une\x01\x05\x41Skulltula d'or\x05\x40! "
-                                "Vous avez\x01\x05\x41\x19\x05\x40 jetons au total!" +
-                                postfix;
-        } else if (language == 1) {
+                  "\x13\x71"
+                  "Vous obtenez un \x05\x41Symbole de\x01Skulltula d'or\x05\x40! Vous avez\x01\collect\x96 "
+                  "\x05\x41\x19\x05\x40 symboles en tout!" +
+                  postfix;
+        } else if (gSaveContext.language == LANGUAGE_GER) {
             // German
             str = prefix +
-                                "\x13\x71"
-                                "Du erh\x93lst ein \x05\x41Skulltula-Symbol\x05\x40!\x01"
-                                "Insgesamt hast du \x05\x41\x19\x05\x40\x01Skulltula-Symbole gesammelt!" +
-                                postfix;
+                  "\x13\x71"
+                  "Du hast eine \x05\x41Goldene Skulltula\x01\erhalten\x05\x40! Du hast insgesamt\x01"
+                  "\x05\x41\x19\x05\x40 symbole gesammelt!" +
+                  postfix;
         } else {
             // English
             str = prefix +
-                                "\x13\x71"
-                                "You got a \x05\x41"
-                                "Gold Skulltula Token\x05\x40!\x01You've collected "
-                                "\x05\x41\x19\x05\x40 tokens\x01in total!" +
-                                postfix;
+                  "\x13\x71"
+                  "You got a \x05\x41"
+                  "Gold Skulltula Token\x05\x40!\x01You've collected "
+                  "\x05\x41\x19\x05\x40 tokens\x01in total!" +
+                  postfix;
         }
     } else {
         std::string FixedBaseStr(src);

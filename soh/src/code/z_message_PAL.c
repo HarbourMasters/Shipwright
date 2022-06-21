@@ -1625,7 +1625,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, "../z_message_PAL.c", 1954);
-    } else if (textId == 0xB4 || textId == 0xB5) {
+    } else if (textId == 0xB4) {
         char* msgBase = NULL;
         Message_FindMessage(globalCtx, textId);
         if (CVar_GetS32("gInjectSkulltulaCount", 0) == 0)
