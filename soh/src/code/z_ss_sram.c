@@ -58,38 +58,13 @@ void SsSram_Dma(void* dramAddr, size_t size, s32 direction) {
 
 void SsSram_ReadWrite(uintptr_t addr, void* dramAddr, size_t size, s32 direction) {
     osSyncPrintf("ssSRAMReadWrite:%08x %08x %08x %d\n", addr, (uintptr_t)dramAddr, size, direction);
-    //Check to see if the file exists
-    FILE* saveFile;
-    saveFile = fopen("oot_save.sav", "rb");
-
-    if (saveFile == NULL) {
-
-        saveFile = fopen("oot_save.sav", "wb");
-        fseek(saveFile, 0, SEEK_SET);
-        assert(saveFile != NULL); // OTRTODO LOG
-        uint8_t zero = 0;
-
-        for (uint32_t i = 0; i < SRAM_SIZE; i++) {
-            fwrite(&zero, 1, 1, saveFile);
-        }
-        fclose(saveFile);
-    } else {
-        fclose(saveFile);
-    }
+    
     switch (direction) { 
         case OS_WRITE: {
-            saveFile = fopen("oot_save.sav", "r+b");
-            rewind(saveFile);
-            fseek(saveFile, addr, SEEK_SET);
-            fwrite(dramAddr, size, 1, saveFile);
-            fclose(saveFile);
+            Ctx_WriteSaveFile(addr, dramAddr, size);
         } break;
         case OS_READ: {
-            saveFile = fopen("oot_save.sav", "rb+");
-            rewind(saveFile);
-            fseek(saveFile, addr, SEEK_SET);
-            fread(dramAddr, size, 1, saveFile);
-            fclose(saveFile);
+            Ctx_ReadSaveFile(addr, dramAddr, size);
         } break;
     }
     //SsSram_Init(addr, DEVICE_TYPE_SRAM, PI_DOMAIN2, 5, 0xD, 2, 0xC, 0);
