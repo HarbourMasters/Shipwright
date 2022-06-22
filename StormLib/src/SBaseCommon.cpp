@@ -959,7 +959,7 @@ ULONGLONG FindFreeMpqSpace(TMPQArchive * ha)
 
     //static TFileEntry* furthestFile = nullptr;
     //TFileEntry* startEntry = furthestFile == nullptr ? ha->pFileTable : furthestFile;
-    
+
     TFileEntry* startEntry = (ha->useFreeSpaceOptimization && ha->lastFreeSpaceEntry != nullptr) ? ha->lastFreeSpaceEntry : ha->pFileTable;
 
     // Parse the entire block table

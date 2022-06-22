@@ -17,7 +17,7 @@ pipeline {
                         MSBUILD='C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\msbuild.exe'
                         CONFIG='Release'
                         OTRPLATFORM='x64'
-                        PLATFORM='x86'
+                        PLATFORM='x64'
                         ZIP='C:\\Program Files\\7-Zip\\7z.exe'
                         PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
                         CMAKE='C:\\Program Files\\CMake\\bin\\cmake.exe'
@@ -57,7 +57,7 @@ pipeline {
                             
                             cd "..\\..\\"
                             
-                            move "soh\\Release\\soh.exe" ".\\"
+                            move "soh\\x64\\Release\\soh.exe" ".\\"
                             move "OTRGui\\build\\assets" ".\\"
                             move ".\\OTRExporter\\x64\\Release\\ZAPD.exe" ".\\assets\\extractor\\"
                             move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
@@ -106,7 +106,6 @@ pipeline {
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md build/readme.txt
                             cd build
-
                             7z a soh-linux.7z soh.elf OTRGui assets readme.txt
                             mv soh-linux.7z ../
                             

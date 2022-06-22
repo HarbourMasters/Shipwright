@@ -3216,11 +3216,11 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
     GameOverContext* gameOverCtx = &globalCtx->gameOverCtx;
     Player* player = GET_PLAYER(globalCtx);
     Input* input = &globalCtx->state.input[0];
-    size_t size;
-    size_t size0;
-    size_t size1;
-    size_t size2;
-    u16 i;
+    size_t size = 0;
+    size_t size0 = 0;
+    size_t size1 = 0;
+    size_t size2 = 0;
+    u16 i = 0;
     s16 stepR;
     s16 stepG;
     s16 stepB;
@@ -3283,7 +3283,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             //DmaMgr_SendRequest1(pauseCtx->iconItem24Segment, (uintptr_t)_icon_item_24_staticSegmentRomStart, size,
                                 //"../z_kaleido_scope_PAL.c", 3675);
 
-            pauseCtx->iconItemAltSegment = (void*)(((uintptr_t)pauseCtx->iconItem24Segment + size + 0xF) & ~0xF);
+            //pauseCtx->iconItemAltSegment = (void*)(((uintptr_t)pauseCtx->iconItem24Segment + size + 0xF) & ~0xF);
 #endif
 
             switch (globalCtx->sceneNum) {
@@ -3331,7 +3331,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
             // OTRTODO: LANGUAGE SUPPORT
 #if 1
-            pauseCtx->iconItemLangSegment = (void*)(((uintptr_t)pauseCtx->iconItemAltSegment + size2 + 0xF) & ~0xF);
+            //pauseCtx->iconItemLangSegment = (void*)(((uintptr_t)pauseCtx->iconItemAltSegment + size2 + 0xF) & ~0xF);
 
             if (gSaveContext.language == LANGUAGE_ENG) {
                 //size = (uintptr_t)_icon_item_nes_staticSegmentRomEnd - (uintptr_t)_icon_item_nes_staticSegmentRomStart;

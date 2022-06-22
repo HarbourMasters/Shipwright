@@ -4000,9 +4000,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\macro.inc">
-      <Filter>Header Files\include</Filter>
-    </None>
+    <Image Include="SHIPOFHARKINIAN.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -4010,8 +4008,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="SHIPOFHARKINIAN.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <None Include="include\macro.inc" />
   </ItemGroup>
 </Project>

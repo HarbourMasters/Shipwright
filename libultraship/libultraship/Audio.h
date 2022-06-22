@@ -76,7 +76,7 @@ namespace Ship
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 	};
-	
+
 	class AudioV2 : public ResourceFile
 	{
 	public:
