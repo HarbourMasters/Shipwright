@@ -340,8 +340,9 @@ static LPBYTE CreateListFile(TMPQArchive * ha, DWORD * pcbListFile)
             {
                 for (int i = 0; i < strlen(pFileEntry->szFileName); i++)
                 {
-                    if (pFileEntry->szFileName[i] == '/')
-                        pFileEntry->szFileName[i] = '\\';
+                    // OTRTODO
+                    //if (pFileEntry->szFileName[i] == '/')
+                        //pFileEntry->szFileName[i] = '\\';
                 }
 
                 SortTable[nFileNodes++] = pFileEntry->szFileName;

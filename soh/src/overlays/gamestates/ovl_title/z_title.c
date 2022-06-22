@@ -224,7 +224,7 @@ void Title_Main(GameState* thisx) {
 
     if (CVar_GetS32("gSkipLogoTitle",0)!=0) {
         gSaveContext.language = CVar_GetS32("gLanguages", 0);
-        Sram_InitSram(&this->state, &this->sramCtx);
+        Sram_InitSram(&this->state);
         s16 selectedfile = CVar_GetS32("gSaveFileID", 0);
         if (selectedfile == 4) {
             selectedfile = 0xFF;
@@ -242,13 +242,13 @@ void Title_Main(GameState* thisx) {
         }
         if (selectedfile == 0xFF) {
             gSaveContext.fileNum = selectedfile;
-            Sram_OpenSave(&this->sramCtx);
+            Sram_OpenSave();
             gSaveContext.gameMode = 0;
             this->state.running = false;
             SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         } else {
             gSaveContext.fileNum = selectedfile;
-            Sram_OpenSave(&this->sramCtx);
+            Sram_OpenSave();
             gSaveContext.gameMode = 0;
             this->state.running = false;
             //return;
@@ -322,7 +322,7 @@ void Title_Main(GameState* thisx) {
 void Title_Destroy(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
-    Sram_InitSram(&this->state, &this->sramCtx);
+    Sram_InitSram(&this->state);
 }
 
 void Title_Init(GameState* thisx) {
@@ -346,7 +346,6 @@ void Title_Init(GameState* thisx) {
     this->state.destroy = Title_Destroy;
     this->exit = false;
     gSaveContext.fileNum = 0xFF;
-    Sram_Alloc(&this->state, &this->sramCtx);
     this->ult = 0;
     this->unk_1D4 = 0x14;
     this->coverAlpha = 255;

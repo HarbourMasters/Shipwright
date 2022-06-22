@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include <vector>
 #include <map>
+#include <string>
 
 namespace Ship
 {
@@ -24,14 +25,12 @@ namespace Ship
 		/* 0x00 */ uint32_t start;
 		/* 0x04 */ uint32_t end;
 		/* 0x08 */ uint32_t count;
-		///* 0x10 */ int16_t state[16];  // only exists if count != 0. 8-byte aligned
 		/* 0x10 */ std::vector<int16_t> states;
 	};
 
 	struct SoundFontEntry
 	{
-		//SampleEntry* sampleEntry = nullptr;
-		uint32_t sampleOffset;
+		std::string sampleFileName;
 		float tuning;
 	};
 
@@ -40,10 +39,9 @@ namespace Ship
 		uint8_t releaseRate;
 		uint8_t pan;
 		uint8_t loaded;
-		uint32_t offset;
+		std::string sampleFileName;
 		float tuning;
 		std::vector<AdsrEnvelope*> env;
-		//SampleEntry* sample = nullptr;
 	};
 
 	struct InstrumentEntry
@@ -59,30 +57,48 @@ namespace Ship
 		SoundFontEntry* highNotesSound = nullptr;
 	};
 
-	class AudioSoundFontV1 : public ResourceFile
+	class AudioSequenceV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
 	};
 
-	class AudioSampleV1 : public ResourceFile
+	class AudioSoundFontV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
 	};
-	
-	class AudioV1 : public ResourceFile
+
+	class AudioSampleV2 : public ResourceFile
 	{
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 	};
 
-	struct AudioSoundFont : public Resource
+	class AudioV2 : public ResourceFile
+	{
+	public:
+		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+	};
+
+	class AudioSequence : public Resource
+	{
+	public:
+		std::vector<char> seqData;
+		uint8_t seqNumber;
+		uint8_t medium;
+		uint8_t cachePolicy;
+		std::vector<uint8_t> fonts;
+	};
+
+	class AudioSoundFont : public Resource
 	{
 	public:
 		uint32_t ptr;
 		uint32_t size;
+		uint32_t id;
 		uint8_t medium;
 		uint8_t cachePolicy;
 		uint16_t data1;
@@ -97,6 +113,7 @@ namespace Ship
 	class AudioSample : public Resource
 	{
 	public:
+		uint32_t originalOffset;
 		uint8_t codec;
 		uint8_t medium;
 		uint8_t unk_bit26;
@@ -110,11 +127,5 @@ namespace Ship
 	class Audio : public Resource
 	{
 	public:
-		//std::vector<AudioTableEntry> soundFontTable;
-		//std::vector<AudioTableEntry> sequenceTable;
-		//std::vector<AudioTableEntry> sampleBankTable;
-		//std::vector<char*> sequences;
-		//std::vector<SampleEntry*> samples;
-
 	};
 }

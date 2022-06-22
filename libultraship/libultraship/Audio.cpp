@@ -2,7 +2,30 @@
 
 namespace Ship
 {
-	void AudioSampleV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSequenceV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	{
+		AudioSequence* seq = (AudioSequence*)res;
+
+		ResourceFile::ParseFileBinary(reader, res);
+
+		int seqDataSize = reader->ReadInt32();
+
+		seq->seqData.reserve(seqDataSize);
+
+		for (int i = 0; i < seqDataSize; i++)
+			seq->seqData.push_back(reader->ReadUByte());
+
+		seq->seqNumber = reader->ReadUByte();
+		seq->medium = reader->ReadUByte();
+		seq->cachePolicy = reader->ReadUByte();
+
+		int numFonts = reader->ReadInt32();
+
+		for (int i = 0; i < numFonts; i++)
+			seq->fonts.push_back(reader->ReadUByte());
+	}
+
+	void AudioSampleV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		AudioSample* entry = (AudioSample*)res;
 
@@ -13,35 +36,36 @@ namespace Ship
 		entry->unk_bit26 = reader->ReadByte();
 		entry->unk_bit25 = reader->ReadByte();
 
-		uint32_t dataSize = reader->ReadInt32();
-		
-		for (uint32_t i = 0; i < dataSize; i++)
+		int dataSize = reader->ReadInt32();
+
+		for (int i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
 		entry->loop.start = reader->ReadUInt32();
 		entry->loop.end = reader->ReadUInt32();
 		entry->loop.count = reader->ReadUInt32();
 
-		uint32_t loopStateCnt = reader->ReadUInt32();
+		int loopStateCnt = reader->ReadUInt32();
 
-		for (uint32_t i = 0; i < loopStateCnt; i++)
+		for (int i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
 
 		entry->book.order = reader->ReadInt32();
 		entry->book.npredictors = reader->ReadInt32();
 
-		uint32_t bookSize = reader->ReadInt32();
+		int bookSize = reader->ReadInt32();
 
-		for (uint32_t i = 0; i < bookSize; i++)
+		for (int i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
-	void AudioSoundFontV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSoundFontV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		AudioSoundFont* soundFont = (AudioSoundFont*)res;
 
 		ResourceFile::ParseFileBinary(reader, res);
 
+		soundFont->id = reader->ReadInt32();
 		soundFont->medium = reader->ReadByte();
 		soundFont->cachePolicy = reader->ReadByte();
 		soundFont->data1 = reader->ReadInt16();
@@ -60,9 +84,9 @@ namespace Ship
 			drum.loaded = reader->ReadUByte();
 
 			drum.env = ReadEnvelopeData(reader);
-			
+
 			bool hasSample = reader->ReadByte();
-			drum.offset = reader->ReadInt32();
+			drum.sampleFileName = reader->ReadString();
 			drum.tuning = reader->ReadSingle();
 
 			soundFont->drums.push_back(drum);
@@ -72,14 +96,14 @@ namespace Ship
 		{
 			InstrumentEntry entry;
 
-			entry.isValidEntry = reader->ReadByte();
-			entry.loaded = reader->ReadByte();
-			entry.normalRangeLo = reader->ReadByte();
-			entry.normalRangeHi = reader->ReadByte();
-			entry.releaseRate = reader->ReadByte();
+			entry.isValidEntry = reader->ReadUByte();
+			entry.loaded = reader->ReadUByte();
+			entry.normalRangeLo = reader->ReadUByte();
+			entry.normalRangeHi = reader->ReadUByte();
+			entry.releaseRate = reader->ReadUByte();
 
 			entry.env = ReadEnvelopeData(reader);
-			
+
 			{
 				bool hasSFEntry = reader->ReadByte();
 
@@ -87,7 +111,7 @@ namespace Ship
 				{
 					entry.lowNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.lowNotesSound->sampleOffset = reader->ReadInt32();
+					entry.lowNotesSound->sampleFileName = reader->ReadString();
 					entry.lowNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -99,7 +123,7 @@ namespace Ship
 				{
 					entry.normalNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.normalNotesSound->sampleOffset = reader->ReadInt32();
+					entry.normalNotesSound->sampleFileName = reader->ReadString();
 					entry.normalNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -111,7 +135,7 @@ namespace Ship
 				{
 					entry.highNotesSound = new SoundFontEntry();
 					bool hasSampleRef = reader->ReadByte();
-					entry.highNotesSound->sampleOffset = reader->ReadInt32();
+					entry.highNotesSound->sampleFileName = reader->ReadString();
 					entry.highNotesSound->tuning = reader->ReadSingle();
 				}
 			}
@@ -128,7 +152,7 @@ namespace Ship
 			if (hasSFEntry)
 			{
 				bool hasSampleRef = reader->ReadByte();
-				entry->sampleOffset = reader->ReadInt32();
+				entry->sampleFileName = reader->ReadString();
 				entry->tuning = reader->ReadSingle();
 			}
 
@@ -136,7 +160,7 @@ namespace Ship
 		}
 	}
 
-	std::vector<AdsrEnvelope*> AudioSoundFontV1::ReadEnvelopeData(BinaryReader* reader)
+	std::vector<AdsrEnvelope*> AudioSoundFontV2::ReadEnvelopeData(BinaryReader* reader)
 	{
 		std::vector<AdsrEnvelope*> envelopes;
 
@@ -154,15 +178,10 @@ namespace Ship
 		return envelopes;
 	}
 
-	void AudioV1::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioV2::ParseFileBinary(BinaryReader* reader, Resource* res)
 	{
 		Audio* audio = (Audio*)res;
 
 		ResourceFile::ParseFileBinary(reader, res);
-
-		//int sampleCnt = reader->ReadInt32();
-
-		//for (size_t i = 0; i < sampleCnt; i++)
-			//audio->samples.push_back(ReadSampleEntry(reader));
 	}
 }

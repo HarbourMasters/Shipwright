@@ -4,6 +4,7 @@
 #pragma once
 
 #include "GlobalCtx2.h"
+#include "SaveManager.h"
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
@@ -19,7 +20,7 @@ public:
     ~OTRGlobals();
 
 private:
-
+	void CheckSaveFile(size_t sramSize);
 };
 #endif
 
@@ -35,6 +36,7 @@ uint16_t OTRGetPixelDepth(float x, float y);
 int32_t OTRGetLastScancode();
 uint32_t ResourceMgr_GetGameVersion();
 void ResourceMgr_CacheDirectory(const char* resName);
+char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
@@ -48,8 +50,17 @@ Gfx* ResourceMgr_LoadGfxByName(const char* path);
 Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
 char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
+
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
+SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
+SequenceData ResourceMgr_LoadSeqByName(const char* path);
+SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
+void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+char* Config_getValue(char* category, char* key);
+bool Config_setValue(char* category, char* key, char* value);
+
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
 s32* ResourceMgr_LoadCSByName(const char* path);
@@ -76,10 +87,6 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
-char* ResourceMgr_LoadSeqByID(int seqID);
-int ResourceMgr_GetSeqSizeByID(int seqID);
-SoundFont* ResourceMgr_LoadAudioSoundFont(int fontIndex);
-SoundFontSample* ResourceMgr_LoadAudioSample(int romOffset);
 #endif
 
 #endif

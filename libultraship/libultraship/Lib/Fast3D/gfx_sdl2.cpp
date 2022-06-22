@@ -38,8 +38,8 @@ static SDL_Window *wnd;
 static SDL_GLContext ctx;
 static int inverted_scancode_table[512];
 static int vsync_enabled = 0;
-static unsigned int window_width = DESIRED_SCREEN_WIDTH;
-static unsigned int window_height = DESIRED_SCREEN_HEIGHT;
+static int window_width = DESIRED_SCREEN_WIDTH;
+static int window_height = DESIRED_SCREEN_HEIGHT;
 static bool fullscreen_state;
 static bool is_running = true;
 static void (*on_fullscreen_changed_callback)(bool is_now_fullscreen);
@@ -154,7 +154,8 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
 #ifndef __SWITCH__
     if (start_in_fullscreen) {
@@ -274,8 +275,7 @@ static void gfx_sdl_handle_events(void) {
 #endif
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    window_width = event.window.data1;
-                    window_height = event.window.data2;
+                    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                 }
                 break;
             case SDL_QUIT:

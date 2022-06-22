@@ -103,6 +103,7 @@ clean:
 	$(MAKE) -C lib/libgfxd clean
 	$(MAKE) -C ZAPDUtils clean
 	$(MAKE) -C ExporterTest clean
+	rm -rf ../StormLib/build
 
 rebuild: clean all
 
@@ -121,6 +122,11 @@ build/%.o: %.cpp
 lib/libgfxd/libgfxd.a:
 	$(MAKE) -C lib/libgfxd
 
+.PHONY: StormLib
+StormLib:
+	LDFLAGS="" cmake -B ../StormLib/build -S ../StormLib
+	LDFLAGS="" cmake --build ../StormLib/build
+
 .PHONY: ExporterTest
 ExporterTest:
 	$(MAKE) -C ExporterTest
@@ -131,5 +137,5 @@ ZAPDUtils:
 
 
 # Linking
-ZAPD.out: $(O_FILES) lib/libgfxd/libgfxd.a ExporterTest ZAPDUtils
-	$(CXX) $(CXXFLAGS) $(O_FILES) lib/libgfxd/libgfxd.a ZAPDUtils/ZAPDUtils.a $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)
+ZAPD.out: $(O_FILES) lib/libgfxd/libgfxd.a ExporterTest ZAPDUtils StormLib
+	$(CXX) $(CXXFLAGS) $(O_FILES) lib/libgfxd/libgfxd.a ZAPDUtils/ZAPDUtils.a ../StormLib/build/libstorm.a $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)

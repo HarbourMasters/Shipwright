@@ -18,6 +18,11 @@
 
 #define AIBUF_LEN 0x580
 
+#define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
+
+extern bool gUseLegacySD;
+extern char* fontMap[256];
+
 typedef enum {
     /* 0 */ ADSR_STATE_DISABLED,
     /* 1 */ ADSR_STATE_INITIAL,
@@ -120,7 +125,7 @@ typedef struct {
     /* 0x08 */ s16 book[1]; // size 8 * order * npredictors. 8-byte aligned
 } AdpcmBook; // size >= 0x8
 
-typedef struct
+typedef struct 
 {
     union {
         struct {
@@ -136,6 +141,8 @@ typedef struct
     /* 0x04 */ u8* sampleAddr;
     /* 0x08 */ AdpcmLoop* loop;
     /* 0x0C */ AdpcmBook* book;
+    u32 sampleRateMagicValue; // For wav samples only...
+    s32 sampleRate;           // For wav samples only...
 } SoundFontSample; // size = 0x10
 
 typedef struct {
@@ -227,6 +234,7 @@ typedef struct {
     /* 0x08 */ Instrument** instruments;
     /* 0x0C */ Drum** drums;
     /* 0x10 */ SoundFontSound* soundEffects;
+    s32 fntIndex;
 } SoundFont; // size = 0x14
 
 typedef struct {
@@ -681,7 +689,6 @@ typedef struct {
     union{
         u32 opArgs;
         struct {
-            // OTRTODO: struct members swapped for quick audio
             u8 arg2;
             u8 arg1;
             u8 arg0;
@@ -1063,6 +1070,16 @@ typedef enum {
     /*  4 */ OCARINA_NOTE_C_UP,
     /* -1 */ OCARINA_NOTE_INVALID = 0xFF
 } OcarinaNoteIdx;
+
+typedef struct {
+    char* seqData;
+    int32_t seqDataSize;
+    uint8_t seqNumber;
+    uint8_t medium;
+    uint8_t cachePolicy;
+    int32_t numFonts;
+    uint8_t fonts[16];
+} SequenceData;
 
 #ifdef __cplusplus
 extern "C" {

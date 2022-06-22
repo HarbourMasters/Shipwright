@@ -12,12 +12,11 @@ namespace Ship
 		while (reader->GetBaseAddress() % 8 != 0)
 			reader->ReadByte();
 
-		if (sizeof(uintptr_t) < 8)
+		while (true)
 		{
-			while (true)
-			{
-				uint64_t data = reader->ReadUInt64();
+			uint64_t data = reader->ReadUInt64();
 
+			if (sizeof(uintptr_t) < 8){
 				dl->instructions.push_back(data);
 
 				uint8_t opcode = data >> 24;
@@ -28,13 +27,7 @@ namespace Ship
 
 				if (opcode == G_ENDDL)
 					break;
-			}
-		}
-		else
-		{
-			while (true)
-			{
-				uint64_t data = reader->ReadUInt64();
+			} else {
 				uint32_t w0 = (uint32_t)data;
 				uint32_t w1 = (uint32_t)(data >> 32);
 
