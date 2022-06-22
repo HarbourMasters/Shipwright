@@ -60,6 +60,11 @@ void GameOver_Update(GlobalContext* globalCtx) {
                 }
             }
 
+            if ((CVar_GetS32("gAutoTunics", 0) == 1) && (CVar_GetS32("gNoRestrictAge", 0) || LINK_IS_ADULT) &&
+                (gSaveContext.inventory.equipment & gBitFlags[PLAYER_TUNIC_GORON] << gEquipShifts[EQUIP_TUNIC])) {
+                Inventory_ChangeEquipment(EQUIP_TUNIC, PLAYER_TUNIC_GORON + 1);
+            }
+
             gSaveContext.nayrusLoveTimer = 2000;
             gSaveContext.naviTimer = 0;
             gSaveContext.seqId = (u8)NA_BGM_DISABLED;
