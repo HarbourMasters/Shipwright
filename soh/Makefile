@@ -100,7 +100,6 @@ LDLIBS := \
 	z \
 	pthread \
 	atomic \
-	storm \
 	ultraship \
 )
 
