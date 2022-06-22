@@ -75,6 +75,15 @@ void BgTokiSwd_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if (LINK_IS_ADULT) {
         this->actor.draw = NULL;
+    } else if (gSaveContext.n64ddFlag) {
+        // don't give child link a kokiri sword if we don't have one
+        uint32_t kokiriSwordBitMask = 1 << 0;
+        if (!(gSaveContext.inventory.equipment & kokiriSwordBitMask)) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            player->currentSwordItem = ITEM_NONE;
+            gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+        }
     }
 
     if (gSaveContext.sceneSetupIndex == 5) {
