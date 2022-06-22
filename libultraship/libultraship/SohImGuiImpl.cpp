@@ -878,6 +878,8 @@ namespace SohImGui {
                 {
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                     EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
                     EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
                     Tooltip("Modifies all sources of damage not affected by other sliders");
