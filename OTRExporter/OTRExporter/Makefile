@@ -12,7 +12,8 @@ LTO ?= 0
 WARN := -Wall -Wextra -Werror \
 	-Wno-unused-parameter \
 	-Wno-unused-function \
-	-Wno-unused-variable
+	-Wno-unused-variable \
+	-Wno-error=multichar
 
 
 CXXFLAGS := $(WARN) -std=c++17 

@@ -240,7 +240,7 @@ int fbTest = -1;
 void GameState_Update(GameState* gameState) {
     GraphicsContext* gfxCtx = gameState->gfxCtx;
 
-    if (fbTest == -1) 
+    if (fbTest == -1)
     {
         fbTest = gfx_create_framebuffer(64, 112);
         //fbTest = gfx_create_framebuffer(256, 512);
@@ -323,18 +323,18 @@ void GameState_Update(GameState* gameState) {
         GameState_Draw(gameState, gfxCtx);
         func_800C49F4(gfxCtx);
     }
-    
+
     // -----------------------
     // Cheats hooks
     // -----------------------
-    
+
     // Inf Money
     if (CVar_GetS32("gInfiniteMoney", 0) != 0) {
         if (gSaveContext.rupees < CUR_CAPACITY(UPG_WALLET)) {
             gSaveContext.rupees = CUR_CAPACITY(UPG_WALLET);
         }
     }
-    
+
     // Inf Health
     if (CVar_GetS32("gInfiniteHealth", 0) != 0) {
         if (gSaveContext.health < gSaveContext.healthCapacity) {
@@ -348,33 +348,33 @@ void GameState_Update(GameState* gameState) {
         if (AMMO(ITEM_STICK) < CUR_CAPACITY(UPG_STICKS)) {
             AMMO(ITEM_STICK) = CUR_CAPACITY(UPG_STICKS);
         }
-        
+
         // Deku Nuts
         if (AMMO(ITEM_NUT) < CUR_CAPACITY(UPG_NUTS)) {
             AMMO(ITEM_NUT) = CUR_CAPACITY(UPG_NUTS);
         }
-        
+
         // Bombs
         if (AMMO(ITEM_BOMB) < CUR_CAPACITY(UPG_BOMB_BAG)) {
             AMMO(ITEM_BOMB) = CUR_CAPACITY(UPG_BOMB_BAG);
         }
-        
+
         // Fairy Bow (Ammo)
         if (AMMO(ITEM_BOW) < CUR_CAPACITY(UPG_QUIVER)) {
             AMMO(ITEM_BOW) = CUR_CAPACITY(UPG_QUIVER);
         }
-        
+
         // Fairy Slingshot (Ammo)
         if (AMMO(ITEM_SLINGSHOT) < CUR_CAPACITY(UPG_BULLET_BAG)) {
             AMMO(ITEM_SLINGSHOT) = CUR_CAPACITY(UPG_BULLET_BAG);
         }
-        
+
         // Bombchus (max: 50, no upgrades)
         if (AMMO(ITEM_BOMBCHU) < 50) {
             AMMO(ITEM_BOMBCHU) = 50;
         }
     }
-    
+
     // Inf Magic
     if (CVar_GetS32("gInfiniteMagic", 0) != 0) {
         if (gSaveContext.magicAcquired && gSaveContext.magic != (gSaveContext.doubleMagic + 1) * 0x30) {
@@ -386,7 +386,7 @@ void GameState_Update(GameState* gameState) {
     if (CVar_GetS32("gInfiniteNayru", 0) != 0) {
         gSaveContext.nayrusLoveTimer = 0x44B;
     }
-    
+
     // Moon Jump On L
     if (CVar_GetS32("gMoonJumpOnL", 0) != 0) {
         if (gGlobalCtx) {
@@ -424,7 +424,7 @@ void GameState_Update(GameState* gameState) {
     } else {
         CVar_SetS32("gPrevTime", -1);
     }
-   
+
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.
     gSaveContext.language = CVar_GetS32("gLanguages", 0);
 
@@ -525,7 +525,7 @@ void GameState_Init(GameState* gameState, GameStateFunc init, GraphicsContext* g
     }
     SpeedMeter_Init(&D_801664D0);
     func_800AA0B4();
-    osSendMesg(&gameState->gfxCtx->queue, NULL, OS_MESG_BLOCK);
+    osSendMesgPtr(&gameState->gfxCtx->queue, NULL, OS_MESG_BLOCK);
 
     endTime = osGetTime();
     // "Other initialization processing time %d us"

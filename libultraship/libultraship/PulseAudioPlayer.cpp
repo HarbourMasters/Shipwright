@@ -74,7 +74,7 @@ namespace Ship
         // Create stream
         pa_sample_spec ss;
         ss.format = PA_SAMPLE_S16LE;
-        ss.rate = 32000;
+        ss.rate = this->GetSampleRate();
         ss.channels = 2;
 
         pa_buffer_attr attr;
@@ -149,8 +149,7 @@ namespace Ship
 
     int PulseAudioPlayer::GetDesiredBuffered()
     {
-        // return 1100;
-        return 1680;
+        return 2480;
     }
 
     void PulseAudioPlayer::Play(const uint8_t* buff, uint32_t len)
