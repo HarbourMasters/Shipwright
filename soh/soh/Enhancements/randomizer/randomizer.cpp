@@ -1854,8 +1854,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_NUT_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_NUTS)) {
                 case 0:
-                    return GI_NUT_UPGRADE_30;
                 case 1:
+                    return GI_NUT_UPGRADE_30;
+                case 2:
                     return GI_NUT_UPGRADE_40;
             }
             return GI_RUPEE_BLUE;
@@ -1863,8 +1864,9 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_PROGRESSIVE_STICK_UPGRADE:
             switch (CUR_UPG_VALUE(UPG_STICKS)) {
                 case 0:
-                    return GI_STICK_UPGRADE_20;
                 case 1:
+                    return GI_STICK_UPGRADE_20;
+                case 2:
                     return GI_STICK_UPGRADE_30;
             }
             return GI_RUPEE_BLUE;
