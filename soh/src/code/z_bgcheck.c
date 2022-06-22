@@ -1584,6 +1584,11 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
                                     &colCtx->subdivLength.y, &colCtx->subdivLengthInv.y);
     BgCheck_SetSubdivisionDimension(colCtx->minBounds.z, colCtx->subdivAmount.z, &colCtx->maxBounds.z,
                                     &colCtx->subdivLength.z, &colCtx->subdivLengthInv.z);
+
+#ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+    colCtx->memSize *= 2;
+#endif
+
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
               colCtx->colHeader->numPolygons * sizeof(u8) + colCtx->dyna.polyNodesMax * sizeof(SSNode) +
               colCtx->dyna.polyListMax * sizeof(CollisionPoly) + colCtx->dyna.vtxListMax * sizeof(Vec3s) +
@@ -3787,7 +3792,7 @@ void CollisionHeader_SegmentedToVirtual(CollisionHeader* colHeader) {
 /**
  * Convert CollisionHeader Segmented to Virtual addressing
  */
-void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest) 
+void CollisionHeader_GetVirtual(void* colHeader, CollisionHeader** dest)
 {
     if (ResourceMgr_OTRSigCheck(colHeader))
         colHeader = ResourceMgr_LoadColByName(colHeader);

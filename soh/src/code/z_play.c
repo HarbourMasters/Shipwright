@@ -256,9 +256,9 @@ void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     gGlobalCtx = globalCtx;
-    // globalCtx->state.gfxCtx = NULL;
-    u32 zAlloc;
-    u32 zAllocAligned;
+    //globalCtx->state.gfxCtx = NULL;
+    uintptr_t zAlloc;
+    uintptr_t zAllocAligned;
     size_t zAllocSize;
     Player* player;
     s32 playerStartCamId;

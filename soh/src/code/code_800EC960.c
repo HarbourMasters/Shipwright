@@ -1250,7 +1250,7 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
     if (dpad) {
-        sOcarinaAllowedBtnMask = 
+        sOcarinaAllowedBtnMask =
             (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaABtnMap = BTN_A;
         sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
@@ -4095,7 +4095,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol) 
+s32 Audio_SetGanonDistVol(u8 targetVol)
 {
     u8 phi_v0;
     u16 phi_v0_2;
@@ -4517,7 +4517,7 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId) 
+void Audio_PlayFanfare(u16 seqId)
 {
     u16 sp26;
     u32 sp20;

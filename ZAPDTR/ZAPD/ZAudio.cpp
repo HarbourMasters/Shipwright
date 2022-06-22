@@ -188,7 +188,7 @@ SampleEntry* ZAudio::ParseSampleEntry(std::vector<uint8_t> audioBank,
 	}
 	else
 	{
-		return samples[sampleOffset];	
+		return samples[sampleOffset];
 	}
 }
 
@@ -338,7 +338,7 @@ void ZAudio::ParseRawData()
 		                                                  "Audioseq");
 
 	// TABLE PARSING
-	
+
 	// MQ DBG ROM
 	//int gSoundFontTableOffset = 0x138270;
 	//int gSequenceTableOffset = 0x1386A0;
