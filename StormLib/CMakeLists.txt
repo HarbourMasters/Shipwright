@@ -1,8 +1,9 @@
-project(StormLib)
+set(PROJECT_NAME StormLib)
+#project(StormLib)
 cmake_minimum_required(VERSION 3.10)
 
 set(LIBRARY_NAME storm)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -332,6 +333,38 @@ add_library(${LIBRARY_NAME} ${LIB_TYPE} ${SRC_FILES} ${SRC_ADDITIONAL_FILES} ${S
 if(WIN32)
     set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "StormLib")
 endif()
+
+use_props(${LIBRARY_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+
+################################################################################
+# MSVC runtime library
+################################################################################
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        get_property(MSVC_RUNTIME_LIBRARY_DEFAULT TARGET ${LIBRARY_NAME} PROPERTY MSVC_RUNTIME_LIBRARY)
+        if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+                string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+                        $<$<CONFIG:Debug>:
+                                MultiThreadedDebug
+                        >
+                        $<$<CONFIG:Release>:
+                                MultiThreaded
+                        >
+                        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+                )
+        elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+                string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
+                        $<$<CONFIG:Debug>:
+                                MultiThreadedDebug
+                        >
+                        $<$<CONFIG:Release>:
+                                MultiThreaded
+                        >
+                        $<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+                )
+        endif()
+        set_target_properties(${LIBRARY_NAME} PROPERTIES MSVC_RUNTIME_LIBRARY ${MSVC_RUNTIME_LIBRARY_STR})
+endif()
+
 
 target_link_libraries(${LIBRARY_NAME} ${LINK_LIBS})
 target_compile_definitions(${LIBRARY_NAME} INTERFACE STORMLIB_NO_AUTO_LINK) #CMake will take care of the linking
