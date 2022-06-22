@@ -651,7 +651,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
     // If any of these CVars are enabled, disable toggling the minimap with L, unless gEnableMapToggle is set
     bool enableMapToggle =
-        !(CVar_GetS32("gMoonJumpOnL", 0) || CVar_GetS32("gTurboOnL", 0)) ||
+        !(CVar_GetS32("gDebugEnabled", 0) || CVar_GetS32("gMoonJumpOnL", 0) || CVar_GetS32("gTurboOnL", 0)) ||
         CVar_GetS32("gEnableMapToggle", 0);
 
     if (globalCtx->pauseCtx.state < 4) {
