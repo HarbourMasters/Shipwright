@@ -4527,12 +4527,17 @@ void Audio_PlayFanfare(u16 seqId)
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
     sp18 = func_800E5E84(seqId & 0xFF, &sp20);
-    if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
-        D_8016B9F4 = 1;
-    } else {
-        D_8016B9F4 = 5;
-        Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-    }
+	if (!sp1C || !sp18) {
+		// disable BGM, we're about to null deref!
+		D_8016B9F4 = 1;
+	} else {
+		if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
+			D_8016B9F4 = 1;
+		} else {
+			D_8016B9F4 = 5;
+			Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
+		}
+	}
     D_8016B9F6 = seqId;
 }
 
