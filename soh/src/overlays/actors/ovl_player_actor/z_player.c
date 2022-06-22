@@ -12789,17 +12789,100 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
             }
             else {
                 s32 sp28 = D_808549FC[this->itemActionParam - PLAYER_AP_BOTTLE_POTION_RED];
-
-                if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                
+                if (CVar_GetS32("gRedPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_RED)
+                {
+                    if (CVar_GetS32("gRedPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gRedPotion", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gRedPotion", 20) * 16;
+                    }
                 }
+                else if (CVar_GetS32("gBluePotionEffects", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_BLUE)
+                {
+                    if (CVar_GetS32("gBlueHealthPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gBluePotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gBluePotionHealth", 20) * 16;
+                    }
 
-                if (sp28 & 2) {
-                    Magic_Fill(globalCtx);
+                    if (CVar_GetS32("gBlueManaPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMana", 100), 5);;
+                    }
                 }
+                else if (CVar_GetS32("gGreenPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN)
+                {
+                    if (CVar_GetS32("gGreenPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
 
-                if (sp28 & 4) {
-                    gSaveContext.healthAccumulator = 0x50;
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotion", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gGreenPotion", 100), 5);;
+                    }
+                }
+                else if (CVar_GetS32("gMilkEffect", 0) && (this->itemActionParam == PLAYER_AP_BOTTLE_MILK || this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF))
+                {
+                    if (CVar_GetS32("gMilkPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gMilk", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gMilk", 5) * 16;
+                    }
+                    if  (CVar_GetS32("gSeparateHalfMilkEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF)
+                    {
+                        if (CVar_GetS32("gHalfMilkPercentRestore", 0))
+                        {
+                            gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gHalfMilk", 100) / 100 + 15) / 16 * 16;
+                        }
+                        else
+                        {
+                            gSaveContext.healthAccumulator = CVar_GetS32("gHalfMilk", 5) * 16;
+                        }
+                    }
+                }
+                else
+                {
+                    if (sp28 & 1) {
+                        gSaveContext.healthAccumulator = 0x140;
+                    }
+
+                    if (sp28 & 2) {
+                        Magic_Fill(globalCtx);
+                    }
+
+                    if (sp28 & 4) {
+                        gSaveContext.healthAccumulator = 0x50;
+                    }
                 }
             }
 

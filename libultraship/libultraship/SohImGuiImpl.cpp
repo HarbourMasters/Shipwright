@@ -876,6 +876,50 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
+                    if (ImGui::BeginMenu("Potion Values"))
+                    {
+                        EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
+                        Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                        EnhancementSliderInt("Red Potion: %d", "##REDPOTION", "gRedPotion", 1, 100, "");
+                        Tooltip("Changes the amount of health restored by Red Potions");
+                        EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                        Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                        
+                        EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
+                        Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
+                        EnhancementSliderInt("Green Potion: %d", "##GREENPOTION", "gGreenPotion", 1, 100, "");
+                        Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                        EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                        Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                        EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
+                        Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                        EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                        Tooltip("Changes the amount of health restored by Blue Potions");
+                        EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                        Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                        
+                        EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                        Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
+                        EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                        Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                        EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
+                        Tooltip("Enable the following changes to the amount of health restored by Milk");
+                        EnhancementSliderInt("Milk: %d", "##MILK", "gMilk", 1, 100, "");
+                        Tooltip("Changes the amount of health restored by Milk");
+                        EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                        Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                        EnhancementCheckbox("gSeparateHalfMilkEffect", "gMilkEffect");
+                        Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                        EnhancementSliderInt("Half Milk: %d", "##HALFMILK", "gHalfMilk", 1, 100, "");
+                        Tooltip("Changes the amount of health restored by Half Milk");
+                        EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                        Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+                        ImGui::EndMenu();
+                    }
+
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
                     EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
