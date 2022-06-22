@@ -980,6 +980,7 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_REQUIEM_OF_SPIRIT, GID_SONG_REQUIEM },
                                                { GI_NOCTURNE_OF_SHADOW, GID_SONG_NOCTURNE },
                                                { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
+                                               { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
                                                { GI_ICE_TRAP, GID_RUPEE_GOLD },
                                                { GI_ICE_TRAP, GID_MAX },
                                                { GI_TEXT_0, GID_MAX } };
