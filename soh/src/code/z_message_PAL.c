@@ -2429,7 +2429,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 }
                 break;
             case MSGMODE_SETUP_DISPLAY_SONG_PLAYED:
-                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0) {
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
                     Message_DrawText(globalCtx, &gfx);
                     Audio_OcaSetInstrument(1);
                     Audio_OcaSetInstrument(1);
@@ -2481,7 +2481,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 Message_Decode(globalCtx);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
                 
-                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0) {
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME) {
                     msgCtx->stateTimer = 20;
                 } else {
                     msgCtx->stateTimer = 1;
