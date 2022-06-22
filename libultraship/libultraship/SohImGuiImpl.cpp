@@ -876,51 +876,71 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
-                    EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
-                    EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
-                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
-                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
-                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
-                    EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
-                    Tooltip("Modifies all sources of damage not affected by other sliders");
-                    EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
-                    Tooltip("Modifies all fall damage");
-                    EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                    Tooltip("Modifies all void out damage");
+                    if (ImGui::BeginMenu("Time Savers"))
+                    {
+                        EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                        EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                        EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                        Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                        EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
-                    EnhancementCheckbox("Skip Text", "gSkipText");
-                    Tooltip("Holding down B skips text");
-                    EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
-                    Tooltip("Disable the low HP beeping sound");
-                    EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                    Tooltip("Hides most of the UI when not needed");
+                        EnhancementCheckbox("Skip Text", "gSkipText");
+                        Tooltip("Holding down B skips text");
+                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                        Tooltip("Prevent forced Navi conversations");
+                        EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                        Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                        EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                        Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                        EnhancementCheckbox("Fast Chests", "gFastChests");
+                        Tooltip("Kick open every chest");
+                        EnhancementCheckbox("Fast Drops", "gFastDrops");
+                        Tooltip("Skip first-time pickup messages for consumable items");
+                        EnhancementCheckbox("Better Owl", "gBetterOwl");
+                        Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Difficulty Options"))
+                    {
+                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
+                        Tooltip("Modifies all sources of damage not affected by other sliders");
+                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
+                        Tooltip("Modifies all fall damage");
+                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
+                        Tooltip("Modifies all void out damage");
+
+                        EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
+                        Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                        EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
+                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Reduced Clutter"))
+                    {
+                        EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
+                        Tooltip("Disable the low HP beeping sound");
+                        EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                        Tooltip("Hides most of the UI when not needed");
+                        EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
+                        Tooltip("Disables the voice audio when Navi calls you");
+
+                        ImGui::EndMenu();
+                    }
+                    
+                    
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
-                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
-                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
-                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
-                    Tooltip("Prevent forced Navi conversations");
-                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
-                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
-                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
-                    Tooltip("Disables the voice audio when Navi calls you");
-                    EnhancementCheckbox("Fast Chests", "gFastChests");
-                    Tooltip("Kick open every chest");
-                    EnhancementCheckbox("Fast Drops", "gFastDrops");
-                    Tooltip("Skip first-time pickup messages for consumable items");
-                    EnhancementCheckbox("Better Owl", "gBetterOwl");
-                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
-                    EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
-                    Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
-                    EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
-                    Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
                     Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
                     ImGui::EndMenu();
