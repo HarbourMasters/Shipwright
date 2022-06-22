@@ -911,7 +911,7 @@ namespace SohImGui {
                         EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
                         Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
-                        EnhancementCheckbox("gSeparateHalfMilkEffect", "gMilkEffect");
+                        EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
                         Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
                         EnhancementSliderInt("Half Milk: %d", "##HALFMILK", "gHalfMilk", 1, 100, "");
                         Tooltip("Changes the amount of health restored by Half Milk");
