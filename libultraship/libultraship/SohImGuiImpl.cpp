@@ -966,6 +966,8 @@ namespace SohImGui {
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
+                    Tooltip("Change most 2D items & projectiles to their a 3D version");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
                     Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
