@@ -172,18 +172,20 @@ source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__s
 
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
-    "soh/gu_pc.c"
+    "soh/OTRAudio.h"
     "soh/OTRGlobals.cpp"
     "soh/OTRGlobals.h"
+    "soh/SaveManager.h"
+    "soh/SaveManager.cpp"
+    "soh/frame_interpolation.h"
+    "soh/frame_interpolation.cpp"
+    "soh/gu_pc.c"
     "soh/stubs.c"
-	"soh/util.h"
-	"soh/util.cpp"
+    "soh/util.h"
+    "soh/util.cpp"
     "soh/z_message_OTR.cpp"
     "soh/z_play_otr.cpp"
     "soh/z_scene_otr.cpp"
-	"soh/OTRAudio.h"
-    "soh/frame_interpolation.h"
-    "soh/frame_interpolation.cpp"
 )
 source_group("Source Files\\soh" FILES ${Source_Files__soh})
 
