@@ -942,7 +942,7 @@ u8 AudioSeq_GetInstrument(SequenceChannel* channel, u8 instId, Instrument** inst
         return 0;
     }
 
-    if (inst->envelope != NULL) 
+    if (inst->envelope != NULL)
     {
         adsr->envelope = inst->envelope;
         adsr->releaseRate = (inst->releaseRate);
@@ -1067,8 +1067,7 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                                 offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
                                 lowBits = gAudioContext.sequenceFontTable[offset];
                                 command = gAudioContext.sequenceFontTable[offset + lowBits - result];
-                            }
-                            else {
+                            } else {
                                 SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
                                 command = sDat.fonts[sDat.numFonts - result - 1];
                             }
@@ -1179,14 +1178,12 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         result = (u8)parameters[0];
                         command = (u8)parameters[0];
 
-                        if (seqPlayer->defaultFont != 0xFF) 
-                        {
+                        if (seqPlayer->defaultFont != 0xFF) {
                             if (gUseLegacySD) {
                                 offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
                                 lowBits = gAudioContext.sequenceFontTable[offset];
                                 command = gAudioContext.sequenceFontTable[offset + lowBits - result];
-                            }
-                            else {
+                            } else {
                                 SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
                                 command = sDat.fonts[sDat.numFonts - result - 1];
                             }

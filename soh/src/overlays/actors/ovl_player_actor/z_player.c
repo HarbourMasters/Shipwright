@@ -2107,10 +2107,12 @@ LinkAnimationHeader* func_808346C4(GlobalContext* globalCtx, Player* this) {
     func_808323B4(globalCtx, this);
 
     if (this->unk_870 < 0.5f) {
-        return D_808543A4[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
+        return D_808543A4[Player_HoldsTwoHandedWeapon(this) &&
+        !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
     else {
-        return D_808543AC[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
+        return D_808543AC[Player_HoldsTwoHandedWeapon(this) &&
+        !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
 }
 
@@ -3837,15 +3839,18 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
                             func_80833638(this, func_80834BD4);
 
                             if (this->unk_870 < 0.5f) {
-                                anim = D_808543BC[Player_HoldsTwoHandedWeapon(this)];
+                                anim = D_808543BC[Player_HoldsTwoHandedWeapon(this) &&
+                                !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
                             }
                             else {
-                                anim = D_808543B4[Player_HoldsTwoHandedWeapon(this)];
+                                anim = D_808543B4[Player_HoldsTwoHandedWeapon(this) &&
+                                !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
                             }
                             LinkAnimation_PlayOnce(globalCtx, &this->skelAnime2, anim);
                         }
                         else {
-                            func_80832264(globalCtx, this, D_808543C4[Player_HoldsTwoHandedWeapon(this)]);
+                            func_80832264(globalCtx, this, D_808543C4[Player_HoldsTwoHandedWeapon(this) &&
+                            !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))]);
                         }
                     }
 
@@ -4868,7 +4873,7 @@ void func_8083AE40(Player* this, s16 objectId) {
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
-            size, 0, &this->giObjectLoadQueue, NULL, "../z_player.c", 9099);
+            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), "../z_player.c", 9099);
     }
 }
 
@@ -9479,7 +9484,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
     Player_InitCommon(this, globalCtx, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
-    this->giObjectSegment = (void*)(((u32)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
 
     sp50 = gSaveContext.respawnFlag;
 
@@ -10819,7 +10824,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };
 
 void Player_Update(Actor* thisx, GlobalContext* globalCtx) {
-    static Vec3f sDogSpawnPos; 
+    static Vec3f sDogSpawnPos;
     Player* this = (Player*)thisx;
     s32 dogParams;
     s32 pad;

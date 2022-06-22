@@ -1433,7 +1433,7 @@
 					<Offset Version="MQDebug" At="0"/>
 				</Sample>
 			</Samples>
-			
+
 			<Samples Bank="3">
 				<Sample Name="Low Rumbling">
 					<Offset Version="MQDebug" At="0"/>
@@ -1515,9 +1515,9 @@
 	</Samples>
 		
 
-		   <Soundfont Name="02_Ambient_Sounds" Index="2"/>
-		   <Soundfont Name="37_Unused_Deku_Tree" Index="37" OverrideSampleBank="2"/>
-		   <Soundfont Name="04_Deku_Tree" Index="4"/>
+			<Soundfont Name="02_Ambient_Sounds" Index="2"/>
+			<Soundfont Name="37_Unused_Deku_Tree" Index="37" OverrideSampleBank="2"/>
+			<Soundfont Name="04_Deku_Tree" Index="4"/>
 			<Soundfont Name="11_Dodongos_Cavern" Index="11"/>
 			<Soundfont Name="33_Ending_1" Index="33"/>
 			<Soundfont Name="34_Ending_2" Index="34"/>
@@ -1553,8 +1553,6 @@
 			<Soundfont Name="18_Warp_Songs" Index="18"/>
 			<Soundfont Name="25_Water_Temple" Index="25"/>
 			<Soundfont Name="21_Zoras_Domain" Index="21"/>
-		
-		
 		</Audio>
 	</File>
 </Root>
