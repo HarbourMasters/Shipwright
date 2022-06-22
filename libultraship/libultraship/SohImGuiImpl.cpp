@@ -137,7 +137,11 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
+        #if defined(__APPLE__)
+            ImGui_ImplOpenGL3_Init("#version 410 core");
+        #else
             ImGui_ImplOpenGL3_Init("#version 120");
+        #endif
             break;
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -1327,6 +1331,8 @@ namespace SohImGui {
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
+#elif __APPLE__
+            ImGui::Text("Platform: macOS");
 #else
             ImGui::Text("Platform: Linux");
 #endif

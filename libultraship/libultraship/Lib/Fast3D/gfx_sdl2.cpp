@@ -13,6 +13,8 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
+#elif __APPLE__
+#include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
@@ -119,7 +121,7 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
-#ifndef __linux__
+#ifdef _WIN32
 static HANDLE timer;
 #endif
 
@@ -134,7 +136,14 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#ifndef __linux
+#if defined(__APPLE__)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+#endif
+
+#ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
@@ -271,7 +280,7 @@ static inline void sync_framerate_with_timer(void) {
     const int64_t next = previous_time + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
     const int64_t left = next - t;
     if (left > 0) {
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
         const timespec spec = { 0, left * 100 };
         nanosleep(&spec, nullptr);
 #else
