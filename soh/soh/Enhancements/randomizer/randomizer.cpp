@@ -2164,8 +2164,6 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DODONGOS_CAVERN_BOMB_BAG_CHEST;
                 case 21802:
                     return RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST;
-                case 20512:
-                    return RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST;
                 case 4372:
                     return RC_DODONGOS_CAVERN_GOSSIP_STONE;
             }
@@ -2511,6 +2509,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 18:
             switch (actorId) {
+                case 10:
+                    return RC_DODONGOS_CAVERN_BOSS_ROOM_CHEST;
                 case 95:
                     return RC_DODONGOS_CAVERN_KING_DODONGO_HEART;
                 case 93:
