@@ -2050,7 +2050,11 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx) {
     u8 requiredAge;
     s16 i;
 
-    if (gSaveContext.n64ddFlag) {
+    // don't skip epona escape cutscenes
+    if (gSaveContext.n64ddFlag &&
+        gSaveContext.entranceIndex != 650 &&
+        gSaveContext.entranceIndex != 654 &&
+        gSaveContext.entranceIndex != 658) {
         gSaveContext.showTitleCard = false;
         return;
     }
