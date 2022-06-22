@@ -240,7 +240,7 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         if (type == ITEM_ETC_ARROW_FIRE) {
             this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
-        } else if (type == ITEM_ETC_ARROW_FIRE) {
+        } else if (type == ITEM_ETC_LETTER) {
             this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
         }
     }
