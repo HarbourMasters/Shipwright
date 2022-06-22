@@ -39,6 +39,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
     CVar_RegisterS32("gUseNaviCol", 0);
     CVar_RegisterS32("gUseTunicsCol", 0);
+    CVar_RegisterS32("gGuardVision", 0);
     CVar_RegisterS32("gTimeFlowFileSelect", 0);
 }
 

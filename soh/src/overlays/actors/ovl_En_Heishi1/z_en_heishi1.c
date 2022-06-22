@@ -29,7 +29,7 @@ void EnHeishi1_TurnTowardLink(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_Kick(EnHeishi1* this, GlobalContext* globalCtx);
 void EnHeishi1_WaitNight(EnHeishi1* this, GlobalContext* globalCtx);
 
-static s32 sPlayerIsCaught = false;
+s32 sHeishi1PlayerIsCaught = false;
 
 const ActorInit En_Heishi1_InitVars = {
     0,
@@ -154,7 +154,7 @@ void EnHeishi1_Walk(EnHeishi1* this, GlobalContext* globalCtx) {
         Audio_PlayActorSound2(&this->actor, NA_SE_EV_KNIGHT_WALK);
     }
 
-    if (!sPlayerIsCaught) {
+    if (!sHeishi1PlayerIsCaught) {
         path = &globalCtx->setupPathList[this->path];
         pointPos = SEGMENTED_TO_VIRTUAL(path->points);
         pointPos += this->waypoint;
@@ -259,7 +259,7 @@ void EnHeishi1_Wait(EnHeishi1* this, GlobalContext* globalCtx) {
     s32 i;
 
     SkelAnime_Update(&this->skelAnime);
-    if (!sPlayerIsCaught) {
+    if (!sHeishi1PlayerIsCaught) {
         switch (this->headBehaviorDecided) {
             case false:
                 this->headDirection++;
@@ -352,7 +352,7 @@ void EnHeishi1_Kick(EnHeishi1* this, GlobalContext* globalCtx) {
                 globalCtx->nextEntranceIndex = 0x4FA;
                 globalCtx->sceneLoadFlag = 0x14;
                 this->loadStarted = true;
-                sPlayerIsCaught = false;
+                sHeishi1PlayerIsCaught = false;
                 globalCtx->fadeTransition = 0x2E;
                 gSaveContext.nextTransition = 0x2E;
             }
@@ -413,7 +413,7 @@ void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx) {
         if (this->type != 5) {
             path = this->path * 2;
             if ((sCamDataIdxs[path] == activeCam->camDataIdx) || (sCamDataIdxs[path + 1] == activeCam->camDataIdx)) {
-                if (!sPlayerIsCaught) {
+                if (!sHeishi1PlayerIsCaught) {
                     if ((this->actionFunc == EnHeishi1_Walk) || (this->actionFunc == EnHeishi1_Wait)) {
                         Vec3f searchBallVel;
                         Vec3f searchBallAccel = { 0.0f, 0.0f, 0.0f };
@@ -459,7 +459,7 @@ void EnHeishi1_Update(Actor* thisx, GlobalContext* globalCtx) {
                                     // "Discovered!"
                                     osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ 発見！ ☆☆☆☆☆ \n" VT_RST);
                                     func_8002DF54(globalCtx, &this->actor, 1);
-                                    sPlayerIsCaught = true;
+                                    sHeishi1PlayerIsCaught = true;
                                     this->actionFunc = EnHeishi1_SetupMoveToLink;
                                 }
                             }

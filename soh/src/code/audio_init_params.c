@@ -10,11 +10,8 @@ const s16 D_8014A6C0[] = {
     0x0030, // gTatumsPerBeat
 };
 
-#ifdef _SOH64  // OTRTODO: This might be overkill...
+// OTRTODO: This might be overkill...
 const AudioContextInitSizes D_8014A6C4 = { 0x37F000, 0xE0E00, 0xBCE00 };
-#else
-const AudioContextInitSizes D_8014A6C4 = { 0x37F000, 0xE0E00, 0xBCE00 };
-#endif
 
 ReverbSettings D_80133420[][3] = {
     {

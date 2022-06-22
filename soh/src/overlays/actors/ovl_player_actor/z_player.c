@@ -351,6 +351,7 @@ s32 func_80852F38(GlobalContext* globalCtx, Player* this);
 s32 func_80852FFC(GlobalContext* globalCtx, Actor* actor, s32 csMode);
 void func_80853080(Player* this, GlobalContext* globalCtx);
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage);
+s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified);
 void func_80853148(GlobalContext* globalCtx, Actor* actor);
 
 // .bss part 1
@@ -3516,12 +3517,22 @@ void func_80837AFC(Player* this, s32 timer) {
     this->unk_88F = 0;
 }
 
-s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
+s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u8 modified) {
     if ((this->invincibilityTimer != 0) || (this->actor.category != ACTORCAT_PLAYER)) {
         return 1;
     }
 
-    return Health_ChangeBy(globalCtx, damage);
+    s32 modifiedDamage = damage;
+    if (modified)
+    {
+       modifiedDamage *= CVar_GetS32("gDamageMul", 1);
+    }
+
+    return Health_ChangeBy(globalCtx, modifiedDamage);
+}
+
+s32 func_80837B18(GlobalContext* globalCtx, Player* this, s32 damage) {
+    return func_80837B18_modified(globalCtx, this, damage, true);
 }
 
 void func_80837B60(Player* this) {
@@ -3747,7 +3758,7 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
 
     if (this->unk_A86 != 0) {
         if (!Player_InBlockingCsMode(globalCtx, this)) {
-            Player_InflictDamage(globalCtx, -16);
+            Player_InflictDamageModified(globalCtx, -16 * CVar_GetS32("gVoidDamageMul", 1), false);
             this->unk_A86 = 0;
         }
     }
@@ -6157,7 +6168,12 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 iREG(67) = false;
 
-                if ((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) || (globalCtx->sceneNum == SCENE_BOWLING)) {
+                s32 drop = giEntry->objectId;
+
+                if ((globalCtx->sceneNum == SCENE_BOWLING) || !(CVar_GetS32("gFastDrops", 0) &&
+                    ((drop == OBJECT_GI_BOMB_1) || (drop == OBJECT_GI_NUTS) || (drop == OBJECT_GI_STICK) ||
+                    (drop == OBJECT_GI_SEED) || (drop == OBJECT_GI_MAGICPOT) || (drop == OBJECT_GI_ARROW))) &&
+                    (Item_CheckObtainability(giEntry->itemId) == ITEM_NONE)) {
                     func_808323B4(globalCtx, this);
                     func_8083AE40(this, giEntry->objectId);
 
@@ -8279,7 +8295,7 @@ s32 func_80843E64(GlobalContext* globalCtx, Player* this) {
 
         impactInfo = &D_80854600[impactIndex];
 
-        if (Player_InflictDamage(globalCtx, impactInfo->damage)) {
+        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * CVar_GetS32("gFallDamageMul", 1), false)) {
             return -1;
         }
 
@@ -14829,9 +14845,13 @@ void func_80853080(Player* this, GlobalContext* globalCtx) {
 }
 
 s32 Player_InflictDamage(GlobalContext* globalCtx, s32 damage) {
+    return Player_InflictDamageModified(globalCtx, damage, true);
+}
+
+s32 Player_InflictDamageModified(GlobalContext* globalCtx, s32 damage, u8 modified) {
     Player* this = GET_PLAYER(globalCtx);
 
-    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18(globalCtx, this, damage)) {
+    if (!Player_InBlockingCsMode(globalCtx, this) && !func_80837B18_modified(globalCtx, this, damage, modified)) {
         this->stateFlags2 &= ~PLAYER_STATE2_7;
         return 1;
     }
