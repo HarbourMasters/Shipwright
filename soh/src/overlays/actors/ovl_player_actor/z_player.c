@@ -2107,10 +2107,12 @@ LinkAnimationHeader* func_808346C4(GlobalContext* globalCtx, Player* this) {
     func_808323B4(globalCtx, this);
 
     if (this->unk_870 < 0.5f) {
-        return D_808543A4[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
+        return D_808543A4[Player_HoldsTwoHandedWeapon(this) &&
+        !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
     else {
-        return D_808543AC[Player_HoldsTwoHandedWeapon(this) && !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
+        return D_808543AC[Player_HoldsTwoHandedWeapon(this) &&
+        !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
     }
 }
 
@@ -3837,15 +3839,18 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
                             func_80833638(this, func_80834BD4);
 
                             if (this->unk_870 < 0.5f) {
-                                anim = D_808543BC[Player_HoldsTwoHandedWeapon(this)];
+                                anim = D_808543BC[Player_HoldsTwoHandedWeapon(this) &&
+                                !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
                             }
                             else {
-                                anim = D_808543B4[Player_HoldsTwoHandedWeapon(this)];
+                                anim = D_808543B4[Player_HoldsTwoHandedWeapon(this) &&
+                                !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))];
                             }
                             LinkAnimation_PlayOnce(globalCtx, &this->skelAnime2, anim);
                         }
                         else {
-                            func_80832264(globalCtx, this, D_808543C4[Player_HoldsTwoHandedWeapon(this)]);
+                            func_80832264(globalCtx, this, D_808543C4[Player_HoldsTwoHandedWeapon(this) &&
+                            !(CVar_GetS32("gShieldTwoHanded", 0) && (this->heldItemActionParam != PLAYER_AP_STICK))]);
                         }
                     }
 
