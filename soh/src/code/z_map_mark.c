@@ -124,6 +124,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
         }
 
         markPoint = &mapMarkIconData->points[0];
+        //Place each chest / boss room icon
         for (i = 0; i < mapMarkIconData->count; i++) {
             if ((mapMarkIconData->markType != MAP_MARK_CHEST) || !Flags_GetTreasure(globalCtx, markPoint->chestFlag)) {
                 //Minimap chest / boss icon 
@@ -137,7 +138,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
                             globalCtx->sceneNum == SCENE_BMORI1 || globalCtx->sceneNum == SCENE_HIDAN || globalCtx->sceneNum == SCENE_MIZUSIN || 
                             globalCtx->sceneNum == SCENE_JYASINZOU || globalCtx->sceneNum == SCENE_HAKADAN || globalCtx->sceneNum == SCENE_HAKADANCH || 
                             globalCtx->sceneNum == SCENE_ICE_DOUKUTO) {
-                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic-11);
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         } else {
                             rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
                         }
@@ -154,10 +155,10 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
                     rectTop = PosY_Minimap_ori;
                 }
 
-                int height = markInfo->textureHeight * 1.0f; //Adjust Height with scale
-                int width = markInfo->textureWidth * 1.0f; //Adjust Width with scale
-                int height_factor = (1 << 10) * markInfo->textureHeight / height;
-                int width_factor = (1 << 10) * markInfo->textureWidth / width;
+                int height = 8 * 1.0f; //Adjust Height with scale
+                int width = 8 * 1.0f; //Adjust Width with scale
+                int height_factor = (1 << 10) * 8 / height;
+                int width_factor = (1 << 10) * 8 / width;
 
                 markInfo = &sMapMarkInfoTable[mapMarkIconData->markType];
 
@@ -166,13 +167,12 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
                 gDPLoadTextureBlock(OVERLAY_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-                //rectLeft = (GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+Right_MC_Margin) + 204) << 2;
-                //rectTop = (GREG(95) + markPoint->y + Bottom_MC_Margin + 140) << 2;
+                //Changed to a Wide texture to support Left anchor.
                 gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, rectLeft + width  << 2,
                                     rectTop + height  << 2, G_TX_RENDERTILE, 0, 0, width_factor,
                                     height_factor);
             }
+
             markPoint++;
         }
         mapMarkIconData++;

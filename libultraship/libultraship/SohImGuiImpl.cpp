@@ -73,10 +73,12 @@ namespace SohImGui {
         "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
         "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
         "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
-        "gCCRupeePrim", "gCCKeysPrim", "gDF_Col", "gDF_Env",
+        "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col",
+        "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
+        "gDF_Col", "gDF_Env",
         "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
         "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-        "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
+        "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim", 
     };
 
     const char* filters[3] = {

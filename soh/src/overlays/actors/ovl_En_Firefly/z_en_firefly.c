@@ -747,7 +747,26 @@ void EnFirefly_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
     s16 effScaleStep;
     s16 effLife;
     EnFirefly* this = (EnFirefly*)thisx;
-
+    if (CVar_GetS32("gUseKeeseCol", 0)) {
+        Color_RGBA8 fireAuraPrimColor_custom = { CVar_GetS32("gKeese1_Ef_PrimR", 255), CVar_GetS32("gKeese1_Ef_PrimG", 255), CVar_GetS32("gKeese1_Ef_PrimB", 100), 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { CVar_GetS32("gKeese1_Ef_EnvR", 255), CVar_GetS32("gKeese1_Ef_Env", 50), CVar_GetS32("gKeese1_Ef_EnvB", 0), 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { CVar_GetS32("gKeese2_Ef_PrimR", 100), CVar_GetS32("gKeese2_Ef_PrimG", 200), CVar_GetS32("gKeese2_Ef_PrimB", 255), 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { CVar_GetS32("gKeese2_Ef_EnvR", 0), CVar_GetS32("gKeese2_Ef_Env", 0), CVar_GetS32("gKeese2_Ef_EnvB", 255), 0 };
+        fireAuraPrimColor = fireAuraPrimColor_custom;
+        fireAuraEnvColor = fireAuraEnvColor_custom;
+        iceAuraPrimColor = iceAuraPrimColor_custom;
+        iceAuraEnvColor = iceAuraEnvColor_custom;
+    } else {
+        //Original colors are back there
+        Color_RGBA8 fireAuraPrimColor_custom = { 255, 255, 100, 255 };
+        Color_RGBA8 fireAuraEnvColor_custom = { 255, 50, 0, 0 };
+        Color_RGBA8 iceAuraPrimColor_custom = { 100, 200, 255, 255 };
+        Color_RGBA8 iceAuraEnvColor_custom = { 0, 0, 255, 0 };
+        fireAuraPrimColor = fireAuraPrimColor_custom;
+        fireAuraEnvColor = fireAuraEnvColor_custom;
+        iceAuraPrimColor = iceAuraPrimColor_custom;
+        iceAuraEnvColor = iceAuraEnvColor_custom;
+    }
     if (!this->onFire && (limbIndex == 27)) {
         gSPDisplayList((*gfx)++, gKeeseEyesDL);
     } else {

@@ -516,11 +516,11 @@ void Map_Init(GlobalContext* globalCtx) {
     interfaceCtx->unk_258 = -1;
     interfaceCtx->unk_25A = -1;
 
-    interfaceCtx->mapSegment = GameState_Alloc(&globalCtx->state, 0x1000, "../z_map_exp.c", 457);
+    interfaceCtx->mapSegment = GameState_Alloc(&globalCtx->state, 0x1000, __FILE__, __LINE__);
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", globalCtx->sceneNum,
                  interfaceCtx->mapSegment, globalCtx);
-    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", "../z_map_exp.c", 459);
+    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", __FILE__, __LINE__);
 
     switch (globalCtx->sceneNum) {
         case SCENE_SPOT00:
@@ -627,18 +627,9 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         if (CVar_GetS32("gMinimapPosType", 0) != 0) {
             if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                if (globalCtx->sceneNum == SCENE_YDAN || globalCtx->sceneNum == SCENE_DDAN || globalCtx->sceneNum == SCENE_BDAN || 
-                    globalCtx->sceneNum == SCENE_BMORI1 || globalCtx->sceneNum == SCENE_HIDAN || globalCtx->sceneNum == SCENE_MIZUSIN || 
-                    globalCtx->sceneNum == SCENE_JYASINZOU || globalCtx->sceneNum == SCENE_HAKADAN || globalCtx->sceneNum == SCENE_HAKADANCH || 
-                    globalCtx->sceneNum == SCENE_ICE_DOUKUTO) {
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + ((CVar_GetS32("gMinimapPosX", 0)-11)*10)) / 10.0f), 
-                        (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-                } else {
                     Matrix_Translate(
                         OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
                         (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-                }
             } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
@@ -678,18 +669,9 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         if (CVar_GetS32("gMinimapPosType", 0) != 0) {
             if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                if (globalCtx->sceneNum == SCENE_YDAN || globalCtx->sceneNum == SCENE_DDAN || globalCtx->sceneNum == SCENE_BDAN || 
-                    globalCtx->sceneNum == SCENE_BMORI1 || globalCtx->sceneNum == SCENE_HIDAN || globalCtx->sceneNum == SCENE_MIZUSIN || 
-                    globalCtx->sceneNum == SCENE_JYASINZOU || globalCtx->sceneNum == SCENE_HAKADAN || globalCtx->sceneNum == SCENE_HAKADANCH || 
-                    globalCtx->sceneNum == SCENE_ICE_DOUKUTO) {
-                    Matrix_Translate(
-                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + ((CVar_GetS32("gMinimapPosX", 0)-11)*10)) / 10.0f), 
-                        (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-                } else {
                     Matrix_Translate(
                         OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
                         (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
-                }
             } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                 Matrix_Translate(
@@ -777,7 +759,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                             dgnMiniMapY = R_DGN_MINIMAP_Y+CVar_GetS32("gMinimapPosY", 0)+Y_Margins_Minimap;
                             if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
                                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
-                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap)-11;            
+                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);            
                             } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
                                 if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
                                 dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);
@@ -1030,7 +1012,6 @@ void Map_Update(GlobalContext* globalCtx) {
                 if (R_MAP_TEX_INDEX != (R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor))) {
                     R_MAP_TEX_INDEX = R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor);
                 }
-                if (1) {} // Appears to be necessary to match
 
                 if (interfaceCtx->mapRoomNum != sLastRoomNum) {
                     // "Current floor = %d Current room = %x Number of rooms = %d"

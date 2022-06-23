@@ -3617,8 +3617,8 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
     };
     s16 DPad_ItemsOffset[4][2] = {
-        { 8,-9},//Up
-        { 8,21},//Down
+        { 7,-9},//Up
+        { 7,21},//Down
         {-8, 7},//Left
         {23, 7},//Right
     }; //(X,Y) Used with custom position to place it properly.
