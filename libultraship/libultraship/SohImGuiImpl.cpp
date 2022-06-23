@@ -785,6 +785,9 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                if(CVar_GetS32("gDpadEquips", 0) != 0) {
+                    EnhancementCheckbox("Modify D-pad Equips", "gModifyDpadEquips");
+                }
 
 		ImGui::Separator();
 
