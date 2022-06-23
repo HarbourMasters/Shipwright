@@ -145,6 +145,7 @@ static f32 D_80B7A668 = 0.0f;
 
 static u8 sSinkingLureLocation = 0;
 
+/// Weight of caught fish. 
 static f32 D_80B7A670 = 0.0f;
 
 static u8 D_80B7A674 = true;
@@ -2891,17 +2892,35 @@ void Fishing_HandleAquariumDialog(Fishing* this, GlobalContext* globalCtx) {
     }
 }
 
-f32 Fishing_GetMinimumRequiredScore(uint16_t weight) {
+f32 Fishing_GetMinimumRequiredScore() {
+    int32_t weight;
+    // RANDOTODO: update the enhancement sliders to not allow
+    // values above rando fish weight values when rando'd
+    if(sLinkAge == 1) {
+        weight = CVar_GetS32("gChildMinimumWeightFish", 10);
+        if (gSaveContext.n64ddFlag) {
+            if (weight > 8) {
+                weight = 8;
+            }
+        }
+    } else {
+        weight = CVar_GetS32("gAdultMinimumWeightFish", 13);
+        if (gSaveContext.n64ddFlag) {
+            if (weight > 10) {
+                weight = 10;
+            }
+        }        
+    }
+
     return sqrt(((f32)weight - 0.5f) / 0.0036f);
 }
 
 bool getInstantFish() {
-    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeInstantFishing", 0) : CVar_GetS32("gInstantFishing", 0);
+    return CVar_GetS32("gInstantFishing", 0);
 }
 
 bool getGuaranteeBite() {
-    return gSaveContext.n64ddFlag ? CVar_GetS32("gRandomizeGuaranteeFishingBite", 1)
-                                  : CVar_GetS32("gGuaranteeFishingBite", 0);
+    return CVar_GetS32("gGuaranteeFishingBite", 0);
 }
 
 void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
@@ -5032,11 +5051,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
 
                     if (sLinkAge == 1) {
                         if (!(HIGH_SCORE(HS_FISHING) & 0x400)) {
-                            int32_t weight = gSaveContext.n64ddFlag ?
-                                                GetRandoSettingValue(RSK_CHILD_FISH_WEIGHT) :
-                                                CVar_GetS32("gChildMinimumWeightFish", 10);
-
-                            if (D_80B7E078 >= Fishing_GetMinimumRequiredScore(weight)) {
+                            if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 getItemId = gSaveContext.n64ddFlag ?
@@ -5046,11 +5061,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                         }
                     } else {
                         if (!(HIGH_SCORE(HS_FISHING) & 0x800)) {
-                            int32_t weight = gSaveContext.n64ddFlag ?
-                                                GetRandoSettingValue(RSK_ADULT_FISH_WEIGHT) :
-                                                CVar_GetS32("gAdultMinimumWeightFish", 13);
-
-                            if (D_80B7E078 >= Fishing_GetMinimumRequiredScore(weight)) {
+                            if (D_80B7E078 >= Fishing_GetMinimumRequiredScore()) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 getItemId = gSaveContext.n64ddFlag ?
