@@ -74,6 +74,15 @@ void BgTokiSwd_Init(Actor* thisx, GlobalContext* globalCtx) {
     BgTokiSwd_SetupAction(this, func_808BAF40);
 
     if (LINK_IS_ADULT) {
+        if (gSaveContext.n64ddFlag) {
+            if (!CUR_UPG_VALUE(UPG_BOMB_BAG)) {
+                for (size_t i = 0; i < 8; i++) {
+                    if (gSaveContext.equips.buttonItems[i] == ITEM_BOMB) {
+                        gSaveContext.equips.buttonItems[i] = ITEM_NONE;
+                    }
+                }
+            }
+        }
         this->actor.draw = NULL;
     } else if (gSaveContext.n64ddFlag) {
         // don't give child link a kokiri sword if we don't have one
