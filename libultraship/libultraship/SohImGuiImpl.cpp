@@ -977,7 +977,6 @@ namespace SohImGui {
                     Tooltip("Change most 2D items & projectiles to their a 3D version");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
                     Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
-                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
