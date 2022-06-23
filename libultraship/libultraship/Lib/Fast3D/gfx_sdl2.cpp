@@ -225,7 +225,7 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
 #ifdef __SWITCH__
-    Ship::Switch::GetDisplaySize(width, height);
+    Ship::Switch::GetDisplaySize((int*) width, (int*) height);
 #else
     *width  = window_width;
     *height = window_height;

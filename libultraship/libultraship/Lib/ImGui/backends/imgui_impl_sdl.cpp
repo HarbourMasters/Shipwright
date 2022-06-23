@@ -643,7 +643,7 @@ static void ImGui_ImplSDL2_UpdateMonitors()
         platform_io.Monitors.push_back(monitor);
     }
 #else
-        uint32_t width, height;
+        int width, height;
         Ship::Switch::GetDisplaySize(&width, &height);
         ImGuiPlatformMonitor monitor;
         monitor.MainPos = monitor.WorkPos = ImVec2(.0f, .0f);

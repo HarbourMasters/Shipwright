@@ -178,7 +178,7 @@ bool Ship::Switch::IsRunning(){
     return isRunning;
 }
 
-void Ship::Switch::GetDisplaySize(uint32_t *width, uint32_t *height) {
+void Ship::Switch::GetDisplaySize(int *width, int *height) {
     switch (appletGetOperationMode()) {
         case DOCKED_MODE:
             *width  = 1920;

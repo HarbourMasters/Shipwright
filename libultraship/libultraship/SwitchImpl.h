@@ -21,7 +21,7 @@ public:
     static void Exit();
     static void Update();
     static bool IsRunning();
-    static void GetDisplaySize(uint32_t *width, uint32_t *height);
+    static void GetDisplaySize(int *width, int *height);
     static void GetTouchPosition(int *touchX, int *touchY);
     static void ApplyOverclock();
     static float GetDPI();

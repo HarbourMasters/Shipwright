@@ -755,6 +755,8 @@ SOURCEFILES_CPP := \
 		soh/Enhancements/debugger/colViewer.cpp \
 		soh/Enhancements/debugger/debugSaveEditor.cpp \
 		soh/Enhancements/debugger/ImGuiHelpers.cpp \
+		soh/Enhancments/debugger/actorViewer.cpp \
+		soh/SaveManager.cpp \
 		soh/GbiWrap.cpp \
 		soh/OTRGlobals.cpp \
 		soh/z_message_OTR.cpp \
@@ -796,13 +798,17 @@ CFLAGS	+=	-Wno-incompatible-pointer-types -Wno-int-conversion \
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS	:= -lultraship -lZAPDUtils -lstorm -lz -lbz2 -lnx -lglad -lglapi -ldrm_nouveau -lm `sdl2-config --libs`
+STATIC_LIBS := $(SOH_TOP_DIR)/libultraship/lib/libultraship.a \
+			$(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils/lib/libZAPDUtils.a \
+			$(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils/lib/libZAPDUtils.a \
+			$(SOH_TOP_DIR)/StormLib/nxbuild/libstorm.a
+LIBS	:= -lstorm -lultraship -lZAPDUtils -lz -lbz2 -lnx -lglad -lglapi -ldrm_nouveau -lm `sdl2-config --libs`
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(SOH_TOP_DIR)/libultraship $(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils
+LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(SOH_TOP_DIR)/StormLib/nxbuild $(SOH_TOP_DIR)/libultraship $(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -944,8 +950,7 @@ $(OUTPUT).nso	:	$(OUTPUT).elf
 endif
 
 $(OUTPUT).elf	:	$(OFILES) \
-			$(SOH_TOP_DIR)/libultraship/lib/libultraship.a \
-			$(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils/lib/libZAPDUtils.a
+			$(STATIC_LIBS)
 
 $(OFILES_SRC)	: $(HFILES_BIN)
 

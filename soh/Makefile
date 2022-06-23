@@ -123,7 +123,7 @@ all:
 	$(MAKE) $(TARGET)
 
 setup:
-	cd ../OTRExporter && python3 extract_baserom.py
+	cd ../OTRExporter
 	$(MAKE) mpq
 
 mpq:

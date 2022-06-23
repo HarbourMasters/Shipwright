@@ -15,6 +15,13 @@ option(STORM_BUILD_TESTS
 #   "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
 
+if(DEFINED _initial_CMAKE_TOOLCHAIN_FILE
+   AND NOT _initial_CMAKE_TOOLCHAIN_FILE STREQUAL CMAKE_TOOLCHAIN_FILE)
+  message(WARNING "The CMAKE_TOOLCHAIN_FILE cannot be changed")
+elseif(DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(_initial_CMAKE_TOOLCHAIN_FILE "${CMAKE_TOOLCHAIN_FILE}" CACHE INTERNAL "")
+endif()
+
 set(SRC_FILES
            src/adpcm/adpcm.cpp
            src/huffman/huff.cpp
