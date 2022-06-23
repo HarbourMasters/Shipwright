@@ -2472,8 +2472,9 @@ namespace Settings {
   void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
 
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
-    OpenDoorOfTime.SetSelectedIndex(cvarSettings[RSK_DOOR_OF_TIME]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
+    ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
+    OpenDoorOfTime.SetSelectedIndex(cvarSettings[RSK_DOOR_OF_TIME]);
     GerudoFortress.SetSelectedIndex(cvarSettings[RSK_GERUDO_FORTRESS]);
     Bridge.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE]);
     BridgeStoneCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT]);
