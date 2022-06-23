@@ -1284,6 +1284,13 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
     bool success = false;
 
     try {
+        // clear out existing settings
+        // RANDOTODO don't use magic number for settings array size
+        for(size_t i = 0; i < 300; i++) {
+            gSaveContext.randoSettings[i].key = RSK_NONE;
+            gSaveContext.randoSettings[i].value = 0;
+        }
+
         json spoilerFileJson;
         spoilerFileStream >> spoilerFileJson;
         json settingsJson = spoilerFileJson["settings"];
