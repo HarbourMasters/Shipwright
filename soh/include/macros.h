@@ -76,6 +76,10 @@
                                 ? gSaveContext.equips.buttonItems[(button) + 1]       \
                                 : ITEM_NONE)
 
+#define DPAD_ITEM(button) ((gSaveContext.buttonStatus[(button) + 5] != BTN_DISABLED) \
+                                ? gSaveContext.equips.buttonItems[(button) + 4]       \
+                                : ITEM_NONE)
+
 #define CHECK_BTN_ALL(state, combo) (~((state) | ~(combo)) == 0)
 #define CHECK_BTN_ANY(state, combo) (((state) & (combo)) != 0)
 

@@ -695,13 +695,13 @@ s16 D_8082AB2C[] = {
     24, 72, 13, 22, 19, 20, 19, 27, 14, 26, 22, 21, 49, 32, 45, 60, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 16, 32, 8,
 };
 
-static u8 D_8082AB6C[][5] = {
-    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED },
-    { BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_DISABLED },
-    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED },
-    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED },
-    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED },
-    { BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_DISABLED },
+static u8 D_8082AB6C[][ARRAY_COUNT(gSaveContext.buttonStatus)] = {
+    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED },
+    { BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_DISABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED },
+    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED },
+    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED },
+    { BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_ENABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED, BTN_DISABLED },
+    { BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_DISABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED, BTN_ENABLED },
 };
 
 static s16 D_8082AB8C = 0;
@@ -786,7 +786,7 @@ static void* sPromptChoiceTexs[][2] = {
     { gPauseYesFRATex, gPauseNoFRATex },
 };
 
-static u8 D_808321A8[5];
+static u8 sButtonStatusSave[ARRAY_COUNT(gSaveContext.buttonStatus)];
 static PreRender sPlayerPreRender;
 static void* sPreRenderCvg;
 extern int fbTest;
@@ -911,16 +911,19 @@ void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
         pauseCtx->cursorSpecialPos = PAUSE_CURSOR_PAGE_LEFT;
     }
 
-    gSaveContext.buttonStatus[1] = D_8082AB6C[pauseCtx->pageIndex + pt][1];
-    gSaveContext.buttonStatus[2] = D_8082AB6C[pauseCtx->pageIndex + pt][2];
-    gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex + pt][3];
-    gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex + pt][4];
+    for (int buttonIndex = 1; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = D_8082AB6C[pauseCtx->pageIndex + pt][buttonIndex];
+    }
 
     if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (D_8082ABEC[pauseCtx->mode] == PAUSE_EQUIP)) {
         gSaveContext.buttonStatus[1] = BTN_ENABLED;
         gSaveContext.buttonStatus[2] = BTN_ENABLED;
         gSaveContext.buttonStatus[3] = BTN_ENABLED;
-        gSaveContext.buttonStatus[4] = BTN_ENABLED;
+        // A-Button is already enabled
+        gSaveContext.buttonStatus[5] = BTN_ENABLED;
+        gSaveContext.buttonStatus[6] = BTN_ENABLED;
+        gSaveContext.buttonStatus[7] = BTN_ENABLED;
+        gSaveContext.buttonStatus[8] = BTN_ENABLED;
     }
 
     osSyncPrintf("kscope->kscp_pos+pt = %d\n", pauseCtx->pageIndex + pt);
@@ -2586,7 +2589,8 @@ void KaleidoScope_InitVertices(GlobalContext* globalCtx, GraphicsContext* gfxCtx
     pauseCtx->cursorVtx[17].v.tc[0] = pauseCtx->cursorVtx[18].v.tc[1] = pauseCtx->cursorVtx[19].v.tc[0] =
         pauseCtx->cursorVtx[19].v.tc[1] = 0x400;
 
-    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, 164 * sizeof(Vtx));
+    // 24 items, 7 "item selected" backgrounds, 14 ammo digits (2 each for 7 items) -- then 4 vertices for each
+    pauseCtx->itemVtx = Graph_Alloc(gfxCtx, (24 + 7 + 14) * 4 * sizeof(Vtx));
 
     for (phi_t4 = 0, phi_t2 = 0, phi_t5 = 58; phi_t4 < 4; phi_t4++, phi_t5 -= 32) {
         for (phi_t1 = -96, phi_t3 = 0; phi_t3 < 6; phi_t3++, phi_t2 += 4, phi_t1 += 32) {
@@ -2625,8 +2629,9 @@ void KaleidoScope_InitVertices(GlobalContext* globalCtx, GraphicsContext* gfxCtx
         }
     }
 
-    for (phi_t3 = 1; phi_t3 < 4; phi_t3++, phi_t2 += 4) {
-        if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE) {
+    for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
+        if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
+            ((phi_t3 < 4) || (CVar_GetS32("gDpadEquips", 0) != 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -2675,7 +2680,7 @@ void KaleidoScope_InitVertices(GlobalContext* globalCtx, GraphicsContext* gfxCtx
         }
     }
 
-    for (phi_t2 = 108, phi_t3 = 0; phi_t3 < 7; phi_t3++) {
+    for (phi_t3 = 0; phi_t3 < 7; phi_t3++) {
         phi_t4 = D_8082B11C[phi_t3];
 
         pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -3068,11 +3073,10 @@ void func_808265BC(GlobalContext* globalCtx) {
 
     if (pauseCtx->unk_1EA == (64 * ZREG(47))) {
         func_80084BF4(globalCtx, 1);
-        gSaveContext.buttonStatus[0] = D_8082AB6C[pauseCtx->pageIndex][0];
-        gSaveContext.buttonStatus[1] = D_8082AB6C[pauseCtx->pageIndex][1];
-        gSaveContext.buttonStatus[2] = D_8082AB6C[pauseCtx->pageIndex][2];
-        gSaveContext.buttonStatus[3] = D_8082AB6C[pauseCtx->pageIndex][3];
-        gSaveContext.buttonStatus[4] = D_8082AB6C[pauseCtx->pageIndex][4];
+
+        for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+            gSaveContext.buttonStatus[buttonIndex] = D_8082AB6C[pauseCtx->pageIndex][buttonIndex];
+        }
 
         pauseCtx->pageIndex = D_8082ABEC[pauseCtx->mode];
 
@@ -3080,7 +3084,11 @@ void func_808265BC(GlobalContext* globalCtx) {
             gSaveContext.buttonStatus[1] = BTN_ENABLED;
             gSaveContext.buttonStatus[2] = BTN_ENABLED;
             gSaveContext.buttonStatus[3] = BTN_ENABLED;
-            gSaveContext.buttonStatus[4] = BTN_ENABLED;
+            // A-Button is already enabled
+            gSaveContext.buttonStatus[5] = BTN_ENABLED;
+            gSaveContext.buttonStatus[6] = BTN_ENABLED;
+            gSaveContext.buttonStatus[7] = BTN_ENABLED;
+            gSaveContext.buttonStatus[8] = BTN_ENABLED;
         }
 
         pauseCtx->unk_1E4 = 0;
@@ -3246,11 +3254,9 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
     switch (pauseCtx->state) {
         case 3:
-            D_808321A8[0] = gSaveContext.buttonStatus[0];
-            D_808321A8[1] = gSaveContext.buttonStatus[1];
-            D_808321A8[2] = gSaveContext.buttonStatus[2];
-            D_808321A8[3] = gSaveContext.buttonStatus[3];
-            D_808321A8[4] = gSaveContext.buttonStatus[4];
+            for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+                sButtonStatusSave[buttonIndex] = gSaveContext.buttonStatus[buttonIndex];
+            }
 
             pauseCtx->cursorX[PAUSE_MAP] = 0;
             pauseCtx->cursorSlot[PAUSE_MAP] = pauseCtx->cursorPoint[PAUSE_MAP] = pauseCtx->dungeonMapSlot =
@@ -3649,6 +3655,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_DISABLED;
                         gSaveContext.unk_13EA = 0;
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
@@ -3695,6 +3703,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_DISABLED;
                         gSaveContext.unk_13EA = 0;
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
@@ -3744,6 +3754,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_DISABLED;
                         gSaveContext.buttonStatus[4] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_DISABLED;
                         gSaveContext.unk_13EA = 0;
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 0;
@@ -3778,6 +3790,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                             Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                             gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                                 gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                            gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                                gSaveContext.buttonStatus[8] = BTN_ENABLED;
                             gSaveContext.unk_13EA = 0;
                             Interface_ChangeAlpha(50);
                             pauseCtx->unk_1EC = 2;
@@ -3812,6 +3826,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         func_800F64E0(0);
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
                         gSaveContext.unk_13EA = 0;
                         Interface_ChangeAlpha(50);
                     }
@@ -3823,6 +3839,8 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                         Interface_SetDoAction(globalCtx, DO_ACTION_NONE);
                         gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
                             gSaveContext.buttonStatus[3] = BTN_ENABLED;
+                        gSaveContext.buttonStatus[5] = gSaveContext.buttonStatus[6] = gSaveContext.buttonStatus[7] =
+                            gSaveContext.buttonStatus[8] = BTN_ENABLED;
                         gSaveContext.unk_13EA = 0;
                         Interface_ChangeAlpha(50);
                         pauseCtx->unk_1EC = 5;
@@ -4212,11 +4230,10 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                     break;
             }
 
-            gSaveContext.buttonStatus[0] = D_808321A8[0];
-            gSaveContext.buttonStatus[1] = D_808321A8[1];
-            gSaveContext.buttonStatus[2] = D_808321A8[2];
-            gSaveContext.buttonStatus[3] = D_808321A8[3];
-            gSaveContext.buttonStatus[4] = D_808321A8[4];
+            for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+                gSaveContext.buttonStatus[buttonIndex] = sButtonStatusSave[buttonIndex];
+            }
+
             interfaceCtx->unk_1FA = interfaceCtx->unk_1FC = 0;
             osSyncPrintf(VT_FGCOL(YELLOW));
             osSyncPrintf("i=%d  LAST_TIME_TYPE=%d\n", i, gSaveContext.unk_13EE);
