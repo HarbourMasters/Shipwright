@@ -2865,7 +2865,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         s16 X_Margins;
         s16 Y_Margins;
         if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {
-            X_Margins = (Left_HUD_Margin*-1);
+            X_Margins = Left_HUD_Margin;
             Y_Margins = (Top_HUD_Margin*-1);
         } else {
             X_Margins = 0;
@@ -3556,10 +3556,6 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
-int16_t gItemIconX[] = { B_BUTTON_X, C_LEFT_BUTTON_X, C_DOWN_BUTTON_X, C_RIGHT_BUTTON_X,
-                                DPAD_UP_X,  DPAD_DOWN_X,     DPAD_LEFT_X,     DPAD_RIGHT_X };
-int16_t gItemIconY[] = { B_BUTTON_Y, C_LEFT_BUTTON_Y, C_DOWN_BUTTON_Y, C_RIGHT_BUTTON_Y,
-                                DPAD_UP_Y,  DPAD_DOWN_Y,     DPAD_LEFT_Y,     DPAD_RIGHT_Y };
 int16_t gItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
 int16_t gItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
 
@@ -3573,6 +3569,8 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
     s16 Y_Margins_CD;
     s16 X_Margins_BtnB;
     s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
     if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
         if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
@@ -3601,13 +3599,69 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
-    const s16 ItemIconPos_ori[4][2] = {
-        { R_ITEM_ICON_X(0)+X_Margins_BtnB, R_ITEM_ICON_Y(0)+Y_Margins_BtnB },
-        { R_ITEM_ICON_X(1)+X_Margins_CL, R_ITEM_ICON_Y(1)+Y_Margins_CL },
-        { R_ITEM_ICON_X(2)+X_Margins_CD, R_ITEM_ICON_Y(2)+Y_Margins_CD },
-        { R_ITEM_ICON_X(3)+X_Margins_CR, R_ITEM_ICON_Y(3)+Y_Margins_CR },
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[8][2] = {
+        { B_BUTTON_X+X_Margins_BtnB, B_BUTTON_Y+Y_Margins_BtnB },
+        { C_LEFT_BUTTON_X+X_Margins_CL, C_LEFT_BUTTON_Y+Y_Margins_CL },
+        { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD },
+        { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y+Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y+Y_Margins_DPad_Items }, 
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y+Y_Margins_DPad_Items }, 
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
     };
-    s16 ItemIconPos[4][2]; //(X,Y)
+    s16 DPad_ItemsOffset[4][2] = {
+        { 8,-9},//Up
+        { 8,21},//Down
+        {-8, 7},//Left
+        {23, 7},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+    s16 ItemIconPos[8][2]; //(X,Y)
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        ItemIconPos[4][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+            ItemIconPos[4][0] = -9999;
+            ItemIconPos[5][0] = -9999;
+            ItemIconPos[6][0] = -9999;
+            ItemIconPos[7][0] = -9999;
+        }
+    } else {
+        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
+        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
+        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
+        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
+        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+    }
     //B Button
     if (CVar_GetS32("gBBtnPosType", 0) != 0) {
         ItemIconPos[0][1] = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB;
@@ -3685,9 +3739,9 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
     gSPWideTextureRectangle(OVERLAY_DISP++, ItemIconPos[button][0] << 2, ItemIconPos[button][1] << 2,
-                        (ItemIconPos[button][0] + R_ITEM_ICON_WIDTH(button)) << 2,
-                        (ItemIconPos[button][1] + R_ITEM_ICON_WIDTH(button)) << 2, G_TX_RENDERTILE, 0, 0,
-                        R_ITEM_ICON_DD(button) << 1, R_ITEM_ICON_DD(button) << 1);
+                        (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
+                        (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
+                        gItemIconDD[button] << 1, gItemIconDD[button] << 1);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
@@ -4117,7 +4171,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
             s16 X_Margins_RC;
             s16 Y_Margins_RC;
             if (CVar_GetS32("gRCUseMargins", 0) != 0) {
-                if (CVar_GetS32("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin*-1;};
+                if (CVar_GetS32("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
                 Y_Margins_RC = Bottom_HUD_Margin;
             } else {
                 X_Margins_RC = 0;
@@ -4130,7 +4184,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
             if (CVar_GetS32("gRCPosType", 0) != 0) {
                 PosY_RC = CVar_GetS32("gRCPosY", 0)+Y_Margins_RC;
                 if (CVar_GetS32("gRCPosType", 0) == 1) {//Anchor Left
-                    if (CVar_GetS32("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin*-1;};
+                    if (CVar_GetS32("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
                     PosX_RC = OTRGetDimensionFromLeftEdge(CVar_GetS32("gRCPosX", 0)+X_Margins_RC);
                 } else if (CVar_GetS32("gRCPosType", 0) == 2) {//Anchor Right
                     if (CVar_GetS32("gRCUseMargins", 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
@@ -4166,7 +4220,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                         s16 X_Margins_SKC;
                         s16 Y_Margins_SKC;
                         if (CVar_GetS32("gSKCUseMargins", 0) != 0) {
-                            if (CVar_GetS32("gSKCPosType", 0) == 0) {X_Margins_SKC = Left_HUD_Margin*-1;};
+                            if (CVar_GetS32("gSKCPosType", 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
                             Y_Margins_SKC = Bottom_HUD_Margin;
                         } else {
                             X_Margins_SKC = 0;
@@ -4179,7 +4233,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                         if (CVar_GetS32("gSKCPosType", 0) != 0) {
                             PosY_SKC = CVar_GetS32("gSKCPosY", 0)+Y_Margins_SKC;
                             if (CVar_GetS32("gSKCPosType", 0) == 1) {//Anchor Left
-                                if (CVar_GetS32("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Left_HUD_Margin*-1;};
+                                if (CVar_GetS32("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
                                 PosX_SKC = OTRGetDimensionFromLeftEdge(CVar_GetS32("gSKCPosX", 0)+X_Margins_SKC);
                             } else if (CVar_GetS32("gSKCPosType", 0) == 2) {//Anchor Right
                                 if (CVar_GetS32("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
@@ -4423,13 +4477,47 @@ void Interface_Draw(GlobalContext* globalCtx) {
                     interfaceCtx->dpadRightAlpha);
 
             // Draw DPad
+            s16 DpadPosX;
+            s16 DpadPosY;
+            s16 X_Margins_Dpad;
+            s16 Y_Margins_Dpad;
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+                if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_Dpad = Right_HUD_Margin;};
+                Y_Margins_Dpad = (Top_HUD_Margin*-1);
+            } else {
+                Y_Margins_Dpad = 0;
+                X_Margins_Dpad = 0;
+            }
+            if (CVar_GetS32("gDPadPosType", 0) != 0) {
+                DpadPosY = CVar_GetS32("gDPadPosY", 0)+Y_Margins_Dpad;
+                if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Left_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_Dpad);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Right_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_Dpad);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+                    DpadPosX = CVar_GetS32("gDPadPosX", 0);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+                    DpadPosX = -9999;
+                }
+            } else {
+                DpadPosX = OTRGetRectDimensionFromRightEdge(DPAD_X+X_Margins_Dpad);
+                DpadPosY = DPAD_Y+Y_Margins_Dpad;
+            }
+
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
+
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCDpadPrimR", 255), CVar_GetS32("gCCDpadPrimG", 255), CVar_GetS32("gCCDpadPrimB", 255), dpadAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
+            }
             gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
                                 G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X) << 2, DPAD_Y << 2,
-                                    (OTRGetRectDimensionFromRightEdge(DPAD_X) + 32) << 2, (DPAD_Y + 32) << 2,
+            gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
+                                    (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
                                     G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
 
             // DPad-Up Button Icon & Ammo Count
@@ -4659,7 +4747,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 if (CVar_GetS32("gASPosType", 0) != 0) {
                     ArcheryPos_Y = CVar_GetS32("gASPosY", 0);
                     if (CVar_GetS32("gASPosType", 0) == 1) {//Anchor Left
-                        if (CVar_GetS32("gASUseMargins", 0) != 0) {X_Margins_Archery = Left_HUD_Margin*-1;};
+                        if (CVar_GetS32("gASUseMargins", 0) != 0) {X_Margins_Archery = Left_HUD_Margin;};
                         ArcheryPos_X = OTRGetRectDimensionFromLeftEdge(CVar_GetS32("gASPosX", 0)+X_Margins_Archery);
                     } else if (CVar_GetS32("gASPosType", 0) == 2) {//Anchor Right
                         if (CVar_GetS32("gASUseMargins", 0) != 0) {X_Margins_Archery = Right_HUD_Margin;};
@@ -5086,7 +5174,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
                 s32 X_Margins_Timer;
                 if (CVar_GetS32("gTimersUseMargins", 0) != 0) {
-                    if (CVar_GetS32("gTimersPosType", 0) == 0) {X_Margins_Timer = Left_HUD_Margin*-1;};
+                    if (CVar_GetS32("gTimersPosType", 0) == 0) {X_Margins_Timer = Left_HUD_Margin;};
                 } else {
                     X_Margins_Timer = 0;
                 }
@@ -5095,7 +5183,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 if (CVar_GetS32("gTimersPosType", 0) != 0) {
                     svar2 = (CVar_GetS32("gTimersPosY", 0));
                     if (CVar_GetS32("gTimersPosType", 0) == 1) {//Anchor Left
-                        if (CVar_GetS32("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Left_HUD_Margin*-1;};
+                        if (CVar_GetS32("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Left_HUD_Margin;};
                         svar5 = OTRGetRectDimensionFromLeftEdge(CVar_GetS32("gTimersPosX", 0)+X_Margins_Timer);
                     } else if (CVar_GetS32("gTimersPosType", 0) == 2) {//Anchor Right
                         if (CVar_GetS32("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Right_HUD_Margin;};

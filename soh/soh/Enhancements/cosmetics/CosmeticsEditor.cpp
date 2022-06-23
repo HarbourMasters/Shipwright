@@ -68,10 +68,9 @@ ImVec4 nl_orb_colenv;
 ImVec4 dgn_minimap_colors;
 ImVec4 cp_minimap_colors;
 ImVec4 le_minimap_colors;
-ImVec4 menu_save_colors;
-ImVec4 menu_gameover_colors;
 ImVec4 tc_ou_colors;
 ImVec4 tc_bu_colors;
+ImVec4 dpad_colors;
 ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
@@ -373,26 +372,6 @@ void Draw_Placements(){
         SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", 0, ImGui::GetWindowSize().x/2+70, "");
         SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
     }
-
-    if (ImGui::CollapsingHeader("DPad items position")) {
-        SohImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
-        SohImGui::Tooltip("This will use original intended elements position.");
-        SohImGui::EnhancementRadioButton("Original position", "gDPadPosType", 0);
-        SohImGui::Tooltip("This will use original intended elements position.");
-        SohImGui::EnhancementRadioButton("Anchor to the left", "gDPadPosType", 1);
-        SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-        SohImGui::EnhancementRadioButton("Anchor to the right", "gDPadPosType", 2);
-        SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-        SohImGui::EnhancementRadioButton("No anchors", "gDPadPosType", 3);
-        SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-        SohImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
-        SohImGui::Tooltip("This will make your elements hidden");
-        SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowSize().y/2, "");
-        SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-        SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", 0, ImGui::GetWindowSize().x/2+70, "");
-        SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-    }
-
     if (ImGui::CollapsingHeader("C Button Down position")) {
         SohImGui::EnhancementCheckbox("C Button Down use margins", "gCBtnDUseMargins");
         SohImGui::Tooltip("This will use original intended elements position.");
@@ -445,6 +424,24 @@ void Draw_Placements(){
         SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowSize().y/3, "");
         SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
         SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", 0, ImGui::GetWindowSize().x/2+70, "");
+        SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+    }
+    if (ImGui::CollapsingHeader("DPad items position")) {
+        SohImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
+        SohImGui::Tooltip("This will use original intended elements position.");
+        SohImGui::EnhancementRadioButton("Original position", "gDPadPosType", 0);
+        SohImGui::Tooltip("This will use original intended elements position.");
+        SohImGui::EnhancementRadioButton("Anchor to the left", "gDPadPosType", 1);
+        SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
+        SohImGui::EnhancementRadioButton("Anchor to the right", "gDPadPosType", 2);
+        SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
+        SohImGui::EnhancementRadioButton("No anchors", "gDPadPosType", 3);
+        SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+        SohImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
+        SohImGui::Tooltip("This will make your elements hidden");
+        SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowSize().y/2, "");
+        SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+        SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", 0, ImGui::GetWindowSize().x/2+70, "");
         SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
     }
     if (ImGui::CollapsingHeader("Minimap position")) {
@@ -638,6 +635,13 @@ void Draw_HUDButtons(){
         SohImGui::Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
         ImGui::EndTable();
     }
+    if (ImGui::BeginTable("tableDpadHud", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+        ImGui::TableSetupColumn("DPad", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        Table_InitHeader();
+        SohImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
+        SohImGui::Tooltip("DPad background color, should be white for default value");
+        ImGui::EndTable();
+    }
 }
 void Draw_General(){
     if (ImGui::BeginTable("tableScheme", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
@@ -704,13 +708,13 @@ void Draw_General(){
         ImGui::EndTable();
     }
     if (ImGui::BeginTable("tableTitleCards", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-        ImGui::TableSetupColumn("Overworld colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Bosses colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Title cards Overworld", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Title cards Bosses", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
-        SohImGui::EnhancementColor("Unified colors select", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
+        SohImGui::EnhancementColor("Main color", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
         SohImGui::Tooltip("Affect all the overworld title cards color, white by default.");
         Table_NextCol();
-        SohImGui::EnhancementColor("Unified colors select", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
+        SohImGui::EnhancementColor("Main color", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
         SohImGui::Tooltip("Affect all the bosses title cards color, white by default.");
         ImGui::EndTable();
     }

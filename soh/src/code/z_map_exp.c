@@ -996,7 +996,7 @@ void Map_Update(GlobalContext* globalCtx) {
     s16 i;
 
     Top_MM_Margin = CVar_GetS32("gHUDMargin_T", 0);
-    Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0)*-1;
+    Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0);
     Right_MM_Margin = CVar_GetS32("gHUDMargin_R", 0);
     Bottom_MM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 

@@ -109,7 +109,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, interfaceCtx->minimapAlpha);
 
         s32 Top_MC_Margin = CVar_GetS32("gHUDMargin_T", 0);
-        s32 Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0)*-1;
+        s32 Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0);
         s32 Right_MC_Margin = CVar_GetS32("gHUDMargin_R", 0);
         s32 Bottom_MC_Margin = CVar_GetS32("gHUDMargin_B", 0);
 

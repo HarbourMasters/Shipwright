@@ -415,7 +415,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s16 X_Margins;
     s16 Y_Margins;
     if (CVar_GetS32("gHeartsUseMargins", 0) != 0) {
-        X_Margins = (Left_LM_Margin*-1);
+        X_Margins = Left_LM_Margin;
         Y_Margins = (Top_LM_Margin*-1);
     } else {
         X_Margins = 0;

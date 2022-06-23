@@ -70,7 +70,7 @@ namespace SohImGui {
         "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
         "gCCHeartsPrim", "gDDCCHeartsPrim", "gCCDDHeartsPrim",
         "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
-        "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim",
+        "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
         "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
         "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
         "gCCRupeePrim", "gCCKeysPrim", "gDF_Col", "gDF_Env",
