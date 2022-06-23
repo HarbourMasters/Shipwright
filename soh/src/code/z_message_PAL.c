@@ -1985,7 +1985,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
     static void* sOcarinaNoteTextures[] = {
         gOcarinaATex, gOcarinaCDownTex, gOcarinaCRightTex, gOcarinaCLeftTex, gOcarinaCUpTex,
     };
-    s16 sOcarinaNoteAPrimColors[][3] = {};
+    s16 sOcarinaNoteAPrimColors[2][3];
     s16 sOcarinaNoteAPrimColors_GCN[][3] = {
         { 80, 255, 150 },
         { 100, 255, 200 },
