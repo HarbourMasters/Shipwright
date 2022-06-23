@@ -37,7 +37,6 @@ using native build (not docker)
 
 ~~~
 cd ShipWright
-git clone https://github.com/ladislav-zezula/StormLib external/StormLib
 git clone https://github.com/Perlmint/glew-cmake.git external/glew
 ~~~
 
