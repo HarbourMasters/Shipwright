@@ -43,6 +43,7 @@ SOURCES		:=
 DATA		:=
 INCLUDES	:=	\
 		../ZAPDTR/ZAPDUtils \
+		../StormLib/src \
 		libultraship/Lib/Fast3D/U64 \
 		libultraship/Lib/spdlog \
 		libultraship/Lib/spdlog/include \
