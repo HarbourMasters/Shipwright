@@ -516,7 +516,11 @@ void func_809FEB08(EnDu* this, GlobalContext* globalCtx) {
         EnDu_SetupAction(this, func_809FE3C0);
         return;
     }
-    if (CUR_UPG_VALUE(UPG_STRENGTH) <= 0) {
+    if ((!gSaveContext.n64ddFlag && CUR_UPG_VALUE(UPG_STRENGTH) <= 0) ||
+         (gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1E))) {
+        if (gSaveContext.n64ddFlag) {
+            Flags_SetTreasure(globalCtx, 0x1E);
+        }
         this->actor.textId = 0x301C;
         EnDu_SetupAction(this, func_809FEC14);
     } else {
