@@ -289,7 +289,7 @@ set(TEST_SRC_FILES
            test/StormTest.cpp
 )
 
-add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI)
+add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI -D_POSIX_C_SOURCE=200809L)
 set(LINK_LIBS)
 
 find_package(ZLIB)

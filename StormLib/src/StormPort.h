@@ -196,7 +196,6 @@
   #define STORMLIB_MAC                              // Use Mac compatible code
   #define STORMLIB_SWITCH
   #define STORMLIB_PLATFORM_DEFINED
-  extern "C" int ftruncate(int, off_t);
 
 #endif
 
