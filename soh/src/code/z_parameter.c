@@ -3187,26 +3187,25 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3071);
 }
 
+int16_t gItemIconX[] = { B_BUTTON_X, C_LEFT_BUTTON_X, C_DOWN_BUTTON_X, C_RIGHT_BUTTON_X,
+                                DPAD_UP_X,  DPAD_DOWN_X,     DPAD_LEFT_X,     DPAD_RIGHT_X };
+int16_t gItemIconY[] = { B_BUTTON_Y, C_LEFT_BUTTON_Y, C_DOWN_BUTTON_Y, C_RIGHT_BUTTON_Y,
+                                DPAD_UP_Y,  DPAD_DOWN_Y,     DPAD_LEFT_Y,     DPAD_RIGHT_Y };
+int16_t gItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
+int16_t gItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
+
 void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 button) {
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3079);
 
     gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    // These are moved from registers since there was not room for the dpad data. They are static anyways.
-    static int16_t sItemIconX[] = { B_BUTTON_X,           C_LEFT_BUTTON_X,      C_DOWN_BUTTON_X,      C_RIGHT_BUTTON_X,
-                                    DPAD_UP_X,  DPAD_DOWN_X,     DPAD_LEFT_X,     DPAD_RIGHT_X };
-    static int16_t sItemIconY[] = { B_BUTTON_Y,           C_LEFT_BUTTON_Y,      C_DOWN_BUTTON_Y,      C_RIGHT_BUTTON_Y,
-                                    DPAD_UP_Y,  DPAD_DOWN_Y,     DPAD_LEFT_Y,     DPAD_RIGHT_Y };
-    static int16_t sItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
-    static int16_t sItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
-
     gSPWideTextureRectangle(
-        OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(sItemIconX[button] + Right_HUD_Margin) << 2,
-        sItemIconY[button] + (Top_HUD_Margin * -1) << 2,
-        (OTRGetRectDimensionFromRightEdge(sItemIconX[button] + Right_HUD_Margin) + sItemIconWidth[button]) << 2,
-        (sItemIconY[button] + (Top_HUD_Margin * -1) + sItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
-        sItemIconDD[button] << 1, sItemIconDD[button] << 1);
+        OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(gItemIconX[button] + Right_HUD_Margin) << 2,
+        gItemIconY[button] + (Top_HUD_Margin * -1) << 2,
+        (OTRGetRectDimensionFromRightEdge(gItemIconX[button] + Right_HUD_Margin) + gItemIconWidth[button]) << 2,
+        (gItemIconY[button] + (Top_HUD_Margin * -1) + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
+        gItemIconDD[button] << 1, gItemIconDD[button] << 1);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3094);
 }
@@ -3215,17 +3214,16 @@ const char* _gAmmoDigit0Tex[] =
 {
     gAmmoDigit0Tex, gAmmoDigit1Tex, gAmmoDigit2Tex, gAmmoDigit3Tex, gAmmoDigit4Tex,
     gAmmoDigit5Tex, gAmmoDigit6Tex, gAmmoDigit7Tex, gAmmoDigit8Tex, gAmmoDigit9Tex,
-    gUnusedAmmoDigitHalfTex
-};
+    gUnusedAmmoDigitHalfTex };
+
+static int16_t gItemAmmoX[] = { B_BUTTON_X + 2, C_LEFT_BUTTON_X + 1, C_DOWN_BUTTON_X + 1, C_RIGHT_BUTTON_X + 1,
+                                DPAD_UP_X,      DPAD_DOWN_X,         DPAD_LEFT_X,         DPAD_RIGHT_X };
+static int16_t gItemAmmoY[] = { B_BUTTON_Y + 18, C_LEFT_BUTTON_Y + 17, C_DOWN_BUTTON_Y + 17, C_RIGHT_BUTTON_Y + 17,
+                                DPAD_UP_Y + 11,  DPAD_DOWN_Y + 11,     DPAD_LEFT_Y + 11,     DPAD_RIGHT_Y + 11 };
 
 void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
     s16 i;
     s16 ammo;
-
-    static int16_t sItemAmmoX[] = { B_BUTTON_X + 2, C_LEFT_BUTTON_X + 1, C_DOWN_BUTTON_X + 1, C_RIGHT_BUTTON_X + 1,
-                                    DPAD_UP_X,  DPAD_DOWN_X,     DPAD_LEFT_X,     DPAD_RIGHT_X };
-    static int16_t sItemAmmoY[] = { B_BUTTON_Y + 18, C_LEFT_BUTTON_Y + 17, C_DOWN_BUTTON_Y + 17, C_RIGHT_BUTTON_Y + 17,
-                                    DPAD_UP_Y + 11,  DPAD_DOWN_Y + 11,     DPAD_LEFT_Y + 11,     DPAD_RIGHT_Y + 11 };
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3105);
 
@@ -3271,13 +3269,13 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
 
         if (i != 0) {
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8,
-                                          OTRGetRectDimensionFromRightEdge(sItemAmmoX[button] + Right_HUD_Margin),
-                                          sItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
+                                          OTRGetRectDimensionFromRightEdge(gItemAmmoX[button] + Right_HUD_Margin),
+                                          gItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
         }
 
         OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8,
-                                      OTRGetRectDimensionFromRightEdge(sItemAmmoX[button] + Right_HUD_Margin) + 6,
-                                      sItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
+                                      OTRGetRectDimensionFromRightEdge(gItemAmmoX[button] + Right_HUD_Margin) + 6,
+                                      gItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3158);
