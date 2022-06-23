@@ -1089,7 +1089,7 @@ static LinkAnimationHeader* D_80854378[] = {
 static u8 D_80854380[2] = { 0x18, 0x19 };
 static u8 D_80854384[2] = { 0x1A, 0x1B };
 
-static u16 D_80854388[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT };
+static u16 D_80854388[] = { BTN_B, BTN_CLEFT, BTN_CDOWN, BTN_CRIGHT, BTN_DUP, BTN_DDOWN, BTN_DLEFT, BTN_DRIGHT };
 
 static u8 sMagicSpellCosts[] = { 12, 24, 24, 12, 24, 12 };
 
@@ -1894,7 +1894,7 @@ s32 func_80833C98(s32 item1, s32 actionParam) {
 }
 
 s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
-    if (index >= 4) {
+    if (index >= ((CVar_GetS32("gDpadEquips", 0) != 0) ? 8 : 4)) {
         return ITEM_NONE;
     }
     else if (globalCtx->bombchuBowlingStatus != 0) {
@@ -1909,8 +1909,17 @@ s32 func_80833CDC(GlobalContext* globalCtx, s32 index) {
     else if (index == 2) {
         return C_BTN_ITEM(1);
     }
-    else {
+    else if (index == 3) {
         return C_BTN_ITEM(2);
+    }
+    else if (index == 4) {
+        return DPAD_ITEM(0);
+    } else if (index == 5) {
+        return DPAD_ITEM(1);
+    } else if (index == 6) {
+        return DPAD_ITEM(2);
+    } else if (index == 7) {
+        return DPAD_ITEM(3);
     }
 }
 
@@ -1922,16 +1931,29 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
     if (this->currentMask != PLAYER_MASK_NONE) {
         if (CVar_GetS32("gMMBunnyHood", 0) != 0) {
             s32 maskItem = this->currentMask - PLAYER_MASK_KEATON + ITEM_MASK_KEATON;
+            bool hasOnDpad = false;
+            if (CVar_GetS32("gDpadEquips", 0) != 0) {
+                for (int buttonIndex = 4; buttonIndex < 8; buttonIndex++) {
+                    hasOnDpad |= gSaveContext.equips.buttonItems[buttonIndex] == maskItem;
+                }
+            }
 
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
-                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem) {
+                gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
+                !hasOnDpad) {
                 this->currentMask = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
             maskActionParam = this->currentMask - 1 + PLAYER_AP_MASK_KEATON;
+            bool hasOnDpad = false;
+            if (CVar_GetS32("gDpadEquips", 0) != 0) {
+                for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
+                    hasOnDpad |= func_80833C98(DPAD_ITEM(buttonIndex), maskActionParam);
+                }
+            }
             if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-                !func_80833C98(C_BTN_ITEM(2), maskActionParam)) {
+                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && hasOnDpad) {
                 this->currentMask = PLAYER_MASK_NONE;
             }
         }
@@ -1939,8 +1961,14 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
 
     if (!(this->stateFlags1 & (PLAYER_STATE1_11 | PLAYER_STATE1_29)) && !func_8008F128(this)) {
         if (this->itemActionParam >= PLAYER_AP_FISHING_POLE) {
+            bool hasOnDpad = false;
+            if (CVar_GetS32("gDpadEquips", 0) != 0) {
+                for (int buttonIndex = 0; buttonIndex < 4; buttonIndex++) {
+                    hasOnDpad |= func_80833C50(this, DPAD_ITEM(buttonIndex));
+                }
+            }
             if (!func_80833C50(this, B_BTN_ITEM) && !func_80833C50(this, C_BTN_ITEM(0)) &&
-                !func_80833C50(this, C_BTN_ITEM(1)) && !func_80833C50(this, C_BTN_ITEM(2))) {
+                !func_80833C50(this, C_BTN_ITEM(1)) && !func_80833C50(this, C_BTN_ITEM(2)) && !hasOnDpad) {
                 func_80835F44(globalCtx, this, ITEM_NONE);
                 return;
             }
@@ -2328,9 +2356,12 @@ s32 func_80834E44(GlobalContext* globalCtx) {
 }
 
 s32 func_80834E7C(GlobalContext* globalCtx) {
+    u16 buttonsToCheck = BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+    }
     return (globalCtx->shootingGalleryStatus != 0) &&
-        ((globalCtx->shootingGalleryStatus < 0) ||
-            CHECK_BTN_ANY(sControlInput->cur.button, BTN_A | BTN_B | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN));
+        ((globalCtx->shootingGalleryStatus < 0) || CHECK_BTN_ANY(sControlInput->cur.button, buttonsToCheck));
 }
 
 s32 func_80834EB8(Player* this, GlobalContext* globalCtx) {
@@ -6337,8 +6368,12 @@ s32 func_8083EAF0(Player* this, Actor* actor) {
 }
 
 s32 func_8083EB44(Player* this, GlobalContext* globalCtx) {
+    u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+    }
     if ((this->stateFlags1 & PLAYER_STATE1_11) && (this->heldActor != NULL) &&
-        CHECK_BTN_ANY(sControlInput->press.button, BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN)) {
+        CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)) {
         if (!func_80835644(globalCtx, this, this->heldActor)) {
             if (!func_8083EAF0(this, this->heldActor)) {
                 func_80835C58(globalCtx, this, func_808464B0, 1);
@@ -8407,8 +8442,12 @@ void func_8084411C(Player* this, GlobalContext* globalCtx) {
         if (this->stateFlags1 & PLAYER_STATE1_11) {
             Actor* heldActor = this->heldActor;
 
+            u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+            if (CVar_GetS32("gDpadEquips", 0) != 0) {
+                buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+            }
             if (!func_80835644(globalCtx, this, heldActor) && (heldActor->id == ACTOR_EN_NIW) &&
-                CHECK_BTN_ANY(sControlInput->press.button, BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN)) {
+                CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)) {
                 func_8084409C(globalCtx, this, this->linearVelocity + 2.0f, this->actor.velocity.y + 2.0f);
             }
         }
@@ -9206,6 +9245,10 @@ void func_80846260(Player* this, GlobalContext* globalCtx) {
         return;
     }
 
+    u16 buttonsToCheck = BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+    }
     if (this->unk_850 == 0) {
         if (LinkAnimation_OnFrame(&this->skelAnime, 27.0f)) {
             Actor* interactRangeActor = this->interactRangeActor;
@@ -9221,8 +9264,7 @@ void func_80846260(Player* this, GlobalContext* globalCtx) {
             return;
         }
 
-    }
-    else if (CHECK_BTN_ANY(sControlInput->press.button, BTN_A | BTN_B | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN)) {
+    } else if (CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)) {
         func_80835C58(globalCtx, this, func_80846358, 1);
         func_80832264(globalCtx, this, &gPlayerAnim_0032B8);
     }
@@ -11304,13 +11346,16 @@ void func_8084B1D8(Player* this, GlobalContext* globalCtx) {
         func_80836670(this, globalCtx);
     }
 
+    u16 buttonsToCheck = BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN;
+    if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+    }
     if ((this->csMode != 0) || (this->unk_6AD == 0) || (this->unk_6AD >= 4) || func_80833B54(this) ||
         (this->unk_664 != NULL) || !func_8083AD4C(globalCtx, this) ||
         (((this->unk_6AD == 2) && (CHECK_BTN_ANY(sControlInput->press.button, BTN_A | BTN_B | BTN_R) ||
             func_80833B2C(this) || (!func_8002DD78(this) && !func_808334B4(this)))) ||
             ((this->unk_6AD == 1) &&
-                CHECK_BTN_ANY(sControlInput->press.button,
-                    BTN_A | BTN_B | BTN_R | BTN_CUP | BTN_CLEFT | BTN_CRIGHT | BTN_CDOWN)))) {
+                CHECK_BTN_ANY(sControlInput->press.button, buttonsToCheck)))) {
         func_8083C148(this, globalCtx);
         func_80078884(NA_SE_SY_CAMERA_ZOOM_UP);
     }

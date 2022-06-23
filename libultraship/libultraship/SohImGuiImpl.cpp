@@ -779,9 +779,15 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
+                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
+                // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                if(CVar_GetS32("gDpadEquips", 0) != 0) {
+                    EnhancementCheckbox("Modify D-pad Equips", "gModifyDpadEquips");
+                }
 
 		ImGui::Separator();
 
@@ -906,8 +912,6 @@ namespace SohImGui {
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
-                    EnhancementCheckbox("DPad Item Shortcuts", "gDPadShortcuts");
-                    Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
                     if (ImGui::BeginMenu("Fishing")) {
                         EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                         Tooltip("All fish will be caught instantly");
