@@ -298,18 +298,22 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         sBeatingHeartsDDEnv[0] = (u8)(rFactor + HeartDDInner[0]) & 0xFF;
         sBeatingHeartsDDEnv[1] = (u8)(gFactor + HeartDDInner[1]) & 0xFF;
         sBeatingHeartsDDEnv[2] = (u8)(bFactor + HeartDDInner[2]) & 0xFF;
-    } else {
-        // sHeartsDDPrim[2][0] = HEARTS_PRIM_R;
-        // sHeartsDDPrim[2][1] = HEARTS_PRIM_G;
-        // sHeartsDDPrim[2][2] = HEARTS_PRIM_B;
+    } else {    
+        sHeartsDDPrim[0][0] = HEARTS_DD_PRIM_R;
+        sHeartsDDPrim[0][1] = HEARTS_DD_PRIM_G;
+        sHeartsDDPrim[0][2] = HEARTS_DD_PRIM_B;
 
-        sHeartsDDPrim[1][0] = HEARTS_DD_PRIM_R;
-        sHeartsDDPrim[1][1] = HEARTS_DD_PRIM_G;
-        sHeartsDDPrim[1][2] = HEARTS_DD_PRIM_B;
+        sHeartsDDEnv[0][0] = HEARTS_DD_ENV_R;
+        sHeartsDDEnv[0][1] = HEARTS_DD_ENV_G;
+        sHeartsDDEnv[0][2] = HEARTS_DD_ENV_B;
 
-        sHeartsDDEnv[1][0] = HEARTS_PRIM_R;
-        sHeartsDDEnv[1][1] = HEARTS_PRIM_G;
-        sHeartsDDEnv[1][2] = HEARTS_PRIM_B;
+        sHeartsDDPrim[1][0] = sHeartsDDPrimColors[ddType][0];
+        sHeartsDDPrim[1][1] = sHeartsDDPrimColors[ddType][1];
+        sHeartsDDPrim[1][2] = sHeartsDDPrimColors[ddType][2];
+
+        sHeartsDDEnv[1][0] = sHeartsDDEnvColors[ddType][0];
+        sHeartsDDEnv[1][1] = sHeartsDDEnvColors[ddType][1];
+        sHeartsDDEnv[1][2] = sHeartsDDEnvColors[ddType][2];
 
         rFactor = sHeartsDDPrimFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
@@ -323,9 +327,9 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         gFactor = sHeartsDDEnvFactors[ddType][1] * ddFactor;
         bFactor = sHeartsDDEnvFactors[ddType][2] * ddFactor;
 
-        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HEARTS_PRIM_R) & 0xFF;
-        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HEARTS_PRIM_G) & 0xFF;
-        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HEARTS_PRIM_B) & 0xFF;
+        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HEARTS_DD_ENV_R) & 0xFF;
+        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HEARTS_DD_ENV_G) & 0xFF;
+        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HEARTS_DD_ENV_B) & 0xFF;
     }
 
 }
