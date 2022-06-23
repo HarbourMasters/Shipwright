@@ -2011,7 +2011,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
         { 10, 10, 10 },
         { 50, 255, 50 },
     };
-    s16 sOcarinaNoteCPrimColors[][3] = {};
+    s16 sOcarinaNoteCPrimColors[2][3];
     s16 sOcarinaNoteCPrimColors_GCN[][3] = {
         { 255, 255, 50 },
         { 255, 255, 180 },
