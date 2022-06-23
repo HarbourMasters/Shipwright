@@ -801,8 +801,9 @@ LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*
 STATIC_LIBS := $(SOH_TOP_DIR)/libultraship/lib/libultraship.a \
 			$(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils/lib/libZAPDUtils.a \
 			$(SOH_TOP_DIR)/ZAPDTR/ZAPDUtils/lib/libZAPDUtils.a \
-			$(SOH_TOP_DIR)/StormLib/nxbuild/libstorm.a
-LIBS	:= -lstorm -lultraship -lZAPDUtils -lz -lbz2 -lnx -lglad -lglapi -ldrm_nouveau -lm `sdl2-config --libs`
+			$(SOH_TOP_DIR)/StormLib/nxbuild/libstorm.a \
+
+LIBS    := -L$(SOH_TOP_DIR)/StormLib/nxbuild/ -lultraship -lZAPDUtils -lstorm -lz -lbz2 -lnx -lglad -lglapi -ldrm_nouveau -lm `sdl2-config --libs`
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
