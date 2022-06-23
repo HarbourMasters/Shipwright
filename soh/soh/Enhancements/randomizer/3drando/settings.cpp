@@ -2494,6 +2494,7 @@ namespace Settings {
       skipChildZelda = true;
       ShuffleWeirdEgg.SetSelectedIndex(0);
     } else {
+      skipChildZelda = false;
       ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
     }
     
