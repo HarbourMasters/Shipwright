@@ -3,7 +3,6 @@
 #include "textures/parameter_static/parameter_static.h"
 #include "textures/do_action_static/do_action_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
-#include <soh/Enhancements/dpad.h>
 
 #ifdef _MSC_VER
 #include <stdlib.h>
@@ -3658,7 +3657,6 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             Interface_DrawItemButtons(globalCtx);
-            draw_dpad();
         }
 
         gDPPipeSync(OVERLAY_DISP++);
@@ -4769,6 +4767,4 @@ void Interface_Update(GlobalContext* globalCtx) {
             gSaveContext.sunsSongState = SUNSSONG_SPECIAL;
         }
     }
-
-    handle_dpad();
 }

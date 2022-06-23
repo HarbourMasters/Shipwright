@@ -2304,9 +2304,6 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h">
       <Filter>Header Files</Filter>
     </ClCompile>
-    <ClCompile Include="soh\Enhancements\dpad.c">
-      <Filter>Header Files\soh\Enhancements</Filter>
-    </ClCompile>
     <ClCompile Include="soh\Enhancements\gfx.c">
       <Filter>Header Files\soh\Enhancements</Filter>
     </ClCompile>
@@ -3991,9 +3988,6 @@
     </ClInclude>
     <ClInclude Include="randomizerTypes.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="soh\Enhancements\dpad.h">
-      <Filter>Header Files\soh\Enhancements</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\gfx.h">
       <Filter>Header Files\soh\Enhancements</Filter>

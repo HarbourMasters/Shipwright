@@ -909,8 +909,6 @@ namespace SohImGui {
                     EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
-                    EnhancementCheckbox("DPad Item Shortcuts", "gDPadShortcuts");
-                    Tooltip("Allows toggling boots and using the Ocarina from the DPad.");
                     if (ImGui::BeginMenu("Fishing")) {
                         EnhancementCheckbox("Instant Fishing", "gInstantFishing");
                         Tooltip("All fish will be caught instantly");
