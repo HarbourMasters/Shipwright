@@ -135,7 +135,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_definitions(${PROJECT_NAME} PRIVATE
 		"$<$<CONFIG:Debug>:"
 				"_DEBUG"
