@@ -324,10 +324,17 @@ static void WriteSettings(const bool printAll = false) {
   std::vector<Menu*> allMenus = Settings::GetAllOptionMenus();
 
   for (const Menu* menu : allMenus) {
+    if (menu->name == "Cosmetic Settings" ||
+        menu->name == "Ingame Defaults" ||
+        menu->name == "Item Usability Settings" ||
+        menu->name == "Multiplayer Settings" ||
+        menu->name == "Timesaver Settings") continue;
+
     //This is a menu of settings, write them
     if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
       for (const Option* setting : *menu->settingsList) {
-        jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
+        std::string settingName = menu->name + ":" + setting->GetName();
+        jsonData["settings"][settingName] = setting->GetSelectedOptionText();
       }
 
 
