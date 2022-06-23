@@ -190,11 +190,6 @@ extern string_view bigPoeTargetCountDesc;
 
 extern string_view numRequiredCuccosDesc;
 
-extern string_view minChildFishWeightDesc;
-extern string_view minAdultFishWeightDesc;
-extern string_view instantFishingDesc;
-extern string_view guaranteeFishingBiteDesc;
-
 extern string_view kingZoraSpeedFast;
 extern string_view kingZoraSpeedVanilla;
 extern string_view kingZoraSpeedRandom;

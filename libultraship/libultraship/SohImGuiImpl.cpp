@@ -919,7 +919,7 @@ namespace SohImGui {
                         Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
                         EnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10);
                         Tooltip("The minimum weight for the unique fishing reward as a child");
-                        EnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 1, 13, "", 13);
+                        EnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13);
                         Tooltip("The minimum weight for the unique fishing reward as an adult");
                         ImGui::EndMenu();
                     }
