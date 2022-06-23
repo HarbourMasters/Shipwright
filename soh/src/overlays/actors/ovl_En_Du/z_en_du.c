@@ -344,8 +344,10 @@ void func_809FE4A4(EnDu* this, GlobalContext* globalCtx) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
         EnDu_SetupAction(this, func_809FE3C0);
     } else if (globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_06) {
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
-        gSaveContext.cutsceneTrigger = 1;
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gGoronCityDaruniaWrongCs);
+            gSaveContext.cutsceneTrigger = 1;
+        }
         this->unk_1E8 = 1;
         EnDu_SetupAction(this, func_809FE890);
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
