@@ -776,9 +776,12 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
+                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
+                // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
 
 		ImGui::Separator();
 

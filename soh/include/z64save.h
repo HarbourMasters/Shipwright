@@ -5,8 +5,8 @@
 #include "z64math.h"
 
 typedef struct {
-    /* 0x00 */ u8 buttonItems[4];
-    /* 0x04 */ u8 cButtonSlots[3];
+    /* 0x00 */ u8 buttonItems[8];
+    /* 0x04 */ u8 cButtonSlots[7];
     /* 0x08 */ u16 equipment;
 } ItemEquips; // size = 0x0A
 
@@ -125,7 +125,7 @@ typedef struct {
     /* 0x13DA */ s16 timerY[2];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
-    /* 0x13E2 */ u8 buttonStatus[5];
+    /* 0x13E2 */ u8 buttonStatus[9];
     /* 0x13E7 */ u8 unk_13E7; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
