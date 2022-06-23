@@ -648,6 +648,18 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
+                if (!not_acquired && CVar_GetS32("gUseTunicsCol",0) && itemId == ITEM_TUNIC_KOKIRI) {
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, CVar_GetS32("gTunic_Kokiri_R",0), CVar_GetS32("gTunic_Kokiri_G",0), CVar_GetS32("gTunic_Kokiri_B",0), 255);
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                    itemId += 2;
+                } else if (!not_acquired && CVar_GetS32("gUseTunicsCol",0) && itemId == ITEM_TUNIC_GORON) {
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, CVar_GetS32("gTunic_Goron_R",0), CVar_GetS32("gTunic_Goron_G",0), CVar_GetS32("gTunic_Goron_B",0), 255);
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                    itemId += 1;
+                } else if (!not_acquired && CVar_GetS32("gUseTunicsCol",0) && itemId == ITEM_TUNIC_ZORA) {
+                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, CVar_GetS32("gTunic_Zora_R",0), CVar_GetS32("gTunic_Zora_G",0), CVar_GetS32("gTunic_Zora_B",0), 255);
+                    gsSPGrayscale(POLY_KAL_DISP++, true);
+                }
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
                 gsSPGrayscale(POLY_KAL_DISP++, false);
             }

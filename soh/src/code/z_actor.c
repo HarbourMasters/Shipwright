@@ -803,7 +803,6 @@ void TitleCard_InitBossName(GlobalContext* globalCtx, TitleCardContext* titleCtx
 void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCtx, void* texture, s32 x, s32 y,
                              s32 width, s32 height, s32 delay) {
     SceneTableEntry* loadedScene = globalCtx->loadedScene;
-
   //  size_t size = loadedScene->titleFile.vromEnd - loadedScene->titleFile.vromStart;
     switch (globalCtx->sceneNum) {
         case SCENE_YDAN:
@@ -1020,13 +1019,32 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
+    s16* TitleCard_Colors[3] = {255,255,255};
+        if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
+            TitleCard_Colors[0] = CVar_GetS32("gCCTC_B_U_PrimR", 255);
+            TitleCard_Colors[1] = CVar_GetS32("gCCTC_B_U_PrimG", 255);
+            TitleCard_Colors[2] = CVar_GetS32("gCCTC_B_U_PrimB", 255);
+        } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
+            TitleCard_Colors[0] = CVar_GetS32("gCCTC_OW_U_PrimR", 255);
+            TitleCard_Colors[1] = CVar_GetS32("gCCTC_OW_U_PrimG", 255);
+            TitleCard_Colors[2] = CVar_GetS32("gCCTC_OW_U_PrimB", 255);
+        } else {
+            TitleCard_Colors[0] = 255;
+            TitleCard_Colors[1] = 255;
+            TitleCard_Colors[2] = 255;
+        }
+
     if (DECR(titleCtx->delayTimer) == 0) {
         if (DECR(titleCtx->durationTimer) == 0) {
             Math_StepToS(&titleCtx->alpha, 0, 30);
-            Math_StepToS(&titleCtx->intensity, 0, 70);
+            Math_StepToS(&titleCtx->intensityR, 0, 70);
+            Math_StepToS(&titleCtx->intensityG, 0, 70);
+            Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensity, 255, 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors[0], 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors[1], 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors[2], 20);
         }
     }
 }
@@ -1046,11 +1064,33 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
     if (titleCtx->alpha != 0) {
         width = titleCtx->width;
         height = titleCtx->height;
-        titleX = (titleCtx->x * 4) - (width * 2);
-        titleY = (titleCtx->y * 4) - (height * 2);
+        s16 TitleCard_PosX_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosX", 0) : CVar_GetS32("gTCMPosX", 0));
+        s16 TitleCard_PosY_Modifier = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosY", 0) : CVar_GetS32("gTCMPosY", 0));
+        s16 TitleCard_PosType_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBPosType", 0) : CVar_GetS32("gTCMPosType", 0));
+        s16 TitleCard_Margin_Checker = (titleCtx->isBossCard ? CVar_GetS32("gTCBUseMargins", 0) : CVar_GetS32("gTCMUseMargins", 0));
+        s16 TitleCard_MarginX = 0;
+        s16 TitleCard_PosX = titleCtx->x;
+        s16 TitleCard_PosY = titleCtx->y;
+        if (TitleCard_PosType_Checker != 0) {
+            TitleCard_PosY = TitleCard_PosY_Modifier;
+            if (TitleCard_PosType_Checker == 1) {//Anchor Left
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_L", 0)*-1;};
+                TitleCard_PosX = OTRGetDimensionFromLeftEdge(TitleCard_PosX_Modifier+TitleCard_MarginX)-11;            
+            } else if (TitleCard_PosType_Checker == 2) {//Anchor Right
+                if (TitleCard_Margin_Checker != 0) {TitleCard_MarginX = CVar_GetS32("gHUDMargin_R", 0);};
+                TitleCard_PosX = OTRGetDimensionFromRightEdge(TitleCard_PosX_Modifier+TitleCard_MarginX);
+            } else if (TitleCard_PosType_Checker == 3) {//Anchor None
+                TitleCard_PosX = TitleCard_PosX_Modifier;
+            } else if (TitleCard_PosType_Checker == 4) {//Hidden
+                TitleCard_PosX = -9999;
+            }
+        }
+
+        titleX = (TitleCard_PosX * 4) - (width * 2);
+        titleY = (TitleCard_PosY * 4) - (height * 2);
         doubleWidth = width * 2;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2824);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
         height = (width * height > 0x1000) ? 0x1000 / width : height;
         titleSecondY = titleY + (height * 4);
@@ -1074,7 +1114,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
         // WORLD_OVERLAY_DISP Goes over POLY_XLU_DISP but under POLY_KAL_DISP
         WORLD_OVERLAY_DISP = func_80093808(WORLD_OVERLAY_DISP);
 
-        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensity, (u8)titleCtx->intensity, (u8)titleCtx->intensity,
+        gDPSetPrimColor(WORLD_OVERLAY_DISP++, 0, 0, (u8)titleCtx->intensityR, (u8)titleCtx->intensityG, (u8)titleCtx->intensityB,
                         (u8)titleCtx->alpha);
 
         gDPLoadTextureBlock(WORLD_OVERLAY_DISP++, (uintptr_t)titleCtx->texture + textureLanguageOffset + shiftTopY, G_IM_FMT_IA,
@@ -1082,7 +1122,7 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
                             width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
         //Removing the -1 there remove the gap between top and bottom textures.
-        gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
+        gSPWideTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleY, ((doubleWidth * 2) + titleX) - 4, titleY + (height * 4),
                             G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
         height = titleCtx->height - height;
@@ -1094,11 +1134,11 @@ void TitleCard_Draw(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
                                 G_IM_SIZ_8b, width, height, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             //Removing the -1 there remove the gap between top and bottom textures.
-            gSPTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
+            gSPWideTextureRectangle(WORLD_OVERLAY_DISP++, titleX, titleSecondY, ((doubleWidth * 2) + titleX) - 4,
                                 titleSecondY + (height * 4), G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 2880);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }
 

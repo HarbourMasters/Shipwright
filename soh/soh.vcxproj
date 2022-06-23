@@ -179,6 +179,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\actorViewer.cpp" />
     <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
@@ -887,6 +888,7 @@
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\actorViewer.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />

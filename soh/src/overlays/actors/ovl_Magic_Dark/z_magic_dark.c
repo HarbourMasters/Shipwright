@@ -77,8 +77,6 @@ void MagicDark_DiamondUpdate(Actor* thisx, GlobalContext* globalCtx) {
     s16 nayrusLoveTimer = gSaveContext.nayrusLoveTimer;
     s32 msgMode = globalCtx->msgCtx.msgMode;
 
-    if (1) {}
-
     if ((msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) || (msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(thisx);
         return;
@@ -201,7 +199,7 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u16 gameplayFrames = globalCtx->gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 525);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -220,10 +218,15 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
         Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
         Matrix_RotateY(this->actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_magic_dark.c", 553),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        if (CVar_GetS32("gUseSpellsCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gNL_Diamond_ColR",170), CVar_GetS32("gNL_Diamond_ColG",255), CVar_GetS32("gNL_Diamond_ColB",255), (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gNL_Diamond_EnvR",100), CVar_GetS32("gNL_Diamond_EnvG",100), CVar_GetS32("gNL_Diamond_EnvB",255), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        }
         gSPDisplayList(POLY_XLU_DISP++, sDiamondMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, gameplayFrames * 2, gameplayFrames * -4, 32, 32, 1,
@@ -231,7 +234,7 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, sDiamondModelDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_magic_dark.c", 570);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void MagicDark_OrbDraw(Actor* thisx, GlobalContext* globalCtx) {

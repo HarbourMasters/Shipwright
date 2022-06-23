@@ -32,6 +32,7 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "soh/frame_interpolation.h"
@@ -115,6 +116,7 @@ extern "C" void InitOTR() {
     OTRMessage_Init();
     OTRAudio_Init();
     DebugConsole_Init();
+    InitCosmeticsEditor();
     Debug_Init();
     OTRExtScanner();
 }

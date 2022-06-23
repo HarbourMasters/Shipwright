@@ -194,6 +194,10 @@ void EffectBlure_Destroy(void* thisx) {
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
+    s16 RedColor;
+    s16 GreenColor;
+    s16 BlueColor;
+    s16 TrailDuration;
 
     if (this == NULL) {
         return 0;
@@ -202,6 +206,31 @@ s32 EffectBlure_Update(void* thisx) {
     if (this->numElements == 0) {
         return 0;
     }
+
+    if (CVar_GetS32("gUseTrailsCol", 0) !=0) {
+        RedColor = CVar_GetS32("gTrailColR",255);
+        GreenColor = CVar_GetS32("gTrailColG",255);
+        BlueColor = CVar_GetS32("gTrailColB",255);
+        TrailDuration = 4.0f*CVar_GetS32("gTrailDurantion",1);
+    } else {
+        RedColor = 255;
+        GreenColor = 255;
+        BlueColor = 255;
+        TrailDuration=4.0f;
+    }
+    this->p1StartColor.r = RedColor;
+    this->p2StartColor.r = RedColor;
+    this->p1EndColor.r = RedColor;
+    this->p2EndColor.r = RedColor;
+    this->p1StartColor.g = GreenColor;
+    this->p2StartColor.g = GreenColor;
+    this->p1EndColor.g = GreenColor;
+    this->p2EndColor.g = GreenColor;
+    this->p1StartColor.b = BlueColor;
+    this->p2StartColor.b = BlueColor;
+    this->p1EndColor.b = BlueColor;
+    this->p2EndColor.b = BlueColor;
+    this->elemDuration = TrailDuration;
 
     while (true) {
         if (this->elements[0].state == 0) {

@@ -2178,6 +2178,9 @@
     <ClCompile Include="src\overlays\actors\ovl_Shot_Sun\z_shot_sun.c">
       <Filter>Source Files\src\overlays\actors</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\cosmetics\CosmeticsEditor.cpp">
+      <Filter>Source Files\soh\Enhancements\cosmetics</Filter>
+    </ClCompile>
     <ClCompile Include="soh\Enhancements\debugger\debugger.cpp">
       <Filter>Source Files\soh\Enhancements\debugger</Filter>
     </ClCompile>
@@ -3748,6 +3751,9 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h">
+      <Filter>Header Files\soh\Enhancements\cosmetics</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\debugger\debugger.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
