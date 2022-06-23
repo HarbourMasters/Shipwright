@@ -256,7 +256,7 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
             case 4:
                 if (gSaveContext.n64ddFlag) {
                     int doorOfTime = GetRandoSettingValue(RSK_DOOR_OF_TIME);
-                    if (doorOfTime == 1 &&
+                    if (doorOfTime == 2 &&
                         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
                          !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
