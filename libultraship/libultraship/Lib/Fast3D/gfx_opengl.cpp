@@ -316,7 +316,7 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
 #ifdef __APPLE__
     append_line(fs_buf, &fs_len, "#version 410 core");
 #else
-    append_line(fs_buf, &fs_len, "#version 120");
+    append_line(fs_buf, &fs_len, "#version 130");
 #endif
     //append_line(fs_buf, &fs_len, "precision mediump float;");
     for (int i = 0; i < 2; i++) {
