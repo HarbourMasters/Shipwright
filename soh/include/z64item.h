@@ -535,10 +535,8 @@ typedef enum {
     /* 0x74 */ GID_GORON_RUBY,
     /* 0x74 */ GID_ZORA_SAPPHIRE,
     /* 0x75 */ GID_SONG_GENERIC,
-    /* 0x76 */ GID_MAX
+    /* 0x76 */ GID_MAXIMUM
 } GetItemDrawID;
-// for some reason the mac branch had this as GID_MAXIMUM instead
-// i couldn't find it used anywhere so i'm keeping it as GID_MAX
 
 typedef enum {
     /* 0x00 */ EXCH_ITEM_NONE,

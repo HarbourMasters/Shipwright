@@ -842,7 +842,7 @@ std::unordered_map<s16, s16> getItemIdToItemId = {
     { GI_CLAIM_CHECK, ITEM_CLAIM_CHECK }
 };
 
-std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
+std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
                                                { GI_BOMBS_5, GID_BOMB },
                                                { GI_NUTS_5, GID_NUTS },
                                                { GI_BOMBCHUS_10, GID_BOMBCHU },
@@ -982,8 +982,8 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAX },
                                                { GI_PRELUDE_OF_LIGHT, GID_SONG_PRELUDE },
                                                { GI_DOUBLE_DEFENSE, GID_HEART_CONTAINER },
                                                { GI_ICE_TRAP, GID_RUPEE_GOLD },
-                                               { GI_ICE_TRAP, GID_MAX },
-                                               { GI_TEXT_0, GID_MAX } };
+                                               { GI_ICE_TRAP, GID_MAXIMUM },
+                                               { GI_TEXT_0, GID_MAXIMUM } };
 
 std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "No Item", RG_NONE },
