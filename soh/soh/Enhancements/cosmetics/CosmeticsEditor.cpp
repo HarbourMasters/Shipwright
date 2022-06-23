@@ -72,14 +72,12 @@ ImVec4 le_minimap_colors;
 ImVec4 tc_ou_colors;
 ImVec4 tc_bu_colors;
 ImVec4 dpad_colors;
-
-
-ImVec4 menu_equips_colors;
+/*ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
 ImVec4 menu_quest_colors;
 ImVec4 menu_save_colors;
-ImVec4 menu_gameover_colors;
+ImVec4 menu_gameover_colors;*/
 void Table_InitHeader(bool has_header = true) {
     if (has_header) {
         ImGui::TableHeadersRow();
@@ -282,6 +280,7 @@ void Draw_Menus(){
         SohImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(0, 100, 255, 255), true, false, true);
         ImGui::EndTable();
     }
+    /*
     if (ImGui::BeginTable("tablePauseMenu", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Kaleido pages (Non working atm)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
@@ -304,6 +303,7 @@ void Draw_Menus(){
         SohImGui::EnhancementColor("Gameover", "gCCGameoverPrim", menu_gameover_colors, ImVec4(0, 100, 255, 255), true, true);
         ImGui::EndTable();
     }
+    */
 }
 void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
