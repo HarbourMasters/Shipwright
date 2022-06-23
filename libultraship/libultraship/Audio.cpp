@@ -8,20 +8,20 @@ namespace Ship
 
 		ResourceFile::ParseFileBinary(reader, res);
 
-		int seqDataSize = reader->ReadInt32();
+		uint32_t seqDataSize = reader->ReadInt32();
 
 		seq->seqData.reserve(seqDataSize);
 
-		for (int i = 0; i < seqDataSize; i++)
+		for (uint32_t i = 0; i < seqDataSize; i++)
 			seq->seqData.push_back(reader->ReadUByte());
 
 		seq->seqNumber = reader->ReadUByte();
 		seq->medium = reader->ReadUByte();
 		seq->cachePolicy = reader->ReadUByte();
 
-		int numFonts = reader->ReadInt32();
+		uint32_t numFonts = reader->ReadInt32();
 
-		for (int i = 0; i < numFonts; i++)
+		for (uint32_t i = 0; i < numFonts; i++)
 			seq->fonts.push_back(reader->ReadUByte());
 	}
 
@@ -36,26 +36,26 @@ namespace Ship
 		entry->unk_bit26 = reader->ReadByte();
 		entry->unk_bit25 = reader->ReadByte();
 
-		int dataSize = reader->ReadInt32();
+		uint32_t dataSize = reader->ReadInt32();
 
-		for (int i = 0; i < dataSize; i++)
+		for (uint32_t i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
 		entry->loop.start = reader->ReadUInt32();
 		entry->loop.end = reader->ReadUInt32();
 		entry->loop.count = reader->ReadUInt32();
 
-		int loopStateCnt = reader->ReadUInt32();
+		uint32_t loopStateCnt = reader->ReadUInt32();
 
-		for (int i = 0; i < loopStateCnt; i++)
+		for (uint32_t i = 0; i < loopStateCnt; i++)
 			entry->loop.states.push_back(reader->ReadInt16());
 
 		entry->book.order = reader->ReadInt32();
 		entry->book.npredictors = reader->ReadInt32();
 
-		int bookSize = reader->ReadInt32();
+		uint32_t bookSize = reader->ReadInt32();
 
-		for (int i = 0; i < bookSize; i++)
+		for (uint32_t i = 0; i < bookSize; i++)
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
@@ -72,11 +72,11 @@ namespace Ship
 		soundFont->data2 = reader->ReadInt16();
 		soundFont->data3 = reader->ReadInt16();
 
-		int drumCnt = reader->ReadInt32();
-		int instrumentCnt = reader->ReadInt32();
-		int sfxCnt = reader->ReadInt32();
+		uint32_t drumCnt = reader->ReadInt32();
+		uint32_t instrumentCnt = reader->ReadInt32();
+		uint32_t sfxCnt = reader->ReadInt32();
 
-		for (int i = 0; i < drumCnt; i++)
+		for (uint32_t i = 0; i < drumCnt; i++)
 		{
 			DrumEntry drum;
 			drum.releaseRate = reader->ReadUByte();
@@ -92,7 +92,7 @@ namespace Ship
 			soundFont->drums.push_back(drum);
 		}
 
-		for (int i = 0; i < instrumentCnt; i++)
+		for (uint32_t i = 0; i < instrumentCnt; i++)
 		{
 			InstrumentEntry entry;
 
@@ -143,7 +143,7 @@ namespace Ship
 			soundFont->instruments.push_back(entry);
 		}
 
-		for (int i = 0; i < sfxCnt; i++)
+		for (uint32_t i = 0; i < sfxCnt; i++)
 		{
 			SoundFontEntry* entry = new SoundFontEntry();
 
@@ -164,9 +164,9 @@ namespace Ship
 	{
 		std::vector<AdsrEnvelope*> envelopes;
 
-		int envelopeCnt = reader->ReadInt32();
+		uint32_t envelopeCnt = reader->ReadInt32();
 
-		for (int i = 0; i < envelopeCnt; i++)
+		for (uint32_t i = 0; i < envelopeCnt; i++)
 		{
 			AdsrEnvelope* env = new AdsrEnvelope();
 			env->delay = reader->ReadInt16();

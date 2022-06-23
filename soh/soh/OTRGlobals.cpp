@@ -42,7 +42,12 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
+#ifdef __APPLE__
+#include <SDL_scancode.h>
+#else
 #include <SDL2/SDL_scancode.h>
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;

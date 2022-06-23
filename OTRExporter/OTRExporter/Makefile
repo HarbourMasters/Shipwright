@@ -1,6 +1,6 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++
+CXX ?= g++
 AR	:= ar
 FORMAT := clang-format-11
 
@@ -31,7 +31,7 @@ ifneq ($(LTO),0)
 	CXXFLAGS += -flto
 endif
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 CXX_FILES := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 H_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.h))
 
