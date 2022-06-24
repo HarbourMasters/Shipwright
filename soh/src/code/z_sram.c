@@ -601,7 +601,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10;
         gSaveContext.eventChkInf[0xC] |= 0x20;
-        gSaveContext.eventChkInf[4] |= 0x20;
         gSaveContext.eventChkInf[4] |= 0x8000;
         gSaveContext.infTable[0] |= 1;
         gSaveContext.cutsceneIndex = 0;
