@@ -599,22 +599,23 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.n64ddFlag = 1;
 
         // Set Cutscene flags to skip them
-        gSaveContext.eventChkInf[0xC] |= 0x10;
-        gSaveContext.eventChkInf[0xC] |= 0x20;
-        gSaveContext.eventChkInf[4] |= 0x8000;
+        gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
+        gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal
+        gSaveContext.eventChkInf[4] |= 0x20; // master sword pulled
+        gSaveContext.eventChkInf[4] |= 0x8000; // entered master sword chamber
         gSaveContext.infTable[0] |= 1;
         gSaveContext.cutsceneIndex = 0;
         Flags_SetEventChkInf(5);
 
         // Skip boss cutscenes
-        gSaveContext.eventChkInf[7] |= 1;
-        gSaveContext.eventChkInf[7] |= 2;
-        gSaveContext.eventChkInf[7] |= 4;
-        gSaveContext.eventChkInf[7] |= 8;
-        gSaveContext.eventChkInf[7] |= 0x10;
-        gSaveContext.eventChkInf[7] |= 0x20;
-        gSaveContext.eventChkInf[7] |= 0x40;
-        gSaveContext.eventChkInf[7] |= 0x80;
+        gSaveContext.eventChkInf[7] |= 1; // gohma
+        gSaveContext.eventChkInf[7] |= 2; // dodongo
+        gSaveContext.eventChkInf[7] |= 4; // phantom ganon
+        gSaveContext.eventChkInf[7] |= 8; // volvagia
+        gSaveContext.eventChkInf[7] |= 0x10; // morpha
+        gSaveContext.eventChkInf[7] |= 0x20; // twinrova
+        gSaveContext.eventChkInf[7] |= 0x40; // barinade
+        gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
         // Give Link's pocket item
         GiveLinksPocketMedallion();
