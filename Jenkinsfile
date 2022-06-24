@@ -120,6 +120,33 @@ pipeline {
                         }
                     }
                 }
+                stage ('Build macOS') {
+                    agent {
+                        label "SoH-Mac-Builders"
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            sh '''
+                            cd soh
+                            mv ../README.md readme.txt
+                            7z a soh-mac.7z readme.txt
+                            '''
+                        }
+                        archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
+                    }
+                    post {
+                        always {
+                            step([$class: 'WsCleanup']) // Clean workspace
+                        }
+                    }
+                }
                 // stage ('Build macOS') {
                 //     agent {
                 //         label "SoH-Mac-Builders"
