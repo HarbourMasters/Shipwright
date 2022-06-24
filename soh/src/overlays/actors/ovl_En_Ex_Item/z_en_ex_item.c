@@ -229,7 +229,7 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
                 this->scale = 0.5f;
                 this->unkFloat = 0.5f;
                 this->actor.velocity.y = 10.0f;
-                if (!gSaveContext.n64ddFlag) {
+                if (!gSaveContext.n64ddFlag || !GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                     switch (this->type) {
                         case EXITEM_GREEN_RUPEE_CHEST:
                             this->giDrawId = GID_RUPEE_GREEN;

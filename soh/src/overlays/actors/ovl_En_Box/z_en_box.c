@@ -421,21 +421,23 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         Flags_SetTreasure(globalCtx, this->dyna.actor.params & 0x1F);
 
         // treasure chest game rando
-        if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
-            if((this->dyna.actor.params & 0xF) < 2) {
-                Flags_SetCollectible(globalCtx, 0x1B);
-            }
-            if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                Flags_SetCollectible(globalCtx, 0x1C);
-            }
-            if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                Flags_SetCollectible(globalCtx, 0x1D);
-            }
-            if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                Flags_SetCollectible(globalCtx, 0x1E);
-            }
-            if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                Flags_SetCollectible(globalCtx, 0x1F);
+        if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                if((this->dyna.actor.params & 0xF) < 2) {
+                    Flags_SetCollectible(globalCtx, 0x1B);
+                }
+                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                    Flags_SetCollectible(globalCtx, 0x1C);
+                }
+                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                    Flags_SetCollectible(globalCtx, 0x1D);
+                }
+                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                    Flags_SetCollectible(globalCtx, 0x1E);
+                }
+                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                    Flags_SetCollectible(globalCtx, 0x1F);
+                }
             }
         }
     } else {
@@ -445,31 +447,33 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
             int32_t item = GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
             
-            // treasure chest game rando
-            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
-                if((this->dyna.actor.params & 0xF) < 2) {
-                    if(Flags_GetCollectible(globalCtx, 0x1B)) {
-                        item = GI_RUPEE_BLUE;
+            // RANDOTODO treasure chest game rando
+            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+                if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
+                    if((this->dyna.actor.params & 0xF) < 2) {
+                        if(Flags_GetCollectible(globalCtx, 0x1B)) {
+                            item = GI_RUPEE_BLUE;
+                        }
                     }
-                }
-                if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
-                    if(Flags_GetCollectible(globalCtx, 0x1C)) {
-                        item = GI_RUPEE_BLUE;
+                    if((this->dyna.actor.params & 0xF) >= 2 && (this->dyna.actor.params & 0xF) < 4) {
+                        if(Flags_GetCollectible(globalCtx, 0x1C)) {
+                            item = GI_RUPEE_BLUE;
+                        }
                     }
-                }
-                if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
-                    if(Flags_GetCollectible(globalCtx, 0x1D)) {
-                        item = GI_RUPEE_BLUE;
+                    if((this->dyna.actor.params & 0xF) >= 4 && (this->dyna.actor.params & 0xF) < 6) {
+                        if(Flags_GetCollectible(globalCtx, 0x1D)) {
+                            item = GI_RUPEE_BLUE;
+                        }
                     }
-                }
-                if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
-                    if(Flags_GetCollectible(globalCtx, 0x1E)) {
-                        item = GI_RUPEE_BLUE;
+                    if((this->dyna.actor.params & 0xF) >= 6 && (this->dyna.actor.params & 0xF) < 8) {
+                        if(Flags_GetCollectible(globalCtx, 0x1E)) {
+                            item = GI_RUPEE_BLUE;
+                        }
                     }
-                }
-                if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
-                    if(Flags_GetCollectible(globalCtx, 0x1F)) {
-                        item = GI_RUPEE_BLUE;
+                    if((this->dyna.actor.params & 0xF) >= 8 && (this->dyna.actor.params & 0xF) < 10) {
+                        if(Flags_GetCollectible(globalCtx, 0x1F)) {
+                            item = GI_RUPEE_BLUE;
+                        }
                     }
                 }
             }
