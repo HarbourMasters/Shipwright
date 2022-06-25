@@ -2945,6 +2945,8 @@ void GenerateRandomizerImgui() {
     // RANDOTODO implement chest minigame shuffle with keysanity
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
+    cvarSettings[RSK_LANGUAGE] = CVar_GetS32("gLanguages", 0);
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);

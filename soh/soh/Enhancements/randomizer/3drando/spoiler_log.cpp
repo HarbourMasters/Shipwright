@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <Cvar.h>
 
 using json = nlohmann::json;
 
@@ -543,11 +544,23 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints() {
-    jsonData["ganonText"] = GetGanonText().GetEnglish();
-    jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
-    jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
-    jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+static void WriteHints(int language) {
+    std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
+    switch (language) {
+        case 0:
+        default:
+            jsonData["ganonText"] = GetGanonText().GetEnglish();
+            jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
+            jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
+            jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+            break;
+        case 2:
+            jsonData["ganonText"] = GetGanonText().GetFrench();
+            jsonData["ganonHintText"] = GetGanonHintText().GetFrench();
+            jsonData["childAltarText"] = GetChildAltarText().GetFrench();
+            jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
+            break;
+    }
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -555,7 +568,16 @@ static void WriteHints() {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
-        auto textStr = location->GetPlacedItemName().GetEnglish();
+        std::string textStr;
+        switch (language) {
+            case 0:
+            default:
+                textStr = location->GetPlacedItemName().GetEnglish();
+                break;
+            case 2:
+                textStr = location->GetPlacedItemName().GetFrench();
+                break;
+        }
 
         //insert newlines either manually or when encountering a '&'
         constexpr size_t lineLength = 34;
@@ -595,7 +617,7 @@ static void WriteAllLocations() {
     }
 }
 
-const char* SpoilerLog_Write() {
+const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
 
@@ -629,7 +651,7 @@ const char* SpoilerLog_Write() {
     playthroughBeatable = false;
     wothLocations.clear();
 
-    WriteHints();
+    WriteHints(language);
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations();
     

@@ -57,7 +57,7 @@ int Playthrough_Init(uint32_t seed, std::unordered_map<RandomizerSettingKey, uin
     if (Settings::GenerateSpoilerLog) {
         // write logs
         printf("\x1b[11;10HWriting Spoiler Log...");
-        if (SpoilerLog_Write()) {
+        if (SpoilerLog_Write(cvarSettings[RSK_LANGUAGE])) {
             printf("Done");
         } else {
             printf("Failed");
