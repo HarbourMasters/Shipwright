@@ -389,15 +389,31 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case ITEM00_SMALL_KEY:
             this->unk_158 = 0;
-            Actor_SetScale(&this->actor, 0.03f);
-            this->scale = 0.03f;
-            yOffset = 350.0f;
+			if (CVar_GetS32("gNewDrops", 0) !=0) {
+				Actor_SetScale(&this->actor, 0.3f);
+				this->scale = 0.3f;
+				yOffset = 50.0f;
+				shadowScale = 0.5f;
+				this->actor.world.rot.x = 0x4000;
+			} else {
+                Actor_SetScale(&this->actor, 0.03f);
+                this->scale = 0.03f;
+                yOffset = 350.0f;
+            }
             break;
         case ITEM00_HEART_PIECE:
             this->unk_158 = 0;
-            yOffset = 650.0f;
-            Actor_SetScale(&this->actor, 0.02f);
-            this->scale = 0.02f;
+			if (CVar_GetS32("gNewDrops", 0) !=0) {
+				Actor_SetScale(&this->actor, 0.5f);
+				this->scale = 0.5f;
+				yOffset = -0.0f;
+				shadowScale = 0.5f;
+				this->actor.world.rot.x = 0x4000;
+			} else {
+                yOffset = 650.0f;
+                Actor_SetScale(&this->actor, 0.02f);
+                this->scale = 0.02f;
+            }
             break;
         case ITEM00_HEART:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
@@ -711,7 +727,7 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
 		    (this->actor.params == ITEM00_ARROWS_MEDIUM) || (this->actor.params == ITEM00_ARROWS_LARGE) ||
 		    (this->actor.params == ITEM00_BOMBS_A) || (this->actor.params == ITEM00_BOMBS_B) ||
 		    (this->actor.params == ITEM00_NUTS) || (this->actor.params == ITEM00_STICK) ||
-		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) ||
+		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) || (this->actor.params == ITEM00_SMALL_KEY) ||
 		    (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL)) {
 		    this->actor.shape.rot.y = DroppedItemRot;
 		}
@@ -738,7 +754,11 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
     }
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
-        this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
+        if (CVar_GetS32("gNewDrops", 0) !=0) {
+            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 45.0f;
+        } else {
+            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
+        }
     }
 
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.5f, 0.0f);
@@ -891,7 +911,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
 	if (CVar_GetS32("gNewDrops", 0) !=0) { //Update 3D Model rotation on frame update :)
-		DroppedItemRot += 100;
+		DroppedItemRot += 250; //I set it to 100 in original but that way too slow.
 	}
 
     if (this->unk_15A > 0) {
@@ -1131,7 +1151,11 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 				}
                 break;
             case ITEM00_HEART_PIECE:
-                EnItem00_DrawHeartPiece(this, globalCtx);
+                if (CVar_GetS32("gNewDrops", 0) !=0) {
+		            GetItem_Draw(globalCtx, GID_HEART_PIECE);
+				} else {
+                    EnItem00_DrawHeartPiece(this, globalCtx);
+                }
                 break;
             case ITEM00_HEART_CONTAINER:
                 EnItem00_DrawHeartContainer(this, globalCtx);
@@ -1217,7 +1241,11 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 					break;
 				}
             case ITEM00_SMALL_KEY:
-                EnItem00_DrawCollectible(this, globalCtx);
+            	if (CVar_GetS32("gNewDrops", 0) !=0) {
+		            GetItem_Draw(globalCtx, GID_KEY_SMALL);
+				} else {
+                    EnItem00_DrawCollectible(this, globalCtx);
+                }
                 break;
             case ITEM00_SHIELD_DEKU:
                 GetItem_Draw(globalCtx, GID_SHIELD_DEKU);
