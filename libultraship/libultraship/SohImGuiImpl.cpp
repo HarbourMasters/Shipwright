@@ -776,12 +776,21 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
-                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
-                // There should be some system to prevent conclifting enhancements from being selected
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                if (!CVar_GetS32("gDpadEquips", 0)) {
+                    EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                }
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                if (!CVar_GetS32("gDpadPauseName", 0)) {
+                    EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                }
+                EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
+                Tooltip("Hold the assigned button to limit walking speed");
+
+                if (CVar_GetS32("gEnableWalkModify", 0)) {
+                    EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
+                    EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
+                }
 
 		ImGui::Separator();
 
@@ -822,20 +831,6 @@ namespace SohImGui {
                         }
                         ImGui::Separator();
                 }
-
-                ImGui::Separator();
-
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-                EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
-                Tooltip("Hold the assigned button to limit walking speed");
-
-                if (CVar_GetS32("gEnableWalkModify", 0)) {
-                    EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
-                    EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
-                }
-
                 ImGui::EndMenu();
             }
 
