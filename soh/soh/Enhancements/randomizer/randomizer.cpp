@@ -1753,11 +1753,7 @@ std::string AltarIconString(char iconChar) {
     return iconString;
 }
 
-std::string FormatJsonHintText(std::string jsonHint) {
-    std::string formattedHintMessage = jsonHint;
-    char newLine = 0x01;
-    char playerName = 0x0F;
-    char nextBox = 0x04;
+std::string SpecialCharacterString(std::string specialCharacter) {
     char aSpeCap1 = 0x80;
     char iSpeLow = 0x81;
     char aSpeCap2 = 0x82;
@@ -1789,41 +1785,69 @@ std::string FormatJsonHintText(std::string jsonHint) {
     char uSpeLow1 = 0x9C;
     char uSpeLow2 = 0x9D;
     char uSpeLow3 = 0x9E;
+
+        // std::unordered_map<std::string, char> specialCharacters = {
+    //     {"À", aSpeCap1},
+    //     {"è", eSpeLow1}
+    // };
+
+    std::string specCharString = "";
+    if(specialCharacter == "è") {
+        specCharString += eSpeLow1;
+    }
+
+    return specCharString;
+}
+
+std::string FormatJsonHintText(std::string jsonHint) {
+    std::string formattedHintMessage = jsonHint;
+    char newLine = 0x01;
+    char playerName = 0x0F;
+    char nextBox = 0x04;
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '&', newLine);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '^', nextBox);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), '@', playerName);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'À', aSpeCap1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'î', iSpeLow);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Â', aSpeCap2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ä', aSpeCap3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ç', cSpeCap);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'È', eSpeCap1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'É', eSpeCap2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ê', eSpeCap3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ë', eSpeCap4);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ï', iSpeCap);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ô', oSpeCap1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ö', oSpeCap2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ù', uSpeCap1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Û', uSpeCap2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ü', uSpeCap3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ß', bSpeGer3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'à', aSpeLow1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'á', aSpeLow2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'â', aSpeLow3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ä', aSpeLow4);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ç', cSpeLow);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'è', eSpeLow1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'é', eSpeLow2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ê', eSpeLow3);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ë', eSpeLow4);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ï', iSpeLow2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ô', oSpeLow1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ö', oSpeLow2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ù', uSpeLow1);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'û', uSpeLow2);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ü', uSpeLow3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'À', aSpeCap1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'î', iSpeLow);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Â', aSpeCap2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ä', aSpeCap3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ç', cSpeCap);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'È', eSpeCap1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'É', eSpeCap2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ê', eSpeCap3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ë', eSpeCap4);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ï', iSpeCap);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ô', oSpeCap1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ö', oSpeCap2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ù', uSpeCap1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Û', uSpeCap2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'Ü', uSpeCap3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ß', bSpeGer3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'à', aSpeLow1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'á', aSpeLow2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'â', aSpeLow3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ä', aSpeLow4);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ç', cSpeLow);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'è', eSpeLow1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'é', eSpeLow2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ê', eSpeLow3);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ë', eSpeLow4);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ï', iSpeLow2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ô', oSpeLow1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ö', oSpeLow2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ù', uSpeLow1);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'û', uSpeLow2);
+    // std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ü', uSpeLow3);
     
+    // add special characters
+    for (std::string specialCharacter : {"è"}) {
+        size_t start_pos = formattedHintMessage.find(specialCharacter);
+        if(!(start_pos == std::string::npos)) {
+            std::string specialCharacterString = SpecialCharacterString(specialCharacter);
+            formattedHintMessage.replace(start_pos, specialCharacter.length(), specialCharacterString);
+        }
+    }
+
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
         std::string textToReplace = "$";
