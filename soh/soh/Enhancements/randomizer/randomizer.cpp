@@ -1594,7 +1594,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
     char eSpeLow2 = 0x96;
     char eSpeLow3 = 0x97;
     char eSpeLow4 = 0x98;
-    char iSpeLow = 0x99;
+    char iSpeLow2 = 0x99;
     char oSpeLow1 = 0x9A;
     char oSpeLow2 = 0x9B;
     char uSpeLow1 = 0x9C;
@@ -1628,7 +1628,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'é', eSpeLow2);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ê', eSpeLow3);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ë', eSpeLow4);
-    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ï', iSpeLow);
+    std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ï', iSpeLow2);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ô', oSpeLow1);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ö', oSpeLow2);
     std::replace(formattedHintMessage.begin(), formattedHintMessage.end(), 'ù', uSpeLow1);
