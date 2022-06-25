@@ -27,6 +27,8 @@
 
 using json = nlohmann::json;
 
+json jsonData;
+
 namespace {
 std::string placementtxt;
 } // namespace
@@ -255,41 +257,44 @@ void WriteIngameSpoilerLog() {
 
 // Writes the location to the specified node.
 static void WriteLocation(
-    tinyxml2::XMLElement* parentNode, const uint32_t locationKey,
+    std::string sphere, const uint32_t locationKey,
     const bool withPadding = false
 ) {
   ItemLocation* location = Location(locationKey);
 
-  auto node = parentNode->InsertNewChildElement("location");
-  node->SetAttribute("name", location->GetName().c_str());
-  node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
+  // auto node = parentNode->InsertNewChildElement("location");
 
-  if (withPadding) {
-    constexpr int16_t LONGEST_NAME = 56; // The longest name of a location.
-    constexpr int16_t PRICE_ATTRIBUTE = 12; // Length of a 3-digit price attribute.
+  jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
 
-    // Insert a padding so we get a kind of table in the XML document.
-    int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
-    if (location->IsCategory(Category::cShop)) {
-      // Shop items have short location names, but come with an additional price attribute.
-      requiredPadding -= PRICE_ATTRIBUTE;
-    }
-    if (requiredPadding >= 0) {
-      std::string padding(requiredPadding, ' ');
-      node->SetAttribute("_", padding.c_str());
-    }
-  }
+  // node->SetAttribute("name", location->GetName().c_str());
+  // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 
-  if (location->IsCategory(Category::cShop)) {
-    char price[6];
-    sprintf(price, "%03d", location->GetPrice());
-    node->SetAttribute("price", price);
-  }
-  if (!location->IsAddedToPool()) {
-    #ifdef ENABLE_DEBUG  
-      node->SetAttribute("not-added", true);
-    #endif
-  }
+  // if (withPadding) {
+  //   constexpr int16_t LONGEST_NAME = 56; // The longest name of a location.
+  //   constexpr int16_t PRICE_ATTRIBUTE = 12; // Length of a 3-digit price attribute.
+
+  //   // Insert a padding so we get a kind of table in the XML document.
+  //   int16_t requiredPadding = LONGEST_NAME - location->GetName().length();
+  //   if (location->IsCategory(Category::cShop)) {
+  //     // Shop items have short location names, but come with an additional price attribute.
+  //     requiredPadding -= PRICE_ATTRIBUTE;
+  //   }
+  //   if (requiredPadding >= 0) {
+  //     std::string padding(requiredPadding, ' ');
+  //     node->SetAttribute("_", padding.c_str());
+  //   }
+  // }
+
+  // if (location->IsCategory(Category::cShop)) {
+  //   char price[6];
+  //   sprintf(price, "%03d", location->GetPrice());
+  //   node->SetAttribute("price", price);
+  // }
+  // if (!location->IsAddedToPool()) {
+  //   #ifdef ENABLE_DEBUG  
+  //     node->SetAttribute("not-added", true);
+  //   #endif
+  // }
 }
 
 //Writes a shuffled entrance to the specified node
@@ -314,8 +319,6 @@ static void WriteShuffledEntrance(
     }
   }
 }
-
-json jsonData;
 
 // Writes the settings (without excluded locations, starting inventory and tricks) to the spoilerLog document.
 static void WriteSettings(const bool printAll = false) {
@@ -359,8 +362,8 @@ static void WriteSettings(const bool printAll = false) {
 }
 
 // Writes the excluded locations to the spoiler log, if there are any.
-static void WriteExcludedLocations(tinyxml2::XMLDocument& spoilerLog) {
-  auto parentNode = spoilerLog.NewElement("excluded-locations");
+static void WriteExcludedLocations() {
+  // auto parentNode = spoilerLog.NewElement("excluded-locations");
 
   for (size_t i = 1; i < Settings::excludeLocationsOptionsVector.size(); i++) {
     for (const auto& location : Settings::excludeLocationsOptionsVector[i]) {
@@ -368,15 +371,17 @@ static void WriteExcludedLocations(tinyxml2::XMLDocument& spoilerLog) {
         continue;
       }
 
-      tinyxml2::XMLElement* node = spoilerLog.NewElement("location");
-      node->SetAttribute("name", RemoveLineBreaks(location->GetName()).c_str());
-      parentNode->InsertEndChild(node);
+      jsonData["excludedLocations"].push_back(RemoveLineBreaks(location->GetName()));
+
+      // tinyxml2::XMLElement* node = spoilerLog.NewElement("location");
+      // node->SetAttribute("name", RemoveLineBreaks(location->GetName()).c_str());
+      // parentNode->InsertEndChild(node);
     }
   }
 
-  if (!parentNode->NoChildren()) {
-    spoilerLog.RootElement()->InsertEndChild(parentNode);
-  }
+  // if (!parentNode->NoChildren()) {
+  //   spoilerLog.RootElement()->InsertEndChild(parentNode);
+  // }
 }
 
 // Writes the starting inventory to the spoiler log, if there is any.
@@ -494,19 +499,20 @@ static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the intended playthrough to the spoiler log, separated into spheres.
-static void WritePlaythrough(tinyxml2::XMLDocument& spoilerLog) {
-  auto playthroughNode = spoilerLog.NewElement("playthrough");
+static void WritePlaythrough() {
+  // auto playthroughNode = spoilerLog.NewElement("playthrough");
 
   for (uint32_t i = 0; i < playthroughLocations.size(); ++i) {
-    auto sphereNode = playthroughNode->InsertNewChildElement("sphere");
-    sphereNode->SetAttribute("level", i + 1);
-
+    auto sphereNum = std::to_string(i);
+    std::string sphereString =  "sphere ";
+    if (sphereNum.length() == 1) sphereString += "0";
+    sphereString += sphereNum;
     for (const uint32_t key : playthroughLocations[i]) {
-      WriteLocation(sphereNode, key, true);
+      WriteLocation(sphereString, key, true);
     }
   }
 
-  spoilerLog.RootElement()->InsertEndChild(playthroughNode);
+  // spoilerLog.RootElement()->InsertEndChild(playthroughNode);
 }
 
 //Write the randomized entrance playthrough to the spoiler log, if applicable
@@ -534,7 +540,7 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
     auto parentNode = spoilerLog.NewElement("way-of-the-hero-locations");
 
     for (const uint32_t key : wothLocations) {
-        WriteLocation(parentNode, key, true);
+        // WriteLocation(parentNode, key, true);
     }
 
     if (!parentNode->NoChildren()) {
@@ -606,6 +612,8 @@ const char* SpoilerLog_Write() {
     rootNode->SetAttribute("seed", Settings::seed.c_str());
     rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
+    jsonData.clear();
+
     // Write Hash
     int index = 0;
     for (uint8_t seed_value : Settings::hashIconIndexes) {
@@ -614,7 +622,7 @@ const char* SpoilerLog_Write() {
     }
 
     WriteSettings();
-    //WriteExcludedLocations(spoilerLog);
+    WriteExcludedLocations();
     WriteStartingInventory();
     //WriteEnabledTricks(spoilerLog);
     //if (Settings::Logic.Is(LOGIC_GLITCHED)) {
@@ -622,7 +630,7 @@ const char* SpoilerLog_Write() {
     //}
     //WriteMasterQuestDungeons(spoilerLog);
     //WriteRequiredTrials(spoilerLog);
-    //WritePlaythrough(spoilerLog);
+    WritePlaythrough();
     //WriteWayOfTheHeroLocation(spoilerLog);
 
     playthroughLocations.clear();
@@ -665,7 +673,7 @@ bool PlacementLog_Write() {
     rootNode->SetAttribute("hash", GetRandomizerHashAsString().c_str());
 
     // WriteSettings(placementLog, true); // Include hidden settings.
-    WriteExcludedLocations(placementLog);
+    // WriteExcludedLocations(placementLog);
     // WriteStartingInventory(placementLog);
     WriteEnabledTricks(placementLog);
     WriteEnabledGlitches(placementLog);
