@@ -262,14 +262,9 @@ static void WriteLocation(
 ) {
   ItemLocation* location = Location(locationKey);
 
-  auto node = parentNode->InsertNewChildElement("location");
-  node->SetAttribute("name", location->GetName().c_str());
   // PURPLE TODO: LOCALIZATION
-  node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
   // auto node = parentNode->InsertNewChildElement("location");
-
   jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
-
   // node->SetAttribute("name", location->GetName().c_str());
   // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 
