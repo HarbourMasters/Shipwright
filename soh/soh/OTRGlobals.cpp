@@ -1508,9 +1508,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += "Ça fera ";
         scrubText += 0x05; // change the color
         scrubText += 0x41; // red
-        scrubText += std::to_string(price);
-        scrubText += price;
-        scrubText += " Rubis";
+        scrubText += std::to_string(price) + " Rubis";
         scrubText += 0x05; // change the color
         scrubText += 0x40; // white
         scrubText += "!";
