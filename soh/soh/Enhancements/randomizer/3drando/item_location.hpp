@@ -355,8 +355,17 @@ public:
 
         excludedOption = Option::Bool(settingText, {"Include", "Exclude"}, {desc});
       }
-
-      Settings::excludeLocationsOptionsVector[collectionCheckGroup].push_back(&excludedOption);
+      
+      // RANDOTODO: this without string compares and loops
+      bool alreadyAdded = false;
+      for(const Option* location : Settings::excludeLocationsOptionsVector[collectionCheckGroup]) {
+        if (location->GetName() == excludedOption.GetName()) {
+          alreadyAdded = true;
+        }
+      }
+      if (!alreadyAdded) {
+        Settings::excludeLocationsOptionsVector[collectionCheckGroup].push_back(&excludedOption);
+      }
     }
 
     static auto Base(uint8_t scene, uint8_t flag, std::string&& name, const uint32_t hintKey, const uint32_t vanillaItem, std::vector<Category>&& categories, SpoilerCollectionCheck collectionCheck = SpoilerCollectionCheck(), SpoilerCollectionCheckGroup collectionCheckGroup = SpoilerCollectionCheckGroup::GROUP_NO_GROUP) {
