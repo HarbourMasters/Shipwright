@@ -406,7 +406,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             if (CVar_GetS32("gNewDrops", 0) !=0) {
                 Actor_SetScale(&this->actor, 0.5f);
                 this->scale = 0.5f;
-                yOffset = -0.0f;
+                yOffset = 50.0f;
                 shadowScale = 0.5f;
                 this->actor.world.rot.x = 0x4000;
             } else {
@@ -755,7 +755,7 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
         if (CVar_GetS32("gNewDrops", 0) !=0) {
-            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 45.0f;
+            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 50.0f;
         } else {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
         }
