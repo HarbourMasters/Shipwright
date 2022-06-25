@@ -2054,7 +2054,8 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag &&
         gSaveContext.entranceIndex != 650 &&
         gSaveContext.entranceIndex != 654 &&
-        gSaveContext.entranceIndex != 658) {
+        gSaveContext.entranceIndex != 658 &&
+        gSaveContext.entranceIndex != 1142) {
         gSaveContext.showTitleCard = false;
         return;
     }
