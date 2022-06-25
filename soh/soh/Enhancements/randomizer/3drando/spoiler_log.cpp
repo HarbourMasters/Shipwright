@@ -146,7 +146,7 @@ void WriteIngameSpoilerLog() {
                     sprintf(&spoilerData.StringData[spoilerStringOffset], nameFormatStr, locName.c_str()) + 1;
             }
         }
-
+        // PURPLE TODO: LOCALIZATION
         auto locItem = loc->GetPlacedItemName().GetEnglish();
         if (loc->GetPlacedItemKey() == ICE_TRAP && loc->IsCategory(Category::cShop)) {
             locItem = NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.GetEnglish();
@@ -262,6 +262,7 @@ static void WriteLocation(
 
   auto node = parentNode->InsertNewChildElement("location");
   node->SetAttribute("name", location->GetName().c_str());
+  // PURPLE TODO: LOCALIZATION
   node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 
   if (withPadding) {
@@ -483,6 +484,7 @@ static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
     }
 
     auto node = parentNode->InsertNewChildElement("trial");
+    // PURPLE TODO: LOCALIZATION
     std::string name = trial->GetName().GetEnglish();
     name[0] = toupper(name[0]); // Capitalize T in "The"
     node->SetAttribute("name", name.c_str());
