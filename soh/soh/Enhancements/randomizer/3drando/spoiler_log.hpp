@@ -107,5 +107,5 @@ const RandomizerHash& GetRandomizerHash();
 
 void WriteIngameSpoilerLog();
 
-const char* SpoilerLog_Write();
+const char* SpoilerLog_Write(int language);
 const SpoilerData& GetSpoilerData();

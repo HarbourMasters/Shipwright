@@ -148,7 +148,7 @@ void WriteIngameSpoilerLog() {
                     sprintf(&spoilerData.StringData[spoilerStringOffset], nameFormatStr, locName.c_str()) + 1;
             }
         }
-
+        // PURPLE TODO: LOCALIZATION
         auto locItem = loc->GetPlacedItemName().GetEnglish();
         if (loc->GetPlacedItemKey() == ICE_TRAP && loc->IsCategory(Category::cShop)) {
             locItem = NonShopItems[TransformShopIndex(GetShopIndex(key))].Name.GetEnglish();
@@ -262,10 +262,9 @@ static void WriteLocation(
 ) {
   ItemLocation* location = Location(locationKey);
 
+  // PURPLE TODO: LOCALIZATION
   // auto node = parentNode->InsertNewChildElement("location");
-
   jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
-
   // node->SetAttribute("name", location->GetName().c_str());
   // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 
@@ -488,6 +487,7 @@ static void WriteRequiredTrials(tinyxml2::XMLDocument& spoilerLog) {
     }
 
     auto node = parentNode->InsertNewChildElement("trial");
+    // PURPLE TODO: LOCALIZATION
     std::string name = trial->GetName().GetEnglish();
     name[0] = toupper(name[0]); // Capitalize T in "The"
     node->SetAttribute("name", name.c_str());
@@ -549,11 +549,22 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 }
 
 // Writes the hints to the spoiler log, if they are enabled.
-static void WriteHints() {
-    jsonData["ganonText"] = GetGanonText().GetEnglish();
-    jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
-    jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
-    jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+static void WriteHints(int language) {
+    switch (language) {
+        case 0:
+        default:
+            jsonData["ganonText"] = GetGanonText().GetEnglish();
+            jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
+            jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
+            jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
+            break;
+        case 2:
+            jsonData["ganonText"] = GetGanonText().GetFrench();
+            jsonData["ganonHintText"] = GetGanonHintText().GetFrench();
+            jsonData["childAltarText"] = GetChildAltarText().GetFrench();
+            jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
+            break;
+    }
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -561,7 +572,16 @@ static void WriteHints() {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
-        auto textStr = location->GetPlacedItemName().GetEnglish();
+        std::string textStr;
+        switch (language) {
+            case 0:
+            default:
+                textStr = location->GetPlacedItemName().GetEnglish();
+                break;
+            case 2:
+                textStr = location->GetPlacedItemName().GetFrench();
+                break;
+        }
 
         //insert newlines either manually or when encountering a '&'
         constexpr size_t lineLength = 34;
@@ -594,14 +614,23 @@ static void WriteHints() {
     }
 }
 
-static void WriteAllLocations() {
+static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
-        jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+        
+        switch (language) {
+            case 0:
+            default:
+                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+                break;
+            case 2:
+                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().french;
+                break;
+        }
     }
 }
 
-const char* SpoilerLog_Write() {
+const char* SpoilerLog_Write(int language) {
     auto spoilerLog = tinyxml2::XMLDocument(false);
     spoilerLog.InsertEndChild(spoilerLog.NewDeclaration());
 
@@ -637,9 +666,9 @@ const char* SpoilerLog_Write() {
     playthroughBeatable = false;
     wothLocations.clear();
 
-    WriteHints();
+    WriteHints(language);
     //WriteShuffledEntrances(spoilerLog);
-    WriteAllLocations();
+    WriteAllLocations(language);
     
     if (!std::filesystem::exists("./Randomizer")) {
         std::filesystem::create_directory("./Randomizer");
