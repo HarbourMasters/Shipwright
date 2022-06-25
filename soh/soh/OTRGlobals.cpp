@@ -59,7 +59,6 @@ OTRGlobals::OTRGlobals() {
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
     context->GetWindow()->Init();
-    CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {
