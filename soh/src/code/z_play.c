@@ -198,8 +198,8 @@ void Gameplay_Init(GameState* thisx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     gGlobalCtx = globalCtx;
     //globalCtx->state.gfxCtx = NULL;
-    u32 zAlloc;
-    u32 zAllocAligned;
+    uintptr_t zAlloc;
+    uintptr_t zAllocAligned;
     size_t zAllocSize;
     Player* player;
     s32 playerStartCamId;
@@ -240,7 +240,6 @@ void Gameplay_Init(GameState* thisx) {
     globalCtx->cameraPtrs[MAIN_CAM]->uid = 0;
     globalCtx->activeCamera = MAIN_CAM;
     func_8005AC48(&globalCtx->mainCamera, 0xFF);
-    Sram_Init(globalCtx, &globalCtx->sramCtx);
     func_80112098(globalCtx);
     Message_Init(globalCtx);
     GameOver_Init(globalCtx);
