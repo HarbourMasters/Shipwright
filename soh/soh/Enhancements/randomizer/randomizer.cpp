@@ -1206,6 +1206,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start With Kokiri Sword", RSK_STARTING_KOKIRI_SWORD },
     { "Start With Ocarina", RSK_STARTING_OCARINA },
     { "Shuffle Dungeon Items:Maps/Compasses", RSK_STARTING_MAPS_COMPASSES },
+    { "Shuffle Dungeon Items:Ganon's Boss Key", RSK_GANONS_BOSS_KEY },
     { "Misc Settings:Gossip Stone Hints", RSK_GOSSIP_STONE_HINTS },
     { "Misc Settings:  Hint Clarity", RSK_HINT_CLARITY},
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
