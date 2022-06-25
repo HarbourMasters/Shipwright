@@ -2208,6 +2208,72 @@
     <ClCompile Include="soh\SaveManager.cpp">
       <Filter>Source Files\soh</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_dungeon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_overworld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_item.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_bottom_of_the_well.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_castle_town.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_death_mountain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_deku_tree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_dodongos_cavern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_fire_temple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_forest_temple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ganons_castle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_training_grounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_valley.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_hyrule_field.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ice_cavern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_jabujabus_belly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_kakariko.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_lost_woods.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_shadow_temple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_spirit_temple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_water_temple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_zoras_domain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\cosmetics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

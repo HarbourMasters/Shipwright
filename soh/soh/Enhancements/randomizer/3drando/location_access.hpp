@@ -218,6 +218,19 @@ public:
     }
 };
 
+extern std::array<Area, KEY_ENUM_MAX> areaTable;
+extern std::vector<EventAccess> grottoEvents;
+
+bool Here(const AreaKey area, ConditionFn condition);
+bool CanPlantBean(const AreaKey area);
+bool BothAges(const AreaKey area);
+bool ChildCanAccess(const AreaKey area);
+bool AdultCanAccess(const AreaKey area);
+bool HasAccessTo(const AreaKey area);
+
+#define DAY_NIGHT_CYCLE true
+#define NO_DAY_NIGHT_CYCLE false
+
 namespace Areas {
 
   extern void AccessReset();
@@ -229,3 +242,25 @@ namespace Areas {
 void  AreaTable_Init();
 Area* AreaTable(const uint32_t areaKey);
 std::vector<Entrance*> GetShuffleableEntrances(EntranceType type, bool onlyPrimary = true);
+
+// Overworld
+void AreaTable_Init_LostWoods();
+void AreaTable_Init_HyruleField();
+void AreaTable_Init_CastleTown();
+void AreaTable_Init_Kakariko();
+void AreaTable_Init_DeathMountain();
+void AreaTable_Init_ZorasDomain();
+void AreaTable_Init_GerudoValley();
+// Dungeons
+void AreaTable_Init_DekuTree();
+void AreaTable_Init_DodongosCavern();
+void AreaTable_Init_JabuJabusBelly();
+void AreaTable_Init_ForestTemple();
+void AreaTable_Init_FireTemple();
+void AreaTable_Init_WaterTemple();
+void AreaTable_Init_SpiritTemple();
+void AreaTable_Init_ShadowTemple();
+void AreaTable_Init_BottomOfTheWell();
+void AreaTable_Init_IceCavern();
+void AreaTable_Init_GerudoTrainingGrounds();
+void AreaTable_Init_GanonsCastle();

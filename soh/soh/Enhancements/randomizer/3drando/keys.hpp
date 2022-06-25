@@ -1,5 +1,9 @@
 #pragma once
 
+#include <cstdint>
+
+using AreaKey = uint32_t;
+
 typedef enum {
   NONE,
   KOKIRI_SWORD,
