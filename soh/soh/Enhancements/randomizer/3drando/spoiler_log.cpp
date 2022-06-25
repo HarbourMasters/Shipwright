@@ -24,7 +24,6 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
-#include <Cvar.h>
 
 using json = nlohmann::json;
 
@@ -545,7 +544,6 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
 
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
-    std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
     switch (language) {
         case 0:
         default:
@@ -610,10 +608,19 @@ static void WriteHints(int language) {
     }
 }
 
-static void WriteAllLocations() {
+static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
-        jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+        
+        switch (language) {
+            case 0:
+            default:
+                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().english;
+                break;
+            case 2:
+                jsonData["locations"][location->GetName()] = location->GetPlacedItemName().french;
+                break;
+        }
     }
 }
 
@@ -653,7 +660,7 @@ const char* SpoilerLog_Write(int language) {
 
     WriteHints(language);
     //WriteShuffledEntrances(spoilerLog);
-    WriteAllLocations();
+    WriteAllLocations(language);
     
     if (!std::filesystem::exists("./Randomizer")) {
         std::filesystem::create_directory("./Randomizer");
