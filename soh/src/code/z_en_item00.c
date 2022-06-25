@@ -389,13 +389,13 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case ITEM00_SMALL_KEY:
             this->unk_158 = 0;
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-			} else {
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.3f);
+                this->scale = 0.3f;
+                yOffset = 50.0f;
+                shadowScale = 0.5f;
+                this->actor.world.rot.x = 0x4000;
+            } else {
                 Actor_SetScale(&this->actor, 0.03f);
                 this->scale = 0.03f;
                 yOffset = 350.0f;
@@ -403,13 +403,13 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case ITEM00_HEART_PIECE:
             this->unk_158 = 0;
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.5f);
-				this->scale = 0.5f;
-				yOffset = -0.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-			} else {
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.5f);
+                this->scale = 0.5f;
+                yOffset = -0.0f;
+                shadowScale = 0.5f;
+                this->actor.world.rot.x = 0x4000;
+            } else {
                 yOffset = 650.0f;
                 Actor_SetScale(&this->actor, 0.02f);
                 this->scale = 0.02f;
@@ -911,7 +911,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
 	if (CVar_GetS32("gNewDrops", 0) !=0) { //Update 3D Model rotation on frame update :)
-		DroppedItemRot += 250; //I set it to 100 in original but that way too slow.
+	    DroppedItemRot += 250; //I set it to 100 in original but that way too slow.
 	}
 
     if (this->unk_15A > 0) {
