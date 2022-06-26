@@ -605,7 +605,7 @@ void BgPoEvent_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 sp48;
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_po_event.c", 1481);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     func_80093D18(globalCtx->state.gfxCtx);
     if ((this->type == 3) || (this->type == 2)) {
         if (this->actionFunc == BgPoEvent_PaintingEmpty) {
@@ -617,10 +617,10 @@ void BgPoEvent_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, alpha);
     }
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_po_event.c", 1501),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, displayLists[this->type]);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_po_event.c", 1508);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if ((this->type == 0) || (this->type == 1)) {
         sp48 = (833.0f - this->dyna.actor.world.pos.y) * 0.0025f;

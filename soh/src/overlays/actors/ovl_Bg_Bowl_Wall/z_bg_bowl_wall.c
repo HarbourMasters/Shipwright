@@ -202,13 +202,13 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     BgBowlWall* this = (BgBowlWall*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 441);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x8,
                Gfx_TexScroll(globalCtx->state.gfxCtx, 0, -2 * (frames = globalCtx->state.frames), 16, 16));
     gDPPipeSync(POLY_OPA_DISP++);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 453),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->dyna.actor.params == 0) {
@@ -217,5 +217,5 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gBowlingRound2WallDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_bowl_wall.c", 464);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

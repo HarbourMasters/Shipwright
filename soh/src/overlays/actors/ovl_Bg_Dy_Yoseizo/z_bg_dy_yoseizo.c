@@ -894,7 +894,7 @@ static void* sMouthTextures[] = {
 void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1609);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     if (this->actionFunc != BgDyYoseizo_Vanish) {
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -909,7 +909,7 @@ void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, BgDyYoseizo_OverrideLimbDraw, NULL, this);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1629);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     BgDyYoseizo_ParticleDraw(this, globalCtx);
 }
 
@@ -1010,7 +1010,7 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
     BgDyYoseizoParticle* particle = this->particles;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1767);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, particle++) {
@@ -1031,11 +1031,11 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
             Matrix_Scale(particle->scale, particle->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(particle->roll, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_bg_dy_yoseizo.c", 1810),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAliveDL));
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1819);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }

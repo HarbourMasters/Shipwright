@@ -201,12 +201,12 @@ void BgGndSoulmeiro_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     switch (params) {
         case 0:
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_soulmeiro.c", 398);
+            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
             func_80093D84(globalCtx->state.gfxCtx);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_gnd_soulmeiro.c", 400),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, dLists[params]);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_soulmeiro.c", 403);
+            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
             break;
         case 1:
             Gfx_DrawDListXlu(globalCtx, dLists[params]);
