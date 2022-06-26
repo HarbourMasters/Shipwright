@@ -49,7 +49,7 @@ void EffectSsKFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     xzScale = this->rXZScale / 10000.0f;
     yScale = this->rYScale / 10000.0f;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_k_fire.c", 152);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(xzScale, yScale, xzScale, MTXMODE_APPLY);
@@ -75,11 +75,11 @@ void EffectSsKFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         Matrix_RotateY(M_PI, MTXMODE_APPLY);
     }
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_eff_k_fire.c", 215),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_k_fire.c", 220);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectSsKFire_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

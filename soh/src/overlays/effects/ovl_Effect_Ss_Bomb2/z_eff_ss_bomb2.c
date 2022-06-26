@@ -73,7 +73,7 @@ void EffectSsBomb2_DrawFade(GlobalContext* globalCtx, u32 index, EffectSs* this)
     s32 pad;
     f32 scale;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_bomb2.c", 298);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     scale = this->rScale * 0.01f;
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
@@ -96,7 +96,7 @@ void EffectSsBomb2_DrawFade(GlobalContext* globalCtx, u32 index, EffectSs* this)
     if (1) {}
     if (1) {}
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_bomb2.c", 345);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* this) {
@@ -118,7 +118,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
     f32 layer2Scale = 0.925f;
     s32 i;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_bomb2.c", 386);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     depth = this->rDepth;
     scale = this->rScale * 0.01f;
@@ -150,7 +150,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
                 Matrix_Translate(0.0f, 0.0f, depth, MTXMODE_APPLY);
                 Matrix_RotateZ((this->life * 0.02f) + 180.0f, MTXMODE_APPLY);
                 Matrix_Scale(layer2Scale, layer2Scale, layer2Scale, MTXMODE_APPLY);
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_eff_ss_bomb2.c", 448),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffBombExplosion3DL);
                 layer2Scale -= 0.15f;
@@ -161,7 +161,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
     if (1) {}
     if (1) {}
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_bomb2.c", 456);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectSsBomb2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
