@@ -93,6 +93,7 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
 Sprite* GetSeedTexture(uint8_t index);
 void LoadRandomizerSettings(const char* spoilerFileName);
+bool GettingRandoBottledItem();
 u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 int CopyAltarMessage(char* buffer, const int maxBufferSize);
