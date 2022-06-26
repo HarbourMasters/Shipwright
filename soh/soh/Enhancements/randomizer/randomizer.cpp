@@ -1918,6 +1918,7 @@ GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNu
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
+#pragma optimize("", off)
 bool Randomizer::GettingItemInBottle() {
     if (this->gettingBottledItem) {
         this->gettingBottledItem = false;
@@ -1925,6 +1926,7 @@ bool Randomizer::GettingItemInBottle() {
     }
     return false;
 }
+#pragma optimize("", on)
 
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     // RANDOTODO find a more robust way to handle resetting this,
