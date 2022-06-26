@@ -377,7 +377,14 @@ DrawItemTableEntry sDrawItemTable[] = {
     { GetItem_DrawJewelGoron, { gGiGoronRubyGemDL, gGiGoronRubySettingDL } },
     { GetItem_DrawJewelZora, { gGiZoraSapphireGemDL, gGiZoraSapphireSettingDL } },
 
-    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } },
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Generic
+
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Zelda's  Lullaby
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Epona's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Saria's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Sun's song
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } }, //Song of time
+    { GetItem_DrawGenericMusicNote, { gGiSongNoteDL } } //Song of storms
 };
 
 /**
@@ -793,15 +800,27 @@ void GetItem_DrawOpa0Xlu1(GlobalContext* globalCtx, s16 drawId) {
 
 void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId) {
     s32 pad;
+    s16 color_slot = drawId-120; //0 = generic 
+    s16* colors[7][3] = {
+        {255,255,255},  //Generic Song (full white)
+        {109, 73,143},  //Lullaby
+        {217,110, 48},  //Epona
+        { 62,109, 23},  //Saria
+        {237,231, 62},  //Sun
+        { 98,177,211},  //Time
+        {146,146,146}   //Storms
+    };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 998);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
-    func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_draw.c", 1002),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
+    gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
+    gsSPGrayscale(POLY_OPA_DISP++, true);
+    func_80093D18(globalCtx->state.gfxCtx);
+    gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
+    gsSPGrayscale(POLY_OPA_DISP++, false);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 1008);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {

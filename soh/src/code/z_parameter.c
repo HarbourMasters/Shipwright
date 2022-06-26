@@ -3773,9 +3773,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
             gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
                                 G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X) << 2, DPAD_Y << 2,
-                                    (OTRGetRectDimensionFromRightEdge(DPAD_X) + 32) << 2, (DPAD_Y + 32) << 2,
-                                    G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) << 2,
+                                    (DPAD_Y + (Top_HUD_Margin * -1)) << 2,
+                                    (OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) + 32) << 2,
+                                    (DPAD_Y + 32 + (Top_HUD_Margin * -1)) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10),
+                                    (1 << 10));
 
             // DPad-Up Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {
