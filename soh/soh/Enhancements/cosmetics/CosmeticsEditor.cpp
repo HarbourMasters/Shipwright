@@ -307,7 +307,7 @@ void Draw_Menus(){
 }
 void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("General margins Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        ImGui::TableSetupColumn("General margins settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
         SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 0, "");
         SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", 0, ImGui::GetWindowViewport()->Size.x, "");
@@ -318,7 +318,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Hearts count position")) {
         if (ImGui::BeginTable("tableHeartsCounts", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Hearts counts Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Hearts counts settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Hearts count use margins", "gHeartsUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -342,9 +342,9 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Magic Meter position")) {
         if (ImGui::BeginTable("tablemmpos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Magic Meter Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Magic meter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Magic Meter use margins", "gMagicBarUseMargins");
+            SohImGui::EnhancementCheckbox("Magic meter use margins", "gMagicBarUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
             SohImGui::EnhancementRadioButton("Original position", "gMagicBarPosType", 0);
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -366,7 +366,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("B Button position")) {
         if (ImGui::BeginTable("tablebbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("B Button Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("B Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("B Button use margins", "gBBtnUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -390,7 +390,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("A Button position")) {
         if (ImGui::BeginTable("tableabtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("A Button Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("A Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("A Button use margins", "gABtnUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -414,7 +414,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Start Button position")) {
         if (ImGui::BeginTable("tablestartbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Start Button Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Start Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Start Button use margins", "gStartBtnUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -438,7 +438,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("C Button Up position")) {
         if (ImGui::BeginTable("tablecubtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Up Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("C Button Up settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("C Button Up use margins", "gCBtnUUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -471,7 +471,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("C Button Down position")) {
         if (ImGui::BeginTable("tablecdbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Down Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("C Button Down settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("C Button Down use margins", "gCBtnDUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -504,7 +504,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("C Button Left position")) {
         if (ImGui::BeginTable("tableclbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Left Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("C Button Left settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("C Button Left use margins", "gCBtnLUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -537,7 +537,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("C Button Right position")) {
         if (ImGui::BeginTable("tablecrnbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("C Button Right Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("C Button Right settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("C Button Right use margins", "gCBtnRUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -570,7 +570,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("DPad items Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("DPad items settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -601,7 +601,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Minimaps position")) {
         if (ImGui::BeginTable("tableminimapspos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("minimaps Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("minimaps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Minimap Button use margins", "gMinimapUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -625,7 +625,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Small Keys counter position")) {
         if (ImGui::BeginTable("tablesmolekeys", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Small Keys counter Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Small Keys counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Small Keys counter use margins", "gSKCUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -649,7 +649,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Rupee counter position")) {
         if (ImGui::BeginTable("tablerupeecount", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Rupee counter Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Rupee counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Rupee counter use margins", "gRCUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -673,7 +673,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Carrots position")) {
         if (ImGui::BeginTable("tableCarrots", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Carrots Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Carrots settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Carrots use margins", "gCarrotsUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -697,7 +697,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Timers position")) {
         if (ImGui::BeginTable("tabletimers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Timers Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Timers settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Timers use margins", "gTimersUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -721,7 +721,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Archery Scores position")) {
         if (ImGui::BeginTable("tablearchery", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Archery Scores Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Archery Scores settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Archery Scores use margins", "gASUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -745,7 +745,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Title cards (Maps) position")) {
         if (ImGui::BeginTable("tabletcmaps", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Titlecard maps Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Titlecard maps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Title cards (Maps) use margins", "gTCMUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
@@ -769,7 +769,7 @@ void Draw_Placements(){
     }
     if (ImGui::CollapsingHeader("Title cards (Bosses) position")) {
         if (ImGui::BeginTable("tabletcbosses", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-            ImGui::TableSetupColumn("Title cards (Bosses) Settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            ImGui::TableSetupColumn("Title cards (Bosses) settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
             SohImGui::EnhancementCheckbox("Title cards (Bosses) use margins", "gTCBUseMargins");
             SohImGui::Tooltip("This will use original intended elements position.");
