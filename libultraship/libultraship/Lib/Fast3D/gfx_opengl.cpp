@@ -43,6 +43,7 @@
 #include "../../Environment.h"
 #include "../../GlobalCtx2.h"
 #include "gfx_pc.h"
+#include "../../Cvar.h"
 
 using namespace std;
 
@@ -677,7 +678,14 @@ static void gfx_opengl_set_depth_test_and_mask(bool depth_test, bool z_upd) {
 
 static void gfx_opengl_set_zmode_decal(bool zmode_decal) {
     if (zmode_decal) {
-        glPolygonOffset(-8, -8);
+        if (CVar_GetS32("gN64Mode", 0) == 0)
+        {
+            glPolygonOffset(-8, -8);
+        }
+        else {
+            glPolygonOffset(-2, -2);
+        }
+        
         glEnable(GL_POLYGON_OFFSET_FILL);
     } else {
         glPolygonOffset(0, 0);

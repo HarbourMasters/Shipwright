@@ -29,6 +29,7 @@
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
 #include "gfx_pc.h"
+#include "../../Cvar.h"
 #define DEBUG_D3D 0
 
 using namespace Microsoft::WRL; // For ComPtr
@@ -663,7 +664,14 @@ static void gfx_d3d11_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
         rasterizer_desc.CullMode = D3D11_CULL_NONE;
         rasterizer_desc.FrontCounterClockwise = true;
         rasterizer_desc.DepthBias = 0;
-        rasterizer_desc.SlopeScaledDepthBias = d3d.zmode_decal ? -8.0f : 0.0f;
+        if (CVar_GetS32("gN64Mode", 0) == 0)
+        {
+            rasterizer_desc.SlopeScaledDepthBias = d3d.zmode_decal ? -2.0f : 0.0f;;
+        }
+        else {
+            rasterizer_desc.SlopeScaledDepthBias = d3d.zmode_decal ? -8.0f : 0.0f;
+        }
+        
         rasterizer_desc.DepthBiasClamp = 0.0f;
         rasterizer_desc.DepthClipEnable = false;
         rasterizer_desc.ScissorEnable = true;
