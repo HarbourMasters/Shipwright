@@ -1991,7 +1991,8 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     } else if (((item >= ITEM_POTION_RED) && (item <= ITEM_POE)) || (item == ITEM_MILK)) {
         temp = SLOT(item);
 
-        if ((item != ITEM_MILK_BOTTLE) && (item != ITEM_LETTER_RUTO)) {
+        if ((item != ITEM_MILK_BOTTLE) && (item != ITEM_LETTER_RUTO) &&
+            !(gSaveContext.n64ddFlag && GettingRandoBottledItem())) {
             if (item == ITEM_MILK) {
                 item = ITEM_MILK_BOTTLE;
                 temp = SLOT(item);
