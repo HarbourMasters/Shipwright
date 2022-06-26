@@ -1078,7 +1078,7 @@ void EnXc_DrawPullingOutHarp(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s32 pad2;
 
-    OPEN_DISPS(gfxCtx, "../z_en_oA2_inSpot05.c", 1444);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 20, 0);
@@ -1088,7 +1088,7 @@ void EnXc_DrawPullingOutHarp(Actor* thisx, GlobalContext* globalCtx) {
     func_8002EBCC(&this->actor, globalCtx, 0);
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_PullingOutHarpOverrideLimbDraw, NULL, this);
-    CLOSE_DISPS(gfxCtx, "../z_en_oA2_inSpot05.c", 1497);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EnXc_DrawHarp(Actor* thisx, GlobalContext* globalCtx) {
@@ -1100,7 +1100,7 @@ void EnXc_DrawHarp(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s32 pad2;
 
-    OPEN_DISPS(gfxCtx, "../z_en_oA2_inSpot05.c", 1511);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
@@ -1111,7 +1111,7 @@ void EnXc_DrawHarp(Actor* thisx, GlobalContext* globalCtx) {
     func_8002EBCC(&this->actor, globalCtx, 0);
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_HarpOverrideLimbDraw, NULL, this);
-    CLOSE_DISPS(gfxCtx, "../z_en_oA2_inSpot05.c", 1564);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void func_80B3EBF0(EnXc* this, GlobalContext* globalCtx) {
@@ -1713,7 +1713,7 @@ void EnXc_DrawTriforce(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s32 pad2;
 
-    OPEN_DISPS(gfxCtx, "../z_en_oA2_inMetamol.c", 565);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     if (this->unk_2BC != 0) {
         Mtx* mtx = Graph_Alloc(gfxCtx, sizeof(Mtx));
         s32* primColor = this->triforcePrimColor;
@@ -1724,7 +1724,7 @@ void EnXc_DrawTriforce(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Translate(kREG(16) + 100.0f, kREG(17) + 4460.0f, kREG(18) + 1190.0f, MTXMODE_APPLY);
         Matrix_RotateZYX(kREG(22), kREG(23), this->triforceAngle, MTXMODE_APPLY);
         Matrix_Scale(scale[0], scale[1], scale[2], MTXMODE_APPLY);
-        Matrix_ToMtx(mtx, "../z_en_oA2_inMetamol.c", 602);
+        Matrix_ToMtx(mtx, __FILE__, __LINE__);
         Matrix_Pop();
         func_80093D84(gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, primColor[2], primColor[3]);
@@ -1739,7 +1739,7 @@ void EnXc_DrawTriforce(Actor* thisx, GlobalContext* globalCtx) {
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTexture));
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_TriforceOverrideLimbDraw, EnXc_TriforcePostLimbDraw, this);
-    CLOSE_DISPS(gfxCtx, "../z_en_oA2_inMetamol.c", 668);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void func_80B40590(EnXc* this, GlobalContext* globalCtx) {
@@ -2135,13 +2135,13 @@ void EnXc_DrawSquintingEyes(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime* skelAnime = &this->skelAnime;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_en_oA2_inStalker.c", 839);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     func_80093D18(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gSheikEyeSquintingTex));
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
                           NULL);
-    CLOSE_DISPS(gfxCtx, "../z_en_oA2_inStalker.c", 854);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EnXc_InitTempleOfTime(EnXc* this, GlobalContext* globalCtx) {

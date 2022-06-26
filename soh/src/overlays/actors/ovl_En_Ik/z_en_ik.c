@@ -853,13 +853,13 @@ void EnIk_PostLimbDraw3(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     Vec3f spE8;
     EnIk* this = (EnIk*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1201);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if (this->unk_2FB & 1) {
         BodyBreak_SetInfo(&this->bodyBreak, limbIndex, 26, 27, 28, dList, BODYBREAK_OBJECT_DEFAULT);
     }
     if (limbIndex == 12) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1217),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->actor.params != 0) {
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_019E08);
@@ -898,38 +898,38 @@ void EnIk_PostLimbDraw3(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 
     switch (limbIndex) {
         case 22:
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1270),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
             break;
         case 24:
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1275),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
         case 26:
             if (!(this->unk_2FA & 1)) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1281),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
             }
             break;
         case 27:
             if (!(this->unk_2FA & 1)) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1288),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
             }
             break;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1294);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void func_80A76798(Actor* thisx, GlobalContext* globalCtx) {
     EnIk* this = (EnIk*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1309);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -954,7 +954,7 @@ void func_80A76798(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnIk_OverrideLimbDraw3, EnIk_PostLimbDraw3, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ik_inFight.c", 1351);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnIk_StartMusic(void) {
@@ -1164,25 +1164,25 @@ s32 EnIk_OverrideLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 void EnIk_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_en_ik_inAwake.c", 207);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     switch (limbIndex) {
         case 13: {
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_ik_inAwake.c", 267),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016D88);
             }
         } break;
         case 22:
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_ik_inAwake.c", 274),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016F88);
             break;
         case 24:
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_ik_inAwake.c", 280),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016EE8);
             break;
@@ -1190,7 +1190,7 @@ void EnIk_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_ik_inAwake.c", 288),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
             }
@@ -1199,13 +1199,13 @@ void EnIk_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
             EnIk* this = (EnIk*)thisx;
 
             if (EnIk_curFrame(&this->actor) < 30.0f) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_ik_inAwake.c", 297),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
             }
         } break;
     }
-    CLOSE_DISPS(gfxCtx, "../z_en_ik_inAwake.c", 304);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void func_80A77844(EnIk* this, GlobalContext* globalCtx) {
@@ -1213,7 +1213,7 @@ void func_80A77844(EnIk* this, GlobalContext* globalCtx) {
     SkelAnime* skelAnime = &this->skelAnime;
     s32 pad[2];
 
-    OPEN_DISPS(gfxCtx, "../z_en_ik_inAwake.c", 322);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_80093D18(gfxCtx);
@@ -1224,7 +1224,7 @@ void func_80A77844(EnIk* this, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnIk_OverrideLimbDraw2, EnIk_PostLimbDraw2, this);
 
-    CLOSE_DISPS(gfxCtx, "../z_en_ik_inAwake.c", 345);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void func_80A779DC(EnIk* this, GlobalContext* globalCtx) {

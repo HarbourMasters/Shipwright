@@ -417,32 +417,32 @@ void DemoIk_Type2PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     f32 frame = DemoIk_GetCurFrame(this);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_ik_inFace.c", 268);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     if (limbIndex == 1 && (frame >= 30.0f)) {
         switch (this->actor.params) {
             case 3:
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_ik_inFace.c", 274),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_017028);
                 break;
             case 4:
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_ik_inFace.c", 280),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_017170);
                 break;
             case 5:
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_ik_inFace.c", 286),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016BE0);
                 break;
             default:
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_ik_inFace.c", 292),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, object_ik_DL_016CD8);
                 break;
         }
     }
-    CLOSE_DISPS(gfxCtx, "../z_demo_ik_inFace.c", 300);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void DemoIk_Type2Draw(DemoIk* this, GlobalContext* globalCtx) {
@@ -450,7 +450,7 @@ void DemoIk_Type2Draw(DemoIk* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(gfxCtx, "../z_demo_ik_inFace.c", 318);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_80093D18(gfxCtx);
     func_80093D84(gfxCtx);
@@ -459,7 +459,7 @@ void DemoIk_Type2Draw(DemoIk* this, GlobalContext* globalCtx) {
     gSPSegment(POLY_OPA_DISP++, 0x0A, DemoIk_SetColors(gfxCtx, 255, 255, 255, 20, 40, 30));
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           DemoIk_Type2OverrideLimbDraw, DemoIk_Type2PostLimbDraw, this);
-    CLOSE_DISPS(gfxCtx, "../z_demo_ik_inFace.c", 341);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 static DemoIkActionFunc sActionFuncs[] = {

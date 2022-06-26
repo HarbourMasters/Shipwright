@@ -223,7 +223,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 111);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
@@ -244,7 +244,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 137),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
@@ -252,7 +252,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 151);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 numDustEffects, f32 radius,

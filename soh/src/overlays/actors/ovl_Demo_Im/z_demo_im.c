@@ -1187,7 +1187,7 @@ void DemoIm_DrawSolid(DemoIm* this, GlobalContext* globalCtx) {
     void* eyeTexture = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_im.c", 904);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -1199,7 +1199,7 @@ void DemoIm_DrawSolid(DemoIm* this, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_im.c", 925);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void DemoIm_Draw(Actor* thisx, GlobalContext* globalCtx) {

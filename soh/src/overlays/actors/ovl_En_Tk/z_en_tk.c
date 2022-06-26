@@ -92,7 +92,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
     s16 alpha;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 114);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     gfxSetup = 0;
 
@@ -116,7 +116,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->size, eff->size, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 140),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             imageIdx = eff->timeLeft * ((f32)ARRAY_COUNT(dustTextures) / eff->timeTotal);
@@ -127,7 +127,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
         eff++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 154);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 s32 EnTkEff_CreateDflt(EnTk* this, Vec3f* pos, u8 duration, f32 size, f32 growth, f32 yAccelMax) {
