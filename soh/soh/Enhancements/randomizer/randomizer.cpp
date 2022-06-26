@@ -1402,7 +1402,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Clarity", RSK_HINT_CLARITY},
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
-    { "Start with Consumables", RSK_STARTING_CONSUMABLES }
+    { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+    { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT }
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1570,6 +1571,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
+                    case RSK_BIG_POE_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;

@@ -781,6 +781,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if(GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
             gSaveContext.inventory.dungeonItems[10] |= 1;
         }
+
+        HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * GetRandoSettingValue(RSK_BIG_POE_COUNT));
     }
 
     Save_SaveFile();
