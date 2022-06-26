@@ -1402,7 +1402,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Clarity", RSK_HINT_CLARITY},
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
-    { "Start with Consumables", RSK_STARTING_CONSUMABLES }
+    { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+    { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT }
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1570,6 +1571,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
+                    case RSK_BIG_POE_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -3220,6 +3222,8 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_LANGUAGE] = CVar_GetS32("gLanguages", 0);
 
+    cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
@@ -4286,13 +4290,13 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                if (ImGui::BeginTable("tableRandoOthers", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
-                    // ImGui::TableNextColumn();
+                    ImGui::TableNextColumn();
                     // COLUMN 1 - TIME SAVERS
                     // ImGui::NewLine();
                     // todo implement child stealth skip
@@ -4347,14 +4351,10 @@ void DrawRandoEditor(bool& open) {
 
                     // todo implement big poe count
                     // // Big Poe Target Count
-                    // SohImGui::EnhancementCheckbox("Big Poe Target Count", "gRandomizeEnableBigPoeTargetCount");
-                    // InsertHelpHoverText(
-                    //     "The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
-                    // if (CVar_GetS32("gRandomizeEnableBigPoeTargetCount", 0) == 1) {
-                    //     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                    //                                    "gRandomizeBigPoeTargetCount", 0, 100, "");
-                    // }
-                    // ImGui::Separator();
+                    SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                    InsertHelpHoverText("The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
+                    ImGui::Separator();
 
                     // todo implement cuccos to return
                     // // Cuccos to return

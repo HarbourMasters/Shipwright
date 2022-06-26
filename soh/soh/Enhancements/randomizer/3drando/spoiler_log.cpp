@@ -329,8 +329,17 @@ static void WriteSettings(const bool printAll = false) {
     if (menu->name == "Cosmetic Settings" ||
         menu->name == "Ingame Defaults" ||
         menu->name == "Item Usability Settings" ||
-        menu->name == "Multiplayer Settings" ||
-        menu->name == "Timesaver Settings") continue;
+        menu->name == "Multiplayer Settings") continue;
+
+    if (menu->name == "Timesaver Settings") {
+      for (const Option* setting : *menu->settingsList) {
+        if (setting->GetName() == "Big Poe Target Count" || setting->GetName() == "Cuccos to return") {
+            std::string settingName = menu->name + ":" + setting->GetName();
+            jsonData["settings"][settingName] = setting->GetSelectedOptionText();
+        }
+      }
+      continue;
+    }
 
     //This is a menu of settings, write them
     if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
