@@ -663,7 +663,7 @@ static void gfx_d3d11_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
         rasterizer_desc.CullMode = D3D11_CULL_NONE;
         rasterizer_desc.FrontCounterClockwise = true;
         rasterizer_desc.DepthBias = 0;
-        rasterizer_desc.SlopeScaledDepthBias = d3d.zmode_decal ? -2.0f : 0.0f;
+        rasterizer_desc.SlopeScaledDepthBias = d3d.zmode_decal ? -8.0f : 0.0f;
         rasterizer_desc.DepthBiasClamp = 0.0f;
         rasterizer_desc.DepthClipEnable = false;
         rasterizer_desc.ScissorEnable = true;

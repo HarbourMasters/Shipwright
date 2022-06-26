@@ -677,7 +677,7 @@ static void gfx_opengl_set_depth_test_and_mask(bool depth_test, bool z_upd) {
 
 static void gfx_opengl_set_zmode_decal(bool zmode_decal) {
     if (zmode_decal) {
-        glPolygonOffset(-2, -2);
+        glPolygonOffset(-8, -8);
         glEnable(GL_POLYGON_OFFSET_FILL);
     } else {
         glPolygonOffset(0, 0);
