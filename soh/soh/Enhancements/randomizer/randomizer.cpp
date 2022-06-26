@@ -4348,7 +4348,7 @@ void DrawRandoEditor(bool& open) {
                     // todo implement big poe count
                     // // Big Poe Target Count
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                                    "gRandomizeBigPoeTargetCount", 0, 10, "", 10);
+                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
                     InsertHelpHoverText("The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
                     ImGui::Separator();
 

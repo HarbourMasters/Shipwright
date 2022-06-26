@@ -2521,8 +2521,7 @@ namespace Settings {
 
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
-    // RANDOTODO is set selected index working? wouldn't zero indexing break things?
-    BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]);
+    BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
