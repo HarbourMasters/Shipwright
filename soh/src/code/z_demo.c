@@ -2050,12 +2050,14 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx) {
     u8 requiredAge;
     s16 i;
 
-    // don't skip epona escape cutscenes
     if (gSaveContext.n64ddFlag &&
+        // don't skip epona escape cutscenes 
         gSaveContext.entranceIndex != 650 &&
         gSaveContext.entranceIndex != 654 &&
         gSaveContext.entranceIndex != 658 &&
-        gSaveContext.entranceIndex != 1142) {
+        gSaveContext.entranceIndex != 1142 &&
+        // don't skip nabooru iron knuckle cs
+        gSaveContext.entranceIndex != 141) {
         gSaveContext.showTitleCard = false;
         return;
     }
