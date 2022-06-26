@@ -410,7 +410,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
             sEntranceIconMapIndex = extendedMapIndex;
             //DmaMgr_SendRequest1(interfaceCtx->mapSegment,
                                 //(uintptr_t)_map_grand_staticSegmentRomStart + gMapData->owMinimapTexOffset[extendedMapIndex],
-                                //gMapData->owMinimapTexSize[mapIndex], "../z_map_exp.c", 309);
+                                //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
             if (sEntranceIconMapIndex < 24)
                 memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableOW[sEntranceIconMapIndex]), gMapData->owMinimapTexSize[mapIndex]);
@@ -443,7 +443,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
             //DmaMgr_SendRequest1(globalCtx->interfaceCtx.mapSegment,
                                 //(uintptr_t)_map_i_staticSegmentRomStart +
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
-                                //0xFF0, "../z_map_exp.c", 346);
+                                //0xFF0, __FILE__, __LINE__);
 
             memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]), 0xFF0);
 
@@ -516,11 +516,11 @@ void Map_Init(GlobalContext* globalCtx) {
     interfaceCtx->unk_258 = -1;
     interfaceCtx->unk_25A = -1;
 
-    interfaceCtx->mapSegment = GameState_Alloc(&globalCtx->state, 0x1000, "../z_map_exp.c", 457);
+    interfaceCtx->mapSegment = GameState_Alloc(&globalCtx->state, 0x1000, __FILE__, __LINE__);
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", globalCtx->sceneNum,
                  interfaceCtx->mapSegment, globalCtx);
-    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", "../z_map_exp.c", 459);
+    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", __FILE__, __LINE__);
 
     switch (globalCtx->sceneNum) {
         case SCENE_SPOT00:
@@ -599,7 +599,7 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     s16 tempX, tempZ;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 565);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if (globalCtx->interfaceCtx.minimapAlpha >= 0xAA) {
         func_80094A14(globalCtx->state.gfxCtx);
@@ -618,7 +618,7 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         Matrix_RotateX(-1.6f, MTXMODE_APPLY);
         tempX = (0x7FFF - player->actor.shape.rot.y) / 0x400;
         Matrix_RotateY(tempX / 10.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_map_exp.c", 585),
+        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 255, 0, 255);
@@ -632,14 +632,14 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         Matrix_Scale(VREG(9) / 100.0f, VREG(9) / 100.0f, VREG(9) / 100.0f, MTXMODE_APPLY);
         Matrix_RotateX(VREG(52) / 10.0f, MTXMODE_APPLY);
         Matrix_RotateY(sPlayerInitialDirection / 10.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_map_exp.c", 603),
+        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 0, 0, 255);
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 607);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void Minimap_Draw(GlobalContext* globalCtx) {
@@ -647,7 +647,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 626);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if (globalCtx->pauseCtx.state < 4) {
         switch (globalCtx->sceneNum) {
@@ -819,7 +819,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 782);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 s16 Map_GetFloorTextIndexOffset(s32 mapIndex, s32 floor) {

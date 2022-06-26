@@ -698,7 +698,7 @@ void DrawColViewer() {
         return;
     }
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    OPEN_DISPS(gGlobalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
@@ -706,5 +706,5 @@ void DrawColViewer() {
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

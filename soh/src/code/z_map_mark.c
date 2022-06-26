@@ -58,8 +58,8 @@ void MapMark_Init(GlobalContext* globalCtx) {
     MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
     u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 
-    overlay->loadedRamAddr = GameState_Alloc(&globalCtx->state, overlaySize, "../z_map_mark.c", 235);
-    LogUtils_CheckNullPointer("dlftbl->allocp", overlay->loadedRamAddr, "../z_map_mark.c", 236);
+    overlay->loadedRamAddr = GameState_Alloc(&globalCtx->state, overlaySize, __FILE__, __LINE__);
+    LogUtils_CheckNullPointer("dlftbl->allocp", overlay->loadedRamAddr, __FILE__, __LINE__);
 
     Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
 
@@ -96,7 +96,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
 
     mapMarkIconData = &sLoadedMarkDataTable[dungeon][interfaceCtx->mapRoomNum][0];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_mark.c", 303);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     while (true) {
        if (mapMarkIconData->markType == MAP_MARK_NONE) {
@@ -145,7 +145,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
         mapMarkIconData++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_mark.c", 339);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void MapMark_Draw(GlobalContext* globalCtx) {

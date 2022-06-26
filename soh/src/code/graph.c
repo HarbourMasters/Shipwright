@@ -134,7 +134,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
         return &gGameStateOverlayTable[5];
     }
 
-    LOG_ADDRESS("game_init_func", gameStateInitFunc, "../graph.c", 696);
+    LOG_ADDRESS("game_init_func", gameStateInitFunc, __FILE__, __LINE__);
     return NULL;
 }
 
@@ -225,9 +225,9 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     task->output_buff_size = (u64*)((u8*)gGfxSPTaskOutputBuffer + sizeof(gGfxSPTaskOutputBuffer));
     task->data_ptr = (u64*)gfxCtx->workBuffer;
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 828);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     task->data_size = (uintptr_t)WORK_DISP - (uintptr_t)gfxCtx->workBuffer;
-    CLOSE_DISPS(gfxCtx, "../graph.c", 830);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 
     { s32 pad2; } // Necessary to match stack usage
 
@@ -272,29 +272,29 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gameState->unk_A0 = 0;
     Graph_InitTHGA(gfxCtx);
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 966);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gDPNoOpString(WORK_DISP++, "WORK_DISP 開始", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 開始", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 開始", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 開始", 0);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 975);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
     Debug_Draw();
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 987);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 終了", 0);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 996);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 999);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
@@ -305,7 +305,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gDPFullSync(OVERLAY_DISP++);
     gSPEndDisplayList(OVERLAY_DISP++);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 1028);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 
     if (HREG(80) == 10 && HREG(93) == 2) {
         HREG(80) = 7;
@@ -344,14 +344,14 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
             osSyncPrintf("%c", 7);
             // "Dynamic area head is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域先頭が破壊されています\n" VT_RST);
-            Fault_AddHungupAndCrash("../graph.c", 1070);
+            Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
         if (pool->tailMagic != GFXPOOL_TAIL_MAGIC) {
             problem = true;
             osSyncPrintf("%c", 7);
             // "Dynamic region tail is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域末尾が破壊されています\n" VT_RST);
-            Fault_AddHungupAndCrash("../graph.c", 1076);
+            Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
     }
 
@@ -458,7 +458,7 @@ static void RunFrame()
         size = runFrameContext.ovl->instanceSize;
         osSyncPrintf("クラスサイズ＝%dバイト\n", size); // "Class size = %d bytes"
 
-        runFrameContext.gameState = SystemArena_MallocDebug(size, "../graph.c", 1196);
+        runFrameContext.gameState = SystemArena_MallocDebug(size, __FILE__, __LINE__);
 
         if (!runFrameContext.gameState)
         {
@@ -499,7 +499,7 @@ static void RunFrame()
 
         runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
         GameState_Destroy(runFrameContext.gameState);
-        SystemArena_FreeDebug(runFrameContext.gameState, "../graph.c", 1227);
+        SystemArena_FreeDebug(runFrameContext.gameState, __FILE__, __LINE__);
         Overlay_FreeGameState(runFrameContext.ovl);
     }
     Graph_Destroy(&runFrameContext.gfxCtx);

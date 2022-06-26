@@ -1626,7 +1626,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
 
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
-                            //font->msgLength, "../z_message_PAL.c", 1954);
+                            //font->msgLength, __FILE__, __LINE__);
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;
@@ -2919,7 +2919,7 @@ void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
     static s16 sFillTimer = 0;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_message_PAL.c", 3485);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     if (sVarLastValue != *var) {
         sVarLastValue = *var;
@@ -2940,7 +2940,7 @@ void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
         gDPFillRectangle(POLY_OPA_DISP++, 40, 120, 60, 140); // 20x20 white box
         gDPPipeSync(POLY_OPA_DISP++);
     }
-    CLOSE_DISPS(gfxCtx, "../z_message_PAL.c", 3513);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void Message_DrawDebugText(GlobalContext* globalCtx, Gfx** p) {
@@ -2966,7 +2966,7 @@ void Message_Draw(GlobalContext* globalCtx) {
     Gfx* polyOpaP;
     s16 watchVar;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_message_PAL.c", 3554);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     watchVar = gSaveContext.scarecrowCustomSongSet;
     Message_DrawDebugVariableChanged(&watchVar, globalCtx->state.gfxCtx);
@@ -2985,7 +2985,7 @@ void Message_Draw(GlobalContext* globalCtx) {
     gSPEndDisplayList(plusOne++);
     Graph_BranchDlist(polyOpaP, plusOne);
     POLY_OPA_DISP = plusOne;
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_message_PAL.c", 3582);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void Message_Update(GlobalContext* globalCtx) {

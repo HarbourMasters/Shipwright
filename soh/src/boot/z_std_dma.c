@@ -125,9 +125,9 @@ end:
 s32 DmaMgr_DmaHandler(OSPiHandle* pihandle, OSIoMesg* mb, s32 direction) {
     s32 ret;
 
-    ASSERT(pihandle == gCartHandle, "pihandle == carthandle", "../z_std_dma.c", 530);
-    ASSERT(direction == OS_READ, "direction == OS_READ", "../z_std_dma.c", 531);
-    ASSERT(mb != NULL, "mb != NULL", "../z_std_dma.c", 532);
+    ASSERT(pihandle == gCartHandle, "pihandle == carthandle", __FILE__, __LINE__);
+    ASSERT(direction == OS_READ, "direction == OS_READ", __FILE__, __LINE__);
+    ASSERT(mb != NULL, "mb != NULL", __FILE__, __LINE__);
 
     if (D_80009460 == 10) {
         osSyncPrintf("%10lld サウンドＤＭＡ %08x %08x %08x (%d)\n", OS_CYCLES_TO_USEC(osGetTime()), mb->dramAddr,
@@ -355,7 +355,7 @@ s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_
             osSyncPrintf(VT_FGCOL(RED));
             osSyncPrintf("dmaEntryMsgQが一杯です。キューサイズの再検討をおすすめします。");
             LOG_NUM("(sizeof(dmaEntryMsgBufs) / sizeof(dmaEntryMsgBufs[0]))", ARRAY_COUNT(sDmaMgrMsgs),
-                    "../z_std_dma.c", 952);
+                    __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
         }
     }
@@ -417,7 +417,7 @@ void DmaMgr_Init(void) {
     {
         osSyncPrintf("_bootSegmentRomStart(%08x) != dma_rom_ad[0].rom_b(%08x)\n", _bootSegmentRomStart,
                      gDmaDataTable[0].vromEnd);
-        Fault_AddHungupAndCrash("../z_std_dma.c", 1055);
+        Fault_AddHungupAndCrash(__FILE__, __LINE__);
     }
 #endif
 

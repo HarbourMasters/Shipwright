@@ -382,11 +382,11 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 }
 
 void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 809);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 813);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 // original name: "SQ_NoInterpolate_disp"
@@ -403,7 +403,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
     Vec3f sp60;
     Vec3f sp54;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 838);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     Math_Vec3s_ToVec3f(&sp6C, &this->elements[0].p2);
 
@@ -483,7 +483,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 2, 3, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 932);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
@@ -514,7 +514,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
     Color_RGBA8 sp144;
     Vec3f sp138;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 971);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     Math_Vec3s_ToVec3f(&sp138, &this->elements[0].p2);
 
@@ -535,7 +535,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp118;
         Vec3f sp10C;
 
-        ASSERT(index - 1 >= 0, "index - 1 >= 0", "../z_eff_blure.c", 1005);
+        ASSERT(index - 1 >= 0, "index - 1 >= 0", __FILE__, __LINE__);
 
         ratio = (f32)(elem - 1)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index - 1, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -555,7 +555,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp100;
         Vec3f spF4;
 
-        ASSERT(index + 2 < this->numElements, "index + 2 < this2->now_edge_num", "../z_eff_blure.c", 1032);
+        ASSERT(index + 2 < this->numElements, "index + 2 < this2->now_edge_num", __FILE__, __LINE__);
 
         ratio = (f32)(elem + 2)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index + 2, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -656,7 +656,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         gSP2Triangles(POLY_XLU_DISP++, 12, 13, 15, 0, 12, 15, 14, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1184);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
@@ -668,7 +668,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp5C;
     Mtx* mtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1201);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     if (this->numElements < 2) {
         return;
@@ -710,19 +710,19 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1263);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectBlure_SetupSimple(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1280);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1285);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1294);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gDPPipeSync(POLY_XLU_DISP++);
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
@@ -743,7 +743,7 @@ void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx*
 
     gDPSetEnvColor(POLY_XLU_DISP++, this->altEnvColor.r, this->altEnvColor.g, this->altEnvColor.b, this->altEnvColor.a);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1329);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void (*sSetupHandlers[])(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) = {
@@ -757,7 +757,7 @@ s32 D_80115788 = 0; // unused
 void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
     Mtx* mtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1356);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     sSetupHandlers[this->drawMode](gfxCtx, this, vtx);
     gDPPipeSync(POLY_XLU_DISP++);
@@ -829,7 +829,7 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1452);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 Vtx_t D_8011578C[] = {
@@ -949,7 +949,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 phi_t2;
 
     FrameInterpolation_RecordOpenChild(this, 0);
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1596);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -1061,6 +1061,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1823);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
     FrameInterpolation_RecordCloseChild();
 }

@@ -37,7 +37,7 @@ void func_80095AB4(GlobalContext* globalCtx, Room* room, u32 flags) {
     PolygonType0* polygon0;
     PolygonDlist* polygonDlist;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 193);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if (flags & 1) {
         func_800342EC(&D_801270A0, globalCtx);
@@ -67,7 +67,7 @@ void func_80095AB4(GlobalContext* globalCtx, Room* room, u32 flags) {
         polygonDlist++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 239);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 #define SHAPE_SORT_MAX 64
@@ -99,7 +99,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     PolygonDlist2* temp;
     f32 temp_f2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 287);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     if (flags & 1) {
         func_800342EC(&D_801270A0, globalCtx);
         //gSPSegment(POLY_OPA_DISP++, 0x03, room->segment);
@@ -118,7 +118,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     polygonDlist = SEGMENTED_TO_VIRTUAL(polygon2->start);
     spA4 = spB8;
 
-    ASSERT(polygon2->num <= SHAPE_SORT_MAX, "polygon2->num <= SHAPE_SORT_MAX", "../z_room.c", 317);
+    ASSERT(polygon2->num <= SHAPE_SORT_MAX, "polygon2->num <= SHAPE_SORT_MAX", __FILE__, __LINE__);
     sp78 = polygonDlist;
 
     for (sp9C = 0; sp9C < polygon2->num; sp9C++, polygonDlist++) {
@@ -215,7 +215,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
 
     iREG(88) = sp9C - 1;
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 430);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 //#define JPEG_MARKER 0xFFD8FFE0
@@ -344,7 +344,7 @@ void func_80096680(GlobalContext* globalCtx, Room* room, u32 flags) {
     u32 sp94;
     u32 sp90;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 628);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     camera = GET_ACTIVE_CAM(globalCtx);
     sp9C = (camera->setting == CAM_SET_PREREND_FIXED);
@@ -390,7 +390,7 @@ void func_80096680(GlobalContext* globalCtx, Room* room, u32 flags) {
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 691);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
@@ -422,7 +422,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
 
     // "z_room.c: Data consistent with camera id does not exist camid=%d"
     osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
-    LogUtils_HungupThread("../z_room.c", 726);
+    LogUtils_HungupThread(__FILE__, __LINE__);
 
     return NULL;
 }
@@ -439,7 +439,7 @@ void func_80096B6C(GlobalContext* globalCtx, Room* room, u32 flags) {
     u32 sp90;
     u32 sp8C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 752);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     camera = GET_ACTIVE_CAM(globalCtx);
     sp98 = (camera->setting == CAM_SET_PREREND_FIXED);
@@ -485,7 +485,7 @@ void func_80096B6C(GlobalContext* globalCtx, Room* room, u32 flags) {
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_room.c", 819);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 // Room Draw Polygon Type 1
@@ -497,7 +497,7 @@ void func_80096F6C(GlobalContext* globalCtx, Room* room, u32 flags) {
     } else if (polygon1->format == 2) {
         func_80096B6C(globalCtx, room, flags);
     } else {
-        LogUtils_HungupThread("../z_room.c", 841);
+        LogUtils_HungupThread(__FILE__, __LINE__);
     }
 }
 
@@ -530,7 +530,7 @@ u32 func_80096FE8(GlobalContext* globalCtx, RoomContext* roomCtx) {
         RomFile* roomList = globalCtx->roomList;
         TransitionActorEntry* transitionActor = &globalCtx->transiActorCtx.list[0];
 
-        LOG_NUM("game_play->room_rom_address.num", globalCtx->numRooms, "../z_room.c", 912);
+        LOG_NUM("game_play->room_rom_address.num", globalCtx->numRooms, __FILE__, __LINE__);
 
         for (j = 0; j < globalCtx->transiActorCtx.numActors; j++) {
             frontRoom = transitionActor->sides[0].room;
@@ -551,7 +551,7 @@ u32 func_80096FE8(GlobalContext* globalCtx, RoomContext* roomCtx) {
     osSyncPrintf(VT_FGCOL(YELLOW));
     // "Room buffer size=%08x(%5.1fK)"
     osSyncPrintf("部屋バッファサイズ=%08x(%5.1fK)\n", maxRoomSize, maxRoomSize / 1024.0f);
-    roomCtx->bufPtrs[0] = GameState_Alloc(&globalCtx->state, maxRoomSize, "../z_room.c", 946);
+    roomCtx->bufPtrs[0] = GameState_Alloc(&globalCtx->state, maxRoomSize, __FILE__, __LINE__);
     // "Room buffer initial pointer=%08x"
     osSyncPrintf("部屋バッファ開始ポインタ=%08x\n", roomCtx->bufPtrs[0]);
     roomCtx->bufPtrs[1] = (void*)((intptr_t)roomCtx->bufPtrs[0] + maxRoomSize);
@@ -579,14 +579,14 @@ s32 func_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, s32 roomNum) {
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < globalCtx->numRooms, "read_room_ID < game_play->room_rom_address.num", "../z_room.c", 1009);
+        ASSERT(roomNum < globalCtx->numRooms, "read_room_ID < game_play->room_rom_address.num", __FILE__, __LINE__);
 
         size = globalCtx->roomList[roomNum].vromEnd - globalCtx->roomList[roomNum].vromStart;
         roomCtx->unk_34 = (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, globalCtx->roomList[roomNum].vromStart, size, 0,
-                            &roomCtx->loadQueue, OS_MESG_PTR(NULL), "../z_room.c", 1036);
+                            &roomCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
         roomCtx->unk_30 ^= 1;
 
         return 1;
@@ -623,7 +623,7 @@ void Room_Draw(GlobalContext* globalCtx, Room* room, u32 flags) {
     {
         gSegments[3] = VIRTUAL_TO_PHYSICAL(room->segment);
         ASSERT(room->mesh->polygon.type < ARRAY_COUNTU(sRoomDrawHandlers),
-               "this->ground_shape->polygon.type < number(Room_Draw_Proc)", "../z_room.c", 1125);
+               "this->ground_shape->polygon.type < number(Room_Draw_Proc)", __FILE__, __LINE__);
         sRoomDrawHandlers[room->mesh->polygon.type](globalCtx, room, flags);
     }
 }

@@ -23,7 +23,7 @@ void VisMono_Init(VisMono* this) {
 }
 
 void VisMono_Destroy(VisMono* this) {
-    SystemArena_FreeDebug(this->monoDl, "../z_vismono.c", 137);
+    SystemArena_FreeDebug(this->monoDl, __FILE__, __LINE__);
 }
 
 void VisMono_UpdateTexture(VisMono* this, u16* tex) {
@@ -96,12 +96,12 @@ void VisMono_Draw(VisMono* this, Gfx** gfxp) {
         glistpEnd = VisMono_DrawTexture(this, monoDL);
 
         if (!(glistpEnd <= monoDL + DLSIZE)) {
-            LOG_ADDRESS("glistp_end", glistpEnd, "../z_vismono.c", 257);
-            LOG_ADDRESS("mono_dl", monoDL, "../z_vismono.c", 258);
-            LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE, "../z_vismono.c", 259);
-            LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE, "../z_vismono.c", 260);
+            LOG_ADDRESS("glistp_end", glistpEnd, __FILE__, __LINE__);
+            LOG_ADDRESS("mono_dl", monoDL, __FILE__, __LINE__);
+            LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE, __FILE__, __LINE__);
+            LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE, __FILE__, __LINE__);
         }
-        ASSERT(glistpEnd <= monoDL + DLSIZE, "glistp_end <= mono_dl + DLSIZE", "../z_vismono.c", 262);
+        ASSERT(glistpEnd <= monoDL + DLSIZE, "glistp_end <= mono_dl + DLSIZE", __FILE__, __LINE__);
     }
 
     gDPPipeSync(gfx++);
@@ -124,13 +124,13 @@ void VisMono_DrawOld(VisMono* this) {
     Gfx* glistpEnd;
 
     if (!this->tlut) {
-        this->tlut = SystemArena_MallocDebug(256 * sizeof(u16), "../z_vismono.c", 283);
+        this->tlut = SystemArena_MallocDebug(256 * sizeof(u16), __FILE__, __LINE__);
         VisMono_UpdateTexture(this, this->tlut);
     }
 
     if (!this->monoDl) {
-        this->monoDl = SystemArena_MallocDebug(DLSIZE * sizeof(Gfx), "../z_vismono.c", 289);
+        this->monoDl = SystemArena_MallocDebug(DLSIZE * sizeof(Gfx), __FILE__, __LINE__);
         glistpEnd = VisMono_DrawTexture(this, this->monoDl);
-        ASSERT(glistpEnd <= this->monoDl + DLSIZE, "glistp_end <= this->mono_dl + DLSIZE", "../z_vismono.c", 292);
+        ASSERT(glistpEnd <= this->monoDl + DLSIZE, "glistp_end <= this->mono_dl + DLSIZE", __FILE__, __LINE__);
     }
 }

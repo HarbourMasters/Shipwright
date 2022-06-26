@@ -154,7 +154,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
             } else if (var4 == 11) {
                 padMgr->pakType[i] = 2;
             } else if (var4 == 4) {
-                LOG_NUM("++errcnt", ++errcnt, "../padmgr.c", 282);
+                LOG_NUM("++errcnt", ++errcnt, __FILE__, __LINE__);
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Controller pack communication error"
                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "コントローラパックの通信エラー");
@@ -237,7 +237,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 break;
             case 4:
                 input->cur = input->prev;
-                LOG_NUM("this->Key_switch[i]", padMgr->ctrlrIsConnected[i], "../padmgr.c", 380);
+                LOG_NUM("this->Key_switch[i]", padMgr->ctrlrIsConnected[i], __FILE__, __LINE__);
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Overrun error occurred"
                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "オーバーランエラーが発生");
@@ -259,8 +259,8 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 }
                 break;
             default:
-                LOG_HEX("padnow1->errno", padnow1->err_no, "../padmgr.c", 396);
-                Fault_AddHungupAndCrash("../padmgr.c", 397);
+                LOG_HEX("padnow1->errno", padnow1->err_no, __FILE__, __LINE__);
+                Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
         buttonDiff = input->prev.button ^ input->cur.button;
@@ -325,7 +325,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
             if (padMgr->padStatus[i].type == CONT_TYPE_NORMAL) {
                 mask |= 1 << i;
             } else {
-                //LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type, "../padmgr.c", 458);
+                //LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type, __FILE__, __LINE__);
                 // "An unknown type of controller is connected"
                 //osSyncPrintf("知らない種類のコントローラが接続されています\n");
             }
@@ -400,7 +400,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
         }
 
         osRecvMesg(&padMgr->interruptMsgQ, (OSMesg*)&mesg, OS_MESG_BLOCK);
-        //LogUtils_CheckNullPointer("msg", mesg, "../padmgr.c", 563);
+        //LogUtils_CheckNullPointer("msg", mesg, __FILE__, __LINE__);
 
         PadMgr_HandleRetraceMsg(padMgr);
         break;

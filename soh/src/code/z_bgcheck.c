@@ -87,7 +87,7 @@ void SSNodeList_SetSSListHead(SSNodeList* nodeList, SSList* ssList, s16* polyId)
 void DynaSSNodeList_SetSSListHead(DynaSSNodeList* nodeList, SSList* ssList, s16* polyId) {
     u16 newNodeId = DynaSSNodeList_GetNextNodeIdx(nodeList);
 
-    ASSERT(newNodeId != SS_NULL, "new_node != SS_NULL", "../z_bgcheck.c", 1776);
+    ASSERT(newNodeId != SS_NULL, "new_node != SS_NULL", __FILE__, __LINE__);
     SSNode_SetValue(&nodeList->tbl[newNodeId], polyId, ssList->head);
     ssList->head = newNodeId;
 }
@@ -106,7 +106,7 @@ void DynaSSNodeList_Initialize(GlobalContext* globalCtx, DynaSSNodeList* nodeLis
 void DynaSSNodeList_Alloc(GlobalContext* globalCtx, DynaSSNodeList* nodeList, s32 max) {
     nodeList->tbl = THA_AllocEndAlign(&globalCtx->state.tha, max * sizeof(SSNode), -2);
 
-    ASSERT(nodeList->tbl != NULL, "psst->tbl != NULL", "../z_bgcheck.c", 1811);
+    ASSERT(nodeList->tbl != NULL, "psst->tbl != NULL", __FILE__, __LINE__);
 
     nodeList->max = max;
     nodeList->count = 0;
@@ -700,7 +700,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 2854);
+        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", __FILE__, __LINE__);
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nz) * invNormalXZ;
@@ -781,7 +781,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 2964);
+        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", __FILE__, __LINE__);
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nx) * invNormalXZ;
@@ -1570,7 +1570,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         &globalCtx->state.tha,
         colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z, ~1);
     if (colCtx->lookupTbl == NULL) {
-        LogUtils_HungupThread("../z_bgcheck.c", 4176);
+        LogUtils_HungupThread(__FILE__, __LINE__);
     }
     colCtx->minBounds.x = colCtx->colHeader->minBounds.x;
     colCtx->minBounds.y = colCtx->colHeader->minBounds.y;
@@ -1599,7 +1599,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         tblMax = customNodeListMax;
     } else {
         if (colCtx->memSize < memSize) {
-            LogUtils_HungupThread("../z_bgcheck.c", 4230);
+            LogUtils_HungupThread(__FILE__, __LINE__);
         }
         tblMax = (colCtx->memSize - memSize) / sizeof(SSNode);
     }
@@ -1677,7 +1677,7 @@ f32 BgCheck_RaycastFloorImpl(GlobalContext* globalCtx, CollisionContext* colCtx,
         if (checkPos.y < colCtx->minBounds.y) {
             break;
         }
-        if (BgCheck_PosErrorCheck(&checkPos, "../z_bgcheck.c", 4410)) {
+        if (BgCheck_PosErrorCheck(&checkPos, __FILE__, __LINE__)) {
             if (actor != NULL) {
                 osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
             }
@@ -1892,8 +1892,8 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     dy = posNext->y - posPrev->y;
     dz = posNext->z - posPrev->z;
 
-    if (BgCheck_PosErrorCheck(posNext, "../z_bgcheck.c", 4831) == true ||
-        BgCheck_PosErrorCheck(posPrev, "../z_bgcheck.c", 4832) == true) {
+    if (BgCheck_PosErrorCheck(posNext, __FILE__, __LINE__) == true ||
+        BgCheck_PosErrorCheck(posPrev, __FILE__, __LINE__) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2081,7 +2081,7 @@ s32 BgCheck_CheckCeilingImpl(CollisionContext* colCtx, u16 xpFlags, f32* outY, V
 
     *outBgId = BGCHECK_SCENE;
     *outY = pos->y;
-    if (BgCheck_PosErrorCheck(pos, "../z_bgcheck.c", 5206) == true) {
+    if (BgCheck_PosErrorCheck(pos, __FILE__, __LINE__) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2155,8 +2155,8 @@ s32 BgCheck_CheckLineImpl(CollisionContext* colCtx, u16 xpFlags1, u16 xpFlags2, 
     s32 temp_lo;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(posA, "../z_bgcheck.c", 5334) == true ||
-        BgCheck_PosErrorCheck(posB, "../z_bgcheck.c", 5335) == true) {
+    if (BgCheck_PosErrorCheck(posA, __FILE__, __LINE__) == true ||
+        BgCheck_PosErrorCheck(posB, __FILE__, __LINE__) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         } else {
@@ -2369,7 +2369,7 @@ s32 BgCheck_SphVsFirstPolyImpl(CollisionContext* colCtx, u16 xpFlags, CollisionP
     StaticLookup* lookup;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(center, "../z_bgcheck.c", 5852) == true) {
+    if (BgCheck_PosErrorCheck(center, __FILE__, __LINE__) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2427,11 +2427,11 @@ void SSNodeList_Alloc(GlobalContext* globalCtx, SSNodeList* this, s32 tblMax, s3
     this->count = 0;
     this->tbl = THA_AllocEndAlign(&globalCtx->state.tha, tblMax * sizeof(SSNode), -2);
 
-    ASSERT(this->tbl != NULL, "this->short_slist_node_tbl != NULL", "../z_bgcheck.c", 5975);
+    ASSERT(this->tbl != NULL, "this->short_slist_node_tbl != NULL", __FILE__, __LINE__);
 
-    this->polyCheckTbl = GameState_Alloc(&globalCtx->state, numPolys, "../z_bgcheck.c", 5979);
+    this->polyCheckTbl = GameState_Alloc(&globalCtx->state, numPolys, __FILE__, __LINE__);
 
-    ASSERT(this->polyCheckTbl != NULL, "this->polygon_check != NULL", "../z_bgcheck.c", 5981);
+    ASSERT(this->polyCheckTbl != NULL, "this->polygon_check != NULL", __FILE__, __LINE__);
 }
 
 /**
@@ -2441,8 +2441,8 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
     SSNode* result = &this->tbl[this->count];
 
     this->count++;
-    ASSERT(this->count < this->max, "this->short_slist_node_last_index < this->short_slist_node_size", "../z_bgcheck.c",
-           5998);
+    ASSERT(this->count < this->max, "this->short_slist_node_last_index < this->short_slist_node_size", __FILE__,
+           __LINE__);
     if (!(this->count < this->max)) {
         return NULL;
     }
@@ -2455,7 +2455,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
 u16 SSNodeList_GetNextNodeIdx(SSNodeList* this) {
     u16 new_index = this->count++;
 
-    ASSERT(new_index < this->max, "new_index < this->short_slist_node_size", "../z_bgcheck.c", 6021);
+    ASSERT(new_index < this->max, "new_index < this->short_slist_node_size", __FILE__, __LINE__);
     return new_index;
 }
 
@@ -2561,7 +2561,7 @@ void DynaPoly_NullPolyList(CollisionPoly** polyList) {
  */
 void DynaPoly_AllocPolyList(GlobalContext* globalCtx, CollisionPoly** polyList, s32 numPolys) {
     *polyList = THA_AllocEndAlign(&globalCtx->state.tha, numPolys * sizeof(CollisionPoly), -2);
-    ASSERT(*polyList != NULL, "ptbl->pbuf != NULL", "../z_bgcheck.c", 6247);
+    ASSERT(*polyList != NULL, "ptbl->pbuf != NULL", __FILE__, __LINE__);
 }
 
 /**
@@ -2576,7 +2576,7 @@ void DynaPoly_NullVtxList(Vec3s** vtxList) {
  */
 void DynaPoly_AllocVtxList(GlobalContext* globalCtx, Vec3s** vtxList, s32 numVtx) {
     *vtxList = THA_AllocEndAlign(&globalCtx->state.tha, numVtx * sizeof(Vec3s), -2);
-    ASSERT(*vtxList != NULL, "ptbl->pbuf != NULL", "../z_bgcheck.c", 6277);
+    ASSERT(*vtxList != NULL, "ptbl->pbuf != NULL", __FILE__, __LINE__);
 }
 
 /**
@@ -2794,9 +2794,9 @@ void DynaPoly_ExpandSRT(GlobalContext* globalCtx, DynaCollisionContext* dyna, s3
     }
 
     ASSERT(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons,
-           "pdyna_poly_info->poly_num >= *pstart_poly_index + pbgdata->poly_num", "../z_bgcheck.c", 6687);
+           "pdyna_poly_info->poly_num >= *pstart_poly_index + pbgdata->poly_num", __FILE__, __LINE__);
     ASSERT(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices,
-           "pdyna_poly_info->vert_num >= *pstart_vert_index + pbgdata->vtx_num", "../z_bgcheck.c", 6688);
+           "pdyna_poly_info->vert_num >= *pstart_vert_index + pbgdata->vtx_num", __FILE__, __LINE__);
 
     if (!(dyna->bitFlag & DYNAPOLY_INVALIDATE_LOOKUP) &&
         (BgActor_IsTransformUnchanged(&dyna->bgActors[bgId]) == true)) {
@@ -3229,7 +3229,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 7382);
+        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", __FILE__, __LINE__);
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {
@@ -3302,7 +3302,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 7489);
+        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", __FILE__, __LINE__);
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {

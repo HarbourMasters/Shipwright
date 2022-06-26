@@ -22,7 +22,7 @@ KaleidoMgrOverlay* gKaleidoMgrCurOvl = NULL;
 u8 gBossMarkState = 0;
 
 void KaleidoManager_LoadOvl(KaleidoMgrOverlay* ovl) {
-    //LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, "../z_kaleido_manager.c", 99);
+    //LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, __FILE__, __LINE__);
 
     ovl->loadedRamAddr = sKaleidoAreaPtr;
     Overlay_Load(ovl->vromStart, ovl->vromEnd, ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr);
@@ -62,8 +62,8 @@ void KaleidoManager_Init(GlobalContext* globalCtx) {
     osSyncPrintf("KaleidoArea の最大サイズは %d バイトを確保します\n", largestSize);
     osSyncPrintf(VT_RST);
 
-    sKaleidoAreaPtr = GameState_Alloc(&globalCtx->state, largestSize, "../z_kaleido_manager.c", 150);
-    LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, "../z_kaleido_manager.c", 151);
+    sKaleidoAreaPtr = GameState_Alloc(&globalCtx->state, largestSize, __FILE__, __LINE__);
+    LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, __FILE__, __LINE__);
 
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("KaleidoArea %08x - %08x\n", sKaleidoAreaPtr, (uintptr_t)sKaleidoAreaPtr + largestSize);
