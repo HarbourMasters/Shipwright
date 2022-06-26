@@ -911,7 +911,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
 	if (CVar_GetS32("gNewDrops", 0) !=0) { //Update 3D Model rotation on frame update :)
-	    DroppedItemRot += 250; //I set it to 100 in original but that way too slow.
+	    DroppedItemRot += 250;
 	}
 
     if (this->unk_15A > 0) {
