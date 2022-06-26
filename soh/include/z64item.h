@@ -535,7 +535,14 @@ typedef enum {
     /* 0x74 */ GID_GORON_RUBY,
     /* 0x74 */ GID_ZORA_SAPPHIRE,
     /* 0x75 */ GID_SONG_GENERIC,
-    /* 0x76 */ GID_MAXIMUM
+    /* 0x76 */ GID_SONG_ZELDA,
+    /* 0x77 */ GID_SONG_EPONA,
+    /* 0x78 */ GID_SONG_SARIA,
+    /* 0x79 */ GID_SONG_SUN,
+    /* 0x7A */ GID_SONG_TIME,
+    /* 0x7B */ GID_SONG_STORM,
+    /* 0x7C */ GID_MAXIMUM
+
 } GetItemDrawID;
 
 typedef enum {
