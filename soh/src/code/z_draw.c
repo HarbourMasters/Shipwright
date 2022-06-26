@@ -833,7 +833,35 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[0]);
     gSPDisplayList(POLY_XLU_DISP++, sDrawItemTable[drawId].dlists[1]);
+    if (gSaveContext.n64ddFlag) {
+        if (drawId == 2 || drawId == 3 || drawId == 4 || drawId == 5 || drawId == 6 || drawId == 7) {
+            s16 color_slot = drawId - 2;
+            s16* colors[6][3] = {
+                { 255, 255, 255 }, // Minuet Color
+                { 109, 73, 143 },  // Bolero Color
+                { 217, 110, 48 },  // Serenade Color
+                { 62, 109, 23 },   // Requiem Color
+                { 237, 231, 62 },  // Nocturne Color
+                { 98, 177, 211 }   // Prelude Color
+            };
+            static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
+            static Vec3f accel = { 0.0f, 0.05f, 0.0f };
+            Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+            Color_RGBA8 envColor = {
+                colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0
+            }; // Tu peux sois faire un deuxieme array avec les Env sois faire des math dedans
+            Vec3f pos;
 
+            velocity.x = Rand_CenteredFloat(3.0f);
+            velocity.z = Rand_CenteredFloat(3.0f);
+            velocity.y = -0.05f;
+            accel.y = -0.025f;
+            pos.x = Rand_CenteredFloat(12.0f);// + this->actor.world.pos.x;
+            pos.y = (Rand_ZeroOne() * 6.0f);// + this->actor.world.pos.y;
+            pos.z = Rand_CenteredFloat(12.0f);// + this->actor.world.pos.z;
+            EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 50000, 1600);
+        }
+    }
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 1008);
 }
 
