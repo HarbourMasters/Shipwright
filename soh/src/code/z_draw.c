@@ -849,7 +849,7 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
             Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
             Color_RGBA8 envColor = {
                 colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0
-            }; // Tu peux sois faire un deuxieme array avec les Env sois faire des math dedans
+            }; // Can do a second array with Env or math on it
             Vec3f pos;
 
             velocity.x = Rand_CenteredFloat(3.0f);
