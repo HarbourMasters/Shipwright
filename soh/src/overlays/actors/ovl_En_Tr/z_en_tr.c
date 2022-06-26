@@ -114,7 +114,7 @@ void EnTr_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
 
         default:
-            ASSERT(0, "0", "../z_en_tr.c", 277);
+            ASSERT(0, "0", __FILE__, __LINE__);
             break;
     }
 }
@@ -437,13 +437,13 @@ void EnTr_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         this->actor.shape.shadowDraw = ActorShadow_DrawCircle;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tr.c", 840);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         func_800943C8(globalCtx->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
         func_8002EBCC(&this->actor, globalCtx, 0);
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnTr_OverrideLimbDraw, NULL, this);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tr.c", 854);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }
 

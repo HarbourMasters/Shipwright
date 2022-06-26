@@ -2389,14 +2389,14 @@ void EnXc_DrawDefault(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* localGfxCtx = globalCtx->state.gfxCtx;
     GraphicsContext* gfxCtx = localGfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_en_oA2.c", 1164);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_80093D18(gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeSegment));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeSegment));
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnXc_OverrideLimbDraw, EnXc_PostLimbDraw, this);
-    CLOSE_DISPS(gfxCtx, "../z_en_oA2.c", 1207);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 static EnXcDrawFunc sDrawFuncs[] = {

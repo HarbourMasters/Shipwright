@@ -566,7 +566,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 frames;
 
     if (!(this->unk_19E & 8)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gs.c", 1046);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
         frames = globalCtx->gameplayFrames;
         func_80093D18(globalCtx->state.gfxCtx);
@@ -581,7 +581,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateZ(this->unk_1A0[1].z * (M_PI / 0x8000), MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gs.c", 1064),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gGossipStoneMaterialDL);
 
@@ -601,7 +601,7 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(0.05f, -0.05f, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gs.c", 1087),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(
                 POLY_XLU_DISP++, 0x08,
@@ -611,6 +611,6 @@ void EnGs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gs.c", 1101);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }

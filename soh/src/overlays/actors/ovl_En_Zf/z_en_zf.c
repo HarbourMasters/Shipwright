@@ -2235,7 +2235,7 @@ void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnZf* this = (EnZf*)thisx;
     ; // Extra ";" required for matching. Cannot be if (1) {} or the like. Typo?
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zf.c", 3533);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_8002EBCC(thisx, globalCtx, 1);
 
@@ -2271,7 +2271,7 @@ void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnZf_OverrideLimbDraw, EnZf_PostLimbDraw, this, POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zf.c", 3601);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnZf_SetupCircleAroundPlayer(EnZf* this, f32 speed) {

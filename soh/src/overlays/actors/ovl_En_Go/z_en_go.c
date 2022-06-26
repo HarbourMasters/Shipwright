@@ -1044,12 +1044,12 @@ void EnGo_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnGo_DrawCurledUp(EnGo* this, GlobalContext* globalCtx) {
     Vec3f D_80A41BB4 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2320);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     Matrix_Push();
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go.c", 2326),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00BD80);
@@ -1057,25 +1057,25 @@ void EnGo_DrawCurledUp(EnGo* this, GlobalContext* globalCtx) {
     Matrix_MultVec3f(&D_80A41BB4, &this->actor.focus.pos);
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2341);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnGo_DrawRolling(EnGo* this, GlobalContext* globalCtx) {
     Vec3f D_80A41BC0 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2355);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     Matrix_Push();
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_RotateZYX((s16)(globalCtx->state.frames * ((s16)this->actor.speedXZ * 1400)), 0, this->actor.shape.rot.z,
                      MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go.c", 2368),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00C140);
     Matrix_MultVec3f(&D_80A41BC0, &this->actor.focus.pos);
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2383);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 s32 EnGo_OverrideLimbDraw(GlobalContext* globalCtx, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -1123,7 +1123,7 @@ void EnGo_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
 void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGo* this = (EnGo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2479);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     EnGo_UpdateDust(this);
     Matrix_Push();
@@ -1145,7 +1145,7 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2525);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         EnGo_DrawDust(this, globalCtx);
     }
 }
@@ -1206,7 +1206,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2626);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
     if (1) {}
@@ -1225,7 +1225,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go.c", 2664),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
@@ -1233,5 +1233,5 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go.c", 2678);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

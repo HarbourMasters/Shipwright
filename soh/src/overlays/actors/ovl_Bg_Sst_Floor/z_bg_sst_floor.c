@@ -126,14 +126,14 @@ void BgSstFloor_Update(BgSstFloor* thisx, GlobalContext* globalCtx) {
 void BgSstFloor_Draw(BgSstFloor* thisx, GlobalContext* globalCtx) {
     BgSstFloor* this = (BgSstFloor*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 277);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_Scale(1.0f, this->drumHeight * -0.0025f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 283),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gBongoDrumDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_sst_floor.c", 287);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

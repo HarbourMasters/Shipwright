@@ -383,15 +383,15 @@ void EnExRuppy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnExRuppy* this = (EnExRuppy*)thisx;
 
     if (!this->invisible) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 774);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
         func_80093D18(globalCtx->state.gfxCtx);
         func_8002EBCC(thisx, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 780),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(rupeeTextures[this->colorIdx]));
         gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 784);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }

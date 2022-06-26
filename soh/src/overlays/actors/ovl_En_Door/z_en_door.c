@@ -333,7 +333,7 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDoor* this = (EnDoor*)thisx;
 
     if (this->actor.objBankIndex == this->requiredObjBankIndex) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 910);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
         func_80093D18(globalCtx->state.gfxCtx);
         SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
@@ -350,6 +350,6 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Actor_DrawDoorLock(globalCtx, this->lockTimer, DOORLOCK_NORMAL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 941);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }

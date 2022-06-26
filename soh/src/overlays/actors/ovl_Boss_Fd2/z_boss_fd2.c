@@ -1027,15 +1027,15 @@ s32 BossFd2_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     }
 
     if ((limbIndex == 32) || (limbIndex == 35) || (limbIndex == 36)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2165);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, (s8)bossFd->fwork[BFD_HEAD_TEX2_ALPHA]);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2172);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     } else {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2174);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, (s8)bossFd->fwork[BFD_BODY_TEX2_ALPHA]);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2181);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
     if ((0 < limbIndex) && (limbIndex < 16)) {
         *dList = NULL;
@@ -1076,7 +1076,7 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     Vec3f spB0;
     f32 xyScale;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2389);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     Matrix_Push();
     gDPPipeSync(POLY_OPA_DISP++);
 
@@ -1152,12 +1152,12 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
         xyScale = (0.01f - (i * 0.0009f)) * spE8[i] * scale[i];
         Matrix_Scale(xyScale, xyScale, 0.01f * spE8[i], MTXMODE_APPLY);
         Matrix_RotateX(M_PI / 2.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2498),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gHoleVolvagiaManeModelDL);
     }
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2503);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void BossFd2_DrawMane(BossFd2* this, GlobalContext* globalCtx) {
@@ -1165,7 +1165,7 @@ void BossFd2_DrawMane(BossFd2* this, GlobalContext* globalCtx) {
     BossFd* bossFd = (BossFd*)this->actor.parent;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2515);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     if (1) {}
     for (i = 0; i < 10; i++) {
         this->centerMane.scale[i] = 1.5f + 0.3f * Math_SinS(5596.0f * this->work[FD2_VAR_TIMER] + i * 0x3200);
@@ -1189,7 +1189,7 @@ void BossFd2_DrawMane(BossFd2* this, GlobalContext* globalCtx) {
     BossFd2_UpdateMane(this, globalCtx, &this->leftMane.head, this->leftMane.pos, this->leftMane.rot,
                        this->leftMane.pull, this->leftMane.scale);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2601);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void BossFd2_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -1197,7 +1197,7 @@ void BossFd2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BossFd2* this = (BossFd2*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2617);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     osSyncPrintf("FD2 draw start \n");
     if (this->actionFunc != BossFd2_Wait) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -1219,5 +1219,5 @@ void BossFd2_Draw(Actor* thisx, GlobalContext* globalCtx) {
         BossFd2_DrawMane(this, globalCtx);
         POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_fd2.c", 2688);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

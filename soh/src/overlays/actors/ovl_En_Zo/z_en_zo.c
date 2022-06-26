@@ -808,7 +808,7 @@ void EnZo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Pop();
 
     if ((s32)this->alpha != 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zo.c", 1008);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
         if (this->alpha == 255.0f) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexture]));
@@ -818,6 +818,6 @@ void EnZo_Draw(Actor* thisx, GlobalContext* globalCtx) {
             func_80034CC4(globalCtx, &this->skelAnime, EnZo_OverrideLimbDraw, EnZo_PostLimbDraw, thisx, this->alpha);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zo.c", 1025);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }

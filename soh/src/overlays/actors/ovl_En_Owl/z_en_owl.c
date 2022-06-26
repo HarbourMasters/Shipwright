@@ -964,7 +964,7 @@ void func_80ACC00C(EnOwl* this, GlobalContext* globalCtx) {
                     this->actor.draw = NULL;
                     break;
                 default:
-                    ASSERT(0, "0", "../z_en_owl.c", 1693);
+                    ASSERT(0, "0", __FILE__, __LINE__);
                     break;
             }
 
@@ -1333,14 +1333,14 @@ void EnOwl_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnOwl* this = (EnOwl*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_owl.c", 2247);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 8, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     SkelAnime_DrawFlexOpa(globalCtx, this->curSkelAnime->skeleton, this->curSkelAnime->jointTable,
                           this->curSkelAnime->dListCount, EnOwl_OverrideLimbDraw, EnOwl_PostLimbUpdate, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_owl.c", 2264);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnOwl_ChangeMode(EnOwl* this, EnOwlActionFunc actionFunc, OwlFunc arg2, SkelAnime* skelAnime,

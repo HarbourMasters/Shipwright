@@ -350,7 +350,7 @@ void func_80AE7FDC(EnRl* this, GlobalContext* globalCtx) {
     void* tex = D_80AE81A0[temp];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_rl.c", 416);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -361,7 +361,7 @@ void func_80AE7FDC(EnRl* this, GlobalContext* globalCtx) {
 
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
                           &this->actor);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_rl.c", 437);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 static EnRlDrawFunc sDrawFuncs[] = {

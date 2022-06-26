@@ -650,7 +650,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     spB4 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp98 = 1.0f - Math_CosS(spC6);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part1.c", 458);
+    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
 
     spA8.x = Math_CosS(spB8);
     spA8.y = 0.0f;
@@ -663,7 +663,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(spC0, &spA8, MTXMODE_APPLY);
     Matrix_Translate(sp9C.x, sp9C.y, sp9C.z, MTXMODE_APPLY);
-    Matrix_ToMtx(spB4, "../z_demo_gt_part1.c", 474);
+    Matrix_ToMtx(spB4, __FILE__, __LINE__);
     unk198 = this->unk_198;
     unk188 = this->unk_188;
     unk178 = this->unk_178;
@@ -688,7 +688,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_XLU_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gTowerCollapseCsFlameSmokeDL);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part1.c", 557);
+    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
 }
 
 void func_8097F904_Init1(DemoGt* this, GlobalContext* globalCtx) {

@@ -404,7 +404,7 @@ void EnElf_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         default:
-            ASSERT(0, "0", "../z_en_elf.c", 1103);
+            ASSERT(0, "0", __FILE__, 1103);
             break;
     }
 
@@ -798,7 +798,7 @@ void func_80A03AB0(EnElf* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->func_2C8 == NULL) {
-        ASSERT(0, "0", "../z_en_elf.c", 1725);
+        ASSERT(0, "0", __FILE__, 1725);
     }
 
     this->func_2C8(this, globalCtx);
@@ -1410,7 +1410,7 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
         if (nREG(81) != 0) {
             if (gSaveContext.sceneFlags[127].chest) {
                 LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest,
-                        "../z_en_elf.c", 2595);
+                        __FILE__, __LINE__);
             }
         }
 
@@ -1502,7 +1502,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!(player->stateFlags1 & 0x100000) || (kREG(90) < this->actor.projectedPos.z)) {
             dListHead = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Gfx) * 4);
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_elf.c", 2730);
+            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
             func_80094B58(globalCtx->state.gfxCtx);
 
@@ -1528,7 +1528,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                            EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_elf.c", 2793);
+            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         }
     }
 }

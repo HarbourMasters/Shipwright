@@ -766,7 +766,7 @@ void EnFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     frames = globalCtx->state.frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 1751);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     Matrix_Push();
     EnFd_DrawDots(this, globalCtx);
@@ -790,7 +790,7 @@ void EnFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                            this->skelAnime.dListCount, EnFd_OverrideLimbDraw, EnFd_PostLimbDraw, this,
                                            POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 1822);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnFd_AddEffect(EnFd* this, u8 type, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 timer, f32 scale,
@@ -882,7 +882,7 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
     s16 idx;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 1969);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     firstDone = false;
     if (1) {}
     func_80093D84(globalCtx->state.gfxCtx);
@@ -899,14 +899,14 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fd.c", 2006),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             idx = eff->timer * (8.0f / eff->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 2020);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
@@ -914,7 +914,7 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
     s16 firstDone;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 2034);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
@@ -933,11 +933,11 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fd.c", 2064),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerTriangleParticleDL);
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fd.c", 2071);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

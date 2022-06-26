@@ -223,8 +223,8 @@ s32 func_808B4E58(BgSpot16Bombstone* this, GlobalContext* globalctx) {
     this->bombiwaBankIndex = Object_GetIndex(&globalctx->objectCtx, OBJECT_BOMBIWA);
 
     if (this->bombiwaBankIndex < 0) {
-        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", actor->params, "../z_bg_spot16_bombstone.c",
-                     589);
+        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", actor->params, __FILE__,
+                     __LINE__);
         return false;
     }
 
@@ -253,7 +253,7 @@ void BgSpot16Bombstone_Init(Actor* thisx, GlobalContext* globalCtx) {
             shouldLive = func_808B4E58(this, globalCtx);
             break;
         default:
-            osSyncPrintf("Error : arg_data おかしいな(%s %d)(arg_data 0x%04x)\n", "../z_bg_spot16_bombstone.c", 668,
+            osSyncPrintf("Error : arg_data おかしいな(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                          this->actor.params);
             shouldLive = false;
             break;
@@ -387,7 +387,7 @@ void func_808B56BC(BgSpot16Bombstone* this, GlobalContext* globalCtx) {
                 player->actor.world.pos.z += sinValue * this->cosRotation;
             } else {
                 osSyncPrintf("Error 補正出来ない(%s %d)(arg_data 0x%04x)(hosei_angY %x)\n",
-                             "../z_bg_spot16_bombstone.c", 935, this->actor.params, adjustedYawDiff);
+                             __FILE__, __LINE__, this->actor.params, adjustedYawDiff);
             }
         }
     }
@@ -535,11 +535,11 @@ void BgSpot16Bombstone_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot16Bombstone* this = (BgSpot16Bombstone*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_bombstone.c", 1253);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot16_bombstone.c", 1257),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->actor.params == 0xFF) {
@@ -551,7 +551,7 @@ void BgSpot16Bombstone_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_OPA_DISP++, this->dList);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_bombstone.c", 1274);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 void BgSpot16Bombstone_Reset(void) {

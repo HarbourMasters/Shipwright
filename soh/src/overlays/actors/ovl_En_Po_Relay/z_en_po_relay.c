@@ -381,7 +381,7 @@ void EnPoRelay_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         f32 rand;
         Vec3f vec;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 885);
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         rand = Rand_ZeroOne();
         this->lightColor.r = (s16)(rand * 30.0f) + 225;
         this->lightColor.g = (s16)(rand * 100.0f) + 155;
@@ -390,26 +390,26 @@ void EnPoRelay_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 128);
         gSPDisplayList(POLY_OPA_DISP++, gDampeLanternDL);
         if (1) {}
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 901);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
         Matrix_MultVec3f(&D_80AD8D48, &vec);
         Lights_PointNoGlowSetInfo(&this->lightInfo, vec.x, vec.y, vec.z, this->lightColor.r, this->lightColor.g,
                                   this->lightColor.b, 200);
     } else if (limbIndex == 8) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 916);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 918),
+        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDampeHaloDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 922);
+        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     }
 }
 
 void EnPoRelay_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnPoRelay* this = (EnPoRelay*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 940);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesTextures[this->eyeTextureIdx]));
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, EnPoRelay_PostLimbDraw, &this->actor);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 954);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

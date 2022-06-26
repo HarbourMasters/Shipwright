@@ -1500,7 +1500,7 @@ void EnNb_DrawDefault(EnNb* this, GlobalContext* globalCtx) {
     void* eyeTexture = sEyeTextures[eyeIdx];
     s32 pad1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_nb.c", 992);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
@@ -1510,7 +1510,7 @@ void EnNb_DrawDefault(EnNb* this, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           EnNb_OverrideLimbDraw, EnNb_PostLimbDraw, &this->actor);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_nb.c", 1013);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 static EnNbDrawFunc sDrawFuncs[] = {

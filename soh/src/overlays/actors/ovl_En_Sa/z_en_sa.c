@@ -803,7 +803,7 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnSa* this = (EnSa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1444);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->rightEyeIndex]));
@@ -817,5 +817,5 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1497);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

@@ -1000,7 +1000,7 @@ void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
     void* mouthTexture = sMouthTextures[mouthTexIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_du.c", 615);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -1015,7 +1015,7 @@ void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount, NULL, NULL,
                           this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_du.c", 638);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }
 
 static DemoDuDrawFunc sDrawFuncs[] = {

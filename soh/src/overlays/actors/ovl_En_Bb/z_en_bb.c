@@ -1280,7 +1280,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f blureVtx1;
     Vec3f blureVtx2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bb.c", 2044);
+    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 
     blureBase1.z = this->maxSpeed * 80.0f;
     blureBase2.z = this->maxSpeed * 80.0f;
@@ -1334,7 +1334,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                (M_PI / 0x8000),
                            MTXMODE_APPLY);
             Matrix_Scale(this->flameScaleX * 0.01f, this->flameScaleY * 0.01f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bb.c", 2106),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
         } else {
@@ -1348,5 +1348,5 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bb.c", 2127);
+    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
 }

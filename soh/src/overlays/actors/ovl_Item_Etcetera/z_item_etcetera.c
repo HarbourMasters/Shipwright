@@ -68,7 +68,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(0, "0", "../z_item_etcetera.c", 241);
+        ASSERT(0, "0", __FILE__, __LINE__);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -181,7 +181,7 @@ void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx) {
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) {
     if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[0] != NULL)) {
         LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action,
-                "../z_item_etcetera.c", 441);
+                __FILE__, __LINE__);
         if (globalCtx->csCtx.npcActions[0]->action == 2) {
             this->actor.draw = ItemEtcetera_Draw;
             this->actor.gravity = -0.1f;
