@@ -337,6 +337,42 @@ endif()
 use_props(${LIBRARY_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 
 ################################################################################
+# Compile definitions
+################################################################################
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+       if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+               target_compile_definitions(${LIBRARY_NAME} PRIVATE
+                       "$<$<CONFIG:Debug>:"
+                               "_DEBUG;"
+                               "_CRT_SECURE_NO_WARNINGS;"
+                       ">"
+                       "$<$<CONFIG:Release>:"
+                               "NDEBUG"
+                       ">"
+                       WIN32
+                       _LIB
+                       "UNICODE;"
+                       "_UNICODE"
+               )
+       elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+               target_compile_definitions(${LIBRARY_NAME} PRIVATE
+                       "$<$<CONFIG:Debug>:"
+                               "_DEBUG;"
+                               "_CRT_SECURE_NO_WARNINGS;"
+                       ">"
+                       "$<$<CONFIG:Release>:"
+                               "NDEBUG;"
+                       ">"
+                       "WIN32;"
+                       _LIB
+                       "UNICODE;"
+                       "_UNICODE"
+               )
+       endif()
+endif()
+
+################################################################################
 # MSVC runtime library
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
