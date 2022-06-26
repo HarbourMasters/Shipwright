@@ -156,8 +156,8 @@ set(Header_Files__soh__Enhancements
     #"soh/Enhancements/cvar.h"
     "soh/Enhancements/debugconsole.h"
     "soh/Enhancements/gameconsole.h"
-	"soh/Enhancements/savestates.h"
-	"soh/Enhancements/savestates_extern.inc"
+    "soh/Enhancements/savestates.h"
+    "soh/Enhancements/savestates_extern.inc"
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
@@ -193,7 +193,7 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/bootcommands.c"
     "soh/Enhancements/debugconsole.cpp"
     "soh/Enhancements/gameconsole.c"
-	"soh/Enhancements/savestates.cpp"
+    "soh/Enhancements/savestates.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
 
@@ -1799,11 +1799,11 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set_property(TARGET glew32s PROPERTY
              IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x86/glew32s.lib)
 
-	add_library(StormLibRUS32 STATIC IMPORTED )
-	set_property(TARGET StormLibRUS32 PROPERTY
-			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
-	set_property(TARGET StormLibRUS32 PROPERTY
-             IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
+     #add_library(StormLibRUS32 STATIC IMPORTED )
+     #	set_property(TARGET StormLibRUS32 PROPERTY
+     #			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
+     #	set_property(TARGET StormLibRUS32 PROPERTY
+     #        IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")

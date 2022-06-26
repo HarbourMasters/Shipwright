@@ -15,6 +15,7 @@ set(Header_Files__Resources__Factories
     "Factories/MtxFactory.h"
     "Factories/PathFactory.h"
     "Factories/PlayerAnimationFactory.h"
+    "Factories/ResourceLoader.h"
     "Factories/SceneFactory.h"
     "Factories/SkeletonFactory.h"
     "Factories/SkeletonLimbFactory.h"
@@ -32,7 +33,6 @@ set(Header_Files__Resources__Files
     "CollisionHeader.h"
     "Cutscene.h"
     "DisplayList.h"
-    "Factories/ResourceLoader.h"
     "Material.h"
     "Matrix.h"
     "Model.h"
@@ -210,6 +210,12 @@ set(Source_Files__Lib__stb
 )
 source_group("Source Files\\Lib\\stb" FILES ${Source_Files__Lib__stb})
 
+set(Source_Files__Lib__dr_libs
+    "Lib/dr_libs/mp3.h"
+    "Lib/dr_libs/wav.h"
+)
+source_group("Source Files\\Lib\\dr_libs" FILES ${Source_Files__Lib__dr_libs})
+
 set(Source_Files__Lib__tinyxml2
     "Lib/tinyxml2/tinyxml2.h"
 )
@@ -314,6 +320,7 @@ set(ALL_FILES
     ${Source_Files__Lib__ImGui}
 	${Source_Files__Lib__ImGui__Windows}
     ${Source_Files__Lib__stb}
+    ${Source_Files__Lib__dr_libs}
     ${Source_Files__Lib__tinyxml2}
     ${Source_Files__Logging}
     ${Source_Files__ModManager}

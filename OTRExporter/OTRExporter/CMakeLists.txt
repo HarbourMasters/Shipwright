@@ -5,8 +5,8 @@ set(PROJECT_NAME OTRExporter)
 ################################################################################
 set(Header_Files
     "AnimationExporter.h"
-    "AudioExporter.h"
     "ArrayExporter.h"
+    "AudioExporter.h"
     "BackgroundExporter.h"
     "BlobExporter.h"
     "CollisionExporter.h"
@@ -172,7 +172,6 @@ if(MSVC)
                 /Gy
             >
             /permissive-;
-            /std:c++17;
             /sdl;
             /W3;
             ${DEFAULT_CXX_DEBUG_INFORMATION_FORMAT};
@@ -180,9 +179,6 @@ if(MSVC)
         )
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x86")
         target_compile_options(${PROJECT_NAME} PRIVATE
-            $<$<CONFIG:Debug>:
-                /std:c++17
-            >
             $<$<CONFIG:Release>:
                 /Oi;
                 /Gy
