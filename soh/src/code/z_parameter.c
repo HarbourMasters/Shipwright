@@ -1661,24 +1661,45 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        // if we get a boss/big key in ganon's castle (which doesn't have a map/compass)
-        // when rando'd it's for ganon's tower
-        if (gSaveContext.n64ddFlag && gSaveContext.mapIndex == 13) {
-            gSaveContext.inventory.dungeonItems[10] |= 1;
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+        // Boss Key, Compass, and Dungeon Map scenemap exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            // if we get a boss/big key in ganon's castle (which doesn't have a map/compass)
+            // when rando'd it's for ganon's tower
+            if (gSaveContext.mapIndex == 13) {
+                gSaveContext.inventory.dungeonItems[10] |= 1;
+            } else if (gSaveContext.mapIndex == 11) {
+            // if we get a boss/big key, dungeon map, or compass in Desert Colossus, it is
+            // for Spirit Temple.
+                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
+            } else {
+                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+            }
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
-        // if we get a small key in ganon's tower (boss key chest)
-        // when rando'd it's for ganon's castle
-        if (gSaveContext.n64ddFlag && gSaveContext.mapIndex == 10) {
-            if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                gSaveContext.inventory.dungeonKeys[13] = 1;
-                return ITEM_NONE;
-            } else {
-                gSaveContext.inventory.dungeonKeys[13]++;
-                return ITEM_NONE;
+        // Small key scenemap exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            // if we get a small key in ganon's tower (boss key chest)
+            // when rando'd it's for ganon's castle
+            if (gSaveContext.mapIndex == 10) {
+                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
+                    gSaveContext.inventory.dungeonKeys[13] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[13]++;
+                    return ITEM_NONE;
+                }
+            }
+            // if we get a small key in Desert Colossus (chest on either hand of
+            // the statue) it is for Spirit Temple.
+            if (gSaveContext.mapIndex == 11) {
+                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
+                    gSaveContext.inventory.dungeonKeys[6] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[6]++;
+                    return ITEM_NONE;
+                }
             }
         }
 
