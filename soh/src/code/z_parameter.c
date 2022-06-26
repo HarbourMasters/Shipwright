@@ -2934,7 +2934,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         gDPLoadTextureBlock(OVERLAY_DISP++, gMagicBarEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0,
                             G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-        gSPWideTextureRectangle(OVERLAY_DISP++, ((rMagicBarX + gSaveContext.unk_13F4) + 7) << 2, magicBarY << 2,
+        gSPWideTextureRectangle(OVERLAY_DISP++, ((rMagicBarX + gSaveContext.unk_13F4) + 8) << 2, magicBarY << 2,
                             ((rMagicBarX + gSaveContext.unk_13F4) + 16) << 2, (magicBarY + 16) << 2, G_TX_RENDERTILE,
                             256, 0, 1 << 10, 1 << 10);
 
@@ -3768,6 +3768,8 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
     s16 Y_Margins_CD;
     s16 X_Margins_BtnB;
     s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
     if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
         if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
         Y_Margins_BtnB = (Top_HUD_Margin*-1);
@@ -3796,13 +3798,69 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
         X_Margins_CD = 0;
         Y_Margins_CD = 0;
     }
-    const s16 ItemIconPos_ori[4][2] = {
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[8][2] = {
         { R_ITEM_AMMO_X(0)+X_Margins_BtnB, R_ITEM_AMMO_Y(0)+Y_Margins_BtnB }, //Bow on Epona?
         { R_ITEM_AMMO_X(1)+X_Margins_CL, R_ITEM_AMMO_Y(1)+Y_Margins_CL },
         { R_ITEM_AMMO_X(2)+X_Margins_CD, R_ITEM_AMMO_Y(2)+Y_Margins_CD },
         { R_ITEM_AMMO_X(3)+X_Margins_CR, R_ITEM_AMMO_Y(3)+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y + 11 + Y_Margins_DPad_Items }
     };
-    s16 ItemIconPos[4][2]; //(X,Y)
+    s16 ItemIconPos[8][2]; //(X,Y)
+    s16 DPad_ItemsOffset[4][2] = {
+        { 7,-9},//Up
+        { 7,21},//Down
+        {-8, 7},//Left
+        {23, 7},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        ItemIconPos[4][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+            ItemIconPos[4][0] = -9999;
+            ItemIconPos[5][0] = -9999;
+            ItemIconPos[6][0] = -9999;
+            ItemIconPos[7][0] = -9999;
+        }
+    } else {
+        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
+        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
+        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
+        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
+        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+    }
     //B Button
     s16 PosX_adjust = 1;
     s16 PosY_adjust = 17;

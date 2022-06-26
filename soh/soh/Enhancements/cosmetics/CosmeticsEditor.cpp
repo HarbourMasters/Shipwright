@@ -165,7 +165,7 @@ void Draw_Npcs(){
         ImGui::TableSetupColumn("Dog N.2 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Affect the colors of the white dog");
-        SohImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,100,255), true, false, true);
+        SohImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affect the colors of the brown dog");
         SohImGui::EnhancementColor("Dog brown", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true);
@@ -975,10 +975,6 @@ void DrawCosmeticsEditor(bool& open) {
             Draw_HUDButtons();
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Placements")) {
-            Draw_Placements();
-            ImGui::EndTabItem();
-        }
         if (ImGui::BeginTabItem("Items & Skills")) {
             Draw_ItemsSkills();
             ImGui::EndTabItem();
@@ -989,6 +985,10 @@ void DrawCosmeticsEditor(bool& open) {
         }
         if (ImGui::BeginTabItem("Menus")) {
             Draw_Menus();
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Placements")) {
+            Draw_Placements();
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
