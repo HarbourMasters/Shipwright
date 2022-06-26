@@ -1667,13 +1667,12 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             // when rando'd it's for ganon's tower
             if (gSaveContext.mapIndex == 13) {
                 gSaveContext.inventory.dungeonItems[10] |= 1;
-            } else {
-                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
-            }
+            } else if (gSaveContext.mapIndex == 11) {
             // if we get a boss/big key, dungeon map, or compass in Desert Colossus, it is
             // for Spirit Temple.
-            if (gSaveContext.mapIndex == 11) {
                 gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
+            } else {
+                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
             }
         }
         return ITEM_NONE;
