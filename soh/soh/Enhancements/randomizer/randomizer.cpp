@@ -1403,7 +1403,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
-    { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT }
+    { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
+    { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE}
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1660,6 +1661,12 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
+                    case RSK_SKIP_EPONA_RACE:
+                        if(it.value() == "Don't Skip") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Skip") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
                 }
                 index++;        
             }
@@ -3224,6 +3231,8 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
+    cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
@@ -4312,12 +4321,6 @@ void DrawRandoEditor(bool& open) {
                     // InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
                     // ImGui::Separator();
 
-                    // todo implement epona race skip
-                    // // Skip Epona race
-                    // SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
-                    // InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
-                    // ImGui::Separator();
-
                     // todo implement minigame repeat skip
                     // // Skip Minigame repetition
                     // SohImGui::EnhancementCheckbox("Skip Minigame Repetition", "gRandomizeSkipMinigameRepetition");
@@ -4354,6 +4357,11 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                     "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
                     InsertHelpHoverText("The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
+                    ImGui::Separator();
+
+                    // Skip Epona race
+                    SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
+                    InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
                     ImGui::Separator();
 
                     // todo implement cuccos to return
