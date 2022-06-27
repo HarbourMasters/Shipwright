@@ -180,8 +180,6 @@ void EnAnubiceFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     func_8002D7EC(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
 
-    if (1) {}
-
     for (i = 4; i >= 0; i--) {
         this->unk_160[i + 1] = this->unk_160[i];
     }

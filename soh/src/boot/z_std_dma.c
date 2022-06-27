@@ -60,7 +60,6 @@ s32 DmaMgr_DmaRomToRam(uintptr_t rom, uintptr_t ram, size_t size) {
     osCreateMesgQueue(&queue, &msg, 1);
 
     while (size > buffSize) {
-        if (1) {} // Necessary to match
 
         ioMsg.hdr.pri = OS_MESG_PRI_NORMAL;
         ioMsg.hdr.retQueue = &queue;
@@ -92,7 +91,6 @@ s32 DmaMgr_DmaRomToRam(uintptr_t rom, uintptr_t ram, size_t size) {
         ram += buffSize;
     }
 
-    if (1) {} // Also necessary to match
 
     ioMsg.hdr.pri = OS_MESG_PRI_NORMAL;
     ioMsg.hdr.retQueue = &queue;

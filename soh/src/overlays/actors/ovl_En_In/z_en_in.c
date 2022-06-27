@@ -890,7 +890,6 @@ void func_80A7B024(EnIn* this, GlobalContext* globalCtx) {
     }
     player->actor.freezeTimer = 10;
     if (this->unk_308.unk_00 == 2) {
-        if (1) {}
         if (!(gSaveContext.eventChkInf[1] & 0x800) && (gSaveContext.infTable[10] & 0x800)) {
             gSaveContext.eventChkInf[1] |= 0x800;
             gSaveContext.infTable[10] |= 0x800;

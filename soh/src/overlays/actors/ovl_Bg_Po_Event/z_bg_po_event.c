@@ -112,7 +112,6 @@ void BgPoEvent_InitPaintings(BgPoEvent* this, GlobalContext* globalCtx) {
     }
     for (i1 = 0; i1 < sTrisInit.count; i1++) {
         item = &sTrisInit.elements[i1];
-        if (1) {} // This section looks like a macro of some sort.
         for (i2 = 0; i2 < 3; i2++) {
             vtxVec = &item->dim.vtx[i2];
             sp9C[i2].x = (vtxVec->x * coss) + (this->dyna.actor.home.pos.x + (sins * vtxVec->z));

@@ -773,7 +773,6 @@ void EnFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnFd_DrawFlames(this, globalCtx);
     Matrix_Pop();
     if (this->actionFunc != EnFd_Reappear && !(this->fadeAlpha < 0.9f)) {
-        if (1) {}
         func_80093D84(globalCtx->state.gfxCtx);
         clampedHealth = CLAMP(thisx->colChkInfo.health - 1, 0, 23);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, primColors[clampedHealth / 8].r, primColors[clampedHealth / 8].g,
@@ -884,7 +883,6 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     firstDone = false;
-    if (1) {}
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type == FD_EFFECT_FLAME) {

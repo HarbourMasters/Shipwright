@@ -147,7 +147,6 @@ void BgJyaBigmirror_HandleMirRay(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
         lightBeamToggles[0] = puzzleSolved; // Only spawn if puzzle solved
-        if (1) {}
         lightBeamToggles[1] = lightBeamToggles[2] =
             this->puzzleFlags & (BIGMIR_PUZZLE_IN_1ST_TOP_ROOM | BIGMIR_PUZZLE_IN_2ND_TOP_ROOM);
 
@@ -227,7 +226,6 @@ void BgJyaBigmirror_DrawLightBeam(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, gBigMirror1DL);
 
     if (lift != NULL) {
-        if (1) {}
         Matrix_SetTranslateRotateYXZ(lift->world.pos.x, lift->world.pos.y, lift->world.pos.z, &D_80893F4C);
         Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),

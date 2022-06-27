@@ -582,10 +582,6 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp6C;
     Vec3f sp60;
 
-    if (1) {}
-    if (1) {}
-    if (1) {}
-
     func_80B132A8(this, globalCtx);
     this->unk_28C++;
     if (this->unk_254 != 0) {

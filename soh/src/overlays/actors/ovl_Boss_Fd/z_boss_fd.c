@@ -1041,7 +1041,6 @@ void BossFd_Wait(BossFd* this, GlobalContext* globalCtx) {
             temp_rand = Rand_ZeroFloat(8.9f);
         } while (temp_rand == this->holeIndex);
         this->holeIndex = temp_rand;
-        if (1) {} // Needed for matching
         this->targetPosition.x = sHoleLocations[this->holeIndex].x;
         this->targetPosition.y = sHoleLocations[this->holeIndex].y - 200.0f;
         this->targetPosition.z = sHoleLocations[this->holeIndex].z;
@@ -1078,8 +1077,6 @@ void BossFd_Effects(BossFd* this, GlobalContext* globalCtx) {
     f32 temp_x;
     f32 temp_z;
     s16 i;
-
-    if (1) {} // Needed for match
 
     if (this->fogMode == 0) {
         globalCtx->envCtx.unk_BF = 0;

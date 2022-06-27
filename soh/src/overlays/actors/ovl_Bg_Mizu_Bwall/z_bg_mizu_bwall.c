@@ -506,7 +506,6 @@ void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     u32 frames;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-    if (1) {}
     frames = globalCtx->gameplayFrames;
 
     func_80093D18(globalCtx->state.gfxCtx);

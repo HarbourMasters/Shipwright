@@ -280,8 +280,6 @@ void EffectBlure_UpdateFlags(EffectBlureElement* elem) {
         f32 sp30;
         f32 sp2C;
 
-        if (1) {} // Necessary to match
-
         Math_Vec3s_DiffToVec3f(&sp64, &elem->p1, &prev->p1);
         Math_Vec3s_DiffToVec3f(&sp58, &elem->p2, &prev->p2);
         Math_Vec3s_DiffToVec3f(&sp4C, &next->p1, &elem->p1);
@@ -432,8 +430,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[0].v.cn[2] = sp78.b;
         vtx[0].v.cn[3] = sp78.a;
 
-        if (1) {} // Necessary to match
-
         sp60.x = sp8C.x;
         sp60.y = sp8C.y;
         sp60.z = sp8C.z;
@@ -462,8 +458,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[2].v.cn[1] = sp7C.g;
         vtx[2].v.cn[2] = sp7C.b;
         vtx[2].v.cn[3] = sp7C.a;
-
-        if (1) {} // Necessary to match
 
         sp60.x = sp84.x;
         sp60.y = sp84.y;

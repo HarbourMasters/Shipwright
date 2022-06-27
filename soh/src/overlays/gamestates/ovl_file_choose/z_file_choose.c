@@ -753,8 +753,6 @@ void FileChoose_DrawFileInfo(GameState* thisx, s16 fileIndex, s16 isActive) {
     s16 j;
     s16 deathCountSplit[3];
 
-    if (1) {}
-
     OPEN_DISPS(this->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
@@ -1513,8 +1511,6 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.unk_13F6 = gSaveContext.magic;
     gSaveContext.magic = 0;
     gSaveContext.magicLevel = gSaveContext.magic;
-
-    if (1) {}
 
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("Z_MAGIC_NOW_NOW=%d  MAGIC_NOW=%d\n", ((void)0, gSaveContext.unk_13F6), gSaveContext.magic);

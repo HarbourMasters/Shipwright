@@ -2866,7 +2866,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                         break;
                     }
 
-                            if (sOcarinaNotesAlphaValues[i] != 255) {
+                    if (sOcarinaNotesAlphaValues[i] != 255) {
                         sOcarinaNotesAlphaValues[i] += VREG(50);
                         if (sOcarinaNotesAlphaValues[i] >= 255) {
                             sOcarinaNotesAlphaValues[i] = 255;
@@ -2977,7 +2977,6 @@ void Message_Draw(GlobalContext* globalCtx) {
         Graph_BranchDlist(polyOpaP, plusOne);
         POLY_OPA_DISP = plusOne;
     }
-    if (1) {}
     plusOne = Graph_GfxPlusOne(polyOpaP = POLY_OPA_DISP);
     gSPDisplayList(OVERLAY_DISP++, plusOne);
     Message_DrawMain(globalCtx, &plusOne);

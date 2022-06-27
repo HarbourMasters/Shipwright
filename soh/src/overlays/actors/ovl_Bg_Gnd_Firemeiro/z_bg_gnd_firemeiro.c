@@ -53,7 +53,6 @@ void BgGndFiremeiro_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     BgGndFiremeiro* this = (BgGndFiremeiro*)thisx;
 
     if (this->dyna.actor.params == 0) {
-        if (1) {}
         DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
 }

@@ -100,9 +100,6 @@ void EffectSsGSpk_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    if (1) {}
-    if (1) {}
-
     CLOSE_DISPS(gfxCtx);
 }
 

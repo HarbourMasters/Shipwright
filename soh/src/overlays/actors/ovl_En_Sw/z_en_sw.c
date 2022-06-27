@@ -183,7 +183,6 @@ s32 func_80B0C0CC(EnSw* this, GlobalContext* globalCtx, s32 arg2) {
             if (phi_s1 == 0) {
                 sp78.x = sp84.x - (this->unk_37C.x * 24.0f);
                 sp78.y = sp84.y - (this->unk_37C.y * 24.0f);
-                if (0) {}
                 sp78.z = sp84.z - (this->unk_37C.z * 24.0f);
             } else if (phi_s1 == 1) {
                 sp78.x = sp84.x + (this->unk_370.x * 24.0f);
@@ -730,7 +729,6 @@ s32 func_80B0DFFC(EnSw* this, GlobalContext* globalCtx) {
     } else if (((globalCtx->state.frames % 4) == 2) &&
                !BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &this->unk_46C, &sp50, &sp60, true,
                                         false, false, true, &sp5C)) {
-        if (0) {}
         sp4C = false;
     } else if (((globalCtx->state.frames % 4) == 3) &&
                BgCheck_EntityLineTest1(&globalCtx->colCtx, &this->actor.world.pos, &this->unk_478, &sp50, &sp60, true,

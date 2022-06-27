@@ -182,8 +182,6 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
     Graph_BranchDlist(polyOpaP, newDList);
     POLY_OPA_DISP = newDList;
 
-    if (1) {}
-
     CLOSE_DISPS(gfxCtx);
 
     func_80063D7C(gfxCtx);
@@ -222,8 +220,6 @@ void func_800C49F4(GraphicsContext* gfxCtx) {
     gSPEndDisplayList(newDlist++);
     Graph_BranchDlist(polyOpaP, newDlist);
     POLY_OPA_DISP = newDlist;
-
-    if (1) {}
 
     CLOSE_DISPS(gfxCtx);
 }

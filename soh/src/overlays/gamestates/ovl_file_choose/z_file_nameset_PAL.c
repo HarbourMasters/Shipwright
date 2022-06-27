@@ -115,9 +115,6 @@ void FileChoose_SetNameEntryVtx(GameState* thisx) {
     s16 phi_v0;
     char* filename = Save_GetSaveMetaInfo(this->buttonIndex)->playerName;
 
-    if (1) {}
-    if (1) {}
-
     OPEN_DISPS(this->state.gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);

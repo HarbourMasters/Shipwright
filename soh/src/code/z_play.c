@@ -1647,7 +1647,6 @@ s32 Gameplay_CameraSetAtEyeUp(GlobalContext* globalCtx, s16 camId, Vec3f* at, Ve
 s32 Gameplay_CameraSetFov(GlobalContext* globalCtx, s16 camId, f32 fov) {
     s32 ret = Camera_SetParam(globalCtx->cameraPtrs[camId], 0x20, &fov) & 1;
 
-    if (1) {}
     return ret;
 }
 

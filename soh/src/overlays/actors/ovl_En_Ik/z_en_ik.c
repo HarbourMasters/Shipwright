@@ -688,8 +688,6 @@ void func_80A75C38(EnIk* this, GlobalContext* globalCtx) {
     this->unk_2FD = temp_v0_3 & 0xFF;
     this->bodyCollider.base.acFlags &= ~AC_HIT;
 
-    if (1) {}
-
     if ((this->unk_2FD == 0) || (this->unk_2FD == 0xD) || ((this->unk_2FB == 0) && (this->unk_2FD == 0xE))) {
         if (this->unk_2FD != 0) {
             CollisionCheck_SpawnShieldParticlesMetal(globalCtx, &sp38);

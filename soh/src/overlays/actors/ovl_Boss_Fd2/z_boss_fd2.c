@@ -1166,7 +1166,6 @@ void BossFd2_DrawMane(BossFd2* this, GlobalContext* globalCtx) {
     s16 i;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-    if (1) {}
     for (i = 0; i < 10; i++) {
         this->centerMane.scale[i] = 1.5f + 0.3f * Math_SinS(5596.0f * this->work[FD2_VAR_TIMER] + i * 0x3200);
         this->rightMane.scale[i] = 1.5f + 0.3f * Math_SinS(5496.0f * this->work[FD2_VAR_TIMER] + i * 0x3200);

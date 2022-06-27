@@ -197,8 +197,6 @@ void BgGndSoulmeiro_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     s32 params = thisx->params & 0xFF;
 
-    if (1) {}
-
     switch (params) {
         case 0:
             OPEN_DISPS(globalCtx->state.gfxCtx);

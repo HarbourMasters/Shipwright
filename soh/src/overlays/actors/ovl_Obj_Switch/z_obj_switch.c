@@ -754,8 +754,6 @@ void ObjSwitch_DrawCrystal(ObjSwitch* this, GlobalContext* globalCtx) {
     subType = (this->dyna.actor.params >> 4 & 7);
     func_8002ED80(&this->dyna.actor, globalCtx, 0);
 
-    if (1) {}
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);

@@ -283,7 +283,6 @@ void EnAObj_BoulderFragment(EnAObj* this, GlobalContext* globalCtx) {
     if (this->dyna.actor.speedXZ != 0.0f && this->dyna.actor.bgCheckFlags & 0x8) {
         this->dyna.actor.world.rot.y =
             this->dyna.actor.wallYaw - this->dyna.actor.world.rot.y + this->dyna.actor.wallYaw - 0x8000;
-        if (1) {}
         this->dyna.actor.bgCheckFlags &= ~0x8;
     }
 

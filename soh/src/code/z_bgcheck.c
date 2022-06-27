@@ -216,7 +216,6 @@ void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest) {
         phi_f12 = -(nz * inv_phi_f2);
     } else {
         phi_f14 = sqrtf(1.0f - SQ(ny));
-        if (1) {}
         if (!IS_ZERO(phi_f14)) {
             inv_phi_f14 = (1.0f / phi_f14);
             phi_f12 = nx * inv_phi_f14;

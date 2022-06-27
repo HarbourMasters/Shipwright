@@ -223,8 +223,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     for (i = 0; i < padMgr->nControllers; i++, input++, padnow1++) {
         input->prev = input->cur;
 
-        if (1) {} // Necessary to match
-
         switch (padnow1->err_no) {
             case 0:
                 input->cur = *padnow1;

@@ -1081,8 +1081,6 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, GlobalContext* globalCtx) {
             if (globalCtx->csCtx.frames == 640) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
             }
-
-            if (0) {}
         }
 
         if (globalCtx->sceneNum == SCENE_SPOT08 && gSaveContext.sceneSetupIndex == 4) {
@@ -1092,9 +1090,6 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, GlobalContext* globalCtx) {
             if (globalCtx->csCtx.frames == 648) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_WHITE_OUT);
             }
-
-            // Necessary to match
-            if (0) {}
         }
 
         if (globalCtx->sceneNum == SCENE_TOKINOMA && gSaveContext.sceneSetupIndex == 14) {
@@ -1671,7 +1666,6 @@ void DemoEffect_DrawJewel(Actor* thisx, GlobalContext* globalCtx2) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (!DemoEffect_CheckCsAction(this, globalCtx, 1)) {
-        if (1) {}
 
         if (!(this->effectFlags & 0x1)) {
             switch (this->jewel.type) {
@@ -1865,7 +1859,6 @@ void DemoEffect_DrawLightEffect(Actor* thisx, GlobalContext* globalCtx) {
         if (this->light.flicker == 0) {
             this->light.flicker = 1;
         } else {
-            disp = (uintptr_t)gEffFlash1DL; // necessary to match, should be able to remove after fake matches are fixed
             alpha = &this->light.alpha;
             func_80093D84(globalCtx->state.gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, this->primXluColor[0], this->primXluColor[1],
@@ -1878,7 +1871,6 @@ void DemoEffect_DrawLightEffect(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateZ(this->light.rotation * (M_PI / 180.0f), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH);
-            if (disp) {};
             gSPDisplayList(POLY_XLU_DISP++, disp);
             Matrix_Pop();
             Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);

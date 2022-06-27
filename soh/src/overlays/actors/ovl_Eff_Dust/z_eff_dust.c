@@ -300,8 +300,6 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
 
         initialPositions++;
         distanceTraveled++;
-        // Needed for matching.
-        if (0) {}
     }
 
     CLOSE_DISPS(gfxCtx);

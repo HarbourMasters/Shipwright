@@ -1101,8 +1101,6 @@ s32 EnHy_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
     u8 i;
     UNK_PTR ptr;
 
-    if (1) {}
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 15) {

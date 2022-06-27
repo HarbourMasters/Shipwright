@@ -3459,7 +3459,7 @@ void BossVa_UpdateEffects(GlobalContext* globalCtx) {
                 } else if (effect->mode == GORE_FADING) {
                     if (effect->timer == 0) {
                         effect->type = VA_NONE;
-                                }
+                    }
 
                 } else {
                     Math_SmoothStepToF(&effect->scaleMod, 0.075f, 1.0f, 0.005f, 0.0f);
@@ -3500,7 +3500,7 @@ void BossVa_UpdateEffects(GlobalContext* globalCtx) {
                         }
                         break;
                 }
-                }
+            }
         }
     }
 }

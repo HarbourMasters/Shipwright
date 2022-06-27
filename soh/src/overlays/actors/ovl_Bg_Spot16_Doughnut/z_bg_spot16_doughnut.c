@@ -126,8 +126,6 @@ void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    if (1) {}
-
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->fireFlag & 1) {

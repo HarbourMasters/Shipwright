@@ -137,7 +137,6 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         }
         Actor_Kill(&this->actor);
     } else {
-        if (0) {} // Necessary to match
         func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);

@@ -284,7 +284,6 @@ void EnKarebaba_Spin(EnKarebaba* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelAnime);
 
     if (Animation_OnFrame(&this->skelAnime, 0.0f) || Animation_OnFrame(&this->skelAnime, 12.0f)) {
-        if (1) {} // Here for matching purposes only.
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_MOUTH);
     }

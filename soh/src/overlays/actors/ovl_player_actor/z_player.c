@@ -6878,8 +6878,6 @@ void func_8084029C(Player* this, f32 arg1) {
         arg1 = 7.25f;
     }
 
-    if (1) {}
-
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
     }

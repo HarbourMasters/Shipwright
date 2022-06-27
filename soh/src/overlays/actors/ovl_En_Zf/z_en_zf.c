@@ -2233,7 +2233,6 @@ static Gfx D_80B4A2F8[] = {
 void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnZf* this = (EnZf*)thisx;
-    ; // Extra ";" required for matching. Cannot be if (1) {} or the like. Typo?
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 

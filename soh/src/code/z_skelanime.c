@@ -46,8 +46,6 @@ void SkelAnime_DrawLimbLod(GlobalContext* globalCtx, s32 limbIndex, void** skele
         }
     }
 
-    if (1) {}
-
     if (postLimbDraw != NULL) {
         postLimbDraw(globalCtx, limbIndex, &dList, &rot, arg);
     }
@@ -266,8 +264,6 @@ void SkelAnime_DrawLimbOpa(GlobalContext* globalCtx, s32 limbIndex, void** skele
             gSPDisplayList(POLY_OPA_DISP++, dList);
         }
     }
-
-    if (1) {}
 
     if (postLimbDraw != NULL) {
         postLimbDraw(globalCtx, limbIndex, &dList, &rot, arg);

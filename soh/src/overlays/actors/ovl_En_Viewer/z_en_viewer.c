@@ -866,7 +866,6 @@ void EnViewer_UpdateGanondorfCape(GlobalContext* globalCtx, EnViewer* this) {
     Vec3f forearmWorldOffset;
 
     if ((this->actor.params >> 8) == ENVIEWER_TYPE_5_GANONDORF) {
-        if (1) {}
         sGanondorfCape->backPush = BREG(54) / 10.0f;
         sGanondorfCape->backSwayMagnitude = (BREG(60) + 25) / 100.0f;
         sGanondorfCape->sideSwayMagnitude = (BREG(55) - 45) / 10.0f;

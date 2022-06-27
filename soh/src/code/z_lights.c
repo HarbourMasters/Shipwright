@@ -82,8 +82,6 @@ void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
         light++;
     }
 
-    if (0) {}
-
     i++; // abmient light is total number of lights + 1
     gSPLight(POLY_OPA_DISP++, &lights->l.a, i);
     gSPLight(POLY_XLU_DISP++, &lights->l.a, i);
@@ -120,7 +118,7 @@ void Lights_BindPoint(Lights* lights, LightParams* params, Vec3f* vec) {
 
             if (light != NULL) {
                 posDiff = sqrtf(posDiff);
-                    scale = posDiff / scale;
+                scale = posDiff / scale;
                 scale = 1 - SQ(scale);
 
                 light->l.col[0] = light->l.colc[0] = params->point.color[0] * scale;

@@ -188,7 +188,6 @@ void func_80B4B010(EnZl1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80B4B240;
         Audio_PlayFanfare(NA_BGM_APPEAR);
     } else {
-        if (1) {} // necessary to match
         rotDiff = ABS(this->actor.yawTowardsPlayer - this->actor.shape.rot.y);
         if ((rotDiff < 0x238E) && !(player->actor.world.pos.y < this->actor.world.pos.y)) {
             func_8002F2F4(&this->actor, globalCtx);

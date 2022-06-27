@@ -255,7 +255,6 @@ void func_80B53980(EnZl3* thisx, s16 y, s32 idx) {
                 curFrame = skelAnime->curFrame;
                 unk_3DC = this->unk_3DC;
                 yTemp = (s32)((curFrame / unk_3DC) * -11000) + y;
-                if (0) {};
                 if (temp28C >= yTemp) {
                     temp28C = yTemp;
                     if (temp25C > 0) {
@@ -834,8 +833,6 @@ void func_80B550F0(EnZl3* this) {
 
 void func_80B55144(EnZl3* this) {
     f32* fl = &D_80B5A484;
-
-    if (1) {} // necessary to match
 
     if (*fl < 2.0f) {
         *fl += 1.0f;

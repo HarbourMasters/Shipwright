@@ -875,7 +875,6 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
         EnMag_DrawTextureI8(&gfx, gTitleTheLegendOfTextTex, 72, 8, 153, 72, 72, 8, 1024, 1024);
         EnMag_DrawTextureI8(&gfx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 151, 126, 96, 8, 1024, 1024);
 
-        if (1) {}
     }
 
     func_8009457C(&gfx);

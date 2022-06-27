@@ -106,7 +106,6 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
         func_80093C80(globalCtx);
         gSPMatrix(POLY_OPA_DISP++, &gMtxClear, G_MTX_MODELVIEW | G_MTX_LOAD);
     }
-    if (1) {}
     if (flags & 2) {
         func_8003435C(&D_801270A0, globalCtx);
         //gSPSegment(POLY_XLU_DISP++, 0x03, room->segment);

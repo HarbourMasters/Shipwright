@@ -164,7 +164,6 @@ void EnSkb_Init(Actor* thisx, GlobalContext* globalCtx) {
     paramOffsetBody = this->actor.params + 0xA;
     this->collider.elements[0].dim.worldSphere.radius = paramOffsetBody;
     this->collider.elements[0].dim.modelSphere.radius = paramOffsetBody;
-    if (1) {};
     paramOffsetArm = (this->actor.params * 2) + 0x14;
     this->collider.elements[1].dim.worldSphere.radius = paramOffsetArm;
     this->collider.elements[1].dim.modelSphere.radius = paramOffsetArm;

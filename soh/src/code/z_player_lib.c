@@ -630,8 +630,6 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
     if (!Player_InCsMode(globalCtx)) {
         triggerEntry = &sTextTriggers[var];
 
-        if (0) {}
-
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
             (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
@@ -1222,8 +1220,6 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
     Matrix_MultVec3f(&D_801260C8, &sp8C);
     D_801260C8.z = arg2;
     Matrix_MultVec3f(&D_801260C8, &sp80);
-
-    if (1) {}
 
     if (BgCheck_AnyLineTest3(&globalCtx->colCtx, &sp8C, &sp80, &sp74, &sp9C, 1, 1, 1, 1, &bgId)) {
         OPEN_DISPS(globalCtx->state.gfxCtx);

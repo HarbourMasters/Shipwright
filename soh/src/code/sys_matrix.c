@@ -851,8 +851,6 @@ void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
             cmf->yy = axis->y * axis->y * rCos + cos;
             cmf->zz = axis->z * axis->z * rCos + cos;
 
-            if (0) {}
-
             temp2 = axis->x * rCos * axis->y;
             temp3 = axis->z * sin;
             cmf->yx = temp2 + temp3;

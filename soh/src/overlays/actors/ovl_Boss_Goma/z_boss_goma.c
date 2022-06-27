@@ -1921,8 +1921,6 @@ void BossGoma_Update(Actor* thisx, GlobalContext* globalCtx) {
         this->sfxFaintTimer--;
     }
 
-    if (1) {}
-
     this->eyeState = EYESTATE_IRIS_FOLLOW_BONUS_IFRAMES;
     this->actionFunc(this, globalCtx);
     this->actor.shape.rot.y = this->actor.world.rot.y;

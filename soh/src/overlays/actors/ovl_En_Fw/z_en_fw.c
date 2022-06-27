@@ -462,7 +462,6 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
-    if (1) {}
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type != 0) {

@@ -363,8 +363,6 @@ void BgMizuMovebg_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames;
 
-    if (1) {}
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     frames = globalCtx->gameplayFrames;

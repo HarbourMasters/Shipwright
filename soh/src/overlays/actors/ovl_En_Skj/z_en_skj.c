@@ -827,7 +827,6 @@ void EnSkj_Fight(EnSkj* this, GlobalContext* globalCtx) {
         Matrix_MultVec3f(&pos1, &pos2);
         prevPosX = this->actor.world.pos.x;
         prevPosZ = this->actor.world.pos.z;
-        if (1) {}
         this->actor.world.pos.x = this->center.x + pos2.x;
         this->actor.world.pos.z = this->center.z + pos2.z;
 

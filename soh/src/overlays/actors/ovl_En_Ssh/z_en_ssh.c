@@ -662,7 +662,6 @@ void EnSsh_Talk(EnSsh* this, GlobalContext* globalCtx) {
 }
 
 void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
-    if (1) {}
     if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
         this->actionFunc = EnSsh_Talk;
         if (this->actor.params == ENSSH_FATHER) {

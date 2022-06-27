@@ -2483,7 +2483,6 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, this->unk_328);
         BossGanon2_InitRand(this->unk_340 + 1, 0x71AC - this->unk_340, 0x263A);
         rand = BossGanon2_RandZeroOne();
-        if (1) {}
 
         for (i = 0; i < 5; i++) {
             angle = (i * (2 * M_PI / 5)) + (rand * M_PI);

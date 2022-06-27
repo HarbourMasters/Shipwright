@@ -3821,8 +3821,6 @@ void func_80033C30(Vec3f* arg0, Vec3f* arg1, u8 alpha, GlobalContext* globalCtx)
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    if (0) {} // Necessary to match
-
     POLY_OPA_DISP = Gfx_CallSetupDL(POLY_OPA_DISP, 0x2C);
 
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 0, 0, 0, alpha);
@@ -5800,8 +5798,6 @@ s32 func_80037D98(GlobalContext* globalCtx, Actor* actor, s16 arg2, s32* arg3) {
     }
 
     Actor_GetScreenPos(globalCtx, actor, &sp2C, &sp2A);
-
-    if (0) {} // Necessary to match
 
     if ((sp2C < 0) || (sp2C > SCREEN_WIDTH) || (sp2A < 0) || (sp2A > SCREEN_HEIGHT)) {
         return false;

@@ -727,8 +727,6 @@ void func_80968B70(Actor* thisx, GlobalContext* globalCtx) {
     u8 primColor[4];
     u8 envColor[3];
 
-    if (1) {}
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
@@ -776,8 +774,6 @@ void func_80968FB0(Actor* thisx, GlobalContext* globalCtx) {
     u16 frames = globalCtx->gameplayFrames;
     f32 scaleFactor;
     s32 pad;
-
-    if (1) {}
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 

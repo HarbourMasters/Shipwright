@@ -102,8 +102,6 @@ void DemoShd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u32 unk_14E = this->unk_14E;
 
-    if (1) {} // Necessary to match, can be anywhere in the function
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);

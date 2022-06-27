@@ -2682,9 +2682,6 @@ s32 func_80B70A2C(Fishing* this, GlobalContext* globalCtx, u8 ignorePosCheck) {
         return false;
     }
 
-    // Necessary to match
-    if (this->unk_1AC) {}
-
     if (this->unk_1AC >= 40.0f) {
         count = 40;
         scale = 1.2f;
@@ -2728,9 +2725,6 @@ void func_80B70CF0(Fishing* this, GlobalContext* globalCtx) {
     Vec3f vel;
     f32 speedXZ;
     f32 angle;
-
-    // Necessary to match
-    if (this->unk_1AC) {}
 
     if (this->unk_1AC >= 45.0f) {
         count = 30;
@@ -4088,8 +4082,6 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
 
         this->actor.world.pos.y += (this->unk_184 * 1.5f);
 
-        if (1) {}
-
         if (this->unk_152 != 0) {
             this->unk_168 = this->unk_154;
             this->unk_152--;
@@ -4718,8 +4710,6 @@ void Fishing_DrawGroupFishes(GlobalContext* globalCtx) {
     } else {
         scale = 0.00475f;
     }
-
-    if (1) {}
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -5653,8 +5643,6 @@ void Fishing_UpdateOwner(Actor* thisx, GlobalContext* globalCtx2) {
     if (target < 0.0f) {
         target = 0.0f;
     }
-    if (1) {}
-    if (1) {}
     Math_ApproachF(&D_80B7A65C.z, target, 1.0f, 5.0f);
 
     if (D_80B7A65C.z < 1500.0f) {

@@ -954,7 +954,6 @@ void EnAm_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->iceTimer != 0) {
         this->dyna.actor.colorFilterTimer++;
-        if (1) {};
         this->iceTimer--;
 
         if ((this->iceTimer % 4) == 0) {

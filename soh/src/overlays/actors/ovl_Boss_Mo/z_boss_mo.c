@@ -1411,7 +1411,7 @@ void BossMo_IntroCs(BossMo* this, GlobalContext* globalCtx) {
                 this->cameraEyeVel.x = fabsf(this->cameraEye.x - 111.0f) * 0.1f;
                 this->cameraEyeVel.y = fabsf(this->cameraEye.y - 133.0f) * 0.1f;
                 this->cameraEyeVel.z = fabsf(this->cameraEye.z - -191.0f) * 0.1f;
-                    this->csState = MO_INTRO_FINISH;
+                this->csState = MO_INTRO_FINISH;
                 this->timers[2] = 110;
                 this->cameraNextEye.x = 111.0f;
                 this->cameraNextEye.y = 133.0f;
@@ -1589,7 +1589,7 @@ void BossMo_DeathCs(BossMo* this, GlobalContext* globalCtx) {
                 this->cameraSpeedMod = 0.0f;
                 this->cameraAccel = 0.02f;
                 this->cameraNextAt.y = 320.0f;
-                    this->timers[0] = 100;
+                this->timers[0] = 100;
                 sMorphaTent1->drawActor = true;
                 sMorphaTent1->work[MO_TENT_ACTION_STATE] = MO_TENT_DEATH_3;
                 sMorphaTent1->actor.shape.rot.x = 0;
@@ -2568,7 +2568,6 @@ void BossMo_DrawWater(BossMo* this, GlobalContext* globalCtx) {
     s32 pad;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-    if (1) {}
 
     Matrix_Push();
     func_80093D84(globalCtx->state.gfxCtx);
@@ -2728,7 +2727,6 @@ void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx) {
     u16 scroll;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-    if (1) {}
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, (s8)(this->baseAlpha * 1.5f));
     gDPSetEnvColor(POLY_OPA_DISP++, 150, 150, 150, 0);

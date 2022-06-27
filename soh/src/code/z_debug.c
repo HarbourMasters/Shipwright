@@ -244,8 +244,6 @@ void func_80063D7C(GraphicsContext* gfxCtx) {
     Graph_BranchDlist(sp78, sp7C);
     POLY_OPA_DISP = sp7C;
 
-    if (1) {}
-
     CLOSE_DISPS(gfxCtx);
 
     GfxPrint_Destroy(&printer);

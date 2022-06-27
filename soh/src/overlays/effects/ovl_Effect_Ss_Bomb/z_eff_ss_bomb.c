@@ -52,8 +52,6 @@ void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 scale;
     s16 color;
 
-    if (1) {}
-
     OPEN_DISPS(gfxCtx);
 
     scale = this->rScale / 100.0f;

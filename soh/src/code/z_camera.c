@@ -949,7 +949,6 @@ s32 func_800458D4(Camera* camera, VecSph* eyeAtDir, f32 arg2, f32* arg3, s16 arg
     eyeAtAngle = Math_FAtan2F(deltaY, OLib_Vec3fDistXZ(&camera->at, &camera->eye));
 
     if (eyeAtAngle > DEGF_TO_RADF(OREG(32))) {
-        if (1) {}
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(eyeAtAngle - OREG(32)));
     } else if (eyeAtAngle < DEGF_TO_RADF(OREG(33))) {
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(OREG(33)) - eyeAtAngle);
@@ -1876,7 +1875,6 @@ s32 Camera_Normal3(Camera* camera) {
                                                     camera->yawUpdateRateInv, sp98, 0.1f);
         camera->pitchUpdateRateInv = Camera_LERPCeilF((f32)OREG(7) + (anim->swing.swingUpdateRateTimer * 2),
                                                       camera->pitchUpdateRateInv, sp94, 0.1f);
-        if (1) {}
         anim->swing.swingUpdateRateTimer--;
     } else {
         camera->yawUpdateRateInv = Camera_LERPCeilF(norm3->yawUpdateSpeed, camera->yawUpdateRateInv, sp98, 0.1f);
@@ -6665,7 +6663,6 @@ s32 Camera_Special9(Camera* camera) {
     sCameraInterfaceFlags = params->interfaceFlags;
 
     switch (camera->animState) {
-        if (1) {}
 
         case 0:
             camera->unk_14C &= ~(0x4 | 0x2);
@@ -6750,7 +6747,6 @@ s32 Camera_Special9(Camera* camera) {
             }
             break;
     }
-    if (1) {}
     spAC = playerPosRot->pos;
     spAC.y += playerYOffset;
     camera->dist = OLib_Vec3fDist(&spAC, eye);
@@ -7781,7 +7777,6 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
     }
 
     if (flags & 8) {
-        if (1) {}
         camera->camDataIdx = camera->prevCamDataIdx;
         camera->prevCamDataIdx = -1;
     } else if (!(flags & 4)) {

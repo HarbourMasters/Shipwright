@@ -77,8 +77,6 @@ void MagicDark_DiamondUpdate(Actor* thisx, GlobalContext* globalCtx) {
     s16 nayrusLoveTimer = gSaveContext.nayrusLoveTimer;
     s32 msgMode = globalCtx->msgCtx.msgMode;
 
-    if (1) {}
-
     if ((msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) || (msgMode == MSGMODE_SONG_PLAYED)) {
         Actor_Kill(thisx);
         return;

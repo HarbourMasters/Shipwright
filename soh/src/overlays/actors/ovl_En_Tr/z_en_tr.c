@@ -430,8 +430,6 @@ void EnTr_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnTr* this = (EnTr*)thisx;
 
-    if (1) {}
-
     if ((globalCtx->csCtx.state == CS_STATE_IDLE) || (globalCtx->csCtx.npcActions[this->actionIndex] == 0)) {
         this->actor.shape.shadowDraw = NULL;
     } else {

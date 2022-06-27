@@ -88,7 +88,6 @@ void BgBowlWall_SpawnBullseyes(BgBowlWall* this, GlobalContext* globalCtx) {
     this->bullseyeCenter.x = sBullseyeOffset[type].x + this->dyna.actor.world.pos.x;
     this->bullseyeCenter.y = sBullseyeOffset[type].y + this->dyna.actor.world.pos.y;
     this->bullseyeCenter.z = sBullseyeOffset[type].z + this->dyna.actor.world.pos.z;
-    if (1) {}
     bullseye = (EnWallTubo*)Actor_SpawnAsChild(&globalCtx->actorCtx, &this->dyna.actor, globalCtx, ACTOR_EN_WALL_TUBO,
                                                this->bullseyeCenter.x, this->bullseyeCenter.y, this->bullseyeCenter.z,
                                                0, 0, 0, this->dyna.actor.params);

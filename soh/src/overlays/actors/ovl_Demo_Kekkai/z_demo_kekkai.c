@@ -278,7 +278,6 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
 
     if (this->orbScale != 0.0f) {
-        if (1) {}
         alphas[2] = (s32)(this->energyAlpha * 202.0f);
         alphas[1] = (s32)(this->energyAlpha * 126.0f);
         alphas[0] = 0;

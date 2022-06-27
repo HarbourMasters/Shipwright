@@ -294,8 +294,6 @@ void func_8009899C(GlobalContext* globalCtx, SceneCmd* cmd) {
 
     ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
 
-    if (1) {}
-
     while (k < cmd->objectList.num) {
         nextPtr = func_800982FC(&globalCtx->objectCtx, i, *objectEntry);
         if (i < OBJECT_EXCHANGE_BANK_MAX - 1) {
@@ -438,8 +436,6 @@ void func_800991A0(GlobalContext* globalCtx, SceneCmd* cmd) {
 
     if (gSaveContext.sceneSetupIndex != 0) {
         altHeader = ((SceneCmd**)SEGMENTED_TO_VIRTUAL(cmd->altHeaders.segment))[gSaveContext.sceneSetupIndex - 1];
-
-        if (1) {}
 
         if (altHeader != NULL) {
             Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));

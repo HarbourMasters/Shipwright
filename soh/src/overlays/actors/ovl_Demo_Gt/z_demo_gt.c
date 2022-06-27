@@ -63,8 +63,6 @@ void func_8097D7D8(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velOffset, f32 s
             velocity.y += velOffset->y;
             velocity.z += velOffset->z;
 
-            if (0) {}
-
             accel.x *= scale;
             accel.y *= scale;
             accel.z *= scale;

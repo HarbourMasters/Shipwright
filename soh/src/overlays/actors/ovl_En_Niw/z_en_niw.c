@@ -886,10 +886,6 @@ void EnNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 camResult;
     s32 pad3[10];
 
-    if (1) {} // Required to match
-    if (1) {}
-    if (1) {}
-
     this->unk_294++;
 
     if (this->actionFunc != func_80AB6570) {

@@ -119,7 +119,6 @@ void MagicFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     s32 pad;
 
-    if (1) {}
     this->actor.world.pos = player->actor.world.pos;
     if ((globalCtx->msgCtx.msgMode == MSGMODE_OCARINA_CORRECT_PLAYBACK) ||
         (globalCtx->msgCtx.msgMode == MSGMODE_SONG_PLAYED)) {

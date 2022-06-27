@@ -1317,8 +1317,6 @@ void func_8009B0FC(GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    if (1) {} // Necessary to match
-
     spB0 = (globalCtx->roomCtx.unk_74[1] >> 8) & 0xFF;
     spAC = globalCtx->roomCtx.unk_74[1] & 0xFF;
     gameplayFrames = globalCtx->gameplayFrames;
@@ -1445,8 +1443,6 @@ void func_8009BC44(GlobalContext* globalCtx) {
     u32 gameplayFrames;
     s8 sp83;
 
-    if (1) {} // Necessary to match
-
     sp83 = coss((globalCtx->gameplayFrames * 1500) & 0xFFFF) >> 8;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -1503,8 +1499,6 @@ void func_8009C0AC(GlobalContext* globalCtx) {
     u32 gameplayFrames;
     s8 sp7B;
 
-    if (1) {} // Necessary to match
-
     sp7B = coss((globalCtx->gameplayFrames * 1500) & 0xFFFF) >> 8;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
@@ -1548,8 +1542,6 @@ void* sIceCavernEntranceTextures[] = {
 // Scene Draw Config 37
 void func_8009C3EC(GlobalContext* globalCtx) {
     u32 gameplayFrames;
-
-    if (0) {} // Necessary to match
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1652,8 +1644,6 @@ void* sGTGEntranceTextures[] = {
 // Scene Draw Config 27
 void func_8009CC00(GlobalContext* globalCtx) {
     u32 gameplayFrames;
-
-    if (0) {} // Necessary to match
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1828,8 +1818,6 @@ void* sForestTempleEntranceTextures[] = {
 void func_8009D758(GlobalContext* globalCtx) {
     u32 gameplayFrames;
 
-    if (0) {} // Necessary to match
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gameplayFrames = globalCtx->gameplayFrames;
@@ -1972,9 +1960,6 @@ void func_8009E0B8(GlobalContext* globalCtx) {
     spA3 = 128;
     spA0 = 500;
     displayListHead = Graph_Alloc(globalCtx->state.gfxCtx, 6 * sizeof(Gfx));
-
-    if (1) {}
-    if (1) {}
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2134,8 +2119,6 @@ void func_8009EAD8(GlobalContext* globalCtx) {
 // Scene Draw Config 9
 void func_8009EE44(GlobalContext* globalCtx) {
     u32 gameplayFrames;
-
-    if (0) {} // Necessary to match
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 

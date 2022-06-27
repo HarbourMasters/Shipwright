@@ -819,7 +819,6 @@ s32 EnFr_IsFrogSongComplete(EnFr* this, GlobalContext* globalCtx) {
     if (this->ocarinaNote == (*msgCtx).lastOcaNoteIdx) { // required to match, possibly an array?
         this->ocarinaNoteIndex++;
         ocarinaNoteIndex = this->ocarinaNoteIndex;
-        if (1) {}
         if (ocarinaNoteIndex >= 14) { // Frog Song is completed
             this->ocarinaNoteIndex = 13;
             return true;

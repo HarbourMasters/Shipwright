@@ -229,8 +229,6 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     task->data_size = (uintptr_t)WORK_DISP - (uintptr_t)gfxCtx->workBuffer;
     CLOSE_DISPS(gfxCtx);
 
-    { s32 pad2; } // Necessary to match stack usage
-
     task->yield_data_ptr = (u64*)gGfxSPTaskYieldBuffer;
     task->yield_data_size = sizeof(gGfxSPTaskYieldBuffer);
 
@@ -257,8 +255,6 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     scTask->framebuffer = cfb;
     sGraphCfbInfoIdx = sGraphCfbInfoIdx % ARRAY_COUNT(sGraphCfbInfos);
-
-    if (1) {}
 
     gfxCtx->schedMsgQ = &gSchedContext.cmdQ;
 

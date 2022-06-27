@@ -118,7 +118,7 @@ void ArrowFire_Hit(ArrowFire* this, GlobalContext* globalCtx) {
             this->radius = (((1.0f - offset) * scale) + 10.0f);
             this->unk_158 += ((2.0f - this->unk_158) * 0.1f);
             if (this->timer < 16) {
-                    this->alpha = ((this->timer * 0x23) - 0x118);
+                this->alpha = ((this->timer * 0x23) - 0x118);
             }
         }
     }
@@ -197,10 +197,8 @@ void ArrowFire_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     stateFrames = globalCtx->state.frames;
     arrow = (EnArrow*)this->actor.parent;
-    if (1) {}
 
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {
-        if (1) {}
         tranform = (arrow->hitFlags & 2) ? &this->actor : &arrow->actor;
 
         OPEN_DISPS(globalCtx->state.gfxCtx);

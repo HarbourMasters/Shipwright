@@ -454,13 +454,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, GlobalContext* globalCtx) {
 
     this->subCamEyeInit.x = this->subCamEye.x = this->actor.world.pos.x + eyePosDeltaWorld.x;
     this->subCamEyeInit.y = this->subCamEye.y = this->actor.world.pos.y + eyePosDeltaWorld.y;
-    if (1) {}
     this->subCamEyeInit.z = this->subCamEye.z = this->actor.world.pos.z + eyePosDeltaWorld.z;
 
-    if (1) {}
     this->subCamAtTarget.x = this->subCamAt.x = this->actor.world.pos.x;
     this->subCamAtTarget.y = this->subCamAt.y = this->actor.world.pos.y + 60.0f;
-    if (1) {}
     this->subCamAtTarget.z = this->subCamAt.z = this->actor.world.pos.z;
 
     this->subCamId = Gameplay_CreateSubCamera(globalCtx);

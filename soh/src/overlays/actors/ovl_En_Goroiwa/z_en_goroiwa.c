@@ -375,7 +375,6 @@ s32 EnGoroiwa_MoveDownToNextWaypoint(EnGoroiwa* this, GlobalContext* globalCtx) 
     this->actor.world.pos.x = nextPointPos->x;
     this->actor.world.pos.z = nextPointPos->z;
     thisY = this->actor.world.pos.y;
-    if (1) {}
     this->actor.world.pos.y += this->actor.velocity.y;
     if (this->actor.velocity.y < 0.0f && this->actor.world.pos.y <= nextPointY) {
         if (this->bounceCount == 0) {

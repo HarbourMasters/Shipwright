@@ -389,7 +389,6 @@ void EnPoRelay_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 128);
         gSPDisplayList(POLY_OPA_DISP++, gDampeLanternDL);
-        if (1) {}
         CLOSE_DISPS(globalCtx->state.gfxCtx);
         Matrix_MultVec3f(&D_80AD8D48, &vec);
         Lights_PointNoGlowSetInfo(&this->lightInfo, vec.x, vec.y, vec.z, this->lightColor.r, this->lightColor.g,

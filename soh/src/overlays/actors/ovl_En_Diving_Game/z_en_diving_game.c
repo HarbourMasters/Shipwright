@@ -498,8 +498,6 @@ void EnDivingGame_Update(Actor* thisx, GlobalContext* globalCtx2) {
         this->spawnRuppyTimer--;
     }
 
-    if (1) {}
-
     if (gSaveContext.timer1Value == 10) {
         func_800F5918();
     }

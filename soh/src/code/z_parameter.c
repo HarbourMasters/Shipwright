@@ -998,7 +998,7 @@ void func_80083108(GlobalContext* globalCtx) {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
                     }
-                        }
+                }
 
                 if (sp28) {
                     Interface_LoadItemIcon1(globalCtx, 0);
