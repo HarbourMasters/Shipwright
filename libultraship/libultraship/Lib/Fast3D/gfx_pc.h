@@ -10,6 +10,7 @@
 
 #include "U64/PR/ultra64/types.h"
 
+// TODO figure out why changing these to 640x480 makes the game only render in a quarter of the window
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
