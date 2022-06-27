@@ -16,6 +16,13 @@ option(STORM_BUILD_TESTS
 #   "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__Windows
+           src/lzma/C/LzFindMt.c
+           src/lzma/C/Threads.c
+)
+endif()
+
 set(SRC_FILES
            src/adpcm/adpcm.cpp
            src/huffman/huff.cpp
@@ -47,6 +54,7 @@ set(SRC_FILES
            src/SFileVerify.cpp
            src/libtomcrypt/src/pk/rsa/rsa_verify_simple.c
            src/libtomcrypt/src/misc/crypt_libc.c
+           ${Source_Files__Windows}
 )
 
 if(MSVC)

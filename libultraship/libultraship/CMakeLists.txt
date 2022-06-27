@@ -57,18 +57,18 @@ set(Source_Files__Audio
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-set(Source_Files__Audio__Windows
+set(Source_Files__Audio__extra
     "WasapiAudioPlayer.cpp"
     "WasapiAudioPlayer.h"
 )
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-set(Source_Files__Audio__Linux
+else()
+set(Source_Files__Audio__extra
     "PulseAudioPlayer.cpp"
     "PulseAudioPlayer.h"
 )
 endif ()
 
-source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__Windows} ${Source_Files__Audio__Linux})
+source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
 
 set(Source_Files__Config
     "ConfigFile.cpp"
@@ -153,17 +153,6 @@ source_group("Source Files\\Lib" FILES ${Source_Files__Lib})
 set(Source_Files__Lib__Fast3D
     "Lib/Fast3D/gfx_cc.cpp"
     "Lib/Fast3D/gfx_cc.h"
-    "Lib/Fast3D/gfx_direct3d11.cpp"
-    "Lib/Fast3D/gfx_direct3d11.h"
-    "Lib/Fast3D/gfx_direct3d12.cpp"
-    "Lib/Fast3D/gfx_direct3d12.h"
-    "Lib/Fast3D/gfx_direct3d12_guids.h"
-    "Lib/Fast3D/gfx_direct3d_common.cpp"
-    "Lib/Fast3D/gfx_direct3d_common.h"
-    "Lib/Fast3D/gfx_dxgi.cpp"
-    "Lib/Fast3D/gfx_dxgi.h"
-    "Lib/Fast3D/gfx_glx.cpp"
-    "Lib/Fast3D/gfx_glx.h"
     "Lib/Fast3D/gfx_opengl.cpp"
     "Lib/Fast3D/gfx_opengl.h"
     "Lib/Fast3D/gfx_pc.cpp"
@@ -175,6 +164,25 @@ set(Source_Files__Lib__Fast3D
     "Lib/Fast3D/gfx_window_manager_api.h"
 )
 source_group("Source Files\\Lib\\Fast3D" FILES ${Source_Files__Lib__Fast3D})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+set(Source_Files__Lib__Fast3D__extra
+     "Lib/Fast3D/gfx_direct3d11.cpp"
+     "Lib/Fast3D/gfx_direct3d11.h"
+     "Lib/Fast3D/gfx_direct3d12.cpp"
+     "Lib/Fast3D/gfx_direct3d12.h"
+     "Lib/Fast3D/gfx_direct3d12_guids.h"
+     "Lib/Fast3D/gfx_direct3d_common.cpp"
+     "Lib/Fast3D/gfx_direct3d_common.h"
+     "Lib/Fast3D/gfx_dxgi.cpp"
+     "Lib/Fast3D/gfx_dxgi.h"
+)
+else()
+set(Source_Files__Lib__Fast3D__extra
+     "Lib/Fast3D/gfx_glx.cpp"
+     "Lib/Fast3D/gfx_glx.h"
+endif()
+source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
 
 set(Source_Files__Lib__ImGui
     "Lib/ImGui/backends/imgui_impl_opengl3.cpp"
@@ -305,8 +313,7 @@ set(ALL_FILES
     ${Header_Files__Resources__Factories}
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
-    ${Source_Files__Audio__Windows}
-    ${Source_Files__Audio__Linux}
+    ${Source_Files__Audio__extra}
     ${Source_Files__Config}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
@@ -317,8 +324,9 @@ set(ALL_FILES
     ${Source_Files__Globals}
     ${Source_Files__Lib}
     ${Source_Files__Lib__Fast3D}
+    ${Source_Files__Lib__Fast3D__extra}
     ${Source_Files__Lib__ImGui}
-	${Source_Files__Lib__ImGui__Windows}
+    ${Source_Files__Lib__ImGui__Windows}
     ${Source_Files__Lib__stb}
     ${Source_Files__Lib__dr_libs}
     ${Source_Files__Lib__tinyxml2}
