@@ -22,7 +22,7 @@ MtxF* sMatrixStack;   // "Matrix_stack"
 MtxF* sCurrentMatrix; // "Matrix_now"
 
 void Matrix_Init(GameState* gameState) {
-    sCurrentMatrix = GameState_Alloc(gameState, 20 * sizeof(MtxF), "../sys_matrix.c", 153);
+    sCurrentMatrix = GameState_Alloc(gameState, 20 * sizeof(MtxF), __FILE__, __LINE__);
     sMatrixStack = sCurrentMatrix;
 }
 
@@ -35,7 +35,7 @@ void Matrix_Push(void) {
 void Matrix_Pop(void) {
     FrameInterpolation_RecordMatrixPop();
     sCurrentMatrix--;
-    ASSERT(sCurrentMatrix >= sMatrixStack, "Matrix_now >= Matrix_stack", "../sys_matrix.c", 176);
+    ASSERT(sCurrentMatrix >= sMatrixStack, "Matrix_now >= Matrix_stack", __FILE__, __LINE__);
 }
 
 void Matrix_Get(MtxF* dest) {

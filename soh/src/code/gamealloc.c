@@ -29,7 +29,7 @@ void* GameAlloc_MallocDebug(GameAlloc* this, size_t size, const char* file, s32 
 }
 
 void* GameAlloc_Malloc(GameAlloc* this, size_t size) {
-    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), "../gamealloc.c", 93);
+    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), __FILE__, __LINE__);
 
     if (ptr != NULL) {
         ptr->size = size;
@@ -49,12 +49,12 @@ void GameAlloc_Free(GameAlloc* this, void* data) {
 
     if (data != NULL) {
         ptr = &((GameAllocEntry*)data)[-1];
-        LogUtils_CheckNullPointer("ptr->prev", ptr->prev, "../gamealloc.c", 120);
-        LogUtils_CheckNullPointer("ptr->next", ptr->next, "../gamealloc.c", 121);
+        LogUtils_CheckNullPointer("ptr->prev", ptr->prev, __FILE__, __LINE__);
+        LogUtils_CheckNullPointer("ptr->next", ptr->next, __FILE__, __LINE__);
         ptr->prev->next = ptr->next;
         ptr->next->prev = ptr->prev;
         this->head = this->base.prev;
-        SystemArena_FreeDebug(ptr, "../gamealloc.c", 125);
+        SystemArena_FreeDebug(ptr, __FILE__, __LINE__);
     }
 }
 
@@ -65,7 +65,7 @@ void GameAlloc_Cleanup(GameAlloc* this) {
     while (&this->base != next) {
         cur = next;
         next = next->next;
-        SystemArena_FreeDebug(cur, "../gamealloc.c", 145);
+        SystemArena_FreeDebug(cur, __FILE__, __LINE__);
     }
 
     this->head = &this->base;
