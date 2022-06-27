@@ -837,7 +837,7 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
         if (drawId == 2 || drawId == 3 || drawId == 4 || drawId == 5 || drawId == 6 || drawId == 7) {
             s16 color_slot = drawId - 2;
             s16* colors[6][3] = {
-                { 255, 255, 255 }, // Minuet Color
+                { 34, 177, 76 }, // Minuet Color
                 { 109, 73, 143 },  // Bolero Color
                 { 217, 110, 48 },  // Serenade Color
                 { 62, 109, 23 },   // Requiem Color
@@ -852,14 +852,14 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
             }; // Can do a second array with Env or math on it
             Vec3f pos;
 
-            velocity.x = Rand_CenteredFloat(3.0f);
-            velocity.z = Rand_CenteredFloat(3.0f);
+            velocity.x = Rand_CenteredFloat(0.05f);
+            velocity.z = Rand_CenteredFloat(0.05f);
             velocity.y = -0.05f;
             accel.y = -0.025f;
-            pos.x = Rand_CenteredFloat(12.0f);// + this->actor.world.pos.x;
-            pos.y = (Rand_ZeroOne() * 6.0f);// + this->actor.world.pos.y;
-            pos.z = Rand_CenteredFloat(12.0f);// + this->actor.world.pos.z;
-            EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 50000, 1600);
+            pos.x = Rand_CenteredFloat(12.0f) + -1500.0f;// + this->actor.world.pos.x;
+            pos.y = (Rand_ZeroOne() * 6.0f) + 1050.0f;// + this->actor.world.pos.y;
+            pos.z = Rand_CenteredFloat(12.0f) + -1100.0f; // + this->actor.world.pos.z;
+            EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 80);
         }
     }
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_draw.c", 1008);
