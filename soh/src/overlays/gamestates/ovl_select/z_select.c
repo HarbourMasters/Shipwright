@@ -69,7 +69,7 @@ static SceneSelectEntry sScenes[] = {
     { "24:Grave 1", Select_LoadGame, 0x031C },
     { "25:Grave 2", Select_LoadGame, 0x004B },
     { "26:Royal Family's Tomb", Select_LoadGame, 0x002D },
-    { "27:Great Fairy's Fountain (Power)", Select_LoadGame, 0x0315 },
+    { "27:Great Fairy's Fountain (Upgrades)", Select_LoadGame, 0x0315 },
     { "28:Fairy's Fountain (Grotto)", Select_LoadGame, 0x036D },
     { "29:Great Fairy's Fountain (Magic)", Select_LoadGame, 0x0371 },
     { "30:Ganon's Tower - Collapsing", Select_LoadGame, 0x043F },
