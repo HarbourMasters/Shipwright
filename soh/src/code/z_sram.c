@@ -672,10 +672,6 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             GiveLinkDekuNuts(20);
         }
 
-        if (GetRandoSettingValue(RSK_FULL_WALLETS)) {
-            GiveLinkRupees(9001);
-        }
-
         if(GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA)) {
             s32 giid = GetRandomizedItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
             
@@ -783,6 +779,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             // set this at the end to ensure we always start with the letter
             // this is for the off chance we got the weird egg from impa (which should never happen)
             INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
+        }
+
+        if (GetRandoSettingValue(RSK_FULL_WALLETS)) {
+            GiveLinkRupees(9001);
         }
 
         // For Ganon's boss key "Start With" is 0
