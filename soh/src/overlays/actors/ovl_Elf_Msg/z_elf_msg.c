@@ -47,14 +47,14 @@ void ElfMsg_SetupAction(ElfMsg* this, ElfMsgActionFunc actionFunc) {
 s32 ElfMsg_KillCheck(ElfMsg* this, GlobalContext* globalCtx) {
     if ((this->actor.world.rot.y > 0) && (this->actor.world.rot.y < 0x41) &&
         Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 1)) {
-        LOG_STRING("共倒れ", __FILE__, __LINE__); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
         }
         Actor_Kill(&this->actor);
         return 1;
     } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(globalCtx, this->actor.room)) {
-        LOG_STRING("共倒れ", __FILE__, __LINE__); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
         }

@@ -476,10 +476,10 @@ void SkelAnime_GetFrameData(AnimationHeader* animation, s32 frame, s32 limbCount
 
     for (i = 0; i < limbCount; i++, frameTable++, jointIndices++) {
         if ((frameTable == NULL) || (jointIndices == NULL) || (dynamicData == NULL) || (staticData == NULL)) {
-            LOG_ADDRESS("out", frameTable, __FILE__, __LINE__);
-            LOG_ADDRESS("ref_tbl", jointIndices, __FILE__, __LINE__);
-            LOG_ADDRESS("frame_tbl", dynamicData, __FILE__, __LINE__);
-            LOG_ADDRESS("tbl", staticData, __FILE__, __LINE__);
+            LOG_ADDRESS("out", frameTable);
+            LOG_ADDRESS("ref_tbl", jointIndices);
+            LOG_ADDRESS("frame_tbl", dynamicData);
+            LOG_ADDRESS("tbl", staticData);
         }
 
         frameTable->x =

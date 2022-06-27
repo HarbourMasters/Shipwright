@@ -63,7 +63,7 @@ void BgGndIceblock_Init(Actor* thisx, GlobalContext* globalCtx) {
         this->dyna.actor.params = 1;
         sBlockPositions[1] = 14;
     } else {
-        LOG_FLOAT("thisx->world.position.x", this->dyna.actor.world.pos.x, __FILE__, __LINE__);
+        LOG_FLOAT("thisx->world.position.x", this->dyna.actor.world.pos.x);
         ASSERT(0, "0", __FILE__, __LINE__);
     }
 }

@@ -70,7 +70,7 @@ void ItemOcarina_Init(Actor* thisx, GlobalContext* globalCtx) {
             return;
     }
 
-    LOG_NUM("no", params, __FILE__, __LINE__);
+    LOG_NUM("no", params);
     this->spinRotOffset = 0x400;
 }
 

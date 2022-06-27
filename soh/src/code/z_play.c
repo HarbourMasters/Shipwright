@@ -728,7 +728,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                         globalCtx->envCtx.sandstormPrimA = 255;
                         globalCtx->envCtx.sandstormEnvA = 255;
                         // "It's here!!!!!!!!!"
-                        LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!", __FILE__, __LINE__);
+                        LOG_STRING("来た!!!!!!!!!!!!!!!!!!!!!");
                         globalCtx->transitionMode = 15;
                     } else {
                         globalCtx->transitionMode = 12;
@@ -773,12 +773,12 @@ void Gameplay_Update(GlobalContext* globalCtx) {
         }
 
         if (1 && HREG(63)) {
-            LOG_NUM("1", 1, __FILE__, __LINE__);
+            LOG_NUM("1", 1);
         }
 
         if (1 && (gTrnsnUnkState != 3)) {
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             if ((gSaveContext.gameMode == 0) && (globalCtx->msgCtx.msgMode == MSGMODE_NONE) &&
@@ -787,30 +787,30 @@ void Gameplay_Update(GlobalContext* globalCtx) {
             }
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             sp80 = (globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             AnimationContext_Reset(&globalCtx->animationCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             Object_UpdateBank(&globalCtx->objectCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             if ((sp80 == 0) && (IREG(72) == 0)) {
                 if (1 && HREG(63)) {
-                    LOG_NUM("1", 1, __FILE__, __LINE__);
+                    LOG_NUM("1", 1);
                 }
 
                 globalCtx->gameplayFrames++;
@@ -830,37 +830,37 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                     }
                 } else {
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     func_800973FC(globalCtx, &globalCtx->roomCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     CollisionCheck_AT(globalCtx, &globalCtx->colChkCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     CollisionCheck_OC(globalCtx, &globalCtx->colChkCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     CollisionCheck_Damage(globalCtx, &globalCtx->colChkCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     CollisionCheck_ClearContext(globalCtx, &globalCtx->colChkCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     if (globalCtx->unk_11DE9 == 0) {
@@ -868,31 +868,31 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                     }
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     func_80064558(globalCtx, &globalCtx->csCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     func_800645A0(globalCtx, &globalCtx->csCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     Effect_UpdateAll(globalCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
 
                     EffectSs_UpdateAll(globalCtx);
 
                     if (1 && HREG(63)) {
-                        LOG_NUM("1", 1, __FILE__, __LINE__);
+                        LOG_NUM("1", 1);
                     }
                 }
             } else {
@@ -900,19 +900,19 @@ void Gameplay_Update(GlobalContext* globalCtx) {
             }
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             func_80095AA0(globalCtx, &globalCtx->roomCtx.curRoom, &input[1], 0);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             func_80095AA0(globalCtx, &globalCtx->roomCtx.prevRoom, &input[1], 1);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             if (globalCtx->unk_1242B != 0) {
@@ -933,65 +933,65 @@ void Gameplay_Update(GlobalContext* globalCtx) {
             }
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             SkyboxDraw_Update(&globalCtx->skyboxCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
                 if (1 && HREG(63)) {
-                    LOG_NUM("1", 1, __FILE__, __LINE__);
+                    LOG_NUM("1", 1);
                 }
 
                 KaleidoScopeCall_Update(globalCtx);
             } else if (globalCtx->gameOverCtx.state != GAMEOVER_INACTIVE) {
                 if (1 && HREG(63)) {
-                    LOG_NUM("1", 1, __FILE__, __LINE__);
+                    LOG_NUM("1", 1);
                 }
 
                 GameOver_Update(globalCtx);
             } else {
                 if (1 && HREG(63)) {
-                    LOG_NUM("1", 1, __FILE__, __LINE__);
+                    LOG_NUM("1", 1);
                 }
 
                 Message_Update(globalCtx);
             }
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             Interface_Update(globalCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             AnimationContext_Update(globalCtx, &globalCtx->animationCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             SoundSource_UpdateAll(globalCtx);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             ShrinkWindow_Update(R_UPDATE_RATE);
 
             if (1 && HREG(63)) {
-                LOG_NUM("1", 1, __FILE__, __LINE__);
+                LOG_NUM("1", 1);
             }
 
             TransitionFade_Update(&globalCtx->transitionFade, R_UPDATE_RATE);
@@ -1001,12 +1001,12 @@ void Gameplay_Update(GlobalContext* globalCtx) {
     }
 
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 
 skip:
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 
     if ((sp80 == 0) || (gDbgCamEnabled)) {
@@ -1016,13 +1016,13 @@ skip:
         globalCtx->nextCamera = globalCtx->activeCamera;
 
         if (1 && HREG(63)) {
-            LOG_NUM("1", 1, __FILE__, __LINE__);
+            LOG_NUM("1", 1);
         }
 
         for (i = 0; i < NUM_CAMS; i++) {
             if ((i != globalCtx->nextCamera) && (globalCtx->cameraPtrs[i] != NULL)) {
                 if (1 && HREG(63)) {
-                    LOG_NUM("1", 1, __FILE__, __LINE__);
+                    LOG_NUM("1", 1);
                 }
 
                 Camera_Update(globalCtx->cameraPtrs[i]);
@@ -1032,12 +1032,12 @@ skip:
         Camera_Update(globalCtx->cameraPtrs[globalCtx->nextCamera]);
 
         if (1 && HREG(63)) {
-            LOG_NUM("1", 1, __FILE__, __LINE__);
+            LOG_NUM("1", 1);
         }
     }
 
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 
     Environment_Update(globalCtx, &globalCtx->envCtx, &globalCtx->lightCtx, &globalCtx->pauseCtx, &globalCtx->msgCtx,
@@ -1352,7 +1352,7 @@ void Gameplay_Main(GameState* thisx) {
     DebugDisplay_Init();
 
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 
     if ((HREG(80) == 10) && (HREG(94) != 10)) {
@@ -1377,7 +1377,7 @@ void Gameplay_Main(GameState* thisx) {
     }
 
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 
     FrameInterpolation_StartRecord();
@@ -1385,7 +1385,7 @@ void Gameplay_Main(GameState* thisx) {
     FrameInterpolation_StopRecord();
 
     if (1 && HREG(63)) {
-        LOG_NUM("1", 1, __FILE__, __LINE__);
+        LOG_NUM("1", 1);
     }
 }
 

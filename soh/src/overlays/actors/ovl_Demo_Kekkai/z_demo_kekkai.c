@@ -253,7 +253,7 @@ void DemoKekkai_TrialBarrierIdle(Actor* thisx, GlobalContext* globalCtx) {
     if (this->collider2.base.acFlags & AC_HIT) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         // "I got it"
-        LOG_STRING("当ったよ", __FILE__, __LINE__);
+        LOG_STRING("当ったよ");
         this->actor.update = DemoKekkai_TrialBarrierDispel;
         this->timer = 0;
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(sSageCutscenes[this->actor.params]);

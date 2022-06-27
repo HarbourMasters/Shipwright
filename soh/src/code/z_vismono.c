@@ -96,10 +96,10 @@ void VisMono_Draw(VisMono* this, Gfx** gfxp) {
         glistpEnd = VisMono_DrawTexture(this, monoDL);
 
         if (!(glistpEnd <= monoDL + DLSIZE)) {
-            LOG_ADDRESS("glistp_end", glistpEnd, __FILE__, __LINE__);
-            LOG_ADDRESS("mono_dl", monoDL, __FILE__, __LINE__);
-            LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE, __FILE__, __LINE__);
-            LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE, __FILE__, __LINE__);
+            LOG_ADDRESS("glistp_end", glistpEnd);
+            LOG_ADDRESS("mono_dl", monoDL);
+            LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE);
+            LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE);
         }
         ASSERT(glistpEnd <= monoDL + DLSIZE, "glistp_end <= mono_dl + DLSIZE", __FILE__, __LINE__);
     }

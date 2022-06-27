@@ -120,7 +120,7 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
 
     if (this->maxval == 0) {
         osSyncPrintf(VT_FGCOL(RED));
-        LOG_NUM("this->maxval", this->maxval, __FILE__, __LINE__);
+        LOG_NUM("this->maxval", this->maxval);
         osSyncPrintf(VT_RST);
     } else {
         OPEN_DISPS(gfxCtx);

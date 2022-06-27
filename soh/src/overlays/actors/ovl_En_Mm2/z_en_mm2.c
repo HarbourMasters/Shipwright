@@ -277,7 +277,7 @@ void func_80AAF668(EnMm2* this, GlobalContext* globalCtx) {
             HIGH_SCORE(HS_MARATHON) = gSaveContext.timer2Value;
         }
     } else {
-        LOG_HEX("((z_common_data.event_inf[1]) & (0x0001))", gSaveContext.eventInf[1] & 1, __FILE__, __LINE__);
+        LOG_HEX("((z_common_data.event_inf[1]) & (0x0001))", gSaveContext.eventInf[1] & 1);
         if (!(gSaveContext.eventInf[1] & 1)) {
             this->unk_1F4 |= 2;
             this->unk_1F4 &= ~1;

@@ -86,29 +86,29 @@
 #define CHECK_FLAG_ALL(flags, mask) (((flags) & (mask)) == (mask))
 
 #ifndef NDEBUG
-#define LOG(exp, value, format, file, line)         \
+#define LOG(exp, value, format)         \
     do {                                            \
-        LogUtils_LogThreadId(file, line);           \
+        LogUtils_LogThreadId(__FILE__, __FILE__);           \
         osSyncPrintf(exp " = " format "\n", value); \
     } while (0)
 #else
-#define LOG(exp, value, format, file, line) ((void)0)
+#define LOG(exp, value, format) ((void)0)
 #endif
 
 #ifndef NDEBUG
-#define LOG_STRING(string, file, line) LOG(#string, string, "%s", file, line)
-#define LOG_ADDRESS(exp, value, file, line) LOG(exp, value, "%08x", file, line)
-#define LOG_TIME(exp, value, file, line) LOG(exp, value, "%lld", file, line)
-#define LOG_NUM(exp, value, file, line) LOG(exp, value, "%d", file, line)
-#define LOG_HEX(exp, value, file, line) LOG(exp, value, "%x", file, line)
-#define LOG_FLOAT(exp, value, file, line) LOG(exp, value, "%f", file, line)
+#define LOG_STRING(string) LOG(#string, string, "%s")
+#define LOG_ADDRESS(exp, value) LOG(exp, value, "%p")
+#define LOG_TIME(exp, value) LOG(exp, value, "%lld")
+#define LOG_NUM(exp, value) LOG(exp, value, "%d")
+#define LOG_HEX(exp, value) LOG(exp, value, "%x")
+#define LOG_FLOAT(exp, value) LOG(exp, value, "%f")
 #else
-#define LOG_STRING(string, file, line) ((void)0)
-#define LOG_ADDRESS(exp, value, file, line) ((void)0)
-#define LOG_TIME(exp, value, file, line) ((void)0)
-#define LOG_NUM(exp, value, file, line) ((void)0)
-#define LOG_HEX(exp, value, file, line) ((void)0)
-#define LOG_FLOAT(exp, value, file, line) ((void)0)
+#define LOG_STRING(string) ((void)0)
+#define LOG_ADDRESS(exp, value) ((void)0)
+#define LOG_TIME(exp, value) ((void)0)
+#define LOG_NUM(exp, value) ((void)0)
+#define LOG_HEX(exp, value) ((void)0)
+#define LOG_FLOAT(exp, value) ((void)0)
 #endif
 
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \

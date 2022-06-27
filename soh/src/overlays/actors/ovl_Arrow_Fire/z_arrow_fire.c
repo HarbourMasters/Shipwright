@@ -56,7 +56,7 @@ void ArrowFire_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void ArrowFire_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     func_800876C8(globalCtx);
-    LOG_STRING("消滅", __FILE__, __LINE__); // "Disappearance"
+    LOG_STRING("消滅"); // "Disappearance"
 }
 
 void ArrowFire_Charge(ArrowFire* this, GlobalContext* globalCtx) {

@@ -134,7 +134,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
         return &gGameStateOverlayTable[5];
     }
 
-    LOG_ADDRESS("game_init_func", gameStateInitFunc, __FILE__, __LINE__);
+    LOG_ADDRESS("game_init_func", gameStateInitFunc);
     return NULL;
 }
 

@@ -57,7 +57,7 @@ void ArrowLight_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void ArrowLight_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     func_800876C8(globalCtx);
-    LOG_STRING("消滅", __FILE__, __LINE__); // "Disappearance"
+    LOG_STRING("消滅"); // "Disappearance"
 }
 
 void ArrowLight_Charge(ArrowLight* this, GlobalContext* globalCtx) {

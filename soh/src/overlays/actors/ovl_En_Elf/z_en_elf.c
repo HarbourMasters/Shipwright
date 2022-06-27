@@ -1407,8 +1407,7 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
 
         if (nREG(81) != 0) {
             if (gSaveContext.sceneFlags[127].chest) {
-                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest,
-                        __FILE__, __LINE__);
+                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest);
             }
         }
 

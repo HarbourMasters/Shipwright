@@ -4900,7 +4900,7 @@ void func_8083AE40(Player* this, s16 objectId) {
 
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
-        LOG_HEX("size", size, __FILE__, __LINE__);
+        LOG_HEX("size", size);
         ASSERT(size <= 1024 * 8, "size <= 1024 * 8", __FILE__, __LINE__);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,

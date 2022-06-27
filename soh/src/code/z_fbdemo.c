@@ -89,9 +89,8 @@ void TransitionUnk_InitGraphics(TransitionUnk* this) {
     gDPPipeSync(gfx++);
     gSPEndDisplayList(gfx++);
 
-    LOG_NUM("this->col * (1 + this->row * (1 + 7 + 1)) + 1 + 1", this->col * (1 + this->row * 9) + 2, __FILE__,
-            __LINE__);
-    LOG_NUM("gp - this->gfxtbl", gfx - this->gfx, __FILE__, __LINE__);
+    LOG_NUM("this->col * (1 + this->row * (1 + 7 + 1)) + 1 + 1", this->col * (1 + this->row * 9) + 2);
+    LOG_NUM("gp - this->gfxtbl", gfx - this->gfx);
 }
 
 void TransitionUnk_InitData(TransitionUnk* this) {

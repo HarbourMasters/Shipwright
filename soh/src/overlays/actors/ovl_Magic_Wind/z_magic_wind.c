@@ -61,7 +61,7 @@ void MagicWind_Init(Actor* thisx, GlobalContext* globalCtx) {
             SkelCurve_SetAnim(&this->skelCurve, &sAnim, 60.0f, 0.0f, 60.0f, -1.0f);
             MagicWind_SetupAction(this, MagicWind_Shrink);
             // "Means start"
-            LOG_STRING("表示開始", __FILE__, __LINE__);
+            LOG_STRING("表示開始");
             func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_WARP);
             break;
     }
@@ -72,7 +72,7 @@ void MagicWind_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     SkelCurve_Destroy(globalCtx, &this->skelCurve);
     func_800876C8(globalCtx);
     // "wipe out"
-    LOG_STRING("消滅", __FILE__, __LINE__);
+    LOG_STRING("消滅");
 }
 
 void MagicWind_UpdateAlpha(f32 alpha) {
@@ -94,7 +94,7 @@ void MagicWind_WaitForTimer(MagicWind* this, GlobalContext* globalCtx) {
     }
 
     // "Means start"
-    LOG_STRING("表示開始", __FILE__, __LINE__);
+    LOG_STRING("表示開始");
     func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_NORMAL);
     MagicWind_UpdateAlpha(1.0f);
     MagicWind_SetupAction(this, MagicWind_Grow);

@@ -47,14 +47,14 @@ void ElfMsg2_SetupAction(ElfMsg2* this, ElfMsg2ActionFunc actionFunc) {
 s32 ElfMsg2_KillCheck(ElfMsg2* this, GlobalContext* globalCtx) {
     if ((this->actor.world.rot.y > 0) && (this->actor.world.rot.y < 0x41) &&
         Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 1)) {
-        LOG_STRING("共倒れ", __FILE__, __LINE__); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F));
         }
         Actor_Kill(&this->actor);
         return 1;
     } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(globalCtx, this->actor.room)) {
-        LOG_STRING("共倒れ２", __FILE__, __LINE__); // "Mutual destruction 2"
+        LOG_STRING("共倒れ２"); // "Mutual destruction 2"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F));
         }
@@ -63,7 +63,7 @@ s32 ElfMsg2_KillCheck(ElfMsg2* this, GlobalContext* globalCtx) {
     } else if (((this->actor.params >> 8) & 0x3F) == 0x3F) {
         return 0;
     } else if (Flags_GetSwitch(globalCtx, ((this->actor.params >> 8) & 0x3F))) {
-        LOG_STRING("共倒れ", __FILE__, __LINE__); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         Actor_Kill(&this->actor);
         return 1;
     }

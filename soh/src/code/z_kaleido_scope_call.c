@@ -37,10 +37,10 @@ void KaleidoScopeCall_Init(GlobalContext* globalCtx) {
     sKaleidoScopeUpdateFunc = KaleidoManager_GetRamAddr(KaleidoScope_Update);
     sKaleidoScopeDrawFunc = KaleidoManager_GetRamAddr(KaleidoScope_Draw);
 
-    LOG_ADDRESS("kaleido_scope_move", KaleidoScope_Update, __FILE__, __LINE__);
-    LOG_ADDRESS("kaleido_scope_move_func", sKaleidoScopeUpdateFunc, __FILE__, __LINE__);
-    LOG_ADDRESS("kaleido_scope_draw", KaleidoScope_Draw, __FILE__, __LINE__);
-    LOG_ADDRESS("kaleido_scope_draw_func", sKaleidoScopeDrawFunc, __FILE__, __LINE__);
+    LOG_ADDRESS("kaleido_scope_move", KaleidoScope_Update);
+    LOG_ADDRESS("kaleido_scope_move_func", sKaleidoScopeUpdateFunc);
+    LOG_ADDRESS("kaleido_scope_draw", KaleidoScope_Draw);
+    LOG_ADDRESS("kaleido_scope_draw_func", sKaleidoScopeDrawFunc);
 
     KaleidoSetup_Init(globalCtx);
 }

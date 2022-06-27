@@ -57,7 +57,7 @@ void ArrowIce_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void ArrowIce_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     func_800876C8(globalCtx);
-    LOG_STRING("消滅", __FILE__, __LINE__); // "Disappearance"
+    LOG_STRING("消滅"); // "Disappearance"
 }
 
 void ArrowIce_Charge(ArrowIce* this, GlobalContext* globalCtx) {
