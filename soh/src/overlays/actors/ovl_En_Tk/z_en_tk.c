@@ -9,6 +9,10 @@
 #include "objects/object_tk/object_tk.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
+#define ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE 0x1000
+
+bool heartPieceSpawned;
 
 void EnTk_Init(Actor* thisx, GlobalContext* globalCtx);
 void EnTk_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -505,6 +509,7 @@ void EnTk_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->currentReward = -1;
     this->currentSpot = NULL;
     this->actionFunc = EnTk_Rest;
+    heartPieceSpawned = false;
 }
 
 void EnTk_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -611,13 +616,23 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (!(gSaveContext.itemGetInf[1] & 0x1000)) {
-                    gSaveContext.itemGetInf[1] |= 0x1000;
+                // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
+                // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
+                // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
+                if (!heartPieceSpawned &&
+                    (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
+                     CVar_GetS32("gGravediggingTourFix", 0) &&
+                         !Flags_GetCollectible(globalCtx, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
                     this->currentReward = 4;
+                    gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
+                    heartPieceSpawned = true;
                 }
             }
 
-            Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            if (this->currentReward == 4) {
+                reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
+            }
         }
     }
 

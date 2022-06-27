@@ -18,11 +18,6 @@
 #define _AudiotableSegmentRomStart "Audiotable"
 
 
-
-
-
-#define _icon_item_gameover_staticSegmentRomStart 0
-#define _icon_item_gameover_staticSegmentRomEnd 0
 #define _icon_item_staticSegmentRomStart 0
 #define _icon_item_staticSegmentRomEnd 0
 #define _map_i_staticSegmentRomStart 0

@@ -13,6 +13,8 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
+#elif __APPLE__
+#include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
@@ -34,8 +36,8 @@ static SDL_Window *wnd;
 static SDL_GLContext ctx;
 static int inverted_scancode_table[512];
 static int vsync_enabled = 0;
-static unsigned int window_width = DESIRED_SCREEN_WIDTH;
-static unsigned int window_height = DESIRED_SCREEN_HEIGHT;
+static int window_width = DESIRED_SCREEN_WIDTH;
+static int window_height = DESIRED_SCREEN_HEIGHT;
 static bool fullscreen_state;
 static void (*on_fullscreen_changed_callback)(bool is_now_fullscreen);
 static bool (*on_key_down_callback)(int scancode);
@@ -119,15 +121,14 @@ static void set_fullscreen(bool on, bool call_callback) {
 }
 
 static uint64_t previous_time;
-#ifndef __linux__
+#ifdef _WIN32
 static HANDLE timer;
 #endif
 
-static int frameDivisor = 1;
+static int target_fps = 60;
 
-#define FRAME_INTERVAL_US_NUMERATOR_ 50000
-#define FRAME_INTERVAL_US_DENOMINATOR 3
-#define FRAME_INTERVAL_US_NUMERATOR (FRAME_INTERVAL_US_NUMERATOR_ * frameDivisor)
+#define FRAME_INTERVAL_US_NUMERATOR 1000000
+#define FRAME_INTERVAL_US_DENOMINATOR (target_fps)
 
 static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     SDL_Init(SDL_INIT_VIDEO);
@@ -135,7 +136,14 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-#ifndef __linux
+#if defined(__APPLE__)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+#endif
+
+#ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
@@ -149,7 +157,8 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     window_height = height;
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
@@ -248,11 +257,11 @@ static void gfx_sdl_handle_events(void) {
 #endif
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    window_width = event.window.data1;
-                    window_height = event.window.data2;
+                    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                 }
                 break;
             case SDL_QUIT:
+                SDL_Quit(); // bandaid fix for linux window closing issue
                 exit(0);
         }
     }
@@ -269,15 +278,16 @@ static uint64_t qpc_to_100ns(uint64_t qpc) {
 
 static inline void sync_framerate_with_timer(void) {
     uint64_t t;
-    t = SDL_GetPerformanceCounter();
+    t = qpc_to_100ns(SDL_GetPerformanceCounter());
 
-    const int64_t next = qpc_to_100ns(previous_time) + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
-    const int64_t left = next - qpc_to_100ns(t);
+    const int64_t next = previous_time + 10 * FRAME_INTERVAL_US_NUMERATOR / FRAME_INTERVAL_US_DENOMINATOR;
+    const int64_t left = next - t;
     if (left > 0) {
-#ifdef __linux__
+#if defined __linux__ || defined __APPLE__
         const timespec spec = { 0, left * 100 };
         nanosleep(&spec, nullptr);
 #else
+        // The accuracy of this timer seems to usually be within +- 1.0 ms
         LARGE_INTEGER li;
         li.QuadPart = -left;
         SetWaitableTimer(timer, &li, 0, nullptr, nullptr, false);
@@ -285,7 +295,13 @@ static inline void sync_framerate_with_timer(void) {
 #endif
     }
 
-    t = SDL_GetPerformanceCounter();
+    t = qpc_to_100ns(SDL_GetPerformanceCounter());
+    if (left > 0 && t - next < 10000) {
+        // In case it takes some time for the application to wake up after sleep,
+        // or inaccurate timer,
+        // don't let that slow down the framerate.
+        t = next;
+    }
     previous_time = t;
 }
 
@@ -302,9 +318,16 @@ static double gfx_sdl_get_time(void) {
     return 0.0;
 }
 
-static void gfx_sdl_set_framedivisor(int divisor)
-{
-    frameDivisor = divisor;
+static void gfx_sdl_set_target_fps(int fps) {
+    target_fps = fps;
+}
+
+static void gfx_sdl_set_maximum_frame_latency(int latency) {
+    // Not supported by SDL :(
+}
+
+static float gfx_sdl_get_detected_hz(void) {
+    return 0;
 }
 
 struct GfxWindowManagerAPI gfx_sdl = {
@@ -320,7 +343,9 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_swap_buffers_begin,
     gfx_sdl_swap_buffers_end,
     gfx_sdl_get_time,
-    gfx_sdl_set_framedivisor
+    gfx_sdl_set_target_fps,
+    gfx_sdl_set_maximum_frame_latency,
+    gfx_sdl_get_detected_hz
 };
 
 #endif

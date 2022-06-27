@@ -49,7 +49,7 @@ namespace Ship
             {
                 auto res = (Ship::DisplayList*)resShared.get();
 
-                Gfx* gfx = (Gfx*)&res->instructions[patches[i].index];
+                Gfx* gfx = &((Gfx*)res->instructions.data())[patches[i].index];
                 gfx->words.w1 = patches[i].origData;
             }
         }

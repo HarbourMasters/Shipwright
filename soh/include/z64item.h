@@ -501,7 +501,7 @@ typedef enum {
     /* 0x72 */ GID_BULLET_BAG_50,
     /* 0x73 */ GID_SWORD_KOKIRI,
     /* 0x74 */ GID_SKULL_TOKEN_2,
-    /* 0x75 */ GID_MAX
+    /* 0x75 */ GID_MAXIMUM
 } GetItemDrawID;
 
 typedef enum {

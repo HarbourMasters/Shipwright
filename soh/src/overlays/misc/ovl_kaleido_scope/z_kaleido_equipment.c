@@ -89,11 +89,17 @@ void KaleidoScope_DrawEquipmentImage(GlobalContext* globalCtx, void* source, u32
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 122);
 }
 
+Vec3s link_kaleido_rot = { 0, 32300, 0 }; // Default rotation link face us.
+
 void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     Vec3f pos;
-    Vec3s rot;
+    //Vec3s rot; // Removed for not having it use din the function
     f32 scale;
+    Input* input = &globalCtx->state.input[0];
+    s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
+    u8 AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? true : false;
+    u8 AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? true : false;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
@@ -112,11 +118,29 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
         scale = 0.047f;
     }
 
-    rot.y = 32300;
-    rot.x = rot.z = 0;
+    link_kaleido_rot.x = link_kaleido_rot.z = 0;
+
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) ||
+        (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT))) {
+        link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
+    } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
+               (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
+        link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
+    }
+
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) ||
+        (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
+        link_kaleido_rot.y = 32300;
+    } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
+               (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
+        link_kaleido_rot.y = 32300;
+    }
+
+    link_kaleido_rot.x = 0;
+
     extern int fbTest;
     gsSPSetFB(globalCtx->state.gfxCtx->polyOpa.p++, fbTest);
-    func_8009214C(globalCtx, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &rot, scale,
+    func_8009214C(globalCtx, pauseCtx->playerSegment, &pauseCtx->playerSkelAnime, &pos, &link_kaleido_rot, scale,
                   CUR_EQUIP_VALUE(EQUIP_SWORD), CUR_EQUIP_VALUE(EQUIP_TUNIC) - 1, CUR_EQUIP_VALUE(EQUIP_SHIELD),
                   CUR_EQUIP_VALUE(EQUIP_BOOTS) - 1);
     gsSPResetFB(globalCtx->state.gfxCtx->polyOpa.p++);
@@ -135,11 +159,11 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     u16 pad;
     s16 cursorMoveResult;
     u16 cursorItem;
-    u16 cursorSlot;
+    u16 cursorSlot = 0;
     s16 cursorPoint;
     s16 cursorX;
     s16 cursorY;
-    volatile s16 oldCursorPoint;
+    s16 oldCursorPoint;
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
     OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 219);
@@ -190,10 +214,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                                     cursorMoveResult = 1;
                                 }
                             }
-                        } else {
-                            if (gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) {
-                                cursorMoveResult = 2;
-                            }
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
+                            cursorMoveResult = 2;
                         }
                     } else {
                         pauseCtx->cursorX[PAUSE_EQUIP] = cursorX;
@@ -226,10 +248,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                             if (CUR_UPG_VALUE(pauseCtx->cursorY[PAUSE_EQUIP]) != 0) {
                                 cursorMoveResult = 1;
                             }
-                        } else {
-                            if (gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] & gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
                                 cursorMoveResult = 2;
-                            }
                         }
                     } else {
                         pauseCtx->cursorX[PAUSE_EQUIP] = cursorX;
@@ -278,8 +298,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                             } else if (CUR_UPG_VALUE(pauseCtx->cursorY[PAUSE_EQUIP]) != 0) {
                                 cursorMoveResult = 1;
                             }
-                        } else if (gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
+                                   gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -296,8 +316,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                             if (CUR_UPG_VALUE(pauseCtx->cursorY[PAUSE_EQUIP]) != 0) {
                                 cursorMoveResult = 1;
                             }
-                        } else if (gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
-                                   gSaveContext.inventory.equipment) {
+                        } else if ((gBitFlags[pauseCtx->cursorPoint[PAUSE_EQUIP] - 1] &
+                                   gSaveContext.inventory.equipment) || CVar_GetS32("gPauseAnyCursor", 0)) {
                             cursorMoveResult = 2;
                         }
                     } else {
@@ -470,16 +490,24 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
+        u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
+        if (CVar_GetS32("gDpadEquips", 0) != 0) {
+            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+        }
+
         if ((pauseCtx->cursorSpecialPos == 0) && (cursorItem != PAUSE_ITEM_NONE) && (pauseCtx->state == 6) &&
-            (pauseCtx->unk_1E4 == 0) &&
-            CHECK_BTN_ANY(input->press.button, BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT) &&
+            (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
             if ((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
                 (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                  ((void)0, gSaveContext.linkAge))) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-                    Inventory_ChangeEquipment(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]);
+                    if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
+                        Inventory_ChangeEquipment(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]);
+                    } else {
+                        goto EQUIP_FAIL;
+                    }
 
                     if (pauseCtx->cursorY[PAUSE_EQUIP] == 0) {
                         gSaveContext.infTable[29] = 0;
@@ -507,35 +535,41 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 } else if (CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) {
                     // Only allow assigning tunic and boots to c-buttons
                     if (pauseCtx->cursorY[PAUSE_EQUIP] > 1) {
-                        u16 slot = 0;
-                        switch (cursorItem) {
-                            case ITEM_TUNIC_KOKIRI:
-                                slot = SLOT_TUNIC_KOKIRI;
-                                break;
-                            case ITEM_TUNIC_GORON:
-                                slot = SLOT_TUNIC_GORON;
-                                break;
-                            case ITEM_TUNIC_ZORA:
-                                slot = SLOT_TUNIC_ZORA;
-                                break;
-                            case ITEM_BOOTS_KOKIRI:
-                                slot = SLOT_BOOTS_KOKIRI;
-                                break;
-                            case ITEM_BOOTS_IRON:
-                                slot = SLOT_BOOTS_IRON;
-                                break;
-                            case ITEM_BOOTS_HOVER:
-                                slot = SLOT_BOOTS_HOVER;
-                                break;
-                            default:
-                                break;
+                        if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
+                            u16 slot = 0;
+                            switch (cursorItem) {
+                                case ITEM_TUNIC_KOKIRI:
+                                    slot = SLOT_TUNIC_KOKIRI;
+                                    break;
+                                case ITEM_TUNIC_GORON:
+                                    slot = SLOT_TUNIC_GORON;
+                                    break;
+                                case ITEM_TUNIC_ZORA:
+                                    slot = SLOT_TUNIC_ZORA;
+                                    break;
+                                case ITEM_BOOTS_KOKIRI:
+                                    slot = SLOT_BOOTS_KOKIRI;
+                                    break;
+                                case ITEM_BOOTS_IRON:
+                                    slot = SLOT_BOOTS_IRON;
+                                    break;
+                                case ITEM_BOOTS_HOVER:
+                                    slot = SLOT_BOOTS_HOVER;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            KaleidoScope_SetupItemEquip(globalCtx, cursorItem, slot,
+                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
+                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                        } else {
+                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                   &D_801333E8);
                         }
-                        KaleidoScope_SetupItemEquip(globalCtx, cursorItem, slot,
-                                                    pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
-                                                    pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
                     }
                 }
             } else {
+                EQUIP_FAIL:
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
                     Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 } else if ((CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) && (pauseCtx->cursorY[PAUSE_EQUIP] > 1)) {
@@ -611,7 +645,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBiggoronSwordIconTex, 32, 32, point);
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBrokenGiantsKnifeIconTex, 32, 32, point);
-            } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
+            }
+            if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 int itemId = ITEM_SWORD_KOKIRI + temp;
                 bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
                 if (not_acquired) {

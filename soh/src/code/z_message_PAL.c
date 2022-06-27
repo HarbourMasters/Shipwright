@@ -272,6 +272,13 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     const char** languageSegmentTable;
     Font* font;
     const char* seg;
+    u16 bufferId = textId;
+    // Use the better owl message if better owl is enabled
+    if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
+        bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
+    {
+        bufferId = 0x71B3;
+    }
 
     if (gSaveContext.language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
@@ -287,7 +294,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     while (messageTableEntry->textId != 0xFFFF) {
         font = &globalCtx->msgCtx.font;
 
-        if (messageTableEntry->textId == textId) {
+        if (messageTableEntry->textId == bufferId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
 
@@ -298,14 +305,14 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
             // "Message found!!!"
             osSyncPrintf(" メッセージが,見つかった！！！ = %x  "
                          "(data=%x) (data0=%x) (data1=%x) (data2=%x) (data3=%x)\n",
-                         textId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
+                         bufferId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
             return;
         }
         messageTableEntry++;
     }
 
     // "Message not found!!!"
-    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", textId);
+    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", bufferId);
     font = &globalCtx->msgCtx.font;
     messageTableEntry = sNesMessageEntryTablePtr;
 
@@ -742,6 +749,9 @@ u16 Message_DrawItemIcon(GlobalContext* globalCtx, u16 itemId, Gfx** p, u16 i) {
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, msgCtx->textColorAlpha);
 
+    // Invalidate icon texture as it may have changed from the last time a text box had an icon
+    gSPInvalidateTexCache(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE);
+
     if (itemId >= ITEM_MEDALLION_FOREST) {
         gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                             24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -1146,14 +1156,16 @@ void Message_LoadItemIcon(GlobalContext* globalCtx, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[gSaveContext.language];
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
-        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x1000);
+        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
+               ResourceMgr_LoadTexByName(gItemIcons[itemId]), 0x1000);
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
         R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gSaveContext.language];
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
-         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x900);
+        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
+               ResourceMgr_LoadTexByName(gItemIcons[itemId]), 0x900);
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -3295,7 +3307,7 @@ void Message_Update(GlobalContext* globalCtx) {
 
 void Message_SetTables(void) {
     OTRMessage_Init();
-    
+
     // OTRTODO
     //sNesMessageEntryTablePtr = sNesMessageEntryTable;
     //sGerMessageEntryTablePtr = sGerMessageEntryTable;

@@ -4,6 +4,7 @@
 #pragma once
 
 #ifdef __cplusplus
+#include <filesystem>
 #include <memory>
 #include "spdlog/spdlog.h"
 #include "ConfigFile.h"
@@ -22,6 +23,9 @@ namespace Ship {
 			std::shared_ptr<ResourceMgr> GetResourceManager() { return ResMan; }
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
 			std::shared_ptr<ConfigFile> GetConfig() { return Config; }
+
+			void WriteSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+			void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
 
 			GlobalCtx2(const std::string& Name);
 			~GlobalCtx2();

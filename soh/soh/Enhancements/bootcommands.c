@@ -25,16 +25,23 @@ void BootCommands_Init()
     CVar_RegisterS32("gDebugEnabled", 0);
     CVar_RegisterS32("gPauseLiveLink", 0);
     CVar_RegisterS32("gMinimalUI", 0);
+    CVar_RegisterS32("gRedGanonBlood", 0);
+    CVar_RegisterS32("gHoverFishing", 0);
     CVar_RegisterS32("gRumbleEnabled", 0);
-    CVar_RegisterS32("gUniformLR", 1);
+    CVar_RegisterS32("gUniformLR", 0);
     CVar_RegisterS32("gTwoHandedIdle", 0);
-    CVar_RegisterS32("gDekuNutUpgradeFix", 1);
+    CVar_RegisterS32("gDekuNutUpgradeFix", 0);
+    CVar_RegisterS32("gNaviTextFix", 0);
     CVar_RegisterS32("gNewDrops", 0);
     CVar_RegisterS32("gVisualAgony", 0);
     CVar_RegisterS32("gLanguages", 0); //0 = English / 1 = German / 2 = French
+    CVar_RegisterS32("gForgeTime", 3);
+    CVar_RegisterS32("gGravediggingTourFix", 1);
     CVar_RegisterS32("gHudColors", 1); //0 = N64 / 1 = NGC / 2 = Custom
     CVar_RegisterS32("gUseNaviCol", 0);
     CVar_RegisterS32("gUseTunicsCol", 0);
+    CVar_RegisterS32("gGuardVision", 0);
+    CVar_RegisterS32("gTimeFlowFileSelect", 0);
 }
 
 //void BootCommands_ParseBootArgs(char* str)
