@@ -884,8 +884,6 @@ namespace SohImGui {
                         Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                         EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
-                        EnhancementCheckbox("Skip Text", "gSkipText");
-                        Tooltip("Holding down B skips text");
                         EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                         EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
                         Tooltip("Prevent forced Navi conversations");
@@ -1087,6 +1085,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
                     Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
                 }
+                EnhancementCheckbox("Skip Text", "gSkipText");
+                Tooltip("Holding down B skips text.\nKnown to cause a cutscene softlock in Water Temple.\nSoftlock can be fixed by pressing D-Right in Debug mode.");
 
                 ImGui::EndMenu();
             }
