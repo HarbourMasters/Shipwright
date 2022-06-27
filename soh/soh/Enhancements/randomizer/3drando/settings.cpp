@@ -2511,6 +2511,7 @@ namespace Settings {
     }
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
+    StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);
     
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
