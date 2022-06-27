@@ -1403,6 +1403,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+    { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE}
 };
@@ -1573,6 +1574,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
                     case RSK_BIG_POE_COUNT:
+                    case RSK_CUCCO_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -3229,6 +3231,7 @@ void GenerateRandomizerImgui() {
 
     cvarSettings[RSK_LANGUAGE] = CVar_GetS32("gLanguages", 0);
 
+    cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
@@ -4352,7 +4355,12 @@ void DrawRandoEditor(bool& open) {
                     //     "see what item\nis on top of the laboratory roof.");
                     // ImGui::Separator();
 
-                    // todo implement big poe count
+                    // Cuccos to return
+                    SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
+                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                    InsertHelpHoverText("The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
+                    ImGui::Separator();
+
                     // // Big Poe Target Count
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                     "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
@@ -4363,17 +4371,6 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
                     InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
                     ImGui::Separator();
-
-                    // todo implement cuccos to return
-                    // // Cuccos to return
-                    // SohImGui::EnhancementCheckbox("Cuccos To Return", "gRandomizeEnableCuccosToReturn");
-                    // InsertHelpHoverText(
-                    //     "The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
-                    // if (CVar_GetS32("gRandomizeEnableCuccosToReturn", 0) == 1) {
-                    //     SohImGui::EnhancementSliderInt("Cuccos to return Count: %d", "##RandoCuccosToReturn",
-                    //                                    "gRandomizeCuccosToReturn", 0, 100, "");
-                    // }
-                    // ImGui::Separator();
 
                     // todo implement complete mask quest
                     // // Complete Mask Quest
