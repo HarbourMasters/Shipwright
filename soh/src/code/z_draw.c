@@ -838,11 +838,11 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
             s16 color_slot = drawId - 2;
             s16* colors[6][3] = {
                 { 34, 177, 76 }, // Minuet Color
-                { 109, 73, 143 },  // Bolero Color
-                { 217, 110, 48 },  // Serenade Color
-                { 62, 109, 23 },   // Requiem Color
-                { 237, 231, 62 },  // Nocturne Color
-                { 98, 177, 211 }   // Prelude Color
+                { 177, 35, 35 },  // Bolero Color
+                { 35, 35, 177 },  // Serenade Color
+                { 177, 122, 35 },   // Requiem Color
+                { 101, 65, 153 },  // Nocturne Color
+                { 255, 226, 92 }   // Prelude Color
             };
             static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
             static Vec3f accel = { 0.0f, 0.05f, 0.0f };
