@@ -1,4 +1,4 @@
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 #include <map>
@@ -10,8 +10,8 @@
 #include "Archive.h"
 #include "Environment.h"
 #include "GameSettings.h"
-#include "SohConsole.h"
-#include "SohHooks.h"
+#include "Console.h"
+#include "Hooks.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
