@@ -181,6 +181,7 @@ else()
 set(Source_Files__Lib__Fast3D__extra
      "Lib/Fast3D/gfx_glx.cpp"
      "Lib/Fast3D/gfx_glx.h"
+)
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
 
