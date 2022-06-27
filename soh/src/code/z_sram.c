@@ -783,6 +783,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * GetRandoSettingValue(RSK_BIG_POE_COUNT));
+
+        if(GetRandoSettingValue(RSK_SKIP_EPONA_RACE)) {
+            gSaveContext.eventChkInf[1] |= (1 << 8);
+        }
     }
 
     Save_SaveFile();
