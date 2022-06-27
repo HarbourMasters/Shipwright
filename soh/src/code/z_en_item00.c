@@ -1248,6 +1248,45 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
+void EnItem00_NotesParticles(Actor* Parent, GlobalContext* globalCtx, s16 getItemId) {
+    // printf("getItemId[%s]\n",getItemId);
+    // if (getItemId == GI_MINUET_OF_FOREST || getItemId == GI_BOLERO_OF_FIRE || getItemId == GI_SERENADE_OF_WATER ||
+    // getItemId == GI_REQUIEM_OF_SPIRIT || getItemId == GI_NOCTURNE_OF_SHADOW || getItemId == GI_PRELUDE_OF_LIGHT ) {
+    s16 color_slot = getItemId - 2;
+    s16* colors[6][3] = {
+        { 34, 255, 76 },   // Minuet Color
+        { 177, 35, 35 },   // Bolero Color
+        { 115, 251, 253 }, // Serenade Color
+        { 177, 122, 35 },  // Requiem Color
+        { 177, 28, 212 },  // Nocturne Color
+        { 255, 255, 92 }   // Prelude Color
+    };
+
+    s16* colorsEnv[6][3] = {
+        { 30, 110, 30 },  // Minuet Color
+        { 90, 10, 10 },   // Bolero Color
+        { 35, 35, 177 },  // Serenade Color
+        { 70, 20, 10 },   // Requiem Color
+        { 100, 20, 140 }, // Nocturne Color
+        { 100, 100, 10 }  // Prelude Color
+    };
+    static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
+    static Vec3f accel = { 0.0f, 0.05f, 0.0f };
+    Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+    Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+    Vec3f pos;
+
+    // velocity.x = Rand_CenteredFloat(3.0f);
+    // velocity.z = Rand_CenteredFloat(3.0f);
+    velocity.y = -0.05f;
+    accel.y = -0.025f;
+    pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
+    pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+    pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+    EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
+    //}
+}
+
 /**
  * Draw Function used for Rupee types of En_Item00.
  */
@@ -1283,6 +1322,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     if ((gSaveContext.n64ddFlag && this->getItemId != GI_NONE) || this->actor.params == ITEM00_SMALL_KEY) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+        EnItem00_NotesParticles(&this->actor, globalCtx, this->getItemId);
         GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams,
                                                                        globalCtx->sceneNum)));
     } else {
@@ -1340,6 +1380,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+        EnItem00_NotesParticles(&this->actor, globalCtx, this->getItemId);
         GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams,
                                                                        globalCtx->sceneNum)));
     } else {
