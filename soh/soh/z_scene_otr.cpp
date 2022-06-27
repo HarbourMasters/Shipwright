@@ -908,7 +908,7 @@ extern "C" s32 OTRfunc_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, 
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < globalCtx->numRooms, "read_room_ID < game_play->room_rom_address.num", __FILE__, __LINE__);
+        ASSERT(roomNum < globalCtx->numRooms);
 
         if (roomNum >= globalCtx->numRooms)
             return 0; // UH OH

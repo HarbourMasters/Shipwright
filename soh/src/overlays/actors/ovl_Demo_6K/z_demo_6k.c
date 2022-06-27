@@ -86,7 +86,7 @@ void Demo6K_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
 
     if (objBankIndex < 0) {
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -173,7 +173,7 @@ void Demo6K_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->unk_293 = params - 14;
             break;
         default:
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT(0);
             break;
     }
 

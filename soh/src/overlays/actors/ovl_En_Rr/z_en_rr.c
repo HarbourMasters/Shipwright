@@ -788,7 +788,7 @@ void EnRr_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actionFunc(this, globalCtx);
     if (this->hasPlayer == 0x3F80) { // checks if 1.0f has been stored to hasPlayer's address
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(this->hasPlayer == 0x3F80);
     }
 
     Math_StepToF(&this->actor.speedXZ, 0.0f, 0.1f);

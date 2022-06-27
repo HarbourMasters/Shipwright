@@ -964,7 +964,7 @@ void func_80ACC00C(EnOwl* this, GlobalContext* globalCtx) {
                     this->actor.draw = NULL;
                     break;
                 default:
-                    ASSERT(0, "0", __FILE__, __LINE__);
+                    ASSERT(0);
                     break;
             }
 

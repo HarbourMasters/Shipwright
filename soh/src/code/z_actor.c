@@ -2362,7 +2362,7 @@ void Actor_UpdateAll(GlobalContext* globalCtx, ActorContext* actorCtx) {
 
     if (0) {
         // This ASSERT is optimized out but it exists due to its presence in rodata
-        ASSERT(gMaxActorId == ACTOR_ID_MAX, "MaxProfile == ACTOR_DLF_MAX", __FILE__, UNK_LINE);
+        ASSERT(gMaxActorId == ACTOR_ID_MAX);
     }
 
     sp74 = NULL;
@@ -2762,8 +2762,7 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
                     if ((actor->flags & ACTOR_FLAG_7) &&
                         ((globalCtx->roomCtx.curRoom.showInvisActors == 0) || (globalCtx->actorCtx.unk_03 != 0) ||
                          (actor->room != globalCtx->roomCtx.curRoom.num))) {
-                        ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX,
-                               "invisible_actor_counter < INVISIBLE_ACTOR_MAX", __FILE__, __LINE__);
+                        ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
                         invisibleActors[invisibleActorCounter] = actor;
                         invisibleActorCounter++;
                     } else {
@@ -3006,7 +3005,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
     u32 overlaySize;
 
     overlayEntry = &gActorOverlayTable[actorId];
-    ASSERT(actorId < ACTOR_ID_MAX, "profile < ACTOR_DLF_MAX", __FILE__, __LINE__);
+    ASSERT(actorId < ACTOR_ID_MAX);
 
     name = overlayEntry->name != NULL ? overlayEntry->name : "";
     overlaySize = (uintptr_t)overlayEntry->vramEnd - (uintptr_t)overlayEntry->vramStart;
@@ -3035,7 +3034,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
             }
         } else {
             if (overlayEntry->allocType & ALLOCTYPE_ABSOLUTE) {
-                ASSERT(overlaySize <= AM_FIELD_SIZE, "actor_segsize <= AM_FIELD_SIZE", __FILE__, __LINE__);
+                ASSERT(overlaySize <= AM_FIELD_SIZE);
 
                 if (actorCtx->absoluteSpace == NULL) {
                     // "AMF: absolute magic field"
@@ -3102,7 +3101,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
-    ASSERT(overlayEntry->numLoaded < 255, "actor_dlftbl->clients < 255", __FILE__, __LINE__);
+    ASSERT(overlayEntry->numLoaded < 255);
 
     overlayEntry->numLoaded++;
 
@@ -3243,8 +3242,8 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, GlobalContext* globalC
             osSyncPrintf("オーバーレイではありません\n"); // "Not an overlay"
         }
     } else { */
-        //ASSERT(overlayEntry->loadedRamAddr != NULL, "actor_dlftbl->allocp != NULL", __FILE__, __LINE__);
-        //ASSERT(overlayEntry->numLoaded > 0, "actor_dlftbl->clients > 0", __FILE__, __LINE__);
+        //ASSERT(overlayEntry->loadedRamAddr != NULL, "actor_dlftbl->allocp != NULL");
+        //ASSERT(overlayEntry->numLoaded > 0, "actor_dlftbl->clients > 0");
         overlayEntry->numLoaded--;
         Actor_FreeOverlay(overlayEntry);
     //}

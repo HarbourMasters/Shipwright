@@ -125,9 +125,9 @@ end:
 s32 DmaMgr_DmaHandler(OSPiHandle* pihandle, OSIoMesg* mb, s32 direction) {
     s32 ret;
 
-    ASSERT(pihandle == gCartHandle, "pihandle == carthandle", __FILE__, __LINE__);
-    ASSERT(direction == OS_READ, "direction == OS_READ", __FILE__, __LINE__);
-    ASSERT(mb != NULL, "mb != NULL", __FILE__, __LINE__);
+    ASSERT(pihandle == gCartHandle);
+    ASSERT(direction == OS_READ);
+    ASSERT(mb != NULL);
 
     if (D_80009460 == 10) {
         osSyncPrintf("%10lld サウンドＤＭＡ %08x %08x %08x (%d)\n", OS_CYCLES_TO_USEC(osGetTime()), mb->dramAddr,

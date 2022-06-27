@@ -128,7 +128,7 @@ void EnSth_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     osSyncPrintf("bank_ID = %d\n", objectBankIdx);
     if (objectBankIdx < 0) {
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(objectBankIdx < 0);
     }
     this->objectBankIdx = objectBankIdx;
     this->drawFunc = EnSth_Draw;

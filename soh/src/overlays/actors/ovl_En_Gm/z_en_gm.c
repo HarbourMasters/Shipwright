@@ -78,7 +78,7 @@ void EnGm_Init(Actor* thisx, GlobalContext* globalCtx) {
         // "There is no model bank! !! (Medi Goron)"
         osSyncPrintf("モデル バンクが無いよ！！（中ゴロン）\n");
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(this->objGmBankIndex < 0);
     }
 
     this->updateFunc = func_80A3D838;

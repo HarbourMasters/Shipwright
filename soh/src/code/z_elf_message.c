@@ -59,7 +59,7 @@ u32 ElfMessage_CheckCondition(ElfMessage* msg) {
     }
 
     LOG_STRING("企画外 条件"); // "Unplanned conditions"
-    ASSERT(0, "0", __FILE__, __LINE__);
+    ASSERT(0);
 
     return false;
 }
@@ -142,7 +142,7 @@ u16 ElfMessage_GetTextFromMsgs(ElfMessage* msg) {
                 return msg->byte2 | 0x100;
             default:
                 LOG_STRING("企画外 条件"); // "Unplanned conditions"
-                ASSERT(0, "0", __FILE__, __LINE__);
+                ASSERT(0);
         }
         msg++;
     }

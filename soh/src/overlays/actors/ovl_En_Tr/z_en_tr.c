@@ -114,7 +114,7 @@ void EnTr_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
 
         default:
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT(0);
             break;
     }
 }

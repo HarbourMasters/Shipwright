@@ -62,7 +62,7 @@ void EnGuest_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "No such bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT(this->osAnimeBankIndex < 0);
         }
     }
 }

@@ -771,7 +771,7 @@ void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, GlobalContext* globalCtx
     s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_SPOT02_OBJECTS);
 
     if (objBankIndex < 0) {
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(objBankIndex < 0);
     } else {
         this->requiredObjBankIndex = objBankIndex;
     }
@@ -872,7 +872,7 @@ void ObjectKankyo_InitBeams(ObjectKankyo* this, GlobalContext* globalCtx) {
     s32 objectIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_DEMO_KEKKAI);
 
     if (objectIndex < 0) {
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(objectIndex < 0);
     } else {
         this->requiredObjBankIndex = objectIndex;
     }

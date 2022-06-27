@@ -38,7 +38,7 @@ void func_801109B0(GlobalContext* globalCtx) {
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 
-    ASSERT(interfaceCtx->parameterSegment != NULL, "parameter->parameterSegment != NULL", __FILE__, __LINE__);
+    ASSERT(interfaceCtx->parameterSegment != NULL);
     DmaMgr_SendRequest1(interfaceCtx->parameterSegment, (uintptr_t)_parameter_staticSegmentRomStart, parameterSize,
                         __FILE__, 162);
 
@@ -47,7 +47,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     osSyncPrintf("ＤＯアクション テクスチャ初期=%x\n", 0x480); // "DO Action Texture Initialization"
     osSyncPrintf("parameter->do_actionSegment=%x\n", interfaceCtx->doActionSegment);
 
-    ASSERT(interfaceCtx->doActionSegment != NULL, "parameter->do_actionSegment != NULL", __FILE__, __LINE__);
+    ASSERT(interfaceCtx->doActionSegment != NULL);
 
     if (gSaveContext.language == LANGUAGE_ENG) {
         doActionOffset = 0;
@@ -72,7 +72,7 @@ void func_801109B0(GlobalContext* globalCtx) {
 
     memcpy(interfaceCtx->doActionSegment + 0x300, ResourceMgr_LoadTexByName(gReturnDoActionENGTex), 0x180);
     //DmaMgr_SendRequest1(interfaceCtx->doActionSegment + 0x300, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset,
-                        //0x180, __FILE__, __LINE__);
+                        //0x180);
 
     interfaceCtx->iconItemSegment = GameState_Alloc(
         &globalCtx->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems), __FILE__, __LINE__);
@@ -81,7 +81,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);
     osSyncPrintf("parameter->icon_itemSegment=%x\n", interfaceCtx->iconItemSegment);
 
-    ASSERT(interfaceCtx->iconItemSegment != NULL, "parameter->icon_itemSegment != NULL", __FILE__, __LINE__);
+    ASSERT(interfaceCtx->iconItemSegment != NULL);
 
     osSyncPrintf("Register_Item[%x, %x, %x, %x]\n", gSaveContext.equips.buttonItems[0],
                  gSaveContext.equips.buttonItems[1], gSaveContext.equips.buttonItems[2],
@@ -176,7 +176,7 @@ void Message_Init(GlobalContext* globalCtx) {
     osSyncPrintf("message->fukidashiSegment=%x\n", msgCtx->textboxSegment);
 
     osSyncPrintf("吹き出しgame_alloc=%x\n", 0x2200); // "Textbox game_alloc=%x"
-    ASSERT(msgCtx->textboxSegment != NULL, "message->fukidashiSegment != NULL", __FILE__, __LINE__);
+    ASSERT(msgCtx->textboxSegment != NULL);
 
     Font_LoadOrderedFont(&globalCtx->msgCtx.font);
 

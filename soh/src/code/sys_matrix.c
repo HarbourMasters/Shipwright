@@ -35,7 +35,7 @@ void Matrix_Push(void) {
 void Matrix_Pop(void) {
     FrameInterpolation_RecordMatrixPop();
     sCurrentMatrix--;
-    ASSERT(sCurrentMatrix >= sMatrixStack, "Matrix_now >= Matrix_stack", __FILE__, __LINE__);
+    ASSERT(sCurrentMatrix >= sMatrixStack);
 }
 
 void Matrix_Get(MtxF* dest) {

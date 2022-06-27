@@ -156,7 +156,7 @@ void EnGe2_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actor.targetMode = 6;
             break;
         default:
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT(0);
     }
 
     this->stateFlags = 0;

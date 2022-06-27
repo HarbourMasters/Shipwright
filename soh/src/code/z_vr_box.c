@@ -961,24 +961,24 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
 
         if (skyboxCtx->unk_140 != 0) {
             skyboxCtx->dListBuf = GameState_Alloc(state, 8 * 150 * sizeof(Gfx), __FILE__, __LINE__);
-            ASSERT(skyboxCtx->dListBuf != NULL, "vr_box->dpList != NULL", __FILE__, __LINE__);
+            ASSERT(skyboxCtx->dListBuf != NULL);
 
             skyboxCtx->roomVtx = GameState_Alloc(state, 256 * sizeof(Vtx), __FILE__, __LINE__);
-            ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", __FILE__, __LINE__);
+            ASSERT(skyboxCtx->roomVtx != NULL);
 
             func_800AEFC8(skyboxCtx, skyboxId);
         } else {
             skyboxCtx->dListBuf = GameState_Alloc(state, 12 * 150 * sizeof(Gfx), __FILE__, __LINE__);
-            ASSERT(skyboxCtx->dListBuf != NULL, "vr_box->dpList != NULL", __FILE__, __LINE__);
+            ASSERT(skyboxCtx->dListBuf != NULL);
 
             if (skyboxId == SKYBOX_CUTSCENE_MAP) {
                 skyboxCtx->roomVtx = GameState_Alloc(state, 192 * sizeof(Vtx), __FILE__, __LINE__);
-                ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", __FILE__, __LINE__);
+                ASSERT(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 6);
             } else {
                 skyboxCtx->roomVtx = GameState_Alloc(state, 160 * sizeof(Vtx), __FILE__, __LINE__);
-                ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", __FILE__, __LINE__);
+                ASSERT(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 5);
             }

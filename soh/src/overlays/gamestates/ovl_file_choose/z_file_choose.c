@@ -1954,12 +1954,12 @@ void FileChoose_Init(GameState* thisx) {
     osSyncPrintf("SIZE=%x\n", size);
 
     this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
-    ASSERT(this->staticSegment != NULL, "this->staticSegment != NULL", __FILE__, __LINE__);
+    ASSERT(this->staticSegment != NULL);
     DmaMgr_SendRequest1(this->staticSegment, (u32)_title_staticSegmentRomStart, size, __FILE__, __LINE__);
 
     size = (u32)_parameter_staticSegmentRomEnd - (u32)_parameter_staticSegmentRomStart;
     this->parameterSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
-    ASSERT(this->parameterSegment != NULL, "this->parameterSegment != NULL", __FILE__, __LINE__);
+    ASSERT(this->parameterSegment != NULL);
     DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
                         __LINE__);
 

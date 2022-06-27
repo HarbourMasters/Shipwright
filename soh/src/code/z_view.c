@@ -176,10 +176,10 @@ void func_800AA550(View* view) {
     lrx = view->viewport.rightX - varX;
     lry = view->viewport.bottomY - varY;
 
-    ASSERT(ulx >= 0, "ulx >= 0", __FILE__, __LINE__);
-    ASSERT(uly >= 0, "uly >= 0", __FILE__, __LINE__);
-    ASSERT(lrx <= SCREEN_WIDTH, "lrx <= SCREEN_WD", __FILE__, __LINE__);
-    ASSERT(lry <= SCREEN_HEIGHT, "lry <= SCREEN_HT", __FILE__, __LINE__);
+    ASSERT(ulx >= 0);
+    ASSERT(uly >= 0);
+    ASSERT(lrx <= SCREEN_WIDTH);
+    ASSERT(lry <= SCREEN_HEIGHT);
 
     OPEN_DISPS(gfxCtx);
 

@@ -15,9 +15,7 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
                  objectCtx->spaceEnd);
 
     ASSERT(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
-            (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)),
-           "this->num < OBJECT_EXCHANGE_BANK_MAX && (this->status[this->num].Segment + size) < this->endSegment",
-           __FILE__, __LINE__);
+            (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)));
 
     DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size,
                         __FILE__, __LINE__);
@@ -153,9 +151,8 @@ void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
     osSyncPrintf("OBJECT EXCHANGE NO=%2d BANK=%3d SIZE=%8.3fK\n", bankIndex, objectId, size / 1024.0f);
 
     nextPtr = (void*)ALIGN16((uintptr_t)status->segment + size);
-    if (1) {} // Necessary to match
 
-    ASSERT(nextPtr < objectCtx->spaceEnd, "nextptr < this->endSegment", __FILE__, __LINE__);
+    ASSERT(nextPtr < objectCtx->spaceEnd);
 
     // "Object exchange free size=%08x"
     osSyncPrintf("オブジェクト入れ替え空きサイズ=%08x\n", (uintptr_t)objectCtx->spaceEnd - (uintptr_t)nextPtr);
@@ -295,8 +292,7 @@ void func_8009899C(GlobalContext* globalCtx, SceneCmd* cmd) {
         status++;
     }
 
-    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX, "scene_info->object_bank.num <= OBJECT_EXCHANGE_BANK_MAX",
-           __FILE__, __LINE__);
+    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
 
     if (1) {}
 

@@ -520,7 +520,7 @@ void Map_Init(GlobalContext* globalCtx) {
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", globalCtx->sceneNum,
                  interfaceCtx->mapSegment, globalCtx);
-    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", __FILE__, __LINE__);
+    ASSERT(interfaceCtx->mapSegment != NULL);
 
     switch (globalCtx->sceneNum) {
         case SCENE_SPOT00:

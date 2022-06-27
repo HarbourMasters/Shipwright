@@ -333,7 +333,7 @@ void Title_Init(GameState* thisx) {
 
     //this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
     osSyncPrintf("z_title.c\n");
-    //ASSERT(this->staticSegment != NULL, "this->staticSegment != NULL", __FILE__, __LINE__);
+    //ASSERT(this->staticSegment != NULL);
 
     //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
 

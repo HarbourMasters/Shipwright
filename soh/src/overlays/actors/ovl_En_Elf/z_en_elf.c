@@ -404,7 +404,7 @@ void EnElf_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         default:
-            ASSERT(0, "0", __FILE__, 1103);
+            ASSERT(0);
             break;
     }
 
@@ -798,7 +798,7 @@ void func_80A03AB0(EnElf* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->func_2C8 == NULL) {
-        ASSERT(0, "0", __FILE__, 1725);
+        ASSERT(this->func_2C8 == NULL);
     }
 
     this->func_2C8(this, globalCtx);

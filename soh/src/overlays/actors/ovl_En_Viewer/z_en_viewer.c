@@ -169,10 +169,10 @@ void EnViewer_InitImpl(EnViewer* this, GlobalContext* globalCtx) {
     EnViewerInitData* initData = &sInitData[this->actor.params >> 8];
     s32 skelObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, initData->skeletonObject);
 
-    ASSERT(skelObjBankIndex >= 0, "bank_ID >= 0", __FILE__, __LINE__);
+    ASSERT(skelObjBankIndex >= 0);
 
     this->animObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, initData->animObject);
-    ASSERT(this->animObjBankIndex >= 0, "this->anime_bank_ID >= 0", __FILE__, __LINE__);
+    ASSERT(this->animObjBankIndex >= 0);
 
     if (!Object_IsLoaded(&globalCtx->objectCtx, skelObjBankIndex) ||
         !Object_IsLoaded(&globalCtx->objectCtx, this->animObjBankIndex)) {

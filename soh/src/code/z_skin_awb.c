@@ -53,7 +53,7 @@ void Skin_Init(GlobalContext* globalCtx, Skin* skin, SkeletonHeader* skeletonHea
 
     skin->vtxTable = ZeldaArena_MallocDebug(limbCount * sizeof(SkinLimbVtx), __FILE__, __LINE__);
 
-    ASSERT(skin->vtxTable != NULL, "pskin_awb->avb_tbl != NULL", __FILE__, __LINE__);
+    ASSERT(skin->vtxTable != NULL);
 
     for (i = 0; i < limbCount; i++) {
         SkinLimbVtx* vtxEntry = &skin->vtxTable[i];
@@ -71,11 +71,11 @@ void Skin_Init(GlobalContext* globalCtx, Skin* skin, SkeletonHeader* skeletonHea
 
             vtxEntry->buf[0] =
                 ZeldaArena_MallocDebug(animatedLimbData->totalVtxCount * sizeof(Vtx), __FILE__, __LINE__);
-            ASSERT(vtxEntry->buf[0] != NULL, "psavb->buf[0] != NULL", __FILE__, __LINE__);
+            ASSERT(vtxEntry->buf[0] != NULL);
 
             vtxEntry->buf[1] =
                 ZeldaArena_MallocDebug(animatedLimbData->totalVtxCount * sizeof(Vtx), __FILE__, __LINE__);
-            ASSERT(vtxEntry->buf[1] != NULL, "psavb->buf[1] != NULL", __FILE__, __LINE__);
+            ASSERT(vtxEntry->buf[1] != NULL);
 
             Skin_InitAnimatedLimb(globalCtx, skin, i);
         }

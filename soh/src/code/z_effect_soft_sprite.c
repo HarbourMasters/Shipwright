@@ -18,7 +18,7 @@ void EffectSs_InitInfo(GlobalContext* globalCtx, s32 tableSize) {
 
     sEffectSsInfo.table =
         GameState_Alloc(&globalCtx->state, tableSize * sizeof(EffectSs), __FILE__, __LINE__);
-    ASSERT(sEffectSsInfo.table != NULL, "EffectSS2Info.data_table != NULL", __FILE__, __LINE__);
+    ASSERT(sEffectSsInfo.table != NULL);
 
     sEffectSsInfo.searchStartIndex = 0;
     sEffectSsInfo.tableSize = tableSize;
@@ -175,7 +175,7 @@ void EffectSs_Spawn(GlobalContext* globalCtx, s32 type, s32 priority, void* init
 
     overlayEntry = &gEffectSsOverlayTable[type];
 
-    ASSERT(type < EFFECT_SS_TYPE_MAX, "type < EFFECT_SS2_TYPE_LAST_LABEL", __FILE__, __LINE__);
+    ASSERT(type < EFFECT_SS_TYPE_MAX);
 
     if (EffectSs_FindSlot(priority, &index) != 0) {
         // Abort because we couldn't find a suitable slot to add this effect in

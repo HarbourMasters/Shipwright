@@ -101,7 +101,7 @@ void VisMono_Draw(VisMono* this, Gfx** gfxp) {
             LOG_ADDRESS("mono_dl + (1+3+1+1+80*(7+2+2+3)+1)", monoDL + DLSIZE);
             LOG_ADDRESS("(1+3+1+1+80*(7+2+2+3)+1)", DLSIZE);
         }
-        ASSERT(glistpEnd <= monoDL + DLSIZE, "glistp_end <= mono_dl + DLSIZE", __FILE__, __LINE__);
+        ASSERT(glistpEnd <= monoDL + DLSIZE);
     }
 
     gDPPipeSync(gfx++);
@@ -131,6 +131,6 @@ void VisMono_DrawOld(VisMono* this) {
     if (!this->monoDl) {
         this->monoDl = SystemArena_MallocDebug(DLSIZE * sizeof(Gfx), __FILE__, __LINE__);
         glistpEnd = VisMono_DrawTexture(this, this->monoDl);
-        ASSERT(glistpEnd <= this->monoDl + DLSIZE, "glistp_end <= this->mono_dl + DLSIZE", __FILE__, __LINE__);
+        ASSERT(glistpEnd <= this->monoDl + DLSIZE);
     }
 }

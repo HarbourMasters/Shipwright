@@ -118,7 +118,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     polygonDlist = SEGMENTED_TO_VIRTUAL(polygon2->start);
     spA4 = spB8;
 
-    ASSERT(polygon2->num <= SHAPE_SORT_MAX, "polygon2->num <= SHAPE_SORT_MAX", __FILE__, __LINE__);
+    ASSERT(polygon2->num <= SHAPE_SORT_MAX);
     sp78 = polygonDlist;
 
     for (sp9C = 0; sp9C < polygon2->num; sp9C++, polygonDlist++) {
@@ -579,7 +579,7 @@ s32 func_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, s32 roomNum) {
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < globalCtx->numRooms, "read_room_ID < game_play->room_rom_address.num", __FILE__, __LINE__);
+        ASSERT(roomNum < globalCtx->numRooms);
 
         size = globalCtx->roomList[roomNum].vromEnd - globalCtx->roomList[roomNum].vromStart;
         roomCtx->unk_34 = (void*)ALIGN16((intptr_t)roomCtx->bufPtrs[roomCtx->unk_30] - ((size + 8) * roomCtx->unk_30 + 7));
@@ -622,8 +622,7 @@ void Room_Draw(GlobalContext* globalCtx, Room* room, u32 flags) {
     if (room->segment != NULL)
     {
         gSegments[3] = VIRTUAL_TO_PHYSICAL(room->segment);
-        ASSERT(room->mesh->polygon.type < ARRAY_COUNTU(sRoomDrawHandlers),
-               "this->ground_shape->polygon.type < number(Room_Draw_Proc)", __FILE__, __LINE__);
+        ASSERT(room->mesh->polygon.type < ARRAY_COUNTU(sRoomDrawHandlers));
         sRoomDrawHandlers[room->mesh->polygon.type](globalCtx, room, flags);
     }
 }

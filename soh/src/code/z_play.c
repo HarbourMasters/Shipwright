@@ -28,7 +28,7 @@ void func_800BC450(GlobalContext* globalCtx) {
 }
 
 void func_800BC490(GlobalContext* globalCtx, s16 point) {
-    ASSERT(point == 1 || point == 2, "point == 1 || point == 2", __FILE__, __LINE__);
+    ASSERT(point == 1 || point == 2);
 
     globalCtx->unk_1242B = point;
 

@@ -852,7 +852,7 @@ Gfx* Gfx_SetFog(Gfx* gfx, s32 r, s32 g, s32 b, s32 a, s32 near, s32 far) {
         far++;
     }
 
-    ASSERT(near != far, "n != f", __FILE__, __LINE__);
+    ASSERT(near != far);
 
     gDPSetFogColor(gfx++, r, g, b, a);
 
@@ -873,7 +873,7 @@ Gfx* Gfx_SetFogWithSync(Gfx* gfx, s32 r, s32 g, s32 b, s32 a, s32 near, s32 far)
     if (far == near) {
         far++;
     }
-    ASSERT(near != far, "n != f", __FILE__, __LINE__);
+    ASSERT(near != far);
 
     gDPPipeSync(gfx++);
     gDPSetFogColor(gfx++, r, g, b, a);

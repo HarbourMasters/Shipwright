@@ -584,7 +584,7 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(this->actor.params > OSSAN_TYPE_MASK && this->actor.params < OSSAN_TYPE_KOKIRI);
         return;
     }
 
@@ -613,7 +613,7 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(this->objBankIndex1 < 0);
         return;
     }
 
@@ -622,7 +622,7 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("予備バンクが無いよ！！(%s)\n", sShopkeeperPrintName[this->actor.params]);
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", __FILE__, __LINE__);
+        ASSERT(EnOssan_TryGetObjBankIndexes(this, globalCtx, objectIds) == 0);
         return;
     }
 

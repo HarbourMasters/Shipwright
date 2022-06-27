@@ -226,7 +226,7 @@ void EnFr_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "The argument is wrong!!"
             osSyncPrintf("%s[%d] : 引数が間違っている！！(%d)\n", __FILE__, __LINE__, this->actor.params);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT((this->actor.params >= 6) || (this->actor.params < 0));
         }
 
         this->objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GAMEPLAY_FIELD_KEEP);
@@ -236,7 +236,7 @@ void EnFr_Init(Actor* thisx, GlobalContext* globalCtx) {
             // "There is no bank!!"
             osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", __FILE__, __LINE__);
+            ASSERT(this->objBankIndex < 0);
         }
     }
 }

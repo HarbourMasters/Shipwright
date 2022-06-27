@@ -1106,7 +1106,7 @@ void SkelAnime_InitLink(GlobalContext* globalCtx, SkelAnime* skelAnime, FlexSkel
         skelAnime->jointTable = ZeldaArena_MallocDebug(allocSize, __FILE__, __LINE__);
         skelAnime->morphTable = ZeldaArena_MallocDebug(allocSize, __FILE__, __LINE__);
     } else {
-        ASSERT(limbBufCount == limbCount, "joint_buff_num == joint_num", __FILE__, __LINE__);
+        ASSERT(limbBufCount == limbCount);
 
         skelAnime->jointTable = (Vec3s*)ALIGN16((uintptr_t)jointTable);
         skelAnime->morphTable = (Vec3s*)ALIGN16((uintptr_t)morphTable);
@@ -1435,7 +1435,7 @@ s32 SkelAnime_Init(GlobalContext* globalCtx, SkelAnime* skelAnime, SkeletonHeade
         skelAnime->morphTable =
             ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->morphTable), __FILE__, __LINE__);
     } else {
-        ASSERT(limbCount == skelAnime->limbCount, "joint_buff_num == this->joint_num", __FILE__, __LINE__);
+        ASSERT(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }
@@ -1471,7 +1471,7 @@ s32 SkelAnime_InitFlex(GlobalContext* globalCtx, SkelAnime* skelAnime, FlexSkele
         skelAnime->morphTable =
             ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->morphTable), __FILE__, __LINE__);
     } else {
-        ASSERT(limbCount == skelAnime->limbCount, "joint_buff_num == this->joint_num", __FILE__, __LINE__);
+        ASSERT(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
         skelAnime->morphTable = morphTable;
     }
