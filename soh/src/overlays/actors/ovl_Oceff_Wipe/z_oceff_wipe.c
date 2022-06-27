@@ -78,7 +78,7 @@ void OceffWipe_Draw(Actor* thisx, GlobalContext* globalCtx) {
     eye = GET_ACTIVE_CAM(globalCtx)->eye;
     Camera_GetSkyboxOffset(&vec, GET_ACTIVE_CAM(globalCtx));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->timer < 32) {
         z = Math_SinS(this->timer << 9) * 1400;
@@ -125,5 +125,5 @@ void OceffWipe_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                                      0 - scroll, scroll * (-2), 32, 32));
     gSPDisplayList(POLY_XLU_DISP++, sFrustumDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

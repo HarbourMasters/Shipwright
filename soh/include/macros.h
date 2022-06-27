@@ -140,34 +140,34 @@ extern GraphicsContext* __gfxCtx;
 // __gfxCtx shouldn't be used directly.
 // Use the DISP macros defined above when writing to display buffers.
 #ifndef NDEBUG
-#define OPEN_DISPS(gfxCtx, file, line) \
+#define OPEN_DISPS(gfxCtx) \
     { \
         void FrameInterpolation_RecordOpenChild(const void* a, int b); \
-        FrameInterpolation_RecordOpenChild(file, line); \
+        FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         Gfx* dispRefs[4]; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx; \
-        Graph_OpenDisps(dispRefs, gfxCtx, file, line)
+        Graph_OpenDisps(dispRefs, gfxCtx, __FILE__, __LINE__)
 #else
-#define OPEN_DISPS(gfxCtx, file, line) \
+#define OPEN_DISPS(gfxCtx) \
     { \
         void FrameInterpolation_RecordOpenChild(const void* a, int b); \
-        FrameInterpolation_RecordOpenChild(file, line); \
+        FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx;
 #endif
 
 #ifndef NDEBUG
-#define CLOSE_DISPS(gfxCtx, file, line) \
+#define CLOSE_DISPS(gfxCtx) \
     {void FrameInterpolation_RecordCloseChild(void); \
     FrameInterpolation_RecordCloseChild();} \
-    Graph_CloseDisps(dispRefs, gfxCtx, file, line); \
+    Graph_CloseDisps(dispRefs, gfxCtx, __FILE__, __LINE__); \
     } \
     (void)0
 #else
-#define CLOSE_DISPS(gfxCtx, file, line) \
+#define CLOSE_DISPS(gfxCtx) \
     {void FrameInterpolation_RecordCloseChild(void); \
     FrameInterpolation_RecordCloseChild();} \
     (void)0; \

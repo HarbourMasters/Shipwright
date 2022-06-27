@@ -524,7 +524,7 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnNy* this = (EnNy*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Collider_UpdateSpheres(0, &this->collider);
     func_8002ED80(&this->actor, globalCtx, 1);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -546,7 +546,7 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gEnNySpikeDL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;
@@ -570,7 +570,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
     f32 scale;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0x00, 0x00, 0x00, 0xFF);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2);
@@ -586,7 +586,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;

@@ -52,7 +52,7 @@ void EffectSsStick_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
 
@@ -71,7 +71,7 @@ void EffectSsStick_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     gSPSegment(POLY_OPA_DISP++, 0x0C, gCullBackDList);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsStick_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

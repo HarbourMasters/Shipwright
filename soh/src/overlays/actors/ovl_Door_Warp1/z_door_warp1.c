@@ -881,7 +881,7 @@ void DoorWarp1_Update(Actor* thisx, GlobalContext* globalCtx) {
 void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -891,7 +891,7 @@ void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkelAnime_Update(&this->skelAnime);
 }
@@ -904,7 +904,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     eye.y = (Math_CosS(globalCtx->state.frames * 200) * 120.0f) * 80.0f;
     eye.z = (Math_CosS(globalCtx->state.frames * 200) * 120.0f) * 80.0f;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002EB44(&this->actor.world.pos, &eye, &eye, globalCtx->state.gfxCtx);
@@ -915,7 +915,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkelAnime_Update(&this->skelAnime);
 }
@@ -929,7 +929,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     f32 xzScale;
     f32 temp_f0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     temp_f0 = 1.0f - (2.0f - this->unk_194) / 1.7f;
     if (this->actor.params != WARP_YELLOW && this->actor.params != WARP_DESTINATION &&
@@ -1020,7 +1020,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gWarpPortalDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DoorWarp1_Draw(Actor* thisx, GlobalContext* globalCtx) {

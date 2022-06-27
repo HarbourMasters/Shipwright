@@ -222,7 +222,7 @@ void func_80063D7C(GraphicsContext* gfxCtx) {
     if (!CVar_GetS32("gDebugEnabled", 0))
         return;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     GfxPrint_Init(&printer);
     sp78 = POLY_OPA_DISP;
@@ -246,7 +246,7 @@ void func_80063D7C(GraphicsContext* gfxCtx) {
 
     if (1) {}
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 
     GfxPrint_Destroy(&printer);
 }

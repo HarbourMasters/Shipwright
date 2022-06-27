@@ -324,7 +324,7 @@ void BgHidanKowarerukabe_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgHidanKowarerukabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -334,5 +334,5 @@ void BgHidanKowarerukabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Collider_UpdateSpheres(0, &this->collider);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

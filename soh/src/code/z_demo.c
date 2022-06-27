@@ -1916,7 +1916,7 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
         if (0) {} // Also necessary to match
 
         if (BREG(0) != 0) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             prevDisplayList = POLY_OPA_DISP;
             displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
@@ -1926,7 +1926,7 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         csCtx->frames++;

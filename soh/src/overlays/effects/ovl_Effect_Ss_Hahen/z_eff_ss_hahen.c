@@ -71,7 +71,7 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
@@ -86,7 +86,7 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     func_80093D18(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // in the original game this function is hardcoded to be used only by the skull pots in Shadow Temple
@@ -95,7 +95,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
@@ -113,7 +113,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 100, 100, 120, 255);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsHahen_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

@@ -340,7 +340,7 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
     s16 phi_s1;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     osSyncPrintf("SDA D 1\n");
     func_80094044(globalCtx->state.gfxCtx);
@@ -368,5 +368,5 @@ void func_80AF9C70(u8* shadowTexture, Player* player, GlobalContext* globalCtx) 
         gSPDisplayList(POLY_XLU_DISP++, D_80AFA3F8);
     }
     osSyncPrintf("SDA D 2\n");
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }

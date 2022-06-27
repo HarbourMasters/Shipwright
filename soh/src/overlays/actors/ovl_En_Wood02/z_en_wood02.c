@@ -424,7 +424,7 @@ void EnWood02_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u8 green;
     u8 blue;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
     type = this->actor.params;
 
     if ((type == WOOD_TREE_OVAL_GREEN_SPAWNER) || (type == WOOD_TREE_OVAL_GREEN_SPAWNED) ||
@@ -460,5 +460,5 @@ void EnWood02_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, D_80B3BF54[this->drawType & 0xF]);
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }

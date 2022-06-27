@@ -700,7 +700,7 @@ void EnFhgFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnFhgFire* this = (EnFhgFire*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actor.params == FHGFIRE_LIGHTNING_BURST) {
         func_80093D84(globalCtx->state.gfxCtx);
@@ -753,5 +753,5 @@ void EnFhgFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf("FF DRAW 2\n");
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

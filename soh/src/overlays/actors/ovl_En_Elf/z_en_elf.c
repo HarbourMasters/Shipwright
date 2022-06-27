@@ -1502,7 +1502,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!(player->stateFlags1 & 0x100000) || (kREG(90) < this->actor.projectedPos.z)) {
             dListHead = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Gfx) * 4);
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             func_80094B58(globalCtx->state.gfxCtx);
 
@@ -1528,7 +1528,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                            EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }

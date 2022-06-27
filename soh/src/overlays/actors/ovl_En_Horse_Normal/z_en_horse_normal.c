@@ -637,7 +637,7 @@ void EnHorseNormal_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnHorseNormal* this = (EnHorseNormal*)thisx;
     Mtx* mtx2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->sceneNum != SCENE_SPOT20 || globalCtx->sceneNum != SCENE_MALON_STABLE) {
         func_80A6C8E0(this, globalCtx);
@@ -712,5 +712,5 @@ void EnHorseNormal_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

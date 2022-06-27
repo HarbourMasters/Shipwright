@@ -37,7 +37,7 @@ void func_80095AB4(GlobalContext* globalCtx, Room* room, u32 flags) {
     PolygonType0* polygon0;
     PolygonDlist* polygonDlist;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (flags & 1) {
         func_800342EC(&D_801270A0, globalCtx);
@@ -67,7 +67,7 @@ void func_80095AB4(GlobalContext* globalCtx, Room* room, u32 flags) {
         polygonDlist++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 #define SHAPE_SORT_MAX 64
@@ -99,7 +99,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     PolygonDlist2* temp;
     f32 temp_f2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (flags & 1) {
         func_800342EC(&D_801270A0, globalCtx);
         //gSPSegment(POLY_OPA_DISP++, 0x03, room->segment);
@@ -215,7 +215,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
 
     iREG(88) = sp9C - 1;
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 //#define JPEG_MARKER 0xFFD8FFE0
@@ -344,7 +344,7 @@ void func_80096680(GlobalContext* globalCtx, Room* room, u32 flags) {
     u32 sp94;
     u32 sp90;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     camera = GET_ACTIVE_CAM(globalCtx);
     sp9C = (camera->setting == CAM_SET_PREREND_FIXED);
@@ -390,7 +390,7 @@ void func_80096680(GlobalContext* globalCtx, Room* room, u32 flags) {
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
@@ -439,7 +439,7 @@ void func_80096B6C(GlobalContext* globalCtx, Room* room, u32 flags) {
     u32 sp90;
     u32 sp8C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     camera = GET_ACTIVE_CAM(globalCtx);
     sp98 = (camera->setting == CAM_SET_PREREND_FIXED);
@@ -485,7 +485,7 @@ void func_80096B6C(GlobalContext* globalCtx, Room* room, u32 flags) {
         gSPDisplayList(POLY_XLU_DISP++, polygonDlist->xlu);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 // Room Draw Polygon Type 1

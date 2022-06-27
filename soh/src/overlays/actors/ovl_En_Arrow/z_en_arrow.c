@@ -462,7 +462,7 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else if (this->actor.speedXZ != 0.0f) {
         alpha = (Math_CosS(this->timer * 5000) * 127.5f) + 127.5f;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093C14(globalCtx->state.gfxCtx);
 
@@ -489,7 +489,7 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Pop();
         Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     func_809B4800(this, globalCtx);

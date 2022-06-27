@@ -204,7 +204,7 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     s16 temp;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     temp = this->unk_156 & 7;
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
     func_80094BC4(globalCtx->state.gfxCtx);
@@ -220,7 +220,7 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_01D950);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnBdfire_Draw(Actor* thisx, GlobalContext* globalCtx) {

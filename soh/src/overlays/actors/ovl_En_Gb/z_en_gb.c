@@ -423,7 +423,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGb* this = (EnGb*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -436,7 +436,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, globalCtx);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx) {
@@ -517,7 +517,7 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -550,5 +550,5 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         Matrix_Pop();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

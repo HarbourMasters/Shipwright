@@ -564,7 +564,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u16 timer1 = this->timer1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
@@ -597,7 +597,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
         if ((s16)i) {}
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80968298(Actor* thisx, GlobalContext* globalCtx) {
@@ -611,7 +611,7 @@ void func_80968298(Actor* thisx, GlobalContext* globalCtx) {
     s32 i2;
     u8 alpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     alpha = (s32)(this->unk_170 * 255.0f);
     POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
@@ -647,7 +647,7 @@ void func_80968298(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 50, 50, 50, 255);
     gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_001040);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8096865C(Actor* thisx, GlobalContext* globalCtx) {
@@ -655,7 +655,7 @@ void func_8096865C(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     Gfx* displayList;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (!(this->flags & 1)) {
         if (this->actor.params > 8) {
@@ -681,7 +681,7 @@ void func_8096865C(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, displayList);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
@@ -692,7 +692,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
 
     if ((i = (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[1] != NULL)) &&
         (globalCtx->csCtx.npcActions[1]->action != 1)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
@@ -716,7 +716,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
 
         gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -729,7 +729,7 @@ void func_80968B70(Actor* thisx, GlobalContext* globalCtx) {
 
     if (1) {}
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
@@ -766,7 +766,7 @@ void func_80968B70(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, envColor[0], envColor[1], envColor[2], 128);
     gSPDisplayList(POLY_XLU_DISP++, object_gnd_magic_DL_001190);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80968FB0(Actor* thisx, GlobalContext* globalCtx) {
@@ -779,7 +779,7 @@ void func_80968FB0(Actor* thisx, GlobalContext* globalCtx) {
 
     if (1) {}
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     scaleFactor = ((s16)D_809693CC[(frames * 4) & 0xF] * 0.01f) + 1.0f;
@@ -795,7 +795,7 @@ void func_80968FB0(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 200, 0, 255);
     gSPDisplayList(POLY_XLU_DISP++, gGlowCircleSmallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_809691BC(Demo6K* this, GlobalContext* globalCtx, s32 params) {

@@ -105,12 +105,12 @@ void BossGanon2_SetObjectSegment(BossGanon2* this, GlobalContext* globalCtx, s32
     gSegments[6] = PHYSICAL_TO_VIRTUAL(globalCtx->objectCtx.status[objectIdx].segment);
 
     if (setRSPSegment) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[objectIdx].segment);
         gSPSegment(POLY_XLU_DISP++, 0x06, globalCtx->objectCtx.status[objectIdx].segment);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -2411,7 +2411,7 @@ void func_809034E4(Vec3f* arg0, Vec3f* arg1) {
 }
 
 void func_80903F38(BossGanon2* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_312 != 0) {
         func_809034E4(&this->unk_200, &this->unk_20C);
@@ -2430,14 +2430,14 @@ void func_80903F38(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00BB80);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80904108(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
 
     if (this->unk_324 > 0.0f) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         Matrix_Push();
         gDPPipeSync(POLY_XLU_DISP++);
@@ -2453,7 +2453,7 @@ void func_80904108(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00E1C0));
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -2464,7 +2464,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
     f32 sin;
     f32 cos;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Push();
 
     if ((this->unk_330 != 0) || (this->unk_328 != 0)) {
@@ -2505,14 +2505,14 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
     }
 
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8090464C(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
 
     if (this->unk_1B4 > 0.0f) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         Matrix_Push();
         gDPPipeSync(POLY_XLU_DISP++);
@@ -2527,7 +2527,7 @@ void func_8090464C(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00CCD8));
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -2536,7 +2536,7 @@ s32 BossGanon2_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     s32 pad;
     BossGanon2* this = (BossGanon2*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 15) {
         rot->y += this->unk_31A;
@@ -2558,7 +2558,7 @@ s32 BossGanon2_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
         *dList = NULL;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return 0;
 }
 
@@ -2568,7 +2568,7 @@ void BossGanon2_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     BossGanon2* this = (BossGanon2*)thisx;
     Vec3f sp4C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     D_80907120.z = 17000.0f;
     D_8090712C.z = 3000.0f;
@@ -2627,14 +2627,14 @@ void BossGanon2_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_30C > 0.0f) {
         func_80093D84(globalCtx->state.gfxCtx);
@@ -2658,13 +2658,13 @@ void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80904FC8(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_384 > 0.0f) {
         func_80093D84(globalCtx->state.gfxCtx);
@@ -2685,14 +2685,14 @@ void func_80904FC8(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00B378));
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
     Player* player;
     f32 phi_f20;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_38C > 0.0f) {
         s8 i;
@@ -2722,7 +2722,7 @@ void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossGanon2_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
@@ -2733,13 +2733,13 @@ void BossGanon2_PostLimbDraw2(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
         Matrix_MultVec3f(&D_80906D60, &this->unk_234[temp_v1]);
     }
     if (limbIndex == 11) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     } else if (limbIndex == 10) {
         Matrix_MultVec3f(&D_80907164, &this->unk_1B8);
     }
@@ -2749,7 +2749,7 @@ void func_80905674(BossGanon2* this, GlobalContext* globalCtx) {
     s32 pad;
 
     if (this->unk_380 > 0.0f) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         Matrix_Push();
         gDPPipeSync(POLY_XLU_DISP++);
@@ -2768,7 +2768,7 @@ void func_80905674(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00EC40));
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -2777,7 +2777,7 @@ void BossGanon2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossGanon2* this = (BossGanon2*)thisx;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -2844,7 +2844,7 @@ void BossGanon2_Draw(Actor* thisx, GlobalContext* globalCtx) {
         D_80910638 = 0;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     func_809060E8(globalCtx);
 }
@@ -2920,7 +2920,7 @@ void func_809060E8(GlobalContext* globalCtx) {
 
     effects = effect = globalCtx->specialEffects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -2981,7 +2981,7 @@ void func_809060E8(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80906538(BossGanon2* this, u8* shadowTexture, f32 arg2) {
@@ -3081,7 +3081,7 @@ void BossGanon2_DrawShadowTexture(void* shadowTexture, BossGanon2* this, GlobalC
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 alpha;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -3102,7 +3102,7 @@ void BossGanon2_DrawShadowTexture(void* shadowTexture, BossGanon2* this, GlobalC
                         G_TX_NOMIRROR | G_TX_CLAMP, 6, 6, G_TX_NOLOD, G_TX_NOLOD);
     gSPDisplayList(POLY_OPA_DISP++, ovl_Boss_Ganon2_DL_00B3F0);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossGanon2_Reset(void) {

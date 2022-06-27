@@ -67,7 +67,7 @@ void DebugDisplay_DrawObjects(GlobalContext* globalCtx) {
 }
 
 void DebugDisplay_DrawSpriteI8(DebugDispObject* dispObj, void* texture, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80094678(globalCtx->state.gfxCtx);
 
@@ -85,11 +85,11 @@ void DebugDisplay_DrawSpriteI8(DebugDispObject* dispObj, void* texture, GlobalCo
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gDebugSpriteDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DebugDisplay_DrawPolygon(DebugDispObject* dispObj, void* dlist, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_8009435C(globalCtx->state.gfxCtx);
 
@@ -104,5 +104,5 @@ void DebugDisplay_DrawPolygon(DebugDispObject* dispObj, void* dlist, GlobalConte
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, dlist);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -81,7 +81,7 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Actor* actorIt;
     u8 flag = false;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     actorIt = globalCtx->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
 
@@ -107,5 +107,5 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

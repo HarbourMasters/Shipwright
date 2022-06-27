@@ -717,7 +717,7 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     index = (6 - this->actor.colChkInfo.health) >> 1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (1) {}
 
@@ -740,7 +740,7 @@ void EnFz_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, displayLists[index]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     EnFz_DrawIceSmoke(this, globalCtx);
 }
 
@@ -861,7 +861,7 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     u8 texLoaded = false;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -889,5 +889,5 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
         iceSmoke++;
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }

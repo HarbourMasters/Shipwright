@@ -750,7 +750,7 @@ void EnGoma_Update(Actor* thisx, GlobalContext* globalCtx) {
 s32 EnGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGoma* this = (EnGoma*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->eyeEnvColor[0], (s16)this->eyeEnvColor[1], (s16)this->eyeEnvColor[2],
                    255);
 
@@ -762,7 +762,7 @@ s32 EnGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
                        (s16)(Rand_ZeroOne() * 255.0f), 255);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return 0;
 }
 
@@ -783,7 +783,7 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 y;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     switch (this->gomaType) {
@@ -839,7 +839,7 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGoma_Debris(EnGoma* this, GlobalContext* globalCtx) {

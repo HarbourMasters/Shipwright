@@ -279,7 +279,7 @@ Gfx* func_8088EB54(GlobalContext* globalCtx, BgHidanSima* this, Gfx* gfx) {
 void BgHidanSima_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgHidanSima* this = (BgHidanSima*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -294,5 +294,5 @@ void BgHidanSima_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = func_8088EB54(globalCtx, this, POLY_XLU_DISP);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

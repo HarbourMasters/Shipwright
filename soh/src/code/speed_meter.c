@@ -55,7 +55,7 @@ void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
     uly = this->y;
     lry = this->y + 2;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     /*! @bug if gIrqMgrRetraceTime is 0, CLOSE_DISPS will never be reached */
     if (gIrqMgrRetraceTime == 0) {
@@ -98,7 +98,7 @@ void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
 
     OVERLAY_DISP = gfx;
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void SpeedMeter_InitAllocEntry(SpeedMeterAllocEntry* this, u32 maxval, u32 val, u16 backColor, u16 foreColor, u32 ulx,
@@ -123,7 +123,7 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
         LOG_NUM("this->maxval", this->maxval, __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
     } else {
-        OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(gfxCtx);
 
         View_Init(&view, gfxCtx);
         view.flags = 0xA;
@@ -146,7 +146,7 @@ void SpeedMeter_DrawAllocEntry(SpeedMeterAllocEntry* this, GraphicsContext* gfxC
         gDPPipeSync(gfx++);
 
         OVERLAY_DISP = gfx;
-        CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 

@@ -348,7 +348,7 @@ void EnAObj_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnAObj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 type = thisx->params;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -364,5 +364,5 @@ void EnAObj_Draw(Actor* thisx, GlobalContext* globalCtx) {
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[type]);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

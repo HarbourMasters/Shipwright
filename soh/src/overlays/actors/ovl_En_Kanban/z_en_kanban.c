@@ -790,7 +790,7 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     u8* shadowTex = Graph_Alloc(globalCtx->state.gfxCtx, 0x400);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, object_kanban_DL_000C30);
@@ -892,5 +892,5 @@ void EnKanban_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, sShadowDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -329,7 +329,7 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgMizuWater* this = (BgMizuWater*)thisx;
     s32 gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gameplayFrames = globalCtx->gameplayFrames;
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -346,5 +346,5 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gObjectMizuObjectsWaterDL_004B20);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

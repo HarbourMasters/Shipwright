@@ -1074,7 +1074,7 @@ block_1:
     Matrix_TranslateRotateZYX(pos, rot);
 
     if (*dList != NULL) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         mtxScaleZ = 1.0f;
         mtxScaleY = 1.0f;
@@ -1101,7 +1101,7 @@ block_1:
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     { s32 pad; } // Required to match
     return 1;
@@ -1133,7 +1133,7 @@ void BossDodongo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossDodongo* this = (BossDodongo*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     if ((this->unk_1C0 >= 2) && (this->unk_1C0 & 1)) {
@@ -1151,7 +1151,7 @@ void BossDodongo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     BossDodongo_DrawEffects(globalCtx);
 }
@@ -1691,7 +1691,7 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
 
     eff = (BossDodongoEffect*)globalCtx->specialEffects;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     unkMtx = &globalCtx->billboardMtxF;
@@ -1717,5 +1717,5 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }

@@ -70,7 +70,7 @@ void BgSpot01Idomizu_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -84,5 +84,5 @@ void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gKakarikoWellWaterDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

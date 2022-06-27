@@ -949,7 +949,7 @@ void Environment_Update(GlobalContext* globalCtx, EnvironmentContext* envCtx, Li
             Gfx* displayList;
             Gfx* prevDisplayList;
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             prevDisplayList = POLY_OPA_DISP;
             displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
@@ -959,7 +959,7 @@ void Environment_Update(GlobalContext* globalCtx, EnvironmentContext* envCtx, Li
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
             if (1) {}
-            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if ((envCtx->unk_BF != 0xFF) && (envCtx->unk_DC != 2) && (envCtx->unk_BD != envCtx->unk_BF) &&
@@ -1302,7 +1302,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
     f32 scale;
     f32 temp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0) {
         Math_SmoothStepToF(&globalCtx->envCtx.sunPos.x,
@@ -1397,7 +1397,7 @@ void Environment_DrawSunAndMoon(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_DrawSunLensFlare(GlobalContext* globalCtx, EnvironmentContext* envCtx, View* view,
@@ -1461,7 +1461,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     dist = Math3D_Vec3f_DistXYZ(&pos, &view->eye) / 12.0f;
 
@@ -1615,7 +1615,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 f32 func_800746DC(void) {
@@ -1642,7 +1642,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
-        OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(gfxCtx);
 
         vec.x = view->lookAt.x - view->eye.x;
         vec.y = view->lookAt.y - view->eye.y;
@@ -1724,7 +1724,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             }
         }
 
-        CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -1758,7 +1758,7 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
         (globalCtx->skyboxId == SKYBOX_UNSET_1D)) {
         f32 alpha;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_800938B4(globalCtx->state.gfxCtx);
 
@@ -1776,11 +1776,11 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
                         globalCtx->lightCtx.fogColor[2], 255.0f * alpha);
         gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     if (globalCtx->envCtx.customSkyboxFilter) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_800938B4(globalCtx->state.gfxCtx);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, globalCtx->envCtx.skyboxFilterColor[0],
@@ -1788,18 +1788,18 @@ void Environment_DrawSkyboxFilters(GlobalContext* globalCtx) {
                         globalCtx->envCtx.skyboxFilterColor[3]);
         gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
 void Environment_DrawLightningFlash(GlobalContext* globalCtx, u8 red, u8 green, u8 blue, u8 alpha) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800938B4(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, red, green, blue, alpha);
     gDPFillRectangle(POLY_OPA_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_UpdateLightningStrike(GlobalContext* globalCtx) {
@@ -1914,7 +1914,7 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
         switch (sLightningBolts[i].state) {
@@ -1973,7 +1973,7 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_PlaySceneSequence(GlobalContext* globalCtx) {
@@ -2239,7 +2239,7 @@ void func_800766C4(GlobalContext* globalCtx) {
 
 void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, u8 alpha, u8 drawFlags) {
     if (alpha != 0) {
-        OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(gfxCtx);
 
         if (drawFlags & FILL_SCREEN_OPA) {
             POLY_OPA_DISP = func_800937C0(POLY_OPA_DISP);
@@ -2262,7 +2262,7 @@ void Environment_FillScreen(GraphicsContext* gfxCtx, u8 red, u8 green, u8 blue, 
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
         }
 
-        CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -2413,7 +2413,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     sp94 = (s32)(D_8015FDB0 * (9.0f / 6.0f));
     sp92 = (s32)(D_8015FDB0 * (6.0f / 6.0f));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_XLU_DISP = func_80093F34(POLY_XLU_DISP);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -2429,7 +2429,7 @@ void Environment_DrawSandstorm(GlobalContext* globalCtx, u8 sandstormState) {
     gSPWideTextureRectangle(POLY_XLU_DISP++, OTRGetRectDimensionFromLeftEdge(0) << 2, 0,
                             OTRGetRectDimensionFromRightEdge(SCREEN_WIDTH) << 2, 0x03C0, G_TX_RENDERTILE, 0, 0, 0x008C,
                             -0x008C);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     D_8015FDB0 += (s32)sp98;
 }

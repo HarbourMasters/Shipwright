@@ -170,7 +170,7 @@ void EnNutsball_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (CVar_GetS32("gNewDrops", 0) != 0) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -193,5 +193,5 @@ void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

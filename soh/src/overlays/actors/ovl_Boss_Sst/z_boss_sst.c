@@ -2707,7 +2707,7 @@ s32 BossSst_OverrideHandTrailDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx**
 void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
     BossSst* this = (BossSst*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -2757,7 +2757,7 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     BossSst_DrawEffect(&this->actor, globalCtx);
 }
@@ -2859,7 +2859,7 @@ void BossSst_DrawHead(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BossSst* this = (BossSst*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -2924,7 +2924,7 @@ void BossSst_DrawHead(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, sIntroVanishDList);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkinMatrix_Vec3fMtxFMultXYZ(&globalCtx->viewProjectionMtxF, &this->actor.focus.pos, &this->center);
     BossSst_DrawEffect(&this->actor, globalCtx);
@@ -3154,7 +3154,7 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
     BossSstEffect* effect;
 
     if (this->effectMode != BONGO_NULL) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
         if (this->effectMode == BONGO_ICE) {
@@ -3223,7 +3223,7 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

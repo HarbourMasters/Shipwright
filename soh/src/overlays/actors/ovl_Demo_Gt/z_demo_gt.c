@@ -650,7 +650,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     spB4 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp98 = 1.0f - Math_CosS(spC6);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     spA8.x = Math_CosS(spB8);
     spA8.y = 0.0f;
@@ -688,7 +688,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_XLU_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gTowerCollapseCsFlameSmokeDL);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_8097F904_Init1(DemoGt* this, GlobalContext* globalCtx) {
@@ -853,7 +853,7 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     s32* unk178;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
     unk198 = this->unk_198;
@@ -866,7 +866,7 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80980110_Init2(DemoGt* this, GlobalContext* globalCtx) {
@@ -1168,7 +1168,7 @@ void DemoGt_Update10(DemoGt* this, GlobalContext* globalCtx) {
 void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
@@ -1176,7 +1176,7 @@ void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureOuterDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80980F00_Init5(DemoGt* this, GlobalContext* globalCtx) {
@@ -1271,7 +1271,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
         sp44 = 1.0f - Math_CosS(sp76);
 
-        OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(gfxCtx);
 
         sp54.x = Math_CosS(sp68);
         sp54.y = 0.0f;
@@ -1298,7 +1298,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
         gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-        CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -1390,7 +1390,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp44 = 1 - Math_CosS(sp76);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     sp54.x = Math_CosS(sp68);
     sp54.y = 0.0f;
@@ -1417,7 +1417,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_809818A4_Init7(DemoGt* this, GlobalContext* globalCtx) {
@@ -1486,7 +1486,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     sp64 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp48 = 1.0f - Math_CosS(sp78);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     sp58.x = Math_CosS(sp6C);
     sp58.y = 0.0f;
@@ -1509,7 +1509,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80981C94_Init23(DemoGt* this, GlobalContext* globalCtx) {
@@ -1578,7 +1578,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
     sp5C = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp40 = 1.0f - Math_CosS(sp6E);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     sp50.x = Math_CosS(sp60);
     sp50.y = 0.0f;
@@ -1600,7 +1600,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, sp5C, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsWalkwayDL);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80982054_Init24(DemoGt* this, GlobalContext* globalCtx) {
@@ -1669,7 +1669,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
     sp5C = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp40 = 1.0f - Math_CosS(sp6E);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     sp50.x = Math_CosS(sp60);
     sp50.y = 0.0f;
@@ -1691,7 +1691,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, sp5C, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsAlternativeWalkwayDL);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 static DemoGtUpdateFunc sUpdateFuncs[] = {

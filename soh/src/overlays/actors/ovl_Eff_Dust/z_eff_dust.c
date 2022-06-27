@@ -269,7 +269,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
     f32 aux;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
 
@@ -304,7 +304,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
         if (0) {}
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
@@ -317,7 +317,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     f32 aux;
     Player* player = GET_PLAYER(globalCtx);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
 
@@ -363,7 +363,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
         distanceTraveled++;
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_Draw(Actor* thisx, GlobalContext* globalCtx) {

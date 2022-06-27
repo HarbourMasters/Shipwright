@@ -1065,7 +1065,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     Lights* sp228;
     Vec3f sp21C;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.mainKeepIndex].segment);
     gSegments[5] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.subKeepIndex].segment);
@@ -1341,7 +1341,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
         POLY_OPA_DISP = gfxP;
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Gameplay_Main(GameState* thisx) {

@@ -1074,7 +1074,7 @@ void EnPoh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80AE067C(this);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -1095,7 +1095,7 @@ void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
@@ -1103,7 +1103,7 @@ void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGBA8* sp90;
     Color_RGBA8* phi_t0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80AE067C(this);
     if (this->actor.params == EN_POH_SHARP) {
         sp90 = &D_80AE1B4C;
@@ -1150,7 +1150,7 @@ void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, sp90->r, sp90->g, sp90->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx) {
@@ -1166,7 +1166,7 @@ void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx) {
 void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc == EnPoh_Death) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -1198,5 +1198,5 @@ void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, this->info->soulDisplayList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

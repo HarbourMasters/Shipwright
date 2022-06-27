@@ -505,7 +505,7 @@ void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (1) {}
     frames = globalCtx->gameplayFrames;
 
@@ -527,5 +527,5 @@ void BgMizuBwall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     if (this->dList != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->dList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

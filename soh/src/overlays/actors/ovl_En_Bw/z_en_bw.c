@@ -846,7 +846,7 @@ void EnBw_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     Vec3f icePos;
     s32 iceIndex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->color1.a == 0xFF) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -902,7 +902,7 @@ void EnBw_Draw(Actor* thisx, GlobalContext* globalCtx2) {
             EffectSsEnIce_SpawnFlyingVec3f(globalCtx, thisx, &icePos, 0x96, 0x96, 0x96, 0xFA, 0xEB, 0xF5, 0xFF, 1.3f);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnBw_Reset(void) {

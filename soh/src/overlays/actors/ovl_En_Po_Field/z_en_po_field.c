@@ -783,7 +783,7 @@ void EnPoField_DrawFlame(EnPoField* this, GlobalContext* globalCtx) {
     s32 pad;
 
     if (this->flameTimer != 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
@@ -803,7 +803,7 @@ void EnPoField_DrawFlame(EnPoField* this, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -929,7 +929,7 @@ void EnPoField_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnPoFieldInfo* info = &sPoFieldInfo[this->actor.params];
 
     if (this->actionFunc != EnPoField_WaitForSpawn) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x0A,
@@ -958,7 +958,7 @@ void EnPoField_Draw(Actor* thisx, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gPoeFieldLanternDL);
         gSPDisplayList(POLY_OPA_DISP++, gPoeFieldLanternTopDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     EnPoField_DrawFlame(this, globalCtx);
 }
@@ -978,7 +978,7 @@ void EnPoField_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnPoFieldInfo* info = &sPoFieldInfo[this->actor.params];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc == EnPoField_SoulIdle) {
         func_80093D18(globalCtx->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x0A,
@@ -1004,7 +1004,7 @@ void EnPoField_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeFieldSoulDL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     EnPoField_DrawFlame(this, globalCtx);
 }
 

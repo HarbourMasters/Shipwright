@@ -73,7 +73,7 @@ void DemoGeff_Init(Actor* thisx, GlobalContext* globalCtx) {
 void func_80977EA8(GlobalContext* globalCtx, Gfx* dlist) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
 
@@ -82,7 +82,7 @@ void func_80977EA8(GlobalContext* globalCtx, Gfx* dlist) {
     gSPDisplayList(POLY_OPA_DISP++, dlist);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80977F80(DemoGeff* this, GlobalContext* globalCtx) {
@@ -90,7 +90,7 @@ void func_80977F80(DemoGeff* this, GlobalContext* globalCtx) {
     s32 objBankIndex = this->objBankIndex;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[objBankIndex].segment);
     gSegments[6] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[objBankIndex].segment);
@@ -98,7 +98,7 @@ void func_80977F80(DemoGeff* this, GlobalContext* globalCtx) {
     // Necessary to match
     if (!globalCtx) {}
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80978030(DemoGeff* this, GlobalContext* globalCtx) {

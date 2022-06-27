@@ -707,7 +707,7 @@ void DoorShutter_Draw(Actor* thisx, GlobalContext* globalCtx) {
         s32 pad[2];
         ShutterInfo* sp70 = &sShutterInfo[this->unk_16C];
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -761,7 +761,7 @@ void DoorShutter_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                    : ((this->unk_16C == 6) ? DOORLOCK_NORMAL_SPIRIT : DOORLOCK_NORMAL));
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

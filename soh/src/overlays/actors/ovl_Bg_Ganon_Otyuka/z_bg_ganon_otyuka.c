@@ -257,7 +257,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossGanon* ganondorf;
     f32 spBC = -30.0f;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     actor = globalCtx->actorCtx.actorLists[ACTORCAT_BOSS].head;
     while (actor != NULL) {
@@ -368,5 +368,5 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
         actor = actor->next;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

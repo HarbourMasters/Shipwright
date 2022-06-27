@@ -686,7 +686,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnClearTag* this = (EnClearTag*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->drawMode != CLEAR_TAG_DRAW_MODE_EFFECT) {
         func_80093D84(globalCtx->state.gfxCtx);
 
@@ -766,7 +766,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
         EnClearTag_DrawEffects(globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -896,7 +896,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     EnClearTagEffect* effect = (EnClearTagEffect*)globalCtx->specialEffects;
     EnClearTagEffect* firstEffect = effect;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -1022,7 +1022,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnClearTag_Reset(void) {

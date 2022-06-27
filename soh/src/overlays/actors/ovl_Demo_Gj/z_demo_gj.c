@@ -270,7 +270,7 @@ void DemoGj_DrawCommon(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList)
     if (kREG(0) == 0) {
         GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-        OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(gfxCtx);
 
         func_80093D18(gfxCtx);
 
@@ -280,7 +280,7 @@ void DemoGj_DrawCommon(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList)
         gSPDisplayList(POLY_OPA_DISP++, displayList);
         gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-        CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -296,7 +296,7 @@ void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList
     gfxCtx = globalCtx->state.gfxCtx;
     matrix = Graph_Alloc(gfxCtx, sizeof(Mtx));
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     Matrix_Push();
     Matrix_RotateZYX(x, y, z, MTXMODE_APPLY);
@@ -309,7 +309,7 @@ void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList
     gSPDisplayList(POLY_OPA_DISP++, displayList);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void DemoGj_SetupRotation(DemoGj* this, GlobalContext* globalCtx) {

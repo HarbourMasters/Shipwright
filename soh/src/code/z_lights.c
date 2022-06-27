@@ -67,7 +67,7 @@ void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
 
 #if 1
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gSPNumLights(POLY_OPA_DISP++, lights->numLights);
     gSPNumLights(POLY_XLU_DISP++, lights->numLights);
@@ -88,7 +88,7 @@ void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
     gSPLight(POLY_OPA_DISP++, &lights->l.a, i);
     gSPLight(POLY_XLU_DISP++, &lights->l.a, i);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 #endif
 }
 
@@ -417,7 +417,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
 
     node = globalCtx->lightCtx.listHead;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -449,5 +449,5 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         node = node->next;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

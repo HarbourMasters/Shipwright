@@ -1524,7 +1524,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
     s16 i;
     BossFdEffect* firstEffect = effect;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     for (i = 0; i < 180; i++, effect++) {
         if (effect->type == BFD_FX_EMBER) {
@@ -1643,7 +1643,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -1652,7 +1652,7 @@ void BossFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     osSyncPrintf("FD DRAW START\n");
     if (this->actionFunc != BossFd_Wait) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
         if (this->work[BFD_DAMAGE_FLASH_TIMER] & 2) {
             POLY_OPA_DISP = Gfx_SetFog(POLY_OPA_DISP, 255, 255, 255, 0, 900, 1099);
@@ -1660,7 +1660,7 @@ void BossFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         BossFd_DrawBody(globalCtx, this);
         POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     osSyncPrintf("FD DRAW END\n");
@@ -1733,7 +1733,7 @@ void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec
     f32 phi_f20;
     f32 phi_f22;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     maneLength = this->skinSegments;
     maneLength = CLAMP_MAX(maneLength, 10);
@@ -1779,7 +1779,7 @@ void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec
         gSPDisplayList(POLY_XLU_DISP++, gVolvagiaManeModelDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 BossFd_OverrideHeadDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -1839,7 +1839,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     f32 temp_float;
     Mtx* tempMat = Graph_Alloc(globalCtx->state.gfxCtx, 18 * sizeof(Mtx));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->skinSegments != 0) {
         gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeState]));
     }
@@ -1993,5 +1993,5 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
 
     Matrix_Pop();
     osSyncPrintf("END\n");
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

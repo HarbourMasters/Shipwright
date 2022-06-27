@@ -85,7 +85,7 @@ void BgTokiHikari_Draw(Actor* thisx, GlobalContext* globalCtx) {
 void func_808BA018(BgTokiHikari* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -106,7 +106,7 @@ void func_808BA018(BgTokiHikari* this, GlobalContext* globalCtx) {
 
         gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_007EE0);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_808BA204(BgTokiHikari* this, GlobalContext* globalCtx) {
@@ -136,7 +136,7 @@ void func_808BA274(BgTokiHikari* this, GlobalContext* globalCtx) {
 void func_808BA2CC(BgTokiHikari* this, GlobalContext* globalCtx) {
     s32 pad[2];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Translate(0.0f, 276.0f, 1122.0f, MTXMODE_NEW);
     Matrix_Scale(0.32f, 0.32f, this->unk_14C * 7.0f, MTXMODE_APPLY);
     Matrix_RotateZ(M_PI, MTXMODE_APPLY);
@@ -181,5 +181,5 @@ void func_808BA2CC(BgTokiHikari* this, GlobalContext* globalCtx) {
 
     gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10);
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

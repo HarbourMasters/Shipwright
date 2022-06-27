@@ -70,7 +70,7 @@ void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot07Taki* this = (BgSpot07Taki*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     frames = globalCtx->gameplayFrames;
     if (LINK_IS_ADULT) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -115,5 +115,5 @@ void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         gSPDisplayList(POLY_XLU_DISP++, object_spot07_object_DL_0032D8);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

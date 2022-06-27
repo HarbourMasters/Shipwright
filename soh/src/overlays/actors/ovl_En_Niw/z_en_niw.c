@@ -1204,7 +1204,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     EnNiwFeather* feather = &this->feathers[0];
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -1225,7 +1225,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnNiw_Reset(void) {

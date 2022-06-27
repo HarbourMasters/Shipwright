@@ -766,7 +766,7 @@ void EnFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     frames = globalCtx->state.frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Push();
     EnFd_DrawDots(this, globalCtx);
@@ -790,7 +790,7 @@ void EnFd_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                            this->skelAnime.dListCount, EnFd_OverrideLimbDraw, EnFd_PostLimbDraw, this,
                                            POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFd_AddEffect(EnFd* this, u8 type, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 timer, f32 scale,
@@ -882,7 +882,7 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
     s16 idx;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     firstDone = false;
     if (1) {}
     func_80093D84(globalCtx->state.gfxCtx);
@@ -906,7 +906,7 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
@@ -914,7 +914,7 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
     s16 firstDone;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
@@ -939,5 +939,5 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -498,9 +498,9 @@ void DoorKiller_SetTexture(Actor* thisx, GlobalContext* globalCtx) {
     DoorKiller* this = (DoorKiller*)thisx;
     void* doorTexture = this->texture;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, doorTexture);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DoorKiller_DrawDoor(Actor* thisx, GlobalContext* globalCtx) {

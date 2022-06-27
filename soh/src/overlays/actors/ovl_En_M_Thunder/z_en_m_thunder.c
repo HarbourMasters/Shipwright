@@ -323,7 +323,7 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 phi_f14;
     s32 phi_t1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_Scale(0.02f, 0.02f, 0.02f, MTXMODE_APPLY);
     gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
@@ -393,5 +393,5 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPDisplayList(POLY_XLU_DISP++, gSpinAttackChargingDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

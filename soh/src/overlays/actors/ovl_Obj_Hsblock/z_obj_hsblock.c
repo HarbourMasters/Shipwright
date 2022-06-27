@@ -149,7 +149,7 @@ void ObjHsblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGB8* color;
     Color_RGB8 defaultColor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -168,5 +168,5 @@ void ObjHsblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params & 3]);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

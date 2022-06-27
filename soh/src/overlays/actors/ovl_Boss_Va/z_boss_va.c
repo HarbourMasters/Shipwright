@@ -2874,7 +2874,7 @@ s32 BossVa_BodyOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     BossVa* this = (BossVa*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 20) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -2894,7 +2894,7 @@ s32 BossVa_BodyOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
         rot->x -= 0xCCC;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return false;
 }
 
@@ -2903,7 +2903,7 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     Vec3f sp78 = { 0.0f, 0.0f, 0.0f };
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 6) {
         if (sFightPhase < PHASE_3) {
@@ -2966,7 +2966,7 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_MultVec3f(&sp78, &this->unk_274);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 BossVa_SupportOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
@@ -3157,7 +3157,7 @@ s32 BossVa_BariOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 void BossVa_BariPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     BossVa* this = (BossVa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 2) {
         gSPSegment(POLY_XLU_DISP++, 0x0A,
@@ -3172,7 +3172,7 @@ void BossVa_BariPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         gSPDisplayList(POLY_XLU_DISP++, *dList);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -3187,7 +3187,7 @@ void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp74 = { -15.0f, 40.0f, 0.0f };
     Color_RGBA8 unused = { 250, 250, 230, 200 };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     paramsPtr = &this->actor.params;
@@ -3292,7 +3292,7 @@ void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         BossVa_DrawDoor(globalCtx, sDoorState);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static s32 sUnkValue = 0x009B0000; // Unreferenced? Possibly a color
@@ -3518,7 +3518,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
     BossVaEffect* effectHead = effect;
     Camera* camera = Gameplay_GetCamera(globalCtx, sCsCamera);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_LARGE_SPARK) {
@@ -3734,7 +3734,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossVa_SpawnSpark(GlobalContext* globalCtx, BossVaEffect* effect, BossVa* this, Vec3f* offset, s16 scale,
@@ -4006,7 +4006,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     f32 segAngle = 0.0f;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(0.0f, 80.0f, 400.0f, MTXMODE_NEW);
     Matrix_RotateY(M_PI, MTXMODE_APPLY);
@@ -4031,7 +4031,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
         gSPDisplayList(POLY_OPA_DISP++, doorPieceDispList[i]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossVa_Reset(void) {

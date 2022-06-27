@@ -492,7 +492,7 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Mult(&player->shieldMf, MTXMODE_NEW);
         MirRay_SetIntensity(this, globalCtx);
         if (!(this->reflectIntensity <= 0.0f)) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             func_80093D84(globalCtx->state.gfxCtx);
             Matrix_Scale(1.0f, 1.0f, this->reflectIntensity * 5.0f, MTXMODE_APPLY);
@@ -529,7 +529,7 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             D_80B8E670 = 1;
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }

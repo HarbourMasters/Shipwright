@@ -242,7 +242,7 @@ void BgHidanCurtain_Update(Actor* thisx, GlobalContext* globalCtx2) {
 void BgHidanCurtain_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgHidanCurtain* this = (BgHidanCurtain*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 220, 0, this->alpha);
@@ -258,5 +258,5 @@ void BgHidanCurtain_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gEffFireCircleDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

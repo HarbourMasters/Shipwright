@@ -321,7 +321,7 @@ void BgSpot01Idohashira_Init(Actor* thisx, GlobalContext* globalCtx) {
 void func_808AB700(BgSpot01Idohashira* this, GlobalContext* globalCtx) {
     GraphicsContext* localGfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(localGfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(localGfxCtx);
 
     func_80093D18(localGfxCtx);
 
@@ -330,7 +330,7 @@ void func_808AB700(BgSpot01Idohashira* this, GlobalContext* globalCtx) {
     func_808AAF34(this, globalCtx);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoWellArchDL);
 
-    CLOSE_DISPS(localGfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(localGfxCtx);
 }
 
 void BgSpot01Idohashira_Draw(Actor* thisx, GlobalContext* globalCtx) {

@@ -458,7 +458,7 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     s16 i;
     s16 idx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
@@ -487,5 +487,5 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

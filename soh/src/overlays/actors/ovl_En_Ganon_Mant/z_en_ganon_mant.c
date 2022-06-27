@@ -364,7 +364,7 @@ void EnGanonMant_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
 
@@ -385,7 +385,7 @@ void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
     // draw cloak
     gSPDisplayList(POLY_OPA_DISP++, gMantDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx) {

@@ -123,7 +123,7 @@ void BgMenkuriEye_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgMenkuriEye* this = (BgMenkuriEye*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     if (Flags_GetSwitch(globalCtx, this->actor.params)) {
         gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 255);
@@ -139,7 +139,7 @@ void BgMenkuriEye_Draw(Actor* thisx, GlobalContext* globalCtx) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gGTGEyeStatueEyeDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgMenkuriEye_Reset(void) {

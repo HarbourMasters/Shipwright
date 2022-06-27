@@ -1280,7 +1280,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f blureVtx1;
     Vec3f blureVtx2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     blureBase1.z = this->maxSpeed * 80.0f;
     blureBase2.z = this->maxSpeed * 80.0f;
@@ -1348,5 +1348,5 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

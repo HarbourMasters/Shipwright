@@ -121,7 +121,7 @@ void BgSpot03Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u32 gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gameplayFrames = globalCtx->gameplayFrames;
 
@@ -150,7 +150,7 @@ void BgSpot03Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, object_spot03_object_DL_001580);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     this->bufferIndex = this->bufferIndex == 0;
 

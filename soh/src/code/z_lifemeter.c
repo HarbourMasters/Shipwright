@@ -412,7 +412,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     if (!(gSaveContext.health % 0x10)) {
         fullHeartCount--;
@@ -584,7 +584,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void HealthMeter_HandleCriticalAlarm(GlobalContext* globalCtx) {

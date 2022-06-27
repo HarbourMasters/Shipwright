@@ -155,7 +155,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     f32 ratio;
 
     FrameInterpolation_RecordOpenChild(this, 0);
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     if (this != NULL) {
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -276,6 +276,6 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     }
 
 end:
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
     FrameInterpolation_RecordCloseChild();
 }

@@ -654,7 +654,7 @@ void ObjOshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     ObjOshihiki* this = (ObjOshihiki*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (ObjOshihiki_MoveWithBlockUnder(this, globalCtx)) {
         Matrix_Translate(this->underDistX * 10.0f, 0.0f, this->underDistZ * 10.0f, MTXMODE_APPLY);
     }
@@ -682,5 +682,5 @@ void ObjOshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     gSPDisplayList(POLY_OPA_DISP++, gPushBlockDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -723,7 +723,7 @@ void EnVali_DrawBody(EnVali* this, GlobalContext* globalCtx) {
     f32 curFrame;
     Vec3f scale = { 1.0f, 1.0f, 1.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Get(&mtx);
     curFrame = this->skelAnime.curFrame;
@@ -769,7 +769,7 @@ void EnVali_DrawBody(EnVali* this, GlobalContext* globalCtx) {
 
     Matrix_Put(&mtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static Gfx D_80B28998[] = {
@@ -788,7 +788,7 @@ void EnVali_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnVali* this = (EnVali*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -805,5 +805,5 @@ void EnVali_Draw(Actor* thisx, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnVali_OverrideLimbDraw, EnVali_PostLimbDraw, this, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

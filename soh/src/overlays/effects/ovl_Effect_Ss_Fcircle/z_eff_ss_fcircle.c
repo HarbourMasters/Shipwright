@@ -49,7 +49,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 xzScale;
     f32 scale;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     scale = (this->rScale * (0.5f + (this->life * 0.025f))) * 0.01f;
     yScale = (this->rHeight * 0.001f) * scale;
@@ -68,7 +68,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsFcircle_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

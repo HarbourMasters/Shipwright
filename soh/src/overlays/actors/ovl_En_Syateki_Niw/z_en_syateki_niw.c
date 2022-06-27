@@ -766,7 +766,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
     u8 flag = 0;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -789,5 +789,5 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }

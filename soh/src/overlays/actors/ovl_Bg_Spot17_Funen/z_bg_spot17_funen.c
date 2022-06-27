@@ -55,7 +55,7 @@ void func_808B746C(Actor* thisx, GlobalContext* globalCtx) {
 void func_808B7478(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) - thisx->shape.rot.y + 0x8000) *
@@ -71,5 +71,5 @@ void func_808B7478(Actor* thisx, GlobalContext* globalCtx) {
 
     if (1) {}
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

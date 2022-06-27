@@ -166,7 +166,7 @@ void Title_Draw(TitleContext* this) {
     Vec3f v2;
     s32 pad2[2];
 
-    OPEN_DISPS(this->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(this->state.gfxCtx);
 
     v3.x = 69;
     v3.y = 69;
@@ -216,7 +216,7 @@ void Title_Draw(TitleContext* this) {
 
     sTitleRotY += 300;
 
-    CLOSE_DISPS(this->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void Title_Main(GameState* thisx) {
@@ -288,7 +288,7 @@ void Title_Main(GameState* thisx) {
         return;
     }
 
-    OPEN_DISPS(this->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(this->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0, NULL);
     gSPSegment(POLY_OPA_DISP++, 1, this->staticSegment);
@@ -316,7 +316,7 @@ void Title_Main(GameState* thisx) {
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);
     }
 
-    CLOSE_DISPS(this->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void Title_Destroy(GameState* thisx) {

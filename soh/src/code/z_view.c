@@ -181,7 +181,7 @@ void func_800AA550(View* view) {
     ASSERT(lrx <= SCREEN_WIDTH, "lrx <= SCREEN_WD", __FILE__, __LINE__);
     ASSERT(lry <= SCREEN_HEIGHT, "lry <= SCREEN_HT", __FILE__, __LINE__);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetScissor(POLY_OPA_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
@@ -190,7 +190,7 @@ void func_800AA550(View* view) {
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetScissor(POLY_KAL_DISP++, G_SC_NON_INTERLACE, ulx, uly, lrx, lry);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_800AA76C(View* view, f32 x, f32 y, f32 z) {
@@ -293,7 +293,7 @@ s32 func_800AAA9C(View* view) {
     Mtx* viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
     LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
@@ -460,7 +460,7 @@ s32 func_800AAA9C(View* view) {
     gSPMatrix(POLY_KAL_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     FrameInterpolation_RecordCloseChild();
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -470,7 +470,7 @@ s32 func_800AB0A8(View* view) {
     Mtx* projection;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
     LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
@@ -497,7 +497,7 @@ s32 func_800AB0A8(View* view) {
     gSPMatrix(POLY_XLU_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     gSPMatrix(POLY_KAL_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -509,7 +509,7 @@ s32 func_800AB2C4(View* view) {
 
     gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
     LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
@@ -532,7 +532,7 @@ s32 func_800AB2C4(View* view) {
 
     gSPMatrix(OVERLAY_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
@@ -547,7 +547,7 @@ s32 func_800AB560(View* view) {
     Mtx* viewing;
     GraphicsContext* gfxCtx = view->gfxCtx;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
     LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
@@ -592,19 +592,19 @@ s32 func_800AB560(View* view) {
 
     gSPMatrix(OVERLAY_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 
     return 1;
 }
 
 s32 func_800AB944(View* view) {
-    OPEN_DISPS(view->gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(view->gfxCtx);
 
     func_800ABE74(view->eye.x, view->eye.y, view->eye.z);
     guLookAt(view->viewingPtr, view->eye.x, view->eye.y, view->eye.z, view->lookAt.x, view->lookAt.y, view->lookAt.z,
              view->up.x, view->up.y, view->up.z);
 
-    CLOSE_DISPS(view->gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(view->gfxCtx);
 
     return 1;
 }

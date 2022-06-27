@@ -329,7 +329,7 @@ void EnHoll_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     // Only draw the plane if not invisible
     if (this->planeAlpha != 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         if (this->planeAlpha == 255) {
             gfxP = POLY_OPA_DISP;
@@ -354,6 +354,6 @@ void EnHoll_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = gfxP;
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

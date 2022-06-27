@@ -1044,7 +1044,7 @@ void EnGo_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnGo_DrawCurledUp(EnGo* this, GlobalContext* globalCtx) {
     Vec3f D_80A41BB4 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Push();
     func_80093D18(globalCtx->state.gfxCtx);
@@ -1057,13 +1057,13 @@ void EnGo_DrawCurledUp(EnGo* this, GlobalContext* globalCtx) {
     Matrix_MultVec3f(&D_80A41BB4, &this->actor.focus.pos);
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGo_DrawRolling(EnGo* this, GlobalContext* globalCtx) {
     Vec3f D_80A41BC0 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Push();
     func_80093D18(globalCtx->state.gfxCtx);
@@ -1075,7 +1075,7 @@ void EnGo_DrawRolling(EnGo* this, GlobalContext* globalCtx) {
     Matrix_MultVec3f(&D_80A41BC0, &this->actor.focus.pos);
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnGo_OverrideLimbDraw(GlobalContext* globalCtx, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -1123,7 +1123,7 @@ void EnGo_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
 void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGo* this = (EnGo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     EnGo_UpdateDust(this);
     Matrix_Push();
@@ -1145,7 +1145,7 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
         EnGo_DrawDust(this, globalCtx);
     }
 }
@@ -1206,7 +1206,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
     if (1) {}
@@ -1233,5 +1233,5 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

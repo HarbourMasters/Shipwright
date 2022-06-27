@@ -2444,7 +2444,7 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     f32 phi_f22;
     Vec3f sp110;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     sp110.x = globalCtx->envCtx.dirLight1.params.dir.x;
     sp110.y = globalCtx->envCtx.dirLight1.params.dir.y;
@@ -2563,13 +2563,13 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     }
 
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossMo_DrawWater(BossMo* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (1) {}
 
     Matrix_Push();
@@ -2593,14 +2593,14 @@ void BossMo_DrawWater(BossMo* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, gMorphaWaterDL);
 
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossMo_DrawCore(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BossMo* this = (BossMo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actor.world.pos.y > MO_WATER_LEVEL(globalCtx)) {
         BossMo_DrawWater(this, globalCtx);
     }
@@ -2719,7 +2719,7 @@ void BossMo_DrawCore(Actor* thisx, GlobalContext* globalCtx) {
 
         gSPDisplayList(POLY_XLU_DISP++, gMorphaWaterDL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     BossMo_DrawEffects(globalCtx->specialEffects, globalCtx);
 }
@@ -2729,7 +2729,7 @@ void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx) {
     BossMo* this = (BossMo*)thisx;
     u16 scroll;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (1) {}
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, (s8)(this->baseAlpha * 1.5f));
@@ -2748,7 +2748,7 @@ void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx) {
     if (this->drawActor) {
         BossMo_DrawTentacle(this, globalCtx);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx) {
@@ -2911,7 +2911,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     BossMoEffect* effectHead = effect;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
     Matrix_Push();
 
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
@@ -3048,7 +3048,7 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     }
 
     Matrix_Pop();
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossMo_Unknown(void) {

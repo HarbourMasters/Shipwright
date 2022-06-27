@@ -443,7 +443,7 @@ void EnKarebaba_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnKarebaba_DrawBaseShadow(EnKarebaba* this, GlobalContext* globalCtx) {
     MtxF mf;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80094044(globalCtx->state.gfxCtx);
 
@@ -455,7 +455,7 @@ void EnKarebaba_DrawBaseShadow(EnKarebaba* this, GlobalContext* globalCtx) {
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -467,7 +467,7 @@ void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 stemSections;
     f32 scale;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -534,7 +534,7 @@ void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_80026608(globalCtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (this->boundFloor != NULL) {
         EnKarebaba_DrawBaseShadow(this, globalCtx);

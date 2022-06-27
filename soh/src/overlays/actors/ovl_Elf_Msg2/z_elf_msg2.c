@@ -154,7 +154,7 @@ void ElfMsg2_Update(Actor* thisx, GlobalContext* globalCtx) {
 
 void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
 #if ZELDA_DEBUG
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (R_NAVI_MSG_REGION_ALPHA == 0) {
         return;
@@ -167,6 +167,6 @@ void ElfMsg2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_XLU_DISP++, D_809ADC38);
     gSPDisplayList(POLY_XLU_DISP++, sCubeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     #endif
 }

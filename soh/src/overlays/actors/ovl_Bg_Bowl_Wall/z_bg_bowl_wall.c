@@ -202,7 +202,7 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     BgBowlWall* this = (BgBowlWall*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x8,
@@ -217,5 +217,5 @@ void BgBowlWall_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gBowlingRound2WallDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -53,7 +53,7 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
 
     mapMarkData = &gLoadedPauseMarkDataTable[R_MAP_TEX_INDEX >> 1][i];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     while (true) {
         if (mapMarkData->markType == PAUSE_MAP_MARK_NONE) {
@@ -144,7 +144,7 @@ void PauseMapMark_DrawForDungeon(GlobalContext* globalCtx) {
         Matrix_Pop();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void PauseMapMark_Draw(GlobalContext* globalCtx) {

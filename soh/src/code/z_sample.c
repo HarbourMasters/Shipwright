@@ -11,7 +11,7 @@ void Sample_Draw(SampleContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     View* view = &this->view;
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
@@ -36,7 +36,7 @@ void Sample_Draw(SampleContext* this) {
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 0, 0);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Sample_Main(GameState* thisx) {

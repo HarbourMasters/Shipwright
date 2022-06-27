@@ -30,7 +30,7 @@ void PreNMI_Draw(PreNMIContext* this) {
 
     osSyncPrintf(VT_COL(YELLOW, BLACK) "prenmi_draw\n" VT_RST);
 
-    OPEN_DISPS(gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -38,7 +38,7 @@ void PreNMI_Draw(PreNMIContext* this) {
     gDPSetFillColor(POLY_OPA_DISP++, (GPACK_RGBA5551(255, 255, 255, 1) << 16) | GPACK_RGBA5551(255, 255, 255, 1));
     gDPFillRectangle(POLY_OPA_DISP++, 0, this->timer + 100, SCREEN_WIDTH - 1, this->timer + 100);
 
-    CLOSE_DISPS(gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void PreNMI_Main(GameState* thisx) {

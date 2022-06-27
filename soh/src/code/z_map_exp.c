@@ -599,7 +599,7 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
     s16 tempX, tempZ;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->interfaceCtx.minimapAlpha >= 0xAA) {
         func_80094A14(globalCtx->state.gfxCtx);
@@ -639,7 +639,7 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Minimap_Draw(GlobalContext* globalCtx) {
@@ -647,7 +647,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->pauseCtx.state < 4) {
         switch (globalCtx->sceneNum) {
@@ -819,7 +819,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s16 Map_GetFloorTextIndexOffset(s32 mapIndex, s32 floor) {

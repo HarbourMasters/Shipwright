@@ -144,7 +144,7 @@ void DoorGerudo_Update(Actor* thisx, GlobalContext* globalCtx) {
 void DoorGerudo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     DoorGerudo* this = (DoorGerudo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -157,5 +157,5 @@ void DoorGerudo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Actor_DrawDoorLock(globalCtx, this->unk_166, DOORLOCK_NORMAL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

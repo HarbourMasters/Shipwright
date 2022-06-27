@@ -616,7 +616,7 @@ Gfx* func_809CA518(GraphicsContext* gfxCtx) {
 void EnBox_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnBox* this = (EnBox*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     /*
     this->dyna.actor.flags & ACTOR_FLAG_7 is set by Init (if type is 4 or 6)
@@ -644,5 +644,5 @@ void EnBox_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                        EnBox_PostLimbDraw, this, POLY_XLU_DISP);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

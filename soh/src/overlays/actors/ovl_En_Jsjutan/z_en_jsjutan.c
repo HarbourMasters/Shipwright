@@ -375,7 +375,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     s16 i;
     Actor* parent = thisx->parent;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params == ENJSJUTAN_TYPE_01) {
         thisx->world.pos.x = parent->world.pos.x;
@@ -451,5 +451,5 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     }
     gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

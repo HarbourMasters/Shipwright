@@ -365,7 +365,7 @@ void BgMizuMovebg_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (1) {}
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     frames = globalCtx->gameplayFrames;
     func_80093D18(globalCtx->state.gfxCtx);
@@ -393,5 +393,5 @@ void BgMizuMovebg_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, this->dlist);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

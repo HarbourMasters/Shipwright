@@ -226,7 +226,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
     u8 greenEnv;
     u8 blueEnv;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL &&
         globalCtx->csCtx.npcActions[0]->action == 2) {
@@ -265,7 +265,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_808AD3D4(BgSpot02Objects* this, GlobalContext* globalCtx) {
@@ -288,7 +288,7 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     f32 lerp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[2] != NULL) {
         u16 temp_v1 = globalCtx->csCtx.npcActions[2]->urot.z * 0.00549325f;
@@ -329,5 +329,5 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

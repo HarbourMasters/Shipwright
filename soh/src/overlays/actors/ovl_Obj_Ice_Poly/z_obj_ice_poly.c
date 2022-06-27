@@ -193,7 +193,7 @@ void ObjIcePoly_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     ObjIcePoly* this = (ObjIcePoly*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002ED80(&this->actor, globalCtx, 0);
     Matrix_RotateZYX(0x500, 0, -0x500, MTXMODE_APPLY);
@@ -206,5 +206,5 @@ void ObjIcePoly_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, this->alpha);
     gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

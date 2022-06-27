@@ -409,7 +409,7 @@ void EnBubble_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnBubble* this = (EnBubble*)thisx;
     u32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc != EnBubble_Disappear) {
         func_80093D84(globalCtx->state.gfxCtx);
@@ -427,7 +427,7 @@ void EnBubble_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gBubbleDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc != EnBubble_Disappear) {
         this->actor.shape.shadowScale = (f32)((this->expansionWidth + 1.0f) * 0.2f);

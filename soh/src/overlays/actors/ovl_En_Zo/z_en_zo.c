@@ -180,7 +180,7 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
     u8 setup;
 
     effect = this->effects;
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
@@ -204,7 +204,7 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
         }
         effect++;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
@@ -212,7 +212,7 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
     s16 i;
     u8 setup;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
@@ -239,7 +239,7 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
         }
         effect++;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
@@ -248,7 +248,7 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
     u8 setup;
 
     effect = this->effects;
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
@@ -274,7 +274,7 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
         }
         effect++;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_TreadWaterRipples(EnZo* this, f32 scale, f32 targetScale, u8 alpha) {
@@ -808,7 +808,7 @@ void EnZo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Pop();
 
     if ((s32)this->alpha != 0) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         if (this->alpha == 255.0f) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexture]));
@@ -818,6 +818,6 @@ void EnZo_Draw(Actor* thisx, GlobalContext* globalCtx) {
             func_80034CC4(globalCtx, &this->skelAnime, EnZo_OverrideLimbDraw, EnZo_PostLimbDraw, thisx, this->alpha);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

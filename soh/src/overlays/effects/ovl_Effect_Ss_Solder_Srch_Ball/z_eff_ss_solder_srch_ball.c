@@ -232,7 +232,7 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     u32 blc2;
     s16* seenLink = this->actor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL | ZMODE_XLU;
     blc1 = GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
     blc2 = GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
@@ -250,5 +250,5 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     }
     draw_ico_sphere(&POLY_XLU_DISP, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

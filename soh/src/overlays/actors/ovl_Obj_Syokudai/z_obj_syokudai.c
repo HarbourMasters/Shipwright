@@ -265,7 +265,7 @@ void ObjSyokudai_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     timerMax = (((this->actor.params >> 6) & 0xF) * 50) + 100;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
@@ -304,5 +304,5 @@ void ObjSyokudai_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
