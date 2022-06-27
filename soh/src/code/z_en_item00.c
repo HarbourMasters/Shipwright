@@ -1249,10 +1249,28 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnItem00_NotesParticles(Actor* Parent, GlobalContext* globalCtx, s16 getItemId) {
-    // printf("getItemId[%s]\n",getItemId);
-    // if (getItemId == GI_MINUET_OF_FOREST || getItemId == GI_BOLERO_OF_FIRE || getItemId == GI_SERENADE_OF_WATER ||
-    // getItemId == GI_REQUIEM_OF_SPIRIT || getItemId == GI_NOCTURNE_OF_SHADOW || getItemId == GI_PRELUDE_OF_LIGHT ) {
-    s16 color_slot = getItemId - 2;
+    s16 color_slot;
+    switch (getItemId) {
+        case GI_MINUET_OF_FOREST:
+            color_slot = 0;
+            break;
+        case GI_BOLERO_OF_FIRE:
+            color_slot = 1;
+            break;
+        case GI_SERENADE_OF_WATER:
+            color_slot = 2;
+            break;
+        case GI_REQUIEM_OF_SPIRIT:
+            color_slot = 3;
+            break;
+        case GI_NOCTURNE_OF_SHADOW:
+            color_slot = 4;
+            break;
+        case GI_PRELUDE_OF_LIGHT:
+            color_slot = 5;
+            break;
+    }
+
     s16* colors[6][3] = {
         { 34, 255, 76 },   // Minuet Color
         { 177, 35, 35 },   // Bolero Color
