@@ -1448,7 +1448,6 @@ void EnWf_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         if (this->fireTimer != 0) {
             this->actor.colorFilterTimer++;
-            if (1) {}
             this->fireTimer--;
 
             if ((this->fireTimer % 4) == 0) {

@@ -879,7 +879,6 @@ void EnTite_CheckDamage(Actor* thisx, GlobalContext* globalCtx) {
         if (this->flipState == TEKTITE_FLIPPED) {
             EnTite_SetupFlipUpright(this);
         } else if ((this->action >= TEKTITE_IDLE) || (this->action >= TEKTITE_IDLE)) {
-            if (1) {}
             EnTite_SetupFlipOnBack(this);
         }
     }

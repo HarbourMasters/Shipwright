@@ -2708,8 +2708,7 @@ void BossTw_TwinrovaDeathCS(BossTw* this, GlobalContext* globalCtx) {
                     BossTw_AddFlameEffect(globalCtx, &pos, &velocity, &accel, Rand_ZeroFloat(2.0f) + 5, 1);
 
                     // fake code needed to match, tricks the compiler into allocating more stack
-                    if (1) {}
-                    if (zero) {
+                            if (zero) {
                         accel.x *= 2.0;
                     }
 
@@ -4314,8 +4313,7 @@ s32 BossTw_BlastShieldCheck(BossTw* this, GlobalContext* globalCtx) {
                     } else {
                         if (sShieldFireCharge != 0) {
                             sShieldFireCharge = 0;
-                            if (1) {}
-                            BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 0);
+                                            BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 0);
                         } else {
                             BossTw_AddShieldHitEffect(globalCtx, 10.0f, 0);
                             sShieldIceCharge++;

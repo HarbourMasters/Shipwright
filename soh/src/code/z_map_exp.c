@@ -876,7 +876,6 @@ void Map_Update(GlobalContext* globalCtx) {
                 if (R_MAP_TEX_INDEX != (R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor))) {
                     R_MAP_TEX_INDEX = R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor);
                 }
-                if (1) {} // Appears to be necessary to match
 
                 if (interfaceCtx->mapRoomNum != sLastRoomNum) {
                     // "Current floor = %d Current room = %x Number of rooms = %d"

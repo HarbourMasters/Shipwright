@@ -118,8 +118,7 @@ void ArrowFire_Hit(ArrowFire* this, GlobalContext* globalCtx) {
             this->radius = (((1.0f - offset) * scale) + 10.0f);
             this->unk_158 += ((2.0f - this->unk_158) * 0.1f);
             if (this->timer < 16) {
-                if (1) {}
-                this->alpha = ((this->timer * 0x23) - 0x118);
+                    this->alpha = ((this->timer * 0x23) - 0x118);
             }
         }
     }

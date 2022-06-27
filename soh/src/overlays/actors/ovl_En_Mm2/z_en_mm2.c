@@ -218,8 +218,7 @@ void func_80AAF3C0(EnMm2* this, GlobalContext* globalCtx) {
                         break;
                 };
                 if (this->unk_1F4 & 4) {
-                    if (1) {}
-                    this->unk_1F4 &= ~4;
+                            this->unk_1F4 &= ~4;
                     HIGH_SCORE(HS_MARATHON) += 1;
                 }
             }

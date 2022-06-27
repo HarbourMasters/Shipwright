@@ -929,7 +929,6 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, eff->color.r, eff->color.g, eff->color.b,
                             (u8)(eff->color.a * (this->fadeAlpha / 255.0f)));
             gDPPipeSync(POLY_XLU_DISP++);
-            if (1) {}
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);

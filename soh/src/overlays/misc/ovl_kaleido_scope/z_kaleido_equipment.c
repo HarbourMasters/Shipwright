@@ -617,7 +617,6 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
-            if (1) {}
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx,
                                                    gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);

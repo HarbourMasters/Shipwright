@@ -339,7 +339,6 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {
-            if (1) {}
             if (this->actor.world.rot.y > 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDoorRightDL);
             } else {

@@ -282,8 +282,7 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx) {
             if (divingGame->phase == ENDIVINGGAME_PHASE_ENDED) {
                 this->timer = 20;
                 this->actionFunc = EnExRuppy_Kill;
-                if (1) {}
-            } else if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
+                } else if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
                 Rupees_ChangeBy(this->rupeeValue);
                 func_80078884(NA_SE_SY_GET_RUPY);
                 divingGame->grabbedRupeesCounter++;

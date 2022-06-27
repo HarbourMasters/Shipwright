@@ -435,7 +435,6 @@ void func_800C2500(PreRender* this, s32 x, s32 y) {
                     }
                 }
             }
-            if (1) {}
             if (pxR2 > buffR[i]) {
                 for (j = 1; j < 15; j += 2) {
                     if ((i != j) && (buffR[j] <= buffR[i]) && (buffA[j] == 7)) {

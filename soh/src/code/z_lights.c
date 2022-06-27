@@ -120,8 +120,7 @@ void Lights_BindPoint(Lights* lights, LightParams* params, Vec3f* vec) {
 
             if (light != NULL) {
                 posDiff = sqrtf(posDiff);
-                if (1) {}
-                scale = posDiff / scale;
+                    scale = posDiff / scale;
                 scale = 1 - SQ(scale);
 
                 light->l.col[0] = light->l.colc[0] = params->point.color[0] * scale;
@@ -399,9 +398,7 @@ void Lights_GlowCheck(GlobalContext* globalCtx) {
             if ((multDest.z > 1.0f) && y >= shrink && y <= SCREEN_HEIGHT - shrink) {
                 wZ = (s32)((multDest.z * wDest) * 16352.0f) + 16352;
                 zBuf = OTRGetPixelDepth(x, y) * 4;
-                if (1) {}
-                if (1) {}
-
+        
                 if (wZ < (zBuf >> 3)) {
                     params->drawGlow = true;
                 }

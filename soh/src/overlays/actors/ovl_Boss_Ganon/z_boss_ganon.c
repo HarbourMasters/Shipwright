@@ -418,8 +418,7 @@ void BossGanon_Init(Actor* thisx, GlobalContext* globalCtx2) {
             } else {
                 thisx->update = func_808E1EB4;
                 thisx->draw = func_808E229C;
-                if (1) {}
-                thisx->speedXZ = 11.0f;
+                    thisx->speedXZ = 11.0f;
 
                 if (thisx->params == 0xC8) {
                     this->timers[0] = 7;

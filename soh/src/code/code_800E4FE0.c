@@ -187,9 +187,6 @@ AudioTask* func_800E5000(void) {
     if (gAudioContext.resetStatus == 0) {
         // msg = 0000RREE R = read pos, E = End Pos
         while (osRecvMesg(gAudioContext.cmdProcQueueP, &sp4C, OS_MESG_NOBLOCK) != -1) {
-            if (1) {}
-            if (1) {}
-            if (1) {}
             Audio_ProcessCmds(sp4C.data32);
             j++;
         }

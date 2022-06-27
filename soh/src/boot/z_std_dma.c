@@ -249,7 +249,6 @@ void DmaMgr_ProcessMsg(DmaRequest* req) {
 
     while (iter->vromEnd) {
         if (vrom >= iter->vromStart && vrom < iter->vromEnd) {
-            if (1) {} // Necessary to match
 
             if (iter->romEnd == 0) {
                 if (iter->vromEnd < vrom + size) {

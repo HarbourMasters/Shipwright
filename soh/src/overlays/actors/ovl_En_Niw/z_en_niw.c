@@ -539,10 +539,6 @@ void func_80AB6570(EnNiw* this, GlobalContext* globalCtx) {
                     posY += 20.0f;
                 }
                 if (posZ < 0.0f) {
-                    if (1) {} // Required to match
-                    if (1) {}
-                    if (1) {}
-                    if (1) {}
                     posZ -= 20.0f;
                 } else {
                     posZ += 20.0f;

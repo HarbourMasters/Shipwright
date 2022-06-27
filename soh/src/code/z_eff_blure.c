@@ -345,7 +345,6 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 
             vec1->x = (sp30.x * 0.5f * mode4Param * ratio) + elem->p1.x;
             vec1->y = (sp30.y * 0.5f * mode4Param * ratio) + elem->p1.y;
-            if (1) {} // Necessary to match
             vec1->z = (sp30.z * 0.5f * mode4Param * ratio) + elem->p1.z;
 
             vec2->x = -(sp30.x * 0.5f * mode4Param * ratio) + elem->p2.x;
@@ -785,8 +784,6 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
                 gDPPipeSync(POLY_XLU_DISP++);
             }
 
-            if (1) {} // Necessary to match
-
             gSPVertex(POLY_XLU_DISP++, &vtx[j], 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 3, 0, 0, 3, 2, 0);
 
@@ -1044,8 +1041,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                            if (1) {} // Necessary to match
-
+                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }

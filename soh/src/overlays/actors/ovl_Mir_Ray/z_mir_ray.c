@@ -440,11 +440,6 @@ void MirRay_ReflectedBeam(MirRay* this, GlobalContext* globalCtx, MirRayShieldRe
 
                 currentReflection->mtx.zw = 0.0f;
 
-                if (1) {}
-                if (1) {}
-                if (1) {}
-                if (1) {} // All four required to match
-
                 currentReflection->mtx.xx = currentReflection->mtx.yy = currentReflection->mtx.zz =
                     currentReflection->mtx.ww = 1.0f;
                 currentReflection->mtx.yx = currentReflection->mtx.zx = currentReflection->mtx.wx =

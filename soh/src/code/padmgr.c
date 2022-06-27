@@ -73,7 +73,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                     if (padMgr->rumbleEnable[i] != 0) {
                         if (padMgr->rumbleCounter[i] < 3) {
                             // clang-format off
-                            if (1) {} osSyncPrintf(VT_FGCOL(YELLOW));
+                            osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
 
                             // "Vibration pack jumble jumble"?
@@ -95,7 +95,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                     } else {
                         if (padMgr->rumbleCounter[i] != 0) {
                             // clang-format off
-                            if (1) {} osSyncPrintf(VT_FGCOL(YELLOW));
+                            osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
 
                             // "Stop vibration pack"

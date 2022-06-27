@@ -688,8 +688,6 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                     break;
             }
 
-            if (1) {}
-            if (1) {}
             Matrix_Translate(this->effects[i].base.x + this->effects[i].pos.x,
                              this->effects[i].base.y + this->effects[i].pos.y,
                              this->effects[i].base.z + this->effects[i].pos.z, MTXMODE_NEW);

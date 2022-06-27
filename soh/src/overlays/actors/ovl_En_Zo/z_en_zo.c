@@ -187,8 +187,7 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
         if (effect->type == ENZO_EFFECT_RIPPLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
-                if (1) {}
-                gDPPipeSync(POLY_XLU_DISP++);
+                    gDPPipeSync(POLY_XLU_DISP++);
                 gSPDisplayList(POLY_XLU_DISP++, gZoraRipplesMaterialDL);
                 gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
                 setup = true;
@@ -219,8 +218,7 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
         if (effect->type == ENZO_EFFECT_BUBBLE) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
-                if (1) {}
-                gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesMaterialDL);
+                    gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesMaterialDL);
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetEnvColor(POLY_XLU_DISP++, 150, 150, 150, 0);
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
@@ -255,8 +253,7 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
         if (effect->type == ENZO_EFFECT_SPLASH) {
             FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
-                if (1) {}
-                gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesMaterialDL);
+                    gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesMaterialDL);
                 gDPPipeSync(POLY_XLU_DISP++);
                 gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 200, 0);
                 setup = true;

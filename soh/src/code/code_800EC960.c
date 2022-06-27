@@ -3014,14 +3014,12 @@ void AudioDebug_ProcessInput_SndCont(void) {
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CDOWN)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F595C(sAudioSndContWork[sAudioSndContSel]);
         }
     }
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CRIGHT)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F5ACC(sAudioSndContWork[sAudioSndContSel]);
         }
     }

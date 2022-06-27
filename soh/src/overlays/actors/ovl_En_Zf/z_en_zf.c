@@ -2261,7 +2261,6 @@ void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 EffectSsEnIce_SpawnFlyingVec3f(globalCtx, thisx, &this->bodyPartsPos[icePosIndex], 150, 150, 150, 250,
                                                235, 245, 255, 1.4f);
             }
-            if (1) {}
         }
     } else { // fades out when dead
         func_80093D84(globalCtx->state.gfxCtx);

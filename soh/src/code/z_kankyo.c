@@ -958,7 +958,6 @@ void Environment_Update(GlobalContext* globalCtx, EnvironmentContext* envCtx, Li
             gSPEndDisplayList(displayList++);
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
-            if (1) {}
             CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
@@ -1547,7 +1546,6 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
 
             alpha *= 1.0f - fogInfluence;
 
-            if (1) {}
 
             if (!(isOffScreen ^ 0)) {
                 Math_SmoothStepToF(&envCtx->unk_88, unk88Target, 0.5f, 0.05f, 0.001f);

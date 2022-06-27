@@ -3592,8 +3592,7 @@ void Fishing_UpdateFish(Actor* thisx, GlobalContext* globalCtx2) {
             if (D_80B7E124 == 0) {
                 if ((D_80B7FEA0 < 20) && ((D_80B7E0AE & 3) == 0)) {
                     D_80B7FEA0++;
-                    if (1) {}
-                }
+                        }
             }
 
             if ((D_80B7E122 != 0) && (D_80B7E124 == 0)) {

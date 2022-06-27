@@ -291,7 +291,6 @@ void func_80AF95C4(EnSda* this, u8* shadowTexture, Player* player, GlobalContext
         Matrix_RotateX((sp178.x / 32768.0f) * M_PI, MTXMODE_APPLY);
         for (i = 0; i < 22; i++) {
             Matrix_MultVec3f(&D_80AFA180[i], &sp188);
-            if (1) {}
             sp64[i].x = (((KREG(82) / 100.0f) + 4.0f) * sp188.x) + sp16C.x;
             sp64[i].y = (((KREG(82) / 100.0f) + 4.0f) * sp188.y) + sp16C.y;
             sp64[i].z = (((KREG(82) / 100.0f) + 4.0f) * sp188.z) + sp16C.z;

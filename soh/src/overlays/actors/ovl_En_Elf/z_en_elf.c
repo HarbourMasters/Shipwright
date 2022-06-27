@@ -849,7 +849,6 @@ void func_80A03CF8(EnElf* this, GlobalContext* globalCtx) {
         EnElf_GetCutsceneNextPos(&nextPos, globalCtx, 8);
 
         if (globalCtx->csCtx.npcActions[8]->action == 5) {
-            if (1) {}
             EnElf_SpawnSparkles(this, globalCtx, 16);
         }
 
@@ -863,7 +862,6 @@ void func_80A03CF8(EnElf* this, GlobalContext* globalCtx) {
 
         if ((globalCtx->sceneNum == SCENE_LINK_HOME) && (gSaveContext.sceneSetupIndex == 4)) {
             // play dash sound as Navi enters Links house in the intro
-            if (1) {}
             if (globalCtx->csCtx.frames == 55) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
             }

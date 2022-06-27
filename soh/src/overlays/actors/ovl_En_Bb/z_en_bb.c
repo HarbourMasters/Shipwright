@@ -1297,8 +1297,7 @@ void EnBb_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 //! the above bugs mean unk_2A8 can be nonzero without damage effects ever having been set.
                 //! This routine will then increment colorFilterTimer, and on the next frame Actor_Draw will try
                 //! to draw the unset colorFilterParams. This causes a divide-by-zero error, crashing the game.
-                if (1) {}
-                this->fireIceTimer--;
+                    this->fireIceTimer--;
                 if ((this->fireIceTimer % 4) == 0) {
                     Vec3f sp70;
                     s32 index = this->fireIceTimer >> 2;

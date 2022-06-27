@@ -2156,8 +2156,7 @@ s32 DbCamera_UpdateDemoControl(DbCamera* dbCamera, Camera* cam) {
                     sLastFileIdx = sCurFileIdx;
                     D_801612EA = sDbCameraCuts[idx1].letter;
                 }
-                if (1) {}
-            } else if (!CHECK_BTN_ALL(sGlobalCtx->state.input[2].cur.button, BTN_L)) {
+                } else if (!CHECK_BTN_ALL(sGlobalCtx->state.input[2].cur.button, BTN_L)) {
                 if (sLastFileIdx != -1) {
                     switch (sp74[sCurFileIdx]) {
                         case '?':

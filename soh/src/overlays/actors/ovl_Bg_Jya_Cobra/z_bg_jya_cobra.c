@@ -309,8 +309,7 @@ void BgJyaCobra_UpdateShadowFromSide(BgJyaCobra* this) {
                         if (!(temp_x & ~0x3F)) {
                             temp_s2[temp_z + temp_x] |= D_8089731C[k][l];
                         }
-                        if (1) {}
-                    }
+                                }
                 }
             }
         }

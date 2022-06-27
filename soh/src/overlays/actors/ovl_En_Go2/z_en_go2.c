@@ -178,7 +178,6 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
         if (dustEffect->type != 1) {
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
-            if (1) {}
             timer = initialTimer;
             dustEffect->timer = timer;
             dustEffect->type = 1;

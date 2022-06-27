@@ -5401,7 +5401,6 @@ s32 Camera_Unique9(Camera* camera) {
             }
 
             spB4 = scratchSph.r;
-            if (1) {}
             scratchSph.r =
                 !(spB4 < anim->curKeyFrame->eyeTargetInit.z)
                     ? Camera_LERPCeilF(anim->curKeyFrame->eyeTargetInit.z, spB4, anim->curKeyFrame->lerpStepScale, 1.0f)

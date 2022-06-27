@@ -1411,8 +1411,7 @@ void BossMo_IntroCs(BossMo* this, GlobalContext* globalCtx) {
                 this->cameraEyeVel.x = fabsf(this->cameraEye.x - 111.0f) * 0.1f;
                 this->cameraEyeVel.y = fabsf(this->cameraEye.y - 133.0f) * 0.1f;
                 this->cameraEyeVel.z = fabsf(this->cameraEye.z - -191.0f) * 0.1f;
-                if (1) {}
-                this->csState = MO_INTRO_FINISH;
+                    this->csState = MO_INTRO_FINISH;
                 this->timers[2] = 110;
                 this->cameraNextEye.x = 111.0f;
                 this->cameraNextEye.y = 133.0f;
@@ -1590,8 +1589,7 @@ void BossMo_DeathCs(BossMo* this, GlobalContext* globalCtx) {
                 this->cameraSpeedMod = 0.0f;
                 this->cameraAccel = 0.02f;
                 this->cameraNextAt.y = 320.0f;
-                if (1) {}
-                this->timers[0] = 100;
+                    this->timers[0] = 100;
                 sMorphaTent1->drawActor = true;
                 sMorphaTent1->work[MO_TENT_ACTION_STATE] = MO_TENT_DEATH_3;
                 sMorphaTent1->actor.shape.rot.x = 0;

@@ -2866,8 +2866,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                         break;
                     }
 
-                    if (1) {}
-                    if (sOcarinaNotesAlphaValues[i] != 255) {
+                            if (sOcarinaNotesAlphaValues[i] != 255) {
                         sOcarinaNotesAlphaValues[i] += VREG(50);
                         if (sOcarinaNotesAlphaValues[i] >= 255) {
                             sOcarinaNotesAlphaValues[i] = 255;

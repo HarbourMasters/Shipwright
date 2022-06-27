@@ -1098,7 +1098,6 @@ void DemoEffect_UpdateLightEffect(DemoEffect* this, GlobalContext* globalCtx) {
         }
 
         if (globalCtx->sceneNum == SCENE_TOKINOMA && gSaveContext.sceneSetupIndex == 14) {
-            if (1) {}
 
             if (globalCtx->csCtx.npcActions[this->csActionId]->action == 2) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_LIGHT_GATHER - SFX_FLAG);
@@ -1837,7 +1836,6 @@ void DemoEffect_DrawGodLgt(Actor* thisx, GlobalContext* globalCtx) {
         this->godLgt.rotation++;
         if (this->godLgt.rotation > 120) {
             this->godLgt.rotation = 0;
-            if (1) {}
         }
 
         Matrix_RotateZ((((s32)this->godLgt.rotation) * 3.0f) * (M_PI / 180.0f), MTXMODE_APPLY);
