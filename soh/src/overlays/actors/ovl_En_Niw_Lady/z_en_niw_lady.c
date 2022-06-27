@@ -200,7 +200,7 @@ void func_80ABA244(EnNiwLady* this, GlobalContext* globalCtx) {
     EnNiw* currentCucco;
     s32 phi_s1;
 
-    this->cuccosInPen = 0;
+    this->cuccosInPen = gSaveContext.n64ddFlag ? (7 - GetRandoSettingValue(RSK_CUCCO_COUNT)) : 0;
     currentCucco = (EnNiw*)globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (currentCucco != NULL) {
         if (currentCucco->actor.id == ACTOR_EN_NIW) {

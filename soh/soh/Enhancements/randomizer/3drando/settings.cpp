@@ -2521,6 +2521,7 @@ namespace Settings {
 
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
 
+    NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
     BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
 
     SkipEponaRace.SetSelectedIndex(cvarSettings[RSK_SKIP_EPONA_RACE]);
