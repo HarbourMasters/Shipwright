@@ -417,7 +417,7 @@ static void WriteStartingInventory() {
         jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
       }
 
-      if (setting->GetName() == "Start with Consumables") {
+      if (setting->GetName() == "Start with Consumables" || setting->GetName() == "Start with Max Rupees") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }

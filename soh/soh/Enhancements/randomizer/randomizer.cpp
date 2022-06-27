@@ -1403,6 +1403,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
     { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+    { "Start with Max Rupees", RSK_FULL_WALLETS },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE}
@@ -1657,6 +1658,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         gSaveContext.randoSettings[index].value = it.value();
                         break;
                     case RSK_STARTING_CONSUMABLES:
+                    case RSK_FULL_WALLETS:
                         if(it.value() == "No") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "Yes") {
@@ -3218,6 +3220,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
+    cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
     cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
     cvarSettings[RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak10SkullReward", 0);
@@ -4070,6 +4073,8 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                     SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
+                    SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                    InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
 
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
