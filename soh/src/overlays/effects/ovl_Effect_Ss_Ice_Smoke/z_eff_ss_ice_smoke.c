@@ -79,7 +79,7 @@ void EffectSsIceSmoke_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         scale = this->rScale * 0.0001f;
         Matrix_Scale(scale, scale, 1.0f, MTXMODE_APPLY);
 
-        mtx = Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        mtx = Matrix_NewMtx(globalCtx->state.gfxCtx);
 
         if (mtx != NULL) {
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);

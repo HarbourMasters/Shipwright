@@ -617,7 +617,7 @@ void BgPoEvent_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
         gDPSetEnvColor(POLY_OPA_DISP++, 255, 255, 255, alpha);
     }
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, displayLists[this->type]);
     CLOSE_DISPS(globalCtx->state.gfxCtx);

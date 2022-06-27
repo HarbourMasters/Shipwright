@@ -506,7 +506,7 @@ void EnViewer_Ganondorf9PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gf
     if (limbIndex == 11) {
         OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
         CLOSE_DISPS(globalCtx->state.gfxCtx);
@@ -852,7 +852,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                                     (10 * i - 20 * globalCtx->state.frames) % 512, 32, 128));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 170, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 50, 00, 255);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);

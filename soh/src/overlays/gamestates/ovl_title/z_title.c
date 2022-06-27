@@ -188,7 +188,7 @@ void Title_Draw(TitleContext* this) {
     Matrix_Scale(1.0, 1.0, 1.0, MTXMODE_APPLY);
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(this->state.gfxCtx, __FILE__, __LINE__), G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(this->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
     func_800944C4(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);

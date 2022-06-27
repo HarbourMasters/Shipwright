@@ -244,7 +244,7 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_RotateZ(this->actor.world.rot.z + i * 1000.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);

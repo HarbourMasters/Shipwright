@@ -65,7 +65,7 @@ void EndTitle_DrawFull(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_RotateX(0xBB8 * M_PI / 0x8000, MTXMODE_APPLY);
     Matrix_RotateY(0.0f, MTXMODE_APPLY);
     Matrix_RotateZ(0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__), G_MTX_LOAD);
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, sTriforceDL);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

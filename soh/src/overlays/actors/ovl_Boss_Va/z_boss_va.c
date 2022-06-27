@@ -2914,11 +2914,11 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_MultVec3f(&sp78, &this->unk_1D8);
     } else if ((limbIndex >= 10) && (limbIndex < 20) && (sBodyBari[limbIndex - 10] != 0)) {
         if (((limbIndex >= 16) || (limbIndex == 10)) && (sFightPhase <= PHASE_3)) {
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008BB8);
         } else if ((limbIndex >= 11) && (sFightPhase <= PHASE_2)) {
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008BB8);
         }
@@ -2933,11 +2933,11 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, (globalCtx->gameplayFrames * 10) % 128, 16, 32, 1, 0,
                                     (globalCtx->gameplayFrames * 5) % 128, 16, 32));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008D70);
     } else if ((*dList != NULL) && (limbIndex >= 29) && (limbIndex < 56)) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, *dList);
     } else if ((limbIndex == 24) && (sCsState < DEATH_START)) {
@@ -3163,11 +3163,11 @@ void BossVa_BariPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         gSPSegment(POLY_XLU_DISP++, 0x0A,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, (globalCtx->gameplayFrames * 10) % 32, 16, 32, 1, 0,
                                     (globalCtx->gameplayFrames * -5) % 32, 16, 32));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_000FA0);
     } else if ((limbIndex == 3) || (limbIndex == 4)) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, *dList);
     }
@@ -3533,7 +3533,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale * 0.0185f, effect->scale * 0.0185f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
             FrameInterpolation_RecordCloseChild();
@@ -3554,7 +3554,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sSparkBallTex[effect->mode]));
@@ -3593,7 +3593,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
             gDPPipeSync(POLY_XLU_DISP++);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_009468);
             FrameInterpolation_RecordCloseChild();
@@ -3618,7 +3618,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
                 Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
                 Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012948);
             }
@@ -3652,7 +3652,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateY(-(effect->offset.x * 0.13f), MTXMODE_APPLY);
             Matrix_RotateX(-(effect->offset.x * 0.115f), MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012C50);
             FrameInterpolation_RecordCloseChild();
@@ -3677,7 +3677,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateZYX(effect->rot.x, effect->rot.y, 0, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_013638);
             FrameInterpolation_RecordCloseChild();
@@ -3701,7 +3701,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale * 0.02f, effect->scale * 0.02f, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
             FrameInterpolation_RecordCloseChild();
@@ -3725,7 +3725,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateY((effect->rot.y / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008F70);
             FrameInterpolation_RecordCloseChild();
@@ -4024,7 +4024,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
         Matrix_RotateZ(segAngle, MTXMODE_APPLY);
         Matrix_Translate(0.0f, doorPieceLength[i] * yScale, 0.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, doorPieceDispList[i]);
     }

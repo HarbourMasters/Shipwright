@@ -627,7 +627,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[0] + kREG(31), unk_28C[1] + kREG(32), unk_28C[2] + kREG(33), MTXMODE_APPLY);
         Matrix_Translate(-188.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[0], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[0]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -635,7 +635,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[3] + kREG(34), unk_28C[4] + kREG(35), unk_28C[5] + kREG(36), MTXMODE_APPLY);
         Matrix_Translate(-410.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[1], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[1]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -643,7 +643,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[6] + kREG(37), unk_28C[7] + kREG(38), unk_28C[8] + kREG(39), MTXMODE_APPLY);
         Matrix_Translate(-1019.0f, -26.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[2], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[2]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(467.0f, 265.0f, 389.0f, MTXMODE_APPLY);
@@ -656,7 +656,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[9] + kREG(40), unk_28C[10] + kREG(41), unk_28C[11] + kREG(42), MTXMODE_APPLY);
         Matrix_Translate(-427.0f, -1.0f, -3.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[3], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[3]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -666,7 +666,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[12] + kREG(43), unk_28C[13] + kREG(44), unk_28C[14] + kREG(45), MTXMODE_APPLY);
         Matrix_Translate(-446.0f, -52.0f, 84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[4], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[4]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(467.0f, 265.0f, -389.0f, MTXMODE_APPLY);
@@ -679,7 +679,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[15] + kREG(46), unk_28C[16] + kREG(47), unk_28C[17] + kREG(48), MTXMODE_APPLY);
         Matrix_Translate(-427.0f, -1.0f, 3.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[5], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[5]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -689,7 +689,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[18] + kREG(49), unk_28C[19] + kREG(50), unk_28C[20] + kREG(51), MTXMODE_APPLY);
         Matrix_Translate(-446.0f, -52.0f, -84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[6], __FILE__, __LINE__);
+        Matrix_ToMtx(&sp78[6]);
         Matrix_Pop();
         Matrix_Pop();
         this->unk_2FC = 1;
@@ -2460,23 +2460,23 @@ s32 func_80B5944C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         Matrix_RotateZYX(rot->x, rot->y, rot->z, MTXMODE_APPLY);
         Matrix_Push();
         Matrix_Translate(174.0f, -317.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[0], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[0]);
         Matrix_Translate(-410.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[1], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[1]);
         Matrix_Translate(-1019.0f, -26.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[2], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[2]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(40.0f, 264.0f, 386.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[3], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[3]);
         Matrix_Translate(-446.0f, -52.0f, 84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[4], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[4]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(40.0f, 264.0f, -386.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[5], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[5]);
         Matrix_Translate(-446.0f, -52.0f, -84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[6], __FILE__, __LINE__);
+        Matrix_ToMtx(&mtx[6]);
         Matrix_Pop();
         Matrix_Pop();
     }

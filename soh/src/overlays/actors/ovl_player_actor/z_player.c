@@ -10954,13 +10954,13 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
-            Matrix_ToMtx(sp70++, __FILE__, __LINE__);
+            Matrix_ToMtx(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
-            Matrix_ToMtx(sp70, __FILE__, __LINE__);
+            Matrix_ToMtx(sp70);
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
@@ -10992,7 +10992,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                 this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                 Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0,
@@ -11120,7 +11120,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                     0, (globalCtx->gameplayFrames * -2) % 128, 32, 32));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
             gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);

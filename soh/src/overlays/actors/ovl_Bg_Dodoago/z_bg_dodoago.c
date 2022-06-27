@@ -313,7 +313,7 @@ void BgDodoago_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (Flags_GetEventChkInf(0xB0)) {
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDodongoLowerJawDL);
     }

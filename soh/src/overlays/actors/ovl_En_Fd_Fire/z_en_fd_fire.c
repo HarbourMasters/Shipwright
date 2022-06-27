@@ -266,7 +266,7 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x8,

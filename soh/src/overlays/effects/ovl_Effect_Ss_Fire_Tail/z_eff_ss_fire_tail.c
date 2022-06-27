@@ -119,7 +119,7 @@ void EffectSsFireTail_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
 
     Matrix_Scale(1.0f, temp1, 1.0f / temp1, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D84(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB, 255);

@@ -1255,7 +1255,7 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
         texIndex = this->actor.params - 0x10;
     }
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
@@ -1285,7 +1285,7 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
@@ -1302,13 +1302,13 @@ void EnItem00_DrawHeartContainer(EnItem00* this, GlobalContext* globalCtx) {
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_8002EBCC(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gHeartPieceExteriorDL);
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartContainerInteriorDL);
 
@@ -1325,7 +1325,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
 

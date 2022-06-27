@@ -150,7 +150,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
                 Matrix_Translate(0.0f, 0.0f, depth, MTXMODE_APPLY);
                 Matrix_RotateZ((this->life * 0.02f) + 180.0f, MTXMODE_APPLY);
                 Matrix_Scale(layer2Scale, layer2Scale, layer2Scale, MTXMODE_APPLY);
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffBombExplosion3DL);
                 layer2Scale -= 0.15f;

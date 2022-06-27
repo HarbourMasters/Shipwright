@@ -87,7 +87,7 @@ void func_808BA018(BgTokiHikari* this, GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (LINK_IS_ADULT) {
@@ -101,7 +101,7 @@ void func_808BA018(BgTokiHikari* this, GlobalContext* globalCtx) {
         gSPSegment(POLY_XLU_DISP++, 9,
                    Gfx_TexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 128, 64, 32));
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_007EE0);
@@ -148,7 +148,7 @@ void func_808BA2CC(BgTokiHikari* this, GlobalContext* globalCtx) {
 
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)(this->unk_14C * 155.0f) + 100, (u8)(255.0f * this->unk_14C), 0, 128);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -164,7 +164,7 @@ void func_808BA2CC(BgTokiHikari* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)(this->unk_14C * 255.0f), (u8)(this->unk_14C * 255.0f),
                    (u8)(this->unk_14C * 255.0f), (u8)(200.0f * this->unk_14C));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, object_toki_objects_DL_0009C0);
@@ -176,7 +176,7 @@ void func_808BA2CC(BgTokiHikari* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, (u8)(this->unk_14C * 255.0f), (u8)(this->unk_14C * 255.0f),
                    (u8)(this->unk_14C * 255.0f), (u8)(200.0f * this->unk_14C));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayListOffset(POLY_XLU_DISP++, object_toki_objects_DL_0009C0, 10);

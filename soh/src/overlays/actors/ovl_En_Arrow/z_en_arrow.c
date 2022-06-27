@@ -482,7 +482,7 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                                      : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
                        MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
         Matrix_Pop();

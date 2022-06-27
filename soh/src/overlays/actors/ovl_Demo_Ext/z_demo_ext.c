@@ -197,7 +197,7 @@ void DemoExt_DrawVortex(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Scale(scale->x, scale->y, scale->z, MTXMODE_APPLY);
     Matrix_RotateZYX((s16)(kREG(16) + 0x4000), this->rotationPitch, kREG(18), MTXMODE_APPLY);
     Matrix_Translate(kREG(22), kREG(23), kREG(24), MTXMODE_APPLY);
-    Matrix_ToMtx(mtx, __FILE__, __LINE__);
+    Matrix_ToMtx(mtx);
     Matrix_Pop();
     func_80093D84(gfxCtx);
 

@@ -818,14 +818,14 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateY(-(this->eggSquishAngle * 0.15f), MTXMODE_APPLY);
             Matrix_Translate(0.0f, this->eggYOffset, 0.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->eggPitch, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gObjectGolEggDL);
             Matrix_Pop();
             break;
 
         case ENGOMA_HATCH_DEBRIS:
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBrownFragmentDL);
             break;
@@ -833,7 +833,7 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
         case ENGOMA_BOSSLIMB:
             if (this->bossLimbDl != NULL) {
                 gSPSegment(POLY_OPA_DISP++, 0x08, EnGoma_NoBackfaceCullingDlist(globalCtx->state.gfxCtx));
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, this->bossLimbDl);
             }

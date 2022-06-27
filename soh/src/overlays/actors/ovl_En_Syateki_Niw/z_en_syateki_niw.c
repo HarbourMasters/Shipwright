@@ -783,7 +783,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
         }

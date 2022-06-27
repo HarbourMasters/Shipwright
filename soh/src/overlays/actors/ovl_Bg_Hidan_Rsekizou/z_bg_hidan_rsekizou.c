@@ -215,7 +215,7 @@ Gfx* BgHidanRsekizou_DrawFireball(GlobalContext* globalCtx, BgHidanRsekizou* thi
     mf->zw = (tmpf7 * coss) + this->dyna.actor.world.pos.z;
 
     gSPMatrix(displayList++,
-              Matrix_MtxFToMtx(Matrix_CheckFloats(mf, __FILE__, __LINE__),
+              Matrix_MtxFToMtx(Matrix_CheckFloats(mf),
                                Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx))),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(displayList++, gFireTempleFireballDL);
@@ -233,7 +233,7 @@ void BgHidanRsekizou_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gFireTempleSpinningFlamethrowerDL);
     Matrix_MtxFCopy(&mf, &gMtxFClear);

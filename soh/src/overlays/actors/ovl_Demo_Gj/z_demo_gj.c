@@ -274,7 +274,7 @@ void DemoGj_DrawCommon(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList)
 
         func_80093D18(gfxCtx);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                   G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, displayList);
@@ -300,7 +300,7 @@ void DemoGj_DrawRotated(DemoGj* this, GlobalContext* globalCtx, Gfx* displayList
 
     Matrix_Push();
     Matrix_RotateZYX(x, y, z, MTXMODE_APPLY);
-    Matrix_ToMtx(matrix, __FILE__, __LINE__);
+    Matrix_ToMtx(matrix);
     Matrix_Pop();
 
     func_80093D18(gfxCtx);

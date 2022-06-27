@@ -265,7 +265,7 @@ s32 func_800AA890(View* view, Mtx* mtx) {
     Matrix_RotateZ(-view->unk_104.z, MTXMODE_APPLY);
     Matrix_RotateY(-view->unk_104.y, MTXMODE_APPLY);
     Matrix_RotateX(-view->unk_104.x, MTXMODE_APPLY);
-    Matrix_ToMtx(mtx, __FILE__, __LINE__);
+    Matrix_ToMtx(mtx);
 
     return 1;
 }

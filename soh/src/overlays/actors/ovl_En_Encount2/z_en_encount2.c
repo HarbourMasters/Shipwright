@@ -362,7 +362,7 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_Scale(particle->scale, particle->scale, particle->scale, MTXMODE_APPLY);
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
                 gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
             }

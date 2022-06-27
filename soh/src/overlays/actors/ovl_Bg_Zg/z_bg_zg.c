@@ -126,7 +126,7 @@ void func_808C0EEC(BgZg* this, GlobalContext* globalCtx) {
     OPEN_DISPS(localGfxCtx);
 
     func_80093D18(localGfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(localGfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(localGfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseBarsDL);
 

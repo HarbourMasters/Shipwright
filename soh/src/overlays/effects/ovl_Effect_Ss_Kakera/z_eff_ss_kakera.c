@@ -112,7 +112,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
     if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         func_80093D84(globalCtx->state.gfxCtx);
 
@@ -122,7 +122,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         func_80093D18(globalCtx->state.gfxCtx);
 

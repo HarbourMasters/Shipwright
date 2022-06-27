@@ -1273,7 +1273,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
             Matrix_RotateX(-pauseCtx->unk_1F4 / 100.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->itemPageVtx,
@@ -1291,7 +1291,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             Matrix_RotateZ(pauseCtx->unk_1F8 / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(1.57f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->equipPageVtx,
@@ -1310,7 +1310,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             Matrix_RotateX(pauseCtx->unk_200 / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(3.14f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
@@ -1329,7 +1329,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             Matrix_RotateZ(-pauseCtx->unk_1FC / 100.0f, MTXMODE_APPLY);
             Matrix_RotateY(-1.57f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             POLY_KAL_DISP =
@@ -1358,7 +1358,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 Matrix_Scale(0.78f, 0.78f, 0.78f, MTXMODE_APPLY);
                 Matrix_RotateX(-pauseCtx->unk_1F4 / 100.0f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
                 POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->itemPageVtx,
@@ -1373,7 +1373,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 Matrix_RotateZ(-pauseCtx->unk_1FC / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(-1.57f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
                 POLY_KAL_DISP =
@@ -1405,7 +1405,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 Matrix_RotateX(pauseCtx->unk_200 / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(3.14f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
                 POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->questPageVtx,
@@ -1424,7 +1424,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
                 Matrix_RotateZ(pauseCtx->unk_1F8 / 100.0f, MTXMODE_APPLY);
                 Matrix_RotateY(1.57f, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
                 POLY_KAL_DISP = KaleidoScope_DrawPageSections(POLY_KAL_DISP, pauseCtx->equipPageVtx,
@@ -1475,7 +1475,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             Matrix_RotateY(1.57f, MTXMODE_APPLY);
         }
 
-        gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if ((pauseCtx->state >= 8) && (pauseCtx->state <= 0x11)) {
@@ -1745,7 +1745,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
     Matrix_Translate(0.0f, 0.0f, -144.0f, MTXMODE_NEW);
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_KAL_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 90, 100, 130, 255);

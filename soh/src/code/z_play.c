@@ -1109,7 +1109,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                 0.0f;
         // This transpose is where the viewing matrix is properly converted into a billboard matrix
         Matrix_Transpose(&globalCtx->billboardMtxF);
-        globalCtx->billboardMtx = Matrix_MtxFToMtx(Matrix_CheckFloats(&globalCtx->billboardMtxF, __FILE__, __LINE__),
+        globalCtx->billboardMtx = Matrix_MtxFToMtx(Matrix_CheckFloats(&globalCtx->billboardMtxF),
                                                    Graph_Alloc(gfxCtx, sizeof(Mtx)));
 
         gSPSegment(POLY_OPA_DISP++, 0x01, globalCtx->billboardMtx);

@@ -663,7 +663,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(spC0, &spA8, MTXMODE_APPLY);
     Matrix_Translate(sp9C.x, sp9C.y, sp9C.z, MTXMODE_APPLY);
-    Matrix_ToMtx(spB4, __FILE__, __LINE__);
+    Matrix_ToMtx(spB4);
     unk198 = this->unk_198;
     unk188 = this->unk_188;
     unk178 = this->unk_178;
@@ -861,7 +861,7 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
                                         unk178[1], unk178[2], 128));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
@@ -1171,7 +1171,7 @@ void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
     OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureOuterDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
@@ -1285,7 +1285,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
 
         Matrix_RotateAxis(sp70, &sp54, MTXMODE_APPLY);
         Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
-        Matrix_ToMtx(sp60, __FILE__, __LINE__);
+        Matrix_ToMtx(sp60);
 
         if (!FrameAdvance_IsEnabled(globalCtx)) {
             func_80980F8C(this, globalCtx);
@@ -1404,7 +1404,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp70, &sp54, MTXMODE_APPLY);
     Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp60, __FILE__, __LINE__);
+    Matrix_ToMtx(sp60);
 
     if (!FrameAdvance_IsEnabled(globalCtx)) {
         func_80981458(this, globalCtx);
@@ -1500,7 +1500,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp74, &sp58, MTXMODE_APPLY);
     Matrix_Translate(sp4C.x, sp4C.y, sp4C.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp64, __FILE__, __LINE__);
+    Matrix_ToMtx(sp64);
 
     Matrix_Pop();
 
@@ -1592,7 +1592,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp68, &sp50, MTXMODE_APPLY);
     Matrix_Translate(sp44.x, sp44.y, sp44.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp5C, __FILE__, __LINE__);
+    Matrix_ToMtx(sp5C);
 
     Matrix_Pop();
 
@@ -1683,7 +1683,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp68, &sp50, MTXMODE_APPLY);
     Matrix_Translate(sp44.x, sp44.y, sp44.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp5C, __FILE__, __LINE__);
+    Matrix_ToMtx(sp5C);
 
     Matrix_Pop();
 

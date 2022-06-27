@@ -471,7 +471,7 @@ Gfx* EnBombf_NewMtxDList(GraphicsContext* gfxCtx, GlobalContext* globalCtx) {
     displayList = Graph_Alloc(gfxCtx, 5 * sizeof(Gfx));
     displayListHead = displayList;
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-    gSPMatrix(displayListHead++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(displayListHead++, Matrix_NewMtx(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPEndDisplayList(displayListHead);
     return displayList;
@@ -489,7 +489,7 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80093D18(globalCtx->state.gfxCtx);
 
         if (thisx->params != BOMBFLOWER_BODY) {
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerLeavesDL);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBaseLeavesDL);
@@ -501,7 +501,7 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 200, 255, 200, 255);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 20, 10, 0);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(globalCtx->state.gfxCtx, globalCtx)));

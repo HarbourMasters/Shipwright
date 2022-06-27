@@ -81,7 +81,7 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
@@ -105,7 +105,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetCombineLERP(POLY_OPA_DISP++, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0,

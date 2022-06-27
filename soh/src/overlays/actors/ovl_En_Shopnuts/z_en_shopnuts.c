@@ -293,7 +293,7 @@ void EnShopnuts_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 
         Matrix_Scale(x, y, z, MTXMODE_APPLY);
         if (1) {}
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gBusinessScrubNoseDL);
         CLOSE_DISPS(globalCtx->state.gfxCtx);

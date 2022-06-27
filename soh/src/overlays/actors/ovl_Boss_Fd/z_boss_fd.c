@@ -1540,7 +1540,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaEmberModelDL);
             FrameInterpolation_RecordCloseChild();
@@ -1563,7 +1563,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateX(effect->vFdFxRotX, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gVolvagiaDebrisModelDL);
             FrameInterpolation_RecordCloseChild();
@@ -1587,7 +1587,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[effect->timer2]));
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustModelDL);
@@ -1612,7 +1612,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[effect->timer2]));
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaDustModelDL);
@@ -1636,7 +1636,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateX(effect->vFdFxRotX, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gVolvagiaSkullPieceModelDL);
             FrameInterpolation_RecordCloseChild();
@@ -1774,7 +1774,7 @@ void BossFd_DrawMane(GlobalContext* globalCtx, BossFd* this, Vec3f* manePos, Vec
         Matrix_Scale(maneScale[maneIndex] * (0.01f - (i * 0.0008f)), maneScale[maneIndex] * (0.01f - (i * 0.0008f)),
                      0.01f, MTXMODE_APPLY);
         Matrix_RotateX(-M_PI / 2.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gVolvagiaManeModelDL);
     }
@@ -1893,7 +1893,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
                                  this->fwork[BFD_BODY_PULSE]),
                          1.0f, MTXMODE_APPLY);
             Matrix_RotateY(M_PI / 2.0f, MTXMODE_APPLY);
-            Matrix_ToMtx(tempMat, __FILE__, __LINE__);
+            Matrix_ToMtx(tempMat);
             gSPMatrix(POLY_OPA_DISP++, tempMat, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, sBodyDLists[i]);
         } else {
@@ -1917,7 +1917,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
                     temp_float = 0.1f * sp84;
                 }
                 Matrix_Scale(0.1f, 0.1f, 0.1f, MTXMODE_APPLY);
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gVolvagiaRibsDL);
 

@@ -1098,7 +1098,7 @@ void EnFloormas_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_RotateY(DEGTORAD(60.0f), MTXMODE_APPLY);
         Matrix_RotateZ(DEGTORAD(15.0f), MTXMODE_APPLY);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
-        gSPMatrix((*gfx)++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__), G_MTX_LOAD);
+        gSPMatrix((*gfx)++, Matrix_NewMtx(globalCtx->state.gfxCtx), G_MTX_LOAD);
         gSPDisplayList((*gfx)++, gWallmasterFingerDL);
         Matrix_Pop();
     }

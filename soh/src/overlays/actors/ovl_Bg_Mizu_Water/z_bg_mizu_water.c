@@ -335,7 +335,7 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, -gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,
                                 -gameplayFrames * 1, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);

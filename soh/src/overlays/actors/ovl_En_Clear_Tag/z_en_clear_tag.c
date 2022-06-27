@@ -695,12 +695,12 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 255, 0, 255);
 
             Matrix_Translate(25.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
 
             Matrix_Translate(-50.0f, 0.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingLaserDL);
         } else {
@@ -718,7 +718,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_RotateY(yRotation, MTXMODE_APPLY);
             }
             Matrix_RotateZ(this->roll, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDL);
 
@@ -732,7 +732,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 200, 155);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 50, 0, 0);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingBackfireDL);
 
@@ -756,7 +756,7 @@ void EnClearTag_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_RotateY(yRotation, MTXMODE_APPLY);
             }
             Matrix_RotateZ(this->roll, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingShadowDL);
         }
@@ -914,7 +914,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_RotateY(effect->rotationY, MTXMODE_APPLY);
             Matrix_RotateX(effect->rotationX, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDebrisEffectDL);
         }
@@ -938,7 +938,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_RotateX(effect->floorTangent.x, MTXMODE_APPLY);
             Matrix_RotateZ(effect->floorTangent.z, MTXMODE_APPLY);
             Matrix_Scale(effect->scale + effect->scale, 1.0f, effect->scale * 2.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectGroundDL);
         }
@@ -967,7 +967,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
             Matrix_Translate(0.0f, 20.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
         }
@@ -993,7 +993,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Translate(effect->position.x, effect->position.y, effect->position.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
         }
@@ -1016,7 +1016,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             Matrix_Translate(effect->position.x, effect->position.y, effect->position.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__),
+            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectDL);
         }
