@@ -837,26 +837,26 @@ void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {
         if (drawId == 2 || drawId == 3 || drawId == 4 || drawId == 5 || drawId == 6 || drawId == 7) {
             s16 color_slot = drawId - 2;
             s16* colors[6][3] = {
-                { 34, 255, 76 }, // Minuet Color { 34, 177, 76 }
+                { 34, 255, 76 }, // Minuet Color
                 { 177, 35, 35 },  // Bolero Color
-                { 35, 35, 177 },  // Serenade Color
+                { 115, 251, 253 },  // Serenade Color
                 { 177, 122, 35 },   // Requiem Color
-                { 101, 65, 153 },  // Nocturne Color
-                { 255, 226, 92 }   // Prelude Color
+                { 177, 28, 212 },  // Nocturne Color
+                { 255, 255, 92 }   // Prelude Color
             };
 
             s16* colorsEnv[6][3] = {
-                { 255, 255, 255 },  // Minuet Color
-                { 177, 35, 35 },  // Bolero Color
+                { 30, 110, 30 },  // Minuet Color
+                { 90, 10, 10 },  // Bolero Color
                 { 35, 35, 177 },  // Serenade Color
-                { 177, 122, 35 }, // Requiem Color
-                { 101, 65, 153 }, // Nocturne Color
-                { 255, 226, 92 }  // Prelude Color
+                { 70, 20, 10 }, // Requiem Color
+                { 100, 20, 140 }, // Nocturne Color
+                { 100, 100, 10 }  // Prelude Color
             };
             static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
             static Vec3f accel = { 0.0f, 0.05f, 0.0f };
             Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
-            Color_RGBA8 envColor = { colorsEnv[color_slot][0], colorsEnv[color_slot][1], colorsEnv[color_slot][2], 0 }; // Can do a second array with Env or math on it
+            Color_RGBA8 envColor = { colorsEnv[color_slot][0], colorsEnv[color_slot][1], colorsEnv[color_slot][2], 0 };
             Vec3f pos;
 
             //velocity.x = Rand_CenteredFloat(0.05f);
