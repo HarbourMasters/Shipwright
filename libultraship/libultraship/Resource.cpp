@@ -40,13 +40,16 @@ namespace Ship
 
         for (size_t i = 0; i < patches.size(); i++)
         {
-            std::string hashStr = resMgr->HashToString(patches[i].crc);
-            auto resShared = resMgr->GetCachedFile(hashStr);
+            const std::string* hashStr = resMgr->HashToString(patches[i].crc);
+            if (hashStr == nullptr)
+                continue;
+
+            auto resShared = resMgr->GetCachedFile(hashStr->c_str());
             if (resShared != nullptr)
             {
                 auto res = (Ship::DisplayList*)resShared.get();
 
-                Gfx* gfx = (Gfx*)&res->instructions[patches[i].index];
+                Gfx* gfx = &((Gfx*)res->instructions.data())[patches[i].index];
                 gfx->words.w1 = patches[i].origData;
             }
         }

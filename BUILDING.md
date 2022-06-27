@@ -2,7 +2,7 @@
 
 ## Windows
 
- 1. Install [Python](https://www.python.org/downloads/) >= 3.6.
+ 1. Requires [Python](https://www.python.org/downloads/) >= 3.6.
  2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
  3. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
  4. Clone the Ship of Harkinian repository.
@@ -21,7 +21,7 @@
 
 ```bash
 # Clone the repo
-git clone git@github.com:HarbourMasters/ShipWright.git
+git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
@@ -41,10 +41,31 @@ cp /usr/local/lib/libGLEW.a external
 
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
-make setup -j$(nproc) OPTFLAGS=-O0 DEBUG=0
+make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
 # Compile the code
-make -j $(nproc) OPTFLAGS=-O0 DEBUG=0
+make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 ```
+
+## macOS
+
+1. Requires `gcc@12, sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
+```bash
+# Clone the repo
+git clone https://github.com/HarbourMasters/Shipwright.git
+cd ShipWright
+# Copy the baserom to the OTRExporter folder
+cp <path to your ROM> OTRExporter
+
+cd soh
+# Extract the assets/Compile the exporter/Run the exporter
+# -jX defines number of cores to use for compilation - lower or remove entirely if having issues
+make setup -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+# Compile the code (watch the -j parameter as above)
+make -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+# Create macOS app bundle
+make filledappbundle
+```
+9. Launch soh app in the soh folder!
 
 # Compatible Roms
 ```
@@ -57,10 +78,10 @@ OOT_PAL_GC_DBG1 checksum 0x871E1C92 (debug non-master quest)
 The OTRExporter exports an `oot.otr` archive file which Ship of Harkinian requires to play.
 
 Use the `extract_assets.py` script file to run the exporter using any of the following methods:
-
-1. Double click on the script after placing one or more roms in the directory.
-2. Drag & Drop a rom onto the script.
-3. In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
-4. In a terminal run `python3 extract_assets.py <path_to_rom>`
+1) Double click on the script after placing one or more roms in the directory.
+2) Drag & Drop a rom onto the script.
+3) In a terminal run `python3 extract_assets.py` after placing one or more roms in the directory.
+4) In a terminal run `python3 extract_assets.py <path_to_rom>`
 
 If the script finds multiple roms the user is prompted which to use. Selection is done using the number keys and then pressing the carriage return key.
+

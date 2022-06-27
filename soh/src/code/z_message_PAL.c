@@ -272,6 +272,13 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     const char** languageSegmentTable;
     Font* font;
     const char* seg;
+    u16 bufferId = textId;
+    // Use the better owl message if better owl is enabled
+    if (CVar_GetS32("gBetterOwl", 0) != 0 && (bufferId == 0x2066 || bufferId == 0x607B ||
+        bufferId == 0x10C2 || bufferId == 0x10C6 || bufferId == 0x206A))
+    {
+        bufferId = 0x71B3;
+    }
 
     if (gSaveContext.language == LANGUAGE_GER)
         messageTableEntry = sGerMessageEntryTablePtr;
@@ -287,7 +294,7 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
     while (messageTableEntry->textId != 0xFFFF) {
         font = &globalCtx->msgCtx.font;
 
-        if (messageTableEntry->textId == textId) {
+        if (messageTableEntry->textId == bufferId) {
             foundSeg = messageTableEntry->segment;
             font->charTexBuf[0] = messageTableEntry->typePos;
 
@@ -298,14 +305,14 @@ void Message_FindMessage(GlobalContext* globalCtx, u16 textId) {
             // "Message found!!!"
             osSyncPrintf(" メッセージが,見つかった！！！ = %x  "
                          "(data=%x) (data0=%x) (data1=%x) (data2=%x) (data3=%x)\n",
-                         textId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
+                         bufferId, font->msgOffset, font->msgLength, foundSeg, seg, nextSeg);
             return;
         }
         messageTableEntry++;
     }
 
     // "Message not found!!!"
-    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", textId);
+    osSyncPrintf(" メッセージが,見つからなかった！！！ = %x\n", bufferId);
     font = &globalCtx->msgCtx.font;
     messageTableEntry = sNesMessageEntryTablePtr;
 
@@ -446,6 +453,46 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     static s16 sIconEnvR = 0;
     static s16 sIconEnvG = 0;
     static s16 sIconEnvB = 0;
+    if (CVar_GetS32("gHudColors", 1) == 0) {
+        sIconPrimColors[0][0] = 4;
+        sIconPrimColors[0][1] = 84;
+        sIconPrimColors[0][2] = 204;
+        sIconPrimColors[1][0] = 45;
+        sIconPrimColors[1][1] = 125;
+        sIconPrimColors[1][2] = 255;
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 70;
+        sIconEnvColors[1][2] = 255;
+    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+        sIconPrimColors[0][0] = 4;
+        sIconPrimColors[0][1] = 200;
+        sIconPrimColors[0][2] = 80;
+        sIconPrimColors[1][0] = 50;
+        sIconPrimColors[1][1] = 255;
+        sIconPrimColors[1][2] = 130;
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 0;
+        sIconEnvColors[1][1] = 255;
+        sIconEnvColors[1][2] = 130;
+    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 50)/255)*95;
+        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 255)/255)*95;
+        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 130)/255)*95;
+        sIconPrimColors[1][0] = CVar_GetS32("gCCABtnPrimR", 50);
+        sIconPrimColors[1][1] = CVar_GetS32("gCCABtnPrimG", 255);
+        sIconPrimColors[1][2] = CVar_GetS32("gCCABtnPrimB", 130);
+        sIconEnvColors[0][0] = 0;
+        sIconEnvColors[0][1] = 0;
+        sIconEnvColors[0][2] = 0;
+        sIconEnvColors[1][0] = 10;
+        sIconEnvColors[1][1] = 10;
+        sIconEnvColors[1][2] = 10;
+    }
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &msgCtx->font;
     Gfx* gfx = *p;
@@ -701,6 +748,9 @@ u16 Message_DrawItemIcon(GlobalContext* globalCtx, u16 itemId, Gfx** p, u16 i) {
     gDPPipeSync(gfx++);
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, msgCtx->textColorAlpha);
+
+    // Invalidate icon texture as it may have changed from the last time a text box had an icon
+    gSPInvalidateTexCache(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE);
 
     if (itemId >= ITEM_MEDALLION_FOREST) {
         gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA, G_IM_SIZ_32b,
@@ -1106,14 +1156,16 @@ void Message_LoadItemIcon(GlobalContext* globalCtx, u16 itemId, s16 y) {
         R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem32XOffsets[gSaveContext.language];
         R_TEXTBOX_ICON_YPOS = y + 6;
         R_TEXTBOX_ICON_SIZE = 32;
-        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x1000);
+        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
+               ResourceMgr_LoadTexByName(gItemIcons[itemId]), 0x1000);
         // "Item 32-0"
         osSyncPrintf("アイテム32-0\n");
     } else {
         R_TEXTBOX_ICON_XPOS = R_TEXT_INIT_XPOS - sIconItem24XOffsets[gSaveContext.language];
         R_TEXTBOX_ICON_YPOS = y + 10;
         R_TEXTBOX_ICON_SIZE = 24;
-         memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, gItemIcons[itemId], 0x900);
+        memcpy((uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE,
+               ResourceMgr_LoadTexByName(gItemIcons[itemId]), 0x900);
         // "Item 24"
         osSyncPrintf("アイテム24＝%d (%d) {%d}\n", itemId, itemId - ITEM_KOKIRI_EMERALD, 84);
     }
@@ -1841,6 +1893,7 @@ void Message_DrawTextBox(GlobalContext* globalCtx, Gfx** p) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Gfx* gfx = *p;
 
+    gSPInvalidateTexCache(gfx++, msgCtx->textboxSegment);
     gDPPipeSync(gfx++);
     gDPSetPrimColor(gfx++, 0, 0, msgCtx->textboxColorRed, msgCtx->textboxColorGreen, msgCtx->textboxColorBlue,
                     msgCtx->textboxColorAlphaCurrent);
@@ -2826,12 +2879,22 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
 
                     gDPPipeSync(gfx++);
                     if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A) {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { //A buttons :)
+                            gDPSetPrimColor(gfx++, 0, 0, 80, 150, 255, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCABtnPrimR", 0), CVar_GetS32("gCCABtnPrimG", 0), CVar_GetS32("gCCABtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        }
                         gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
                     } else {
-                        gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB,
-                                        sOcarinaNotesAlphaValues[i]);
+                        if (CVar_GetS32("gHudColors", 1) == 0) { //C buttons :)
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 0), CVar_GetS32("gCCCBtnPrimG", 0), CVar_GetS32("gCCCBtnPrimB", 0), sOcarinaNotesAlphaValues[i]);
+                        }
                         gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
                     }
 
@@ -3244,7 +3307,7 @@ void Message_Update(GlobalContext* globalCtx) {
 
 void Message_SetTables(void) {
     OTRMessage_Init();
-    
+
     // OTRTODO
     //sNesMessageEntryTablePtr = sNesMessageEntryTable;
     //sGerMessageEntryTablePtr = sGerMessageEntryTable;

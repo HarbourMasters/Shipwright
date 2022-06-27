@@ -222,6 +222,72 @@ void Title_Draw(TitleContext* this) {
 void Title_Main(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
+    if (CVar_GetS32("gSkipLogoTitle",0)!=0) {
+        gSaveContext.language = CVar_GetS32("gLanguages", 0);
+        Sram_InitSram(&this->state);
+        s16 selectedfile = CVar_GetS32("gSaveFileID", 0);
+        if (selectedfile == 4) {
+            selectedfile = 0xFF;
+        } else if(selectedfile == 0){
+            gSaveContext.fileNum = selectedfile;
+            gSaveContext.gameMode = 0;
+            this->state.running = false;
+            SET_NEXT_GAMESTATE(&this->state, FileChoose_Init, SelectContext);
+            return;
+        } else {
+            selectedfile--;
+            if (selectedfile < 0) {
+                selectedfile = 0xFF;
+            }
+        }
+        if (selectedfile == 0xFF) {
+            gSaveContext.fileNum = selectedfile;
+            Sram_OpenSave();
+            gSaveContext.gameMode = 0;
+            this->state.running = false;
+            SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
+        } else {
+            gSaveContext.fileNum = selectedfile;
+            Sram_OpenSave();
+            gSaveContext.gameMode = 0;
+            this->state.running = false;
+            //return;
+            SET_NEXT_GAMESTATE(&this->state, Gameplay_Init, GlobalContext);
+        }
+        gSaveContext.respawn[0].entranceIndex = -1;
+        gSaveContext.respawnFlag = 0;
+        gSaveContext.seqId = (u8)NA_BGM_DISABLED;
+        gSaveContext.natureAmbienceId = 0xFF;
+        gSaveContext.showTitleCard = true;
+        gSaveContext.dogParams = 0;
+        gSaveContext.timer1State = 0;
+        gSaveContext.timer2State = 0;
+        gSaveContext.eventInf[0] = 0;
+        gSaveContext.eventInf[1] = 0;
+        gSaveContext.eventInf[2] = 0;
+        gSaveContext.eventInf[3] = 0;
+        gSaveContext.unk_13EE = 0x32;
+        gSaveContext.nayrusLoveTimer = 0;
+        gSaveContext.healthAccumulator = 0;
+        gSaveContext.unk_13F0 = 0;
+        gSaveContext.unk_13F2 = 0;
+        gSaveContext.forcedSeqId = NA_BGM_GENERAL_SFX;
+        gSaveContext.skyboxTime = 0;
+        gSaveContext.nextTransition = 0xFF;
+        gSaveContext.nextCutsceneIndex = 0xFFEF;
+        gSaveContext.cutsceneTrigger = 0;
+        gSaveContext.chamberCutsceneNum = 0;
+        gSaveContext.nextDayTime = 0xFFFF;
+        gSaveContext.unk_13C3 = 0;
+        gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] = gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+        gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = gSaveContext.unk_13F4 = 0;
+        gSaveContext.unk_13F6 = gSaveContext.magic;
+        gSaveContext.magic = 0;
+        gSaveContext.magicLevel = gSaveContext.magic;
+        gSaveContext.naviTimer = 0;
+        return;
+    }
+
     OPEN_DISPS(this->state.gfxCtx, "../z_title.c", 494);
 
     gSPSegment(POLY_OPA_DISP++, 0, NULL);
@@ -256,7 +322,7 @@ void Title_Main(GameState* thisx) {
 void Title_Destroy(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
-    Sram_InitSram(&this->state, &this->sramCtx);
+    Sram_InitSram(&this->state);
 }
 
 void Title_Init(GameState* thisx) {
@@ -280,7 +346,6 @@ void Title_Init(GameState* thisx) {
     this->state.destroy = Title_Destroy;
     this->exit = false;
     gSaveContext.fileNum = 0xFF;
-    Sram_Alloc(&this->state, &this->sramCtx);
     this->ult = 0;
     this->unk_1D4 = 0x14;
     this->coverAlpha = 255;

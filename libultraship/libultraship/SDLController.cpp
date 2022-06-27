@@ -198,7 +198,6 @@ namespace Ship {
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
             const char* contName = SDL_GameControllerName(Cont);
-            const int isSpecialController = !strcmp("PS5 Controller", contName);
             float gyro_drift_x = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), 0.0f);
             float gyro_drift_y = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), 0.0f);
             const float gyro_sensitivity = CVar_GetFloat(StringHelper::Sprintf("gCont%i_GyroSensitivity", contNumber).c_str(), 1.0f);
@@ -208,25 +207,14 @@ namespace Ship {
             }
 
             if (gyro_drift_y == 0) {
-                if (isSpecialController == 1) {
-                    gyro_drift_y = gyroData[2];
-                }
-                else {
-                    gyro_drift_y = gyroData[1];
-                }
+                gyro_drift_y = gyroData[1];
             }
 
             CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", contNumber).c_str(), gyro_drift_x);
             CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", contNumber).c_str(), gyro_drift_y);
 
-            if (isSpecialController == 1) {
-                wGyroX = gyroData[0] - gyro_drift_x;
-                wGyroY = -gyroData[2] - gyro_drift_y;
-            }
-            else {
-                wGyroX = gyroData[0] - gyro_drift_x;
-                wGyroY = gyroData[1] - gyro_drift_y;
-            }
+            wGyroX = gyroData[0] - gyro_drift_x;
+            wGyroY = gyroData[1] - gyro_drift_y;
 
             wGyroX *= gyro_sensitivity;
             wGyroY *= gyro_sensitivity;

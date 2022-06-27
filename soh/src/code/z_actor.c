@@ -335,38 +335,59 @@ void func_8002BE98(TargetContext* targetCtx, s32 actorCategory, GlobalContext* g
 
 void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, GlobalContext* globalCtx) {
     NaviColor* naviColor = &sNaviColorList[actorCategory];
-    if (actorCategory == ACTORCAT_PLAYER) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_Blue", naviColor->outer.b);
+
+    if (CVar_GetS32("gUseNaviCol",0) != 1 ) {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 255;
+            naviColor->outer.r = 0; naviColor->outer.g = 0; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = 150; naviColor->inner.g = 150; naviColor->inner.b = 255;
+            naviColor->outer.r = 150; naviColor->outer.g = 150; naviColor->outer.b = 255;
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = 255; naviColor->inner.g = 255; naviColor->inner.b = 0;
+            naviColor->outer.r = 220; naviColor->outer.g = 155; naviColor->outer.b = 0;
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = 0; naviColor->inner.g = 255; naviColor->inner.b = 0;
+            naviColor->outer.r = 0; naviColor->outer.g = 255; naviColor->outer.b = 0;
+        }
+    } else {
+        if (actorCategory == ACTORCAT_PLAYER) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_NPC) {
+            naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
+        }
+        if (actorCategory == ACTORCAT_PROP) {
+            naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
+            naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
+            naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
+            naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
+            naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
+            naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
+        }
     }
-    if (actorCategory == ACTORCAT_NPC) {
-        naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_Blue", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_Blue", naviColor->outer.b);
-    }
-    if (actorCategory == ACTORCAT_PROP) {
-        naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_Red", naviColor->inner.r);
-        naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_Green", naviColor->inner.g);
-        naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_Blue", naviColor->inner.b);
-        naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_Red", naviColor->outer.r);
-        naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_Green", naviColor->outer.g);
-        naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_Blue", naviColor->outer.b);
-    }
+    
     targetCtx->naviRefPos.x = actor->focus.pos.x;
     targetCtx->naviRefPos.y = actor->focus.pos.y + (actor->targetArrowOffset * actor->scale.y);
     targetCtx->naviRefPos.z = actor->focus.pos.z;
@@ -848,11 +869,12 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         case SCENE_ZOORA:
             texture = gZoraShopTitleCardENGTex;
             break;
-        case SCENE_ALLEY_SHOP:
+        case SCENE_NIGHT_SHOP:
             texture = gBombchuShopTitleCardENGTex;
             break;
         case SCENE_DRAG:
         case SCENE_MAHOUYA:
+        case SCENE_ALLEY_SHOP:
             texture = gPotionShopTitleCardENGTex;
             break;
         case SCENE_FACE_SHOP:
@@ -1142,7 +1164,9 @@ void Actor_Init(Actor* actor, GlobalContext* globalCtx) {
     actor->uncullZoneForward = 1000.0f;
     actor->uncullZoneScale = 350.0f;
     actor->uncullZoneDownward = 700.0f;
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         actor->uncullZoneForward = 32767.0f;
         actor->uncullZoneScale = 32767.0f;
         actor->uncullZoneDownward = 32767.0f;
@@ -2269,8 +2293,8 @@ void Actor_DrawFaroresWindPointer(GlobalContext* globalCtx) {
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.y) + yOffset,
                                   ((void)0, gSaveContext.respawn[RESPAWN_MODE_TOP].pos.z), 255, 255, 255, lightRadius);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5474);
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_actor.c", 5474);
 }
 
 void func_80030488(GlobalContext* globalCtx) {
@@ -2669,7 +2693,9 @@ s32 func_800314B0(GlobalContext* globalCtx, Actor* actor) {
 s32 func_800314D4(GlobalContext* globalCtx, Actor* actor, Vec3f* arg2, f32 arg3) {
     f32 var;
 
-    if (CVar_GetS32("gDisableDrawDistance", 0) != 0) {
+    if (CVar_GetS32("gDisableDrawDistance", 0) != 0 && actor->id != ACTOR_EN_TORCH2 && actor->id != ACTOR_EN_BLKOBJ // Extra check for Dark Link and his room 
+        && actor->id != ACTOR_EN_HORSE // Check for Epona, else if we call her she will spawn at the other side of the  map + we can hear her during the title screen sequence
+        && actor->id != ACTOR_EN_HORSE_GANON && actor->id != ACTOR_EN_HORSE_ZELDA) {  // check for Zelda's and Ganondorf's horses that will always be scene during cinematic whith camera paning
         return true;
     }
 

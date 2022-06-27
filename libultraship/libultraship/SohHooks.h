@@ -1,80 +1,50 @@
 #pragma once
 
-struct HookParameter {
-    const char* name;
-    void* parameter;
-};
-
-#define LOOKUP_TEXTURE  "F3D::LookupCacheTexture"
-#define GRAYOUT_TEXTURE "Kaleido::GrayOutTexture"
-#define INVALIDATE_TEXTURE "GBI::gSPInvalidateTexCache"
-#define CONTROLLER_READ "N64::ControllerRead"
-
-#define AUDIO_INIT      "AudioMgr::Init"
-
-#define LOAD_TEXTURE    "ResourceMgr::LoadTexByName"
-
-#define UPDATE_VOLUME   "AudioVolume::Bind"
-
-#define IMGUI_API_INIT "ImGuiApiInit"
-#define IMGUI_API_DRAW "ImGuiApiDraw"
-
-#define WINDOW_API_INIT  "WApiInit"
-#define WINDOW_API_HANDLE_EVENTS  "WApiHandleEvents"
-#define WINDOW_API_START_FRAME  "WApiStartFrame"
-
-// Graphics API Hooks
-#define GFX_PRE_START_FRAME  "GFXApiPreStartFrame"
-#define GFX_POST_START_FRAME "GFXApiPostStartFrame"
-
-#define GFX_PRE_END_FRAME  "GFXApiPreEndFrame"
-#define GFX_POST_END_FRAME "GFXApiPostEndFrame"
-
-#define GFX_ON_REZISE "GFXApiOnResize"
-#define GFX_INIT      "GFXApiInit"
-#define GFX_SHUTDOWN  "GFXApiShutdown"
-
-// End
-
 #ifdef __cplusplus
 
-#define HOOK_PARAMETER(name, ptr) HookParameter({ name, static_cast<void*>(ptr) })
-#define BIND_HOOK(name, func) ModInternal::registerHookListener({ name, [this](HookEvent call) { func(call); }})
-#define BIND_PTR(name, type) static_cast<type>(call->baseArgs[name])
-#define BIND_VAR(name, type) *BIND_PTR(name, type)
-
-
 #include <functional>
-#include <string>
-#include <map>
-#include <memory>
 
-struct HookCall {
-    std::string name;
-    std::map<std::string, void*> baseArgs;
-    std::map<std::string, void*> hookedArgs;
-    bool cancelled = false;
-};
+#include "UltraController.h"
 
-typedef std::shared_ptr<HookCall> HookEvent;
-typedef std::function<void(HookEvent)> HookFunc;
-struct HookListener {
-    std::string hookName;
-    HookFunc callback;
-    int priority = 0;
-};
+#define DEFINE_HOOK(name, type) struct name { typedef std::function<type> fn; }
 
 namespace ModInternal {
-    void registerHookListener(HookListener listener);
-    void bindHook(std::string name);
-    void initBindHook(int length, ...);
-    bool callBindHook(int length, ...);
+
+    template <typename H>
+    struct RegisteredHooks {
+        inline static std::vector<typename H::fn> functions;
+    };
+
+    template <typename H>
+    void RegisterHook(typename H::fn h) {
+        RegisteredHooks<H>::functions.push_back(h);
+    }
+
+    template <typename H, typename... Args>
+    void ExecuteHooks(Args&&... args) {
+        for (auto& fn : RegisteredHooks<H>::functions) {
+            fn(std::forward<Args>(args)...);
+        }
+    }
+
+    DEFINE_HOOK(ControllerRead, void(OSContPad* cont_pad));
+
+    DEFINE_HOOK(AudioInit, void());
+
+    DEFINE_HOOK(LoadTexture, void(const char* path, uint8_t** texture));
+
+    DEFINE_HOOK(GfxInit, void());
+
 }
 
-#else
+#endif
 
-void bind_hook(char* name);
-void init_hook(int length, ...);
-bool call_hook(int length, ...);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
+void ModInternal_ExecuteAudioInitHooks();
+
+#ifdef __cplusplus
+}
 #endif

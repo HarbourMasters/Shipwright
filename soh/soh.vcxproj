@@ -46,6 +46,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -53,6 +54,7 @@
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,24 +76,26 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\Win32\DebugUS\;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x86;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\Win32\ReleaseUS\;$(LibraryPath)</LibraryPath>
     <IntDir>$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\x64\DebugUS\;$(LibraryPath)</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(IncludePath)</IncludePath>
-    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)assets;$(ProjectDir)build;$(ProjectDir)include;$(ProjectDir)src;$(ProjectDir);$(ProjectDir)..\libultraship\libultraship\Lib\libjpeg\include;$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\spdlog\include;$(ProjectDir)..\ZAPDTR\ZAPDUtils;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64;$(ProjectDir)..\libultraship\libultraship\Lib\Fast3D\U64\PR;$(ProjectDir)..\libultraship\libultraship\Lib\SDL;$(ProjectDir)..\libultraship\libultraship\Lib\dr_libs;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OutDir);$(ProjectDir)..\libultraship\libultraship;$(ProjectDir)..\libultraship\libultraship\Lib\SDL\lib\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLEW\x64;$(ProjectDir)..\libultraship\libultraship\Lib\GLFW;$(ProjectDir)..\StormLib\bin\StormLib\x64\ReleaseUS\;$(LibraryPath)</LibraryPath>
+    <IntDir>$(Platform)\$(Configuration)Obj\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -102,12 +106,12 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <BasicRuntimeChecks>StackFrameRuntimeCheck</BasicRuntimeChecks>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glfw3dll.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <StackReserveSize>8777216</StackReserveSize>
       <GenerateMapFile>true</GenerateMapFile>
       <MapExports>true</MapExports>
@@ -131,7 +135,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glfw3dll.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -144,35 +148,38 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glfw3dll.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>
       </IgnoreSpecificDefaultLibraries>
-      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>INCLUDE_GAME_PRINTF;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)GLEW_STATIC </PreprocessorDefinitions>
+      <SDLCheck>false</SDLCheck>
+      <PreprocessorDefinitions>INCLUDE_GAME_PRINTF;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)GLEW_STATIC </PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>/FORCE:MULTIPLE %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>libultraship.lib;ZAPDUtils.lib;opengl32.lib;glu32.lib;SDL2.lib;SDL2main.lib;glew32s.lib;winmm.lib;imm32.lib;version.lib;setupapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\Enhancements\debugger\actorViewer.cpp" />
     <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
@@ -185,6 +192,7 @@
     <ClCompile Include="soh\GbiWrap.cpp" />
     <ClCompile Include="soh\gu_pc.c" />
     <ClCompile Include="soh\OTRGlobals.cpp" />
+    <ClCompile Include="soh\SaveManager.cpp" />
     <ClCompile Include="soh\stubs.c" />
     <ClCompile Include="soh\util.cpp" />
     <ClCompile Include="soh\z_message_OTR.cpp" />
@@ -879,6 +887,7 @@
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\Enhancements\debugger\actorViewer.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />
@@ -933,8 +942,10 @@
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
+    <ClInclude Include="soh\Lib\nlohmann\json.hpp" />
     <ClInclude Include="soh\OTRAudio.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
+    <ClInclude Include="soh\SaveManager.h" />
     <ClInclude Include="soh\util.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arms_Hook\z_arms_hook.h" />
     <ClInclude Include="src\overlays\actors\ovl_Arrow_Fire\z_arrow_fire.h" />

@@ -96,7 +96,6 @@ static struct {
     uint32_t msaa_num_quality_levels[D3D11_MAX_MULTISAMPLE_SAMPLE_COUNT];
 
     ComPtr<ID3D11Device> device;
-    ComPtr<IDXGISwapChain1> swap_chain;
     ComPtr<ID3D11DeviceContext> context;
     ComPtr<ID3D11RasterizerState> rasterizer_state;
     ComPtr<ID3D11DepthStencilState> depth_stencil_state;
@@ -252,7 +251,24 @@ static void gfx_d3d11_init(void) {
     });
 
     // Create the swap chain
-    d3d.swap_chain = gfx_dxgi_create_swap_chain(d3d.device.Get());
+    gfx_dxgi_create_swap_chain(d3d.device.Get(), []() {
+        d3d.framebuffers[0].render_target_view.Reset();
+        d3d.textures[d3d.framebuffers[0].texture_id].texture.Reset();
+        d3d.context->ClearState();
+        d3d.context->Flush();
+
+        d3d.last_shader_program = nullptr;
+        d3d.last_vertex_buffer_stride = 0;
+        d3d.last_blend_state.Reset();
+        d3d.last_resource_views[0].Reset();
+        d3d.last_resource_views[1].Reset();
+        d3d.last_sampler_states[0].Reset();
+        d3d.last_sampler_states[1].Reset();
+        d3d.last_depth_test = -1;
+        d3d.last_depth_mask = -1;
+        d3d.last_zmode_decal = -1;
+        d3d.last_primitive_topology = D3D_PRIMITIVE_TOPOLOGY_UNDEFINED;
+    });
 
     // Create D3D Debug device if in debug mode
 
@@ -266,7 +282,7 @@ static void gfx_d3d11_init(void) {
 
     // Check the size of the window
     DXGI_SWAP_CHAIN_DESC1 swap_chain_desc;
-    ThrowIfFailed(d3d.swap_chain->GetDesc1(&swap_chain_desc));
+    ThrowIfFailed(gfx_dxgi_get_swap_chain()->GetDesc1(&swap_chain_desc));
     d3d.textures[fb.texture_id].width = swap_chain_desc.Width;
     d3d.textures[fb.texture_id].height = swap_chain_desc.Height;
     fb.msaa_level = 1;
@@ -303,8 +319,6 @@ static void gfx_d3d11_init(void) {
     ThrowIfFailed(d3d.device->CreateBuffer(&constant_buffer_desc, nullptr, d3d.per_frame_cb.GetAddressOf()),
                   gfx_dxgi_get_h_wnd(), "Failed to create per-frame constant buffer.");
 
-    d3d.context->PSSetConstantBuffers(0, 1, d3d.per_frame_cb.GetAddressOf());
-
     // Create per-draw constant buffer
 
     constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -315,8 +329,6 @@ static void gfx_d3d11_init(void) {
 
     ThrowIfFailed(d3d.device->CreateBuffer(&constant_buffer_desc, nullptr, d3d.per_draw_cb.GetAddressOf()),
                   gfx_dxgi_get_h_wnd(), "Failed to create per-draw constant buffer.");
-
-    d3d.context->PSSetConstantBuffers(1, 1, d3d.per_draw_cb.GetAddressOf());
 
     // Create compute shader that can be used to retrieve depth buffer values
 
@@ -737,6 +749,8 @@ static void gfx_d3d11_on_resize(void) {
 
 static void gfx_d3d11_start_frame(void) {
     // Set per-frame constant buffer
+    ID3D11Buffer* buffers[2] = { d3d.per_frame_cb.Get(), d3d.per_draw_cb.Get() };
+    d3d.context->PSSetConstantBuffers(0, 2, buffers);
 
     d3d.per_frame_cb_data.noise_frame++;
     if (d3d.per_frame_cb_data.noise_frame > 150) {
@@ -803,15 +817,16 @@ static void gfx_d3d11_update_framebuffer_parameters(int fb_id, uint32_t width, u
             if (msaa_level <= 1) {
                 ThrowIfFailed(d3d.device->CreateShaderResourceView(tex.texture.Get(), nullptr, tex.resource_view.ReleaseAndGetAddressOf()));
             }
-        } else if (diff) {
+        } else if (diff || (render_target && tex.texture.Get() == nullptr)) {
             DXGI_SWAP_CHAIN_DESC1 desc1;
-            ThrowIfFailed(d3d.swap_chain->GetDesc1(&desc1));
+            IDXGISwapChain1* swap_chain = gfx_dxgi_get_swap_chain();
+            ThrowIfFailed(swap_chain->GetDesc1(&desc1));
             if (desc1.Width != width || desc1.Height != height) {
                 fb.render_target_view.Reset();
                 tex.texture.Reset();
-                ThrowIfFailed(d3d.swap_chain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, desc1.Flags));
+                ThrowIfFailed(swap_chain->ResizeBuffers(0, 0, 0, DXGI_FORMAT_UNKNOWN, desc1.Flags));
             }
-            ThrowIfFailed(d3d.swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID *)tex.texture.ReleaseAndGetAddressOf()));
+            ThrowIfFailed(swap_chain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID *)tex.texture.ReleaseAndGetAddressOf()));
         }
         if (render_target) {
             ThrowIfFailed(d3d.device->CreateRenderTargetView(tex.texture.Get(), nullptr, fb.render_target_view.ReleaseAndGetAddressOf()));

@@ -12,13 +12,15 @@ The Ship does not include assets and as such requires a prior copy of the game t
 4) Launch `soh.exe`
 
 ### Supported Games
-Ocarina of Time Debug (not Master Quest)
+#### Ocarina of Time Debug (not Master Quest)
+> Currently the recommended option
 ```
 Build team: `zelda@srd022j`
 Build date: `03-02-21 00:49:18` (year-month-day)
 sha1: cee6bc3c2a634b41728f2af8da54d9bf8cc14099
 ```
-Ocarina of Time PAL GameCube
+#### Ocarina of Time PAL GameCube
+> May lead to crashes and instability
 ```
 sha1: 0227d7c0074f2d0ac935631990da8ec5914597b4
 ```
@@ -46,7 +48,22 @@ If you still cannot get the tool to work, join our [Discord Server](https://disc
 
 Launch the game. If the window immediately closes, or if there are visual artifacts, you may have selected the wrong rom in the OTRGui tool.
 
-Currently, DirectX 11 and OpenGL is supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
+Default keyboard configuration:
+| N64 | A | B | Z | Start | Analog stick | C buttons | D-Pad |
+| - | - | - | - | - | - | - | - |
+| Keyboard | X | C | Z | Space | WASD | Arrow keys | TFGH |
+
+Other shortcuts:
+| Keys | Action |
+| - | - |
+| F1 | Toggle menubar |
+| F5 | Save state |
+| F6 | Change state |
+| F7 | Load state |
+| F10 | Fullscreen (OpenGL) |
+| Alt+Enter | Fullscreen (DirectX) |
+
+Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?
@@ -61,8 +78,11 @@ Official Discord: https://discord.com/invite/BtBmd55HVH
 Refer to the [building instructions](BUILDING.md) to compile SoH.
 
 ## Troubleshooting The Exporter
-- Affirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
-- Affirm that `zapd.exe` exists in the `/assets/extractor` folder
+- Confirm that you have an `/assets` folder filled with XMLs in the same directory as OTRGui.exe
+- Confirm that `zapd.exe` exists in the `/assets/extractor` folder
+
+## Nightly Builds
+Nightly builds of Ship of Harkinian are available [here](https://builds.shipofharkinian.com/job/SoH_Multibranch/job/develop)
 
 
 ## The Harbour Masters Are...
@@ -103,7 +123,7 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
 ## Video Credits
     Kenix | Producer / Writer
 	rainbow_fash | Executive Producer
-    TheLegendOfXela | Editor
+    ReveriePass | Editor
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link
     AceHeart | Zelda

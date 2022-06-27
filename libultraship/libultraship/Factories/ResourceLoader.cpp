@@ -15,6 +15,7 @@
 #include "TextureFactory.h"
 #include "BlobFactory.h"
 #include "MtxFactory.h"
+#include "AudioFactory.h"
 #include <Utils/MemoryStream.h>
 
 namespace Ship
@@ -28,9 +29,9 @@ namespace Ship
 
         for (int i = 0; i < 3; i++)
             reader->ReadByte();
-        
+
         // OTRTODO: Setup the binaryreader to use the resource's endianess
-        
+
         ResourceType resourceType = (ResourceType)reader->ReadUInt32();
         Resource* result = nullptr;
 
@@ -83,6 +84,18 @@ namespace Ship
             break;
         case ResourceType::Matrix:
             result = MtxFactory::ReadMtx(reader.get());
+            break;
+        case ResourceType::Audio:
+            result = AudioFactory::ReadAudio(reader.get());
+            break;
+        case ResourceType::AudioSample:
+            result = AudioSampleFactory::ReadAudioSample(reader.get());
+            break;
+        case ResourceType::AudioSoundFont:
+            result = AudioSoundFontFactory::ReadAudioSoundFont(reader.get());
+            break;
+        case ResourceType::AudioSequence:
+            result = AudioSequenceFactory::ReadAudioSequence(reader.get());
             break;
         default:
             // RESOURCE TYPE NOT SUPPORTED
