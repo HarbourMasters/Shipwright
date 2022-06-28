@@ -91,6 +91,9 @@
     <Filter Include="Source Files\CustomImpl\Overlay">
       <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Lib\dr_libs">
+      <UniqueIdentifier>{db6e02cc-fc4c-4138-8219-1d281ad93ec2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">
@@ -297,10 +300,10 @@
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="SohImGuiImpl.cpp">
+    <ClCompile Include="ImGuiImpl.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
-    <ClCompile Include="SohConsole.cpp">
+    <ClCompile Include="Console.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp">
@@ -333,7 +336,7 @@
     <ClCompile Include="ModManager.cpp">
       <Filter>Source Files\ModManager</Filter>
     </ClCompile>
-    <ClCompile Include="SohHooks.cpp">
+    <ClCompile Include="Hooks.cpp">
       <Filter>Source Files\CustomImpl\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="luslog.cpp">
@@ -344,6 +347,12 @@
     </ClCompile>
     <ClCompile Include="GameOverlay.cpp">
       <Filter>Source Files\CustomImpl\Overlay</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Source Files\Resources\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\AudioFactory.cpp">
+      <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -575,10 +584,10 @@
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="SohImGuiImpl.h">
+    <ClInclude Include="ImGuiImpl.h">
       <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
-    <ClInclude Include="SohConsole.h">
+    <ClInclude Include="Console.h">
       <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h">
@@ -623,7 +632,7 @@
     <ClInclude Include="ModModule.h">
       <Filter>Source Files\ModManager\ModModule</Filter>
     </ClInclude>
-    <ClInclude Include="SohHooks.h">
+    <ClInclude Include="Hooks.h">
       <Filter>Source Files\CustomImpl\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="luslog.h">
@@ -637,6 +646,18 @@
     </ClInclude>
     <ClInclude Include="GameOverlay.h">
       <Filter>Source Files\CustomImpl\Overlay</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Header Files\Resources\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Factories\AudioFactory.h">
+      <Filter>Header Files\Resources\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\dr_libs\mp3.h">
+      <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\dr_libs\wav.h">
+      <Filter>Source Files\Lib\dr_libs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

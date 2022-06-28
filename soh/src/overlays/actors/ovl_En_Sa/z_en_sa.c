@@ -660,7 +660,7 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
             EnSa_ChangeAnim(this, csAction->action);
             this->unk_210 = csAction->action;
         }
-        if (phi_v0) {}
+        //if (phi_v0) {}
         if (csAction->action == 3) {
             if (this->unk_20C == 0) {
                 phi_v0 = 0;
@@ -727,7 +727,12 @@ void EnSa_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (this->actionFunc != func_80AF68E4) {
-        this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 400.0f);
+        if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 32767);
+        }
+        else {
+            this->alpha = func_80034DD4(&this->actor, globalCtx, this->alpha, 400.0f);
+        }
     } else {
         this->alpha = 255;
     }

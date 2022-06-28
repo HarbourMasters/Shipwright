@@ -4,7 +4,7 @@
 #include "Utils/Directory.h"
 #include "yaz0/yaz0.h"
 
-#ifndef _MSC_VER
+#ifdef __linux__
 #include <byteswap.h>
 #endif
 #include <Globals.h>
@@ -16,6 +16,10 @@ namespace fs = std::filesystem;
 #if defined(_MSC_VER)
 #define __bswap_32 _byteswap_ulong
 #define bswap_32 _byteswap_ulong
+#endif
+#if defined __APPLE__
+#define __bswap32 __builtin_bswap32
+#define bswap32 __builtin_bswap32
 #endif
 
 // ROM DMA Table Start
@@ -68,7 +72,7 @@ ZRom::ZRom(std::string romPath)
 	romData = File::ReadAllBytes(romPath);
 
 	version.crc = BitConverter::ToInt32BE(romData, 0x10);
-	
+
 	switch (version.crc)
 	{
 	case OOT_NTSC_10:
@@ -191,9 +195,9 @@ ZRom::ZRom(std::string romPath)
 		}
 		else
 			files[lines[i]] = outData;
-	}
 
-	int bp = 0;
+		//File::WriteAllBytes(StringHelper::Sprintf("baserom/%s", lines[i].c_str()), files[lines[i]]);
+	}
 }
 
 std::vector<uint8_t> ZRom::GetFile(std::string fileName)

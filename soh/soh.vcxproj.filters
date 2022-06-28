@@ -82,6 +82,12 @@
     <Filter Include="Source Files\soh\Enhancements\debugger">
       <UniqueIdentifier>{04fc1c52-49ff-48e2-ae23-2c00867374f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\soh\Lib">
+      <UniqueIdentifier>{dbcf07c4-80b1-4c88-ac54-2bbdd8f53ee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\soh\Lib\nlohmann">
+      <UniqueIdentifier>{9c880c8e-492b-48f6-b230-1fd269ea74b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -2184,8 +2190,12 @@
     <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp">
       <Filter>Source Files\soh\Enhancements\debugger</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\debugger\actorViewer.cpp">
+      <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
     <ClCompile Include="soh\Enhancements\debugger\ImGuiHelpers.cpp">
       <Filter>Source Files\soh\Enhancements\debugger</Filter>
+    </ClCompile>
     <ClCompile Include="soh\frame_interpolation.cpp">
       <Filter>Source Files\soh</Filter>
     </ClCompile>
@@ -2194,6 +2204,9 @@
     </ClCompile>
     <ClCompile Include="soh\Enhancements\savestates.cpp">
       <Filter>Source Files\soh\Enhancements</Filter>
+    </ClCompile>
+    <ClCompile Include="soh\SaveManager.cpp">
+      <Filter>Source Files\soh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3748,8 +3761,12 @@
     <ClInclude Include="soh\Enhancements\debugger\colViewer.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
     </ClInclude>
+    <ClInclude Include="soh\Enhancements\debugger\actorViewer.h">
+      <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    </ClInclude>
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h">
       <Filter>Header Files\soh\Enhancements\debugger</Filter>
+    </ClInclude>
     <ClInclude Include="soh\frame_interpolation.h">
       <Filter>Header Files\soh</Filter>
     </ClInclude>
@@ -3759,11 +3776,15 @@
     <ClInclude Include="soh\OTRAudio.h">
       <Filter>Source Files\soh</Filter>
     </ClInclude>
+    <ClInclude Include="soh\Lib\nlohmann\json.hpp">
+      <Filter>Source Files\soh\Lib\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\SaveManager.h">
+      <Filter>Source Files\soh</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="include\macro.inc">
-      <Filter>Header Files\include</Filter>
-    </None>
+    <Image Include="SHIPOFHARKINIAN.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -3771,8 +3792,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="SHIPOFHARKINIAN.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
+    <None Include="include\macro.inc" />
   </ItemGroup>
 </Project>

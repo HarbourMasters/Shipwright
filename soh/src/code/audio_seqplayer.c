@@ -3,6 +3,9 @@
 #include "ultra64.h"
 #include "global.h"
 
+extern bool gUseLegacySD;
+extern char* sequenceMap[256];
+
 #define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
 #define PORTAMENTO_MODE(x) ((x).mode & ~0x80)
 #define PORTAMENTO_MODE_1 1
@@ -938,8 +941,16 @@ u8 AudioSeq_GetInstrument(SequenceChannel* channel, u8 instId, Instrument** inst
         *instOut = NULL;
         return 0;
     }
-    adsr->envelope = inst->envelope;
-    adsr->releaseRate = inst->releaseRate;
+
+    if (inst->envelope != NULL)
+    {
+        adsr->envelope = inst->envelope;
+        adsr->releaseRate = (inst->releaseRate);
+    }
+    else {
+        adsr->envelope = gDefaultEnvelope;
+    }
+
     *instOut = inst;
     instId += 2;
     return instId;
@@ -1052,9 +1063,14 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         command = (u8)parameters[0];
 
                         if (seqPlayer->defaultFont != 0xFF) {
-                            offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
-                            lowBits = gAudioContext.sequenceFontTable[offset];
-                            command = gAudioContext.sequenceFontTable[offset + lowBits - result];
+                            if (gUseLegacySD) {
+                                offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
+                                lowBits = gAudioContext.sequenceFontTable[offset];
+                                command = gAudioContext.sequenceFontTable[offset + lowBits - result];
+                            } else {
+                                SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
+                                command = sDat.fonts[sDat.numFonts - result - 1];
+                            }
                         }
 
                         if (AudioHeap_SearchCaches(FONT_TABLE, CACHE_EITHER, command)) {
@@ -1163,9 +1179,14 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         command = (u8)parameters[0];
 
                         if (seqPlayer->defaultFont != 0xFF) {
-                            offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
-                            lowBits = gAudioContext.sequenceFontTable[offset];
-                            command = gAudioContext.sequenceFontTable[offset + lowBits - result];
+                            if (gUseLegacySD) {
+                                offset = ((u16*)gAudioContext.sequenceFontTable)[seqPlayer->seqId];
+                                lowBits = gAudioContext.sequenceFontTable[offset];
+                                command = gAudioContext.sequenceFontTable[offset + lowBits - result];
+                            } else {
+                                SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
+                                command = sDat.fonts[sDat.numFonts - result - 1];
+                            }
                         }
 
                         if (AudioHeap_SearchCaches(FONT_TABLE, CACHE_EITHER, command)) {
@@ -1322,14 +1343,12 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         break;
                     case 0xB2:
                         offset = (u16)parameters[0];
-                        // OTRTODO: Byteswap added for quick audio
                         channel->unk_22 = BOMSWAP16(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
                         break;
                     case 0xB4:
                         channel->dynTable = (void*)&seqPlayer->seqData[channel->unk_22];
                         break;
                     case 0xB5:
-                        // OTRTODO: Byteswap added for quick audio
                         channel->unk_22 = BOMSWAP16(((u16*)(channel->dynTable))[scriptState->value]);
                         break;
                     case 0xB6:

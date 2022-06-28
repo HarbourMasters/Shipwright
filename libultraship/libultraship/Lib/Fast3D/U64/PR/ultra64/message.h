@@ -6,7 +6,23 @@
 #define OS_MESG_NOBLOCK         0
 #define OS_MESG_BLOCK           1
 
-typedef void* OSMesg;
+typedef union {
+    u8 data8;
+    u16 data16;
+    u32 data32;
+    void* ptr;
+} OSMesg;
+
+#define OS_MESG_8(x) ((OSMesg) { .data8 = (x) })
+#define OS_MESG_16(x) ((OSMesg) { .data16 = (x) })
+#define OS_MESG_32(x) ((OSMesg) { .data32 = (x) })
+#define OS_MESG_PTR(x) ((OSMesg) { .ptr = (x) })
+
+#define osSendMesg8(queue, msg, flag) osSendMesg(queue, OS_MESG_8(msg), flag)
+#define osSendMesg16(queue, msg, flag) osSendMesg(queue, OS_MESG_16(msg), flag)
+#define osSendMesg32(queue, msg, flag) osSendMesg(queue, OS_MESG_32(msg), flag)
+#define osSendMesgPtr(queue, msg, flag) osSendMesg(queue, OS_MESG_PTR(msg), flag)
+
 typedef u32 OSEvent;
 
 #define OS_NUM_EVENTS           15

@@ -1,6 +1,6 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++
+CXX ?= g++
 AR	:= ar
 FORMAT := clang-format-11
 
@@ -12,7 +12,8 @@ LTO ?= 0
 WARN := -Wall -Wextra -Werror \
 	-Wno-unused-parameter \
 	-Wno-unused-function \
-	-Wno-unused-variable
+	-Wno-unused-variable \
+	-Wno-error=multichar
 
 
 CXXFLAGS := $(WARN) -std=c++17 
@@ -30,7 +31,7 @@ ifneq ($(LTO),0)
 	CXXFLAGS += -flto
 endif
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 CXX_FILES := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 H_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.h))
 
@@ -46,6 +47,7 @@ INC_DIRS := $(addprefix -I, \
 	../../libultraship/libultraship \
 	../../libultraship/libultraship/Lib/spdlog/include \
 	../../libultraship/libultraship/Lib/Fast3D/U64 \
+	../../StormLib/src \
 )
 
 # create build directories

@@ -1,5 +1,5 @@
 #include "global.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 #include <string.h>
 
 void func_800C3C80(AudioMgr* audioMgr) {
@@ -7,7 +7,7 @@ void func_800C3C80(AudioMgr* audioMgr) {
 
     task = audioMgr->rspTask;
     if (audioMgr->rspTask->taskQueue != NULL) {
-        osSendMesg(task->taskQueue, NULL, OS_MESG_BLOCK);
+        osSendMesgPtr(task->taskQueue, NULL, OS_MESG_BLOCK);
     }
 }
 
@@ -25,8 +25,8 @@ void AudioMgr_HandleRetrace(AudioMgr* audioMgr) {
         audioMgr->audioTask.list = audioMgr->rspTask->task;
         audioMgr->audioTask.msgQ = &audioMgr->unk_AC;
 
-        audioMgr->audioTask.msg = NULL;
-        osSendMesg(&audioMgr->sched->cmdQ, &audioMgr->audioTask, OS_MESG_BLOCK);
+        audioMgr->audioTask.msg.ptr = NULL;
+        osSendMesgPtr(&audioMgr->sched->cmdQ, &audioMgr->audioTask, OS_MESG_BLOCK);
         Sched_SendEntryMsg(audioMgr->sched);
     }
 
@@ -96,7 +96,7 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
     osCreateMesgQueue(&audioMgr->unk_74, &audioMgr->unk_8C, 8);
     osCreateMesgQueue(&audioMgr->unk_C8, &audioMgr->unk_E0, 1);
 
-    osSendMesg(&audioMgr->unk_AC, NULL, OS_MESG_BLOCK);
+    osSendMesgPtr(&audioMgr->unk_AC, NULL, OS_MESG_BLOCK);
 
         static bool hasInitialized = false;
 
@@ -107,7 +107,7 @@ void AudioMgr_Init(AudioMgr* audioMgr, void* stack, OSPri pri, OSId id, SchedCon
         Audio_Init();
         AudioLoad_SetDmaHandler(DmaMgr_DmaHandler);
         Audio_InitSound();
-        osSendMesg(&audioMgr->unk_C8, NULL, OS_MESG_BLOCK);
+        osSendMesgPtr(&audioMgr->unk_C8, NULL, OS_MESG_BLOCK);
         ModInternal_ExecuteAudioInitHooks();
         // Removed due to crash
         //IrqMgr_AddClient(audioMgr->irqMgr, &irqClient, &audioMgr->unk_74);

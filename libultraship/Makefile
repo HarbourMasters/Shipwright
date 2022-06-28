@@ -1,9 +1,10 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++
-CC := gcc
+CXX ?= g++
+CC ?= gcc
 AR	:= ar
 FORMAT := clang-format-11
+UNAME := $(shell uname)
 
 ASAN ?= 0
 DEBUG ?= 1
@@ -16,11 +17,19 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-unused-function \
 	-Wno-parentheses \
 	-Wno-narrowing \
-	-Wno-missing-field-initializers
+	-Wno-missing-field-initializers \
+	-Wno-error=multichar
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0 -m32
+CWARN :=
+CXXWARN := -Wno-deprecated-enum-enum-conversion
+
+CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
+CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
+
+ifeq ($(UNAME), Darwin) #APPLE
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
+endif
 
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g -D_DEBUG
@@ -37,13 +46,13 @@ ifneq ($(LTO),0)
 	CFLAGS += -flto
 endif
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 
 CXX_FILES := \
-	$(shell find libultraship/Factories -name *.cpp) \
-	$(shell find libultraship/Lib/Fast3D -name *.cpp) \
-	$(shell find libultraship -maxdepth 1 -name *.cpp) \
-	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name *.cpp) \
+	$(shell find libultraship/Factories -name "*.cpp") \
+	$(shell find libultraship/Lib/Fast3D -name "*.cpp") \
+	$(shell find libultraship -maxdepth 1 -name "*.cpp") \
+	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name "*.cpp") \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -53,7 +62,7 @@ C_FILES := \
 	libultraship/mixer.c \
 	libultraship/Lib/stb/stb_impl.c
 
-FMT_FILES := $(shell find libultraship/ -type f \( -name *.cpp -o -name *.h \) -a -not -path "libultraship/Lib/*")
+FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
 O_FILES   := \
 	$(CXX_FILES:%.cpp=build/%.o) \
@@ -68,7 +77,9 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/Fast3D/U64 \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
+	libultraship/Lib/ImGui \
 	libultraship \
+	../StormLib/src \
 )
 
 # create build directories
