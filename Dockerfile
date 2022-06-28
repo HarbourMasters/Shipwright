@@ -21,7 +21,10 @@ RUN apt-get update && \
         libbz2-dev \
         libpng-dev \
         libgles2-mesa-dev && \    
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+    ln -s /usr/bin/g++-10 /usr/bin/g++ && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+    gcc --version && \
+    g++ --version
 
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
 
