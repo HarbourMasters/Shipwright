@@ -26,7 +26,7 @@
 #include "gfx_direct3d_common.h"
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 #include "../../Cvar.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
@@ -49,8 +49,8 @@ static struct {
     std::string game_name;
 
     HMODULE dxgi_module;
-    HRESULT(__stdcall* CreateDXGIFactory1)(REFIID riid, void** factory);
-    HRESULT(__stdcall* CreateDXGIFactory2)(UINT flags, REFIID iid, void** factory);
+    HRESULT (__stdcall *CreateDXGIFactory1)(REFIID riid, void **factory);
+    HRESULT (__stdcall *CreateDXGIFactory2)(UINT flags, REFIID iid, void **factory);
 
     bool process_dpi_awareness_done;
 
@@ -235,57 +235,55 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     event_impl.win32 = { h_wnd, static_cast<int>(message), static_cast<int>(w_param), static_cast<int>(l_param) };
     SohImGui::Update(event_impl);
     switch (message) {
-    case WM_SIZE:
-        dxgi.current_width = (uint32_t)(l_param & 0xffff);
-        dxgi.current_height = (uint32_t)(l_param >> 16);
-        break;
-    case WM_DESTROY:
-        exit(0);
-    case WM_PAINT:
-        if (dxgi.in_paint) {
-            dxgi.recursive_paint_detected = true;
-            return DefWindowProcW(h_wnd, message, w_param, l_param);
-        }
-        else {
-            if (dxgi.run_one_game_iter != nullptr) {
-                dxgi.in_paint = true;
-                dxgi.run_one_game_iter();
-                dxgi.in_paint = false;
-                if (dxgi.recursive_paint_detected) {
-                    dxgi.recursive_paint_detected = false;
-                    InvalidateRect(h_wnd, nullptr, false);
-                    UpdateWindow(h_wnd);
+        case WM_SIZE:
+            dxgi.current_width = (uint32_t)(l_param & 0xffff);
+            dxgi.current_height = (uint32_t)(l_param >> 16);
+            break;
+        case WM_DESTROY:
+            exit(0);
+        case WM_PAINT:
+            if (dxgi.in_paint) {
+                dxgi.recursive_paint_detected = true;
+                return DefWindowProcW(h_wnd, message, w_param, l_param);
+            } else {
+                if (dxgi.run_one_game_iter != nullptr) {
+                    dxgi.in_paint = true;
+                    dxgi.run_one_game_iter();
+                    dxgi.in_paint = false;
+                    if (dxgi.recursive_paint_detected) {
+                        dxgi.recursive_paint_detected = false;
+                        InvalidateRect(h_wnd, nullptr, false);
+                        UpdateWindow(h_wnd);
+                    }
                 }
             }
-        }
-        break;
-    case WM_ACTIVATEAPP:
-        if (dxgi.on_all_keys_up != nullptr) {
-            dxgi.on_all_keys_up();
-        }
-        break;
-    case WM_KEYDOWN:
-        onkeydown(w_param, l_param);
-        break;
-    case WM_KEYUP:
-        onkeyup(w_param, l_param);
-        break;
-    case WM_DROPFILES:
-        DragQueryFileA((HDROP)w_param, 0, fileName, 256);
-        CVar_SetString("gSpoilerLog", fileName);
-        CVar_SetS32("gDroppedNewSpoilerFile", 1);
-        Game::SaveSettings();
-        break;
-    case WM_SYSKEYDOWN:
-        if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {
-            toggle_borderless_window_full_screen(!dxgi.is_full_screen, true);
             break;
-        }
-        else {
+        case WM_ACTIVATEAPP:
+            if (dxgi.on_all_keys_up != nullptr) {
+                dxgi.on_all_keys_up();
+            }
+            break;
+        case WM_KEYDOWN:
+            onkeydown(w_param, l_param);
+            break;
+        case WM_KEYUP:
+            onkeyup(w_param, l_param);
+            break;
+        case WM_DROPFILES:
+            DragQueryFileA((HDROP)w_param, 0, fileName, 256);
+            CVar_SetString("gSpoilerLog", fileName);
+            CVar_SetS32("gDroppedNewSpoilerFile", 1);
+            Game::SaveSettings();
+            break;
+        case WM_SYSKEYDOWN:
+            if ((w_param == VK_RETURN) && ((l_param & 1 << 30) == 0)) {
+                toggle_borderless_window_full_screen(!dxgi.is_full_screen, true);
+                break;
+            } else {
+                return DefWindowProcW(h_wnd, message, w_param, l_param);
+            }
+        default:
             return DefWindowProcW(h_wnd, message, w_param, l_param);
-        }
-    default:
-        return DefWindowProcW(h_wnd, message, w_param, l_param);
     }
     return 0;
 }
