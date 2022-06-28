@@ -102,48 +102,16 @@ pipeline {
                             mkdir build
                             mv soh/soh.elf build/
                             mv OTRGui/build/OTRGui build/
-                            mv OTRGui/build/assets build/
+                            mv OTRGui/assets build/
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md build/readme.txt
-                            cd build
-                            7z a soh-linux.7z soh.elf OTRGui assets readme.txt
-                            mv soh-linux.7z ../
+                                                        
+                            docker exec sohcont appimage/appimage.sh
                             
                             '''
                         }
                         sh 'sudo docker container stop sohcont'
-                        archiveArtifacts artifacts: 'soh-linux.7z', followSymlinks: false, onlyIfSuccessful: true
-                    }
-                    post {
-                        always {
-                            step([$class: 'WsCleanup']) // Clean workspace
-                        }
-                    }
-                }
-                stage ('Build macOS') {
-                    agent {
-                        label "SoH-Mac-Builders"
-                    }
-                    steps {
-                        checkout([
-                            $class: 'GitSCM',
-                            branches: scm.branches,
-                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                            extensions: scm.extensions,
-                            userRemoteConfigs: scm.userRemoteConfigs
-                        ])
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                            sh '''
-                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-                            cd soh
-                            make setup -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
-                            make -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
-                            make -j4 appbundle
-                            mv ../README.md readme.txt
-                            7z a soh-mac.7z soh.app readme.txt
-                            '''
-                        }
-                        archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
+                        archiveArtifacts artifacts: 'SOH-Linux.AppImage', followSymlinks: false, onlyIfSuccessful: true
                     }
                     post {
                         always {
