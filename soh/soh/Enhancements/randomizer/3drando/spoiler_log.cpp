@@ -261,7 +261,6 @@ static void WriteLocation(
     std::string sphere, const uint32_t locationKey, const bool withPadding = false) {
   ItemLocation* location = Location(locationKey);
 
-  // PURPLE TODO: LOCALIZATION
   // auto node = parentNode->InsertNewChildElement("location");
   switch (gSaveContext.language) {
         case LANGUAGE_ENG:
