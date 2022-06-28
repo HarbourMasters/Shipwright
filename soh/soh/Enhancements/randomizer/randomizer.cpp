@@ -9,7 +9,7 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <GameSettings.h>
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
