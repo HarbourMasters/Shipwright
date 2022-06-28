@@ -789,6 +789,9 @@ u16 Message_DrawItemIcon(GlobalContext* globalCtx, u16 itemId, Gfx** p, u16 i) {
     gDPSetCombineMode(gfx++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
     gDPSetPrimColor(gfx++, 0, 0, 255, 255, 255, msgCtx->textColorAlpha);
 
+    // Invalidate icon texture as it may have changed from the last time a text box had an icon
+    gSPInvalidateTexCache(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE);
+
     if (itemId >= ITEM_MEDALLION_FOREST) {
         gDPLoadTextureBlock(gfx++, (uintptr_t)msgCtx->textboxSegment + MESSAGE_STATIC_TEX_SIZE, G_IM_FMT_RGBA, G_IM_SIZ_32b,
                             24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,

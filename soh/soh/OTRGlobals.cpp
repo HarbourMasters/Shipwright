@@ -57,7 +57,6 @@ OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
-    CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {

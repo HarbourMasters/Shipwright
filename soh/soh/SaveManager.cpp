@@ -51,6 +51,7 @@ void SaveManager::Init() {
     // If there is a lingering unversioned save, convert it
     if (std::filesystem::exists("oot_save.sav")) {
         ConvertFromUnversioned();
+        std::filesystem::rename("oot_save.sav", "oot_save.bak");
     }
 
     // If the global save file exist, load it. Otherwise, create it.
@@ -1171,8 +1172,6 @@ void SaveManager::ConvertFromUnversioned() {
             gSaveContext = saveContextSave;
         }
     }
-
-    std::filesystem::rename("oot_save.sav", "oot_save.bak");
 
 #undef SLOT_SIZE
 #undef SLOT_OFFSET

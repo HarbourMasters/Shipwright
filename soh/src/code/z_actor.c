@@ -870,11 +870,12 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         case SCENE_ZOORA:
             texture = gZoraShopTitleCardENGTex;
             break;
-        case SCENE_ALLEY_SHOP:
+        case SCENE_NIGHT_SHOP:
             texture = gBombchuShopTitleCardENGTex;
             break;
         case SCENE_DRAG:
         case SCENE_MAHOUYA:
+        case SCENE_ALLEY_SHOP:
             texture = gPotionShopTitleCardENGTex;
             break;
         case SCENE_FACE_SHOP:
