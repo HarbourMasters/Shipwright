@@ -3075,8 +3075,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return RC_ZF_ICEBERC_FREESTANDING_POH;
                 case 15362:
+                case 14594:
                     return RC_JABU_GOSSIP_STONE;
                 case 14849:
+                case 14337:
                     return RC_FAIRY_GOSSIP_STONE;
             }
             break;
