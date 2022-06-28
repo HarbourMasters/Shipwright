@@ -246,7 +246,7 @@ void HintTable_Init() {
                        Text{"there is a #1/32 chance# to win", /*french*/"être #le gagnant parmi 32# donne", /*spanish*/"hay una #probabilidad de 1/32# de ganar"},
                      }, {},
                        //clear text
-                       Text{"the #treasure chest game# grants", /*french*/"la #chasse aux trésors# donne", /*spanish*/"#el Cofre del Tesoro# premia"}
+                       Text{"the #treasure chest game# grants", /*french*/"la #Chasse-aux-Trésors# donne", /*spanish*/"#el Cofre del Tesoro# premia"}
   );
 
     hintTable[MARKET_TREASURE_CHEST_GAME_ITEM_1] = HintText::Sometimes({
@@ -255,7 +255,7 @@ void HintTable_Init() {
                        Text{"the #first or second game chest# contains", /*french*/"le #premier ou deuxième coffre à jeu# contient", /*spanish*/"#el primer o segundo cofre del azar# revela"},
                      }, {},
                        //clear text
-                       Text{"the #first locked room# in the chest game contains", /*french*/"la #première salle# de la chasse aux trésors contient", /*spanish*/"#en la primera sala del Cofre del Tesoro# aguarda"}
+                       Text{"the #first locked room# in the chest game contains", /*french*/"la #première salle# de la Chasse-aux-Trésors contient", /*spanish*/"#en la primera sala del Cofre del Tesoro# aguarda"}
   );
 
     hintTable[MARKET_TREASURE_CHEST_GAME_ITEM_2] = HintText::Sometimes({
@@ -264,7 +264,7 @@ void HintTable_Init() {
                        Text{"the #third or fourth game chest# contains", /*french*/"le #troisième ou quatrième coffre à jeu# contient", /*spanish*/"#el tercer o cuarto cofre del azar# revela"},
                      }, {},
                        //clear text
-                       Text{"the #second locked room# in the chest game contains", /*french*/"la #deuxième salle# de la chasse aux trésors contient", /*spanish*/"#en la segunda sala del Cofre del Tesoro# aguarda"}
+                       Text{"the #second locked room# in the chest game contains", /*french*/"la #deuxième salle# de la Chasse-aux-Trésors contient", /*spanish*/"#en la segunda sala del Cofre del Tesoro# aguarda"}
   );
 
     hintTable[MARKET_TREASURE_CHEST_GAME_ITEM_3] = HintText::Sometimes({
@@ -273,7 +273,7 @@ void HintTable_Init() {
                        Text{"the #fifth or sixth game chest# contains", /*french*/"le #cinquième ou sixième coffre à jeu# contient", /*spanish*/"#el quinto o sexto cofre del azar# revela"},
                      }, {},
                        //clear text
-                       Text{"the #third locked room# in the chest game contains", /*french*/"la #troisième salle# de la chasse aux trésors contient", /*spanish*/"#en la tercera sala del Cofre del Tesoro# aguarda"}
+                       Text{"the #third locked room# in the chest game contains", /*french*/"la #troisième salle# de la Chasse-aux-Trésors contient", /*spanish*/"#en la tercera sala del Cofre del Tesoro# aguarda"}
   );
 
     hintTable[MARKET_TREASURE_CHEST_GAME_ITEM_4] = HintText::Sometimes({
@@ -282,7 +282,7 @@ void HintTable_Init() {
                        Text{"the #seventh or eighth game chest# contains", /*french*/"le #septième ou huitième coffre à jeu# contient", /*spanish*/"#el séptimo u octavo cofre del azar# revela"},
                      }, {},
                        //clear text
-                       Text{"the #fourth locked room# in the chest game contains", /*french*/"la #quatrième salle# de la chasse aux trésors contient", /*spanish*/"#en la cuarta sala del Cofre del Tesoro# aguarda"}
+                       Text{"the #fourth locked room# in the chest game contains", /*french*/"la #quatrième salle# de la Chasse-aux-Trésors contient", /*spanish*/"#en la cuarta sala del Cofre del Tesoro# aguarda"}
   );
 
     hintTable[MARKET_TREASURE_CHEST_GAME_ITEM_5] = HintText::Sometimes({
@@ -291,7 +291,7 @@ void HintTable_Init() {
                        Text{"the #ninth or tenth game chest# contains", /*french*/"le #neuvième ou dixième coffre à jeu# contient", /*spanish*/"#el noveno o décimo cofre del azar# revela"},
                      }, {},
                        //clear text
-                       Text{"the #fifth locked room# in the chest game contains", /*french*/"la #cinquième salle# de la chasse aux trésors contient", /*spanish*/"#en la quinta sala del Cofre del Tesoro# aguarda"}
+                       Text{"the #fifth locked room# in the chest game contains", /*french*/"la #cinquième salle# de la Chasse-aux-Trésors contient", /*spanish*/"#en la quinta sala del Cofre del Tesoro# aguarda"}
   );
 
     hintTable[GF_HBA_1500_POINTS] = HintText::Sometimes({
@@ -897,7 +897,7 @@ void HintTable_Init() {
 
     hintTable[MARKET_TREASURE_CHEST_GAME] = HintText::Region({
                      //obscure text
-                     Text{"the #Treasure Chest Shop#", /*french*/"la #chasse aux trésors#", /*spanish*/"el Cofre del Tesoro"},
+                     Text{"the #Treasure Chest Shop#", /*french*/"la #Chasse-aux-Trésors#", /*spanish*/"el Cofre del Tesoro"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP] = HintText::Region({
@@ -1301,7 +1301,7 @@ void HintTable_Init() {
 
     hintTable[JUNK17] = HintText::Junk({
                      //obscure text
-                     Text{"Without the Lens of Truth, the Treasure Chest Mini-Game is a 1 out of 32 chance.^Good luck!", /*french*/"Gagner la chasse aux trésors est 1 chance sur 32.^Bonne chance!", /*spanish*/"Sin la Lupa de la Verdad, ganarías 1/32 veces en el Cofre del Tesoro.^¡Buena suerte con ello!"},
+                     Text{"Without the Lens of Truth, the Treasure Chest Mini-Game is a 1 out of 32 chance.^Good luck!", /*french*/"Gagner la Chasse-aux-Trésors est 1 chance sur 32.^Bonne chance!", /*spanish*/"Sin la Lupa de la Verdad, ganarías 1/32 veces en el Cofre del Tesoro.^¡Buena suerte con ello!"},
     });
 
     hintTable[JUNK18] = HintText::Junk({

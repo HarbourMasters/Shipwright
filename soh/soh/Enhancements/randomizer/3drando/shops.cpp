@@ -240,7 +240,7 @@ void InitTrickNames() {
   trickNameTable[GI_STONE_OF_AGONY] = {
      Text{"Shard of Agahnim", "Fragment d'agonie", "Piedra de Agahnim"},
      Text{"Stone of Agony", "Fragment de cristal", "Fragmento de la Agonía"},
-     Text{"Pirate's Charm", "Pierre de souffrance", "Amuleto Pirata"}};
+     Text{"Pirate's Charm", "Pierre de Souffrance", "Amuleto Pirata"}};
   trickNameTable[GI_DINS_FIRE] = {
      Text{"Eldin's Fire", "Feu d'Eldin", "Fuego de Eldin"},
      Text{"Din's Blaze", "Flamme de Din", "Poder de Din"},
@@ -260,7 +260,7 @@ void InitTrickNames() {
   trickNameTable[GI_ARROW_ICE] = {
      Text{"Shadow Arrow", "Flèche d'ombre", "Flecha de las Sombras"},
      Text{"Ancient Arrow", "Flèche archéonique", "Flecha ancestral"},
-     Text{"Ice Trap Arrow", "Flèche de piège de glace", "Cetro de hielo"}};
+     Text{"Ice Trap Arrow", "Flèche de Piège de Glace", "Cetro de hielo"}};
   trickNameTable[GI_ARROW_LIGHT] = {
      Text{"Wind Arrow", "Flèche de vent", "Flecha del Viento"},
      Text{"Shock Arrow", "Flèches électriques", "Flecha eléctrica"},
@@ -305,7 +305,7 @@ void InitTrickNames() {
      Text{"Grog's Saw", "Scie de Grog", "Sierra del Cazador Furtivo"}};
   trickNameTable[GI_SWORD_BROKEN] = {
      Text{"Broken Biggoron's Sword", "Épée brisée de Grogoron", "Espada de Biggoron rota"},
-     Text{"Broken Giant's Knife", "Lame des géants brisée", "Daga gigante rota"},
+     Text{"Broken Giant's Knife", "Lame des Géants brisée", "Daga gigante rota"},
      Text{"Biggoron's Sword", "Épée de Grogoron", "Espada de Biggoron"}};
   trickNameTable[GI_PRESCRIPTION] = {
      Text{"Biggoron's Prescription", "Ordonnance de Grogoron", "Receta de Biggoron"},
@@ -426,7 +426,7 @@ void InitTrickNames() {
   trickNameTable[0x15] = {
      Text{"Bottle with Maggie's Letter", "Flacon avec lettre de Maggy", "Carta de Dolores"},
      Text{"Bottle with Letter to Kafei", "Flacon avec lettre pour Kafei", "Carta para Kafei"},
-     Text{"Bottle with Zelda's Letter", "Flacon avec lettre de Zelda", "Carta náutica"}};
+     Text{"Bottle with Zelda's Letter", "Flacon avec Lettre de Zelda", "Carta náutica"}};
   trickNameTable[0x93] = {
      Text{"Bottle with Composer Brother", "Flacon avec un compositeur", "Hermana Poe embotellada"},
      Text{"Bottle with Jalhalla", "Flacon avec Jalhalla", "Yaihalla embotellado"},
@@ -563,16 +563,16 @@ void InitTrickNames() {
      Text{"Switch Hook", "Great grappin", "Gancho chulo"}};
   trickNameTable[GI_BOMB_BAG_1] = {
 	 Text{"Bomb Capacity (20)", "Capacité de bombes (20)", "Bolsa de bombas (contiene 20)"},
-     Text{"Bronze Bomb Bag", "Sac de bombes de bronze", "Saco de bronce de bombas"},
-     Text{"Small Bomb Bag", "Petit sac de bombes", "Zurrón de bombas pequeño"}};
+     Text{"Bronze Bomb Bag", "Sac de Bombes de bronze", "Saco de bronce de bombas"},
+     Text{"Small Bomb Bag", "Petit Sac de Bombes", "Zurrón de bombas pequeño"}};
   trickNameTable[GI_BOMB_BAG_2] = {
 	 Text{"Bomb Capacity (30)", "Capacité de bombes (30)", "Bolsa de bombas (contiene 30)"},
-     Text{"Silver Bomb Bag", "Sac de bombes d'argent", "Saco plateado de bombas"},
-     Text{"Medium Bomb Bag", "Sac de bombes moyen", "Zurrón de bombas mediano"}};
+     Text{"Silver Bomb Bag", "Sac de Bombes d'argent", "Saco plateado de bombas"},
+     Text{"Medium Bomb Bag", "Sac de Bombes moyen", "Zurrón de bombas mediano"}};
   trickNameTable[GI_BOMB_BAG_3] = {
 	 Text{"Bomb Capacity (40)", "Capacité de bombes (40)", "Bolsa de bombas (contiene 40)"},
-     Text{"Golden Bomb Bag", "Sac de bombes d'or", "Saco dorado de bombas"},
-     Text{"Large Bomb Bag", "Gros sac de bombes", "Zurrón de bombas grande"}};
+     Text{"Golden Bomb Bag", "Sac de Bombes d'or", "Saco dorado de bombas"},
+     Text{"Large Bomb Bag", "Gros Sac de Bombes", "Zurrón de bombas grande"}};
   trickNameTable[GI_BOW_1] = {
 	 Text{"Bow", "Arc", "Arco del Hada"},
      Text{"Hero's Bow", "Arc du héros", "Arco del héroe"},
