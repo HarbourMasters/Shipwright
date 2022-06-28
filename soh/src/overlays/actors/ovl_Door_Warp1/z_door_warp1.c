@@ -560,7 +560,7 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_YDAN_BOSS) {
-            if (!Flags_GetEventChkInf(7)) {
+            if (!Flags_GetEventChkInf(7) || gSaveContext.n64ddFlag) {
                 Flags_SetEventChkInf(7);
                 Flags_SetEventChkInf(9);
                 gSaveContext.dungeonsDone[1] = 1;
