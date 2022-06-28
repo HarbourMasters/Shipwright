@@ -336,7 +336,7 @@ s32 Collider_FreeJntSph(GlobalContext* globalCtx, ColliderJntSph* collider) {
 
     collider->count = 0;
     if (collider->elements != NULL) {
-        ZeldaArena_FreeDebug(collider->elements, __FILE__, __LINE__);
+        ZeldaArena_FreeDebug(collider->elements);
     }
     collider->elements = NULL;
     return 1;
@@ -367,7 +367,7 @@ s32 Collider_SetJntSphToActor(GlobalContext* globalCtx, ColliderJntSph* dest, Co
 
     Collider_SetBaseToActor(globalCtx, &dest->base, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), __FILE__, __LINE__);
+    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -396,7 +396,7 @@ s32 Collider_SetJntSphAllocType1(GlobalContext* globalCtx, ColliderJntSph* dest,
 
     Collider_SetBaseType1(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), __FILE__, __LINE__);
+    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -424,7 +424,7 @@ s32 Collider_SetJntSphAlloc(GlobalContext* globalCtx, ColliderJntSph* dest, Acto
 
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), __FILE__, __LINE__);
+    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -702,7 +702,7 @@ s32 Collider_FreeTris(GlobalContext* globalCtx, ColliderTris* tris) {
 
     tris->count = 0;
     if (tris->elements != NULL) {
-        ZeldaArena_FreeDebug(tris->elements, __FILE__, __LINE__);
+        ZeldaArena_FreeDebug(tris->elements);
     }
     tris->elements = NULL;
     return 1;
@@ -734,7 +734,7 @@ s32 Collider_SetTrisAllocType1(GlobalContext* globalCtx, ColliderTris* dest, Act
 
     Collider_SetBaseType1(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement), __FILE__, __LINE__);
+    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement));
     if (dest->elements == NULL) {
         dest->count = 0;
         osSyncPrintf(VT_FGCOL(RED));
@@ -760,7 +760,7 @@ s32 Collider_SetTrisAlloc(GlobalContext* globalCtx, ColliderTris* dest, Actor* a
 
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement), __FILE__, __LINE__);
+    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement));
 
     if (dest->elements == NULL) {
         osSyncPrintf(VT_FGCOL(RED));

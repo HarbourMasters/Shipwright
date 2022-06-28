@@ -111,7 +111,7 @@
 #define LOG_FLOAT(exp, value) ((void)0)
 #endif
 
-// LogUtils as macro
+// LogUtils
 #ifndef NDEBUG
 #define LOG_POINTER(val, max, ptr, name) LogUtils_LogPointer(val, max, ptr, name, __FILE__, __LINE__)
 #define LOG_CHECK_BOUNDARY(name, value, unk) LogUtils_CheckBoundary(name, value, unk, __FILE__, __LINE__)

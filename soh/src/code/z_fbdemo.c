@@ -111,19 +111,19 @@ void TransitionUnk_Destroy(TransitionUnk* this) {
     Sleep_Msec(100);
 
     if (this->unk_0C != NULL) {
-        SystemArena_FreeDebug(this->unk_0C, __FILE__, __LINE__);
+        SystemArena_FreeDebug(this->unk_0C);
         this->unk_0C = NULL;
     }
     if (this->vtxFrame1 != NULL) {
-        SystemArena_FreeDebug(this->vtxFrame1, __FILE__, __LINE__);
+        SystemArena_FreeDebug(this->vtxFrame1);
         this->vtxFrame1 = NULL;
     }
     if (this->vtxFrame2 != NULL) {
-        SystemArena_FreeDebug(this->vtxFrame2, __FILE__, __LINE__);
+        SystemArena_FreeDebug(this->vtxFrame2);
         this->vtxFrame2 = NULL;
     }
     if (this->gfx != NULL) {
-        SystemArena_FreeDebug(this->gfx, __FILE__, __LINE__);
+        SystemArena_FreeDebug(this->gfx);
         this->gfx = NULL;
     }
 }
@@ -134,27 +134,27 @@ TransitionUnk* TransitionUnk_Init(TransitionUnk* this, s32 row, s32 col) {
     this->frame = 0;
     this->row = row;
     this->col = col;
-    this->unk_0C = SystemArena_MallocDebug((row + 1) * sizeof(TransitionUnkData) * (col + 1), __FILE__, __LINE__);
-    this->vtxFrame1 = SystemArena_MallocDebug((row + 1) * sizeof(Vtx) * (col + 1), __FILE__, __LINE__);
-    this->vtxFrame2 = SystemArena_MallocDebug((row + 1) * sizeof(Vtx) * (col + 1), __FILE__, __LINE__);
-    this->gfx = SystemArena_MallocDebug((this->col * (1 + this->row * 9) + 2) * sizeof(Gfx), __FILE__, __LINE__);
+    this->unk_0C = SystemArena_MallocDebug((row + 1) * sizeof(TransitionUnkData) * (col + 1));
+    this->vtxFrame1 = SystemArena_MallocDebug((row + 1) * sizeof(Vtx) * (col + 1));
+    this->vtxFrame2 = SystemArena_MallocDebug((row + 1) * sizeof(Vtx) * (col + 1));
+    this->gfx = SystemArena_MallocDebug((this->col * (1 + this->row * 9) + 2) * sizeof(Gfx));
 
     if (this->unk_0C == NULL || this->vtxFrame1 == NULL || this->vtxFrame2 == NULL || this->gfx == NULL) {
         osSyncPrintf("fbdemo_init allocation error\n");
         if (this->unk_0C != NULL) {
-            SystemArena_FreeDebug(this->unk_0C, __FILE__, __LINE__);
+            SystemArena_FreeDebug(this->unk_0C);
             this->unk_0C = NULL;
         }
         if (this->vtxFrame1 != NULL) {
-            SystemArena_FreeDebug(this->vtxFrame1, __FILE__, __LINE__);
+            SystemArena_FreeDebug(this->vtxFrame1);
             this->vtxFrame1 = NULL;
         }
         if (this->vtxFrame2 != NULL) {
-            SystemArena_FreeDebug(this->vtxFrame2, __FILE__, __LINE__);
+            SystemArena_FreeDebug(this->vtxFrame2);
             this->vtxFrame2 = NULL;
         }
         if (this->gfx != NULL) {
-            SystemArena_FreeDebug(this->gfx, __FILE__, __LINE__);
+            SystemArena_FreeDebug(this->gfx);
             this->gfx = NULL;
         }
         return NULL;

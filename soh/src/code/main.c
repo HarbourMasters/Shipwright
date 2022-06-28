@@ -75,7 +75,7 @@ void Main(void* arg) {
         debugHeapSize = (0x80600000 - (uintptr_t)debugHeap);
     } else {
         debugHeapSize = 0x400;
-        debugHeap = SystemArena_MallocDebug(debugHeapSize, __FILE__, __LINE__);
+        debugHeap = SystemArena_MallocDebug(debugHeapSize);
     }
 
     debugHeapSize = 1024 * 64;

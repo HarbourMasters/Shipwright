@@ -104,7 +104,7 @@ void Overlay_FreeGameState(GameStateOverlay* overlayEntry) {
                 overlayEntry->unk_24 = NULL;
             }
 
-            SystemArena_FreeDebug(overlayEntry->loadedRamAddr, __FILE__, __LINE__);
+            SystemArena_FreeDebug(overlayEntry->loadedRamAddr);
             overlayEntry->loadedRamAddr = NULL;
         }
     }

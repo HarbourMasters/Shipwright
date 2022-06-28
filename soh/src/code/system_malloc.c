@@ -29,8 +29,8 @@ void* SystemArena_Malloc(size_t size) {
     return ptr;
 }
 
-void* SystemArena_MallocDebug(size_t size, const char* file, s32 line) {
-    void* ptr = __osMallocDebug(&gSystemArena, size, file, line);
+void* SystemArena_MallocDebug(size_t size) {
+    void* ptr = __osMallocDebug(&gSystemArena, size, __FILE__, __LINE__);
 
     SystemArena_CheckPointer(ptr, size, "malloc_DEBUG", "確保"); // "Secure"
     return ptr;
@@ -43,8 +43,8 @@ void* SystemArena_MallocR(size_t size) {
     return ptr;
 }
 
-void* SystemArena_MallocRDebug(size_t size, const char* file, s32 line) {
-    void* ptr = __osMallocRDebug(&gSystemArena, size, file, line);
+void* SystemArena_MallocRDebug(size_t size) {
+    void* ptr = __osMallocRDebug(&gSystemArena, size, __FILE__, __LINE__);
 
     SystemArena_CheckPointer(ptr, size, "malloc_r_DEBUG", "確保"); // "Secure"
     return ptr;
@@ -56,8 +56,8 @@ void* SystemArena_Realloc(void* ptr, size_t newSize) {
     return ptr;
 }
 
-void* SystemArena_ReallocDebug(void* ptr, size_t newSize, const char* file, s32 line) {
-    ptr = __osReallocDebug(&gSystemArena, ptr, newSize, file, line);
+void* SystemArena_ReallocDebug(void* ptr, size_t newSize) {
+    ptr = __osReallocDebug(&gSystemArena, ptr, newSize, __FILE__, __LINE__);
     SystemArena_CheckPointer(ptr, newSize, "realloc_DEBUG", "再確保"); // "Re-securing"
     return ptr;
 }
@@ -66,8 +66,8 @@ void SystemArena_Free(void* ptr) {
     __osFree(&gSystemArena, ptr);
 }
 
-void SystemArena_FreeDebug(void* ptr, const char* file, s32 line) {
-    __osFreeDebug(&gSystemArena, ptr, file, line);
+void SystemArena_FreeDebug(void* ptr) {
+    __osFreeDebug(&gSystemArena, ptr, __FILE__, __LINE__);
 }
 
 void* SystemArena_Calloc(size_t num, size_t size) {

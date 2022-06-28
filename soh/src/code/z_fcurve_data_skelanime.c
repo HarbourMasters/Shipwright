@@ -23,8 +23,7 @@ s32 SkelCurve_Init(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve, SkelCurv
     skelCurve->limbCount = limbList->limbCount;
     skelCurve->limbList = SEGMENTED_TO_VIRTUAL(limbList->limbs);
 
-    skelCurve->transforms = ZeldaArena_MallocDebug(sizeof(*skelCurve->transforms) * skelCurve->limbCount,
-                                                   __FILE__, __LINE__);
+    skelCurve->transforms = ZeldaArena_MallocDebug(sizeof(*skelCurve->transforms) * skelCurve->limbCount);
     ASSERT(skelCurve->transforms != NULL);
     skelCurve->animCurFrame = 0.0f;
     return 1;
@@ -32,7 +31,7 @@ s32 SkelCurve_Init(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve, SkelCurv
 
 void SkelCurve_Destroy(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve) {
     if (skelCurve->transforms != NULL) {
-        ZeldaArena_FreeDebug(skelCurve->transforms, __FILE__, __LINE__);
+        ZeldaArena_FreeDebug(skelCurve->transforms);
     }
 }
 

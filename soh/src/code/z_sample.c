@@ -79,7 +79,7 @@ void Sample_SetupView(SampleContext* this) {
 void Sample_LoadTitleStatic(SampleContext* this) {
     size_t size = _title_staticSegmentRomEnd - _title_staticSegmentRomStart;
 
-    this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
+    this->staticSegment = GameState_Alloc(&this->state, size);
     DmaMgr_SendRequest1(this->staticSegment, _title_staticSegmentRomStart, size, __FILE__, __LINE__);
 }
 

@@ -103,7 +103,7 @@ void EffDust_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->scalingFactor = 20.0f;
             break;
         default:
-            SystemArena_FreeDebug(this, __FILE__, __LINE__);
+            SystemArena_FreeDebug(this);
             break;
     }
 

@@ -37,7 +37,7 @@ char regChar[] = " SOPQMYDUIZCNKXcsiWAVHGmnBdkb";
 void func_800636C0(void) {
     s32 i;
 
-    gGameInfo = (GameInfo*)SystemArena_MallocDebug(sizeof(GameInfo), __FILE__, __LINE__);
+    gGameInfo = (GameInfo*)SystemArena_MallocDebug(sizeof(GameInfo));
     gGameInfo->regPage = 0;
     gGameInfo->regGroup = 0;
     gGameInfo->regCur = 0;

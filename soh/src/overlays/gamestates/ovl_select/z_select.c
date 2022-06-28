@@ -626,7 +626,7 @@ void Select_Init(GameState* thisx) {
     }
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)
-    this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
+    this->staticSegment = GameState_Alloc(&this->state, size);
     DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, __FILE__, __LINE__);
 #endif
     gSaveContext.cutsceneIndex = 0x8000;

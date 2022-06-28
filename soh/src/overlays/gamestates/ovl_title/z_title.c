@@ -331,7 +331,7 @@ void Title_Init(GameState* thisx) {
 
     quote = SetQuote();
 
-    //this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
+    //this->staticSegment = GameState_Alloc(&this->state, size);
     osSyncPrintf("z_title.c\n");
     //ASSERT(this->staticSegment != NULL);
 

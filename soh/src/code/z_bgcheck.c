@@ -2428,7 +2428,7 @@ void SSNodeList_Alloc(GlobalContext* globalCtx, SSNodeList* this, s32 tblMax, s3
 
     ASSERT(this->tbl != NULL);
 
-    this->polyCheckTbl = GameState_Alloc(&globalCtx->state, numPolys, __FILE__, __LINE__);
+    this->polyCheckTbl = GameState_Alloc(&globalCtx->state, numPolys);
 
     ASSERT(this->polyCheckTbl != NULL);
 }

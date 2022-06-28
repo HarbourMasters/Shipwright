@@ -1949,12 +1949,12 @@ void FileChoose_Init(GameState* thisx) {
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);
 
-    this->staticSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
+    this->staticSegment = GameState_Alloc(&this->state, size);
     ASSERT(this->staticSegment != NULL);
     DmaMgr_SendRequest1(this->staticSegment, (u32)_title_staticSegmentRomStart, size, __FILE__, __LINE__);
 
     size = (u32)_parameter_staticSegmentRomEnd - (u32)_parameter_staticSegmentRomStart;
-    this->parameterSegment = GameState_Alloc(&this->state, size, __FILE__, __LINE__);
+    this->parameterSegment = GameState_Alloc(&this->state, size);
     ASSERT(this->parameterSegment != NULL);
     DmaMgr_SendRequest1(this->parameterSegment, (u32)_parameter_staticSegmentRomStart, size, __FILE__,
                         __LINE__);
