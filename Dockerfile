@@ -22,10 +22,10 @@ RUN apt-get update && \
         libbz2-dev \
         libpng-dev \
         libgles2-mesa-dev && \    
-    ln -s /usr/bin/gcc-10 /usr/bin/gcc && \
-    ln -s /usr/bin/gcc-10 /usr/bin/cc && \
-    ln -s /usr/bin/g++-10 /usr/bin/g++ && \
-    ln -s /usr/bin/g++-10 /usr/bin/c++
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++10 10
+	
+RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
 
 RUN git clone https://github.com/Perlmint/glew-cmake.git && \
     cmake glew-cmake && \
