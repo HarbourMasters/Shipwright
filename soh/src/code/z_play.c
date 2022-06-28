@@ -365,7 +365,7 @@ void Gameplay_Init(GameState* thisx) {
 
     osSyncPrintf("ZELDA ALLOC SIZE=%x\n", THA_GetSize(&globalCtx->state.tha));
     zAllocSize = THA_GetSize(&globalCtx->state.tha);
-    zAlloc = GameState_Alloc(&globalCtx->state, zAllocSize);
+    zAlloc = GameState_Alloc(&globalCtx->state, zAllocSize, __FILE__, __LINE__);
     zAllocAligned = (zAlloc + 8) & ~0xF;
     ZeldaArena_Init(zAllocAligned, zAllocSize - zAllocAligned + zAlloc);
     // "Zelda Heap"
@@ -1465,7 +1465,7 @@ void* Gameplay_LoadFile(GlobalContext* globalCtx, RomFile* file) {
     void* allocp;
 
     size = file->vromEnd - file->vromStart;
-    allocp = GameState_Alloc(&globalCtx->state, size);
+    allocp = GameState_Alloc(&globalCtx->state, size, __FILE__, __LINE__);
     DmaMgr_SendRequest1(allocp, file->vromStart, size, __FILE__, __LINE__);
 
     return allocp;

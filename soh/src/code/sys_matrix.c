@@ -22,7 +22,7 @@ MtxF* sMatrixStack;   // "Matrix_stack"
 MtxF* sCurrentMatrix; // "Matrix_now"
 
 void Matrix_Init(GameState* gameState) {
-    sCurrentMatrix = GameState_Alloc(gameState, 20 * sizeof(MtxF));
+    sCurrentMatrix = GameState_Alloc(gameState, 20 * sizeof(MtxF), __FILE__, __LINE__);
     sMatrixStack = sCurrentMatrix;
 }
 

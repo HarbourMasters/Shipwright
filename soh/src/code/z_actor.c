@@ -2889,7 +2889,7 @@ void func_80031C3C(ActorContext* actorCtx, GlobalContext* globalCtx) {
     }
 
     if (actorCtx->absoluteSpace != NULL) {
-        ZeldaArena_FreeDebug(actorCtx->absoluteSpace);
+        ZeldaArena_FreeDebug(actorCtx->absoluteSpace, __FILE__, __LINE__);
         actorCtx->absoluteSpace = NULL;
     }
 
@@ -2980,7 +2980,7 @@ void Actor_FreeOverlay(ActorOverlay* actorOverlay) {
                 if (HREG(20) != 0) {
                     osSyncPrintf("オーバーレイ解放します\n"); // "Overlay deallocated"
                 }
-                ZeldaArena_FreeDebug(actorOverlay->loadedRamAddr);
+                ZeldaArena_FreeDebug(actorOverlay->loadedRamAddr, __FILE__, __LINE__);
                 actorOverlay->loadedRamAddr = NULL;
             }
         }
@@ -3039,7 +3039,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
                 if (actorCtx->absoluteSpace == NULL) {
                     // "AMF: absolute magic field"
-                    actorCtx->absoluteSpace = ZeldaArena_MallocRDebug(AM_FIELD_SIZE);
+                    actorCtx->absoluteSpace = ZeldaArena_MallocRDebug(AM_FIELD_SIZE, "AMF:絶対魔法領域", 0);
                     if (HREG(20) != 0) {
                         // "Absolute magic field reservation - %d bytes reserved"
                         osSyncPrintf("絶対魔法領域確保 %d バイト確保\n", AM_FIELD_SIZE);
@@ -3048,9 +3048,9 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
 
                 overlayEntry->loadedRamAddr = actorCtx->absoluteSpace;
             } else if (overlayEntry->allocType & ALLOCTYPE_PERMANENT) {
-                overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize);
+                overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize, name, 0);
             } else {
-                overlayEntry->loadedRamAddr = ZeldaArena_MallocDebug(overlaySize);
+                overlayEntry->loadedRamAddr = ZeldaArena_MallocDebug(overlaySize, name, 0);
             }
 
             if (overlayEntry->loadedRamAddr == NULL) {
@@ -3092,7 +3092,7 @@ Actor* Actor_Spawn(ActorContext* actorCtx, GlobalContext* globalCtx, s16 actorId
         return NULL;
     }
 
-    actor = ZeldaArena_MallocDebug(actorInit->instanceSize);
+    actor = ZeldaArena_MallocDebug(actorInit->instanceSize, name, 1);
 
     if (actor == NULL) {
         // "Actor class cannot be reserved! %s <size＝%d bytes>"
@@ -3236,7 +3236,7 @@ Actor* Actor_Delete(ActorContext* actorCtx, Actor* actor, GlobalContext* globalC
 
     newHead = Actor_RemoveFromCategory(globalCtx, actorCtx, actor);
 
-    ZeldaArena_FreeDebug(actor);
+    ZeldaArena_FreeDebug(actor, __FILE__, __LINE__);
 
     /* if (overlayEntry->vramStart == 0) {
         if (HREG(20) != 0) {
@@ -3414,15 +3414,15 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, GlobalContext* globalCtx) 
     u32 objectIdsSize;
 
     matricesSize = (count + 1) * sizeof(*bodyBreak->matrices);
-    bodyBreak->matrices = ZeldaArena_MallocDebug(matricesSize);
+    bodyBreak->matrices = ZeldaArena_MallocDebug(matricesSize, __FILE__, __LINE__);
 
     if (bodyBreak->matrices != NULL) {
         dListsSize = (count + 1) * sizeof(*bodyBreak->dLists);
-        bodyBreak->dLists = ZeldaArena_MallocDebug(dListsSize);
+        bodyBreak->dLists = ZeldaArena_MallocDebug(dListsSize, __FILE__, __LINE__);
 
         if (bodyBreak->dLists != NULL) {
             objectIdsSize = (count + 1) * sizeof(*bodyBreak->objectIds);
-            bodyBreak->objectIds = ZeldaArena_MallocDebug(objectIdsSize);
+            bodyBreak->objectIds = ZeldaArena_MallocDebug(objectIdsSize, __FILE__, __LINE__);
 
             if (bodyBreak->objectIds != NULL) {
                 memset((u8*)bodyBreak->matrices,0, matricesSize);
@@ -3435,15 +3435,15 @@ void BodyBreak_Alloc(BodyBreak* bodyBreak, s32 count, GlobalContext* globalCtx) 
     }
 
     if (bodyBreak->matrices != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->matrices);
+        ZeldaArena_FreeDebug(bodyBreak->matrices, __FILE__, __LINE__);
     }
 
     if (bodyBreak->dLists != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->dLists);
+        ZeldaArena_FreeDebug(bodyBreak->dLists, __FILE__, __LINE__);
     }
 
     if (bodyBreak->objectIds != NULL) {
-        ZeldaArena_FreeDebug(bodyBreak->objectIds);
+        ZeldaArena_FreeDebug(bodyBreak->objectIds, __FILE__, __LINE__);
     }
 }
 
@@ -3510,9 +3510,9 @@ s32 BodyBreak_SpawnParts(Actor* actor, BodyBreak* bodyBreak, GlobalContext* glob
 
     bodyBreak->val = BODYBREAK_STATUS_FINISHED;
 
-    ZeldaArena_FreeDebug(bodyBreak->matrices);
-    ZeldaArena_FreeDebug(bodyBreak->dLists);
-    ZeldaArena_FreeDebug(bodyBreak->objectIds);
+    ZeldaArena_FreeDebug(bodyBreak->matrices, __FILE__, __LINE__);
+    ZeldaArena_FreeDebug(bodyBreak->dLists, __FILE__, __LINE__);
+    ZeldaArena_FreeDebug(bodyBreak->objectIds, __FILE__, __LINE__);
 
     return true;
 }

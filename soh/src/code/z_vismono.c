@@ -23,7 +23,7 @@ void VisMono_Init(VisMono* this) {
 }
 
 void VisMono_Destroy(VisMono* this) {
-    SystemArena_FreeDebug(this->monoDl);
+    SystemArena_FreeDebug(this->monoDl, __FILE__, __LINE__);
 }
 
 void VisMono_UpdateTexture(VisMono* this, u16* tex) {
@@ -124,12 +124,12 @@ void VisMono_DrawOld(VisMono* this) {
     Gfx* glistpEnd;
 
     if (!this->tlut) {
-        this->tlut = SystemArena_MallocDebug(256 * sizeof(u16));
+        this->tlut = SystemArena_MallocDebug(256 * sizeof(u16), __FILE__, __LINE__);
         VisMono_UpdateTexture(this, this->tlut);
     }
 
     if (!this->monoDl) {
-        this->monoDl = SystemArena_MallocDebug(DLSIZE * sizeof(Gfx));
+        this->monoDl = SystemArena_MallocDebug(DLSIZE * sizeof(Gfx), __FILE__, __LINE__);
         glistpEnd = VisMono_DrawTexture(this, this->monoDl);
         ASSERT(glistpEnd <= this->monoDl + DLSIZE);
     }

@@ -62,7 +62,7 @@ void KaleidoManager_Init(GlobalContext* globalCtx) {
     osSyncPrintf("KaleidoArea の最大サイズは %d バイトを確保します\n", largestSize);
     osSyncPrintf(VT_RST);
 
-    sKaleidoAreaPtr = GameState_Alloc(&globalCtx->state, largestSize);
+    sKaleidoAreaPtr = GameState_Alloc(&globalCtx->state, largestSize, __FILE__, __LINE__);
     LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
 
     osSyncPrintf(VT_FGCOL(GREEN));

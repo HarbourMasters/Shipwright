@@ -17,7 +17,7 @@ void EffectSs_InitInfo(GlobalContext* globalCtx, s32 tableSize) {
     }
 
     sEffectSsInfo.table =
-        GameState_Alloc(&globalCtx->state, tableSize * sizeof(EffectSs));
+        GameState_Alloc(&globalCtx->state, tableSize * sizeof(EffectSs), __FILE__, __LINE__);
     ASSERT(sEffectSsInfo.table != NULL);
 
     sEffectSsInfo.searchStartIndex = 0;
@@ -54,7 +54,7 @@ void EffectSs_ClearAll(GlobalContext* globalCtx) {
         addr = overlay->loadedRamAddr;
 
         if (addr != NULL) {
-            ZeldaArena_FreeDebug(addr);
+            ZeldaArena_FreeDebug(addr, __FILE__, __LINE__);
         }
 
         overlay->loadedRamAddr = NULL;
@@ -191,7 +191,7 @@ void EffectSs_Spawn(GlobalContext* globalCtx, s32 type, s32 priority, void* init
         initInfo = overlayEntry->initInfo;
     } else {
         if (overlayEntry->loadedRamAddr == NULL) {
-            overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize);
+            overlayEntry->loadedRamAddr = ZeldaArena_MallocRDebug(overlaySize, __FILE__, __LINE__);
 
             if (overlayEntry->loadedRamAddr == NULL) {
                 osSyncPrintf(VT_FGCOL(RED));

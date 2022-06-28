@@ -34,7 +34,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     // "Permanent PARAMETER Segment = %x"
     osSyncPrintf("常駐ＰＡＲＡＭＥＴＥＲセグメント=%x\n", parameterSize);
 
-    interfaceCtx->parameterSegment = GameState_Alloc(&globalCtx->state, parameterSize);
+    interfaceCtx->parameterSegment = GameState_Alloc(&globalCtx->state, parameterSize, __FILE__, __LINE__);
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 
@@ -42,7 +42,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     DmaMgr_SendRequest1(interfaceCtx->parameterSegment, (uintptr_t)_parameter_staticSegmentRomStart, parameterSize,
                         __FILE__, 162);
 
-    interfaceCtx->doActionSegment = GameState_Alloc(&globalCtx->state, 0x480);
+    interfaceCtx->doActionSegment = GameState_Alloc(&globalCtx->state, 0x480, __FILE__, __LINE__);
 
     osSyncPrintf("ＤＯアクション テクスチャ初期=%x\n", 0x480); // "DO Action Texture Initialization"
     osSyncPrintf("parameter->do_actionSegment=%x\n", interfaceCtx->doActionSegment);
@@ -75,7 +75,7 @@ void func_801109B0(GlobalContext* globalCtx) {
                         //0x180);
 
     interfaceCtx->iconItemSegment = GameState_Alloc(
-        &globalCtx->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
+        &globalCtx->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems), __FILE__, __LINE__);
 
     // "Icon Item Texture Initialization = %x"
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);
@@ -171,7 +171,7 @@ void Message_Init(GlobalContext* globalCtx) {
 
     View_Init(&msgCtx->view, globalCtx->state.gfxCtx);
 
-    msgCtx->textboxSegment = GameState_Alloc(&globalCtx->state, 0x2200);
+    msgCtx->textboxSegment = GameState_Alloc(&globalCtx->state, 0x2200, __FILE__, __LINE__);
 
     osSyncPrintf("message->fukidashiSegment=%x\n", msgCtx->textboxSegment);
 

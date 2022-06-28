@@ -7,7 +7,7 @@ ListAlloc* ListAlloc_Init(ListAlloc* this) {
 }
 
 void* ListAlloc_Alloc(ListAlloc* this, size_t size) {
-    ListAlloc* ptr = SystemArena_MallocDebug(size + sizeof(ListAlloc));
+    ListAlloc* ptr = SystemArena_MallocDebug(size + sizeof(ListAlloc), __FILE__, __LINE__);
     ListAlloc* next;
 
     if (ptr == NULL) {
@@ -49,7 +49,7 @@ void ListAlloc_Free(ListAlloc* this, void* data) {
         this->next = ptr->prev;
     }
 
-    SystemArena_FreeDebug(ptr);
+    SystemArena_FreeDebug(ptr, __FILE__, __LINE__);
 }
 
 void ListAlloc_FreeAll(ListAlloc* this) {
