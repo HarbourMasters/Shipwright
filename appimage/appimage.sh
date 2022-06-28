@@ -21,7 +21,7 @@ chmod +x AppDir/usr/bin/{soh.elf,OTRGui,soh.sh}
 cd AppDir && ln -s ./usr/bin/soh.sh ./AppRun && cd ..
 
 export UPD_INFO="gh-releases-zsync|HarbourMasters|Shipwright-linux|zelda64|SOH-Linux.AppImage.zsync"
-./linuxdeploy-x86_64.AppImage                   \
+./linuxdeploy-x86_64.AppImage --appimage-extract-and-run \
   --appdir=./AppDir/          \
   -d ./AppDir/soh.desktop     \
   -i ./AppDir/soh.png         \
@@ -33,4 +33,4 @@ cd ./AppDir/usr/bin/assets/extractor/
 patchelf --set-rpath "\$ORIGIN/../../../lib" ZAPD.out
 cd /soh
  
-./appimagetool-x86_64.AppImage ./AppDir "SOH-Linux.AppImage" -u "gh-releases-zsync|HarbourMasters|Shipwright-linux|zelda64|SOH-Linux.AppImage.zsync"
+./appimagetool-x86_64.AppImage --appimage-extract-and-run ./AppDir "SOH-Linux.AppImage" -u "gh-releases-zsync|HarbourMasters|Shipwright-linux|zelda64|SOH-Linux.AppImage.zsync"
