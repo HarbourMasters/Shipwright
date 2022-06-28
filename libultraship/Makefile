@@ -18,6 +18,7 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-parentheses \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers \
+	-Wno-error=stringop-overflow \
 	-Wno-error=multichar
 
 CWARN :=
