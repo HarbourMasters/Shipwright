@@ -2,6 +2,7 @@
 
 CXX ?= g++
 CC ?= gcc
+MXX ?= clang++
 AR	:= ar
 FORMAT := clang-format-11
 UNAME := $(shell uname)
@@ -27,8 +28,12 @@ CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
+STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
+CXX_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | tail -n 1)
+MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc -stdlib++-isystem ${STD_ISYSTEM} -cxx-isystem ${CXX_ISYSTEM}
+
 ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
 endif
 
 ifneq ($(DEBUG),0)
@@ -62,11 +67,18 @@ C_FILES := \
 	libultraship/mixer.c \
 	libultraship/Lib/stb/stb_impl.c
 
+MM_FILES := \
+	libultraship/OSXFolderManager.mm
+
 FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
 O_FILES   := \
 	$(CXX_FILES:%.cpp=build/%.o) \
 	$(C_FILES:%.c=build/%.o)
+
+ifeq ($(UNAME), Darwin) #APPLE
+	O_FILES += $(MM_FILES:%.mm=build/%.o)
+endif
 
 D_FILES   := $(O_FILES:%.o=%.d)
 
@@ -100,6 +112,9 @@ build/%.o: %.cpp
 
 build/%.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OPTFLAGS) $(INC_DIRS) -c $< -o $@
+
+build/%.o: %.mm
+	$(MXX) $(MMFLAGS) $(CXXFLAGS) $(OPTFLAGS) $(INC_DIRS) -c $< -o $@
 
 $(LIB): $(O_FILES)
 	$(AR) rcs $@ $^

@@ -19,6 +19,7 @@ namespace Ship {
 			static std::shared_ptr<GlobalCtx2> CreateInstance(const std::string& Name);
 
 			std::string GetName() { return Name; }
+			std::string GetAppDirectoryPath();
 			std::shared_ptr<Window> GetWindow() { return Win; }
 			std::shared_ptr<ResourceMgr> GetResourceManager() { return ResMan; }
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }

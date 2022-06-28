@@ -1146,7 +1146,7 @@ std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
     std::string fileName = Conf.get("SAVE").get("Save Filename");
 
     if (fileName.empty()) {
-        Conf["SAVE"]["Save Filename"] = "oot_save.sav";
+        Conf["SAVE"]["Save Filename"] = OTRGlobals::Instance->context->GetAppDirectoryPath() + "/oot_save.sav";
         Conf.Save();
     }
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
