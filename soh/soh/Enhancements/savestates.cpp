@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <SohImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
