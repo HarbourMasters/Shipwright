@@ -9,7 +9,7 @@ RUN apt-get update && \
         binutils \
         gcc-10 \
         g++-10 \
-		p7zip-full \
+	p7zip-full \
         python3.9 \
         make \
         cmake \
@@ -22,9 +22,9 @@ RUN apt-get update && \
         libpng-dev \
         libgles2-mesa-dev && \    
     ln -s /usr/bin/g++-10 /usr/bin/g++ && \
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
-	gcc --version && \
-	g++ --version
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+    gcc --version && \
+    g++ --version
 
 	
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
