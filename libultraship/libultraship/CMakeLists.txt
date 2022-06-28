@@ -102,10 +102,10 @@ set(Source_Files__CustomImpl
     "GameOverlay.h"
     "GameSettings.cpp"
     "GameSettings.h"
-    "SohConsole.cpp"
-    "SohConsole.h"
-    "SohImGuiImpl.cpp"
-    "SohImGuiImpl.h"
+    "Console.cpp"
+    "Console.h"
+    "ImGuiImpl.cpp"
+    "ImGuiImpl.h"
 )
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
@@ -116,8 +116,8 @@ set(Source_Files__CustomImpl__Environment
 source_group("Source Files\\CustomImpl\\Environment" FILES ${Source_Files__CustomImpl__Environment})
 
 set(Source_Files__CustomImpl__Hooks
-    "SohHooks.cpp"
-    "SohHooks.h"
+    "Hooks.cpp"
+    "Hooks.h"
 )
 source_group("Source Files\\CustomImpl\\Hooks" FILES ${Source_Files__CustomImpl__Hooks})
 
