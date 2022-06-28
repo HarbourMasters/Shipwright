@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <variables.h>
 
 using json = nlohmann::json;
 
@@ -257,14 +258,20 @@ void WriteIngameSpoilerLog() {
 
 // Writes the location to the specified node.
 static void WriteLocation(
-    std::string sphere, const uint32_t locationKey,
-    const bool withPadding = false
-) {
+    std::string sphere, const uint32_t locationKey, const bool withPadding = false) {
   ItemLocation* location = Location(locationKey);
 
   // PURPLE TODO: LOCALIZATION
   // auto node = parentNode->InsertNewChildElement("location");
-  jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        default:
+            jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
+            break;
+        case LANGUAGE_FRA:
+            jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetFrench();
+            break;
+    }
   // node->SetAttribute("name", location->GetName().c_str());
   // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 

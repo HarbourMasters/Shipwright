@@ -1,4 +1,4 @@
-﻿#include "randomizer.h"
+#include "randomizer.h"
 #include "json.hpp"
 #include <fstream>
 #include <variables.h>
@@ -1347,9 +1347,9 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Buy Bombchu (10)", RG_BUY_BOMBCHU_10 },
     { "Acheter: Missiles (10)", RG_BUY_BOMBCHU_10 },
     { "Buy Bombchu (20)", RG_BUY_BOMBCHU_20 },
-    { "Acheter: Missiles", RG_BUY_BOMBCHU_20 },
+    { "Acheter: Missiles (20)", RG_BUY_BOMBCHU_20 },
     { "Buy Bombchu (5)", RG_BUY_BOMBCHU_5 },
-    { "Acheter: Missiles", RG_BUY_BOMBCHU_5 },
+    { "Acheter: Missiles (5)", RG_BUY_BOMBCHU_5 },
     { "Buy Deku Seeds (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Acheter: Graines Mojo (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Sold Out", RG_SOLD_OUT },

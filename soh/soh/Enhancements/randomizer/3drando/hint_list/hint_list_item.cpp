@@ -59,7 +59,7 @@ void HintTable_Init_Item() {
                        Text{"a shield", /*french*/"un bouclier", /*spanish*/"un escudo"},
                      },
                        //clear text
-                       Text{"a Deku Shield", /*french*/"un bouclier Mojo", /*spanish*/"un escudo deku"}
+                       Text{"a Deku Shield", /*french*/"un Bouclier Mojo", /*spanish*/"un escudo deku"}
     );
 
     hintTable[HYLIAN_SHIELD] = HintText::Item({
@@ -201,7 +201,7 @@ void HintTable_Init_Item() {
                        Text{"something that can remove boulders", /*french*/"une chose qui enlève les rochers", /*spanish*/"algo que pueda quitar rocas"},
                      },
                        //clear text
-                       Text{"the Megaton Hammer", /*french*/"la Masse des titans", /*spanish*/"el martillo Megatón"}
+                       Text{"the Megaton Hammer", /*french*/"la Masse des Titans", /*spanish*/"el martillo Megatón"}
     );
 
     hintTable[STONE_OF_AGONY] = HintText::Item({

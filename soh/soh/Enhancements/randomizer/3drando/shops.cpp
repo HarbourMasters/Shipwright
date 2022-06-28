@@ -182,11 +182,11 @@ void InitTrickNames() {
      Text{"Gilded Sword", "Excalibur", "Espada de los Sabios"},
      Text{"Magical Sword", "Lame dorée", "Fay"}};*/
   trickNameTable[GI_SWORD_KNIFE] = {
-     Text{"Big Goron's Sword", "Épée de gros Goron", "Espada de Big Goron"},
+     Text{"Big Goron's Sword", "Épée de Gros Goron", "Espada de Big Goron"},
      Text{"Fierce Deity's Sword", "Épée du dieu démon", "Espada de la Fiera Deidad"},
      Text{"Biggoron's Knife", "Lame de Grogoron", "Daga de Biggoron"}};
   trickNameTable[GI_SWORD_BGS] = {
-     Text{"Big Goron's Sword", "Épée de gros Goron", "Espada de Big Goron"},
+     Text{"Big Goron's Sword", "Épée de Biggoron", "Espada de Big Goron"},
      Text{"Fierce Deity's Sword", "Épée du dieu démon", "Espada de la Fiera Deidad"},
      Text{"Biggoron's Knife", "Lame de Grogoron", "Daga de Biggoron"}};
   trickNameTable[GI_SHIELD_DEKU] = {
@@ -306,7 +306,7 @@ void InitTrickNames() {
   trickNameTable[GI_SWORD_BROKEN] = {
      Text{"Broken Biggoron's Sword", "Épée brisée de Grogoron", "Espada de Biggoron rota"},
      Text{"Broken Giant's Knife", "Lame des Géants brisée", "Daga gigante rota"},
-     Text{"Biggoron's Sword", "Épée de Grogoron", "Espada de Biggoron"}};
+     Text{"Biggoron's Sword", "Épée de Biggoron", "Espada de Biggoron"}};
   trickNameTable[GI_PRESCRIPTION] = {
      Text{"Biggoron's Prescription", "Ordonnance de Grogoron", "Receta de Biggoron"},
      Text{"Eyedrop Prescription", "Ordonnance de gouttes", "Receta ocular"},
