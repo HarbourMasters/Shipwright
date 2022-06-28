@@ -177,7 +177,7 @@ set(Source_Files__Lib__Fast3D__extra
      "Lib/Fast3D/gfx_dxgi.cpp"
      "Lib/Fast3D/gfx_dxgi.h"
 )
-else()
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__Lib__Fast3D__extra
      "Lib/Fast3D/gfx_glx.cpp"
      "Lib/Fast3D/gfx_glx.h"
