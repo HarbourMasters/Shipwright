@@ -21,7 +21,7 @@
 #include <SDL2/SDL_opengles2.h>
 #endif
 
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
