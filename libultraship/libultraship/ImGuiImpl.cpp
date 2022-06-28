@@ -1,4 +1,4 @@
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 #include <map>
@@ -10,8 +10,8 @@
 #include "Archive.h"
 #include "Environment.h"
 #include "GameSettings.h"
-#include "SohConsole.h"
-#include "SohHooks.h"
+#include "Console.h"
+#include "Hooks.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -786,8 +786,6 @@ namespace SohImGui {
                 Tooltip("When in the first person view or aiming with weapons, invert the Y axis");
                 EnhancementCheckbox("Invert X axis in first person", "gInvertXAxis");
                 Tooltip("When in the first person view or aiming with weapons, invert the X axis");
-                EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
-                Tooltip("When in the C-Up first person view, auto center the camera");
 
 		ImGui::Separator();
 
@@ -1147,7 +1145,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Console", "gConsoleEnabled");
                 Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
-                
+
                 ImGui::EndMenu();
             }
 
