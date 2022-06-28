@@ -118,7 +118,10 @@ void EnBox_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (globalCtx) {} // helps the compiler store globalCtx2 into s1
 
-    if (Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) {
+    if ((!gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, this->dyna.actor.params & 0x1F)) ||
+        (gSaveContext.n64ddFlag && GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F,
+                                                       this->dyna.actor.id, this->dyna.actor.params,
+                                                       globalCtx->sceneNum) == GI_ICE_TRAP)) {
         this->alpha = 255;
         this->iceSmokeTimer = 100;
         EnBox_SetupAction(this, EnBox_Open);
