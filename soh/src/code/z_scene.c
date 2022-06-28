@@ -68,7 +68,7 @@ void Object_InitBank(GlobalContext* globalCtx, ObjectContext* objectCtx) {
     osSyncPrintf(VT_RST);
 
     objectCtx->spaceStart = objectCtx->status[0].segment =
-        GameState_Alloc(&globalCtx->state, spaceSize, __FILE__, __LINE__);
+        GAMESTATE_ALLOC_MC(&globalCtx->state, spaceSize);
     objectCtx->spaceEnd = (void*)((uintptr_t)objectCtx->spaceStart + spaceSize);
 
     objectCtx->mainKeepIndex = Object_Spawn(objectCtx, OBJECT_GAMEPLAY_KEEP);

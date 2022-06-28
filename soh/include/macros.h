@@ -128,6 +128,18 @@
 #define LOG_HUNGUP_THREAD() ((void)0)
 #endif
 
+#define ZELDA_ARENA_MALLOC_DEBUG(size) ZeldaArena_MallocDebug(size, __FILE__, __LINE__)
+#define ZELDA_ARENA_MALLOC_RDEBUG(size) ZeldaArena_MallocRDebug(size, __FILE__, __LINE__)
+#define ZELDA_ARENA_REALLOC_DEBUG(ptr, newSize) ZeldaArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define ZELDA_ARENA_FREE_DEBUG(ptr) ZeldaArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define SYSTEM_ARENA_MALLOC_DEBUG(size) SystemArena_MallocDebug(size, __FILE__, __LINE__)
+#define SYSTEM_ARENA_MALLOC_RDEBUG(size) SystemArena_MallocRDebug(size, __FILE__, __LINE__)
+#define SYSTEM_ARENA_REALLOC_DEBUG(ptr, newSize) SystemArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define SYSTEM_ARENA_FREE_DEBUG(ptr) SystemArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define GAMESTATE_ALLOC_MC(gameState, size) GameState_Alloc(gameState, size, __FILE__, __LINE__);
+
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \
     do {                                                 \
         (curState)->init = newInit;                      \

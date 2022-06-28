@@ -34,7 +34,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     // "Permanent PARAMETER Segment = %x"
     osSyncPrintf("常駐ＰＡＲＡＭＥＴＥＲセグメント=%x\n", parameterSize);
 
-    interfaceCtx->parameterSegment = GameState_Alloc(&globalCtx->state, parameterSize, __FILE__, __LINE__);
+    interfaceCtx->parameterSegment = GAMESTATE_ALLOC_MC(&globalCtx->state, parameterSize);
 
     osSyncPrintf("parameter->parameterSegment=%x\n", interfaceCtx->parameterSegment);
 
@@ -42,7 +42,7 @@ void func_801109B0(GlobalContext* globalCtx) {
     DmaMgr_SendRequest1(interfaceCtx->parameterSegment, (uintptr_t)_parameter_staticSegmentRomStart, parameterSize,
                         __FILE__, 162);
 
-    interfaceCtx->doActionSegment = GameState_Alloc(&globalCtx->state, 0x480, __FILE__, __LINE__);
+    interfaceCtx->doActionSegment = GAMESTATE_ALLOC_MC(&globalCtx->state, 0x480);
 
     osSyncPrintf("ＤＯアクション テクスチャ初期=%x\n", 0x480); // "DO Action Texture Initialization"
     osSyncPrintf("parameter->do_actionSegment=%x\n", interfaceCtx->doActionSegment);
@@ -74,8 +74,8 @@ void func_801109B0(GlobalContext* globalCtx) {
     //DmaMgr_SendRequest1(interfaceCtx->doActionSegment + 0x300, (uintptr_t)_do_action_staticSegmentRomStart + doActionOffset,
                         //0x180);
 
-    interfaceCtx->iconItemSegment = GameState_Alloc(
-        &globalCtx->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems), __FILE__, __LINE__);
+    interfaceCtx->iconItemSegment = GAMESTATE_ALLOC_MC(
+        &globalCtx->state, 0x1000 * ARRAY_COUNT(gSaveContext.equips.buttonItems));
 
     // "Icon Item Texture Initialization = %x"
     osSyncPrintf("アイコンアイテム テクスチャ初期=%x\n", 0x4000);
@@ -171,7 +171,7 @@ void Message_Init(GlobalContext* globalCtx) {
 
     View_Init(&msgCtx->view, globalCtx->state.gfxCtx);
 
-    msgCtx->textboxSegment = GameState_Alloc(&globalCtx->state, 0x2200, __FILE__, __LINE__);
+    msgCtx->textboxSegment = GAMESTATE_ALLOC_MC(&globalCtx->state, 0x2200);
 
     osSyncPrintf("message->fukidashiSegment=%x\n", msgCtx->textboxSegment);
 

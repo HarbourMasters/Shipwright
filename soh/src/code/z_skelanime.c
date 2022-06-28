@@ -1099,8 +1099,8 @@ void SkelAnime_InitLink(GlobalContext* globalCtx, SkelAnime* skelAnime, FlexSkel
     }
 
     if (jointTable == NULL) {
-        skelAnime->jointTable = ZeldaArena_MallocDebug(allocSize, __FILE__, __LINE__);
-        skelAnime->morphTable = ZeldaArena_MallocDebug(allocSize, __FILE__, __LINE__);
+        skelAnime->jointTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
+        skelAnime->morphTable = ZELDA_ARENA_MALLOC_DEBUG(allocSize);
     } else {
         ASSERT(limbBufCount == limbCount);
 
@@ -1427,9 +1427,9 @@ s32 SkelAnime_Init(GlobalContext* globalCtx, SkelAnime* skelAnime, SkeletonHeade
     skelAnime->skeleton = SEGMENTED_TO_VIRTUAL(skeletonHeader->segment);
     if (jointTable == NULL) {
         skelAnime->jointTable =
-            ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->jointTable), __FILE__, __LINE__);
+            ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
         skelAnime->morphTable =
-            ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->morphTable), __FILE__, __LINE__);
+            ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
         ASSERT(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
@@ -1462,10 +1462,10 @@ s32 SkelAnime_InitFlex(GlobalContext* globalCtx, SkelAnime* skelAnime, FlexSkele
 
     if (jointTable == NULL) {
         skelAnime->jointTable =
-            ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->jointTable), __FILE__, __LINE__);
+            ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
 
         skelAnime->morphTable =
-            ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->morphTable), __FILE__, __LINE__);
+            ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     } else {
         ASSERT(limbCount == skelAnime->limbCount);
         skelAnime->jointTable = jointTable;
@@ -1496,9 +1496,9 @@ s32 SkelAnime_InitSkin(GlobalContext* globalCtx, SkelAnime* skelAnime, SkeletonH
     skelAnime->limbCount = skeletonHeader->limbCount + 1;
     skelAnime->skeleton = SEGMENTED_TO_VIRTUAL(skeletonHeader->segment);
     skelAnime->jointTable =
-        ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->jointTable), __FILE__, __LINE__);
+        ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->jointTable));
     skelAnime->morphTable =
-        ZeldaArena_MallocDebug(skelAnime->limbCount * sizeof(*skelAnime->morphTable), __FILE__, __LINE__);
+        ZELDA_ARENA_MALLOC_DEBUG(skelAnime->limbCount * sizeof(*skelAnime->morphTable));
     if ((skelAnime->jointTable == NULL) || (skelAnime->morphTable == NULL)) {
         osSyncPrintf(VT_FGCOL(RED));
         // "Memory allocation error"
@@ -1892,13 +1892,13 @@ s32 Animation_OnFrame(SkelAnime* skelAnime, f32 frame) {
  */
 void SkelAnime_Free(SkelAnime* skelAnime, GlobalContext* globalCtx) {
     if (skelAnime->jointTable != NULL) {
-        ZeldaArena_FreeDebug(skelAnime->jointTable, __FILE__, __LINE__);
+        ZELDA_ARENA_FREE_DEBUG(skelAnime->jointTable);
     } else {
         osSyncPrintf("now_joint あきまへん！！\n"); // "now_joint is freed! !"
     }
 
     if (skelAnime->morphTable != NULL) {
-        ZeldaArena_FreeDebug(skelAnime->morphTable, __FILE__, __LINE__);
+        ZELDA_ARENA_FREE_DEBUG(skelAnime->morphTable);
     } else {
         osSyncPrintf("morf_joint あきまへん！！\n"); // "morf_joint is freed !!"
     }

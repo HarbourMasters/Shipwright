@@ -23,7 +23,7 @@ void View_ViewportToVp(Vp* dest, Viewport* src) {
 }
 
 View* View_New(GraphicsContext* gfxCtx) {
-    View* view = SystemArena_MallocDebug(sizeof(View), __FILE__, __LINE__);
+    View* view = SYSTEM_ARENA_MALLOC_DEBUG(sizeof(View));
 
     if (view != NULL) {
         memset(view, 0, sizeof(View));
@@ -34,7 +34,7 @@ View* View_New(GraphicsContext* gfxCtx) {
 }
 
 void View_Free(View* view) {
-    SystemArena_FreeDebug(view, __FILE__, __LINE__);
+    SYSTEM_ARENA_FREE_DEBUG(view);
 }
 
 void View_Init(View* view, GraphicsContext* gfxCtx) {

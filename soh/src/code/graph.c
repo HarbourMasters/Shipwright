@@ -454,7 +454,7 @@ static void RunFrame()
         size = runFrameContext.ovl->instanceSize;
         osSyncPrintf("クラスサイズ＝%dバイト\n", size); // "Class size = %d bytes"
 
-        runFrameContext.gameState = SystemArena_MallocDebug(size, __FILE__, __LINE__);
+        runFrameContext.gameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
 
         if (!runFrameContext.gameState)
         {
@@ -495,7 +495,7 @@ static void RunFrame()
 
         runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
         GameState_Destroy(runFrameContext.gameState);
-        SystemArena_FreeDebug(runFrameContext.gameState, __FILE__, __LINE__);
+        SYSTEM_ARENA_FREE_DEBUG(runFrameContext.gameState);
         Overlay_FreeGameState(runFrameContext.ovl);
     }
     Graph_Destroy(&runFrameContext.gfxCtx);

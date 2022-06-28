@@ -13,7 +13,7 @@ void GameAlloc_Log(GameAlloc* this) {
 }
 
 void* GameAlloc_MallocDebug(GameAlloc* this, size_t size, const char* file, s32 line) {
-    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), file, line);
+    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), __FILE__, __LINE__);
 
     if (ptr != NULL) {
         ptr->size = size;
@@ -29,7 +29,7 @@ void* GameAlloc_MallocDebug(GameAlloc* this, size_t size, const char* file, s32 
 }
 
 void* GameAlloc_Malloc(GameAlloc* this, size_t size) {
-    GameAllocEntry* ptr = SystemArena_MallocDebug(size + sizeof(GameAllocEntry), __FILE__, __LINE__);
+    GameAllocEntry* ptr = SYSTEM_ARENA_MALLOC_DEBUG(size + sizeof(GameAllocEntry));
 
     if (ptr != NULL) {
         ptr->size = size;
@@ -54,7 +54,7 @@ void GameAlloc_Free(GameAlloc* this, void* data) {
         ptr->prev->next = ptr->next;
         ptr->next->prev = ptr->prev;
         this->head = this->base.prev;
-        SystemArena_FreeDebug(ptr, __FILE__, __LINE__);
+        SYSTEM_ARENA_FREE_DEBUG(ptr);
     }
 }
 
@@ -65,7 +65,7 @@ void GameAlloc_Cleanup(GameAlloc* this) {
     while (&this->base != next) {
         cur = next;
         next = next->next;
-        SystemArena_FreeDebug(cur, __FILE__, __LINE__);
+        SYSTEM_ARENA_FREE_DEBUG(cur);
     }
 
     this->head = &this->base;

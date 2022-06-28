@@ -58,7 +58,7 @@ void MapMark_Init(GlobalContext* globalCtx) {
     MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
     u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 
-    overlay->loadedRamAddr = GameState_Alloc(&globalCtx->state, overlaySize, __FILE__, __LINE__);
+    overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&globalCtx->state, overlaySize);
     LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
 
     Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
