@@ -32,11 +32,11 @@ void IrqMgr_AddClient(IrqMgr* this, IrqMgrClient* c, OSMesgQueue* msgQ) {
     osSetIntMask(prevInt);
 
     if (this->resetStatus > STATUS_IDLE) {
-        osSendMesg(c->queue, (OSMesg) & this->prenmiMsg, OS_MESG_NOBLOCK);
+        osSendMesgPtr(c->queue, &this->prenmiMsg, OS_MESG_NOBLOCK);
     }
 
     if (this->resetStatus >= STATUS_NMI) {
-        osSendMesg(c->queue, (OSMesg) & this->nmiMsg, OS_MESG_NOBLOCK);
+        osSendMesgPtr(c->queue, &this->nmiMsg, OS_MESG_NOBLOCK);
     }
 }
 
@@ -107,8 +107,8 @@ void IrqMgr_HandlePreNMI(IrqMgr* this) {
     this->resetStatus = STATUS_PRENMI;
     sIrqMgrResetTime = this->resetTime = osGetTime();
 
-    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(450000), 0ull, &this->queue, (OSMesg)PRENMI450_MSG);
-    IrqMgr_JamMesgForClient(this, (OSMesg) & this->prenmiMsg);
+    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(450000), 0ull, &this->queue, OS_MESG_32(PRENMI450_MSG));
+    IrqMgr_JamMesgForClient(this, OS_MESG_PTR(&this->prenmiMsg));
 }
 
 void IrqMgr_CheckStack() {
@@ -131,19 +131,19 @@ void IrqMgr_HandlePRENMI450(IrqMgr* this) {
     gIrqMgrResetStatus = temp;
     this->resetStatus = STATUS_NMI;
 
-    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(30000), 0ull, &this->queue, (OSMesg)PRENMI480_MSG);
-    IrqMgr_SendMesgForClient(this, (OSMesg) & this->nmiMsg);
+    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(30000), 0ull, &this->queue, OS_MESG_32(PRENMI480_MSG));
+    IrqMgr_SendMesgForClient(this, OS_MESG_PTR(&this->nmiMsg));
 }
 
 void IrqMgr_HandlePRENMI480(IrqMgr* this) {
     u32 ret;
 
-    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(20000), 0ull, &this->queue, (OSMesg)PRENMI500_MSG);
+    osSetTimer(&this->timer, OS_USEC_TO_CYCLES(20000), 0ull, &this->queue, OS_MESG_32(PRENMI500_MSG));
     ret = osAfterPreNMI();
     if (ret) {
         // "osAfterPreNMI returned %d !?"
         osSyncPrintf("osAfterPreNMIが %d を返しました！？\n", ret);
-        osSetTimer(&this->timer, OS_USEC_TO_CYCLES(1000), 0ull, &this->queue, (OSMesg)PRENMI480_MSG);
+        osSetTimer(&this->timer, OS_USEC_TO_CYCLES(1000), 0ull, &this->queue, OS_MESG_32(PRENMI480_MSG));
     }
 }
 
@@ -160,7 +160,7 @@ void IrqMgr_HandleRetrace(IrqMgr* this) {
         }
     }
     sIrqMgrRetraceCount++;
-    IrqMgr_SendMesgForClient(this, (OSMesg) & this->retraceMsg);
+    IrqMgr_SendMesgForClient(this, OS_MESG_PTR(&this->retraceMsg));
 }
 
 void IrqMgr_ThreadEntry(void* arg0) {
@@ -168,13 +168,13 @@ void IrqMgr_ThreadEntry(void* arg0) {
     IrqMgr* this = (IrqMgr*)arg0;
     u8 exit;
 
-    msg = 0;
+    msg.data32 = 0;
     osSyncPrintf("ＩＲＱマネージャスレッド実行開始\n"); // "Start IRQ manager thread execution"
     exit = false;
 
     while (!exit) {
         osRecvMesg(&this->queue, &msg, OS_MESG_BLOCK);
-        switch ((u32)msg) {
+        switch (msg.data32) {
             case RETRACE_MSG:
                 IrqMgr_HandleRetrace(this);
                 break;
@@ -225,8 +225,8 @@ void IrqMgr_Init(IrqMgr* this, void* stack, OSPri pri, u8 retraceCount) {
     this->resetTime = 0;
 
     osCreateMesgQueue(&this->queue, this->msgBuf, ARRAY_COUNT(this->msgBuf));
-    osSetEventMesg(OS_EVENT_PRENMI, &this->queue, (OSMesg)PRE_NMI_MSG);
-    osViSetEvent(&this->queue, (OSMesg)RETRACE_MSG, retraceCount);
+    osSetEventMesg(OS_EVENT_PRENMI, &this->queue, OS_MESG_32(PRE_NMI_MSG));
+    osViSetEvent(&this->queue, OS_MESG_32(RETRACE_MSG), retraceCount);
     osCreateThread(&this->thread, 0x13, IrqMgr_ThreadEntry, this, stack, pri);
     osStartThread(&this->thread);
 }

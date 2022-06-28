@@ -1250,7 +1250,7 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
     if (dpad) {
-        sOcarinaAllowedBtnMask = 
+        sOcarinaAllowedBtnMask =
             (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaABtnMap = BTN_A;
         sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
@@ -4095,7 +4095,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol) 
+s32 Audio_SetGanonDistVol(u8 targetVol)
 {
     u8 phi_v0;
     u16 phi_v0_2;
@@ -4517,7 +4517,7 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId) 
+void Audio_PlayFanfare(u16 seqId)
 {
     u16 sp26;
     u32 sp20;
@@ -4527,12 +4527,17 @@ void Audio_PlayFanfare(u16 seqId)
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
     sp18 = func_800E5E84(seqId & 0xFF, &sp20);
-    if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
-        D_8016B9F4 = 1;
-    } else {
-        D_8016B9F4 = 5;
-        Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-    }
+	if (!sp1C || !sp18) {
+		// disable BGM, we're about to null deref!
+		D_8016B9F4 = 1;
+	} else {
+		if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
+			D_8016B9F4 = 1;
+		} else {
+			D_8016B9F4 = 5;
+			Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
+		}
+	}
     D_8016B9F6 = seqId;
 }
 

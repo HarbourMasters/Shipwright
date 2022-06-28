@@ -18,12 +18,16 @@
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
 #include "stox.h"
+#if __APPLE__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #include <map>
 #include <string>
 #include <chrono>
-#include "SohHooks.h"
-#include "SohConsole.h"
+#include "Hooks.h"
+#include "Console.h"
 
 #include <iostream>
 
@@ -319,7 +323,7 @@ namespace Ship {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
 
-        
+
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {

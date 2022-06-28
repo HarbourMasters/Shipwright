@@ -1,7 +1,8 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
+CXX ?= g++
 CXXFLAGS ?= -Wall -Wextra -O2 -g -std=c++17
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 CPP_FILES := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.cpp))
 H_FILES   := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.h))
 

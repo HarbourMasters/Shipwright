@@ -61,6 +61,7 @@ void Object_InitBank(GlobalContext* globalCtx, ObjectContext* objectCtx) {
 
     for (i = 0; i < OBJECT_EXCHANGE_BANK_MAX; i++) {
         objectCtx->status[i].id = OBJECT_INVALID;
+        objectCtx->status[i].segment = NULL;
     }
 
     osSyncPrintf(VT_FGCOL(GREEN));

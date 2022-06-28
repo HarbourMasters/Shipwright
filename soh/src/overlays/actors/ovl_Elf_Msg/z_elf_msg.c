@@ -110,7 +110,7 @@ void ElfMsg_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 s32 ElfMsg_GetMessageId(ElfMsg* this) {
     // Negative message ID forces link to talk to Navi
-    if (this->actor.params & 0x8000) {
+    if (this->actor.params & 0x8000 || CVar_GetS32("gNoForcedNavi", 0) != 0) {
         return (this->actor.params & 0xFF) + 0x100;
     } else {
         return -((this->actor.params & 0xFF) + 0x100);

@@ -25,11 +25,11 @@
 #include "gfx_window_manager_api.h"
 #include "gfx_rendering_api.h"
 #include "gfx_screen_config.h"
-#include "../../SohHooks.h"
+#include "../../Hooks.h"
 
 #include "../../luslog.h"
 #include "../StrHash64.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 #include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
@@ -1586,7 +1586,7 @@ static void gfx_sp_movemem(uint8_t index, uint8_t offset, const void* data) {
     }
 }
 
-static void gfx_sp_moveword(uint8_t index, uint16_t offset, uint32_t data) {
+static void gfx_sp_moveword(uint8_t index, uint16_t offset, uintptr_t data) {
     switch (index) {
         case G_MW_NUMLIGHT:
 #ifdef F3DEX_GBI_2

@@ -118,7 +118,7 @@ void EnCow_Init(Actor* thisx, GlobalContext* globalCtx) {
             func_809DEE9C(this);
             this->actionFunc = func_809DF96C;
             if (globalCtx->sceneNum == SCENE_LINK_HOME) {
-                if (!LINK_IS_ADULT) {
+                if (!LINK_IS_ADULT && !CVar_GetS32("gCowOfTime", 0)) {
                     Actor_Kill(&this->actor);
                     return;
                 }
