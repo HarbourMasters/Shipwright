@@ -347,7 +347,7 @@ void InitTrickNames() {
      Text{"Progressive Arrow Holder", "Arbalète (prog.)", "Ballesta progresiva"}};
   trickNameTable[0x84] = {
      Text{"Progressive Seed Capacity", "Capacité de graines (prog.)", "Mayor capacidad de semillas"},
-     Text{"Progressive Scattershot", "Lance-pierre rafale (prog.)", "Resortera múltiple progresiva"},
+     Text{"Progressive Scattershot", "Lance-Pierre rafale (prog.)", "Resortera múltiple progresiva"},
      Text{"Progressive Seed Satchel", "Sac de graines (prog.)", "Bolsa de semillas progresiva"}};
   trickNameTable[0x85] = {
      Text{"Progressive Rupee Capacity", "Capacité de rubis (prog.)", "Mayor capacidad de rupias"},
@@ -586,8 +586,8 @@ void InitTrickNames() {
      Text{"Golden Quiver", "Carquois d'or", "Carcaj dorado"},
      Text{"Large Quiver", "Gros carquois", "Saco de flechas grande"}};
   trickNameTable[GI_SLINGSHOT_1] = {
-	 Text{"Slingshot", "Lance-pierre", "Tirachinas del Hada"},
-     Text{"Scattershot", "Lance-pierre rafale", "Tirachinas múltiple"},
+	 Text{"Slingshot", "Lance-Pierre", "Tirachinas del Hada"},
+     Text{"Scattershot", "Lance-Pierre rafale", "Tirachinas múltiple"},
      Text{"Small Seed Satchel", "Petit sac de graines", "Bolsa de semillas pequeña"}};
   trickNameTable[GI_SLINGSHOT_2] = {
 	 Text{"Deku Seed Capacity (40)", "Capacité de graines (40)", "Capacidad de semillas (40)"},
@@ -624,11 +624,11 @@ void InitTrickNames() {
   trickNameTable[GI_WALLET_2] = {
 	 Text{"Rupee Capacity (500)", "Capacité de rubis (500)", "Capacidad de rupias (500)"},
      Text{"Golden Wallet", "Bourse d'or", "Cartera de rupias gigante"},
-     Text{"Large Wallet", "Grosse bourse", "Zurrón de rupias grande"}};
+     Text{"Large Wallet", "Grosse Bourse", "Zurrón de rupias grande"}};
   trickNameTable[GI_WALLET_3] = {
 	 Text{"Rupee Capacity (999)", "Capacité de rubis (999)", "Capacidad de rupias (999)"},
      Text{"Golden Wallet", "Bourse d'or", "Cartera de ricachón"},
-     Text{"Large Wallet", "Grosse bourse", "Zurrón de rupias gigante"}};
+     Text{"Large Wallet", "Grosse Bourse", "Zurrón de rupias gigante"}};
   trickNameTable[GI_DEKU_NUT_UPGRADE_1] = {
 	 Text{"Deku Bomb Capacity (30)", "Capacité de bombes Mojo (30)", "Capacidad de semillas deku (40)"},
      Text{"Baba Nut Capacity (30)", "Capacité de noix Baba (30)", "Capacidad de nueces baba (40)"},

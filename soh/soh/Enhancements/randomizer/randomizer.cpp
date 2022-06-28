@@ -1075,7 +1075,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Progressive Hookshot", RG_PROGRESSIVE_HOOKSHOT },
     { "Grappin (prog.)", RG_PROGRESSIVE_HOOKSHOT },
     { "Progressive Strength Upgrade", RG_PROGRESSIVE_STRENGTH },
-    { "Amélioration de force (prog.)", RG_PROGRESSIVE_STRENGTH },
+    { "Amélioration de Force (prog.)", RG_PROGRESSIVE_STRENGTH },
     { "Progressive Bomb Bag", RG_PROGRESSIVE_BOMB_BAG },
     { "Sac de Bombes (prog.)", RG_PROGRESSIVE_BOMB_BAG },
     { "Progressive Bow", RG_PROGRESSIVE_BOW },

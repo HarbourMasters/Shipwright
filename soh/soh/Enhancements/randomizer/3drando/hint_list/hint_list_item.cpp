@@ -11,7 +11,7 @@ void HintTable_Init_Item() {
                        Text{"a sword", /*french*/"une épée", /*spanish*/"una espada"},
                      },
                        //clear text
-                       Text{"the Kokiri Sword", /*french*/"l'épée Kokiri", /*spanish*/"la Espada Kokiri"}
+                       Text{"the Kokiri Sword", /*french*/"l'Épée Kokiri", /*spanish*/"la Espada Kokiri"}
     );
 
     hintTable[MASTER_SWORD] = HintText::Item({
@@ -23,7 +23,7 @@ void HintTable_Init_Item() {
                        Text{"a sword", /*french*/"une épée", /*spanish*/"una espada"},
                      },
                        //clear text
-                       Text{"the Master Sword", /*french*/"l'épée de légende", /*spanish*/"la Espada Maestra"}
+                       Text{"the Master Sword", /*french*/"l'Épée de Légende", /*spanish*/"la Espada Maestra"}
     );
 
     hintTable[GIANTS_KNIFE] = HintText::Item({
@@ -35,7 +35,7 @@ void HintTable_Init_Item() {
                        Text{"a sword", /*french*/"une épée", /*spanish*/"una espada"},
                      },
                        //clear text
-                       Text{"the Giant's Knife", /*french*/"la lame des géants", /*spanish*/"la daga gigante"}
+                       Text{"the Giant's Knife", /*french*/"la Lame des Géants", /*spanish*/"la daga gigante"}
     );
 
     hintTable[BIGGORON_SWORD] = HintText::Item({
@@ -47,7 +47,7 @@ void HintTable_Init_Item() {
                        Text{"a sword", /*french*/"une épée", /*spanish*/"una espada"},
                      },
                        //clear text
-                       Text{"the Biggoron Sword", /*french*/"l'épée de Grogoron", /*spanish*/"la Espada de Biggoron"}
+                       Text{"the Biggoron Sword", /*french*/"l'Épée de Biggoron", /*spanish*/"la Espada de Biggoron"}
     );
 
     hintTable[DEKU_SHIELD] = HintText::Item({
@@ -71,7 +71,7 @@ void HintTable_Init_Item() {
                        Text{"a shield", /*french*/"un bouclier", /*spanish*/"un escudo"},
                      },
                        //clear text
-                       Text{"a Hylian Shield", /*french*/"un bouclier hylien", /*spanish*/"un escudo hyliano"}
+                       Text{"a Hylian Shield", /*french*/"un Bouclier Hylien", /*spanish*/"un escudo hyliano"}
     );
 
     hintTable[MIRROR_SHIELD] = HintText::Item({
@@ -84,7 +84,7 @@ void HintTable_Init_Item() {
                        Text{"a shield", /*french*/"un bouclier", /*spanish*/"un escudo"},
                      },
                        //clear text
-                       Text{"the Mirror Shield", /*french*/"le bouclier miroir", /*spanish*/"el escudo espejo"}
+                       Text{"the Mirror Shield", /*french*/"le Bouclier Miroir", /*spanish*/"el escudo espejo"}
     );
 
     hintTable[GORON_TUNIC] = HintText::Item({
@@ -97,7 +97,7 @@ void HintTable_Init_Item() {
                        Text{"a tunic", /*french*/"une tunique", /*spanish*/"un sayo"},
                      },
                        //clear text
-                       Text{"a Goron Tunic", /*french*/"une tunique Goron", /*spanish*/"un sayo goron"}
+                       Text{"a Goron Tunic", /*french*/"une Tunique Goron", /*spanish*/"un sayo goron"}
     );
 
     hintTable[ZORA_TUNIC] = HintText::Item({
@@ -111,7 +111,7 @@ void HintTable_Init_Item() {
                        Text{"something expensive", /*french*/"une chose dispendieuse", /*spanish*/"algo caro"},
                      },
                        //clear text
-                       Text{"a Zora Tunic", /*french*/"une tunique Zora", /*spanish*/"un sayo zora"}
+                       Text{"a Zora Tunic", /*french*/"une Tunique Zora", /*spanish*/"un sayo zora"}
     );
 
     hintTable[IRON_BOOTS] = HintText::Item({
@@ -125,7 +125,7 @@ void HintTable_Init_Item() {
                        Text{"something heavy", /*french*/"une chose pesante", /*spanish*/"algo de lo más pesado"},
                      },
                        //clear text
-                       Text{"the Iron Boots", /*french*/"une paire de bottes de plomb", /*spanish*/"las botas de hierro"}
+                       Text{"the Iron Boots", /*french*/"une paire de Bottes de plomb", /*spanish*/"las botas de hierro"}
     );
 
     hintTable[HOVER_BOOTS] = HintText::Item({
@@ -138,7 +138,7 @@ void HintTable_Init_Item() {
                        Text{"some boots", /*french*/"une paire de bottes", /*spanish*/"un par de botas"},
                      },
                        //clear text
-                       Text{"the Hover Boots", /*french*/"une paire de bottes des airs", /*spanish*/"las botas voladoras"}
+                       Text{"the Hover Boots", /*french*/"une paire de Bottes des airs", /*spanish*/"las botas voladoras"}
     );
 
 
@@ -160,7 +160,7 @@ void HintTable_Init_Item() {
                        Text{"an egg", /*french*/"un oeuf", /*spanish*/"un huevo"},
                      },
                        //clear text
-                       Text{"the Weird Egg", /*french*/"l'oeuf curieux", /*spanish*/"el huevo extraño"}
+                       Text{"the Weird Egg", /*french*/"l'Oeuf curieux", /*spanish*/"el huevo extraño"}
     );
 
     hintTable[BOOMERANG] = HintText::Item({
@@ -174,7 +174,7 @@ void HintTable_Init_Item() {
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
-                       Text{"the Boomerang", /*french*/"le boomerang", /*spanish*/"el bumerán"}
+                       Text{"the Boomerang", /*french*/"le Boomerang", /*spanish*/"el bumerán"}
     );
 
     hintTable[LENS_OF_TRUTH] = HintText::Item({
@@ -188,7 +188,7 @@ void HintTable_Init_Item() {
                        Text{"a secret-finding tool", /*french*/"un cherche-secrets", /*spanish*/"un instrumento para hallar objetos"},
                      },
                        //clear text
-                       Text{"the Lens of Truth", /*french*/"le monocle de Vérité", /*spanish*/"la Lupa de la Verdad"}
+                       Text{"the Lens of Truth", /*french*/"le Monocle de Vérité", /*spanish*/"la Lupa de la Verdad"}
     );
 
     hintTable[MEGATON_HAMMER] = HintText::Item({
@@ -201,7 +201,7 @@ void HintTable_Init_Item() {
                        Text{"something that can remove boulders", /*french*/"une chose qui enlève les rochers", /*spanish*/"algo que pueda quitar rocas"},
                      },
                        //clear text
-                       Text{"the Megaton Hammer", /*french*/"la masse des titans", /*spanish*/"el martillo Megatón"}
+                       Text{"the Megaton Hammer", /*french*/"la Masse des titans", /*spanish*/"el martillo Megatón"}
     );
 
     hintTable[STONE_OF_AGONY] = HintText::Item({
@@ -227,7 +227,7 @@ void HintTable_Init_Item() {
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
                      },
                        //clear text
-                       Text{"Din's Fire", /*french*/"le feu de Din", /*spanish*/"el Fuego de Din"}
+                       Text{"Din's Fire", /*french*/"le Feu de Din", /*spanish*/"el Fuego de Din"}
     );
 
     hintTable[FARORES_WIND] = HintText::Item({
@@ -240,7 +240,7 @@ void HintTable_Init_Item() {
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
                      },
                        //clear text
-                       Text{"Farore's Wind", /*french*/"le vent de Farore", /*spanish*/"el Viento de Farore"}
+                       Text{"Farore's Wind", /*french*/"le Vent de Farore", /*spanish*/"el Viento de Farore"}
     );
 
     hintTable[NAYRUS_LOVE] = HintText::Item({
@@ -253,7 +253,7 @@ void HintTable_Init_Item() {
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
                      },
                        //clear text
-                       Text{"Nayru's Love", /*french*/"l'amour de Nayru", /*spanish*/"el Amor de Nayru"}
+                       Text{"Nayru's Love", /*french*/"l'Amour de Nayru", /*spanish*/"el Amor de Nayru"}
     );
 
     hintTable[FIRE_ARROWS] = HintText::Item({
@@ -266,7 +266,7 @@ void HintTable_Init_Item() {
                        Text{"a magic arrow", /*french*/"une flèche magique", /*spanish*/"una flecha mágica"},
                      },
                        //clear text
-                       Text{"the Fire Arrows", /*french*/"la flèche de feu", /*spanish*/"la flecha de fuego"}
+                       Text{"the Fire Arrows", /*french*/"les Flèches de Feu", /*spanish*/"la flecha de fuego"}
     );
 
     hintTable[ICE_ARROWS] = HintText::Item({
@@ -280,7 +280,7 @@ void HintTable_Init_Item() {
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
-                       Text{"the Ice Arrows", /*french*/"la flèche de glace", /*spanish*/"la flecha de hielo"}
+                       Text{"the Ice Arrows", /*french*/"les Flèches de Glace", /*spanish*/"la flecha de hielo"}
     );
 
     hintTable[LIGHT_ARROWS] = HintText::Item({
@@ -294,7 +294,7 @@ void HintTable_Init_Item() {
                        Text{"a magic arrow", /*french*/"une flèche magique", /*spanish*/"una flecha mágica"},
                      },
                        //clear text
-                       Text{"the Light Arrows", /*french*/"la flèche de lumière", /*spanish*/"la flecha de luz"}
+                       Text{"the Light Arrows", /*french*/"les Flèches de Lumière", /*spanish*/"la flecha de luz"}
     );
 
     hintTable[GERUDO_TOKEN] = HintText::Item({
@@ -305,7 +305,7 @@ void HintTable_Init_Item() {
                        Text{"a token of recognition", /*french*/"une preuve de reconnaissance", /*spanish*/"una prueba de reconocimiento"},
                      },
                        //clear text
-                       Text{"the Gerudo Token", /*french*/"la carte Gerudo", /*spanish*/"el pase de socio gerudo"}
+                       Text{"the Gerudo Token", /*french*/"la Carte Gerudo", /*spanish*/"el pase de socio gerudo"}
     );
 
     hintTable[MAGIC_BEAN] = HintText::Item({
@@ -316,7 +316,7 @@ void HintTable_Init_Item() {
                        Text{"something sometimes buried", /*french*/"une chose parfois enterrée", /*spanish*/"algo a veces enterrado"},
                      },
                        //clear text
-                       Text{"a Magic Bean", /*french*/"un haricot magique", /*spanish*/"una judía mágica"}
+                       Text{"a Magic Bean", /*french*/"un Haricot Magique", /*spanish*/"una judía mágica"}
     );
 
     hintTable[MAGIC_BEAN_PACK] = HintText::Item({
@@ -327,7 +327,7 @@ void HintTable_Init_Item() {
                        Text{"something sometimes buried", /*french*/"une chose parfois enterrée", /*spanish*/"algo a veces enterrado"},
                      },
                        //clear text
-                       Text{"Magic Beans", /*french*/"un paquet de haricots magiques", /*spanish*/"unas judías mágicas"}
+                       Text{"Magic Beans", /*french*/"un Paquet de Haricots Magiques", /*spanish*/"unas judías mágicas"}
     );
 
     hintTable[DOUBLE_DEFENSE] = HintText::Item({
@@ -341,7 +341,7 @@ void HintTable_Init_Item() {
                        Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
-                       Text{"Double Defense", /*french*/"la double défence", /*spanish*/"la doble defensa"}
+                       Text{"Double Defense", /*french*/"la Double Défence", /*spanish*/"la doble defensa"}
     );
 
     hintTable[GOLD_SKULLTULA_TOKEN] = HintText::Item({
@@ -356,7 +356,7 @@ void HintTable_Init_Item() {
                        Text{"something sometimes buried", /*french*/"une chose parfois enterrée", /*spanish*/"algo a veces enterrado"},
                      },
                        //clear text
-                       Text{"a Gold Skulltula Token", /*french*/"un jeton de Skulltula d'or", /*spanish*/"un símbolo de skulltula dorada"}
+                       Text{"a Gold Skulltula Token", /*french*/"un Symbole de Skulltula d'or", /*spanish*/"un símbolo de skulltula dorada"}
     );
 
     hintTable[POCKET_EGG] = HintText::Item({
@@ -370,7 +370,7 @@ void HintTable_Init_Item() {
                        Text{"an egg", /*french*/"un oeuf", /*spanish*/"un huevo"},
                      },
                        //clear text
-                       Text{"the Pocket Egg", /*french*/"l'uf de poche", /*spanish*/"el huevo de bolsillo"}
+                       Text{"the Pocket Egg", /*french*/"l'Oeuf de Poche", /*spanish*/"el huevo de bolsillo"}
     );
 
     hintTable[POCKET_CUCCO] = HintText::Item({
@@ -381,7 +381,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Pocket Cucco", /*french*/"le Cocotte de poche", /*spanish*/"el cuco de bolsillo"}
+                       Text{"the Pocket Cucco", /*french*/"la Cocotte de Poche", /*spanish*/"el cuco de bolsillo"}
     );
 
     hintTable[COJIRO] = HintText::Item({
@@ -403,7 +403,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"an Odd Mushroom", /*french*/"un champignon suspect", /*spanish*/"un champiñón extraño"}
+                       Text{"an Odd Mushroom", /*french*/"un Champignon Suspect", /*spanish*/"un champiñón extraño"}
     );
 
     hintTable[ODD_POTION] = HintText::Item({
@@ -427,7 +427,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Poacher's Saw", /*french*/"la scie du chasseur", /*spanish*/"la sierra del furtivo"}
+                       Text{"the Poacher's Saw", /*french*/"la Scie du Chasseur", /*spanish*/"la sierra del furtivo"}
     );
 
     hintTable[BROKEN_SWORD] = HintText::Item({
@@ -439,7 +439,7 @@ void HintTable_Init_Item() {
                        Text{"a sword", /*french*/"une épée", /*spanish*/"una espada"},
                      },
                        //clear text
-                       Text{"the Broken Goron's Sword", /*french*/"l'épée brisée de Goron", /*spanish*/"la espada goron rota"}
+                       Text{"the Broken Goron's Sword", /*french*/"l'Épée Brisée de Goron", /*spanish*/"la espada goron rota"}
     );
 
     hintTable[PRESCRIPTION] = HintText::Item({
@@ -451,7 +451,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Prescription", /*french*/"une ordonnance", /*spanish*/"la receta"}
+                       Text{"the Prescription", /*french*/"une Ordonnance", /*spanish*/"la receta"}
     );
 
     hintTable[EYEBALL_FROG] = HintText::Item({
@@ -462,7 +462,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Eyeball Frog", /*french*/"le crapaud-qui-louche", /*spanish*/"la rana de ojos saltones"}
+                       Text{"the Eyeball Frog", /*french*/"le Crapaud-qui-louche", /*spanish*/"la rana de ojos saltones"}
     );
 
     hintTable[EYEDROPS] = HintText::Item({
@@ -473,7 +473,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Eyedrops", /*french*/"une phiole de super gouttes", /*spanish*/"las supergotas oculares"}
+                       Text{"the Eyedrops", /*french*/"une phiole de Super-Gouttes", /*spanish*/"las supergotas oculares"}
     );
 
     hintTable[CLAIM_CHECK] = HintText::Item({
@@ -484,7 +484,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"the Claim Check", /*french*/"un certificat", /*spanish*/"el recibo"}
+                       Text{"the Claim Check", /*french*/"un Certificat", /*spanish*/"el recibo"}
     );
 
     hintTable[PROGRESSIVE_HOOKSHOT] = HintText::Item({
@@ -498,7 +498,7 @@ void HintTable_Init_Item() {
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
-                       Text{"a Hookshot", /*french*/"un grappin", /*spanish*/"un gancho"}
+                       Text{"a Hookshot", /*french*/"un Grappin", /*spanish*/"un gancho"}
     );
 
     hintTable[PROGRESSIVE_STRENGTH] = HintText::Item({
@@ -511,7 +511,7 @@ void HintTable_Init_Item() {
                        Text{"something that can remove boulders", /*french*/"une chose qui enlève les rochers", /*spanish*/"algo que pueda quitar rocas"},
                      },
                        //clear text
-                       Text{"a Strength Upgrade", /*french*/"une amélioration de force", /*spanish*/"un aumento de fuerza"}
+                       Text{"a Strength Upgrade", /*french*/"une Amélioration de Force", /*spanish*/"un aumento de fuerza"}
     );
 
     hintTable[PROGRESSIVE_BOMB_BAG] = HintText::Item({
@@ -524,7 +524,7 @@ void HintTable_Init_Item() {
                        Text{"something that can remove boulders", /*french*/"une chose qui enlève les rochers", /*spanish*/"algo que pueda quitar rocas"},
                      },
                        //clear text
-                       Text{"a Bomb Bag", /*french*/"un sac de bombes", /*spanish*/"un saco de bombas"}
+                       Text{"a Bomb Bag", /*french*/"un Sac de Bombes", /*spanish*/"un saco de bombas"}
     );
 
     hintTable[PROGRESSIVE_BOW] = HintText::Item({
@@ -536,7 +536,7 @@ void HintTable_Init_Item() {
                        Text{"a projectile shooter", /*french*/"un tire-projectile", /*spanish*/"un arma de proyectil"},
                      },
                        //clear text
-                       Text{"a Bow", /*french*/"l'arc des fées", /*spanish*/"un arco de las hadas"}
+                       Text{"a Bow", /*french*/"l'Arc des Fées", /*spanish*/"un arco de las hadas"}
     );
 
     hintTable[PROGRESSIVE_SLINGSHOT] = HintText::Item({
@@ -549,7 +549,7 @@ void HintTable_Init_Item() {
                        Text{"a projectile shooter", /*french*/"un tire-projectile", /*spanish*/"un arma de proyectil"},
                      },
                        //clear text
-                       Text{"a Slingshot", /*french*/"un lance-pierre", /*spanish*/"una resortera de las hadas"}
+                       Text{"a Slingshot", /*french*/"un Lance-Pierre", /*spanish*/"una resortera de las hadas"}
     );
 
     hintTable[PROGRESSIVE_WALLET] = HintText::Item({
@@ -562,7 +562,7 @@ void HintTable_Init_Item() {
                        Text{"a prize of the House of Skulltulas", /*french*/"un prix de la maison des Skulltulas", /*spanish*/"un obsequio de la Casa Skulltula"},
                      },
                        //clear text
-                       Text{"a Wallet", /*french*/"une bourse", /*spanish*/"una bolsa de rupias"}
+                       Text{"a Wallet", /*french*/"une Bourse", /*spanish*/"una bolsa de rupias"}
     );
 
     hintTable[PROGRESSIVE_SCALE] = HintText::Item({
@@ -574,7 +574,7 @@ void HintTable_Init_Item() {
                        Text{"a diving tool", /*french*/"un outil de plongée", /*spanish*/"un instrumento de buceo"},
                      },
                        //clear text
-                       Text{"a Zora Scale", /*french*/"une écaille Zora", /*spanish*/"una escama Zora"}
+                       Text{"a Zora Scale", /*french*/"une Écaille Zora", /*spanish*/"una escama Zora"}
     );
 
     hintTable[PROGRESSIVE_NUT_UPGRADE] = HintText::Item({
@@ -587,7 +587,7 @@ void HintTable_Init_Item() {
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
-                       Text{"Deku Nut Capacity", /*french*/"une augmentation de noix Mojo", /*spanish*/"un aumento de nueces deku"}
+                       Text{"Deku Nut Capacity", /*french*/"une Augmentation de Noix Mojo", /*spanish*/"un aumento de nueces deku"}
     );
 
     hintTable[PROGRESSIVE_STICK_UPGRADE] = HintText::Item({
