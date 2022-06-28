@@ -589,10 +589,12 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
             Actor_SetFocus(&this->dyna.actor, 40.0f);
     }
 
-    if ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C && this->actionFunc == EnBox_Open &&
-        this->skelanime.curFrame > 45 && this->iceSmokeTimer < 100) {
-        EnBox_SpawnIceSmoke(this, globalCtx);
-    }
+    if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
+         (gSaveContext.n64ddFlag && GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F,
+                                                        this->dyna.actor.id, this->dyna.actor.params,
+                                                        globalCtx->sceneNum) == GI_ICE_TRAP)) && 
+        this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&
+        this->iceSmokeTimer < 100) EnBox_SpawnIceSmoke(this, globalCtx);
 }
 
 void EnBox_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx, Gfx** gfx) {
