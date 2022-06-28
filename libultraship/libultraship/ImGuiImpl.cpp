@@ -754,11 +754,19 @@ namespace SohImGui {
             ShowCursor(menu_bar, Dialogues::dMenubar);
         }
 
-        if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
-             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
-            ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+        #if __APPLE__
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
             console->Commands["reset"].handler(noArgs);
         }
+        #else
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(noArgs);
+        }
+        #endif
         
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
