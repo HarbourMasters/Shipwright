@@ -12,7 +12,7 @@
 #include "textures/map_name_static/map_name_static.h"
 #include "textures/map_48x85_static/map_48x85_static.h"
 #include "vt.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 
 #include "soh/frame_interpolation.h"
 

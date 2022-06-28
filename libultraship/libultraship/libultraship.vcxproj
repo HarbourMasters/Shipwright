@@ -267,7 +267,7 @@
     <ClCompile Include="mixer.c" />
     <ClCompile Include="ModManager.cpp" />
     <ClCompile Include="SDLAudioPlayer.cpp" />
-    <ClCompile Include="SohConsole.cpp" />
+    <ClCompile Include="Console.cpp" />
     <ClCompile Include="Factories\AnimationFactory.cpp" />
     <ClCompile Include="Factories\ArrayFactory.cpp" />
     <ClCompile Include="Factories\BlobFactory.cpp" />
@@ -281,8 +281,8 @@
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="ConfigFile.cpp" />
     <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="SohHooks.cpp" />
-    <ClCompile Include="SohImGuiImpl.cpp" />
+    <ClCompile Include="Hooks.cpp" />
+    <ClCompile Include="ImGuiImpl.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Factories\CollisionHeaderFactory.cpp" />
     <ClCompile Include="Factories\DisplayListFactory.cpp" />
@@ -362,7 +362,7 @@
     <ClInclude Include="ModManager.h" />
     <ClInclude Include="ModModule.h" />
     <ClInclude Include="SDLAudioPlayer.h" />
-    <ClInclude Include="SohConsole.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="Factories\ArrayFactory.h" />
     <ClInclude Include="Factories\BlobFactory.h" />
     <ClInclude Include="Factories\CutsceneFactory.h" />
@@ -375,8 +375,8 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="Cutscene.h" />
-    <ClInclude Include="SohHooks.h" />
-    <ClInclude Include="SohImGuiImpl.h" />
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="ImGuiImpl.h" />
     <ClInclude Include="Lib\Fast3D\gfx_cc.h" />
     <ClInclude Include="Lib\Fast3D\gfx_direct3d11.h" />
     <ClInclude Include="Lib\Fast3D\gfx_direct3d12.h" />
