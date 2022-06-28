@@ -760,8 +760,15 @@ namespace SohImGui {
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
-            ImGui::Text("Shipwright");
-            ImGui::Separator();
+            if (ImGui::BeginMenu("Shipwright")) {
+                if (ImGui::MenuItem("Reset")) {
+                    // TODO: RESET FROM HERE
+                }
+                if (ImGui::MenuItem("Exit")) {
+                    // TODO: EXIT FROM HERE
+                }
+                ImGui::EndMenu();
+            }
 
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
