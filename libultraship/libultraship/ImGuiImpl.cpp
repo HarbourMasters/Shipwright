@@ -1,4 +1,4 @@
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 #include <map>
@@ -10,8 +10,8 @@
 #include "Archive.h"
 #include "Environment.h"
 #include "GameSettings.h"
-#include "SohConsole.h"
-#include "SohHooks.h"
+#include "Console.h"
+#include "Hooks.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -137,7 +137,11 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
+        #if defined(__APPLE__)
+            ImGui_ImplOpenGL3_Init("#version 410 core");
+        #else
             ImGui_ImplOpenGL3_Init("#version 120");
+        #endif
             break;
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -350,10 +354,10 @@ namespace SohImGui {
         }
 
         for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= (uint8_t)tint.x;
-            texBuffer[pixel * 4 + 1] *= (uint8_t)tint.y;
-            texBuffer[pixel * 4 + 2] *= (uint8_t)tint.z;
-            texBuffer[pixel * 4 + 3] *= (uint8_t)tint.w;
+            texBuffer[pixel * 4 + 0] *= tint.x;
+            texBuffer[pixel * 4 + 1] *= tint.y;
+            texBuffer[pixel * 4 + 2] *= tint.z;
+            texBuffer[pixel * 4 + 3] *= tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
@@ -772,9 +776,12 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
+                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
+                // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
 
 		ImGui::Separator();
 
@@ -992,7 +999,6 @@ namespace SohImGui {
                     Tooltip("Change most 2D items & projectiles to their a 3D version");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
                     Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
-                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
@@ -1351,6 +1357,8 @@ namespace SohImGui {
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
+#elif __APPLE__
+            ImGui::Text("Platform: macOS");
 #else
             ImGui::Text("Platform: Linux");
 #endif
