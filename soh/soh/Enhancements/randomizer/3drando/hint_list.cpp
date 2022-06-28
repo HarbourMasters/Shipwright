@@ -222,7 +222,7 @@ void HintTable_Init() {
                        Text{"returning a #special Cucco# awards", /*french*/"ramener une #poulette précieuse# donne", /*spanish*/"quien devuelva un #cuco especial# encontrará"},
   });
 
-    hintTable[LW_TRADE_ODD_POULTICE] = HintText::Sometimes({
+    hintTable[LW_TRADE_ODD_POTION] = HintText::Sometimes({
                        //obscure text
                        Text{"a #Kokiri girl in the woods# leaves", /*french*/"la #fillette Kokiri dans les bois# laisse", /*spanish*/"una #chica kokiri del bosque# otorga"},
   });
@@ -935,7 +935,7 @@ void HintTable_Init() {
                      Text{"Impa's cow cage", /*french*/"la #cage à vache d'Impa#", /*spanish*/"la jaula de la vaca de Impa"},
   });
 
-    hintTable[KAK_ODD_POULTICE_BUILDING] = HintText::Region({
+    hintTable[KAK_ODD_POTION_BUILDING] = HintText::Region({
                      //obscure text
                      Text{"Granny's Potion Shop", /*french*/"la #maison bleue de Cocorico#", /*spanish*/"la tienda de pociones de la abuela"},
   });

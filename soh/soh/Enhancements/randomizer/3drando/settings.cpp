@@ -1725,7 +1725,7 @@ namespace Settings {
     }
 
     //Force include adult trade quest if Shuffle Adult Trade Quest is off
-    std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POULTICE, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
+    std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POTION, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
     if (ShuffleAdultTradeQuest) {
       Unhide(adultTradeLocations);
     } else {

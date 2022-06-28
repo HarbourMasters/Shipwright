@@ -57,7 +57,7 @@ const std::array<uint32_t, 59> alwaysItems = {
   ZORA_TUNIC,
   HOVER_BOOTS,
   MIRROR_SHIELD,
-  SHARD_OF_AGONY,
+  STONE_OF_AGONY,
   FIRE_ARROWS,
   ICE_ARROWS,
   LIGHT_ARROWS,
@@ -733,7 +733,7 @@ void GenerateItemPool() {
     AddItemToMainPool(POCKET_EGG);
     AddItemToMainPool(COJIRO);
     AddItemToMainPool(ODD_MUSHROOM);
-    AddItemToMainPool(ODD_POULTICE);
+    AddItemToMainPool(ODD_POTION);
     AddItemToMainPool(POACHERS_SAW);
     AddItemToMainPool(BROKEN_SWORD);
     AddItemToMainPool(PRESCRIPTION);
@@ -742,8 +742,8 @@ void GenerateItemPool() {
   } else {
     PlaceItemInLocation(KAK_TRADE_POCKET_CUCCO, COJIRO, false, true);
     PlaceItemInLocation(LW_TRADE_COJIRO, ODD_MUSHROOM, false, true);
-    PlaceItemInLocation(KAK_TRADE_ODD_MUSHROOM, ODD_POULTICE, false, true);
-    PlaceItemInLocation(LW_TRADE_ODD_POULTICE, POACHERS_SAW, false, true);
+    PlaceItemInLocation(KAK_TRADE_ODD_MUSHROOM, ODD_POTION, false, true);
+    PlaceItemInLocation(LW_TRADE_ODD_POTION, POACHERS_SAW, false, true);
     PlaceItemInLocation(GV_TRADE_SAW, BROKEN_SWORD, false, true);
     PlaceItemInLocation(DMT_TRADE_BROKEN_SWORD, PRESCRIPTION, false, true);
     PlaceItemInLocation(ZD_TRADE_PRESCRIPTION, EYEBALL_FROG, false, true);

@@ -75,7 +75,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "LW Near Shortcuts Grotto Chest", RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST },
     { "LW Skull Kid", RC_LW_SKULL_KID },
     { "LW Trade Cojiro", RC_LW_TRADE_COJIRO },
-    { "LW Trade Odd Potion", RC_LW_TRADE_ODD_POULTICE },
+    { "LW Trade Odd Potion", RC_LW_TRADE_ODD_POTION },
     { "LW Ocarina Memory Game", RC_LW_OCARINA_MEMORY_GAME },
     { "LW Target in Woods", RC_LW_TARGET_IN_WOODS },
     { "LW Deku Scrub Near Deku Theater Right", RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT },
@@ -1024,8 +1024,8 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Monocle de Vérité", RG_LENS_OF_TRUTH },
     { "Megaton Hammer", RG_MEGATON_HAMMER },
     { "Masse des Titans", RG_MEGATON_HAMMER },
-    { "Stone of Agony", RG_SHARD_OF_AGONY },
-    { "Pierre de Souffrance", RG_SHARD_OF_AGONY },
+    { "Stone of Agony", RG_STONE_OF_AGONY },
+    { "Pierre de Souffrance", RG_STONE_OF_AGONY },
     { "Din's Fire", RG_DINS_FIRE },
     { "Feu de Din", RG_DINS_FIRE },
     { "Farore's Wind", RG_FARORES_WIND },
@@ -1056,8 +1056,8 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "P'tit Poulet", RG_COJIRO },
     { "Odd Mushroom", RG_ODD_MUSHROOM },
     { "Champignon Suspect", RG_ODD_MUSHROOM },
-    { "Odd Potion", RG_ODD_POULTICE },
-    { "Mixture Suspecte ", RG_ODD_POULTICE },
+    { "Odd Potion", RG_ODD_POTION },
+    { "Mixture Suspecte ", RG_ODD_POTION },
     { "Poacher's Saw", RG_POACHERS_SAW },
     { "Scie du Chasseur", RG_POACHERS_SAW },
     { "Broken Goron's Sword", RG_BROKEN_SWORD },
@@ -2000,7 +2000,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MEGATON_HAMMER:
             return GI_HAMMER;
 
-        case RG_SHARD_OF_AGONY:
+        case RG_STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
 
         case RG_DINS_FIRE:
@@ -2040,7 +2040,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_COJIRO;
         case RG_ODD_MUSHROOM:
             return GI_ODD_MUSHROOM;
-        case RG_ODD_POULTICE:
+        case RG_ODD_POTION:
             return GI_ODD_POTION;
         case RG_POACHERS_SAW:
             return GI_SAW;

@@ -160,7 +160,7 @@ void HintTable_Init_Item() {
                        Text{"an egg", /*french*/"un oeuf", /*spanish*/"un huevo"},
                      },
                        //clear text
-                       Text{"the Weird Egg", /*french*/"l'uf curieux", /*spanish*/"el huevo extraño"}
+                       Text{"the Weird Egg", /*french*/"l'oeuf curieux", /*spanish*/"el huevo extraño"}
     );
 
     hintTable[BOOMERANG] = HintText::Item({
@@ -204,7 +204,7 @@ void HintTable_Init_Item() {
                        Text{"the Megaton Hammer", /*french*/"la masse des titans", /*spanish*/"el martillo Megatón"}
     );
 
-    hintTable[SHARD_OF_AGONY] = HintText::Item({
+    hintTable[STONE_OF_AGONY] = HintText::Item({
                        //obscure text
                        Text{"the shake shard", /*french*/"le fragment vibrant", /*spanish*/"el fragmento tintineante"},
                        Text{"a blue alarm",    /*french*/"une alerte bleue",    /*spanish*/"una azul alarma"},
@@ -214,7 +214,7 @@ void HintTable_Init_Item() {
                        Text{"a secret-finding tool", /*french*/"un cherche-secrets", /*spanish*/"un instrumento para hallar objetos"},
                      },
                        //clear text
-                       Text{"the Shard of Agony", /*french*/"le fragment de souffrance", /*spanish*/"la Piedra de la Agonía"}
+                       Text{"the Stone of Agony", /*french*/"la Pierre de Souffrance", /*spanish*/"la Piedra de la Agonía"}
     );
 
     hintTable[DINS_FIRE] = HintText::Item({
@@ -406,7 +406,7 @@ void HintTable_Init_Item() {
                        Text{"an Odd Mushroom", /*french*/"un champignon suspect", /*spanish*/"un champiñón extraño"}
     );
 
-    hintTable[ODD_POULTICE] = HintText::Item({
+    hintTable[ODD_POTION] = HintText::Item({
                        //obscure text
                        Text{"Granny's goodies", /*french*/"la confiserie de mamie", /*spanish*/"la especialidad de la abuela"},
                      }, {
@@ -416,7 +416,7 @@ void HintTable_Init_Item() {
                        Text{"a trade quest item", /*french*/"un objet de quête d'échanges", /*spanish*/"un objeto de una misión secundaria"},
                      },
                        //clear text
-                       Text{"an Odd Poultice", /*french*/"une mixture suspecte", /*spanish*/"una medicina rara"}
+                       Text{"an Odd Potion", /*french*/"une Mixture Suspecte", /*spanish*/"una medicina rara"}
     );
 
     hintTable[POACHERS_SAW] = HintText::Item({
