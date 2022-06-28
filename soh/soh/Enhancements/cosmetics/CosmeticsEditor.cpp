@@ -1,6 +1,6 @@
 #include "CosmeticsEditor.h"
 #include "../../util.h"
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 
 #include <array>
 #include <bit>
@@ -72,6 +72,7 @@ ImVec4 le_minimap_colors;
 ImVec4 tc_ou_colors;
 ImVec4 tc_bu_colors;
 ImVec4 dpad_colors;
+ImVec4 visualagony_colors;
 /*ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
@@ -309,10 +310,10 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General margins settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
-        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 0, "");
-        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", 0, ImGui::GetWindowViewport()->Size.x, "");
-        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 0, "");
-        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 0, "");
+        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "");
+        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "");
+        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "");
+        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -359,6 +360,37 @@ void Draw_Placements(){
             SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "");
+            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            ImGui::NewLine();
+            ImGui::EndTable();
+        }
+    }
+    if (CVar_GetS32("gVisualAgony",0) && ImGui::CollapsingHeader("Visual stone of agony position")) {
+        if (ImGui::BeginTable("tabledvisualstoneofagony", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+            ImGui::TableSetupColumn("Visual stone of agony settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+            Table_InitHeader(false);
+            SohImGui::EnhancementCheckbox("Visual stone of agony use margins", "gVSOAUseMargins");
+            SohImGui::Tooltip("This will use original intended elements position.");
+            SohImGui::EnhancementRadioButton("Original position", "gVSOAPosType", 0);
+            SohImGui::Tooltip("This will use original intended elements position.");
+            SohImGui::EnhancementRadioButton("Anchor to the left", "gVSOAPosType", 1);
+            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            SohImGui::EnhancementRadioButton("Anchor to the right", "gVSOAPosType", 2);
+            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            SohImGui::EnhancementRadioButton("No anchors", "gVSOAPosType", 3);
+            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            SohImGui::EnhancementRadioButton("Hidden", "gVSOAPosType", 4); //in case you want only SFX
+            SohImGui::Tooltip("This will make your elements hidden");
+            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
+            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            s16 Min_X_Dpad = 0;
+            s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
+            if(CVar_GetS32("gVSOAPosType",0) == 2){
+                Max_X_Dpad = 290;
+            } else if(CVar_GetS32("gVSOAPosType",0) == 4){
+                Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
+            }
+            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "");
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
@@ -568,7 +600,7 @@ void Draw_Placements(){
             ImGui::EndTable();
         }
     }
-    if (ImGui::CollapsingHeader("DPad items position")) {
+    if (CVar_GetS32("gDpadEquips",0) && ImGui::CollapsingHeader("DPad items position")) {
         if (ImGui::BeginTable("tabledpaditems", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("DPad items settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
@@ -731,8 +763,8 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
             SohImGui::EnhancementRadioButton("Anchor to the right", "gASPosType", 2);
             SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gASPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            //SohImGui::EnhancementRadioButton("No anchors", "gASPosType", 3); //currently bugged
+            //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gASPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
             SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "");
@@ -848,7 +880,7 @@ void Draw_HUDButtons(){
             ImGui::EndTable();
         }
     }
-    if (ImGui::CollapsingHeader("DPad colors")) {
+    if (CVar_GetS32("gDpadEquips",0) && ImGui::CollapsingHeader("DPad colors")) {
         if (ImGui::BeginTable("tableDpadHud", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("DPad", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
@@ -951,6 +983,9 @@ void Draw_General(){
             Table_NextLine();
             Draw_HelpIcon("Affect the Small keys icon on interface\nGray by default.");
             SohImGui::EnhancementColor("Small Keys icon", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
+            Table_NextLine();
+            Draw_HelpIcon("Affect the Stone of Agony icon on interface\nWhite by default.");
+            SohImGui::EnhancementColor("Stone of agony icon", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255));
             ImGui::EndTable();
         }
     }

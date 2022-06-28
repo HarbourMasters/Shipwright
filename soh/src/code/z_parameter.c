@@ -2885,12 +2885,13 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         if (CVar_GetS32("gMagicBarPosType", 0) != 0) {
             magicBarY = CVar_GetS32("gMagicBarPosY", 0)+Y_Margins;
             if (CVar_GetS32("gMagicBarPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {X_Margins = Left_HUD_Margin;};
                 PosX_Start = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
                 rMagicBarX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
                 PosX_MidEnd = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
                 rMagicFillX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
             } else if (CVar_GetS32("gMagicBarPosType", 0) == 2) {//Anchor Right
-                X_Margins = Right_HUD_Margin;
+                if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {X_Margins = Right_HUD_Margin;};
                 PosX_Start = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
                 rMagicBarX = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
                 PosX_MidEnd = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
@@ -2898,7 +2899,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
             } else if (CVar_GetS32("gMagicBarPosType", 0) == 3) {//Anchor None
                 PosX_Start = CVar_GetS32("gMagicBarPosX", 0)+X_Margins;
                 rMagicBarX = CVar_GetS32("gMagicBarPosX", 0)+X_Margins;
-                PosX_MidEnd = CVar_GetS32("gMagicBarPosX", 0)+X_Margins+7;
+                PosX_MidEnd = CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8;
                 rMagicFillX = CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8;
             } else if (CVar_GetS32("gMagicBarPosType", 0) == 4) {//hidden
                 PosX_Start = -9999;
@@ -3817,10 +3818,10 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
     };
     s16 ItemIconPos[8][2]; //(X,Y)
     s16 DPad_ItemsOffset[4][2] = {
-        { 7,-9},//Up
-        { 7,21},//Down
-        {-8, 7},//Left
-        {23, 7},//Right
+        { 7,2},//Up
+        { 7,32},//Down
+        {-8, 18},//Left
+        {23, 18},//Right
     }; //(X,Y) Used with custom position to place it properly.
     //DPadItems
     if (CVar_GetS32("gDPadPosType", 0) != 0) {

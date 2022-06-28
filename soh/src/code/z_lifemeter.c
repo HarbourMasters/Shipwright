@@ -283,6 +283,10 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         HeartDDInner[1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
         HeartDDInner[2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
 
+        sHeartsDDEnv[0][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
+        sHeartsDDEnv[0][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
+        sHeartsDDEnv[0][2] = CVar_GetS32("gCCDDHeartsPrimB", 0);
+
         rFactor = sHeartsDDPrimFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
         bFactor = sHeartsDDPrimFactors[ddType][2] * ddFactor;
@@ -602,9 +606,9 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
         offsetX += 10.0f;
         if (i == 9) {
             PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
-            PosY_original += 10.0f+Y_Margins;
+            PosY_original = 10.0f+Y_Margins;
             if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-                offsetY += 10.0f;
+                offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins+10.0f;
                 if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
                     offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
                 } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right

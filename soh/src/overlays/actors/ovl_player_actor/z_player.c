@@ -10386,28 +10386,68 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
         /*Prevent it on horse, while jumping and on title screen.
         If you fly around no stone of agony for you! */
         if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
-            int rectLeft    = OTRGetRectDimensionFromLeftEdge(26); //Left X Pos
-            int rectTop     = 60; //Top Y Pos
+            s16 Top_Margins = (CVar_GetS32("gHUDMargin_T", 0)*-1);
+            s16 Left_Margins = CVar_GetS32("gHUDMargin_L", 0);
+            s16 Right_Margins = CVar_GetS32("gHUDMargin_R", 0);
+            s16 X_Margins_VSOA;
+            s16 Y_Margins_VSOA;
+            if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {
+                if (CVar_GetS32("gVSOAPosType", 0) == 0) {X_Margins_VSOA = Left_Margins;};
+                Y_Margins_VSOA = Top_Margins;
+            } else {
+                X_Margins_VSOA = 0;
+                Y_Margins_VSOA = 0;
+            }
+            s16 PosX_VSOA_ori = OTRGetRectDimensionFromLeftEdge(26)+X_Margins_VSOA;
+            s16 PosY_VSOA_ori = 60+Y_Margins_VSOA;
+            s16 PosX_VSOA;
+            s16 PosY_VSOA;
+            if (CVar_GetS32("gVSOAPosType", 0) != 0) {
+                PosY_VSOA = CVar_GetS32("gVSOAPosY", 0)+Y_Margins_VSOA;
+                if (CVar_GetS32("gVSOAPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {X_Margins_VSOA = Left_Margins;};
+                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gVSOAPosX", 0)+X_Margins_VSOA);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {X_Margins_VSOA = Right_Margins;};
+                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVar_GetS32("gVSOAPosX", 0)+X_Margins_VSOA);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 3) {//Anchor None
+                    PosX_VSOA = CVar_GetS32("gVSOAPosX", 0);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 4) {//Hidden
+                   PosX_VSOA = -9999;
+                }
+            } else {
+                PosY_VSOA = PosY_VSOA_ori;
+                PosX_VSOA = PosX_VSOA_ori;
+            }
+
+            int rectLeft    = PosX_VSOA; //Left X Pos
+            int rectTop     = PosY_VSOA; //Top Y Pos
             int rectWidth   = 24; //Texture Width
             int rectHeight  = 24; //Texture Heigh
-            int DefaultIconA= 50; //Default icon alphe (55 on 255)
-
-            if (CVar_GetS32("gHUDMargins", 0) != 0) {
-                rectLeft = OTRGetRectDimensionFromLeftEdge(26+(CVar_GetS32("gHUDMargin_L", 0)*-1));
-                rectTop = 60+(CVar_GetS32("gHUDMargin_T", 0)*-1);
-            } else {
-                rectTop = 60;
-                rectLeft = OTRGetRectDimensionFromLeftEdge(26);
-            }
+            int DefaultIconA= 50; //Default icon alpha (55 on 255)
 
             OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
-            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            if (this->unk_6A0 > 4000000.0f) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+            }
+
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            if (this->unk_6A0 > 4000000.0f) {
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), 255);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+                }
+            } else {
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+                }
             }
             if (temp == 0 || temp <= 0.1f) {
                /*Fail check, it is used to draw off the icon when
