@@ -41,10 +41,10 @@ void func_800C0F28(PreRender* this, Gfx** gfxp, void* buf, void* bufSave) {
     s32 x2;
     s32 dx;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("glistpp", gfxp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("glistpp", gfxp);
     gfx = *gfxp;
-    LogUtils_CheckNullPointer("glistp", gfx, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("glistp", gfx);
 
     gDPPipeSync(gfx++);
     gDPSetOtherMode(gfx++,
@@ -89,10 +89,10 @@ void func_800C1258(PreRender* this, Gfx** gfxp) {
     s32 y2;
     s32 dy;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("glistpp", gfxp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("glistpp", gfxp);
     gfx = *gfxp;
-    LogUtils_CheckNullPointer("glistp", gfx, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("glistp", gfx);
 
     gDPPipeSync(gfx++);
     gDPSetOtherMode(gfx++,
@@ -139,10 +139,10 @@ void func_800C170C(PreRender* this, Gfx** gfxp, void* fbuf, void* fbufSave, u32 
     s32 x2;
     s32 dx;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("glistpp", gfxp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("glistpp", gfxp);
     gfx = *gfxp;
-    LogUtils_CheckNullPointer("glistp", gfx, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("glistp", gfx);
 
     gDPPipeSync(gfx++);
     gDPSetOtherMode(gfx++,
@@ -195,10 +195,10 @@ void func_800C1B24(PreRender* this, Gfx** gfxp, void* fbuf, void* cvgSave) {
     s32 x2;
     s32 dx;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("glistpp", gfxp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("glistpp", gfxp);
     gfx = *gfxp;
-    LogUtils_CheckNullPointer("glistp", gfx, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("glistp", gfx);
 
     gDPPipeSync(gfx++);
     gDPSetOtherMode(gfx++,
@@ -239,8 +239,8 @@ void func_800C1B24(PreRender* this, Gfx** gfxp, void* fbuf, void* cvgSave) {
 }
 
 void func_800C1E9C(PreRender* this, Gfx** gfxp) {
-    LogUtils_CheckNullPointer("this->zbuf_save", this->zbufSave, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("this->zbuf", this->zbuf, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this->zbuf_save", this->zbufSave);
+    LOG_CHECK_NULL_POINTER("this->zbuf", this->zbuf);
 
     if ((this->zbufSave != NULL) && (this->zbuf != NULL)) {
         func_800C0F28(this, gfxp, this->zbuf, this->zbufSave);
@@ -248,8 +248,8 @@ void func_800C1E9C(PreRender* this, Gfx** gfxp) {
 }
 
 void func_800C1F20(PreRender* this, Gfx** gfxp) {
-    LogUtils_CheckNullPointer("this->fbuf_save", this->fbufSave, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("this->fbuf", this->fbuf, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this->fbuf_save", this->fbufSave);
+    LOG_CHECK_NULL_POINTER("this->fbuf", this->fbuf);
 
     if ((this->fbufSave != NULL) && (this->fbuf != NULL)) {
          func_800C1AE8(this, gfxp, this->fbuf, this->fbufSave);
@@ -275,7 +275,7 @@ void func_800C1FA4(PreRender* this, Gfx** gfxp) {
 
 void func_800C20B4(PreRender* this, Gfx** gfxp) {
     func_800C1FA4(this, gfxp);
-    LogUtils_CheckNullPointer("this->cvg_save", this->cvgSave, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this->cvg_save", this->cvgSave);
     if (this->cvgSave != NULL) {
         func_800C1B24(this, gfxp, this->fbuf, this->cvgSave);
     }
@@ -293,10 +293,10 @@ void func_800C213C(PreRender* this, Gfx** gfxp) {
     s32 rtile = 1;
 
     if (this->cvgSave != NULL) {
-        LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-        LogUtils_CheckNullPointer("glistpp", gfxp, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("this", this);
+        LOG_CHECK_NULL_POINTER("glistpp", gfxp);
         gfx = *gfxp;
-        LogUtils_CheckNullPointer("glistp", gfx, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("glistp", gfx);
 
         gDPPipeSync(gfx++);
         gDPSetEnvColor(gfx++, 255, 255, 255, 32);

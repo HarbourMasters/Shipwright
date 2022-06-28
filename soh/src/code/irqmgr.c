@@ -19,9 +19,9 @@ u32 sIrqMgrRetraceCount = 0;
 void IrqMgr_AddClient(IrqMgr* this, IrqMgrClient* c, OSMesgQueue* msgQ) {
     OSIntMask prevInt;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("c", c, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("msgQ", msgQ, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("c", c);
+    LOG_CHECK_NULL_POINTER("msgQ", msgQ);
 
     prevInt = osSetIntMask(1);
 
@@ -45,8 +45,8 @@ void IrqMgr_RemoveClient(IrqMgr* this, IrqMgrClient* c) {
     IrqMgrClient* lastIter = NULL;
     OSIntMask prevInt;
 
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("c", c, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("c", c);
 
     prevInt = osSetIntMask(1);
 
@@ -214,8 +214,8 @@ void IrqMgr_ThreadEntry(void* arg0) {
 }
 
 void IrqMgr_Init(IrqMgr* this, void* stack, OSPri pri, u8 retraceCount) {
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("stack", stack, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
+    LOG_CHECK_NULL_POINTER("stack", stack);
 
     this->clients = NULL;
     this->retraceMsg.type = OS_SC_RETRACE_MSG;

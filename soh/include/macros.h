@@ -111,6 +111,23 @@
 #define LOG_FLOAT(exp, value) ((void)0)
 #endif
 
+// LogUtils as macro
+#ifndef NDEBUG
+#define LOG_POINTER(val, max, ptr, name) LogUtils_LogPointer(val, max, ptr, name, __FILE__, __LINE__)
+#define LOG_CHECK_BOUNDARY(name, value, unk) LogUtils_CheckBoundary(name, value, unk, __FILE__, __LINE__)
+#define LOG_CHECK_NULL_POINTER(exp, ptr) LogUtils_CheckNullPointer(exp, ptr,__FILE__, __LINE__)
+#define LOG_CHECK_VALID_POINTER(exp, ptr) LogUtils_CheckValidPointer(exp, ptr,__FILE__, __LINE__)
+#define LOG_THREAD_ID() LogUtils_LogThreadId(__FILE__, __LINE__)
+#define LOG_HUNGUP_THREAD() LogUtils_HungupThread(__FILE__, __LINE__)
+#else
+#define LOG_POINTER(val, max, ptr, name) ((void)0)
+#define LOG_CHECKBOUNDARY(name, value, unk) ((void)0)
+#define LOG_CHECK_NULL_POINTER(exp, ptr) ((void)0)
+#define LOG_CHECK_VALID_POINTER(exp, ptr) ((void)0)
+#define LOG_THREAD_ID() ((void)0)
+#define LOG_HUNGUP_THREAD() ((void)0)
+#endif
+
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \
     do {                                                 \
         (curState)->init = newInit;                      \

@@ -18,7 +18,7 @@ OSTime sRDPStartTime;
 void Sched_SwapFrameBuffer(CfbInfo* cfbInfo) {
     u16 width;
 
-    LogUtils_CheckValidPointer("cfbinfo->swapbuffer", cfbInfo->swapBuffer, __FILE__, __LINE__);
+    LOG_CHECK_VALID_POINTER("cfbinfo->swapbuffer", cfbInfo->swapBuffer);
     if (cfbInfo->swapBuffer != NULL) {
         osViSwapBuffer(cfbInfo->swapBuffer);
         cfbInfo->updateRate2 = cfbInfo->updateRate;
@@ -221,7 +221,7 @@ void func_800C8BC4(SchedContext* sc, OSScTask* task) {
     if (sc->pendingSwapBuf1 == NULL) {
         sc->pendingSwapBuf1 = task->framebuffer;
 
-        LogUtils_CheckValidPointer("sc->pending_swapbuffer1", sc->pendingSwapBuf1, __FILE__, __LINE__);
+        LOG_CHECK_VALID_POINTER("sc->pending_swapbuffer1", sc->pendingSwapBuf1);
 
         if ((sc->curBuf == NULL) || (sc->curBuf->updateRate2 < 1)) {
             func_800C84E4(sc, task->framebuffer);

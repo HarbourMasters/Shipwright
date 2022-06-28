@@ -421,7 +421,7 @@ BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
 
     // "z_room.c: Data consistent with camera id does not exist camid=%d"
     osSyncPrintf(VT_COL(RED, WHITE) "z_room.c:カメラＩＤに一致するデータが存在しません camid=%d\n" VT_RST, camId);
-    LogUtils_HungupThread(__FILE__, __LINE__);
+    LOG_HUNGUP_THREAD();
 
     return NULL;
 }
@@ -496,7 +496,7 @@ void func_80096F6C(GlobalContext* globalCtx, Room* room, u32 flags) {
     } else if (polygon1->format == 2) {
         func_80096B6C(globalCtx, room, flags);
     } else {
-        LogUtils_HungupThread(__FILE__, __LINE__);
+        LOG_HUNGUP_THREAD();
     }
 }
 

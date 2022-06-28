@@ -296,7 +296,7 @@ s32 func_800AAA9C(View* view) {
     OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -307,7 +307,7 @@ s32 func_800AAA9C(View* view) {
     gSPViewport(POLY_KAL_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     width = view->viewport.rightX - view->viewport.leftX;
@@ -315,7 +315,7 @@ s32 func_800AAA9C(View* view) {
     aspect = (f32)width / (f32)height;
 
     viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("viewing", viewing, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("viewing", viewing);
     view->viewingPtr = viewing;
 
     if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
@@ -473,7 +473,7 @@ s32 func_800AB0A8(View* view) {
     OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -485,7 +485,7 @@ s32 func_800AB0A8(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -512,7 +512,7 @@ s32 func_800AB2C4(View* view) {
     OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -522,7 +522,7 @@ s32 func_800AB2C4(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -550,7 +550,7 @@ s32 func_800AB560(View* view) {
     OPEN_DISPS(gfxCtx);
 
     vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-    LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("vp", vp);
     View_ViewportToVp(vp, &view->viewport);
     view->vp = *vp;
 
@@ -560,7 +560,7 @@ s32 func_800AB560(View* view) {
     gSPViewport(OVERLAY_DISP++, vp);
 
     projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("projection", projection);
     view->projectionPtr = projection;
 
     width = view->viewport.rightX - view->viewport.leftX;
@@ -575,7 +575,7 @@ s32 func_800AB560(View* view) {
     gSPMatrix(OVERLAY_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
 
     viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-    LogUtils_CheckNullPointer("viewing", viewing, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("viewing", viewing);
     view->viewingPtr = viewing;
 
     if (view->eye.x == view->lookAt.x && view->eye.y == view->lookAt.y && view->eye.z == view->lookAt.z) {
@@ -622,7 +622,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 2) {
         vp = Graph_Alloc(gfxCtx, sizeof(Vp));
-        LogUtils_CheckNullPointer("vp", vp, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("vp", vp);
         View_ViewportToVp(vp, &view->viewport);
 
         view->vp = *vp;
@@ -635,7 +635,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 8) {
         projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("projection", projection);
         view->projectionPtr = projection;
 
         guOrtho(projection, -(f32)gScreenWidth * 0.5f, (f32)gScreenWidth * 0.5f, -(f32)gScreenHeight * 0.5f,
@@ -646,7 +646,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
         gSPMatrix(gfx++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
     } else if (arg1 & 6) {
         projection = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("projection", projection, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("projection", projection);
         view->projectionPtr = projection;
 
         width = view->viewport.rightX - view->viewport.leftX;
@@ -663,7 +663,7 @@ s32 func_800AB9EC(View* view, s32 arg1, Gfx** gfxp) {
 
     if (arg1 & 1) {
         viewing = Graph_Alloc(gfxCtx, sizeof(Mtx));
-        LogUtils_CheckNullPointer("viewing", viewing, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("viewing", viewing);
         view->viewingPtr = viewing;
 
         func_800ABE74(view->eye.x, view->eye.y, view->eye.z);

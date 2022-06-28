@@ -49,8 +49,8 @@ void GameAlloc_Free(GameAlloc* this, void* data) {
 
     if (data != NULL) {
         ptr = &((GameAllocEntry*)data)[-1];
-        LogUtils_CheckNullPointer("ptr->prev", ptr->prev, __FILE__, __LINE__);
-        LogUtils_CheckNullPointer("ptr->next", ptr->next, __FILE__, __LINE__);
+        LOG_CHECK_NULL_POINTER("ptr->prev", ptr->prev);
+        LOG_CHECK_NULL_POINTER("ptr->next", ptr->next);
         ptr->prev->next = ptr->next;
         ptr->next->prev = ptr->prev;
         this->head = this->base.prev;

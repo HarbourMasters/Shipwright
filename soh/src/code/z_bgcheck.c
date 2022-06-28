@@ -1569,7 +1569,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         &globalCtx->state.tha,
         colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z, ~1);
     if (colCtx->lookupTbl == NULL) {
-        LogUtils_HungupThread(__FILE__, __LINE__);
+        LOG_HUNGUP_THREAD();
     }
     colCtx->minBounds.x = colCtx->colHeader->minBounds.x;
     colCtx->minBounds.y = colCtx->colHeader->minBounds.y;
@@ -1598,7 +1598,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         tblMax = customNodeListMax;
     } else {
         if (colCtx->memSize < memSize) {
-            LogUtils_HungupThread(__FILE__, __LINE__);
+            LOG_HUNGUP_THREAD();
         }
         tblMax = (colCtx->memSize - memSize) / sizeof(SSNode);
     }

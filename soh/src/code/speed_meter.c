@@ -29,7 +29,7 @@ SpeedMeterTimeEntry sSpeedMeterTimeEntryArray[] = {
     gDPPipeSync(gfx);
 
 void SpeedMeter_InitImpl(SpeedMeter* this, u32 arg1, u32 y) {
-    LogUtils_CheckNullPointer("this", this, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("this", this);
     this->unk_18 = arg1;
     this->y = y;
 }

@@ -22,7 +22,7 @@ KaleidoMgrOverlay* gKaleidoMgrCurOvl = NULL;
 u8 gBossMarkState = 0;
 
 void KaleidoManager_LoadOvl(KaleidoMgrOverlay* ovl) {
-    //LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, __FILE__, __LINE__);
+    //LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
 
     ovl->loadedRamAddr = sKaleidoAreaPtr;
     Overlay_Load(ovl->vromStart, ovl->vromEnd, ovl->vramStart, ovl->vramEnd, ovl->loadedRamAddr);
@@ -63,7 +63,7 @@ void KaleidoManager_Init(GlobalContext* globalCtx) {
     osSyncPrintf(VT_RST);
 
     sKaleidoAreaPtr = GameState_Alloc(&globalCtx->state, largestSize, __FILE__, __LINE__);
-    LogUtils_CheckNullPointer("KaleidoArea_allocp", sKaleidoAreaPtr, __FILE__, __LINE__);
+    LOG_CHECK_NULL_POINTER("KaleidoArea_allocp", sKaleidoAreaPtr);
 
     osSyncPrintf(VT_FGCOL(GREEN));
     osSyncPrintf("KaleidoArea %08x - %08x\n", sKaleidoAreaPtr, (uintptr_t)sKaleidoAreaPtr + largestSize);

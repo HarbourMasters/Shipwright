@@ -54,7 +54,7 @@ u32 EffectSsKakera_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
 
     } else {
         osSyncPrintf("shape_modelがNULL\n");
-        LogUtils_HungupThread(__FILE__, __LINE__);
+        LOG_HUNGUP_THREAD();
     }
 
     this->draw = EffectSsKakera_Draw;
