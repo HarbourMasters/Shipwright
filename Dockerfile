@@ -5,34 +5,31 @@ FROM ubuntu:21.04 as build
 ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN dpkg --add-architecture i386 && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
-        binutils:i386 \
-        gcc-10:i386 \
-        g++-10:i386 \
-        python3.10 \
+        libc6-dev \
+        binutils \
+        gcc-10 \
+        g++-10 \
         python \
-        make \
+        ccache \
         cmake \
+        make \
         git \
         lld \
-        libsdl2-dev:i386 \
-        zlib1g-dev:i386 \
-        libbz2-dev:i386 \
-        libpng-dev:i386 \
+        libsdl2-dev \
+        zlib1g-dev \
+        libbz2-dev \
+        libpng-dev \
         libgles2-mesa-dev && \
-    ln -sf /usr/bin/python3.10 /usr/bin/python3 && \
-    ln -s /usr/bin/gcc-10 /usr/bin/gcc && \
-    ln -s /usr/bin/gcc-10 /usr/bin/cc && \
-    ln -s /usr/bin/g++-10 /usr/bin/g++ && \
-    ln -s /usr/bin/g++-10 /usr/bin/c++
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
 
 RUN git clone https://github.com/Perlmint/glew-cmake.git && \
     cmake glew-cmake && \
     make -j$(nproc) && \
-    make install ARCH64=false
+    make install
 
 RUN mkdir /soh
 WORKDIR /soh
