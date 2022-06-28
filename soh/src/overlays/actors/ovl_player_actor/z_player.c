@@ -11159,7 +11159,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
             temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);
             Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-            temp2 = sControlInput->rel.stick_x * -16.0f * (Cvar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+            temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
             temp2 = CLAMP(temp2, -3000, 3000);
             this->actor.focus.rot.y += temp2;
         } else {
