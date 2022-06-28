@@ -202,7 +202,7 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
                     }
                     break;
                 case 4:
-                    if ((CheckMedallionCount() + CheckDungeonCount()) >= bridgeRewardCount) {
+                    if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
                         LaunchBridgeCutscene(this, globalCtx);
                     }
                     break;
