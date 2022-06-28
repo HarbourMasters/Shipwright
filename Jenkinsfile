@@ -106,13 +106,13 @@ pipeline {
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md build/readme.txt
                             cd build
-                            7z a soh-linux.7z soh.elf OTRGui assets readme.txt
-                            mv soh-linux.7z ../
+                            
+                            docker exec sohcont appimage/appimage.sh
                             
                             '''
                         }
                         sh 'sudo docker container stop sohcont'
-                        archiveArtifacts artifacts: 'soh-linux.7z', followSymlinks: false, onlyIfSuccessful: true
+                        archiveArtifacts artifacts: 'SOH-Linux.AppImage', followSymlinks: false, onlyIfSuccessful: true
                     }
                     post {
                         always {
