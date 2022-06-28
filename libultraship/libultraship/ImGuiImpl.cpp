@@ -779,7 +779,7 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Shipwright")) {
                 if (ImGui::MenuItem("Reset",
                     #if __APPLE__
-                    "⌘ R"
+                    "Command-R"
                     #else
                     "Ctrl+R"
                     #endif
