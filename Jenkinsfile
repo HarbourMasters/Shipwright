@@ -106,7 +106,7 @@ pipeline {
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md build/readme.txt
 
-							docker exec sohcont appimage/appimage.sh
+			    docker exec sohcont appimage/appimage.sh
                             
                             '''
                         }
