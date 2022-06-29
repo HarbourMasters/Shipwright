@@ -84,7 +84,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
     add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
-set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL TRUE)
 endif()
 
 if (NOT TARGET storm)
