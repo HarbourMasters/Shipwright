@@ -278,7 +278,7 @@ typedef enum {
     HINTS_NO_HINTS,
     HINTS_NEED_NOTHING,
     HINTS_MASK_OF_TRUTH,
-    HINTS_SHARD_OF_AGONY,
+    HINTS_STONE_OF_AGONY,
 } GossipStoneHintsSetting;
 
 typedef enum {

@@ -138,7 +138,7 @@ void GenerateStartingInventory() {
   AddItemToInventory(PROGRESSIVE_STRENGTH,      StartingStrength.Value<uint8_t>());
   AddItemToInventory(PROGRESSIVE_SCALE,         StartingScale.Value<uint8_t>());
   AddItemToInventory(PROGRESSIVE_WALLET,        StartingWallet.Value<uint8_t>());
-  AddItemToInventory(SHARD_OF_AGONY,            StartingShardOfAgony.Value<uint8_t>());
+  AddItemToInventory(STONE_OF_AGONY,            StartingShardOfAgony.Value<uint8_t>());
   AddItemToInventory(DOUBLE_DEFENSE,            StartingDoubleDefense.Value<uint8_t>());
   AddItemToInventory(KOKIRI_EMERALD,            StartingKokiriEmerald.Value<uint8_t>());
   AddItemToInventory(GORON_RUBY,                StartingGoronRuby.Value<uint8_t>());

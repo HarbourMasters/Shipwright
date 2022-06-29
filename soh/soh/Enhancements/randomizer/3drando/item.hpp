@@ -90,7 +90,7 @@ public:
         if (type == ITEMTYPE_DUNGEONREWARD && (ShuffleRewards.Is(REWARDSHUFFLE_END_OF_DUNGEON))) {
             return false;
         }
-
+        // PURPLE TODO: LOCALIZATION
         if (name.GetEnglish().find("Bombchus") != std::string::npos && !BombchusInLogic) {
             return false;
         }

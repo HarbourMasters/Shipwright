@@ -68,7 +68,7 @@ void AreaTable_Init_Kakariko() {
                   //Exits
                   Entrance(KAKARIKO_VILLAGE,          {[]{return true;}}),
                   Entrance(KAK_OPEN_GROTTO,           {[]{return true;}}),
-                  Entrance(KAK_ODD_POULTICE_BUILDING, {[]{return IsAdult;}}),
+                  Entrance(KAK_ODD_POTION_BUILDING, {[]{return IsAdult;}}),
                   Entrance(KAK_POTION_SHOP_BACK,      {[]{return IsAdult && AtDay;},
                                            /*Glitched*/[]{return CanDoGlitch(GlitchType::TripleSlashClip, GlitchDifficulty::NOVICE);}}),
   });
@@ -176,7 +176,7 @@ void AreaTable_Init_Kakariko() {
                   Entrance(KAK_POTION_SHOP_FRONT, {[]{return true;}}),
   });
 
-  areaTable[KAK_ODD_POULTICE_BUILDING] = Area("Kak Granny's Potion Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {
+  areaTable[KAK_ODD_POTION_BUILDING] = Area("Kak Granny's Potion Shop", "", NONE, NO_DAY_NIGHT_CYCLE, {
                   //Events
                   EventAccess(&OddPoulticeAccess, {[]{return OddPoulticeAccess || (IsAdult && (OddMushroomAccess || (OddMushroom && DisableTradeRevert)));}}),
                 }, {
