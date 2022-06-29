@@ -55,6 +55,7 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+std::vector<std::string> noArgs;
 
 namespace SohImGui {
 
@@ -756,6 +757,20 @@ namespace SohImGui {
             ShowCursor(menu_bar, Dialogues::dMenubar);
         }
 
+        #if __APPLE__
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(noArgs);
+        }
+        #else
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(noArgs);
+        }
+        #endif
+        
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
@@ -763,8 +778,19 @@ namespace SohImGui {
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
-            ImGui::Text("Shipwright");
-            ImGui::Separator();
+
+            if (ImGui::BeginMenu("Shipwright")) {
+                if (ImGui::MenuItem("Reset",
+                    #if __APPLE__
+                    "Command-R"
+                    #else
+                    "Ctrl+R"
+                    #endif
+                    )) {
+                    console->Commands["reset"].handler(noArgs);
+                }
+                ImGui::EndMenu();
+            }            
 
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
