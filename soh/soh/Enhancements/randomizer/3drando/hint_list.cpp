@@ -1604,6 +1604,19 @@ void HintTable_Init() {
                      Text{"BOK? No way.", /*french*/"BD'accord? Hors de question.", /*spanish*/"¿BVale? Ni hablar."},
     });
 
+    // ^ junk hints above are from 3drando
+    // v junk hints below are new to soh rando
+
+    hintTable[JUNK78] = HintText::Junk({
+                     //obscure text
+                     Text{"They say blarg...^...or at least briaguya does.", /*french*/"blarg", /*spanish*/"blarg"},
+    });
+
+    hintTable[JUNK79] = HintText::Junk({
+                     //obscure text
+                     Text{"They say this peace is what all true warriors strive for.", /*french*/"blarg", /*spanish*/"blarg"},
+    });
+
     /*--------------------------
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
