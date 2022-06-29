@@ -505,6 +505,26 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
     }
     if (this) {}
     func_8002ED80(&this->actor, globalCtx, 0);
+    if (gSaveContext.n64ddFlag) {
+        s32 randoGetItemId;
+        switch (this->type) {
+            case EXITEM_BOMB_BAG_BOWLING:
+            case EXITEM_BOMB_BAG_COUNTER:
+                randoGetItemId = GetRandomizedItemIdFromKnownCheck(
+                                    RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                break;
+            case EXITEM_BOMBCHUS_BOWLING:
+            case EXITEM_BOMBCHUS_COUNTER:
+                randoGetItemId = GetRandomizedItemIdFromKnownCheck(
+                                    RC_MARKET_BOMBCHU_BOWLING_BOMBCHUS, GI_BOMBCHUS_10);
+                break;
+        }
+
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+    }
+
     GetItem_Draw(globalCtx, this->giDrawId);
 }
 
@@ -512,8 +532,12 @@ void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
     func_8002ED80(&this->actor, globalCtx, 0);
 
     if (gSaveContext.n64ddFlag) {
-        GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(
-                                    RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE)));
+        s32 randoGetItemId = GetRandomizedItemIdFromKnownCheck(
+                                RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
     } else {
         GetItem_Draw(globalCtx, GID_HEART_PIECE);
     }
