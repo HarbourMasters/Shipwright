@@ -138,8 +138,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] != 0) {
                             pauseCtx->cursorX[PAUSE_ITEM] -= 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] -= 1;
-
-                            if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                            if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                CVar_GetS32("gPauseAnyCursor", 0)) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -170,8 +170,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         if (pauseCtx->cursorX[PAUSE_ITEM] < 5) {
                             pauseCtx->cursorX[PAUSE_ITEM] += 1;
                             pauseCtx->cursorPoint[PAUSE_ITEM] += 1;
-
-                            if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                            if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                CVar_GetS32("gPauseAnyCursor", 0)) {
                                 moveCursorResult = 1;
                             }
                         } else {
@@ -292,8 +292,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] != 0) {
                                 pauseCtx->cursorY[PAUSE_ITEM] -= 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] -= 6;
-
-                                if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                                if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                    CVar_GetS32("gPauseAnyCursor", 0)) {
                                     moveCursorResult = 1;
                                 }
                             } else {
@@ -306,8 +306,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                             if (pauseCtx->cursorY[PAUSE_ITEM] < 3) {
                                 pauseCtx->cursorY[PAUSE_ITEM] += 1;
                                 pauseCtx->cursorPoint[PAUSE_ITEM] += 6;
-
-                                if (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) {
+                                if ((gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE) ||
+                                    CVar_GetS32("gPauseAnyCursor", 0)) {
                                     moveCursorResult = 1;
                                 }
                             } else {
@@ -350,10 +350,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     if (CHECK_BTN_ANY(input->press.button, BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT)) {
-                        if (((gSlotAgeReqs[cursorSlot] == 9) ||
-                             (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge)) ||
-                            (CVar_GetS32("gNoRestrictAge", 0))) &&
-                            (cursorItem != ITEM_SOLD_OUT)) {
+                        if (((gSlotAgeReqs[cursorSlot] == 9) || CVar_GetS32("gNoRestrictAge", 0) ||
+                             (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
+                            (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
                             KaleidoScope_SetupItemEquip(globalCtx, cursorItem, cursorSlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);

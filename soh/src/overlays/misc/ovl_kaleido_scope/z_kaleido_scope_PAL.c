@@ -1559,22 +1559,22 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
         { 0, 255, 100, 255 },//Gamecube
         { 0, 100, 255, 255 },//Original N64
     };
-    static void* D_8082AD54[3] = {
+    static const void* sToEquipTextures[3] = {
         gPauseToEquipENGTex,
         gPauseToEquipGERTex,
         gPauseToEquipFRATex,
     };
-    static void* D_8082AD60[3] = {
+    static const void* sToDecideTextures[3] = {
         gPauseToDecideENGTex,
         gPauseToDecideGERTex,
         gPauseToDecideFRATex,
     };
-    static void* D_8082AD6C[3] = {
+    static const void* sPlayMelodyTextures[3] = {
         gPauseToPlayMelodyENGTex,
         gPauseToPlayMelodyGERTex,
         gPauseToPlayMelodyFRATex,
     };
-    static void* D_8082AD78[][3] = {
+    static const void* D_8082AD78[][3] = {
         { gPauseToEquipmentENGTex, gPauseToEquipmentGERTex, gPauseToEquipmentFRATex },
         { gPauseToSelectItemENGTex, gPauseToSelectItemGERTex, gPauseToSelectItemFRATex },
         { gPauseToMapENGTex, gPauseToMapGERTex, gPauseToMapFRATex },
@@ -1814,8 +1814,13 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             } else {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
             }
+            //TOOD CVAR
+            if (((CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
+                (pauseCtx->pageIndex != PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) && (pauseCtx->pageIndex != PAUSE_ITEM ||
+                (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) {
+                POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
+            }
 
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
         if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gDebugEnabled", 0) != 0) {
@@ -1898,7 +1903,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             gDPPipeSync(POLY_KAL_DISP++);
             gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
-            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD60[gSaveContext.language],
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToDecideTextures[gSaveContext.language],
                                                         D_8082ADE0[gSaveContext.language], 16, 4);
         } else if (pauseCtx->cursorSpecialPos != 0) {
             if ((pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
@@ -1946,15 +1951,16 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 } else if (CVar_GetS32("gHudColors", 1) == 2) {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
                 }
-                //gSPDisplayList(POLY_KAL_DISP++, gCButtonIconsDL); //Same reason for every A button, to be able to recolor them.
-                gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, 48, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-                gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
+                if (gSaveContext.inventory.items[pauseCtx->cursorSlot[PAUSE_ITEM]] != ITEM_NONE) {
+                    //gSPDisplayList(POLY_KAL_DISP++, gCButtonIconsDL); //Same reason for every A button, to be able to recolor them.
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, 48, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
+                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-                gDPPipeSync(POLY_KAL_DISP++);
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD54[gSaveContext.language],
-                                                            D_8082ADD8[gSaveContext.language], 16, 4);
+                    gDPPipeSync(POLY_KAL_DISP++);
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
+                                                                D_8082ADD8[gSaveContext.language], 16, 4);
+                }
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
             } else if ((pauseCtx->pageIndex == PAUSE_QUEST) && (pauseCtx->cursorSlot[PAUSE_QUEST] >= 6) &&
@@ -1996,7 +2002,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     gDPPipeSync(POLY_KAL_DISP++);
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD6C[gSaveContext.language],
+                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sPlayMelodyTextures[gSaveContext.language],
                                                                 D_8082ADE8[gSaveContext.language], 16, 4);
                 }
             } else if (pauseCtx->pageIndex == PAUSE_EQUIP) {
@@ -2017,6 +2023,10 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
+                 if (!(CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) && (pauseCtx->pageIndex == PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
+                    return;
+                 }
+
                 //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
                 if (CVar_GetS32("gHudColors", 1) == 0) {//To equip A button
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2], gABtnTexColour[1][3]);
@@ -2031,7 +2041,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 gDPPipeSync(POLY_KAL_DISP++);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
 
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, D_8082AD54[gSaveContext.language],
+                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
                                                             D_8082ADD8[gSaveContext.language], 16, 4);
             }
         }
@@ -3206,11 +3216,11 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
     GameOverContext* gameOverCtx = &globalCtx->gameOverCtx;
     Player* player = GET_PLAYER(globalCtx);
     Input* input = &globalCtx->state.input[0];
-    size_t size;
-    size_t size0;
-    size_t size1;
-    size_t size2;
-    u16 i;
+    size_t size = 0;
+    size_t size0 = 0;
+    size_t size1 = 0;
+    size_t size2 = 0;
+    u16 i = 0;
     s16 stepR;
     s16 stepG;
     s16 stepB;
@@ -3273,7 +3283,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             //DmaMgr_SendRequest1(pauseCtx->iconItem24Segment, (uintptr_t)_icon_item_24_staticSegmentRomStart, size,
                                 //"../z_kaleido_scope_PAL.c", 3675);
 
-            pauseCtx->iconItemAltSegment = (void*)(((uintptr_t)pauseCtx->iconItem24Segment + size + 0xF) & ~0xF);
+            //pauseCtx->iconItemAltSegment = (void*)(((uintptr_t)pauseCtx->iconItem24Segment + size + 0xF) & ~0xF);
 #endif
 
             switch (globalCtx->sceneNum) {
@@ -3321,7 +3331,7 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
             // OTRTODO: LANGUAGE SUPPORT
 #if 1
-            pauseCtx->iconItemLangSegment = (void*)(((uintptr_t)pauseCtx->iconItemAltSegment + size2 + 0xF) & ~0xF);
+            //pauseCtx->iconItemLangSegment = (void*)(((uintptr_t)pauseCtx->iconItemAltSegment + size2 + 0xF) & ~0xF);
 
             if (gSaveContext.language == LANGUAGE_ENG) {
                 //size = (uintptr_t)_icon_item_nes_staticSegmentRomEnd - (uintptr_t)_icon_item_nes_staticSegmentRomStart;

@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <unordered_map>
 #include <list>
+#include <cstddef>
 
 #include "U64/PR/ultra64/types.h"
 

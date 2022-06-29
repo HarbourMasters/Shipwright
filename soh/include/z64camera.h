@@ -55,7 +55,7 @@ typedef enum {
     /* 0x1E */ CAM_SET_CRAWLSPACE, // Used in all crawlspaces "RAIL3"
     /* 0x1F */ CAM_SET_START0, // Data is given in Temple of Time, but no surface uses it
     /* 0x20 */ CAM_SET_START1, // Scene/room door transitions that snap the camera to a fixed location (example: ganon's towers doors climbing up)
-    /* 0x21 */ CAM_SET_FREE0, // Full manual control is given over the camera 
+    /* 0x21 */ CAM_SET_FREE0, // Full manual control is given over the camera
     /* 0x22 */ CAM_SET_FREE2, // Various OnePoint Cutscenes, 10 total (example: falling chest)
     /* 0x23 */ CAM_SET_PIVOT_CORNER, // Inside the carpenter jail cells from theives hideout "CIRCLE4"
     /* 0x24 */ CAM_SET_PIVOT_WATER_SURFACE, // Player diving from the surface of the water to underwater "CIRCLE5"
@@ -391,7 +391,7 @@ typedef struct {
     { groundAtLerpStepScale, CAM_DATA_GROUND_AT_LERP_STEP_SCALE }
 
 typedef struct {
-    
+
     /* 0x00 */ SwingAnimation swing;
     /* 0x1C */ f32 unk_1C;
     /* 0x20 */ VecSph unk_20;
@@ -403,7 +403,7 @@ typedef struct {
     /* 0x08 */ f32 distMax;
     /* 0x0C */ f32 yawUpateRateTarget;
     /* 0x10 */ f32 maxYawUpdate;
-    /* 0x14 */ f32 unk_14; // never used.  
+    /* 0x14 */ f32 unk_14; // never used.
     /* 0x18 */ f32 atLERPScaleMax;
     /* 0x1C */ s16 interfaceFlags;
     /* 0x20 */ Jump1Anim anim;
@@ -954,7 +954,7 @@ typedef struct {
  * 0x2: Add atTargetInit to view's lookAt
  *      if initFlags & 0x6060: use world for focus point
  * 0x3: Add atTargetInit to camera's at
- * 0x4: Don't update targets? 
+ * 0x4: Don't update targets?
  * 0x8: flag to use atTagetInit as f32 pitch, yaw, r
  * 0x10: ? unused
  * 0x20: focus on player
@@ -1033,7 +1033,7 @@ typedef struct {
 typedef struct {
     /* 0x0 */ s16 interfaceFlags;
     /* 0x2 */ s16 unk_02;
-    /* 0x4 */ Demo6Anim anim; 
+    /* 0x4 */ Demo6Anim anim;
 } Demo6; // size = 0x14
 
 typedef struct {
@@ -1157,7 +1157,7 @@ typedef struct {
 } CamColChk; // size = 0x28
 
 typedef struct {
-    /* 0x000 */ char paramData[0x50];
+    /* 0x000 */ char paramData[0x14 * sizeof(void*)];
     /* 0x050 */ Vec3f at;
     /* 0x05C */ Vec3f eye;
     /* 0x068 */ Vec3f up;

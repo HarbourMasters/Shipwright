@@ -68,7 +68,7 @@ ZRom::ZRom(std::string romPath)
 	romData = File::ReadAllBytes(romPath);
 
 	version.crc = BitConverter::ToInt32BE(romData, 0x10);
-	
+
 	switch (version.crc)
 	{
 	case OOT_NTSC_10:

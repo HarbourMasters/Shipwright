@@ -170,12 +170,12 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     D_8016A528 = osGetTime() - sGraphSetTaskTime - D_8016A558;
 
-    osSetTimer(&timer, OS_USEC_TO_CYCLES(3000000), 0, &gfxCtx->queue, (OSMesg)666);
+    osSetTimer(&timer, OS_USEC_TO_CYCLES(3000000), 0, &gfxCtx->queue, OS_MESG_32(666));
 
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_BLOCK);
     osStopTimer(&timer);
     //OTRTODO - Proper GFX crash handler
-    #if 0 
+    #if 0
     if (msg == (OSMesg)666) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("RCPが帰ってきませんでした。"); // "RCP did not return."
@@ -194,7 +194,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         }
         Fault_AddHungupAndCrashImpl("RCP is HUNG UP!!", "Oh! MY GOD!!");
     }
-    #endif 
+    #endif
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_NOBLOCK);
 
     D_8012D260 = gfxCtx->workBuffer;
@@ -243,7 +243,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     }
 
     scTask->msgQ = &gfxCtx->queue;
-    scTask->msg = NULL;
+    scTask->msg.ptr = NULL;
 
     cfb = &sGraphCfbInfos[sGraphCfbInfoIdx++];
     cfb->fb1 = gfxCtx->curFrameBuffer;
@@ -262,7 +262,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     gfxCtx->schedMsgQ = &gSchedContext.cmdQ;
 
-    osSendMesg(&gSchedContext.cmdQ, scTask, OS_MESG_BLOCK);
+    osSendMesgPtr(&gSchedContext.cmdQ, scTask, OS_MESG_BLOCK);
     Sched_SendEntryMsg(&gSchedContext);
 }
 
@@ -399,7 +399,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0)) 
+    if (CVar_GetS32("gDebugEnabled", 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
@@ -475,14 +475,14 @@ static void RunFrame()
         {
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
-            
+
             Graph_StartFrame();
 
             // TODO: Workaround for rumble being too long. Implement os thread functions.
             for (int i = 0; i < 3; i++) {
                 PadMgr_ThreadEntry(&gPadMgr);
             }
-            
+
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();
 

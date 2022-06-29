@@ -3787,6 +3787,11 @@
     <Image Include="SHIPOFHARKINIAN.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ResourceCompile Include="Resource.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="include\macro.inc" />
   </ItemGroup>
 </Project>

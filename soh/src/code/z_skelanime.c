@@ -857,7 +857,7 @@ void AnimationContext_SetLoadFrame(GlobalContext* globalCtx, LinkAnimationHeader
             animation = ResourceMgr_LoadAnimByName(animation);
 
         LinkAnimationHeader* linkAnimHeader = SEGMENTED_TO_VIRTUAL(animation);
-        u32 ram = frameTable;
+        Vec3s* ram = frameTable;
 
         osCreateMesgQueue(&entry->data.load.msgQueue, &entry->data.load.msg, 1);
 

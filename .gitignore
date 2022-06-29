@@ -7,7 +7,6 @@ __pycache__/
 .vscode/
 .vs/
 .idea/
-CMakeLists.txt
 cmake-build-debug
 venv/
 

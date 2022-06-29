@@ -878,6 +878,8 @@ namespace SohImGui {
                 {
                     EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                     EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
+                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                     EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
                     EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
                     Tooltip("Modifies all sources of damage not affected by other sliders");
@@ -914,6 +916,8 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
+                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
                     ImGui::EndMenu();
                 }
 
@@ -961,6 +965,8 @@ namespace SohImGui {
                     }
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
+                    EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
+                    Tooltip("Change most 2D items & projectiles to their a 3D version");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
                     Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
@@ -988,6 +994,8 @@ namespace SohImGui {
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
+                    EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
 
                     ImGui::EndMenu();
                 }
@@ -1052,7 +1060,7 @@ namespace SohImGui {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance\nNeeds to reload the map to take effect");
+                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
                 }
 
                 ImGui::EndMenu();
@@ -1122,10 +1130,6 @@ namespace SohImGui {
                 Tooltip("Allows you to use Pierre without setting the Scarecrow's song");
                 EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
-                Tooltip("Prevents the Deku Shield from burning on contact with fire");
-                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
                 ImGui::EndMenu();
             }
 

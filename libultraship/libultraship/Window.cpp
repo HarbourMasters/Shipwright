@@ -319,7 +319,7 @@ namespace Ship {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
 
-        
+
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {

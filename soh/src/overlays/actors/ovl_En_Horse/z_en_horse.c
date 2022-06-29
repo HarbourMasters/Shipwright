@@ -2370,7 +2370,7 @@ void EnHorse_CutsceneUpdate(EnHorse* this, GlobalContext* globalCtx) {
         EnHorse_Freeze(this);
         return;
     }
-    if (linkCsAction != 0 && linkCsAction != 0xABABABAB) {
+    if (linkCsAction != 0 && (uint32_t)(uintptr_t)linkCsAction != 0xABABABAB) {
         csFunctionIdx = EnHorse_GetCutsceneFunctionIndex(linkCsAction->action); 
         if (csFunctionIdx != 0) {
             if (this->cutsceneAction != csFunctionIdx) {

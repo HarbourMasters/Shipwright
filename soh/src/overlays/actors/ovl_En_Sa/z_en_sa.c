@@ -660,7 +660,7 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
             EnSa_ChangeAnim(this, csAction->action);
             this->unk_210 = csAction->action;
         }
-        if (phi_v0) {}
+        //if (phi_v0) {}
         if (csAction->action == 3) {
             if (this->unk_20C == 0) {
                 phi_v0 = 0;

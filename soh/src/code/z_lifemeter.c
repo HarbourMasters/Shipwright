@@ -136,7 +136,7 @@ void HealthMeter_Init(GlobalContext* globalCtx) {
         HeartDDOutline[1] = HEARTS_DD_PRIM_G;
         HeartDDOutline[2] = HEARTS_DD_PRIM_B;
     }
-    
+
     interfaceCtx->unk_228 = 0x140;
     interfaceCtx->unk_226 = gSaveContext.health;
     interfaceCtx->unk_22A = interfaceCtx->unk_1FE = 0;
@@ -162,9 +162,9 @@ void HealthMeter_Init(GlobalContext* globalCtx) {
     sHeartsDDPrim[0][1] = sHeartsDDPrim[1][1] = HeartDDOutline[1];
     sHeartsDDPrim[0][2] = sHeartsDDPrim[1][2] = HeartDDOutline[2];
 
-    sHeartsDDPrim[2][0] = HeartInner[0];
-    sHeartsDDPrim[2][1] = HeartInner[1];
-    sHeartsDDPrim[2][2] = HeartInner[2];
+    // sHeartsDDPrim[2][0] = HeartInner[0];
+    // sHeartsDDPrim[2][1] = HeartInner[1];
+    // sHeartsDDPrim[2][2] = HeartInner[2];
 
     sHeartsDDEnv[0][0] = sHeartsDDEnv[1][0] = HeartDDInner[0];
     sHeartsDDEnv[0][1] = sHeartsDDEnv[1][1] = HeartDDInner[1];
@@ -274,11 +274,11 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     sHeartsDDEnv[0][2] = HeartDDInner[2];
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        sHeartsDDPrim[2][0] = HeartInner[0]; 
+        sHeartsDDPrim[2][0] = HeartInner[0];
         sHeartsDDPrim[2][1] = HeartInner[1];
         sHeartsDDPrim[2][2] = HeartInner[2];
 
-        sHeartsDDPrim[1][0] = HeartDDOutline[0]; 
+        sHeartsDDPrim[1][0] = HeartDDOutline[0];
         sHeartsDDPrim[1][1] = HeartDDOutline[1];
         sHeartsDDPrim[1][2] = HeartDDOutline[2];
 
@@ -286,7 +286,7 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         sHeartsDDEnv[1][1] = HeartDDInner[1];
         sHeartsDDEnv[1][2] = HeartDDInner[2];
 
-        HeartDDInner[0] = HeartInner[0]; 
+        HeartDDInner[0] = HeartInner[0];
         HeartDDInner[1] = HeartInner[1];
         HeartDDInner[2] = HeartInner[2];
 
@@ -306,9 +306,9 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         sBeatingHeartsDDEnv[1] = (u8)(gFactor + HeartDDInner[1]) & 0xFF;
         sBeatingHeartsDDEnv[2] = (u8)(bFactor + HeartDDInner[2]) & 0xFF;
     } else {
-        sHeartsDDPrim[2][0] = HEARTS_PRIM_R; 
-        sHeartsDDPrim[2][1] = HEARTS_PRIM_G;
-        sHeartsDDPrim[2][2] = HEARTS_PRIM_B;
+        // sHeartsDDPrim[2][0] = HEARTS_PRIM_R;
+        // sHeartsDDPrim[2][1] = HEARTS_PRIM_G;
+        // sHeartsDDPrim[2][2] = HEARTS_PRIM_B;
 
         sHeartsDDPrim[1][0] = HEARTS_DD_PRIM_R;
         sHeartsDDPrim[1][1] = HEARTS_DD_PRIM_G;

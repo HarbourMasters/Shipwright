@@ -183,7 +183,7 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
  * The different icons are given in the MessageBoxIcon enum.
  */
 void Font_LoadMessageBoxIcon(Font* font, u16 icon) {
-    memcpy(font->iconBuf, msgStaticTbl[4 + icon], FONT_CHAR_TEX_SIZE);
+    memcpy(font->iconBuf, ResourceMgr_LoadTexByName(msgStaticTbl[4 + icon]), FONT_CHAR_TEX_SIZE);
 }
 
 /**
@@ -194,7 +194,7 @@ void Font_LoadOrderedFont(Font* font) {
     size_t len;
     size_t jj;
     s32 fontStatic;
-    u32 fontBuf;
+    u8* fontBuf;
     s32 codePointIndex;
     s32 fontBufIndex;
     s32 offset;

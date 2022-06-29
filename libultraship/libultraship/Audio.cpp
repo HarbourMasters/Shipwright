@@ -37,7 +37,7 @@ namespace Ship
 		entry->unk_bit25 = reader->ReadByte();
 
 		int dataSize = reader->ReadInt32();
-		
+
 		for (int i = 0; i < dataSize; i++)
 			entry->data.push_back(reader->ReadUByte());
 
@@ -84,7 +84,7 @@ namespace Ship
 			drum.loaded = reader->ReadUByte();
 
 			drum.env = ReadEnvelopeData(reader);
-			
+
 			bool hasSample = reader->ReadByte();
 			drum.sampleFileName = reader->ReadString();
 			drum.tuning = reader->ReadSingle();
@@ -103,7 +103,7 @@ namespace Ship
 			entry.releaseRate = reader->ReadUByte();
 
 			entry.env = ReadEnvelopeData(reader);
-			
+
 			{
 				bool hasSFEntry = reader->ReadByte();
 
