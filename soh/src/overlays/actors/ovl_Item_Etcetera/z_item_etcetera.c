@@ -225,7 +225,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
         func_8002ED80(&this->actor, globalCtx, 0);
 
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
-            s32 randoGetItemId = GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx);
+            s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
             if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
             }
