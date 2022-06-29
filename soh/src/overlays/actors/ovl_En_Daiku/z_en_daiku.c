@@ -162,13 +162,6 @@ void EnDaiku_Init(Actor* thisx, GlobalContext* globalCtx) {
     } else if ((this->actor.params & 3) == 3 && (gSaveContext.eventChkInf[9] & 8)) {
         isFree = true;
     }
-    
-    if (gSaveContext.n64ddFlag) {
-        int gerudoFortress = GetRandoSettingValue(RSK_GERUDO_FORTRESS);
-        if (gerudoFortress == 2) {
-            isFree = true;
-        }
-    }
 
     if (isFree == true && globalCtx->sceneNum == SCENE_GERUDOWAY) {
         noKill = false;
@@ -502,16 +495,7 @@ void EnDaiku_EscapeSuccess(EnDaiku* this, GlobalContext* globalCtx) {
     Gameplay_ChangeCameraStatus(globalCtx, MAIN_CAM, CAM_STAT_ACTIVE);
     this->subCamActive = false;
 
-    int gerudoFortress = GetRandoSettingValue(RSK_GERUDO_FORTRESS);
-    u8 gerudoFast = gSaveContext.n64ddFlag && gerudoFortress == 1;
-
-    if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF || gerudoFast) {
-        if (gerudoFast) {
-            gSaveContext.eventChkInf[9] |= 1;
-            gSaveContext.eventChkInf[9] |= 2;
-            gSaveContext.eventChkInf[9] |= 4;
-            gSaveContext.eventChkInf[9] |= 8;
-        }
+    if ((gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
         Matrix_RotateY(this->initRot.y * (M_PI / 0x8000), MTXMODE_NEW);
         Matrix_MultVec3f(&D_809E4148, &vec);
         gerudoGuard =

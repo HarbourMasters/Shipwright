@@ -223,6 +223,14 @@ s32 Ge2_DetectPlayerInUpdate(GlobalContext* globalCtx, EnGe2* this, Vec3f* pos, 
 }
 
 s32 EnGe2_CheckCarpentersFreed(void) {
+    if (gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } 
+
     if ((u8)(gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
         return 1;
     }

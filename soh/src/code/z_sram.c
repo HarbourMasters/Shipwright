@@ -798,6 +798,38 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
 
         // skip the z target talk instructions by the kokiri shop
         gSaveContext.sceneFlags[85].swch |= (1 << 0x1F);
+
+        // fast gerudo fortress
+        if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+            gSaveContext.eventChkInf[9] |= 2;
+            gSaveContext.eventChkInf[9] |= 4;
+            gSaveContext.eventChkInf[9] |= 8;
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x02);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x03);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x04);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x06);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x07);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x08);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x10);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x12);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x13);
+            gSaveContext.sceneFlags[12].collect |= (1 << 0x0A);
+            gSaveContext.sceneFlags[12].collect |= (1 << 0x0E);
+            gSaveContext.sceneFlags[12].collect |= (1 << 0x0F);
+        }
+
+        // open gerudo fortress
+        if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+            gSaveContext.eventChkInf[9] |= 1;
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x05);
+            gSaveContext.sceneFlags[12].swch |= (1 << 0x11);
+            gSaveContext.sceneFlags[12].collect |= (1 << 0x0C);
+
+            if (!GetRandoSettingValue(RSK_SHUFFLE_GERUDO_TOKEN)) {
+                GiveLinkGerudoCard();
+            }
+        }
     }
 
     Save_SaveFile();
