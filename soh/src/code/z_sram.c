@@ -826,7 +826,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.sceneFlags[12].swch |= (1 << 0x11);
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0C);
 
-            if (!GetRandoSettingValue(RSK_SHUFFLE_GERUDO_TOKEN)) {
+            if (!GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
         }

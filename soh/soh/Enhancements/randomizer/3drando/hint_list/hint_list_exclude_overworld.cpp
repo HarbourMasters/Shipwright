@@ -334,7 +334,7 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"the #sunken treasure in a lake# is", /*french*/"le #trésor au fond du lac# est", /*spanish*/"el #tesoro hundido del lago# se trata de"},
   });
 
-    hintTable[GF_GERUDO_TOKEN] = HintText::Exclude({
+    hintTable[GF_GERUDO_MEMBERSHIP_CARD] = HintText::Exclude({
                        //obscure text
                        Text{"#rescuing captured carpenters# is rewarded with", /*french*/"#secourir les charpentiers capturés# assure", /*spanish*/"#rescatar los apresados carpinteros# se premia con"},
   });

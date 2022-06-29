@@ -113,7 +113,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "GF Chest", RC_GF_CHEST },
     { "GF HBA 1000 Points", RC_GF_HBA_1000_POINTS },
     { "GF HBA 1500 Points", RC_GF_HBA_1500_POINTS },
-    { "GF Gerudo Membership Card", RC_GF_GERUDO_TOKEN },
+    { "GF Gerudo Membership Card", RC_GF_GERUDO_MEMBERSHIP_CARD },
     { "GF North F1 Carpenter", RC_GF_NORTH_F1_CARPENTER },
     { "GF North F2 Carpenter", RC_GF_NORTH_F2_CARPENTER },
     { "GF South F1 Carpenter", RC_GF_SOUTH_F1_CARPENTER },
@@ -1040,8 +1040,8 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Flèche de Glace", RG_ICE_ARROWS },
     { "Light Arrow", RG_LIGHT_ARROWS },
     { "Flèche de Lumière", RG_LIGHT_ARROWS },
-    { "Gerudo Membership Card", RG_GERUDO_TOKEN },
-    { "Carte Gerudo", RG_GERUDO_TOKEN },
+    { "Gerudo Membership Card", RG_GERUDO_MEMBERSHIP_CARD },
+    { "Carte Gerudo", RG_GERUDO_MEMBERSHIP_CARD },
     { "Magic Bean", RG_MAGIC_BEAN },
     { "Haricots Magiques", RG_MAGIC_BEAN },
     { "Magic Bean Pack", RG_MAGIC_BEAN_PACK },
@@ -2020,7 +2020,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_LIGHT_ARROWS:
             return GI_ARROW_LIGHT;
 
-        case RG_GERUDO_TOKEN:
+        case RG_GERUDO_MEMBERSHIP_CARD:
             return GI_GERUDO_CARD;
 
         case RG_MAGIC_BEAN:
@@ -3217,7 +3217,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
                                             CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
     
-    cvarSettings[RSK_SHUFFLE_GERUDO_TOKEN] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
+    cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
     cvarSettings[RSK_ICE_TRAPS] = CVar_GetS32("gRandomizeIceTraps", 1);
     cvarSettings[RSK_GOSSIP_STONE_HINTS] = CVar_GetS32("gRandomizeGossipStoneHints", 1);

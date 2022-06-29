@@ -297,7 +297,7 @@ void HintTable_Init_Item() {
                        Text{"the Light Arrows", /*french*/"les Flèches de Lumière", /*spanish*/"la flecha de luz"}
     );
 
-    hintTable[GERUDO_TOKEN] = HintText::Item({
+    hintTable[GERUDO_MEMBERSHIP_CARD] = HintText::Item({
                        //obscure text
                        Text{"a girl club membership", /*french*/"une carte de membre", /*spanish*/"una fémina membresía"},
                        Text{"a desert tribe's pass",  /*french*/"un laissez-passer",   /*spanish*/"el vale del desierto"},

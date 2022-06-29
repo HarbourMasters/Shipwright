@@ -852,13 +852,13 @@ void GenerateItemPool() {
 
   //Gerudo Membership Card
   if (ShuffleGerudoToken && GerudoFortress.IsNot(GERUDOFORTRESS_OPEN)) {
-    AddItemToMainPool(GERUDO_TOKEN);
+    AddItemToMainPool(GERUDO_MEMBERSHIP_CARD);
     IceTrapModels.push_back(GI_GERUDO_CARD);
   } else if (ShuffleGerudoToken) {
-    AddItemToPool(PendingJunkPool, GERUDO_TOKEN);
-    PlaceItemInLocation(GF_GERUDO_TOKEN, ICE_TRAP, false, true);
+    AddItemToPool(PendingJunkPool, GERUDO_MEMBERSHIP_CARD);
+    PlaceItemInLocation(GF_GERUDO_MEMBERSHIP_CARD, ICE_TRAP, false, true);
   } else {
-    PlaceItemInLocation(GF_GERUDO_TOKEN, GERUDO_TOKEN, false, true);
+    PlaceItemInLocation(GF_GERUDO_MEMBERSHIP_CARD, GERUDO_MEMBERSHIP_CARD, false, true);
   }
 
   //Keys
@@ -878,7 +878,7 @@ void GenerateItemPool() {
 
   if (ItemPoolValue.Is(ITEMPOOL_PLENTIFUL)) {
     if (ShuffleGerudoToken) {
-      AddItemToPool(PendingJunkPool, GERUDO_TOKEN);
+      AddItemToPool(PendingJunkPool, GERUDO_MEMBERSHIP_CARD);
     }
 
     //Plentiful small keys
