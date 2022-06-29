@@ -138,8 +138,11 @@ void EnExItem_WaitForObject(EnExItem* this, GlobalContext* globalCtx) {
             case EXITEM_BOMB_BAG_BOWLING:
                 this->unk_17C = func_8002EBCC;
                 if (gSaveContext.n64ddFlag) {
-                    this->giDrawId = GetItemModelFromId(
-                        GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20));
+                    s32 randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_MARKET_BOMBCHU_BOWLING_FIRST_PRIZE, GI_BOMB_BAG_20);
+                    this->giDrawId = GetItemModelFromId(randoGetItemId);
+                    if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+                        EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+                    }
                 } else {
                     this->giDrawId = GID_BOMB_BAG_30;
                 }
