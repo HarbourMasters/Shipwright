@@ -22,16 +22,16 @@ enum FilteringMode {
     NONE
 };
 
-namespace std {
-template <>
-    class hash <std::pair<float, float>>{
-    public :
-        size_t operator()(const pair<float, float> &x ) const {
-            size_t h = std::hash<float>()(x.first) ^ std::hash<float>()(x.second);
-            return  h ;
-        }
-    };
-}
+// A hash function used to hash a: pair<float, float>
+struct hash_pair_ff {
+    size_t operator()(const std::pair<float, float> &p ) const {
+        auto hash1 = std::hash<float>{}(p.first);
+        auto hash2 = std::hash<float>{}(p.second);
+ 
+        // If hash1 == hash2, their XOR is zero.
+        return (hash1 != hash2) ? hash1 ^ hash2 : hash1;
+    }
+};
 
 struct GfxRenderingAPI {
     struct GfxClipParameters (*get_clip_parameters)(void);
@@ -60,7 +60,7 @@ struct GfxRenderingAPI {
     void (*start_draw_to_framebuffer)(int fb_id, float noise_scale);
     void (*clear_framebuffer)(void);
     void (*resolve_msaa_color_buffer)(int fb_id_target, int fb_id_source);
-    std::unordered_map<std::pair<float, float>, uint16_t> (*get_pixel_depth)(int fb_id, const std::set<std::pair<float, float>>& coordinates);
+    std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> (*get_pixel_depth)(int fb_id, const std::set<std::pair<float, float>>& coordinates);
     void *(*get_framebuffer_texture_id)(int fb_id);
     void (*select_texture_fb)(int fb_id);
     void (*delete_texture)(uint32_t texID);

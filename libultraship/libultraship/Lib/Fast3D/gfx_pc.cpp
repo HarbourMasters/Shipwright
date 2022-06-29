@@ -216,7 +216,7 @@ static map<int, FBInfo>::iterator active_fb;
 static map<int, FBInfo> framebuffers;
 
 static set<pair<float, float>> get_pixel_depth_pending;
-static unordered_map<pair<float, float>, uint16_t> get_pixel_depth_cached;
+static unordered_map<pair<float, float>, uint16_t, hash_pair_ff> get_pixel_depth_cached;
 
 #ifdef _WIN32
 // TODO: Properly implement for MSVC
@@ -1072,8 +1072,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                                     doty = (2.906921f * doty * doty + 1.36114f) * doty;
                                     dotx = (dotx + 1.0f) / 4.0f;
                                     doty = (doty + 1.0f) / 4.0f;*/
-                    dotx = acosf(-dotx) / M_PI / 4.0f;
-                    doty = acosf(-doty) / M_PI / 4.0f;
+                    dotx = acosf(-dotx) /* M_PI */ / 4.0f;
+                    doty = acosf(-doty) /* M_PI */ / 4.0f;
                 }
                 else {
                     dotx = (dotx + 1.0f) / 4.0f;
@@ -1107,11 +1107,13 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
         d->w = w;
 
         if (rsp.geometry_mode & G_FOG) {
-            // avoid division by zero
-            w = std::max(0.0f, w);
+            if (fabsf(w) < 0.001f) {
+                // To avoid division by zero
+                w = 0.001f;
+            }
 
             float winv = 1.0f / w;
-            if (winv < 0.0f) winv = std::numeric_limits<int>::max();
+            if (winv < 0.0f) winv = std::numeric_limits<int16_t>::max();
 
             float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
             std::clamp(fog_z, 0.0f, 255.0f);
@@ -2860,7 +2862,7 @@ uint16_t gfx_get_pixel_depth(float x, float y) {
 
     get_pixel_depth_pending.emplace(x, y);
 
-    unordered_map<pair<float, float>, uint16_t> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
+    unordered_map<pair<float, float>, uint16_t, hash_pair_ff> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
     get_pixel_depth_cached.merge(res);
     get_pixel_depth_pending.clear();
 
