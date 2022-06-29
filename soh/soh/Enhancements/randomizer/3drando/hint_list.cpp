@@ -1431,7 +1431,7 @@ void HintTable_Init() {
 
     hintTable[JUNK43] = HintText::Junk({
                      //obscure text
-                     Text{"Dear @, please come to the castle. I've baked a cake for you.&Yours truly, Princess Zelda.", /*french*/"Mon très cher @:&Viens vite au château, je t'ai préparé un délicieux gâteau...&À bientôt, Princesse Zelda", /*spanish*/"Querido @: Por favor, ven al castillo. He hecho una tarta para ti.&Sinceramente tuya: Princesa Zelda."},
+                     Text{"Dear @, please come to the castle. I've baked a cake for you.&Yours truly, Princess Zelda.", /*french*/"Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda", /*spanish*/"Querido @: Por favor, ven al castillo. He hecho una tarta para ti.&Sinceramente tuya: Princesa Zelda."},
     });
 
     hintTable[JUNK44] = HintText::Junk({
@@ -1607,14 +1607,16 @@ void HintTable_Init() {
     // ^ junk hints above are from 3drando
     // v junk hints below are new to soh rando
 
+    #define HINT_TEXT_NEEDS_TRANSLATION_FR "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!"
+
     hintTable[JUNK78] = HintText::Junk({
                      //obscure text
-                     Text{"They say blarg...^...or at least briaguya does.", /*french*/"blarg", /*spanish*/"blarg"},
+                     Text{"They say blarg...^...or at least briaguya does.", /*french*/HINT_TEXT_NEEDS_TRANSLATION_FR, /*spanish*/"blarg"},
     });
 
     hintTable[JUNK79] = HintText::Junk({
                      //obscure text
-                     Text{"They say this peace is what all true warriors strive for.", /*french*/"blarg", /*spanish*/"blarg"},
+                     Text{"They say this peace is what all true warriors strive for.", /*french*/HINT_TEXT_NEEDS_TRANSLATION_FR, /*spanish*/"blarg"},
     });
 
     /*--------------------------
