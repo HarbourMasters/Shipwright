@@ -330,9 +330,9 @@ endif()
 find_package(PNG REQUIRED)
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/lib/tinyxml2
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/lib/libgfxd
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/libgfxd
 	${PNG_PNG_INCLUDE_DIR}/
 	.
 	)
@@ -438,7 +438,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		#set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:${PROJECT_SOURCE_DIR}/x64/Release/OTRExporter.lib")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"ZAPDUtils;"
-			"-WHOLEARCHIVE:${PROJECT_SOURCE_DIR}/x64/Release/OTRExporter.lib"
+			"-WHOLEARCHIVE:$<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter>"
 			"libultraship;"
 			storm
 			PNG::PNG
@@ -451,7 +451,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	find_package(SDL2)
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
-		-Wl,-force_load ${PROJECT_BINARY_DIR}/OTRExporter/libOTRExporter.a
+		-Wl,-force_load $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter>
 		"libultraship;"
 		storm
 		PNG::PNG
@@ -467,7 +467,7 @@ else()
 	find_package(SDL2)
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
-		-Wl,--whole-archive ${PROJECT_BINARY_DIR}/OTRExporter/libOTRExporter.a -Wl,--no-whole-archive
+		-Wl,--whole-archive $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter> -Wl,--no-whole-archive
 		"libultraship;"
 		storm
 		PNG::PNG

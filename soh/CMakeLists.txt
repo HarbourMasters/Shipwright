@@ -83,17 +83,23 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 # Sub-projects
 ################################################################################
 if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew)
+    add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
 set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL TRUE)
 endif()
 
-add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
-add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
-add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
+if (NOT TARGET storm)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
+endif()
+
+if (NOT TARGET libultraship)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
+endif()
+
+if (NOT TARGET ZAPDUtils)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
+endif()
 
 set(PROJECT_NAME soh)
-
-
 
 ################################################################################
 # Source groups

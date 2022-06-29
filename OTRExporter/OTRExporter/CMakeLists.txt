@@ -154,13 +154,13 @@ endif()
 ################################################################################
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/ZAPD/
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/lib/tinyxml2
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
-	${PROJECT_SOURCE_DIR}/../StormLib/src
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPD/
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/lib/tinyxml2
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/spdlog/include
+	${CMAKE_CURRENT_SOURCE_DIR}/../../libultraship/libultraship/Lib/Fast3D/U64
+	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
 	.
 )
 

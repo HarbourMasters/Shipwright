@@ -80,8 +80,26 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-add_subdirectory(../StormLib ${CMAKE_BINARY_DIR}/StormLib)
-add_subdirectory(../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
-add_subdirectory(../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
-add_subdirectory(../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
+if (NOT TARGET storm)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../StormLib ${CMAKE_BINARY_DIR}/StormLib)^M
+endif()
+
+if (NOT TARGET libultraship)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)^M
+endif()
+
+if (NOT TARGET ZAPD)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)^M
+endif()
+
+if (NOT TARGET ZAPDUtils)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)^M
+endif()
+
 add_subdirectory(OTRExporter)
+
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/extract_assets.py filedata)
+string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "build-cmake/ZAPD/ZAPD.out" filedata "${filedata}")
+file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" "${filedata}")
+file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
