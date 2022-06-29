@@ -1503,8 +1503,9 @@ void FileChoose_LoadGame(GameState* thisx) {
     gSaveContext.nextDayTime = 0xFFFF;
     gSaveContext.unk_13C3 = 0;
 
-    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-        gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+    }
 
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC =
         gSaveContext.unk_13F4 = 0;
@@ -1936,8 +1937,9 @@ void FileChoose_InitContext(GameState* thisx) {
 
     Environment_UpdateSkybox(NULL, SKYBOX_NORMAL_SKY, &this->envCtx, &this->skyboxCtx);
 
-    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-        gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+    }
 }
 
 void FileChoose_Destroy(GameState* thisx) {

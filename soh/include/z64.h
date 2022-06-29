@@ -705,6 +705,10 @@ typedef struct {
     /* 0x024C */ u16    cDownAlpha;
     /* 0x024E */ u16    cRightAlpha;
     /* 0x0250 */ u16    healthAlpha; // also max C-Up alpha
+    /* 0x024E */ u16    dpadUpAlpha;
+    /* 0x024E */ u16    dpadDownAlpha;
+    /* 0x024E */ u16    dpadLeftAlpha;
+    /* 0x024E */ u16    dpadRightAlpha;
     /* 0x0252 */ u16    magicAlpha; // also Rupee and Key counters alpha
     /* 0x0254 */ u16    minimapAlpha;
     /* 0x0256 */ s16    startAlpha;

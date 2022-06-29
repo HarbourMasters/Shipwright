@@ -18,12 +18,16 @@ notes/
 baserom/
 docs/doxygen/
 *.elf
+*-arm64
+*-x86_64
 *.sra
 *.z64
 *.n64
 *.v64
 *.map
 *.dump
+*.app/
+*.icns
 out.txt
 shipofharkinian.ini
 imgui.ini
@@ -405,3 +409,6 @@ cvars.cfg
 
 DebugObj/*
 ReleaseObj/*
+
+# Junk from App Bundle
+appsupport

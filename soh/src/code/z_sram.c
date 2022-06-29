@@ -147,7 +147,7 @@ void Sram_OpenSave() {
 
         INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_CHICKEN;
 
-        for (j = 1; j < 4; j++) {
+        for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
             if (gSaveContext.equips.buttonItems[j] == ITEM_LETTER_ZELDA) {
                 gSaveContext.equips.buttonItems[j] = ITEM_CHICKEN;
             }
@@ -166,7 +166,7 @@ void Sram_OpenSave() {
         if (INV_CONTENT(ITEM_TRADE_ADULT) == gSpoilingItems[i]) {
             INV_CONTENT(gSpoilingItemReverts[i]) = gSpoilingItemReverts[i];
 
-            for (j = 1; j < 4; j++) {
+            for (j = 1; j < ARRAY_COUNT(gSaveContext.equips.buttonItems); j++) {
                 if (gSaveContext.equips.buttonItems[j] == gSpoilingItems[i]) {
                     gSaveContext.equips.buttonItems[j] = gSpoilingItemReverts[i];
                 }

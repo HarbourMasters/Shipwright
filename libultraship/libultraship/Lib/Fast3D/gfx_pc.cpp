@@ -25,11 +25,11 @@
 #include "gfx_window_manager_api.h"
 #include "gfx_rendering_api.h"
 #include "gfx_screen_config.h"
-#include "../../SohHooks.h"
+#include "../../Hooks.h"
 
 #include "../../luslog.h"
 #include "../StrHash64.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 #include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"

@@ -1,9 +1,10 @@
 # Only used for standalone compilation, usually inherits these from the main makefile
 
-CXX := g++
-CC := gcc
+CXX ?= g++
+CC ?= gcc
 AR	:= ar
 FORMAT := clang-format-11
+UNAME := $(shell uname)
 
 ASAN ?= 0
 DEBUG ?= 1
@@ -16,7 +17,8 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-unused-function \
 	-Wno-parentheses \
 	-Wno-narrowing \
-	-Wno-missing-field-initializers
+	-Wno-missing-field-initializers \
+	-Wno-error=multichar
 
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion
@@ -24,6 +26,10 @@ CXXWARN := -Wno-deprecated-enum-enum-conversion
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
+
+ifeq ($(UNAME), Darwin) #APPLE
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
+endif
 
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g -D_DEBUG
@@ -40,7 +46,7 @@ ifneq ($(LTO),0)
 	CFLAGS += -flto
 endif
 
-SRC_DIRS  := $(shell find -type d -not -path "*build*")
+SRC_DIRS  := $(shell find . -type d -not -path "*build*")
 
 CXX_FILES := \
 	$(shell find libultraship/Factories -name "*.cpp") \
@@ -71,6 +77,7 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/Fast3D/U64 \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
+	libultraship/Lib/ImGui \
 	libultraship \
 	../StormLib/src \
 )

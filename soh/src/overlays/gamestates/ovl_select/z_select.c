@@ -25,8 +25,9 @@ void Select_LoadGame(SelectContext* this, s32 entranceIndex) {
         gSaveContext.unk_13F4 = 0;
         gSaveContext.magicLevel = gSaveContext.magic;
     }
-    gSaveContext.buttonStatus[0] = gSaveContext.buttonStatus[1] = gSaveContext.buttonStatus[2] =
-        gSaveContext.buttonStatus[3] = gSaveContext.buttonStatus[4] = BTN_ENABLED;
+    for (int buttonIndex = 0; buttonIndex < ARRAY_COUNT(gSaveContext.buttonStatus); buttonIndex++) {
+        gSaveContext.buttonStatus[buttonIndex] = BTN_ENABLED;
+    }
     gSaveContext.unk_13E7 = gSaveContext.unk_13E8 = gSaveContext.unk_13EA = gSaveContext.unk_13EC = 0;
     Audio_QueueSeqCmd(SEQ_PLAYER_BGM_MAIN << 24 | NA_BGM_STOP);
     gSaveContext.entranceIndex = entranceIndex;
@@ -68,9 +69,9 @@ static SceneSelectEntry sScenes[] = {
     { "24:Grave 1", Select_LoadGame, 0x031C },
     { "25:Grave 2", Select_LoadGame, 0x004B },
     { "26:Royal Family's Tomb", Select_LoadGame, 0x002D },
-    { "27:Great Fairy's Fountain (Din)", Select_LoadGame, 0x0315 },
-    { "28:Great Fairy's Fountain (Farore)", Select_LoadGame, 0x036D },
-    { "29:Great Fairy's Fountain (Nayru)", Select_LoadGame, 0x0371 },
+    { "27:Great Fairy's Fountain (Upgrades)", Select_LoadGame, 0x0315 },
+    { "28:Fairy's Fountain (Grotto)", Select_LoadGame, 0x036D },
+    { "29:Great Fairy's Fountain (Magic)", Select_LoadGame, 0x0371 },
     { "30:Ganon's Tower - Collapsing", Select_LoadGame, 0x043F },
     { "31:Castle Courtyard", Select_LoadGame, 0x0400 },
     { "32:Fishing Pond", Select_LoadGame, 0x045F },
@@ -128,7 +129,7 @@ static SceneSelectEntry sScenes[] = {
     { "84:Stairs to Ganondorf's Lair", Select_LoadGame, 0x041B },
     { "85:Ganondorf's Lair", Select_LoadGame, 0x041F },
     { "86:Ice Cavern", Select_LoadGame, 0x0088 },
-    { "87:DampÃ© Grave Relay Game", Select_LoadGame, 0x044F },
+    { "87:Dampe Grave Relay Game", Select_LoadGame, 0x044F },
     { "88:Inside Ganon's Castle", Select_LoadGame, 0x0467 },
     { "89:Ganon's Lair", Select_LoadGame, 0x0517 },
     { "90:Escaping Ganon's Castle 1", Select_LoadGame, 0x0179 },

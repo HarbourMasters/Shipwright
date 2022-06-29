@@ -1,4 +1,5 @@
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
+
 
 #include <iostream>
 #include <map>
@@ -10,8 +11,8 @@
 #include "Archive.h"
 #include "Environment.h"
 #include "GameSettings.h"
-#include "SohConsole.h"
-#include "SohHooks.h"
+#include "Console.h"
+#include "Hooks.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -137,7 +138,11 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
+        #if defined(__APPLE__)
+            ImGui_ImplOpenGL3_Init("#version 410 core");
+        #else
             ImGui_ImplOpenGL3_Init("#version 120");
+        #endif
             break;
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -350,10 +355,10 @@ namespace SohImGui {
         }
 
         for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= (uint8_t)tint.x;
-            texBuffer[pixel * 4 + 1] *= (uint8_t)tint.y;
-            texBuffer[pixel * 4 + 2] *= (uint8_t)tint.z;
-            texBuffer[pixel * 4 + 3] *= (uint8_t)tint.w;
+            texBuffer[pixel * 4 + 0] *= tint.x;
+            texBuffer[pixel * 4 + 1] *= tint.y;
+            texBuffer[pixel * 4 + 2] *= tint.z;
+            texBuffer[pixel * 4 + 3] *= tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
@@ -772,9 +777,12 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
 	    {
+                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
+                // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
 
 		ImGui::Separator();
 
@@ -886,7 +894,7 @@ namespace SohImGui {
                     EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
                     Tooltip("Modifies all fall damage");
                     EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                    Tooltip("Modifies all void out damage")
+                    Tooltip("Modifies all void out damage");
                     EnhancementCheckbox("Skip Text", "gSkipText");
                     Tooltip("Holding down B skips text");
                     EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
@@ -1092,7 +1100,6 @@ namespace SohImGui {
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
                     EnhancementCheckbox("Hover Boots", "gInfiniteHover");
-
                     ImGui::EndMenu();
                 }
 
@@ -1116,6 +1123,7 @@ namespace SohImGui {
                 Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
                 Tooltip("Holding L makes you float into the air");
+
                 EnhancementCheckbox("Turbo on L", "gTurboOnL");
                 Tooltip("Holding L makes you super fast");
                 EnhancementCheckbox("Freeze Enemies", "gFreezeEnemies");
@@ -1340,6 +1348,8 @@ namespace SohImGui {
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
+#elif __APPLE__
+            ImGui::Text("Platform: macOS");
 #else
             ImGui::Text("Platform: Linux");
 #endif

@@ -24,7 +24,7 @@
 #include "gfx_dxgi.h"
 
 #include "gfx_screen_config.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"

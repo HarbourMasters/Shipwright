@@ -3,7 +3,7 @@
 #endif
 
 #include "debugconsole.h"
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 #include "savestates.h"
 
 #include <vector>

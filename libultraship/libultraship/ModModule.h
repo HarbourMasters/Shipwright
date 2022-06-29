@@ -1,7 +1,7 @@
 #pragma once
 #include "ModManager.h"
-#include "SohHooks.h"
-#include "SohConsole.h"
+#include "Hooks.h"
+#include "Console.h"
 #include "Archive.h"
 
 namespace Ship {

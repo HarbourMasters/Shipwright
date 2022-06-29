@@ -26,7 +26,7 @@
 #include "gfx_direct3d_common.h"
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"

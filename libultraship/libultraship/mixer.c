@@ -364,7 +364,7 @@ void aS8DecImpl(uint8_t flags, ADPCM_STATE state) {
     memcpy(state, out - 16, 16 * sizeof(int16_t));
 }
 
-void aAddMixerImpl(uint16_t in_addr, uint16_t out_addr, uint16_t count) {
+void aAddMixerImpl(uint16_t count, uint16_t in_addr, uint16_t out_addr) {
     int16_t *in = BUF_S16(in_addr);
     int16_t *out = BUF_S16(out_addr);
     int nbytes = ROUND_UP_64(ROUND_DOWN_16(count));

@@ -1,7 +1,7 @@
 #include "ModManager.h"
 #include "TextureMod.h"
 #include "ModModule.h"
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 namespace Ship {
 	std::vector<ModModule*> modules;

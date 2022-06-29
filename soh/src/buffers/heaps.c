@@ -1,6 +1,8 @@
 #include "z64.h"
 #include <assert.h>
+#ifndef __APPLE__
 #include <malloc.h>
+#endif
 
 #ifndef _MSC_VER
 #include <unistd.h>

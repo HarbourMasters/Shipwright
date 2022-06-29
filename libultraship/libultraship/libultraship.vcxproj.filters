@@ -300,10 +300,10 @@
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="SohImGuiImpl.cpp">
+    <ClCompile Include="ImGuiImpl.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
-    <ClCompile Include="SohConsole.cpp">
+    <ClCompile Include="Console.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp">
@@ -336,7 +336,7 @@
     <ClCompile Include="ModManager.cpp">
       <Filter>Source Files\ModManager</Filter>
     </ClCompile>
-    <ClCompile Include="SohHooks.cpp">
+    <ClCompile Include="Hooks.cpp">
       <Filter>Source Files\CustomImpl\Hooks</Filter>
     </ClCompile>
     <ClCompile Include="luslog.cpp">
@@ -584,10 +584,10 @@
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="SohImGuiImpl.h">
+    <ClInclude Include="ImGuiImpl.h">
       <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
-    <ClInclude Include="SohConsole.h">
+    <ClInclude Include="Console.h">
       <Filter>Source Files\CustomImpl</Filter>
     </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h">
@@ -632,7 +632,7 @@
     <ClInclude Include="ModModule.h">
       <Filter>Source Files\ModManager\ModModule</Filter>
     </ClInclude>
-    <ClInclude Include="SohHooks.h">
+    <ClInclude Include="Hooks.h">
       <Filter>Source Files\CustomImpl\Hooks</Filter>
     </ClInclude>
     <ClInclude Include="luslog.h">

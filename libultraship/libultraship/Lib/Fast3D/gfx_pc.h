@@ -2,6 +2,7 @@
 #define GFX_PC_H
 
 #include <stdbool.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <unordered_map>
 #include <list>

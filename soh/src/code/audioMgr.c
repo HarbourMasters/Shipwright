@@ -1,5 +1,5 @@
 #include "global.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 #include <string.h>
 
 void func_800C3C80(AudioMgr* audioMgr) {
