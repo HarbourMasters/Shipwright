@@ -55,7 +55,7 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
-std::vector<std::string> noArgs;
+std::vector<std::string> emptyArgs;
 
 namespace SohImGui {
 
@@ -758,7 +758,7 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
              ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Commands["reset"].handler(noArgs);
+            console->Commands["reset"].handler(emptyArgs);
         }
         #else
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
