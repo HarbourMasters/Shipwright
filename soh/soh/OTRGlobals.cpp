@@ -1504,8 +1504,8 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += "un ";
         scrubText += 0x05; // change the color
         scrubText += 0x42; // green
-        scrubText += "objet mysté\x96";
-        scrubText += "rieux";
+        scrubText += "objet myst\x96rieux";
+        //scrubText += ";
         scrubText += 0x05; // change the color
         scrubText += 0x40; // white
         scrubText += "?";
