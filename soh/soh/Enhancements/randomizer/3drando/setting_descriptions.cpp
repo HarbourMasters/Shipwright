@@ -996,7 +996,7 @@ string_view ToggleLogicIntermediateDesc               = "Enables all but the har
 string_view ToggleLogicExpertDesc                     = "Enables all the Detailed Logic tricks.";          //
                                                                                                            //
 string_view LogicGrottosWithoutAgonyDesc              = "Difficulty: Novice\n"                             //
-                                                        "Grottos can be accessed without Shard of Agony,\n"//
+                                                        "Grottos can be accessed without Stone of Agony,\n"//
                                                         "simply by knowing where they are located.";       //
 string_view LogicVisibleCollisionDesc                 = "Difficulty: Novice\n"                             //
                                                         "The closed Kakariko Village Gate can be crossed\n"//
