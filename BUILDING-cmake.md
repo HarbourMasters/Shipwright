@@ -1,3 +1,6 @@
+Windows
+=======
+
 libpng and zlib will be used from VCPKG.
 My vcpkg is located at d:/VCPKG
 I also created a new triplet to be used.
@@ -31,7 +34,8 @@ cd ../soh
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
 ~~~
 
-Linux (Ubuntu 22.04):
+Linux (Ubuntu 22.04)
+====================
 
 using native build (not docker)
 
@@ -77,19 +81,15 @@ cpack -G External	(does appimage)
 
 Only tested on Linux so far.
 
-~~~
 
-macOS (M1):
+macOS (M1)
+==========
 
 using native build (not docker)
 (will be built with below cmake commands) - no extra build needed
 
 ~~~
 cd OTRExporter
-
-# change the path to ZAPD in extract_assets.py
-sed "s%../ZAPDTR/ZAPD.out%build-cmake/ZAPD/ZAPD.out%" < extract_assets.py > extract_assets_cmake.py
-chmod +x extract_assets_cmake.py
 
 cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE=../soh/CMake/Mac-gnu-toolchain.cmake
 cmake --build build-cmake
