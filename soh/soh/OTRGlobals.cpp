@@ -40,7 +40,12 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
+#ifdef __APPLE__
+#include <SDL_scancode.h>
+#else
 #include <SDL2/SDL_scancode.h>
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
@@ -51,7 +56,6 @@ OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
-    CheckSaveFile(SRAM_SIZE);
 }
 
 OTRGlobals::~OTRGlobals() {

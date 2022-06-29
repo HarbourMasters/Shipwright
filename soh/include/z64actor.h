@@ -6,7 +6,7 @@
 #include "z64math.h"
 #include "z64collision_check.h"
 
-#define ACTOR_NUMBER_MAX 200
+#define ACTOR_NUMBER_MAX 2000
 #define INVISIBLE_ACTOR_MAX 20
 #define AM_FIELD_SIZE 0x27A0
 #define MASS_IMMOVABLE 0xFF // Cannot be pushed by OC collisions

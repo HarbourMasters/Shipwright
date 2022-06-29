@@ -490,9 +490,13 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
+        u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
+        if (CVar_GetS32("gDpadEquips", 0) != 0) {
+            buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+        }
+
         if ((pauseCtx->cursorSpecialPos == 0) && (cursorItem != PAUSE_ITEM_NONE) && (pauseCtx->state == 6) &&
-            (pauseCtx->unk_1E4 == 0) &&
-            CHECK_BTN_ANY(input->press.button, BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT) &&
+            (pauseCtx->unk_1E4 == 0) && CHECK_BTN_ANY(input->press.button, buttonsToCheck) &&
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
             if ((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
@@ -531,32 +535,37 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 } else if (CVar_GetS32("gAssignableTunicsAndBoots", 0) != 0) {
                     // Only allow assigning tunic and boots to c-buttons
                     if (pauseCtx->cursorY[PAUSE_EQUIP] > 1) {
-                        u16 slot = 0;
-                        switch (cursorItem) {
-                            case ITEM_TUNIC_KOKIRI:
-                                slot = SLOT_TUNIC_KOKIRI;
-                                break;
-                            case ITEM_TUNIC_GORON:
-                                slot = SLOT_TUNIC_GORON;
-                                break;
-                            case ITEM_TUNIC_ZORA:
-                                slot = SLOT_TUNIC_ZORA;
-                                break;
-                            case ITEM_BOOTS_KOKIRI:
-                                slot = SLOT_BOOTS_KOKIRI;
-                                break;
-                            case ITEM_BOOTS_IRON:
-                                slot = SLOT_BOOTS_IRON;
-                                break;
-                            case ITEM_BOOTS_HOVER:
-                                slot = SLOT_BOOTS_HOVER;
-                                break;
-                            default:
-                                break;
+                        if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
+                            u16 slot = 0;
+                            switch (cursorItem) {
+                                case ITEM_TUNIC_KOKIRI:
+                                    slot = SLOT_TUNIC_KOKIRI;
+                                    break;
+                                case ITEM_TUNIC_GORON:
+                                    slot = SLOT_TUNIC_GORON;
+                                    break;
+                                case ITEM_TUNIC_ZORA:
+                                    slot = SLOT_TUNIC_ZORA;
+                                    break;
+                                case ITEM_BOOTS_KOKIRI:
+                                    slot = SLOT_BOOTS_KOKIRI;
+                                    break;
+                                case ITEM_BOOTS_IRON:
+                                    slot = SLOT_BOOTS_IRON;
+                                    break;
+                                case ITEM_BOOTS_HOVER:
+                                    slot = SLOT_BOOTS_HOVER;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            KaleidoScope_SetupItemEquip(globalCtx, cursorItem, slot,
+                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
+                                                        pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
+                        } else {
+                            Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                                   &D_801333E8);
                         }
-                        KaleidoScope_SetupItemEquip(globalCtx, cursorItem, slot,
-                                                    pauseCtx->equipVtx[cursorSlot * 4].v.ob[0] * 10,
-                                                    pauseCtx->equipVtx[cursorSlot * 4].v.ob[1] * 10);
                     }
                 }
             } else {
