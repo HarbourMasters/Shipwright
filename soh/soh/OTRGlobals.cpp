@@ -1504,12 +1504,12 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += "un ";
         scrubText += 0x05; // change the color
         scrubText += 0x42; // green
-        scrubText += "objet mystérieux";
+        scrubText += "objet mysté\x96rieux";
         scrubText += 0x05; // change the color
         scrubText += 0x40; // white
         scrubText += "?";
         scrubText += 0x01; // newline
-        scrubText += "Ça fera ";
+        scrubText += "\x84\a fera ";
         scrubText += 0x05; // change the color
         scrubText += 0x41; // red
         scrubText += std::to_string(price) + " Rubis";
