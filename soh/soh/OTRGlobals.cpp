@@ -100,7 +100,7 @@ extern "C" void OTRExtScanner() {
 
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
-    SaveManager::Instance = new SaveManager();
+    SaveManager::Instance = new SaveManager(OTRGlobals::Instance->context->GetAppDirectoryPath());
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)

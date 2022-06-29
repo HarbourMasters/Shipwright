@@ -33,7 +33,7 @@ public:
     using SaveFunc = void(*)();
     using PostFunc = void(*)(int version);
 
-    SaveManager();
+    SaveManager(std::string appDirectoryPath);
 
     void Init();
     void InitFile(bool isDebug);
@@ -114,6 +114,7 @@ public:
     static void LoadBaseVersion1();
     static void SaveBase();
 
+    std::string appDirectoryPath;
     std::vector<InitFunc> initFuncs;
 
     using SectionLoadHandler = std::map<int, LoadFunc>;
