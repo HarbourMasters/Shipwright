@@ -213,5 +213,14 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_8002EBCC(thisx, globalCtx, 0);
     func_8002ED80(thisx, globalCtx, 0);
 
-    GetItem_Draw(globalCtx, gSaveContext.n64ddFlag ? GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT)) : GID_OCARINA_TIME);
+    if (gSaveContext.n64ddFlag) {
+        s32 randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        return;
+    }
+
+    GetItem_Draw(globalCtx, GID_OCARINA_TIME);
 }

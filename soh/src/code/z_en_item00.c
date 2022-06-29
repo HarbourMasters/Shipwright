@@ -1248,6 +1248,69 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 }
 
+void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 getItemId) {
+    s16 color_slot;
+    switch (getItemId) {
+        case GI_MINUET_OF_FOREST:
+        case GI_SINGLE_MAGIC:
+        case GI_DOUBLE_MAGIC:
+            color_slot = 0;
+            break;
+        case GI_BOLERO_OF_FIRE:
+            color_slot = 1;
+            break;
+        case GI_SERENADE_OF_WATER:
+            color_slot = 2;
+            break;
+        case GI_REQUIEM_OF_SPIRIT:
+            color_slot = 3;
+            break;
+        case GI_NOCTURNE_OF_SHADOW:
+            color_slot = 4;
+            break;
+        case GI_PRELUDE_OF_LIGHT:
+            color_slot = 5;
+            break;
+        case GI_DOUBLE_DEFENSE:
+            color_slot = 6;
+            break;
+    }
+
+    s16* colors[7][3] = {
+        { 34, 255, 76 },    // Minuet and Magic Upgrades Colors
+        { 177, 35, 35 },    // Bolero Color
+        { 115, 251, 253 },  // Serenade Color
+        { 177, 122, 35 },   // Requiem Color
+        { 177, 28, 212 },   // Nocturne Color
+        { 255, 255, 92 },   // Prelude Color
+        { 255, 255, 255}    // Double Defense Color
+    };
+
+    s16* colorsEnv[7][3] = {
+        { 30, 110, 30 },    // Minuet and Magic Upgrades Colors
+        { 90, 10, 10 },     // Bolero Color
+        { 35, 35, 177 },    // Serenade Color
+        { 70, 20, 10 },     // Requiem Color
+        { 100, 20, 140 },   // Nocturne Color
+        { 100, 100, 10 },   // Prelude Color
+        { 154, 154, 154 }   // Double Defense Color
+    };
+    static Vec3f velocity = { 0.0f, 0.2f, 0.0f };
+    static Vec3f accel = { 0.0f, 0.05f, 0.0f };
+    Color_RGBA8 primColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+    Color_RGBA8 envColor = { colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 0 };
+    Vec3f pos;
+
+    // velocity.x = Rand_CenteredFloat(3.0f);
+    // velocity.z = Rand_CenteredFloat(3.0f);
+    velocity.y = -0.05f;
+    accel.y = -0.025f;
+    pos.x = Rand_CenteredFloat(32.0f) + Parent->world.pos.x;
+    pos.y = (Rand_ZeroOne() * 6.0f) + Parent->world.pos.y + 25;
+    pos.z = Rand_CenteredFloat(32.0f) + Parent->world.pos.z;
+    EffectSsKiraKira_SpawnDispersed(globalCtx, &pos, &velocity, &accel, &primColor, &envColor, 1000, 50);
+}
+
 /**
  * Draw Function used for Rupee types of En_Item00.
  */
@@ -1283,8 +1346,11 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     if ((gSaveContext.n64ddFlag && this->getItemId != GI_NONE) || this->actor.params == ITEM00_SMALL_KEY) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams,
-                                                                       globalCtx->sceneNum)));
+        s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1340,8 +1406,11 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        GetItem_Draw(globalCtx, GetItemModelFromId(GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams,
-                                                                       globalCtx->sceneNum)));
+        s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
     } else {
         s32 pad;
 

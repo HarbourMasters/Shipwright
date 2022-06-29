@@ -225,7 +225,11 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
         func_8002ED80(&this->actor, globalCtx, 0);
 
         if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
-            GetItem_Draw(globalCtx, GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx));
+            s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
+            if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+            }
+            GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
             return;
         }
         
@@ -238,10 +242,19 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 type = this->actor.params & 0xFF;
 
     if (gSaveContext.n64ddFlag) {
+        s32 randoGetItemId = GI_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
-            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
+            randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
         } else if (type == ITEM_ETC_LETTER) {
-            this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
+            randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+        }
+
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+
+        if (randoGetItemId != GI_NONE) {
+            this->giDrawId = GetItemModelFromId(randoGetItemId);
         }
     }
 
