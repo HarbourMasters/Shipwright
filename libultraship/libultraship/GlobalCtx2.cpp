@@ -42,7 +42,7 @@ namespace Ship {
             strcpy(buf, appSupportDirectory);
             strcat(buf, "/com.shipofharkinian.soh");
 
-            return buf;
+            return std::string(buf);
         #endif
 
         return ".";
