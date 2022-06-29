@@ -286,7 +286,7 @@ namespace Settings {
   };
 
   //Misc Settings
-  Option GossipStoneHints    = Option::U8  ("Gossip Stone Hints",     {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"},        {gossipStonesHintsDesc},                                                                                          OptionCategory::Setting,    HINTS_NEED_NOTHING);
+  Option GossipStoneHints    = Option::U8  ("Gossip Stone Hints",     {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"},        {gossipStonesHintsDesc},                                                                                          OptionCategory::Setting,    HINTS_NEED_NOTHING);
   Option ClearerHints        = Option::U8  ("  Hint Clarity",         {"Obscure", "Ambiguous", "Clear"},                                      {obscureHintsDesc, ambiguousHintsDesc, clearHintsDesc});
   Option HintDistribution    = Option::U8  ("  Hint Distribution",    {"Useless", "Balanced", "Strong", "Very Strong"},                       {uselessHintsDesc, balancedHintsDesc, strongHintsDesc, veryStrongHintsDesc},                                      OptionCategory::Setting,    1); // Balanced
   Option CompassesShowReward = Option::U8  ("Compasses Show Rewards", {"No", "Yes"},                                                          {compassesShowRewardsDesc},                                                                                       OptionCategory::Setting,    1);
@@ -517,7 +517,7 @@ namespace Settings {
   Option StartingStrength         = Option::U8  ("Strength Upgrade",     {"Off",             "Goron Bracelet",   "Silver Gauntlet",  "Golden Gauntlet"},  {""});
   Option StartingScale            = Option::U8  ("Scale Upgrade",        {"Off",             "Silver Scale"  ,   "Golden Scale"},                         {""});
   Option StartingWallet           = Option::U8  ("Wallet Upgrade",       {"Off",             "Adult's Wallet",   "Giant's Wallet" ,  "Tycoon's Wallet"},  {""});
-  Option StartingShardOfAgony     = Option::U8  ("Shard of Agony",       {"Off",             "On"},                                                       {""});
+  Option StartingShardOfAgony     = Option::U8  ("Stone of Agony",       {"Off",             "On"},                                                       {""});
   Option StartingHearts           = Option::U8  ("Hearts",               {NumOpts(1, 20)},                                                                {""}, OptionCategory::Setting, 2); // Default 3 hearts
   Option StartingMagicMeter       = Option::U8  ("Magic Meter",          {"Off",             "Single Magic",     "Double Magic"},                         {""});
   Option StartingDoubleDefense    = Option::U8  ("Double Defense",       {"Off",             "On"},                                                       {""});
@@ -596,7 +596,7 @@ namespace Settings {
 
   //Detailed Logic Tricks                               ---------------------
   Option ToggleAllTricks                  = Option::U8("All Tricks", {"None", "Novice", "Intermediate", "Expert"},  {ToggleLogicNoneDesc, ToggleLogicNoviceDesc, ToggleLogicIntermediateDesc, ToggleLogicExpertDesc},                                           OptionCategory::Toggle);
-  Option LogicGrottosWithoutAgony         = LogicTrick(" Grotto Access\n   w/o Shard of Agony",       LogicGrottosWithoutAgonyDesc);
+  Option LogicGrottosWithoutAgony         = LogicTrick(" Grotto Access\n   w/o Stone of Agony",       LogicGrottosWithoutAgonyDesc);
   Option LogicVisibleCollision            = LogicTrick(" Go Through Visible\n   One-Way Collisions",  LogicVisibleCollisionDesc);
   Option LogicFewerTunicRequirements      = LogicTrick(" Fewer Tunic\n   Requirements",               LogicFewerTunicRequirementsDesc);
   Option LogicLostWoodsGSBean             = LogicTrick(" LW Adult Tree GS\n   w/o Magic Beans",       LogicLostWoodsGSBeanDesc);
@@ -1725,7 +1725,7 @@ namespace Settings {
     }
 
     //Force include adult trade quest if Shuffle Adult Trade Quest is off
-    std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POULTICE, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
+    std::vector<uint32_t> adultTradeLocations = {KAK_TRADE_POCKET_CUCCO, LW_TRADE_COJIRO, KAK_TRADE_ODD_MUSHROOM, LW_TRADE_ODD_POTION, GV_TRADE_SAW, DMT_TRADE_BROKEN_SWORD, ZD_TRADE_PRESCRIPTION, LH_TRADE_FROG, DMT_TRADE_EYEDROPS};
     if (ShuffleAdultTradeQuest) {
       Unhide(adultTradeLocations);
     } else {
@@ -2511,6 +2511,7 @@ namespace Settings {
     }
 
     StartingConsumables.SetSelectedIndex(cvarSettings[RSK_STARTING_CONSUMABLES]);
+    StartingMaxRupees.SetSelectedIndex(cvarSettings[RSK_FULL_WALLETS]);
     
     GossipStoneHints.SetSelectedIndex(cvarSettings[RSK_GOSSIP_STONE_HINTS]);
     ClearerHints.SetSelectedIndex(cvarSettings[RSK_HINT_CLARITY]);
@@ -2520,6 +2521,11 @@ namespace Settings {
     IceTrapValue.SetSelectedIndex(cvarSettings[RSK_ICE_TRAPS]);
 
     GanonsBossKey.SetSelectedIndex(cvarSettings[RSK_GANONS_BOSS_KEY]);
+
+    NumRequiredCuccos.SetSelectedIndex(cvarSettings[RSK_CUCCO_COUNT]);
+    BigPoeTargetCount.SetSelectedIndex(cvarSettings[RSK_BIG_POE_COUNT]-1);
+
+    SkipEponaRace.SetSelectedIndex(cvarSettings[RSK_SKIP_EPONA_RACE]);
 
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);

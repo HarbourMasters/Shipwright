@@ -1661,24 +1661,38 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        // if we get a boss/big key in ganon's castle (which doesn't have a map/compass)
-        // when rando'd it's for ganon's tower
-        if (gSaveContext.n64ddFlag && gSaveContext.mapIndex == 13) {
-            gSaveContext.inventory.dungeonItems[10] |= 1;
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+        // Boss Key, Compass, and Dungeon Map exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 13) { // ganon's castle -> ganon's tower
+                gSaveContext.inventory.dungeonItems[10] |= 1;
+            } else if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
+            } else {
+                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+            }
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
-        // if we get a small key in ganon's tower (boss key chest)
-        // when rando'd it's for ganon's castle
-        if (gSaveContext.n64ddFlag && gSaveContext.mapIndex == 10) {
-            if (gSaveContext.inventory.dungeonKeys[13] < 0) {
-                gSaveContext.inventory.dungeonKeys[13] = 1;
-                return ITEM_NONE;
-            } else {
-                gSaveContext.inventory.dungeonKeys[13]++;
-                return ITEM_NONE;
+        // Small key exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
+                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
+                    gSaveContext.inventory.dungeonKeys[13] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[13]++;
+                    return ITEM_NONE;
+                }
+            }
+
+            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
+                    gSaveContext.inventory.dungeonKeys[6] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[6]++;
+                    return ITEM_NONE;
+                }
             }
         }
 
@@ -1754,9 +1768,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
+        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(200);
+        }
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
+        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(500);
+        }
         return ITEM_NONE;
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -3773,9 +3793,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
             gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
                                 G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X) << 2, DPAD_Y << 2,
-                                    (OTRGetRectDimensionFromRightEdge(DPAD_X) + 32) << 2, (DPAD_Y + 32) << 2,
-                                    G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) << 2,
+                                    (DPAD_Y + (Top_HUD_Margin * -1)) << 2,
+                                    (OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) + 32) << 2,
+                                    (DPAD_Y + 32 + (Top_HUD_Margin * -1)) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10),
+                                    (1 << 10));
 
             // DPad-Up Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {

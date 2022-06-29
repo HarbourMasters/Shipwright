@@ -21,7 +21,7 @@
 #include <SDL2/SDL_opengles2.h>
 #endif
 
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 #include "../../Cvar.h"
 
 #include "gfx_window_manager_api.h"

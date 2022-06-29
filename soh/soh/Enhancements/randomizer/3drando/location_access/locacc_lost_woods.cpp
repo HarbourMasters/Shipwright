@@ -130,7 +130,7 @@ void AreaTable_Init_LostWoods() {
                   LocationAccess(LW_SKULL_KID,                 {[]{return IsChild && CanPlay(SariasSong);},
                                                     /*Glitched*/[]{return IsChild && (Fish || Bugs) && SariasSong && CanShield && (CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED) || (HasBombchus && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
                   LocationAccess(LW_TRADE_COJIRO,              {[]{return IsAdult && Cojiro;}}),
-                  LocationAccess(LW_TRADE_ODD_POULTICE,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
+                  LocationAccess(LW_TRADE_ODD_POTION,        {[]{return IsAdult && OddPoultice && Cojiro;}}),
                   LocationAccess(LW_OCARINA_MEMORY_GAME,       {[]{return IsChild && Ocarina;},
                                                     /*Glitched*/[]{return IsChild && (CanDoGlitch(GlitchType::OutdoorBombOI, GlitchDifficulty::INTERMEDIATE) || ((Fish || Bugs) && CanShield && CanDoGlitch(GlitchType::QPA, GlitchDifficulty::ADVANCED)) || ((Bugs || Fish) && HasBombchus && CanShield && CanDoGlitch(GlitchType::ActionSwap, GlitchDifficulty::ADVANCED)));}}),
                   LocationAccess(LW_TARGET_IN_WOODS,           {[]{return IsChild && CanUse(SLINGSHOT);}}),

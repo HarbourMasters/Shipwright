@@ -27,7 +27,7 @@ void Sram_InitDebugSave(void) {
 // RANDOTODO replace most of these GiveLink functions with calls to
 // Item_Give in z_parameter, we'll need to update Item_Give to ensure
 // nothing breaks when calling it without a valid globalCtx first
-void GiveLinkRupees(GetItemID giid) {
+void GiveLinkRupees(int numOfRupees) {
     int maxRupeeCount;
     if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
         maxRupeeCount = 99;
@@ -38,22 +38,26 @@ void GiveLinkRupees(GetItemID giid) {
     }
 
     int newRupeeCount = gSaveContext.rupees;
-    if (giid == GI_RUPEE_GREEN) {
-        newRupeeCount += 1;
-    } else if (giid == GI_RUPEE_BLUE) {
-        newRupeeCount += 5;
-    } else if (giid == GI_RUPEE_RED) {
-        newRupeeCount += 20;
-    } else if (giid == GI_RUPEE_PURPLE) {
-        newRupeeCount += 50;
-    } else if (giid == GI_RUPEE_GOLD) {
-        newRupeeCount += 100;
-    }
+    newRupeeCount += numOfRupees;
 
     if (newRupeeCount > maxRupeeCount) {
         gSaveContext.rupees = maxRupeeCount;
     } else {
         gSaveContext.rupees = newRupeeCount;
+    }
+}
+
+void GiveLinkRupeesByGetItemId(GetItemID giid) {
+    if (giid == GI_RUPEE_GREEN) {
+        GiveLinkRupees(1);
+    } else if (giid == GI_RUPEE_BLUE) {
+        GiveLinkRupees(5);
+    } else if (giid == GI_RUPEE_RED) {
+        GiveLinkRupees(20);
+    } else if (giid == GI_RUPEE_PURPLE) {
+        GiveLinkRupees(50);
+    } else if (giid == GI_RUPEE_GOLD) {
+        GiveLinkRupees(100);
     }
 }
 
@@ -678,7 +682,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                        giid == GI_RUPEE_RED ||
                        giid == GI_RUPEE_PURPLE ||
                        giid == GI_RUPEE_GOLD) {
-                GiveLinkRupees(giid);
+                GiveLinkRupeesByGetItemId(giid);
             } else if (giid == GI_BOMBCHUS_10 ||
                        giid == GI_BOMBCHUS_5 ||
                        giid == GI_BOMBCHUS_20) {
@@ -777,10 +781,23 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
         }
 
+        if (GetRandoSettingValue(RSK_FULL_WALLETS)) {
+            GiveLinkRupees(9001);
+        }
+
         // For Ganon's boss key "Start With" is 0
         if(GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
             gSaveContext.inventory.dungeonItems[10] |= 1;
         }
+
+        HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * GetRandoSettingValue(RSK_BIG_POE_COUNT));
+
+        if(GetRandoSettingValue(RSK_SKIP_EPONA_RACE)) {
+            gSaveContext.eventChkInf[1] |= (1 << 8);
+        }
+
+        // skip the z target talk instructions by the kokiri shop
+        gSaveContext.sceneFlags[85].swch |= (1 << 0x1F);
     }
 
     Save_SaveFile();

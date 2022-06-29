@@ -24,6 +24,7 @@
 #include <iostream>
 #include <fstream>
 #include <filesystem>
+#include <variables.h>
 
 using json = nlohmann::json;
 
@@ -257,14 +258,19 @@ void WriteIngameSpoilerLog() {
 
 // Writes the location to the specified node.
 static void WriteLocation(
-    std::string sphere, const uint32_t locationKey,
-    const bool withPadding = false
-) {
+    std::string sphere, const uint32_t locationKey, const bool withPadding = false) {
   ItemLocation* location = Location(locationKey);
 
-  // PURPLE TODO: LOCALIZATION
   // auto node = parentNode->InsertNewChildElement("location");
-  jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
+  switch (gSaveContext.language) {
+        case LANGUAGE_ENG:
+        default:
+            jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetEnglish();
+            break;
+        case LANGUAGE_FRA:
+            jsonData["playthrough"][sphere][location->GetName()] = location->GetPlacedItemName().GetFrench();
+            break;
+    }
   // node->SetAttribute("name", location->GetName().c_str());
   // node->SetText(location->GetPlacedItemName().GetEnglish().c_str());
 
@@ -329,8 +335,19 @@ static void WriteSettings(const bool printAll = false) {
     if (menu->name == "Cosmetic Settings" ||
         menu->name == "Ingame Defaults" ||
         menu->name == "Item Usability Settings" ||
-        menu->name == "Multiplayer Settings" ||
-        menu->name == "Timesaver Settings") continue;
+        menu->name == "Multiplayer Settings") continue;
+
+    if (menu->name == "Timesaver Settings") {
+      for (const Option* setting : *menu->settingsList) {
+        if (setting->GetName() == "Big Poe Target Count" ||
+            setting->GetName() == "Cuccos to return" ||
+            setting->GetName() == "Skip Epona Race") {
+            std::string settingName = menu->name + ":" + setting->GetName();
+            jsonData["settings"][settingName] = setting->GetSelectedOptionText();
+        }
+      }
+      continue;
+    }
 
     //This is a menu of settings, write them
     if (menu->mode == OPTION_SUB_MENU && menu->printInSpoiler) {
@@ -406,7 +423,7 @@ static void WriteStartingInventory() {
         jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
       }
 
-      if (setting->GetName() == "Start with Consumables") {
+      if (setting->GetName() == "Start with Consumables" || setting->GetName() == "Start with Max Rupees") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }

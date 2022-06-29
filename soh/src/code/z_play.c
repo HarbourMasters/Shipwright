@@ -207,8 +207,8 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
 void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
-        (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) && player != NULL &&
+    if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
         GiveItemWithoutActor(globalCtx, getItemId);
@@ -234,7 +234,8 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
 
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
-        !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+        !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
+        globalCtx->sceneLoadFlag == 0) {
         GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
         Flags_SetTreasure(globalCtx, 0x1E);

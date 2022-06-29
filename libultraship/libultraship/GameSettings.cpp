@@ -10,9 +10,9 @@
 #include "ConfigFile.h"
 #include "Cvar.h"
 #include "GlobalCtx2.h"
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 #include "../../soh/include/z64audio.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 #include "../../soh/soh/Enhancements/debugconsole.h"
 
 #include "Window.h"

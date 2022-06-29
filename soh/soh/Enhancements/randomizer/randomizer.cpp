@@ -1,4 +1,4 @@
-﻿#include "randomizer.h"
+#include "randomizer.h"
 #include "json.hpp"
 #include <fstream>
 #include <variables.h>
@@ -9,7 +9,7 @@
 #include <textures/icon_item_static/icon_item_static.h>
 #include <textures/icon_item_24_static/icon_item_24_static.h>
 #include <GameSettings.h>
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 #include <thread>
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
@@ -75,7 +75,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "LW Near Shortcuts Grotto Chest", RC_LW_NEAR_SHORTCUTS_GROTTO_CHEST },
     { "LW Skull Kid", RC_LW_SKULL_KID },
     { "LW Trade Cojiro", RC_LW_TRADE_COJIRO },
-    { "LW Trade Odd Poultice", RC_LW_TRADE_ODD_POULTICE },
+    { "LW Trade Odd Potion", RC_LW_TRADE_ODD_POTION },
     { "LW Ocarina Memory Game", RC_LW_OCARINA_MEMORY_GAME },
     { "LW Target in Woods", RC_LW_TARGET_IN_WOODS },
     { "LW Deku Scrub Near Deku Theater Right", RC_LW_DEKU_SCRUB_NEAR_DEKU_THEATER_RIGHT },
@@ -1024,8 +1024,8 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Monocle de Vérité", RG_LENS_OF_TRUTH },
     { "Megaton Hammer", RG_MEGATON_HAMMER },
     { "Masse des Titans", RG_MEGATON_HAMMER },
-    { "Shard of Agony", RG_SHARD_OF_AGONY },
-    { "Pierre de Souffrance", RG_SHARD_OF_AGONY },
+    { "Stone of Agony", RG_STONE_OF_AGONY },
+    { "Pierre de Souffrance", RG_STONE_OF_AGONY },
     { "Din's Fire", RG_DINS_FIRE },
     { "Feu de Din", RG_DINS_FIRE },
     { "Farore's Wind", RG_FARORES_WIND },
@@ -1055,13 +1055,13 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Cojiro", RG_COJIRO },
     { "P'tit Poulet", RG_COJIRO },
     { "Odd Mushroom", RG_ODD_MUSHROOM },
-    { "Champignon suspect", RG_ODD_MUSHROOM },
-    { "Odd Poultice", RG_ODD_POULTICE },
-    { "Mixture suspecte ", RG_ODD_POULTICE },
+    { "Champignon Suspect", RG_ODD_MUSHROOM },
+    { "Odd Potion", RG_ODD_POTION },
+    { "Mixture Suspecte ", RG_ODD_POTION },
     { "Poacher's Saw", RG_POACHERS_SAW },
-    { "Scie du chasseur", RG_POACHERS_SAW },
+    { "Scie du Chasseur", RG_POACHERS_SAW },
     { "Broken Goron's Sword", RG_BROKEN_SWORD },
-    { "Epée brisée de Goron", RG_BROKEN_SWORD },
+    { "Épée Brisée de Goron", RG_BROKEN_SWORD },
     { "Prescription", RG_PRESCRIPTION },
     { "Ordonnance", RG_PRESCRIPTION },
     { "Eyeball Frog", RG_EYEBALL_FROG },
@@ -1073,31 +1073,31 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Gold Skulltula Token", RG_GOLD_SKULLTULA_TOKEN },
     { "Symbole de Skulltula d'Or", RG_GOLD_SKULLTULA_TOKEN },
     { "Progressive Hookshot", RG_PROGRESSIVE_HOOKSHOT },
-    { "Grappin Progressif", RG_PROGRESSIVE_HOOKSHOT },
+    { "Grappin (prog.)", RG_PROGRESSIVE_HOOKSHOT },
     { "Progressive Strength Upgrade", RG_PROGRESSIVE_STRENGTH },
-    { "Amélioration Progressive de Force", RG_PROGRESSIVE_STRENGTH },
+    { "Amélioration de Force (prog.)", RG_PROGRESSIVE_STRENGTH },
     { "Progressive Bomb Bag", RG_PROGRESSIVE_BOMB_BAG },
-    { "Sac de Bombe Progressif", RG_PROGRESSIVE_BOMB_BAG },
+    { "Sac de Bombes (prog.)", RG_PROGRESSIVE_BOMB_BAG },
     { "Progressive Bow", RG_PROGRESSIVE_BOW },
-    { "Arc Progressif", RG_PROGRESSIVE_BOW },
+    { "Arc (prog.)", RG_PROGRESSIVE_BOW },
     { "Progressive Slingshot", RG_PROGRESSIVE_SLINGSHOT },
-    { "Lance-Pierre Progressif", RG_PROGRESSIVE_SLINGSHOT },
+    { "Lance-Pierre (prog.)", RG_PROGRESSIVE_SLINGSHOT },
     { "Progressive Wallet", RG_PROGRESSIVE_WALLET },
-    { "Bourse Progressive", RG_PROGRESSIVE_WALLET },
+    { "Bourse (prog.)", RG_PROGRESSIVE_WALLET },
     { "Progressive Scale", RG_PROGRESSIVE_SCALE },
-    { "Écaille Progressive", RG_PROGRESSIVE_SCALE },
+    { "Écaille (prog.)", RG_PROGRESSIVE_SCALE },
     { "Progressive Nut Capacity", RG_PROGRESSIVE_NUT_UPGRADE },
-    { "Capacité de Noix Progressif", RG_PROGRESSIVE_NUT_UPGRADE },
+    { "Capacité de Noix (prog.)", RG_PROGRESSIVE_NUT_UPGRADE },
     { "Progressive Stick Capacity", RG_PROGRESSIVE_STICK_UPGRADE },
-    { "Capacité de Bâton Progressif", RG_PROGRESSIVE_STICK_UPGRADE },
+    { "Capacité de Bâtons (prog.)", RG_PROGRESSIVE_STICK_UPGRADE },
     { "Progressive Bombchu", RG_PROGRESSIVE_BOMBCHUS },
-    { "Missile Progressif", RG_PROGRESSIVE_BOMBCHUS },
+    { "Missiles (prog.)", RG_PROGRESSIVE_BOMBCHUS },
     { "Progressive Magic Meter", RG_PROGRESSIVE_MAGIC_METER },
-    { "Jauge de Magie Progressive", RG_PROGRESSIVE_MAGIC_METER },
+    { "Jauge de magie (prog.)", RG_PROGRESSIVE_MAGIC_METER },
     { "Progressive Ocarina", RG_PROGRESSIVE_OCARINA },
-    { "Ocarina Progressif", RG_PROGRESSIVE_OCARINA },
+    { "Ocarina (prog.)", RG_PROGRESSIVE_OCARINA },
     { "Progressive Goron Sword", RG_PROGRESSIVE_GORONSWORD },
-    { "Épée Goron Progressive", RG_PROGRESSIVE_GORONSWORD },
+    { "Épée Goron (prog.)", RG_PROGRESSIVE_GORONSWORD },
     { "Empty Bottle", RG_EMPTY_BOTTLE },
     { "Bouteille Vide", RG_EMPTY_BOTTLE },
     { "Bottle with Milk", RG_BOTTLE_WITH_MILK },
@@ -1121,11 +1121,11 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Bottle with Ruto's Letter", RG_RUTOS_LETTER },
     { "Bouteille avec la Lettre de Ruto", RG_RUTOS_LETTER },
     { "Bottle with Big Poe", RG_BOTTLE_WITH_BIG_POE },
-    { "Bouteille avec une Ame", RG_BOTTLE_WITH_BIG_POE },
+    { "Bouteille avec une Âme", RG_BOTTLE_WITH_BIG_POE },
     { "Zelda's Lullaby", RG_ZELDAS_LULLABY },
     { "Berceuse de Zelda", RG_ZELDAS_LULLABY },
     { "Epona's Song", RG_EPONAS_SONG },
-    { "Chant d'Epona", RG_EPONAS_SONG },
+    { "Chant d'Épona", RG_EPONAS_SONG },
     { "Saria's Song", RG_SARIAS_SONG },
     { "Chant de Saria", RG_SARIAS_SONG },
     { "Sun's Song", RG_SUNS_SONG },
@@ -1197,7 +1197,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Shadow Temple Big Key", RG_SHADOW_TEMPLE_BOSS_KEY },
     { "Clé d'or du Temple de l'Ombre", RG_SHADOW_TEMPLE_BOSS_KEY },
     { "Ganon's Castle Big Key", RG_GANONS_CASTLE_BOSS_KEY },
-    { "Clé d'or du Temple du Château de Ganon", RG_GANONS_CASTLE_BOSS_KEY },
+    { "Clé d'or du Château de Ganon", RG_GANONS_CASTLE_BOSS_KEY },
     { "Forest Temple Small Key", RG_FOREST_TEMPLE_SMALL_KEY },
     { "Petite Clé du Temple de la Forêt", RG_FOREST_TEMPLE_SMALL_KEY },
     { "Fire Temple Small Key", RG_FIRE_TEMPLE_SMALL_KEY },
@@ -1217,27 +1217,27 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Ganon's Castle Small Key", RG_GANONS_CASTLE_SMALL_KEY },
     { "Petite Clé du Château de Ganon", RG_GANONS_CASTLE_SMALL_KEY },
     { "Chest Game Small Key", RG_TREASURE_GAME_SMALL_KEY },
-    { "Petite Clé du jeu la Chasse aux Trésors", RG_TREASURE_GAME_SMALL_KEY },
+    { "Petite Clé du jeu la Chasse-aux-Trésors", RG_TREASURE_GAME_SMALL_KEY },
     { "Forest Temple Key Ring", RG_FOREST_TEMPLE_KEY_RING },
-    { "Porte-clés du Temple de la Forêt", RG_FOREST_TEMPLE_KEY_RING },
+    { "Trousseau du Temple de la Forêt", RG_FOREST_TEMPLE_KEY_RING },
     { "Fire Temple Key Ring", RG_FIRE_TEMPLE_KEY_RING },
-    { "Porte-clés du Temple du Feu", RG_FIRE_TEMPLE_KEY_RING },
+    { "Trousseau du Temple du Feu", RG_FIRE_TEMPLE_KEY_RING },
     { "Water Temple Key Ring", RG_WATER_TEMPLE_KEY_RING },
-    { "Porte-clés du Temple de l'Eau", RG_WATER_TEMPLE_KEY_RING },
+    { "Trousseau du Temple de l'Eau", RG_WATER_TEMPLE_KEY_RING },
     { "Spirit Temple Key Ring", RG_SPIRIT_TEMPLE_KEY_RING },
-    { "Porte-clés du Temple de l'Esprit", RG_SPIRIT_TEMPLE_KEY_RING },
+    { "Trousseau du Temple de l'Esprit", RG_SPIRIT_TEMPLE_KEY_RING },
     { "Shadow Temple Key Ring", RG_SHADOW_TEMPLE_KEY_RING },
-    { "Porte-clés du Temple de l'Ombre", RG_SHADOW_TEMPLE_KEY_RING },
+    { "Trousseau du Temple de l'Ombre", RG_SHADOW_TEMPLE_KEY_RING },
     { "Bottom of the Well Key Ring", RG_BOTTOM_OF_THE_WELL_KEY_RING },
-    { "Porte-clés du Puits", RG_BOTTOM_OF_THE_WELL_KEY_RING },
+    { "Trousseau du Puits", RG_BOTTOM_OF_THE_WELL_KEY_RING },
     { "Training Grounds Key Ring", RG_GERUDO_TRAINING_GROUNDS_KEY_RING },
-    { "Porte-clés du Gymnase Gerudo", RG_GERUDO_TRAINING_GROUNDS_KEY_RING },
+    { "Trousseau du Gymnase Gerudo", RG_GERUDO_TRAINING_GROUNDS_KEY_RING },
     { "Gerudo Fortress Key Ring", RG_GERUDO_FORTRESS_KEY_RING },
-    { "Porte-clés du Repaire des Voleurs", RG_GERUDO_FORTRESS_KEY_RING },
+    { "Trousseau du Repaire des Voleurs", RG_GERUDO_FORTRESS_KEY_RING },
     { "Ganon's Castle Key Ring", RG_GANONS_CASTLE_KEY_RING },
-    { "Porte-clés du Château de Ganon", RG_GANONS_CASTLE_KEY_RING },
+    { "Trousseau du Château de Ganon", RG_GANONS_CASTLE_KEY_RING },
     { "Kokiri's Emerald", RG_KOKIRI_EMERALD },
-    { "Emeraude Kokiri", RG_KOKIRI_EMERALD },
+    { "Émeraude Kokiri", RG_KOKIRI_EMERALD },
     { "Goron's Ruby", RG_GORON_RUBY },
     { "Rubis Goron", RG_GORON_RUBY },
     { "Zora's Sapphire", RG_ZORA_SAPPHIRE },
@@ -1267,9 +1267,9 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Huge Rupee", RG_HUGE_RUPEE },
     { "Énorme Rubis", RG_HUGE_RUPEE },
     { "Piece of Heart", RG_PIECE_OF_HEART },
-    { "Quart de coeur", RG_PIECE_OF_HEART },
+    { "Quart de Coeur", RG_PIECE_OF_HEART },
     { "Heart Container", RG_HEART_CONTAINER },
-    { "Coeur d'Energie", RG_HEART_CONTAINER },
+    { "Réceptacle de Coeur", RG_HEART_CONTAINER },
     { "Ice Trap", RG_ICE_TRAP },
     { "Piège de Glace", RG_ICE_TRAP },
     { "Milk", RG_MILK },
@@ -1299,7 +1299,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Deku Nuts (10)", RG_DEKU_NUTS_10 },
     { "Noix Mojo (10)", RG_DEKU_NUTS_10 },
     { "Deku Seeds (30)", RG_DEKU_SEEDS_30 },
-    { "Noix Mojo (30)", RG_DEKU_SEEDS_30 },
+    { "Graines Mojo (30)", RG_DEKU_SEEDS_30 },
     { "Deku Stick (1)", RG_DEKU_STICK_1 },
     { "Bâton Mojo (1)", RG_DEKU_STICK_1 },
     { "Red Potion Refill", RG_RED_POTION_REFILL },
@@ -1309,17 +1309,17 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Blue Potion Refill", RG_BLUE_POTION_REFILL },
     { "Recharge de Potion Bleue", RG_BLUE_POTION_REFILL },
     { "Piece of Heart (Treasure Chest Minigame)", RG_TREASURE_GAME_HEART },
-    { "Quart de Coeur (Jeu de la Chasse aux Trésors)", RG_TREASURE_GAME_HEART },
+    { "Quart de Coeur (Chasse-aux-Trésors)", RG_TREASURE_GAME_HEART },
     { "Green Rupee (Treasure Chest Minigame)", RG_TREASURE_GAME_GREEN_RUPEE },
-    { "Rubit Vert (Jeu de la Chasse aux Trésors)", RG_TREASURE_GAME_GREEN_RUPEE },
+    { "Rubis Vert (Chasse-aux-Trésors)", RG_TREASURE_GAME_GREEN_RUPEE },
     { "Buy Deku Nut (5)", RG_BUY_DEKU_NUT_5 },
     { "Acheter: Noix Mojo (5)", RG_BUY_DEKU_NUT_5 },
     { "Buy Arrows (30)", RG_BUY_ARROWS_30 },
     { "Acheter: Flèches (30)", RG_BUY_ARROWS_30 },
     { "Buy Arrows (50)", RG_BUY_ARROWS_50 },
     { "Acheter: Flèches (50)", RG_BUY_ARROWS_50 },
-    { "Buy Bombs (5) [25, ", RG_BUY_BOMBS_525 },
-    { "Acheter: Bombes (5) [25, ", RG_BUY_BOMBS_525 },
+    { "Buy Bombs (5) [25]", RG_BUY_BOMBS_525 },
+    { "Acheter: Bombes (5) [25]", RG_BUY_BOMBS_525 },
     { "Buy Deku Nut (10)", RG_BUY_DEKU_NUT_10 },
     { "Acheter: Noix Mojo (10)", RG_BUY_DEKU_NUT_10 },
     { "Buy Deku Stick (1)", RG_BUY_DEKU_STICK_1 },
@@ -1328,8 +1328,8 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Acheter: Bombes ", RG_BUY_BOMBS_10 },
     { "Buy Fish", RG_BUY_FISH },
     { "Acheter: Poisson", RG_BUY_FISH },
-    { "Buy Red Potion [30, ", RG_BUY_RED_POTION_30 },
-    { "Acheter: Potion Rouge [30, ", RG_BUY_RED_POTION_30 },
+    { "Buy Red Potion [30]", RG_BUY_RED_POTION_30 },
+    { "Acheter: Potion Rouge [30]", RG_BUY_RED_POTION_30 },
     { "Buy Green Potion", RG_BUY_GREEN_POTION },
     { "Acheter: Potion Verte", RG_BUY_GREEN_POTION },
     { "Buy Blue Potion", RG_BUY_BLUE_POTION },
@@ -1343,16 +1343,17 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Buy Zora Tunic", RG_BUY_ZORA_TUNIC },
     { "Acheter: Tunique Zora", RG_BUY_ZORA_TUNIC },
     { "Buy Heart", RG_BUY_HEART },
-    { "Acheter: Coeur", RG_BUY_HEART },
+    { "Acheter: Coeur de Vie", RG_BUY_HEART },
     { "Buy Bombchu (10)", RG_BUY_BOMBCHU_10 },
     { "Acheter: Missiles (10)", RG_BUY_BOMBCHU_10 },
     { "Buy Bombchu (20)", RG_BUY_BOMBCHU_20 },
-    { "Acheter: Missiles", RG_BUY_BOMBCHU_20 },
+    { "Acheter: Missiles (20)", RG_BUY_BOMBCHU_20 },
     { "Buy Bombchu (5)", RG_BUY_BOMBCHU_5 },
-    { "Acheter: Missiles", RG_BUY_BOMBCHU_5 },
+    { "Acheter: Missiles (5)", RG_BUY_BOMBCHU_5 },
     { "Buy Deku Seeds (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Acheter: Graines Mojo (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Sold Out", RG_SOLD_OUT },
+    { "Vendu", RG_SOLD_OUT },
     { "Rupture de de stock", RG_SOLD_OUT },
     { "Buy Blue Fire", RG_BUY_BLUE_FIRE },
     { "Acheter: Flamme Bleue", RG_BUY_BLUE_FIRE },
@@ -1368,12 +1369,12 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Acheter: Bombes (20)", RG_BUY_BOMBS_20 },
     { "Buy Bombs (30)", RG_BUY_BOMBS_30 },
     { "Acheter: Bombes (30)", RG_BUY_BOMBS_30 },
-    { "Buy Bombs (5) [35, ", RG_BUY_BOMBS_535 },
-    { "Acheter: Bombes (5) [35, ", RG_BUY_BOMBS_535 },
-    { "Buy Red Potion [40, ", RG_BUY_RED_POTION_40 },
-    { "Acheter: Potion Rouge [40, ", RG_BUY_RED_POTION_40 },
-    { "Buy Red Potion [50, ", RG_BUY_RED_POTION_50 },
-    { "Acheter: Potion Rouge [50, ", RG_BUY_RED_POTION_50 },
+    { "Buy Bombs (5) [35]", RG_BUY_BOMBS_535 },
+    { "Acheter: Bombes (5) [35]", RG_BUY_BOMBS_535 },
+    { "Buy Red Potion [40]", RG_BUY_RED_POTION_40 },
+    { "Acheter: Potion Rouge [40]", RG_BUY_RED_POTION_40 },
+    { "Buy Red Potion [50]", RG_BUY_RED_POTION_50 },
+    { "Acheter: Potion Rouge [50]", RG_BUY_RED_POTION_50 },
     { "Triforce", RG_TRIFORCE },
     { "Hint", RG_HINT },
     { "Indice", RG_HINT }
@@ -1402,7 +1403,11 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Misc Settings:  Hint Clarity", RSK_HINT_CLARITY},
     { "Misc Settings:  Hint Distribution", RSK_HINT_DISTRIBUTION},
     { "Skip Child Zelda", RSK_SKIP_CHILD_ZELDA },
-    { "Start with Consumables", RSK_STARTING_CONSUMABLES }
+    { "Start with Consumables", RSK_STARTING_CONSUMABLES },
+    { "Start with Max Rupees", RSK_FULL_WALLETS },
+    { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
+    { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
+    { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE}
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1570,6 +1575,8 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                     case RSK_RAINBOW_BRIDGE_DUNGEON_COUNT:
                     case RSK_RAINBOW_BRIDGE_TOKEN_COUNT:
                     case RSK_TRIAL_COUNT:
+                    case RSK_BIG_POE_COUNT:
+                    case RSK_CUCCO_COUNT:
                         numericValueString = it.value();
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
@@ -1615,7 +1622,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         } else if(it.value() == "Mask of Truth") {
                             gSaveContext.randoSettings[index].value = 2;
-                        } else if(it.value() == "Shard of Agony") {
+                        } else if(it.value() == "Stone of Agony") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
@@ -1652,12 +1659,19 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         gSaveContext.randoSettings[index].value = it.value();
                         break;
                     case RSK_STARTING_CONSUMABLES:
+                    case RSK_FULL_WALLETS:
                         if(it.value() == "No") {
                             gSaveContext.randoSettings[index].value = 0;            
                         } else if(it.value() == "Yes") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
+                    case RSK_SKIP_EPONA_RACE:
+                        if(it.value() == "Don't Skip") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Skip") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
                 }
                 index++;        
             }
@@ -1918,6 +1932,7 @@ GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNu
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
+#pragma optimize("", off)
 bool Randomizer::GettingItemInBottle() {
     if (this->gettingBottledItem) {
         this->gettingBottledItem = false;
@@ -1925,6 +1940,7 @@ bool Randomizer::GettingItemInBottle() {
     }
     return false;
 }
+#pragma optimize("", on)
 
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
     // RANDOTODO find a more robust way to handle resetting this,
@@ -1985,7 +2001,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_MEGATON_HAMMER:
             return GI_HAMMER;
 
-        case RG_SHARD_OF_AGONY:
+        case RG_STONE_OF_AGONY:
             return GI_STONE_OF_AGONY;
 
         case RG_DINS_FIRE:
@@ -2025,7 +2041,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_COJIRO;
         case RG_ODD_MUSHROOM:
             return GI_ODD_MUSHROOM;
-        case RG_ODD_POULTICE:
+        case RG_ODD_POTION:
             return GI_ODD_POTION;
         case RG_POACHERS_SAW:
             return GI_SAW;
@@ -3060,8 +3076,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                     return RC_ZF_ICEBERC_FREESTANDING_POH;
                 case 15362:
+                case 14594:
                     return RC_JABU_GOSSIP_STONE;
                 case 14849:
+                case 14337:
                     return RC_FAIRY_GOSSIP_STONE;
             }
             break;
@@ -3205,6 +3223,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_HINT_DISTRIBUTION] = CVar_GetS32("gRandomizeHintDistribution", 1);
     cvarSettings[RSK_GANONS_BOSS_KEY] = CVar_GetS32("gRandomizeShuffleGanonBossKey", 0);
     cvarSettings[RSK_STARTING_CONSUMABLES] = CVar_GetS32("gRandomizeStartingConsumables", 0);
+    cvarSettings[RSK_FULL_WALLETS] = CVar_GetS32("gRandomizeFullWallets", 0);
     
     cvarSettings[RSK_EXCLUDE_DEKU_THEATER_MASK_OF_TRUTH] = CVar_GetS32("gRandomizeExcludeDekuTheaterMaskOfTruth", 0);
     cvarSettings[RSK_EXCLUDE_KAK_10_GOLD_SKULLTULA_REWARD] = CVar_GetS32("gRandomizeExcludeKak10SkullReward", 0);
@@ -3217,6 +3236,11 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME] = false;
 
     cvarSettings[RSK_LANGUAGE] = CVar_GetS32("gLanguages", 0);
+
+    cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
+    cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
+
+    cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3292,7 +3316,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoSkipSongReplays[3] = { "Don't skip", "Skip (no SFX)", "Skip (Keep SFX)" };
 
     // Misc Settings
-    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Shard of Agony"};
+    const char* randoGossipStoneHints[4] = {"No Hints", "Need Nothing", "Mask of Truth", "Stone of Agony"};
     const char* randoHintClarity[3] = { "Obscure", "Ambiguous", "Clear" };
     const char* randoHintDistribution[4] = {"Useless", "Balanced", "Strong", "Very Strong"};
     const char* randoDamageMultiplier[7] = { "x1", "x2", "x4", "x8", "x16", "OHKO", "x1/2" };
@@ -4052,6 +4076,8 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("Start with Maps/Compasses", "gRandomizeStartingMapsCompasses");
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                     SohImGui::EnhancementCheckbox("Start with Consumables", "gRandomizeStartingConsumables");
+                    SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
+                    InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
 
                     // todo dungeon items stuff (more details in commented out block)
                     // ImGui::TableNextColumn();
@@ -4284,13 +4310,13 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
             if (ImGui::BeginTabItem("Others")) {
-                if (ImGui::BeginTable("tableRandoOthers", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    // ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                if (ImGui::BeginTable("tableRandoOthers", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
-                    // ImGui::TableNextColumn();
+                    ImGui::TableNextColumn();
                     // COLUMN 1 - TIME SAVERS
                     // ImGui::NewLine();
                     // todo implement child stealth skip
@@ -4304,12 +4330,6 @@ void DrawRandoEditor(bool& open) {
                     // // Skip tower escape
                     // SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
                     // InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
-                    // ImGui::Separator();
-
-                    // todo implement epona race skip
-                    // // Skip Epona race
-                    // SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
-                    // InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
                     // ImGui::Separator();
 
                     // todo implement minigame repeat skip
@@ -4343,27 +4363,22 @@ void DrawRandoEditor(bool& open) {
                     //     "see what item\nis on top of the laboratory roof.");
                     // ImGui::Separator();
 
-                    // todo implement big poe count
-                    // // Big Poe Target Count
-                    // SohImGui::EnhancementCheckbox("Big Poe Target Count", "gRandomizeEnableBigPoeTargetCount");
-                    // InsertHelpHoverText(
-                    //     "The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
-                    // if (CVar_GetS32("gRandomizeEnableBigPoeTargetCount", 0) == 1) {
-                    //     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                    //                                    "gRandomizeBigPoeTargetCount", 0, 100, "");
-                    // }
-                    // ImGui::Separator();
+                    // Cuccos to return
+                    SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
+                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                    InsertHelpHoverText("The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
+                    ImGui::Separator();
 
-                    // todo implement cuccos to return
-                    // // Cuccos to return
-                    // SohImGui::EnhancementCheckbox("Cuccos To Return", "gRandomizeEnableCuccosToReturn");
-                    // InsertHelpHoverText(
-                    //     "The cucco Lady will give a reward for returning\nthis many of her cuccos to the pen.");
-                    // if (CVar_GetS32("gRandomizeEnableCuccosToReturn", 0) == 1) {
-                    //     SohImGui::EnhancementSliderInt("Cuccos to return Count: %d", "##RandoCuccosToReturn",
-                    //                                    "gRandomizeCuccosToReturn", 0, 100, "");
-                    // }
-                    // ImGui::Separator();
+                    // // Big Poe Target Count
+                    SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
+                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                    InsertHelpHoverText("The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
+                    ImGui::Separator();
+
+                    // Skip Epona race
+                    SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
+                    InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
+                    ImGui::Separator();
 
                     // todo implement complete mask quest
                     // // Complete Mask Quest
