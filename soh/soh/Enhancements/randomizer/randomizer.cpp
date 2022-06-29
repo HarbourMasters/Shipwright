@@ -992,6 +992,8 @@ std::unordered_map<s16, s16> itemIdToModel = { { GI_NONE, GID_MAXIMUM },
                                                { GI_MEDALLION_SPIRIT, GID_MEDALLION_SPIRIT },
                                                { GI_MEDALLION_SHADOW, GID_MEDALLION_SHADOW },
                                                { GI_MEDALLION_LIGHT, GID_MEDALLION_LIGHT },
+                                               { GI_SINGLE_MAGIC, GID_MAGIC_SMALL },
+                                               { GI_DOUBLE_MAGIC, GID_MAGIC_LARGE },
                                                { GI_ICE_TRAP, GID_RUPEE_GOLD },
                                                { GI_ICE_TRAP, GID_MAXIMUM },
                                                { GI_TEXT_0, GID_MAXIMUM } };
