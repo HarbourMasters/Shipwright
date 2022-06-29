@@ -167,20 +167,20 @@ source_group("Source Files\\Lib\\Fast3D" FILES ${Source_Files__Lib__Fast3D})
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 set(Source_Files__Lib__Fast3D__extra
-     "Lib/Fast3D/gfx_direct3d11.cpp"
-     "Lib/Fast3D/gfx_direct3d11.h"
-     "Lib/Fast3D/gfx_direct3d12.cpp"
-     "Lib/Fast3D/gfx_direct3d12.h"
-     "Lib/Fast3D/gfx_direct3d12_guids.h"
-     "Lib/Fast3D/gfx_direct3d_common.cpp"
-     "Lib/Fast3D/gfx_direct3d_common.h"
-     "Lib/Fast3D/gfx_dxgi.cpp"
-     "Lib/Fast3D/gfx_dxgi.h"
+    "Lib/Fast3D/gfx_direct3d11.cpp"
+    "Lib/Fast3D/gfx_direct3d11.h"
+    "Lib/Fast3D/gfx_direct3d12.cpp"
+    "Lib/Fast3D/gfx_direct3d12.h"
+    "Lib/Fast3D/gfx_direct3d12_guids.h"
+    "Lib/Fast3D/gfx_direct3d_common.cpp"
+    "Lib/Fast3D/gfx_direct3d_common.h"
+    "Lib/Fast3D/gfx_dxgi.cpp"
+    "Lib/Fast3D/gfx_dxgi.h"
 )
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 set(Source_Files__Lib__Fast3D__extra
-     "Lib/Fast3D/gfx_glx.cpp"
-     "Lib/Fast3D/gfx_glx.h"
+    "Lib/Fast3D/gfx_glx.cpp"
+    "Lib/Fast3D/gfx_glx.h"
 )
 endif()
 source_group("Source Files\\Lib\\Fast3D\\extra" FILES ${Source_Files__Lib__Fast3D__extra})
