@@ -229,7 +229,7 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
             if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
             }
-            GetItem_Draw(globalCtx, GetChestGameRandoGiDrawId(this->actor.room, this->giDrawId, globalCtx));
+            GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
             return;
         }
         
