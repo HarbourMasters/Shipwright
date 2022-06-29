@@ -241,7 +241,7 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
     s32 type = this->actor.params & 0xFF;
 
-        if (gSaveContext.n64ddFlag) {
+    if (gSaveContext.n64ddFlag) {
         s32 randoGetItemId = GI_NONE;
         if (type == ITEM_ETC_ARROW_FIRE) {
             randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
