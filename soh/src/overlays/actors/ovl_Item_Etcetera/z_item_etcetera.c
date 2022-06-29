@@ -244,6 +244,10 @@ void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         if (type == ITEM_ETC_ARROW_FIRE) {
             this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE));
+            s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+            }
         } else if (type == ITEM_ETC_LETTER) {
             this->giDrawId = GetItemModelFromId(GetRandomizedItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO));
             s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum);
