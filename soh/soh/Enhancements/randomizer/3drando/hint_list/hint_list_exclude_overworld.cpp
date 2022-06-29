@@ -263,7 +263,7 @@ void HintTable_Init_Exclude_Overworld() {
                        Text{"a #child sing-a-long# holds",             /*french*/"les #jeunes flûtistes# donnent",  /*spanish*/"#tocar junto a otros# otorga"},
                      }, {},
                        //clear text
-                       Text{"#playing an Ocarina in Lost Woods# is rewarded with", /*french*/"#jouer l'ocarina dans la forêt des méandres# donne", /*spanish*/"#tocar la ocarina en el Bosque Perdido# otorga"}
+                       Text{"#playing an Ocarina in Lost Woods# is rewarded with", /*french*/"#jouer l'ocarina dans les Bois Perdus# donne", /*spanish*/"#tocar la ocarina en el Bosque Perdido# otorga"}
   );
 
     hintTable[KAK_10_GOLD_SKULLTULA_REWARD] = HintText::Exclude({

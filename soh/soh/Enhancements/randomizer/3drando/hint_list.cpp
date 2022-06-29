@@ -717,7 +717,7 @@ void HintTable_Init() {
 
     hintTable[THE_LOST_WOODS] = HintText::Exclude({
                      //obscure text
-                     Text{"the Lost Woods", /*french*/"la forêt des méandres", /*spanish*/"el Bosque Perdido"},
+                     Text{"the Lost Woods", /*french*/"les Bois Perdus", /*spanish*/"el Bosque Perdido"},
   });
 
     hintTable[SACRED_FOREST_MEADOW] = HintText::Exclude({
