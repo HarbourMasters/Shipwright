@@ -1287,7 +1287,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 
     };
 
     s16* colorsEnv[7][3] = {
-        { 30, 110, 30 },    // Minuet Color
+        { 30, 110, 30 },    // Minuet and Magic Upgrades Colors
         { 90, 10, 10 },     // Bolero Color
         { 35, 35, 177 },    // Serenade Color
         { 70, 20, 10 },     // Requiem Color
