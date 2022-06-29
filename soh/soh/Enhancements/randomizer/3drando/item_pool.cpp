@@ -850,7 +850,7 @@ void GenerateItemPool() {
     }
   }
 
-  //Gerudo Token
+  //Gerudo Membership Card
   if (ShuffleGerudoToken && GerudoFortress.IsNot(GERUDOFORTRESS_OPEN)) {
     AddItemToMainPool(GERUDO_TOKEN);
     IceTrapModels.push_back(GI_GERUDO_CARD);

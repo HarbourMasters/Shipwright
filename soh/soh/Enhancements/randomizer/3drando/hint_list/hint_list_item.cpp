@@ -305,7 +305,7 @@ void HintTable_Init_Item() {
                        Text{"a token of recognition", /*french*/"une preuve de reconnaissance", /*spanish*/"una prueba de reconocimiento"},
                      },
                        //clear text
-                       Text{"the Gerudo Token", /*french*/"la Carte Gerudo", /*spanish*/"el pase de socio gerudo"}
+                       Text{"the Gerudo Membership Card", /*french*/"la Carte Gerudo", /*spanish*/"el pase de socio gerudo"}
     );
 
     hintTable[MAGIC_BEAN] = HintText::Item({

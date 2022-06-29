@@ -113,7 +113,7 @@ std::unordered_map<std::string, RandomizerCheck> SpoilerfileCheckNameToEnum = {
     { "GF Chest", RC_GF_CHEST },
     { "GF HBA 1000 Points", RC_GF_HBA_1000_POINTS },
     { "GF HBA 1500 Points", RC_GF_HBA_1500_POINTS },
-    { "GF Gerudo Token", RC_GF_GERUDO_TOKEN },
+    { "GF Gerudo Membership Card", RC_GF_GERUDO_TOKEN },
     { "GF North F1 Carpenter", RC_GF_NORTH_F1_CARPENTER },
     { "GF North F2 Carpenter", RC_GF_NORTH_F2_CARPENTER },
     { "GF South F1 Carpenter", RC_GF_SOUTH_F1_CARPENTER },
@@ -1040,7 +1040,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Flèche de Glace", RG_ICE_ARROWS },
     { "Light Arrow", RG_LIGHT_ARROWS },
     { "Flèche de Lumière", RG_LIGHT_ARROWS },
-    { "Gerudo Token", RG_GERUDO_TOKEN },
+    { "Gerudo Membership Card", RG_GERUDO_TOKEN },
     { "Carte Gerudo", RG_GERUDO_TOKEN },
     { "Magic Bean", RG_MAGIC_BEAN },
     { "Haricots Magiques", RG_MAGIC_BEAN },
@@ -4023,10 +4023,10 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();                            
                         }
 
-                        // Shuffle Gerudo Token
-                        ImGui::Text("Shuffle Gerudo Token");
+                        // Shuffle Gerudo Membership Card
+                        ImGui::Text("Shuffle Gerudo Membership Card");
                         InsertHelpHoverText(
-                            "Enabling this shuffles the Gerudo Token into the\nitem pool.\n\nThe Gerudo "
+                            "Enabling this shuffles the Gerudo Membership Card into the\nitem pool.\n\nThe Gerudo "
                             "Token is required to enter the Gerudo\nTraining Ground.");
                         SohImGui::EnhancementCombobox("gRandomizeShuffleGerudoToken", randoShuffleGerudoToken, 2, 0);
                         ImGui::Separator();

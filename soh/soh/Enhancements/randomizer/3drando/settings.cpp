@@ -163,7 +163,7 @@ namespace Settings {
   Option ShuffleKokiriSword     = Option::Bool("Shuffle Kokiri Sword",   {"Off", "On"},                                                     {kokiriSwordDesc});
   Option ShuffleOcarinas        = Option::Bool("Shuffle Ocarinas",       {"Off", "On"},                                                     {ocarinasDesc});
   Option ShuffleWeirdEgg        = Option::Bool("Shuffle Weird Egg",      {"Off", "On"},                                                     {weirdEggDesc});
-  Option ShuffleGerudoToken     = Option::Bool("Shuffle Gerudo Token",   {"Off", "On"},                                                     {gerudoTokenDesc});
+  Option ShuffleGerudoToken     = Option::Bool("Shuffle Gerudo Membership Card",   {"Off", "On"},                                                     {gerudoTokenDesc});
   Option ShuffleMagicBeans      = Option::Bool("Shuffle Magic Beans",    {"Off", "On"},                                                     {magicBeansDesc});
   Option ShuffleMerchants       = Option::U8  ("Shuffle Merchants",      {"Off", "On (No Hints)", "On (With Hints)"},                       {merchantsDesc, merchantsHintsDesc});
   Option ShuffleAdultTradeQuest = Option::Bool("Shuffle Adult Trade",    {"Off", "On"},                                                     {adultTradeDesc});
@@ -1465,7 +1465,7 @@ namespace Settings {
 
     ctx.startingTokens        = StartingSkulltulaToken.Value<uint8_t>();
 
-    //Give the Gerudo Token if Gerudo Fortress is Open and Shuffle Gerudo Card is off
+    //Give the Gerudo Membership Card if Gerudo Fortress is Open and Shuffle Gerudo Card is off
     if (GerudoFortress.Is(GERUDOFORTRESS_OPEN) && !ShuffleGerudoToken) {
         ctx.startingQuestItems |= 0x00400000;
     }
@@ -1701,7 +1701,7 @@ namespace Settings {
       IncludeAndHide({HC_MALON_EGG});
     }
 
-    //Force include Gerudo Token Location if it's not shuffled
+    //Force include Gerudo Membership Card Location if it's not shuffled
     if (ShuffleGerudoToken) {
       Unhide({GF_GERUDO_TOKEN});
     } else {
