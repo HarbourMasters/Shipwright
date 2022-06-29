@@ -795,6 +795,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         if(GetRandoSettingValue(RSK_SKIP_EPONA_RACE)) {
             gSaveContext.eventChkInf[1] |= (1 << 8);
         }
+
+        // skip the z target talk instructions by the kokiri shop
+        gSaveContext.sceneFlags[85].swch |= (1 << 0x1F);
     }
 
     Save_SaveFile();
