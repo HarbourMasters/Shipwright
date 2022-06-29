@@ -231,4 +231,3 @@ endfunction()
 # Default properties of visual studio projects
 ################################################################################
 set(DEFAULT_CXX_PROPS "${CMAKE_CURRENT_LIST_DIR}/DefaultCXX.cmake")
-set(DEFAULT_Fortran_PROPS "${CMAKE_CURRENT_LIST_DIR}/DefaultFortran.cmake")
