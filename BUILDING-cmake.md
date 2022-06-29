@@ -45,9 +45,6 @@ git clone https://github.com/Perlmint/glew-cmake.git external/glew
 ~~~
 cd OTRExporter
 
-# change the path to ZAPD in extract_assets.py
-sed "s%../ZAPDTR/ZAPD.out%build-cmake/ZAPD/ZAPD.out%" < extract_assets.py > extract_assets_cmake.py
-chmod +x extract_assets_cmake.py
 
 cmake -S . -B build-cmake 
 cmake --build build-cmake 
@@ -62,6 +59,24 @@ cd ../OTRGui
 cmake -H. -Bbuild-cmake -GNinja -DOpenGL_GL_PREFERENCE="GLVND" -DCMAKE_BUILD_TYPE="Release"
 cmake --build build-cmake  
 cp build-cmake/ZAPD/ZAPD.out build-cmake/assets/extractor
+
+~~~
+Packaging support (experimental - only 64 bit):
+execute at top-level:
+~~~
+cmake -S . -B build-cmake
+cmake --build build-cmake
+~~~
+
+now in build-cmake:
+~~~
+cpack -G DEB
+cpack -G ZIP
+cpack -G External	(does appimage)
+~~~
+
+Only tested on Linux so far.
+
 ~~~
 
 macOS (M1):
