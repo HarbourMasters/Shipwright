@@ -338,7 +338,7 @@ void HintTable_Init_Item() {
                      }, {
                        //ambiguous text
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
-                       Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
+                       Text{"something heart-shaped", /*french*/"une chose en forme de coeur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
                        Text{"Double Defense", /*french*/"la Double Défence", /*spanish*/"la doble defensa"}
@@ -1610,10 +1610,10 @@ void HintTable_Init_Item() {
                        Text{"a Band-Aid",    /*french*/"un diachylon",     /*spanish*/"un corazoncito sanador"},
                      }, {
                        //ambiguous text
-                       Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
+                       Text{"something heart-shaped", /*french*/"une chose en forme de coeur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
-                       Text{"a Recovery Heart", /*french*/"un cur de vie", /*spanish*/"un corazón"}
+                       Text{"a Recovery Heart", /*french*/"un coeur de vie", /*spanish*/"un corazón"}
     );
 
     hintTable[GREEN_RUPEE] = HintText::Item({
@@ -1683,13 +1683,13 @@ void HintTable_Init_Item() {
     hintTable[PIECE_OF_HEART] = HintText::Item({
                        //obscure text
                        Text{"a little love",  /*french*/"un peu plus d'amour", /*spanish*/"un cuarto de amor"},
-                       Text{"a broken heart", /*french*/"un cur brisé",       /*spanish*/"un corazón roto"},
+                       Text{"a broken heart", /*french*/"un coeur brisé",       /*spanish*/"un corazón roto"},
                      }, {
                        //ambiguous text
-                       Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
+                       Text{"something heart-shaped", /*french*/"une chose en forme de coeur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
-                       Text{"a Piece of Heart", /*french*/"un quart de cur", /*spanish*/"una pieza de corazón"}
+                       Text{"a Piece of Heart", /*french*/"un Quart de Coeur", /*spanish*/"una pieza de corazón"}
     );
 
     hintTable[HEART_CONTAINER] = HintText::Item({
@@ -1699,10 +1699,10 @@ void HintTable_Init_Item() {
                        Text{"a boss's organ",     /*french*/"un organe de monstre",        /*spanish*/"los órganos de un jefe"},
                      }, {
                        //ambiguous text
-                       Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
+                       Text{"something heart-shaped", /*french*/"une chose en forme de coeur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
-                       Text{"a Heart Container", /*french*/"un cur d'énergie", /*spanish*/"un contenedor de corazón"}
+                       Text{"a Heart Container", /*french*/"un Réceptacle de Coeur", /*spanish*/"un contenedor de corazón"}
     );
 
     hintTable[ICE_TRAP] = HintText::Item({
@@ -1719,7 +1719,7 @@ void HintTable_Init_Item() {
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
-                       Text{"an Ice Trap", /*french*/"un piège de glace", /*spanish*/"una trampa de hielo"}
+                       Text{"an Ice Trap", /*french*/"un Piège de Glace", /*spanish*/"una trampa de hielo"}
     );
 
   //MILK
@@ -1900,10 +1900,10 @@ void HintTable_Init_Item() {
                        Text{"a victory valentine", /*french*/"un amour gagnant", /*spanish*/"el amor victorioso"},
                      }, {
                        //ambiguous text
-                       Text{"something heart-shaped", /*french*/"une chose en forme de cur", /*spanish*/"algo con forma de corazón"},
+                       Text{"something heart-shaped", /*french*/"une chose en forme de coeur", /*spanish*/"algo con forma de corazón"},
                      },
                        //clear text
-                       Text{"a Piece of Heart", /*french*/"un quart de cur", /*spanish*/"el amor de la victoria"}
+                       Text{"a Piece of Heart", /*french*/"un Quart de Coeur", /*spanish*/"el amor de la victoria"}
     );
 
     hintTable[TREASURE_GAME_GREEN_RUPEE] = HintText::Item({
