@@ -1,4 +1,4 @@
-#include "hint_list.hpp"
+#include "../hint_list.hpp"
 
 void HintTable_Init_Exclude_Dungeon() {
   /*--------------------------
