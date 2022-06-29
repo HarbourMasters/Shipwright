@@ -926,50 +926,50 @@ void func_80083108(GlobalContext* globalCtx) {
                         sp28 = 1;
                     }
 
-                for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
+                    for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
 
-                    if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
-                        (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
-                        // Equipment on c-buttons is always enabled
-                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
-                            sp28 = 1;
-                        }
-
-                        gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
-                    } else if (func_8008F2F8(globalCtx) == 2) {
-                        if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
-                            (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
-                            if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
-                                sp28 = 1;
-                            }
-
-
-                            if (!CVar_GetS32("gUnderwaterItems", 0)) {
-                                gSaveContext.buttonStatus[BUTTON_STAT_INDEX(i)] = BTN_DISABLED;
-                            } 
-                        } else {
+                        if ((gSaveContext.equips.buttonItems[i] >= ITEM_SHIELD_DEKU) &&
+                            (gSaveContext.equips.buttonItems[i] <= ITEM_BOOTS_HOVER)) {
+                            // Equipment on c-buttons is always enabled
                             if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
                                 sp28 = 1;
                             }
 
                             gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
-                        }
-                    } else {
-                        if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
-                            sp28 = 1;
-                        }
+                        } else if (func_8008F2F8(globalCtx) == 2) {
+                            if ((gSaveContext.equips.buttonItems[i] != ITEM_HOOKSHOT) &&
+                                (gSaveContext.equips.buttonItems[i] != ITEM_LONGSHOT)) {
+                                if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
+                                    sp28 = 1;
+                                }
 
-                        if (!CVar_GetS32("gUnderwaterItems", 0)) {
-                            gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
-                        } 
+                                if (!CVar_GetS32("gUnderwaterItems", 0)) {
+                                    gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
+                                }
+                            } else {
+                                if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_DISABLED) {
+                                    sp28 = 1;
+                                }
+
+                                gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_ENABLED;
+                            }
+                        } else {
+                            if (gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] == BTN_ENABLED) {
+                                sp28 = 1;
+                            }
+
+                            if (!CVar_GetS32("gUnderwaterItems", 0)) {
+                                gSaveContext.buttonStatus[BUTTON_STATUS_INDEX(i)] = BTN_DISABLED;
+                            }
+                        }
                     }
-                }
 
-                if (sp28) {
-                    gSaveContext.unk_13EA = 0;
-                }
+                    if (sp28) {
+                        gSaveContext.unk_13EA = 0;
+                    }
 
-                Interface_ChangeAlpha(50);
+                    Interface_ChangeAlpha(50);
+                }
             } else if ((player->stateFlags1 & 0x00200000) || (player->stateFlags2 & 0x00040000)) {
                 if (gSaveContext.buttonStatus[0] != BTN_DISABLED) {
                     gSaveContext.buttonStatus[0] = BTN_DISABLED;

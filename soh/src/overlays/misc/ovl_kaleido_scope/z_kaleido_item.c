@@ -354,9 +354,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
-                        if (((gSlotAgeReqs[cursorSlot] == 9 || Cvar_GetS32("gNoRestrictAge", 0) ||
+                        if (((gSlotAgeReqs[cursorSlot] == 9 || CVar_GetS32("gNoRestrictAge", 0) ||
                              (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
-                            (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
+                            (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE))) {
                             KaleidoScope_SetupItemEquip(globalCtx, cursorItem, cursorSlot,
                                                         pauseCtx->itemVtx[index].v.ob[0] * 10,
                                                         pauseCtx->itemVtx[index].v.ob[1] * 10);
