@@ -408,9 +408,11 @@ s16 EnGo2_GetStateGoronDmtRollingSmall(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && LINK_IS_ADULT) {
+    if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
+               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
         return 0x3027;
     } else {
         return gSaveContext.eventChkInf[2] & 0x8 ? 0x3021 : gSaveContext.infTable[14] & 0x1 ? 0x302A : 0x3008;
@@ -429,9 +431,11 @@ s16 EnGo2_GetStateGoronDmtDcEntrance(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && LINK_IS_ADULT) {
+    if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
+               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
         return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x1 ? 0x3015 : 0x3014;
@@ -450,10 +454,12 @@ s16 EnGo2_GetStateGoronCityEntrance(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && LINK_IS_ADULT) {
+    if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
-        return 0x3067;
+    } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
+               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
+        return 0x3027;
     } else {
         return gSaveContext.infTable[15] & 0x10 ? 0x3017 : 0x3016;
     }
@@ -471,9 +477,11 @@ s16 EnGo2_GetStateGoronCityIsland(GlobalContext* globalCtx, EnGo2* this) {
 }
 
 u16 EnGo2_GetTextIdGoronCityLowestFloor(GlobalContext* globalCtx, EnGo2* this) {
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && LINK_IS_ADULT) {
+    if (((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+         (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
         return 0x3043;
-    } else if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    } else if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) ||
+               (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[0])) {
         return 0x3027;
     } else {
         return CUR_UPG_VALUE(UPG_STRENGTH) != 0    ? 0x302C
@@ -1561,7 +1569,8 @@ void EnGo2_Init(Actor* thisx, GlobalContext* globalCtx) {
         case GORON_CITY_LOWEST_FLOOR:
         case GORON_CITY_STAIRWELL:
         case GORON_CITY_LOST_WOODS:
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && LINK_IS_ADULT) {
+            if (((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                 (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[4])) && LINK_IS_ADULT) {
                 Actor_Kill(&this->actor);
             }
             this->actionFunc = EnGo2_CurledUp;

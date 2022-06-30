@@ -518,7 +518,8 @@ void EnOssan_TalkGoronShopkeeper(GlobalContext* globalCtx) {
         } else {
             Message_ContinueTextbox(globalCtx, 0x300F);
         }
-    } else if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+    } else if ((!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+               (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[4])) {
         Message_ContinueTextbox(globalCtx, 0x3057);
     } else {
         Message_ContinueTextbox(globalCtx, 0x305B);
