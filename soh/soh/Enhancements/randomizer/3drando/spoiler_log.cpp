@@ -341,7 +341,8 @@ static void WriteSettings(const bool printAll = false) {
       for (const Option* setting : *menu->settingsList) {
         if (setting->GetName() == "Big Poe Target Count" ||
             setting->GetName() == "Cuccos to return" ||
-            setting->GetName() == "Skip Epona Race") {
+            setting->GetName() == "Skip Epona Race" ||
+            setting->GetName() == "Skip Tower Escape") {
             std::string settingName = menu->name + ":" + setting->GetName();
             jsonData["settings"][settingName] = setting->GetSelectedOptionText();
         }

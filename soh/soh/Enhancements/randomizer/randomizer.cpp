@@ -1409,7 +1409,8 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Max Rupees", RSK_FULL_WALLETS },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
-    { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE}
+    { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
+    { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE }
 };
 
 s32 Randomizer::GetItemIDFromGetItemID(s32 getItemId) {
@@ -1669,6 +1670,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_SKIP_EPONA_RACE:
+                    case RSK_SKIP_TOWER_ESCAPE:
                         if(it.value() == "Don't Skip") {
                             gSaveContext.randoSettings[index].value = 0;
                         } else if (it.value() == "Skip") {
@@ -3243,6 +3245,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
+    cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -4328,12 +4331,6 @@ void DrawRandoEditor(bool& open) {
                     //     "The crawlspace into Hyrule Castle goes straight to\nZelda, skipping the guards.");
                     // ImGui::Separator();
 
-                    // todo implement tower escape skip
-                    // // Skip tower escape
-                    // SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
-                    // InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
-                    // ImGui::Separator();
-
                     // todo implement minigame repeat skip
                     // // Skip Minigame repetition
                     // SohImGui::EnhancementCheckbox("Skip Minigame Repetition", "gRandomizeSkipMinigameRepetition");
@@ -4380,6 +4377,11 @@ void DrawRandoEditor(bool& open) {
                     // Skip Epona race
                     SohImGui::EnhancementCheckbox("Skip Epona Race", "gRandomizeSkipEponaRace");
                     InsertHelpHoverText("Epona can be summoned with Epona's Song without\nneeding to race Ingo.");
+                    ImGui::Separator();
+
+                    // Skip tower escape
+                    SohImGui::EnhancementCheckbox("Skip Tower Escape", "gRandomizeSkipTowerEscape");
+                    InsertHelpHoverText("The tower escape sequence between Ganondorf and\nGanon will be skipped.");
                     ImGui::Separator();
 
                     // todo implement complete mask quest

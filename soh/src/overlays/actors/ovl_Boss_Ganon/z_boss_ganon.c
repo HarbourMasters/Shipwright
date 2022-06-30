@@ -1503,7 +1503,7 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
 
             if (this->csTimer == 180) {
                 globalCtx->sceneLoadFlag = 0x14;
-                globalCtx->nextEntranceIndex = 0x43F;
+                globalCtx->nextEntranceIndex = (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_TOWER_ESCAPE)) ? 0x517 : 0x43F;
                 globalCtx->fadeTransition = 5;
             }
             break;
