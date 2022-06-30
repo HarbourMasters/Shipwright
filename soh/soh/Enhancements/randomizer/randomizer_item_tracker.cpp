@@ -310,20 +310,4 @@ void DrawItemTracker(bool& open) {
 
 void InitItemTracker() {
     SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
-
-    // Load item icons into ImGui
-    for (const auto& entry : itemMappingSSS) {
-        SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
-        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
-    }
-    for (const auto& entry : questMappingSSS) {
-        SohImGui::LoadResource(entry.second.name, entry.second.texturePath);
-        SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
-    }
-    for (const auto& entry : songMappingSSS) {
-        SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
-        ImVec4 fadedCol = entry.color;
-        fadedCol.w = 0.3f;
-        SohImGui::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
-    }
 }
