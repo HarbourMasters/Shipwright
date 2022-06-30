@@ -910,6 +910,8 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_BOOTS_HOVER,
 };
 
+static u8 sMaskMemory;
+
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
     func_8083485C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C,
@@ -1909,7 +1911,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
                 !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
+                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
@@ -2886,6 +2888,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                 else {
                     this->currentMask = actionParam - PLAYER_AP_MASK_KEATON + 1;
                 }
+                sMaskMemory = this->currentMask;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
@@ -4574,6 +4577,7 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(globalCtx, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_29;
+            sMaskMemory = PLAYER_MASK_NONE;
         }
         else {
             LinkAnimationHeader* anim;
@@ -8257,6 +8261,7 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
     }
     else if (globalCtx->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         globalCtx->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
+        sMaskMemory = PLAYER_MASK_NONE;
     }
 }
 
@@ -9525,6 +9530,17 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     func_80835F44(globalCtx, this, ITEM_NONE);
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
+    if (CVar_GetS32("gMMBunnyHood", 0)) {
+        this->currentMask = sMaskMemory;
+        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
+            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
+                (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex+1]] != 9 &&
+                 LINK_IS_ADULT && !CVar_GetS32("gNoRestrictAge", 0))) {
+                gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
+                gSaveContext.equips.buttonItems[cSlotIndex+1] = ITEM_NONE;
+            }
+        }
+    }
     Player_InitCommon(this, globalCtx, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
     this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
 
