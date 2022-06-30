@@ -290,6 +290,16 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
 };
 
+void DrawItem(uint32_t itemId) {
+    const ItemTrackerMapEntry& entry = itemTrackerMap[ITEM_SWORD_KOKIRI];
+    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
+
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
+
 void DrawItemTracker(bool& open) {
     if (!open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
@@ -302,13 +312,7 @@ void DrawItemTracker(bool& open) {
         return;
     }
 
-    const ItemTrackerMapEntry& entry = itemTrackerMap[ITEM_SWORD_KOKIRI];
-    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
-
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
-                 ImVec2(0, 0), ImVec2(1, 1));
-
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    DrawItem(ITEM_SWORD_KOKIRI);
 
     ImGui::End();
 }
