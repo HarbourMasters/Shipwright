@@ -21,7 +21,9 @@
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
 //  2022-XX-XX: Platform: Added support for multiple windows via the ImGuiPlatformIO interface.
-//  2022-02-07: Added ImGui_ImplGlfw_InstallCallbacks()/ImGui_ImplGlfw_RestoreCallbacks() helpers to facilitate user installing callbacks after iniitializing backend.
+//  2022-04-30: Inputs: Fixed ImGui_ImplGlfw_TranslateUntranslatedKey() for lower case letters on OSX.
+//  2022-03-23: Inputs: Fixed a regression in 1.87 which resulted in keyboard modifiers events being reported incorrectly on Linux/X11.
+//  2022-02-07: Added ImGui_ImplGlfw_InstallCallbacks()/ImGui_ImplGlfw_RestoreCallbacks() helpers to facilitate user installing callbacks after initializing backend.
 //  2022-01-26: Inputs: replaced short-lived io.AddKeyModsEvent() (added two weeks ago)with io.AddKeyEvent() using ImGuiKey_ModXXX flags. Sorry for the confusion.
 //  2021-01-20: Inputs: calling new io.AddKeyAnalogEvent() for gamepad support, instead of writing directly to io.NavInputs[].
 //  2022-01-17: Inputs: calling new io.AddMousePosEvent(), io.AddMouseButtonEvent(), io.AddMouseWheelEvent() API (1.87+).
@@ -69,11 +71,17 @@
 
 // GLFW
 #include <GLFW/glfw3.h>
+
 #ifdef _WIN32
 #undef APIENTRY
 #define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>   // for glfwGetWin32Window
+#include <GLFW/glfw3native.h>   // for glfwGetWin32Window()
 #endif
+#ifdef __APPLE__
+#define GLFW_EXPOSE_NATIVE_COCOA
+#include <GLFW/glfw3native.h>   // for glfwGetCocoaWindow()
+#endif
+
 #define GLFW_HAS_WINDOW_TOPMOST       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ GLFW_FLOATING
 #define GLFW_HAS_WINDOW_HOVERED       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ GLFW_HOVERED
 #define GLFW_HAS_WINDOW_ALPHA         (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3300) // 3.3+ glfwSetWindowOpacity
@@ -115,6 +123,9 @@ struct ImGui_ImplGlfw_Data
     GLFWwindow*             KeyOwnerWindows[GLFW_KEY_LAST];
     bool                    InstalledCallbacks;
     bool                    WantUpdateMonitors;
+#ifdef _WIN32
+    WNDPROC                 GlfwWndProc;
+#endif
 
     // Chain GLFW callbacks: our callbacks will call the user's previously installed callbacks, if any.
     GLFWwindowfocusfun      PrevUserCallbackWindowFocus;
@@ -126,7 +137,7 @@ struct ImGui_ImplGlfw_Data
     GLFWcharfun             PrevUserCallbackChar;
     GLFWmonitorfun          PrevUserCallbackMonitor;
 
-    ImGui_ImplGlfw_Data()   { memset(this, 0, sizeof(*this)); }
+    ImGui_ImplGlfw_Data()   { memset((void*)this, 0, sizeof(*this)); }
 };
 
 // Backend data stored in io.BackendPlatformUserData to allow support for multiple Dear ImGui contexts
@@ -270,6 +281,19 @@ static ImGuiKey ImGui_ImplGlfw_KeyToImGuiKey(int key)
     }
 }
 
+static int ImGui_ImplGlfw_KeyToModifier(int key)
+{
+    if (key == GLFW_KEY_LEFT_CONTROL || key == GLFW_KEY_RIGHT_CONTROL)
+        return GLFW_MOD_CONTROL;
+    if (key == GLFW_KEY_LEFT_SHIFT || key == GLFW_KEY_RIGHT_SHIFT)
+        return GLFW_MOD_SHIFT;
+    if (key == GLFW_KEY_LEFT_ALT || key == GLFW_KEY_RIGHT_ALT)
+        return GLFW_MOD_ALT;
+    if (key == GLFW_KEY_LEFT_SUPER || key == GLFW_KEY_RIGHT_SUPER)
+        return GLFW_MOD_SUPER;
+    return 0;
+}
+
 static void ImGui_ImplGlfw_UpdateKeyModifiers(int mods)
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -320,6 +344,7 @@ static int ImGui_ImplGlfw_TranslateUntranslatedKey(int key, int scancode)
         IM_ASSERT(IM_ARRAYSIZE(char_names) == IM_ARRAYSIZE(char_keys));
         if (key_name[0] >= '0' && key_name[0] <= '9')               { key = GLFW_KEY_0 + (key_name[0] - '0'); }
         else if (key_name[0] >= 'A' && key_name[0] <= 'Z')          { key = GLFW_KEY_A + (key_name[0] - 'A'); }
+        else if (key_name[0] >= 'a' && key_name[0] <= 'z')          { key = GLFW_KEY_A + (key_name[0] - 'a'); }
         else if (const char* p = strchr(char_names, key_name[0]))   { key = char_keys[p - char_names]; }
     }
     // if (action == GLFW_PRESS) printf("key %d scancode %d name '%s'\n", key, scancode, key_name);
@@ -338,6 +363,9 @@ void ImGui_ImplGlfw_KeyCallback(GLFWwindow* window, int keycode, int scancode, i
     if (action != GLFW_PRESS && action != GLFW_RELEASE)
         return;
 
+    // Workaround: X11 does not include current pressed/released modifier key in 'mods' flags. https://github.com/glfw/glfw/issues/1630
+    if (int keycode_to_mod = ImGui_ImplGlfw_KeyToModifier(keycode))
+        mods = (action == GLFW_PRESS) ? (mods | keycode_to_mod) : (mods & ~keycode_to_mod);
     ImGui_ImplGlfw_UpdateKeyModifiers(mods);
 
     if (keycode >= 0 && keycode < IM_ARRAYSIZE(bd->KeyOwnerWindows))
@@ -519,6 +547,8 @@ static bool ImGui_ImplGlfw_Init(GLFWwindow* window, bool install_callbacks, Glfw
     main_viewport->PlatformHandle = (void*)bd->Window;
 #ifdef _WIN32
     main_viewport->PlatformHandleRaw = glfwGetWin32Window(bd->Window);
+#elif defined(__APPLE__)
+    main_viewport->PlatformHandleRaw = (void*)glfwGetCocoaWindow(bd->Window);
 #endif
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
         ImGui_ImplGlfw_InitPlatformInterface();
@@ -858,6 +888,8 @@ static void ImGui_ImplGlfw_CreateWindow(ImGuiViewport* viewport)
     viewport->PlatformHandle = (void*)vd->Window;
 #ifdef _WIN32
     viewport->PlatformHandleRaw = glfwGetWin32Window(vd->Window);
+#elif defined(__APPLE__)
+    viewport->PlatformHandleRaw = (void*)glfwGetCocoaWindow(vd->Window);
 #endif
     glfwSetWindowPos(vd->Window, (int)viewport->Pos.x, (int)viewport->Pos.y);
 
@@ -908,9 +940,9 @@ static void ImGui_ImplGlfw_DestroyWindow(ImGuiViewport* viewport)
 // We have submitted https://github.com/glfw/glfw/pull/1568 to allow GLFW to support "transparent inputs".
 // In the meanwhile we implement custom per-platform workarounds here (FIXME-VIEWPORT: Implement same work-around for Linux/OSX!)
 #if !GLFW_HAS_MOUSE_PASSTHROUGH && GLFW_HAS_WINDOW_HOVERED && defined(_WIN32)
-static WNDPROC g_GlfwWndProc = NULL;
 static LRESULT CALLBACK WndProcNoInputs(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+    ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     if (msg == WM_NCHITTEST)
     {
         // Let mouse pass-through the window. This will allow the backend to call io.AddMouseViewportEvent() properly (which is OPTIONAL).
@@ -921,7 +953,7 @@ static LRESULT CALLBACK WndProcNoInputs(HWND hWnd, UINT msg, WPARAM wParam, LPAR
         if (viewport->Flags & ImGuiViewportFlags_NoInputs)
             return HTTRANSPARENT;
     }
-    return ::CallWindowProc(g_GlfwWndProc, hWnd, msg, wParam, lParam);
+    return ::CallWindowProc(bd->GlfwWndProc, hWnd, msg, wParam, lParam);
 }
 #endif
 
@@ -942,9 +974,10 @@ static void ImGui_ImplGlfw_ShowWindow(ImGuiViewport* viewport)
 
     // GLFW hack: install hook for WM_NCHITTEST message handler
 #if !GLFW_HAS_MOUSE_PASSTHROUGH && GLFW_HAS_WINDOW_HOVERED && defined(_WIN32)
+    ImGui_ImplGlfw_Data* bd = ImGui_ImplGlfw_GetBackendData();
     ::SetPropA(hwnd, "IMGUI_VIEWPORT", viewport);
-    if (g_GlfwWndProc == NULL)
-        g_GlfwWndProc = (WNDPROC)::GetWindowLongPtr(hwnd, GWLP_WNDPROC);
+    if (bd->GlfwWndProc == NULL)
+        bd->GlfwWndProc = (WNDPROC)::GetWindowLongPtr(hwnd, GWLP_WNDPROC);
     ::SetWindowLongPtr(hwnd, GWLP_WNDPROC, (LONG_PTR)WndProcNoInputs);
 #endif
 
