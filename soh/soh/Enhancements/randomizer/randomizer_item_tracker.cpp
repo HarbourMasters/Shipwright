@@ -270,6 +270,26 @@ char z2ASCIISSS(int code) {
     return char(ret);
 }
 
+typedef struct {
+    uint32_t id;
+    std::string name;
+    std::string nameFaded;
+    uint32_t bitMask;
+} ItemTrackerMapEntry;
+
+#define ITEM_TRACKER_MAP_ENTRY(id, maskShift)     \
+    {                                             \
+        id, {                                     \
+            id, #id, #id "_Faded", 1 << maskShift \
+        }                                         \
+    }
+
+std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = { 
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0), 
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
+};
+
 void DrawItemTracker(bool& open) {
     if (!open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
@@ -282,9 +302,9 @@ void DrawItemTracker(bool& open) {
         return;
     }
 
-    uint32_t bitMask = 1 << 0;
-    bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
-    const ItemMapEntry& entry = itemMappingSSS[ITEM_SWORD_KOKIRI];
+    const ItemTrackerMapEntry& entry = itemTrackerMap[ITEM_SWORD_KOKIRI];
+    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
+
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
