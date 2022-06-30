@@ -270,28 +270,6 @@ char z2ASCIISSS(int code) {
     return char(ret);
 }
 
-void DrawEquipmentTabTracker() {
-    const std::vector<uint8_t> equipmentValues = {
-        ITEM_SWORD_KOKIRI, ITEM_SWORD_MASTER,  ITEM_SWORD_BGS,     ITEM_NONE,
-        ITEM_SHIELD_DEKU,  ITEM_SHIELD_HYLIAN, ITEM_SHIELD_MIRROR, ITEM_NONE,
-        ITEM_TUNIC_KOKIRI, ITEM_TUNIC_GORON,   ITEM_TUNIC_ZORA,    ITEM_NONE,
-        ITEM_BOOTS_KOKIRI, ITEM_BOOTS_IRON,    ITEM_BOOTS_HOVER,   ITEM_NONE,
-    };
-
-        ImGui::PushID(0);
-        uint32_t bitMask = 1 << 0;
-        bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
-        const ItemMapEntry& entry = itemMappingSSS[equipmentValues[0]];
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
-                     ImVec2(0, 0), ImVec2(1, 1));
-       
-        ImGui::PopStyleColor();
-        ImGui::PopID();
-        SetLastItemHoverText(SohUtils::GetItemName(entry.id));
- 
-}
-
 void DrawItemTracker(bool& open) {
     if (!open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
@@ -303,7 +281,16 @@ void DrawItemTracker(bool& open) {
         ImGui::End();
         return;
     }
-    DrawEquipmentTabTracker();
+
+    uint32_t bitMask = 1 << 0;
+    bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
+    const ItemMapEntry& entry = itemMappingSSS[ITEM_SWORD_KOKIRI];
+    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
+
+    ImGui::PopStyleColor();
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 
     ImGui::End();
 }
