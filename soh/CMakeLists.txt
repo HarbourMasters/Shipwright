@@ -1718,21 +1718,19 @@ endif()
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
-			"$<$<CONFIG:Debug>:"
-				"libultraship;"
-				"ZAPDUtils;"
-				"opengl32;"
-				"glu32;"
-				"SDL2;"
-				"SDL2main;"
-				"glfw3dll;"
-				"glew32s;"
-				"storm;"
-				"winmm;"
-				"imm32;"
-				"version;"
-				"setupapi"
-			">"
+			"libultraship;"
+			"ZAPDUtils;"
+			"opengl32;"
+			"glu32;"
+			"SDL2;"
+			"SDL2main;"
+			"glfw3dll;"
+			"glew32s;"
+			"storm;"
+			"winmm;"
+			"imm32;"
+			"version;"
+			"setupapi"
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32") 
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
