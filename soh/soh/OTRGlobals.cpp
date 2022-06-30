@@ -36,6 +36,7 @@
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
+#include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
@@ -119,6 +120,7 @@ extern "C" void InitOTR() {
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();
+    InitItemTracker();
     OTRExtScanner();
 }
 
