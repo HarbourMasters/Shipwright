@@ -285,11 +285,9 @@ void DrawItemTracker(bool& open) {
     uint32_t bitMask = 1 << 0;
     bool hasEquip = (bitMask & gSaveContext.inventory.equipment) != 0;
     const ItemMapEntry& entry = itemMappingSSS[ITEM_SWORD_KOKIRI];
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
-    ImGui::PopStyleColor();
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 
     ImGui::End();
