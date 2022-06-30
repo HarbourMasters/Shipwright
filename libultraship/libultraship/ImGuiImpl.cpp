@@ -764,7 +764,7 @@ namespace SohImGui {
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
              ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
-            console->Commands["reset"].handler(noArgs);
+            console->Commands["reset"].handler(emptyArgs);
         }
         #endif
         
@@ -784,7 +784,7 @@ namespace SohImGui {
                     "Ctrl+R"
                     #endif
                     )) {
-                    console->Commands["reset"].handler(noArgs);
+                    console->Commands["reset"].handler(emptyArgs);
                 }
                 ImGui::EndMenu();
             }            
