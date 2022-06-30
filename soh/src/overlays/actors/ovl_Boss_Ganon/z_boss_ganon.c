@@ -348,7 +348,8 @@ void BossGanon_Init(Actor* thisx, GlobalContext* globalCtx2) {
         }
 
         sBossGanonGanondorf = this;
-        thisx->colChkInfo.health = 40;
+        // thisx->colChkInfo.health = 40;
+        thisx->colChkInfo.health = 1;
         Actor_ProcessInitChain(thisx, sInitChain);
         ActorShape_Init(&thisx->shape, 0, NULL, 0);
         Actor_SetScale(thisx, 0.01f);
@@ -1502,8 +1503,12 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
             }
 
             if (this->csTimer == 180) {
-                globalCtx->sceneLoadFlag = 0x14;
-                globalCtx->nextEntranceIndex = 0x43F;
+                if (gSaveContext.n64ddFlag) {
+                    // todo rando setting check
+                } else {
+                    globalCtx->sceneLoadFlag = 0x14;
+                    globalCtx->nextEntranceIndex = 0x43F;
+                }
                 globalCtx->fadeTransition = 5;
             }
             break;
