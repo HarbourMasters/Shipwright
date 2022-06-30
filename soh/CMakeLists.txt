@@ -1845,6 +1845,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
      #			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
      #	set_property(TARGET StormLibRUS32 PROPERTY
      #        IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
+  endif()
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
