@@ -362,7 +362,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 						MemoryStream* dlStream = new MemoryStream();
 						BinaryWriter dlWriter = BinaryWriter(dlStream);
 
-						Save(dList->otherDLists[i], outPath, &dlWriter);
+						Save(dList->otherDLists[i], outPath, &dlWriter, writeFullHeader);
 						AddFile(fName, dlStream->ToVector());
 					}
 				}

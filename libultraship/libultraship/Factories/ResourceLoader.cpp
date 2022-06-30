@@ -106,16 +106,16 @@ namespace Ship
             result = MtxFactory::ReadMtx(reader, readFullHeader);
             break;
         case ResourceType::Audio:
-            result = AudioFactory::ReadAudio(reader.get());
+            result = AudioFactory::ReadAudio(reader, readFullHeader);
             break;
         case ResourceType::AudioSample:
-            result = AudioSampleFactory::ReadAudioSample(reader.get());
+            result = AudioSampleFactory::ReadAudioSample(reader, readFullHeader);
             break;
         case ResourceType::AudioSoundFont:
-            result = AudioSoundFontFactory::ReadAudioSoundFont(reader.get());
+            result = AudioSoundFontFactory::ReadAudioSoundFont(reader, readFullHeader);
             break;
         case ResourceType::AudioSequence:
-            result = AudioSequenceFactory::ReadAudioSequence(reader.get());
+            result = AudioSequenceFactory::ReadAudioSequence(reader, readFullHeader);
             break;
         case ResourceType::Scalar:
             result = ScalarFactory::ReadScalar(reader, readFullHeader);

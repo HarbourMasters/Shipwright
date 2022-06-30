@@ -160,7 +160,7 @@ static void ExporterResourceEnd(ZResource* res, BinaryWriter& writer)
 		if (Globals::Instance->fileMode == ZFileMode::ExtractDirectory)
 		{
 			std::unique_lock Lock(fileMutex);
-			files[fName] = strem->ToVector();
+			files[fName] = stream->ToVector();
 		}
 		else
 			File::WriteAllBytes("Extract/" + fName, stream->ToVector());

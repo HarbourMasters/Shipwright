@@ -60,27 +60,27 @@ namespace Ship
 	class AudioSequenceV2 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
 	};
 
 	class AudioSoundFontV2 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 		static std::vector<AdsrEnvelope*> ReadEnvelopeData(BinaryReader* reader);
 	};
 
 	class AudioSampleV2 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class AudioV2 : public ResourceFile
 	{
 	public:
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class AudioSequence : public Resource
