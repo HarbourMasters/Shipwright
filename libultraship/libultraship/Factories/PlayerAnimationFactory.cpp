@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    PlayerAnimation* PlayerAnimationFactory::ReadPlayerAnimation(BinaryReader* reader)
+    PlayerAnimation* PlayerAnimationFactory::ReadPlayerAnimation(BinaryReader* reader, bool readFullHeader)
     {
         PlayerAnimation* anim = new PlayerAnimation();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             PlayerAnimationV0 Anim = PlayerAnimationV0();
-            Anim.ParseFileBinary(reader, anim);
+            Anim.ParseFileBinary(reader, anim, readFullHeader);
         }
         break;
         default:

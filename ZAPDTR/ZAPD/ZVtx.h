@@ -5,7 +5,6 @@
 #include <vector>
 #include "ZResource.h"
 #include "ZScalar.h"
-#include "tinyxml2.h"
 
 class ZVtx : public ZResource
 {

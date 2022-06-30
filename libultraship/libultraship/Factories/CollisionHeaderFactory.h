@@ -6,6 +6,6 @@ namespace Ship
     class CollisionHeaderFactory
     {
     public:
-        static CollisionHeader* ReadCollisionHeader(BinaryReader* reader);
+        static CollisionHeader* ReadCollisionHeader(BinaryReader* reader, bool readFullHeader);
     };
 }

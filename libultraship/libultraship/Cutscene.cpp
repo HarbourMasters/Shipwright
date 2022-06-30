@@ -1,10 +1,10 @@
 #include "Cutscene.h"
 
-void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 {
 	Cutscene* cs = (Cutscene*)res;
 
-	ResourceFile::ParseFileBinary(reader, res);
+	ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 	uint32_t numEntries = reader->ReadUInt32();
 	cs->commands.reserve(numEntries);

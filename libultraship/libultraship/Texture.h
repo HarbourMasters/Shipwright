@@ -26,7 +26,7 @@ namespace Ship
 		uint32_t offsetToImageData;
 		uint32_t offsetToPaletteData;
 
-		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+		void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
 	};
 
 	class Texture : public Resource

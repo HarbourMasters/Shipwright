@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    CollisionHeader* CollisionHeaderFactory::ReadCollisionHeader(BinaryReader* reader)
+    CollisionHeader* CollisionHeaderFactory::ReadCollisionHeader(BinaryReader* reader, bool readFullHeader)
     {
         CollisionHeader* colHeader = new CollisionHeader();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             CollisionHeaderV0 col = CollisionHeaderV0();
-            col.ParseFileBinary(reader, colHeader);
+            col.ParseFileBinary(reader, colHeader, readFullHeader);
         }
         break;
         default:

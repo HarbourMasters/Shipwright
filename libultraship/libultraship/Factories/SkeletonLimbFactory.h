@@ -6,6 +6,6 @@ namespace Ship
     class SkeletonLimbFactory
     {
     public:
-        static SkeletonLimb* ReadSkeletonLimb(BinaryReader* reader);
+        static SkeletonLimb* ReadSkeletonLimb(BinaryReader* reader, bool readFullHeader);
     };
 }

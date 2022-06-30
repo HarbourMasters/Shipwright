@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Path* PathFactory::ReadPath(BinaryReader* reader)
+    Path* PathFactory::ReadPath(BinaryReader* reader, bool readFullHeader)
     {
         Path* path = new Path();
         Version version = (Version)reader->ReadUInt32();
@@ -12,7 +12,7 @@ namespace Ship
         case Version::Deckard:
         {
             PathV0 Path;
-            Path.ParseFileBinary(reader, path);
+            Path.ParseFileBinary(reader, path, readFullHeader);
         }
         break;
         default:

@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-    void SkeletonLimbV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void SkeletonLimbV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         SkeletonLimb* limb = (SkeletonLimb*)res;
 
-        ResourceFile::ParseFileBinary(reader, limb);
+        ResourceFile::ParseFileBinary(reader, limb, readFullHeader);
 
         limb->limbType = (LimbType)reader->ReadByte();
         limb->skinSegmentType = (ZLimbSkinType)reader->ReadByte();

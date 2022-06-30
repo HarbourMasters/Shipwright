@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-	void PathV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void PathV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		Path* path = (Path*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		uint32_t numPaths = reader->ReadUInt32();
 		path->paths.reserve(numPaths);

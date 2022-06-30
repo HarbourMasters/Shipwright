@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    DisplayList* DisplayListFactory::ReadDisplayList(BinaryReader* reader)
+    DisplayList* DisplayListFactory::ReadDisplayList(BinaryReader* reader, bool readFullHeader)
     {
         DisplayList* dl = new DisplayList();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             DisplayListV0 DL = DisplayListV0();
-            DL.ParseFileBinary(reader, dl);
+            DL.ParseFileBinary(reader, dl, readFullHeader);
         }
         break;
         default:

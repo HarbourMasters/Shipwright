@@ -30,7 +30,7 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
 {
-	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample, Ship::Version::Rachael);
+	WriteHeader(nullptr, writer, Ship::ResourceType::AudioSample, Ship::Version::Rachael, true);
 
 	writer->Write(entry->codec);
 	writer->Write(entry->medium);
@@ -78,11 +78,11 @@ void OTRExporter_Audio::WriteEnvData(std::vector<AdsrEnvelope*> envelopes, Binar
 	}
 }
 
-void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZAudio* audio = (ZAudio*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Audio, Ship::Version::Rachael);
+	WriteHeader(res, writer, Ship::ResourceType::Audio, Ship::Version::Rachael, writeFullHeader);
 
 	// Write Samples as individual files
 	for (auto pair : audio->samples)
@@ -115,7 +115,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* fntStream = new MemoryStream();
 		BinaryWriter fntWriter = BinaryWriter(fntStream);
 
-		WriteHeader(nullptr, "", &fntWriter, Ship::ResourceType::AudioSoundFont, Ship::Version::Rachael);
+		WriteHeader(nullptr, &fntWriter, Ship::ResourceType::AudioSoundFont, Ship::Version::Rachael, true);
 
 		fntWriter.Write((uint32_t)i);
 		fntWriter.Write(audio->soundFontTable[i].medium);
@@ -174,7 +174,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		MemoryStream* seqStream = new MemoryStream();
 		BinaryWriter seqWriter = BinaryWriter(seqStream);
 
-		WriteHeader(nullptr, "", &seqWriter, Ship::ResourceType::AudioSequence, Ship::Version::Rachael);
+		WriteHeader(nullptr, &seqWriter, Ship::ResourceType::AudioSequence, Ship::Version::Rachael, true);
 
 		seqWriter.Write((uint32_t)seq.size());
 		seqWriter.Write(seq.data(), seq.size());

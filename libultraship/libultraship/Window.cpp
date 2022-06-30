@@ -193,7 +193,8 @@ extern "C" {
         }
     }
 
-    char* ResourceMgr_LoadTexByName(char* texPath) {
+    char* ResourceMgr_LoadTexByName(char* texPath) 
+    {
         const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
         ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;

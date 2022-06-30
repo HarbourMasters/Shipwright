@@ -6,7 +6,11 @@
 #include "GlobalCtx2.h"
 #include "StrHash.h"
 #include "File.h"
-#include "Lib/tinyxml2/tinyxml2.h"
+
+namespace tinyxml2
+{
+    class XMLElement;
+}
 
 namespace Ship
 {
@@ -25,6 +29,7 @@ namespace Ship
         SkeletonLimb     =   0x4F534C42,     // OSLB
         Matrix           =   0x4F4D5458,     // OMTX
         Path             =   0x4F505448,     // OPTH
+        Vector           =   0x4F564543,     // OVEC
         Vertex           =   0x4F565458,     // OVTX
         Cutscene         =   0x4F435654,     // OCUT
         Array            =   0x4F415252,     // OARR
@@ -34,6 +39,7 @@ namespace Ship
         AudioSample      =   0x4F534D50,     // OSMP
         AudioSoundFont   =   0x4F534654,     // OSFT
         AudioSequence    =   0x4F534551,     // OSEQ
+        Scalar           =   0x4F53434C,     // OSCL
     };
 
     enum class DataType
@@ -65,7 +71,12 @@ namespace Ship
         Rachael     = 2,
         Leon        = 3,
         Zhora       = 4,
-        // ...
+        // TR
+        Rinzler     = 5,
+        Flynn       = 6,
+        Bradley     = 7,
+        Quorra      = 8,
+        Clu         = 9,
     };
 
     struct Patch
@@ -97,7 +108,7 @@ namespace Ship
         uint64_t id;            // 0x09 - Unique Resource ID
         uint32_t resourceVersion; // 0x11 - Resource Minor Version Number
 
-        virtual void ParseFileBinary(BinaryReader* reader, Resource* res);
+        virtual void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader);
         virtual void ParseFileXML(tinyxml2::XMLElement* reader, Resource* res);
         virtual void WriteFileBinary(BinaryWriter* writer, Resource* res);
         virtual void WriteFileXML(tinyxml2::XMLElement* writer, Resource* res);

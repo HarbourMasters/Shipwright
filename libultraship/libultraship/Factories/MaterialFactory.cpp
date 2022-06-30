@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Material* MaterialFactory::ReadMaterial(BinaryReader* reader)
+    Material* MaterialFactory::ReadMaterial(BinaryReader* reader, bool readFullHeader)
     {
         Material* mat = new Material();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             MaterialV0 Material = MaterialV0();
-            Material.ParseFileBinary(reader, mat);
+            Material.ParseFileBinary(reader, mat, readFullHeader);
         }
             break;
         default:

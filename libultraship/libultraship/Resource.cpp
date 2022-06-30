@@ -7,16 +7,19 @@
 
 namespace Ship
 {
-    void ResourceFile::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void ResourceFile::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
-        id = reader->ReadUInt64();
-        res->id = id;
-        reader->ReadUInt32(); // Resource minor version number
-        reader->ReadUInt64(); // ROM CRC
-        reader->ReadUInt32(); // ROM Enum
+        if (readFullHeader)
+        {
+            id = reader->ReadUInt64();
+            res->id = id;
+            reader->ReadUInt32(); // Resource minor version number
+            reader->ReadUInt64(); // ROM CRC
+            reader->ReadUInt32(); // ROM Enum
 
-        // Reserved for future file format versions...
-        reader->Seek(64, SeekOffsetType::Start);
+            // Reserved for future file format versions...
+            reader->Seek(64, SeekOffsetType::Start); // OTRTODO: Do not seek from the start - we may be reading a file inside a file that does not start at offset 0...
+        }
     }
     void ResourceFile::ParseFileXML(tinyxml2::XMLElement* reader, Resource* res)
     {

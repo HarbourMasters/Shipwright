@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-    void TextureV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void TextureV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         Texture* tex = (Texture*)res;
 
-        ResourceFile::ParseFileBinary(reader, tex);
+        ResourceFile::ParseFileBinary(reader, tex, readFullHeader);
 
         tex->texType = (TextureType)reader->ReadUInt32();
         tex->width = reader->ReadUInt32();

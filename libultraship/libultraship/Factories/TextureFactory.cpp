@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Texture* TextureFactory::ReadTexture(BinaryReader* reader)
+    Texture* TextureFactory::ReadTexture(BinaryReader* reader, bool readFullHeader)
     {
         Texture* tex = new Texture();
 
@@ -13,7 +13,7 @@ namespace Ship
         case Version::Deckard:
         {
             TextureV0 texFac = TextureV0();
-            texFac.ParseFileBinary(reader, tex);
+            texFac.ParseFileBinary(reader, tex, readFullHeader);
         }
         break;
         default:

@@ -7,6 +7,7 @@
 
 #include "Globals.h"
 #include "OutputFormatter.h"
+#include <tinyxml2.h>
 #include "Utils/BinaryWriter.h"
 #include "Utils/BitConverter.h"
 #include "Utils/Directory.h"
@@ -392,7 +393,7 @@ void ZFile::ExtractResources()
 		if (exporter != nullptr)
 		{
 			// exporter->Save(res, Globals::Instance->outputPath.string(), &writerFile);
-			exporter->Save(res, Globals::Instance->outputPath.string(), &writerRes);
+			exporter->Save(res, Globals::Instance->outputPath.string(), &writerRes, true);
 		}
 
 		if (exporterSet != nullptr && exporterSet->resSaveFunc != nullptr)

@@ -6,6 +6,6 @@ namespace Ship
     class BlobFactory
     {
     public:
-        static Blob* ReadBlob(BinaryReader* reader);
+        static Blob* ReadBlob(BinaryReader* reader, bool readFullHeader);
     };
 }

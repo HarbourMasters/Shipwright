@@ -1,11 +1,11 @@
 #include "TextExporter.h"
 #include "../ZAPD/ZFile.h"
 
-void OTRExporter_Text::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Text::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZText* txt = (ZText*)res;
 
-	WriteHeader(txt, outPath, writer, Ship::ResourceType::Text);
+	WriteHeader(txt, writer, Ship::ResourceType::Text, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)txt->messages.size());
 

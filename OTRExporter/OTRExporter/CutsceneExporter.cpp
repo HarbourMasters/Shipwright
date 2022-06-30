@@ -1,11 +1,11 @@
 #include "CutsceneExporter.h"
 #include <Resource.h>
 
-void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Cutscene::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZCutscene* cs = (ZCutscene*)res;
 
-	WriteHeader(cs, outPath, writer, Ship::ResourceType::Cutscene);
+	WriteHeader(cs, writer, Ship::ResourceType::Cutscene, Ship::Version::Deckard, writeFullHeader);
 
 	//writer->Write((uint32_t)cs->commands.size() + 2 + 2);
 	writer->Write((uint32_t)0);

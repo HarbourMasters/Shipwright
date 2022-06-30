@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-	Cutscene* CutsceneFactory::ReadCutscene(BinaryReader* reader)
+	Cutscene* CutsceneFactory::ReadCutscene(BinaryReader* reader, bool readFullHeader)
 	{
         Cutscene* cs = new Cutscene();
         Version version = (Version)reader->ReadUInt32();
@@ -12,7 +12,7 @@ namespace Ship
         case Version::Deckard:
         {
             CutsceneV0 cutscene = CutsceneV0();
-            cutscene.ParseFileBinary(reader, cs);
+            cutscene.ParseFileBinary(reader, cs, readFullHeader);
         }
         break;
         default:

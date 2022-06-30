@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-	void AudioSequenceV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSequenceV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		AudioSequence* seq = (AudioSequence*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		uint32_t seqDataSize = reader->ReadInt32();
 
@@ -25,11 +25,11 @@ namespace Ship
 			seq->fonts.push_back(reader->ReadUByte());
 	}
 
-	void AudioSampleV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSampleV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		AudioSample* entry = (AudioSample*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		entry->codec = reader->ReadByte();
 		entry->medium = reader->ReadByte();
@@ -59,11 +59,11 @@ namespace Ship
 			entry->book.books.push_back(reader->ReadInt16());
 	}
 
-	void AudioSoundFontV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioSoundFontV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		AudioSoundFont* soundFont = (AudioSoundFont*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
 		soundFont->id = reader->ReadInt32();
 		soundFont->medium = reader->ReadByte();
@@ -178,10 +178,10 @@ namespace Ship
 		return envelopes;
 	}
 
-	void AudioV2::ParseFileBinary(BinaryReader* reader, Resource* res)
+	void AudioV2::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 	{
 		Audio* audio = (Audio*)res;
 
-		ResourceFile::ParseFileBinary(reader, res);
+		ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 	}
 }

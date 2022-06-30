@@ -1,11 +1,11 @@
 #include "AnimationExporter.h"
 #include <Animation.h>
 
-void OTRExporter_Animation::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Animation::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZAnimation* anim = (ZAnimation*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Animation);
+	WriteHeader(res, writer, Ship::ResourceType::Animation, Ship::Version::Deckard, writeFullHeader);
 
 	ZNormalAnimation* normalAnim = dynamic_cast<ZNormalAnimation*>(anim);
 	ZCurveAnimation* curveAnim = dynamic_cast<ZCurveAnimation*>(anim);

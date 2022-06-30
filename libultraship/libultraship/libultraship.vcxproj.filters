@@ -354,6 +354,12 @@
     <ClCompile Include="Factories\AudioFactory.cpp">
       <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
+    <ClCompile Include="Scalar.cpp">
+      <Filter>Source Files\Resources\Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\ScalarFactory.cpp">
+      <Filter>Source Files\Resources\Factories</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -658,6 +664,12 @@
     </ClInclude>
     <ClInclude Include="Lib\dr_libs\wav.h">
       <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="Scalar.h">
+      <Filter>Header Files\Resources\Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Factories\ScalarFactory.h">
+      <Filter>Header Files\Resources\Factories</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

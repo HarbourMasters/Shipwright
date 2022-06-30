@@ -84,6 +84,9 @@
     <ClInclude Include="AudioExporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ScalarExporter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CollisionExporter.cpp">
@@ -144,6 +147,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AudioExporter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScalarExporter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

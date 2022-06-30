@@ -6,6 +6,6 @@ namespace Ship
     class TextureFactory
     {
     public:
-        static Texture* ReadTexture(BinaryReader* reader);
+        static Texture* ReadTexture(BinaryReader* reader, bool readFullHeader);
     };
 }

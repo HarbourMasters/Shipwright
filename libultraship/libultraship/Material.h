@@ -31,7 +31,7 @@ namespace Ship
         uint32_t shaderParamsCnt;
         uint32_t offsetToShaderEntries;
 
-        void ParseFileBinary(BinaryReader* reader, Resource* res) override;
+        void ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader) override;
     };
 
     class Material : public Resource

@@ -2,7 +2,7 @@
 
 namespace Ship
 {
-    Audio* AudioFactory::ReadAudio(BinaryReader* reader)
+    Audio* AudioFactory::ReadAudio(BinaryReader* reader, bool readFullHeader)
     {
         Audio* audio = new Audio();
         Version version = (Version)reader->ReadUInt32();
@@ -12,7 +12,7 @@ namespace Ship
         case Version::Rachael:
         {
             AudioV2 audioFac = AudioV2();
-            audioFac.ParseFileBinary(reader, audio);
+            audioFac.ParseFileBinary(reader, audio, readFullHeader);
         }
         break;
         default:
@@ -23,7 +23,7 @@ namespace Ship
         return audio;
     }
 
-    AudioSample* AudioSampleFactory::ReadAudioSample(BinaryReader* reader)
+    AudioSample* AudioSampleFactory::ReadAudioSample(BinaryReader* reader, bool readFullHeader)
     {
         AudioSample* audioSample = new AudioSample();
         Version version = (Version)reader->ReadUInt32();
@@ -33,7 +33,7 @@ namespace Ship
         case Version::Rachael:
         {
             AudioSampleV2 audioSampleFac = AudioSampleV2();
-            audioSampleFac.ParseFileBinary(reader, audioSample);
+            audioSampleFac.ParseFileBinary(reader, audioSample, readFullHeader);
         }
         break;
         default:
@@ -44,7 +44,7 @@ namespace Ship
         return audioSample;
     }
 
-    AudioSoundFont* AudioSoundFontFactory::ReadAudioSoundFont(BinaryReader* reader)
+    AudioSoundFont* AudioSoundFontFactory::ReadAudioSoundFont(BinaryReader* reader, bool readFullHeader)
     {
         AudioSoundFont* audioSF = new AudioSoundFont();
         Version version = (Version)reader->ReadUInt32();
@@ -54,7 +54,7 @@ namespace Ship
         case Version::Rachael:
         {
             AudioSoundFontV2 audioSFFac = AudioSoundFontV2();
-            audioSFFac.ParseFileBinary(reader, audioSF);
+            audioSFFac.ParseFileBinary(reader, audioSF, readFullHeader);
         }
         break;
         default:
@@ -65,7 +65,7 @@ namespace Ship
         return audioSF;
     }
 
-    AudioSequence* AudioSequenceFactory::ReadAudioSequence(BinaryReader* reader)
+    AudioSequence* AudioSequenceFactory::ReadAudioSequence(BinaryReader* reader, bool readFullHeader)
     {
         AudioSequence* audioSeq = new AudioSequence();
         Version version = (Version)reader->ReadUInt32();
@@ -75,7 +75,7 @@ namespace Ship
         case Version::Rachael:
         {
             AudioSequenceV2 audioSeqFac = AudioSequenceV2();
-            audioSeqFac.ParseFileBinary(reader, audioSeq);
+            audioSeqFac.ParseFileBinary(reader, audioSeq, readFullHeader);
         }
         break;
         default:

@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZAPD", "ZAPD\ZAPD.vcxproj", "{B53F9E5B-0A58-4BAE-9AFE-856C8CBB8D36}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExporterExample", "ExporterTest\ExporterTest.vcxproj", "{65608EB0-1A47-45AD-AB66-192FB64C762C}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZAPDUtils", "ZAPDUtils\ZAPDUtils.vcxproj", "{A2E01C3E-D647-45D1-9788-043DEBC1A908}"
 EndProject
 Global

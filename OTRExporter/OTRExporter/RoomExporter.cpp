@@ -35,11 +35,11 @@
 #include "PathExporter.h"
 #undef FindResource
 
-void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer)
+void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWriter* writer, bool writeFullHeader)
 {
 	ZRoom* room = (ZRoom*)res;
 
-	WriteHeader(res, outPath, writer, Ship::ResourceType::Room);
+	WriteHeader(res, writer, Ship::ResourceType::Room, Ship::Version::Deckard, writeFullHeader);
 
 	writer->Write((uint32_t)room->commands.size());
 
@@ -451,7 +451,9 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 			MemoryStream* csStream = new MemoryStream();
 			BinaryWriter csWriter = BinaryWriter(csStream);
 			OTRExporter_Cutscene cs;
-			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter);
+			cs.Save(cmdSetCutscenes->cutscenes[0], "", &csWriter, true);
+			
+			AddFile(fName, csStream->ToVector());
 
 			AddFile(fName, csStream->ToVector());
 		}
@@ -472,7 +474,7 @@ void OTRExporter_Room::Save(ZResource* res, const fs::path& outPath, BinaryWrite
 				MemoryStream* pathStream = new MemoryStream();
 				BinaryWriter pathWriter = BinaryWriter(pathStream);
 				OTRExporter_Path pathExp;
-				pathExp.Save(&cmdSetPathways->pathwayList, outPath, &pathWriter);
+				pathExp.Save(&cmdSetPathways->pathwayList, outPath, &pathWriter, true);
 
 				AddFile(path, pathStream->ToVector());
 			}

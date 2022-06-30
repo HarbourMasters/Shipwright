@@ -2,11 +2,11 @@
 
 namespace Ship
 {
-    void MaterialV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+    void MaterialV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
     {
         Material* mat = (Material*)res;
 
-        ResourceFile::ParseFileBinary(reader, res);
+        ResourceFile::ParseFileBinary(reader, res, readFullHeader);
 
         cmtH = (MaterialCmt)reader->ReadUByte();
         cmtV = (MaterialCmt)reader->ReadUByte();
