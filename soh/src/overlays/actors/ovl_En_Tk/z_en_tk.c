@@ -668,7 +668,7 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
 
     if (this->skelAnime.curFrame >= 32.0f && this->rewardTimer == 10) {
         /* Play a reward sound shortly after digging */
-        if (this->validDigHere == 0) {
+        if (!gSaveContext.n64ddFlag && this->validDigHere == 0) {
             /* Bad dig spot */
             Audio_PlayActorSound2(&this->actor, NA_SE_SY_ERROR);
         } else if (this->currentReward == 4) {
