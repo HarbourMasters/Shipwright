@@ -30,6 +30,7 @@ set(CPACK_DEBIAN_PACKAGE_MAINTAINER "YOUR NAME")
 set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/README.md")
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 # package name for deb
 # if set, then instead of some-application-0.9.2-Linux.deb
 # you'll get some-application_0.9.2_amd64.deb (note the underscores too)
@@ -85,6 +86,8 @@ execute_process(
     #    --verbosity=2
 )
 ]])
+
+endif()
 
 include(CPack)
 

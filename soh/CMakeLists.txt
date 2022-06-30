@@ -1469,7 +1469,10 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			$<$<CONFIG:Debug>:
 				MultiThreadedDebug
 			>
-			$<$<NOT:$<OR:$<CONFIG:Debug>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
+			$<$<CONFIG:Release>:
+				MultiThreaded
+			>
+			$<$<NOT:$<OR:$<CONFIG:Debug>,$<CONFIG:Release>>>:${MSVC_RUNTIME_LIBRARY_DEFAULT}>
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		string(CONCAT "MSVC_RUNTIME_LIBRARY_STR"
@@ -1489,17 +1492,17 @@ endif()
 ################################################################################
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
-	${PROJECT_SOURCE_DIR}/include/
-	${PROJECT_SOURCE_DIR}/src/
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
-	${PROJECT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL
-	${PROJECT_SOURCE_DIR}/../libultraship/libultraship/
-	${PROJECT_SOURCE_DIR}/assets/
+	${CMAKE_CURRENT_SOURCE_DIR}/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/src/
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/libjpeg/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/spdlog/include/
+	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL
+	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
+	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
 )
 
@@ -1520,6 +1523,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK
+			"_CRT_SECURE_NO_WARNINGS;"
 		)
 	elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
 		target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -1571,7 +1575,7 @@ if(MSVC)
             >
             $<$<CONFIG:Release>:
                 /Oi;
-                /sdl;
+                /sdl-;
                 /Gy;
                 /W3
             >
@@ -1782,6 +1786,38 @@ else()
 endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+        add_library( SDL2 STATIC IMPORTED )
+        set_property(TARGET SDL2 PROPERTY
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2.lib  )
+        set_property(TARGET SDL2 PROPERTY
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2.lib)
+
+        add_library( SDL2main STATIC IMPORTED )
+        set_property(TARGET SDL2main PROPERTY
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2main.lib  )
+        set_property(TARGET SDL2main PROPERTY
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x64/SDL2main.lib)
+
+        add_library(glfw3dll  STATIC IMPORTED )
+        set_property(TARGET glfw3dll PROPERTY
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib  )
+        set_property(TARGET glfw3dll PROPERTY
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
+
+        add_library(glew32s STATIC IMPORTED )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x64/glew32s.lib  )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x64/glew32s.lib)
+
+        #add_library(StormLibRUS32 STATIC IMPORTED )
+        # set_property(TARGET StormLibRUS32 PROPERTY
+        #                 IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
+        # set_property(TARGET StormLibRUS32 PROPERTY
+        #        IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+
 	add_library( SDL2 STATIC IMPORTED )
 	set_property(TARGET SDL2 PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib  )
 	set_property(TARGET SDL2 PROPERTY

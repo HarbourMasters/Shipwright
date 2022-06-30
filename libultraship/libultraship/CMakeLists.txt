@@ -403,10 +403,12 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 				"NDEBUG"
 			">"
 			"SPDLOG_ACTIVE_LEVEL=0;"
+			"WIN32;"
 			"_CONSOLE;"
 			"_CRT_SECURE_NO_WARNINGS;"
 			"ENABLE_DX11;"
 			"ENABLE_OPENGL;"
+			"%(PreprocessorDefinitions)GLEW_STATIC;"
 			"UNICODE;"
 			"_UNICODE"
 			STORMLIB_NO_AUTO_LINK

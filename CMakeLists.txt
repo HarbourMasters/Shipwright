@@ -104,4 +104,21 @@ set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.desktop")
 set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.png")
 
+file(READ ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py filedata)
+string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "../build-cmake/ZAPD/ZAPD.out" filedata "${filedata}")
+file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" "${filedata}")
+file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
+
+find_package(Python COMPONENTS Interpreter)
+
+add_custom_target(ExtractAssets
+    COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
+    COMMENT "Running asset extraction..."
+    DEPENDS ${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out
+)
+add_dependencies(ExtractAssets ZAPD)
+
+add_dependencies(soh ExtractAssets)
+
 include(CMake/Packaging.cmake)
