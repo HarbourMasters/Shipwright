@@ -348,8 +348,7 @@ void BossGanon_Init(Actor* thisx, GlobalContext* globalCtx2) {
         }
 
         sBossGanonGanondorf = this;
-        // thisx->colChkInfo.health = 40;
-        thisx->colChkInfo.health = 1;
+        thisx->colChkInfo.health = 40;
         Actor_ProcessInitChain(thisx, sInitChain);
         ActorShape_Init(&thisx->shape, 0, NULL, 0);
         Actor_SetScale(thisx, 0.01f);
