@@ -60,7 +60,7 @@ void GenerateStartingInventory() {
   }
 
   if (GerudoFortress.Is(GERUDOFORTRESS_OPEN) && !ShuffleGerudoToken) {
-    AddItemToInventory(GERUDO_TOKEN);
+    AddItemToInventory(GERUDO_MEMBERSHIP_CARD);
   }
 
   //Starting Inventory Menu

@@ -358,12 +358,12 @@ string_view weirdEggDesc              = "Enabling this shuffles the Weird Egg fr
                                         "Kakariko Gate as child which can lock some\n"     //
                                         "progression";                                     //
 /*------------------------------                                                           //
-|     SHUFFLE GERUDO TOKEN     |                                                           //
+|     SHUFFLE Gerudo Membership Card     |                                                           //
 ------------------------------*/                                                           //
-string_view gerudoTokenDesc           = "Enabling this shuffles the Gerudo Token into the\n"
+string_view gerudoTokenDesc           = "Enabling this shuffles the Gerudo Membership Card into the\n"
                                         "item pool.\n"                                     //
                                         "\n"                                               //
-                                        "The Gerudo Token is required to enter the Gerudo\n"
+                                        "The Gerudo Membership Card is required to enter the Gerudo\n"
                                         "Training Ground.";                                //
 /*------------------------------                                                           //
 |      SHUFFLE MAGIC BEANS     |                                                           //

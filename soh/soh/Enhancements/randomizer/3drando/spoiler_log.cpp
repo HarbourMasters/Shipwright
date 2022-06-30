@@ -129,7 +129,7 @@ void WriteIngameSpoilerLog() {
         }
         // Gerudo Fortress
         else if ((Settings::GerudoFortress.Is(GERUDOFORTRESS_OPEN) &&
-                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == GF_GERUDO_TOKEN)) ||
+                  (loc->IsCategory(Category::cVanillaGFSmallKey) || loc->GetHintKey() == GF_GERUDO_MEMBERSHIP_CARD)) ||
                  (Settings::GerudoFortress.Is(GERUDOFORTRESS_FAST) && loc->IsCategory(Category::cVanillaGFSmallKey) &&
                   loc->GetHintKey() != GF_NORTH_F1_CARPENTER)) {
             continue;

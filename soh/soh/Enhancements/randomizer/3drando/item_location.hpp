@@ -135,7 +135,7 @@ public:
   }
 
   static auto GerudoToken() {
-    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_TOKEN, 0x00, 0x00);
+    return SpoilerCollectionCheck(SpoilerCollectionCheckType::SPOILER_CHK_GERUDO_MEMBERSHIP_CARD, 0x00, 0x00);
   }
 
   static auto BigPoePoints() {
