@@ -3267,6 +3267,7 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (!open) {
+        CVar_SetS32("gRandomizerSettingsEnabled", 0);
         return;
     }
 
@@ -3489,9 +3490,11 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandoGenerating", 0));
+        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) ||
+                                           CVar_GetS32("gOnFileSelectNameEntry", 0);
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                            ImGui::GetStyle().Alpha * CVar_GetS32("gRandoGenerating", 0) ? 0.5f : 1.0f);
+                            ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
 
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
