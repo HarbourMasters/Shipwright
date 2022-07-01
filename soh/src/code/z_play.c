@@ -267,6 +267,14 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
+    if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+        if (gSaveContext.entranceIndex == 0x7A) {
+            gSaveContext.entranceIndex = 0x400;
+        } else if (gSaveContext.entranceIndex == 0x296) {
+            gSaveContext.entranceIndex = 0x23D;
+        }
+    }
+
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
         globalCtx->state.running = false;
