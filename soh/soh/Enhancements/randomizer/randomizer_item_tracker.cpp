@@ -284,7 +284,7 @@ typedef struct {
         }                                         \
     }
 
-std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = { 
+std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = { 
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0), 
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
@@ -298,19 +298,13 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_KOKIRI, 12),
     ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_IRON, 13),
     ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_HOVER, 14),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_BRACELET, 980), // <-- THREE DIGIT NUMBER  == PLACEHOLDER UNTIL I'VE FOUND THE CORRECT ONE
-    ITEM_TRACKER_MAP_ENTRY(ITEM_GAUNTLETS_SILVER, 981),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_GAUNTLETS_GOLD, 982),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SCALE_SILVER, 983),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SCALE_GOLDEN, 984),
-
 };
 
-void DrawItem(uint32_t itemId) {
-    const ItemTrackerMapEntry& entry = itemTrackerMap[itemId];
+void DrawEquip(uint32_t itemId) {
+    const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
 
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -336,7 +330,117 @@ void DrawQuest(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
 
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+};
+
+std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
+    ITEM_TRACKER_MAP_ENTRY(ITEM_STICK, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_NUT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOMB, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_FIRE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_DINS_FIRE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SLINGSHOT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_OCARINA_FAIRY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_OCARINA_TIME, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOMBCHU, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_HOOKSHOT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LONGSHOT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_ICE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FARORES_WIND, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOMERANG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LENS, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BEAN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_HAMMER, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ARROW_LIGHT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_NAYRUS_LOVE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOTTLE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_RED, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_GREEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_BLUE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FAIRY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FISH, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_BOTTLE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_RUTO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BLUE_FIRE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BUG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BIG_POE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_HALF, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_WEIRD_EGG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_CHICKEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_ZELDA, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_KEATON, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SKULL, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SPOOKY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_BUNNY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GORON, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_ZORA, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GERUDO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_TRUTH, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SOLD_OUT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_EGG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_CUCCO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_COJIRO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_MUSHROOM, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_POTION, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SAW, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_PRESCRIPTION, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FROG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_EYEDROPS, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_CLAIM_CHECK, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_FIRE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_ICE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOW_ARROW_LIGHT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOTTLE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_RED, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_GREEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POTION_BLUE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FAIRY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FISH, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_BOTTLE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_RUTO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BLUE_FIRE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BUG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BIG_POE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MILK_HALF, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POE, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_WEIRD_EGG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_CHICKEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_LETTER_ZELDA, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_KEATON, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SKULL, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_SPOOKY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_BUNNY, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GORON, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_ZORA, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_GERUDO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MASK_TRUTH, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SOLD_OUT, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_EGG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_POCKET_CUCCO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_COJIRO, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_MUSHROOM, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_ODD_POTION, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SAW, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_PRESCRIPTION, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_FROG, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_EYEDROPS, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_CLAIM_CHECK, 0),
+
+};
+
+void DrawItem(uint32_t itemId) {
+    uint32_t actualItemId = INV_CONTENT(itemId);
+    bool hasEquip = actualItemId != ITEM_NONE;
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
+
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -360,18 +464,34 @@ std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTracker
         ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_SILVER),
         ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_GOLDEN),
     }},
+    {UPG_QUIVER, {
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_30),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_40),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_QUIVER_50),
+      }},
+    {UPG_BULLET_BAG, {
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_30),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_40),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BULLET_BAG_50),
+      }},
+    {UPG_BOMB_BAG, {
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_20),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_30),
+          ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BOMB_BAG_40),
+      }},
+
 };
 
 void DrawUpgrade(int32_t categoryId) {
     if (CUR_UPG_VALUE(categoryId) == 0) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
         ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded),
-                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     } else {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
         ImGui::Image(SohImGui::GetTextureByName(entry.name),
-                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     }
 }
@@ -387,38 +507,81 @@ void DrawItemTracker(bool& open) {
         ImGui::End();
         return;
     }
-
-    DrawItem(ITEM_SWORD_KOKIRI);
+    
+    DrawItem(ITEM_STICK);
     ImGui::SameLine();
-    DrawItem(ITEM_SWORD_MASTER);
+    DrawItem(ITEM_NUT);
     ImGui::SameLine();
-    DrawItem(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY 
+    DrawItem(ITEM_BOMB);
+    ImGui::SameLine();
+    DrawItem(ITEM_BOW);
+    ImGui::SameLine();
+    DrawItem(ITEM_ARROW_FIRE);
+    ImGui::SameLine();
+    DrawItem(ITEM_DINS_FIRE);
+    ImGui::NewLine();
+    DrawItem(ITEM_SLINGSHOT);
+    ImGui::SameLine();
+    DrawItem(ITEM_OCARINA_FAIRY);
+    ImGui::SameLine();
+    DrawItem(ITEM_BOMBCHU);
+    ImGui::SameLine();
+    DrawItem(ITEM_HOOKSHOT);
+    ImGui::SameLine();
+    DrawItem(ITEM_ARROW_ICE);
+    ImGui::SameLine();
+    DrawItem(ITEM_FARORES_WIND);
+    ImGui::NewLine();
+    DrawItem(ITEM_BOOMERANG);
+    ImGui::SameLine();
+    DrawItem(ITEM_LENS);
+    ImGui::SameLine();
+    DrawItem(ITEM_BEAN);
+    ImGui::SameLine();
+    DrawItem(ITEM_HAMMER);
+    ImGui::SameLine();
+    DrawItem(ITEM_ARROW_LIGHT);
+    ImGui::SameLine();
+    DrawItem(ITEM_NAYRUS_LOVE);
+    ImGui::NewLine();
+    /* DrawItem();
+    DrawItem();
+    DrawItem();
+    DrawItem();
+    DrawItem();
+    DrawItem();*/
+    ImGui::NewLine();
+    DrawEquip(ITEM_SWORD_KOKIRI);
+    ImGui::SameLine();
+    DrawEquip(ITEM_SWORD_MASTER);
+    ImGui::SameLine();
+    DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY 
     ImGui::SameLine();
     DrawQuest(QUEST_STONE_OF_AGONY);
     ImGui::SameLine();
     DrawQuest(QUEST_GERUDO_CARD);
     ImGui::NewLine();
-    DrawItem(ITEM_SHIELD_DEKU);
+    DrawEquip(ITEM_SHIELD_DEKU);
     ImGui::SameLine();
-    DrawItem(ITEM_SHIELD_HYLIAN);
+    DrawEquip(ITEM_SHIELD_HYLIAN);
     ImGui::SameLine();
-    DrawItem(ITEM_SHIELD_MIRROR);
+    DrawEquip(ITEM_SHIELD_MIRROR);
     ImGui::SameLine();
     DrawUpgrade(UPG_STRENGTH);
     ImGui::SameLine();
     DrawUpgrade(UPG_SCALE);
     ImGui::NewLine();
-    DrawItem(ITEM_TUNIC_KOKIRI);
+    DrawEquip(ITEM_TUNIC_KOKIRI);
     ImGui::SameLine();
-    DrawItem(ITEM_TUNIC_GORON);
+    DrawEquip(ITEM_TUNIC_GORON);
     ImGui::SameLine();
-    DrawItem(ITEM_TUNIC_ZORA);
+    DrawEquip(ITEM_TUNIC_ZORA);
     ImGui::NewLine();
-    DrawItem(ITEM_BOOTS_KOKIRI);
+    DrawEquip(ITEM_BOOTS_KOKIRI);
     ImGui::SameLine();
-    DrawItem(ITEM_BOOTS_IRON);
+    DrawEquip(ITEM_BOOTS_IRON);
     ImGui::SameLine();
-    DrawItem(ITEM_BOOTS_HOVER);
+    DrawEquip(ITEM_BOOTS_HOVER);
     ImGui::SameLine();
     DrawQuest(QUEST_KOKIRI_EMERALD);
     ImGui::SameLine();
