@@ -9531,6 +9531,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
     if (CVar_GetS32("gMMBunnyHood", 0)) {
+        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) { sMaskMemory = PLAYER_MASK_NONE; }
         this->currentMask = sMaskMemory;
         for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
             if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
