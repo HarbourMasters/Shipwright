@@ -306,6 +306,17 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
 
 };
 
+void DrawItem(uint32_t itemId) {
+    const ItemTrackerMapEntry& entry = itemTrackerMap[itemId];
+    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
+
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
+
+
 std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0),
     ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
@@ -321,16 +332,6 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
 
 };
 
-void DrawItem(uint32_t itemId) {
-    const ItemTrackerMapEntry& entry = itemTrackerMap[itemId];
-    bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
-
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
-                 ImVec2(0, 0), ImVec2(1, 1));
-
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-}
-
 void DrawQuest(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
@@ -339,6 +340,40 @@ void DrawQuest(uint32_t itemId) {
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+};
+
+typedef struct {
+    uint8_t id;
+    std::string name;
+    std::string nameFaded;
+} ItemTrackerUpgradeEntry;
+
+#define ITEM_TRACKER_UPGRADE_ENTRY(id)  { id, #id, #id "_Faded" }
+
+std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTrackerMap = {
+    {UPG_STRENGTH, {
+        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_BRACELET),
+        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_SILVER),
+        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_GAUNTLETS_GOLD),
+    }},
+    {UPG_SCALE, {
+        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_SILVER),
+        ITEM_TRACKER_UPGRADE_ENTRY(ITEM_SCALE_GOLDEN),
+    }},
+};
+
+void DrawUpgrade(int32_t categoryId) {
+    if (CUR_UPG_VALUE(categoryId) == 0) {
+        const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
+        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded),
+                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+        SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    } else {
+        const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
+        ImGui::Image(SohImGui::GetTextureByName(entry.name),
+                     ImVec2(48.0f, 48.0f), ImVec2(0, 0), ImVec2(1, 1));
+        SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    }
 }
 
 void DrawItemTracker(bool& open) {
@@ -369,9 +404,9 @@ void DrawItemTracker(bool& open) {
     ImGui::SameLine();
     DrawItem(ITEM_SHIELD_MIRROR);
     ImGui::SameLine();
-    DrawItem(ITEM_BRACELET); // PURPLE TODO: CHECK WHAT BRACELET / GAUNTLET TO DISPLAY
+    DrawUpgrade(UPG_STRENGTH);
     ImGui::SameLine();
-    DrawItem(ITEM_SCALE_SILVER); // PURPLE TODO: CHECK WHAT SCALE TO DISPLAY
+    DrawUpgrade(UPG_SCALE);
     ImGui::NewLine();
     DrawItem(ITEM_TUNIC_KOKIRI);
     ImGui::SameLine();
