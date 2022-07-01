@@ -439,7 +439,18 @@ void DrawItem(uint32_t itemId) {
     uint32_t actualItemId = INV_CONTENT(itemId);
     bool hasEquip = actualItemId != ITEM_NONE;
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
+    int blarg = gItemSlots[SLOT_BOTTLE_1];
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
 
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+};
+
+void DrawBottle(uint32_t itemId) {
+    uint32_t actualItemId = INV_CONTENT(itemId);
+    bool hasEquip = actualItemId != ITEM_NONE;
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
+    int blarg = gItemSlots[SLOT_BOTTLE_1];
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
@@ -507,7 +518,7 @@ void DrawItemTracker(bool& open) {
         ImGui::End();
         return;
     }
-    
+   
     DrawItem(ITEM_STICK);
     ImGui::SameLine();
     DrawItem(ITEM_NUT);
@@ -544,12 +555,16 @@ void DrawItemTracker(bool& open) {
     ImGui::SameLine();
     DrawItem(ITEM_NAYRUS_LOVE);
     ImGui::NewLine();
-    /* DrawItem();
-    DrawItem();
-    DrawItem();
-    DrawItem();
-    DrawItem();
-    DrawItem();*/
+    DrawBottle(ITEM_BOTTLE);
+    ImGui::SameLine();
+    DrawBottle(ITEM_BOTTLE);
+    ImGui::SameLine();
+    DrawBottle(ITEM_BOTTLE);
+    ImGui::SameLine();
+    DrawBottle(ITEM_BOTTLE);
+    ImGui::SameLine();
+    //DrawItem(); // CHILD TRADE
+    //DrawItem(); // ADULT TRADE
     ImGui::NewLine();
     DrawEquip(ITEM_SWORD_KOKIRI);
     ImGui::SameLine();
