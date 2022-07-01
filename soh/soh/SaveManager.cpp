@@ -907,6 +907,9 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].playerName); i++) {
         fileMetaInfo[to].playerName[i] = fileMetaInfo[from].playerName[i];
     }
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].seedHash); i++) {
+        fileMetaInfo[to].seedHash[i] = fileMetaInfo[from].seedHash[i];
+    }
     fileMetaInfo[to].healthCapacity = fileMetaInfo[from].healthCapacity;
     fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
