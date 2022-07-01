@@ -288,11 +288,52 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0), 
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 3),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_DEKU, 4),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_HYLIAN, 5),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SHIELD_MIRROR, 6),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_KOKIRI, 8),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_GORON, 9),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_TUNIC_ZORA, 10),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_KOKIRI, 12),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_IRON, 13),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BOOTS_HOVER, 14),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_BRACELET, 980), // <-- THREE DIGIT NUMBER  == PLACEHOLDER UNTIL I'VE FOUND THE CORRECT ONE
+    ITEM_TRACKER_MAP_ENTRY(ITEM_GAUNTLETS_SILVER, 981),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_GAUNTLETS_GOLD, 982),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SCALE_SILVER, 983),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SCALE_GOLDEN, 984),
+
+};
+
+std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_WATER, 2),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, 3),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_SHADOW, 4),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_LIGHT, 5),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_KOKIRI_EMERALD, 18),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_GORON_RUBY, 19),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, 20),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_STONE_OF_AGONY, 21),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_GERUDO_CARD, 22),
+
 };
 
 void DrawItem(uint32_t itemId) {
-    const ItemTrackerMapEntry& entry = itemTrackerMap[ITEM_SWORD_KOKIRI];
+    const ItemTrackerMapEntry& entry = itemTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
+
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
+                 ImVec2(0, 0), ImVec2(1, 1));
+
+    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+}
+
+void DrawQuest(uint32_t itemId) {
+    const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
+    bool hasEquip = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
 
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(48.0f, 48.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
@@ -313,6 +354,54 @@ void DrawItemTracker(bool& open) {
     }
 
     DrawItem(ITEM_SWORD_KOKIRI);
+    ImGui::SameLine();
+    DrawItem(ITEM_SWORD_MASTER);
+    ImGui::SameLine();
+    DrawItem(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY 
+    ImGui::SameLine();
+    DrawQuest(QUEST_STONE_OF_AGONY);
+    ImGui::SameLine();
+    DrawQuest(QUEST_GERUDO_CARD);
+    ImGui::NewLine();
+    DrawItem(ITEM_SHIELD_DEKU);
+    ImGui::SameLine();
+    DrawItem(ITEM_SHIELD_HYLIAN);
+    ImGui::SameLine();
+    DrawItem(ITEM_SHIELD_MIRROR);
+    ImGui::SameLine();
+    DrawItem(ITEM_BRACELET); // PURPLE TODO: CHECK WHAT BRACELET / GAUNTLET TO DISPLAY
+    ImGui::SameLine();
+    DrawItem(ITEM_SCALE_SILVER); // PURPLE TODO: CHECK WHAT SCALE TO DISPLAY
+    ImGui::NewLine();
+    DrawItem(ITEM_TUNIC_KOKIRI);
+    ImGui::SameLine();
+    DrawItem(ITEM_TUNIC_GORON);
+    ImGui::SameLine();
+    DrawItem(ITEM_TUNIC_ZORA);
+    ImGui::NewLine();
+    DrawItem(ITEM_BOOTS_KOKIRI);
+    ImGui::SameLine();
+    DrawItem(ITEM_BOOTS_IRON);
+    ImGui::SameLine();
+    DrawItem(ITEM_BOOTS_HOVER);
+    ImGui::SameLine();
+    DrawQuest(QUEST_KOKIRI_EMERALD);
+    ImGui::SameLine();
+    DrawQuest(QUEST_GORON_RUBY);
+    ImGui::SameLine();
+    DrawQuest(QUEST_ZORA_SAPPHIRE);
+    ImGui::NewLine();
+    DrawQuest(QUEST_MEDALLION_FOREST);
+    ImGui::SameLine();
+    DrawQuest(QUEST_MEDALLION_FIRE);
+    ImGui::SameLine();
+    DrawQuest(QUEST_MEDALLION_WATER);
+    ImGui::SameLine();
+    DrawQuest(QUEST_MEDALLION_SPIRIT);
+    ImGui::SameLine();
+    DrawQuest(QUEST_MEDALLION_SHADOW);
+    ImGui::SameLine();
+    DrawQuest(QUEST_MEDALLION_LIGHT);
 
     ImGui::End();
 }
