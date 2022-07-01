@@ -420,7 +420,9 @@ namespace SohImGui {
         Game::InitSettings();
 
         CVar_SetS32("gRandoGenerating", 0);
-        CVar_SetS32("gDroppedNewSpoilerFile", 0);
+        CVar_SetS32("gNewSeedGenerated", 0);
+        CVar_SetS32("gNewFileDropped", 0);
+        CVar_SetString("gDroppedFile", "");
         Game::SaveSettings();
     }
 

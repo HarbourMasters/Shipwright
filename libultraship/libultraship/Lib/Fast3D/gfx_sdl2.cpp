@@ -262,8 +262,8 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_DROPFILE:
-                CVar_SetString("gSpoilerLog", event.drop.file);
-                CVar_SetS32("gDroppedNewSpoilerFile", 1);
+                CVar_SetString("gDroppedFile", event.drop.file);
+                CVar_SetS32("gNewFileDropped", 1);
                 Game::SaveSettings();
                 break;
             case SDL_QUIT:
