@@ -893,7 +893,7 @@ static void ImGui_ImplSDL2_SwapBuffers(ImGuiViewport* viewport, void*)
 #if SDL_HAS_VULKAN
 #if defined(__APPLE__)
 #include <SDL_vulkan.h>
-#elif
+#else
 #include <SDL2/SDL_vulkan.h>
 #endif
 static int ImGui_ImplSDL2_CreateVkSurface(ImGuiViewport* viewport, ImU64 vk_instance, const void* vk_allocator, ImU64* out_vk_surface)
