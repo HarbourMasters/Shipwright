@@ -446,11 +446,10 @@ void DrawItem(uint32_t itemId) {
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
 
-void DrawBottle(uint32_t itemId) {
-    uint32_t actualItemId = INV_CONTENT(itemId);
+void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
+    uint32_t actualItemId = gSaveContext.inventory.items[SLOT(itemId) + bottleSlot];
     bool hasEquip = actualItemId != ITEM_NONE;
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
-    int blarg = gItemSlots[SLOT_BOTTLE_1];
     ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
                  ImVec2(0, 0), ImVec2(1, 1));
 
@@ -555,13 +554,13 @@ void DrawItemTracker(bool& open) {
     ImGui::SameLine();
     DrawItem(ITEM_NAYRUS_LOVE);
     ImGui::NewLine();
-    DrawBottle(ITEM_BOTTLE);
+    DrawBottle(ITEM_BOTTLE, 0);
     ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE);
+    DrawBottle(ITEM_BOTTLE, 1);
     ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE);
+    DrawBottle(ITEM_BOTTLE, 2);
     ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE);
+    DrawBottle(ITEM_BOTTLE, 3);
     ImGui::SameLine();
     //DrawItem(); // CHILD TRADE
     //DrawItem(); // ADULT TRADE
