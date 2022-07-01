@@ -303,8 +303,8 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = {
 void DrawEquip(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
-
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -328,9 +328,9 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
 
 void DrawQuest(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
-    bool hasEquip = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
-
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+    bool hasQuestItem = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -437,10 +437,10 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
 
 void DrawItem(uint32_t itemId) {
     uint32_t actualItemId = INV_CONTENT(itemId);
-    bool hasEquip = actualItemId != ITEM_NONE;
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
-    int blarg = gItemSlots[SLOT_BOTTLE_1];
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+    bool hasItem = actualItemId != ITEM_NONE;
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -448,9 +448,10 @@ void DrawItem(uint32_t itemId) {
 
 void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(itemId) + bottleSlot];
-    bool hasEquip = actualItemId != ITEM_NONE;
-    const ItemTrackerMapEntry& entry = itemTrackerMap[hasEquip ? actualItemId : itemId];
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(32.0f, 32.0f),
+    bool hasItem = actualItemId != ITEM_NONE;
+    const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -493,15 +494,16 @@ std::unordered_map<int32_t, std::vector<ItemTrackerUpgradeEntry>> upgradeTracker
 };
 
 void DrawUpgrade(int32_t categoryId) {
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     if (CUR_UPG_VALUE(categoryId) == 0) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
-        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded),
-                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
+            ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     } else {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
-        ImGui::Image(SohImGui::GetTextureByName(entry.name),
-                     ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1));
+        ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
+            ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     }
 }
@@ -517,104 +519,114 @@ void DrawItemTracker(bool& open) {
         ImGui::End();
         return;
     }
-   
-    DrawItem(ITEM_STICK);
-    ImGui::SameLine();
-    DrawItem(ITEM_NUT);
-    ImGui::SameLine();
-    DrawItem(ITEM_BOMB);
-    ImGui::SameLine();
-    DrawItem(ITEM_BOW);
-    ImGui::SameLine();
-    DrawItem(ITEM_ARROW_FIRE);
-    ImGui::SameLine();
-    DrawItem(ITEM_DINS_FIRE);
-    ImGui::NewLine();
-    DrawItem(ITEM_SLINGSHOT);
-    ImGui::SameLine();
-    DrawItem(ITEM_OCARINA_FAIRY);
-    ImGui::SameLine();
-    DrawItem(ITEM_BOMBCHU);
-    ImGui::SameLine();
-    DrawItem(ITEM_HOOKSHOT);
-    ImGui::SameLine();
-    DrawItem(ITEM_ARROW_ICE);
-    ImGui::SameLine();
-    DrawItem(ITEM_FARORES_WIND);
-    ImGui::NewLine();
-    DrawItem(ITEM_BOOMERANG);
-    ImGui::SameLine();
-    DrawItem(ITEM_LENS);
-    ImGui::SameLine();
-    DrawItem(ITEM_BEAN);
-    ImGui::SameLine();
-    DrawItem(ITEM_HAMMER);
-    ImGui::SameLine();
-    DrawItem(ITEM_ARROW_LIGHT);
-    ImGui::SameLine();
-    DrawItem(ITEM_NAYRUS_LOVE);
-    ImGui::NewLine();
-    DrawBottle(ITEM_BOTTLE, 0);
-    ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE, 1);
-    ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE, 2);
-    ImGui::SameLine();
-    DrawBottle(ITEM_BOTTLE, 3);
-    ImGui::SameLine();
-    //DrawItem(); // CHILD TRADE
-    //DrawItem(); // ADULT TRADE
-    ImGui::NewLine();
-    DrawEquip(ITEM_SWORD_KOKIRI);
-    ImGui::SameLine();
-    DrawEquip(ITEM_SWORD_MASTER);
-    ImGui::SameLine();
-    DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY 
-    ImGui::SameLine();
-    DrawQuest(QUEST_STONE_OF_AGONY);
-    ImGui::SameLine();
-    DrawQuest(QUEST_GERUDO_CARD);
-    ImGui::NewLine();
-    DrawEquip(ITEM_SHIELD_DEKU);
-    ImGui::SameLine();
-    DrawEquip(ITEM_SHIELD_HYLIAN);
-    ImGui::SameLine();
-    DrawEquip(ITEM_SHIELD_MIRROR);
-    ImGui::SameLine();
-    DrawUpgrade(UPG_STRENGTH);
-    ImGui::SameLine();
-    DrawUpgrade(UPG_SCALE);
-    ImGui::NewLine();
-    DrawEquip(ITEM_TUNIC_KOKIRI);
-    ImGui::SameLine();
-    DrawEquip(ITEM_TUNIC_GORON);
-    ImGui::SameLine();
-    DrawEquip(ITEM_TUNIC_ZORA);
-    ImGui::NewLine();
-    DrawEquip(ITEM_BOOTS_KOKIRI);
-    ImGui::SameLine();
-    DrawEquip(ITEM_BOOTS_IRON);
-    ImGui::SameLine();
-    DrawEquip(ITEM_BOOTS_HOVER);
-    ImGui::SameLine();
-    DrawQuest(QUEST_KOKIRI_EMERALD);
-    ImGui::SameLine();
-    DrawQuest(QUEST_GORON_RUBY);
-    ImGui::SameLine();
-    DrawQuest(QUEST_ZORA_SAPPHIRE);
-    ImGui::NewLine();
-    DrawQuest(QUEST_MEDALLION_FOREST);
-    ImGui::SameLine();
-    DrawQuest(QUEST_MEDALLION_FIRE);
-    ImGui::SameLine();
-    DrawQuest(QUEST_MEDALLION_WATER);
-    ImGui::SameLine();
-    DrawQuest(QUEST_MEDALLION_SPIRIT);
-    ImGui::SameLine();
-    DrawQuest(QUEST_MEDALLION_SHADOW);
-    ImGui::SameLine();
-    DrawQuest(QUEST_MEDALLION_LIGHT);
 
+    if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        if (ImGui::BeginTabItem("Item Tracker")) {
+            DrawItem(ITEM_STICK);
+            ImGui::SameLine();
+            DrawItem(ITEM_NUT);
+            ImGui::SameLine();
+            DrawItem(ITEM_BOMB);
+            ImGui::SameLine();
+            DrawItem(ITEM_BOW);
+            ImGui::SameLine();
+            DrawItem(ITEM_ARROW_FIRE);
+            ImGui::SameLine();
+            DrawItem(ITEM_DINS_FIRE);
+            ImGui::NewLine();
+            DrawItem(ITEM_SLINGSHOT);
+            ImGui::SameLine();
+            DrawItem(ITEM_OCARINA_FAIRY);
+            ImGui::SameLine();
+            DrawItem(ITEM_BOMBCHU);
+            ImGui::SameLine();
+            DrawItem(ITEM_HOOKSHOT);
+            ImGui::SameLine();
+            DrawItem(ITEM_ARROW_ICE);
+            ImGui::SameLine();
+            DrawItem(ITEM_FARORES_WIND);
+            ImGui::NewLine();
+            DrawItem(ITEM_BOOMERANG);
+            ImGui::SameLine();
+            DrawItem(ITEM_LENS);
+            ImGui::SameLine();
+            DrawItem(ITEM_BEAN);
+            ImGui::SameLine();
+            DrawItem(ITEM_HAMMER);
+            ImGui::SameLine();
+            DrawItem(ITEM_ARROW_LIGHT);
+            ImGui::SameLine();
+            DrawItem(ITEM_NAYRUS_LOVE);
+            ImGui::NewLine();
+            DrawBottle(ITEM_BOTTLE, 0);
+            ImGui::SameLine();
+            DrawBottle(ITEM_BOTTLE, 1);
+            ImGui::SameLine();
+            DrawBottle(ITEM_BOTTLE, 2);
+            ImGui::SameLine();
+            DrawBottle(ITEM_BOTTLE, 3);
+            ImGui::SameLine();
+            DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
+            ImGui::SameLine();
+            DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
+            ImGui::NewLine();
+            DrawEquip(ITEM_SWORD_KOKIRI);
+            ImGui::SameLine();
+            DrawEquip(ITEM_SWORD_MASTER);
+            ImGui::SameLine();
+            DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
+            ImGui::SameLine();
+            DrawQuest(QUEST_STONE_OF_AGONY);
+            ImGui::SameLine();
+            DrawQuest(QUEST_GERUDO_CARD);
+            ImGui::NewLine();
+            DrawEquip(ITEM_SHIELD_DEKU);
+            ImGui::SameLine();
+            DrawEquip(ITEM_SHIELD_HYLIAN);
+            ImGui::SameLine();
+            DrawEquip(ITEM_SHIELD_MIRROR);
+            ImGui::SameLine();
+            DrawUpgrade(UPG_STRENGTH);
+            ImGui::SameLine();
+            DrawUpgrade(UPG_SCALE);
+            ImGui::NewLine();
+            DrawEquip(ITEM_TUNIC_KOKIRI);
+            ImGui::SameLine();
+            DrawEquip(ITEM_TUNIC_GORON);
+            ImGui::SameLine();
+            DrawEquip(ITEM_TUNIC_ZORA);
+            ImGui::NewLine();
+            DrawEquip(ITEM_BOOTS_KOKIRI);
+            ImGui::SameLine();
+            DrawEquip(ITEM_BOOTS_IRON);
+            ImGui::SameLine();
+            DrawEquip(ITEM_BOOTS_HOVER);
+            ImGui::SameLine();
+            DrawQuest(QUEST_KOKIRI_EMERALD);
+            ImGui::SameLine();
+            DrawQuest(QUEST_GORON_RUBY);
+            ImGui::SameLine();
+            DrawQuest(QUEST_ZORA_SAPPHIRE);
+            ImGui::NewLine();
+            DrawQuest(QUEST_MEDALLION_FOREST);
+            ImGui::SameLine();
+            DrawQuest(QUEST_MEDALLION_FIRE);
+            ImGui::SameLine();
+            DrawQuest(QUEST_MEDALLION_WATER);
+            ImGui::SameLine();
+            DrawQuest(QUEST_MEDALLION_SPIRIT);
+            ImGui::SameLine();
+            DrawQuest(QUEST_MEDALLION_SHADOW);
+            ImGui::SameLine();
+            DrawQuest(QUEST_MEDALLION_LIGHT);
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Options")) {
+            SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 64, "");
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+    }
     ImGui::End();
 }
 
