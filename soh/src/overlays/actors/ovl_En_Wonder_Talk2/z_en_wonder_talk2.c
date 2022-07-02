@@ -260,15 +260,19 @@ void func_80B3A4F8(EnWonderTalk2* this, GlobalContext* globalCtx) {
                         case 0x0007: //shadow temple
                             randoSkipText = true;
                             break;
+                        default:
+                            break;
                     }
                     // individual textIds that should be skipped, or that should be preserved
                     // in a scene that otherwise has all wonder talk skipped.
-                    switch (this->actor.textId) { 
+                    //switch (this->actor.textId) { 
                     //    case: 0x023c //textId we want to skip
                     //        randoSkipText = true;
                     //        break;
                     //    case 0x023c: // textId in a skipped scene that we don't want to skip
                     //        randoSkipText = false;
+                    //        break;
+                    //    default:
                     //        break;
                     //}
                 }
