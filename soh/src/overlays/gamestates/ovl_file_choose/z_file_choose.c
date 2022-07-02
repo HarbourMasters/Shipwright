@@ -1742,9 +1742,9 @@ void FileChoose_LoadGame(GameState* thisx) {
         this->state.running = false;
     }
 
-    // LoadRandomizerSettings("");
-    // LoadHintLocations("");
-    // LoadItemLocations("");
+    LoadRandomizerSettings("");
+    LoadHintLocations("");
+    LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
