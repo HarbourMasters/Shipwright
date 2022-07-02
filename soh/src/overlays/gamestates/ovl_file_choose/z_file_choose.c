@@ -2214,6 +2214,7 @@ void FileChoose_Init(GameState* thisx) {
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
     fileSelectSpoilerFileLoaded = false;
+    CVar_SetS32("gOnFileSelectNameEntry", 0);
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);
