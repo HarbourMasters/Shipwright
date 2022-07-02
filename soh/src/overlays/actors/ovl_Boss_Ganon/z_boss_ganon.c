@@ -560,7 +560,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             Gameplay_ChangeCameraStatus(globalCtx, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
-            if (gSaveContext.eventChkInf[7] & 0x100) {
+            if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag) {
                 // watched cutscene already, skip most of it
                 this->csState = 17;
                 this->csTimer = 0;

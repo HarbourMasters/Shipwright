@@ -1443,6 +1443,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
 
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
+    this->ganonHintText = gSaveContext.ganonHintText;
+    this->ganonText = gSaveContext.ganonText;
 
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
@@ -1862,6 +1864,14 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
         std::string adultAltarJsonText = spoilerFileJson["adultAltarText"].get<std::string>();
         std::string formattedAdultAltarText = FormatJsonHintText(adultAltarJsonText);
         memcpy(gSaveContext.adultAltarText, formattedAdultAltarText.c_str(), formattedAdultAltarText.length());
+
+        std::string ganonHintJsonText = spoilerFileJson["ganonHintText"].get<std::string>();
+        std::string formattedGanonHintJsonText = FormatJsonHintText(ganonHintJsonText);
+        memcpy(gSaveContext.ganonHintText, formattedGanonHintJsonText.c_str(), formattedGanonHintJsonText.length());
+
+        std::string ganonJsonText = spoilerFileJson["ganonText"].get<std::string>();
+        std::string formattedGanonJsonText = FormatJsonHintText(ganonJsonText);
+        memcpy(gSaveContext.ganonText, formattedGanonJsonText.c_str(), formattedGanonJsonText.length());
 
         json hintsJson = spoilerFileJson["hints"];
         int index = 0;
@@ -2392,12 +2402,20 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
     }
 }
 
-std::string Randomizer::GetAdultAltarText() {
+std::string Randomizer::GetAdultAltarText() const {
     return this->adultAltarText;
 }
 
-std::string Randomizer::GetChildAltarText() {
+std::string Randomizer::GetChildAltarText() const {
     return this->childAltarText;
+}
+
+std::string Randomizer::GetGanonText() const {
+    return ganonText;
+}
+
+std::string Randomizer::GetGanonHintText() const {
+    return ganonHintText;
 }
 
 std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {

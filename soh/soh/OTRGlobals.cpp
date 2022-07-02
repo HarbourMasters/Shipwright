@@ -1260,6 +1260,19 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
+int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -1456,7 +1469,7 @@ extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 acto
 }
 
 extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
-    std::string scrubText = "";
+    std::string scrubText("");
     int language = CVar_GetS32("gLanguages", 0);
     int price = 0;
     switch (scrubTextId) {
@@ -1524,45 +1537,30 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         break;
     }
     
-    memset(buffer, 0, maxBufferSize);
-    const int copiedCharLen = std::min<int>(maxBufferSize - 1, scrubText.length());
-    memcpy(buffer, scrubText.c_str(), copiedCharLen);
-    return copiedCharLen;
+    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
 extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
-    std::string altarText;
-    if(LINK_IS_ADULT) {
-        altarText = OTRGlobals::Instance->gRandomizer->GetAdultAltarText();
-    } else {
-        altarText = OTRGlobals::Instance->gRandomizer->GetChildAltarText();
-    }
+    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
+                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
+    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+}
 
-    if (!altarText.empty()) {
-        memset(buffer, 0, maxBufferSize);
-        const int copiedCharLen = std::min<int>(maxBufferSize - 1, altarText.length());
-        memcpy(buffer, altarText.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-    return 0;
+extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
 extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
-    if (!hintText.empty()) {
-        // I have observed that buffer is sometimes not clean, so just go ahead and clear it.
-        // if this is deemed too destructive, just make sure that the null terminator is marked.
-        memset(buffer, 0, maxBufferSize);
-
-        // Figure out how many letters we are going to copy over, either the full hint (if fits) or up to max buffer size (-1 to account for null terminator)
-        const int copiedCharLen = std::min<int>(maxBufferSize - 1, hintText.length());
-
-        memcpy(buffer, hintText.c_str(), copiedCharLen);
-        return copiedCharLen;
-    }
-    return 0;
+    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
 }
 
 extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {

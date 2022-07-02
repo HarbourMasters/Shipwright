@@ -78,6 +78,14 @@ void SaveManager::LoadRandomizerVersion1() {
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
         SaveManager::Instance->LoadData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
     }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonHintText); i++) {
+        SaveManager::Instance->LoadData("ght" + std::to_string(i), gSaveContext.ganonHintText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
+        SaveManager::Instance->LoadData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
+    }
 }
 
 void SaveManager::SaveRandomizer() {
@@ -108,6 +116,14 @@ void SaveManager::SaveRandomizer() {
 
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
         SaveManager::Instance->SaveData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonHintText); i++) {
+        SaveManager::Instance->SaveData("ght" + std::to_string(i), gSaveContext.ganonHintText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
+        SaveManager::Instance->SaveData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
 }
 
