@@ -949,7 +949,6 @@ void BossGanondrof_SetupDeath(BossGanondrof* this, GlobalContext* globalCtx) {
     this->actionFunc = BossGanondrof_Death;
     Audio_QueueSeqCmd(0x1 << 28 | SEQ_PLAYER_BGM_MAIN << 24 | 0x100FF);
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_DEAD);
-
     this->deathState = DEATH_START;
     this->actor.flags &= ~ACTOR_FLAG_0;
     this->work[GND_VARIANCE_TIMER] = 0;
@@ -982,6 +981,7 @@ void BossGanondrof_Death(BossGanondrof* this, GlobalContext* globalCtx) {
             osSyncPrintf("7\n");
             Gameplay_ChangeCameraStatus(globalCtx, this->deathCamera, CAM_STAT_ACTIVE);
             osSyncPrintf("8\n");
+            this->deathState = DEATH_THROES;
             player->actor.speedXZ = 0.0f;
             this->timers[0] = 50;
             this->cameraEye = camera->eye;
