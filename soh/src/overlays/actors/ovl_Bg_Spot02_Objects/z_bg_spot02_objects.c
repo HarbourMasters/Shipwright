@@ -129,6 +129,8 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
+    // We want to do most of the same things in rando, but we're not in a cutscene and the flag for
+    // destroying the royal tombstone is already set.
     if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x2000) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
         this->timer = 25;
@@ -156,6 +158,8 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
 void func_808ACA08(BgSpot02Objects* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
+    // The visual effects play the same way whether in rando or not, we just don't want
+    // to play the damage animation on link.
     if (this->timer != 0) {
         this->timer--;
     }
@@ -168,6 +172,8 @@ void func_808ACA08(BgSpot02Objects* this, GlobalContext* globalCtx) {
         Actor_Kill(&this->dyna.actor);
     }
 
+    // This shouldn't execute in rando even without the check since we never
+    // enter the cutscene context.
     if (globalCtx->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
         if (!LINK_IS_ADULT) {
             func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
@@ -211,6 +217,9 @@ void BgSpot02Objects_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void func_808ACC34(BgSpot02Objects* this, GlobalContext* globalCtx) {
+    // This is the actionFunc that the game settles on when you load the Graveyard
+    // When we're in rando and the flag for the gravestone being destroyed gets set,
+    // set the actionFunc to the function where the gravestone explodes.
     if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0X2000) {
         this->actionFunc = func_808AC908;
     }

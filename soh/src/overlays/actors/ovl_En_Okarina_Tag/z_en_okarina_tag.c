@@ -267,6 +267,7 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
                 gSaveContext.cutsceneTrigger = 1;
                 break;
             case 6:
+                // Don't start the cutscene in a rando save.
                 if (!(gSaveContext.n64ddFlag)) {
                     globalCtx->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
                                                              : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
