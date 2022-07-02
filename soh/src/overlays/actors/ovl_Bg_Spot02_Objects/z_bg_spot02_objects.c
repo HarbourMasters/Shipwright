@@ -129,6 +129,12 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
+    if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x2000) {
+        Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
+        EffectSsBomb2_SpawnLayered(globalCtx, &pos, &zeroVec, &zeroVec, 70, 30);
+        this->actionFunc = func_808ACA08;
+    }
+
     if (globalCtx->csCtx.state != 0) {
         if (globalCtx->csCtx.npcActions[3] != NULL && globalCtx->csCtx.npcActions[3]->action == 2) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
@@ -146,24 +152,28 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
 void func_808ACA08(BgSpot02Objects* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (this->timer != 0) {
-        this->timer--;
-    }
-
-    if (this->timer == 20) {
-        this->dyna.actor.draw = NULL;
-        EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS, 20,
-                                 object_spot02_objects_DL_012D30);
-    } else if (this->timer == 0) {
-        Actor_Kill(&this->dyna.actor);
-    }
-
-    if (globalCtx->csCtx.frames == 402) {
-        if (!LINK_IS_ADULT) {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
-        } else {
-            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+    if (!(gSaveContext.n64ddFlag)) {
+        if (this->timer != 0) {
+            this->timer--;
         }
+
+        if (this->timer == 20) {
+            this->dyna.actor.draw = NULL;
+            EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS,
+                                     20, object_spot02_objects_DL_012D30);
+        } else if (this->timer == 0) {
+            Actor_Kill(&this->dyna.actor);
+        }
+
+        if (globalCtx->csCtx.frames == 402) {
+            if (!LINK_IS_ADULT) {
+                func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
+            } else {
+                func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+            }
+        }
+    } else {
+        Actor_Kill(&this->dyna.actor);
     }
 }
 
@@ -201,6 +211,10 @@ void BgSpot02Objects_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void func_808ACC34(BgSpot02Objects* this, GlobalContext* globalCtx) {
+    if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0X2000) {
+        this->actionFunc = func_808AC908;
+    }
+
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL &&
         globalCtx->csCtx.npcActions[0]->action == 2) {
         this->unk_16A++;
