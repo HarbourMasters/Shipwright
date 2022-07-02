@@ -131,6 +131,10 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
 
     if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x2000) {
         Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
+        this->timer = 25;
+        pos.x = (Math_SinS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.x;
+        pos.y = this->dyna.actor.world.pos.y + 30.0f;
+        pos.z = (Math_CosS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.z;
         EffectSsBomb2_SpawnLayered(globalCtx, &pos, &zeroVec, &zeroVec, 70, 30);
         this->actionFunc = func_808ACA08;
     }
@@ -152,28 +156,24 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
 void func_808ACA08(BgSpot02Objects* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (!(gSaveContext.n64ddFlag)) {
-        if (this->timer != 0) {
-            this->timer--;
-        }
+    if (this->timer != 0) {
+        this->timer--;
+    }
 
-        if (this->timer == 20) {
-            this->dyna.actor.draw = NULL;
-            EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS,
-                                     20, object_spot02_objects_DL_012D30);
-        } else if (this->timer == 0) {
-            Actor_Kill(&this->dyna.actor);
-        }
-
-        if (globalCtx->csCtx.frames == 402) {
-            if (!LINK_IS_ADULT) {
-                func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
-            } else {
-                func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
-            }
-        }
-    } else {
+    if (this->timer == 20) {
+        this->dyna.actor.draw = NULL;
+        EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS,
+                                    20, object_spot02_objects_DL_012D30);
+    } else if (this->timer == 0) {
         Actor_Kill(&this->dyna.actor);
+    }
+
+    if (globalCtx->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
+        if (!LINK_IS_ADULT) {
+            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
+        } else {
+            func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE);
+        }
     }
 }
 
