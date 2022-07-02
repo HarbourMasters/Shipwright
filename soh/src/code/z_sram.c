@@ -596,7 +596,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (CVar_GetS32("gRandomizer", 0) != 0 && CVar_GetString("gSpoilerLog", "") != "") {
+    if (CVar_GetS32("gRandomizer", 0) != 0 &&
+        strcmp(CVar_GetString("gSpoilerLog", ""), "") != 0) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
