@@ -443,6 +443,9 @@ void DrawItem(uint32_t itemId) {
     ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    ImGui::GetWindowDrawList()->AddText(ImVec2(20, 20), 0xFFFFFFFF, "test");
+
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
 
