@@ -421,6 +421,11 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
             CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
         }
+        bool silent = true;
+        if((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+           (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+            silent = false;
+        }
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "");
@@ -428,7 +433,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadRandomizerSettings(fileLoc);
         LoadHintLocations(fileLoc);
-        LoadItemLocations(fileLoc);
+        LoadItemLocations(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1739,7 +1744,7 @@ void FileChoose_LoadGame(GameState* thisx) {
 
     LoadRandomizerSettings("");
     LoadHintLocations("");
-    LoadItemLocations("");
+    LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
