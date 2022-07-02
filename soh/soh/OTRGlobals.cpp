@@ -1297,7 +1297,7 @@ extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBu
     std::string postfix(freeze ? "\x0E\x3C\x02" : "\x02");
     std::string str;
 
-    if (src == NULL) {
+    if (src == nullptr) {
         if (gSaveContext.language == LANGUAGE_FRA) {
             // French
             str = prefix +
