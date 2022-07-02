@@ -1409,6 +1409,7 @@ std::unordered_map<std::string, RandomizerSettingKey> SpoilerfileSettingNameToEn
     { "Start with Max Rupees", RSK_FULL_WALLETS },
     { "Timesaver Settings:Cuccos to return", RSK_CUCCO_COUNT },
     { "Timesaver Settings:Big Poe Target Count", RSK_BIG_POE_COUNT },
+    { "Timesaver Settings:Skip Child Stealth", RSK_SKIP_CHILD_STEALTH },
     { "Timesaver Settings:Skip Epona Race", RSK_SKIP_EPONA_RACE },
     { "Timesaver Settings:Skip Tower Escape", RSK_SKIP_TOWER_ESCAPE }
 };
@@ -1669,6 +1670,7 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
+                    case RSK_SKIP_CHILD_STEALTH:
                     case RSK_SKIP_EPONA_RACE:
                     case RSK_SKIP_TOWER_ESCAPE:
                         if(it.value() == "Don't Skip") {
@@ -3244,6 +3246,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_CUCCO_COUNT] = CVar_GetS32("gRandomizeCuccosToReturn", 7);
     cvarSettings[RSK_BIG_POE_COUNT] = CVar_GetS32("gRandomizeBigPoeTargetCount", 10);
 
+    cvarSettings[RSK_SKIP_CHILD_STEALTH] = CVar_GetS32("gRandomizeSkipChildStealth", 0);
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
@@ -3264,6 +3267,7 @@ void DrawRandoEditor(bool& open) {
     }
 
     if (!open) {
+        CVar_SetS32("gRandomizerSettingsEnabled", 0);
         return;
     }
 
@@ -3486,9 +3490,11 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
-        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandoGenerating", 0));
+        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) ||
+                                           CVar_GetS32("gOnFileSelectNameEntry", 0);
+        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                            ImGui::GetStyle().Alpha * CVar_GetS32("gRandoGenerating", 0) ? 0.5f : 1.0f);
+                            ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
 
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
@@ -3499,11 +3505,10 @@ void DrawRandoEditor(bool& open) {
                 }
             }
             std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
-            // todo make sure we make the "randomizer" folder if it doesn't exist
             ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
+            // RANDOTODO settings presets
             // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
-            // // todo make sure we make the "randomizer" folder if it doesn't exist
             // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
         ImGui::Separator();
@@ -4324,12 +4329,6 @@ void DrawRandoEditor(bool& open) {
                     ImGui::TableNextColumn();
                     // COLUMN 1 - TIME SAVERS
                     // ImGui::NewLine();
-                    // todo implement child stealth skip
-                    // // Skip child stealth
-                    // SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
-                    // InsertHelpHoverText(
-                    //     "The crawlspace into Hyrule Castle goes straight to\nZelda, skipping the guards.");
-                    // ImGui::Separator();
 
                     // todo implement minigame repeat skip
                     // // Skip Minigame repetition
@@ -4372,6 +4371,11 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
                                                     "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
                     InsertHelpHoverText("The Poe buyer will give a reward for turning in\nthe chosen number of Big Poes.");
+                    ImGui::Separator();
+
+                    // // Skip child stealth
+                    SohImGui::EnhancementCheckbox("Skip Child Stealth", "gRandomizeSkipChildStealth");
+                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to\nZelda, skipping the guards.");
                     ImGui::Separator();
 
                     // Skip Epona race

@@ -380,7 +380,6 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
-u8 changedSeed;
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -404,18 +403,19 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         Audio_PlayFanfare(NA_BGM_HORSE_GOAL);
         func_800F5E18(SEQ_PLAYER_BGM_MAIN, NA_BGM_FILE_SELECT, 0, 7, 1);
         generating = 0;
-        changedSeed = 1;
-        LoadRandomizerSettings("");
-        LoadHintLocations("");
-        LoadItemLocations("");
         return;
     } else if (generating) {
         return;
     }
 
-    if (CVar_GetS32("gDroppedNewSpoilerFile", 0) != 0 || changedSeed) {
-        CVar_SetS32("gDroppedNewSpoilerFile", 0);
-        changedSeed = 0;
+    if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+        (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+        if (CVar_GetS32("gNewFileDropped", 0) != 0) {
+            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
+        }
+        CVar_SetS32("gNewSeedGenerated", 0);
+        CVar_SetS32("gNewFileDropped", 0);
+        CVar_SetString("gDroppedFile", "");
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadRandomizerSettings(fileLoc);
         LoadHintLocations(fileLoc);
@@ -427,6 +427,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
             if (!Save_GetSaveMetaInfo(this->buttonIndex)->valid) {
                 Audio_PlaySoundGeneral(NA_SE_SY_FSEL_DECIDE_L, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                 this->configMode = CM_ROTATE_TO_NAME_ENTRY;
+                CVar_SetS32("gOnFileSelectNameEntry", 1);
                 this->kbdButton = FS_KBD_BTN_NONE;
                 this->charPage = FS_CHAR_PAGE_ENG;
                 this->kbdX = 0;

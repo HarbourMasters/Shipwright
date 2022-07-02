@@ -271,8 +271,8 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             break;
         case WM_DROPFILES:
             DragQueryFileA((HDROP)w_param, 0, fileName, 256);
-            CVar_SetString("gSpoilerLog", fileName);
-            CVar_SetS32("gDroppedNewSpoilerFile", 1);
+            CVar_SetString("gDroppedFile", fileName);
+            CVar_SetS32("gNewFileDropped", 1);
             Game::SaveSettings();
             break;
         case WM_SYSKEYDOWN:

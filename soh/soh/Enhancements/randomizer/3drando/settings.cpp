@@ -2491,6 +2491,7 @@ namespace Settings {
       skipChildZelda = false;
       ShuffleWeirdEgg.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_WEIRD_EGG]);
     }
+    SkipChildStealth.SetSelectedIndex(cvarSettings[RSK_SKIP_CHILD_STEALTH]);
     
     ShuffleGerudoToken.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD]);
 

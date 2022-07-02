@@ -184,6 +184,10 @@ void func_80A1DBA0(EnFu* this, GlobalContext* globalCtx) {
 void func_80A1DBD4(EnFu* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
+    if (gSaveContext.n64ddFlag && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING)) {
+        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+    }
+
     if (globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = EnFu_WaitAdult;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -243,7 +247,7 @@ void EnFu_WaitAdult(EnFu* this, GlobalContext* globalCtx) {
     } else if (player->stateFlags2 & 0x1000000) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(globalCtx, this->actor.textId, NULL);
-        this->actionFunc = EnFu_TeachSong;
+        this->actionFunc = gSaveContext.n64ddFlag ? func_80A1DBD4 : EnFu_TeachSong;
         this->behaviorFlags |= FU_WAIT;
     } else if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
         this->actionFunc = func_80A1DBA0;

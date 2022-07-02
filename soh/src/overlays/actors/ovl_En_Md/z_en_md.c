@@ -372,7 +372,8 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
+        (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[1])) {
         return 0x1045;
     }
 

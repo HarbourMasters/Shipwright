@@ -799,6 +799,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip the z target talk instructions by the kokiri shop
         gSaveContext.sceneFlags[85].swch |= (1 << 0x1F);
 
+        // Go away ruto (water temple first cutscene)
+        gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
+
         // fast gerudo fortress
         if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
             gSaveContext.eventChkInf[9] |= 2;

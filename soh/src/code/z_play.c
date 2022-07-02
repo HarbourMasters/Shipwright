@@ -207,7 +207,9 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
 void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+    if ((gSaveContext.entranceIndex == 0x00DB ||
+         gSaveContext.entranceIndex == 0x0191 ||
+         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
         GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
@@ -266,6 +268,14 @@ void Gameplay_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+
+    if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+        if (gSaveContext.entranceIndex == 0x7A) {
+            gSaveContext.entranceIndex = 0x400;
+        } else if (gSaveContext.entranceIndex == 0x296) {
+            gSaveContext.entranceIndex = 0x23D;
+        }
+    }
 
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
