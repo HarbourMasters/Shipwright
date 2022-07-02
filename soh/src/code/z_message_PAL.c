@@ -1633,8 +1633,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             msgBase = (uintptr_t)font->msgOffset;
         }
 
-        GetSkulltulaCountMessage(font->msgBuf, msgBase, sizeof(font->msgBuf));
-        msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        msgCtx->msgLength = font->msgLength = GetSkulltulaCountMessage(font->msgBuf, msgBase, sizeof(font->msgBuf));
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;
