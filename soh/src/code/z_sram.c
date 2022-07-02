@@ -802,6 +802,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Go away ruto (water temple first cutscene)
         gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
 
+        // Skip intro cutscene when bombing mud wall in Dodongo's cavern
+        // this also makes the lower jaw render, and the eyes react to explosives
+        Flags_SetEventChkInf(0xB0);
+
         // fast gerudo fortress
         if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
             gSaveContext.eventChkInf[9] |= 2;
