@@ -1483,9 +1483,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     }
 }
 
-void Randomizer::LoadItemLocations(const char* spoilerFileName) {
+void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
     if (strcmp(spoilerFileName, "") != 0) {
-        ParseItemLocationsFile(spoilerFileName);
+        ParseItemLocationsFile(spoilerFileName, silent);
     }
 
     for (auto itemLocation : gSaveContext.itemLocations) {
@@ -1895,7 +1895,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     }
 }
 
-void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
+void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -1934,7 +1934,9 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
             index++;
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        if(!silent) {
+            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
         success = true;
     } catch (const std::exception& e) {
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

@@ -19,7 +19,7 @@ class Randomizer {
     GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
     void ParseHintLocationsFile(const char* spoilerFileName);
-    void ParseItemLocationsFile(const char* spoilerFileName);
+    void ParseItemLocationsFile(const char* spoilerFileName, bool silent);
 
   public:
     Randomizer();
@@ -31,7 +31,7 @@ class Randomizer {
     bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
-    void LoadItemLocations(const char* spoilerFileName);
+    void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
     bool GettingItemInBottle();
