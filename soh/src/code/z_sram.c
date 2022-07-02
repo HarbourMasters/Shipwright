@@ -811,6 +811,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // this also makes the lower jaw render, and the eyes react to explosives
         Flags_SetEventChkInf(0xB0);
 
+        // skip verbose lake owl, skip to "i'm on my way back to the castle"
+        gSaveContext.infTable[25] |= 0x20;
+
         // fast gerudo fortress
         if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
             gSaveContext.eventChkInf[9] |= 2;

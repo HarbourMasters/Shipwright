@@ -957,11 +957,23 @@ void func_80ACC00C(EnOwl* this, GlobalContext* globalCtx) {
                     osSyncPrintf(VT_FGCOL(CYAN));
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = 0x027E;
+                        globalCtx->sceneLoadFlag = 0x14;
+                        globalCtx->fadeTransition = 2;
+                        break;
+                    }
                     globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
                     this->actor.draw = NULL;
                     break;
                 case 8:
                 case 9:
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = 0x0554;
+                        globalCtx->sceneLoadFlag = 0x14;
+                        globalCtx->fadeTransition = 2;
+                        break;
+                    }
                     globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
                     this->actor.draw = NULL;
                     break;
