@@ -464,6 +464,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             gSaveContext.dayTime = dayTime;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
                             CVar_SetS32("gOnFileSelectNameEntry", 0);
+                            CVar_SetS32("gNewFileDropped", 0);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;
                             func_800AA000(300.0f, 0xB4, 0x14, 0x64);
