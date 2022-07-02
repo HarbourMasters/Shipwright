@@ -636,7 +636,9 @@ void func_80999EE0(DoorWarp1* this, GlobalContext* globalCtx) {
         Gameplay_CameraSetAtEye(globalCtx, sRutoWarpSubCamId, &at, &eye);
         Gameplay_CameraSetFov(globalCtx, sRutoWarpSubCamId, 90.0f);
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_TALKING;
-        Message_StartTextbox(globalCtx, 0x4022, NULL);
+        if (!gSaveContext.n64ddFlag) {
+            Message_StartTextbox(globalCtx, 0x4022, NULL);
+        }
         DoorWarp1_SetupAction(this, func_80999FE4);
     }
 }
