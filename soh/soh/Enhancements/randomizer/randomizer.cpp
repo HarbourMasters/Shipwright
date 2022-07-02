@@ -1426,6 +1426,38 @@ s16 Randomizer::GetItemModelFromId(s16 itemId) {
     return itemIdToModel[itemId];
 }
 
+std::string sanitize(std::string stringValue) {
+    // Add backslashes.
+    for (auto i = stringValue.begin();;) {
+        auto const pos =
+            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
+        if (pos == stringValue.end()) {
+            break;
+        }
+        i = std::next(stringValue.insert(pos, '\\'), 2);
+    }
+
+    // Removes others.
+    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
+                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
+                      stringValue.end());
+
+    return stringValue;
+}
+
+bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
+    if (strcmp(spoilerFileName, "") != 0) {
+        std::ifstream spoilerFileStream(sanitize(spoilerFileName));
+        if (!spoilerFileStream) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         ParseRandomizerSettingsFile(spoilerFileName);
@@ -1451,9 +1483,9 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     }
 }
 
-void Randomizer::LoadItemLocations(const char* spoilerFileName) {
+void Randomizer::LoadItemLocations(const char* spoilerFileName, bool silent) {
     if (strcmp(spoilerFileName, "") != 0) {
-        ParseItemLocationsFile(spoilerFileName);
+        ParseItemLocationsFile(spoilerFileName, silent);
     }
 
     for (auto itemLocation : gSaveContext.itemLocations) {
@@ -1461,25 +1493,6 @@ void Randomizer::LoadItemLocations(const char* spoilerFileName) {
     }
 
     itemLocations[RC_UNKNOWN_CHECK] = RG_NONE;
-}
-
-std::string sanitize(std::string stringValue) {
-    // Add backslashes.
-    for (auto i = stringValue.begin();;) {
-        auto const pos =
-            std::find_if(i, stringValue.end(), [](char const c) { return '\\' == c || '\'' == c || '"' == c; });
-        if (pos == stringValue.end()) {
-            break;
-        }
-        i = std::next(stringValue.insert(pos, '\\'), 2);
-    }
-
-    // Removes others.
-    stringValue.erase(std::remove_if(stringValue.begin(), stringValue.end(),
-                                     [](char const c) { return '\n' == c || '\r' == c || '\0' == c || '\x1A' == c; }),
-                      stringValue.end());
-
-    return stringValue;
 }
 
 void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
@@ -1882,7 +1895,7 @@ void Randomizer::ParseHintLocationsFile(const char* spoilerFileName) {
     }
 }
 
-void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
+void Randomizer::ParseItemLocationsFile(const char* spoilerFileName, bool silent) {
     std::ifstream spoilerFileStream(sanitize(spoilerFileName));
     if (!spoilerFileStream)
         return;
@@ -1921,7 +1934,9 @@ void Randomizer::ParseItemLocationsFile(const char* spoilerFileName) {
             index++;
         }
 
-        Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        if(!silent) {
+            Audio_PlaySoundGeneral(NA_SE_SY_CORRECT_CHIME, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
+        }
         success = true;
     } catch (const std::exception& e) {
         Audio_PlaySoundGeneral(NA_SE_SY_ERROR, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);

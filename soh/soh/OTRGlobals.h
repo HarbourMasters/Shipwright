@@ -99,7 +99,7 @@ RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 int CopyAltarMessage(char* buffer, const int maxBufferSize);
 int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
 void LoadHintLocations(const char* spoilerFileName);
-void LoadItemLocations(const char* spoilerFileName);
+void LoadItemLocations(const char* spoilerFileName, bool silent);
 s16 GetItemModelFromId(s16 itemId);
 s32 GetItemIDFromGetItemID(s32 getItemId);
 s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);

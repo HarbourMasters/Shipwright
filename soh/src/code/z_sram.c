@@ -596,7 +596,8 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.playerName[offset] = Save_GetSaveMetaInfo(fileChooseCtx->buttonIndex)->playerName[offset];
     }
 
-    if (CVar_GetS32("gRandomizer", 0) != 0 && CVar_GetString("gSpoilerLog", "") != "") {
+    if (CVar_GetS32("gRandomizer", 0) != 0 &&
+        strcmp(CVar_GetString("gSpoilerLog", ""), "") != 0) {
         // Set N64DD Flags for save file
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
@@ -799,8 +800,19 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // skip the z target talk instructions by the kokiri shop
         gSaveContext.sceneFlags[85].swch |= (1 << 0x1F);
 
+        //Ruto already met in jabu and spawns down the hole immediately
+        gSaveContext.infTable[20] |= 2;
+        gSaveContext.infTable[20] |= 4;
+
         // Go away ruto (water temple first cutscene)
         gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
+
+        // Skip intro cutscene when bombing mud wall in Dodongo's cavern
+        // this also makes the lower jaw render, and the eyes react to explosives
+        Flags_SetEventChkInf(0xB0);
+
+        // skip verbose lake owl, skip to "i'm on my way back to the castle"
+        gSaveContext.infTable[25] |= 0x20;
 
         // fast gerudo fortress
         if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
