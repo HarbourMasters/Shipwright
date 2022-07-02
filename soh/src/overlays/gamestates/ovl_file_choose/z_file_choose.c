@@ -380,6 +380,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 }
 
 u8 generating;
+bool fileSelectSpoilerFileLoaded;
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -408,18 +409,27 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         return;
     }
 
+    if (!SpoilerFileExists(CVar_GetString("gSpoilerLog", ""))) {
+        CVar_SetString("gSpoilerLog", "");
+        fileSelectSpoilerFileLoaded = false;
+    }
+
     if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+        (CVar_GetS32("gNewSeedGenerated", 0) != 0) || 
+        (!fileSelectSpoilerFileLoaded &&
+        SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
             CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
         }
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "");
+        fileSelectSpoilerFileLoaded = false;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
         LoadRandomizerSettings(fileLoc);
         LoadHintLocations(fileLoc);
         LoadItemLocations(fileLoc);
+        fileSelectSpoilerFileLoaded = true;
     }
 
     if (CHECK_BTN_ALL(input->press.button, BTN_START) || CHECK_BTN_ALL(input->press.button, BTN_A)) {
@@ -2203,6 +2213,7 @@ void FileChoose_Init(GameState* thisx) {
     FileChooseContext* this = (FileChooseContext*)thisx;
     size_t size = (u32)_title_staticSegmentRomEnd - (u32)_title_staticSegmentRomStart;
     s32 pad;
+    fileSelectSpoilerFileLoaded = false;
 
     SREG(30) = 1;
     osSyncPrintf("SIZE=%x\n", size);

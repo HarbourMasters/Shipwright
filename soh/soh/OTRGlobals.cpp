@@ -1447,6 +1447,10 @@ extern "C" bool GettingRandoBottledItem() {
     return OTRGlobals::Instance->gRandomizer->GettingItemInBottle();
 }
 
+extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+    return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
+}
+
 extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }

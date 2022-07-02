@@ -28,6 +28,7 @@ class Randomizer {
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
     s32 GetItemIDFromGetItemID(s32 getItemId);
+    bool SpoilerFileExists(const char* spoilerFileName);
     void LoadRandomizerSettings(const char* spoilerFileName);
     void LoadHintLocations(const char* spoilerFileName);
     void LoadItemLocations(const char* spoilerFileName);
