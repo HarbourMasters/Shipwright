@@ -1816,7 +1816,9 @@ void EnGo2_SetGetItem(EnGo2* this, GlobalContext* globalCtx) {
                 EnGo2_GetItemAnimation(this, globalCtx);
                 return;
             case GI_TUNIC_GORON:
-                gSaveContext.infTable[16] |= 0x200;
+                if (!gSaveContext.n64ddFlag) {
+                    gSaveContext.infTable[16] |= 0x200;
+                }
                 EnGo2_GetItemAnimation(this, globalCtx);
                 return;
             case GI_SWORD_BGS:
