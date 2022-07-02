@@ -251,7 +251,7 @@ void func_80B3A4F8(EnWonderTalk2* this, GlobalContext* globalCtx) {
                 osSyncPrintf("\n\n");
             }
             this->unk_158 = 0;
-            if (!this->unk_156) {
+            if (!this->unk_156 && !(gSaveContext.n64ddFlag)) {
                 Message_StartTextbox(globalCtx, this->actor.textId, NULL);
                 func_8002DF54(globalCtx, NULL, 8);
                 this->actor.flags |= ACTOR_FLAG_0 | ACTOR_FLAG_4;
