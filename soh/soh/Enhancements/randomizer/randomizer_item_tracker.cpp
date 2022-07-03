@@ -848,12 +848,13 @@ void DrawItemTracker(bool& open) {
     static uint32_t ccc = 0xFF000000;
     ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
 
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        ImGui::PopStyleColor();
         ImGui::End();
         return;
     }
 
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
