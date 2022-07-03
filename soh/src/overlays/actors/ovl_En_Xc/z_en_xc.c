@@ -2341,6 +2341,14 @@ void EnXc_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnXc* this = (EnXc*)thisx;
     s32 action = this->action;
 
+    if (this->actor.params == SHEIK_TYPE_9) {
+        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && !(gSaveContext.eventChkInf[5] & 0x20)) {
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20, GI_PRELUDE_OF_LIGHT);
+            }
+        }
+    }
+
     if ((action < 0) || (action >= ARRAY_COUNT(sActionFuncs)) || (sActionFuncs[action] == NULL)) {
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
     } else {
