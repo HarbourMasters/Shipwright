@@ -817,7 +817,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawItem(ITEM_HAMMER);
             ImGui::SameLine(spacingX * 4);
             DrawItem(ITEM_ARROW_LIGHT);
-            ImGui::SameLine(spacingX * 4);
+            ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_NAYRUS_LOVE);
             ImGui::SameLine();
             ImGui::NewLine();
