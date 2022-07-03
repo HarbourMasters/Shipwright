@@ -818,7 +818,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
-            // DrawQuest(QUEST_SKULL_TOKEN);
+            DrawQuest(QUEST_SKULL_TOKEN);
             ImGui::NewLine();
             DrawEquip(ITEM_SHIELD_DEKU);
             ImGui::SameLine();
