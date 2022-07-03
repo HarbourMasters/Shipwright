@@ -438,12 +438,48 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_FROG, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_EYEDROPS, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_CLAIM_CHECK, 0),
-
+    ITEM_TRACKER_MAP_ENTRY(ITEM_HEART_CONTAINER, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_SMALL, 0),
+    ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_LARGE, 0),
 };
 
 void DrawItem(uint32_t itemId) {
     uint32_t actualItemId = INV_CONTENT(itemId);
+
+    if (itemId == ITEM_HEART_CONTAINER) {
+        actualItemId = itemId;
+    }
+
+    if (itemId == ITEM_MAGIC_SMALL ||
+        itemId == ITEM_MAGIC_LARGE) {
+        // todo make this large/small based on what upgrades we have
+        if (gSaveContext.magicLevel == 2) {
+            actualItemId = ITEM_MAGIC_LARGE;
+        } else {
+            actualItemId = ITEM_MAGIC_SMALL;
+        }
+    }
+
     bool hasItem = actualItemId != ITEM_NONE;
+
+    if (itemId == ITEM_HEART_CONTAINER) {
+        if (gSaveContext.doubleDefense) {
+            hasItem = true;
+        } else {
+            hasItem = false;
+        }
+    }
+
+    if (itemId == ITEM_MAGIC_SMALL ||
+        itemId == ITEM_MAGIC_LARGE) {
+        // todo make this large/small based on what upgrades we have
+        if (gSaveContext.magicLevel == 0) {
+            hasItem = false;
+        } else {
+            hasItem = true;
+        }
+    }   
+
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
 
@@ -850,6 +886,14 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawEquip(ITEM_TUNIC_ZORA);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
+            DrawItem(ITEM_HEART_CONTAINER);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
+            DrawItem(ITEM_MAGIC_SMALL);
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();

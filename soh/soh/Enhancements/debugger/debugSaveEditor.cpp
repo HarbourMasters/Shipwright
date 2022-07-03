@@ -130,6 +130,9 @@ std::map<uint32_t, ItemMapEntry> itemMapping = {
     ITEM_MAP_ENTRY(ITEM_COMPASS),
     ITEM_MAP_ENTRY(ITEM_DUNGEON_MAP),
     ITEM_MAP_ENTRY(ITEM_KEY_SMALL),
+    ITEM_MAP_ENTRY(ITEM_HEART_CONTAINER),
+    ITEM_MAP_ENTRY(ITEM_MAGIC_SMALL),
+    ITEM_MAP_ENTRY(ITEM_MAGIC_LARGE)
 };
 
 // Maps entries in the GS flag array to the area name it represents
