@@ -198,6 +198,7 @@ std::map<uint32_t, QuestMapEntry> questMappingSSS = {
     QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, gZoraSapphireIconTex),
     QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, gStoneOfAgonyIconTex),
     QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, gGerudosCardIconTex),
+    //QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, gGoldSkulltulaIconTex),
 };
 
 typedef struct {
@@ -331,13 +332,30 @@ void DrawQuest(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = questTrackerMap[itemId];
     bool hasQuestItem = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
+    
+    ImVec2 p = ImGui::GetCursorScreenPos();
+    int estimatedTextWidth = 10;
+    int estimatedTextHeight = 10;
+    ImGui::SetCursorScreenPos(ImVec2(p.x + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
 
     if (entry.name == "QUEST_SKULL_TOKEN") {
-        ImVec2 p = ImGui::GetCursorScreenPos();
-        ImGui::GetWindowDrawList()->AddText(ImVec2(p.x, p.y), 0xFFFFFFFF, "test");
+        if (gSaveContext.inventory.gsTokens == 0) {
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
+            ImGui::PopStyleColor();
+        } else if (gSaveContext.inventory.gsTokens >= 1 && gSaveContext.inventory.gsTokens <= 99) {
+            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
+        } else if (gSaveContext.inventory.gsTokens >= 100) {
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 0, 0, 255));
+            ImGui::Text("%i", gSaveContext.inventory.gsTokens);
+            ImGui::PopStyleColor();
+        }
     }
+
+    ImGui::EndGroup();
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
@@ -818,7 +836,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
-            // DrawQuest(QUEST_SKULL_TOKEN);
+            DrawQuest(QUEST_SKULL_TOKEN);
             ImGui::NewLine();
             DrawEquip(ITEM_SHIELD_DEKU);
             ImGui::SameLine();
@@ -901,6 +919,21 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
         }
         if (ImGui::BeginTabItem("Options")) {
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 64, "");
+            /*
+            static uint32_t ccc = 0xFFD8D8D8;
+            ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
+            auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
+            printf("original color: (%.6f, %.6f, %.6f, %.6f)\n", color.w, color.x, color.y, color.z);
+
+            if (ImGui::ColorEdit4("ColorTest", (float*)&color, flags)) {
+                printf("changed color: (%.6f, %.6f, %.6f, %.6f)\n", color.w, color.x, color.y, color.z);
+                ccc = ImGui::ColorConvertFloat4ToU32(color);
+            }
+
+
+            // ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
+             //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
+            //ImGui::PushStyleColor(ImGuiCol_WindowBg, color);*/
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
