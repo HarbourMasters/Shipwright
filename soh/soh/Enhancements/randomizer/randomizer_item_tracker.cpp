@@ -471,10 +471,10 @@ void DrawItem(uint32_t itemId) {
     }
 
     if (itemId == ITEM_WALLET_ADULT || itemId == ITEM_WALLET_GIANT) {
-        if (CUR_UPG_VALUE(UPG_WALLET) >= 0) {
-            actualItemId = ITEM_WALLET_ADULT;
-        } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
+        if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
             actualItemId = ITEM_WALLET_GIANT;
+        } else if (CUR_UPG_VALUE(UPG_WALLET) < 2) {
+            actualItemId = ITEM_WALLET_ADULT;
         }
     }
 
