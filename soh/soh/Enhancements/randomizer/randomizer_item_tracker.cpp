@@ -198,7 +198,7 @@ std::map<uint32_t, QuestMapEntry> questMappingSSS = {
     QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, gZoraSapphireIconTex),
     QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, gStoneOfAgonyIconTex),
     QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, gGerudosCardIconTex),
-    //QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, gGoldSkulltulaIconTex),
+    // QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, gGoldSkulltulaIconTex),
 };
 
 typedef struct {
@@ -285,8 +285,8 @@ typedef struct {
         }                                         \
     }
 
-std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = { 
-    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0), 
+std::unordered_map<uint32_t, ItemTrackerMapEntry> equipTrackerMap = {
+    ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_KOKIRI, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_MASTER, 1),
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BGS, 2),
     ITEM_TRACKER_MAP_ENTRY(ITEM_SWORD_BROKEN, 3),
@@ -311,7 +311,6 @@ void DrawEquip(uint32_t itemId) {
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
-
 std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FOREST, 0),
     ITEM_TRACKER_MAP_ENTRY(QUEST_MEDALLION_FIRE, 1),
@@ -335,7 +334,7 @@ void DrawQuest(uint32_t itemId) {
     ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
-    
+
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
     int estimatedTextHeight = 10;
@@ -459,9 +458,9 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_HEART_CONTAINER, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_SMALL, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_LARGE, 0),
-    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_ADULT, 0), 
+    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_ADULT, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_GIANT, 0),
-    };
+};
 
 void DrawItem(uint32_t itemId) {
     uint32_t actualItemId = INV_CONTENT(itemId);
@@ -523,7 +522,7 @@ void DrawItem(uint32_t itemId) {
     int estimatedTextHeight = 10;
     ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
 
-    switch (actualItemId) { 
+    switch (actualItemId) {
         case ITEM_STICK:
             if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
@@ -688,16 +687,15 @@ void DrawItem(uint32_t itemId) {
             break;
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
-            if (UPG_WALLET == 0) {
+            if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
                 ImGui::Text("99");
-            } else if (UPG_WALLET == 1) {
+            } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
                 ImGui::Text("200");
-            } else if (UPG_WALLET == 2) {
+            } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
                 ImGui::Text("500");
             }
             break;
     }
-    
     ImGui::EndGroup();
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -778,219 +776,277 @@ void DrawItemTracker(bool& open) {
     }
 
 if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+        int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
+        int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
         if (ImGui::BeginTabItem("Item Tracker")) {
             DrawItem(ITEM_STICK);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_NUT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_BOMB);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_BOW);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_FIRE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_DINS_FIRE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             ImGui::NewLine();
             DrawItem(ITEM_SLINGSHOT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_OCARINA_FAIRY);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_BOMBCHU);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_HOOKSHOT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_ICE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_FARORES_WIND);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             ImGui::NewLine();
             DrawItem(ITEM_BOOMERANG);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_LENS);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_BEAN);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_HAMMER);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_LIGHT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_NAYRUS_LOVE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             ImGui::NewLine();
             DrawBottle(ITEM_BOTTLE, 0);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 1);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 2);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 3);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
             ImGui::NewLine();
             DrawEquip(ITEM_SWORD_KOKIRI);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_SWORD_MASTER);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_STONE_OF_AGONY);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_GERUDO_CARD);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_SKULL_TOKEN);
             ImGui::NewLine();
             DrawEquip(ITEM_SHIELD_DEKU);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_SHIELD_HYLIAN);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_SHIELD_MIRROR);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawUpgrade(UPG_STRENGTH);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawUpgrade(UPG_SCALE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_WALLET_ADULT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::NewLine();
             DrawEquip(ITEM_TUNIC_KOKIRI);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_TUNIC_GORON);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_TUNIC_ZORA);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX + 48.0f, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_HEART_CONTAINER);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawItem(ITEM_MAGIC_SMALL);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             ImGui::NewLine();
             DrawEquip(ITEM_BOOTS_KOKIRI);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_BOOTS_IRON);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawEquip(ITEM_BOOTS_HOVER);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_KOKIRI_EMERALD);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_GORON_RUBY);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_ZORA_SAPPHIRE);
             ImGui::NewLine();
             DrawQuest(QUEST_MEDALLION_FOREST);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_FIRE);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_WATER);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_SPIRIT);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_SHADOW);
             ImGui::SameLine();
-            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_LIGHT);
+            ImGui::SameLine();
+            // PURPLE TRACKER V2
+            /*
+            ImGui::NewLine(); // SONG LINE 1
+            DrawSong(QUEST_SONG_LULLABY);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_EPONA);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_SARIA);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_SUN);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_TIME);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_STORMS);
+            ImGui::SameLine();
+            ImGui::NewLine(); // SONG LINE 2
+            DrawSong(QUEST_SONG_MINUET);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_BOLERO);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_SERENADE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_REQUIEM);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_NOCTURNE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(spacingX, spacingY));
+            ImGui::SameLine();
+            DrawSong(QUEST_SONG_PRELUDE);
+            */
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Options")) {
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 64, "");
+
+            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", 0, 16,
+                                           "");
             /*
+            SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
+                                           16, "");
+            
+
             static uint32_t ccc = 0xFFD8D8D8;
             ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
             auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
@@ -1002,9 +1058,11 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             }
 
 
-            // ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
-             //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
-            //ImGui::PushStyleColor(ImGuiCol_WindowBg, color);*/
+            ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
+            //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
+            ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
+            ImGui::PopStyleColor();
+            */
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
