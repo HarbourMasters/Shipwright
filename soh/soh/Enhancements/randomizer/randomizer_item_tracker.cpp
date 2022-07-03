@@ -1021,13 +1021,11 @@ void DrawItemTracker(bool& open) {
                                            "");
             // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
             //                                16, "");
-            
+            ImGui::Text("Chroma Key");
 
             auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
-            printf("original color: (%.6f, %.6f, %.6f, %.6f)\n", color.w, color.x, color.y, color.z);
 
             if (ImGui::ColorEdit4("ColorTest", (float*)&color, flags)) {
-                printf("changed color: (%.6f, %.6f, %.6f, %.6f)\n", color.w, color.x, color.y, color.z);
                 ccc = ImGui::ColorConvertFloat4ToU32(color);
             }
 
