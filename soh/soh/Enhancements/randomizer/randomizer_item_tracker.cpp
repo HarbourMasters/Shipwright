@@ -695,6 +695,9 @@ void DrawItem(uint32_t itemId) {
                 ImGui::Text("500");
             }
             break;
+        default:
+            ImGui::Text(" ");
+            break;
     }
     ImGui::EndGroup();
 
