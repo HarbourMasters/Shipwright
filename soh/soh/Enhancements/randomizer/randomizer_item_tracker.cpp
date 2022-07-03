@@ -918,7 +918,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
-            DrawUpgrade(ITEM_WALLET_ADULT);
+            DrawItem(ITEM_WALLET_ADULT);
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::NewLine();
