@@ -714,11 +714,17 @@ void DrawItem(uint32_t itemId) {
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
             if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("99");
+                ImGui::PopStyleColor();
             } else if (CUR_UPG_VALUE(UPG_WALLET) == 1) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("200");
+                ImGui::PopStyleColor();
             } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("500");
+                ImGui::PopStyleColor();
             }
             break;
         default:
