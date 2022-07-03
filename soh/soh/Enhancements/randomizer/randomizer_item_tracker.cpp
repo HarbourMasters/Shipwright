@@ -459,7 +459,9 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(ITEM_HEART_CONTAINER, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_SMALL, 0),
     ITEM_TRACKER_MAP_ENTRY(ITEM_MAGIC_LARGE, 0),
-};
+    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_ADULT, 0), 
+    ITEM_TRACKER_MAP_ENTRY(ITEM_WALLET_GIANT, 0),
+    };
 
 void DrawItem(uint32_t itemId) {
     uint32_t actualItemId = INV_CONTENT(itemId);
@@ -468,9 +470,15 @@ void DrawItem(uint32_t itemId) {
         actualItemId = itemId;
     }
 
-    if (itemId == ITEM_MAGIC_SMALL ||
-        itemId == ITEM_MAGIC_LARGE) {
-        // todo make this large/small based on what upgrades we have
+    if (itemId == ITEM_WALLET_ADULT || itemId == ITEM_WALLET_GIANT) {
+        if (CUR_UPG_VALUE(UPG_WALLET) >= 0) {
+            actualItemId = ITEM_WALLET_ADULT;
+        } else if (CUR_UPG_VALUE(UPG_WALLET) == 2) {
+            actualItemId = ITEM_WALLET_GIANT;
+        }
+    }
+
+    if (itemId == ITEM_MAGIC_SMALL || itemId == ITEM_MAGIC_LARGE) {
         if (gSaveContext.magicLevel == 2) {
             actualItemId = ITEM_MAGIC_LARGE;
         } else {
@@ -488,15 +496,21 @@ void DrawItem(uint32_t itemId) {
         }
     }
 
-    if (itemId == ITEM_MAGIC_SMALL ||
-        itemId == ITEM_MAGIC_LARGE) {
-        // todo make this large/small based on what upgrades we have
+    if (itemId == ITEM_WALLET_ADULT || itemId == ITEM_WALLET_GIANT) {
+        if (CUR_UPG_VALUE(UPG_WALLET) == 0) {
+            hasItem = false;
+        } else {
+            hasItem = true;
+        }
+    }
+
+    if (itemId == ITEM_MAGIC_SMALL || itemId == ITEM_MAGIC_LARGE) {
         if (gSaveContext.magicLevel == 0) {
             hasItem = false;
         } else {
             hasItem = true;
         }
-    }   
+    }
 
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
@@ -672,12 +686,22 @@ void DrawItem(uint32_t itemId) {
             ImGui::Text("10");
             ImGui::PopStyleColor();
             break;
+        case ITEM_WALLET_ADULT:
+        case ITEM_WALLET_GIANT:
+            if (UPG_WALLET == 0) {
+                ImGui::Text("99");
+            } else if (UPG_WALLET == 1) {
+                ImGui::Text("200");
+            } else if (UPG_WALLET == 2) {
+                ImGui::Text("500");
+            }
+            break;
     }
     
     ImGui::EndGroup();
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
-};
+}
 
 void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     uint32_t actualItemId = gSaveContext.inventory.items[SLOT(itemId) + bottleSlot];
@@ -894,6 +918,9 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine();
             ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
+            DrawUpgrade(ITEM_WALLET_ADULT);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::NewLine();
             DrawEquip(ITEM_TUNIC_KOKIRI);
             ImGui::SameLine();
