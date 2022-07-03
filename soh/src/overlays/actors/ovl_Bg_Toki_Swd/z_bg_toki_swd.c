@@ -109,12 +109,6 @@ void BgTokiSwd_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     BgTokiSwd* this = (BgTokiSwd*)thisx;
 
     Collider_DestroyCylinder(globalCtx, &this->collider);
-    
-    if (gSaveContext.n64ddFlag && LINK_IS_ADULT && !Gameplay_InCsMode(globalCtx)) {
-        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && !(gSaveContext.eventChkInf[5] & 0x20)) {
-            GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20, GI_PRELUDE_OF_LIGHT);
-        }
-    }
 }
 
 void func_808BAF40(BgTokiSwd* this, GlobalContext* globalCtx) {
@@ -139,7 +133,9 @@ void func_808BAF40(BgTokiSwd* this, GlobalContext* globalCtx) {
             this->actor.parent = NULL;
             BgTokiSwd_SetupAction(this, func_808BB0AC);
         } else {
-            if (Actor_IsFacingPlayer(&this->actor, 0x2000)) {
+            Player* player = GET_PLAYER(globalCtx);
+            if (Actor_IsFacingPlayer(&this->actor, 0x2000) && 
+                (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && player->getItemId == GI_NONE))) {
                 func_8002F580(&this->actor, globalCtx);
             }
         }
