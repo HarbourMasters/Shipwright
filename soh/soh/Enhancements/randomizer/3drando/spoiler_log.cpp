@@ -567,23 +567,79 @@ static void WriteWayOfTheHeroLocation(tinyxml2::XMLDocument& spoilerLog) {
     }
 }
 
+std::string AutoFormatHintTextString(std::string unformattedHintTextString) {
+  std::string textStr = unformattedHintTextString;
+
+  // RANDOTODO: don't just make manual exceptions
+  bool needsAutomaicNewlines = true;
+  if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
+      textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda" ||
+      textStr == "What about Zelda makes you think she'd be a better ruler than I?^I saved Lon Lon Ranch,&fed the hungry,&and my castle floats." ||
+      textStr == "Many tricks are up my sleeve,&to save yourself&you'd better leave!" ||
+      textStr == "I've learned this spell,&it's really neat,&I'll keep it later&for your treat!" ||
+      textStr == "Sale petit garnement,&tu fais erreur!&C'est maintenant que marque&ta dernière heure!" ||
+      textStr == "Gamin, ton destin achève,&sous mon sort tu périras!&Cette partie ne fut pas brève,&et cette mort, tu subiras!") {
+    needsAutomaicNewlines = false;
+  }
+
+  if (needsAutomaicNewlines) {
+    //insert newlines either manually or when encountering a '&'
+    constexpr size_t lineLength = 34;
+    size_t lastNewline = 0;
+    while (lastNewline + lineLength < textStr.length()) {
+      size_t carrot     = textStr.find('^', lastNewline);
+      size_t ampersand  = textStr.find('&', lastNewline);
+      size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
+      size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
+      //replace '&' first if it's within the newline range
+      if (ampersand < lastNewline + lineLength) {
+        lastNewline = ampersand;
+      //or move the lastNewline cursor to the next line if a '^' is encountered
+      } else if (carrot < lastNewline + lineLength) {
+        lastNewline = carrot + 1;
+      //some lines need to be split but don't have spaces, look for periods instead
+      } else if (lastSpace == std::string::npos) {
+        textStr.replace(lastPeriod, 1, ".&");
+        lastNewline = lastPeriod + 2;
+      } else {
+        textStr.replace(lastSpace, 1, "&");
+        lastNewline = lastSpace + 1;
+      }
+    }
+  }
+
+  // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
+  textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
+
+  return textStr;
+}
+
 // Writes the hints to the spoiler log, if they are enabled.
 static void WriteHints(int language) {
+    std::string unformattedGanonText;
+    std::string unformattedGanonHintText;
+
     switch (language) {
         case 0:
         default:
-            jsonData["ganonText"] = GetGanonText().GetEnglish();
-            jsonData["ganonHintText"] = GetGanonHintText().GetEnglish();
+            unformattedGanonText = GetGanonText().GetEnglish();
+            unformattedGanonHintText = GetGanonHintText().GetEnglish();
             jsonData["childAltarText"] = GetChildAltarText().GetEnglish();
             jsonData["adultAltarText"] = GetAdultAltarText().GetEnglish();
             break;
         case 2:
-            jsonData["ganonText"] = GetGanonText().GetFrench();
-            jsonData["ganonHintText"] = GetGanonHintText().GetFrench();
+            unformattedGanonText = GetGanonText().GetFrench();
+            unformattedGanonHintText = GetGanonHintText().GetFrench();
             jsonData["childAltarText"] = GetChildAltarText().GetFrench();
             jsonData["adultAltarText"] = GetAdultAltarText().GetFrench();
             break;
     }
+
+    std::string ganonText = AutoFormatHintTextString(unformattedGanonText);
+    std::string ganonHintText = AutoFormatHintTextString(unformattedGanonHintText);
+
+    jsonData["ganonText"] = ganonText;
+    jsonData["ganonHintText"] = ganonHintText;
 
     if (Settings::GossipStoneHints.Is(HINTS_NO_HINTS)) {
         return;
@@ -591,55 +647,18 @@ static void WriteHints(int language) {
 
     for (const uint32_t key : gossipStoneLocations) {
         ItemLocation* location = Location(key);
-        std::string textStr;
+        std::string unformattedHintTextString;
         switch (language) {
             case 0:
             default:
-                textStr = location->GetPlacedItemName().GetEnglish();
+                unformattedHintTextString = location->GetPlacedItemName().GetEnglish();
                 break;
             case 2:
-                textStr = location->GetPlacedItemName().GetFrench();
+                unformattedHintTextString = location->GetPlacedItemName().GetFrench();
                 break;
         }
 
-        
-
-        // RANDOTODO: don't just make manual exceptions
-        bool needsAutomaicNewlines = true;
-        if (textStr == "Erreur 0x69a504:&Traduction manquante^C'est de la faute à Purple Hato!&J'vous jure!" ||
-            textStr == "Mon très cher @:&Viens vite au château, je t'ai préparé&un délicieux gâteau...^À bientôt, Princesse Zelda") {
-          needsAutomaicNewlines = false;
-        }
-
-        if (needsAutomaicNewlines) {
-          //insert newlines either manually or when encountering a '&'
-          constexpr size_t lineLength = 34;
-          size_t lastNewline = 0;
-          while (lastNewline + lineLength < textStr.length()) {
-            size_t carrot     = textStr.find('^', lastNewline);
-            size_t ampersand  = textStr.find('&', lastNewline);
-            size_t lastSpace  = textStr.rfind(' ', lastNewline + lineLength);
-            size_t lastPeriod = textStr.rfind('.', lastNewline + lineLength);
-            //replace '&' first if it's within the newline range
-            if (ampersand < lastNewline + lineLength) {
-              lastNewline = ampersand;
-            //or move the lastNewline cursor to the next line if a '^' is encountered
-            } else if (carrot < lastNewline + lineLength) {
-              lastNewline = carrot + 1;
-            //some lines need to be split but don't have spaces, look for periods instead
-            } else if (lastSpace == std::string::npos) {
-              textStr.replace(lastPeriod, 1, ".&");
-              lastNewline = lastPeriod + 2;
-            } else {
-              textStr.replace(lastSpace, 1, "&");
-              lastNewline = lastSpace + 1;
-            }
-          }
-        }
-
-        // todo add colors (see `AddColorsAndFormat` in `custom_messages.cpp`)
-        textStr.erase(std::remove(textStr.begin(), textStr.end(), '#'), textStr.end());
-        
+        std::string textStr = AutoFormatHintTextString(unformattedHintTextString);
         jsonData["hints"][location->GetName()] = textStr;
     }
 }
