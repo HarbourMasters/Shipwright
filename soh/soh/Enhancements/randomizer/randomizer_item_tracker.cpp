@@ -356,7 +356,7 @@ void DrawQuest(uint32_t itemId) {
 
     ImGui::EndGroup();
 
-    SetLastItemHoverText(SohUtils::GetItemName(entry.id));
+    SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
 };
 
 std::unordered_map<uint32_t, ItemTrackerMapEntry> itemTrackerMap = {
@@ -792,6 +792,46 @@ void DrawUpgrade(int32_t categoryId) {
     }
 }
 
+typedef struct {
+    uint32_t id;
+    std::string name;
+    std::string nameFaded;
+    ImVec4 color;
+} ItemTrackerSongEntry;
+
+#define ITEM_TRACKER_SONG_ENTRY(id, r, g, b)     \
+    {                                             \
+        id, {                                     \
+            id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
+        }                                         \
+    }
+
+// Maps song ids to info for use in ImGui
+std::unordered_map<int32_t, ItemTrackerSongEntry> songTrackerMap = {
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+};
+
+void DrawSong(int32_t songId) {
+    int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+    const ItemTrackerSongEntry& entry = songTrackerMap[songId];
+    uint32_t bitMask = 1 << entry.id;
+    bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
+    ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
+            ImVec2(0, 0), ImVec2(1, 1));
+    SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
+}
+
 void DrawItemTracker(bool& open) {
     if (!open) {
         CVar_SetS32("gItemTrackerEnabled", 0);
@@ -925,26 +965,36 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine(spacingX * 5);
             DrawQuest(QUEST_MEDALLION_LIGHT);
             ImGui::EndGroup();
+            ImGui::BeginGroup();
+            DrawSong(QUEST_SONG_LULLABY);
+            ImGui::SameLine(spacingX);
+            DrawSong(QUEST_SONG_EPONA);
+            ImGui::SameLine(spacingX * 2);
+            DrawSong(QUEST_SONG_SARIA);
+            ImGui::SameLine(spacingX * 3);
+            DrawSong(QUEST_SONG_SUN);
+            ImGui::SameLine(spacingX * 4);
+            DrawSong(QUEST_SONG_TIME);
+            ImGui::SameLine(spacingX * 5);
+            DrawSong(QUEST_SONG_STORMS);
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
+            DrawSong(QUEST_SONG_MINUET);
+            ImGui::SameLine(spacingX);
+            DrawSong(QUEST_SONG_BOLERO);
+            ImGui::SameLine(spacingX * 2);
+            DrawSong(QUEST_SONG_SERENADE);
+            ImGui::SameLine(spacingX * 3);
+            DrawSong(QUEST_SONG_REQUIEM);
+            ImGui::SameLine(spacingX * 4);
+            DrawSong(QUEST_SONG_NOCTURNE);
+            ImGui::SameLine(spacingX * 5);
+            DrawSong(QUEST_SONG_PRELUDE);
+            ImGui::EndGroup();
             // PURPLE TRACKER V2
             /*
             ImGui::NewLine(); // SONG LINE 1
-            DrawSong(QUEST_SONG_LULLABY);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_EPONA);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_SARIA);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_SUN);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_TIME);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_STORMS);
-            ImGui::SameLine(spacingX);
+
             ImGui::NewLine(); // SONG LINE 2
             DrawSong(QUEST_SONG_MINUET);
             ImGui::SameLine(spacingX);
