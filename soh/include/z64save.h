@@ -178,6 +178,8 @@ typedef struct {
     HintLocationRando hintLocations[50];
     char childAltarText[250];
     char adultAltarText[750];
+    char ganonHintText[150];
+    char ganonText[250];
     u8 seedIcons[5];
     u8 dungeonsDone[8];
     u8 trialsDone[6];

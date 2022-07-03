@@ -560,7 +560,7 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
             Gameplay_ChangeCameraStatus(globalCtx, this->csCamIndex, CAM_STAT_ACTIVE);
             this->csCamFov = 60.0f;
 
-            if (gSaveContext.eventChkInf[7] & 0x100) {
+            if (gSaveContext.eventChkInf[7] & 0x100 || gSaveContext.n64ddFlag) {
                 // watched cutscene already, skip most of it
                 this->csState = 17;
                 this->csTimer = 0;
@@ -892,7 +892,9 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
                     this->csTimer = 0;
                     this->csCamFov = 60.0f;
                     BossGanon_SetIntroCsCamera(this, 12);
-                    Message_StartTextbox(globalCtx, 0x70CB, NULL);
+                    if (!gSaveContext.n64ddFlag) {
+                        Message_StartTextbox(globalCtx, 0x70CB, NULL);
+                    }
                 }
             }
             break;
@@ -1503,7 +1505,13 @@ void BossGanon_DeathAndTowerCutscene(BossGanon* this, GlobalContext* globalCtx) 
 
             if (this->csTimer == 180) {
                 globalCtx->sceneLoadFlag = 0x14;
-                globalCtx->nextEntranceIndex = (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_TOWER_ESCAPE)) ? 0x517 : 0x43F;
+                if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
+                    Flags_SetEventChkInf(0xC7);
+                    globalCtx->nextEntranceIndex = 0x517;
+                }
+                else {
+                    globalCtx->nextEntranceIndex = 0x43F;
+                }
                 globalCtx->fadeTransition = 5;
             }
             break;

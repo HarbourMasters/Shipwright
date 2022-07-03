@@ -2126,6 +2126,12 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO)) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
+
+            // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
+            // and exit.
+            if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
+                return;
+            }
             gSaveContext.cutsceneIndex = 0xFFF0;
         }
     }

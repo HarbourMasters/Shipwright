@@ -1688,6 +1688,12 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
             msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
+        } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                msgCtx->msgLength = font->msgLength = CopyGanonText(font->msgBuf, sizeof(font->msgBuf));
+            } else {
+                msgCtx->msgLength = font->msgLength = CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
+            }
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

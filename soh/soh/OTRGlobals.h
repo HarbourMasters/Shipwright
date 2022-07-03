@@ -98,6 +98,8 @@ u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 int CopyAltarMessage(char* buffer, const int maxBufferSize);
 int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
+int CopyGanonText(char* buffer, const int maxBufferSize);
+int CopyGanonHintText(char* buffer, const int maxBufferSize);
 void LoadHintLocations(const char* spoilerFileName);
 void LoadItemLocations(const char* spoilerFileName, bool silent);
 s16 GetItemModelFromId(s16 itemId);
