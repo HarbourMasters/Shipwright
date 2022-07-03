@@ -965,11 +965,18 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             */
             ImGui::EndTabItem();
         }
+        
         if (ImGui::BeginTabItem("Options")) {
+            int minimalSpacingX;
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                minimalSpacingX = 48;
+            } else {
+                minimalSpacingX = 32;
+            }
             SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 64, "");
 
-            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", 32, 64,
+            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 64,
                                            "");
             /*
             SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
