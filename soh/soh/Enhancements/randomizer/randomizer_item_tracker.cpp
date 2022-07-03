@@ -323,6 +323,7 @@ std::unordered_map<uint32_t, ItemTrackerMapEntry> questTrackerMap = {
     ITEM_TRACKER_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, 20),
     ITEM_TRACKER_MAP_ENTRY(QUEST_STONE_OF_AGONY, 21),
     ITEM_TRACKER_MAP_ENTRY(QUEST_GERUDO_CARD, 22),
+    ITEM_TRACKER_MAP_ENTRY(QUEST_SKULL_TOKEN, 23),
 
 };
 
@@ -332,6 +333,11 @@ void DrawQuest(uint32_t itemId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
+
+    if (entry.name == "QUEST_SKULL_TOKEN") {
+        ImVec2 p = ImGui::GetCursorScreenPos();
+        ImGui::GetWindowDrawList()->AddText(ImVec2(p.x, p.y), 0xFFFFFFFF, "test");
+    }
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
@@ -440,11 +446,181 @@ void DrawItem(uint32_t itemId) {
     bool hasItem = actualItemId != ITEM_NONE;
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
+
+    ImGui::BeginGroup();
     ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
-
     ImVec2 p = ImGui::GetCursorScreenPos();
-    ImGui::GetWindowDrawList()->AddText(ImVec2(20, 20), 0xFFFFFFFF, "test");
+    int estimatedTextWidth = 10;
+    int estimatedTextHeight = 10;
+    ImGui::SetCursorScreenPos(ImVec2(p.x - 5 + (iconSize / 2) - estimatedTextWidth, p.y - estimatedTextHeight));
+
+    switch (actualItemId) { 
+        case ITEM_STICK:
+            if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_STICK));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_STICK) != 0 || AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS) - 1) {
+                ImGui::Text("%i", AMMO(ITEM_STICK));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_STICK) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_STICK));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("%i", CUR_CAPACITY(UPG_STICKS));
+            ImGui::PopStyleColor();
+            break;
+        case ITEM_NUT:
+            if (AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS)) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_NUT));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_NUT) != 0 || AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS) - 1) {
+                ImGui::Text("%i", AMMO(ITEM_NUT));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_NUT) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_NUT));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("%i", CUR_CAPACITY(UPG_NUTS));
+            ImGui::PopStyleColor();
+            break;
+        case ITEM_BOMB:
+            if (AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG)) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOMB));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_BOMB) != 0 || AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG) - 1) {
+                ImGui::Text("%i", AMMO(ITEM_BOMB));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_BOMB) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOMB));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("%i", CUR_CAPACITY(UPG_BOMB_BAG));
+            ImGui::PopStyleColor();
+            break;
+
+        case ITEM_BOW:
+            if (AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER)) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOW));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_BOW) != 0 || AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER) - 1) {
+                ImGui::Text("%i", AMMO(ITEM_BOW));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_BOW) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOW));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("%i", CUR_CAPACITY(UPG_QUIVER));
+            ImGui::PopStyleColor();
+            break;
+        case ITEM_SLINGSHOT:
+            if (AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG)) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_SLINGSHOT) != 0 || AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG) - 1) {
+                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_SLINGSHOT) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("%i", CUR_CAPACITY(UPG_BULLET_BAG));
+            ImGui::PopStyleColor();
+            break;
+        case ITEM_BOMBCHU:
+            if (AMMO(ITEM_BOMBCHU) == 50) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_BOMBCHU) != 0 || AMMO(ITEM_BOMBCHU) < 50) {
+                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_BOMBCHU) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("50");
+            ImGui::PopStyleColor();
+            break;
+        case ITEM_BEAN:
+            if (AMMO(ITEM_BEAN) == 10) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("%i", AMMO(ITEM_BEAN));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+                ImGui::PopStyleColor();
+            } else if (AMMO(ITEM_BEAN) != 0 || AMMO(ITEM_BEAN) < 10) {
+                ImGui::Text("%i", AMMO(ITEM_BEAN));
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            } else if (AMMO(ITEM_BEAN) == 0) {
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                ImGui::Text("%i", AMMO(ITEM_BEAN));
+                ImGui::PopStyleColor();
+                ImGui::SameLine(0, 0.0f);
+                ImGui::Text("/");
+            }
+            ImGui::SameLine(0, 0.0f);
+            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+            ImGui::Text("10");
+            ImGui::PopStyleColor();
+            break;
+    }
+    
+    ImGui::EndGroup();
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 };
@@ -523,103 +699,202 @@ void DrawItemTracker(bool& open) {
         return;
     }
 
-    if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("Item Tracker")) {
             DrawItem(ITEM_STICK);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_NUT);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_BOMB);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_BOW);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_FIRE);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_DINS_FIRE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             ImGui::NewLine();
             DrawItem(ITEM_SLINGSHOT);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_OCARINA_FAIRY);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_BOMBCHU);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_HOOKSHOT);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_ICE);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_FARORES_WIND);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             ImGui::NewLine();
             DrawItem(ITEM_BOOMERANG);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_LENS);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_BEAN);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_HAMMER);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_ARROW_LIGHT);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_NAYRUS_LOVE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             ImGui::NewLine();
             DrawBottle(ITEM_BOTTLE, 0);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 1);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 2);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawBottle(ITEM_BOTTLE, 3);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
             ImGui::NewLine();
             DrawEquip(ITEM_SWORD_KOKIRI);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawEquip(ITEM_SWORD_MASTER);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawEquip(ITEM_SWORD_BGS); // PURPLE TODO: CHECK IF BGS OR BROKEN SWORD TO DISPLAY
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_STONE_OF_AGONY);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_GERUDO_CARD);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
+            // DrawQuest(QUEST_SKULL_TOKEN);
             ImGui::NewLine();
             DrawEquip(ITEM_SHIELD_DEKU);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawEquip(ITEM_SHIELD_HYLIAN);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawEquip(ITEM_SHIELD_MIRROR);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawUpgrade(UPG_STRENGTH);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawUpgrade(UPG_SCALE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             ImGui::NewLine();
             DrawEquip(ITEM_TUNIC_KOKIRI);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawEquip(ITEM_TUNIC_GORON);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawEquip(ITEM_TUNIC_ZORA);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             ImGui::NewLine();
             DrawEquip(ITEM_BOOTS_KOKIRI);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawEquip(ITEM_BOOTS_IRON);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawEquip(ITEM_BOOTS_HOVER);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_KOKIRI_EMERALD);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_GORON_RUBY);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawQuest(QUEST_ZORA_SAPPHIRE);
             ImGui::NewLine();
             DrawQuest(QUEST_MEDALLION_FOREST);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_FIRE);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_WATER);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_SPIRIT);
             ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
+            ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_SHADOW);
+            ImGui::SameLine();
+            ImGui::Dummy(ImVec2(0.0f, 5.0f));
             ImGui::SameLine();
             DrawQuest(QUEST_MEDALLION_LIGHT);
             ImGui::EndTabItem();
