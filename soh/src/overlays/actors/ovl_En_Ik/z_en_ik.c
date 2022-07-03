@@ -1423,9 +1423,13 @@ void func_80A781CC(Actor* thisx, GlobalContext* globalCtx) {
     if (!Gameplay_InCsMode(globalCtx)) {
         this->actor.update = EnIk_Update;
         this->actor.draw = EnIk_Draw;
-        Cutscene_SetSegment(globalCtx, gSpiritBossNabooruKnuckleDefeatCs);
-        gSaveContext.cutsceneTrigger = 1;
-        Actor_SetScale(&this->actor, 0.01f);
+        if (!(gSaveContext.n64ddFlag)) {
+            Cutscene_SetSegment(globalCtx, gSpiritBossNabooruKnuckleDefeatCs);
+            gSaveContext.cutsceneTrigger = 1;
+            Actor_SetScale(&this->actor, 0.01f);
+        } else {
+            Actor_Kill(&this->actor);
+        }
         gSaveContext.eventChkInf[3] |= 0x1000;
         func_80A7735C(this, globalCtx);
     }
