@@ -112,8 +112,8 @@ typedef struct {
 } AdsrEnvelope; // size = 0x4
 
 typedef struct {
-    /* 0x00 */ u32 start;
-    /* 0x04 */ u32 end;
+    /* 0x00 */ uintptr_t start;
+    /* 0x04 */ uintptr_t end;
     /* 0x08 */ u32 count;
     /* 0x0C */ char unk_0C[0x4];
     /* 0x10 */ s16 state[16]; // only exists if count != 0. 8-byte aligned
@@ -150,7 +150,7 @@ typedef struct {
     /* 0x04 */ union {
         u32 tuningAsU32;
         f32 tuning;// frequency scale factor
-    };            
+    };
 } SoundFontSound; // size = 0x8
 
 typedef struct {
@@ -696,7 +696,7 @@ typedef struct {
         };
     };
     union {
-        void* data;
+        u32 data;
         f32 asFloat;
         s32 asInt;
         struct {
@@ -720,10 +720,10 @@ typedef struct {
     /* 0x01 */ s8 delay;
     /* 0x02 */ s8 medium;
     /* 0x04 */ u8* ramAddr;
-    /* 0x08 */ u32 curDevAddr;
+    /* 0x08 */ u8* curDevAddr;
     /* 0x0C */ u8* curRamAddr;
-    /* 0x10 */ u32 bytesRemaining;
-    /* 0x14 */ u32 chunkSize;
+    /* 0x10 */ size_t bytesRemaining;
+    /* 0x14 */ size_t chunkSize;
     /* 0x18 */ s32 unkMediumParam;
     /* 0x1C */ u32 retMsg;
     /* 0x20 */ OSMesgQueue* retQueue;
@@ -737,7 +737,7 @@ typedef struct {
     /* 0x01 */ u8 seqOrFontId;
     /* 0x02 */ u16 instId;
     /* 0x04 */ s32 unkMediumParam;
-    /* 0x08 */ s32 curDevAddr;
+    /* 0x08 */ u8* curDevAddr;
     /* 0x0C */ u8* curRamAddr;
     /* 0x10 */ u8* ramAddr;
     /* 0x14 */ s32 status;
@@ -886,7 +886,7 @@ typedef struct {
     /* 0x351C */ s32 audioResetFadeOutFramesLeft;
     /* 0x3520 */ f32* unk_3520;
     /* 0x3524 */ u8* audioHeap;
-    /* 0x3528 */ u32 audioHeapSize;
+    /* 0x3528 */ size_t audioHeapSize;
     /* 0x352C */ Note* notes;
     /* 0x3530 */ SequencePlayer seqPlayers[4];
     /* 0x3AB0 */ SequenceLayer sequenceLayers[64];
@@ -924,9 +924,9 @@ typedef struct {
 } NoteSubAttributes; // size = 0x18
 
 typedef struct {
-    /* 0x00 */ u32 heapSize;
-    /* 0x04 */ u32 initPoolSize;
-    /* 0x08 */ u32 permanentPoolSize;
+    /* 0x00 */ size_t heapSize;
+    /* 0x04 */ size_t initPoolSize;
+    /* 0x08 */ size_t permanentPoolSize;
 } AudioContextInitSizes; // size = 0xC
 
 typedef struct {

@@ -15,8 +15,8 @@ namespace Ship
 
 	struct AdpcmBook
 	{
-		/* 0x00 */ int32_t order;
-		/* 0x04 */ int32_t npredictors;
+		/* 0x00 */ uint32_t order;
+		/* 0x04 */ uint32_t npredictors;
 		/* 0x08 */ std::vector<int16_t> books;  // size 8 * order * npredictors. 8-byte aligned
 	};
 
@@ -76,7 +76,7 @@ namespace Ship
 	public:
 		void ParseFileBinary(BinaryReader* reader, Resource* res) override;
 	};
-	
+
 	class AudioV2 : public ResourceFile
 	{
 	public:

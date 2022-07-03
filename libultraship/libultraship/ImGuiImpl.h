@@ -2,7 +2,7 @@
 
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
-#include "SohConsole.h"
+#include "Console.h"
 
 struct GameAsset {
     uint32_t textureId;

@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <SohImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -263,6 +263,9 @@ typedef struct SaveStateInfo {
 
     uint8_t sKankyoIsSpawned_copy;
     int16_t sTrailingFairies_copy;
+
+    // z_en_heishi1
+    uint32_t sHeishi1PlayerIsCaughtCopy;
 
 
     //Misc static data
@@ -616,6 +619,8 @@ void SaveState::SaveOverlayStaticData(void) {
     info->D_80B5A4BC_copy = D_80B5A4BC;
     info->sKankyoIsSpawned_copy = sKankyoIsSpawned;
     info->sTrailingFairies_copy = sTrailingFairies;
+    
+    info->sHeishi1PlayerIsCaughtCopy = sHeishi1PlayerIsCaught;
 
 }
 
@@ -686,6 +691,8 @@ void SaveState::LoadOverlayStaticData(void) {
     D_80B5A4BC = info->D_80B5A4BC_copy;
     sKankyoIsSpawned = info->sKankyoIsSpawned_copy;
     sTrailingFairies = info->sTrailingFairies_copy;
+
+    sHeishi1PlayerIsCaught = info->sHeishi1PlayerIsCaughtCopy;
 }
 
 void SaveState::SaveMiscCodeData(void) {
