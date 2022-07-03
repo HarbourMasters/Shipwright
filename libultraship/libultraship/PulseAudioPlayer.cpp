@@ -78,10 +78,10 @@ namespace Ship
         ss.channels = 2;
 
         pa_buffer_attr attr;
-        attr.maxlength = (1600 + 544 + 528 + 1600) * 4;
-        attr.tlength = (528*2 + 544) * 4;
-        attr.prebuf = 1500 * 4;
-        attr.minreq = 161 * 4;
+	    attr.maxlength = (uint32_t)-1;
+        attr.tlength = (uint32_t)-1;
+	    attr.prebuf = (uint32_t)-1;
+        attr.minreq = (uint32_t)-1;
         attr.fragsize = (uint32_t)-1;
 
         m_Stream = pa_stream_new(m_Context, "zelda", &ss, NULL);
