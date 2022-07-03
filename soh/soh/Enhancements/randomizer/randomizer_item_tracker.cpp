@@ -847,14 +847,13 @@ void DrawItemTracker(bool& open) {
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
     static uint32_t ccc = 0xFF000000;
     ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
-    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
 
     if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
-    ImGui::PopStyleColor();
 
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
     if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
@@ -1039,6 +1038,7 @@ void DrawItemTracker(bool& open) {
         }
         ImGui::EndTabBar();
     }
+    ImGui::PopStyleColor();
     ImGui::End();
 }
 
