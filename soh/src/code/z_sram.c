@@ -622,6 +622,10 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.eventChkInf[7] |= 0x40; // barinade
         gSaveContext.eventChkInf[7] |= 0x80; // bongo bongo
 
+        // Skip cutscene before Nabooru fight
+        gSaveContext.eventChkInf[3] |= 0x800;
+        gSaveContext.eventChkInf[12] |= 1;
+
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
