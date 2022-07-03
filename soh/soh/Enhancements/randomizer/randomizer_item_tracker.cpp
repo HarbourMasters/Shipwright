@@ -524,117 +524,127 @@ void DrawItem(uint32_t itemId) {
 
     switch (actualItemId) {
         case ITEM_STICK:
-            if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_STICK));
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                if (AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS)) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%i", AMMO(ITEM_STICK));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                    ImGui::PopStyleColor();
+                } else if (AMMO(ITEM_STICK) != 0 || AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS) - 1) {
+                    ImGui::Text("%i", AMMO(ITEM_STICK));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                } else if (AMMO(ITEM_STICK) == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                    ImGui::Text("%i", AMMO(ITEM_STICK));
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_STICK) != 0 || AMMO(ITEM_STICK) == CUR_CAPACITY(UPG_STICKS) - 1) {
-                ImGui::Text("%i", AMMO(ITEM_STICK));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-            } else if (AMMO(ITEM_STICK) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_STICK));
-                ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
             }
-            ImGui::SameLine(0, 0.0f);
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%i", CUR_CAPACITY(UPG_STICKS));
             ImGui::PopStyleColor();
             break;
         case ITEM_NUT:
-            if (AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS)) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_NUT));
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                if (AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS)) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%i", AMMO(ITEM_NUT));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                    ImGui::PopStyleColor();
+                } else if (AMMO(ITEM_NUT) != 0 || AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS) - 1) {
+                    ImGui::Text("%i", AMMO(ITEM_NUT));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                } else if (AMMO(ITEM_NUT) == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                    ImGui::Text("%i", AMMO(ITEM_NUT));
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_NUT) != 0 || AMMO(ITEM_NUT) == CUR_CAPACITY(UPG_NUTS) - 1) {
-                ImGui::Text("%i", AMMO(ITEM_NUT));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-            } else if (AMMO(ITEM_NUT) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_NUT));
-                ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
             }
-            ImGui::SameLine(0, 0.0f);
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%i", CUR_CAPACITY(UPG_NUTS));
             ImGui::PopStyleColor();
             break;
         case ITEM_BOMB:
-            if (AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG)) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOMB));
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                if (AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG)) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%i", AMMO(ITEM_BOMB));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                    ImGui::PopStyleColor();
+                } else if (AMMO(ITEM_BOMB) != 0 || AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG) - 1) {
+                    ImGui::Text("%i", AMMO(ITEM_BOMB));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                } else if (AMMO(ITEM_BOMB) == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                    ImGui::Text("%i", AMMO(ITEM_BOMB));
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_BOMB) != 0 || AMMO(ITEM_BOMB) == CUR_CAPACITY(UPG_BOMB_BAG) - 1) {
-                ImGui::Text("%i", AMMO(ITEM_BOMB));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-            } else if (AMMO(ITEM_BOMB) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOMB));
-                ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
             }
-            ImGui::SameLine(0, 0.0f);
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%i", CUR_CAPACITY(UPG_BOMB_BAG));
             ImGui::PopStyleColor();
             break;
 
         case ITEM_BOW:
-            if (AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER)) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOW));
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                if (AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER)) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%i", AMMO(ITEM_BOW));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                    ImGui::PopStyleColor();
+                } else if (AMMO(ITEM_BOW) != 0 || AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER) - 1) {
+                    ImGui::Text("%i", AMMO(ITEM_BOW));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                } else if (AMMO(ITEM_BOW) == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                    ImGui::Text("%i", AMMO(ITEM_BOW));
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_BOW) != 0 || AMMO(ITEM_BOW) == CUR_CAPACITY(UPG_QUIVER) - 1) {
-                ImGui::Text("%i", AMMO(ITEM_BOW));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-            } else if (AMMO(ITEM_BOW) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_BOW));
-                ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
             }
-            ImGui::SameLine(0, 0.0f);
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%i", CUR_CAPACITY(UPG_QUIVER));
             ImGui::PopStyleColor();
             break;
         case ITEM_SLINGSHOT:
-            if (AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG)) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                if (AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG)) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                    ImGui::PopStyleColor();
+                } else if (AMMO(ITEM_SLINGSHOT) != 0 || AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG) - 1) {
+                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                } else if (AMMO(ITEM_SLINGSHOT) == 0) {
+                    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
+                    ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
+                    ImGui::PopStyleColor();
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-                ImGui::PopStyleColor();
-            } else if (AMMO(ITEM_SLINGSHOT) != 0 || AMMO(ITEM_SLINGSHOT) == CUR_CAPACITY(UPG_BULLET_BAG) - 1) {
-                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
-            } else if (AMMO(ITEM_SLINGSHOT) == 0) {
-                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
-                ImGui::Text("%i", AMMO(ITEM_SLINGSHOT));
-                ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
             }
-            ImGui::SameLine(0, 0.0f);
             ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
             ImGui::Text("%i", CUR_CAPACITY(UPG_BULLET_BAG));
             ImGui::PopStyleColor();
@@ -643,47 +653,63 @@ void DrawItem(uint32_t itemId) {
             if (AMMO(ITEM_BOMBCHU) == 50) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::PopStyleColor();
             } else if (AMMO(ITEM_BOMBCHU) != 0 || AMMO(ITEM_BOMBCHU) < 50) {
                 ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
             } else if (AMMO(ITEM_BOMBCHU) == 0) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
                 ImGui::Text("%i", AMMO(ITEM_BOMBCHU));
                 ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
             }
-            ImGui::SameLine(0, 0.0f);
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("50");
-            ImGui::PopStyleColor();
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                ImGui::SameLine(0, 0.0f);
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("50");
+                ImGui::PopStyleColor();
+            }
             break;
         case ITEM_BEAN:
             if (AMMO(ITEM_BEAN) == 10) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
                 ImGui::Text("%i", AMMO(ITEM_BEAN));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
                 ImGui::PopStyleColor();
             } else if (AMMO(ITEM_BEAN) != 0 || AMMO(ITEM_BEAN) < 10) {
                 ImGui::Text("%i", AMMO(ITEM_BEAN));
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
             } else if (AMMO(ITEM_BEAN) == 0) {
                 ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(155, 155, 155, 255));
                 ImGui::Text("%i", AMMO(ITEM_BEAN));
                 ImGui::PopStyleColor();
-                ImGui::SameLine(0, 0.0f);
-                ImGui::Text("/");
+                if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                    ImGui::SameLine(0, 0.0f);
+                    ImGui::Text("/");
+                }
             }
-            ImGui::SameLine(0, 0.0f);
-            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
-            ImGui::Text("10");
-            ImGui::PopStyleColor();
+            if (CVar_GetS32("gItemTrackerAmmoDisplay", 0) == 1) {
+                ImGui::SameLine(0, 0.0f);
+                ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(0, 255, 0, 255));
+                ImGui::Text("10");
+                ImGui::PopStyleColor();
+            }
             break;
         case ITEM_WALLET_ADULT:
         case ITEM_WALLET_GIANT:
@@ -936,6 +962,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Options")) {
+            SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 64, "");
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", 32, 64,
