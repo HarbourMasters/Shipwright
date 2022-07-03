@@ -845,15 +845,22 @@ void DrawItemTracker(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    static uint32_t ccc = 0xFF000000;
+    ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
+    ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
+
     if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
     }
+    ImGui::PopStyleColor();
 
-if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
+    if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
+
         if (ImGui::BeginTabItem("Item Tracker")) {
+
             ImGui::BeginGroup();
             DrawItem(ITEM_STICK);
             ImGui::SameLine(spacingX);
@@ -997,28 +1004,6 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine(spacingX * 5);
             DrawSong(QUEST_SONG_PRELUDE);
             ImGui::EndGroup();
-            // PURPLE TRACKER V2
-            /*
-            ImGui::NewLine(); // SONG LINE 1
-
-            ImGui::NewLine(); // SONG LINE 2
-            DrawSong(QUEST_SONG_MINUET);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_BOLERO);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_SERENADE);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_REQUIEM);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_NOCTURNE);
-            ImGui::SameLine(spacingX);
-            ImGui::SameLine(spacingX);
-            DrawSong(QUEST_SONG_PRELUDE);
-            */
             ImGui::EndTabItem();
         }
         
@@ -1034,13 +1019,10 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 64,
                                            "");
-            /*
-            SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
-                                           16, "");
+            // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
+            //                                16, "");
             
 
-            static uint32_t ccc = 0xFFD8D8D8;
-            ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
             auto flags = ImGuiColorEditFlags_AlphaPreview | ImGuiColorEditFlags_AlphaBar | ImGuiColorEditFlags_NoLabel;
             printf("original color: (%.6f, %.6f, %.6f, %.6f)\n", color.w, color.x, color.y, color.z);
 
@@ -1050,11 +1032,11 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             }
 
 
-            ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
-            //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
-            ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-            ImGui::PopStyleColor();
-            */
+            // ImVec4 colors = ImColor::HSV(0.39f, 0.00f, 0.63f, 0.11f);
+            // //ImGui::ColorEdit4("TrackerBackgroundColor", colors, ImGuiColorEditFlags_DisplayHSV);
+            // ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
+            // ImGui::PopStyleColor();
+            // */
             ImGui::EndTabItem();
         }
         ImGui::EndTabBar();
