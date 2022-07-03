@@ -892,7 +892,9 @@ void BossGanon_IntroCutscene(BossGanon* this, GlobalContext* globalCtx) {
                     this->csTimer = 0;
                     this->csCamFov = 60.0f;
                     BossGanon_SetIntroCsCamera(this, 12);
-                    Message_StartTextbox(globalCtx, 0x70CB, NULL);
+                    if (!gSaveContext.n64ddFlag) {
+                        Message_StartTextbox(globalCtx, 0x70CB, NULL);
+                    }
                 }
             }
             break;
