@@ -808,6 +808,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
         if (ImGui::BeginTabItem("Item Tracker")) {
+            ImGui::BeginGroup();
             DrawItem(ITEM_STICK);
             ImGui::SameLine(spacingX);
             DrawItem(ITEM_NUT);
@@ -819,8 +820,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawItem(ITEM_ARROW_FIRE);
             ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_DINS_FIRE);
-            ImGui::SameLine();
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawItem(ITEM_SLINGSHOT);
             ImGui::SameLine(spacingX);
             DrawItem(ITEM_OCARINA_FAIRY);
@@ -832,8 +833,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawItem(ITEM_ARROW_ICE);
             ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_FARORES_WIND);
-            ImGui::SameLine();
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawItem(ITEM_BOOMERANG);
             ImGui::SameLine(spacingX);
             DrawItem(ITEM_LENS);
@@ -845,8 +846,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawItem(ITEM_ARROW_LIGHT);
             ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_NAYRUS_LOVE);
-            ImGui::SameLine();
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawBottle(ITEM_BOTTLE, 0);
             ImGui::SameLine(spacingX);
             DrawBottle(ITEM_BOTTLE, 1);
@@ -858,7 +859,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawItem(ITEM_POCKET_EGG); // ADULT TRADE
             ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_MASK_KEATON); // CHILD TRADE
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawEquip(ITEM_SWORD_KOKIRI);
             ImGui::SameLine(spacingX);
             DrawEquip(ITEM_SWORD_MASTER);
@@ -870,8 +872,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawQuest(QUEST_GERUDO_CARD);
             ImGui::SameLine(spacingX * 5);
             DrawQuest(QUEST_SKULL_TOKEN);
-            ImGui::SameLine();
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawEquip(ITEM_SHIELD_DEKU);
             ImGui::SameLine(spacingX);
             DrawEquip(ITEM_SHIELD_HYLIAN);
@@ -883,8 +885,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawUpgrade(UPG_SCALE);
             ImGui::SameLine(spacingX * 5);
             DrawItem(ITEM_WALLET_ADULT);
-            ImGui::SameLine();
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawEquip(ITEM_TUNIC_KOKIRI);
             ImGui::SameLine(spacingX);
             DrawEquip(ITEM_TUNIC_GORON);
@@ -896,7 +898,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             ImGui::SameLine(spacingX * 4);
             DrawItem(ITEM_MAGIC_SMALL);
             ImGui::SameLine(spacingX * 5);
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawEquip(ITEM_BOOTS_KOKIRI);
             ImGui::SameLine(spacingX);
             DrawEquip(ITEM_BOOTS_IRON);
@@ -908,7 +911,8 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawQuest(QUEST_GORON_RUBY);
             ImGui::SameLine(spacingX * 5);
             DrawQuest(QUEST_ZORA_SAPPHIRE);
-            ImGui::NewLine();
+            ImGui::EndGroup();
+            ImGui::BeginGroup();
             DrawQuest(QUEST_MEDALLION_FOREST);
             ImGui::SameLine(spacingX);
             DrawQuest(QUEST_MEDALLION_FIRE);
@@ -920,7 +924,7 @@ if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseBu
             DrawQuest(QUEST_MEDALLION_SHADOW);
             ImGui::SameLine(spacingX * 5);
             DrawQuest(QUEST_MEDALLION_LIGHT);
-            ImGui::SameLine();
+            ImGui::EndGroup();
             // PURPLE TRACKER V2
             /*
             ImGui::NewLine(); // SONG LINE 1
