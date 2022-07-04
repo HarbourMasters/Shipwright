@@ -773,7 +773,7 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
         {
             table = AudioLoad_GetLoadTable(tableType);
             size = table->entries[realId].size;
-            size = ALIGN16(size);
+            //size = ALIGN16(size);
             medium = table->entries[id].medium;
             cachePolicy = table->entries[id].cachePolicy;
             romAddr = table->entries[realId].romAddr;
@@ -1031,7 +1031,7 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
 void AudioLoad_SyncDma(uintptr_t devAddr, u8* addr, size_t size, s32 medium) {
     OSMesgQueue* msgQueue = &gAudioContext.syncDmaQueue;
     OSIoMesg* ioMesg = &gAudioContext.syncDmaIoMesg;
-    size = ALIGN16(size);
+    //size = ALIGN16(size);
 
     Audio_InvalDCache(addr, size);
 

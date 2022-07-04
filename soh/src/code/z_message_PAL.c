@@ -1134,7 +1134,7 @@ void Message_DrawText(GlobalContext* globalCtx, Gfx** gfxP) {
         }
     }
     if (msgCtx->textDelayTimer == 0) {
-        msgCtx->textDrawPos = i + CVar_GetS32("gTextSpeed", 1);
+        msgCtx->textDrawPos = i + CVar_GetS32("gTextSpeed", 2);
         msgCtx->textDelayTimer = msgCtx->textDelay;
     } else {
         msgCtx->textDelayTimer--;
