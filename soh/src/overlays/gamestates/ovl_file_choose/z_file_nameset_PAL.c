@@ -389,6 +389,7 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                 if (this->newFileNameCharCount < 0) {
                     this->newFileNameCharCount = 0;
                     this->configMode = CM_NAME_ENTRY_TO_MAIN;
+                    CVar_SetS32("gOnFileSelectNameEntry", 0);
                 } else {
                     for (i = this->newFileNameCharCount; i < 7; i++) {
                         filename[i] = filename[i + 1];
@@ -462,6 +463,8 @@ void FileChoose_DrawNameEntry(GameState* thisx) {
                             Sram_InitSave(this);
                             gSaveContext.dayTime = dayTime;
                             this->configMode = CM_NAME_ENTRY_TO_MAIN;
+                            CVar_SetS32("gOnFileSelectNameEntry", 0);
+                            CVar_SetS32("gNewFileDropped", 0);
                             this->nameBoxAlpha[this->buttonIndex] = this->nameAlpha[this->buttonIndex] = 200;
                             this->connectorAlpha[this->buttonIndex] = 255;
                             func_800AA000(300.0f, 0xB4, 0x14, 0x64);

@@ -50,7 +50,7 @@ bool oldCursorState = true;
     ImGui::PopStyleColor(); \
     ImGui::Separator();
 #define TOGGLE_BTN ImGuiKey_F1
-#define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
+// #define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
 #define HOOK(b) if(b) needs_save = true;
 OSContPad* pads;
 
@@ -292,12 +292,12 @@ namespace SohImGui {
             u8 b = (current_hue / 60.0f + (1 - i)) * 255;
 
             switch (i) {
-            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+                case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+                case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+                case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+                case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+                case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+                case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
             }
 
             if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
@@ -405,7 +405,7 @@ namespace SohImGui {
             LoadTexture("C-Right", "assets/ship_of_harkinian/buttons/CRight.png");
             LoadTexture("C-Up", "assets/ship_of_harkinian/buttons/CUp.png");
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
-            });
+        });
 
         for (const auto& [i, controllers] : Ship::Window::Controllers)
         {
@@ -416,8 +416,14 @@ namespace SohImGui {
 
         ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
-            });
+        });
         Game::InitSettings();
+
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_SetS32("gNewSeedGenerated", 0);
+        CVar_SetS32("gNewFileDropped", 0);
+        CVar_SetString("gDroppedFile", "");
+        Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -508,9 +514,9 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue)
     {
-        int val = CVar_GetS32(cvarName, 0);
+        int val = CVar_GetS32(cvarName, defaultValue);
 
         ImGui::Text(text, val);
 
@@ -677,8 +683,7 @@ namespace SohImGui {
                 CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
                 needs_save = true;
             }
-        }
-        else {
+        } else {
             if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags)) {
                 CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
                 CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
@@ -695,7 +700,6 @@ namespace SohImGui {
         ImGui::SameLine();
         RandomizeColor(cvarName, &ColorRGBA);
         if (allow_rainbow) {
-            
             if (ImGui::GetWindowSize().x > 560) {
                 ImGui::SameLine();
             }
@@ -716,7 +720,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -745,8 +749,9 @@ namespace SohImGui {
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
         ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
-        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
+	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
+        // if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -808,6 +813,9 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                if(CVar_GetS32("gDpadEquips", 0) != 0) {
+                    EnhancementCheckbox("Modify D-pad Equips", "gModifyDpadEquips");
+                }
 
 		ImGui::Separator();
 
@@ -930,7 +938,9 @@ namespace SohImGui {
                         Tooltip("Skip first-time pickup messages for consumable items");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
                         Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
-                        
+                        EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
+                        Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
+
                         ImGui::EndMenu();
                     }
 
@@ -948,6 +958,18 @@ namespace SohImGui {
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
                         
+                        if (ImGui::BeginMenu("Fishing")) {
+                            EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                            Tooltip("All fish will be caught instantly");
+                            EnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite");
+                            Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
+                            EnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10);
+                            Tooltip("The minimum weight for the unique fishing reward as a child");
+                            EnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13);
+                            Tooltip("The minimum weight for the unique fishing reward as an adult");
+                            ImGui::EndMenu();
+                        }
+
                         ImGui::EndMenu();
                     }
 
@@ -974,6 +996,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
                     Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
+                    EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
+                    Tooltip("Injects Golden Skulltula total count in pickup messages");
                     ImGui::EndMenu();
                 }
 

@@ -372,7 +372,8 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
+        (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[1])) {
         return 0x1045;
     }
 
@@ -482,6 +483,14 @@ s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
 
 u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
     if (globalCtx->sceneNum == SCENE_SPOT04) {
+        if (gSaveContext.n64ddFlag) {
+            // if we have beaten deku tree or have open forest turned on
+            if (gSaveContext.dungeonsDone[1] || GetRandoSettingValue(RSK_FOREST) == 1) {
+                return 0;
+            }
+            return 1;
+        }
+
         if (!(gSaveContext.eventChkInf[1] & 0x1000) && !(gSaveContext.eventChkInf[4] & 1)) {
             return 1;
         }

@@ -72,7 +72,9 @@ void func_8006D0EC(GlobalContext* globalCtx, Player* player) {
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_HORSE, -25.0f, 0.0f, -1600.0f, 0, -0x4000, 0, 1);
         ASSERT(horseActor != NULL, "horse_actor != NULL", "../z_horse.c", 389);
     } else if ((globalCtx->sceneNum == gSaveContext.horseData.scene) &&
-               (Flags_GetEventChkInf(0x18) != 0 || DREG(1) != 0)) {
+               (((Flags_GetEventChkInf(0x18) != 0) && (!gSaveContext.n64ddFlag ||
+               (gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_SONG_EPONA) &&
+               (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE)))) || DREG(1) != 0)) {
         // "Set by existence of horse %d %d %d"
         osSyncPrintf("馬存在によるセット %d %d %d\n", gSaveContext.horseData.scene, Flags_GetEventChkInf(0x18),
                      DREG(1));

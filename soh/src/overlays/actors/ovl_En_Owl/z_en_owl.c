@@ -136,7 +136,9 @@ void EnOwl_Init(Actor* thisx, GlobalContext* globalCtx) {
     // "conversation owl %4x no = %d, sv = %d"
     osSyncPrintf(VT_FGCOL(CYAN) " 会話フクロウ %4x no = %d, sv = %d\n" VT_RST, this->actor.params, owlType, switchFlag);
 
-    if ((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(globalCtx, switchFlag)) {
+    if (((owlType != OWL_DEFAULT) && (switchFlag < 0x20) && Flags_GetSwitch(globalCtx, switchFlag)) ||
+        // Owl shortcuts at SPOT06: Lake Hylia and SPOT16: Death Mountain Trail
+        (gSaveContext.n64ddFlag && !(globalCtx->sceneNum == SCENE_SPOT06 || globalCtx->sceneNum == SCENE_SPOT16))) {
         osSyncPrintf("savebitでフクロウ退避\n"); // "Save owl with savebit"
         Actor_Kill(&this->actor);
         return;
@@ -628,7 +630,7 @@ void func_80ACB274(EnOwl* this, GlobalContext* globalCtx) {
 void EnOwl_WaitDeathMountainShortcut(EnOwl* this, GlobalContext* globalCtx) {
     EnOwl_LookAtLink(this, globalCtx);
 
-    if (!gSaveContext.magicAcquired) {
+    if (!gSaveContext.magicAcquired && !gSaveContext.n64ddFlag) {
         if (func_80ACA558(this, globalCtx, 0x3062)) {
             Audio_PlayFanfare(NA_BGM_OWL);
             this->actionFunc = func_80ACB274;
@@ -955,11 +957,23 @@ void func_80ACC00C(EnOwl* this, GlobalContext* globalCtx) {
                     osSyncPrintf(VT_FGCOL(CYAN));
                     osSyncPrintf("SPOT 06 の デモがはしった\n"); // "Demo of SPOT 06 has been completed"
                     osSyncPrintf(VT_RST);
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = 0x027E;
+                        globalCtx->sceneLoadFlag = 0x14;
+                        globalCtx->fadeTransition = 2;
+                        break;
+                    }
                     globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaOwlCs);
                     this->actor.draw = NULL;
                     break;
                 case 8:
                 case 9:
+                    if (gSaveContext.n64ddFlag) {
+                        globalCtx->nextEntranceIndex = 0x0554;
+                        globalCtx->sceneLoadFlag = 0x14;
+                        globalCtx->fadeTransition = 2;
+                        break;
+                    }
                     globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gDMTOwlCs);
                     this->actor.draw = NULL;
                     break;

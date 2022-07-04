@@ -79,7 +79,7 @@ void EnBomBowlMan_Init(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    this->prizeSelect = (s16)Rand_ZeroFloat(4.99f);
+    this->prizeSelect = gSaveContext.n64ddFlag ? 0 : (s16)Rand_ZeroFloat(4.99f);
     this->actor.targetMode = 1;
     this->actionFunc = EnBomBowMan_SetupWaitAsleep;
 }
@@ -134,11 +134,23 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
     if (frameCount == 30.0f) {
         this->dialogState = TEXT_STATE_EVENT;
 
-        // Check for beaten Dodongo's Cavern
-        if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
-            this->actor.textId = 0xBF;
-        } else {
-            this->actor.textId = 0x7058;
+        // Check for beaten Dodongo's Cavern if Rando is disabled
+        if (!gSaveContext.n64ddFlag) {
+            if ((gSaveContext.eventChkInf[2] & 0x20) || BREG(2)) {
+                this->actor.textId = 0xBF;
+            } else {
+                this->actor.textId = 0x7058;
+            }
+        }
+
+        // Check for Bomb Bag if Rando is enabled
+        // RANDOTODO: Check for bombchu pack instead of bomb bag if bombchus are in logic
+        if (gSaveContext.n64ddFlag) {
+            if (INV_CONTENT(ITEM_BOMB) != ITEM_NONE) {
+                this->actor.textId = 0xBF;
+            } else {
+                this->actor.textId = 0x7058;
+            }
         }
     }
     Message_ContinueTextbox(globalCtx, this->actor.textId);
@@ -148,6 +160,7 @@ void EnBomBowMan_BlinkAwake(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeTextureIndex = 2;
         this->blinkCount++;
         if (this->blinkCount >= 3) {
+            // we're still making it in here when rando'd
             this->actionFunc = EnBomBowMan_CheckBeatenDC;
         }
     }
@@ -164,8 +177,11 @@ void EnBomBowMan_CheckBeatenDC(EnBomBowlMan* this, GlobalContext* globalCtx) {
         this->eyeMode = CHU_GIRL_EYES_AWAKE;
         this->blinkTimer = (s16)Rand_ZeroFloat(60.0f) + 20;
 
-        // Check for beaten Dodongo's Cavern
-        if (!((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) {
+        // Check for beaten Dodongo's Cavern if not rando'd
+        // check for bomb bag if rando'd
+        if ((!gSaveContext.n64ddFlag && 
+             !((gSaveContext.eventChkInf[2] & 0x20) || BREG(2))) ||
+             (gSaveContext.n64ddFlag && (INV_CONTENT(ITEM_BOMB) == ITEM_NONE))) {
             this->actionFunc = EnBomBowMan_WaitNotBeatenDC;
         } else {
             this->actor.textId = 0x18;
@@ -395,14 +411,25 @@ void EnBomBowMan_ChooseShowPrize(EnBomBowlMan* this, GlobalContext* globalCtx) {
                 }
                 break;
             case 1:
-                prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                } else {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                }
                 break;
             case 2:
                 prizeTemp = EXITEM_BOMBCHUS_BOWLING;
                 break;
             case 3:
-                prizeTemp = EXITEM_HEART_PIECE_BOWLING;
-                if (gSaveContext.itemGetInf[1] & 4) {
+                if (!gSaveContext.n64ddFlag) {
+                    prizeTemp = EXITEM_HEART_PIECE_BOWLING;
+                    if (gSaveContext.itemGetInf[1] & 4) {
+                        prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
+                    }
+                } else {
                     prizeTemp = EXITEM_PURPLE_RUPEE_BOWLING;
                 }
                 break;

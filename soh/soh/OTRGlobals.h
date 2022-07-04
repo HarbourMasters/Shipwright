@@ -8,6 +8,9 @@
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
+#include "Enhancements/randomizer/randomizer.h"
+// #include "randomizer/spoiler_log.hpp"
+
 class OTRGlobals
 {
 public:
@@ -15,6 +18,7 @@ public:
 
     std::shared_ptr<Ship::GlobalCtx2> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
     ~OTRGlobals();
@@ -87,6 +91,20 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+Sprite* GetSeedTexture(uint8_t index);
+void LoadRandomizerSettings(const char* spoilerFileName);
+u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
+RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+int CopyAltarMessage(char* buffer, const int maxBufferSize);
+int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
+int CopyGanonText(char* buffer, const int maxBufferSize);
+int CopyGanonHintText(char* buffer, const int maxBufferSize);
+void LoadHintLocations(const char* spoilerFileName);
+void LoadItemLocations(const char* spoilerFileName, bool silent);
+s16 GetItemModelFromId(s16 itemId);
+s32 GetItemIDFromGetItemID(s32 getItemId);
+s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif

@@ -95,8 +95,10 @@ u16 EnMa1_GetText(GlobalContext* globalCtx, Actor* thisx) {
     if (faceReaction != 0) {
         return faceReaction;
     }
-    if (CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
-        return 0x204A;
+    if (!gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+            return 0x204A;
+        }
     }
     if (gSaveContext.eventChkInf[1] & 0x40) {
         return 0x2049;
@@ -271,6 +273,12 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
     CollisionCheck_SetInfo2(&this->actor.colChkInfo, DamageTable_Get(22), &sColChkInfoInit);
 
+    if (gSaveContext.n64ddFlag) { // Skip Malon's multiple textboxes before getting an item
+        gSaveContext.infTable[8] |= 0x800;
+        gSaveContext.infTable[8] |= 0x10;
+        gSaveContext.eventChkInf[1] |= 1;
+    }
+
     if (!func_80AA08C4(this, globalCtx)) {
         Actor_Kill(&this->actor);
         return;
@@ -281,10 +289,14 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
+        if (gSaveContext.n64ddFlag) { // Skip straight to "let's sing it together" textbox in the ranch
+            gSaveContext.eventChkInf[1] |= 0x40;
+        }
+
         this->actionFunc = func_80AA0F44;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     }
@@ -310,7 +322,7 @@ void func_80AA0D88(EnMa1* this, GlobalContext* globalCtx) {
 
     if ((globalCtx->sceneNum == SCENE_SPOT15) && (gSaveContext.eventChkInf[1] & 0x10)) {
         Actor_Kill(&this->actor);
-    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || CHECK_QUEST_ITEM(QUEST_SONG_EPONA)) {
+    } else if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
         if (this->unk_1E8.unk_00 == 2) {
             this->actionFunc = func_80AA0EA0;
             globalCtx->msgCtx.stateTimer = 4;
@@ -324,7 +336,12 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = func_80AA0EFC;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        if (gSaveContext.n64ddFlag) {
+            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
+        }
     }
 }
 
@@ -334,6 +351,20 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0D88;
         gSaveContext.eventChkInf[1] |= 4;
         globalCtx->msgCtx.msgMode = MSGMODE_TEXT_CLOSING;
+    }
+}
+
+void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+
+    if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F) &&
+               (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE) &&
+               Actor_TextboxIsClosing(&malon->actor, globalCtx) &&
+               (globalCtx->msgCtx.textId == 0x2049 || globalCtx->msgCtx.textId == 0x204A)) {
+        func_8002F434(&malon->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
 }
 
@@ -348,6 +379,11 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
         if (this->skelAnime.animation != &gMalonChildSingAnim) {
             EnMa1_ChangeAnim(this, ENMA1_ANIM_3);
         }
+    }
+
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
+        return;
     }
 
     if (gSaveContext.eventChkInf[1] & 0x40) {

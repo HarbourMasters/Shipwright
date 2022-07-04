@@ -111,7 +111,8 @@ u16 EnGo_GetTextID(GlobalContext* globalCtx, Actor* thisx) {
                 return 0x3053;
             }
         case 0x00:
-            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+            if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) ||
+                (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[4])) {
                 if (gSaveContext.infTable[16] & 0x8000) {
                     return 0x3042;
                 } else {
@@ -954,7 +955,7 @@ void EnGo_GetItem(EnGo* this, GlobalContext* globalCtx) {
         this->unk_20C = 0;
         if ((this->actor.params & 0xF0) == 0x90) {
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_CLAIM_CHECK) {
-                getItemId = GI_SWORD_BGS;
+                getItemId = gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_DMT_TRADE_CLAIM_CHECK, GI_SWORD_BGS) : GI_SWORD_BGS;
                 this->unk_20C = 1;
             }
             if (INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_EYEDROPS) {
