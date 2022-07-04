@@ -1458,10 +1458,6 @@ extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
 
-extern "C" bool GettingRandoBottledItem() {
-    return OTRGlobals::Instance->gRandomizer->GettingItemInBottle();
-}
-
 extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }

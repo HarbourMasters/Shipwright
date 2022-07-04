@@ -819,10 +819,6 @@ void EnPoh_TalkRegular(EnPoh* this, GlobalContext* globalCtx) {
             if (globalCtx->msgCtx.choiceIndex == 0) {
                 if (Inventory_HasEmptyBottle()) {
                     this->actor.textId = 0x5008;
-                    if (gSaveContext.n64ddFlag) {
-                        // ensure the flag is set to false by calling this
-                        GettingRandoBottledItem();
-                    }
                     Item_Give(globalCtx, ITEM_POE);
                     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_BIG_GET);
                 } else {
