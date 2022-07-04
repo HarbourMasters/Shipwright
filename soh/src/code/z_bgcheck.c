@@ -1676,7 +1676,7 @@ f32 BgCheck_RaycastFloorImpl(GlobalContext* globalCtx, CollisionContext* colCtx,
         if (checkPos.y < colCtx->minBounds.y) {
             break;
         }
-        if (BgCheck_PosErrorCheck(&checkPos, __FILE__, __LINE__)) {
+        if (BGCHECK_POS_ERROR_CHECK(&checkPos)) {
             if (actor != NULL) {
                 osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
             }
@@ -1891,8 +1891,8 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     dy = posNext->y - posPrev->y;
     dz = posNext->z - posPrev->z;
 
-    if (BgCheck_PosErrorCheck(posNext, __FILE__, __LINE__) == true ||
-        BgCheck_PosErrorCheck(posPrev, __FILE__, __LINE__) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posNext) == true ||
+        BGCHECK_POS_ERROR_CHECK(posPrev) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2080,7 +2080,7 @@ s32 BgCheck_CheckCeilingImpl(CollisionContext* colCtx, u16 xpFlags, f32* outY, V
 
     *outBgId = BGCHECK_SCENE;
     *outY = pos->y;
-    if (BgCheck_PosErrorCheck(pos, __FILE__, __LINE__) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(pos) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2154,8 +2154,8 @@ s32 BgCheck_CheckLineImpl(CollisionContext* colCtx, u16 xpFlags1, u16 xpFlags2, 
     s32 temp_lo;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(posA, __FILE__, __LINE__) == true ||
-        BgCheck_PosErrorCheck(posB, __FILE__, __LINE__) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posA) == true ||
+        BGCHECK_POS_ERROR_CHECK(posB) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         } else {
@@ -2368,7 +2368,7 @@ s32 BgCheck_SphVsFirstPolyImpl(CollisionContext* colCtx, u16 xpFlags, CollisionP
     StaticLookup* lookup;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(center, __FILE__, __LINE__) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(center) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }

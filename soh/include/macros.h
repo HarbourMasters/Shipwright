@@ -142,7 +142,15 @@
 #define SYSTEM_ARENA_REALLOC_DEBUG(ptr, newSize) SystemArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
 #define SYSTEM_ARENA_FREE_DEBUG(ptr) SystemArena_FreeDebug(ptr, __FILE__, __LINE__)
 
-#define GAMESTATE_ALLOC_MC(gameState, size) GameState_Alloc(gameState, size, __FILE__, __LINE__);
+#define DEBUG_ARENA_MALLOC_DEBUG(size) DebugArena_MallocDebug(size, __FILE__, __LINE__)
+#define DEBUG_ARENA_MALLOC_RDEBUG(size) DebugArena_MallocRDebug(size, __FILE__, __LINE__)
+#define DEBUG_ARENA_REALLOC_DEBUG(ptr, newSize) DebugArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define DEBUG_ARENA_FREE_DEBUG(ptr) DebugArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define GAMESTATE_ALLOC_MC(gameState, size) GameState_Alloc(gameState, size, __FILE__, __LINE__)
+#define GAMESTATE_MALLOC_DEBUG(gameState, size) GameAlloc_MallocDebug(gameState, size, __FILE__, __LINE__)
+
+#define BGCHECK_POS_ERROR_CHECK(vec3f) BgCheck_PosErrorCheck(vec3f, __FILE__, __LINE__)
 
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \
     do {                                                 \

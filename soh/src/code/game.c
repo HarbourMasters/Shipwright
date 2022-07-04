@@ -431,7 +431,7 @@ void GameState_InitArena(GameState* gameState, size_t size) {
     void* arena;
 
     osSyncPrintf("ハイラル確保 サイズ＝%u バイト\n"); // "Hyrule reserved size = %u bytes"
-    arena = GameAlloc_MallocDebug(&gameState->alloc, size, __FILE__, __LINE__);
+    arena = GAMESTATE_MALLOC_DEBUG(&gameState->alloc, size);
     if (arena != NULL) {
         THA_Ct(&gameState->tha, arena, size);
         osSyncPrintf("ハイラル確保成功\n"); // "Successful Hyral"
@@ -466,7 +466,7 @@ void GameState_Realloc(GameState* gameState, size_t size) {
     }
 
     osSyncPrintf("ハイラル再確保 サイズ＝%u バイト\n", size); // "Hyral reallocate size = %u bytes"
-    gameArena = GameAlloc_MallocDebug(alloc, size, __FILE__, __LINE__);
+    gameArena = GAMESTATE_MALLOC_DEBUG(alloc, size);
     if (gameArena != NULL) {
         THA_Ct(&gameState->tha, gameArena, size);
         osSyncPrintf("ハイラル再確保成功\n"); // "Successful reacquisition of Hyrule"
