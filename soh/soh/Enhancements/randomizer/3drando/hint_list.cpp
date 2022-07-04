@@ -742,7 +742,7 @@ void HintTable_Init() {
 
     hintTable[GERUDO_FORTRESS] = HintText::Exclude({
                      //obscure text
-                     Text{"Gerudo's Fortress", /*french*/"la forteresse Gerudo", /*spanish*/"la Fortaleza Gerudo"},
+                     Text{"Gerudo's Fortress", /*french*/"la Repaire des Voleurs", /*spanish*/"la Fortaleza Gerudo"},
   });
 
     hintTable[HAUNTED_WASTELAND] = HintText::Exclude({
@@ -772,7 +772,7 @@ void HintTable_Init() {
 
     hintTable[OUTSIDE_GANONS_CASTLE] = HintText::Exclude({
                      //obscure text
-                     Text{"outside Ganon's Castle", /*french*/"les alentours du château de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
+                     Text{"outside Ganon's Castle", /*french*/"les alentours du Château de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
   });
 
     hintTable[KAKARIKO_VILLAGE] = HintText::Exclude({
@@ -1371,7 +1371,7 @@ void HintTable_Init() {
 
     hintTable[JUNK31] = HintText::Junk({
                      //obscure text
-                     Text{"Game Over. Return of Ganon.", /*french*/"Partie terminée. RETOUR DE GANON.", /*spanish*/"Fin de la partida. El regreso de Ganon."},
+                     Text{"Game Over. Return of Ganon.", /*french*/"Partie terminée. RETour de Ganon.", /*spanish*/"Fin de la partida. El regreso de Ganon."},
     });
 
     hintTable[JUNK32] = HintText::Junk({
@@ -1717,7 +1717,7 @@ void HintTable_Init() {
                      Text{"a conquered citadel", /*french*/"la citadelle assiégée", /*spanish*/"una conquistada ciudadela"},
                    }, {},
                      //clear text
-                     Text{"Inside Ganon's Castle", /*french*/"l'intérieur du château de Ganon", /*spanish*/"el interior del Castillo de Ganon"}
+                     Text{"Inside Ganon's Castle", /*french*/"l'intérieur du Château de Ganon", /*spanish*/"el interior del Castillo de Ganon"}
     );
 
     /*--------------------------
@@ -1953,12 +1953,12 @@ void HintTable_Init() {
 
     hintTable[SIX_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{"#Ganon's Tower# is protected by a powerful barrier.", /*french*/"#la tour de Ganon# est protégée par une puissante barrière", /*spanish*/"la #torre de Ganon# está protegida por una poderosa barrera"},
+                     Text{"#Ganon's Tower# is protected by a powerful barrier.", /*french*/"#la Tour de Ganon# est protégée par une puissante barrière", /*spanish*/"la #torre de Ganon# está protegida por una poderosa barrera"},
     });
 
     hintTable[ZERO_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{"Sheik dispelled the barrier around #Ganon's Tower#.", /*french*/"Sheik a dissipé la barrière autour de #la tour de Ganon#", /*spanish*/"Sheik disipó la barrera alrededor de la #torre de Ganon#."},
+                     Text{"Sheik dispelled the barrier around #Ganon's Tower#.", /*french*/"Sheik a dissipé la barrière autour de #la Tour de Ganon#", /*spanish*/"Sheik disipó la barrera alrededor de la #torre de Ganon#."},
     });
 
     hintTable[FOUR_TO_FIVE_TRIALS] = HintText::Exclude({
@@ -1968,7 +1968,7 @@ void HintTable_Init() {
 
     hintTable[ONE_TO_THREE_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{" protects Ganons Tower.", /*french*/" protège la tour de Ganon.", /*spanish*/" protege la torre de Ganon"},
+                     Text{" protects Ganons Tower.", /*french*/" protège la Tour de Ganon.", /*spanish*/" protege la torre de Ganon"},
     });
 
     /*--------------------------

@@ -45,11 +45,11 @@ constexpr std::array FrenchDungeonNames = {
     "Temple de l'Esprit",
     "Temple de l'Ombre",
     "Puits",
-    "caverne de glace",
-    "",
+    "Caverne Polaire",
+    "Tour de Ganon",
     "Gymnase Gerudo",
-    "forteresse Gerudo",
-    "château de Ganon",
+    "Repaire des Voleurs",
+    "Château de Ganon",
 };
 
 constexpr std::array FrenchDungeonArticles = {

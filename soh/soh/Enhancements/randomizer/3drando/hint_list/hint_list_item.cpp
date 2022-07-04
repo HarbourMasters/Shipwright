@@ -1244,7 +1244,7 @@ void HintTable_Init_Item() {
                         Text{"a boss key", /*french*/"une clé d'or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Ganon's Castle Boss Key", /*french*/"la clé d'or du château de Ganon", /*spanish*/"la gran llave del Castillo de Ganon"}
+                        Text{"the Ganon's Castle Boss Key", /*french*/"la clé d'or du Château de Ganon", /*spanish*/"la gran llave del Castillo de Ganon"}
      );
     hintTable[FOREST_TEMPLE_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1335,7 +1335,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Gerudo Fortress Small Key", /*french*/"une petite clé de la forteresse Gerudo", /*spanish*/"una llave pequeña de la Fortaleza Gerudo"}
+                        Text{"a Gerudo Fortress Small Key", /*french*/"une petite clé de la Repaire des Voleurs", /*spanish*/"una llave pequeña de la Fortaleza Gerudo"}
      );
     hintTable[BOTTOM_OF_THE_WELL_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1361,7 +1361,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Ganon's Castle Small Key", /*french*/"une petite clé du château de Ganon", /*spanish*/"una llave pequeña del Castillo de Ganon"}
+                        Text{"a Ganon's Castle Small Key", /*french*/"une petite clé du Château de Ganon", /*spanish*/"una llave pequeña del Castillo de Ganon"}
      );
      hintTable[FOREST_TEMPLE_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1452,7 +1452,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Gerudo Fortress Key Ring", /*french*/"un trousseau de clés de la forteresse Gerudo", /*spanish*/"un llavero de la Fortaleza Gerudo"}
+                        Text{"a Gerudo Fortress Key Ring", /*french*/"un trousseau de clés de la Repaire des Voleurs", /*spanish*/"un llavero de la Fortaleza Gerudo"}
      );
     hintTable[BOTTOM_OF_THE_WELL_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1478,7 +1478,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Ganon's Castle Key Ring", /*french*/"un trousseau de clés du château de Ganon", /*spanish*/"un llavero del Castillo de Ganon"}
+                        Text{"a Ganon's Castle Key Ring", /*french*/"un trousseau de clés du Château de Ganon", /*spanish*/"un llavero del Castillo de Ganon"}
      );
 
     hintTable[TREASURE_GAME_SMALL_KEY] = HintText::Item({

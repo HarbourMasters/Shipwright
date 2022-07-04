@@ -1918,47 +1918,47 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[GANONS_CASTLE_DEKU_SCRUB_CENTER_LEFT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_DEKU_SCRUB_CENTER_RIGHT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_DEKU_SCRUB_RIGHT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_DEKU_SCRUB_LEFT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
 
     hintTable[GANONS_CASTLE_MQ_DEKU_SCRUB_RIGHT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_LEFT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_MQ_DEKU_SCRUB_CENTER_RIGHT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 
     hintTable[GANONS_CASTLE_MQ_DEKU_SCRUB_LEFT] = HintText::Exclude({
                        //obscure text
-                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
+                       Text{"#scrubs in Ganon's Castle# sell", /*french*/"les #pestes Mojo dans le Château de Ganon# vendent", /*spanish*/"los #dekus del Castillo de Ganon# venden"},
   });
 }
