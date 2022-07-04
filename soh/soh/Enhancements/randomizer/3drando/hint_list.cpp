@@ -2050,8 +2050,8 @@ void HintTable_Init() {
 
     hintTable[GANON_LINE01] = HintText::GanonLine({
                      //obscure text
-                     Text{"Oh! It's @.&I was expecting someone called Sheik. Do you know what happened to them?",
-                /*french*/"Ah, c'est @.&J'attendais un certain Sheik. Tu sais ce qui lui est arrivé?",
+                     Text{"Oh! It's @.&I was expecting someone called Sheik.&Do you know what happened to them?",
+                /*french*/"Ah, c'est @.&J'attendais un certain Sheik.&Tu sais ce qui lui est arrivé?",
                /*spanish*/"¡Oh! Pero si es @.&Estaba esperando a alguien llamado Sheik. ¿Sabes qué puede haberle pasado?"},
     });
 
