@@ -2035,7 +2035,7 @@ void HintTable_Init() {
     hintTable[LIGHT_ARROW_LOCATION_HINT] = HintText::LightArrow({
                      //obscure text
                      Text{"Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows from ",
-                /*french*/"Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai caché dans ",
+                /*french*/"Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans ",
                /*spanish*/"Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de "},
     });
 
