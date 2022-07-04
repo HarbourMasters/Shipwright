@@ -1802,8 +1802,8 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_OPEN_HINT] = HintText::Bridge({
                      //obscure text
-                     Text{"The awakened ones will have #already&created a bridge# to the castle where&the evil dwells.",
-                /*french*/"Les êtres de sagesse ont#déjà créé&un pont# vers le repaire du mal.",
+                     Text{"The awakened ones have already&created a bridge to the castle&where the evil dwells.",
+                /*french*/"Les êtres de sagesse ont&déjà créé un pont vers&le repaire du mal.",
                /*spanish*/"Los sabios #ya habrán creado un puente#&al castillo, de donde emana el mal."},
     });
 
@@ -1856,7 +1856,7 @@ void HintTable_Init() {
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the evil one's key will&be given from the start.",
-                /*french*/"Aussi, la clé du #Malin# sera #possession même du héros#.",
+                /*french*/"Aussi, la clé du Malin sera&possession même du héros.",
                /*spanish*/"Y obtendrás la llave del #señor del mal# desde el #inicio#."},
     });
 
@@ -2006,7 +2006,7 @@ void HintTable_Init() {
     hintTable[ADULT_ALTAR_TEXT_START] = HintText::Altar({
                      //obscure text
                      Text{"An awakening voice from the Sacred&Realm will call those destined to be&Sages, who dwell in the five temples.",
-                /*french*/"Quand le mal aura triomphé, une voix du Saint Royaume appellera ceux cachés dans les #cinq temples#, destinés à être Sages.",
+                /*french*/"Quand le mal aura triomphé, une voix&du Saint Royaume appellera ceux&cachés dans les cinq temples, destinés à être Sages.",
                /*spanish*/"Cuando el mal lo impregne todo, desde el Reino Sagrado surgirá una voz que hará despertar a los sabios que moran en los #cinco templos#."},
     });
 
