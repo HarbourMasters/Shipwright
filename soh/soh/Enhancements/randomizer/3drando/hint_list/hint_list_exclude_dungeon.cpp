@@ -124,17 +124,17 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #muddy wall in Dodongo's Cavern# hides", /*french*/"le #mur fragile dans la caverne Dodongo# recèle", /*spanish*/"tras una #agrietada pared en la Cueva de los Dodongos# yace"},
+                       Text{"a #muddy wall in Dodongo's Cavern# hides", /*french*/"le #mur fragile dans la Caverne Dodongo# recèle", /*spanish*/"tras una #agrietada pared en la Cueva de los Dodongos# yace"},
   });
 
     hintTable[DODONGOS_CAVERN_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #statue in Dodongo's Cavern# guards", /*french*/"la #statue dans la caverne Dodongo# protège", /*spanish*/"una #estatua de la Cueva de los Dodongos# esconde"},
+                       Text{"a #statue in Dodongo's Cavern# guards", /*french*/"la #statue dans la Caverne Dodongo# protège", /*spanish*/"una #estatua de la Cueva de los Dodongos# esconde"},
   });
 
     hintTable[DODONGOS_CAVERN_BOMB_FLOWER_PLATFORM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"above a #maze of stone# in Dodongo's Cavern lies", /*french*/"sur #un labyrinthe de pierre# dans la caverne Dodongo gît", /*spanish*/"entre un #laberinto de piedra# en la Cueva de los Dodongos yace"},
+                       Text{"above a #maze of stone# in Dodongo's Cavern lies", /*french*/"sur #un labyrinthe de pierre# dans la Caverne Dodongo gît", /*spanish*/"entre un #laberinto de piedra# en la Cueva de los Dodongos yace"},
   });
 
     hintTable[DODONGOS_CAVERN_BOMB_BAG_CHEST] = HintText::Exclude({
@@ -150,32 +150,32 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #muddy wall in Dodongo's Cavern# hides", /*french*/"le #mur fragile dans la caverne Dodongo# recèle", /*spanish*/"una #agrietada pared en la Cueva de los Dodongos# esconde"},
+                       Text{"a #muddy wall in Dodongo's Cavern# hides", /*french*/"le #mur fragile dans la Caverne Dodongo# recèle", /*spanish*/"una #agrietada pared en la Cueva de los Dodongos# esconde"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_BOMB_BAG_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"an #elevated alcove# in Dodongo's Cavern holds", /*french*/"l'#alcove haut perchée# dans la caverne Dodongo cache", /*spanish*/"una #elevada alcoba# en la Cueva de los Dodongos brinda"},
+                       Text{"an #elevated alcove# in Dodongo's Cavern holds", /*french*/"l'#alcove haut perchée# dans la Caverne Dodongo cache", /*spanish*/"una #elevada alcoba# en la Cueva de los Dodongos brinda"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#fire-breathing lizards# in Dodongo's Cavern guard", /*french*/"les #lézards cracheurs de feu# dans la caverne Dodongo protègent", /*spanish*/"unos #flamígeros reptiles# en la Cueva de los Dodongos esconden"},
+                       Text{"#fire-breathing lizards# in Dodongo's Cavern guard", /*french*/"les #lézards cracheurs de feu# dans la Caverne Dodongo protègent", /*spanish*/"unos #flamígeros reptiles# en la Cueva de los Dodongos esconden"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_LARVAE_ROOM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#baby spiders# in Dodongo's Cavern guard", /*french*/"les #petites araignées dans la caverne Dodongo# protègent", /*spanish*/"unas #pequeñas larvas# en la Cueva de los Dodongos esconden"},
+                       Text{"#baby spiders# in Dodongo's Cavern guard", /*french*/"les #petites araignées dans la Caverne Dodongo# protègent", /*spanish*/"unas #pequeñas larvas# en la Cueva de los Dodongos esconden"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_TORCH_PUZZLE_ROOM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"above a #maze of stone# in Dodongo's Cavern lies", /*french*/"sur #un labyrinthe de pierre# dans la caverne Dodongo gît", /*spanish*/"sobre un #laberinto de piedra# en la Cueva de los Dodongos yace"},
+                       Text{"above a #maze of stone# in Dodongo's Cavern lies", /*french*/"sur #un labyrinthe de pierre# dans la Caverne Dodongo gît", /*spanish*/"sobre un #laberinto de piedra# en la Cueva de los Dodongos yace"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_UNDER_GRAVE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#beneath a headstone# in Dodongo's Cavern lies", /*french*/"#sous une pierre tombale# dans la caverne Dodongo gît", /*spanish*/"#bajo una lápida# en la Cueva de los Dodongos yace"},
+                       Text{"#beneath a headstone# in Dodongo's Cavern lies", /*french*/"#sous une pierre tombale# dans la Caverne Dodongo gît", /*spanish*/"#bajo una lápida# en la Cueva de los Dodongos yace"},
   });
 
     hintTable[DODONGOS_CAVERN_KING_DODONGO_HEART] = HintText::Exclude({
@@ -188,89 +188,89 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider entangled in vines# in Dodongo's Cavern guards", /*french*/"une #Skulltula sur les vignes dans la caverne Dodongo# a", /*spanish*/"una #Skulltula sobre unas cepas# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider entangled in vines# in Dodongo's Cavern guards", /*french*/"une #Skulltula sur les vignes dans la Caverne Dodongo# a", /*spanish*/"una #Skulltula sobre unas cepas# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_GS_SCARECROW] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider among explosive slugs# hides", /*french*/"une #Skulltula dans l'alcove du couloir dans la caverne Dodongo# a", /*spanish*/"una #Skulltula rodeada de explosivos gusanos# otorga"},
+                       Text{"a #spider among explosive slugs# hides", /*french*/"une #Skulltula dans l'alcove du couloir dans la Caverne Dodongo# a", /*spanish*/"una #Skulltula rodeada de explosivos gusanos# otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider just out of reach# in Dodongo's Cavern holds", /*french*/"une #Skulltula au haut des escaliers de la caverne Dodongo# a", /*spanish*/"una #Skulltula fuera del alcance# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider just out of reach# in Dodongo's Cavern holds", /*french*/"une #Skulltula au haut des escaliers de la Caverne Dodongo# a", /*spanish*/"una #Skulltula fuera del alcance# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_GS_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider behind a statue# in Dodongo's Cavern holds", /*french*/"une #Skulltula au cœur de la caverne Dodongo# a", /*spanish*/"una #Skulltula tras una estatua# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider behind a statue# in Dodongo's Cavern holds", /*french*/"une #Skulltula au cœur de la Caverne Dodongo# a", /*spanish*/"una #Skulltula tras una estatua# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider among bats# in Dodongo's Cavern holds", /*french*/"une #Skulltula entourée de Saigneurs dans la caverne Dodongo# a", /*spanish*/"una #Skulltula rodeada de murciélagos# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider among bats# in Dodongo's Cavern holds", /*french*/"une #Skulltula entourée de Saigneurs dans la Caverne Dodongo# a", /*spanish*/"una #Skulltula rodeada de murciélagos# de la Cueva de los Dodongos otorga"},
   });
 
 
     hintTable[DODONGOS_CAVERN_MQ_GS_SCRUB_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider high on a wall# in Dodongo's Cavern holds", /*french*/"une #Skulltula haut perchée dans la caverne Dodongo# a", /*spanish*/"una #Skulltula en lo alto de una pared# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider high on a wall# in Dodongo's Cavern holds", /*french*/"une #Skulltula haut perchée dans la Caverne Dodongo# a", /*spanish*/"una #Skulltula en lo alto de una pared# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_GS_LIZALFOS_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider on top of a pillar of rock# in Dodongo's Cavern holds", /*french*/"une #Skulltula sur l'énorme pilier de roc de la caverne Dodongo# a", /*spanish*/"una #Skulltula en lo alto de un pilar# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider on top of a pillar of rock# in Dodongo's Cavern holds", /*french*/"une #Skulltula sur l'énorme pilier de roc de la Caverne Dodongo# a", /*spanish*/"una #Skulltula en lo alto de un pilar# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_GS_LARVAE_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider in a crate# in Dodongo's Cavern holds", /*french*/"une #Skulltula dans une boîte de la caverne Dodongo# a", /*spanish*/"una #Skulltula bajo una caja# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider in a crate# in Dodongo's Cavern holds", /*french*/"une #Skulltula dans une boîte de la Caverne Dodongo# a", /*spanish*/"una #Skulltula bajo una caja# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_GS_BACK_AREA] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider among graves# in Dodongo's Cavern holds", /*french*/"une #Skulltula parmi les tombes de la caverne Dodongo# a", /*spanish*/"una #Skulltula entre lápidas# en la Cueva de los Dodongos otorga"},
+                       Text{"a #spider among graves# in Dodongo's Cavern holds", /*french*/"une #Skulltula parmi les tombes de la Caverne Dodongo# a", /*spanish*/"una #Skulltula entre lápidas# en la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_LEFT] = HintText::Exclude({
                        //obscure text
-                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans la caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
+                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans la Caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
   });
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
+                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
   });
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT] = HintText::Exclude({
                        //obscure text
-                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans la caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
+                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans la Caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
   });
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_LOBBY] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub in Dodongo's Cavern# sells", /*french*/"la #peste Mojo dans l'entrée de la caverne Dodongo# vend", /*spanish*/"un #deku en la Cueva de los Dodongos# vende"},
+                       Text{"a #scrub in Dodongo's Cavern# sells", /*french*/"la #peste Mojo dans l'entrée de la Caverne Dodongo# vend", /*spanish*/"un #deku en la Cueva de los Dodongos# vende"},
   });
 
 
     hintTable[DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_REAR] = HintText::Exclude({
                        //obscure text
-                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans l'entrée de la caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
+                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans l'entrée de la Caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_DEKU_SCRUB_LOBBY_FRONT] = HintText::Exclude({
                        //obscure text
-                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans l'entrée de la caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
+                       Text{"a pair of #scrubs in Dodongo's Cavern# sells", /*french*/"le #duo de peste Mojo dans l'entrée de la Caverne Dodongo# vend", /*spanish*/"un #par de dekus en la Cueva de los Dodongos# venden"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_DEKU_SCRUB_STAIRCASE] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub in Dodongo's Cavern# sells", /*french*/"la #peste Mojo au sommet des escaliers dans la caverne Dodongo# vend", /*spanish*/"un #deku en la Cueva de los Dodongos# vende"},
+                       Text{"a #scrub in Dodongo's Cavern# sells", /*french*/"la #peste Mojo au sommet des escaliers dans la Caverne Dodongo# vend", /*spanish*/"un #deku en la Cueva de los Dodongos# vende"},
   });
 
     hintTable[DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
+                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
   });
 
   /*--------------------------
@@ -613,7 +613,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FOREST_TEMPLE_MQ_GS_WELL] = HintText::Exclude({
                        //obscure text
-                       Text{"#draining a well# in Forest Temple uncovers a spider with", /*french*/"une #Skulltula au fond du puits du Temple de la Forêt# a", /*spanish*/"#vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga"},
+                       Text{"#draining a well# in Forest Temple uncovers a spider with", /*french*/"une #Skulltula au fond du Puits du Temple de la Forêt# a", /*spanish*/"#vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga"},
   });
 
   /*--------------------------
@@ -1107,48 +1107,48 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula au dessus d'un escalier du temple de l'esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
+                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula au dessus d'un escalier du Temple de l'Esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_GS_BOULDER_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider behind a temporal stone# in the Spirit Temple yields", /*french*/"une #Skulltula derrière une pierre temporelle du temple de l'esprit# a", /*spanish*/"una #Skulltula tras un bloque temporal# del Templo del Espíritu otorga"},
+                       Text{"a #spider behind a temporal stone# in the Spirit Temple yields", /*french*/"une #Skulltula derrière une pierre temporelle du Temple de l'Esprit# a", /*spanish*/"una #Skulltula tras un bloque temporal# del Templo del Espíritu otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_GS_LOBBY] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider beside a statue# holds", /*french*/"une #Skulltula dans la grande salle du temple de l'esprit# a", /*spanish*/"una #Skulltula junto a una estatua# del Templo del Espíritu otorga"},
+                       Text{"a #spider beside a statue# holds", /*french*/"une #Skulltula dans la grande salle du Temple de l'Esprit# a", /*spanish*/"una #Skulltula junto a una estatua# del Templo del Espíritu otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider at the top of a deep shaft# in the Spirit Temple holds", /*french*/"une #Skulltula près d'un mur d'escalade du temple de l'esprit# a", /*spanish*/"una #Skulltula en lo alto de un gran hueco# del Templo del Espíritu otorga"},
+                       Text{"a #spider at the top of a deep shaft# in the Spirit Temple holds", /*french*/"une #Skulltula près d'un mur d'escalade du Temple de l'Esprit# a", /*spanish*/"una #Skulltula en lo alto de un gran hueco# del Templo del Espíritu otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_GS_METAL_FENCE] = HintText::Exclude({
                        //obscure text
-                       Text{"a child defeats a #spider among bats# in the Spirit Temple to gain", /*french*/"une #Skulltula sur le grillage du temple de l'esprit# a", /*spanish*/"el joven que derrote la #Skulltula entre murciélagos# del Templo del Espíritu hallará"},
+                       Text{"a child defeats a #spider among bats# in the Spirit Temple to gain", /*french*/"une #Skulltula sur le grillage du Temple de l'Esprit# a", /*spanish*/"el joven que derrote la #Skulltula entre murciélagos# del Templo del Espíritu hallará"},
   });
 
 
     hintTable[SPIRIT_TEMPLE_MQ_GS_LEEVER_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"#above a pit of sand# in the Spirit Temple hides", /*french*/"une #Skulltula au dessus du trou sableux du temple de l'esprit# a", /*spanish*/"una #Skulltula sobre un pozo de arena# del Templo del Espíritu otorga"},
+                       Text{"#above a pit of sand# in the Spirit Temple hides", /*french*/"une #Skulltula au dessus du trou sableux du Temple de l'Esprit# a", /*spanish*/"una #Skulltula sobre un pozo de arena# del Templo del Espíritu otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_WEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula dans la salle aux neuf trônes du temple de l'esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
+                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula dans la salle aux neuf trônes du Temple de l'Esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_MQ_GS_NINE_THRONES_ROOM_NORTH] = HintText::Exclude({
                        //obscure text
-                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula dans la salle aux neuf trônes du temple de l'esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
+                       Text{"a spider in the #hall of a knight# guards", /*french*/"une #Skulltula dans la salle aux neuf trônes du Temple de l'Esprit# a", /*spanish*/"una #Skulltula en el salón de un guerrero# otorga"},
   });
 
     hintTable[SPIRIT_TEMPLE_MQ_GS_SUN_BLOCK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"#upon a web of glass# in the Spirit Temple sits a spider holding", /*french*/"une #Skulltula sur une paroi de verre du temple de l'esprit# a", /*spanish*/"#sobre una plataforma de cristal# yace una Skulltula que otorga"},
+                       Text{"#upon a web of glass# in the Spirit Temple sits a spider holding", /*french*/"une #Skulltula sur une paroi de verre du Temple de l'Esprit# a", /*spanish*/"#sobre una plataforma de cristal# yace una Skulltula que otorga"},
   });
 
   /*--------------------------
@@ -1397,32 +1397,32 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[BOTTOM_OF_THE_WELL_FRONT_LEFT_FAKE_WALL_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth in the well# reveals", /*french*/"l'#oeil de vérité dans le puits# révèle", /*spanish*/"el #Ojo de la Verdad en el pozo# revela"},
+                       Text{"the #Eye of Truth in the well# reveals", /*french*/"l'#oeil de vérité dans le Puits# révèle", /*spanish*/"el #Ojo de la Verdad en el pozo# revela"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_FRONT_CENTER_BOMBABLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#gruesome debris# in the well hides", /*french*/"des #débris dans le puits# cachent", /*spanish*/"unos #horripilantes escombros# del pozo esconden"},
+                       Text{"#gruesome debris# in the well hides", /*french*/"des #débris dans le Puits# cachent", /*spanish*/"unos #horripilantes escombros# del pozo esconden"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_RIGHT_BOTTOM_FAKE_WALL_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth in the well# reveals", /*french*/"l'#oeil de vérité dans le puits# révèle", /*spanish*/"el #Ojo de la Verdad en el pozo# revela"},
+                       Text{"the #Eye of Truth in the well# reveals", /*french*/"l'#oeil de vérité dans le Puits# révèle", /*spanish*/"el #Ojo de la Verdad en el pozo# revela"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #hidden entrance to a cage# in the well leads to", /*french*/"dans un #chemin caché dans le puits# gît", /*spanish*/"la #entrada oculta de una celda# del pozo conduce a"},
+                       Text{"a #hidden entrance to a cage# in the well leads to", /*french*/"dans un #chemin caché dans le Puits# gît", /*spanish*/"la #entrada oculta de una celda# del pozo conduce a"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_CENTER_SKULLTULA_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider guarding a cage# in the well protects", /*french*/"l'#araignée dans la cage du puits# protège", /*spanish*/"una #araña protegiendo una celda# del pozo guarda"},
+                       Text{"a #spider guarding a cage# in the well protects", /*french*/"l'#araignée dans la cage du Puits# protège", /*spanish*/"una #araña protegiendo una celda# del pozo guarda"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_BACK_LEFT_BOMBABLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#gruesome debris# in the well hides", /*french*/"des #débris dans le puits# cachent", /*spanish*/"unos #horripilantes escombros# del pozo esconden"},
+                       Text{"#gruesome debris# in the well hides", /*french*/"des #débris dans le Puits# cachent", /*spanish*/"unos #horripilantes escombros# del pozo esconden"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_INVISIBLE_CHEST] = HintText::Exclude({
@@ -1432,27 +1432,27 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[BOTTOM_OF_THE_WELL_UNDERWATER_FRONT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le puits#", /*spanish*/"una #melodía real en el pozo# revela"},
+                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le Puits#", /*spanish*/"una #melodía real en el pozo# revela"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_UNDERWATER_LEFT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le puits#", /*spanish*/"una #melodía real en el pozo# revela"},
+                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le Puits#", /*spanish*/"una #melodía real en el pozo# revela"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the well# lies", /*french*/"#dans le cœur du puits# gît", /*spanish*/"en las #profundidades del pozo# yace"},
+                       Text{"in the #depths of the well# lies", /*french*/"#dans le cœur du Puits# gît", /*spanish*/"en las #profundidades del pozo# yace"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#perilous pits# in the well guard the path to", /*french*/"#trois trous# dans le puits protègent", /*spanish*/"#peligrosos fosos# del pozo conducen a"},
+                       Text{"#perilous pits# in the well guard the path to", /*french*/"#trois trous# dans le Puits protègent", /*spanish*/"#peligrosos fosos# del pozo conducen a"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_LIKE_LIKE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#locked in a cage# in the well lies", /*french*/"#dans une cage# du puits gît", /*spanish*/"#entre rejas# en el pozo yace"},
+                       Text{"#locked in a cage# in the well lies", /*french*/"#dans une cage# du Puits gît", /*spanish*/"#entre rejas# en el pozo yace"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_FREESTANDING_KEY] = HintText::Exclude({
@@ -1463,12 +1463,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le puits#", /*spanish*/"una #melodía real en el pozo# revela"},
+                       Text{"a #royal melody in the well# uncovers", /*french*/"la #mélodie royale révèle dans le Puits#", /*spanish*/"una #melodía real en el pozo# revela"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_LENS_OF_TRUTH_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"an #army of the dead# in the well guards", /*french*/"l'#armée des morts# dans le puits protège", /*spanish*/"un #ejército del más allá# del pozo guarda"},
+                       Text{"an #army of the dead# in the well guards", /*french*/"l'#armée des morts# dans le Puits protège", /*spanish*/"un #ejército del más allá# del pozo guarda"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_DEAD_HAND_FREESTANDING_KEY] = HintText::Exclude({
@@ -1478,38 +1478,38 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_EAST_INNER_ROOM_FREESTANDING_KEY] = HintText::Exclude({
                        //obscure text
-                       Text{"an #invisible path in the well# leads to", /*french*/"dans un #chemin caché dans le puits# gît", /*spanish*/"un #camino invisible del pozo# conduce a"},
+                       Text{"an #invisible path in the well# leads to", /*french*/"dans un #chemin caché dans le Puits# gît", /*spanish*/"un #camino invisible del pozo# conduce a"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider locked in a cage# in the well holds", /*french*/"une #Skulltula dans une cage au fonds du puits# a", /*spanish*/"una #Skulltula enjaulada# del pozo otorga"},
+                       Text{"a #spider locked in a cage# in the well holds", /*french*/"une #Skulltula dans une cage au fonds du Puits# a", /*spanish*/"una #Skulltula enjaulada# del pozo otorga"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"an #invisible path in the well# leads to", /*french*/"une #Skulltula dans le chemin invisible au fonds du puits# a", /*spanish*/"un #camino invisible del pozo# conduce a una Skulltula que otorga"},
+                       Text{"an #invisible path in the well# leads to", /*french*/"une #Skulltula dans le chemin invisible au fonds du Puits# a", /*spanish*/"un #camino invisible del pozo# conduce a una Skulltula que otorga"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
+                       Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du Puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
   });
 
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_GS_BASEMENT] = HintText::Exclude({
                        //obscure text
-                       Text{"a #gauntlet of invisible spiders# protects", /*french*/"une #Skulltula protégée par les araignées invisibles au fonds du puits# a", /*spanish*/"unas #arañas invisibles# custodian una Skulltula que otorga"},
+                       Text{"a #gauntlet of invisible spiders# protects", /*french*/"une #Skulltula protégée par les araignées invisibles au fonds du Puits# a", /*spanish*/"unas #arañas invisibles# custodian una Skulltula que otorga"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_GS_COFFIN_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider crawling near the dead# in the well holds", /*french*/"une #Skulltula près des cercueils au fonds du puits# a", /*spanish*/"una #Skulltula junto a los muertos# del pozo otorga"},
+                       Text{"a #spider crawling near the dead# in the well holds", /*french*/"une #Skulltula près des cercueils au fonds du Puits# a", /*spanish*/"una #Skulltula junto a los muertos# del pozo otorga"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_GS_WEST_INNER_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
+                       Text{"a #spider locked in a crypt# within the well guards", /*french*/"une #Skulltula embarrée dans la crypte au fonds du Puits# a", /*spanish*/"una #Skulltula encerrada en una cripta# del pozo otorga"},
   });
 
   /*--------------------------
@@ -1592,178 +1592,178 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[GERUDO_TRAINING_GROUNDS_LOBBY_LEFT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #blinded eye in the Gerudo Training Grounds# drops", /*french*/"l'#Oeil dans le gymnase Gerudo# voit", /*spanish*/"#cegar un ojo en el Centro de Instrucción Gerudo# revela"},
+                       Text{"a #blinded eye in the Gerudo Training Grounds# drops", /*french*/"l'#Oeil dans le Gymnase Gerudo# voit", /*spanish*/"#cegar un ojo en el Centro de Instrucción Gerudo# revela"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_LOBBY_RIGHT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #blinded eye in the Gerudo Training Grounds# drops", /*french*/"l'#Oeil dans le gymnase Gerudo# voit", /*spanish*/"#cegar un ojo en el Centro de Instrucción Gerudo# revela"},
+                       Text{"a #blinded eye in the Gerudo Training Grounds# drops", /*french*/"l'#Oeil dans le Gymnase Gerudo# voit", /*spanish*/"#cegar un ojo en el Centro de Instrucción Gerudo# revela"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_STALFOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#soldiers walking on shifting sands# in the Gerudo Training Grounds guard", /*french*/"les #squelettes# du gymnase Gerudo protègent", /*spanish*/"#soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen"},
+                       Text{"#soldiers walking on shifting sands# in the Gerudo Training Grounds guard", /*french*/"les #squelettes# du Gymnase Gerudo protègent", /*spanish*/"#soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_BEAMOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#reptilian warriors# in the Gerudo Training Grounds protect", /*french*/"les #lézards# dans le gymnase Gerudo protègent", /*spanish*/"#unos escamosos guerreros# del Centro de Instrucción Gerudo protegen"},
+                       Text{"#reptilian warriors# in the Gerudo Training Grounds protect", /*french*/"les #lézards# dans le Gymnase Gerudo protègent", /*spanish*/"#unos escamosos guerreros# del Centro de Instrucción Gerudo protegen"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HIDDEN_CEILING_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth# in the Gerudo Training Grounds reveals", /*french*/"#bien caché# dans le gymnase Gerudo gît", /*spanish*/"el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela"},
+                       Text{"the #Eye of Truth# in the Gerudo Training Grounds reveals", /*french*/"#bien caché# dans le Gymnase Gerudo gît", /*spanish*/"el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MAZE_PATH_FIRST_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the first prize of #the thieves' training# is", /*french*/"le #premier trésor du gymnase Gerudo# est", /*spanish*/"el primer premio de la #instrucción bandida# se trata de"},
+                       Text{"the first prize of #the thieves' training# is", /*french*/"le #premier trésor du Gymnase Gerudo# est", /*spanish*/"el primer premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MAZE_PATH_SECOND_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the second prize of #the thieves' training# is", /*french*/"le #deuxième trésor du gymnase Gerudo# est", /*spanish*/"el segundo premio de la #instrucción bandida# se trata de"},
+                       Text{"the second prize of #the thieves' training# is", /*french*/"le #deuxième trésor du Gymnase Gerudo# est", /*spanish*/"el segundo premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MAZE_PATH_THIRD_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the third prize of #the thieves' training# is", /*french*/"le #troisième trésor du gymnase Gerudo# est", /*spanish*/"el tercer premio de la #instrucción bandida# se trata de"},
+                       Text{"the third prize of #the thieves' training# is", /*french*/"le #troisième trésor du Gymnase Gerudo# est", /*spanish*/"el tercer premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MAZE_RIGHT_CENTRAL_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
+                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le Gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MAZE_RIGHT_SIDE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
+                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le Gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HAMMER_ROOM_CLEAR_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#fiery foes# in the Gerudo Training Grounds guard", /*french*/"les #limaces de feu# du gymnase Gerudo protègent", /*spanish*/"unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan"},
+                       Text{"#fiery foes# in the Gerudo Training Grounds guard", /*french*/"les #limaces de feu# du Gymnase Gerudo protègent", /*spanish*/"unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HAMMER_ROOM_SWITCH_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#engulfed in flame# where thieves train lies", /*french*/"le #trésor enflammé# du gymnase Gerudo est", /*spanish*/"donde entrenan las bandidas #entre llamas# yace"},
+                       Text{"#engulfed in flame# where thieves train lies", /*french*/"le #trésor enflammé# du Gymnase Gerudo est", /*spanish*/"donde entrenan las bandidas #entre llamas# yace"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_EYE_STATUE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
+                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du Gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_NEAR_SCARECROW_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
+                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du Gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_BEFORE_HEAVY_BLOCK_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#before a block of silver# thieves can find", /*french*/"#près d'un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"#ante un plateado bloque# las bandidas hallan"},
+                       Text{"#before a block of silver# thieves can find", /*french*/"#près d'un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"#ante un plateado bloque# las bandidas hallan"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FIRST_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
+                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_SECOND_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
+                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_THIRD_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
+                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_HEAVY_BLOCK_FOURTH_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
+                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_FREESTANDING_KEY] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
+                       Text{"the #Song of Time# in the Gerudo Training Grounds leads to", /*french*/"le #chant du temps# révèle dans le Gymnase Gerudo", /*spanish*/"la #Canción del Tiempo# en el Centro de Instrucción Gerudo conduce a"},
   });
 
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_LOBBY_RIGHT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#thieves prepare for training# with", /*french*/"dans #l'entrée du gymnase Gerudo# gît", /*spanish*/"las #bandidas se instruyen# con"},
+                       Text{"#thieves prepare for training# with", /*french*/"dans #l'entrée du Gymnase Gerudo# gît", /*spanish*/"las #bandidas se instruyen# con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_LOBBY_LEFT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#thieves prepare for training# with", /*french*/"dans #l'entrée du gymnase Gerudo# gît", /*spanish*/"las #bandidas se instruyen# con"},
+                       Text{"#thieves prepare for training# with", /*french*/"dans #l'entrée du Gymnase Gerudo# gît", /*spanish*/"las #bandidas se instruyen# con"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_FIRST_IRON_KNUCKLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#soldiers walking on shifting sands# in the Gerudo Training Grounds guard", /*french*/"les #squelettes# du gymnase Gerudo protègent", /*spanish*/"#soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen"},
+                       Text{"#soldiers walking on shifting sands# in the Gerudo Training Grounds guard", /*french*/"les #squelettes# du Gymnase Gerudo protègent", /*spanish*/"#soldados en resbaladizas arenas# del Centro de Instrucción Gerudo protegen"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_BEFORE_HEAVY_BLOCK_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#before a block of silver# thieves can find", /*french*/"#près d'un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"#ante un plateado bloque# las bandidas hallan"},
+                       Text{"#before a block of silver# thieves can find", /*french*/"#près d'un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"#ante un plateado bloque# las bandidas hallan"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_EYE_STATUE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
+                       Text{"thieves #blind four faces# to find", /*french*/"l'#épreuve d'archerie# du Gymnase Gerudo donne", /*spanish*/"las bandidas #ciegan cuatro bustos# para hallar"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_FLAME_CIRCLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#engulfed in flame# where thieves train lies", /*french*/"le #trésor enflammé# du gymnase Gerudo est", /*spanish*/"donde entrenan las bandidas #entre llamas# yace"},
+                       Text{"#engulfed in flame# where thieves train lies", /*french*/"le #trésor enflammé# du Gymnase Gerudo est", /*spanish*/"donde entrenan las bandidas #entre llamas# yace"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_SECOND_IRON_KNUCKLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#fiery foes# in the Gerudo Training Grounds guard", /*french*/"les #ennemis de feu# du gymnase Gerudo protègent", /*spanish*/"unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan"},
+                       Text{"#fiery foes# in the Gerudo Training Grounds guard", /*french*/"les #ennemis de feu# du Gymnase Gerudo protègent", /*spanish*/"unos #flamígeros enemigos# del Centro de Instrucción Gerudo guardan"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_DINOLFOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#reptilian warriors# in the Gerudo Training Grounds protect", /*french*/"les #lézards# dans le gymnase Gerudo protègent", /*spanish*/"#unos escamosos guerreros# del Centro de Instrucción Gerudo protegen"},
+                       Text{"#reptilian warriors# in the Gerudo Training Grounds protect", /*french*/"les #lézards# dans le Gymnase Gerudo protègent", /*spanish*/"#unos escamosos guerreros# del Centro de Instrucción Gerudo protegen"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_MAZE_RIGHT_CENTRAL_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #path of fire# leads thieves to", /*french*/"dans le #chemin enflammé# dans le gymnase Gerudo gît", /*spanish*/"un #camino de fuego# conduce a las bandidas a"},
+                       Text{"a #path of fire# leads thieves to", /*french*/"dans le #chemin enflammé# dans le Gymnase Gerudo gît", /*spanish*/"un #camino de fuego# conduce a las bandidas a"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_MAZE_PATH_FIRST_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the first prize of #the thieves' training# is", /*french*/"le #premier trésor du gymnase Gerudo# est", /*spanish*/"el primer premio de la #instrucción bandida# se trata de"},
+                       Text{"the first prize of #the thieves' training# is", /*french*/"le #premier trésor du Gymnase Gerudo# est", /*spanish*/"el primer premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_MAZE_RIGHT_SIDE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #path of fire# leads thieves to", /*french*/"dans le #chemin enflammé# dans le gymnase Gerudo gît", /*spanish*/"un #camino de fuego# conduce a las bandidas a"},
+                       Text{"a #path of fire# leads thieves to", /*french*/"dans le #chemin enflammé# dans le Gymnase Gerudo gît", /*spanish*/"un #camino de fuego# conduce a las bandidas a"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_MAZE_PATH_THIRD_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the third prize of #the thieves' training# is", /*french*/"le #troisième trésor du gymnase Gerudo# est", /*spanish*/"el tercer premio de la #instrucción bandida# se trata de"},
+                       Text{"the third prize of #the thieves' training# is", /*french*/"le #troisième trésor du Gymnase Gerudo# est", /*spanish*/"el tercer premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_MAZE_PATH_SECOND_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the second prize of #the thieves' training# is", /*french*/"le #deuxième trésor du gymnase Gerudo# est", /*spanish*/"el segundo premio de la #instrucción bandida# se trata de"},
+                       Text{"the second prize of #the thieves' training# is", /*french*/"le #deuxième trésor du Gymnase Gerudo# est", /*spanish*/"el segundo premio de la #instrucción bandida# se trata de"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_HIDDEN_CEILING_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth# in the Gerudo Training Grounds reveals", /*french*/"#bien caché# dans le gymnase Gerudo gît", /*spanish*/"el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela"},
+                       Text{"the #Eye of Truth# in the Gerudo Training Grounds reveals", /*french*/"#bien caché# dans le Gymnase Gerudo gît", /*spanish*/"el #Ojo de la Verdad# en el Centro de Instrucción Gerudo revela"},
   });
 
     hintTable[GERUDO_TRAINING_GROUNDS_MQ_HEAVY_BLOCK_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
+                       Text{"a #feat of strength# rewards thieves with", /*french*/"#derrière un bloc argent# dans le Gymnase Gerudo gît", /*spanish*/"una #hazaña de fuerza# premia a las bandidas con"},
   });
 
   /*--------------------------

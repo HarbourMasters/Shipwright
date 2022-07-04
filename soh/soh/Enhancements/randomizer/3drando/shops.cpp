@@ -508,7 +508,7 @@ void InitTrickNames() {
   trickNameTable[0xD1] = {
      Text{"Quake Medallion", "Médaillon des secousses", "Medallón Llamarada"},
      Text{"Nabooru's Medallion", "Médaillon de Nabooru", "Medallón de Nabooru"},
-     Text{"Medallion of Spirit", "Médaillon du temple de l'esprit", "Medalla del Espíritu"}};
+     Text{"Medallion of Spirit", "Médaillon du Temple de l'Esprit", "Medalla del Espíritu"}};
   trickNameTable[0xD2] = {
      Text{"Travel Medallion", "Amulette de téléportation", "Medallón Maligno"},
      Text{"Impa's Medallion", "Médaillon d'Impa", "Medallón de Impa"},
