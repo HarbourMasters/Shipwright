@@ -1428,29 +1428,7 @@ void func_80A781CC(Actor* thisx, GlobalContext* globalCtx) {
             gSaveContext.cutsceneTrigger = 1;
             Actor_SetScale(&this->actor, 0.01f);
         } else {
-            if ((this->actor.colChkInfo.health <= 10) && (this->unk_2F9 != 0)) {
-                s32 i;
-                Vec3f pos;
-                Vec3f sp7C = { 0.0f, 0.5f, 0.0f };
-
-                this->unk_2F9--;
-
-                for (i = 0xC - (this->unk_2F9 >> 1); i >= 0; i--) {
-                    pos.x = this->actor.world.pos.x + Rand_CenteredFloat(120.0f);
-                    pos.z = this->actor.world.pos.z + Rand_CenteredFloat(120.0f);
-                    pos.y = this->actor.world.pos.y + 20.0f + Rand_CenteredFloat(50.0f);
-                    EffectSsDeadDb_Spawn(globalCtx, &pos, &sp7C, &sp7C, 100, 0, 255, 255, 255, 255, 0, 0, 255, 1, 9,
-                                         true);
-                }
-                if (this->unk_2F9 == 0) {
-                    Item_DropCollectibleRandom(globalCtx, &this->actor, &this->actor.world.pos, 0xB0);
-                    if (this->switchFlags != 0xFF) {
-                        Flags_SetSwitch(globalCtx, this->switchFlags);
-                    }
-                    Actor_Kill(&this->actor);
-                }
-            }
-            //Actor_Kill(&this->actor);
+            Actor_Kill(&this->actor);
         }
         gSaveContext.eventChkInf[3] |= 0x1000;
         func_80A7735C(this, globalCtx);
