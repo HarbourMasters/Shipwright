@@ -2440,7 +2440,7 @@ void func_8009FE58(GlobalContext* globalCtx) {
         Matrix_Scale(1.005f, sinf(D_8012A398) * 0.8f, 1.005f, MTXMODE_NEW);
     }
 
-    gSPSegment(POLY_OPA_DISP++, 0x0D, Matrix_NewMtx(globalCtx->state.gfxCtx));
+    gSPSegment(POLY_OPA_DISP++, 0x0D, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

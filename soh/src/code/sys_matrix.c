@@ -552,15 +552,15 @@ Mtx* Matrix_MtxFToMtx(MtxF* src, Mtx* dest) {
     return dest;
 }
 
-Mtx* Matrix_ToMtx(Mtx* dest) {
+Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
     FrameInterpolation_RecordMatrixToMtx(dest, __FILE__, __LINE__);
-    guMtxF2L(Matrix_CheckFloats(sCurrentMatrix), dest);
+    guMtxF2L(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
     return dest;
-    //return Matrix_MtxFToMtx(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
+    //return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
 }
 
-Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx) {
-    return Matrix_ToMtx(Graph_Alloc(gfxCtx, sizeof(Mtx)));
+Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx, char* file, s32 line) {
+    return Matrix_ToMtx(Graph_Alloc(gfxCtx, sizeof(Mtx)), file, line);
 }
 
 Mtx* Matrix_MtxFToNewMtx(MtxF* src, GraphicsContext* gfxCtx) {
@@ -889,7 +889,7 @@ void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
     }
 }
 
-MtxF* Matrix_CheckFloats(MtxF* mf) {
+MtxF* Matrix_CheckFloats(MtxF* mf, char* file, s32 line) {
     s32 i, j;
 
     for (i = 0; i < 4; i++) {
@@ -900,7 +900,7 @@ MtxF* Matrix_CheckFloats(MtxF* mf) {
                              "| %12.6f %12.6f %12.6f %12.6f |\n"
                              "| %12.6f %12.6f %12.6f %12.6f |\n"
                              "\\ %12.6f %12.6f %12.6f %12.6f /\n",
-                             __FILE__, __LINE__, "mf", mf->xx, mf->xy, mf->xz, mf->xw, mf->yx, mf->yy, mf->yz, mf->yw, mf->zx,
+                             file, line, "mf", mf->xx, mf->xy, mf->xz, mf->xw, mf->yx, mf->yy, mf->yz, mf->yw, mf->zx,
                              mf->zy, mf->zz, mf->zw, mf->wx, mf->wy, mf->wz, mf->ww);
                 //Fault_AddHungupAndCrash(file, line);
             }

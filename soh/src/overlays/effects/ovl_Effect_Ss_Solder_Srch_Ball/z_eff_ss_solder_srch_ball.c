@@ -215,7 +215,7 @@ static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, Grap
     Matrix_Push();
     Matrix_Translate(x, y, z, MTXMODE_NEW);
     Matrix_Scale(radius / 128.0f, radius / 128.0f, radius / 128.0f, MTXMODE_APPLY);
-    gSPMatrix((*p_gfx_p)++, Matrix_NewMtx(gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+    gSPMatrix((*p_gfx_p)++, MATRIX_NEWMTX(gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
     gSPDisplayList((*p_gfx_p)++, p_sph_gfx);
     gSPPopMatrix((*p_gfx_p)++, G_MTX_MODELVIEW);
     Matrix_Pop();

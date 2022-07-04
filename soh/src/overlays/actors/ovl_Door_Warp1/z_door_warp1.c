@@ -967,7 +967,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     gDPSetColorDither(POLY_XLU_DISP++, G_AD_NOTPATTERN | G_CD_MAGICSQ);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y + 1.0f, this->actor.world.pos.z, MTXMODE_NEW);
-    gSPSegment(POLY_XLU_DISP++, 0x0A, Matrix_NewMtx(globalCtx->state.gfxCtx));
+    gSPSegment(POLY_XLU_DISP++, 0x0A, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
     Matrix_Push();
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -978,7 +978,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     Matrix_Translate(0.0f, this->unk_194 * 230.0f, 0.0f, MTXMODE_APPLY);
     xzScale = (((f32)this->unk_1AE * spE8) / 100.0f) + 1.0f;
     Matrix_Scale(xzScale, 1.0f, xzScale, MTXMODE_APPLY);
-    gSPSegment(POLY_XLU_DISP++, 0x09, Matrix_NewMtx(globalCtx->state.gfxCtx));
+    gSPSegment(POLY_XLU_DISP++, 0x09, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
     gSPDisplayList(POLY_XLU_DISP++, gWarpPortalDL);
     Matrix_Pop();
 
@@ -1016,7 +1016,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
         xzScale = (((f32)this->unk_1B0 * spE4) / 100.0f) + 1.0f;
         Matrix_Scale(xzScale, 1.0f, xzScale, MTXMODE_APPLY);
 
-        gSPSegment(POLY_XLU_DISP++, 0x09, Matrix_NewMtx(globalCtx->state.gfxCtx));
+        gSPSegment(POLY_XLU_DISP++, 0x09, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
         gSPDisplayList(POLY_XLU_DISP++, gWarpPortalDL);
     }
 

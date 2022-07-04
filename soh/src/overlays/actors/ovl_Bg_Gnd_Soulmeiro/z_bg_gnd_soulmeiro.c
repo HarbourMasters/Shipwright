@@ -201,7 +201,7 @@ void BgGndSoulmeiro_Draw(Actor* thisx, GlobalContext* globalCtx) {
         case 0:
             OPEN_DISPS(globalCtx->state.gfxCtx);
             func_80093D84(globalCtx->state.gfxCtx);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, dLists[params]);
             CLOSE_DISPS(globalCtx->state.gfxCtx);

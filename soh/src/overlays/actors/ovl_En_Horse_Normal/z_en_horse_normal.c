@@ -705,7 +705,7 @@ void EnHorseNormal_Draw(Actor* thisx, GlobalContext* globalCtx) {
         temp_f0_4 = (1.0f - (distFromGround * 0.01f)) * this->actor.shape.shadowScale;
         Matrix_Scale(this->actor.scale.x * temp_f0_4, 1.0f, this->actor.scale.z * temp_f0_4, MTXMODE_APPLY);
         Matrix_RotateY(cloneRotY * (2.0f * M_PI / 0x10000), MTXMODE_APPLY);
-        mtx2 = Matrix_NewMtx(globalCtx->state.gfxCtx);
+        mtx2 = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
         if (mtx2 != NULL) {
             gSPMatrix(POLY_XLU_DISP++, mtx2, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gHorseShadowDL);

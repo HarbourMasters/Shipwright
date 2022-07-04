@@ -180,7 +180,7 @@ void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                     1 * (globalCtx->state.frames * 6), 32, 32));
         Matrix_Scale(25.0f,25.0f,25.0f,MTXMODE_APPLY);
         Matrix_RotateX(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
     } else {
@@ -188,7 +188,7 @@ void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
         
         Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
     }

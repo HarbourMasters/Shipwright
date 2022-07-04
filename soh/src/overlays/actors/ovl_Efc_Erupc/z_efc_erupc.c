@@ -133,7 +133,7 @@ void EfcErupc_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Matrix_Push();
     Matrix_Scale(0.8f, 0.8f, 0.8f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (globalCtx->csCtx.state != 0) {
@@ -143,7 +143,7 @@ void EfcErupc_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     Matrix_Pop();
     Matrix_Scale(3.4f, 3.4f, 3.4f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (globalCtx->csCtx.state != 0) {
         CsCmdActorAction* csActorAction = globalCtx->csCtx.npcActions[2];
@@ -177,7 +177,7 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
             Matrix_Translate(particles->pos.x, particles->pos.y, particles->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(particles->scale, particles->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_0027D8);
         }

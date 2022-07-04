@@ -533,7 +533,7 @@ void EnMm_Draw(Actor* thisx, GlobalContext* globalCtx) {
             mtx = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx) * 2);
 
             Matrix_Put(&this->unk_208);
-            mtx2 = Matrix_NewMtx(globalCtx->state.gfxCtx);
+            mtx2 = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
 
             gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[linkChildObjBankIndex].segment);
             gSPSegment(POLY_OPA_DISP++, 0x0B, mtx);
@@ -544,14 +544,14 @@ void EnMm_Draw(Actor* thisx, GlobalContext* globalCtx) {
             sp50.z = -13450;
 
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp50);
-            Matrix_ToMtx(mtx++);
+            MATRIX_TOMTX(mtx++);
 
             sp50.x = -994;
             sp50.y = -3518;
             sp50.z = -13450;
 
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp50);
-            Matrix_ToMtx(mtx);
+            MATRIX_TOMTX(mtx);
 
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildBunnyHoodDL);
             gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);

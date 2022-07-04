@@ -478,7 +478,7 @@ void EnCs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Mtx* mtx;
 
             Matrix_Put(&this->spookyMaskMtx);
-            mtx = Matrix_NewMtx(globalCtx->state.gfxCtx);
+            mtx = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[childLinkObjectIndex].segment);
             gSPSegment(POLY_OPA_DISP++, 0x0D, mtx - 7);
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildSpookyMaskDL);

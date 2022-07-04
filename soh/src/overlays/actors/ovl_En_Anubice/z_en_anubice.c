@@ -480,7 +480,7 @@ void EnAnubice_PostLimbDraw(struct GlobalContext* globalCtx, s32 limbIndex, Gfx*
     if (limbIndex == ANUBICE_LIMB_HEAD) {
         OPEN_DISPS(globalCtx->state.gfxCtx);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gAnubiceEyesDL);
         Matrix_MultVec3f(&pos, &this->fireballPos);

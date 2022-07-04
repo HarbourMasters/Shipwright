@@ -222,7 +222,7 @@ void ItemShield_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (!(this->unk_19C & 2)) {
         OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, SEGMENTED_TO_VIRTUAL(gLinkChildDekuShieldDL));
         CLOSE_DISPS(globalCtx->state.gfxCtx);

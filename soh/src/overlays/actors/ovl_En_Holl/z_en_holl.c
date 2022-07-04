@@ -343,7 +343,7 @@ void EnHoll_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateY(M_PI, MTXMODE_APPLY);
         }
 
-        gSPMatrix(gfxP++, Matrix_NewMtx(globalCtx->state.gfxCtx),
+        gSPMatrix(gfxP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(gfxP++, 0, 0, 0, 0, 0, (u8)this->planeAlpha);
         gSPDisplayList(gfxP++, sPlaneDL);

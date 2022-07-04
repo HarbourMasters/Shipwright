@@ -325,7 +325,7 @@ void func_808AB700(BgSpot01Idohashira* this, GlobalContext* globalCtx) {
 
     func_80093D18(localGfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(localGfxCtx),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(localGfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_808AAF34(this, globalCtx);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoWellArchDL);

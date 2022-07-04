@@ -128,6 +128,10 @@
 #define LOG_HUNGUP_THREAD() ((void)0)
 #endif
 
+#define MATRIX_TOMTX(dest) Matrix_ToMtx(dest, __FILE__, __LINE__)
+#define MATRIX_NEWMTX(gfxCtx) Matrix_NewMtx(gfxCtx, __FILE__, __LINE__)
+#define MATRIX_CHECKFLOATS(mf) Matrix_CheckFloats(mf, __FILE__, __LINE__)
+
 #define ZELDA_ARENA_MALLOC_DEBUG(size) ZeldaArena_MallocDebug(size, __FILE__, __LINE__)
 #define ZELDA_ARENA_MALLOC_RDEBUG(size) ZeldaArena_MallocRDebug(size, __FILE__, __LINE__)
 #define ZELDA_ARENA_REALLOC_DEBUG(ptr, newSize) ZeldaArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
