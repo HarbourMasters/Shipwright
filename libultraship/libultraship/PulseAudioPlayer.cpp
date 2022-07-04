@@ -92,7 +92,7 @@ namespace Ship
         attr.prebuf = SAMPLES_HIGH * 3 * 1.5 * 4;
         
         attr.minreq = 222 * 4;
-        attr.tlength = (44100 / 20) * 4;
+        attr.tlength = (GetSampleRate() / 20) * 4;
         
         // initialize to a value that is deemed sensible by the server 
         attr.fragsize = (uint32_t)-1;
