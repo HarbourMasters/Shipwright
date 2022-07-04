@@ -137,7 +137,12 @@ void EnKusa_DropCollectible(EnKusa* this, GlobalContext* globalCtx) {
             Item_DropCollectibleRandom(globalCtx, NULL, &this->actor.world.pos, dropParams << 4);
             break;
         case ENKUSA_TYPE_1:
-            if (Rand_ZeroOne() < 0.5f) {
+            if (CVar_GetS32("gNoRandomDrops", 0)) {
+            }
+            else if (CVar_GetS32("gNoHeartDrops", 0)) {
+                Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_SEEDS);
+            }
+            else if (Rand_ZeroOne() < 0.5f) {
                 Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_SEEDS);
             } else {
                 Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_HEART);

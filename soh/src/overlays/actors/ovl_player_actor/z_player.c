@@ -1921,7 +1921,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
                 }
             }
             if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && hasOnDpad) {
+                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && !hasOnDpad) {
                 this->currentMask = PLAYER_MASK_NONE;
             }
         }
