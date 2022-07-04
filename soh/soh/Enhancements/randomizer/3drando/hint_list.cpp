@@ -1809,14 +1809,14 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_VANILLA_HINT] = HintText::Bridge({
                      //obscure text
-                     Text{"The awakened ones will await for the&Hero to collect the #Shadow and Spirit&Medallions# as well as the #Light Arrows#.",
+                     Text{"The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni des #médaillons de l'ombre et&l'esprit# et des #flèches de lumière#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto a la #flecha de luz#."},
     });
 
     hintTable[BRIDGE_STONES_HINT] = HintText::Bridge({
                      //obscure text                                                  singular        plural
-                     Text{"The awakened ones will await for the&Hero to collect #%d |Spiritual Stone|Spiritual Stones|#.",
+                     Text{"The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |pierre spirituelle|pierres spirituelles|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#."},
     });
