@@ -77,11 +77,26 @@ namespace Ship
         ss.rate = this->GetSampleRate();
         ss.channels = 2;
 
+        #define SAMPLES_HIGH 752
+        #define SAMPLES_LOW 720
+
         pa_buffer_attr attr;
-        attr.maxlength = (uint32_t)-1;
-        attr.tlength = (uint32_t)-1;
-        attr.prebuf = (uint32_t)-1;
-        attr.minreq = (uint32_t)-1;
+        // set the max length to the desired buffered level, plus
+        // 3x the high sample rate, which is what the n64 audio engine
+        // can output at one time, x2 to avoid overflow in case of the
+        // n64 audio engine running faster than pulseaudio, all multiplied
+        // by 4 because each sample is 4 bytes
+        attr.maxlength = (GetDesiredBuffered() + 3 * SAMPLES_HIGH * 2) * 4;
+        
+         // in an ideal world, one third of the calls should use SAMPLES_HIGH and two thirds SAMPLES_LOW
+        attr.tlength = (SAMPLES_LOW * 2 + SAMPLES_HIGH) * 4;
+        
+        // slightly more than one double audio update
+        attr.prebuf = SAMPLES_HIGH * 3 * 1.5 * 4;
+        
+        attr.minreq = 222 * 4;
+        
+        // initialize to a value that is deemed sensible by the server 
         attr.fragsize = (uint32_t)-1;
 
         m_Stream = pa_stream_new(m_Context, "zelda", &ss, NULL);
