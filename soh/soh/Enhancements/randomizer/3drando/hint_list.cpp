@@ -1802,21 +1802,21 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_OPEN_HINT] = HintText::Bridge({
                      //obscure text
-                     Text{"The awakened ones will have #already&created a bridge# to the castle where&the evil dwells.",
-                /*french*/"Les êtres de sagesse ont#déjà créé&un pont# vers le repaire du mal.",
+                     Text{"The awakened ones have already&created a bridge to the castle&where the evil dwells.",
+                /*french*/"Les êtres de sagesse ont&déjà créé un pont vers&le repaire du mal.",
                /*spanish*/"Los sabios #ya habrán creado un puente#&al castillo, de donde emana el mal."},
     });
 
     hintTable[BRIDGE_VANILLA_HINT] = HintText::Bridge({
                      //obscure text
-                     Text{"The awakened ones will await for the&Hero to collect the #Shadow and Spirit&Medallions# as well as the #Light Arrows#.",
+                     Text{"The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni des #médaillons de l'ombre et&l'esprit# et des #flèches de lumière#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto a la #flecha de luz#."},
     });
 
     hintTable[BRIDGE_STONES_HINT] = HintText::Bridge({
                      //obscure text                                                  singular        plural
-                     Text{"The awakened ones will await for the&Hero to collect #%d |Spiritual Stone|Spiritual Stones|#.",
+                     Text{"The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |pierre spirituelle|pierres spirituelles|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#."},
     });
@@ -1830,21 +1830,21 @@ void HintTable_Init() {
 
     hintTable[BRIDGE_REWARDS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular                     plural
-                     Text{"The awakened ones will await for the&Hero to collect #%d |Spiritual Stone&or Medallion|Spiritual Stones&and Medallions|#.",
+                     Text{"The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones and Medallions|.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |pierre spirituelle&ou médaillon|pierres spirituelles&et médaillons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y medallones|#."},
     });
 
     hintTable[BRIDGE_DUNGEONS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular plural
-                     Text{"The awakened ones will await for the&Hero to conquer #%d |Dungeon|Dungeons|#.",
+                     Text{"The awakened ones will await&for the Hero to conquer&%d |Dungeon|Dungeons|.",
                 /*french*/"Les êtres de sagesse attendront la&conquête de #%d |donjon|donjons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe& complete #%d |mazmorra|mazmorras|#."},
     });
 
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
                      //obscure text
-                     Text{"The awakened ones will await for the&Hero to collect #%d |Gold Skulltula&Token|Gold Skulltula&Tokens|#.",
+                     Text{"The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
                 /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |symbole|symboles| de&Skulltula d'or#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#."},
     });
@@ -1856,7 +1856,7 @@ void HintTable_Init() {
     hintTable[GANON_BK_START_WITH_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the evil one's key will&be given from the start.",
-                /*french*/"Aussi, la clé du #Malin# sera #possession même du héros#.",
+                /*french*/"Aussi, la clé du Malin sera&possession même du héros.",
                /*spanish*/"Y obtendrás la llave del #señor del mal# desde el #inicio#."},
     });
 
@@ -2006,7 +2006,7 @@ void HintTable_Init() {
     hintTable[ADULT_ALTAR_TEXT_START] = HintText::Altar({
                      //obscure text
                      Text{"An awakening voice from the Sacred&Realm will call those destined to be&Sages, who dwell in the five temples.",
-                /*french*/"Quand le mal aura triomphé, une voix du Saint Royaume appellera ceux cachés dans les #cinq temples#, destinés à être Sages.",
+                /*french*/"Quand le mal aura triomphé, une voix&du Saint Royaume appellera ceux&cachés dans les cinq temples, destinés à être Sages.",
                /*spanish*/"Cuando el mal lo impregne todo, desde el Reino Sagrado surgirá una voz que hará despertar a los sabios que moran en los #cinco templos#."},
     });
 
