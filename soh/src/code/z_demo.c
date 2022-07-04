@@ -490,6 +490,8 @@ void func_80065134(GlobalContext* globalCtx, CutsceneContext* csCtx, CsCmdDayTim
 void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCtx, CsCmdBase* cmd) {
     Player* player = GET_PLAYER(globalCtx);
     s32 temp = 0;
+    // Automatically skip certain cutscenes when in rando
+    bool randoCsSkip = (gSaveContext.n64ddFlag && cmd->base == 33);
 
     if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (globalCtx->sceneNum != SCENE_SPOT00) &&
         (csCtx->frames > 20) &&
@@ -501,11 +503,9 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
         temp = 1;
     }
 
-    if ((csCtx->frames == cmd->startFrame) || (temp != 0) ||
-        // Skip specific cutscene in rando automatically
-        (gSaveContext.n64ddFlag && cmd->base == 33 && (csCtx->frames > 20)) ||
-        ((csCtx->frames > 20) && CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
-         (gSaveContext.fileNum != 0xFEDC)) && CVar_GetS32("gDebugEnabled", 0)) {
+    if ((csCtx->frames == cmd->startFrame) || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip ||
+        (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
+            (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0))))) {
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
