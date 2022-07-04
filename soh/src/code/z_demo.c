@@ -505,8 +505,7 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
         // Skip specific cutscene in rando automatically
         (gSaveContext.n64ddFlag && cmd->base == 33 && (csCtx->frames > 20)) ||
         ((csCtx->frames > 20) && CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
-         (gSaveContext.fileNum != 0xFEDC)) &&
-            CVar_GetS32("gDebugEnabled", 0)) {
+         (gSaveContext.fileNum != 0xFEDC)) && CVar_GetS32("gDebugEnabled", 0)) {
 
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
