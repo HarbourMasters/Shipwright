@@ -36,14 +36,14 @@ constexpr std::array EnglishDungeonNames = {
 };
 
 constexpr std::array FrenchDungeonNames = {
-    "vénérable arbre Mojo",
+    "Vénérable Arbre Mojo",
     "caverne Dodongo",
-    "ventre de Jabu-Jabu",
-    "temple de la forêt",
-    "temple du feu",
-    "temple de l'eau",
+    "Ventre de Jabu-Jabu",
+    "Temple de la Forêt",
+    "Temple du Feu",
+    "Temple de l'Eau",
     "temple de l'esprit",
-    "temple de l'ombre",
+    "Temple de l'Ombre",
     "puits",
     "caverne de glace",
     "",

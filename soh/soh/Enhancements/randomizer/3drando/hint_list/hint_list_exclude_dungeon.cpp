@@ -6,63 +6,63 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[DEKU_TREE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
+                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
   });
 
     hintTable[DEKU_TREE_SLINGSHOT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #treasure guarded by a scrub# in the Deku Tree is", /*french*/"le #trésor protégé par une peste# dans l'arbre Mojo est", /*spanish*/"un #deku del Gran Árbol Deku# esconde"},
+                       Text{"the #treasure guarded by a scrub# in the Deku Tree is", /*french*/"le #trésor protégé par une peste# dans l'Arbre Mojo est", /*spanish*/"un #deku del Gran Árbol Deku# esconde"},
   });
 
     hintTable[DEKU_TREE_SLINGSHOT_ROOM_SIDE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #treasure guarded by a scrub# in the Deku Tree is", /*french*/"le #trésor protégé par une peste# dans l'arbre Mojo est", /*spanish*/"un #deku del Gran Árbol Deku# esconde"},
+                       Text{"the #treasure guarded by a scrub# in the Deku Tree is", /*french*/"le #trésor protégé par une peste# dans l'Arbre Mojo est", /*spanish*/"un #deku del Gran Árbol Deku# esconde"},
   });
 
     hintTable[DEKU_TREE_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
+                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'Arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
   });
 
     hintTable[DEKU_TREE_COMPASS_ROOM_SIDE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
+                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'Arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
   });
 
     hintTable[DEKU_TREE_BASEMENT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#webs in the Deku Tree# hide", /*french*/"les #toiles dans l'arbre Mojo# cachent", /*spanish*/"entre #telarañas del Gran Árbol Deku# yace"},
+                       Text{"#webs in the Deku Tree# hide", /*french*/"les #toiles dans l'Arbre Mojo# cachent", /*spanish*/"entre #telarañas del Gran Árbol Deku# yace"},
   });
 
 
     hintTable[DEKU_TREE_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
+                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
   });
 
     hintTable[DEKU_TREE_MQ_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #treasure guarded by a large spider# in the Deku Tree is", /*french*/"le #trésor protégé par une grosse araignée# dans l'arbre Mojo est", /*spanish*/"una #gran araña del Gran Árbol Deku# esconde"},
+                       Text{"a #treasure guarded by a large spider# in the Deku Tree is", /*french*/"le #trésor protégé par une grosse araignée# dans l'Arbre Mojo est", /*spanish*/"una #gran araña del Gran Árbol Deku# esconde"},
   });
 
     hintTable[DEKU_TREE_MQ_SLINGSHOT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
+                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'Arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
   });
 
     hintTable[DEKU_TREE_MQ_SLINGSHOT_ROOM_BACK_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
+                       Text{"#pillars of wood# in the Deku Tree lead to", /*french*/"les #piliers de bois# dans l'Arbre Mojo indiquent", /*spanish*/"los #salientes del Gran Árbol Deku# conducen a"},
   });
 
     hintTable[DEKU_TREE_MQ_BASEMENT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#webs in the Deku Tree# hide", /*french*/"les #toiles dans l'arbre Mojo# cachent", /*spanish*/"entre #telarañas del Gran Árbol Deku# yace"},
+                       Text{"#webs in the Deku Tree# hide", /*french*/"les #toiles dans l'Arbre Mojo# cachent", /*spanish*/"entre #telarañas del Gran Árbol Deku# yace"},
   });
 
     hintTable[DEKU_TREE_MQ_BEFORE_SPINNING_LOG_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#magical fire in the Deku Tree# leads to", /*french*/"le #feu magique dans l'arbre Mojo# éclaire", /*spanish*/"el #fuego mágico en el Gran Árbol Deku# conduce a"},
+                       Text{"#magical fire in the Deku Tree# leads to", /*french*/"le #feu magique dans l'Arbre Mojo# éclaire", /*spanish*/"el #fuego mágico en el Gran Árbol Deku# conduce a"},
   });
 
     hintTable[DEKU_TREE_QUEEN_GOHMA_HEART] = HintText::Exclude({
@@ -75,43 +75,43 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DEKU_TREE_GS_BASEMENT_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
+                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
   });
 
     hintTable[DEKU_TREE_GS_BASEMENT_GATE] = HintText::Exclude({
                        //obscure text
-                       Text{"a #web protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière une toile dans l'arbre Mojo# a", /*spanish*/"una #Skulltula protegida por su tela# del Árbol Deku otorga"},
+                       Text{"a #web protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière une toile dans l'Arbre Mojo# a", /*spanish*/"una #Skulltula protegida por su tela# del Árbol Deku otorga"},
   });
 
     hintTable[DEKU_TREE_GS_BASEMENT_VINES] = HintText::Exclude({
                        //obscure text
-                       Text{"a #web protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière une toile dans l'arbre Mojo# a", /*spanish*/"una #Skulltula protegida por su tela# del Árbol Deku otorga"},
+                       Text{"a #web protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière une toile dans l'Arbre Mojo# a", /*spanish*/"una #Skulltula protegida por su tela# del Árbol Deku otorga"},
   });
 
     hintTable[DEKU_TREE_GS_COMPASS_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider atop the Deku Tree# holds", /*french*/"une #Skulltula au sommet de l'arbre Mojo# a", /*spanish*/"una #Skulltula en lo alto del Árbol Deku# otorga"},
+                       Text{"a #spider atop the Deku Tree# holds", /*french*/"une #Skulltula au sommet de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en lo alto del Árbol Deku# otorga"},
   });
 
 
     hintTable[DEKU_TREE_MQ_GS_LOBBY] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider in a crate# within the Deku Tree hides", /*french*/"une #Skulltula dans une boîte dans l'arbre Mojo# a", /*spanish*/"una #Skulltula bajo una caja# del Árbol Deku otorga"},
+                       Text{"a #spider in a crate# within the Deku Tree hides", /*french*/"une #Skulltula dans une boîte dans l'Arbre Mojo# a", /*spanish*/"una #Skulltula bajo una caja# del Árbol Deku otorga"},
   });
 
     hintTable[DEKU_TREE_MQ_GS_COMPASS_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #wall of rock protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière des rochers dans l'arbre Mojo# a", /*spanish*/"una #Skulltula protegida por una pared rocosa# del Árbol Deku otorga"},
+                       Text{"a #wall of rock protects a spider# within the Deku Tree holding", /*french*/"une #Skulltula derrière des rochers dans l'Arbre Mojo# a", /*spanish*/"una #Skulltula protegida por una pared rocosa# del Árbol Deku otorga"},
   });
 
     hintTable[DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
+                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
   });
 
     hintTable[DEKU_TREE_MQ_DEKU_SCRUB] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub in the Deku Tree# sells", /*french*/"la #peste Mojo dans l'arbre Mojo# vend", /*spanish*/"un #deku del Gran Árbol Deku# vende"},
+                       Text{"a #scrub in the Deku Tree# sells", /*french*/"la #peste Mojo dans l'Arbre Mojo# vend", /*spanish*/"un #deku del Gran Árbol Deku# vende"},
   });
 
   /*--------------------------
@@ -368,38 +368,38 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider resting near a princess# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula près de la princesse dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula junto a una princesa# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider resting near a princess# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula près de la princesse dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula junto a una princesa# en la Tripa de Jabu-Jabu otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider resting near a princess# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula près de la princesse dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula junto a una princesa# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider resting near a princess# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula près de la princesse dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula junto a una princesa# en la Tripa de Jabu-Jabu otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_GS_NEAR_BOSS] = HintText::Exclude({
                        //obscure text
-                       Text{"#jellyfish surround a spider# holding", /*french*/"une #Skulltula entourée de méduses dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada de medusas# otorga"},
+                       Text{"#jellyfish surround a spider# holding", /*french*/"une #Skulltula entourée de méduses dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada de medusas# otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider guarded by a school of stingers# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula protégée par des raies dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada por unos stingers# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider guarded by a school of stingers# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula protégée par des raies dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada por unos stingers# en la Tripa de Jabu-Jabu otorga"},
   });
 
 
     hintTable[JABU_JABUS_BELLY_MQ_GS_TAILPASARAN_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider surrounded by electricity# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula entourée d'électricité dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada de electricidad# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider surrounded by electricity# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula entourée d'électricité dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula rodeada de electricidad# en la Tripa de Jabu-Jabu otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_MQ_GS_BOOMERANG_CHEST_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider guarded by a school of stingers# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula protégée par des raies dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula protegida por unos stingers# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider guarded by a school of stingers# in Jabu-Jabu's Belly holds", /*french*/"une #Skulltula protégée par des raies dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula protegida por unos stingers# en la Tripa de Jabu-Jabu otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_MQ_GS_NEAR_BOSS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider in a web within Jabu-Jabu's Belly# holds", /*french*/"une #Skulltula sur une toile dans le ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula sobre una red# en la Tripa de Jabu-Jabu otorga"},
+                       Text{"a #spider in a web within Jabu-Jabu's Belly# holds", /*french*/"une #Skulltula sur une toile dans le Ventre de Jabu-Jabu# a", /*spanish*/"una #Skulltula sobre una red# en la Tripa de Jabu-Jabu otorga"},
   });
 
     hintTable[JABU_JABUS_BELLY_DEKU_SCRUB] = HintText::Exclude({
@@ -412,12 +412,12 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[FOREST_TEMPLE_FIRST_ROOM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #tree in the Forest Temple# supports", /*french*/"sur l'#arbre dans le temple de la forêt# gît", /*spanish*/"sobre un #árbol del Templo del Bosque# yace"},
+                       Text{"a #tree in the Forest Temple# supports", /*french*/"sur l'#arbre dans le Temple de la Forêt# gît", /*spanish*/"sobre un #árbol del Templo del Bosque# yace"},
   });
 
     hintTable[FOREST_TEMPLE_FIRST_STALFOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#defeating enemies beneath a falling ceiling# in Forest Temple yields", /*french*/"#deux squelettes# dans le temple de la forêt protègent", /*spanish*/"#derrotar enemigos caídos de lo alto# del Templo del Bosque revela"},
+                       Text{"#defeating enemies beneath a falling ceiling# in Forest Temple yields", /*french*/"#deux squelettes# dans le Temple de la Forêt protègent", /*spanish*/"#derrotar enemigos caídos de lo alto# del Templo del Bosque revela"},
   });
 
     hintTable[FOREST_TEMPLE_WELL_CHEST] = HintText::Exclude({
@@ -427,12 +427,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FOREST_TEMPLE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #fiery skull# in Forest Temple guards", /*french*/"le #crâne enflammé# dans le temple de la forêt protège", /*spanish*/"una #ardiente calavera# del Templo del Bosque esconde"},
+                       Text{"a #fiery skull# in Forest Temple guards", /*french*/"le #crâne enflammé# dans le Temple de la Forêt protège", /*spanish*/"una #ardiente calavera# del Templo del Bosque esconde"},
   });
 
     hintTable[FOREST_TEMPLE_RAISED_ISLAND_COURTYARD_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #chest on a small island# in the Forest Temple holds", /*french*/"le #coffre sur l'îlot# du temple de la forêt contient", /*spanish*/"un #cofre sobre una isla# del Templo del Bosque contiene"},
+                       Text{"a #chest on a small island# in the Forest Temple holds", /*french*/"le #coffre sur l'îlot# du Temple de la Forêt contient", /*spanish*/"un #cofre sobre una isla# del Templo del Bosque contiene"},
   });
 
     hintTable[FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST] = HintText::Exclude({
@@ -445,7 +445,7 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a #sharp eye# will spot", /*french*/"l'#oeil perçant# dans la forêt verra", /*spanish*/"un #afilado ojo# revela"},
                      }, {},
                        //clear text
-                       Text{"#blocks of stone# in the Forest Temple surround", /*french*/"les #blocs dans le temple de la forêt# entourent", /*spanish*/"cerca de unos #bloques de piedra# del Templo del Bosque yace"}
+                       Text{"#blocks of stone# in the Forest Temple surround", /*french*/"les #blocs dans le Temple de la Forêt# entourent", /*spanish*/"cerca de unos #bloques de piedra# del Templo del Bosque yace"}
   );
 
     hintTable[FOREST_TEMPLE_BOSS_KEY_CHEST] = HintText::Exclude({
@@ -463,7 +463,7 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"an #army of the dead# guards", /*french*/"des #squelettes sylvestres# protègent", /*spanish*/"un #ejército de soldados caídos# guarda"},
                      }, {},
                        //clear text
-                       Text{"#Stalfos deep in the Forest Temple# guard", /*french*/"#trois squelettes dans le temple de la forêt# protègent", /*spanish*/"los #Stalfos en lo profundo del Templo del Bosque# guardan"}
+                       Text{"#Stalfos deep in the Forest Temple# guard", /*french*/"#trois squelettes dans le Temple de la Forêt# protègent", /*spanish*/"los #Stalfos en lo profundo del Templo del Bosque# guardan"}
   );
 
     hintTable[FOREST_TEMPLE_RED_POE_CHEST] = HintText::Exclude({
@@ -490,12 +490,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FOREST_TEMPLE_MQ_FIRST_ROOM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #tree in the Forest Temple# supports", /*french*/"sur l'#arbre dans le temple de la forêt# gît", /*spanish*/"sobre un #árbol del Templo del Bosque# yace"},
+                       Text{"a #tree in the Forest Temple# supports", /*french*/"sur l'#arbre dans le Temple de la Forêt# gît", /*spanish*/"sobre un #árbol del Templo del Bosque# yace"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_WOLFOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#defeating enemies beneath a falling ceiling# in Forest Temple yields", /*french*/"#deux squelettes# dans le temple de la forêt protègent", /*spanish*/"#derrotar enemigos caídos de lo alto# del Templo del Bosque revela"},
+                       Text{"#defeating enemies beneath a falling ceiling# in Forest Temple yields", /*french*/"#deux squelettes# dans le Temple de la Forêt protègent", /*spanish*/"#derrotar enemigos caídos de lo alto# del Templo del Bosque revela"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_BOW_CHEST] = HintText::Exclude({
@@ -503,17 +503,17 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"an #army of the dead# guards", /*french*/"des #squelettes sylvestres# protègent", /*spanish*/"un #ejército de soldados caídos# guarda"},
                      }, {},
                        //clear text
-                       Text{"#Stalfos deep in the Forest Temple# guard", /*french*/"#trois squelettes dans le temple de la forêt# protègent", /*spanish*/"los #Stalfos en lo profundo del Templo del Bosque# guardan"}
+                       Text{"#Stalfos deep in the Forest Temple# guard", /*french*/"#trois squelettes dans le Temple de la Forêt# protègent", /*spanish*/"los #Stalfos en lo profundo del Templo del Bosque# guardan"}
   );
 
     hintTable[FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_LOWER_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #chest on a small island# in the Forest Temple holds", /*french*/"le #coffre sur l'îlot# du temple de la forêt contient", /*spanish*/"un #cofre sobre una isla# del Templo del Bosque contiene"},
+                       Text{"a #chest on a small island# in the Forest Temple holds", /*french*/"le #coffre sur l'îlot# du Temple de la Forêt contient", /*spanish*/"un #cofre sobre una isla# del Templo del Bosque contiene"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_RAISED_ISLAND_COURTYARD_UPPER_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#high in a courtyard# within the Forest Temple is", /*french*/"#haut perché dans le jardin# du temple de la forêt gît", /*spanish*/"un #cofre en lo alto de un patio# del Templo del Bosque contiene"},
+                       Text{"#high in a courtyard# within the Forest Temple is", /*french*/"#haut perché dans le jardin# du Temple de la Forêt gît", /*spanish*/"un #cofre en lo alto de un patio# del Templo del Bosque contiene"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_WELL_CHEST] = HintText::Exclude({
@@ -549,7 +549,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FOREST_TEMPLE_MQ_REDEAD_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"deep in the forest #undead guard a chest# containing", /*french*/"des #revenants dans le temple de la forêt# protègent", /*spanish*/"en lo profundo del bosque #guardias del más allá# guardan"},
+                       Text{"deep in the forest #undead guard a chest# containing", /*french*/"des #revenants dans le Temple de la Forêt# protègent", /*spanish*/"en lo profundo del bosque #guardias del más allá# guardan"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_BOSS_KEY_CHEST] = HintText::Exclude({
@@ -567,53 +567,53 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider on a small island# in the Forest Temple holds", /*french*/"une #Skulltula sur l'îlot du temple de la forêt# a", /*spanish*/"una #Skulltula sobre una pequeña isla# del Templo del Bosque otorga"},
+                       Text{"a #spider on a small island# in the Forest Temple holds", /*french*/"une #Skulltula sur l'îlot du Temple de la Forêt# a", /*spanish*/"una #Skulltula sobre una pequeña isla# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_GS_FIRST_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider high on a wall of vines# in the Forest Temple holds", /*french*/"une #Skulltula sur un mur de vignes du temple de la forêt# a", /*spanish*/"una #Skulltula en lo alto de una pared de cepas# del Templo del Bosque otorga"},
+                       Text{"a #spider high on a wall of vines# in the Forest Temple holds", /*french*/"une #Skulltula sur un mur de vignes du Temple de la Forêt# a", /*spanish*/"una #Skulltula en lo alto de una pared de cepas# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD] = HintText::Exclude({
                        //obscure text
-                       Text{"#stone columns# lead to a spider in the Forest Temple hiding", /*french*/"une #Skulltula haut perchée dans le jardin du temple de la forêt# a", /*spanish*/"unas #columnas del Templo del Bosque# conducen a una Skulltula que otorga"},
+                       Text{"#stone columns# lead to a spider in the Forest Temple hiding", /*french*/"une #Skulltula haut perchée dans le jardin du Temple de la Forêt# a", /*spanish*/"unas #columnas del Templo del Bosque# conducen a una Skulltula que otorga"},
   });
 
     hintTable[FOREST_TEMPLE_GS_LOBBY] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider among ghosts# in the Forest Temple guards", /*french*/"une #Skulltula dans la grande salle du temple de la forêt# a", /*spanish*/"una #Skulltula rodeada de fantasmas# del Templo del Bosque otorga"},
+                       Text{"a #spider among ghosts# in the Forest Temple guards", /*french*/"une #Skulltula dans la grande salle du Temple de la Forêt# a", /*spanish*/"una #Skulltula rodeada de fantasmas# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_GS_BASEMENT] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider within revolving walls# in the Forest Temple holds", /*french*/"une #Skulltula derrière les murs pivotants du temple de la forêt# a", /*spanish*/"una #Skulltula entre paredes giratorias# del Templo del Bosque otorga"},
+                       Text{"a #spider within revolving walls# in the Forest Temple holds", /*french*/"une #Skulltula derrière les murs pivotants du Temple de la Forêt# a", /*spanish*/"una #Skulltula entre paredes giratorias# del Templo del Bosque otorga"},
   });
 
 
     hintTable[FOREST_TEMPLE_MQ_GS_FIRST_HALLWAY] = HintText::Exclude({
                        //obscure text
-                       Text{"an #ivy-hidden spider# in the Forest Temple hoards", /*french*/"une #Skulltula près de l'entrée du temple de la forêt# a", /*spanish*/"una #Skulltula escondida entre cepas# del Templo del Bosque otorga"},
+                       Text{"an #ivy-hidden spider# in the Forest Temple hoards", /*french*/"une #Skulltula près de l'entrée du Temple de la Forêt# a", /*spanish*/"una #Skulltula escondida entre cepas# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_GS_BLOCK_PUSH_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider in a hidden nook# within the Forest Temple holds", /*french*/"une #Skulltula dans un recoin caché du temple de la forêt# a", /*spanish*/"una #Skulltula en una esquina oculta# del Templo del Bosque otorga"},
+                       Text{"a #spider in a hidden nook# within the Forest Temple holds", /*french*/"une #Skulltula dans un recoin caché du Temple de la Forêt# a", /*spanish*/"una #Skulltula en una esquina oculta# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_GS_RAISED_ISLAND_COURTYARD] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider on an arch# in the Forest Temple holds", /*french*/"une #Skulltula sur une arche du temple de la forêt# a", /*spanish*/"una #Skulltula sobre un arco# del Templo del Bosque otorga"},
+                       Text{"a #spider on an arch# in the Forest Temple holds", /*french*/"une #Skulltula sur une arche du Temple de la Forêt# a", /*spanish*/"una #Skulltula sobre un arco# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_GS_LEVEL_ISLAND_COURTYARD] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider on a ledge# in the Forest Temple holds", /*french*/"une #Skulltula dans le jardin du temple de la forêt# a", /*spanish*/"una #Skulltula en un borde# del Templo del Bosque otorga"},
+                       Text{"a #spider on a ledge# in the Forest Temple holds", /*french*/"une #Skulltula dans le jardin du Temple de la Forêt# a", /*spanish*/"una #Skulltula en un borde# del Templo del Bosque otorga"},
   });
 
     hintTable[FOREST_TEMPLE_MQ_GS_WELL] = HintText::Exclude({
                        //obscure text
-                       Text{"#draining a well# in Forest Temple uncovers a spider with", /*french*/"une #Skulltula au fond du puits du temple de la forêt# a", /*spanish*/"#vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga"},
+                       Text{"#draining a well# in Forest Temple uncovers a spider with", /*french*/"une #Skulltula au fond du puits du Temple de la Forêt# a", /*spanish*/"#vaciar el pozo# del Templo del Bosque desvela una Skulltula que otorga"},
   });
 
   /*--------------------------
@@ -661,12 +661,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_BOULDER_MAZE_SHORTCUT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #blocked path# in Fire Temple holds", /*french*/"un #sol fragile dans le temple du feu# contient", /*spanish*/"en un #camino bloqueado# del Templo del Fuego yace"},
+                       Text{"a #blocked path# in Fire Temple holds", /*french*/"un #sol fragile dans le Temple du Feu# contient", /*spanish*/"en un #camino bloqueado# del Templo del Fuego yace"},
   });
 
     hintTable[FIRE_TEMPLE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #caged chest# in the Fire Temple hoards", /*french*/"un #coffre emprisonné# dans le temple du feu contient", /*spanish*/"un #cofre entre rejas# del Templo del Fuego contiene"},
+                       Text{"a #caged chest# in the Fire Temple hoards", /*french*/"un #coffre emprisonné# dans le Temple du Feu contient", /*spanish*/"un #cofre entre rejas# del Templo del Fuego contiene"},
   });
 
     hintTable[FIRE_TEMPLE_COMPASS_CHEST] = HintText::Exclude({
@@ -676,7 +676,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_HIGHEST_GORON_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Goron atop the Fire Temple# holds", /*french*/"le #Goron au sommet du temple du feu# a", /*spanish*/"un #goron en lo alto del Templo del Fuego# guarda"},
+                       Text{"a #Goron atop the Fire Temple# holds", /*french*/"le #Goron au sommet du Temple du Feu# a", /*spanish*/"un #goron en lo alto del Templo del Fuego# guarda"},
   });
 
 
@@ -695,7 +695,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_MQ_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #blocked path# in Fire Temple holds", /*french*/"le #chemin scellé# dans le temple du feu contient", /*spanish*/"en un #camino bloqueado# del Templo del Fuego yace"},
+                       Text{"a #blocked path# in Fire Temple holds", /*french*/"le #chemin scellé# dans le Temple du Feu contient", /*spanish*/"en un #camino bloqueado# del Templo del Fuego yace"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_LIZALFOS_MAZE_LOWER_CHEST] = HintText::Exclude({
@@ -710,7 +710,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_MQ_MAP_ROOM_SIDE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #falling slug# in the Fire Temple guards", /*french*/"la #limace tombante# dans le temple du feu protège", /*spanish*/"una #babosa del techo# del Templo del Fuego guarda"},
+                       Text{"a #falling slug# in the Fire Temple guards", /*french*/"la #limace tombante# dans le Temple du Feu protège", /*spanish*/"una #babosa del techo# del Templo del Fuego guarda"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_MAP_CHEST] = HintText::Exclude({
@@ -748,17 +748,17 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"#eight tiles of malice# guard a spider holding", /*french*/"une #Skulltula protégée par huit tuiles dans le temple du feu# a", /*spanish*/"#ocho baldosas de maldad# custodian una Skulltula que otorga"},
+                       Text{"#eight tiles of malice# guard a spider holding", /*french*/"une #Skulltula protégée par huit tuiles dans le Temple du Feu# a", /*spanish*/"#ocho baldosas de maldad# custodian una Skulltula que otorga"},
   });
 
     hintTable[FIRE_TEMPLE_GS_BOSS_KEY_LOOP] = HintText::Exclude({
                        //obscure text
-                       Text{"#five tiles of malice# guard a spider holding", /*french*/"une #Skulltula protégée par cinq tuiles dans le temple du feu# a", /*spanish*/"#cinco baldosas de maldad# custodian una Skulltula que otorga"},
+                       Text{"#five tiles of malice# guard a spider holding", /*french*/"une #Skulltula protégée par cinq tuiles dans le Temple du Feu# a", /*spanish*/"#cinco baldosas de maldad# custodian una Skulltula que otorga"},
   });
 
     hintTable[FIRE_TEMPLE_GS_BOULDER_MAZE] = HintText::Exclude({
                        //obscure text
-                       Text{"#explosives in a maze# unveil a spider hiding", /*french*/"une #Skulltula derrière un mur fragile du temple du feu# a", /*spanish*/"los #explosivos en un laberinto# desvelan una Skulltula que otorga"},
+                       Text{"#explosives in a maze# unveil a spider hiding", /*french*/"une #Skulltula derrière un mur fragile du Temple du Feu# a", /*spanish*/"los #explosivos en un laberinto# desvelan una Skulltula que otorga"},
   });
 
     hintTable[FIRE_TEMPLE_GS_SCARECROW_TOP] = HintText::Exclude({
@@ -766,7 +766,7 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a #spider-friendly scarecrow# atop a volcano hides", /*french*/"une #Skulltula repérée par l'épouvantail du volcan# a", /*spanish*/"un #espantapájaros en lo alto de un volcán# custodia una Skulltula que otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider-friendly scarecrow# atop the Fire Temple hides", /*french*/"une #Skulltula repérée par l'épouvantail du temple du feu# a", /*spanish*/"un #espantapájaros del Templo del Fuego# custodia una Skulltula que otorga"}
+                       Text{"a #spider-friendly scarecrow# atop the Fire Temple hides", /*french*/"une #Skulltula repérée par l'épouvantail du Temple du Feu# a", /*spanish*/"un #espantapájaros del Templo del Fuego# custodia una Skulltula que otorga"}
   );
 
     hintTable[FIRE_TEMPLE_GS_SCARECROW_CLIMB] = HintText::Exclude({
@@ -774,28 +774,28 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a #spider-friendly scarecrow# atop a volcano hides", /*french*/"une #Skulltula repérée par l'épouvantail du volcan# a", /*spanish*/"un #espantapájaros en lo alto de un volcán# custodia una Skulltula que otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider-friendly scarecrow# atop the Fire Temple hides", /*french*/"une #Skulltula repérée par l'épouvantail du temple du feu# a", /*spanish*/"un #espantapájaros del Templo del Fuego# custodia una Skulltula que otorga"}
+                       Text{"a #spider-friendly scarecrow# atop the Fire Temple hides", /*french*/"une #Skulltula repérée par l'épouvantail du Temple du Feu# a", /*spanish*/"un #espantapájaros del Templo del Fuego# custodia una Skulltula que otorga"}
   );
 
 
     hintTable[FIRE_TEMPLE_MQ_GS_ABOVE_FIRE_WALL_MAZE] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider above a fiery maze# holds", /*french*/"une #Skulltula au dessus du labyrinthe enflammé du temple du feu# a", /*spanish*/"una #Skulltula sobre un ardiente laberinto# otorga"},
+                       Text{"a #spider above a fiery maze# holds", /*french*/"une #Skulltula au dessus du labyrinthe enflammé du Temple du Feu# a", /*spanish*/"una #Skulltula sobre un ardiente laberinto# otorga"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_CENTER] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider within a fiery maze# holds", /*french*/"une #Skulltula dans le labyrinthe enflammé du temple du feu# a", /*spanish*/"una #Skulltula en el interior de un ardiente laberinto# otorga"},
+                       Text{"a #spider within a fiery maze# holds", /*french*/"une #Skulltula dans le labyrinthe enflammé du Temple du Feu# a", /*spanish*/"una #Skulltula en el interior de un ardiente laberinto# otorga"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_GS_BIG_LAVA_ROOM_OPEN_DOOR] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Goron trapped near lava# befriended a spider with", /*french*/"une #Skulltula emprisonnée près du lac de lave du temple du feu# a", /*spanish*/"una #Skulltula amiga de un Goron atrapado junto a la lava# otorga"},
+                       Text{"a #Goron trapped near lava# befriended a spider with", /*french*/"une #Skulltula emprisonnée près du lac de lave du Temple du Feu# a", /*spanish*/"una #Skulltula amiga de un Goron atrapado junto a la lava# otorga"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_GS_FIRE_WALL_MAZE_SIDE_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider beside a fiery maze# holds", /*french*/"une #Skulltula près du labyrinthe enflammé du temple du feu# a", /*spanish*/"una #Skulltula junto a un ardiente laberinto# otorga"},
+                       Text{"a #spider beside a fiery maze# holds", /*french*/"une #Skulltula près du labyrinthe enflammé du Temple du Feu# a", /*spanish*/"una #Skulltula junto a un ardiente laberinto# otorga"},
   });
 
   /*--------------------------
@@ -803,17 +803,17 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[WATER_TEMPLE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#rolling spikes# in the Water Temple surround", /*french*/"des #Spikes# dans le temple de l'eau entourent", /*spanish*/"unas #rodantes púas# del Templo del Agua guardan"},
+                       Text{"#rolling spikes# in the Water Temple surround", /*french*/"des #Spikes# dans le Temple de l'Eau entourent", /*spanish*/"unas #rodantes púas# del Templo del Agua guardan"},
   });
 
     hintTable[WATER_TEMPLE_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#roaming stingers in the Water Temple# guard", /*french*/"des #raies dans le temple de l'eau# protègent", /*spanish*/"unos #errantes stingers# del Templo del Agua guardan"},
+                       Text{"#roaming stingers in the Water Temple# guard", /*french*/"des #raies dans le Temple de l'Eau# protègent", /*spanish*/"unos #errantes stingers# del Templo del Agua guardan"},
   });
 
     hintTable[WATER_TEMPLE_TORCHES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#fire in the Water Temple# reveals", /*french*/"des #flammes dans le temple de l'eau# révèlent", /*spanish*/"el #fuego en el Templo del Agua# revela"},
+                       Text{"#fire in the Water Temple# reveals", /*french*/"des #flammes dans le Temple de l'Eau# révèlent", /*spanish*/"el #fuego en el Templo del Agua# revela"},
   });
 
     hintTable[WATER_TEMPLE_DRAGON_CHEST] = HintText::Exclude({
@@ -823,17 +823,17 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[WATER_TEMPLE_CENTRAL_BOW_TARGET_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#blinding an eye# in the Water Temple leads to", /*french*/"#l'oeil# du temple de l'eau voit", /*spanish*/"#cegar un ojo# del Templo del Agua conduce a"},
+                       Text{"#blinding an eye# in the Water Temple leads to", /*french*/"#l'oeil# du Temple de l'Eau voit", /*spanish*/"#cegar un ojo# del Templo del Agua conduce a"},
   });
 
     hintTable[WATER_TEMPLE_CENTRAL_PILLAR_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du temple de l'eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
+                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
   });
 
     hintTable[WATER_TEMPLE_CRACKED_WALL_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#through a crack# in the Water Temple is", /*french*/"le #mur fragile# du temple de l'eau cache", /*spanish*/"tras una #agrietada pared# del Templo del Agua yace"},
+                       Text{"#through a crack# in the Water Temple is", /*french*/"le #mur fragile# du Temple de l'Eau cache", /*spanish*/"tras una #agrietada pared# del Templo del Agua yace"},
   });
 
     hintTable[WATER_TEMPLE_LONGSHOT_CHEST] = HintText::Exclude({
@@ -848,27 +848,27 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du temple de l'eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
+                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
   });
 
     hintTable[WATER_TEMPLE_MQ_BOSS_KEY_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"fire in the Water Temple unlocks a #vast gate# revealing a chest with", /*french*/"des #flammes au cœur du temple de l'eau# révèlent", /*spanish*/"el fuego en el Templo del Agua alza una #gran valla# con"},
+                       Text{"fire in the Water Temple unlocks a #vast gate# revealing a chest with", /*french*/"des #flammes au cœur du Temple de l'Eau# révèlent", /*spanish*/"el fuego en el Templo del Agua alza una #gran valla# con"},
   });
 
     hintTable[WATER_TEMPLE_MQ_LONGSHOT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#through a crack# in the Water Temple is", /*french*/"le #mur fragile# du temple de l'eau cache", /*spanish*/"tras una #agrietada pared# del Templo del Agua yace"},
+                       Text{"#through a crack# in the Water Temple is", /*french*/"le #mur fragile# du Temple de l'Eau cache", /*spanish*/"tras una #agrietada pared# del Templo del Agua yace"},
   });
 
     hintTable[WATER_TEMPLE_MQ_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#fire in the Water Temple# reveals", /*french*/"des #flammes dans le temple de l'eau# révèlent", /*spanish*/"el #fuego en el Templo del Agua# revela"},
+                       Text{"#fire in the Water Temple# reveals", /*french*/"des #flammes dans le Temple de l'Eau# révèlent", /*spanish*/"el #fuego en el Templo del Agua# revela"},
   });
 
     hintTable[WATER_TEMPLE_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#sparring soldiers# in the Water Temple guard", /*french*/"les #soldats du temple de l'eau# protègent", /*spanish*/"#acabar con unos soldados# del Templo del Agua revela"},
+                       Text{"#sparring soldiers# in the Water Temple guard", /*french*/"les #soldats du Temple de l'Eau# protègent", /*spanish*/"#acabar con unos soldados# del Templo del Agua revela"},
   });
 
     hintTable[WATER_TEMPLE_MORPHA_HEART] = HintText::Exclude({
@@ -881,12 +881,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider over a waterfall# in the Water Temple holds", /*french*/"une #Skulltula au dessus d'une cascade du temple de l'eau# a", /*spanish*/"una #Skulltula tras una cascada# del Templo del Agua otorga"},
+                       Text{"a #spider over a waterfall# in the Water Temple holds", /*french*/"une #Skulltula au dessus d'une cascade du Temple de l'Eau# a", /*spanish*/"una #Skulltula tras una cascada# del Templo del Agua otorga"},
   });
 
     hintTable[WATER_TEMPLE_GS_CENTRAL_PILLAR] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider in the center of the Water Temple# holds", /*french*/"une #Skulltula au centre du temple de l'eau# a", /*spanish*/"una #Skulltula en el centro del Templo del Agua# otorga"},
+                       Text{"a #spider in the center of the Water Temple# holds", /*french*/"une #Skulltula au centre du Temple de l'Eau# a", /*spanish*/"una #Skulltula en el centro del Templo del Agua# otorga"},
   });
 
     hintTable[WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST] = HintText::Exclude({
@@ -894,28 +894,28 @@ void HintTable_Init_Exclude_Dungeon() {
                        Text{"a spider protected by #rolling boulders under the lake# hides", /*french*/"une #Skulltula derrière les rochers roulants sous le lac# a", /*spanish*/"una #Skulltula protegida por rocas rodantes# bajo el lago otorga"},
                      }, {},
                        //clear text
-                       Text{"a spider protected by #rolling boulders in the Water Temple# hides", /*french*/"une #Skulltula derrière les rochers roulants du temple de l'eau# a", /*spanish*/"una #Skulltula protegida por rocas rodantes# del Templo del Agua otorga"}
+                       Text{"a spider protected by #rolling boulders in the Water Temple# hides", /*french*/"une #Skulltula derrière les rochers roulants du Temple de l'Eau# a", /*spanish*/"una #Skulltula protegida por rocas rodantes# del Templo del Agua otorga"}
   );
 
     hintTable[WATER_TEMPLE_GS_RIVER] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider over a river# in the Water Temple holds", /*french*/"une #Skulltula au dessus de la rivière du temple de l'eau# a", /*spanish*/"una #Skulltula sobre un río# del Templo del Agua otorga"},
+                       Text{"a #spider over a river# in the Water Temple holds", /*french*/"une #Skulltula au dessus de la rivière du Temple de l'Eau# a", /*spanish*/"una #Skulltula sobre un río# del Templo del Agua otorga"},
   });
 
 
     hintTable[WATER_TEMPLE_MQ_GS_BEFORE_UPPER_WATER_SWITCH] = HintText::Exclude({
                        //obscure text
-                       Text{"#beyond a pit of lizards# is a spider holding", /*french*/"une #Skulltula près des lézards du temple de l'eau# a", /*spanish*/"#más allá de un pozo de reptiles# una Skulltula otorga"},
+                       Text{"#beyond a pit of lizards# is a spider holding", /*french*/"une #Skulltula près des lézards du Temple de l'Eau# a", /*spanish*/"#más allá de un pozo de reptiles# una Skulltula otorga"},
   });
 
     hintTable[WATER_TEMPLE_MQ_GS_LIZALFOS_HALLWAY] = HintText::Exclude({
                        //obscure text
-                       Text{"#lizards guard a spider# in the Water Temple with", /*french*/"une #Skulltula dans les couloirs croisés du temple de l'eau# a", /*spanish*/"unos #reptiles custodian una Skulltula# del Templo del Agua que otorga"},
+                       Text{"#lizards guard a spider# in the Water Temple with", /*french*/"une #Skulltula dans les couloirs croisés du Temple de l'Eau# a", /*spanish*/"unos #reptiles custodian una Skulltula# del Templo del Agua que otorga"},
   });
 
     hintTable[WATER_TEMPLE_MQ_GS_RIVER] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider over a river# in the Water Temple holds", /*french*/"une #Skulltula au dessus de la rivière du temple de l'eau# a", /*spanish*/"una #Skulltula sobre un río# del Templo del Agua otorga"},
+                       Text{"a #spider over a river# in the Water Temple holds", /*french*/"une #Skulltula au dessus de la rivière du Temple de l'Eau# a", /*spanish*/"una #Skulltula sobre un río# del Templo del Agua otorga"},
   });
 
   /*--------------------------
@@ -1156,35 +1156,35 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[SHADOW_TEMPLE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth# pierces a hall of faces to reveal", /*french*/"l'#oeil de vérité# voit dans les couloirs du temple de l'ombre", /*spanish*/"el #Ojo de la Verdad# descubrirá un pasillo de facetas con"},
+                       Text{"the #Eye of Truth# pierces a hall of faces to reveal", /*french*/"l'#oeil de vérité# voit dans les couloirs du Temple de l'Ombre", /*spanish*/"el #Ojo de la Verdad# descubrirá un pasillo de facetas con"},
   });
 
     hintTable[SHADOW_TEMPLE_HOVER_BOOTS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #nether dweller in the Shadow Temple# holds", /*french*/"le #spectre du temple de l'ombre# a", /*spanish*/"un #temido morador del Templo de las Sombras# guarda"},
+                       Text{"a #nether dweller in the Shadow Temple# holds", /*french*/"le #spectre du Temple de l'Ombre# a", /*spanish*/"un #temido morador del Templo de las Sombras# guarda"},
                      }, {},
                        //clear text
-                       Text{"#Dead Hand in the Shadow Temple# holds", /*french*/"le #Poigneur dans le temple de l'ombre# cache", /*spanish*/"la #Mano Muerta del Templo de las Sombras# guarda"}
+                       Text{"#Dead Hand in the Shadow Temple# holds", /*french*/"le #Poigneur dans le Temple de l'Ombre# cache", /*spanish*/"la #Mano Muerta del Templo de las Sombras# guarda"}
   );
 
     hintTable[SHADOW_TEMPLE_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#mummies revealed by the Eye of Truth# guard", /*french*/"les #Gibdos dans les couloirs# du temple de l'ombre protègent", /*spanish*/"las #momias reveladas por el Ojo de la Verdad# guardan"},
+                       Text{"#mummies revealed by the Eye of Truth# guard", /*french*/"les #Gibdos dans les couloirs# du Temple de l'Ombre protègent", /*spanish*/"las #momias reveladas por el Ojo de la Verdad# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_EARLY_SILVER_RUPEE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#spinning scythes# protect", /*french*/"les #faucheurs danseurs# du temple de l'ombre protègent", /*spanish*/"las #giratorias guadañas# protegen"},
+                       Text{"#spinning scythes# protect", /*french*/"les #faucheurs danseurs# du Temple de l'Ombre protègent", /*spanish*/"las #giratorias guadañas# protegen"},
   });
 
     hintTable[SHADOW_TEMPLE_INVISIBLE_BLADES_VISIBLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du temple de l'ombre protègent", /*spanish*/"las #hojas invisibles# guardan"},
+                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du Temple de l'Ombre protègent", /*spanish*/"las #hojas invisibles# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_INVISIBLE_BLADES_INVISIBLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du temple de l'ombre protègent", /*spanish*/"las #hojas invisibles# guardan"},
+                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du Temple de l'Ombre protègent", /*spanish*/"las #hojas invisibles# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_FALLING_SPIKES_LOWER_CHEST] = HintText::Exclude({
@@ -1204,12 +1204,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SHADOW_TEMPLE_INVISIBLE_SPIKES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #dead roam among invisible spikes# guarding", /*french*/"#parmi les clous invisibles# du temple de l'ombre se cache", /*spanish*/"los #muertos que vagan por pinchos invisibles# protegen"},
+                       Text{"the #dead roam among invisible spikes# guarding", /*french*/"#parmi les clous invisibles# du Temple de l'Ombre se cache", /*spanish*/"los #muertos que vagan por pinchos invisibles# protegen"},
   });
 
     hintTable[SHADOW_TEMPLE_WIND_HINT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"an #invisible chest guarded by the dead# holds", /*french*/"le #trésor invisible du cul-de-sac# du temple de l'ombre contient", /*spanish*/"un #cofre invisible custodiado por los del más allá# contiene"},
+                       Text{"an #invisible chest guarded by the dead# holds", /*french*/"le #trésor invisible du cul-de-sac# du Temple de l'Ombre contient", /*spanish*/"un #cofre invisible custodiado por los del más allá# contiene"},
   });
 
     hintTable[SHADOW_TEMPLE_AFTER_WIND_ENEMY_CHEST] = HintText::Exclude({
@@ -1224,12 +1224,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SHADOW_TEMPLE_SPIKE_WALLS_LEFT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du temple de l'ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
+                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du Temple de l'Ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
   });
 
     hintTable[SHADOW_TEMPLE_BOSS_KEY_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du temple de l'ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
+                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du Temple de l'Ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
   });
 
     hintTable[SHADOW_TEMPLE_FREESTANDING_KEY] = HintText::Exclude({
@@ -1240,27 +1240,27 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SHADOW_TEMPLE_MQ_COMPASS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Eye of Truth# pierces a hall of faces to reveal", /*french*/"l'#oeil de vérité# voit dans les couloirs du temple de l'ombre", /*spanish*/"el #Ojo de la Verdad# descubre un pasillo de facetas con"},
+                       Text{"the #Eye of Truth# pierces a hall of faces to reveal", /*french*/"l'#oeil de vérité# voit dans les couloirs du Temple de l'Ombre", /*spanish*/"el #Ojo de la Verdad# descubre un pasillo de facetas con"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_HOVER_BOOTS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#Dead Hand in the Shadow Temple# holds", /*french*/"le #Poigneur dans le temple de l'ombre# cache", /*spanish*/"la #Mano Muerta del Templo de las Sombras# guarda"},
+                       Text{"#Dead Hand in the Shadow Temple# holds", /*french*/"le #Poigneur dans le Temple de l'Ombre# cache", /*spanish*/"la #Mano Muerta del Templo de las Sombras# guarda"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_EARLY_GIBDOS_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#mummies revealed by the Eye of Truth# guard", /*french*/"les #Gibdos dans les couloirs# du temple de l'ombre protègent", /*spanish*/"las #momias reveladas por el Ojo de la Verdad# guardan"},
+                       Text{"#mummies revealed by the Eye of Truth# guard", /*french*/"les #Gibdos dans les couloirs# du Temple de l'Ombre protègent", /*spanish*/"las #momias reveladas por el Ojo de la Verdad# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#spinning scythes# protect", /*french*/"les #faucheurs danseurs# du temple de l'ombre protègent", /*spanish*/"las #giratorias guadañas# protegen"},
+                       Text{"#spinning scythes# protect", /*french*/"les #faucheurs danseurs# du Temple de l'Ombre protègent", /*spanish*/"las #giratorias guadañas# protegen"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_BEAMOS_SILVER_RUPEES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#collecting rupees in a vast cavern# with the Shadow Temple unveils", /*french*/"les #pièces argentées dans le temple de l'ombre# révèlent", /*spanish*/"hacerte con las #rupias en una gran caverna# del Templo de las Sombras revela"},
+                       Text{"#collecting rupees in a vast cavern# with the Shadow Temple unveils", /*french*/"les #pièces argentées dans le Temple de l'Ombre# révèlent", /*spanish*/"hacerte con las #rupias en una gran caverna# del Templo de las Sombras revela"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_FALLING_SPIKES_SWITCH_CHEST] = HintText::Exclude({
@@ -1280,37 +1280,37 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SHADOW_TEMPLE_MQ_INVISIBLE_SPIKES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #dead roam among invisible spikes# guarding", /*french*/"#parmi les clous invisibles# du temple de l'ombre se cache", /*spanish*/"los #muertos que vagan por pinchos invisibles# protegen"},
+                       Text{"the #dead roam among invisible spikes# guarding", /*french*/"#parmi les clous invisibles# du Temple de l'Ombre se cache", /*spanish*/"los #muertos que vagan por pinchos invisibles# protegen"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_BOSS_KEY_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du temple de l'ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
+                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du Temple de l'Ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_SPIKE_WALLS_LEFT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du temple de l'ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
+                       Text{"#walls consumed by a ball of fire# reveal", /*french*/"le #piège de bois# du Temple de l'Ombre cache", /*spanish*/"las #paredes consumidas por una esfera ígnea# revelan"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_STALFOS_ROOM_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"near an #empty pedestal# within the Shadow Temple lies", /*french*/"#près d'un pédestal vide du temple de l'ombre# gît", /*spanish*/"cerca de un #vacío pedestal# del Templo de las Sombras yace"},
+                       Text{"near an #empty pedestal# within the Shadow Temple lies", /*french*/"#près d'un pédestal vide du Temple de l'Ombre# gît", /*spanish*/"cerca de un #vacío pedestal# del Templo de las Sombras yace"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_INVISIBLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du temple de l'ombre protègent", /*spanish*/"unas #hojas invisibles# guardan"},
+                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du Temple de l'Ombre protègent", /*spanish*/"unas #hojas invisibles# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_INVISIBLE_BLADES_VISIBLE_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du temple de l'ombre protègent", /*spanish*/"unas #hojas invisibles# guardan"},
+                       Text{"#invisible blades# guard", /*french*/"les #faucheurs invisibles# du Temple de l'Ombre protègent", /*spanish*/"unas #hojas invisibles# guardan"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_WIND_HINT_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"an #invisible chest guarded by the dead# holds", /*french*/"le #trésor invisible du cul-de-sac# du temple de l'ombre contient", /*spanish*/"un #cofre invisible custodiado por los del más allá# contiene"},
+                       Text{"an #invisible chest guarded by the dead# holds", /*french*/"le #trésor invisible du cul-de-sac# du Temple de l'Ombre contient", /*spanish*/"un #cofre invisible custodiado por los del más allá# contiene"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_AFTER_WIND_HIDDEN_CHEST] = HintText::Exclude({
@@ -1343,53 +1343,53 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[SHADOW_TEMPLE_GS_SINGLE_GIANT_POT] = HintText::Exclude({
                        //obscure text
-                       Text{"#beyond a burning skull# lies a spider with", /*french*/"une #Skulltula derrière un crâne enflammé du temple de l'ombre# a", /*spanish*/"#tras una ardiente calavera# yace una Skulltula que otorga"},
+                       Text{"#beyond a burning skull# lies a spider with", /*french*/"une #Skulltula derrière un crâne enflammé du Temple de l'Ombre# a", /*spanish*/"#tras una ardiente calavera# yace una Skulltula que otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider beyond falling spikes# holds", /*french*/"une #Skulltula au delà de la pluie de clous du temple de l'ombre# a", /*spanish*/"una #Skulltula tras los pinchos del techo# otorga"},
+                       Text{"a #spider beyond falling spikes# holds", /*french*/"une #Skulltula au delà de la pluie de clous du Temple de l'Ombre# a", /*spanish*/"una #Skulltula tras los pinchos del techo# otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT] = HintText::Exclude({
                        //obscure text
-                       Text{"#beyond three burning skulls# lies a spider with", /*french*/"une #Skulltula derrière trois crânes enflammés du temple de l'ombre# a", /*spanish*/"#tras tres ardientes calaveras# yace una Skulltula que otorga"},
+                       Text{"#beyond three burning skulls# lies a spider with", /*french*/"une #Skulltula derrière trois crânes enflammés du Temple de l'Ombre# a", /*spanish*/"#tras tres ardientes calaveras# yace una Skulltula que otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a spider guarded by #invisible blades# holds", /*french*/"une #Skulltula protégée par les faucheurs invisibles du temple de l'ombre# a", /*spanish*/"una #Skulltula custodiada por hojas invisibles# otorga"},
+                       Text{"a spider guarded by #invisible blades# holds", /*french*/"une #Skulltula protégée par les faucheurs invisibles du Temple de l'Ombre# a", /*spanish*/"una #Skulltula custodiada por hojas invisibles# otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_GS_NEAR_SHIP] = HintText::Exclude({
                        //obscure text
-                       Text{"a spider near a #docked ship# hoards", /*french*/"une #Skulltula près du traversier du temple de l'ombre# a", /*spanish*/"una #Skulltula cercana a un navío# otorga"},
+                       Text{"a spider near a #docked ship# hoards", /*french*/"une #Skulltula près du traversier du Temple de l'Ombre# a", /*spanish*/"una #Skulltula cercana a un navío# otorga"},
   });
 
 
     hintTable[SHADOW_TEMPLE_MQ_GS_FALLING_SPIKES_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider beyond falling spikes# holds", /*french*/"une #Skulltula au delà de la pluie de clous du temple de l'ombre# a", /*spanish*/"una #Skulltula tras los pinchos del techo# otorga"},
+                       Text{"a #spider beyond falling spikes# holds", /*french*/"une #Skulltula au delà de la pluie de clous du Temple de l'Ombre# a", /*spanish*/"una #Skulltula tras los pinchos del techo# otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_GS_WIND_HINT_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider amidst roaring winds# in the Shadow Temple holds", /*french*/"une #Skulltula près des vents du temple de l'ombre# a", /*spanish*/"una #Skulltula entre ventarrones# del Templo de las Sombras otorga"},
+                       Text{"a #spider amidst roaring winds# in the Shadow Temple holds", /*french*/"une #Skulltula près des vents du Temple de l'Ombre# a", /*spanish*/"una #Skulltula entre ventarrones# del Templo de las Sombras otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_GS_AFTER_WIND] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider beneath gruesome debris# in the Shadow Temple hides", /*french*/"une #Skulltula sous des débris du temple de l'ombre# a", /*spanish*/"una #Skulltula bajo unos horripilantes escombros# del Templo de las Sombras otorga"},
+                       Text{"a #spider beneath gruesome debris# in the Shadow Temple hides", /*french*/"une #Skulltula sous des débris du Temple de l'Ombre# a", /*spanish*/"una #Skulltula bajo unos horripilantes escombros# del Templo de las Sombras otorga"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_GS_AFTER_SHIP] = HintText::Exclude({
                        //obscure text
-                       Text{"a #fallen statue# reveals a spider with", /*french*/"une #Skulltula près de la statue écroulée du temple de l'ombre# a", /*spanish*/"una #estatua caída# revelará una Skulltula que otorgue"},
+                       Text{"a #fallen statue# reveals a spider with", /*french*/"une #Skulltula près de la statue écroulée du Temple de l'Ombre# a", /*spanish*/"una #estatua caída# revelará una Skulltula que otorgue"},
   });
 
     hintTable[SHADOW_TEMPLE_MQ_GS_NEAR_BOSS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #suspended spider# guards", /*french*/"une #Skulltula près du repère du temple de l'ombre# a", /*spanish*/"una #Skulltula flotante# del Templo de las Sombras otorga"},
+                       Text{"a #suspended spider# guards", /*french*/"une #Skulltula près du repère du Temple de l'Ombre# a", /*spanish*/"una #Skulltula flotante# del Templo de las Sombras otorga"},
   });
 
   /*--------------------------

@@ -121,7 +121,7 @@ void HintTable_Init_Item() {
                      }, {
                        //ambiguous text
                        Text{"some boots", /*french*/"une paire de bottes", /*spanish*/"un par de botas"},
-                       Text{"a feature of the Water Temple", /*french*/"une particularité du temple de l'eau", /*spanish*/"algo particular del Templo del Agua"},
+                       Text{"a feature of the Water Temple", /*french*/"une particularité du Temple de l'Eau", /*spanish*/"algo particular del Templo del Agua"},
                        Text{"something heavy", /*french*/"une chose pesante", /*spanish*/"algo de lo más pesado"},
                      },
                        //clear text
@@ -969,7 +969,7 @@ void HintTable_Init_Item() {
                         Text{"a dungeon map", /*french*/"une carte", /*spanish*/"un mapa"},
                       },
                         //clear text
-                        Text{"the Deku Tree Map", /*french*/"la carte de l'arbre Mojo", /*spanish*/"el mapa del Gran Árbol Deku"}
+                        Text{"the Deku Tree Map", /*french*/"la carte de l'Arbre Mojo", /*spanish*/"el mapa del Gran Árbol Deku"}
      );
     hintTable[DODONGOS_CAVERN_MAP] = HintText::Item({
                         //obscure text
@@ -1002,7 +1002,7 @@ void HintTable_Init_Item() {
                         Text{"a dungeon map", /*french*/"une carte", /*spanish*/"un mapa"},
                       },
                         //clear text
-                        Text{"the Forest Temple Map", /*french*/"la carte du temple de la forêt", /*spanish*/"el mapa del Templo del Bosque"}
+                        Text{"the Forest Temple Map", /*french*/"la carte du Temple de la Forêt", /*spanish*/"el mapa del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_MAP] = HintText::Item({
                         //obscure text
@@ -1013,7 +1013,7 @@ void HintTable_Init_Item() {
                         Text{"a dungeon map", /*french*/"une carte", /*spanish*/"un mapa"},
                       },
                         //clear text
-                        Text{"the Fire Temple Map", /*french*/"la carte du temple du feu", /*spanish*/"el mapa del Templo del Fuego"}
+                        Text{"the Fire Temple Map", /*french*/"la carte du Temple du Feu", /*spanish*/"el mapa del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_MAP] = HintText::Item({
                         //obscure text
@@ -1024,7 +1024,7 @@ void HintTable_Init_Item() {
                         Text{"a dungeon map", /*french*/"une carte", /*spanish*/"un mapa"},
                       },
                         //clear text
-                        Text{"the Water Temple Map", /*french*/"la carte du temple de l'eau", /*spanish*/"el mapa del Templo del Agua"}
+                        Text{"the Water Temple Map", /*french*/"la carte du Temple de l'Eau", /*spanish*/"el mapa del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_MAP] = HintText::Item({
                         //obscure text
@@ -1046,7 +1046,7 @@ void HintTable_Init_Item() {
                         Text{"a dungeon map", /*french*/"une carte", /*spanish*/"un mapa"},
                       },
                         //clear text
-                        Text{"the Shadow Temple Map", /*french*/"la carte du temple de l'ombre", /*spanish*/"el mapa del Templo de las Sombras"}
+                        Text{"the Shadow Temple Map", /*french*/"la carte du Temple de l'Ombre", /*spanish*/"el mapa del Templo de las Sombras"}
      );
     hintTable[BOTTOM_OF_THE_WELL_MAP] = HintText::Item({
                         //obscure text
@@ -1079,7 +1079,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Deku Tree Compass", /*french*/"la boussole de l'arbre Mojo", /*spanish*/"la brújula del Gran Árbol Deku"}
+                        Text{"the Deku Tree Compass", /*french*/"la boussole de l'Arbre Mojo", /*spanish*/"la brújula del Gran Árbol Deku"}
      );
     hintTable[DODONGOS_CAVERN_COMPASS] = HintText::Item({
                         //obscure text
@@ -1112,7 +1112,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Forest Temple Compass", /*french*/"la boussole du temple de la forêt", /*spanish*/"la brújula del Templo del Bosque"}
+                        Text{"the Forest Temple Compass", /*french*/"la boussole du Temple de la Forêt", /*spanish*/"la brújula del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_COMPASS] = HintText::Item({
                         //obscure text
@@ -1123,7 +1123,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Fire Temple Compass", /*french*/"la boussole du temple du feu", /*spanish*/"la brújula del Templo del Fuego"}
+                        Text{"the Fire Temple Compass", /*french*/"la boussole du Temple du Feu", /*spanish*/"la brújula del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_COMPASS] = HintText::Item({
                         //obscure text
@@ -1134,7 +1134,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Water Temple Compass", /*french*/"la boussole du temple de l'eau", /*spanish*/"la brújula del Templo del Agua"}
+                        Text{"the Water Temple Compass", /*french*/"la boussole du Temple de l'Eau", /*spanish*/"la brújula del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_COMPASS] = HintText::Item({
                         //obscure text
@@ -1156,7 +1156,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Shadow Temple Compass", /*french*/"la boussole du temple de l'ombre", /*spanish*/"la brújula del Templo de las Sombras"}
+                        Text{"the Shadow Temple Compass", /*french*/"la boussole du Temple de l'Ombre", /*spanish*/"la brújula del Templo de las Sombras"}
      );
     hintTable[BOTTOM_OF_THE_WELL_COMPASS] = HintText::Item({
                         //obscure text
@@ -1178,7 +1178,7 @@ void HintTable_Init_Item() {
                         Text{"a compass", /*french*/"une boussole", /*spanish*/"una brújula"},
                       },
                         //clear text
-                        Text{"the Ice Cavern Compass", /*french*/"la boussole de la caverne polaire", /*spanish*/"la brújula de la Caverna de hielo"}
+                        Text{"the Ice Cavern Compass", /*french*/"la Boussole de la Caverne Polaire", /*spanish*/"la brújula de la Caverna de hielo"}
      );
     hintTable[FOREST_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1189,7 +1189,7 @@ void HintTable_Init_Item() {
                         Text{"a boss key", /*french*/"une clé d'or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Forest Temple Boss Key", /*french*/"la clé d'or du temple de la forêt", /*spanish*/"la gran llave del Templo del Bosque"}
+                        Text{"the Forest Temple Boss Key", /*french*/"la clé d'or du Temple de la Forêt", /*spanish*/"la gran llave del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1200,7 +1200,7 @@ void HintTable_Init_Item() {
                         Text{"a boss key", /*french*/"une clé d'or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Fire Temple Boss Key", /*french*/"la clé d'or du temple du feu", /*spanish*/"la gran llave del Templo del Fuego"}
+                        Text{"the Fire Temple Boss Key", /*french*/"la clé d'or du Temple du Feu", /*spanish*/"la gran llave del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1211,7 +1211,7 @@ void HintTable_Init_Item() {
                         Text{"a boss key", /*french*/"une clé d'or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Water Temple Boss Key", /*french*/"la clé d'or du temple de l'eau", /*spanish*/"la gran llave del Templo del Agua"}
+                        Text{"the Water Temple Boss Key", /*french*/"la clé d'or du Temple de l'Eau", /*spanish*/"la gran llave del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1233,7 +1233,7 @@ void HintTable_Init_Item() {
                         Text{"a boss key", /*french*/"une clé d'or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Shadow Temple Boss Key", /*french*/"la clé d'or du temple de l'ombre", /*spanish*/"la gran llave del Templo de las Sombras"}
+                        Text{"the Shadow Temple Boss Key", /*french*/"la clé d'or du Temple de l'Ombre", /*spanish*/"la gran llave del Templo de las Sombras"}
      );
     hintTable[GANONS_CASTLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1257,7 +1257,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Forest Temple Small Key", /*french*/"une petite clé du temple de la forêt", /*spanish*/"una llave pequeña del Templo del Bosque"}
+                        Text{"a Forest Temple Small Key", /*french*/"une petite clé du Temple de la Forêt", /*spanish*/"una llave pequeña del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1270,7 +1270,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Fire Temple Small Key", /*french*/"une petite clé du temple du feu", /*spanish*/"una llave pequeña del Templo del Fuego"}
+                        Text{"a Fire Temple Small Key", /*french*/"une petite clé du Temple du Feu", /*spanish*/"una llave pequeña del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1283,7 +1283,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Water Temple Small Key", /*french*/"une petite clé du temple de l'eau", /*spanish*/"una llave pequeña del Templo del Agua"}
+                        Text{"a Water Temple Small Key", /*french*/"une petite clé du Temple de l'Eau", /*spanish*/"una llave pequeña del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1309,7 +1309,7 @@ void HintTable_Init_Item() {
                         Text{"a small key", /*french*/"une petite clé", /*spanish*/"una llave pequeña"},
                       },
                         //clear text
-                        Text{"a Shadow Temple Small Key", /*french*/"une petite clé du temple de l'ombre", /*spanish*/"una llave pequeña del Templo de las Sombras"}
+                        Text{"a Shadow Temple Small Key", /*french*/"une petite clé du Temple de l'Ombre", /*spanish*/"una llave pequeña del Templo de las Sombras"}
      );
     hintTable[GERUDO_TRAINING_GROUNDS_SMALL_KEY] = HintText::Item({
                         //obscure text
@@ -1374,7 +1374,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Forest Temple Key Ring", /*french*/"un trousseau de clés du temple de la forêt", /*spanish*/"un llavero del Templo del Bosque"}
+                        Text{"a Forest Temple Key Ring", /*french*/"un trousseau de clés du Temple de la Forêt", /*spanish*/"un llavero del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1387,7 +1387,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Fire Temple Key Ring", /*french*/"un trousseau de clés du temple du feu", /*spanish*/"un llavero del Templo del Fuego"}
+                        Text{"a Fire Temple Key Ring", /*french*/"un trousseau de clés du Temple du Feu", /*spanish*/"un llavero del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1400,7 +1400,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Water Temple Key Ring", /*french*/"un trousseau de clés du temple de l'eau", /*spanish*/"un llavero del Templo del Agua"}
+                        Text{"a Water Temple Key Ring", /*french*/"un trousseau de clés du Temple de l'Eau", /*spanish*/"un llavero del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1426,7 +1426,7 @@ void HintTable_Init_Item() {
                         Text{"a key ring", /*french*/"un trousseau de clés", /*spanish*/"un llavero"},
                       },
                         //clear text
-                        Text{"a Shadow Temple Key Ring", /*french*/"un trousseau de clés du temple de l'ombre", /*spanish*/"un llavero del Templo de las Sombras"}
+                        Text{"a Shadow Temple Key Ring", /*french*/"un trousseau de clés du Temple de l'Ombre", /*spanish*/"un llavero del Templo de las Sombras"}
      );
     hintTable[GERUDO_TRAINING_GROUNDS_KEY_RING] = HintText::Item({
                         //obscure text
@@ -1501,7 +1501,7 @@ void HintTable_Init_Item() {
                        Text{"a gift before death", /*french*/"le dernier souffle d'un arbre", /*spanish*/"un obsequio testamentario"},
                      }, {
                        //ambiguous text
-                       Text{"a spiritual stone", /*french*/"une pierre spirituelle", /*spanish*/"una piedra espiritual"},
+                       Text{"a spiritual stone", /*french*/"une Pierre Ancestrale", /*spanish*/"una piedra espiritual"},
                      },
                        //clear text
                        Text{"the Kokiri Emerald", /*french*/"l'émeraude Kokiri", /*spanish*/"la Esmeralda de los Kokiri"}
@@ -1513,7 +1513,7 @@ void HintTable_Init_Item() {
                        Text{"sworn brotherhood", /*french*/"un serment de fraternité", /*spanish*/"el juramento de hermanos de sangre"},
                      }, {
                        //ambiguous text
-                       Text{"a spiritual stone", /*french*/"une pierre spirituelle", /*spanish*/"una piedra espiritual"},
+                       Text{"a spiritual stone", /*french*/"une Pierre Ancestrale", /*spanish*/"una piedra espiritual"},
                      },
                        //clear text
                        Text{"the Goron Ruby", /*french*/"le rubis Goron", /*spanish*/"el Rubí de los Goron"}
@@ -1525,7 +1525,7 @@ void HintTable_Init_Item() {
                        Text{"an engagement gift", /*french*/"un cadeau de mariage", /*spanish*/"un regalo de compromiso"},
                      }, {
                        //ambiguous text
-                       Text{"a spiritual stone", /*french*/"une pierre spirituelle", /*spanish*/"una piedra espiritual"},
+                       Text{"a spiritual stone", /*french*/"une Pierre Ancestrale", /*spanish*/"una piedra espiritual"},
                      },
                        //clear text
                        Text{"the Zora Sapphire", /*french*/"le saphir Zora", /*spanish*/"el Zafiro de los Zora"}
@@ -1715,7 +1715,7 @@ void HintTable_Init_Item() {
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
                        Text{"a magic arrow", /*french*/"une flèche magique", /*spanish*/"una flecha mágica"},
                        Text{"a medallion", /*french*/"un médaillon", /*spanish*/"un medallón"},
-                       Text{"a spiritual stone", /*french*/"une pierre spirituelle", /*spanish*/"una piedra espiritual"},
+                       Text{"a spiritual stone", /*french*/"une Pierre Ancestrale", /*spanish*/"una piedra espiritual"},
                        Text{"something that can stun", /*french*/"une chose qui peut paralyser", /*spanish*/"algo que pueda paralizar"},
                      },
                        //clear text
