@@ -492,7 +492,7 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
     s32 temp = 0;
 
     // Automatically skip certain cutscenes when in rando
-    // cmd->base == 3: Zelda escaping with impa cutscene
+    // cmd->base == 33: Zelda escaping with impa cutscene
     bool randoCsSkip = (gSaveContext.n64ddFlag && cmd->base == 33);
     bool debugCsSkip = (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0));
