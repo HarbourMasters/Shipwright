@@ -51,8 +51,6 @@ Randomizer::Randomizer() {
 
     Sprite ootOcarinaSprite = { gOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
-
-    this->gettingBottledItem = false;
 }
 
 Sprite* Randomizer::GetSeedTexture(uint8_t index) {
@@ -1963,38 +1961,7 @@ GetItemID Randomizer::GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNu
     return GetItemFromGet(this->itemLocations[GetCheckFromActor(sceneNum, actorId, actorParams)], ogItemId);
 }
 
-#pragma optimize("", off)
-bool Randomizer::GettingItemInBottle() {
-    if (this->gettingBottledItem) {
-        this->gettingBottledItem = false;
-        return true;
-    }
-    return false;
-}
-#pragma optimize("", on)
-
 GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId) {
-    // RANDOTODO find a more robust way to handle resetting this,
-    // if a player walks by a chest with a bottled item in it, then
-    // leaves and goes to a shop that sells items that go in bottles,
-    // they can get a free bottle because the flag has not been reset.
-    // this is only an issue with bottled items that are given via Item_Give
-    switch (randoGet) {
-        case RG_BOTTLE_WITH_RED_POTION:
-        case RG_BOTTLE_WITH_GREEN_POTION:
-        case RG_BOTTLE_WITH_BLUE_POTION:
-        case RG_BOTTLE_WITH_FAIRY:
-        case RG_BOTTLE_WITH_FISH:
-        case RG_BOTTLE_WITH_BLUE_FIRE:
-        case RG_BOTTLE_WITH_BUGS:
-        case RG_BOTTLE_WITH_POE:
-        case RG_BOTTLE_WITH_BIG_POE:
-            this->gettingBottledItem = true;
-            break;
-        default:
-            this->gettingBottledItem = false;
-    }
-
     switch (randoGet) {
         case RG_NONE:
             return ogItemId;
@@ -2210,25 +2177,25 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
         case RG_BOTTLE_WITH_MILK:
             return GI_MILK_BOTTLE;
         case RG_BOTTLE_WITH_RED_POTION:
-            return GI_POTION_RED;
+            return GI_BOTTLE_WITH_RED_POTION;
         case RG_BOTTLE_WITH_GREEN_POTION:
-            return GI_POTION_GREEN;
+            return GI_BOTTLE_WITH_GREEN_POTION;
         case RG_BOTTLE_WITH_BLUE_POTION:
-            return GI_POTION_BLUE;
+            return GI_BOTTLE_WITH_BLUE_POTION;
         case RG_BOTTLE_WITH_FAIRY:
-            return GI_FAIRY;
+            return GI_BOTTLE_WITH_FAIRY;
         case RG_BOTTLE_WITH_FISH:
-            return GI_FISH;
+            return GI_BOTTLE_WITH_FISH;
         case RG_BOTTLE_WITH_BLUE_FIRE:
-            return GI_BLUE_FIRE;
+            return GI_BOTTLE_WITH_BLUE_FIRE;
         case RG_BOTTLE_WITH_BUGS:
-            return GI_BUGS;
+            return GI_BOTTLE_WITH_BUGS;
         case RG_BOTTLE_WITH_POE:
-            return GI_POE;
+            return GI_BOTTLE_WITH_POE;
         case RG_RUTOS_LETTER:
             return GI_LETTER_RUTO;
         case RG_BOTTLE_WITH_BIG_POE:
-            return GI_BIG_POE;
+            return GI_BOTTLE_WITH_BIG_POE;
 
         case RG_ZELDAS_LULLABY:
             return GI_ZELDAS_LULLABY;
