@@ -11,7 +11,6 @@ class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
     std::unordered_map<RandomizerCheck, std::string> hintLocations;
-    bool gettingBottledItem;
     std::string childAltarText;
     std::string adultAltarText;
     std::string ganonHintText;
@@ -36,7 +35,6 @@ class Randomizer {
     void LoadItemLocations(const char* spoilerFileName, bool silent);
     u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
     RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
-    bool GettingItemInBottle();
     std::string GetChildAltarText() const;
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
