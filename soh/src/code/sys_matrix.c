@@ -553,8 +553,8 @@ Mtx* Matrix_MtxFToMtx(MtxF* src, Mtx* dest) {
 }
 
 Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
-    FrameInterpolation_RecordMatrixToMtx(dest, __FILE__, __LINE__);
-    guMtxF2L(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
+    FrameInterpolation_RecordMatrixToMtx(dest, file, line);
+    guMtxF2L(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
     return dest;
     //return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
 }
