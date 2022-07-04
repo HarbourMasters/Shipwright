@@ -87,14 +87,12 @@ namespace Ship
         // n64 audio engine running faster than pulseaudio, all multiplied
         // by 4 because each sample is 4 bytes
         attr.maxlength = (GetDesiredBuffered() + 3 * SAMPLES_HIGH * 2) * 4;
-        
-         // in an ideal world, one third of the calls should use SAMPLES_HIGH and two thirds SAMPLES_LOW
-        attr.tlength = (SAMPLES_LOW * 2 + SAMPLES_HIGH) * 4;
-        
+                
         // slightly more than one double audio update
         attr.prebuf = SAMPLES_HIGH * 3 * 1.5 * 4;
         
         attr.minreq = 222 * 4;
+        attr.tlength = (44100 / 20) * 4;
         
         // initialize to a value that is deemed sensible by the server 
         attr.fragsize = (uint32_t)-1;
