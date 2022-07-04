@@ -406,7 +406,7 @@ void HintTable_Init() {
                        Text{"a #temporal stone within a tree# contains", /*french*/"la #pierre bleue dans un arbre# mène à", /*spanish*/"un #bloque temporal de un árbol# contiene"},
                      }, {},
                        //clear text
-                       Text{"a #temporal stone within the Deku Tree# contains", /*french*/"la #pierre temporelle dans l'arbre Mojo# cache", /*spanish*/"un #bloque temporal del Gran Árbol Deku# contiene"}
+                       Text{"a #temporal stone within the Deku Tree# contains", /*french*/"la #pierre temporelle dans l'Arbre Mojo# cache", /*spanish*/"un #bloque temporal del Gran Árbol Deku# contiene"}
   );
 
     hintTable[DEKU_TREE_MQ_GS_BASEMENT_GRAVES_ROOM] = HintText::Sometimes({
@@ -414,7 +414,7 @@ void HintTable_Init() {
                        Text{"a #spider on a ceiling in a tree# holds", /*french*/"l'#araignée haut-perchée dans un arbre# a", /*spanish*/"una #Skulltula en el techo de un árbol# otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider on a ceiling in the Deku Tree# holds", /*french*/"la#Skulltula dans le cimetière de l'arbre Mojo# a", /*spanish*/"una #Skulltula en el techo del Gran Árbol Deku# otorga"}
+                       Text{"a #spider on a ceiling in the Deku Tree# holds", /*french*/"la#Skulltula dans le cimetière de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en el techo del Gran Árbol Deku# otorga"}
   );
 
     hintTable[DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM] = HintText::Sometimes({
@@ -422,7 +422,7 @@ void HintTable_Init() {
                        Text{"a spider under #temporal stones in a cavern# holds", /*french*/"l'araignée sous #une pierre bleue dans une caverne# a", /*spanish*/"una Skulltula bajo #bloques temporales de una cueva# otorga"},
                      }, {},
                        //clear text
-                       Text{"a spider under #temporal stones in Dodongo's Cavern# holds", /*french*/"la Skulltula sous #la pierre temporelle dans la caverne Dodongo# a", /*spanish*/"una Skulltula bajo #bloques temporales de la Cueva de los Dodongos# otorga"}
+                       Text{"a spider under #temporal stones in Dodongo's Cavern# holds", /*french*/"la Skulltula sous #la pierre temporelle dans la Caverne Dodongo# a", /*spanish*/"una Skulltula bajo #bloques temporales de la Cueva de los Dodongos# otorga"}
   );
 
     hintTable[JABU_JABUS_BELLY_BOOMERANG_CHEST] = HintText::Sometimes({
@@ -454,7 +454,7 @@ void HintTable_Init() {
                        Text{"a #scarecrow atop the volcano# hides", /*french*/"l'#épouvantail au sommet d'un volcan# donne", /*spanish*/"un #espantapájaros en lo alto del volcán# esconde"},
                      }, {},
                        //clear text
-                       Text{"#Pierre atop the Fire Temple# hides", /*french*/"#Pierre au sommet du temple du feu# donne", /*spanish*/"#Pierre en lo alto del Templo del Fuego# esconde"}
+                       Text{"#Pierre atop the Fire Temple# hides", /*french*/"#Pierre au sommet du Temple du Feu# donne", /*spanish*/"#Pierre en lo alto del Templo del Fuego# esconde"}
   );
 
     hintTable[FIRE_TEMPLE_MEGATON_HAMMER_CHEST] = HintText::Sometimes({
@@ -462,7 +462,7 @@ void HintTable_Init() {
                        Text{"the #Flare Dancer atop the volcano# guards a chest containing", /*french*/"le #danseur au sommet du volcan# protège", /*spanish*/"el #Bailafuego en lo alto del volcán# otorga"},
                      }, {},
                        //clear text
-                       Text{"the #Flare Dancer atop the Fire Temple# guards a chest containing", /*french*/"le #Danse-Flamme au sommet du temple du feu# protège", /*spanish*/"el #Bailaguego en lo alto del Templo del Fuego# otorga"}
+                       Text{"the #Flare Dancer atop the Fire Temple# guards a chest containing", /*french*/"le #Danse-Flamme au sommet du Temple du Feu# protège", /*spanish*/"el #Bailaguego en lo alto del Templo del Fuego# otorga"}
   );
 
     hintTable[FIRE_TEMPLE_MQ_CHEST_ON_FIRE] = HintText::Sometimes({
@@ -470,7 +470,7 @@ void HintTable_Init() {
                        Text{"the #Flare Dancer atop the volcano# guards a chest containing", /*french*/"le #danseur au sommet du volcan# protège", /*spanish*/"el #Bailafuego en lo alto del volcán# otorga"},
                      }, {},
                        //clear text
-                       Text{"the #Flare Dancer atop the Fire Temple# guards a chest containing", /*french*/"le #Danse-Flamme au sommet du temple du feu# protège", /*spanish*/"el #Bailafuego en lo alto del Templo del Fuego# otorga"}
+                       Text{"the #Flare Dancer atop the Fire Temple# guards a chest containing", /*french*/"le #Danse-Flamme au sommet du Temple du Feu# protège", /*spanish*/"el #Bailafuego en lo alto del Templo del Fuego# otorga"}
   );
 
     hintTable[FIRE_TEMPLE_MQ_GS_SKULL_ON_FIRE] = HintText::Sometimes({
@@ -478,7 +478,7 @@ void HintTable_Init() {
                        Text{"a #spider under a block in the volcano# holds", /*french*/"l'#araignée sous un bloc dans le volcan# a", /*spanish*/"una #Skulltula bajo el bloque de un volcán# otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider under a block in the Fire Temple# holds", /*french*/"une #Skulltula sous un bloc dans le temple du feu# a", /*spanish*/"una #Skulltula bajo un bloque del Templo del Fuego# otorga"}
+                       Text{"a #spider under a block in the Fire Temple# holds", /*french*/"une #Skulltula sous un bloc dans le Temple du Feu# a", /*spanish*/"una #Skulltula bajo un bloque del Templo del Fuego# otorga"}
   );
 
     hintTable[WATER_TEMPLE_RIVER_CHEST] = HintText::Sometimes({
@@ -486,7 +486,7 @@ void HintTable_Init() {
                        Text{"beyond the #river under the lake# waits", /*french*/"au delà de #la rivière sous le lac# se cache", /*spanish*/"tras el #río bajo el lago# yace"},
                      }, {},
                        //clear text
-                       Text{"beyond the #river in the Water Temple# waits", /*french*/"au delà de #la rivière dans le temple de l'eau# se cache", /*spanish*/"tras el #río del Templo del Agua# yace"}
+                       Text{"beyond the #river in the Water Temple# waits", /*french*/"au delà de #la rivière dans le Temple de l'Eau# se cache", /*spanish*/"tras el #río del Templo del Agua# yace"}
   );
 
     hintTable[WATER_TEMPLE_BOSS_KEY_CHEST] = HintText::Sometimes({
@@ -494,7 +494,7 @@ void HintTable_Init() {
                        Text{"dodging #rolling boulders under the lake# leads to", /*french*/"éviter des #rochers roulants sous le lac# mène à", /*spanish*/"esquivar #rocas rodantes bajo el lago# conduce a"},
                      }, {},
                        //clear text
-                       Text{"dodging #rolling boulders in the Water Temple# leads to", /*french*/"éviter des #rochers roulants dans le temple de l'eau# mène à", /*spanish*/"esquivar #rocas rondantes del Templo del Agua# conduce a"}
+                       Text{"dodging #rolling boulders in the Water Temple# leads to", /*french*/"éviter des #rochers roulants dans le Temple de l'Eau# mène à", /*spanish*/"esquivar #rocas rondantes del Templo del Agua# conduce a"}
   );
 
     hintTable[WATER_TEMPLE_GS_BEHIND_GATE] = HintText::Sometimes({
@@ -502,7 +502,7 @@ void HintTable_Init() {
                        Text{"a spider behind a #gate under the lake# holds", /*french*/"l'araignée derrière une #barrière sous le lac# a", /*spanish*/"una Skulltula tras #una valla bajo el lago# otorga"},
                      }, {},
                        //clear text
-                       Text{"a spider behind a #gate in the Water Temple# holds", /*french*/"la Skulltula derrière une #barrière dans le temple de l'eau# a", /*spanish*/"una Skulltula tras #una valla del Templo del Agua# otorga"}
+                       Text{"a spider behind a #gate in the Water Temple# holds", /*french*/"la Skulltula derrière une #barrière dans le Temple de l'Eau# a", /*spanish*/"una Skulltula tras #una valla del Templo del Agua# otorga"}
   );
 
     hintTable[WATER_TEMPLE_MQ_FREESTANDING_KEY] = HintText::Sometimes({
@@ -510,7 +510,7 @@ void HintTable_Init() {
                        Text{"hidden in a #box under the lake# lies", /*french*/"dans une #boîte sous le lac# gît", /*spanish*/"en una #caja bajo el lago# yace"},
                      }, {},
                        //clear text
-                       Text{"hidden in a #box in the Water Temple# lies", /*french*/"dans une #boîte dans le temple de l'eau# gît", /*spanish*/"en una #caja del Templo del Agua# yace"}
+                       Text{"hidden in a #box in the Water Temple# lies", /*french*/"dans une #boîte dans le Temple de l'Eau# gît", /*spanish*/"en una #caja del Templo del Agua# yace"}
   );
 
     hintTable[WATER_TEMPLE_MQ_GS_FREESTANDING_KEY_AREA] = HintText::Sometimes({
@@ -518,7 +518,7 @@ void HintTable_Init() {
                        Text{"the #locked spider under the lake# holds", /*french*/"l'#araignée emprisonnée sous le lac# a", /*spanish*/"la #Skulltula enjaulada bajo el lago# otorga"},
                      }, {},
                        //clear text
-                       Text{"the #locked spider in the Water Temple# holds", /*french*/"une #Skulltula emprisonnée dans le temple de l'eau# a", /*spanish*/"la #Skulltula enjaulada del Templo del Agua# otorga"}
+                       Text{"the #locked spider in the Water Temple# holds", /*french*/"une #Skulltula emprisonnée dans le Temple de l'Eau# a", /*spanish*/"la #Skulltula enjaulada del Templo del Agua# otorga"}
   );
 
     hintTable[WATER_TEMPLE_MQ_GS_TRIPLE_WALL_TORCH] = HintText::Sometimes({
@@ -526,7 +526,7 @@ void HintTable_Init() {
                        Text{"a spider behind a #gate under the lake# holds", /*french*/"l'#araignée derrière une barrière sous le lac# a", /*spanish*/"una Skulltula tras una #valla bajo el lago# otorga"},
                      }, {},
                        //clear text
-                       Text{"a spider behind a #gate in the Water Temple# holds", /*french*/"une #Skulltula derrière une barrière dans le temple de l'eau# a", /*spanish*/"una Skulltula tras una #valla del Templo del Agua#"}
+                       Text{"a spider behind a #gate in the Water Temple# holds", /*french*/"une #Skulltula derrière une barrière dans le Temple de l'Eau# a", /*spanish*/"una Skulltula tras una #valla del Templo del Agua#"}
   );
 
     hintTable[GERUDO_TRAINING_GROUNDS_UNDERWATER_SILVER_RUPEE_CHEST] = HintText::Sometimes({
@@ -553,20 +553,20 @@ void HintTable_Init() {
 
     hintTable[BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST] = HintText::Sometimes({
                        //obscure text
-                       Text{"the well's #grasping ghoul# hides",    /*french*/"la #terreur du puits# cache", /*spanish*/"en las #profundidades del pozo# se esconde"},
-                       Text{"a #nether dweller in the well# holds", /*french*/"le #spectre qui réside dans le puits# a", /*spanish*/"el #temido morador del pozo# concede"},
+                       Text{"the well's #grasping ghoul# hides",    /*french*/"la #terreur du Puits# cache", /*spanish*/"en las #profundidades del pozo# se esconde"},
+                       Text{"a #nether dweller in the well# holds", /*french*/"le #spectre qui réside dans le Puits# a", /*spanish*/"el #temido morador del pozo# concede"},
                      }, {},
                        //clear text
-                       Text{"#Dead Hand in the well# holds", /*french*/"le #Poigneur dans le puits# cache", /*spanish*/"la #Mano Muerta del pozo# concede"}
+                       Text{"#Dead Hand in the well# holds", /*french*/"le #Poigneur dans le Puits# cache", /*spanish*/"la #Mano Muerta del pozo# concede"}
   );
 
     hintTable[BOTTOM_OF_THE_WELL_MQ_COMPASS_CHEST] = HintText::Sometimes({
                        //obscure text
-                       Text{"the well's #grasping ghoul# hides",    /*french*/"la #terreur du puits# cache", /*spanish*/"en las #profundidades del pozo# se esconde"},
-                       Text{"a #nether dweller in the well# holds", /*french*/"le #spectre qui réside dans le puits# a", /*spanish*/"el #temido morador del pozo# concede"},
+                       Text{"the well's #grasping ghoul# hides",    /*french*/"la #terreur du Puits# cache", /*spanish*/"en las #profundidades del pozo# se esconde"},
+                       Text{"a #nether dweller in the well# holds", /*french*/"le #spectre qui réside dans le Puits# a", /*spanish*/"el #temido morador del pozo# concede"},
                      }, {},
                        //clear text
-                       Text{"#Dead Hand in the well# holds", /*french*/"le #Poigneur dans le puits# cache", /*spanish*/"la #Mano Muerta del pozo# concede"}
+                       Text{"#Dead Hand in the well# holds", /*french*/"le #Poigneur dans le Puits# cache", /*spanish*/"la #Mano Muerta del pozo# concede"}
   );
 
     hintTable[SPIRIT_TEMPLE_SILVER_GAUNTLETS_CHEST] = HintText::Sometimes({
@@ -587,7 +587,7 @@ void HintTable_Init() {
                        Text{"a #temporal paradox in the Colossus# yields", /*french*/"un #paradoxe temporel dans le colosse# révèle", /*spanish*/"una #paradoja temporal del Coloso# conduce a"},
                      }, {},
                        //clear text
-                       Text{"a #temporal paradox in the Spirit Temple# yields", /*french*/"le #paradoxe temporel dans le temple de l'esprit# révèle", /*spanish*/"una #paradoja temporal del Coloso# conduce a"}
+                       Text{"a #temporal paradox in the Spirit Temple# yields", /*french*/"le #paradoxe temporel dans le Temple de l'Esprit# révèle", /*spanish*/"una #paradoja temporal del Coloso# conduce a"}
   );
 
     hintTable[SPIRIT_TEMPLE_MQ_SYMPHONY_ROOM_CHEST] = HintText::Sometimes({
@@ -595,7 +595,7 @@ void HintTable_Init() {
                        Text{"a #symphony in the Colossus# yields", /*french*/"la #symphonie du colosse# révèle", /*spanish*/"una #sinfonía del Coloso# conduce a"},
                      }, {},
                        //clear text
-                       Text{"a #symphony in the Spirit Temple# yields", /*french*/"les #cinq chansons du temple de l'esprit# révèlent", /*spanish*/"una #sinfonía del Coloso# conduce a"}
+                       Text{"a #symphony in the Spirit Temple# yields", /*french*/"les #cinq chansons du Temple de l'Esprit# révèlent", /*spanish*/"una #sinfonía del Coloso# conduce a"}
   );
 
     hintTable[SPIRIT_TEMPLE_MQ_GS_SYMPHONY_ROOM] = HintText::Sometimes({
@@ -603,7 +603,7 @@ void HintTable_Init() {
                        Text{"a #spider's symphony in the Colossus# yields", /*french*/"la #mélodie de l'araignée du colosse# révèle", /*spanish*/"la #Skulltula de la sinfonía del Coloso# otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider's symphony in the Spirit Temple# yields", /*french*/"la #mélodie de la Skulltula du temple de l'esprit# révèle", /*spanish*/"la #Skulltula de la sinfonía del Coloso# otorga"}
+                       Text{"a #spider's symphony in the Spirit Temple# yields", /*french*/"la #mélodie de la Skulltula du Temple de l'Esprit# révèle", /*spanish*/"la #Skulltula de la sinfonía del Coloso# otorga"}
   );
 
     hintTable[SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST] = HintText::Sometimes({
@@ -697,7 +697,7 @@ void HintTable_Init() {
 
     hintTable[KAKARIKO_VILLAGE_TO_BOTTOM_OF_THE_WELL] = HintText::Entrance({
                      //obscure text
-                     Text{"a #village well# leads to", /*french*/"dans le fond du #puits du village# gît", /*spanish*/"el #pozo de un pueblo# conduce a"},
+                     Text{"a #village well# leads to", /*french*/"dans le fond du #Puits du village# gît", /*spanish*/"el #pozo de un pueblo# conduce a"},
   });
 
     /*--------------------------
@@ -742,7 +742,7 @@ void HintTable_Init() {
 
     hintTable[GERUDO_FORTRESS] = HintText::Exclude({
                      //obscure text
-                     Text{"Gerudo's Fortress", /*french*/"la forteresse Gerudo", /*spanish*/"la Fortaleza Gerudo"},
+                     Text{"Gerudo's Fortress", /*french*/"la Repaire des Voleurs", /*spanish*/"la Fortaleza Gerudo"},
   });
 
     hintTable[HAUNTED_WASTELAND] = HintText::Exclude({
@@ -772,7 +772,7 @@ void HintTable_Init() {
 
     hintTable[OUTSIDE_GANONS_CASTLE] = HintText::Exclude({
                      //obscure text
-                     Text{"outside Ganon's Castle", /*french*/"les alentours du château de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
+                     Text{"outside Ganon's Castle", /*french*/"les alentours du Château de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
   });
 
     hintTable[KAKARIKO_VILLAGE] = HintText::Exclude({
@@ -1241,7 +1241,7 @@ void HintTable_Init() {
 
     hintTable[JUNK05] = HintText::Junk({
                      //obscure text
-                     Text{"They say that the Lizalfos in Dodongo's Cavern like to play in lava.", /*french*/"Selon moi, les Lézalfos de la caverne Dodongo aiment patauger dans la lave.", /*spanish*/"Según dicen, a los Lizalfos de la Cueva de los Dodongos les gusta jugar en la lava."},
+                     Text{"They say that the Lizalfos in Dodongo's Cavern like to play in lava.", /*french*/"Selon moi, les Lézalfos de la Caverne Dodongo aiment patauger dans la lave.", /*spanish*/"Según dicen, a los Lizalfos de la Cueva de los Dodongos les gusta jugar en la lava."},
     });
 
     hintTable[JUNK06] = HintText::Junk({
@@ -1371,7 +1371,7 @@ void HintTable_Init() {
 
     hintTable[JUNK31] = HintText::Junk({
                      //obscure text
-                     Text{"Game Over. Return of Ganon.", /*french*/"Partie terminée. RETOUR DE GANON.", /*spanish*/"Fin de la partida. El regreso de Ganon."},
+                     Text{"Game Over. Return of Ganon.", /*french*/"Partie terminée. RETour de Ganon.", /*spanish*/"Fin de la partida. El regreso de Ganon."},
     });
 
     hintTable[JUNK32] = HintText::Junk({
@@ -1516,7 +1516,7 @@ void HintTable_Init() {
 
     hintTable[JUNK60] = HintText::Junk({
                      //obscure text
-                     Text{"You found a spiritual Stone! By which I mean, I worship Nayru.", /*french*/"Vous avez trouvé une pierre spirituelle! En effet, je vénère la déesse Hylia.", /*spanish*/"¡Has encontrado una piedra espiritual! Es que le rindo culto a Nayru..."},
+                     Text{"You found a spiritual Stone! By which I mean, I worship Nayru.", /*french*/"Vous avez trouvé une Pierre Ancestrale! En effet, je vénère la déesse Hylia.", /*spanish*/"¡Has encontrado una piedra espiritual! Es que le rindo culto a Nayru..."},
     });
 
     hintTable[JUNK61] = HintText::Junk({
@@ -1591,7 +1591,7 @@ void HintTable_Init() {
 
     hintTable[JUNK75] = HintText::Junk({
                      //obscure text
-                     Text{"They say that the stone-cold guardian of the Well is only present during work hours.", /*french*/"Selon moi, le gardien de pierre du puits quitte le soir pour aller se coucher.", /*spanish*/"Según dicen, la inmensa roca que bloquea el pozo solo trabaja en horas laborales."},
+                     Text{"They say that the stone-cold guardian of the Well is only present during work hours.", /*french*/"Selon moi, le gardien de pierre du Puits quitte le soir pour aller se coucher.", /*spanish*/"Según dicen, la inmensa roca que bloquea el pozo solo trabaja en horas laborales."},
     });
 
     hintTable[JUNK76] = HintText::Junk({
@@ -1628,7 +1628,7 @@ void HintTable_Init() {
                      Text{"an ancient tree", /*french*/"le vieil arbre", /*spanish*/"un ancestral árbol"},
                    }, {},
                      //clear text
-                     Text{"Deku Tree", /*french*/"l'arbre Mojo", /*spanish*/"el Gran Árbol Deku"}
+                     Text{"Deku Tree", /*french*/"l'Arbre Mojo", /*spanish*/"el Gran Árbol Deku"}
   );
 
     hintTable[DODONGOS_CAVERN] = HintText::DungeonName({
@@ -1636,7 +1636,7 @@ void HintTable_Init() {
                      Text{"an immense cavern", /*french*/"l'immense caverne", /*spanish*/"una descomunal cueva"},
                    }, {},
                      //clear text
-                     Text{ "Dodongo's Cavern", /*french*/"la caverne Dodongo", /*spanish*/"la Cueva de los Dodongos"}
+                     Text{ "Dodongo's Cavern", /*french*/"la Caverne Dodongo", /*spanish*/"la Cueva de los Dodongos"}
   );
 
     hintTable[JABU_JABUS_BELLY] = HintText::DungeonName({
@@ -1644,7 +1644,7 @@ void HintTable_Init() {
                      Text{"the belly of a deity", /*french*/"le ventre d'un gardien", /*spanish*/"la tripa de cierta deidad"},
                    }, {},
                      //clear text
-                     Text{"Jabu-Jabu's Belly", /*french*/"le ventre de Jabu-Jabu", /*spanish*/"tripa de Jabu-Jabu"}
+                     Text{"Jabu-Jabu's Belly", /*french*/"le Ventre de Jabu-Jabu", /*spanish*/"tripa de Jabu-Jabu"}
     );
 
     hintTable[FOREST_TEMPLE] = HintText::DungeonName({
@@ -1652,7 +1652,7 @@ void HintTable_Init() {
                      Text{"a deep forest", /*french*/"la profonde forêt", /*spanish*/"las profundidades del bosque"},
                    }, {},
                      //clear text
-                     Text{"Forest Temple", /*french*/"le temple de la forêt", /*spanish*/"el Templo del Bosque"}
+                     Text{"Forest Temple", /*french*/"le Temple de la Forêt", /*spanish*/"el Templo del Bosque"}
     );
 
     hintTable[FIRE_TEMPLE] = HintText::DungeonName({
@@ -1660,7 +1660,7 @@ void HintTable_Init() {
                      Text{"a high mountain", /*french*/"la grande montagne", /*spanish*/"una alta montaña"},
                    }, {},
                      //clear text
-                     Text{"Fire Temple", /*french*/"le temple du feu", /*spanish*/"el Templo del Fuego"}
+                     Text{"Fire Temple", /*french*/"le Temple du Feu", /*spanish*/"el Templo del Fuego"}
     );
 
     hintTable[WATER_TEMPLE] = HintText::DungeonName({
@@ -1668,7 +1668,7 @@ void HintTable_Init() {
                      Text{"a vast lake", /*french*/"le vaste lac", /*spanish*/"un lago inmenso"},
                    }, {},
                      //clear text
-                     Text{"Water Temple", /*french*/"le temple de l'eau", /*spanish*/"el Templo del Agua"}
+                     Text{"Water Temple", /*french*/"le Temple de l'Eau", /*spanish*/"el Templo del Agua"}
     );
 
     hintTable[SPIRIT_TEMPLE] = HintText::DungeonName({
@@ -1676,7 +1676,7 @@ void HintTable_Init() {
                      Text{"the goddess of the sand", /*french*/"la déesse des sables", /*spanish*/"la diosa de las arenas"},
                    }, {},
                      //clear text
-                     Text{"Spirit Temple", /*french*/"le temple de l'esprit", /*spanish*/"el Templo del Espíritu"}
+                     Text{"Spirit Temple", /*french*/"le Temple de l'Esprit", /*spanish*/"el Templo del Espíritu"}
 
     );
 
@@ -1685,7 +1685,7 @@ void HintTable_Init() {
                      Text{"the house of the dead", /*french*/"la maison des morts", /*spanish*/"la casa de la muerte"},
                    }, {},
                      //clear text
-                     Text{"Shadow Temple", /*french*/"le temple de l'ombre", /*spanish*/"el Templo de las Sombras"}
+                     Text{"Shadow Temple", /*french*/"le Temple de l'Ombre", /*spanish*/"el Templo de las Sombras"}
     );
 
     hintTable[ICE_CAVERN] = HintText::DungeonName({
@@ -1701,7 +1701,7 @@ void HintTable_Init() {
                      Text{"a shadow\'s prison", /*french*/"la prison d'une ombre", /*spanish*/"la prisión de las sombras"},
                    }, {},
                      //clear text
-                     Text{"Bottom of the Well", /*french*/"le fonds du puits", /*spanish*/"el fondo del pozo"}
+                     Text{"Bottom of the Well", /*french*/"le fonds du Puits", /*spanish*/"el fondo del pozo"}
     );
 
     hintTable[GERUDO_TRAINING_GROUNDS] = HintText::DungeonName({
@@ -1709,7 +1709,7 @@ void HintTable_Init() {
                      Text{"the test of thieves", /*french*/"l'épreuve des voleurs", /*spanish*/"la prueba de las bandidas"},
                    }, {},
                      //clear text
-                     Text{"Gerudo Training Grounds", /*french*/"le gymnase Gerudo", /*spanish*/"el Centro de Instrucción Gerudo"}
+                     Text{"Gerudo Training Grounds", /*french*/"le Gymnase Gerudo", /*spanish*/"el Centro de Instrucción Gerudo"}
     );
 
     hintTable[GANONS_CASTLE] = HintText::DungeonName({
@@ -1717,7 +1717,7 @@ void HintTable_Init() {
                      Text{"a conquered citadel", /*french*/"la citadelle assiégée", /*spanish*/"una conquistada ciudadela"},
                    }, {},
                      //clear text
-                     Text{"Inside Ganon's Castle", /*french*/"l'intérieur du château de Ganon", /*spanish*/"el interior del Castillo de Ganon"}
+                     Text{"Inside Ganon's Castle", /*french*/"l'intérieur du Château de Ganon", /*spanish*/"el interior del Castillo de Ganon"}
     );
 
     /*--------------------------
@@ -1729,7 +1729,7 @@ void HintTable_Init() {
                      Text{"An #ancient tree# rewards", /*french*/"le #vieil arbre# octroie", /*spanish*/"un #ancestral árbol# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Deku Tree# rewards", /*french*/"l'#arbre Mojo# octroie", /*spanish*/"el #Gran Árbol Deku# premia con"}
+                     Text{"the #Deku Tree# rewards", /*french*/"l'#Arbre Mojo# octroie", /*spanish*/"el #Gran Árbol Deku# premia con"}
     );
 
     hintTable[KING_DODONGO] = HintText::Boss({
@@ -1737,7 +1737,7 @@ void HintTable_Init() {
                      Text{"An #immense cavern# rewards", /*french*/"l'#immense caverne# octroie", /*spanish*/"una #descomunal cueva# premia con"},
                    }, {},
                      //clear text
-                     Text{"#Dodongo's Cavern# rewards", /*french*/"la #caverne Dodongo# octroie", /*spanish*/"la #Cueva de los Dodongos# premia con"}
+                     Text{"#Dodongo's Cavern# rewards", /*french*/"la #Caverne Dodongo# octroie", /*spanish*/"la #Cueva de los Dodongos# premia con"}
     );
 
     hintTable[BARINADE] = HintText::Boss({
@@ -1745,7 +1745,7 @@ void HintTable_Init() {
                      Text{"the #belly of a deity# rewards", /*french*/"le #ventre du gardien# octroie", /*spanish*/"la #tripa de cierta deidad# premia con"},
                    }, {},
                      //clear text
-                     Text{"#Jabu-Jabu's Belly# rewards", /*french*/"le #ventre de Jabu-Jabu# octroie", /*spanish*/"la #tripa de Jabu-Jabu# premia con"}
+                     Text{"#Jabu-Jabu's Belly# rewards", /*french*/"le #Ventre de Jabu-Jabu# octroie", /*spanish*/"la #tripa de Jabu-Jabu# premia con"}
     );
 
     hintTable[PHANTOM_GANON] = HintText::Boss({
@@ -1753,7 +1753,7 @@ void HintTable_Init() {
                      Text{"a #deep forest# rewards", /*french*/"la #profonde forêt# octroie", /*spanish*/"el #profundo bosque# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Forest Temple# rewards", /*french*/"le #temple de la forêt# octroie", /*spanish*/"el #Templo del Bosque# premia con"}
+                     Text{"the #Forest Temple# rewards", /*french*/"le #Temple de la Forêt# octroie", /*spanish*/"el #Templo del Bosque# premia con"}
     );
 
     hintTable[VOLVAGIA] = HintText::Boss({
@@ -1761,7 +1761,7 @@ void HintTable_Init() {
                      Text{"a #high mountain# rewards", /*french*/"la #grande montagne# octroie", /*spanish*/"una #alta montaña# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Fire Temple# rewards", /*french*/"le #temple du feu# octroie", /*spanish*/"el #Templo del Fuego# premia con"}
+                     Text{"the #Fire Temple# rewards", /*french*/"le #Temple du Feu# octroie", /*spanish*/"el #Templo del Fuego# premia con"}
     );
 
     hintTable[MORPHA] = HintText::Boss({
@@ -1769,7 +1769,7 @@ void HintTable_Init() {
                      Text{"a #vast lake# rewards", /*french*/"le #vaste lac# octroie", /*spanish*/"un #lago inmenso# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Water Temple# rewards", /*french*/"le #temple de l'eau# octroie", /*spanish*/"el #Templo del Agua# premia con"}
+                     Text{"the #Water Temple# rewards", /*french*/"le #Temple de l'Eau# octroie", /*spanish*/"el #Templo del Agua# premia con"}
     );
 
     hintTable[BONGO_BONGO] = HintText::Boss({
@@ -1777,7 +1777,7 @@ void HintTable_Init() {
                      Text{"the #house of the dead# rewards", /*french*/"la #maison des morts# octroie", /*spanish*/"la #casa de la muerte# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Shadow Temple# rewards", /*french*/"le #temple de l'ombre# octroie", /*spanish*/"el #Templo de las Sombras#"}
+                     Text{"the #Shadow Temple# rewards", /*french*/"le #Temple de l'Ombre# octroie", /*spanish*/"el #Templo de las Sombras#"}
     );
 
     hintTable[TWINROVA] = HintText::Boss({
@@ -1785,7 +1785,7 @@ void HintTable_Init() {
                      Text{"a #goddess of the sand# rewards", /*french*/"la #déesse des sables# octroie", /*spanish*/"la #diosa de la arena# premia con"},
                    }, {},
                      //clear text
-                     Text{"the #Spirit Temple# rewards", /*french*/"le #temple de l'esprit# octroie", /*spanish*/"el #Templo del Espíritu# premia con"}
+                     Text{"the #Spirit Temple# rewards", /*french*/"le #Temple de l'Esprit# octroie", /*spanish*/"el #Templo del Espíritu# premia con"}
     );
     //
     // [LINKS_POCKET_BOSS] = HintText::Boss({
@@ -1810,42 +1810,42 @@ void HintTable_Init() {
     hintTable[BRIDGE_VANILLA_HINT] = HintText::Bridge({
                      //obscure text
                      Text{"The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
-                /*french*/"Les êtres de sagesse attendront le&héros muni des #médaillons de l'ombre et&l'esprit# et des #flèches de lumière#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni des #médaillons de l'ombre et&l'esprit# et des #flèches de lumière#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto a la #flecha de luz#."},
     });
 
     hintTable[BRIDGE_STONES_HINT] = HintText::Bridge({
                      //obscure text                                                  singular        plural
                      Text{"The awakened ones will&await for the Hero to collect&%d |Spiritual Stone|Spiritual Stones|.",
-                /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |pierre spirituelle|pierres spirituelles|#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale|Pierres&Ancestrales|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual|piedras espirituales|#."},
     });
 
     hintTable[BRIDGE_MEDALLIONS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular  plural
                      Text{"The awakened ones will await&for the Hero to collect&%d |Medallion|Medallions|.",
-                /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |médaillon|médaillons|#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |médaillon|médaillons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |medallón|medallones|#."},
     });
 
     hintTable[BRIDGE_REWARDS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular                     plural
                      Text{"The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones and Medallions|.",
-                /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |pierre spirituelle&ou médaillon|pierres spirituelles&et médaillons|#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale&ou Médaillon|Pierres&Ancestrales&ou Médaillons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y medallones|#."},
     });
 
     hintTable[BRIDGE_DUNGEONS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular plural
                      Text{"The awakened ones will await&for the Hero to conquer&%d |Dungeon|Dungeons|.",
-                /*french*/"Les êtres de sagesse attendront la&conquête de #%d |donjon|donjons|#.",
+                /*french*/"Les êtres de sagesse attendront&la conquête de #%d |Donjon|Donjons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe& complete #%d |mazmorra|mazmorras|#."},
     });
 
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
                      //obscure text
                      Text{"The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
-                /*french*/"Les êtres de sagesse attendront le&héros muni de #%d |symbole|symboles| de&Skulltula d'or#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Symbole|Symboles| de&Skulltula d'or#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#."},
     });
 
@@ -1930,7 +1930,7 @@ void HintTable_Init() {
     hintTable[LACS_REWARDS_HINT] = HintText::LACS({
                      //obscure text                                                     singular                         plural
                      Text{"And the #evil one#'s key will be&provided by Zelda once #%d |Spiritual&Stone or Medallion# is|Spiritual&Stones and Medallions# are| retrieved.",
-                /*french*/"Aussi, Zelda crééra la clé du&#Malin# avec #%d |pierre spirituelle&et des médaillon|pierres spirituelles&et des médaillons|#.",
+                /*french*/"Aussi, Zelda crééra la clé du&#Malin# avec #%d |Pierre Ancestrale&et des médaillon|Pierres Ancestrales&et des médaillons|#.",
                /*spanish*/"Y Zelda entregará la llave&del #señor del mal# tras obtener&#%d |piedra espiritual o medallón|piedras espirituales o medallones|#."},
     });
 
@@ -1953,12 +1953,12 @@ void HintTable_Init() {
 
     hintTable[SIX_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{"#Ganon's Tower# is protected by a powerful barrier.", /*french*/"#la tour de Ganon# est protégée par une puissante barrière", /*spanish*/"la #torre de Ganon# está protegida por una poderosa barrera"},
+                     Text{"#Ganon's Tower# is protected by a powerful barrier.", /*french*/"#la Tour de Ganon# est protégée par une puissante barrière", /*spanish*/"la #torre de Ganon# está protegida por una poderosa barrera"},
     });
 
     hintTable[ZERO_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{"Sheik dispelled the barrier around #Ganon's Tower#.", /*french*/"Sheik a dissipé la barrière autour de #la tour de Ganon#", /*spanish*/"Sheik disipó la barrera alrededor de la #torre de Ganon#."},
+                     Text{"Sheik dispelled the barrier around #Ganon's Tower#.", /*french*/"Sheik a dissipé la barrière autour de #la Tour de Ganon#", /*spanish*/"Sheik disipó la barrera alrededor de la #torre de Ganon#."},
     });
 
     hintTable[FOUR_TO_FIVE_TRIALS] = HintText::Exclude({
@@ -1968,7 +1968,7 @@ void HintTable_Init() {
 
     hintTable[ONE_TO_THREE_TRIALS] = HintText::Exclude({
                      //obscure text
-                     Text{" protects Ganons Tower.", /*french*/" protège la tour de Ganon.", /*spanish*/" protege la torre de Ganon"},
+                     Text{" protects Ganons Tower.", /*french*/" protège la Tour de Ganon.", /*spanish*/" protege la torre de Ganon"},
     });
 
     /*--------------------------
@@ -1978,7 +1978,7 @@ void HintTable_Init() {
     hintTable[SPIRITUAL_STONE_TEXT_START] = HintText::Altar({
                      //obscure text
                      Text{"3 Spiritual Stones found in Hyrule...",
-                /*french*/"Les trois pierres spirituelles cachées dans Hyrule...",
+                /*french*/"Les trois Pierres Ancestrales cachées dans Hyrule...",
                /*spanish*/"Tres piedras espirituales halladas por Hyrule..."},
     });
 
@@ -1999,14 +1999,14 @@ void HintTable_Init() {
     hintTable[CHILD_ALTAR_TEXT_END_DOTINTENDED] = HintText::Altar({
                      //obscure text
                      Text{"Ye who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
-                /*french*/"À celui qui a quête de devenir héros...&Présentez les pierres spirituelles et&jouez le chant du temps.",
+                /*french*/"À celui qui a quête de devenir héros...&Présentez les Pierres Ancestrales et&jouez le chant du temps.",
                /*spanish*/"Para aquel que se convierta en el héroe...&Tome las piedras espirituales y&entone la Canción del Tiempo."},
     });
 
     hintTable[ADULT_ALTAR_TEXT_START] = HintText::Altar({
                      //obscure text
                      Text{"An awakening voice from the Sacred&Realm will call those destined to be&Sages, who dwell in the five temples.",
-                /*french*/"Quand le mal aura triomphé, une voix&du Saint Royaume appellera ceux&cachés dans les cinq temples, destinés à être Sages.",
+                /*french*/"Quand le mal aura triomphé, une voix&du Saint Royaume appellera ceux&cachés dans les cinq temples, destinés^à être Sages.",
                /*spanish*/"Cuando el mal lo impregne todo, desde el Reino Sagrado surgirá una voz que hará despertar a los sabios que moran en los #cinco templos#."},
     });
 
@@ -2035,7 +2035,7 @@ void HintTable_Init() {
     hintTable[LIGHT_ARROW_LOCATION_HINT] = HintText::LightArrow({
                      //obscure text
                      Text{"Ha ha ha... You'll never beat me by reflecting my lightning bolts and unleashing the arrows from ",
-                /*french*/"Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai caché dans ",
+                /*french*/"Ha ha ha... Pauvre fou! Tu ne pourras jamais me vaincre sans les flèches que j'ai cachées dans ",
                /*spanish*/"Ja, ja, ja... Nunca me derrotarás reflejando mis esferas de energía y desplegando la flecha de luz de "},
     });
 
@@ -2167,7 +2167,7 @@ void HintTable_Init() {
     hintTable[CARPET_SALESMAN_DIALOG_FOURTH] = HintText::MerchantsDialogs({
                      //obscure text
                      Text{"!#^The mark that will lead you to the #Spirit&Temple# is the #flag on the "+IF_NOT_MQ()+"left"+MQ_ELSE()+"right"+MQ_END()+"# outside the shop. Be seeing you!",
-                /*french*/"!#^La marque qui te mènera au #Temple de l'esprit# est le #drapeau "+IF_NOT_MQ()+"gauche"+MQ_ELSE()+"droite"+MQ_END()+"# en sortant d'ici. À la prochaine!",
+                /*french*/"!#^La marque qui te mènera au #Temple de l'Esprit# est le #drapeau "+IF_NOT_MQ()+"gauche"+MQ_ELSE()+"droite"+MQ_END()+"# en sortant d'ici. À la prochaine!",
                /*spanish*/"!#^La marca que te guiará al #Templo del&Espíritu# es la #bandera que está a la&"+IF_NOT_MQ()+"izquierda"+MQ_ELSE()+"derecha"+MQ_END()+"# al salir de aquí. ¡Nos vemos!"},
     });
 }

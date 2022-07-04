@@ -36,20 +36,20 @@ constexpr std::array EnglishDungeonNames = {
 };
 
 constexpr std::array FrenchDungeonNames = {
-    "vénérable arbre Mojo",
-    "caverne Dodongo",
-    "ventre de Jabu-Jabu",
-    "temple de la forêt",
-    "temple du feu",
-    "temple de l'eau",
-    "temple de l'esprit",
-    "temple de l'ombre",
-    "puits",
-    "caverne de glace",
-    "",
+    "Vénérable Arbre Mojo",
+    "Caverne Dodongo",
+    "Ventre de Jabu-Jabu",
+    "Temple de la Forêt",
+    "Temple du Feu",
+    "Temple de l'Eau",
+    "Temple de l'Esprit",
+    "Temple de l'Ombre",
+    "Puits",
+    "Caverne Polaire",
+    "Tour de Ganon",
     "Gymnase Gerudo",
-    "forteresse Gerudo",
-    "château de Ganon",
+    "Repaire des Voleurs",
+    "Château de Ganon",
 };
 
 constexpr std::array FrenchDungeonArticles = {
