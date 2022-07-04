@@ -7,6 +7,7 @@
 #include "WarningHandler.h"
 #include "ZFile.h"
 #include <Globals.h>
+#include <set>
 #include <ZDisplayList.h>
 #include <ZArray.h>
 
@@ -306,6 +307,7 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 
 std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix)
 {
+	static std::set<std::string> myset;
 	if (Globals::Instance->otrMode && genOTRDef)
 	{
 		std::string str = "";;
@@ -342,9 +344,14 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 			prefix = "text";
 
 		if (prefix != "")
-			str += StringHelper::Sprintf("#define %s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
 		else
-			str += StringHelper::Sprintf("#define %s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
+			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
+
+		if (myset.find(name) == myset.end()) {
+			str += "\nstatic volatile const char " + name + "[]__attribute__ ((aligned (16))) = d" + name + ";";
+			myset.insert(name);
+		}
 
 		return str;
 	}

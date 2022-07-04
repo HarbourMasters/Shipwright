@@ -800,6 +800,7 @@ void ZFile::GenerateSourceHeaderFiles()
 {
 	OutputFormatter formatter;
 
+	formatter.Write("#pragma once\n");
 	for (ZResource* res : resources)
 	{
 		std::string resSrc = res->GetSourceOutputHeader("");

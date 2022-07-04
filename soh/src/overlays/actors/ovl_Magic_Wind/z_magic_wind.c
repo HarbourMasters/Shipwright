@@ -78,7 +78,7 @@ void MagicWind_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void MagicWind_UpdateAlpha(f32 alpha) {
     s32 i;
 
-    Vtx* vtx = ResourceMgr_LoadVtxByName(sCylinderVtx);
+    Vtx* vtx = ResourceMgr_LoadVtxByName(dsCylinderVtx);
 
     for (i = 0; i < ARRAY_COUNT(sAlphaUpdVals); i++) {
         vtx[sAlphaUpdVals[i]].n.a = alpha * 255.0f;
