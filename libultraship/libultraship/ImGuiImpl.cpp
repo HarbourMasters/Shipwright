@@ -1165,6 +1165,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
+                    EnhancementCheckbox("Epona Boost", "gInfiniteEpona");
 
                     ImGui::EndMenu();
                 }
