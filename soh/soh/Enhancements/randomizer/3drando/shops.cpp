@@ -496,23 +496,23 @@ void InitTrickNames() {
   trickNameTable[0xCE] = {
      Text{"Wind Medallion", "Médaillon du vent", "Medallón del Viento"},
      Text{"Saria's Medallion", "Médaillon de Saria", "Medallón de Saria"},
-     Text{"Medallion of Forest", "Médaillon du temple de la forêt", "Medalla del Bosque"}};
+     Text{"Medallion of Forest", "Médaillon du Temple de la Forêt", "Medalla del Bosque"}};
   trickNameTable[0xCF] = {
      Text{"Bombos Medallion", "Médaillon des flammes", "Medallón del Temblor"},
      Text{"Darunia's Medallion", "Médaillon de Darunia", "Medallón de Darunia"},
-     Text{"Medallion of Fire", "Médaillon du temple du feu", "Medalla del Fuego"}};
+     Text{"Medallion of Fire", "Médaillon du Temple du Feu", "Medalla del Fuego"}};
   trickNameTable[0xD0] = {
      Text{"Ice Medallion", "Médaillon de glace", "Medallón Helado"},
      Text{"Ruto's Medallion", "Médaillon de Ruto", "Medallón de Ruto"},
-     Text{"Medallion of Water", "Médaillon du temple de l'eau", "Medalla del Agua"}};
+     Text{"Medallion of Water", "Médaillon du Temple de l'Eau", "Medalla del Agua"}};
   trickNameTable[0xD1] = {
      Text{"Quake Medallion", "Médaillon des secousses", "Medallón Llamarada"},
      Text{"Nabooru's Medallion", "Médaillon de Nabooru", "Medallón de Nabooru"},
-     Text{"Medallion of Spirit", "Médaillon du temple de l'esprit", "Medalla del Espíritu"}};
+     Text{"Medallion of Spirit", "Médaillon du Temple de l'Esprit", "Medalla del Espíritu"}};
   trickNameTable[0xD2] = {
      Text{"Travel Medallion", "Amulette de téléportation", "Medallón Maligno"},
      Text{"Impa's Medallion", "Médaillon d'Impa", "Medallón de Impa"},
-     Text{"Medallion of Shadow", "Médaillon du temple de l'ombre", "Medalla de la Sombra"}};
+     Text{"Medallion of Shadow", "Médaillon du Temple de l'Ombre", "Medalla de la Sombra"}};
   trickNameTable[0xD3] = {
      Text{"Ether Medallion", "Médaillon d'éther", "Medallón de Tesoro"},
      Text{"Rauru's Medallion", "Médaillon de Rauru", "Medallón de Rauru"},

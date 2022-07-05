@@ -213,8 +213,15 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 }
 
 s32 EnGe1_CheckCarpentersFreed(void) {
-    u16 carpenterFlags = gSaveContext.eventChkInf[9];
+    if (gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
+    u16 carpenterFlags = gSaveContext.eventChkInf[9];
     if (!((carpenterFlags & 1) && (carpenterFlags & 2) && (carpenterFlags & 4) && (carpenterFlags & 8))) {
         return 0;
     }

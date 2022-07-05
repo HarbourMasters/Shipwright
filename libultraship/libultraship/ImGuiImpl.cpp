@@ -50,7 +50,7 @@ bool oldCursorState = true;
     ImGui::PopStyleColor(); \
     ImGui::Separator();
 #define TOGGLE_BTN ImGuiKey_F1
-// #define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
+#define TOGGLE_PAD_BTN ImGuiKey_GamepadBack
 #define HOOK(b) if(b) needs_save = true;
 OSContPad* pads;
 
@@ -748,15 +748,26 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        ImGuiIO& io = ImGui::GetIO();
-	// io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
-        // if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
         if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
+        
+            if (CVar_GetS32("gControlNav", 0)) {
+                if (CVar_GetS32("gOpenMenuBar", 0)) {
+                    io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                }
+                else
+                {
+                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+                }
+            }
+            else
+            {
+            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+            }
         }
 
         #if __APPLE__
@@ -806,7 +817,12 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller"))
-	    {
+            {
+                EnhancementCheckbox("Use Controller Navigation", "gControlNav");
+                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+
+                ImGui::Separator();
+
                 // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
                 // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
@@ -817,7 +833,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Modify D-pad Equips", "gModifyDpadEquips");
                 }
 
-		ImGui::Separator();
+                ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
@@ -826,8 +842,8 @@ namespace SohImGui {
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
 
-		ImGui::Separator();  
-		    
+                ImGui::Separator();
+
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {

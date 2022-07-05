@@ -1165,7 +1165,7 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Bottom of the Well Map", RG_BOTTOM_OF_THE_WELL_MAP },
     { "Carte du Puits", RG_BOTTOM_OF_THE_WELL_MAP },
     { "Ice Cavern Map", RG_ICE_CAVERN_MAP },
-    { "Carte de la Carverne Polaire", RG_ICE_CAVERN_MAP },
+    { "Carte de la Caverne Polaire", RG_ICE_CAVERN_MAP },
     { "Great Deku Tree Compass", RG_DEKU_TREE_COMPASS },
     { "Boussole de l'Arbre Mojo", RG_DEKU_TREE_COMPASS },
     { "Dodongo's Cavern Compass", RG_DODONGOS_CAVERN_COMPASS },

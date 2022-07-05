@@ -129,7 +129,7 @@ void ItemTable_Init() {                                    //English name       
     itemTable[SPIRIT_TEMPLE_COMPASS]             = Item(Text{"Spirit Temple Compass",           "Boussole du Temple de l'Esprit",   "Brújula del Templo del Espíritu"},         ITEMTYPE_COMPASS,  0xA1, false, &noVariable, SPIRIT_TEMPLE_COMPASS);
     itemTable[SHADOW_TEMPLE_COMPASS]             = Item(Text{"Shadow Temple Compass",           "Boussole du Temple de l'Ombre",    "Brújula del Templo de las Sombras"},       ITEMTYPE_COMPASS,  0xA2, false, &noVariable, SHADOW_TEMPLE_COMPASS);
     itemTable[BOTTOM_OF_THE_WELL_COMPASS]        = Item(Text{"Bottom of the Well Compass",      "Boussole du Puits",                "Brújula del fondo del pozo"},              ITEMTYPE_COMPASS,  0xA3, false, &noVariable, BOTTOM_OF_THE_WELL_COMPASS);
-    itemTable[ICE_CAVERN_COMPASS]                = Item(Text{"Ice Cavern Compass",              "Boussole de la caverne polaire",   "Brújula de la caverna de hielo"},          ITEMTYPE_COMPASS,  0xA4, false, &noVariable, ICE_CAVERN_COMPASS);
+    itemTable[ICE_CAVERN_COMPASS]                = Item(Text{"Ice Cavern Compass",              "Boussole de la Caverne Polaire",   "Brújula de la caverna de hielo"},          ITEMTYPE_COMPASS,  0xA4, false, &noVariable, ICE_CAVERN_COMPASS);
 
     //Boss Keys
     itemTable[FOREST_TEMPLE_BOSS_KEY]            = Item(Text{"Forest Temple Big Key",           "Clé d'or du Temple de la Forêt",   "Gran llave del Templo del Bosque"},        ITEMTYPE_BOSSKEY,  0x95, true, &BossKeyForestTemple, FOREST_TEMPLE_BOSS_KEY);
