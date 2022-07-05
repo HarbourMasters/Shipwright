@@ -973,6 +973,8 @@ namespace SohImGui {
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
+                        EnhancementCheckbox("Easy Twinrova", "gEasyTwinrova");
+                        Tooltip("First phase goes down after a single reflected beam. Shield fully charges after absorbing one attack in the second phase.");
                         
                         if (ImGui::BeginMenu("Fishing")) {
                             EnhancementCheckbox("Instant Fishing", "gInstantFishing");
