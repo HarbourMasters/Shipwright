@@ -1275,7 +1275,12 @@ void BossTw_ShootBeam(BossTw* this, GlobalContext* globalCtx) {
             BossTw_SetupHitByBeam(otherTw, globalCtx);
             Audio_PlayActorSound2(&otherTw->actor, NA_SE_EN_TWINROBA_DAMAGE_VOICE);
             globalCtx->envCtx.unk_D8 = 1.0f;
-            otherTw->actor.colChkInfo.health++;
+            if (!(CVar_GetS32("gEasyTwinrova", 0))) {
+                otherTw->actor.colChkInfo.health++;
+            }
+            else {
+                otherTw->actor.colChkInfo.health = otherTw->actor.colChkInfo.health + 4;
+            }
         }
     }
 }
@@ -4307,7 +4312,11 @@ s32 BossTw_BlastShieldCheck(BossTw* this, GlobalContext* globalCtx) {
                             BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 1);
                         } else {
                             BossTw_AddShieldHitEffect(globalCtx, 10.0f, 1);
-                            sShieldFireCharge++;
+                            if (!(CVar_GetS32("gEasyTwinrova", 0))) {
+                                sShieldFireCharge++;
+                            } else {
+                                sShieldFireCharge = 3;
+                            }
                             D_8094C86F = (sShieldFireCharge * 2) + 8;
                             D_8094C872 = -7;
                         }
@@ -4318,7 +4327,11 @@ s32 BossTw_BlastShieldCheck(BossTw* this, GlobalContext* globalCtx) {
                             BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 0);
                         } else {
                             BossTw_AddShieldHitEffect(globalCtx, 10.0f, 0);
-                            sShieldIceCharge++;
+                            if (!(CVar_GetS32("gEasyTwinrova", 0))) {
+                                sShieldIceCharge++;
+                            } else {
+                                sShieldIceCharge = 3;
+                            }
                             D_8094C86F = (sShieldIceCharge * 2) + 8;
                             D_8094C872 = -7;
                         }
