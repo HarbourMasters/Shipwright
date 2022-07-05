@@ -628,7 +628,21 @@ void func_80A0329C(EnElf* this, GlobalContext* globalCtx) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                Health_ChangeBy(globalCtx, 128);
+                if (CVar_GetS32("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
+                {
+                    if (CVar_GetS32("gFairyPercentRestore", 0))
+                    {
+                        Health_ChangeBy(globalCtx, (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16);
+                    }
+                    else
+                    {
+                        Health_ChangeBy(globalCtx, CVar_GetS32("gFairyHealth", 8) * 16);
+                    }
+                }
+                else
+                {
+                    Health_ChangeBy(globalCtx, 128);
+                }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
                     Magic_Fill(globalCtx);
                 }

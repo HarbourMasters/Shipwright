@@ -965,6 +965,65 @@ namespace SohImGui {
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
                         
+                        if (ImGui::BeginMenu("Potion Values"))
+                        {
+                            EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Red Potions");
+                            EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                            Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
+                            Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
+                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                            Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
+                            Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Blue Potions");
+                            EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Milk");
+                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Milk");
+                            EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                            Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Half Milk");
+                            EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                            Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairies");
+                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairies");
+                            EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
+                            Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
+                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairy Revivals");
+                            EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
+                            Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
+
+                            ImGui::EndMenu();
+                        }
+                        
                         ImGui::EndMenu();
                     }
 
@@ -979,7 +1038,6 @@ namespace SohImGui {
 
                         ImGui::EndMenu();
                     }
-                    
                     
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");

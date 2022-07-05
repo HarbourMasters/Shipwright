@@ -8234,7 +8234,21 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x140;
+                if (CVar_GetS32("gFairyReviveEffect", 0))
+                {
+                    if (CVar_GetS32("gFairyRevivePercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyReviveHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gFairyReviveHealth", 20) * 16;
+                    }
+                }
+                else
+                {
+                    gSaveContext.healthAccumulator = 0x140;
+                }
                 this->unk_850 = -1;
             }
         }
@@ -12849,17 +12863,100 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
             }
             else {
                 s32 sp28 = D_808549FC[this->itemActionParam - PLAYER_AP_BOTTLE_POTION_RED];
-
-                if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                
+                if (CVar_GetS32("gRedPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_RED)
+                {
+                    if (CVar_GetS32("gRedPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gRedPotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gRedPotionHealth", 20) * 16;
+                    }
                 }
+                else if (CVar_GetS32("gBluePotionEffects", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_BLUE)
+                {
+                    if (CVar_GetS32("gBlueHealthPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gBluePotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gBluePotionHealth", 20) * 16;
+                    }
 
-                if (sp28 & 2) {
-                    Magic_Fill(globalCtx);
+                    if (CVar_GetS32("gBlueManaPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMana", 100), 5);;
+                    }
                 }
+                else if (CVar_GetS32("gGreenPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN)
+                {
+                    if (CVar_GetS32("gGreenPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
 
-                if (sp28 & 4) {
-                    gSaveContext.healthAccumulator = 0x50;
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gGreenPotionMana", 100), 5);;
+                    }
+                }
+                else if (CVar_GetS32("gMilkEffect", 0) && (this->itemActionParam == PLAYER_AP_BOTTLE_MILK || this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF))
+                {
+                    if (CVar_GetS32("gMilkPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gMilkHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gMilkHealth", 5) * 16;
+                    }
+                    if  (CVar_GetS32("gSeparateHalfMilkEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF)
+                    {
+                        if (CVar_GetS32("gHalfMilkPercentRestore", 0))
+                        {
+                            gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gHalfMilkHealth", 100) / 100 + 15) / 16 * 16;
+                        }
+                        else
+                        {
+                            gSaveContext.healthAccumulator = CVar_GetS32("gHalfMilkHealth", 5) * 16;
+                        }
+                    }
+                }
+                else
+                {
+                    if (sp28 & 1) {
+                        gSaveContext.healthAccumulator = 0x140;
+                    }
+
+                    if (sp28 & 2) {
+                        Magic_Fill(globalCtx);
+                    }
+
+                    if (sp28 & 4) {
+                        gSaveContext.healthAccumulator = 0x50;
+                    }
                 }
             }
 
@@ -12972,7 +13069,21 @@ void func_8084EED8(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     }
     else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x140;
+        if (CVar_GetS32("gFairyEffect", 0))
+        {
+            if (CVar_GetS32("gFairyPercentRestore", 0))
+            {
+                gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16;
+            }
+            else
+            {
+                gSaveContext.healthAccumulator = CVar_GetS32("gFairyHealth", 8) * 16;
+            }
+        }
+        else
+        {
+            gSaveContext.healthAccumulator = 0x140;
+        }
     }
 }
 
