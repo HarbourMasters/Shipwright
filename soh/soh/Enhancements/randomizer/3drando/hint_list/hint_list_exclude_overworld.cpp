@@ -833,42 +833,42 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_1] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_2] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_3] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_4] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_5] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_6] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_7] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
     hintTable[MARKET_BOMBCHU_SHOP_ITEM_8] = HintText::Exclude({
                        //obscure text
-                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
+                       Text{"a #Bombchu merchant# sells", /*french*/"le #marchand de Missiles# vend", /*spanish*/"un #mercader de bombchus# vende"},
   });
 
 
