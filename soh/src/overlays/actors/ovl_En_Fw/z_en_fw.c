@@ -458,11 +458,10 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     s16 i;
     s16 idx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fw.c", 1191);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
-    if (1) {}
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type != 0) {
@@ -479,7 +478,7 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->scale, eff->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fw.c", 1229),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             idx = eff->timer * (8.0f / eff->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
@@ -487,5 +486,5 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fw.c", 1243);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

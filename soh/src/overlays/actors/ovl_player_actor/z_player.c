@@ -4900,11 +4900,11 @@ void func_8083AE40(Player* this, s16 objectId) {
 
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
-        LOG_HEX("size", size, "../z_player.c", 9090);
-        ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
+        LOG_HEX("size", size);
+        ASSERT(size <= 1024 * 8);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
-            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), "../z_player.c", 9099);
+            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     }
 }
 
@@ -6877,8 +6877,6 @@ void func_8084029C(Player* this, f32 arg1) {
     else if (arg1 > 7.25f) {
         arg1 = 7.25f;
     }
-
-    if (1) {}
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
@@ -9526,7 +9524,7 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
     Player_InitCommon(this, globalCtx, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
-    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 
     sp50 = gSaveContext.respawnFlag;
 
@@ -10400,7 +10398,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
                 rectLeft = OTRGetRectDimensionFromLeftEdge(26);
             }
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -10420,7 +10418,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 3500);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if (this->unk_6A0 > 4000000.0f) {
@@ -10933,7 +10931,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
     OverrideLimbDrawOpa overrideLimbDraw) {
     static s32 D_8085486C = 255;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19228);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, cullDList);
     gSPSegment(POLY_XLU_DISP++, 0x0C, cullDList);
@@ -10954,13 +10952,13 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
-            Matrix_ToMtx(sp70++, "../z_player.c", 19273);
+            MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
-            Matrix_ToMtx(sp70, "../z_player.c", 19279);
+            MATRIX_TOMTX(sp70);
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
@@ -10992,7 +10990,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                 this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19317),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                 Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0,
@@ -11003,7 +11001,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19328);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
@@ -11037,7 +11035,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     rot.y = 32300;
     rot.x = rot.z = 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19346);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
 
     if (!(this->stateFlags2 & PLAYER_STATE2_29)) {
@@ -11120,7 +11118,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                     0, (globalCtx->gameplayFrames * -2) % 128, 32, 32));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19459),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
             gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
@@ -11131,7 +11129,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19473);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {

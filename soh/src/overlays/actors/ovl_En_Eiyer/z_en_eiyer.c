@@ -697,7 +697,7 @@ s32 EnEiyer_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 void EnEiyer_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnEiyer* this = (EnEiyer*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_eiyer.c", 1494);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc != EnEiyer_Dead) {
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -714,5 +714,5 @@ void EnEiyer_Draw(Actor* thisx, GlobalContext* globalCtx) {
         POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable,
                                        EnEiyer_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_eiyer.c", 1541);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

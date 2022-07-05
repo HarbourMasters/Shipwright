@@ -20,7 +20,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
     s16 ammo;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_item.c", 69);
+    OPEN_DISPS(gfxCtx);
 
     ammo = AMMO(item);
 
@@ -67,7 +67,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_item.c", 116);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void KaleidoScope_SetCursorVtx(PauseContext* pauseCtx, u16 index, Vtx* vtx) {
@@ -98,7 +98,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     s16 moveCursorResult;
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 234);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800949A8(globalCtx->state.gfxCtx);
 
@@ -465,7 +465,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 516);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s16 animX, s16 animY) {

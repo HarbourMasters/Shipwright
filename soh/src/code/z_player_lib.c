@@ -630,8 +630,6 @@ s32 func_8008F2F8(GlobalContext* globalCtx) {
     if (!Player_InCsMode(globalCtx)) {
         triggerEntry = &sTextTriggers[var];
 
-        if (0) {}
-
         if ((triggerEntry->flag != 0) && !(gSaveContext.textTriggerFlags & triggerEntry->flag) &&
             (((var == 0) && (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0)) ||
              (((var == 1) || (var == 3)) && (this->currentBoots == PLAYER_BOOTS_IRON) &&
@@ -719,7 +717,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
     s32 eyeIndex = (jointTable[22].x & 0xF) - 1;
     s32 mouthIndex = (jointTable[22].x >> 4) - 1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 1721);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (eyeIndex < 0) {
         eyeIndex = sEyeMouthIndexes[face][0];
@@ -814,7 +812,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 1803);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 Vec3f D_8012602C = { 0.0f, 0.0f, 0.0f };
@@ -1166,7 +1164,7 @@ void func_800906D4(GlobalContext* globalCtx, Player* this, Vec3f* newTipPos) {
 void Player_DrawGetItemImpl(GlobalContext* globalCtx, Player* this, Vec3f* refPos, s32 drawIdPlusOne) {
     f32 height = (this->exchangeItemId != EXCH_ITEM_NONE) ? 6.0f : 14.0f;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2401);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(this->giObjectSegment);
 
@@ -1180,7 +1178,7 @@ void Player_DrawGetItemImpl(GlobalContext* globalCtx, Player* this, Vec3f* refPo
 
     GetItem_Draw(globalCtx, drawIdPlusOne - 1);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2421);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_DrawGetItem(GlobalContext* globalCtx, Player* this) {
@@ -1223,10 +1221,8 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
     D_801260C8.z = arg2;
     Matrix_MultVec3f(&D_801260C8, &sp80);
 
-    if (1) {}
-
     if (BgCheck_AnyLineTest3(&globalCtx->colCtx, &sp8C, &sp80, &sp74, &sp9C, 1, 1, 1, 1, &bgId)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2572);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         WORLD_OVERLAY_DISP = Gfx_CallSetupDL(WORLD_OVERLAY_DISP, 0x07);
 
@@ -1237,12 +1233,12 @@ void Player_DrawHookshotReticle(GlobalContext* globalCtx, Player* this, f32 arg2
         Matrix_Translate(sp74.x, sp74.y, sp74.z, MTXMODE_NEW);
         Matrix_Scale(sp60, sp60, sp60, MTXMODE_APPLY);
 
-        gSPMatrix(WORLD_OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2587),
+        gSPMatrix(WORLD_OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(WORLD_OVERLAY_DISP++, 0x06, globalCtx->objectCtx.status[this->actor.objBankIndex].segment);
         gSPDisplayList(WORLD_OVERLAY_DISP++, gLinkAdultHookshotReticleDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2592);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -1308,7 +1304,7 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
         if (this->itemActionParam == PLAYER_AP_STICK) {
             Vec3f sp124[3];
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2633);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             if (this->actor.scale.y >= 0.0f) {
                 D_80126080.x = this->unk_85C * 5000.0f;
@@ -1324,11 +1320,11 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
             Matrix_RotateZYX(-0x8000, 0, 0x4000, MTXMODE_APPLY);
             Matrix_Scale(1.0f, this->unk_85C, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2653),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildLinkDekuStickDL);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2656);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         } else if ((this->actor.scale.y >= 0.0f) && (this->swordState != 0)) {
             Vec3f spE4[3];
 
@@ -1343,14 +1339,14 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
         } else if ((*dList != NULL) && (this->leftHandType == 7)) {
             Color_RGB8* bottleColor = &sBottleColors[Player_ActionToBottle(this, this->itemActionParam)];
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2710);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2712),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, bottleColor->r, bottleColor->g, bottleColor->b, 0);
             gSPDisplayList(POLY_XLU_DISP++, sBottleDLists[(gSaveContext.linkAge)]);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2717);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if (this->actor.scale.y >= 0.0f) {
@@ -1386,7 +1382,7 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
         } else if ((this->rightHandType == 11) || (this->rightHandType == 12)) {
             BowStringData* stringData = &sBowStringData[gSaveContext.linkAge];
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2783);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             Matrix_Push();
             Matrix_Translate(stringData->pos.x, stringData->pos.y, stringData->pos.z, MTXMODE_APPLY);
@@ -1417,13 +1413,13 @@ void func_80090D20(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* 
                 Matrix_RotateZ(this->unk_858 * -0.2f, MTXMODE_APPLY);
             }
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player_lib.c", 2804),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, stringData->dList);
 
             Matrix_Pop();
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 2809);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         } else if ((this->actor.scale.y >= 0.0f) && (this->rightHandType == 10)) {
             Matrix_Get(&this->shieldMf);
             func_80090604(globalCtx, this, &this->shieldQuad, D_80126154);
@@ -1493,11 +1489,11 @@ u32 func_80091738(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime) {
 
     size = gObjectTable[OBJECT_GAMEPLAY_KEEP].vromEnd - gObjectTable[OBJECT_GAMEPLAY_KEEP].vromStart;
     ptr = segment + 0x3800;
-    DmaMgr_SendRequest1(ptr, gObjectTable[OBJECT_GAMEPLAY_KEEP].vromStart, size, "../z_player_lib.c", 2982);
+    DmaMgr_SendRequest1(ptr, gObjectTable[OBJECT_GAMEPLAY_KEEP].vromStart, size, __FILE__, __LINE__);
 
     size = gObjectTable[linkObjectId].vromEnd - gObjectTable[linkObjectId].vromStart;
     ptr = segment + 0x8800;
-    DmaMgr_SendRequest1(ptr, gObjectTable[linkObjectId].vromStart, size, "../z_player_lib.c", 2988);
+    DmaMgr_SendRequest1(ptr, gObjectTable[linkObjectId].vromStart, size, __FILE__, __LINE__);
 
     ptr = (void*)ALIGN16((intptr_t)ptr + size);
 
@@ -1590,7 +1586,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
     Mtx* perspMtx = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx));
     Mtx* lookAtMtx = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3129);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
 
@@ -1660,7 +1656,7 @@ void func_80091A24(GlobalContext* globalCtx, void* seg04, void* seg06, SkelAnime
 
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP++);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player_lib.c", 3288);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 uintptr_t SelectedAnim = 0; // Current Animaiton on the menu

@@ -890,7 +890,6 @@ void func_80A7B024(EnIn* this, GlobalContext* globalCtx) {
     }
     player->actor.freezeTimer = 10;
     if (this->unk_308.unk_00 == 2) {
-        if (1) {}
         if (!(gSaveContext.eventChkInf[1] & 0x800) && (gSaveContext.infTable[10] & 0x800)) {
             gSaveContext.eventChkInf[1] |= 0x800;
             gSaveContext.infTable[10] |= 0x800;
@@ -973,7 +972,7 @@ void EnIn_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
     EnIn* this = (EnIn*)thisx;
     Vec3f D_80A7B9A8 = { 1600.0, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_in.c", 2335);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == INGO_HEAD_LIMB) {
         Matrix_MultVec3f(&D_80A7B9A8, &this->actor.focus.pos);
@@ -986,7 +985,7 @@ void EnIn_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
         gSPDisplayList(POLY_OPA_DISP++, gIngoChildEraPitchForkDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_in.c", 2365);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnIn_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -994,7 +993,7 @@ void EnIn_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     EnIn* this = (EnIn*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_in.c", 2384);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc != func_80A79FB0) {
         func_80093D18(globalCtx->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
@@ -1002,7 +1001,7 @@ void EnIn_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnIn_OverrideLimbDraw, EnIn_PostLimbDraw, &this->actor);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_in.c", 2416);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnIn_Reset(void) {

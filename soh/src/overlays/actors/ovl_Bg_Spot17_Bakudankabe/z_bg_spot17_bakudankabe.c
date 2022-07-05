@@ -128,11 +128,11 @@ void BgSpot17Bakudankabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s8 r = coss(globalCtx->gameplayFrames * 1500) >> 8;
     s8 g = coss(globalCtx->gameplayFrames * 1500) >> 8;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 269);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 273),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     r = (r >> 1) + 0xC0;
@@ -142,15 +142,15 @@ void BgSpot17Bakudankabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_OPA_DISP++, gCraterBombableWallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 283);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 286);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 290),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCraterBombableWallCracksDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot17_bakudankabe.c", 295);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
