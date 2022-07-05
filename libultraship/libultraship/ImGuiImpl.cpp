@@ -926,6 +926,7 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
+<<<<<<< HEAD:libultraship/libultraship/ImGuiImpl.cpp
                     if (ImGui::BeginMenu("Time Savers"))
                     {
                         EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
@@ -965,6 +966,50 @@ namespace SohImGui {
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
                         
+                        if (ImGui::BeginMenu("Potion Values"))
+                        {
+                            EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                            EnhancementSliderInt("Red Potion: %d", "##REDPOTION", "gRedPotion", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Red Potions");
+                            EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                            Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
+                            Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
+                            EnhancementSliderInt("Green Potion: %d", "##GREENPOTION", "gGreenPotion", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                            Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
+                            Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Blue Potions");
+                            EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Milk");
+                            EnhancementSliderInt("Milk: %d", "##MILK", "gMilk", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Milk");
+                            EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                            Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            EnhancementSliderInt("Half Milk: %d", "##HALFMILK", "gHalfMilk", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Half Milk");
+                            EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                            Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+                            ImGui::EndMenu();
+                        }
+                        
                         ImGui::EndMenu();
                     }
 
@@ -979,7 +1024,6 @@ namespace SohImGui {
 
                         ImGui::EndMenu();
                     }
-                    
                     
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
