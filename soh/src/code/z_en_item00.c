@@ -1406,7 +1406,7 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        s32 randoGetItemId = GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
