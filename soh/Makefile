@@ -102,7 +102,6 @@ LDLIBS := \
 	bz2 \
 	z \
 	pthread \
-	storm \
 	ultraship \
 )
 
