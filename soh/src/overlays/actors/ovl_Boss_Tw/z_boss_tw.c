@@ -1275,6 +1275,7 @@ void BossTw_ShootBeam(BossTw* this, GlobalContext* globalCtx) {
             BossTw_SetupHitByBeam(otherTw, globalCtx);
             Audio_PlayActorSound2(&otherTw->actor, NA_SE_EN_TWINROBA_DAMAGE_VOICE);
             globalCtx->envCtx.unk_D8 = 1.0f;
+            // Immediately set the hp of twinrova to 4 to go into phase 2 after one beam hit
             if (!(CVar_GetS32("gEasyTwinrova", 0))) {
                 otherTw->actor.colChkInfo.health++;
             }
@@ -4312,6 +4313,7 @@ s32 BossTw_BlastShieldCheck(BossTw* this, GlobalContext* globalCtx) {
                             BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 1);
                         } else {
                             BossTw_AddShieldHitEffect(globalCtx, 10.0f, 1);
+                            // Set the shield value to fully charged immediately when enhancement is enabled
                             if (!(CVar_GetS32("gEasyTwinrova", 0))) {
                                 sShieldFireCharge++;
                             } else {
@@ -4327,6 +4329,7 @@ s32 BossTw_BlastShieldCheck(BossTw* this, GlobalContext* globalCtx) {
                             BossTw_AddShieldDeflectEffect(globalCtx, 10.0f, 0);
                         } else {
                             BossTw_AddShieldHitEffect(globalCtx, 10.0f, 0);
+                            // Set the shield value to fully charged immediately when enhancement is enabled
                             if (!(CVar_GetS32("gEasyTwinrova", 0))) {
                                 sShieldIceCharge++;
                             } else {
