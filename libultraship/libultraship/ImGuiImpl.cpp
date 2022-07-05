@@ -716,7 +716,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -744,14 +744,26 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
-        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
+        
+            if (CVar_GetS32("gControlNav", 0)) {
+                if (CVar_GetS32("gOpenMenuBar", 0)) {
+                    io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                }
+                else
+                {
+                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+                }
+            }
+            else
+            {
+            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+            }
         }
 
         #if __APPLE__
@@ -801,7 +813,12 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller"))
-	    {
+            {
+                EnhancementCheckbox("Use Controller Navigation", "gControlNav");
+                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+
+                ImGui::Separator();
+
                 // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
                 // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
@@ -809,7 +826,7 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
 
-		ImGui::Separator();
+                ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
@@ -818,8 +835,8 @@ namespace SohImGui {
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
 
-		ImGui::Separator();  
-		    
+                ImGui::Separator();
+
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
