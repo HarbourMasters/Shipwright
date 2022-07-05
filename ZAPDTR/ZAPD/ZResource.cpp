@@ -351,6 +351,8 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		if (myset.find(name) == myset.end()) {
 			str += StringHelper::Sprintf("\nstatic const char %s[] __attribute__((aligned (2))) = d%s;", name.c_str(), name.c_str());
 			myset.insert(name);
+		} else {
+			str += StringHelper::Sprintf("\nextern static const char %s[] __attribute__((aligned (2)));", name.c_str());
 		}
 
 		return str;
