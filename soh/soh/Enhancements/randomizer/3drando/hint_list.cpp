@@ -47,7 +47,7 @@ void HintTable_Init() {
                        Text{"the #froggy finale# yields",                /*french*/"la #finale amphibienne# donne", /*spanish*/"el #gran final batracio# brinda"},
                      }, {},
                        //clear text
-                       Text{"the final reward from the #Frogs of Zora's River# is", /*french*/"la dernière récompense des #grenouilles du fleuve zora# est", /*spanish*/"la recompensa final de las #ranas del Río Zora# premia"}
+                       Text{"the final reward from the #Frogs of Zora's River# is", /*french*/"la dernière récompense des #grenouilles de la Rivière Zora# est", /*spanish*/"la recompensa final de las #ranas del Río Zora# premia"}
   );
 
     hintTable[KF_LINKS_HOUSE_COW] = HintText::Always({
@@ -802,7 +802,7 @@ void HintTable_Init() {
 
     hintTable[ZORAS_RIVER] = HintText::Exclude({
                      //obscure text
-                     Text{"Zora's River", /*french*/"le fleuve Zora", /*spanish*/"el Río Zora"},
+                     Text{"Zora's River", /*french*/"la Rivière Zora", /*spanish*/"el Río Zora"},
   });
 
     hintTable[ZORAS_DOMAIN] = HintText::Exclude({
