@@ -203,12 +203,12 @@ constexpr std::array DungeonColors = {
             uint32_t dungeon = DUNGEON_FOREST_TEMPLE + bossKey;
             CreateMessage(0x9D4 + bossKey, 0, 2, 3,
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"You got the "+COLOR(DungeonColors[dungeon])+EnglishDungeonNames[dungeon]+NEWLINE()+"Boss Key"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
-                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"Vous trouvez la "+COLOR(DungeonColors[dungeon])+"Clé d'or "+NEWLINE()+FrenchDungeonArticles[dungeon]+" "+FrenchDungeonNames[dungeon]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
+                UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"Vous trouvez la "+COLOR(DungeonColors[dungeon])+"Clé d'Or "+NEWLINE()+FrenchDungeonArticles[dungeon]+" "+FrenchDungeonNames[dungeon]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
                 UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"¡Tienes la "+COLOR(DungeonColors[dungeon])+"gran llave "+SpanishDungeonArticles[dungeon]+NEWLINE()+SpanishDungeonNames[dungeon]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END());
         }
         CreateMessage(0x9D9, 0, 2, 3,
             UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"You got the "+COLOR(DungeonColors[DUNGEON_GANONS_CASTLE_FIRST_PART])+EnglishDungeonNames[DUNGEON_GANONS_CASTLE_FIRST_PART]+NEWLINE()+"Boss Key"+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
-            UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"Vous trouvez la "+COLOR(DungeonColors[DUNGEON_GANONS_CASTLE_FIRST_PART])+"Clé d'or "+NEWLINE()+FrenchDungeonArticles[DUNGEON_GANONS_CASTLE_FIRST_PART]+" "+FrenchDungeonNames[DUNGEON_GANONS_CASTLE_FIRST_PART]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
+            UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"Vous trouvez la "+COLOR(DungeonColors[DUNGEON_GANONS_CASTLE_FIRST_PART])+"Clé d'Or "+NEWLINE()+FrenchDungeonArticles[DUNGEON_GANONS_CASTLE_FIRST_PART]+" "+FrenchDungeonNames[DUNGEON_GANONS_CASTLE_FIRST_PART]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END(),
             UNSKIPPABLE()+ITEM_OBTAINED(ITEM_KEY_BOSS)+INSTANT_TEXT_ON()+"¡Tienes la "+COLOR(DungeonColors[DUNGEON_GANONS_CASTLE_FIRST_PART])+"gran llave "+SpanishDungeonArticles[DUNGEON_GANONS_CASTLE_FIRST_PART]+NEWLINE()+SpanishDungeonNames[DUNGEON_GANONS_CASTLE_FIRST_PART]+COLOR(QM_WHITE)+"!"+INSTANT_TEXT_OFF()+MESSAGE_END());
         //Compasses
         for (uint32_t dungeon = DUNGEON_DEKU_TREE; dungeon <= DUNGEON_ICE_CAVERN; dungeon++) {

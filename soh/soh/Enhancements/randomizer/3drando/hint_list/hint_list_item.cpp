@@ -160,7 +160,7 @@ void HintTable_Init_Item() {
                        Text{"an egg", /*french*/"un oeuf", /*spanish*/"un huevo"},
                      },
                        //clear text
-                       Text{"the Weird Egg", /*french*/"l'Oeuf curieux", /*spanish*/"el huevo extraño"}
+                       Text{"the Weird Egg", /*french*/"l'Oeuf Curieux", /*spanish*/"el huevo extraño"}
     );
 
     hintTable[BOOMERANG] = HintText::Item({
@@ -612,7 +612,7 @@ void HintTable_Init_Item() {
                        Text{"a Great Fairy's power", /*french*/"le pouvoir d'une grande fée", /*spanish*/"el poder de una Gran Hada"},
                      },
                        //clear text
-                       Text{"a Magic Meter", /*french*/"une jauge de magie", /*spanish*/"un aumento de poder mágico"}
+                       Text{"a Magic Meter", /*french*/"une Jauge de Magie", /*spanish*/"un aumento de poder mágico"}
     );
 
     hintTable[PROGRESSIVE_OCARINA] = HintText::Item({
@@ -1186,10 +1186,10 @@ void HintTable_Init_Item() {
                         Text{"a sylvan dungeon's master pass",      /*french*/"une clé maléfique sylvestree",             /*spanish*/"el pase maestro enselvado"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Forest Temple Boss Key", /*french*/"la Clé d'or du Temple de la Forêt", /*spanish*/"la gran llave del Templo del Bosque"}
+                        Text{"the Forest Temple Boss Key", /*french*/"la Clé d'Or du Temple de la Forêt", /*spanish*/"la gran llave del Templo del Bosque"}
      );
     hintTable[FIRE_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1197,10 +1197,10 @@ void HintTable_Init_Item() {
                         Text{"a molten dungeon's master pass",      /*french*/"une clé maléfique fondu",             /*spanish*/"el pase maestro fundido"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Fire Temple Boss Key", /*french*/"la Clé d'or du Temple du Feu", /*spanish*/"la gran llave del Templo del Fuego"}
+                        Text{"the Fire Temple Boss Key", /*french*/"la Clé d'Or du Temple du Feu", /*spanish*/"la gran llave del Templo del Fuego"}
      );
     hintTable[WATER_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1208,10 +1208,10 @@ void HintTable_Init_Item() {
                         Text{"a wet dungeon's master pass",      /*french*/"une clé maléfique humide",             /*spanish*/"el pase maestro mojado"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Water Temple Boss Key", /*french*/"la Clé d'or du Temple de l'Eau", /*spanish*/"la gran llave del Templo del Agua"}
+                        Text{"the Water Temple Boss Key", /*french*/"la Clé d'Or du Temple de l'Eau", /*spanish*/"la gran llave del Templo del Agua"}
      );
     hintTable[SPIRIT_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1219,10 +1219,10 @@ void HintTable_Init_Item() {
                         Text{"a sandy dungeon's master pass",      /*french*/"une clé maléfique sableux",             /*spanish*/"el pase maestro arenoso"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Spirit Temple Boss Key", /*french*/"la Clé d'or du Temple de l'Esprit", /*spanish*/"la gran llave del Templo del Espíritu"}
+                        Text{"the Spirit Temple Boss Key", /*french*/"la Clé d'Or du Temple de l'Esprit", /*spanish*/"la gran llave del Templo del Espíritu"}
      );
     hintTable[SHADOW_TEMPLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1230,10 +1230,10 @@ void HintTable_Init_Item() {
                         Text{"a creepy dungeon's master pass",      /*french*/"une clé maléfique sinistre",             /*spanish*/"el pase maestro siniestra"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Shadow Temple Boss Key", /*french*/"la Clé d'or du Temple de l'Ombre", /*spanish*/"la gran llave del Templo de las Sombras"}
+                        Text{"the Shadow Temple Boss Key", /*french*/"la Clé d'Or du Temple de l'Ombre", /*spanish*/"la gran llave del Templo de las Sombras"}
      );
     hintTable[GANONS_CASTLE_BOSS_KEY] = HintText::Item({
                         //obscure text
@@ -1241,10 +1241,10 @@ void HintTable_Init_Item() {
                         Text{"a final dungeon's master pass",      /*french*/"une clé maléfique final",             /*spanish*/"el pase maestro final"},
                       }, {
                         //ambiguous text
-                        Text{"a boss key", /*french*/"une Clé d'or", /*spanish*/"una gran llave"},
+                        Text{"a boss key", /*french*/"une Clé d'Or", /*spanish*/"una gran llave"},
                       },
                         //clear text
-                        Text{"the Ganon's Castle Boss Key", /*french*/"la Clé d'or du Château de Ganon", /*spanish*/"la gran llave del Castillo de Ganon"}
+                        Text{"the Ganon's Castle Boss Key", /*french*/"la Clé d'Or du Château de Ganon", /*spanish*/"la gran llave del Castillo de Ganon"}
      );
     hintTable[FOREST_TEMPLE_SMALL_KEY] = HintText::Item({
                         //obscure text
