@@ -216,7 +216,7 @@ static map<int, FBInfo>::iterator active_fb;
 static map<int, FBInfo> framebuffers;
 
 static set<pair<float, float>> get_pixel_depth_pending;
-static map<pair<float, float>, uint16_t> get_pixel_depth_cached;
+static unordered_map<pair<float, float>, uint16_t, hash_pair_ff> get_pixel_depth_cached;
 
 #ifdef _WIN32
 // TODO: Properly implement for MSVC
@@ -901,6 +901,7 @@ static void calculate_normal_dir(const Light_t *light, float coeffs[3]) {
         light->dir[1] / 127.0f,
         light->dir[2] / 127.0f
     };
+
     gfx_transposed_matrix_mul(coeffs, light_dir, rsp.modelview_matrix_stack[rsp.modelview_matrix_stack_size - 1]);
     gfx_normalize_vector(coeffs);
 }
@@ -1003,16 +1004,6 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
         const Vtx_tn *vn = &vertices[i].n;
         struct LoadedVertex *d = &rsp.loaded_vertices[dest_index];
 
-        if (markerOn)
-        {
-            int bp = 0;
-        }
-
-        if ((uintptr_t)vertices == 0x14913ec0)
-        {
-            int bp = 0;
-        }
-
         if (v == NULL)
             return;
 
@@ -1020,11 +1011,6 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
         float y = v->ob[0] * rsp.MP_matrix[0][1] + v->ob[1] * rsp.MP_matrix[1][1] + v->ob[2] * rsp.MP_matrix[2][1] + rsp.MP_matrix[3][1];
         float z = v->ob[0] * rsp.MP_matrix[0][2] + v->ob[1] * rsp.MP_matrix[1][2] + v->ob[2] * rsp.MP_matrix[2][2] + rsp.MP_matrix[3][2];
         float w = v->ob[0] * rsp.MP_matrix[0][3] + v->ob[1] * rsp.MP_matrix[1][3] + v->ob[2] * rsp.MP_matrix[2][3] + rsp.MP_matrix[3][3];
-
-        if (markerOn)
-        {
-            int bp = 0;
-        }
 
         x = gfx_adjust_x_for_aspect_ratio(x);
 
@@ -1077,10 +1063,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                 dotx /= 127.0f;
                 doty /= 127.0f;
 
-                if (dotx < -1.0f) dotx = -1.0f;
-                if (dotx > 1.0f) dotx = 1.0f;
-                if (doty < -1.0f) doty = -1.0f;
-                if (doty > 1.0f) doty = 1.0f;
+                std::clamp(dotx, -1.0f, 1.0f);
+                std::clamp(doty, -1.0f, 1.0f);
 
                 if (rsp.geometry_mode & G_TEXTURE_GEN_LINEAR) {
                                     // Not sure exactly what formula we should use to get accurate values
@@ -1088,8 +1072,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                                     doty = (2.906921f * doty * doty + 1.36114f) * doty;
                                     dotx = (dotx + 1.0f) / 4.0f;
                                     doty = (doty + 1.0f) / 4.0f;*/
-                dotx = acosf(-dotx) /*/ (3.14159265f)*/ / 4.0f;
-                doty = acosf(-doty) /*/ (3.14159265f)*/ / 4.0f;
+                    dotx = acosf(-dotx) /* M_PI */ / 4.0f;
+                    doty = acosf(-doty) /* M_PI */ / 4.0f;
                 }
                 else {
                     dotx = (dotx + 1.0f) / 4.0f;
@@ -1110,12 +1094,12 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
 
         // trivial clip rejection
         d->clip_rej = 0;
-        if (x < -w) d->clip_rej |= 1;
-        if (x > w) d->clip_rej |= 2;
-        if (y < -w) d->clip_rej |= 4;
-        if (y > w) d->clip_rej |= 8;
-        //if (z < -w) d->clip_rej |= 16;
-        if (z > w) d->clip_rej |= 32;
+        if (x < -w) d->clip_rej |= 1; // CLIP_LEFT
+        if (x > w) d->clip_rej |= 2; // CLIP_RIGHT
+        if (y < -w) d->clip_rej |= 4; // CLIP_BOTTOM
+        if (y > w) d->clip_rej |= 8; // CLIP_TOP
+        // if (z < -w) d->clip_rej |= 16; // CLIP_NEAR
+        if (z > w) d->clip_rej |= 32; // CLIP_FAR
 
         d->x = x;
         d->y = y;
@@ -1129,13 +1113,10 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             }
 
             float winv = 1.0f / w;
-            if (winv < 0.0f) {
-                winv = 32767.0f;
-            }
+            if (winv < 0.0f) winv = std::numeric_limits<int16_t>::max();
 
             float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
-            if (fog_z < 0) fog_z = 0;
-            if (fog_z > 255) fog_z = 255;
+            std::clamp(fog_z, 0.0f, 255.0f);
             d->color.a = fog_z; // Use alpha variable to store fog factor
         } else {
             d->color.a = v->cn[3];
@@ -2881,7 +2862,7 @@ uint16_t gfx_get_pixel_depth(float x, float y) {
 
     get_pixel_depth_pending.emplace(x, y);
 
-    map<pair<float, float>, uint16_t> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
+    unordered_map<pair<float, float>, uint16_t, hash_pair_ff> res = gfx_rapi->get_pixel_depth(game_renders_to_framebuffer ? game_framebuffer : 0, get_pixel_depth_pending);
     get_pixel_depth_cached.merge(res);
     get_pixel_depth_pending.clear();
 
