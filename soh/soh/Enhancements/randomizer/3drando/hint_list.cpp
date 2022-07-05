@@ -757,12 +757,12 @@ void HintTable_Init() {
 
     hintTable[THE_MARKET] = HintText::Exclude({
                      //obscure text
-                     Text{"the Market", /*french*/"la place du marché", /*spanish*/"la plaza del mercado"},
+                     Text{"the Market", /*french*/"la Place du Marché", /*spanish*/"la plaza del mercado"},
   });
 
     hintTable[TEMPLE_OF_TIME] = HintText::Exclude({
                      //obscure text
-                     Text{"Temple of Time", /*french*/"le temple du temps", /*spanish*/"el Templo del Tiempo"},
+                     Text{"Temple of Time", /*french*/"le Temple du Temps", /*spanish*/"el Templo del Tiempo"},
   });
 
     hintTable[HYRULE_CASTLE] = HintText::Exclude({
@@ -772,7 +772,7 @@ void HintTable_Init() {
 
     hintTable[OUTSIDE_GANONS_CASTLE] = HintText::Exclude({
                      //obscure text
-                     Text{"outside Ganon's Castle", /*french*/"les alentours du Château de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
+                     Text{"outside Ganon's Castle", /*french*/"les alentours du Château&de Ganon", /*spanish*/"el exterior del Castillo de Ganon"},
   });
 
     hintTable[KAKARIKO_VILLAGE] = HintText::Exclude({
@@ -832,7 +832,7 @@ void HintTable_Init() {
 
   //   hintTable[TOT_MAIN] = HintText::Region({
   //                    //obscure text
-  //                    Text{"the #Temple of Time#", /*french*/"le #temple du temps#", /*spanish*/"el Templo del Tiempo"},
+  //                    Text{"the #Temple of Time#", /*french*/"le #Temple du Temps#", /*spanish*/"el Templo del Tiempo"},
   // });
 
     hintTable[KF_MIDOS_HOUSE] = HintText::Region({
@@ -887,12 +887,12 @@ void HintTable_Init() {
 
     hintTable[MARKET_BOMBCHU_BOWLING] = HintText::Region({
                      //obscure text
-                     Text{"the #Bombchu Bowling Alley#", /*french*/"le #bowling teigneux#", /*spanish*/"la Bolera Bombchu"},
+                     Text{"the #Bombchu Bowling Alley#", /*french*/"le #Bowling Teigneux#", /*spanish*/"la Bolera Bombchu"},
   });
 
     hintTable[MARKET_POTION_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Market Potion Shop#", /*french*/"l'#apothicaire de la place du marché#", /*spanish*/"la tienda de pociones de la plaza del mercado"},
+                     Text{"the #Market Potion Shop#", /*french*/"l'#apothicaire de la Place du Marché#", /*spanish*/"la tienda de pociones de la plaza del mercado"},
   });
 
     hintTable[MARKET_TREASURE_CHEST_GAME] = HintText::Region({
@@ -902,7 +902,7 @@ void HintTable_Init() {
 
     hintTable[MARKET_BOMBCHU_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Bombchu Shop#", /*french*/"le #magasin de Bombchus#", /*spanish*/"la Tienda Bombchu"},
+                     Text{"the #Bombchu Shop#", /*french*/"le #Magasin de Missiles#", /*spanish*/"la Tienda Bombchu"},
   });
 
     hintTable[MARKET_MAN_IN_GREEN_HOUSE] = HintText::Region({
@@ -972,12 +972,12 @@ void HintTable_Init() {
 
     hintTable[MARKET_BAZAAR] = HintText::Region({
                      //obscure text
-                     Text{"the #Market Bazaar#", /*french*/"le #bazar de la place du marché#", /*spanish*/"el bazar de la plaza del mercado"},
+                     Text{"the #Market Bazaar#", /*french*/"le #bazar de la Place du Marché#", /*spanish*/"el bazar de la plaza del mercado"},
   });
 
     hintTable[MARKET_SHOOTING_GALLERY] = HintText::Region({
                      //obscure text
-                     Text{"a #Slingshot Shooting Gallery#", /*french*/"le #jeu d'adresse de la place du marché#", /*spanish*/"el Tiro al Blanco con tirachinas"},
+                     Text{"a #Slingshot Shooting Gallery#", /*french*/"le #jeu d'adresse de la Place du Marché#", /*spanish*/"el Tiro al Blanco con tirachinas"},
   });
 
     hintTable[KAK_BAZAAR] = HintText::Region({
@@ -1978,28 +1978,28 @@ void HintTable_Init() {
     hintTable[SPIRITUAL_STONE_TEXT_START] = HintText::Altar({
                      //obscure text
                      Text{"3 Spiritual Stones found in Hyrule...",
-                /*french*/"Les trois Pierres Ancestrales cachées dans Hyrule...",
+                /*french*/"Les trois Pierres Ancestrales cachées&dans Hyrule...",
                /*spanish*/"Tres piedras espirituales halladas por Hyrule..."},
     });
 
     hintTable[CHILD_ALTAR_TEXT_END_DOTOPEN] = HintText::Altar({
                      //obscure text
                      Text{"Ye who may become a Hero...&The path to the future is open...",
-                /*french*/"À celui qui a quête de devenir héros...&Le futur vous accueille béant...",
+                /*french*/"À celui qui a quête de devenir&héros...&Le futur vous accueille béant...",
                /*spanish*/"Para aquel que se convierta en el héroe...&La puerta al futuro está a su disposición..."},
     });
 
     hintTable[CHILD_ALTAR_TEXT_END_DOTCLOSED] = HintText::Altar({
                      //obscure text
                      Text{"Ye who may become a Hero...&Stand with the Ocarina and&play the Song of Time.",
-                /*french*/"À celui qui a quête de devenir héros...&Portez l'Ocarina et&jouez le chant du temps.",
+                /*french*/"À celui qui a quête de devenir&héros...&Portez l'Ocarina et jouez&le chant du temps.",
                /*spanish*/"Para aquel que se convierta en el héroe...&Tome la ocarina y&entone la Canción del Tiempo."},
     });
 
     hintTable[CHILD_ALTAR_TEXT_END_DOTINTENDED] = HintText::Altar({
                      //obscure text
                      Text{"Ye who may become a Hero...&Offer the spiritual stones and&play the Song of Time.",
-                /*french*/"À celui qui a quête de devenir héros...&Présentez les Pierres Ancestrales et&jouez le chant du temps.",
+                /*french*/"À celui qui a quête de devenir&héros... Présentez les Pierres&Ancestrales et jouez&le chant du temps.",
                /*spanish*/"Para aquel que se convierta en el héroe...&Tome las piedras espirituales y&entone la Canción del Tiempo."},
     });
 

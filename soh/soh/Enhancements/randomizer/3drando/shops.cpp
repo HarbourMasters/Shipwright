@@ -639,11 +639,11 @@ void InitTrickNames() {
      Text{"Deku Nut Pack (40)", "Paquet de noix Mojo (40)", "Capacidad de nueces mojo (50)"}};
   trickNameTable[GI_DEKU_STICK_UPGRADE_1] = {
 	 Text{"Deku Rod Capacity (20)", "Capacité de tiges Mojo (20)", "Capacidad de palos mojo (20)"},
-     Text{"Boko Stick Capacity (20)", "Capacité de bâtons Boko (20)", "Capacidad de palos boko (20)"},
+     Text{"Boko Stick Capacity (20)", "Capacité de Bâtons Boko (20)", "Capacidad de palos boko (20)"},
      Text{"Deku Stick Pack (20)", "Paquet de bâtons Mojo (20)", "Capacidad de bastones deku (20)"}};
   trickNameTable[GI_DEKU_STICK_UPGRADE_2] = {
 	 Text{"Deku Rod Capacity (30)", "Capacité de tiges Mojo (30)", "Capacidad de palos mojo (30)"},
-     Text{"Boko Stick Capacity (30)", "Capacité de bâtons Boko (30)", "Capacidad de palos boko (30)"},
+     Text{"Boko Stick Capacity (30)", "Capacité de Bâtons Boko (30)", "Capacidad de palos boko (30)"},
      Text{"Deku Stick Pack (30)", "Paquet de bâtons Mojo (30)", "Capacidad de bastones deku (30)"}};
   trickNameTable[GI_MAGIC_1] = {
 	 Text{"Stamina Meter", "Jauge d'endurance", "Medidor de vigor"},
