@@ -43,7 +43,7 @@ void EnJsjutan_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     this->dyna.actor.flags &= ~ACTOR_FLAG_0;
     DynaPolyActor_Init(&this->dyna, DPM_UNK);
-    CollisionHeader_GetVirtual(&dsCol, &header);
+    CollisionHeader_GetVirtual(&sCol, &header);
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, header);
     Actor_SetScale(thisx, 0.02f);
     this->unk_164 = true;
@@ -430,7 +430,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x0C, sShadowEvenVtx);
     }
-    gSPDisplayList(POLY_OPA_DISP++, dsModelDL);
+    gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_Translate(thisx->world.pos.x, this->unk_168 + 3.0f, thisx->world.pos.z, MTXMODE_NEW);
@@ -449,7 +449,7 @@ void EnJsjutan_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     } else {
         gSPSegment(POLY_OPA_DISP++, 0x0C, sCarpetEvenVtx);
     }
-    gSPDisplayList(POLY_OPA_DISP++, dsModelDL);
+    gSPDisplayList(POLY_OPA_DISP++, sModelDL);
 
     CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_jsjutan.c", 823);
 }

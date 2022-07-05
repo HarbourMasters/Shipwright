@@ -1605,9 +1605,9 @@ void InitSaveEditor() {
         SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : songMapping) {
-        SohImGui::LoadResource(entry.name, dgSongNoteTex, entry.color);
+        SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
-        SohImGui::LoadResource(entry.nameFaded, dgSongNoteTex, fadedCol);
+        SohImGui::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
     }
 }

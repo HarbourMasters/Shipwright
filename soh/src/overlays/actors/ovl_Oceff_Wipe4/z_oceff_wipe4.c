@@ -73,7 +73,7 @@ void OceffWipe4_Draw(Actor* thisx, GlobalContext* globalCtx) {
         z = 1330.0f;
     }
 
-    vtxPtr = ResourceMgr_LoadVtxByName(dsFrustumVtx);
+    vtxPtr = ResourceMgr_LoadVtxByName(sFrustumVtx);
     if (this->timer >= 30) {
         alpha = 12 * (50 - this->timer);
     } else {
@@ -99,7 +99,7 @@ void OceffWipe4_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (this->actor.params == OCEFF_WIPE4_UNUSED) {
         gSPDisplayList(POLY_XLU_DISP++, sUnusedMaterialDL);
     } else {
-        gSPDisplayList(POLY_XLU_DISP++, dsMaterialDL);
+        gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
     }
 
     gSPDisplayList(POLY_XLU_DISP++, sMaterial2DL);
