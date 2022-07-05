@@ -54,7 +54,7 @@ void DemoTreLgt_Init(Actor* thisx, GlobalContext* globalCtx) {
         osSyncPrintf("Demo_Tre_Lgt_Actor_ct();コンストラクト失敗\n");
     }
 
-    ASSERT(true, "1", "../z_demo_tre_lgt.c", UNK_LINE);
+    ASSERT(true);
 
     this->unk_170 = 255;
     this->unk_174 = 255;
@@ -136,7 +136,7 @@ s32 DemoTreLgt_PostLimbDraw(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve,
     s32 pad;
     DemoTreLgt* this = (DemoTreLgt*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_tre_lgt.c", 423);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (globalCtx->state.frames * 2) % 256, 0, 64, 32, 1,
                                 (globalCtx->state.frames * -2) % 256, 0, 64, 32));
@@ -147,14 +147,14 @@ s32 DemoTreLgt_PostLimbDraw(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve,
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 180, this->unk_174);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_tre_lgt.c", 448);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DemoTreLgt_Draw(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     DemoTreLgt* this = (DemoTreLgt*)thisx;
 
-    OPEN_DISPS(gfxCtx, "../z_demo_tre_lgt.c", 461);
+    OPEN_DISPS(gfxCtx);
 
     if (this->action != DEMO_TRE_LGT_ACTION_ANIMATE) {
         return;
@@ -164,5 +164,5 @@ void DemoTreLgt_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 255, 0, 0);
     SkelCurve_Draw(&this->actor, globalCtx, &this->skelCurve, DemoTreLgt_PostLimbDraw, NULL, 1, thisx);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_tre_lgt.c", 476);
+    CLOSE_DISPS(gfxCtx);
 }

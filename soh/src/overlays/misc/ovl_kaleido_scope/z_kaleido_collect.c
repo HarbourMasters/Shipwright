@@ -76,7 +76,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
     s16 sp208[3];
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_collect.c", 248);
+    OPEN_DISPS(gfxCtx);
 
     if ((!pauseCtx->unk_1E4 || (pauseCtx->unk_1E4 == 5) || (pauseCtx->unk_1E4 == 8)) &&
         (pauseCtx->pageIndex == PAUSE_QUEST)) {
@@ -716,7 +716,7 @@ void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfx
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_collect.c", 863);
+    CLOSE_DISPS(gfxCtx);
 }
 
 s32 KaleidoScope_UpdateQuestStatusPoint(PauseContext* pauseCtx, s32 point) {

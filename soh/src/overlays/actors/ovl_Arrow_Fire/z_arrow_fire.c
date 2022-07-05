@@ -56,7 +56,7 @@ void ArrowFire_Init(Actor* thisx, GlobalContext* globalCtx) {
 
 void ArrowFire_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     func_800876C8(globalCtx);
-    LOG_STRING("消滅", "../z_arrow_fire.c", 421); // "Disappearance"
+    LOG_STRING("消滅"); // "Disappearance"
 }
 
 void ArrowFire_Charge(ArrowFire* this, GlobalContext* globalCtx) {
@@ -201,7 +201,7 @@ void ArrowFire_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     if ((arrow != NULL) && (arrow->actor.update != NULL) && (this->timer < 255)) {
         tranform = (arrow->hitFlags & 2) ? &this->actor : &arrow->actor;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         Matrix_Translate(tranform->world.pos.x, tranform->world.pos.y, tranform->world.pos.z, MTXMODE_NEW);
         Matrix_RotateY(tranform->shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -244,7 +244,7 @@ void ArrowFire_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         }
         Matrix_Scale(this->radius * 0.2f, this->unk_158 * 4.0f, this->radius * 0.2f, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -700.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, __FILE__, __LINE__),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, sMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
@@ -252,6 +252,6 @@ void ArrowFire_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                                         255 - stateFrames % 256, 511 - (stateFrames * 10) % 512, 64, 64));
         gSPDisplayList(POLY_XLU_DISP++, sModelDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

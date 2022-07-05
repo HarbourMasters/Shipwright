@@ -998,7 +998,6 @@ void func_80083108(GlobalContext* globalCtx) {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
                     }
-                    if (1) {} // Necessary to match
                 }
 
                 if (sp28) {
@@ -1495,7 +1494,7 @@ void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button) {
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
     DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
                         (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
-                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), "../z_parameter.c", 1171);
+                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -1505,7 +1504,7 @@ void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button) {
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
     DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_180, interfaceCtx->iconItemSegment + button * 0x1000,
                         (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
-                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), "../z_parameter.c", 1193);
+                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -2312,7 +2311,7 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
         //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
                             //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
                             //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
-                            //0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 2145);
+                            //0, &interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
         //osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
     } else {
         gSegments[7] = VIRTUAL_TO_PHYSICAL(interfaceCtx->doActionSegment);
@@ -2398,7 +2397,7 @@ void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action) {
     memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
     //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
                         //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
-                        //&interfaceCtx->loadQueue, NULL, "../z_parameter.c", 2228);
+                        //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
     interfaceCtx->unk_1FA = 1;
@@ -2859,7 +2858,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 magicBarY;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (gSaveContext.magicLevel != 0) {
         s16 X_Margins;
@@ -2989,7 +2988,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80088AA0(s16 arg0) {
@@ -3029,7 +3028,7 @@ void func_80088B34(s16 arg0) {
 }
 
 void Interface_DrawActionLabel(GraphicsContext* gfxCtx, void* texture) {
-    OPEN_DISPS(gfxCtx, "../z_parameter.c", 2820);
+    OPEN_DISPS(gfxCtx);
 
     gDPLoadTextureBlock_4b(OVERLAY_DISP++, texture, G_IM_FMT_IA, DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -3037,7 +3036,7 @@ void Interface_DrawActionLabel(GraphicsContext* gfxCtx, void* texture) {
 
     gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_parameter.c", 2829);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Interface_DrawItemButtons(GlobalContext* globalCtx) {
@@ -3260,7 +3259,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         C_Down_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos_ori[0]);
     }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // B Button Color & Texture
     // Also loads the Item Button Texture reused by other buttons afterwards
@@ -3554,14 +3553,14 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 int16_t gItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
 int16_t gItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
 
 void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 button) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     s16 X_Margins_CL;
     s16 X_Margins_CR;
     s16 X_Margins_CD;
@@ -3744,7 +3743,7 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
                         (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
                         gItemIconDD[button] << 1, gItemIconDD[button] << 1);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 const char* _gAmmoDigit0Tex[] =
@@ -3937,7 +3936,7 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
         ItemIconPos[3][1] = ItemIconPos_ori[3][1];
     }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     i = gSaveContext.equips.buttonItems[button];
 
@@ -3989,19 +3988,19 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
 
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_DrawActionButton(GlobalContext* globalCtx, f32 x, f32 y) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3172);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(-137.0f + x, 97.0f - y, XREG(18) / 10.0f, MTXMODE_NEW);
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
     Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
 
-    gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_parameter.c", 3177),
+    gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[0], 4, 0);
 
@@ -4011,7 +4010,7 @@ void Interface_DrawActionButton(GlobalContext* globalCtx, f32 x, f32 y) {
 
     gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3187);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_InitVertices(GlobalContext* globalCtx) {
@@ -4175,7 +4174,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
     s16 svar6;
     bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || globalCtx->pauseCtx.state != 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // Invalidate Do Action textures as they may have changed
     gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment);
@@ -4687,7 +4686,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_parameter.c", 3701),
+        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
 
@@ -4756,7 +4755,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {
                 // Carrots rendering if the action corresponds to riding a horse
-                if (interfaceCtx->unk_1EE == 8) {
+                if (interfaceCtx->unk_1EE == 8 && !CVar_GetS32("gInfiniteEpona", 0)) {
                     // Load Carrot Icon
                     gDPLoadTextureBlock(OVERLAY_DISP++, gCarrotIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
@@ -5301,7 +5300,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPFillRectangle(OVERLAY_DISP++, 0, 0, gScreenWidth - 1, gScreenHeight - 1);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_Update(GlobalContext* globalCtx) {

@@ -40,7 +40,7 @@ void FlagSet_Update(GlobalContext* globalCtx) {
     Gfx* gfx;
     Gfx* polyOpa;
 
-    OPEN_DISPS(gfxCtx, "../flg_set.c", 131);
+    OPEN_DISPS(gfxCtx);
 
     {
         GfxPrint printer;
@@ -148,5 +148,5 @@ void FlagSet_Update(GlobalContext* globalCtx) {
         globalCtx->pauseCtx.debugState = 0;
     }
 
-    CLOSE_DISPS(gfxCtx, "../flg_set.c", 241);
+    CLOSE_DISPS(gfxCtx);
 }

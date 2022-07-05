@@ -652,7 +652,7 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnReeba* this = (EnReeba*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_reeba.c", 1062);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -664,7 +664,7 @@ void EnReeba_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     SkelAnime_DrawOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, NULL, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_reeba.c", 1088);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (BREG(0)) {
         Vec3f debugPos;
