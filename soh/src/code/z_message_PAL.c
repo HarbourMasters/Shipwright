@@ -1670,6 +1670,96 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, __FILE__, __LINE__);
+    }
+
+    if (CVar_GetS32("gTypoFixes", 0)) {
+        Message_FindMessage(globalCtx, textId);
+        char* src = (uintptr_t)font->msgOffset;
+        // Bombchu Get!
+        if (textId == 0x33 && gSaveContext.language != LANGUAGE_GER) {
+            if (gSaveContext.language == LANGUAGE_ENG) {
+                msgCtx->msgLength = font->msgLength + 2;
+                memcpy(font->msgBuf, src, 0x66);
+                memcpy(font->msgBuf + 0x66, src + 0x67, 0x2E);
+                memcpy(font->msgBuf + 0x97, src + 0x95, font->msgLength - 0x93);
+                memcpy(font->msgBuf + 0x94, " of", 3);
+                font->msgBuf[0x9C] = 0x01;
+                font->msgBuf[0xA1] = 0x20;
+            } else { // French
+                msgCtx->msgLength = font->msgLength - 1;
+                memcpy(font->msgBuf, src, 0x61);
+                memcpy(font->msgBuf + 0x61, src + 0x62, font->msgLength - 0x62);
+            }
+        // Potion Shop at night
+        } else if (textId == 0x020E && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength - 2;
+            strcpy(font->msgBuf, "\x05\x44Potion");
+            memcpy(font->msgBuf + 0x8, src + 0xA, font->msgLength - 0xA);
+        // Shabom Navi hint
+        } else if (textId == 0x0616 && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength - 1;
+            memcpy(font->msgBuf, src, 0x29);
+            strcpy(font->msgBuf + 0x29, "low up\x01in your face!\x05\x40\x09\x02");
+        // Freezard
+        } else if (textId == 0x063B && gSaveContext.language != LANGUAGE_GER) {
+            if (gSaveContext.language == LANGUAGE_ENG) {
+                msgCtx->msgLength = font->msgLength - 1;
+                memcpy(font->msgBuf, src, 0x05);
+                memcpy(font->msgBuf + 0x05, src + 0x06, font->msgLength - 0x06);
+            } else { // French
+                msgCtx->msgLength = font->msgLength - 1;
+                memcpy(font->msgBuf, src, 0x09);
+                memcpy(font->msgBuf + 0x09, src + 0x0A, font->msgLength - 0x0A);
+            }
+        // Nocturne of Shadow
+        } else if (textId == 0x0897 && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength + 2;
+            strcpy(font->msgBuf, "\x08You p");
+            memcpy(font->msgBuf + 6, src + 4, font->msgLength - 4);
+        // Friendly Saria
+        } else if (textId == 0x106B && gSaveContext.language != LANGUAGE_GER) {
+            if (gSaveContext.language == LANGUAGE_ENG) {
+                msgCtx->msgLength = font->msgLength - 4;
+                strcpy(font->msgBuf, "\x1A\x06\x2EI");
+                memcpy(font->msgBuf + 0x04, src + 0x08, font->msgLength - 0x08);
+            } else { // French
+                msgCtx->msgLength = font->msgLength - 2;
+                strcpy(font->msgBuf, "\x1A\x06\x2CJe serai");
+                memcpy(font->msgBuf + 0x0B, src + 0x0D, font->msgLength - 0x0D);
+            }
+        // Running Man's dream
+        } else if (textId == 0x202D && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength;
+            memcpy(font->msgBuf, src, font->msgLength);
+            font->msgBuf[0x07] = '-';
+        // Malon incubation tip
+        } else if (textId == 0x2044 && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength + 3;
+            strcpy(font->msgBuf, "Incubate the egg, then set it to \x05\x46\xA1\x05\x40");
+            memcpy(font->msgBuf + 0x26, src + 0x23, font->msgLength - 0x23);
+        // Talon's plums
+        } else if (textId == 0x2084 && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength + 1;
+            memcpy(font->msgBuf, src, 0x20);
+            font->msgBuf[0x20] = 'b';
+            memcpy(font->msgBuf + 0x21, src + 0x20, font->msgLength - 0x20);
+        // Running Man's head-start
+        } else if (textId == 0x607F && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength + 1;
+            memcpy(font->msgBuf, src, 0x35);
+            font->msgBuf[0x35] = '-';
+            memcpy(font->msgBuf + 0x36, src + 0x35, font->msgLength - 0x35);
+        // It's an illusion, Michael (buff guy in alley)
+        } else if (textId == 0x7114 && gSaveContext.language == LANGUAGE_ENG) {
+            msgCtx->msgLength = font->msgLength - 1;
+            memcpy(font->msgBuf, src, 0x17);
+            strcpy(font->msgBuf + 0x17, " mask...\x02");
+        } else {
+            Message_FindMessage(globalCtx, textId);
+            msgCtx->msgLength = font->msgLength;
+            char* src = (uintptr_t)font->msgOffset;
+            memcpy(font->msgBuf, src, font->msgLength);
+        }
     } else {
         Message_FindMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;

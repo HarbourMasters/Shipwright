@@ -1105,6 +1105,8 @@ namespace SohImGui {
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
                     Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
+                    EnhancementCheckbox("Fix text issues", "gTypoFixes");
+                    Tooltip("Fixes minor errors in the original dialogue");
 
                     ImGui::EndMenu();
                 }
