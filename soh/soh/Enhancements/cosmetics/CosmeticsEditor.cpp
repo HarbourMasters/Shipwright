@@ -853,7 +853,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_C", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Button C colors & C Cursor colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the C Buttons' colors (if not using separate colors)\nAnd various cursor that use C-Button colors", false);
+                Draw_HelpIcon("Affects the C Buttons' color (if not using separate colors)\nAnd various cursor that use C-Buttons colors", false);
                 SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -862,16 +862,16 @@ void Draw_HUDButtons(){
                 if (ImGui::BeginTable("tableBTN_CSep", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("C-Buttons individual colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                     Table_InitHeader(false);
-                    Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
                     SohImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
                     SohImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
                     SohImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
                     SohImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
                     ImGui::EndTable();
                 }
