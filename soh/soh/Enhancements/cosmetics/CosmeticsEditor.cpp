@@ -896,7 +896,7 @@ void Draw_HUDButtons(){
             }
         }
     } else {
-        ImGui::Text("To modify buttons colors you need \"Custom Colors\" scheme\n to be selected in \"General\" tab.\n Once enabled you will be able to modify the following colors:\nA Button colors,\nB Button colors,\nC Button colors & cursor,\nStart button\nDPad icon");
+        ImGui::Text("To modify buttons colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nA Button colors,\nB Button colors,\nC Button colors & cursor,\nStart button\nDPad icon");
     }
 }
 void Draw_General(){
