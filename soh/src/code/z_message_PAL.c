@@ -1726,7 +1726,6 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                 msgCtx->msgLength = font->msgLength - 2;
                 strcpy(font->msgBuf, "\x0F, toi et moi");
                 memcpy(font->msgBuf + 0x0D, src + 0x0A, font->msgLength - 0x0A);
-                font->msgBuf[0x13] = 's';
             }
         // Friendly Saria again
         } else if (textId == 0x106B && gSaveContext.language != LANGUAGE_GER) {
