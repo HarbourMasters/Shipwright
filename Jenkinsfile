@@ -106,9 +106,9 @@ pipeline {
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md readme.txt
 			    
-			    docker exec sohcont appimage/appimage.sh
+                            docker exec sohcont appimage/appimage.sh
 			    
-			    7z a soh-linux.7z SOH-Linux.AppImage readme.txt
+                            7z a soh-linux.7z SOH-Linux.AppImage readme.txt
                             
                             '''
                         }
@@ -137,8 +137,8 @@ pipeline {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             cd soh
-                            make setup -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
-                            make -j4 DEBUG=0 CC=gcc-12 CXX=g++-12
+                            make setup -j4 DEBUG=0 OPTFLAGS=-O2 CC=gcc-12 CXX=g++-12
+                            make -j4 DEBUG=0 OPTFLAGS=-O2 CC=gcc-12 CXX=g++-12
                             make -j4 appbundle
                             mv ../README.md readme.txt
                             7z a soh-mac.7z soh.app readme.txt
