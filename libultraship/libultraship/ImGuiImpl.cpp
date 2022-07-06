@@ -588,7 +588,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will make a random color for the colors at it's right.\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Select a random set of colors\nOverwrites previously chosen color");
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
@@ -600,7 +600,7 @@ namespace SohImGui {
         MakeInvisible += "Rainbow";
 
         EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
-        Tooltip("Clicking this button will make color cycling\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
     }
 
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {

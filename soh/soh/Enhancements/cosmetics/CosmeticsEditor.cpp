@@ -825,6 +825,7 @@ void Draw_Placements(){
     }
 }
 void Draw_HUDButtons(){
+    ImGui::Text("Using these colors require \"Custom Colors\" scheme\nto be selected in \"General\" tab");
     if (ImGui::CollapsingHeader("A Button colors & A Cursors")) {
         if (ImGui::BeginTable("tableBTN_A", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Button A colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
@@ -884,13 +885,14 @@ void Draw_HUDButtons(){
         if (ImGui::BeginTable("tableDpadHud", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("DPad", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            Draw_HelpIcon("DPad background color, should be white for default value");
+            Draw_HelpIcon("DPad background colors, should be white for default value");
             SohImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
             ImGui::EndTable();
         }
     }
 }
 void Draw_General(){
+    ImGui::Text("\"Custom Colors\" is required for\ninterface's elements custom colors");
     if (ImGui::BeginTable("tableScheme", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
         ImGui::TableSetupColumn("N64 Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         ImGui::TableSetupColumn("GameCube Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
