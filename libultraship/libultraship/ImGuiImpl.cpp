@@ -588,7 +588,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Select a random set of colors\nOverwrites previously chosen color");
+        Tooltip("Chooses a random color\nOverwrites previously chosen color");
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
