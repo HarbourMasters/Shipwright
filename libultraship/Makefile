@@ -22,7 +22,7 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-error=multichar
 
 CWARN :=
-CXXWARN := -Wno-deprecated-enum-enum-conversion
+CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-error=maybe-uninitialized
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
