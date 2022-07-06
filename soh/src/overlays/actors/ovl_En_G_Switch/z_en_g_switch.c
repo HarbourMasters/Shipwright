@@ -11,6 +11,7 @@
 #include "overlays/effects/ovl_Effect_Ss_HitMark/z_eff_ss_hitmark.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tsubo/object_tsubo.h"
+#include "objects/object_gi_rupy/object_gi_rupy.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -117,11 +118,22 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
             Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
             this->actor.shape.yOffset = 700.0f;
+
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->actor.shape.yOffset = 35.0f;
+            } else {
+                this->actor.shape.yOffset = 700.0f;
+            }
+
             if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
                 osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Ｙｏｕ ａｒｅ Ｓｈｏｃｋ！  ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
                 Actor_Kill(&this->actor);
             } else {
-                Actor_SetScale(&this->actor, 0.03f);
+                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                    Actor_SetScale(&this->actor, 0.6f);
+                } else {
+                    Actor_SetScale(&this->actor, 0.03f);
+                }
                 this->actionFunc = EnGSwitch_SilverRupeeIdle;
             }
             break;
@@ -152,8 +164,14 @@ void EnGSwitch_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actionFunc = EnGSwitch_WaitForObject;
             break;
         case ENGSWITCH_TARGET_RUPEE:
-            this->actor.shape.yOffset = 700.0f;
-            Actor_SetScale(&this->actor, 0.05f);
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->actor.shape.yOffset = 35.0f;
+                Actor_SetScale(&this->actor, 0.9f);
+            } else {
+                this->actor.shape.yOffset = 700.0f;
+                Actor_SetScale(&this->actor, 0.05f);
+            }
+            
             Collider_InitCylinder(globalCtx, &this->collider);
             Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);
             this->actor.draw = EnGSwitch_DrawRupee;
@@ -467,7 +485,9 @@ void EnGSwitch_DrawPot(Actor* thisx, GlobalContext* globalCtx) {
 static void* sRupeeTextures[] = {
     gRupeeGreenTex, gRupeeBlueTex, gRupeeRedTex, gRupeePinkTex, gRupeeOrangeTex, gRupeeSilverTex,
 };
-
+static void* sRupeeTexturesNew[] = {
+    GID_RUPEE_GREEN, GID_RUPEE_BLUE, GID_RUPEE_RED, GID_RUPEE_PURPLE, GID_RUPEE_GOLD,
+};
 void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
@@ -476,10 +496,26 @@ void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx) {
         OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
         func_8002EBCC(&this->actor, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
-        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        if (CVar_GetS32("gNewDrops", 0) !=0) {
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD);
+            if (this->type == ENGSWITCH_TARGET_RUPEE) {
+                GetItem_Draw(globalCtx, sRupeeTexturesNew[this->colorIdx]);
+            } else {
+                gsDPSetGrayscaleColor(POLY_OPA_DISP++, 255, 255, 255, 255);
+                gsSPGrayscale(POLY_OPA_DISP++, true);
+                func_80093D18(globalCtx->state.gfxCtx);
+                gSPDisplayList(POLY_OPA_DISP++, gGiRupeeInnerDL);
+                gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeInnerColorDL);
+                func_80093D84(globalCtx->state.gfxCtx);
+                gSPDisplayList(POLY_OPA_DISP++, gGiRupeeOuterDL);
+                gSPDisplayList(POLY_OPA_DISP++, gGiGoldRupeeOuterColorDL);
+                gsSPGrayscale(POLY_OPA_DISP++, false);
+            }
+        } else {
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
+            gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        }
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     if (this->type == ENGSWITCH_TARGET_RUPEE) {
