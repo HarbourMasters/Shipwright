@@ -1115,6 +1115,10 @@ namespace SohImGui {
                     Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                     EnhancementCheckbox("Fish while hovering", "gHoverFishing");
                     Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
+                    EnhancementCheckbox("N64 Weird Frames", "gN64WeirdFrames");
+                    Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
+                    EnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB");
+                    Tooltip("Allows bombchus to explode out of bounds similar to GameCube and Wii VC");
 
                     ImGui::EndMenu();
                 }
