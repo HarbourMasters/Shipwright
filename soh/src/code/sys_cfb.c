@@ -25,7 +25,7 @@ void SysCfb_Init(s32 n64dd) {
         osSyncPrintf("RAM4M mode\n");
         sSysCfbEnd = 0x80400000;
     } else {
-        LogUtils_HungupThread("../sys_cfb.c", 354);
+        LOG_HUNGUP_THREAD();
     }
     */
 

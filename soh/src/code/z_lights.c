@@ -67,7 +67,7 @@ void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
 
 #if 1
 
-    OPEN_DISPS(gfxCtx, "../z_lights.c", 339);
+    OPEN_DISPS(gfxCtx);
 
     gSPNumLights(POLY_OPA_DISP++, lights->numLights);
     gSPNumLights(POLY_XLU_DISP++, lights->numLights);
@@ -82,13 +82,11 @@ void Lights_Draw(Lights* lights, GraphicsContext* gfxCtx) {
         light++;
     }
 
-    if (0) {}
-
     i++; // abmient light is total number of lights + 1
     gSPLight(POLY_OPA_DISP++, &lights->l.a, i);
     gSPLight(POLY_XLU_DISP++, &lights->l.a, i);
 
-    CLOSE_DISPS(gfxCtx, "../z_lights.c", 352);
+    CLOSE_DISPS(gfxCtx);
 #endif
 }
 
@@ -120,7 +118,6 @@ void Lights_BindPoint(Lights* lights, LightParams* params, Vec3f* vec) {
 
             if (light != NULL) {
                 posDiff = sqrtf(posDiff);
-                if (1) {}
                 scale = posDiff / scale;
                 scale = 1 - SQ(scale);
 
@@ -401,9 +398,7 @@ void Lights_GlowCheck(GlobalContext* globalCtx) {
             if ((multDest.z > 1.0f) && y >= shrink && y <= SCREEN_HEIGHT - shrink) {
                 wZ = (s32)((multDest.z * wDest) * 16352.0f) + 16352;
                 zBuf = OTRGetPixelDepth(x, y) * 4;
-                if (1) {}
-                if (1) {}
-
+        
                 if (wZ < (zBuf >> 3)) {
                     params->drawGlow = true;
                 }
@@ -419,7 +414,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
 
     node = globalCtx->lightCtx.listHead;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_lights.c", 887);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
@@ -442,7 +437,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, params->color[0], params->color[1], params->color[2], 50);
             Matrix_Translate(params->x, params->y, params->z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_lights.c", 918),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGlowCircleDL);
             FrameInterpolation_RecordCloseChild();
@@ -451,5 +446,5 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         node = node->next;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_lights.c", 927);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

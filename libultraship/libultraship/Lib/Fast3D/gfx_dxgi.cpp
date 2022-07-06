@@ -288,7 +288,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     return 0;
 }
 
-void gfx_dxgi_init(const char* game_name, bool start_in_fullscreen) {
+void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     LARGE_INTEGER qpc_init, qpc_freq;
     QueryPerformanceCounter(&qpc_init);
     QueryPerformanceFrequency(&qpc_freq);
@@ -312,24 +312,24 @@ void gfx_dxgi_init(const char* game_name, bool start_in_fullscreen) {
 
     wcex.cbSize = sizeof(WNDCLASSEX);
 
-    wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = gfx_dxgi_wnd_proc;
-    wcex.cbClsExtra = 0;
-    wcex.cbWndExtra = 0;
-    wcex.hInstance = nullptr;
-    wcex.hIcon = nullptr;
-    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
-    wcex.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    wcex.lpszMenuName = nullptr;
-    wcex.lpszClassName = WINCLASS_NAME;
-    wcex.hIconSm = nullptr;
+    wcex.style          = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc    = gfx_dxgi_wnd_proc;
+    wcex.cbClsExtra     = 0;
+    wcex.cbWndExtra     = 0;
+    wcex.hInstance      = nullptr;
+    wcex.hIcon          = nullptr;
+    wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
+    wcex.hbrBackground  = (HBRUSH)GetStockObject(BLACK_BRUSH);
+    wcex.lpszMenuName   = nullptr;
+    wcex.lpszClassName  = WINCLASS_NAME;
+    wcex.hIconSm        = nullptr;
 
     ATOM winclass = RegisterClassExW(&wcex);
 
 
-    run_as_dpi_aware([&]() {
+    run_as_dpi_aware([&] () {
         // We need to be dpi aware when calculating the size
-        RECT wr = { 0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT };
+        RECT wr = {0, 0, width, height};
         AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
         dxgi.h_wnd = CreateWindowW(WINCLASS_NAME, w_title, WS_OVERLAPPEDWINDOW,
@@ -358,7 +358,7 @@ static void gfx_dxgi_show_cursor(bool hide) {
       * ShowCursor no longer responds. Debugging shows the bool to be correct.
     **/
     INFO("renderer: %s", hide ? "true" : "false");
-    //ShowCursor(hide);
+    ShowCursor(hide);
 }
 
 static void gfx_dxgi_set_fullscreen(bool enable) {
@@ -381,7 +381,7 @@ static void gfx_dxgi_main_loop(void (*run_one_game_iter)(void)) {
     }
 }
 
-static void gfx_dxgi_get_dimensions(uint32_t* width, uint32_t* height) {
+static void gfx_dxgi_get_dimensions(uint32_t *width, uint32_t *height) {
     *width = dxgi.current_width;
     *height = dxgi.current_height;
 }
@@ -436,8 +436,8 @@ static bool gfx_dxgi_start_frame(void) {
     dxgi.frame_timestamp += FRAME_INTERVAL_NS_NUMERATOR;
 
     if (dxgi.frame_stats.size() >= 2) {
-        DXGI_FRAME_STATISTICS* first = &dxgi.frame_stats.begin()->second;
-        DXGI_FRAME_STATISTICS* last = &dxgi.frame_stats.rbegin()->second;
+        DXGI_FRAME_STATISTICS *first = &dxgi.frame_stats.begin()->second;
+        DXGI_FRAME_STATISTICS *last = &dxgi.frame_stats.rbegin()->second;
         uint64_t sync_qpc_diff = last->SyncQPCTime.QuadPart - first->SyncQPCTime.QuadPart;
         UINT sync_vsync_diff = last->SyncRefreshCount - first->SyncRefreshCount;
         UINT present_vsync_diff = last->PresentRefreshCount - first->PresentRefreshCount;
@@ -709,7 +709,7 @@ void ThrowIfFailed(HRESULT res) {
     }
 }
 
-void ThrowIfFailed(HRESULT res, HWND h_wnd, const char* message) {
+void ThrowIfFailed(HRESULT res, HWND h_wnd, const char *message) {
     if (FAILED(res)) {
         char full_message[256];
         sprintf(full_message, "%s\n\nHRESULT: 0x%08X", message, res);

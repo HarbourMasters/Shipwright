@@ -43,7 +43,7 @@ extern "C" void OTRGameplay_SpawnScene(GlobalContext* globalCtx, s32 sceneNum, s
 
     scene->unk_13 = 0;
 
-    //ASSERT(globalCtx->sceneSegment != NULL, "this->sceneSegment != NULL", "../z_play.c", 4960);
+    //ASSERT(globalCtx->sceneSegment != NULL);
     //gSegments[2] = VIRTUAL_TO_PHYSICAL(globalCtx->sceneSegment);
 
     OTRGameplay_InitScene(globalCtx, spawn);

@@ -4,8 +4,8 @@ void MtxConv_F2L(Mtx* m1, MtxF* m2) {
     s32 i;
     s32 j;
 
-    LogUtils_CheckNullPointer("m1", m1, "../mtxuty-cvt.c", 31);
-    LogUtils_CheckNullPointer("m2", m2, "../mtxuty-cvt.c", 32);
+    LOG_CHECK_NULL_POINTER("m1", m1);
+    LOG_CHECK_NULL_POINTER("m2", m2);
 
     for (i = 0; i < 4; i++) {
         for (j = 0; j < 4; j++) {
@@ -18,7 +18,7 @@ void MtxConv_F2L(Mtx* m1, MtxF* m2) {
 }
 
 void MtxConv_L2F(MtxF* m1, Mtx* m2) {
-    LogUtils_CheckNullPointer("m1", m1, "../mtxuty-cvt.c", 55);
-    LogUtils_CheckNullPointer("m2", m2, "../mtxuty-cvt.c", 56);
+    LOG_CHECK_NULL_POINTER("m1", m1);
+    LOG_CHECK_NULL_POINTER("m2", m2);
     guMtxL2F(m1, m2);
 }

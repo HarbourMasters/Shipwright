@@ -68,7 +68,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(0, "0", "../z_item_etcetera.c", 241);
+        ASSERT(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -124,6 +124,11 @@ void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
             if (gSaveContext.n64ddFlag) {
                 Flags_SetTreasure(globalCtx, 0x1F);
             }
+        }
+
+        if ((this->actor.params & 0xFF) == 1) {
+            gSaveContext.eventChkInf[3] |= 2;
+            Flags_SetSwitch(globalCtx, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
@@ -198,8 +203,7 @@ void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx) {
 
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) {
     if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[0] != NULL)) {
-        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action,
-                "../z_item_etcetera.c", 441);
+        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action);
         if (globalCtx->csCtx.npcActions[0]->action == 2) {
             this->actor.draw = ItemEtcetera_Draw;
             this->actor.gravity = -0.1f;

@@ -117,7 +117,7 @@ s32 EnKusa_SnapToFloor(EnKusa* this, GlobalContext* globalCtx, f32 yOffset) {
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "Failure attaching to ground"
-        osSyncPrintf("地面に付着失敗(%s %d)\n", "../z_en_kusa.c", 323);
+        osSyncPrintf("地面に付着失敗(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         return false;
     }
@@ -261,7 +261,7 @@ void EnKusa_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->objBankIndex < 0) {
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！ (arg_data 0x%04x)(%s %d)\n", thisx->params, "../z_en_kusa.c", 561);
+        osSyncPrintf("Error : バンク危険！ (arg_data 0x%04x)(%s %d)\n", thisx->params, __FILE__, __LINE__);
         Actor_Kill(&this->actor);
         return;
     }

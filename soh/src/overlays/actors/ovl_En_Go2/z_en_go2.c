@@ -178,7 +178,6 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
         if (dustEffect->type != 1) {
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
-            if (1) {}
             timer = initialTimer;
             dustEffect->timer = timer;
             dustEffect->type = 1;
@@ -223,11 +222,10 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 111);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
-    if (1) {}
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
@@ -244,7 +242,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             Matrix_Translate(dustEffect->pos.x, dustEffect->pos.y, dustEffect->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(dustEffect->scale, dustEffect->scale, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 137),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
@@ -252,7 +250,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go2_eff.c", 151);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 numDustEffects, f32 radius,
@@ -2006,12 +2004,12 @@ void EnGo2_Update(Actor* thisx, GlobalContext* globalCtx) {
 s32 EnGo2_DrawCurledUp(EnGo2* this, GlobalContext* globalCtx) {
     Vec3f D_80A48554 = { 0.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 2881);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go2.c", 2884),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00BD80);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 2889);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     Matrix_MultVec3f(&D_80A48554, &this->actor.focus.pos);
 
     return 1;
@@ -2022,14 +2020,14 @@ s32 EnGo2_DrawRolling(EnGo2* this, GlobalContext* globalCtx) {
     Vec3f D_80A48560 = { 0.0f, 0.0f, 0.0f };
     f32 speedXZ;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 2914);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     speedXZ = this->actionFunc == EnGo2_ReverseRolling ? 0.0f : this->actor.speedXZ;
     Matrix_RotateZYX((globalCtx->state.frames * ((s16)speedXZ * 1400)), 0, this->actor.shape.rot.z, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_go2.c", 2926),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoronDL_00C140);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 2930);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     Matrix_MultVec3f(&D_80A48560, &this->actor.focus.pos);
     return 1;
 }
@@ -2085,13 +2083,12 @@ void EnGo2_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((this->actionFunc == EnGo2_CurledUp) && (this->skelAnime.playSpeed == 0.0f) &&
         (this->skelAnime.curFrame == 0.0f)) {
-        if (1) {}
         EnGo2_DrawCurledUp(this, globalCtx);
     } else if (this->actionFunc == EnGo2_SlowRolling || this->actionFunc == EnGo2_ReverseRolling ||
                this->actionFunc == EnGo2_ContinueRolling) {
         EnGo2_DrawRolling(this, globalCtx);
     } else {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 3063);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
 
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
@@ -2099,6 +2096,6 @@ void EnGo2_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGo2_OverrideLimbDraw, EnGo2_PostLimbDraw, this);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_go2.c", 3081);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

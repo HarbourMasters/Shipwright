@@ -146,7 +146,7 @@ void ObjBean_InitDynaPoly(ObjBean* this, GlobalContext* globalCtx, CollisionHead
 
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_obj_bean.c", 374,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -476,7 +476,7 @@ void ObjBean_Init(Actor* thisx, GlobalContext* globalCtx) {
             if (path == 0x1F) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "No path data?"
-                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", "../z_obj_bean.c", 909,
+                osSyncPrintf("パスデータが無い？(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
                              this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);
@@ -485,7 +485,7 @@ void ObjBean_Init(Actor* thisx, GlobalContext* globalCtx) {
             if (globalCtx->setupPathList[path].count < 3) {
                 osSyncPrintf(VT_COL(RED, WHITE));
                 // "Incorrect number of path data"
-                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", "../z_obj_bean.c", 921,
+                osSyncPrintf("パスデータ数が不正(%s %d)(arg_data %xH)\n", __FILE__, __LINE__,
                              this->dyna.actor.params);
                 osSyncPrintf(VT_RST);
                 Actor_Kill(&this->dyna.actor);

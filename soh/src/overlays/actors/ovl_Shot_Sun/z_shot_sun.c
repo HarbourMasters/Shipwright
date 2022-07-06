@@ -166,7 +166,6 @@ void ShotSun_UpdateHyliaSun(ShotSun* this, GlobalContext* globalCtx) {
             !Flags_GetTreasure(globalCtx, 0x1F)) {
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_ITEM_ETCETERA, 700.0f, -800.0f, 7261.0f, 0, 0, 0, 7);
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gLakeHyliaFireArrowsCS);
-            if (1) {}
             gSaveContext.cutsceneTrigger = 1;
         } else {
             spawnPos.x = 700.0f;

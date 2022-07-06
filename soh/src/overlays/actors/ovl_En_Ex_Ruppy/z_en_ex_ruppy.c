@@ -55,7 +55,12 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     switch (this->type) {
         case 0:
-            this->unk_160 = 0.01f;
+            
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->unk_160 = 0.3f;
+            } else {
+                this->unk_160 = 0.01f;
+            }
             Actor_SetScale(&this->actor, this->unk_160);
             this->actor.room = -1;
             this->actor.gravity = 0.0f;
@@ -100,9 +105,13 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
                     }
                 }
             }
-
-            this->actor.shape.shadowScale = 7.0f;
-            this->actor.shape.yOffset = 700.0f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->actor.shape.shadowScale = 0.3f;
+                this->actor.shape.yOffset = 35.0f;
+            } else {
+                this->actor.shape.shadowScale = 7.0f;
+                this->actor.shape.yOffset = 700.0f;
+            }
             this->unk_15A = this->actor.world.rot.z;
             this->actor.world.rot.z = 0;
             this->timer = 30;
@@ -113,23 +122,40 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 1:
         case 2: // Giant pink ruppe that explodes when you touch it
             if (this->type == 1) {
-                Actor_SetScale(&this->actor, 0.1f);
                 this->colorIdx = 4;
+                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                    Actor_SetScale(&this->actor, 2.0f);
+                } else {
+                    Actor_SetScale(&this->actor, 0.1f);
+                }
             } else {
-                Actor_SetScale(thisx, 0.02f);
                 this->colorIdx = (s16)Rand_ZeroFloat(3.99f) + 1;
+                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                    Actor_SetScale(thisx, 0.4f);
+                } else {
+                    Actor_SetScale(thisx, 0.02f);
+                }
             }
             this->actor.gravity = -3.0f;
             // "Wow Coin"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ わーなーコイン ☆☆☆☆☆ \n" VT_RST);
-            this->actor.shape.shadowScale = 6.0f;
-            this->actor.shape.yOffset = 700.0f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->actor.shape.shadowScale = 0.3f;
+                this->actor.shape.yOffset = 35.0f;
+            } else {
+                this->actor.shape.shadowScale = 6.0f;
+                this->actor.shape.yOffset = 700.0f;
+            }
             this->actor.flags &= ~ACTOR_FLAG_0;
             this->actionFunc = EnExRuppy_WaitToBlowUp;
             break;
 
         case 3: // Spawned by the guard in Hyrule courtyard
-            Actor_SetScale(&this->actor, 0.02f);
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.4f);
+            } else {
+                Actor_SetScale(&this->actor, 0.02f);
+            }
             this->colorIdx = 0;
             switch ((s16)Rand_ZeroFloat(30.99f)) {
                 case 0:
@@ -144,8 +170,13 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actor.gravity = -3.0f;
             // "Normal rupee"
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ ノーマルルピー ☆☆☆☆☆ \n" VT_RST);
-            this->actor.shape.shadowScale = 6.0f;
-            this->actor.shape.yOffset = 700.0f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                this->actor.shape.shadowScale = 0.3f;
+                this->actor.shape.yOffset = 35.0f;
+            } else {
+                this->actor.shape.yOffset = 700.0f;
+                this->actor.shape.shadowScale = 6.0f;
+            }
             this->actor.flags &= ~ACTOR_FLAG_0;
             this->actionFunc = EnExRuppy_WaitAsCollectible;
             break;
@@ -153,9 +184,16 @@ void EnExRuppy_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 4: // Progress markers in the shooting gallery
             this->actor.gravity = -3.0f;
             this->actor.flags &= ~ACTOR_FLAG_0;
-            Actor_SetScale(&this->actor, 0.01f);
-            this->actor.shape.shadowScale = 6.0f;
-            this->actor.shape.yOffset = -700.0f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.3f);
+                this->actor.shape.shadowScale = 0.3f;
+                this->actor.shape.yOffset = -1365.0f;
+            } else {
+                Actor_SetScale(&this->actor, 0.01f);
+                this->actor.shape.shadowScale = 6.0f;
+                this->actor.shape.yOffset = -700.0f;
+            }
+
             this->actionFunc = EnExRuppy_GalleryTarget;
             break;
     }
@@ -282,7 +320,6 @@ void EnExRuppy_WaitInGame(EnExRuppy* this, GlobalContext* globalCtx) {
             if (divingGame->phase == ENDIVINGGAME_PHASE_ENDED) {
                 this->timer = 20;
                 this->actionFunc = EnExRuppy_Kill;
-                if (1) {}
             } else if (this->actor.xyzDistToPlayerSq < SQ(localConst)) {
                 Rupees_ChangeBy(this->rupeeValue);
                 func_80078884(NA_SE_SY_GET_RUPY);
@@ -356,10 +393,18 @@ void EnExRuppy_WaitAsCollectible(EnExRuppy* this, GlobalContext* globalCtx) {
 }
 
 void EnExRuppy_GalleryTarget(EnExRuppy* this, GlobalContext* globalCtx) {
-    if (this->galleryFlag) {
-        Math_ApproachF(&this->actor.shape.yOffset, 700.0f, 0.5f, 200.0f);
+    if (CVar_GetS32("gNewDrops", 0) !=0) {
+        if (this->galleryFlag) {
+            Math_ApproachF(&this->actor.shape.yOffset, 35.0f, 0.5f, 200.0f);
+        } else {
+            Math_ApproachF(&this->actor.shape.yOffset, -1365.0f, 0.5f, 200.0f);
+        }
     } else {
-        Math_ApproachF(&this->actor.shape.yOffset, -700.0f, 0.5f, 200.0f);
+        if (this->galleryFlag) {
+            Math_ApproachF(&this->actor.shape.yOffset, 700.0f, 0.5f, 200.0f);
+        } else {
+            Math_ApproachF(&this->actor.shape.yOffset, -700.0f, 0.5f, 200.0f);
+        }
     }
 }
 
@@ -379,19 +424,30 @@ void EnExRuppy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     static void* rupeeTextures[] = {
         gRupeeGreenTex, gRupeeBlueTex, gRupeeRedTex, gRupeePinkTex, gRupeeOrangeTex,
     };
+    static void* rupeeTexturesNew[] = {
+        GID_RUPEE_GREEN, GID_RUPEE_BLUE, GID_RUPEE_RED, GID_RUPEE_PURPLE, GID_RUPEE_GOLD,
+    };
     s32 pad;
     EnExRuppy* this = (EnExRuppy*)thisx;
 
     if (!this->invisible) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 774);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D18(globalCtx->state.gfxCtx);
         func_8002EBCC(thisx, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 780),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(rupeeTextures[this->colorIdx]));
-        gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+        if (CVar_GetS32("gNewDrops", 0) !=0) {
+            if (this->type == 4 && this->colorIdx >= 3) {
+                //For some reason the red rupee target become purple.
+                //when using new drops it will show as Gold and that wrong it need to be red.
+                this->colorIdx = 2;
+            }
+            GetItem_Draw(globalCtx, rupeeTexturesNew[this->colorIdx]);
+        } else {
+            gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(rupeeTextures[this->colorIdx]));
+            gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+        }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_ruppy.c", 784);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
