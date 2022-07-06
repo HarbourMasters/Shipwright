@@ -26,7 +26,7 @@
 #include "gfx_direct3d_common.h"
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
@@ -278,7 +278,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
     return 0;
 }
 
-void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
+void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     LARGE_INTEGER qpc_init, qpc_freq;
     QueryPerformanceCounter(&qpc_init);
     QueryPerformanceFrequency(&qpc_freq);
@@ -319,7 +319,7 @@ void gfx_dxgi_init(const char *game_name, bool start_in_fullscreen) {
 
     run_as_dpi_aware([&] () {
         // We need to be dpi aware when calculating the size
-        RECT wr = {0, 0, DESIRED_SCREEN_WIDTH, DESIRED_SCREEN_HEIGHT};
+        RECT wr = {0, 0, width, height};
         AdjustWindowRect(&wr, WS_OVERLAPPEDWINDOW, FALSE);
 
         dxgi.h_wnd = CreateWindowW(WINCLASS_NAME, w_title, WS_OVERLAPPEDWINDOW,

@@ -323,10 +323,10 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 phi_f14;
     s32 phi_t1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 844);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_Scale(0.02f, 0.02f, 0.02f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 853),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (this->unk_1C6) {
@@ -383,7 +383,7 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         phi_t1 = 0x14;
     }
     Matrix_Scale(1.0f, phi_f14, phi_f14, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 960),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
@@ -393,5 +393,5 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPDisplayList(POLY_XLU_DISP++, gSpinAttackChargingDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 1031);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

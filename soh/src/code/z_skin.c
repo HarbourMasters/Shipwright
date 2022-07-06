@@ -59,7 +59,7 @@ void Skin_ApplyLimbModifications(GraphicsContext* gfxCtx, Skin* skin, s32 limbIn
     Vec3f spD0;
     SkinTransformation* transformationEntry;
 
-    OPEN_DISPS(gfxCtx, "../z_skin.c", 254);
+    OPEN_DISPS(gfxCtx);
 
     skeleton = (SkinLimb**)SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
     data = SEGMENTED_TO_VIRTUAL(((SkinLimb*)SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]))->segment);
@@ -130,7 +130,7 @@ void Skin_ApplyLimbModifications(GraphicsContext* gfxCtx, Skin* skin, s32 limbIn
 
     vtxEntry->index = (vtxEntry->index == 0) ? 1 : 0;
 
-    CLOSE_DISPS(gfxCtx, "../z_skin.c", 344);
+    CLOSE_DISPS(gfxCtx);
 }
 
 /**
@@ -141,7 +141,7 @@ void Skin_DrawAnimatedLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, s
     SkinLimb** skeleton;
     SkinAnimatedLimbData* data;
 
-    OPEN_DISPS(gfxCtx, "../z_skin.c", 364);
+    OPEN_DISPS(gfxCtx);
 
     skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
     data = SEGMENTED_TO_VIRTUAL(((SkinLimb*)SEGMENTED_TO_VIRTUAL(skeleton[limbIndex]))->segment);
@@ -152,7 +152,7 @@ void Skin_DrawAnimatedLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, s
 
     gSPDisplayList(POLY_OPA_DISP++, data->dlist);
 
-    CLOSE_DISPS(gfxCtx, "../z_skin.c", 377);
+    CLOSE_DISPS(gfxCtx);
 }
 
 /**
@@ -163,7 +163,7 @@ void Skin_DrawLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, Gfx* dlis
     SkinLimb** skeleton;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_skin.c", 395);
+    OPEN_DISPS(gfxCtx);
 
     skeleton = SEGMENTED_TO_VIRTUAL(skin->skeletonHeader->segment);
 
@@ -182,7 +182,7 @@ void Skin_DrawLimb(GraphicsContext* gfxCtx, Skin* skin, s32 limbIndex, Gfx* dlis
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_skin.c", 433);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Skin_DrawImpl(Actor* actor, GlobalContext* globalCtx, Skin* skin, SkinPostDraw postDraw,
@@ -193,7 +193,7 @@ void Skin_DrawImpl(Actor* actor, GlobalContext* globalCtx, Skin* skin, SkinPostD
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_skin.c", 471);
+    OPEN_DISPS(gfxCtx);
 
     if (!(drawFlags & SKIN_DRAW_FLAG_CUSTOM_TRANSFORMS)) {
         Skin_ApplyAnimTransformations(skin, gSkinLimbMatrices, actor, setTranslation);
@@ -235,7 +235,7 @@ void Skin_DrawImpl(Actor* actor, GlobalContext* globalCtx, Skin* skin, SkinPostD
     }
 
 close_disps:
-    CLOSE_DISPS(gfxCtx, "../z_skin.c", 534);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // allows specifying PostLimbDraw and setTranslation

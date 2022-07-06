@@ -1,4 +1,4 @@
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 #include <map>
@@ -10,8 +10,8 @@
 #include "Archive.h"
 #include "Environment.h"
 #include "GameSettings.h"
-#include "SohConsole.h"
-#include "SohHooks.h"
+#include "Console.h"
+#include "Hooks.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -55,6 +55,7 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+std::vector<std::string> emptyArgs;
 
 namespace SohImGui {
 
@@ -354,10 +355,10 @@ namespace SohImGui {
         }
 
         for (size_t pixel = 0; pixel < texBuffer.size() / 4; pixel++) {
-            texBuffer[pixel * 4 + 0] *= (uint8_t)tint.x;
-            texBuffer[pixel * 4 + 1] *= (uint8_t)tint.y;
-            texBuffer[pixel * 4 + 2] *= (uint8_t)tint.z;
-            texBuffer[pixel * 4 + 3] *= (uint8_t)tint.w;
+            texBuffer[pixel * 4 + 0] *= tint.x;
+            texBuffer[pixel * 4 + 1] *= tint.y;
+            texBuffer[pixel * 4 + 2] *= tint.z;
+            texBuffer[pixel * 4 + 3] *= tint.w;
         }
 
         const auto asset = new GameAsset{ api->new_texture() };
@@ -715,7 +716,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -743,16 +744,42 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
-        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
+        
+            if (CVar_GetS32("gControlNav", 0)) {
+                if (CVar_GetS32("gOpenMenuBar", 0)) {
+                    io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                }
+                else
+                {
+                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+                }
+            }
+            else
+            {
+            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+            }
         }
 
+        #if __APPLE__
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(emptyArgs);
+        }
+        #else
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(emptyArgs);
+        }
+        #endif
+        
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
@@ -760,8 +787,19 @@ namespace SohImGui {
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
-            ImGui::Text("Shipwright");
-            ImGui::Separator();
+
+            if (ImGui::BeginMenu("Shipwright")) {
+                if (ImGui::MenuItem("Reset",
+                    #if __APPLE__
+                    "Command-R"
+                    #else
+                    "Ctrl+R"
+                    #endif
+                    )) {
+                    console->Commands["reset"].handler(emptyArgs);
+                }
+                ImGui::EndMenu();
+            }            
 
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
@@ -775,7 +813,12 @@ namespace SohImGui {
             }
 
             if (ImGui::BeginMenu("Controller"))
-	    {
+            {
+                EnhancementCheckbox("Use Controller Navigation", "gControlNav");
+                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+
+                ImGui::Separator();
+
                 // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
                 // There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
@@ -783,7 +826,7 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
 
-		ImGui::Separator();
+                ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
@@ -792,8 +835,8 @@ namespace SohImGui {
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
 
-		ImGui::Separator();  
-		    
+                ImGui::Separator();
+
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
@@ -883,43 +926,123 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
-                    EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
-                    EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
-                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
-                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
-                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
-                    EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
-                    Tooltip("Modifies all sources of damage not affected by other sliders");
-                    EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
-                    Tooltip("Modifies all fall damage");
-                    EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                    Tooltip("Modifies all void out damage");
+                    if (ImGui::BeginMenu("Time Savers"))
+                    {
+                        EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                        EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "");
+                        EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                        Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                        EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
-                    EnhancementCheckbox("Skip Text", "gSkipText");
-                    Tooltip("Holding down B skips text");
-                    EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
-                    Tooltip("Disable the low HP beeping sound");
-                    EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                    Tooltip("Hides most of the UI when not needed");
+                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                        Tooltip("Prevent forced Navi conversations");
+                        EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                        Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                        EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                        Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                        EnhancementCheckbox("Fast Chests", "gFastChests");
+                        Tooltip("Kick open every chest");
+                        EnhancementCheckbox("Fast Drops", "gFastDrops");
+                        Tooltip("Skip first-time pickup messages for consumable items");
+                        EnhancementCheckbox("Better Owl", "gBetterOwl");
+                        Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Difficulty Options"))
+                    {
+                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
+                        Tooltip("Modifies all sources of damage not affected by other sliders");
+                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
+                        Tooltip("Modifies all fall damage");
+                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
+                        Tooltip("Modifies all void out damage");
+
+                        EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
+                        Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                        EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
+                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
+                        
+                        if (ImGui::BeginMenu("Potion Values"))
+                        {
+                            EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Red Potions");
+                            EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                            Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
+                            Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
+                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                            Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
+                            Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Blue Potions");
+                            EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Milk");
+                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Milk");
+                            EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                            Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Half Milk");
+                            EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                            Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairies");
+                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairies");
+                            EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
+                            Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
+                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairy Revivals");
+                            EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
+                            Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
+
+                            ImGui::EndMenu();
+                        }
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Reduced Clutter"))
+                    {
+                        EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
+                        Tooltip("Disable the low HP beeping sound");
+                        EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                        Tooltip("Hides most of the UI when not needed");
+                        EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
+                        Tooltip("Disables the voice audio when Navi calls you");
+
+                        ImGui::EndMenu();
+                    }
+                    
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
-                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
-                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
-                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
-                    Tooltip("Prevent forced Navi conversations");
-                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
-                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
-                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
-                    Tooltip("Disables the voice audio when Navi calls you");
-                    EnhancementCheckbox("Fast Chests", "gFastChests");
-                    Tooltip("Kick open every chest");
-                    EnhancementCheckbox("Fast Drops", "gFastDrops");
-                    Tooltip("Skip first-time pickup messages for consumable items");
-                    EnhancementCheckbox("Better Owl", "gBetterOwl");
-                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
@@ -1069,6 +1192,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
                     Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
                 }
+                EnhancementCheckbox("Skip Text", "gSkipText");
+                Tooltip("Holding down B skips text.\nKnown to cause a cutscene softlock in Water Temple.\nSoftlock can be fixed by pressing D-Right in Debug mode.");
 
                 ImGui::EndMenu();
             }
@@ -1098,6 +1223,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
+                    EnhancementCheckbox("Epona Boost", "gInfiniteEpona");
 
                     ImGui::EndMenu();
                 }

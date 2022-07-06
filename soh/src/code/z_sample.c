@@ -11,7 +11,7 @@ void Sample_Draw(SampleContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     View* view = &this->view;
 
-    OPEN_DISPS(gfxCtx, "../z_sample.c", 62);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     gSPSegment(POLY_OPA_DISP++, 0x01, this->staticSegment);
@@ -36,7 +36,7 @@ void Sample_Draw(SampleContext* this) {
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 0, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_sample.c", 111);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Sample_Main(GameState* thisx) {
@@ -79,8 +79,8 @@ void Sample_SetupView(SampleContext* this) {
 void Sample_LoadTitleStatic(SampleContext* this) {
     size_t size = _title_staticSegmentRomEnd - _title_staticSegmentRomStart;
 
-    this->staticSegment = GameState_Alloc(&this->state, size, "../z_sample.c", 163);
-    DmaMgr_SendRequest1(this->staticSegment, _title_staticSegmentRomStart, size, "../z_sample.c", 164);
+    this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
+    DmaMgr_SendRequest1(this->staticSegment, _title_staticSegmentRomStart, size, __FILE__, __LINE__);
 }
 
 void Sample_Init(GameState* thisx) {

@@ -170,7 +170,7 @@ void EnNutsball_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 327);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (CVar_GetS32("gNewDrops", 0) != 0) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -180,7 +180,7 @@ void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                     1 * (globalCtx->state.frames * 6), 32, 32));
         Matrix_Scale(25.0f,25.0f,25.0f,MTXMODE_APPLY);
         Matrix_RotateX(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 901),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
     } else {
@@ -188,10 +188,10 @@ void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
         
         Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 333),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 337);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

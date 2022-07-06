@@ -910,6 +910,8 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_BOOTS_HOVER,
 };
 
+static u8 sMaskMemory;
+
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
     func_8083485C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C,
@@ -1909,7 +1911,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
                 !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
+                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
@@ -1921,7 +1923,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
                 }
             }
             if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && hasOnDpad) {
+                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && !hasOnDpad) {
                 this->currentMask = PLAYER_MASK_NONE;
             }
         }
@@ -2886,6 +2888,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                 else {
                     this->currentMask = actionParam - PLAYER_AP_MASK_KEATON + 1;
                 }
+                sMaskMemory = this->currentMask;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
@@ -4574,6 +4577,7 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(globalCtx, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_29;
+            sMaskMemory = PLAYER_MASK_NONE;
         }
         else {
             LinkAnimationHeader* anim;
@@ -4900,11 +4904,11 @@ void func_8083AE40(Player* this, s16 objectId) {
 
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
-        LOG_HEX("size", size, "../z_player.c", 9090);
-        ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
+        LOG_HEX("size", size);
+        ASSERT(size <= 1024 * 8);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
-            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), "../z_player.c", 9099);
+            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     }
 }
 
@@ -6878,8 +6882,6 @@ void func_8084029C(Player* this, f32 arg1) {
         arg1 = 7.25f;
     }
 
-    if (1) {}
-
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
     }
@@ -8232,7 +8234,21 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x140;
+                if (CVar_GetS32("gFairyReviveEffect", 0))
+                {
+                    if (CVar_GetS32("gFairyRevivePercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyReviveHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gFairyReviveHealth", 20) * 16;
+                    }
+                }
+                else
+                {
+                    gSaveContext.healthAccumulator = 0x140;
+                }
                 this->unk_850 = -1;
             }
         }
@@ -8257,6 +8273,7 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
     }
     else if (globalCtx->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         globalCtx->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
+        sMaskMemory = PLAYER_MASK_NONE;
     }
 }
 
@@ -9525,8 +9542,20 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     func_80835F44(globalCtx, this, ITEM_NONE);
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
+    if (CVar_GetS32("gMMBunnyHood", 0)) {
+        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) { sMaskMemory = PLAYER_MASK_NONE; }
+        this->currentMask = sMaskMemory;
+        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
+            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
+                (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex+1]] != 9 &&
+                 LINK_IS_ADULT && !CVar_GetS32("gNoRestrictAge", 0))) {
+                gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
+                gSaveContext.equips.buttonItems[cSlotIndex+1] = ITEM_NONE;
+            }
+        }
+    }
     Player_InitCommon(this, globalCtx, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
-    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 
     sp50 = gSaveContext.respawnFlag;
 
@@ -10400,7 +10429,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
                 rectLeft = OTRGetRectDimensionFromLeftEdge(26);
             }
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -10420,7 +10449,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 3500);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if (this->unk_6A0 > 4000000.0f) {
@@ -10933,7 +10962,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
     OverrideLimbDrawOpa overrideLimbDraw) {
     static s32 D_8085486C = 255;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19228);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, cullDList);
     gSPSegment(POLY_XLU_DISP++, 0x0C, cullDList);
@@ -10954,13 +10983,13 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
-            Matrix_ToMtx(sp70++, "../z_player.c", 19273);
+            MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
-            Matrix_ToMtx(sp70, "../z_player.c", 19279);
+            MATRIX_TOMTX(sp70);
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
@@ -10992,7 +11021,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                 this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19317),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                 Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0,
@@ -11003,7 +11032,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19328);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
@@ -11037,7 +11066,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     rot.y = 32300;
     rot.x = rot.z = 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19346);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
 
     if (!(this->stateFlags2 & PLAYER_STATE2_29)) {
@@ -11120,7 +11149,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                     0, (globalCtx->gameplayFrames * -2) % 128, 32, 32));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19459),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
             gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
@@ -11131,7 +11160,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19473);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -12834,17 +12863,100 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
             }
             else {
                 s32 sp28 = D_808549FC[this->itemActionParam - PLAYER_AP_BOTTLE_POTION_RED];
-
-                if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                
+                if (CVar_GetS32("gRedPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_RED)
+                {
+                    if (CVar_GetS32("gRedPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gRedPotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gRedPotionHealth", 20) * 16;
+                    }
                 }
+                else if (CVar_GetS32("gBluePotionEffects", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_BLUE)
+                {
+                    if (CVar_GetS32("gBlueHealthPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gBluePotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gBluePotionHealth", 20) * 16;
+                    }
 
-                if (sp28 & 2) {
-                    Magic_Fill(globalCtx);
+                    if (CVar_GetS32("gBlueManaPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMana", 100), 5);;
+                    }
                 }
+                else if (CVar_GetS32("gGreenPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN)
+                {
+                    if (CVar_GetS32("gGreenPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
 
-                if (sp28 & 4) {
-                    gSaveContext.healthAccumulator = 0x50;
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gGreenPotionMana", 100), 5);;
+                    }
+                }
+                else if (CVar_GetS32("gMilkEffect", 0) && (this->itemActionParam == PLAYER_AP_BOTTLE_MILK || this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF))
+                {
+                    if (CVar_GetS32("gMilkPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gMilkHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gMilkHealth", 5) * 16;
+                    }
+                    if  (CVar_GetS32("gSeparateHalfMilkEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF)
+                    {
+                        if (CVar_GetS32("gHalfMilkPercentRestore", 0))
+                        {
+                            gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gHalfMilkHealth", 100) / 100 + 15) / 16 * 16;
+                        }
+                        else
+                        {
+                            gSaveContext.healthAccumulator = CVar_GetS32("gHalfMilkHealth", 5) * 16;
+                        }
+                    }
+                }
+                else
+                {
+                    if (sp28 & 1) {
+                        gSaveContext.healthAccumulator = 0x140;
+                    }
+
+                    if (sp28 & 2) {
+                        Magic_Fill(globalCtx);
+                    }
+
+                    if (sp28 & 4) {
+                        gSaveContext.healthAccumulator = 0x50;
+                    }
                 }
             }
 
@@ -12957,7 +13069,21 @@ void func_8084EED8(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     }
     else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x140;
+        if (CVar_GetS32("gFairyEffect", 0))
+        {
+            if (CVar_GetS32("gFairyPercentRestore", 0))
+            {
+                gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16;
+            }
+            else
+            {
+                gSaveContext.healthAccumulator = CVar_GetS32("gFairyHealth", 8) * 16;
+            }
+        }
+        else
+        {
+            gSaveContext.healthAccumulator = 0x140;
+        }
     }
 }
 

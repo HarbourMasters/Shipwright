@@ -1,5 +1,5 @@
 #include "colViewer.h"
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 #include "ImGuiHelpers.h"
 #include "../../frame_interpolation.h"
 
@@ -698,7 +698,7 @@ void DrawColViewer() {
         return;
     }
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
 
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
@@ -706,5 +706,5 @@ void DrawColViewer() {
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
 }

@@ -12,7 +12,7 @@ void PreNMI_Update(PreNMIContext* this) {
 
     // Strings existing only in rodata
     if (0) {
-        osSyncPrintf("../z_prenmi.c");
+        osSyncPrintf(__FILE__);
         osSyncPrintf("(int)volume = %d\n");
     }
 
@@ -30,7 +30,7 @@ void PreNMI_Draw(PreNMIContext* this) {
 
     osSyncPrintf(VT_COL(YELLOW, BLACK) "prenmi_draw\n" VT_RST);
 
-    OPEN_DISPS(gfxCtx, "../z_prenmi.c", 96);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -38,7 +38,7 @@ void PreNMI_Draw(PreNMIContext* this) {
     gDPSetFillColor(POLY_OPA_DISP++, (GPACK_RGBA5551(255, 255, 255, 1) << 16) | GPACK_RGBA5551(255, 255, 255, 1));
     gDPFillRectangle(POLY_OPA_DISP++, 0, this->timer + 100, SCREEN_WIDTH - 1, this->timer + 100);
 
-    CLOSE_DISPS(gfxCtx, "../z_prenmi.c", 112);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void PreNMI_Main(GameState* thisx) {
