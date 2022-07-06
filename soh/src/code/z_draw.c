@@ -454,7 +454,7 @@ void GetItem_DrawJewelZora(GlobalContext* globalCtx, s16 drawId) {
 }
 
 void GetItem_DrawJewel(GlobalContext* globalCtx, s16 drawId) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2543);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 9,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0 % 256, (256 - (0 % 256)) - 1, 64, 64, 1, 0 % 256,
@@ -484,7 +484,7 @@ void GetItem_DrawJewel(GlobalContext* globalCtx, s16 drawId) {
 
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_effect.c", 2620);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void GetItem_DrawMaskOrBombchu(GlobalContext* globalCtx, s16 drawId) {
@@ -811,7 +811,7 @@ void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId) {
         {146,146,146}   //Storms
     };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx,  __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD);
     gsDPSetGrayscaleColor(POLY_OPA_DISP++, colors[color_slot][0], colors[color_slot][1], colors[color_slot][2], 255);
@@ -820,7 +820,7 @@ void GetItem_DrawGenericMusicNote(GlobalContext* globalCtx, s16 drawId) {
     gSPDisplayList(POLY_OPA_DISP++, sDrawItemTable[drawId].dlists[0]);
     gsSPGrayscale(POLY_OPA_DISP++, false);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void GetItem_DrawXlu01(GlobalContext* globalCtx, s16 drawId) {

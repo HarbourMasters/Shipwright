@@ -314,7 +314,7 @@ void FileChoose_FinishFadeIn(GameState* thisx) {
 }
 
 void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
-    OPEN_DISPS(this->state.gfxCtx, "gfx.c", 12);
+    OPEN_DISPS(this->state.gfxCtx);
 
     if (sprite->im_siz == G_IM_SIZ_16b) {
         gDPLoadTextureBlock(POLY_OPA_DISP++, sprite->tex, sprite->im_fmt,
@@ -328,23 +328,23 @@ void SpriteLoad(FileChooseContext* this, Sprite* sprite) {
                             G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
     }
 
-    CLOSE_DISPS(this->state.gfxCtx, "gfx.c", 40);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void SpriteDraw(FileChooseContext* this, Sprite* sprite, int left, int top, int width, int height) {
     int width_factor = (1 << 10) * sprite->width / width;
     int height_factor = (1 << 10) * sprite->height / height;
 
-    OPEN_DISPS(this->state.gfxCtx, "gfx.c", 51);
+    OPEN_DISPS(this->state.gfxCtx);
 
     gSPWideTextureRectangle(POLY_OPA_DISP++, left << 2, top << 2, (left + width) << 2, (top + height) << 2,
                             G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
 
-    CLOSE_DISPS(this->state.gfxCtx, "gfx.c", 62);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void DrawSeedHashSprites(FileChooseContext* this) {
-    OPEN_DISPS(this->state.gfxCtx, "dpad.c", 60);
+    OPEN_DISPS(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetCombineMode(POLY_OPA_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -376,7 +376,7 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
     gDPPipeSync(POLY_OPA_DISP++);
 
-    CLOSE_DISPS(this->state.gfxCtx, "dpad.c", 113);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 u8 generating;

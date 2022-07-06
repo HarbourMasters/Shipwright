@@ -1382,25 +1382,26 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     } else {
         s32 texIndex = this->actor.params - 3;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
+        POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
 
-    if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
-        texIndex = 1;
-    } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
-        texIndex -= 3;
+        if (this->actor.params == ITEM00_BOMBS_SPECIAL) {
+            texIndex = 1;
+        } else if (this->actor.params >= ITEM00_ARROWS_SMALL) {
+            texIndex -= 3;
+        }
+
+        POLY_OPA_DISP = func_800946E4(POLY_OPA_DISP);
+
+        gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
+
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
+
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-
-    POLY_OPA_DISP = func_800946E4(POLY_OPA_DISP);
-
-    gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
-
-    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -1441,15 +1442,16 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     } else {
         s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    func_80093D84(globalCtx->state.gfxCtx);
-    func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
+        func_80093D84(globalCtx->state.gfxCtx);
+        func_8002ED80(&this->actor, globalCtx, 0);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
+    }
 }
 
 /**
