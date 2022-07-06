@@ -63,8 +63,6 @@ void func_8097D7D8(GlobalContext* globalCtx, Vec3f* pos, Vec3f* velOffset, f32 s
             velocity.y += velOffset->y;
             velocity.z += velOffset->z;
 
-            if (0) {}
-
             accel.x *= scale;
             accel.y *= scale;
             accel.z *= scale;
@@ -650,7 +648,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     spB4 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp98 = 1.0f - Math_CosS(spC6);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part1.c", 458);
+    OPEN_DISPS(gfxCtx);
 
     spA8.x = Math_CosS(spB8);
     spA8.y = 0.0f;
@@ -663,7 +661,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(spC0, &spA8, MTXMODE_APPLY);
     Matrix_Translate(sp9C.x, sp9C.y, sp9C.z, MTXMODE_APPLY);
-    Matrix_ToMtx(spB4, "../z_demo_gt_part1.c", 474);
+    MATRIX_TOMTX(spB4);
     unk198 = this->unk_198;
     unk188 = this->unk_188;
     unk178 = this->unk_178;
@@ -688,7 +686,7 @@ void DemoGt_Draw1(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_XLU_DISP++, spB4, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gTowerCollapseCsFlameSmokeDL);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part1.c", 557);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_8097F904_Init1(DemoGt* this, GlobalContext* globalCtx) {
@@ -853,7 +851,7 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     s32* unk178;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part2.c", 470);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
     unk198 = this->unk_198;
@@ -861,12 +859,12 @@ void DemoGt_Draw2(DemoGt* this, GlobalContext* globalCtx) {
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TwoTexScrollEnvColor(gfxCtx, 0, 0, unk198[0], 0x20, 0x40, 1, 0, unk198[1], 0x20, 0x40, unk178[0],
                                         unk178[1], unk178[2], 128));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_gt_part2.c", 485),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureInnerDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part2.c", 489);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80980110_Init2(DemoGt* this, GlobalContext* globalCtx) {
@@ -1168,15 +1166,15 @@ void DemoGt_Update10(DemoGt* this, GlobalContext* globalCtx) {
 void DemoGt_Draw3(DemoGt* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part3.c", 1026);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_demo_gt_part3.c", 1028),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_PUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsCollapsedStructureOuterDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part3.c", 1032);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80980F00_Init5(DemoGt* this, GlobalContext* globalCtx) {
@@ -1271,7 +1269,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
         sp44 = 1.0f - Math_CosS(sp76);
 
-        OPEN_DISPS(gfxCtx, "../z_demo_gt_part4_1.c", 217);
+        OPEN_DISPS(gfxCtx);
 
         sp54.x = Math_CosS(sp68);
         sp54.y = 0.0f;
@@ -1285,7 +1283,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
 
         Matrix_RotateAxis(sp70, &sp54, MTXMODE_APPLY);
         Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
-        Matrix_ToMtx(sp60, "../z_demo_gt_part4_1.c", 232);
+        MATRIX_TOMTX(sp60);
 
         if (!FrameAdvance_IsEnabled(globalCtx)) {
             func_80980F8C(this, globalCtx);
@@ -1298,7 +1296,7 @@ void DemoGt_Draw4(DemoGt* this, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
         gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-        CLOSE_DISPS(gfxCtx, "../z_demo_gt_part4_1.c", 246);
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -1390,7 +1388,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     sp60 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp44 = 1 - Math_CosS(sp76);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part4_2.c", 212);
+    OPEN_DISPS(gfxCtx);
 
     sp54.x = Math_CosS(sp68);
     sp54.y = 0.0f;
@@ -1404,7 +1402,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp70, &sp54, MTXMODE_APPLY);
     Matrix_Translate(sp48.x, sp48.y, sp48.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp60, "../z_demo_gt_part4_2.c", 227);
+    MATRIX_TOMTX(sp60);
 
     if (!FrameAdvance_IsEnabled(globalCtx)) {
         func_80981458(this, globalCtx);
@@ -1417,7 +1415,7 @@ void DemoGt_Draw5(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part4_2.c", 241);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_809818A4_Init7(DemoGt* this, GlobalContext* globalCtx) {
@@ -1486,7 +1484,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     sp64 = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp48 = 1.0f - Math_CosS(sp78);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part4_3.c", 276);
+    OPEN_DISPS(gfxCtx);
 
     sp58.x = Math_CosS(sp6C);
     sp58.y = 0.0f;
@@ -1500,7 +1498,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp74, &sp58, MTXMODE_APPLY);
     Matrix_Translate(sp4C.x, sp4C.y, sp4C.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp64, "../z_demo_gt_part4_3.c", 291);
+    MATRIX_TOMTX(sp64);
 
     Matrix_Pop();
 
@@ -1509,7 +1507,7 @@ void DemoGt_Draw6(DemoGt* this, GlobalContext* globalCtx) {
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsStandalonePillarDL);
     gSPPopMatrix(POLY_OPA_DISP++, G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part4_3.c", 307);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80981C94_Init23(DemoGt* this, GlobalContext* globalCtx) {
@@ -1578,7 +1576,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
     sp5C = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp40 = 1.0f - Math_CosS(sp6E);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part5.c", 136);
+    OPEN_DISPS(gfxCtx);
 
     sp50.x = Math_CosS(sp60);
     sp50.y = 0.0f;
@@ -1592,7 +1590,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp68, &sp50, MTXMODE_APPLY);
     Matrix_Translate(sp44.x, sp44.y, sp44.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp5C, "../z_demo_gt_part5.c", 152);
+    MATRIX_TOMTX(sp5C);
 
     Matrix_Pop();
 
@@ -1600,7 +1598,7 @@ void DemoGt_Draw7(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, sp5C, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsWalkwayDL);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part5.c", 160);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_80982054_Init24(DemoGt* this, GlobalContext* globalCtx) {
@@ -1669,7 +1667,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
     sp5C = Graph_Alloc(gfxCtx, sizeof(Mtx));
     sp40 = 1.0f - Math_CosS(sp6E);
 
-    OPEN_DISPS(gfxCtx, "../z_demo_gt_part6.c", 137);
+    OPEN_DISPS(gfxCtx);
 
     sp50.x = Math_CosS(sp60);
     sp50.y = 0.0f;
@@ -1683,7 +1681,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
 
     Matrix_RotateAxis(sp68, &sp50, MTXMODE_APPLY);
     Matrix_Translate(sp44.x, sp44.y, sp44.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sp5C, "../z_demo_gt_part6.c", 153);
+    MATRIX_TOMTX(sp5C);
 
     Matrix_Pop();
 
@@ -1691,7 +1689,7 @@ void DemoGt_Draw8(DemoGt* this, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, sp5C, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gTowerCollapseCsAlternativeWalkwayDL);
 
-    CLOSE_DISPS(gfxCtx, "../z_demo_gt_part6.c", 163);
+    CLOSE_DISPS(gfxCtx);
 }
 
 static DemoGtUpdateFunc sUpdateFuncs[] = {

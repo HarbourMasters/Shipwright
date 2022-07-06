@@ -1098,7 +1098,7 @@ void EnFloormas_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_RotateY(DEGTORAD(60.0f), MTXMODE_APPLY);
         Matrix_RotateZ(DEGTORAD(15.0f), MTXMODE_APPLY);
         Matrix_Scale(2.0f, 2.0f, 2.0f, MTXMODE_APPLY);
-        gSPMatrix((*gfx)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_floormas.c", 2299), G_MTX_LOAD);
+        gSPMatrix((*gfx)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
         gSPDisplayList((*gfx)++, gWallmasterFingerDL);
         Matrix_Pop();
     }
@@ -1109,7 +1109,7 @@ static Color_RGBA8 sMergeColor = { 0, 255, 0, 0 };
 void EnFloormas_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnFloormas* this = (EnFloormas*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_floormas.c", 2318);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     if (this->collider.base.colType == COLTYPE_HARD) {
@@ -1123,13 +1123,13 @@ void EnFloormas_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80026608(globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_floormas.c", 2340);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFloormas_DrawHighlighted(Actor* thisx, GlobalContext* globalCtx) {
     EnFloormas* this = (EnFloormas*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_floormas.c", 2352);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     if (this->collider.base.colType == COLTYPE_HARD) {
@@ -1142,5 +1142,5 @@ void EnFloormas_DrawHighlighted(Actor* thisx, GlobalContext* globalCtx) {
         func_80026A6C(globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_floormas.c", 2374);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

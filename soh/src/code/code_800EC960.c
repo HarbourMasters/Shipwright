@@ -1250,7 +1250,7 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
     if (dpad) {
-        sOcarinaAllowedBtnMask = 
+        sOcarinaAllowedBtnMask =
             (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaABtnMap = BTN_A;
         sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
@@ -1558,7 +1558,6 @@ void func_800ED458(s32 arg0) {
     if ((D_8016BA10 == 0) ||
         ((D_8016BA10 & sOcarinaAllowedBtnMask) != (sCurOcarinaBtnPress & sOcarinaAllowedBtnMask))) {
         D_8016BA10 = 0;
-        if (1) {}
         sCurOcarinaBtnVal = 0xFF;
         sCurOcarinaBtnIdx = 0xFF;
         phi_v1_2 = (sCurOcarinaBtnPress & sOcarinaAllowedBtnMask) & (sPrevOcarinaBtnPress & sOcarinaAllowedBtnMask);
@@ -1802,7 +1801,6 @@ void func_800EDD68(u8 arg0) {
         lastNote = song[i].noteIdx;
     }
 
-    if (1) {}
 
     if (sRecordSongPos != (i + 1)) {
         sRecordSongPos = i + 2;
@@ -2030,7 +2028,6 @@ s32 Audio_OcaMemoryGameGenNote(void) {
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0;
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos + 1].noteIdx = 0xFF;
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos + 1].unk_02 = 0;
-    if (1) {}
     return 0;
 }
 
@@ -3014,14 +3011,12 @@ void AudioDebug_ProcessInput_SndCont(void) {
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CDOWN)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F595C(sAudioSndContWork[sAudioSndContSel]);
         }
     }
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CRIGHT)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F5ACC(sAudioSndContWork[sAudioSndContSel]);
         }
     }
@@ -4095,7 +4090,7 @@ void func_800F4870(u8 arg0) {
 }
 
 // (name derived from debug strings, should probably update. used in ganon/ganon_boss scenes)
-s32 Audio_SetGanonDistVol(u8 targetVol) 
+s32 Audio_SetGanonDistVol(u8 targetVol)
 {
     u8 phi_v0;
     u16 phi_v0_2;
@@ -4517,7 +4512,7 @@ void func_800F5C2C(void) {
     sPrevMainBgmSeqId = NA_BGM_DISABLED;
 }
 
-void Audio_PlayFanfare(u16 seqId) 
+void Audio_PlayFanfare(u16 seqId)
 {
     u16 sp26;
     u32 sp20;
@@ -4527,12 +4522,17 @@ void Audio_PlayFanfare(u16 seqId)
     sp26 = func_800FA0B4(SEQ_PLAYER_FANFARE);
     sp1C = func_800E5E84(sp26 & 0xFF, &sp20);
     sp18 = func_800E5E84(seqId & 0xFF, &sp20);
-    if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
-        D_8016B9F4 = 1;
-    } else {
-        D_8016B9F4 = 5;
-        Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
-    }
+	if (!sp1C || !sp18) {
+		// disable BGM, we're about to null deref!
+		D_8016B9F4 = 1;
+	} else {
+		if ((sp26 == NA_BGM_DISABLED) || (*sp1C == *sp18)) {
+			D_8016B9F4 = 1;
+		} else {
+			D_8016B9F4 = 5;
+			Audio_SeqCmd1(SEQ_PLAYER_FANFARE, 0);
+		}
+	}
     D_8016B9F6 = seqId;
 }
 

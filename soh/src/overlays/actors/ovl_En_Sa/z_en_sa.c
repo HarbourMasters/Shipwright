@@ -660,7 +660,7 @@ void func_80AF68E4(EnSa* this, GlobalContext* globalCtx) {
             EnSa_ChangeAnim(this, csAction->action);
             this->unk_210 = csAction->action;
         }
-        if (phi_v0) {}
+        //if (phi_v0) {}
         if (csAction->action == 3) {
             if (this->unk_20C == 0) {
                 phi_v0 = 0;
@@ -803,7 +803,7 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnSa* this = (EnSa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1444);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->rightEyeIndex]));
@@ -817,5 +817,5 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1497);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -60,7 +60,6 @@ s32 DmaMgr_DmaRomToRam(uintptr_t rom, uintptr_t ram, size_t size) {
     osCreateMesgQueue(&queue, &msg, 1);
 
     while (size > buffSize) {
-        if (1) {} // Necessary to match
 
         ioMsg.hdr.pri = OS_MESG_PRI_NORMAL;
         ioMsg.hdr.retQueue = &queue;
@@ -92,7 +91,6 @@ s32 DmaMgr_DmaRomToRam(uintptr_t rom, uintptr_t ram, size_t size) {
         ram += buffSize;
     }
 
-    if (1) {} // Also necessary to match
 
     ioMsg.hdr.pri = OS_MESG_PRI_NORMAL;
     ioMsg.hdr.retQueue = &queue;
@@ -125,9 +123,9 @@ end:
 s32 DmaMgr_DmaHandler(OSPiHandle* pihandle, OSIoMesg* mb, s32 direction) {
     s32 ret;
 
-    ASSERT(pihandle == gCartHandle, "pihandle == carthandle", "../z_std_dma.c", 530);
-    ASSERT(direction == OS_READ, "direction == OS_READ", "../z_std_dma.c", 531);
-    ASSERT(mb != NULL, "mb != NULL", "../z_std_dma.c", 532);
+    ASSERT(pihandle == gCartHandle);
+    ASSERT(direction == OS_READ);
+    ASSERT(mb != NULL);
 
     if (D_80009460 == 10) {
         osSyncPrintf("%10lld サウンドＤＭＡ %08x %08x %08x (%d)\n", OS_CYCLES_TO_USEC(osGetTime()), mb->dramAddr,
@@ -249,7 +247,6 @@ void DmaMgr_ProcessMsg(DmaRequest* req) {
 
     while (iter->vromEnd) {
         if (vrom >= iter->vromStart && vrom < iter->vromEnd) {
-            if (1) {} // Necessary to match
 
             if (iter->romEnd == 0) {
                 if (iter->vromEnd < vrom + size) {
@@ -312,7 +309,7 @@ void DmaMgr_ThreadEntry(void* arg0) {
     osSyncPrintf("ＤＭＡマネージャスレッド実行開始\n");
     while (true) {
         osRecvMesg(&sDmaMgrMsgQueue, &msg, OS_MESG_BLOCK);
-        req = (DmaRequest*)msg;
+        req = (DmaRequest*)msg.ptr;
         if (req == NULL) {
             break;
         }
@@ -354,13 +351,12 @@ s32 DmaMgr_SendRequestImpl(DmaRequest* req, uintptr_t ram, uintptr_t vrom, size_
             osSyncPrintf("%c", 7);
             osSyncPrintf(VT_FGCOL(RED));
             osSyncPrintf("dmaEntryMsgQが一杯です。キューサイズの再検討をおすすめします。");
-            LOG_NUM("(sizeof(dmaEntryMsgBufs) / sizeof(dmaEntryMsgBufs[0]))", ARRAY_COUNT(sDmaMgrMsgs),
-                    "../z_std_dma.c", 952);
+            LOG_NUM("(sizeof(dmaEntryMsgBufs) / sizeof(dmaEntryMsgBufs[0]))", ARRAY_COUNT(sDmaMgrMsgs));
             osSyncPrintf(VT_RST);
         }
     }
 
-    osSendMesg(&sDmaMgrMsgQueue, req, OS_MESG_BLOCK);
+    osSendMesgPtr(&sDmaMgrMsgQueue, req, OS_MESG_BLOCK);
     return 0;
 }
 
@@ -371,7 +367,7 @@ s32 DmaMgr_SendRequest0(uintptr_t ram, uintptr_t vrom, size_t size) {
     s32 ret;
 
     osCreateMesgQueue(&queue, &msg, 1);
-    ret = DmaMgr_SendRequestImpl(&req, ram, vrom, size, 0, &queue, NULL);
+    ret = DmaMgr_SendRequestImpl(&req, ram, vrom, size, 0, &queue, OS_MESG_PTR(NULL));
     if (ret == -1) {
         return ret;
     }
@@ -413,11 +409,11 @@ void DmaMgr_Init(void) {
     }
 
 #if 0
-    if ((uintptr_t)_bootSegmentRomStart != gDmaDataTable[0].vromEnd) 
+    if ((uintptr_t)_bootSegmentRomStart != gDmaDataTable[0].vromEnd)
     {
         osSyncPrintf("_bootSegmentRomStart(%08x) != dma_rom_ad[0].rom_b(%08x)\n", _bootSegmentRomStart,
                      gDmaDataTable[0].vromEnd);
-        Fault_AddHungupAndCrash("../z_std_dma.c", 1055);
+        Fault_AddHungupAndCrash(__FILE__, __LINE__);
     }
 #endif
 

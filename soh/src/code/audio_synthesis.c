@@ -382,11 +382,11 @@ void AudioSynth_EnvSetup1(Acmd* cmd, s32 arg1, s32 arg2, s32 arg3, s32 arg4) {
 void func_800DBD08(void) {
 }
 
-void AudioSynth_LoadBuffer(Acmd* cmd, s32 arg1, s32 arg2, s32 arg3) {
+void AudioSynth_LoadBuffer(Acmd* cmd, s32 arg1, s32 arg2, uintptr_t arg3) {
     aLoadBuffer(cmd, arg3, arg1, arg2);
 }
 
-void AudioSynth_SaveBuffer(Acmd* cmd, s32 arg1, s32 arg2, s32 arg3) {
+void AudioSynth_SaveBuffer(Acmd* cmd, s32 arg1, s32 arg2, uintptr_t arg3) {
     aSaveBuffer(cmd, arg1, arg3, arg2);
 }
 
@@ -678,11 +678,11 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
     s32 temp_v1_6;
     void* buf;
     s32 nSamplesToDecode;
-    u32 sampleAddr;
+    uintptr_t sampleAddr;
     u32 samplesLenFixedPoint;
     s32 samplesLenAdjusted;
     s32 nSamplesProcessed;
-    s32 loopEndPos;
+    uintptr_t loopEndPos;
     s32 nSamplesToProcess;
     s32 phi_s4;
     s32 nFirstFrameSamplesToIgnore;
@@ -690,15 +690,15 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
     s32 frameSize;
     s32 nFramesToDecode;
     s32 skipInitialSamples;
-    s32 sampleDataStart;
+    intptr_t sampleDataStart;
     u8* sampleData;
     s32 nParts;
     s32 curPart;
-    s32 sampleDataStartPad;
+    intptr_t sampleDataStartPad;
     s32 side;
     s32 resampledTempLen;
     u16 noteSamplesDmemAddrBeforeResampling;
-    s32 sampleDataOffset;
+    intptr_t sampleDataOffset;
     s32 thing;
     s32 s5;
     Note* note;
@@ -786,9 +786,6 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
                             gAudioContext.curLoadedBook = audioFontSample->book->book;
                             break;
                     }
-                    if (1) {}
-                    if (1) {}
-                    if (1) {}
                     nEntries = 16 * audioFontSample->book->order * audioFontSample->book->npredictors;
                     aLoadADPCM(cmd++, nEntries, gAudioContext.curLoadedBook);
                 }
@@ -901,7 +898,6 @@ Acmd* AudioSynth_ProcessNote(s32 noteIndex, NoteSubEu* noteSubEu, NoteSynthesisS
 
                 nSamplesInThisIteration = nSamplesToDecode + nSamplesInFirstFrame - nTrailingSamplesToIgnore;
                 if (nSamplesProcessed == 0) {
-                    if (1) {}
                     skipBytes = nFirstFrameSamplesToIgnore * 2;
                 } else {
                     phi_s4 = ALIGN16(s5 + 16);

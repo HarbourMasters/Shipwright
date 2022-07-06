@@ -30,8 +30,11 @@
 #include "ichain.h"
 #include "regs.h"
 
-//#define AUDIO_HEAP_SIZE 0x38000
-#define AUDIO_HEAP_SIZE 0x3800000 // The original audio heap size was too small. The heap would exceed capacity and corrupt everything in its path.
+#if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
+#define _SOH64
+#endif
+
+#define AUDIO_HEAP_SIZE  0x3800000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
@@ -537,9 +540,9 @@ typedef enum {
     /*  4 */ TEXT_STATE_CHOICE,
     /*  5 */ TEXT_STATE_EVENT,
     /*  6 */ TEXT_STATE_DONE,
-    /*  7 */ TEXT_STATE_SONG_DEMO_DONE, 
-    /*  8 */ TEXT_STATE_8, 
-    /*  9 */ TEXT_STATE_9, 
+    /*  7 */ TEXT_STATE_SONG_DEMO_DONE,
+    /*  8 */ TEXT_STATE_8,
+    /*  9 */ TEXT_STATE_9,
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
@@ -702,6 +705,10 @@ typedef struct {
     /* 0x024C */ u16    cDownAlpha;
     /* 0x024E */ u16    cRightAlpha;
     /* 0x0250 */ u16    healthAlpha; // also max C-Up alpha
+    /* 0x024E */ u16    dpadUpAlpha;
+    /* 0x024E */ u16    dpadDownAlpha;
+    /* 0x024E */ u16    dpadLeftAlpha;
+    /* 0x024E */ u16    dpadRightAlpha;
     /* 0x0252 */ u16    magicAlpha; // also Rupee and Key counters alpha
     /* 0x0254 */ u16    minimapAlpha;
     /* 0x0256 */ s16    startAlpha;

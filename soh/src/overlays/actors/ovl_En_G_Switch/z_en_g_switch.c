@@ -455,12 +455,12 @@ void EnGSwitch_DrawPot(Actor* thisx, GlobalContext* globalCtx) {
     EnGSwitch* this = (EnGSwitch*)thisx;
 
     if (!this->broken) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 918);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 925),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_tsubo_DL_0017C0);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 928);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -472,16 +472,15 @@ void EnGSwitch_DrawRupee(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGSwitch* this = (EnGSwitch*)thisx;
 
-    if (1) {}
     if (!this->broken) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 951);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D18(globalCtx->state.gfxCtx);
         func_8002EBCC(&this->actor, globalCtx, 0);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 957),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[this->colorIdx]));
         gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 961);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     if (this->type == ENGSWITCH_TARGET_RUPEE) {
         EnGSwitch_DrawEffects(this, globalCtx);
@@ -551,7 +550,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
     f32 scale;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_en_g_switch.c", 1073);
+    OPEN_DISPS(gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
@@ -561,11 +560,11 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
             Matrix_RotateX(effect->rot.x, MTXMODE_APPLY);
             Matrix_RotateY(effect->rot.y, MTXMODE_APPLY);
             Matrix_RotateZ(effect->rot.z, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_g_switch.c", 1088),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
         }
     }
-    CLOSE_DISPS(gfxCtx, "../z_en_g_switch.c", 1095);
+    CLOSE_DISPS(gfxCtx);
 }

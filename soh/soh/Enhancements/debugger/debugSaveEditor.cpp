@@ -1,6 +1,6 @@
 #include "debugSaveEditor.h"
 #include "../../util.h"
-#include "../libultraship/SohImGuiImpl.h"
+#include "../libultraship/ImGuiImpl.h"
 #include "ImGuiHelpers.h"
 
 #include <array>
@@ -377,7 +377,7 @@ void DrawInfoTab() {
     }
     ImGui::SameLine();
     if (ImGui::Button("Sunset")) {
-        gSaveContext.dayTime = 0xC000;
+        gSaveContext.dayTime = 0xC001;
     }
     ImGui::SameLine();
     if (ImGui::Button("Midnight")) {

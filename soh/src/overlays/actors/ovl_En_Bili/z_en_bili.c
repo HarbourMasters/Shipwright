@@ -751,7 +751,7 @@ static void* sTentaclesTextures[] = {
 void EnBili_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnBili* this = (EnBili*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bili.c", 1521);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     this->tentaclesTexIndex = CLAMP_MAX(this->tentaclesTexIndex, 7);
@@ -766,5 +766,5 @@ void EnBili_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnBili_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bili.c", 1552);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

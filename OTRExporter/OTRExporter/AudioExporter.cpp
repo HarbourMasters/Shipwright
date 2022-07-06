@@ -31,7 +31,7 @@ void OTRExporter_Audio::WriteSampleEntryReference(ZAudio* audio, SampleEntry* en
 void OTRExporter_Audio::WriteSampleEntry(SampleEntry* entry, BinaryWriter* writer)
 {
 	WriteHeader(nullptr, "", writer, Ship::ResourceType::AudioSample, Ship::Version::Rachael);
-	
+
 	writer->Write(entry->codec);
 	writer->Write(entry->medium);
 	writer->Write(entry->unk_bit26);
@@ -182,7 +182,7 @@ void OTRExporter_Audio::Save(ZResource* res, const fs::path& outPath, BinaryWrit
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].medium);
 		seqWriter.Write((uint8_t)audio->sequenceTable[i].cachePolicy);
 		seqWriter.Write((uint32_t)audio->fontIndices[i].size());
-		
+
 		for (size_t k = 0; k < audio->fontIndices[i].size(); k++)
 			seqWriter.Write((uint8_t)audio->fontIndices[i][k]);
 

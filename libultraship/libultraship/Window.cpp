@@ -18,12 +18,16 @@
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
 #include "stox.h"
+#if __APPLE__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #include <map>
 #include <string>
 #include <chrono>
-#include "SohHooks.h"
-#include "SohConsole.h"
+#include "Hooks.h"
+#include "Console.h"
 
 #include <iostream>
 
@@ -250,15 +254,18 @@ namespace Ship {
 
         SetAudioPlayer();
         bIsFullscreen = Ship::stob(Conf["WINDOW"]["FULLSCREEN"]);
-        dwWidth = Ship::stoi(Conf["WINDOW"]["WINDOW WIDTH"], 320);
-        dwHeight = Ship::stoi(Conf["WINDOW"]["WINDOW HEIGHT"], 240);
-        dwWidth = Ship::stoi(Conf["WINDOW"]["FULLSCREEN WIDTH"], 1920);
-        dwHeight = Ship::stoi(Conf["WINDOW"]["FULLSCREEN HEIGHT"], 1080);
+        if (bIsFullscreen) {
+            dwWidth = Ship::stoi(Conf["WINDOW"]["FULLSCREEN WIDTH"], 1920);
+            dwHeight = Ship::stoi(Conf["WINDOW"]["FULLSCREEN HEIGHT"], 1080);
+        } else {
+            dwWidth = Ship::stoi(Conf["WINDOW"]["WINDOW WIDTH"], 640);
+            dwHeight = Ship::stoi(Conf["WINDOW"]["WINDOW HEIGHT"], 480);
+        }
         dwMenubar = Ship::stoi(Conf["WINDOW"]["menubar"], 0);
         const std::string& gfx_backend = Conf["WINDOW"]["GFX BACKEND"];
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
 
-        gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen);
+        gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(Window::OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
     }
@@ -319,7 +326,7 @@ namespace Ship {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
 
-        
+
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {

@@ -2233,9 +2233,8 @@ static Gfx D_80B4A2F8[] = {
 void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnZf* this = (EnZf*)thisx;
-    ; // Extra ";" required for matching. Cannot be if (1) {} or the like. Typo?
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zf.c", 3533);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_8002EBCC(thisx, globalCtx, 1);
 
@@ -2261,7 +2260,6 @@ void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 EffectSsEnIce_SpawnFlyingVec3f(globalCtx, thisx, &this->bodyPartsPos[icePosIndex], 150, 150, 150, 250,
                                                235, 245, 255, 1.4f);
             }
-            if (1) {}
         }
     } else { // fades out when dead
         func_80093D84(globalCtx->state.gfxCtx);
@@ -2271,7 +2269,7 @@ void EnZf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                        EnZf_OverrideLimbDraw, EnZf_PostLimbDraw, this, POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zf.c", 3601);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZf_SetupCircleAroundPlayer(EnZf* this, f32 speed) {

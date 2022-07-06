@@ -61,7 +61,7 @@ void MagicWind_Init(Actor* thisx, GlobalContext* globalCtx) {
             SkelCurve_SetAnim(&this->skelCurve, &sAnim, 60.0f, 0.0f, 60.0f, -1.0f);
             MagicWind_SetupAction(this, MagicWind_Shrink);
             // "Means start"
-            LOG_STRING("表示開始", "../z_magic_wind.c", 486);
+            LOG_STRING("表示開始");
             func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_WARP);
             break;
     }
@@ -72,7 +72,7 @@ void MagicWind_Destroy(Actor* thisx, GlobalContext* globalCtx) {
     SkelCurve_Destroy(globalCtx, &this->skelCurve);
     func_800876C8(globalCtx);
     // "wipe out"
-    LOG_STRING("消滅", "../z_magic_wind.c", 505);
+    LOG_STRING("消滅");
 }
 
 void MagicWind_UpdateAlpha(f32 alpha) {
@@ -94,7 +94,7 @@ void MagicWind_WaitForTimer(MagicWind* this, GlobalContext* globalCtx) {
     }
 
     // "Means start"
-    LOG_STRING("表示開始", "../z_magic_wind.c", 539);
+    LOG_STRING("表示開始");
     func_8002F7DC(&player->actor, NA_SE_PL_MAGIC_WIND_NORMAL);
     MagicWind_UpdateAlpha(1.0f);
     MagicWind_SetupAction(this, MagicWind_Grow);
@@ -146,7 +146,7 @@ void MagicWind_Update(Actor* thisx, GlobalContext* globalCtx) {
 s32 MagicWind_OverrideLimbDraw(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve, s32 limbIndex, void* thisx) {
     MagicWind* this = (MagicWind*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_magic_wind.c", 615);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 1) {
         gSPSegment(POLY_XLU_DISP++, 8,
@@ -163,7 +163,7 @@ s32 MagicWind_OverrideLimbDraw(GlobalContext* globalCtx, SkelAnimeCurve* skelCur
                                     0xFF - ((globalCtx->state.frames * 0xA) & 0xFF), 0x40, 0x40));
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_magic_wind.c", 646);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return true;
 }
@@ -172,12 +172,12 @@ void MagicWind_Draw(Actor* thisx, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     MagicWind* this = (MagicWind*)thisx;
 
-    OPEN_DISPS(gfxCtx, "../z_magic_wind.c", 661);
+    OPEN_DISPS(gfxCtx);
 
     if (this->actionFunc != MagicWind_WaitForTimer) {
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 25);
         SkelCurve_Draw(thisx, globalCtx, &this->skelCurve, MagicWind_OverrideLimbDraw, NULL, 1, NULL);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_magic_wind.c", 673);
+    CLOSE_DISPS(gfxCtx);
 }

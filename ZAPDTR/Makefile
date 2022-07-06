@@ -7,12 +7,13 @@ DEBUG ?= 0
 COPYCHECK_ARGS ?=
 LLD ?= 0
 WERROR ?= 0
+UNAME := $(shell uname)
 
 # Use clang++ if available, else use g++
 ifeq ($(shell command -v clang++ >/dev/null 2>&1; echo $$?),0)
-  CXX := clang++
+  CXX ?= clang++
 else
-  CXX := g++
+  CXX ?= g++
 endif
 
 INC := -I ZAPD -I lib/elfio -I lib/libgfxd -I lib/tinyxml2 -I ZAPDUtils
@@ -44,8 +45,15 @@ ifneq ($(DEPRECATION_ON),0)
 endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
-LDFLAGS := -lm -ldl -lpng \
-  -L../external -L../libultraship -lz -lbz2 -pthread -lpulse -lultraship -lstorm -lSDL2 -lGLEW -lGL -lX11
+LDFLAGS := -lm -ldl \
+  -L../StormLib/build -L../libultraship -lbz2 -pthread -lultraship -lstorm
+
+ifeq ($(UNAME), Darwin)
+  LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs) -framework OpenGL
+  INC += $(shell pkg-config --cflags libpng)
+else
+  LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2 -lpulse
+endif
 
 # Use LLD if available. Set LLD=0 to not use it
 ifeq ($(shell command -v ld.lld >/dev/null 2>&1; echo $$?),0)
@@ -56,21 +64,12 @@ ifneq ($(LLD),0)
   LDFLAGS += -fuse-ld=lld
 endif
 
-UNAME := $(shell uname)
 UNAMEM := $(shell uname -m)
 ifneq ($(UNAME), Darwin)
   LDFLAGS += -Wl,-export-dynamic -lstdc++fs
   EXPORTERS := -Wl,--whole-archive ../OTRExporter/OTRExporter/OTRExporter.a -Wl,--no-whole-archive
 else
   EXPORTERS := -Wl,-force_load ../OTRExporter/OTRExporter/OTRExporter.a
-  ifeq ($(UNAMEM),arm64)
-    ifeq ($(shell brew list libpng > /dev/null 2>&1; echo $$?),0)
-      LDFLAGS += -L $(shell brew --prefix)/lib
-      INC += -I $(shell brew --prefix)/include
-      else
-      $(error Please install libpng via Homebrew)
-    endif
-  endif
 endif
 
 
@@ -103,6 +102,7 @@ clean:
 	$(MAKE) -C lib/libgfxd clean
 	$(MAKE) -C ZAPDUtils clean
 	$(MAKE) -C ExporterTest clean
+	rm -rf ../StormLib/build
 
 rebuild: clean all
 
@@ -121,6 +121,11 @@ build/%.o: %.cpp
 lib/libgfxd/libgfxd.a:
 	$(MAKE) -C lib/libgfxd
 
+.PHONY: StormLib
+StormLib:
+	LDFLAGS="" cmake -B ../StormLib/build -S ../StormLib
+	LDFLAGS="" cmake --build ../StormLib/build
+
 .PHONY: ExporterTest
 ExporterTest:
 	$(MAKE) -C ExporterTest
@@ -131,5 +136,5 @@ ZAPDUtils:
 
 
 # Linking
-ZAPD.out: $(O_FILES) lib/libgfxd/libgfxd.a ExporterTest ZAPDUtils
-	$(CXX) $(CXXFLAGS) $(O_FILES) lib/libgfxd/libgfxd.a ZAPDUtils/ZAPDUtils.a $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)
+ZAPD.out: $(O_FILES) lib/libgfxd/libgfxd.a ExporterTest ZAPDUtils StormLib
+	$(CXX) $(CXXFLAGS) $(O_FILES) lib/libgfxd/libgfxd.a ZAPDUtils/ZAPDUtils.a ../StormLib/build/libstorm.a $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)
