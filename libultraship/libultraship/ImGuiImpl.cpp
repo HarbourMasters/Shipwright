@@ -69,7 +69,9 @@ namespace SohImGui {
     const char* RainbowColorCvarList[] = {
         //This is the list of possible CVars that has rainbow effect.
         "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-        "gCCHeartsPrim", "gDDCCHeartsPrim", "gCCDDHeartsPrim",
+        "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
+        "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
+        "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol",
         "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
         "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
         "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
@@ -588,7 +590,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will make a random color for the colors at it's right.\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Chooses a random color\nOverwrites previously chosen color");
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
@@ -600,7 +602,7 @@ namespace SohImGui {
         MakeInvisible += "Rainbow";
 
         EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
-        Tooltip("Clicking this button will make color cycling\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
     }
 
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
@@ -630,7 +632,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will to the game original color (GameCube version)\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Revert colors to the game original colors (GameCube version)\nOverwrites previously chosen color");
     }
 
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
