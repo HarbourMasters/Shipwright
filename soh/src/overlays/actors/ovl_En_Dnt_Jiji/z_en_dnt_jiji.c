@@ -431,7 +431,7 @@ void EnDntJiji_Draw(Actor* thisx, GlobalContext* globalCtx) {
     static void* blinkTex[] = { gDntJijiEyeOpenTex, gDntJijiEyeHalfTex, gDntJijiEyeShutTex };
     EnDntJiji* this = (EnDntJiji*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_jiji.c", 1019);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_Push();
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->eyeState]));
@@ -439,8 +439,8 @@ void EnDntJiji_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Pop();
     Matrix_Translate(this->flowerPos.x, this->flowerPos.y, this->flowerPos.z, MTXMODE_NEW);
     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dnt_jiji.c", 1040),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDntJijiFlowerDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dnt_jiji.c", 1043);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

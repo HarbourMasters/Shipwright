@@ -143,7 +143,6 @@ void BgMizuWater_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 3:
             if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
                 this->actor.world.pos.y = this->baseY + 110.0f;
-                if (1) {}
                 this->targetY = this->actor.world.pos.y;
             }
             waterBoxes[8].ySurface = this->actor.world.pos.y;
@@ -151,7 +150,6 @@ void BgMizuWater_Init(Actor* thisx, GlobalContext* globalCtx) {
         case 4:
             if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
                 this->actor.world.pos.y = this->baseY + 160.0f;
-                if (1) {}
                 this->targetY = this->actor.world.pos.y;
             }
             waterBoxes[16].ySurface = this->actor.world.pos.y;
@@ -329,7 +327,7 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgMizuWater* this = (BgMizuWater*)thisx;
     s32 gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_water.c", 738);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gameplayFrames = globalCtx->gameplayFrames;
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -337,7 +335,7 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, -gameplayFrames * 1, gameplayFrames * 1, 32, 32, 1, 0,
                                 -gameplayFrames * 1, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mizu_water.c", 749),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);
@@ -346,5 +344,5 @@ void BgMizuWater_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gObjectMizuObjectsWaterDL_004B20);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_water.c", 756);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

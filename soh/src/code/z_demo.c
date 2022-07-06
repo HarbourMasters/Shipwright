@@ -1910,13 +1910,10 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
     Gfx* displayList;
     Gfx* prevDisplayList;
 
-    if (0) {} // Necessary to match
-
     if (gSaveContext.cutsceneIndex >= 0xFFF0) {
-        if (0) {} // Also necessary to match
 
         if (BREG(0) != 0) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo.c", 4101);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             prevDisplayList = POLY_OPA_DISP;
             displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
@@ -1926,7 +1923,7 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo.c", 4108);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         csCtx->frames++;

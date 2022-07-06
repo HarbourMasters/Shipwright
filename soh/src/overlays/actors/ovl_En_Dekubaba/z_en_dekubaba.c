@@ -1149,7 +1149,7 @@ void EnDekubaba_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnDekubaba_DrawStemRetracted(EnDekubaba* this, GlobalContext* globalCtx) {
     f32 horizontalScale;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2445);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     horizontalScale = this->size * 0.01f;
 
@@ -1157,13 +1157,13 @@ void EnDekubaba_DrawStemRetracted(EnDekubaba* this, GlobalContext* globalCtx) {
                      MTXMODE_NEW);
     Matrix_RotateZYX(this->stemSectionAngle[0], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
     Matrix_Scale(horizontalScale, horizontalScale, horizontalScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2461),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemTopDL);
 
     Actor_SetFocus(&this->actor, 0.0f);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2468);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
@@ -1175,7 +1175,7 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
     f32 scale;
     s32 stemSections;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2487);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc == EnDekubaba_PrunedSomersault) {
         stemSections = 2;
@@ -1202,7 +1202,7 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
 
         Matrix_Put(&mtx);
         Matrix_RotateZYX(this->stemSectionAngle[i], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2533),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         gSPDisplayList(POLY_OPA_DISP++, stemDLists[i]);
@@ -1230,27 +1230,27 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2569);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnDekubaba_DrawStemBasePruned(EnDekubaba* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2579);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_RotateZYX(this->stemSectionAngle[2], this->actor.shape.rot.y, 0, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2586),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemBaseDL);
 
     Collider_UpdateSpheres(55, &this->collider);
     Collider_UpdateSpheres(56, &this->collider);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2596);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnDekubaba_DrawBaseShadow(EnDekubaba* this, GlobalContext* globalCtx) {
     MtxF mtx;
     f32 horizontalScale;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2692);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80094044(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, 255);
@@ -1260,10 +1260,10 @@ void EnDekubaba_DrawBaseShadow(EnDekubaba* this, GlobalContext* globalCtx) {
 
     horizontalScale = this->size * 0.15f;
     Matrix_Scale(horizontalScale, 1.0f, horizontalScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2710),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2715);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnDekubaba_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
@@ -1278,8 +1278,7 @@ void EnDekubaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDekubaba* this = (EnDekubaba*)thisx;
     f32 scale;
 
-    if (1) {}
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2752);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     if (this->actionFunc != EnDekubaba_DeadStickDrop) {
@@ -1296,7 +1295,7 @@ void EnDekubaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Translate(this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, MTXMODE_NEW);
         Matrix_RotateY(this->actor.home.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2780),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaBaseLeavesDL);
 
@@ -1311,12 +1310,12 @@ void EnDekubaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // Display solid until 40 frames left, then blink until killed.
     } else if ((this->timer > 40) || ((this->timer % 2) != 0)) {
         Matrix_Translate(0.0f, 0.0f, 200.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2797),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStickDropDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dekubaba.c", 2804);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 //OTRTODO fix this one

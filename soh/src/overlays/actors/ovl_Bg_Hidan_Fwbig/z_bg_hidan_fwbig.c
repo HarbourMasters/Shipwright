@@ -251,7 +251,7 @@ void BgHidanFwbig_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     f32 height;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_fwbig.c", 630);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -269,10 +269,10 @@ void BgHidanFwbig_Draw(Actor* thisx, GlobalContext* globalCtx) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 0x80, 0, 0x20, 0x40, 1, 0,
                                 (u8)(globalCtx->gameplayFrames * -15), 0x20, 0x40));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_hidan_fwbig.c", 660),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gFireTempleBigFireWallDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_fwbig.c", 664);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

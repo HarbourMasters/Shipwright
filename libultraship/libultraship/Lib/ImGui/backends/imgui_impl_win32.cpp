@@ -13,7 +13,7 @@
 // If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
 // Read online: https://github.com/ocornut/imgui/tree/master/docs
 
-#include "../imgui.h"
+#include "imgui.h"
 #include "imgui_impl_win32.h"
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -102,7 +102,7 @@ struct ImGui_ImplWin32_Data
     PFN_XInputGetState          XInputGetState;
 #endif
 
-    ImGui_ImplWin32_Data()      { memset(this, 0, sizeof(*this)); }
+    ImGui_ImplWin32_Data()      { memset((void*)this, 0, sizeof(*this)); }
 };
 
 // Backend data stored in io.BackendPlatformUserData to allow support for multiple Dear ImGui contexts
@@ -419,7 +419,7 @@ void    ImGui_ImplWin32_NewFrame()
     bd->Time = current_time;
 
     // Update OS mouse position
-     ImGui_ImplWin32_UpdateMouseData();
+    ImGui_ImplWin32_UpdateMouseData();
 
     // Process workarounds for known Windows key handling issues
     ImGui_ImplWin32_ProcessKeyEventsWorkarounds();
@@ -561,10 +561,10 @@ static ImGuiKey ImGui_ImplWin32_VirtualKeyToImGuiKey(WPARAM wParam)
 #endif
 
 // Win32 message handler (process Win32 mouse/keyboard inputs, etc.)
-// Call from your application's message handler.
+// Call from your application's message handler. Keep calling your message handler unless this function returns TRUE.
 // When implementing your own backend, you can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if Dear ImGui wants to use your inputs.
-// - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application.
-// - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application.
+// - When io.WantCaptureMouse is true, do not dispatch mouse input data to your main application, or clear/overwrite your copy of the mouse data.
+// - When io.WantCaptureKeyboard is true, do not dispatch keyboard input data to your main application, or clear/overwrite your copy of the keyboard data.
 // Generally you may always pass all inputs to Dear ImGui, and hide them from your application based on those two flags.
 // PS: In this Win32 handler, we use the capture API (GetCapture/SetCapture/ReleaseCapture) to be able to read mouse coordinates when dragging mouse outside of our window bounds.
 // PS: We treat DBLCLK messages as regular mouse down messages, so this code will work on windows classes that have the CS_DBLCLKS flag set. Our own example app code doesn't set this flag.
@@ -695,6 +695,7 @@ IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT msg, WPARA
             io.AddInputCharacterUTF16((unsigned short)wParam);
         return 0;
     case WM_SETCURSOR:
+        // This is required to restore cursor when transitioning from e.g resize borders to client area.
         if (LOWORD(lParam) == HTCLIENT && ImGui_ImplWin32_UpdateMouseCursor())
             return 1;
         return 0;
