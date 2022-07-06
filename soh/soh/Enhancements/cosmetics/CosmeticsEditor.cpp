@@ -176,7 +176,7 @@ void Draw_Npcs(){
 }
 void Draw_ItemsSkills(){
     SohImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
-    SohImGui::Tooltip("Enable/Disable custom Link's tunics colors. \nIf disabled you will have original colors for Link's tunics.");
+    SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0) && ImGui::BeginTable("tableTunics", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Kokiri Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Goron Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
@@ -308,7 +308,7 @@ void Draw_Menus(){
         }
         */
     } else {
-        ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\n to be selected in \"General\" tab.\n Once enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
+        ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\n to be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
     }
 }
 void Draw_Placements(){
@@ -1000,7 +1000,7 @@ void Draw_General(){
             }
         }
     } else {
-        ImGui::Text("To modify some generic colors you need \"Custom Colors\" scheme\n to be selected in \"General\" tab.\n Once enabled you will be able to modify the following colors :\nHearts,\nMagic Meter,\nMinimap & compass,\nTitle card\nKeys & Rupee icons\nStone of Agony (Visual)");
+        ImGui::Text("To modify some generic colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors :\nHearts,\nMagic Meter,\nMinimap & compass,\nTitle card\nKeys & Rupee icons\nStone of Agony (Visual)");
     }
 }
 void DrawCosmeticsEditor(bool& open) {
