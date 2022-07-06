@@ -1,6 +1,6 @@
 #include "z_kaleido_scope.h"
 #include "z_kaleido_progress.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 #include "textures/icon_item_static/icon_item_static.h"
 #include "textures/title_static/title_static.h"
@@ -163,7 +163,7 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
     int width_factor = (1 << 10) * Size_W / width;
     int height_factor = (1 << 10) * Size_H / height;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, sprite->color.r, sprite->color.g, sprite->color.b, sprite->color.a);
 
@@ -176,7 +176,7 @@ void MenuBackground_Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 
     gSPWideTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
     
     gsSPGrayscale(POLY_KAL_DISP++, false);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 const char* Kaleido_ProgressDigits_tex[] = { //Array holding digit texture for small keys counter
@@ -194,7 +194,7 @@ void Kaleido_DigitsDraw(GlobalContext* globalCtx, s16 number, f32 scale, s16 Lin
     int width_factor = (1 << 10) * 16 / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -214,11 +214,11 @@ void Kaleido_DigitsDraw(GlobalContext* globalCtx, s16 number, f32 scale, s16 Lin
 
     //We close the DISP has there no more GFX to be draw there.
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_BackgroundDraw(GlobalContext* globalCtx){
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     //We want settings for proper color and textures display, this allow colour etc. , in short if I get it right we define our shader here.
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
@@ -251,7 +251,7 @@ void KaleidoScope_BackgroundDraw(GlobalContext* globalCtx){
     MenuBackground_Draw(globalCtx,&Background_Win15_Kspr,4,2);
 
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_DungeonsLabelsDraw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 Line, s16 Col){
@@ -263,7 +263,7 @@ void KaleidoScope_DungeonsLabelsDraw(GlobalContext* globalCtx, Kaleido_sprites* 
     int width_factor = (1 << 10) * sprite->width / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetRenderMode(POLY_KAL_DISP++, G_RM_PASS, G_RM_XLU_SURF2);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -281,7 +281,7 @@ void KaleidoScope_DungeonsLabelsDraw(GlobalContext* globalCtx, Kaleido_sprites* 
 
     //We close the DISP has there no more GFX to be draw there.
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites* sprite, s16 Line, s16 Col, s16 Icon_Type, bool greyscale, s16 ID){
@@ -314,7 +314,7 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites*
     int width_factor = (1 << 10) * sprite->width / width;
 
     //We open our Disp that will allow graphic draw
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
 
@@ -336,7 +336,7 @@ void KaleidoScope_DungeonsIcons24Draw(GlobalContext* globalCtx, Kaleido_sprites*
     //We close the DISP has there no more GFX to be draw there.
     gsSPGrayscale(POLY_KAL_DISP++, false);
     gDPPipeSync(POLY_KAL_DISP++);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KeleidoScope_DungeonContainerDraw(GlobalContext* globalCtx) {

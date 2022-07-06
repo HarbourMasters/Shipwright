@@ -1,5 +1,5 @@
 #include "z_kaleido_scope.h"
-#include "SohHooks.h"
+#include "Hooks.h"
 #include "textures/parameter_static/parameter_static.h"
 
 #define MENU_POS_X -100
