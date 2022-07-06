@@ -141,22 +141,22 @@ void Draw_Npcs(){
         SohImGui::EnhancementColor("Navi Prop", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Keeses", "gUseKeeseCol");
+    SohImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
     SohImGui::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
     if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Fire colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Ice colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader(false);
-        Draw_HelpIcon("Affect the primary color of the Fire itself of the Keese");
+        Draw_HelpIcon("Affects the primary color of the Fire itself of the Keese");
         SohImGui::EnhancementColor("Fire Primary color", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255));
         Table_NextCol();
-        Draw_HelpIcon("Affect the primary color of the Ice itself of the Keese");
+        Draw_HelpIcon("Affects the primary color of the Ice itself of the Keese");
         SohImGui::EnhancementColor("Fire Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
         Table_NextLine();
-        Draw_HelpIcon("Affect the secondary color of the Fire itself of the Keese");
+        Draw_HelpIcon("Affects the secondary color of the Fire itself of the Keese");
         SohImGui::EnhancementColor("Ice Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
         Table_NextCol();
-        Draw_HelpIcon("Affect the secondary color of the Ice itself of the Keese");
+        Draw_HelpIcon("Affects the secondary color of the Ice itself of the Keese");
         SohImGui::EnhancementColor("Ice Secondary color", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255));
         ImGui::EndTable();
     }
@@ -166,10 +166,10 @@ void Draw_Npcs(){
         ImGui::TableSetupColumn("Dog N.1 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Dog N.2 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affect the colors of the white dog");
+        Draw_HelpIcon("Affects the colors of the white dog");
         SohImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true);
         Table_NextCol();
-        Draw_HelpIcon("Affect the colors of the brown dog");
+        Draw_HelpIcon("Affects the colors of the brown dog");
         SohImGui::EnhancementColor("Dog brown", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true);
         ImGui::EndTable();
     }
@@ -182,13 +182,13 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Goron Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Zora Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         Table_InitHeader();
-        Draw_HelpIcon("Affect Kokiri Tunic color", false);
+        Draw_HelpIcon("Affects Kokiri Tunic color", false);
         SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
         Table_NextCol();
-        Draw_HelpIcon("Affect Goron Tunic color", false);
+        Draw_HelpIcon("Affects Goron Tunic color", false);
         SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
         Table_NextCol();
-        Draw_HelpIcon("Affect Zora Tunic color", false);
+        Draw_HelpIcon("Affects Zora Tunic color", false);
         SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
         ImGui::EndTable();
     }
@@ -197,22 +197,22 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Primary colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affect Primary color");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Fire Arrows (primary)", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary color");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Fire Arrows", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255));
         Table_NextLine();
-        Draw_HelpIcon("Affect Primary color");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Ice Arrows (primary)", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary color");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Ice Arrows", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255));
         Table_NextLine();
-        Draw_HelpIcon("Affect Primary color");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Light Arrows (primary)", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary color");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Light Arrows", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255));
         ImGui::EndTable();
     }
@@ -221,22 +221,22 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Inner colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affect Primary colors");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Din's Fire (primary)", "gDF_Col", df_col, ImVec4(255,200,0,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary colors");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Din's Fire", "gDF_Env", df_colenv, ImVec4(255,0,0,255));
         Table_NextLine();
-        Draw_HelpIcon("Affect Primary colors");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Nayru's Love Diamond (primary)", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary colors");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Nayru's Love Diamond", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255));
         Table_NextLine();
-        Draw_HelpIcon("Affect Primary colors");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Nayru's Love Orb (primary)", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary colors");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Nayru's Love Orb", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255));
         ImGui::EndTable();
     }
@@ -245,16 +245,16 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Primary colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affect Primary color");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Level 1 color (primary)", "gCharged1Col", charged1_col, ImVec4(170,255,255,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary color");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Level 1 color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255));
         Table_NextLine();
-        Draw_HelpIcon("Affect Primary color");
+        Draw_HelpIcon("Affects Primary color");
         SohImGui::EnhancementColor("Level 2 color (primary)", "gCharged2Col", charged2_col, ImVec4(255,255,170,255));
         Table_NextCol();
-        Draw_HelpIcon("Affect Secondary color");
+        Draw_HelpIcon("Affects Secondary color");
         SohImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
         ImGui::EndTable();
     }
@@ -262,7 +262,7 @@ void Draw_ItemsSkills(){
     if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Custom Swords trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
-        Draw_HelpIcon("Affect Slash trails color");
+        Draw_HelpIcon("Affects Slash trails color");
         SohImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
         SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
         SohImGui::Tooltip("The longer the trails the weirder it become");
@@ -276,10 +276,10 @@ void Draw_Menus(){
             ImGui::TableSetupColumn("File Choose color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
             ImGui::TableSetupColumn("Bottom text color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
             Table_InitHeader();
-            Draw_HelpIcon("Affect the File Select menu background.");
+            Draw_HelpIcon("Affects the File Select menu background.");
             SohImGui::EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, true);
             Table_NextCol();
-            Draw_HelpIcon("Affect the File Select texts.");
+            Draw_HelpIcon("Affects the File Select texts.");
             SohImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, true);
             ImGui::EndTable();
         }
@@ -835,7 +835,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_A", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("A Button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affect A button colors (and various cursors that use the same theme)", false);
+                Draw_HelpIcon("Affects A button colors (and various cursors that use the same theme)", false);
                 SohImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -844,7 +844,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_B", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("B button color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affect B button color", false);
+                Draw_HelpIcon("Affects B button color", false);
                 SohImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -853,7 +853,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_C", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Button C colors & C Cursor colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affect C Buttons colors (if not using separated colors)\nAnd various cursor that use C-Button colors", false);
+                Draw_HelpIcon("Affects C Buttons colors (if not using separated colors)\nAnd various cursor that use C-Button colors", false);
                 SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -862,16 +862,16 @@ void Draw_HUDButtons(){
                 if (ImGui::BeginTable("tableBTN_CSep", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("C-Buttons individual colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                     Table_InitHeader(false);
-                    Draw_HelpIcon("Affect C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
                     SohImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affect C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
                     SohImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affect C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
                     SohImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
-                    Draw_HelpIcon("Affect C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
+                    Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Button color on top");
                     SohImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
                     ImGui::EndTable();
                 }
@@ -881,7 +881,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_Start", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Start button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affect Start button color", false);
+                Draw_HelpIcon("Affects Start button color", false);
                 SohImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
                 ImGui::EndTable();
             }

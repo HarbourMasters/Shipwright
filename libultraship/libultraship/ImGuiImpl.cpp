@@ -69,7 +69,9 @@ namespace SohImGui {
     const char* RainbowColorCvarList[] = {
         //This is the list of possible CVars that has rainbow effect.
         "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-        "gCCHeartsPrim", "gDDCCHeartsPrim", "gCCDDHeartsPrim",
+        "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
+        "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
+        "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol",
         "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
         "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
         "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
