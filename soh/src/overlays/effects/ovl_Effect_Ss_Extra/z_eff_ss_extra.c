@@ -63,7 +63,7 @@ void EffectSsExtra_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 scale = this->rScale / 100.0f;
     void* object = globalCtx->objectCtx.status[this->rObjBankIdx].segment;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_eff_ss_extra.c", 168);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSegments[6] = VIRTUAL_TO_PHYSICAL(object);
     gSPSegment(POLY_XLU_DISP++, 0x06, object);
@@ -71,12 +71,12 @@ void EffectSsExtra_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_eff_ss_extra.c", 186),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sTextures[this->rScoreIdx]));
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_yabusame_point_DL_000DC0));
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_eff_ss_extra.c", 194);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EffectSsExtra_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

@@ -131,7 +131,7 @@ void EnBlkobj_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnBlkobj_DrawAlpha(GlobalContext* globalCtx, Gfx* dList, s32 alpha) {
     Gfx* segment;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_blkobj.c", 322);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (alpha == 255) {
         segment = sSetupOpaDL;
@@ -143,7 +143,7 @@ void EnBlkobj_DrawAlpha(GlobalContext* globalCtx, Gfx* dList, s32 alpha) {
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, alpha);
     gSPDisplayList(POLY_XLU_DISP++, dList);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_blkobj.c", 330);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnBlkobj_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -152,7 +152,7 @@ void EnBlkobj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 illusionAlpha;
     u32 gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_blkobj.c", 349);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -160,7 +160,7 @@ void EnBlkobj_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPSegment(POLY_XLU_DISP++, 0x0D,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, gameplayFrames, 0, 32, 32, 1, gameplayFrames, 0, 32, 32));
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_blkobj.c", 363),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->alpha != 0) {
@@ -171,5 +171,5 @@ void EnBlkobj_Draw(Actor* thisx, GlobalContext* globalCtx) {
         EnBlkobj_DrawAlpha(globalCtx, gIllusionRoomIllusionDL, illusionAlpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_blkobj.c", 375);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

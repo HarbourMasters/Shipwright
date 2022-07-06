@@ -454,13 +454,10 @@ void EnDaiku_InitSubCamera(EnDaiku* this, GlobalContext* globalCtx) {
 
     this->subCamEyeInit.x = this->subCamEye.x = this->actor.world.pos.x + eyePosDeltaWorld.x;
     this->subCamEyeInit.y = this->subCamEye.y = this->actor.world.pos.y + eyePosDeltaWorld.y;
-    if (1) {}
     this->subCamEyeInit.z = this->subCamEye.z = this->actor.world.pos.z + eyePosDeltaWorld.z;
 
-    if (1) {}
     this->subCamAtTarget.x = this->subCamAt.x = this->actor.world.pos.x;
     this->subCamAtTarget.y = this->subCamAt.y = this->actor.world.pos.y + 60.0f;
-    if (1) {}
     this->subCamAtTarget.z = this->subCamAt.z = this->actor.world.pos.z;
 
     this->subCamId = Gameplay_CreateSubCamera(globalCtx);
@@ -589,7 +586,7 @@ void EnDaiku_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnDaiku_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDaiku* this = (EnDaiku*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_daiku.c", 1227);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -606,7 +603,7 @@ void EnDaiku_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDaiku_OverrideLimbDraw, EnDaiku_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_daiku.c", 1255);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnDaiku_OverrideLimbDraw(GlobalContext* globalCtx, s32 limb, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -632,12 +629,12 @@ void EnDaiku_PostLimbDraw(GlobalContext* globalCtx, s32 limb, Gfx** dList, Vec3s
     static Vec3f targetPosHeadLocal = { 700, 1100, 0 };
     EnDaiku* this = (EnDaiku*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_daiku.c", 1323);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limb == 15) { // head
         Matrix_MultVec3f(&targetPosHeadLocal, &this->actor.focus.pos);
         gSPDisplayList(POLY_OPA_DISP++, hairDLists[this->actor.params & 3]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_daiku.c", 1330);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

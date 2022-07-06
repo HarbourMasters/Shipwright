@@ -110,19 +110,19 @@ void EnDyExtra_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    OPEN_DISPS(gfxCtx, "../z_en_dy_extra.c", 294);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->state.frames * 2, 0, 0x20, 0x40, 1,
                                 globalCtx->state.frames, globalCtx->state.frames * -8, 0x10, 0x10));
     gDPPipeSync(POLY_XLU_DISP++);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dy_extra.c", 307),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, primColors[this->type].r, primColors[this->type].g,
                     primColors[this->type].b, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, envColors[this->type].r, envColors[this->type].g, envColors[this->type].b, 128);
     gSPDisplayList(POLY_XLU_DISP++, gGreatFairySpiralBeamDL);
 
-    CLOSE_DISPS(gfxCtx, "../z_en_dy_extra.c", 325);
+    CLOSE_DISPS(gfxCtx);
 }

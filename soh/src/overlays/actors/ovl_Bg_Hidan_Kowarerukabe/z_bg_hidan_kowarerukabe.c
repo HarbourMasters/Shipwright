@@ -120,7 +120,7 @@ void BgHidanKowarerukabe_Init(Actor* thisx, GlobalContext* globalCtx) {
         ((this->dyna.actor.params & 0xFF) > LARGE_BOMBABLE_WALL)) {
         // "Error: Fire Temple Breakable Walls. arg_data I can't determine the (%s %d)(arg_data 0x%04x)"
         osSyncPrintf("Error : 炎の神殿 壊れる壁 の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n",
-                     "../z_bg_hidan_kowarerukabe.c", 254, this->dyna.actor.params);
+                     __FILE__, __LINE__, this->dyna.actor.params);
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -324,15 +324,15 @@ void BgHidanKowarerukabe_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgHidanKowarerukabe_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgHidanKowarerukabe* this = (BgHidanKowarerukabe*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_kowarerukabe.c", 565);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_hidan_kowarerukabe.c", 568),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, sBreakableWallDLists[this->dyna.actor.params & 0xFF]);
 
     Collider_UpdateSpheres(0, &this->collider);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_kowarerukabe.c", 573);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

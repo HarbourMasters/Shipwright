@@ -924,7 +924,6 @@ void EnDodongo_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (this->iceTimer != 0) {
         this->actor.colorFilterTimer++;
-        if (1) {}
         this->iceTimer--;
         if ((this->iceTimer % 4) == 0) {
             index = this->iceTimer >> 2;
