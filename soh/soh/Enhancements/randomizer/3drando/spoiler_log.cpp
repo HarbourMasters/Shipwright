@@ -11,6 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
+#include "soh/Lib/nlohmann/json.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -20,7 +21,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include <json.hpp>
 #include <iostream>
 #include <fstream>
 #include <filesystem>
