@@ -9,7 +9,7 @@ extern GlobalContext* gGlobalCtx;
  * Simple wrapper to load a texture to be drawn.
  */
 void sprite_load(sprite_t* sprite) {
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx, "gfx.c", 12);
+    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
 
     if (sprite->im_siz == G_IM_SIZ_16b) {
         gDPLoadTextureBlock(
@@ -37,7 +37,7 @@ void sprite_load(sprite_t* sprite) {
         );
     }
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, "gfx.c", 40);
+    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
 }
 
 /**
@@ -48,7 +48,7 @@ void sprite_draw(sprite_t* sprite, int left, int top, int width, int height) {
     int width_factor = (1 << 10) * sprite->width / width;
     int height_factor = (1 << 10) * sprite->height / height;
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx, "gfx.c", 51);
+    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
 
     gSPWideTextureRectangle(
         OVERLAY_DISP++,
@@ -59,5 +59,5 @@ void sprite_draw(sprite_t* sprite, int left, int top, int width, int height) {
         width_factor, height_factor
     );
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, "gfx.c", 62);
+    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
 }

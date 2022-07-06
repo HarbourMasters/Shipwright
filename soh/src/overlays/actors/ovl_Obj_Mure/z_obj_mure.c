@@ -72,7 +72,7 @@ s32 ObjMure_SetCullingImpl(Actor* thisx, GlobalContext* globalCtx) {
             break;
         default:
             // "Error : Culling is not set.(%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Error : カリングの設定がされていません。(%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 204,
+            osSyncPrintf("Error : カリングの設定がされていません。(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                          this->actor.params);
             return false;
     }
@@ -95,11 +95,11 @@ void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->type = thisx->params & 0x1F;
 
     if (this->ptn >= 4) {
-        osSyncPrintf("Error 群れな敵 (%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 237, thisx->params);
+        osSyncPrintf("Error 群れな敵 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, thisx->params);
         Actor_Kill(&this->actor);
         return;
     } else if (this->type >= 5) {
-        osSyncPrintf("Error 群れな敵 (%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 245, thisx->params);
+        osSyncPrintf("Error 群れな敵 (%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, thisx->params);
         Actor_Kill(&this->actor);
         return;
     } else if (!ObjMure_SetCulling(thisx, globalCtx)) {
@@ -110,7 +110,7 @@ void ObjMure_Init(Actor* thisx, GlobalContext* globalCtx) {
     osSyncPrintf("群れな敵 (arg_data 0x%04x)(chNum(%d) ptn(%d) svNum(%d) type(%d))\n", thisx->params, this->chNum,
                  this->ptn, this->svNum, this->type);
     if (ObjMure_GetMaxChildSpawns(this) <= 0) {
-        osSyncPrintf("Warning : 個体数が設定されていません(%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 268,
+        osSyncPrintf("Warning : 個体数が設定されていません(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      thisx->params);
     }
 }
@@ -127,7 +127,7 @@ s32 ObjMure_GetMaxChildSpawns(ObjMure* this) {
 
 void ObjMure_GetSpawnPos(Vec3f* outPos, Vec3f* inPos, s32 ptn, s32 idx) {
     if (ptn >= 4) {
-        osSyncPrintf("おかしなの (%s %d)\n", "../z_obj_mure.c", 307);
+        osSyncPrintf("おかしなの (%s %d)\n", __FILE__, __LINE__);
     }
     *outPos = *inPos;
 }
@@ -142,7 +142,7 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
     for (i = 0; i < maxChildren; i++) {
         if (this->children[i] != NULL) {
             // "Error: I already have a child(%s %d)(arg_data 0x%04x)"
-            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 333,
+            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                          this->actor.params);
         }
         switch (this->childrenStates[i]) {
@@ -158,7 +158,7 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
                     this->children[i]->flags |= ACTOR_FLAG_ENKUSA_CUT;
                     this->children[i]->room = this->actor.room;
                 } else {
-                    osSyncPrintf("warning 発生失敗 (%s %d)\n", "../z_obj_mure.c", 359);
+                    osSyncPrintf("warning 発生失敗 (%s %d)\n", __FILE__, __LINE__);
                 }
                 break;
             default:
@@ -170,7 +170,7 @@ void ObjMure_SpawnActors0(ObjMure* this, GlobalContext* globalCtx) {
                 if (this->children[i] != NULL) {
                     this->children[i]->room = this->actor.room;
                 } else {
-                    osSyncPrintf("warning 発生失敗 (%s %d)\n", "../z_obj_mure.c", 382);
+                    osSyncPrintf("warning 発生失敗 (%s %d)\n", __FILE__, __LINE__);
                 }
                 break;
         }
@@ -186,7 +186,7 @@ void ObjMure_SpawnActors1(ObjMure* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < maxChildren; i++) {
         if (this->children[i] != NULL) {
-            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", "../z_obj_mure.c", 407, actor->params);
+            osSyncPrintf("Error : 既に子供がいる(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, actor->params);
         }
         ac = &globalCtx->actorCtx;
         ObjMure_GetSpawnPos(&spawnPos, &actor->world.pos, this->ptn, i);
@@ -198,7 +198,7 @@ void ObjMure_SpawnActors1(ObjMure* this, GlobalContext* globalCtx) {
             this->children[i]->room = actor->room;
         } else {
             this->childrenStates[i] = OBJMURE_CHILD_STATE_1;
-            osSyncPrintf("warning 発生失敗 (%s %d)\n", "../z_obj_mure.c", 438);
+            osSyncPrintf("warning 発生失敗 (%s %d)\n", __FILE__, __LINE__);
         }
     }
 }

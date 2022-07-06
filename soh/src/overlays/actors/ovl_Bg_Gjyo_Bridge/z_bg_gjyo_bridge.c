@@ -239,7 +239,7 @@ void BgGjyoBridge_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 260);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -251,10 +251,10 @@ void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, -globalCtx->gameplayFrames & 127, 32, 32, 1, 0,
                                 globalCtx->gameplayFrames & 127, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 281),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gRainbowBridgeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 285);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

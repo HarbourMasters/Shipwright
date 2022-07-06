@@ -33,6 +33,7 @@
 #define DRWAV_IMPLEMENTATION
 #include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
@@ -117,6 +118,7 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
+    InitCosmeticsEditor();
     DebugConsole_Init();
     Debug_Init();
     Rando_Init();

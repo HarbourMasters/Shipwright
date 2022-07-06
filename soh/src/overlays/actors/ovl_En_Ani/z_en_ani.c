@@ -330,7 +330,7 @@ void EnAni_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnAni* this = (EnAni*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ani.c", 719);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
 
@@ -339,5 +339,5 @@ void EnAni_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ani.c", 736);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

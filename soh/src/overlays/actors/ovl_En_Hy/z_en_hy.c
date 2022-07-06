@@ -1108,9 +1108,7 @@ s32 EnHy_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
     u8 i;
     UNK_PTR ptr;
 
-    if (1) {}
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2170);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 15) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->objBankIndexHead].segment);
@@ -1145,7 +1143,7 @@ s32 EnHy_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, 
         rot->z += Math_CosS(this->unk_23C[limbIndex]) * 200.0f;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2228);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return false;
 }
@@ -1155,7 +1153,7 @@ void EnHy_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
     s32 pad;
     Vec3f sp3C = { 400.0f, 0.0f, 0.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2255);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 7) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->objBankIndexSkel2].segment);
@@ -1170,7 +1168,7 @@ void EnHy_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec
         Matrix_MultVec3f(&sp3C, &this->actor.focus.pos);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2281);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 Gfx* EnHy_SetEnvColor(GraphicsContext* globalCtx, u8 envR, u8 envG, u8 envB, u8 envA) {
@@ -1189,7 +1187,7 @@ void EnHy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGBA8 envColorSeg9;
     Color_RGBA8 envColorSeg10;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2318);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc != EnHy_InitImpl) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -1245,5 +1243,5 @@ void EnHy_Draw(Actor* thisx, GlobalContext* globalCtx) {
                               this->skelAnime.dListCount, EnHy_OverrideLimbDraw, EnHy_PostLimbDraw, &this->actor);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_hy.c", 2388);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

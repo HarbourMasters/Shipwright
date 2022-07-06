@@ -249,7 +249,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
     u8 greenEnv;
     u8 blueEnv;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 600);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL &&
         globalCtx->csCtx.npcActions[0]->action == 2) {
@@ -280,7 +280,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, redPrim, greenPrim, bluePrim, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, redEnv, greenEnv, blueEnv, 255);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 679),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_808AD850[this->unk_16A]));
         gDPPipeSync(POLY_XLU_DISP++);
@@ -288,7 +288,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 692);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_808AD3D4(BgSpot02Objects* this, GlobalContext* globalCtx) {
@@ -311,7 +311,7 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     f32 lerp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 736);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[2] != NULL) {
         u16 temp_v1 = globalCtx->csCtx.npcActions[2]->urot.z * 0.00549325f;
@@ -341,7 +341,7 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, 128);
             gDPSetEnvColor(POLY_XLU_DISP++, 150, 120, 0, 128);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 795),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 2 * this->timer, -3 * this->timer, 32, 64, 1,
@@ -352,5 +352,5 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 818);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

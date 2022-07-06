@@ -156,7 +156,7 @@ void EnGe2_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actor.targetMode = 6;
             break;
         default:
-            ASSERT(0, "0", "../z_en_ge2.c", 418);
+            ASSERT(0);
     }
 
     this->stateFlags = 0;
@@ -654,7 +654,7 @@ void EnGe2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGe2* this = (EnGe2*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge2.c", 1274);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
@@ -662,5 +662,5 @@ void EnGe2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge2.c", 1291);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -205,7 +205,7 @@ void ObjComb_Update(Actor* thisx, GlobalContext* globalCtx) {
 void ObjComb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ObjComb* this = (ObjComb*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_comb.c", 369);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -217,12 +217,12 @@ void ObjComb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_Translate(0, -(this->actor.scale.y * 118.0f), 0, MTXMODE_APPLY);
     Matrix_Scale(this->actor.scale.x, this->actor.scale.y, this->actor.scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_comb.c", 394),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gFieldBeehiveDL);
 
     Collider_UpdateSpheres(0, &this->collider);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_comb.c", 402);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

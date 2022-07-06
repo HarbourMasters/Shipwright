@@ -54,7 +54,7 @@ void func_80B92B08(ObjElevator* this, GlobalContext* globalCtx, CollisionHeader*
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_obj_elevator.c", 136,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      thisx->id, thisx->params);
     }
 }

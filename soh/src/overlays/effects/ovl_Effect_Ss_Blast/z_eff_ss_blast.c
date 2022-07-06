@@ -61,7 +61,7 @@ void EffectSsBlast_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     s32 pad;
     f32 radius;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_blast.c", 170);
+    OPEN_DISPS(gfxCtx);
 
     radius = this->rScale * 0.0025f;
 
@@ -71,11 +71,11 @@ void EffectSsBlast_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB, this->rPrimColorA);
     Matrix_Put(&mf);
     Matrix_Scale(radius, radius, radius, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_ss_blast.c", 199),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_blast.c", 204);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsBlast_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

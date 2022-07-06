@@ -498,8 +498,6 @@ void EnDivingGame_Update(Actor* thisx, GlobalContext* globalCtx2) {
         this->spawnRuppyTimer--;
     }
 
-    if (1) {}
-
     if (gSaveContext.timer1Value == 10) {
         func_800F5918();
     }
@@ -562,7 +560,7 @@ void EnDivingGame_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDivingGame* this = (EnDivingGame*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_diving_game.c", 1212);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnDivingGame_EmptyDList(globalCtx->state.gfxCtx));
@@ -570,5 +568,5 @@ void EnDivingGame_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDivingGame_OverrideLimbDraw, NULL, this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_diving_game.c", 1232);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -215,7 +215,7 @@ static void draw_ico_sphere(Gfx** p_gfx_p, f32 x, f32 y, f32 z, f32 radius, Grap
     Matrix_Push();
     Matrix_Translate(x, y, z, MTXMODE_NEW);
     Matrix_Scale(radius / 128.0f, radius / 128.0f, radius / 128.0f, MTXMODE_APPLY);
-    gSPMatrix((*p_gfx_p)++, Matrix_NewMtx(gfxCtx, __FILE__, __LINE__), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
+    gSPMatrix((*p_gfx_p)++, MATRIX_NEWMTX(gfxCtx), G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_PUSH);
     gSPDisplayList((*p_gfx_p)++, p_sph_gfx);
     gSPPopMatrix((*p_gfx_p)++, G_MTX_MODELVIEW);
     Matrix_Pop();
@@ -232,7 +232,7 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     u32 blc2;
     s16* seenLink = this->actor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     rm = Z_CMP | IM_RD | CVG_DST_FULL | FORCE_BL | ZMODE_XLU;
     blc1 = GBL_c1(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
     blc2 = GBL_c2(G_BL_CLR_IN, G_BL_A_IN, G_BL_CLR_MEM, G_BL_1MA);
@@ -250,5 +250,5 @@ void EffectSsSolderSrchBall_Draw(GlobalContext* globalCtx, u32 index, EffectSs* 
     }
     draw_ico_sphere(&POLY_XLU_DISP, this->pos.x, this->pos.y, this->pos.z, 30.0f, gfxCtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, __FILE__, __LINE__);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
