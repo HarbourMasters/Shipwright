@@ -60,8 +60,7 @@ using namespace std;
 #define SCALE_3_8(VAL_) ((VAL_) * 0x24)
 #define SCALE_8_3(VAL_) ((VAL_) / 0x24)
 
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+// SCREEN_WIDTH and SCREEN_HEIGHT are defined in the headerfile
 #define HALF_SCREEN_WIDTH (SCREEN_WIDTH / 2)
 #define HALF_SCREEN_HEIGHT (SCREEN_HEIGHT / 2)
 
@@ -2643,15 +2642,15 @@ void gfx_get_dimensions(uint32_t *width, uint32_t *height) {
     gfx_wapi->get_dimensions(width, height);
 }
 
-void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, const char *game_name, bool start_in_fullscreen) {
+void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     gfx_wapi = wapi;
     gfx_rapi = rapi;
-    gfx_wapi->init(game_name, start_in_fullscreen);
+    gfx_wapi->init(game_name, start_in_fullscreen, width, height);
     gfx_rapi->init();
-    gfx_rapi->update_framebuffer_parameters(0, SCREEN_WIDTH, SCREEN_HEIGHT, 1, false, true, true, true);
+    gfx_rapi->update_framebuffer_parameters(0, width, height, 1, false, true, true, true);
     gfx_current_dimensions.internal_mul = 1;
-    gfx_current_dimensions.width = SCREEN_WIDTH;
-    gfx_current_dimensions.height = SCREEN_HEIGHT;
+    gfx_current_dimensions.width = width;
+    gfx_current_dimensions.height = height;
     game_framebuffer = gfx_rapi->create_framebuffer();
     game_framebuffer_msaa_resolved = gfx_rapi->create_framebuffer();
 
