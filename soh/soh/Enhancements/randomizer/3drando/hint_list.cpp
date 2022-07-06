@@ -1619,6 +1619,11 @@ void HintTable_Init() {
                      Text{"They say this peace is what all true warriors strive for.", /*french*/HINT_TEXT_NEEDS_TRANSLATION_FR, /*spanish*/"blarg"},
     });
 
+    hintTable[JUNK80] = HintText::Junk({
+                     //obscure text
+                     Text{"They say this ship is what all true gamers strive for.", /*french*/HINT_TEXT_NEEDS_TRANSLATION_FR, /*spanish*/"blarg"},
+    });
+
     /*--------------------------
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
