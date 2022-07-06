@@ -138,7 +138,7 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, GlobalCo
     f32 normDotUp;
     MtxF mf;
 
-    if (CVar_GetS32("gBombchuOOB", 0) && floorPoly == NULL) {
+    if (CVar_GetS32("gBombchusOOB", 0) && floorPoly == NULL) {
         EnBomChu_Explode(this, globalCtx);
         return;
     }

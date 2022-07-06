@@ -28,7 +28,7 @@ void BootCommands_Init()
     CVar_RegisterS32("gRedGanonBlood", 0);
     CVar_RegisterS32("gHoverFishing", 0);
     CVar_RegisterS32("gN64WeirdFrames", 0);
-    CVar_RegisterS32("gBombchuOOB", 0);
+    CVar_RegisterS32("gBombchusOOB", 0);
     CVar_RegisterS32("gRumbleEnabled", 0);
     CVar_RegisterS32("gUniformLR", 0);
     CVar_RegisterS32("gTwoHandedIdle", 0);
