@@ -1670,9 +1670,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         // OTRTODO
         //DmaMgr_SendRequest1(font->msgBuf, (uintptr_t)(_staff_message_data_staticSegmentRomStart + 4 + font->msgOffset),
                             //font->msgLength, __FILE__, __LINE__);
-    }
-
-    if (CVar_GetS32("gTypoFixes", 0)) {
+    } else if (CVar_GetS32("gTypoFixes", 0)) {
         Message_FindMessage(globalCtx, textId);
         char* src = (uintptr_t)font->msgOffset;
         // Bombchu Get!
