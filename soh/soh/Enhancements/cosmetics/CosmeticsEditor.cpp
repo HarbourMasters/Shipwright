@@ -308,7 +308,7 @@ void Draw_Menus(){
         }
         */
     } else {
-        ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\n to be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
+        ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
     }
 }
 void Draw_Placements(){
