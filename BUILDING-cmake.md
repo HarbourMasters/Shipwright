@@ -20,6 +20,22 @@ D:\vcpkg\vcpkg.exe install libpng --triple=x86-windows-v142
 
 ~~~
 git clone https://github.com/th-2021/Shipwright-cmake.git
+~~~
+
+All-in-One with packaging (64 bit only)
+---------------------------------------
+copy your ROM into Shipwright-cmake/OTRExporter
+~~~
+cd Shipwright-cmake
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64  "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x64-windows-v142"
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --config Release
+cd  .\build\x64
+& 'C:\Program Files\CMake\bin\cpack.exe' -G ZIP
+~~~
+
+Classical build
+---------------
+~~~
 #
 # build SoH
 #
@@ -32,12 +48,32 @@ cd OTRExporter
 cd ../soh
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/Win32" -G "Visual Studio 17 2022" -T v142 -A Win32 "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x86-windows-v142"
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
+cd ../OTRGui
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64 "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x64-windows-v142"
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
 ~~~
 
 Linux (Ubuntu 22.04)
 ====================
 
+All-in-One with packaging support (only 64 bit):
+------------------------------------------------
+
+execute at top-level:
+~~~
+cmake -S . -B build-cmake
+cmake --build build-cmake
+~~~
+
+now in build-cmake:
+~~~
+cpack -G DEB
+cpack -G ZIP
+cpack -G External	(does appimage - experimental)
+~~~
+
 using native build (not docker)
+-------------------------------
 
 ~~~
 cd ShipWright
@@ -65,22 +101,6 @@ cmake --build build-cmake
 cp build-cmake/ZAPD/ZAPD.out build-cmake/assets/extractor
 
 ~~~
-Packaging support (experimental - only 64 bit):
-execute at top-level:
-~~~
-cmake -S . -B build-cmake
-cmake --build build-cmake
-~~~
-
-now in build-cmake:
-~~~
-cpack -G DEB
-cpack -G ZIP
-cpack -G External	(does appimage)
-~~~
-
-Only tested on Linux so far.
-
 
 macOS (M1)
 ==========
