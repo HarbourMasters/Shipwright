@@ -1684,7 +1684,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                 memcpy(font->msgBuf + 0x97, src + 0x95, font->msgLength - 0x93);
                 memcpy(font->msgBuf + 0x94, " of", 3);
                 font->msgBuf[0x9C] = 0x01;
-                font->msgBuf[0xA1] = 0x20;
+                font->msgBuf[0xA1] = ' ';
             } else { // French
                 msgCtx->msgLength = font->msgLength - 1;
                 memcpy(font->msgBuf, src, 0x61);
