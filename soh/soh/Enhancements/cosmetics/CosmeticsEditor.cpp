@@ -835,7 +835,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_A", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("A Button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects A button colors (and various cursors that use the same theme)", false);
+                Draw_HelpIcon("Affects the A button colors (and various cursors that use the same theme)", false);
                 SohImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -844,7 +844,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_B", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("B button color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects B button color", false);
+                Draw_HelpIcon("Affects the B button color", false);
                 SohImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -853,7 +853,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_C", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Button C colors & C Cursor colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects C Buttons colors (if not using separated colors)\nAnd various cursor that use C-Button colors", false);
+                Draw_HelpIcon("Affects the C Buttons' colors (if not using separate colors)\nAnd various cursor that use C-Button colors", false);
                 SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
@@ -881,7 +881,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_Start", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                 ImGui::TableSetupColumn("Start button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects Start button color", false);
+                Draw_HelpIcon("Affects the Start button color", false);
                 SohImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
