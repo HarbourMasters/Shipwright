@@ -926,17 +926,20 @@ namespace SohImGui {
                         Tooltip("Skip first-time pickup messages for consumable items");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
                         Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                        EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
+                        Tooltip("Allow Link to put items away without having to wait around");
                         
                         ImGui::EndMenu();
                     }
 
                     if (ImGui::BeginMenu("Difficulty Options"))
                     {
-                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
+                        // Max damage multiplier increased to 100 to allow for instant death challenges. 1/4 heart * 80 = 20 hearts of damage
+                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 80, "");
                         Tooltip("Modifies all sources of damage not affected by other sliders");
-                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
+                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 80, "");
                         Tooltip("Modifies all fall damage");
-                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
+                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 80, "");
                         Tooltip("Modifies all void out damage");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
