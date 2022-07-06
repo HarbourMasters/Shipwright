@@ -893,13 +893,13 @@ void Draw_HUDButtons(){
 void Draw_General(){
     if (ImGui::BeginTable("tableScheme", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
         ImGui::TableSetupColumn("N64 Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
-        ImGui::TableSetupColumn("Gamecube Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        ImGui::TableSetupColumn("GameCube Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         ImGui::TableSetupColumn("Custom Schemes", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
         Draw_HelpIcon("Change interface color to N64 style");
         SohImGui::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
         Table_NextCol();
-        Draw_HelpIcon("Change interface color to Gamecube style");
+        Draw_HelpIcon("Change interface color to GameCube style");
         SohImGui::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
         Table_NextCol();
         Draw_HelpIcon("Change interface color to your own made style");
