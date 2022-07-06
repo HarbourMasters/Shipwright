@@ -210,8 +210,16 @@ void ArrowIce_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // Draw blue effect over the screen when arrow hits
         if (this->unk_164 > 0) {
             POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, (s32)(10.0f * this->unk_164) & 0xFF,
-                            (s32)(50.0f * this->unk_164) & 0xFF, (s32)(150.0f * this->unk_164) & 0xFF);
+            if (CVar_GetS32("gUseArrowsCol", 0)) {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
+                (s32)(CVar_GetS32("gIceArrowColEnvR", 0) * this->unk_164) & 0xFF,
+                (s32)(CVar_GetS32("gIceArrowColEnvG", 10) * this->unk_164) & 0xFF, 
+                (s32)(CVar_GetS32("gIceArrowColEnvB", 50) * this->unk_164) & 0xFF, 
+                (s32)(30.0f * this->unk_164) & 0xFF); //Intentionnally made Alpha lower.
+            } else {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, (s32)(10.0f * this->unk_164) & 0xFF,
+                                (s32)(50.0f * this->unk_164) & 0xFF, (s32)(150.0f * this->unk_164) & 0xFF);
+            }
             gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
             gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
@@ -219,8 +227,13 @@ void ArrowIce_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         // Draw ice on the arrow
         func_80093D84(globalCtx->state.gfxCtx);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 170, 255, 255, this->alpha);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 128);
+        if (CVar_GetS32("gUseArrowsCol", 0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, CVar_GetS32("gIceArrowColR", 170), CVar_GetS32("gIceArrowColG", 255), CVar_GetS32("gIceArrowColB", 255), this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gIceArrowColEnvR", 0), CVar_GetS32("gIceArrowColEnvG", 0), CVar_GetS32("gIceArrowColEnvB", 255), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 170, 255, 255, this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 255, 128);
+        }
         Matrix_RotateZYX(0x4000, 0x0, 0x0, MTXMODE_APPLY);
         if (this->timer != 0) {
             Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);

@@ -208,8 +208,16 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
         // Draw yellow effect over the screen when arrow hits
         if (this->unk_164 > 0) {
             POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (s32)(30.0f * this->unk_164) & 0xFF,
-                            (s32)(40.0f * this->unk_164) & 0xFF, 0, (s32)(150.0f * this->unk_164) & 0xFF);
+            if (CVar_GetS32("gUseArrowsCol", 0)) {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 
+                (s32)(CVar_GetS32("gLightArrowColEnvR", 30) * this->unk_164) & 0xFF,
+                (s32)(CVar_GetS32("gLightArrowColEnvG", 40) * this->unk_164) & 0xFF, 
+                (s32)(CVar_GetS32("gLightArrowColEnvB", 0) * this->unk_164) & 0xFF, 
+                (s32)(30.0f * this->unk_164) & 0xFF); //Intentionnally made Alpha lower.
+            } else {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, (s32)(30.0f * this->unk_164) & 0xFF,
+                                (s32)(40.0f * this->unk_164) & 0xFF, 0, (s32)(150.0f * this->unk_164) & 0xFF);
+            }
             gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_DISABLE);
             gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
             gDPFillRectangle(POLY_XLU_DISP++, 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1);
@@ -217,8 +225,13 @@ void ArrowLight_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         // Draw light on the arrow
         func_80093D84(globalCtx->state.gfxCtx);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 170, this->alpha);
-        gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 128);
+        if (CVar_GetS32("gUseArrowsCol", 0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, CVar_GetS32("gLightArrowColR", 255), CVar_GetS32("gLightArrowColG", 255), CVar_GetS32("gLightArrowColB", 170), this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gLightArrowColEnvR", 255), CVar_GetS32("gLightArrowColEnvG", 255), CVar_GetS32("gLightArrowColEnvB", 0), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 170, this->alpha);
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 128);
+        }
         Matrix_RotateZYX(0x4000, 0x0, 0x0, MTXMODE_APPLY);
         if (this->timer != 0) {
             Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_APPLY);

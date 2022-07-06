@@ -1947,23 +1947,56 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] =
                     D_8082ADD8[gSaveContext.language] << 5;
 
-                if (CVar_GetS32("gHudColors", 1) == 0) {//To equip text C button icon
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
-                } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
-                } else if (CVar_GetS32("gHudColors", 1) == 2) {
+                s16 PosX; //General Pos of C button icon
+                if (gSaveContext.language == 0) { //eng
+                    PosX = 112;
+                } else if (gSaveContext.language == 1) { //ger
+                    PosX = 175;
+                } else {//baguettes
+                    PosX = 98;
+                }
+                s16 PosY = 200; //General Pos of C button icon
+                s16 icon_w = 46; // Original texture size
+                s16 icon_h = 16;
+                s32 icon_x_offset;
+                s16 icon_w_crop = 17.0f; //Left
+                int height = icon_h * 1.0f; //Adjust Height with scale
+                int width = icon_w * 1.0f; //Adjust Width with scale
+                int width_crop = icon_w_crop * 1.0f; //Adjust Width with scale
+                int height_factor = (1 << 10) * icon_h / height;
+                int width_factor = (1 << 10) * icon_w / width;
+                if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                    for (s16 i=0; i < 3; i++) {
+                        if (i == 0) {
+                            icon_x_offset = width_crop*3-3;
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCRBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCRBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                        } else if (i == 1) {
+                            icon_x_offset = width_crop*2-3;
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCDBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCDBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                        } else if (i == 2) {
+                            icon_x_offset = width_crop;
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCLBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCLBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                        }
+                        gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                        //gSPScisTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
+                        gSPWideTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_WRAP, 0, 0, width_factor, height_factor);
+                    }
+                } else {
+                    if (CVar_GetS32("gHudColors", 1) == 0) {//To equip text C button icon
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
+                    } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
+                    } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                    }
+                    gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                    gSPWideTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
                 }
-                if (gSaveContext.inventory.items[pauseCtx->cursorSlot[PAUSE_ITEM]] != ITEM_NONE) {
-                    //gSPDisplayList(POLY_KAL_DISP++, gCButtonIconsDL); //Same reason for every A button, to be able to recolor them.
-                    gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, 48, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
-                    gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
-
-                    gDPPipeSync(POLY_KAL_DISP++);
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
-                    POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
-                                                                D_8082ADD8[gSaveContext.language], 16, 4);
-                }
+                gDPPipeSync(POLY_KAL_DISP++);
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
+                POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
+                                                            D_8082ADD8[gSaveContext.language], 16, 4);
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
             } else if ((pauseCtx->pageIndex == PAUSE_QUEST) && (pauseCtx->cursorSlot[PAUSE_QUEST] >= 6) &&
@@ -1992,11 +2025,11 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                         D_8082ADE8[gSaveContext.language] << 5;
 
                     if (CVar_GetS32("gHudColors", 1) == 0) {//To play melody A button
-                      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2], gABtnTexColour[1][3]);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2], gABtnTexColour[1][3]);
                     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
                     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                      gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", gABtnTexColour[0][0]), CVar_GetS32("gCCABtnPrimG", gABtnTexColour[0][1]), CVar_GetS32("gCCABtnPrimB", gABtnTexColour[0][2]), gABtnTexColour[0][3]);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", gABtnTexColour[0][0]), CVar_GetS32("gCCABtnPrimG", gABtnTexColour[0][1]), CVar_GetS32("gCCABtnPrimB", gABtnTexColour[0][2]), gABtnTexColour[0][3]);
                     }
                     //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
                     gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
