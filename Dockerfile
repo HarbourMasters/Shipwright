@@ -9,6 +9,7 @@ RUN apt-get update && \
 		binutils \
 		gcc-10 \
 		g++-10 \
+		patchelf \
 		p7zip-full \
 		python3.9 \
 		make \
