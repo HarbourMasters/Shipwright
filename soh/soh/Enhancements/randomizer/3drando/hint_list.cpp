@@ -1867,7 +1867,7 @@ void HintTable_Init() {
 
     hintTable[GANON_BK_VANILLA_HINT] = HintText::GanonsBossKey({
                      //obscure text
-                     Text{"And the #evil one#'s key will be kept in a big chest #inside its tower#.",
+                     Text{"And the evil one's key will&be kept in a big chest&inside its tower.",
                 /*french*/"Aussi, la clé du #Malin# sera encoffrée #dans sa tour#.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en un gran cofre de #su torre#."},
     });
