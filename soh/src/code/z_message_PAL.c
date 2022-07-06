@@ -1717,6 +1717,18 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             strcpy(font->msgBuf, "\x08You p");
             memcpy(font->msgBuf + 0x06, src + 0x04, font->msgLength - 0x04);
         // Friendly Saria
+        } else if (textId == 0x1048 && gSaveContext.language != LANGUAGE_GER) {
+            if (gSaveContext.language == LANGUAGE_ENG) {
+                msgCtx->msgLength = font->msgLength - 4;
+                strcpy(font->msgBuf, "\x0F, you and I");
+                memcpy(font->msgBuf + 0x0C, src + 0x0B, font->msgLength - 0x0B);
+            } else { // French
+                msgCtx->msgLength = font->msgLength - 2;
+                strcpy(font->msgBuf, "\x0F, toi et moi");
+                memcpy(font->msgBuf + 0x0D, src + 0x0A, font->msgLength - 0x0A);
+                font->msgBuf[0x13] = 's';
+            }
+        // Friendly Saria again
         } else if (textId == 0x106B && gSaveContext.language != LANGUAGE_GER) {
             if (gSaveContext.language == LANGUAGE_ENG) {
                 msgCtx->msgLength = font->msgLength - 4;
