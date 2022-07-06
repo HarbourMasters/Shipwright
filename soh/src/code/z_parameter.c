@@ -3617,10 +3617,10 @@ void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 
         { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
     };
     s16 DPad_ItemsOffset[4][2] = {
-        { 7,-9},//Up
-        { 7,21},//Down
-        {-8, 7},//Left
-        {23, 7},//Right
+        { 7,-8},//Up
+        { 7,24},//Down
+        {-9, 8},//Left
+        {23, 8},//Right
     }; //(X,Y) Used with custom position to place it properly.
     s16 ItemIconPos[8][2]; //(X,Y)
     //DPadItems
@@ -3817,10 +3817,10 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
     };
     s16 ItemIconPos[8][2]; //(X,Y)
     s16 DPad_ItemsOffset[4][2] = {
-        { 7,2},//Up
-        { 7,32},//Down
-        {-8, 18},//Left
-        {23, 18},//Right
+        { 7, 3},//Up
+        { 7,35},//Down
+        {-9,19},//Left
+        {23,19},//Right
     }; //(X,Y) Used with custom position to place it properly.
     //DPadItems
     if (CVar_GetS32("gDPadPosType", 0) != 0) {
