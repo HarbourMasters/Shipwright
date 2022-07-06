@@ -34,15 +34,10 @@ namespace Ship {
 
     std::string GlobalCtx2::GetAppDirectoryPath() {
         #ifdef __APPLE__
-            char *folderPath = NULL;
             FolderManager folderManager;
-            auto appSupportDirectory = (char *)folderManager.pathForDirectory(NSApplicationSupportDirectory, NSUserDomainMask);
-
-            char buf[100];
-            strcpy(buf, appSupportDirectory);
-            strcat(buf, "/com.shipofharkinian.soh");
-
-            return std::string(buf);
+            std::string fpath = std::string(folderManager.pathForDirectory(NSApplicationSupportDirectory, NSUserDomainMask));
+            fpath.append("/com.shipofharkinian.soh");
+            return fpath;
         #endif
 
         return ".";
