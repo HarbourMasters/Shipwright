@@ -166,6 +166,11 @@ set(Header_Files__soh__Enhancements
 )
 source_group("Header Files\\soh\\Enhancements" FILES ${Header_Files__soh__Enhancements})
 
+set(Header_Files__soh__Enhancements__cosmetics
+    "soh/Enhancements/cosmetics/CosmeticsEditor.h"
+)
+source_group("Header Files\\soh\\Enhancements\\cosmetics" FILES ${Header_Files__soh__Enhancements__cosmetics})
+
 set(Header_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/actorViewer.h"
     "soh/Enhancements/debugger/colViewer.h"
@@ -201,6 +206,11 @@ set(Source_Files__soh__Enhancements
     "soh/Enhancements/savestates.cpp"
 )
 source_group("Source Files\\soh\\Enhancements" FILES ${Source_Files__soh__Enhancements})
+
+set(Source_Files__soh__Enhancements__cosmetics
+    "soh/Enhancements/cosmetics/CosmeticsEditor.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\cosmetics" FILES ${Source_Files__soh__Enhancements__cosmetics})
 
 set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/actorViewer.cpp"
@@ -1416,8 +1426,10 @@ set(ALL_FILES
     ${Header_Files__include}
     ${Header_Files__soh__Enhancements}
     ${Header_Files__soh__Enhancements__debugger}
+    ${Header_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
+    ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__debugger}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
