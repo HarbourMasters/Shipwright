@@ -1681,8 +1681,8 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                 msgCtx->msgLength = font->msgLength + 2;
                 memcpy(font->msgBuf, src, 0x66);
                 memcpy(font->msgBuf + 0x66, src + 0x67, 0x2E);
-                memcpy(font->msgBuf + 0x97, src + 0x95, font->msgLength - 0x93);
-                memcpy(font->msgBuf + 0x94, " of", 3);
+                memcpy(font->msgBuf + 0x97, src + 0x95, font->msgLength - 0x95);
+                memcpy(font->msgBuf + 0x94, " of", 0x03);
                 font->msgBuf[0x9C] = 0x01;
                 font->msgBuf[0xA1] = ' ';
             } else { // French
@@ -1694,7 +1694,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         } else if (textId == 0x020E && gSaveContext.language == LANGUAGE_ENG) {
             msgCtx->msgLength = font->msgLength - 2;
             strcpy(font->msgBuf, "\x05\x44Potion");
-            memcpy(font->msgBuf + 0x8, src + 0xA, font->msgLength - 0xA);
+            memcpy(font->msgBuf + 0x08, src + 0x0A, font->msgLength - 0x0A);
         // Shabom Navi hint
         } else if (textId == 0x0616 && gSaveContext.language == LANGUAGE_ENG) {
             msgCtx->msgLength = font->msgLength - 1;
@@ -1715,7 +1715,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         } else if (textId == 0x0897 && gSaveContext.language == LANGUAGE_ENG) {
             msgCtx->msgLength = font->msgLength + 2;
             strcpy(font->msgBuf, "\x08You p");
-            memcpy(font->msgBuf + 6, src + 4, font->msgLength - 4);
+            memcpy(font->msgBuf + 0x06, src + 0x04, font->msgLength - 0x04);
         // Friendly Saria
         } else if (textId == 0x106B && gSaveContext.language != LANGUAGE_GER) {
             if (gSaveContext.language == LANGUAGE_ENG) {
