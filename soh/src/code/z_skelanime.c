@@ -845,6 +845,12 @@ AnimationEntry* AnimationContext_AddEntry(AnimationContext* animationCtx, Animat
  */
 void AnimationContext_SetLoadFrame(GlobalContext* globalCtx, LinkAnimationHeader* animation, s32 frame, s32 limbCount,
                                    Vec3s* frameTable) {
+    if (CVar_GetS32("gN64WeirdFrames", 0) && frame < 0) {
+        Vec3s* src = (Vec3s*)getN64WeirdFrame((sizeof(Vec3s) * limbCount + 2) * frame);
+        memcpy(frameTable, src, sizeof(Vec3s) * limbCount + 2);
+        return;
+    }
+
     AnimationEntry* entry = AnimationContext_AddEntry(&globalCtx->animationCtx, ANIMENTRY_LOADFRAME);
 
     if (entry != NULL)

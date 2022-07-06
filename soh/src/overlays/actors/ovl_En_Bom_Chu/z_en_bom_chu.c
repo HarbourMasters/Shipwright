@@ -138,6 +138,11 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, GlobalCo
     f32 normDotUp;
     MtxF mf;
 
+    if (CVar_GetS32("gBombchuOOB", 0) && floorPoly == NULL) {
+        EnBomChu_Explode(this, globalCtx);
+        return;
+    }
+
     this->actor.floorPoly = floorPoly;
 
     normal.x = COLPOLY_GET_NORMAL(floorPoly->normal.x);
