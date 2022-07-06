@@ -33,6 +33,7 @@
 #include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
+#include "../../Utils.h"
 
 // OTRTODO: fix header files for these
 extern "C" {
@@ -1062,8 +1063,8 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
                 dotx /= 127.0f;
                 doty /= 127.0f;
 
-                std::clamp(dotx, -1.0f, 1.0f);
-                std::clamp(doty, -1.0f, 1.0f);
+                dotx = math::clamp(dotx, -1.0f, 1.0f);
+                doty = math::clamp(doty, -1.0f, 1.0f);
 
                 if (rsp.geometry_mode & G_TEXTURE_GEN_LINEAR) {
                                     // Not sure exactly what formula we should use to get accurate values
@@ -1115,7 +1116,7 @@ static void gfx_sp_vertex(size_t n_vertices, size_t dest_index, const Vtx *verti
             if (winv < 0.0f) winv = std::numeric_limits<int16_t>::max();
 
             float fog_z = z * winv * rsp.fog_mul + rsp.fog_offset;
-            std::clamp(fog_z, 0.0f, 255.0f);
+            fog_z = math::clamp(fog_z, 0.0f, 255.0f);
             d->color.a = fog_z; // Use alpha variable to store fog factor
         } else {
             d->color.a = v->cn[3];
