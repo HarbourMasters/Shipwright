@@ -1,7 +1,8 @@
 set(PROJECT_NAME ZAPD)
 
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
+#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
+set(CMAKE_C_STANDARD 11)
 
 ################################################################################
 # Source groups

@@ -1643,7 +1643,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
             -Wno-missing-field-initializers
                 -Wno-parentheses
                 -Wno-narrowing
-                -fpermissive
+                $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
                 $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
                     -pthread
         )

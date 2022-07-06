@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.16.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use")
+#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile
 
 project(Ship C CXX)
 
@@ -92,6 +92,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
+set (STORM_SKIP_INSTALL true)
 add_subdirectory(StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
 add_subdirectory(libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
@@ -121,4 +122,11 @@ add_dependencies(ExtractAssets ZAPD)
 
 add_dependencies(soh ExtractAssets)
 
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    set(CPACK_GENERATOR "DEB;ZIP")
+elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
+    set(CPACK_GENERATOR "ZIP")
+endif()
+
+set(CPACK_PROJECT_CONFIG_FILE ${CMAKE_SOURCE_DIR}/CMake/Packaging-2.cmake)^M
 include(CMake/Packaging.cmake)
