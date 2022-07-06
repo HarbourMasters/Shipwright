@@ -630,7 +630,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will to the game original color (GameCube version)\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Revert colors to the game original colors (GameCube version)\nOverwrites previously chosen color");
     }
 
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
