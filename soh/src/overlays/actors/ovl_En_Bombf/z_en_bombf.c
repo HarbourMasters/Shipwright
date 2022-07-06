@@ -354,7 +354,6 @@ void EnBombf_Update(Actor* thisx, GlobalContext* globalCtx) {
         if ((thisx->speedXZ != 0.0f) && (thisx->bgCheckFlags & 8)) {
 
             if (ABS((s16)(thisx->wallYaw - thisx->world.rot.y)) > 0x4000) {
-                if (1) {}
                 thisx->world.rot.y = ((thisx->wallYaw - thisx->world.rot.y) + thisx->wallYaw) - 0x8000;
             }
             Audio_PlayActorSound2(thisx, NA_SE_EV_BOMB_BOUND);
@@ -472,7 +471,7 @@ Gfx* EnBombf_NewMtxDList(GraphicsContext* gfxCtx, GlobalContext* globalCtx) {
     displayList = Graph_Alloc(gfxCtx, 5 * sizeof(Gfx));
     displayListHead = displayList;
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
-    gSPMatrix(displayListHead++, Matrix_NewMtx(gfxCtx, "../z_en_bombf.c", 1021),
+    gSPMatrix(displayListHead++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPEndDisplayList(displayListHead);
     return displayList;
@@ -482,15 +481,13 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnBombf* this = (EnBombf*)thisx;
 
-    if (1) {}
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bombf.c", 1034);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params <= BOMBFLOWER_BODY) {
         func_80093D18(globalCtx->state.gfxCtx);
 
         if (thisx->params != BOMBFLOWER_BODY) {
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bombf.c", 1041),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerLeavesDL);
             gSPDisplayList(POLY_OPA_DISP++, gBombFlowerBaseLeavesDL);
@@ -502,7 +499,7 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 200, 255, 200, 255);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 20, 10, 0);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bombf.c", 1054),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    SEGMENTED_TO_VIRTUAL(EnBombf_NewMtxDList(globalCtx->state.gfxCtx, globalCtx)));
@@ -511,5 +508,5 @@ void EnBombf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Collider_UpdateSpheres(0, &this->explosionCollider);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bombf.c", 1063);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

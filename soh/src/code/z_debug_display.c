@@ -67,7 +67,7 @@ void DebugDisplay_DrawObjects(GlobalContext* globalCtx) {
 }
 
 void DebugDisplay_DrawSpriteI8(DebugDispObject* dispObj, void* texture, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_debug_display.c", 169);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80094678(globalCtx->state.gfxCtx);
 
@@ -81,15 +81,15 @@ void DebugDisplay_DrawSpriteI8(DebugDispObject* dispObj, void* texture, GlobalCo
     gDPLoadTextureBlock(POLY_XLU_DISP++, texture, G_IM_FMT_I, G_IM_SIZ_8b, 16, 16, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_debug_display.c", 189),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gDebugSpriteDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_debug_display.c", 192);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DebugDisplay_DrawPolygon(DebugDispObject* dispObj, void* dlist, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_debug_display.c", 211);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_8009435C(globalCtx->state.gfxCtx);
 
@@ -100,9 +100,9 @@ void DebugDisplay_DrawPolygon(DebugDispObject* dispObj, void* dlist, GlobalConte
     Matrix_SetTranslateRotateYXZ(dispObj->pos.x, dispObj->pos.y, dispObj->pos.z, &dispObj->rot);
     Matrix_Scale(dispObj->scale.x, dispObj->scale.y, dispObj->scale.z, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_debug_display.c", 228),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, dlist);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_debug_display.c", 231);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

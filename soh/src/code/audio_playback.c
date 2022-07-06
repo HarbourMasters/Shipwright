@@ -205,7 +205,6 @@ void Audio_ProcessNotes(void) {
 
     out:
         if (playbackState->priority != 0) {
-            if (1) {}
             noteSubEu = &note->noteSubEu;
             if (playbackState->unk_04 >= 1 || noteSubEu->bitField0.finished) {
                 if (playbackState->adsr.action.s.state == ADSR_STATE_DISABLED || noteSubEu->bitField0.finished) {

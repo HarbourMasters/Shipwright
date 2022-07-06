@@ -70,11 +70,11 @@ void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot07Taki* this = (BgSpot07Taki*)thisx;
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 169);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     frames = globalCtx->gameplayFrames;
     if (LINK_IS_ADULT) {
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 177),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         if (this->dyna.actor.params == 0) {
             gSPDisplayList(POLY_OPA_DISP++, object_spot07_object_DL_001CF0);
@@ -84,7 +84,7 @@ void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 191),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -115,5 +115,5 @@ void BgSpot07Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         gSPDisplayList(POLY_XLU_DISP++, object_spot07_object_DL_0032D8);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot07_taki.c", 272);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

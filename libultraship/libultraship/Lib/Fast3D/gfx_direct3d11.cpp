@@ -4,6 +4,9 @@
 #include <vector>
 #include <cmath>
 
+#include <map>
+#include <unordered_map>
+
 #include <windows.h>
 #include <versionhelpers.h>
 #include <wrl/client.h>
@@ -902,7 +905,7 @@ FilteringMode gfx_d3d11_get_texture_filter(void) {
     return d3d.current_filter_mode;
 }
 
-std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
+std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_d3d11_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     Framebuffer& fb = d3d.framebuffers[fb_id];
     TextureData& td = d3d.textures[fb.texture_id];
 
@@ -990,7 +993,7 @@ std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id,
 
     d3d.context->CopyResource(d3d.depth_value_output_buffer_copy.Get(), d3d.depth_value_output_buffer.Get());
     ThrowIfFailed(d3d.context->Map(d3d.depth_value_output_buffer_copy.Get(), 0, D3D11_MAP_READ, 0, &ms));
-    std::map<std::pair<float, float>, uint16_t> res;
+    std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
     {
         size_t i = 0;
         for (const auto& coord : coordinates) {

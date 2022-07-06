@@ -71,7 +71,7 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_hahen.c", 208);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
@@ -81,12 +81,12 @@ void EffectSsHahen_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_hahen.c", 228),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_hahen.c", 236);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // in the original game this function is hardcoded to be used only by the skull pots in Shadow Temple
@@ -95,7 +95,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     s32 pad;
     f32 scale = this->rScale * 0.001f;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_hahen.c", 253);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != -1) {
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[this->rObjBankIdx].segment);
@@ -105,7 +105,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     Matrix_RotateY(this->rYaw * 0.01f, MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * 0.01f, MTXMODE_APPLY);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_hahen.c", 271),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetCombineLERP(POLY_OPA_DISP++, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0, PRIMITIVE, 0, SHADE, 0,
@@ -113,7 +113,7 @@ void EffectSsHahen_DrawGray(GlobalContext* globalCtx, u32 index, EffectSs* this)
     gDPSetPrimColor(POLY_OPA_DISP++, 0x0, 0x01, 100, 100, 120, 255);
     gSPDisplayList(POLY_OPA_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_hahen.c", 288);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsHahen_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

@@ -59,7 +59,7 @@ void EffectSsIceSmoke_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
 
     object = globalCtx->objectCtx.status[this->rObjBankIdx].segment;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_eff_ss_ice_smoke.c", 155);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     objBankIdx = Object_GetIndex(&globalCtx->objectCtx, OBJECT_FZ);
 
@@ -79,7 +79,7 @@ void EffectSsIceSmoke_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         scale = this->rScale * 0.0001f;
         Matrix_Scale(scale, scale, 1.0f, MTXMODE_APPLY);
 
-        mtx = Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_eff_ss_ice_smoke.c", 196);
+        mtx = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
 
         if (mtx != NULL) {
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -89,7 +89,7 @@ void EffectSsIceSmoke_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
         this->life = -1;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_eff_ss_ice_smoke.c", 210);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EffectSsIceSmoke_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

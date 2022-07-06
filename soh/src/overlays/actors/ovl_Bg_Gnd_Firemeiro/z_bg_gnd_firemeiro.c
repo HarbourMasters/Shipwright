@@ -53,7 +53,6 @@ void BgGndFiremeiro_Destroy(Actor* thisx, GlobalContext* globalCtx2) {
     BgGndFiremeiro* this = (BgGndFiremeiro*)thisx;
 
     if (this->dyna.actor.params == 0) {
-        if (1) {}
         DynaPoly_DeleteBgActor(globalCtx, &globalCtx->colCtx.dyna, this->dyna.bgId);
     }
 }
@@ -140,12 +139,12 @@ void BgGndFiremeiro_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgGndFiremeiro_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_firemeiro.c", 280);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_800943C8(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_gnd_firemeiro.c", 282),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gFireTrialPlatformDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gnd_firemeiro.c", 285);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

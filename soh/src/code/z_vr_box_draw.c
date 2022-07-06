@@ -10,11 +10,11 @@ Mtx* SkyboxDraw_UpdateMatrix(SkyboxContext* skyboxCtx, f32 x, f32 y, f32 z) {
     Matrix_RotateX(skyboxCtx->rot.x, MTXMODE_APPLY);
     Matrix_RotateY(skyboxCtx->rot.y, MTXMODE_APPLY);
     Matrix_RotateZ(skyboxCtx->rot.z, MTXMODE_APPLY);
-    return Matrix_ToMtx(sSkyboxDrawMatrix, "../z_vr_box_draw.c", 42);
+    return MATRIX_TOMTX(sSkyboxDrawMatrix);
 }
 
 void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyboxId, s16 blend, f32 x, f32 y, f32 z) {
-    OPEN_DISPS(gfxCtx, "../z_vr_box_draw.c", 52);
+    OPEN_DISPS(gfxCtx);
     FrameInterpolation_RecordOpenChild(NULL, FrameInterpolation_GetCameraEpoch());
 
     func_800945A0(gfxCtx);
@@ -35,7 +35,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     Matrix_RotateX(skyboxCtx->rot.x, MTXMODE_APPLY);
     Matrix_RotateY(skyboxCtx->rot.y, MTXMODE_APPLY);
     Matrix_RotateZ(skyboxCtx->rot.z, MTXMODE_APPLY);
-    Matrix_ToMtx(sSkyboxDrawMatrix, "../z_vr_box_draw.c", 76);
+    MATRIX_TOMTX(sSkyboxDrawMatrix);
     gSPMatrix(POLY_OPA_DISP++, sSkyboxDrawMatrix, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gDPSetColorDither(POLY_OPA_DISP++, G_CD_MAGICSQ);
@@ -89,7 +89,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     //gsSPShaderTest2(POLY_OPA_DISP++);
 
     FrameInterpolation_RecordCloseChild();
-    CLOSE_DISPS(gfxCtx, "../z_vr_box_draw.c", 125);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void SkyboxDraw_Update(SkyboxContext* skyboxCtx) {

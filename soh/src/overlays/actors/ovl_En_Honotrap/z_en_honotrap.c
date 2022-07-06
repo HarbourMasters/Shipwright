@@ -142,7 +142,7 @@ void EnHonotrap_GetNormal(Vec3f* normal, Vec3f* vec) {
     f32 mag = Math3D_Vec3fMagnitude(vec);
 
     if (mag < 0.001f) {
-        osSyncPrintf("Warning : vector size zero (%s %d)\n", "../z_en_honotrap.c", 328, normal);
+        osSyncPrintf("Warning : vector size zero (%s %d)\n", __FILE__, __LINE__, normal);
 
         normal->x = normal->y = 0.0f;
         normal->z = 1.0f;
@@ -495,22 +495,22 @@ void EnHonotrap_DrawEye(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnHonotrap* this = (EnHonotrap*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 982);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeState]));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 987),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gEyeSwitch2DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 991);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnHonotrap_DrawFlame(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnHonotrap* this = (EnHonotrap*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 1000);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     this->flameScroll -= 20;
@@ -522,11 +522,11 @@ void EnHonotrap_DrawFlame(Actor* thisx, GlobalContext* globalCtx) {
     Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) - this->actor.shape.rot.y + 0x8000) *
                        (M_PI / 0x8000),
                    MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 1024),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_honotrap.c", 1028);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnHonotrap_Draw(Actor* thisx, GlobalContext* globalCtx) {

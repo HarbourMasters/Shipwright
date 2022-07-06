@@ -54,7 +54,7 @@ u32 EffectSsKakera_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, voi
 
     } else {
         osSyncPrintf("shape_modelがNULL\n");
-        LogUtils_HungupThread("../z_eff_kakera.c", 178);
+        LOG_HUNGUP_THREAD();
     }
 
     this->draw = EffectSsKakera_Draw;
@@ -96,7 +96,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     scale = this->rScale / 256.0f;
     colorIdx = this->rColorIdx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_kakera.c", 241);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rObjId != KAKERA_OBJECT_DEFAULT) {
         if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
@@ -112,7 +112,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
 
     if ((((this->rReg4 >> 7) & 1) << 7) == 0x80) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_kakera.c", 268),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         func_80093D84(globalCtx->state.gfxCtx);
 
@@ -122,7 +122,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     } else {
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_kakera.c", 286),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -133,7 +133,7 @@ void EffectSsKakera_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_OPA_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_kakera.c", 302);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_809A9BA8(EffectSs* this, GlobalContext* globalCtx) {

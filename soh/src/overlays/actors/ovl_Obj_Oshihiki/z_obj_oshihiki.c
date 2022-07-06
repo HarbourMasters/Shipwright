@@ -95,7 +95,7 @@ void ObjOshihiki_InitDynapoly(ObjOshihiki* this, GlobalContext* globalCtx, Colli
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG registration failure"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_obj_oshihiki.c", 280,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -213,7 +213,7 @@ void ObjOshihiki_CheckType(ObjOshihiki* this, GlobalContext* globalCtx) {
             break;
         default:
             // "Error : type cannot be determined"
-            osSyncPrintf("Error : タイプが判別できない(%s %d)(arg_data 0x%04x)\n", "../z_obj_oshihiki.c", 444,
+            osSyncPrintf("Error : タイプが判別できない(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                          this->dyna.actor.params);
             break;
     }
@@ -258,7 +258,7 @@ void ObjOshihiki_SetColor(ObjOshihiki* this, GlobalContext* globalCtx) {
 
     if (i >= ARRAY_COUNT(sColors)) {
         // "Error : scene_data_ID cannot be determined"
-        osSyncPrintf("Error : scene_data_ID が判別できない。(%s %d)\n", "../z_obj_oshihiki.c", 579);
+        osSyncPrintf("Error : scene_data_ID が判別できない。(%s %d)\n", __FILE__, __LINE__);
         color->r = color->g = color->b = 255;
     } else {
         src = &sColors[i][paramsColorIdx];
@@ -390,7 +390,7 @@ s32 ObjOshihiki_CheckFloor(ObjOshihiki* this, GlobalContext* globalCtx) {
 s32 ObjOshihiki_CheckGround(ObjOshihiki* this, GlobalContext* globalCtx) {
     if (this->dyna.actor.world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Warning : Push-pull block fell too much"
-        osSyncPrintf("Warning : 押し引きブロック落ちすぎた(%s %d)(arg_data 0x%04x)\n", "../z_obj_oshihiki.c", 809,
+        osSyncPrintf("Warning : 押し引きブロック落ちすぎた(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.params);
         Actor_Kill(&this->dyna.actor);
         return 0;
@@ -654,7 +654,7 @@ void ObjOshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     ObjOshihiki* this = (ObjOshihiki*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_oshihiki.c", 1289);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (ObjOshihiki_MoveWithBlockUnder(this, globalCtx)) {
         Matrix_Translate(this->underDistX * 10.0f, 0.0f, this->underDistZ * 10.0f, MTXMODE_APPLY);
     }
@@ -662,7 +662,7 @@ void ObjOshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(this->texture));
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_oshihiki.c", 1308),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (globalCtx->sceneNum) {
@@ -682,5 +682,5 @@ void ObjOshihiki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     gSPDisplayList(POLY_OPA_DISP++, gPushBlockDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_oshihiki.c", 1334);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

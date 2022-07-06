@@ -21,7 +21,7 @@ void Locale_Init(void) {
         default:
             osSyncPrintf(VT_COL(RED, WHITE));
             osSyncPrintf("z_locale_init: 日本用かアメリカ用か判別できません\n");
-            LogUtils_HungupThread("../z_locale.c", 118);
+            LOG_HUNGUP_THREAD();
             osSyncPrintf(VT_RST);
             break;
     }

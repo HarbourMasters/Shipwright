@@ -879,7 +879,6 @@ void EnTite_CheckDamage(Actor* thisx, GlobalContext* globalCtx) {
         if (this->flipState == TEKTITE_FLIPPED) {
             EnTite_SetupFlipUpright(this);
         } else if ((this->action >= TEKTITE_IDLE) || (this->action >= TEKTITE_IDLE)) {
-            if (1) {}
             EnTite_SetupFlipOnBack(this);
         }
     }
@@ -980,7 +979,7 @@ void EnTite_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** limbDLis
 void EnTite_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnTite* this = (EnTite*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tite.c", 1704);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     Collider_UpdateSpheres(0, &this->collider);
     if (this->actor.params == TEKTITE_BLUE) {
@@ -994,7 +993,7 @@ void EnTite_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, EnTite_PostLimbDraw,
                       thisx);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tite.c", 1735);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (this->spawnIceTimer != 0) {
         // Spawn chunks of ice all over the tektite's body

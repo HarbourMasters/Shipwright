@@ -247,16 +247,13 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 sp84;
     f32 sp80;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fd_fire.c", 572);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
     sp8E = Math_Vec3f_Yaw(&scale, &this->actor.velocity) - Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx));
     sp84 = fabsf(Math_CosS(sp8E));
     sp88 = Math_SinS(sp8E);
     sp80 = Math_Vec3f_DistXZ(&scale, &this->actor.velocity) / 1.5f;
-    if (1) {}
-    if (1) {}
-    if (1) {}
     Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateZ(((sp88 * -10.0f) * sp80) * (M_PI / 180.0f), MTXMODE_APPLY);
     scale.x = scale.y = scale.z = this->scale * 0.001f;
@@ -266,7 +263,7 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         sp84 = 0.1f;
     }
     Matrix_Scale(1.0f, sp84, 1.0f / sp84, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_fd_fire.c", 623),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x8,
@@ -283,5 +280,5 @@ void EnFdFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_XLU_DISP++);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fd_fire.c", 672);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

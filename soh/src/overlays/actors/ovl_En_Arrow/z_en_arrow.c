@@ -130,8 +130,7 @@ void EnArrow_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->collider.base.atFlags = (AT_ON | AT_TYPE_ENEMY);
         } else if (this->actor.params <= ARROW_SEED) {
             this->collider.info.toucher.dmgFlags = dmgFlags[this->actor.params];
-            LOG_HEX("this->at_info.cl_elem.at_btl_info.at_type", this->collider.info.toucher.dmgFlags,
-                    "../z_en_arrow.c", 707);
+            LOG_HEX("this->at_info.cl_elem.at_btl_info.at_type", this->collider.info.toucher.dmgFlags);
         }
     }
 
@@ -462,7 +461,7 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
     } else if (this->actor.speedXZ != 0.0f) {
         alpha = (Math_CosS(this->timer * 5000) * 127.5f) + 127.5f;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_arrow.c", 1346);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093C14(globalCtx->state.gfxCtx);
 
@@ -483,13 +482,13 @@ void EnArrow_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                                      : ((globalCtx->gameplayFrames & 0xFF) * 4000) * (M_PI / 0x8000),
                        MTXMODE_APPLY);
         Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_arrow.c", 1374),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffSparklesDL);
         Matrix_Pop();
         Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_arrow.c", 1381);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     func_809B4800(this, globalCtx);

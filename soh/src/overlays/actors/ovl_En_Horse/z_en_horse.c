@@ -869,7 +869,8 @@ void EnHorse_Init(Actor* thisx, GlobalContext* globalCtx2) {
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_IN, this->actor.world.pos.x, this->actor.world.pos.y,
                         this->actor.world.pos.z, this->actor.shape.rot.x, this->actor.shape.rot.y, 1, 1);
         if (this->rider == NULL) {
-            __assert("this->race.rider != NULL", "../z_en_horse.c", 3077);
+            //__assert("this->race.rider != NULL");
+            ASSERT(this->rider == NULL);
         }
         if (!(gSaveContext.eventInf[0] & 0x40)) {
             this->ingoHorseMaxSpeed = 12.07f;
@@ -3311,7 +3312,7 @@ void EnHorse_CheckBoost(EnHorse* thisx, GlobalContext* globalCtx2) {
                     this->stateFlags |= ENHORSE_BOOST;
                     this->stateFlags |= ENHORSE_FIRST_BOOST_REGEN;
                     this->stateFlags |= ENHORSE_FLAG_8;
-                    this->numBoosts--;
+                    if (!CVar_GetS32("gInfiniteEpona", 0)) { this->numBoosts--; }
                     this->boostTimer = 0;
                     if (this->numBoosts == 0) {
                         this->boostRegenTime = 140;
@@ -3807,7 +3808,7 @@ s32 EnHorse_OverrideLimbDraw(Actor* thisx, GlobalContext* globalCtx, s32 limbInd
     EnHorse* this = (EnHorse*)thisx;
     s32 drawOriginalLimb = true;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_horse.c", 8582);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (limbIndex == 13 && this->type == HORSE_EPONA) {
         u8 index = eyeBlinkIndexes[this->blinkTimer];
 
@@ -3816,7 +3817,7 @@ s32 EnHorse_OverrideLimbDraw(Actor* thisx, GlobalContext* globalCtx, s32 limbInd
         Skin_DrawLimb(globalCtx->state.gfxCtx, &this->skin, limbIndex, gHorseIngoGerudoSaddleDL, 0);
         drawOriginalLimb = false;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_horse.c", 8601);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return drawOriginalLimb;
 }
 

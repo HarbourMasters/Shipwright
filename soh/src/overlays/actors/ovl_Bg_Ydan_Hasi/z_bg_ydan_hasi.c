@@ -177,17 +177,17 @@ void BgYdanHasi_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (this->dyna.actor.params == HASI_WATER_BLOCK || this->dyna.actor.params == HASI_THREE_BLOCKS) {
         Gfx_DrawDListOpa(globalCtx, dLists[this->dyna.actor.params]);
     } else {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_ydan_hasi.c", 577);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, -globalCtx->gameplayFrames % 128,
                                     globalCtx->gameplayFrames % 128, 0x20, 0x20, 1, globalCtx->gameplayFrames % 128,
                                     globalCtx->gameplayFrames % 128, 0x20, 0x20));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_ydan_hasi.c", 592),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gDTWaterPlaneDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_ydan_hasi.c", 597);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

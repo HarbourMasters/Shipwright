@@ -389,15 +389,31 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case ITEM00_SMALL_KEY:
             this->unk_158 = 0;
-            Actor_SetScale(&this->actor, 0.03f);
-            this->scale = 0.03f;
-            yOffset = 350.0f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.3f);
+                this->scale = 0.3f;
+                yOffset = 50.0f;
+                shadowScale = 0.5f;
+                this->actor.world.rot.x = 0x4000;
+            } else {
+                Actor_SetScale(&this->actor, 0.03f);
+                this->scale = 0.03f;
+                yOffset = 350.0f;
+            }
             break;
         case ITEM00_HEART_PIECE:
             this->unk_158 = 0;
-            yOffset = 650.0f;
-            Actor_SetScale(&this->actor, 0.02f);
-            this->scale = 0.02f;
+            if (CVar_GetS32("gNewDrops", 0) !=0) {
+                Actor_SetScale(&this->actor, 0.5f);
+                this->scale = 0.5f;
+                yOffset = 50.0f;
+                shadowScale = 0.5f;
+                this->actor.world.rot.x = 0x4000;
+            } else {
+                yOffset = 650.0f;
+                Actor_SetScale(&this->actor, 0.02f);
+                this->scale = 0.02f;
+            }
             break;
         case ITEM00_HEART:
         	if (CVar_GetS32("gNewDrops", 0) !=0) {
@@ -711,7 +727,7 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
 		    (this->actor.params == ITEM00_ARROWS_MEDIUM) || (this->actor.params == ITEM00_ARROWS_LARGE) ||
 		    (this->actor.params == ITEM00_BOMBS_A) || (this->actor.params == ITEM00_BOMBS_B) ||
 		    (this->actor.params == ITEM00_NUTS) || (this->actor.params == ITEM00_STICK) ||
-		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) ||
+		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) || (this->actor.params == ITEM00_SMALL_KEY) ||
 		    (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL)) {
 		    this->actor.shape.rot.y = DroppedItemRot;
 		}
@@ -738,7 +754,11 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
     }
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
-        this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
+        if (CVar_GetS32("gNewDrops", 0) !=0) {
+            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 50.0f;
+        } else {
+            this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
+        }
     }
 
     Math_SmoothStepToF(&this->actor.speedXZ, 0.0f, 1.0f, 0.5f, 0.0f);
@@ -891,7 +911,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
 	if (CVar_GetS32("gNewDrops", 0) !=0) { //Update 3D Model rotation on frame update :)
-		DroppedItemRot += 100;
+	    DroppedItemRot += 250;
 	}
 
     if (this->unk_15A > 0) {
@@ -1131,7 +1151,11 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 				}
                 break;
             case ITEM00_HEART_PIECE:
-                EnItem00_DrawHeartPiece(this, globalCtx);
+                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                    GetItem_Draw(globalCtx, GID_HEART_PIECE);
+                } else {
+                    EnItem00_DrawHeartPiece(this, globalCtx);
+                }
                 break;
             case ITEM00_HEART_CONTAINER:
                 EnItem00_DrawHeartContainer(this, globalCtx);
@@ -1217,7 +1241,11 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
 					break;
 				}
             case ITEM00_SMALL_KEY:
-                EnItem00_DrawCollectible(this, globalCtx);
+            	if (CVar_GetS32("gNewDrops", 0) !=0) {
+                    GetItem_Draw(globalCtx, GID_KEY_SMALL);
+            	} else {
+                    EnItem00_DrawCollectible(this, globalCtx);
+                }
                 break;
             case ITEM00_SHIELD_DEKU:
                 GetItem_Draw(globalCtx, GID_SHIELD_DEKU);
@@ -1244,7 +1272,7 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 texIndex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1546);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_8002EBCC(&this->actor, globalCtx, 0);
@@ -1255,14 +1283,14 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
         texIndex = this->actor.params - 0x10;
     }
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1562),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTex[texIndex]));
 
     gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1568);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -1271,7 +1299,7 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
 void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     s32 texIndex = this->actor.params - 3;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1594);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
 
@@ -1285,11 +1313,11 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1607),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1611);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -1298,21 +1326,21 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
 void EnItem00_DrawHeartContainer(EnItem00* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1623);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_8002EBCC(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1634),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gHeartPieceExteriorDL);
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1644),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartContainerInteriorDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1647);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -1321,15 +1349,15 @@ void EnItem00_DrawHeartContainer(EnItem00* this, GlobalContext* globalCtx) {
 void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1658);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002ED80(&this->actor, globalCtx, 0);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_item00.c", 1670),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_XLU_DISP++, gHeartPieceInteriorDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_item00.c", 1673);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 /**
@@ -1377,6 +1405,8 @@ EnItem00* Item_DropCollectible(GlobalContext* globalCtx, Vec3f* spawnPos, s16 pa
 
     params &= 0x3FFF;
 
+    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoHeartDrops", 0)) { return NULL; }
+
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ELF, spawnPos->x,
@@ -1420,6 +1450,8 @@ EnItem00* Item_DropCollectible2(GlobalContext* globalCtx, Vec3f* spawnPos, s16 p
 
     params &= 0x3FFF;
 
+    if ((params & 0x00FF) == ITEM00_HEART && CVar_GetS32("gNoHeartDrops", 0)) { return NULL; }
+    
     if (((params & 0x00FF) == ITEM00_FLEXIBLE) && !param4000) {
         // TODO: Prevent the cast to EnItem00 here since this is a different actor (En_Elf)
         spawnedActor = (EnItem00*)Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ELF, spawnPos->x,
@@ -1454,6 +1486,8 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
 
     param8000 = params & 0x8000;
     params &= 0x7FFF;
+
+    if (CVar_GetS32("gNoRandomDrops", 0)) { return; }
 
     if (fromActor != NULL) {
         if (fromActor->dropFlag) {
@@ -1496,11 +1530,11 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
             EffectSsDeadSound_SpawnStationary(globalCtx, spawnPos, NA_SE_EV_BUTTERFRY_TO_FAIRY, true,
                                               DEADSOUND_REPEAT_MODE_OFF, 40);
             return;
-        } else if (gSaveContext.health <= 0x30) { // 3 hearts or less
+        } else if (gSaveContext.health <= 0x30 && !CVar_GetS32("gNoHeartDrops", 0)) { // 3 hearts or less
             params = 0xB * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
-        } else if (gSaveContext.health <= 0x50) { // 5 hearts or less
+        } else if (gSaveContext.health <= 0x50 && !CVar_GetS32("gNoHeartDrops", 0)) { // 5 hearts or less
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_HEART;
@@ -1533,7 +1567,7 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
         }
     }
 
-    if (dropId != 0xFF) {
+    if (dropId != 0xFF && (!CVar_GetS32("gNoHeartDrops", 0) || dropId != ITEM00_HEART)) {
         dropQuantity = sDropQuantities[params + dropTableIndex];
         while (dropQuantity > 0) {
             if (!param8000) {

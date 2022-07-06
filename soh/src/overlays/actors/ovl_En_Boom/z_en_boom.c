@@ -255,7 +255,7 @@ void EnBoom_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f vec1;
     Vec3f vec2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_boom.c", 567);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_RotateY(this->actor.world.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateZ(0x1F40 * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -270,9 +270,9 @@ void EnBoom_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_80093D18(globalCtx->state.gfxCtx);
     Matrix_RotateY((this->activeTimer * 12000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_boom.c", 601),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gBoomerangRefDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_boom.c", 604);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -215,7 +215,7 @@ Gfx* BgHidanRsekizou_DrawFireball(GlobalContext* globalCtx, BgHidanRsekizou* thi
     mf->zw = (tmpf7 * coss) + this->dyna.actor.world.pos.z;
 
     gSPMatrix(displayList++,
-              Matrix_MtxFToMtx(Matrix_CheckFloats(mf, "../z_bg_hidan_rsekizou.c", 543),
+              Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(mf),
                                Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx))),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(displayList++, gFireTempleFireballDL);
@@ -229,11 +229,11 @@ void BgHidanRsekizou_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     MtxF mf;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_rsekizou.c", 564);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_hidan_rsekizou.c", 568),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gFireTempleSpinningFlamethrowerDL);
     Matrix_MtxFCopy(&mf, &gMtxFClear);
@@ -259,5 +259,5 @@ void BgHidanRsekizou_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_rsekizou.c", 600);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

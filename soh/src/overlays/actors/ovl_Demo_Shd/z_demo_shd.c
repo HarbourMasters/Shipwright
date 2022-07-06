@@ -102,13 +102,11 @@ void DemoShd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u32 unk_14E = this->unk_14E;
 
-    if (1) {} // Necessary to match, can be anywhere in the function
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_shd.c", 726);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_shd.c", 729),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_809932D0);
 
@@ -122,5 +120,5 @@ void DemoShd_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, D_809934B8);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_shd.c", 762);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

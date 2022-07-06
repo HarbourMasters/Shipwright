@@ -360,20 +360,18 @@ void EnBom_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnBom* this = (EnBom*)thisx;
 
-    if (1) {}
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bom.c", 913);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params == BOMB_BODY) {
         func_80093D18(globalCtx->state.gfxCtx);
         Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
         func_8002EBCC(thisx, globalCtx, 0);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bom.c", 928),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gBombCapDL);
         Matrix_RotateZYX(0x4000, 0, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bom.c", 934),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->flashIntensity, 0, 40, 255);
@@ -382,5 +380,5 @@ void EnBom_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Collider_UpdateSpheres(0, &this->explosionCollider);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bom.c", 951);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

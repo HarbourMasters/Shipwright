@@ -582,10 +582,6 @@ void EnSyatekiNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp6C;
     Vec3f sp60;
 
-    if (1) {}
-    if (1) {}
-    if (1) {}
-
     func_80B132A8(this, globalCtx);
     this->unk_28C++;
     if (this->unk_254 != 0) {
@@ -766,7 +762,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     EnSyatekiNiw_1* ptr = &this->unk_348[0];
     u8 flag = 0;
 
-    OPEN_DISPS(gfxCtx, "../z_en_syateki_niw.c", 1234);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -783,11 +779,11 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
             Matrix_RotateZ(ptr->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_syateki_niw.c", 1251),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_syateki_niw.c", 1257);
+    CLOSE_DISPS(gfxCtx);
 }

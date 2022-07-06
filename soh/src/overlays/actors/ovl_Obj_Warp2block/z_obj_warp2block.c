@@ -265,7 +265,7 @@ void func_80BA24F8(ObjWarp2block* this, GlobalContext* globalCtx) {
     this->unk_174++;
     if (this->unk_174 > 60) {
         osSyncPrintf(VT_COL(RED, WHITE));
-        osSyncPrintf("Error : 時のブロック(ワープ２)が対でセットされていません(%s %d)\n", "../z_obj_warp2block.c", 505);
+        osSyncPrintf("Error : 時のブロック(ワープ２)が対でセットされていません(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         Actor_Kill(&this->dyna.actor);
     }
@@ -308,13 +308,13 @@ void ObjWarp2block_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     sp44 = &sColors[thisx->home.rot.z & 7];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 584);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 588),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, sp44->r, sp44->g, sp44->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, gSongOfTimeBlockDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_warp2block.c", 594);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

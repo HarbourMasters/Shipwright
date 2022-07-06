@@ -107,7 +107,7 @@ void BgMjin_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgMjin* this = (BgMjin*)thisx;
     Gfx* dlist;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mjin.c", 250);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (thisx->params != 0) {
         s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIDs[thisx->params - 1]);
@@ -123,9 +123,9 @@ void BgMjin_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mjin.c", 285),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, dlist);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mjin.c", 288);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -513,7 +513,7 @@ void Select_DrawMenu(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     GfxPrint* printer;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 930);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -530,14 +530,14 @@ void Select_DrawMenu(SelectContext* this) {
     POLY_OPA_DISP = GfxPrint_Close(printer);
     GfxPrint_Destroy(printer);
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 966);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_DrawLoadingScreen(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
     GfxPrint* printer;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 977);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -552,13 +552,13 @@ void Select_DrawLoadingScreen(SelectContext* this) {
     POLY_OPA_DISP = GfxPrint_Close(printer);
     GfxPrint_Destroy(printer);
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 1006);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_Draw(SelectContext* this) {
     GraphicsContext* gfxCtx = this->state.gfxCtx;
 
-    OPEN_DISPS(gfxCtx, "../z_select.c", 1013);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x00, NULL);
     func_80095248(gfxCtx, 0, 0, 0);
@@ -571,7 +571,7 @@ void Select_Draw(SelectContext* this) {
         Select_DrawMenu(this);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_select.c", 1037);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Select_Main(GameState* thisx) {
@@ -626,8 +626,8 @@ void Select_Init(GameState* thisx) {
     }
     R_UPDATE_RATE = 1;
 #if !defined(_MSC_VER) && !defined(__GNUC__)
-    this->staticSegment = GameState_Alloc(&this->state, size, "../z_select.c", 1114);
-    DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, "../z_select.c", 1115);
+    this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
+    DmaMgr_SendRequest1(this->staticSegment, _z_select_staticSegmentRomStart, size, __FILE__, __LINE__);
 #endif
     gSaveContext.cutsceneIndex = 0x8000;
     gSaveContext.linkAge = 1;

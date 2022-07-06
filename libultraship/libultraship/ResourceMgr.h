@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <thread>
 #include <queue>
@@ -52,8 +52,8 @@ namespace Ship
 	private:
 		std::weak_ptr<GlobalCtx2> Context;
 		volatile bool bIsRunning;
-		std::map<std::string, std::shared_ptr<File>> FileCache;
-		std::map<std::string, std::shared_ptr<Resource>, std::less<>> ResourceCache;
+		std::unordered_map<std::string, std::shared_ptr<File>> FileCache;
+		std::unordered_map<std::string, std::shared_ptr<Resource>> ResourceCache;
 		std::queue<std::shared_ptr<File>> FileLoadQueue;
 		std::queue<std::shared_ptr<ResourcePromise>> ResourceLoadQueue;
 		std::shared_ptr<Archive> OTR;

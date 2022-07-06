@@ -150,10 +150,10 @@ void BgPoSyokudai_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u8 green;
     u8 blue;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_po_syokudai.c", 315);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_po_syokudai.c", 319),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gGoldenTorchDL);
 
@@ -183,9 +183,9 @@ void BgPoSyokudai_Draw(Actor* thisx, GlobalContext* globalCtx) {
                        MTXMODE_APPLY);
         Matrix_Scale(0.0027f, 0.0027f, 0.0027f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_po_syokudai.c", 368),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_po_syokudai.c", 373);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

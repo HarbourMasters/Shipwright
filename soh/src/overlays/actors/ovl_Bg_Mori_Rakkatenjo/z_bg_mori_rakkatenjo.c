@@ -67,7 +67,7 @@ void BgMoriRakkatenjo_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->moriTexObjIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_MORI_TEX);
     if (this->moriTexObjIndex < 0) {
         // "Forest Temple obj Falling Ceiling Bank Danger!"
-        osSyncPrintf("Error : 森の神殿 obj 落下天井 バンク危険！(%s %d)\n", "../z_bg_mori_rakkatenjo.c", 205);
+        osSyncPrintf("Error : 森の神殿 obj 落下天井 バンク危険！(%s %d)\n", __FILE__, __LINE__);
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -222,15 +222,15 @@ void BgMoriRakkatenjo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriRakkatenjo* this = (BgMoriRakkatenjo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_rakkatenjo.c", 497);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_rakkatenjo.c", 502),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriRakkatenjoDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_rakkatenjo.c", 506);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

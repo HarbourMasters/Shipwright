@@ -204,7 +204,7 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     s16 temp;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bdfire.c", 612);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     temp = this->unk_156 & 7;
     Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
     func_80094BC4(globalCtx->state.gfxCtx);
@@ -217,10 +217,10 @@ void EnBdfire_DrawFire(EnBdfire* this, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 0, 0, 0);
     gSPSegment(POLY_XLU_DISP++, 8, SEGMENTED_TO_VIRTUAL(D_809BCB10[temp]));
     Matrix_Translate(0.0f, 11.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bdfire.c", 647),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_01D950);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bdfire.c", 651);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnBdfire_Draw(Actor* thisx, GlobalContext* globalCtx) {

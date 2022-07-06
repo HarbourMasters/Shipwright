@@ -121,11 +121,11 @@ void BgSpot03Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     u32 gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot03_taki.c", 321);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gameplayFrames = globalCtx->gameplayFrames;
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot03_taki.c", 325),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     func_80093D84(globalCtx->state.gfxCtx);
@@ -150,7 +150,7 @@ void BgSpot03Taki_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, object_spot03_object_DL_001580);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot03_taki.c", 358);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     this->bufferIndex = this->bufferIndex == 0;
 

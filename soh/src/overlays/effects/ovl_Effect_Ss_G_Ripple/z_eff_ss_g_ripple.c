@@ -69,7 +69,7 @@ void EffectSsGRipple_DrawRipple(GlobalContext* globalCtx, EffectSs* this, void* 
     Mtx* mtx;
     f32 yPos;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_g_ripple.c", 199);
+    OPEN_DISPS(gfxCtx);
 
     if (globalCtx) {}
 
@@ -98,7 +98,7 @@ void EffectSsGRipple_DrawRipple(GlobalContext* globalCtx, EffectSs* this, void* 
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_g_ripple.c", 247);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsGRipple_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {

@@ -60,9 +60,9 @@ void EnGuest_Init(Actor* thisx, GlobalContext* globalCtx) {
         if (this->osAnimeBankIndex < 0) {
             osSyncPrintf(VT_COL(RED, WHITE));
             // "No such bank!!"
-            osSyncPrintf("%s[%d] : バンクが無いよ！！\n", "../z_en_guest.c", 129);
+            osSyncPrintf("%s[%d] : バンクが無いよ！！\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
-            ASSERT(0, "0", "../z_en_guest.c", 132);
+            ASSERT(this->osAnimeBankIndex < 0);
         }
     }
 }
@@ -184,7 +184,7 @@ s32 EnGuest_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     EnGuest* this = (EnGuest*)thisx;
     Vec3s sp3C;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_guest.c", 352);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 15) {
         *dList = object_boj_DL_0059B0;
@@ -206,7 +206,7 @@ s32 EnGuest_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         rot->z += Math_CosS(this->unk_2EC[limbIndex]) * 200.0f;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_guest.c", 388);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     return false;
 }
@@ -220,7 +220,7 @@ void EnGuest_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGuest* this = (EnGuest*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_guest.c", 404);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -231,5 +231,5 @@ void EnGuest_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGuest_OverrideLimbDraw, NULL, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_guest.c", 421);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

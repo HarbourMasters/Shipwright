@@ -288,7 +288,6 @@ void EnSyatekiMan_WaitForGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
     EnSyatekiItm* gallery;
 
     SkelAnime_Update(&this->skelAnime);
-    if (1) {}
     gallery = ((EnSyatekiItm*)this->actor.parent);
     if ((gallery->actor.update != NULL) && (gallery->signal == ENSYATEKI_END)) {
         this->csCam = OnePointCutscene_Init(globalCtx, 8002, -99, &this->actor, MAIN_CAM);

@@ -750,7 +750,7 @@ void EnGoma_Update(Actor* thisx, GlobalContext* globalCtx) {
 s32 EnGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
     EnGoma* this = (EnGoma*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_goma.c", 1976);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, (s16)this->eyeEnvColor[0], (s16)this->eyeEnvColor[1], (s16)this->eyeEnvColor[2],
                    255);
 
@@ -762,7 +762,7 @@ s32 EnGoma_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
                        (s16)(Rand_ZeroOne() * 255.0f), 255);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_goma.c", 2011);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return 0;
 }
 
@@ -783,7 +783,7 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 y;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_goma.c", 2040);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     switch (this->gomaType) {
@@ -818,14 +818,14 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_RotateY(-(this->eggSquishAngle * 0.15f), MTXMODE_APPLY);
             Matrix_Translate(0.0f, this->eggYOffset, 0.0f, MTXMODE_APPLY);
             Matrix_RotateX(this->eggPitch, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_goma.c", 2101),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gObjectGolEggDL);
             Matrix_Pop();
             break;
 
         case ENGOMA_HATCH_DEBRIS:
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_goma.c", 2107),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBrownFragmentDL);
             break;
@@ -833,13 +833,13 @@ void EnGoma_Draw(Actor* thisx, GlobalContext* globalCtx) {
         case ENGOMA_BOSSLIMB:
             if (this->bossLimbDl != NULL) {
                 gSPSegment(POLY_OPA_DISP++, 0x08, EnGoma_NoBackfaceCullingDlist(globalCtx->state.gfxCtx));
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_goma.c", 2114),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, this->bossLimbDl);
             }
             break;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_goma.c", 2119);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGoma_Debris(EnGoma* this, GlobalContext* globalCtx) {

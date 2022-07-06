@@ -1049,7 +1049,7 @@ void EnPoh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 
     Collider_UpdateSpheres(limbIndex, &this->colliderSph);
     if (this->actionFunc == func_80ADF15C && this->unk_198 >= 2 && limbIndex == this->info->unk_7) {
-        gSPMatrix((*gfxP)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_poh.c", 2460),
+        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfxP)++, this->info->burnDisplayList);
     }
@@ -1074,7 +1074,7 @@ void EnPoh_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
 void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2629);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80AE067C(this);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -1092,10 +1092,10 @@ void EnPoh_DrawRegular(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
     Matrix_Put(&this->unk_368);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_poh.c", 2676),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2681);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
@@ -1103,7 +1103,7 @@ void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGBA8* sp90;
     Color_RGBA8* phi_t0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2694);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80AE067C(this);
     if (this->actor.params == EN_POH_SHARP) {
         sp90 = &D_80AE1B4C;
@@ -1143,14 +1143,14 @@ void EnPoh_DrawComposer(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
     Matrix_Put(&this->unk_368);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_poh.c", 2787),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
     gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternBottomDL);
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetEnvColor(POLY_OPA_DISP++, sp90->r, sp90->g, sp90->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, gPoeComposerLanternTopDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2802);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx) {
@@ -1166,14 +1166,14 @@ void EnPoh_UpdateDead(Actor* thisx, GlobalContext* globalCtx) {
 void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
     EnPoh* this = (EnPoh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2833);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->actionFunc == EnPoh_Death) {
         func_80093D18(globalCtx->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, this->envColor.r, this->envColor.g, this->envColor.b, 255);
         Lights_PointGlowSetInfo(&this->lightInfo, this->actor.world.pos.x, this->actor.world.pos.y,
                                 this->actor.world.pos.z, this->envColor.r, this->envColor.g, this->envColor.b, 200);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_poh.c", 2854),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, this->info->lanternDisplayList);
         if (this->infoIdx == EN_POH_INFO_COMPOSER) {
@@ -1194,9 +1194,9 @@ void EnPoh_DrawSoul(Actor* thisx, GlobalContext* globalCtx) {
                         this->info->primColor.b, this->lightColor.a);
         gDPSetEnvColor(POLY_XLU_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 255);
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * 9.58738e-05f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_poh.c", 2910),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, this->info->soulDisplayList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_poh.c", 2916);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

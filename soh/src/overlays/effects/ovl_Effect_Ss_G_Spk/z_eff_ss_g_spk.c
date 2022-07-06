@@ -81,7 +81,7 @@ void EffectSsGSpk_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 scale;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_g_spk.c", 208);
+    OPEN_DISPS(gfxCtx);
 
     scale = this->rScale * 0.0025f;
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
@@ -100,10 +100,7 @@ void EffectSsGSpk_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    if (1) {}
-    if (1) {}
-
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_g_spk.c", 255);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsGSpk_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

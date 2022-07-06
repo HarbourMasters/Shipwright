@@ -1558,7 +1558,6 @@ void func_800ED458(s32 arg0) {
     if ((D_8016BA10 == 0) ||
         ((D_8016BA10 & sOcarinaAllowedBtnMask) != (sCurOcarinaBtnPress & sOcarinaAllowedBtnMask))) {
         D_8016BA10 = 0;
-        if (1) {}
         sCurOcarinaBtnVal = 0xFF;
         sCurOcarinaBtnIdx = 0xFF;
         phi_v1_2 = (sCurOcarinaBtnPress & sOcarinaAllowedBtnMask) & (sPrevOcarinaBtnPress & sOcarinaAllowedBtnMask);
@@ -1802,7 +1801,6 @@ void func_800EDD68(u8 arg0) {
         lastNote = song[i].noteIdx;
     }
 
-    if (1) {}
 
     if (sRecordSongPos != (i + 1)) {
         sRecordSongPos = i + 2;
@@ -2030,7 +2028,6 @@ s32 Audio_OcaMemoryGameGenNote(void) {
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos].unk_02 = 0;
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos + 1].noteIdx = 0xFF;
     sOcarinaSongs[OCARINA_SONG_MEMORY_GAME][sOcaMinigameAppendPos + 1].unk_02 = 0;
-    if (1) {}
     return 0;
 }
 
@@ -3014,14 +3011,12 @@ void AudioDebug_ProcessInput_SndCont(void) {
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CDOWN)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F595C(sAudioSndContWork[sAudioSndContSel]);
         }
     }
 
     if (CHECK_BTN_ANY(sDebugPadPress, BTN_CRIGHT)) {
         if (sAudioSndContSel == 0) {
-            if (1) {}
             func_800F5ACC(sAudioSndContWork[sAudioSndContSel]);
         }
     }

@@ -255,7 +255,6 @@ void func_80B53980(EnZl3* thisx, s16 y, s32 idx) {
                 curFrame = skelAnime->curFrame;
                 unk_3DC = this->unk_3DC;
                 yTemp = (s32)((curFrame / unk_3DC) * -11000) + y;
-                if (0) {};
                 if (temp28C >= yTemp) {
                     temp28C = yTemp;
                     if (temp25C > 0) {
@@ -627,7 +626,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[0] + kREG(31), unk_28C[1] + kREG(32), unk_28C[2] + kREG(33), MTXMODE_APPLY);
         Matrix_Translate(-188.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[0], "../z_en_zl3.c", 1490);
+        MATRIX_TOMTX(&sp78[0]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -635,7 +634,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[3] + kREG(34), unk_28C[4] + kREG(35), unk_28C[5] + kREG(36), MTXMODE_APPLY);
         Matrix_Translate(-410.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[1], "../z_en_zl3.c", 1534);
+        MATRIX_TOMTX(&sp78[1]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -643,7 +642,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[6] + kREG(37), unk_28C[7] + kREG(38), unk_28C[8] + kREG(39), MTXMODE_APPLY);
         Matrix_Translate(-1019.0f, -26.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[2], "../z_en_zl3.c", 1554);
+        MATRIX_TOMTX(&sp78[2]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(467.0f, 265.0f, 389.0f, MTXMODE_APPLY);
@@ -656,7 +655,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[9] + kREG(40), unk_28C[10] + kREG(41), unk_28C[11] + kREG(42), MTXMODE_APPLY);
         Matrix_Translate(-427.0f, -1.0f, -3.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[3], "../z_en_zl3.c", 1579);
+        MATRIX_TOMTX(&sp78[3]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -666,7 +665,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[12] + kREG(43), unk_28C[13] + kREG(44), unk_28C[14] + kREG(45), MTXMODE_APPLY);
         Matrix_Translate(-446.0f, -52.0f, 84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[4], "../z_en_zl3.c", 1598);
+        MATRIX_TOMTX(&sp78[4]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(467.0f, 265.0f, -389.0f, MTXMODE_APPLY);
@@ -679,7 +678,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[15] + kREG(46), unk_28C[16] + kREG(47), unk_28C[17] + kREG(48), MTXMODE_APPLY);
         Matrix_Translate(-427.0f, -1.0f, 3.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[5], "../z_en_zl3.c", 1623);
+        MATRIX_TOMTX(&sp78[5]);
         Matrix_Get(&sp38);
         Matrix_MtxFToYXZRotS(&sp38, &sp30, 0);
         if (!FrameAdvance_IsEnabled(globalCtx)) {
@@ -689,7 +688,7 @@ s32 func_80B5458C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         }
         Matrix_RotateZYX(unk_28C[18] + kREG(49), unk_28C[19] + kREG(50), unk_28C[20] + kREG(51), MTXMODE_APPLY);
         Matrix_Translate(-446.0f, -52.0f, -84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&sp78[6], "../z_en_zl3.c", 1642);
+        MATRIX_TOMTX(&sp78[6]);
         Matrix_Pop();
         Matrix_Pop();
         this->unk_2FC = 1;
@@ -834,8 +833,6 @@ void func_80B550F0(EnZl3* this) {
 
 void func_80B55144(EnZl3* this) {
     f32* fl = &D_80B5A484;
-
-    if (1) {} // necessary to match
 
     if (*fl < 2.0f) {
         *fl += 1.0f;
@@ -2460,23 +2457,23 @@ s32 func_80B5944C(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* p
         Matrix_RotateZYX(rot->x, rot->y, rot->z, MTXMODE_APPLY);
         Matrix_Push();
         Matrix_Translate(174.0f, -317.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[0], "../z_en_zl3_inEscape.c", 2471);
+        MATRIX_TOMTX(&mtx[0]);
         Matrix_Translate(-410.0f, -184.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[1], "../z_en_zl3_inEscape.c", 2474);
+        MATRIX_TOMTX(&mtx[1]);
         Matrix_Translate(-1019.0f, -26.0f, 0.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[2], "../z_en_zl3_inEscape.c", 2477);
+        MATRIX_TOMTX(&mtx[2]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(40.0f, 264.0f, 386.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[3], "../z_en_zl3_inEscape.c", 2483);
+        MATRIX_TOMTX(&mtx[3]);
         Matrix_Translate(-446.0f, -52.0f, 84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[4], "../z_en_zl3_inEscape.c", 2486);
+        MATRIX_TOMTX(&mtx[4]);
         Matrix_Pop();
         Matrix_Push();
         Matrix_Translate(40.0f, 264.0f, -386.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[5], "../z_en_zl3_inEscape.c", 2492);
+        MATRIX_TOMTX(&mtx[5]);
         Matrix_Translate(-446.0f, -52.0f, -84.0f, MTXMODE_APPLY);
-        Matrix_ToMtx(&mtx[6], "../z_en_zl3_inEscape.c", 2495);
+        MATRIX_TOMTX(&mtx[6]);
         Matrix_Pop();
         Matrix_Pop();
     }
@@ -2705,7 +2702,7 @@ void func_80B59FF4(EnZl3* this, GlobalContext* globalCtx) {
     void* mouthTex = sMouthTextures[mouthTexIndex];
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zl3.c", 2165);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -2718,7 +2715,7 @@ void func_80B59FF4(EnZl3* this, GlobalContext* globalCtx) {
     POLY_OPA_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        EnZl3_OverrideLimbDraw, EnZl3_PostLimbDraw, this, POLY_OPA_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zl3.c", 2190);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80B5A1D0(EnZl3* this, GlobalContext* globalCtx) {
@@ -2730,7 +2727,7 @@ void func_80B5A1D0(EnZl3* this, GlobalContext* globalCtx) {
     void* mouthTex = sMouthTextures[mouthTexIndex];
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zl3.c", 2205);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -2743,7 +2740,7 @@ void func_80B5A1D0(EnZl3* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        EnZl3_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zl3.c", 2234);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static EnZl3DrawFunc sDrawFuncs[] = {

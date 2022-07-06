@@ -143,7 +143,6 @@ void EnSyatekiItm_StartRound(EnSyatekiItm* this, GlobalContext* globalCtx) {
             i = Rand_ZeroFloat(5.99f);
             while (this->roundFlags[i]) {
                 i = Rand_ZeroFloat(5.99f);
-                if (1) {}
             }
             this->roundNum = i + 1;
             this->roundFlags[i] = true;

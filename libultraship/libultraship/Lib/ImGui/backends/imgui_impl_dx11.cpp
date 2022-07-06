@@ -3,8 +3,8 @@
 
 // Implemented features:
 //  [X] Renderer: User texture binding. Use 'ID3D11ShaderResourceView*' as ImTextureID. Read the FAQ about ImTextureID!
-//  [X] Renderer: Multi-viewport support. Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
-//  [X] Renderer: Support for large meshes (64k+ vertices) with 16-bit indices.
+//  [X] Renderer: Multi-viewport support (multiple windows). Enable with 'io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable'.
+//  [X] Renderer: Large meshes support (64k+ vertices) with 16-bit indices.
 
 // You can use unmodified imgui_impl_* files in your project. See examples/ folder for examples of using this.
 // Prefer including the entire imgui/ repository into your project (either as a copy or as a submodule), and only build the backends you need.
@@ -31,7 +31,7 @@
 //  2018-02-06: Misc: Removed call to ImGui::Shutdown() which is not available from 1.60 WIP, user needs to call CreateContext/DestroyContext themselves.
 //  2016-05-07: DirectX11: Disabling depth-write.
 
-#include "../imgui.h"
+#include "imgui.h"
 #include "imgui_impl_dx11.h"
 
 // DirectX
@@ -62,10 +62,10 @@ struct ImGui_ImplDX11_Data
     int                         VertexBufferSize;
     int                         IndexBufferSize;
 
-    ImGui_ImplDX11_Data()       { memset(this, 0, sizeof(*this)); VertexBufferSize = 5000; IndexBufferSize = 10000; }
+    ImGui_ImplDX11_Data()       { memset((void*)this, 0, sizeof(*this)); VertexBufferSize = 5000; IndexBufferSize = 10000; }
 };
 
-struct VERTEX_CONSTANT_BUFFER
+struct VERTEX_CONSTANT_BUFFER_DX11
 {
     float   mvp[4][4];
 };
@@ -183,7 +183,7 @@ void ImGui_ImplDX11_RenderDrawData(ImDrawData* draw_data)
         D3D11_MAPPED_SUBRESOURCE mapped_resource;
         if (ctx->Map(bd->pVertexConstantBuffer, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped_resource) != S_OK)
             return;
-        VERTEX_CONSTANT_BUFFER* constant_buffer = (VERTEX_CONSTANT_BUFFER*)mapped_resource.pData;
+        VERTEX_CONSTANT_BUFFER_DX11* constant_buffer = (VERTEX_CONSTANT_BUFFER_DX11*)mapped_resource.pData;
         float L = draw_data->DisplayPos.x;
         float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
         float T = draw_data->DisplayPos.y;
@@ -355,6 +355,7 @@ static void ImGui_ImplDX11_CreateFontsTexture()
     io.Fonts->SetTexID((ImTextureID)bd->pFontTextureView);
 
     // Create texture sampler
+    // (Bilinear sampling is required by default. Set 'io.Fonts->Flags |= ImFontAtlasFlags_NoBakedLines' or 'style.AntiAliasedLinesUseTex = false' to allow point/nearest sampling)
     {
         D3D11_SAMPLER_DESC desc;
         ZeroMemory(&desc, sizeof(desc));
@@ -440,7 +441,7 @@ bool    ImGui_ImplDX11_CreateDeviceObjects()
         // Create the constant buffer
         {
             D3D11_BUFFER_DESC desc;
-            desc.ByteWidth = sizeof(VERTEX_CONSTANT_BUFFER);
+            desc.ByteWidth = sizeof(VERTEX_CONSTANT_BUFFER_DX11);
             desc.Usage = D3D11_USAGE_DYNAMIC;
             desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
             desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;

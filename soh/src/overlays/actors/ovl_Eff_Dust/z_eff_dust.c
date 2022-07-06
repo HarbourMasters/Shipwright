@@ -103,7 +103,7 @@ void EffDust_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->scalingFactor = 20.0f;
             break;
         default:
-            SystemArena_FreeDebug(this, "../z_eff_dust.c", 202);
+            SYSTEM_ARENA_FREE_DEBUG(this);
             break;
     }
 
@@ -269,7 +269,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
     f32 aux;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_dust.c", 425);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
 
@@ -293,18 +293,16 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
             Matrix_Scale(this->scalingFactor, this->scalingFactor, this->scalingFactor, MTXMODE_APPLY);
             Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_dust.c", 449),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
 
         initialPositions++;
         distanceTraveled++;
-        // Needed for matching.
-        if (0) {}
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_dust.c", 458);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
@@ -317,7 +315,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     f32 aux;
     Player* player = GET_PLAYER(globalCtx);
 
-    OPEN_DISPS(gfxCtx, "../z_eff_dust.c", 472);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D18(gfxCtx);
 
@@ -354,7 +352,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
 
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_dust.c", 506),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
         }
@@ -363,7 +361,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
         distanceTraveled++;
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_dust.c", 515);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_Draw(Actor* thisx, GlobalContext* globalCtx) {

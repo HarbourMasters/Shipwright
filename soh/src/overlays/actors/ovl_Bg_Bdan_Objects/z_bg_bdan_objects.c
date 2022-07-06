@@ -366,7 +366,6 @@ void func_8086C874(BgBdanObjects* this, GlobalContext* globalCtx) {
             }
         }
         if (this->switchFlag == 0) {
-            if (1) {}
             Camera_ChangeSetting(globalCtx->cameraPtrs[MAIN_CAM], this->cameraSetting);
             func_8005ACFC(globalCtx->cameraPtrs[MAIN_CAM], 4);
         }

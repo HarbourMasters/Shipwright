@@ -61,7 +61,7 @@ void BgMoriBigst_InitDynapoly(BgMoriBigst* this, GlobalContext* globalCtx, Colli
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG login failed"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_mori_bigst.c", 190,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -81,7 +81,7 @@ void BgMoriBigst_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->moriTexObjIndex < 0) {
         // "【Big Stalfos key ceiling】 bank danger!"
         osSyncPrintf("【ビッグスタルフォス鍵型天井】 バンク危険！\n");
-        osSyncPrintf("%s %d\n", "../z_bg_mori_bigst.c", 234);
+        osSyncPrintf("%s %d\n", __FILE__, __LINE__);
         Actor_Kill(&this->dyna.actor);
         return;
     }
@@ -244,14 +244,14 @@ void BgMoriBigst_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriBigst* this = (BgMoriBigst*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_bigst.c", 541);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_bigst.c", 548),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, gMoriBigstDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_bigst.c", 553);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

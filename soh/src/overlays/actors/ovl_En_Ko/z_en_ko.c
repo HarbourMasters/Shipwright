@@ -1348,7 +1348,7 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actor.shape.shadowAlpha = this->modelAlpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2095);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if ((s16)this->modelAlpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    EnKo_SetEnvColor(globalCtx->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, 255));
@@ -1366,5 +1366,5 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
                       this->modelAlpha);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2136);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

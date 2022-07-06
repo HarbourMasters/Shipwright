@@ -539,10 +539,6 @@ void func_80AB6570(EnNiw* this, GlobalContext* globalCtx) {
                     posY += 20.0f;
                 }
                 if (posZ < 0.0f) {
-                    if (1) {} // Required to match
-                    if (1) {}
-                    if (1) {}
-                    if (1) {}
                     posZ -= 20.0f;
                 } else {
                     posZ += 20.0f;
@@ -890,10 +886,6 @@ void EnNiw_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 camResult;
     s32 pad3[10];
 
-    if (1) {} // Required to match
-    if (1) {}
-    if (1) {}
-
     this->unk_294++;
 
     if (this->actionFunc != func_80AB6570) {
@@ -1204,7 +1196,7 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     EnNiwFeather* feather = &this->feathers[0];
 
-    OPEN_DISPS(gfxCtx, "../z_en_niw.c", 1897);
+    OPEN_DISPS(gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -1219,13 +1211,13 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(feather->unk_30, MTXMODE_APPLY);
             Matrix_Translate(0.0f, -1000.0f, 0.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_en_niw.c", 1913),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_niw.c", 1919);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnNiw_Reset(void) {

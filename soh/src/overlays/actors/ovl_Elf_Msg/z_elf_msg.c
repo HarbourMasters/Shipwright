@@ -47,14 +47,14 @@ void ElfMsg_SetupAction(ElfMsg* this, ElfMsgActionFunc actionFunc) {
 s32 ElfMsg_KillCheck(ElfMsg* this, GlobalContext* globalCtx) {
     if ((this->actor.world.rot.y > 0) && (this->actor.world.rot.y < 0x41) &&
         Flags_GetSwitch(globalCtx, this->actor.world.rot.y - 1)) {
-        LOG_STRING("共倒れ", "../z_elf_msg.c", 161); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
         }
         Actor_Kill(&this->actor);
         return 1;
     } else if ((this->actor.world.rot.y == -1) && Flags_GetClear(globalCtx, this->actor.room)) {
-        LOG_STRING("共倒れ", "../z_elf_msg.c", 172); // "Mutual destruction"
+        LOG_STRING("共倒れ"); // "Mutual destruction"
         if (((this->actor.params >> 8) & 0x3F) != 0x3F) {
             Flags_SetSwitch(globalCtx, (this->actor.params >> 8) & 0x3F);
         }
@@ -175,7 +175,7 @@ void ElfMsg_Update(Actor* thisx, GlobalContext* globalCtx) {
 void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx) 
 {
 #ifdef ZELDA_DEBUG
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg.c", 436);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (R_NAVI_MSG_REGION_ALPHA == 0) {
         return;
@@ -188,7 +188,7 @@ void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx)
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, R_NAVI_MSG_REGION_ALPHA);
     }
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_elf_msg.c", 448),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, D_809AD278);
 
@@ -198,6 +198,6 @@ void ElfMsg_Draw(Actor* thisx, GlobalContext* globalCtx)
         gSPDisplayList(POLY_XLU_DISP++, sCylinderDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_elf_msg.c", 457);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     #endif
 }

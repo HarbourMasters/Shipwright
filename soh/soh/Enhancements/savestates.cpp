@@ -914,8 +914,8 @@ void SaveState::Save(void) {
     memcpy(&info->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
     memcpy(&info->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
     memcpy(&info->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
-    memcpy(&info->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
-    memcpy(&info->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
+    memcpy(&info->mtxStackCopy, sMatrixStack, sizeof(MtxF) * 20);
+    memcpy(&info->currentMtxCopy, sCurrentMatrix, sizeof(MtxF));
 
     //Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
@@ -938,8 +938,8 @@ void SaveState::Load(void) {
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
     memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
     memcpy(&sLightsBuffer, &info->lightBufferCopy, sizeof(sLightsBuffer));
-    memcpy(&sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
-    memcpy(&sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
+    memcpy(sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
+    memcpy(sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
     sWarpTimerTarget = info->blueWarpTimerCopy;
 
     memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));

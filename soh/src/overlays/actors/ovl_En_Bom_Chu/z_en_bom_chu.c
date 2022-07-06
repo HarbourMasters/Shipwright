@@ -172,7 +172,6 @@ void EnBomChu_UpdateFloorPoly(EnBomChu* this, CollisionPoly* floorPoly, GlobalCo
 
             this->axisUp = normal;
 
-            if (1) {}
 
             // mf = (axisLeft | axisUp | axisForwards)
 
@@ -484,7 +483,7 @@ void EnBomChu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 blinkHalfPeriod;
     s32 blinkTime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_bom_chu.c", 921);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     func_8002EBCC(&this->actor, globalCtx, 0);
@@ -509,9 +508,9 @@ void EnBomChu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, 9.0f + (colorIntensity * 209.0f), 9.0f + (colorIntensity * 34.0f),
                    35.0f + (colorIntensity * -35.0f), 255);
     Matrix_Translate(this->visualJitter * (1.0f / BOMBCHU_SCALE), 0.0f, 0.0f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_bom_chu.c", 956),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gBombchuDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_bom_chu.c", 961);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

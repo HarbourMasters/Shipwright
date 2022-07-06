@@ -104,10 +104,11 @@ pipeline {
                             mv OTRGui/build/OTRGui build/
                             mv OTRGui/build/assets build/
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
-                            mv README.md build/readme.txt
-                            cd build
-                            7z a soh-linux.7z soh.elf OTRGui assets readme.txt
-                            mv soh-linux.7z ../
+                            mv README.md readme.txt
+			    
+			    docker exec sohcont appimage/appimage.sh
+			    
+			    7z a soh-linux.7z SOH-Linux.AppImage readme.txt
                             
                             '''
                         }

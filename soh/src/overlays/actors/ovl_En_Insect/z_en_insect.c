@@ -581,7 +581,7 @@ void func_80A7D460(EnInsect* this, GlobalContext* globalCtx) {
         if (this->unk_314 & 0x10) {
             osSyncPrintf(VT_COL(YELLOW, BLACK));
             // "warning: target Actor is NULL"
-            osSyncPrintf("warning:目標 Actor が NULL (%s %d)\n", "../z_en_mushi.c", 1046);
+            osSyncPrintf("warning:目標 Actor が NULL (%s %d)\n", __FILE__, __LINE__);
             osSyncPrintf(VT_RST);
         }
         sp40 = 40.0f;
@@ -706,7 +706,7 @@ void func_80A7D460(EnInsect* this, GlobalContext* globalCtx) {
                this->actor.floorHeight < BGCHECK_Y_MIN + 10.0f) {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "BG missing? To do Actor_delete"
-        osSyncPrintf("BG 抜け？ Actor_delete します(%s %d)\n", "../z_en_mushi.c", 1197);
+        osSyncPrintf("BG 抜け？ Actor_delete します(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         Actor_Kill(&this->actor);
     }

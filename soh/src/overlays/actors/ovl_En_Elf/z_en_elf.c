@@ -404,7 +404,7 @@ void EnElf_Init(Actor* thisx, GlobalContext* globalCtx) {
             }
             break;
         default:
-            ASSERT(0, "0", "../z_en_elf.c", 1103);
+            ASSERT(0);
             break;
     }
 
@@ -628,7 +628,21 @@ void func_80A0329C(EnElf* this, GlobalContext* globalCtx) {
 
         if ((heightDiff > 0.0f) && (heightDiff < 60.0f)) {
             if (!func_80A01F90(&this->actor.world.pos, &refActor->actor.world.pos, 10.0f)) {
-                Health_ChangeBy(globalCtx, 128);
+                if (CVar_GetS32("gFairyEffect", 0) && !(this->fairyFlags & FAIRY_FLAG_BIG))
+                {
+                    if (CVar_GetS32("gFairyPercentRestore", 0))
+                    {
+                        Health_ChangeBy(globalCtx, (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16);
+                    }
+                    else
+                    {
+                        Health_ChangeBy(globalCtx, CVar_GetS32("gFairyHealth", 8) * 16);
+                    }
+                }
+                else
+                {
+                    Health_ChangeBy(globalCtx, 128);
+                }
                 if (this->fairyFlags & FAIRY_FLAG_BIG) {
                     Magic_Fill(globalCtx);
                 }
@@ -798,7 +812,7 @@ void func_80A03AB0(EnElf* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelAnime);
 
     if (this->func_2C8 == NULL) {
-        ASSERT(0, "0", "../z_en_elf.c", 1725);
+        ASSERT(this->func_2C8 == NULL);
     }
 
     this->func_2C8(this, globalCtx);
@@ -849,7 +863,6 @@ void func_80A03CF8(EnElf* this, GlobalContext* globalCtx) {
         EnElf_GetCutsceneNextPos(&nextPos, globalCtx, 8);
 
         if (globalCtx->csCtx.npcActions[8]->action == 5) {
-            if (1) {}
             EnElf_SpawnSparkles(this, globalCtx, 16);
         }
 
@@ -863,7 +876,6 @@ void func_80A03CF8(EnElf* this, GlobalContext* globalCtx) {
 
         if ((globalCtx->sceneNum == SCENE_LINK_HOME) && (gSaveContext.sceneSetupIndex == 4)) {
             // play dash sound as Navi enters Links house in the intro
-            if (1) {}
             if (globalCtx->csCtx.frames == 55) {
                 Audio_PlayActorSound2(&this->actor, NA_SE_EV_FAIRY_DASH);
             }
@@ -1409,8 +1421,7 @@ void func_80A053F0(Actor* thisx, GlobalContext* globalCtx) {
 
         if (nREG(81) != 0) {
             if (gSaveContext.sceneFlags[127].chest) {
-                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest,
-                        "../z_en_elf.c", 2595);
+                LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", gSaveContext.sceneFlags[127].chest);
             }
         }
 
@@ -1502,7 +1513,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!(player->stateFlags1 & 0x100000) || (kREG(90) < this->actor.projectedPos.z)) {
             dListHead = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Gfx) * 4);
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_elf.c", 2730);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             func_80094B58(globalCtx->state.gfxCtx);
 
@@ -1528,7 +1539,7 @@ void EnElf_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                            EnElf_OverrideLimbDraw, NULL, this, POLY_XLU_DISP);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_elf.c", 2793);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }

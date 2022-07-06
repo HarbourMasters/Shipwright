@@ -65,7 +65,7 @@ void BootCommands_ParseBootArgs(s32 argc, char** argv)
     for (i = 0; i < argc; i++)
         DebugArena_Free(argv[i]);
 
-    DebugArena_Free(argv);
+    //DebugArena_Free(argv);
 }
 
 /*

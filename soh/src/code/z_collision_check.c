@@ -55,7 +55,7 @@ void Collider_DrawPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC,
     f32 nz;
     f32 originDist;
 
-    OPEN_DISPS(gfxCtx, "../z_collision_check.c", 713);
+    OPEN_DISPS(gfxCtx);
 
     gSPMatrix(POLY_OPA_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_OPA_DISP++, 0x00, 0xFF, r, g, b, 50);
@@ -70,7 +70,7 @@ void Collider_DrawPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC,
     gDPPipeSync(POLY_OPA_DISP++);
 
     vtxTbl = Graph_Alloc(gfxCtx, 3 * sizeof(Vtx));
-    ASSERT(vtxTbl != NULL, "vtx_tbl != NULL", "../z_collision_check.c", 726);
+    ASSERT(vtxTbl != NULL);
 
     vtxTbl[0].n.ob[0] = vA->x;
     vtxTbl[0].n.ob[1] = vA->y;
@@ -97,7 +97,7 @@ void Collider_DrawPoly(GraphicsContext* gfxCtx, Vec3f* vA, Vec3f* vB, Vec3f* vC,
     gSPVertex(POLY_OPA_DISP++, vtxTbl, 3, 0);
     gSP1Triangle(POLY_OPA_DISP++, 0, 1, 2, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_collision_check.c", 757);
+    CLOSE_DISPS(gfxCtx);
 }
 
 s32 Collider_InitBase(GlobalContext* globalCtx, Collider* collider) {
@@ -336,7 +336,7 @@ s32 Collider_FreeJntSph(GlobalContext* globalCtx, ColliderJntSph* collider) {
 
     collider->count = 0;
     if (collider->elements != NULL) {
-        ZeldaArena_FreeDebug(collider->elements, "../z_collision_check.c", 1393);
+        ZELDA_ARENA_FREE_DEBUG(collider->elements);
     }
     collider->elements = NULL;
     return 1;
@@ -367,7 +367,7 @@ s32 Collider_SetJntSphToActor(GlobalContext* globalCtx, ColliderJntSph* dest, Co
 
     Collider_SetBaseToActor(globalCtx, &dest->base, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), "../z_collision_check.c", 1443);
+    dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -396,7 +396,7 @@ s32 Collider_SetJntSphAllocType1(GlobalContext* globalCtx, ColliderJntSph* dest,
 
     Collider_SetBaseType1(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), "../z_collision_check.c", 1490);
+    dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -424,7 +424,7 @@ s32 Collider_SetJntSphAlloc(GlobalContext* globalCtx, ColliderJntSph* dest, Acto
 
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(src->count * sizeof(ColliderJntSphElement), "../z_collision_check.c", 1551);
+    dest->elements = ZELDA_ARENA_MALLOC_DEBUG(src->count * sizeof(ColliderJntSphElement));
 
     if (dest->elements == NULL) {
         dest->count = 0;
@@ -452,7 +452,7 @@ s32 Collider_SetJntSph(GlobalContext* globalCtx, ColliderJntSph* dest, Actor* ac
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = elements;
-    ASSERT(dest->elements != NULL, "pclobj_jntsph->elem_tbl != NULL", "../z_collision_check.c", 1603);
+    ASSERT(dest->elements != NULL);
 
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
@@ -702,7 +702,7 @@ s32 Collider_FreeTris(GlobalContext* globalCtx, ColliderTris* tris) {
 
     tris->count = 0;
     if (tris->elements != NULL) {
-        ZeldaArena_FreeDebug(tris->elements, "../z_collision_check.c", 2099);
+        ZELDA_ARENA_FREE_DEBUG(tris->elements);
     }
     tris->elements = NULL;
     return 1;
@@ -734,7 +734,7 @@ s32 Collider_SetTrisAllocType1(GlobalContext* globalCtx, ColliderTris* dest, Act
 
     Collider_SetBaseType1(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement), "../z_collision_check.c", 2156);
+    dest->elements = ZELDA_ARENA_MALLOC_DEBUG(dest->count * sizeof(ColliderTrisElement));
     if (dest->elements == NULL) {
         dest->count = 0;
         osSyncPrintf(VT_FGCOL(RED));
@@ -760,7 +760,7 @@ s32 Collider_SetTrisAlloc(GlobalContext* globalCtx, ColliderTris* dest, Actor* a
 
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
-    dest->elements = ZeldaArena_MallocDebug(dest->count * sizeof(ColliderTrisElement), "../z_collision_check.c", 2207);
+    dest->elements = ZELDA_ARENA_MALLOC_DEBUG(dest->count * sizeof(ColliderTrisElement));
 
     if (dest->elements == NULL) {
         osSyncPrintf(VT_FGCOL(RED));
@@ -789,7 +789,7 @@ s32 Collider_SetTris(GlobalContext* globalCtx, ColliderTris* dest, Actor* actor,
     Collider_SetBase(globalCtx, &dest->base, actor, &src->base);
     dest->count = src->count;
     dest->elements = elements;
-    ASSERT(dest->elements != NULL, "pclobj_tris->elem_tbl != NULL", "../z_collision_check.c", 2258);
+    ASSERT(dest->elements != NULL);
 
     for (destElem = dest->elements, srcElem = src->elements; destElem < dest->elements + dest->count;
          destElem++, srcElem++) {
@@ -1180,7 +1180,7 @@ s32 CollisionCheck_SetAT(GlobalContext* globalCtx, CollisionCheckContext* colChk
     if (FrameAdvance_IsEnabled(globalCtx) == true) {
         return -1;
     }
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 2997);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
     sATResetFuncs[collider->shape](globalCtx, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1205,7 +1205,7 @@ s32 CollisionCheck_SetAT(GlobalContext* globalCtx, CollisionCheckContext* colChk
  */
 s32 CollisionCheck_SetAT_SAC(GlobalContext* globalCtx, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 3037);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
     if (FrameAdvance_IsEnabled(globalCtx) == true) {
         return -1;
     }
@@ -1249,7 +1249,7 @@ s32 CollisionCheck_SetAC(GlobalContext* globalCtx, CollisionCheckContext* colChk
     if (FrameAdvance_IsEnabled(globalCtx) == true) {
         return -1;
     }
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 3114);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
     sACResetFuncs[collider->shape](globalCtx, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -1274,7 +1274,7 @@ s32 CollisionCheck_SetAC(GlobalContext* globalCtx, CollisionCheckContext* colChk
  */
 s32 CollisionCheck_SetAC_SAC(GlobalContext* globalCtx, CollisionCheckContext* colChkCtx, Collider* collider,
                              s32 index) {
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 3153);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
     if (FrameAdvance_IsEnabled(globalCtx) == true) {
         return -1;
     }
@@ -1319,7 +1319,7 @@ s32 CollisionCheck_SetOC(GlobalContext* globalCtx, CollisionCheckContext* colChk
         return -1;
     }
 
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 3229);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
 
     sOCResetFuncs[collider->shape](globalCtx, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
@@ -1348,7 +1348,7 @@ s32 CollisionCheck_SetOC_SAC(GlobalContext* globalCtx, CollisionCheckContext* co
     if (FrameAdvance_IsEnabled(globalCtx) == true) {
         return -1;
     }
-    ASSERT(collider->shape <= COLSHAPE_QUAD, "pcl_obj->data_type <= CL_DATA_LBL_SWRD", "../z_collision_check.c", 3274);
+    ASSERT(collider->shape <= COLSHAPE_QUAD);
     sOCResetFuncs[collider->shape](globalCtx, collider);
     if (collider->actor != NULL && collider->actor->update == NULL) {
         return -1;
@@ -2987,7 +2987,7 @@ void CollisionCheck_ApplyDamage(GlobalContext* globalCtx, CollisionCheckContext*
         return;
     }
 
-    ASSERT(info->acHitInfo != NULL, "pclobj_elem->ac_hit_elem != NULL", "../z_collision_check.c", 6493);
+    ASSERT(info->acHitInfo != NULL);
     tbl = collider->actor->colChkInfo.damageTable;
     if (tbl == NULL) {
         damage = (f32)info->acHitInfo->toucher.damage - info->bumper.defense;

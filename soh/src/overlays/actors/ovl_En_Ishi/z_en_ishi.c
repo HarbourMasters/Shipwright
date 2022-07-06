@@ -128,7 +128,7 @@ s32 EnIshi_SnapToFloor(EnIshi* this, GlobalContext* globalCtx, f32 arg2) {
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "Failure attaching to ground"
-        osSyncPrintf("地面に付着失敗(%s %d)\n", "../z_en_ishi.c", 388);
+        osSyncPrintf("地面に付着失敗(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         return false;
     }
@@ -482,15 +482,15 @@ void EnIshi_DrawSmall(EnIshi* this, GlobalContext* globalCtx) {
 }
 
 void EnIshi_DrawLarge(EnIshi* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ishi.c", 1050);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ishi.c", 1055),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
     gSPDisplayList(POLY_OPA_DISP++, gSilverRockDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ishi.c", 1062);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static EnIshiDrawFunc sDrawFuncs[] = { EnIshi_DrawSmall, EnIshi_DrawLarge };

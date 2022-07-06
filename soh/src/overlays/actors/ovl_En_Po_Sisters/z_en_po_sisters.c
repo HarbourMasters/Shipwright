@@ -195,7 +195,6 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
     this->unk_194 = (thisx->params >> 8) & 3;
     this->actor.naviEnemyId = this->unk_194 + 0x50;
-    if (1) {}
     this->unk_195 = (thisx->params >> 0xA) & 3;
     this->unk_196 = 32;
     this->unk_197 = 20;
@@ -1303,7 +1302,7 @@ void EnPoSisters_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     s32 pad;
 
     if (this->actionFunc == func_80ADAFC0 && this->unk_19A >= 8 && limbIndex == 9) {
-        gSPMatrix((*gfxP)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 2876),
+        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfxP)++, gPoSistersBurnDL);
     }
@@ -1349,7 +1348,7 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGBA8* temp_s7 = &D_80ADD6F0[this->unk_194];
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 2989);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80ADC55C(this);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -1368,7 +1367,7 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     if (!(this->unk_199 & 0x80)) {
         Matrix_Put(&this->unk_2F8);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3034),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gPoSistersTorchDL);
     }
@@ -1412,11 +1411,11 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
             phi_f20 = CLAMP(phi_f20, 0.5f, 0.8f) * 0.007f;
         }
         Matrix_Scale(phi_f20, phi_f20, phi_f20, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3132),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3139);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoSisters_Reset(void) {

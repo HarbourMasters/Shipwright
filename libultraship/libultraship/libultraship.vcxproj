@@ -99,7 +99,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -107,7 +107,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Testing|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\libjpeg\include;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -115,7 +115,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x86;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -123,7 +123,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -131,7 +131,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Testing|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />
@@ -139,7 +139,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)..\..\ZAPDTR\ZAPDUtils;$(ProjectDir)Lib\Fast3D\U64;$(ProjectDir)Lib\ImGui;$(ProjectDir)Lib\spdlog\include;$(ProjectDir)Lib\SDL;$(ProjectDir)Lib\GLEW;$(ProjectDir)..\..\StormLib\src\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)Lib\SDL\lib\x64;$(LibraryPath)</LibraryPath>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules />

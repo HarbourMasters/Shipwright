@@ -524,11 +524,11 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnNy* this = (EnNy*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ny.c", 837);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Collider_UpdateSpheres(0, &this->collider);
     func_8002ED80(&this->actor, globalCtx, 1);
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ny.c", 845),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetRenderMode(POLY_XLU_DISP++, G_RM_PASS, G_RM_AA_ZB_XLU_SURF2);
@@ -542,11 +542,11 @@ void EnNy_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Scale(this->unk_1E0, this->unk_1E0, this->unk_1E0, MTXMODE_APPLY);
         func_8002EBCC(&this->actor, globalCtx, 1);
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ny.c", 868),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gEnNySpikeDL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ny.c", 872);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;
@@ -570,7 +570,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
     f32 scale;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ny.c", 900);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0x00, 0x00, 0x00, 0xFF);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2);
@@ -581,12 +581,12 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ny.c", 912),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ny.c", 919);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;

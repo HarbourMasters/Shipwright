@@ -323,10 +323,10 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     f32 phi_f14;
     s32 phi_t1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 844);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_Scale(0.02f, 0.02f, 0.02f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 853),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (this->unk_1C6) {
@@ -340,12 +340,20 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     switch (this->unk_1C6) {
         case 0:
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, (u8)(this->unk_1B0 * 255));
+            if (CVar_GetS32("gUseChargedCol",0)) {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged2ColR",255), CVar_GetS32("gCharged2ColG",255), CVar_GetS32("gCharged2ColB",170), (u8)(this->unk_1B0 * 255));
+            } else {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, (u8)(this->unk_1B0 * 255));
+            }
             gSPDisplayList(POLY_XLU_DISP++, gSpinAttack3DL);
             gSPDisplayList(POLY_XLU_DISP++, gSpinAttack4DL);
             break;
         case 1:
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, (u8)(this->unk_1B0 * 255));
+            if (CVar_GetS32("gUseChargedCol",0)) {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged1ColR",170), CVar_GetS32("gCharged1ColG",255), CVar_GetS32("gCharged1ColB",255), (u8)(this->unk_1B0 * 255));
+            } else {
+                gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, (u8)(this->unk_1B0 * 255));
+            }
             gSPDisplayList(POLY_XLU_DISP++, gSpinAttack1DL);
             gSPDisplayList(POLY_XLU_DISP++, gSpinAttack2DL);
             break;
@@ -373,17 +381,29 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     if (this->unk_1B8 >= 0.85f) {
         phi_f14 = (D_80AA046C[(globalCtx->gameplayFrames & 7)] * 6.0f) + 1.0f;
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, this->unk_1C8);
+        if (CVar_GetS32("gUseChargedCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged2ColR",255), CVar_GetS32("gCharged2ColG",255), CVar_GetS32("gCharged2ColB",170), this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gCharged2ColEnvR",255), CVar_GetS32("gCharged2ColEnvG",100), CVar_GetS32("gCharged2ColEnvB",0), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 255, 255, 170, this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 100, 0, 128);
+        }
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 100, 0, 128);
         phi_t1 = 0x28;
     } else {
         phi_f14 = (D_80AA046C[globalCtx->gameplayFrames & 7] * 2.0f) + 1.0f;
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, this->unk_1C8);
+        if (CVar_GetS32("gUseChargedCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gCharged1ColR",170), CVar_GetS32("gCharged1ColG",255), CVar_GetS32("gCharged1ColB",255), this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gCharged1ColEnvR",0), CVar_GetS32("gCharged1ColEnvG",100), CVar_GetS32("gCharged1ColEnvB",255), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, 170, 255, 255, this->unk_1C8);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        }
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
         phi_t1 = 0x14;
     }
     Matrix_Scale(1.0f, phi_f14, phi_f14, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 960),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x09,
@@ -393,5 +413,5 @@ void EnMThunder_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPDisplayList(POLY_XLU_DISP++, gSpinAttackChargingDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_m_thunder.c", 1031);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

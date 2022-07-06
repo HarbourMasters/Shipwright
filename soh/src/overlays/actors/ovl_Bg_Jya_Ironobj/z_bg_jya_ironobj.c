@@ -108,7 +108,7 @@ void BgJyaIronobj_SpawnPillarParticles(BgJyaIronobj* this, GlobalContext* global
     s32 pad[2];
 
     if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
-        osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", "../z_bg_jya_ironobj.c", 233, enIk->unk_2FF);
+        osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", __FILE__, __LINE__, enIk->unk_2FF);
         return;
     }
     osSyncPrintf("¢ attack_type(%d)\n", enIk->unk_2FF);
@@ -171,7 +171,7 @@ void BgJyaIronobj_SpawnThoneParticles(BgJyaIronobj* this, GlobalContext* arg1, E
     s32 pad[2];
 
     if (enIk->unk_2FF <= 0 || enIk->unk_2FF >= 4) {
-        osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", "../z_bg_jya_ironobj.c", 362, enIk->unk_2FF);
+        osSyncPrintf("Error 攻撃方法が分からない(%s %d)\n", __FILE__, __LINE__, enIk->unk_2FF);
         return;
     }
     osSyncPrintf("¢ attack_type(%d)\n", enIk->unk_2FF);

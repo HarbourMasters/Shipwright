@@ -122,13 +122,11 @@ void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 scroll = globalCtx->gameplayFrames & 0xFFFF;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 210);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    if (1) {}
-
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 213),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->fireFlag & 1) {
         gSPSegment(
@@ -142,22 +140,22 @@ void BgSpot16Doughnut_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gDeathMountainCloudCircleNormalDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 238);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 // Draw function for outwardly expanding and dissipating
 void BgSpot16Doughnut_DrawExpanding(Actor* thisx, GlobalContext* globalCtx) {
     BgSpot16Doughnut* this = (BgSpot16Doughnut*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 245);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 248),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, this->envColorAlpha);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 255);
     gSPDisplayList(POLY_XLU_DISP++, gDeathMountainCloudCircleNormalDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot16_doughnut.c", 256);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

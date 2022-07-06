@@ -498,15 +498,15 @@ void EnExItem_DrawMagic(EnExItem* this, GlobalContext* globalCtx, s16 magicIndex
 void EnExItem_DrawKey(EnExItem* this, GlobalContext* globalCtx, s32 index) {
     static void* keySegments[] = { gDropKeySmallTex };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 880);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_8009460C(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 887),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(keySegments[index]));
     gSPDisplayList(POLY_OPA_DISP++, gItemDropDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ex_item.c", 893);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnExItem_DrawRupee(EnExItem* this, GlobalContext* globalCtx) {

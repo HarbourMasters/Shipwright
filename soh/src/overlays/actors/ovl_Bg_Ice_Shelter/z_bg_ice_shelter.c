@@ -110,7 +110,7 @@ void func_80890874(BgIceShelter* this, GlobalContext* globalCtx, CollisionHeader
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG registration failed"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_ice_shelter.c", 362,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -388,11 +388,11 @@ void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     BgIceShelter* this = (BgIceShelter*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_ice_shelter.c", 748);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_ice_shelter.c", 751),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch ((this->dyna.actor.params >> 8) & 7) {
@@ -435,5 +435,5 @@ void BgIceShelter_Draw(Actor* thisx, GlobalContext* globalCtx2) {
             break;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_ice_shelter.c", 815);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

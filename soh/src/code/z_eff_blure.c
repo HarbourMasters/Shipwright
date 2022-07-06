@@ -194,6 +194,10 @@ void EffectBlure_Destroy(void* thisx) {
 s32 EffectBlure_Update(void* thisx) {
     EffectBlure* this = (EffectBlure*)thisx;
     s32 i;
+    s16 RedColor;
+    s16 GreenColor;
+    s16 BlueColor;
+    s16 TrailDuration;
 
     if (this == NULL) {
         return 0;
@@ -202,6 +206,31 @@ s32 EffectBlure_Update(void* thisx) {
     if (this->numElements == 0) {
         return 0;
     }
+
+    if (CVar_GetS32("gUseTrailsCol", 0) !=0) {
+        RedColor = CVar_GetS32("gTrailColR",255);
+        GreenColor = CVar_GetS32("gTrailColG",255);
+        BlueColor = CVar_GetS32("gTrailColB",255);
+        TrailDuration = 4.0f*CVar_GetS32("gTrailDurantion",1);
+    } else {
+        RedColor = 255;
+        GreenColor = 255;
+        BlueColor = 255;
+        TrailDuration=4.0f;
+    }
+    this->p1StartColor.r = RedColor;
+    this->p2StartColor.r = RedColor;
+    this->p1EndColor.r = RedColor;
+    this->p2EndColor.r = RedColor;
+    this->p1StartColor.g = GreenColor;
+    this->p2StartColor.g = GreenColor;
+    this->p1EndColor.g = GreenColor;
+    this->p2EndColor.g = GreenColor;
+    this->p1StartColor.b = BlueColor;
+    this->p2StartColor.b = BlueColor;
+    this->p1EndColor.b = BlueColor;
+    this->p2EndColor.b = BlueColor;
+    this->elemDuration = TrailDuration;
 
     while (true) {
         if (this->elements[0].state == 0) {
@@ -280,8 +309,6 @@ void EffectBlure_UpdateFlags(EffectBlureElement* elem) {
         f32 sp30;
         f32 sp2C;
 
-        if (1) {} // Necessary to match
-
         Math_Vec3s_DiffToVec3f(&sp64, &elem->p1, &prev->p1);
         Math_Vec3s_DiffToVec3f(&sp58, &elem->p2, &prev->p2);
         Math_Vec3s_DiffToVec3f(&sp4C, &next->p1, &elem->p1);
@@ -345,7 +372,6 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 
             vec1->x = (sp30.x * 0.5f * mode4Param * ratio) + elem->p1.x;
             vec1->y = (sp30.y * 0.5f * mode4Param * ratio) + elem->p1.y;
-            if (1) {} // Necessary to match
             vec1->z = (sp30.z * 0.5f * mode4Param * ratio) + elem->p1.z;
 
             vec2->x = -(sp30.x * 0.5f * mode4Param * ratio) + elem->p2.x;
@@ -382,11 +408,11 @@ void EffectBlure_GetComputedValues(EffectBlure* this, s32 index, f32 ratio, Vec3
 }
 
 void EffectBlure_SetupSmooth(EffectBlure* this, GraphicsContext* gfxCtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 809);
+    OPEN_DISPS(gfxCtx);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 813);
+    CLOSE_DISPS(gfxCtx);
 }
 
 // original name: "SQ_NoInterpolate_disp"
@@ -403,7 +429,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
     Vec3f sp60;
     Vec3f sp54;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 838);
+    OPEN_DISPS(gfxCtx);
 
     Math_Vec3s_ToVec3f(&sp6C, &this->elements[0].p2);
 
@@ -432,8 +458,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[0].v.cn[1] = sp78.g;
         vtx[0].v.cn[2] = sp78.b;
         vtx[0].v.cn[3] = sp78.a;
-
-        if (1) {} // Necessary to match
 
         sp60.x = sp8C.x;
         sp60.y = sp8C.y;
@@ -464,8 +488,6 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         vtx[2].v.cn[2] = sp7C.b;
         vtx[2].v.cn[3] = sp7C.a;
 
-        if (1) {} // Necessary to match
-
         sp60.x = sp84.x;
         sp60.y = sp84.y;
         sp60.z = sp84.z;
@@ -483,7 +505,7 @@ void EffectBlure_DrawElemNoInterpolation(EffectBlure* this, EffectBlureElement* 
         gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 2, 3, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 932);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElement* elem, s32 index,
@@ -514,7 +536,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
     Color_RGBA8 sp144;
     Vec3f sp138;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 971);
+    OPEN_DISPS(gfxCtx);
 
     Math_Vec3s_ToVec3f(&sp138, &this->elements[0].p2);
 
@@ -535,7 +557,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp118;
         Vec3f sp10C;
 
-        ASSERT(index - 1 >= 0, "index - 1 >= 0", "../z_eff_blure.c", 1005);
+        ASSERT(index - 1 >= 0);
 
         ratio = (f32)(elem - 1)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index - 1, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -555,7 +577,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         Vec3f sp100;
         Vec3f spF4;
 
-        ASSERT(index + 2 < this->numElements, "index + 2 < this2->now_edge_num", "../z_eff_blure.c", 1032);
+        ASSERT(index + 2 < this->numElements);
 
         ratio = (f32)(elem + 2)->timer / (f32)this->elemDuration;
         EffectBlure_GetComputedValues(this, index + 2, ratio, &sp1EC, &sp1E4, &sp1DC, &sp1D8);
@@ -656,7 +678,7 @@ void EffectBlure_DrawElemHermiteInterpolation(EffectBlure* this, EffectBlureElem
         gSP2Triangles(POLY_XLU_DISP++, 12, 13, 15, 0, 12, 15, 14, 0);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1184);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
@@ -668,7 +690,7 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp5C;
     Mtx* mtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1201);
+    OPEN_DISPS(gfxCtx);
 
     if (this->numElements < 2) {
         return;
@@ -710,19 +732,19 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1263);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_SetupSimple(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1280);
+    OPEN_DISPS(gfxCtx);
 
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1285);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1294);
+    OPEN_DISPS(gfxCtx);
 
     gDPPipeSync(POLY_XLU_DISP++);
     POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
@@ -743,7 +765,7 @@ void EffectBlure_SetupSimpleAlt(GraphicsContext* gfxCtx, EffectBlure* this, Vtx*
 
     gDPSetEnvColor(POLY_XLU_DISP++, this->altEnvColor.r, this->altEnvColor.g, this->altEnvColor.b, this->altEnvColor.a);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1329);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void (*sSetupHandlers[])(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) = {
@@ -757,7 +779,7 @@ s32 D_80115788 = 0; // unused
 void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, Vtx* vtx) {
     Mtx* mtx;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1356);
+    OPEN_DISPS(gfxCtx);
 
     sSetupHandlers[this->drawMode](gfxCtx, this, vtx);
     gDPPipeSync(POLY_XLU_DISP++);
@@ -784,8 +806,6 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
                                 this->altPrimColor.b, this->altPrimColor.a * (1.0f - alphaRatio));
                 gDPPipeSync(POLY_XLU_DISP++);
             }
-
-            if (1) {} // Necessary to match
 
             gSPVertex(POLY_XLU_DISP++, &vtx[j], 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 3, 0, 0, 3, 2, 0);
@@ -829,7 +849,7 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1452);
+    CLOSE_DISPS(gfxCtx);
 }
 
 Vtx_t D_8011578C[] = {
@@ -949,7 +969,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 phi_t2;
 
     FrameInterpolation_RecordOpenChild(this, 0);
-    OPEN_DISPS(gfxCtx, "../z_eff_blure.c", 1596);
+    OPEN_DISPS(gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
@@ -1044,8 +1064,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
                         } else {
                             gSP1Quadrangle(POLY_XLU_DISP++, j - 2, j - 1, j + 1, j, 0);
 
-                            if (1) {} // Necessary to match
-
+                
                             if (this->unkFlag == 1) {
                                 phi_t2 = 0;
                             }
@@ -1061,6 +1080,6 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_blure.c", 1823);
+    CLOSE_DISPS(gfxCtx);
     FrameInterpolation_RecordCloseChild();
 }

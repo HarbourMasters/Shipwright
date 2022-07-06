@@ -730,13 +730,13 @@ void EnTp_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnTp* this = (EnTp*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tp.c", 1451);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_150 != 2) {
         if ((thisx->params <= TAILPASARAN_HEAD) || (thisx->params == TAILPASARAN_HEAD_DYING)) {
             func_80093D18(globalCtx->state.gfxCtx);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_tp.c", 1459),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gTailpasaranHeadDL);
 
@@ -753,13 +753,13 @@ void EnTp_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gTailpasaranTailSegmentTex));
             gDPPipeSync(POLY_XLU_DISP++);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_tp.c", 1480),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gTailpasaranTailSegmentDL);
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tp.c", 1495);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if ((thisx->params <= TAILPASARAN_TAIL) || (thisx->params == TAILPASARAN_TAIL_DYING)) {
         Collider_UpdateSpheres(0, &this->collider);

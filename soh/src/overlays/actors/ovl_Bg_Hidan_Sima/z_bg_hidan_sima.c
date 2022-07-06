@@ -260,7 +260,7 @@ Gfx* func_8088EB54(GlobalContext* globalCtx, BgHidanSima* this, Gfx* gfx) {
 
         gSPSegment(gfx++, 0x09, SEGMENTED_TO_VIRTUAL(sFireballsTexs[(this->timer + s3) % 7]));
         gSPMatrix(gfx++,
-                  Matrix_MtxFToMtx(Matrix_CheckFloats(&mtxF, "../z_bg_hidan_sima.c", 611),
+                  Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF),
                                    Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx))),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(gfx++, gFireTempleFireballDL);
@@ -269,7 +269,7 @@ Gfx* func_8088EB54(GlobalContext* globalCtx, BgHidanSima* this, Gfx* gfx) {
     mtxF.zw = this->dyna.actor.world.pos.z + (phi_s5 * 25 + 80) * cos;
     gSPSegment(gfx++, 0x09, SEGMENTED_TO_VIRTUAL(sFireballsTexs[(this->timer + s3) % 7]));
     gSPMatrix(gfx++,
-              Matrix_MtxFToMtx(Matrix_CheckFloats(&mtxF, "../z_bg_hidan_sima.c", 624),
+              Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(&mtxF),
                                Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx))),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(gfx++, gFireTempleFireballDL);
@@ -279,9 +279,9 @@ Gfx* func_8088EB54(GlobalContext* globalCtx, BgHidanSima* this, Gfx* gfx) {
 void BgHidanSima_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgHidanSima* this = (BgHidanSima*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_sima.c", 641);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_hidan_sima.c", 645),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     if (this->dyna.actor.params == 0) {
         gSPDisplayList(POLY_OPA_DISP++, gFireTempleStonePlatform1DL);
@@ -294,5 +294,5 @@ void BgHidanSima_Draw(Actor* thisx, GlobalContext* globalCtx) {
             POLY_XLU_DISP = func_8088EB54(globalCtx, this, POLY_XLU_DISP);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_hidan_sima.c", 668);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

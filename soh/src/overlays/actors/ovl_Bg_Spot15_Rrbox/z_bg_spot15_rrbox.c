@@ -66,7 +66,7 @@ void func_808B3960(BgSpot15Rrbox* this, GlobalContext* globalCtx, CollisionHeade
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_spot15_rrbox.c", 171,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -323,7 +323,7 @@ void func_808B43D0(BgSpot15Rrbox* this, GlobalContext* globalCtx) {
 
     if (actor->world.pos.y <= BGCHECK_Y_MIN + 10.0f) {
         // "Lon Lon wooden crate fell too much"
-        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", "../z_bg_spot15_rrbox.c", 599,
+        osSyncPrintf("Warning : ロンロン木箱落ちすぎた(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      actor->params);
 
         Actor_Kill(actor);

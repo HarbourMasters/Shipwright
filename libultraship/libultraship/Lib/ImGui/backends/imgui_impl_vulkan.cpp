@@ -2,8 +2,8 @@
 // This needs to be used along with a Platform Backend (e.g. GLFW, SDL, Win32, custom..)
 
 // Implemented features:
-//  [X] Renderer: Support for large meshes (64k+ vertices) with 16-bit indices.
-//  [x] Platform: Multi-viewport / platform windows. With issues (flickering when creating a new viewport).
+//  [X] Renderer: Large meshes support (64k+ vertices) with 16-bit indices.
+//  [x] Renderer: Multi-viewport / platform windows. With issues (flickering when creating a new viewport).
 //  [!] Renderer: User texture binding. Use 'VkDescriptorSet' as ImTextureID. Read the FAQ about ImTextureID! See https://github.com/ocornut/imgui/pull/914 for discussions.
 
 // Important: on 32-bit systems, user texture binding is only supported if your imconfig file has '#define ImTextureID ImU64'.
@@ -132,7 +132,7 @@ struct ImGui_ImplVulkan_Data
 
     ImGui_ImplVulkan_Data()
     {
-        memset(this, 0, sizeof(*this));
+        memset((void*)this, 0, sizeof(*this));
         BufferMemoryAlignment = 256;
     }
 };
@@ -773,6 +773,7 @@ static void ImGui_ImplVulkan_CreateFontSampler(VkDevice device, const VkAllocati
     if (bd->FontSampler)
         return;
 
+    // Bilinear sampling is required by default. Set 'io.Fonts->Flags |= ImFontAtlasFlags_NoBakedLines' or 'style.AntiAliasedLinesUseTex = false' to allow point/nearest sampling.
     VkSamplerCreateInfo info = {};
     info.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
     info.magFilter = VK_FILTER_LINEAR;

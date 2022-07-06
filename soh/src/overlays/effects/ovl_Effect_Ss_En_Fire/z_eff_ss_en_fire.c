@@ -70,7 +70,7 @@ void EffectSsEnFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     s32 pad[3];
     s16 redGreen;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_en_fire.c", 169);
+    OPEN_DISPS(gfxCtx);
 
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     camYaw = (Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000);
@@ -78,7 +78,7 @@ void EffectSsEnFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
 
     scale = Math_SinS(this->life * 0x333) * (this->rScale * 0.00005f);
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_eff_en_fire.c", 180),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     redGreen = this->life - 5;
@@ -100,7 +100,7 @@ void EffectSsEnFire_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_en_fire.c", 213);
+    CLOSE_DISPS(gfxCtx);
 }
 
 typedef struct {

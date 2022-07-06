@@ -499,7 +499,7 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     s16 i;
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 807);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSunTex));
         gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
@@ -569,11 +569,11 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
 
             Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
             Matrix_RotateZ(DEG_TO_RAD(globalCtx->state.frames * 20.0f), MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 913), G_MTX_LOAD);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
             gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
             FrameInterpolation_RecordCloseChild();
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 922);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -596,7 +596,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     s32 pad2;
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 958);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (globalCtx->envCtx.unk_EE[2] < globalCtx->envCtx.unk_EE[3]) {
             if (globalCtx->state.frames % 16 == 0) {
                 globalCtx->envCtx.unk_EE[2] += 2;
@@ -688,8 +688,6 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                     break;
             }
 
-            if (1) {}
-            if (1) {}
             Matrix_Translate(this->effects[i].base.x + this->effects[i].pos.x,
                              this->effects[i].base.y + this->effects[i].pos.y,
                              this->effects[i].base.z + this->effects[i].pos.z, MTXMODE_NEW);
@@ -699,7 +697,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 200, 200, 180);
             gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 200, 180);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1107),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gDust5Tex));
@@ -714,7 +712,7 @@ void ObjectKankyo_DrawSnow(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             gDPPipeSync(POLY_XLU_DISP++);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1127);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -747,7 +745,7 @@ void ObjectKankyo_DrawLightning(ObjectKankyo* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 pad2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1182);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->effects[0].state == 1) {
         Matrix_Translate(globalCtx->csCtx.npcActions[0]->startPos.x, globalCtx->csCtx.npcActions[0]->startPos.y,
@@ -757,7 +755,7 @@ void ObjectKankyo_DrawLightning(ObjectKankyo* this, GlobalContext* globalCtx) {
         Matrix_Scale(2.0f, 5.0f, 2.0f, MTXMODE_APPLY);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, 128);
         gDPSetEnvColor(POLY_XLU_DISP++, 0, 255, 255, 128);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1213), G_MTX_LOAD);
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEffLightningTextures[this->effects[0].timer]));
         func_80094C50(globalCtx->state.gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_MODELVIEW | G_MTX_NOPUSH | G_MTX_MUL);
@@ -766,14 +764,14 @@ void ObjectKankyo_DrawLightning(ObjectKankyo* this, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1233);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void ObjectKankyo_SunGraveSparkInit(ObjectKankyo* this, GlobalContext* globalCtx) {
     s32 objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_SPOT02_OBJECTS);
 
     if (objBankIndex < 0) {
-        ASSERT(0, "0", "../z_object_kankyo.c", 1251);
+        ASSERT(objBankIndex < 0);
     } else {
         this->requiredObjBankIndex = objBankIndex;
     }
@@ -811,7 +809,7 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
     Vec3f end;
     f32 weight;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1324);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (globalCtx->csCtx.state != 0) {
         if (globalCtx->csCtx.npcActions[1] != NULL && globalCtx->csCtx.npcActions[1]->action == 2 &&
             this->requiredObjectLoaded) {
@@ -856,7 +854,7 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
                            this->effects[0].alpha);
 
             Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1416),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_LOAD);
 
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_80BA5900[this->effects[0].timer]));
@@ -867,14 +865,14 @@ void ObjectKankyo_DrawSunGraveSpark(ObjectKankyo* this2, GlobalContext* globalCt
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1432);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void ObjectKankyo_InitBeams(ObjectKankyo* this, GlobalContext* globalCtx) {
     s32 objectIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_DEMO_KEKKAI);
 
     if (objectIndex < 0) {
-        ASSERT(0, "0", "../z_object_kankyo.c", 1449);
+        ASSERT(objectIndex < 0);
     } else {
         this->requiredObjBankIndex = objectIndex;
     }
@@ -921,7 +919,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     f32 beamYaw[] = { 29.9f, 90.0f, 150.0f, 30.0f, 90.0f, -30.1f };
     f32 beamPitch[] = { 103.4f, 103.8f, 103.6f, -103.4f, -103.5f, 103.5f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1539);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->requiredObjectLoaded) {
         for (i = 0; i < 6; i++) {
@@ -935,7 +933,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                 gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, sBeamPrimColors[i].r, sBeamPrimColors[i].g,
                                 sBeamPrimColors[i].b, 128);
                 gDPSetEnvColor(POLY_XLU_DISP++, sBeamEnvColors[i].r, sBeamEnvColors[i].g, sBeamEnvColors[i].b, 128);
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1586),
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_LOAD);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
                            Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->state.frames * 5,
@@ -946,7 +944,7 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_object_kankyo.c", 1607);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void ObjectKankyo_Reset(void) {

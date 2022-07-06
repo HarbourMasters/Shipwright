@@ -875,7 +875,6 @@ void EnMag_DrawInner(Actor* thisx, GlobalContext* globalCtx, Gfx** gfxp) {
         EnMag_DrawTextureI8(&gfx, gTitleTheLegendOfTextTex, 72, 8, 153, 72, 72, 8, 1024, 1024);
         EnMag_DrawTextureI8(&gfx, gTitleOcarinaOfTimeTMTextTex, 96, 8, 151, 126, 96, 8, 1024, 1024);
 
-        if (1) {}
     }
 
     func_8009457C(&gfx);
@@ -987,7 +986,7 @@ void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Gfx* gfx;
     Gfx* gfxRef;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_mag.c", 1151);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gfxRef = POLY_OPA_DISP;
     gfx = Graph_GfxPlusOne(gfxRef);
@@ -999,5 +998,5 @@ void EnMag_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Graph_BranchDlist(gfxRef, gfx);
     POLY_OPA_DISP = gfx;
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_mag.c", 1161);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

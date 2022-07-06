@@ -335,14 +335,14 @@ void ObjTimeblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (((ObjTimeblock*)thisx)->isVisible) {
         Color_RGB8* primColor = &sPrimColors[thisx->home.rot.z & 7];
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_timeblock.c", 762);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_timeblock.c", 766),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, primColor->r, primColor->g, primColor->b, 255);
         gSPDisplayList(POLY_OPA_DISP++, gSongOfTimeBlockDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_timeblock.c", 772);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

@@ -171,7 +171,7 @@ void func_8006EE50(Font* font, u16 arg1, u16 arg2) {
 void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
     //DmaMgr_SendRequest1(&font->charTexBuf[codePointIndex],
                         //&_nes_font_staticSegmentRomStart[character * FONT_CHAR_TEX_SIZE], FONT_CHAR_TEX_SIZE,
-                        //"../z_kanfont.c", 93);
+                        //__FILE__, __LINE__);
 
     if (character < 0x8B)
         memcpy(&font->charTexBuf[codePointIndex], ResourceMgr_LoadTexByName(fntTbl[character]), FONT_CHAR_TEX_SIZE);
@@ -219,7 +219,7 @@ void Font_LoadOrderedFont(Font* font) {
 
             offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
             memcpy(fontBuf, ResourceMgr_LoadTexByName(fntTbl[offset / FONT_CHAR_TEX_SIZE]), FONT_CHAR_TEX_SIZE);
-            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, "../z_kanfont.c", 134);
+            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }
     }

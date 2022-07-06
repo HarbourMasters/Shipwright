@@ -52,7 +52,7 @@ void EffectSsIcePiece_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     scale = this->rScale * 0.01f;
     frames = globalCtx->state.frames;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ice_piece.c", 161);
+    OPEN_DISPS(gfxCtx);
 
     if ((this->rLifespan > 0) && (this->life < (this->rLifespan >> 1))) {
         alpha = ((this->life * 2.0f) / this->rLifespan);
@@ -65,7 +65,7 @@ void EffectSsIcePiece_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_ice_piece.c", 185),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D84(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, (s32)alpha & 0xFF);
@@ -75,7 +75,7 @@ void EffectSsIcePiece_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) 
                                 0x40, 0x20));
     gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment1DL);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ice_piece.c", 209);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsIcePiece_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

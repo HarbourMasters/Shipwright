@@ -58,8 +58,8 @@ void MapMark_Init(GlobalContext* globalCtx) {
     MapMarkDataOverlay* overlay = &sMapMarkDataOvl;
     u32 overlaySize = (uintptr_t)overlay->vramEnd - (uintptr_t)overlay->vramStart;
 
-    overlay->loadedRamAddr = GameState_Alloc(&globalCtx->state, overlaySize, "../z_map_mark.c", 235);
-    LogUtils_CheckNullPointer("dlftbl->allocp", overlay->loadedRamAddr, "../z_map_mark.c", 236);
+    overlay->loadedRamAddr = GAMESTATE_ALLOC_MC(&globalCtx->state, overlaySize);
+    LOG_CHECK_NULL_POINTER("dlftbl->allocp", overlay->loadedRamAddr);
 
     Overlay_Load(overlay->vromStart, overlay->vromEnd, overlay->vramStart, overlay->vramEnd, overlay->loadedRamAddr);
 
@@ -96,7 +96,7 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
 
     mapMarkIconData = &sLoadedMarkDataTable[dungeon][interfaceCtx->mapRoomNum][0];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_mark.c", 303);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     while (true) {
        if (mapMarkIconData->markType == MAP_MARK_NONE) {
@@ -108,44 +108,77 @@ void MapMark_DrawForDungeon(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->minimapAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, interfaceCtx->minimapAlpha);
 
-        s16 Top_MC_Margin = 0;
-        s16 Left_MC_Margin = 0;
-        s16 Right_MC_Margin = 0;
-        s16 Bottom_MC_Margin = 0;
-        if (CVar_GetS32("gHUDMargins", 0) != 0) {
-            Top_MC_Margin = CVar_GetS32("gHUDMargin_T", 0);
-            Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0);
-            Right_MC_Margin = CVar_GetS32("gHUDMargin_R", 0);
-            Bottom_MC_Margin = CVar_GetS32("gHUDMargin_B", 0);
+        s32 Top_MC_Margin = CVar_GetS32("gHUDMargin_T", 0);
+        s32 Left_MC_Margin = CVar_GetS32("gHUDMargin_L", 0);
+        s32 Right_MC_Margin = CVar_GetS32("gHUDMargin_R", 0);
+        s32 Bottom_MC_Margin = CVar_GetS32("gHUDMargin_B", 0);
+
+        s32 X_Margins_Minimap_ic;
+        s32 Y_Margins_Minimap_ic;
+        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {
+            if (CVar_GetS32("gMinimapPosType", 0) == 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+            Y_Margins_Minimap_ic = Bottom_MC_Margin;
         } else {
-            Top_MC_Margin = 0;
-            Left_MC_Margin = 0;
-            Right_MC_Margin = 0;
-            Bottom_MC_Margin = 0;
+            X_Margins_Minimap_ic = 0;
+            Y_Margins_Minimap_ic = 0;
         }
 
         markPoint = &mapMarkIconData->points[0];
+        //Place each chest / boss room icon
         for (i = 0; i < mapMarkIconData->count; i++) {
             if ((mapMarkIconData->markType != MAP_MARK_CHEST) || !Flags_GetTreasure(globalCtx, markPoint->chestFlag)) {
+                //Minimap chest / boss icon 
+                const s32 PosX_Minimap_ori = GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+X_Margins_Minimap_ic) + 204;
+                const s32 PosY_Minimap_ori = GREG(95) + markPoint->y + Y_Margins_Minimap_ic + 140;
+                if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+                    rectTop = (markPoint->y + Y_Margins_Minimap_ic + 140 + CVar_GetS32("gMinimapPosY", 0));
+                    if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Left_MC_Margin;};
+                        if (globalCtx->sceneNum == SCENE_YDAN || globalCtx->sceneNum == SCENE_DDAN || globalCtx->sceneNum == SCENE_BDAN || 
+                            globalCtx->sceneNum == SCENE_BMORI1 || globalCtx->sceneNum == SCENE_HIDAN || globalCtx->sceneNum == SCENE_MIZUSIN || 
+                            globalCtx->sceneNum == SCENE_JYASINZOU || globalCtx->sceneNum == SCENE_HAKADAN || globalCtx->sceneNum == SCENE_HAKADANCH || 
+                            globalCtx->sceneNum == SCENE_ICE_DOUKUTO) {
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                        } else {
+                            rectLeft = OTRGetRectDimensionFromLeftEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                        }
+                    } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap_ic = Right_MC_Margin;};
+                        rectLeft = OTRGetRectDimensionFromRightEdge(markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic);
+                    } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                        rectLeft = markPoint->x+CVar_GetS32("gMinimapPosX", 0)+204+X_Margins_Minimap_ic;
+                    } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                        rectLeft = -9999;
+                    }
+                } else {
+                    rectLeft = PosX_Minimap_ori;
+                    rectTop = PosY_Minimap_ori;
+                }
+
+                int height = 8 * 1.0f; //Adjust Height with scale
+                int width = 8 * 1.0f; //Adjust Width with scale
+                int height_factor = (1 << 10) * 8 / height;
+                int width_factor = (1 << 10) * 8 / width;
+
                 markInfo = &sMapMarkInfoTable[mapMarkIconData->markType];
 
                 gDPPipeSync(OVERLAY_DISP++);
+
                 gDPLoadTextureBlock(OVERLAY_DISP++, markInfo->texture, markInfo->imageFormat, G_IM_SIZ_MARK,
                                     markInfo->textureWidth, markInfo->textureHeight, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-                rectLeft = (GREG(94) + OTRGetRectDimensionFromRightEdge(markPoint->x+Right_MC_Margin) + 204) << 2;
-                rectTop = (GREG(95) + markPoint->y + Bottom_MC_Margin + 140) << 2;
-                gSPTextureRectangle(OVERLAY_DISP++, rectLeft, rectTop, markInfo->rectWidth + rectLeft,
-                                    rectTop + markInfo->rectHeight, G_TX_RENDERTILE, 0, 0, markInfo->dsdx,
-                                    markInfo->dtdy);
+                //Changed to a Wide texture to support Left anchor.
+                gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, rectLeft + width  << 2,
+                                    rectTop + height  << 2, G_TX_RENDERTILE, 0, 0, width_factor,
+                                    height_factor);
             }
+
             markPoint++;
         }
         mapMarkIconData++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_mark.c", 339);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void MapMark_Draw(GlobalContext* globalCtx) {

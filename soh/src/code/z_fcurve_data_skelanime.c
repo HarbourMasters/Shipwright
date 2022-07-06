@@ -23,16 +23,15 @@ s32 SkelCurve_Init(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve, SkelCurv
     skelCurve->limbCount = limbList->limbCount;
     skelCurve->limbList = SEGMENTED_TO_VIRTUAL(limbList->limbs);
 
-    skelCurve->transforms = ZeldaArena_MallocDebug(sizeof(*skelCurve->transforms) * skelCurve->limbCount,
-                                                   "../z_fcurve_data_skelanime.c", 125);
-    ASSERT(skelCurve->transforms != NULL, "this->now_joint != NULL", "../z_fcurve_data_skelanime.c", 127);
+    skelCurve->transforms = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*skelCurve->transforms) * skelCurve->limbCount);
+    ASSERT(skelCurve->transforms != NULL);
     skelCurve->animCurFrame = 0.0f;
     return 1;
 }
 
 void SkelCurve_Destroy(GlobalContext* globalCtx, SkelAnimeCurve* skelCurve) {
     if (skelCurve->transforms != NULL) {
-        ZeldaArena_FreeDebug(skelCurve->transforms, "../z_fcurve_data_skelanime.c", 146);
+        ZELDA_ARENA_FREE_DEBUG(skelCurve->transforms);
     }
 }
 
@@ -104,7 +103,7 @@ void SkelCurve_DrawLimb(GlobalContext* globalCtx, s32 limbIndex, SkelAnimeCurve*
                         OverrideCurveLimbDraw overrideLimbDraw, PostCurveLimbDraw postLimbDraw, s32 lod, void* data) {
     SkelCurveLimb* limb = SEGMENTED_TO_VIRTUAL(skelCurve->limbList[limbIndex]);
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_fcurve_data_skelanime.c", 279);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Push();
 
@@ -136,7 +135,7 @@ void SkelCurve_DrawLimb(GlobalContext* globalCtx, s32 limbIndex, SkelAnimeCurve*
 
             dList = limb->dList[0];
             if (dList != NULL) {
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fcurve_data_skelanime.c", 321),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, dList);
             }
@@ -145,13 +144,13 @@ void SkelCurve_DrawLimb(GlobalContext* globalCtx, s32 limbIndex, SkelAnimeCurve*
 
             dList = limb->dList[0];
             if (dList != NULL) {
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fcurve_data_skelanime.c", 332),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, dList);
             }
             dList = limb->dList[1];
             if (dList != NULL) {
-                gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_fcurve_data_skelanime.c", 338),
+                gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, dList);
             }
@@ -175,7 +174,7 @@ void SkelCurve_DrawLimb(GlobalContext* globalCtx, s32 limbIndex, SkelAnimeCurve*
         SkelCurve_DrawLimb(globalCtx, limb->nextLimbIdx, skelCurve, overrideLimbDraw, postLimbDraw, lod, data);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_fcurve_data_skelanime.c", 371);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void SkelCurve_Draw(Actor* actor, GlobalContext* globalCtx, SkelAnimeCurve* skelCurve,

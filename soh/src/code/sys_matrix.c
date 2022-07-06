@@ -22,7 +22,7 @@ MtxF* sMatrixStack;   // "Matrix_stack"
 MtxF* sCurrentMatrix; // "Matrix_now"
 
 void Matrix_Init(GameState* gameState) {
-    sCurrentMatrix = GameState_Alloc(gameState, 20 * sizeof(MtxF), "../sys_matrix.c", 153);
+    sCurrentMatrix = GAMESTATE_ALLOC_MC(gameState, 20 * sizeof(MtxF));
     sMatrixStack = sCurrentMatrix;
 }
 
@@ -35,7 +35,7 @@ void Matrix_Push(void) {
 void Matrix_Pop(void) {
     FrameInterpolation_RecordMatrixPop();
     sCurrentMatrix--;
-    ASSERT(sCurrentMatrix >= sMatrixStack, "Matrix_now >= Matrix_stack", "../sys_matrix.c", 176);
+    ASSERT(sCurrentMatrix >= sMatrixStack);
 }
 
 void Matrix_Get(MtxF* dest) {
@@ -556,7 +556,7 @@ Mtx* Matrix_ToMtx(Mtx* dest, char* file, s32 line) {
     FrameInterpolation_RecordMatrixToMtx(dest, file, line);
     guMtxF2L(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
     return dest;
-    //return Matrix_MtxFToMtx(Matrix_CheckFloats(sCurrentMatrix, file, line), dest);
+    //return Matrix_MtxFToMtx(MATRIX_CHECKFLOATS(sCurrentMatrix), dest);
 }
 
 Mtx* Matrix_NewMtx(GraphicsContext* gfxCtx, char* file, s32 line) {
@@ -850,8 +850,6 @@ void Matrix_RotateAxis(f32 angle, Vec3f* axis, u8 mode) {
             cmf->xx = axis->x * axis->x * rCos + cos;
             cmf->yy = axis->y * axis->y * rCos + cos;
             cmf->zz = axis->z * axis->z * rCos + cos;
-
-            if (0) {}
 
             temp2 = axis->x * rCos * axis->y;
             temp3 = axis->z * sin;

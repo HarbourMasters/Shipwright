@@ -169,10 +169,10 @@ void EnViewer_InitImpl(EnViewer* this, GlobalContext* globalCtx) {
     EnViewerInitData* initData = &sInitData[this->actor.params >> 8];
     s32 skelObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, initData->skeletonObject);
 
-    ASSERT(skelObjBankIndex >= 0, "bank_ID >= 0", "../z_en_viewer.c", 576);
+    ASSERT(skelObjBankIndex >= 0);
 
     this->animObjBankIndex = Object_GetIndex(&globalCtx->objectCtx, initData->animObject);
-    ASSERT(this->animObjBankIndex >= 0, "this->anime_bank_ID >= 0", "../z_en_viewer.c", 579);
+    ASSERT(this->animObjBankIndex >= 0);
 
     if (!Object_IsLoaded(&globalCtx->objectCtx, skelObjBankIndex) ||
         !Object_IsLoaded(&globalCtx->objectCtx, this->animObjBankIndex)) {
@@ -504,12 +504,12 @@ s32 EnViewer_Ganondorf3OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex,
 
 void EnViewer_Ganondorf9PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     if (limbIndex == 11) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1365);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1370),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_ganon_DL_00BE90));
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1372);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -526,7 +526,7 @@ void EnViewer_DrawGanondorf(EnViewer* this, GlobalContext* globalCtx) {
     s16 frames = 0;
     s16 type;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1405);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     type = this->actor.params >> 8;
     if (type == ENVIEWER_TYPE_3_GANONDORF || type == ENVIEWER_TYPE_5_GANONDORF || type == ENVIEWER_TYPE_7_GANONDORF ||
         type == ENVIEWER_TYPE_8_GANONDORF) {
@@ -573,7 +573,7 @@ void EnViewer_DrawGanondorf(EnViewer* this, GlobalContext* globalCtx) {
     } else {
         SkelAnime_DrawOpa(globalCtx, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable, NULL, NULL, this);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1511);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnViewer_DrawHorse(EnViewer* this, GlobalContext* globalCtx) {
@@ -610,15 +610,15 @@ void EnViewer_ZeldaPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 
     if (globalCtx->sceneNum == SCENE_TOKINOMA) {
         if (limbIndex == 16) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1568);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             gSPDisplayList(POLY_OPA_DISP++, gChildZeldaOcarinaOfTimeDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1570);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }
 
 void EnViewer_DrawZelda(EnViewer* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1583);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (globalCtx->sceneNum == SCENE_SPOT00) { // Hyrule Field
         if (globalCtx->csCtx.frames < 771) {
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gChildZeldaEyeInTex));
@@ -662,7 +662,7 @@ void EnViewer_DrawZelda(EnViewer* this, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
                           this->skin.skelAnime.dListCount, EnViewer_ZeldaOverrideLimbDraw, EnViewer_ZeldaPostLimbDraw,
                           this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1690);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnViewer_ImpaOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
@@ -674,14 +674,14 @@ s32 EnViewer_ImpaOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx**
 }
 
 void EnViewer_DrawImpa(EnViewer* this, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1717);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gImpaEyeOpenTex));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(gImpaEyeOpenTex));
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, &D_80116280[2]);
     SkelAnime_DrawFlexOpa(globalCtx, this->skin.skelAnime.skeleton, this->skin.skelAnime.jointTable,
                           this->skin.skelAnime.dListCount, EnViewer_ImpaOverrideLimbDraw, NULL, this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1740);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static EnViewerDrawFunc sDrawFuncs[] = {
@@ -696,7 +696,7 @@ void EnViewer_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     s16 type;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1760);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->isVisible) {
         type = this->actor.params >> 8;
         if (type <= ENVIEWER_TYPE_2_ZELDA) { // zelda's horse, impa and zelda
@@ -710,7 +710,7 @@ void EnViewer_Draw(Actor* thisx, GlobalContext* globalCtx) {
             sDrawFuncs[this->drawFuncIndex](this, globalCtx);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1784);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnViewer_UpdatePosition(EnViewer* this, GlobalContext* globalCtx) {
@@ -810,7 +810,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
     EnViewer* this = this2;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 1941);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->fireEffects); i++) {
         switch (this->fireEffects[i].state) {
             case 0:
@@ -852,12 +852,12 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                                     (10 * i - 20 * globalCtx->state.frames) % 512, 32, 128));
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 170, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 50, 00, 255);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_viewer.c", 2027),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_viewer.c", 2034);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnViewer_UpdateGanondorfCape(GlobalContext* globalCtx, EnViewer* this) {
@@ -866,7 +866,6 @@ void EnViewer_UpdateGanondorfCape(GlobalContext* globalCtx, EnViewer* this) {
     Vec3f forearmWorldOffset;
 
     if ((this->actor.params >> 8) == ENVIEWER_TYPE_5_GANONDORF) {
-        if (1) {}
         sGanondorfCape->backPush = BREG(54) / 10.0f;
         sGanondorfCape->backSwayMagnitude = (BREG(60) + 25) / 100.0f;
         sGanondorfCape->sideSwayMagnitude = (BREG(55) - 45) / 10.0f;

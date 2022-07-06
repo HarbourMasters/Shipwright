@@ -70,11 +70,11 @@ void BgSpot01Idomizu_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     u32 frames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot01_idomizu.c", 228);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot01_idomizu.c", 232),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     frames = globalCtx->state.frames;
@@ -84,5 +84,5 @@ void BgSpot01Idomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gKakarikoWellWaterDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot01_idomizu.c", 244);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

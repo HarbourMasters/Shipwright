@@ -1505,7 +1505,7 @@ void BossGanondrof_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossGanondrof* this = (BossGanondrof*)thisx;
     EnfHG* horse;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_ganondrof.c", 3716);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     osSyncPrintf("MOVE P = %x\n", this->actor.update);
     osSyncPrintf("STOP TIMER = %d ==============\n", this->actor.freezeTimer);
     horse = (EnfHG*)this->actor.child;
@@ -1537,6 +1537,6 @@ void BossGanondrof_Draw(Actor* thisx, GlobalContext* globalCtx) {
                       BossGanondrof_PostLimbDraw, this);
     osSyncPrintf("DRAW 22\n");
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_ganondrof.c", 3814);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     osSyncPrintf("DRAW END %d\n", this->actor.params);
 }

@@ -169,13 +169,10 @@ void Effect_DrawAll(GraphicsContext* gfxCtx) {
         if (sEffectContext.blures[i].status.active) {
             sEffectInfoTable[EFFECT_BLURE1].draw(&sEffectContext.blures[i].effect, gfxCtx);
         }
-        if (1) {} // Necessary to match
-        if (1) {}
     }
 
     for (i = 0; i < SHIELD_PARTICLE_COUNT; i++) {
         if (sEffectContext.shieldParticles[i].status.active) {
-            if (gfxCtx) {} // Necessary to match
             sEffectInfoTable[EFFECT_SHIELD_PARTICLE].draw(&sEffectContext.shieldParticles[i].effect, gfxCtx);
         }
     }

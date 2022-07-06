@@ -71,8 +71,8 @@ void BgMoriIdomizu_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(&this->actor);
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, "../z_bg_mori_idomizu.c",
-                     202);
+        osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->actor.params, __FILE__,
+                     __LINE__);
         return;
     }
     BgMoriIdomizu_SetupWaitForMoriTex(this);
@@ -163,11 +163,11 @@ void BgMoriIdomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgMoriIdomizu* this = (BgMoriIdomizu*)thisx;
     u32 gameplayFrames = globalCtx->gameplayFrames;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_idomizu.c", 356);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_idomizu.c", 360),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPSegment(POLY_XLU_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
@@ -180,5 +180,5 @@ void BgMoriIdomizu_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     gSPDisplayList(POLY_XLU_DISP++, gMoriIdomizuWaterDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_idomizu.c", 382);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

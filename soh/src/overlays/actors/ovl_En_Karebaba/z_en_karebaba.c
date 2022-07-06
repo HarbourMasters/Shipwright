@@ -284,7 +284,6 @@ void EnKarebaba_Spin(EnKarebaba* this, GlobalContext* globalCtx) {
     SkelAnime_Update(&this->skelAnime);
 
     if (Animation_OnFrame(&this->skelAnime, 0.0f) || Animation_OnFrame(&this->skelAnime, 12.0f)) {
-        if (1) {} // Here for matching purposes only.
 
         Audio_PlayActorSound2(&this->actor, NA_SE_EN_DEKU_JR_MOUTH);
     }
@@ -443,7 +442,7 @@ void EnKarebaba_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnKarebaba_DrawBaseShadow(EnKarebaba* this, GlobalContext* globalCtx) {
     MtxF mf;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1013);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80094044(globalCtx->state.gfxCtx);
 
@@ -451,11 +450,11 @@ void EnKarebaba_DrawBaseShadow(EnKarebaba* this, GlobalContext* globalCtx) {
     func_80038A28(this->boundFloor, this->actor.home.pos.x, this->actor.home.pos.y, this->actor.home.pos.z, &mf);
     Matrix_Mult(&mf, MTXMODE_NEW);
     Matrix_Scale(0.15f, 1.0f, 0.15f, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1029),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gCircleShadowDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1034);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -467,14 +466,14 @@ void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 stemSections;
     f32 scale;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1056);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
     if (this->actionFunc == EnKarebaba_DeadItemDrop) {
         if (this->actor.params > 40 || (this->actor.params & 1)) {
             Matrix_Translate(0.0f, 0.0f, 200.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1066),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStickDropDL);
         }
@@ -500,7 +499,7 @@ void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         for (i = 0; i < stemSections; i++) {
             Matrix_Translate(0.0f, 0.0f, -2000.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1116),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, stemDLists[i]);
 
@@ -521,20 +520,20 @@ void EnKarebaba_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->actor.home.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1144),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gDekuBabaBaseLeavesDL);
 
     if (this->actionFunc == EnKarebaba_Dying) {
         Matrix_RotateZYX(-0x4000, (s16)(this->actor.shape.rot.y - this->actor.home.rot.y), 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1155),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_LOAD | G_MTX_NOPUSH | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDekuBabaStemBaseDL);
     }
 
     func_80026608(globalCtx);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_karebaba.c", 1163);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     if (this->boundFloor != NULL) {
         EnKarebaba_DrawBaseShadow(this, globalCtx);

@@ -90,7 +90,7 @@ void BgMoriHashigo_InitDynapoly(BgMoriHashigo* this, GlobalContext* globalCtx, C
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG login failed"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_mori_hashigo.c", 164,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -127,7 +127,7 @@ s32 BgMoriHashigo_SpawnLadder(BgMoriHashigo* this, GlobalContext* globalCtx) {
         return true;
     } else {
         // "Ladder failure"
-        osSyncPrintf("Error : 梯子の発生失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_mori_hashigo.c", 220,
+        osSyncPrintf("Error : 梯子の発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.params);
         return false;
     }
@@ -170,7 +170,7 @@ void BgMoriHashigo_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->moriTexObjIndex < 0) {
         // "Bank danger!"
         osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params,
-                     "../z_bg_mori_hashigo.c", 312);
+                     __FILE__, __LINE__);
         Actor_Kill(&this->dyna.actor);
     } else {
         BgMoriHashigo_SetupWaitForMoriTex(this);
@@ -282,12 +282,11 @@ void BgMoriHashigo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriHashigo* this = (BgMoriHashigo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_hashigo.c", 516);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
-    if (1) {}
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_hashigo.c", 521),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     switch (this->dyna.actor.params) {
@@ -298,5 +297,5 @@ void BgMoriHashigo_Draw(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_OPA_DISP++, gMoriHashigoLadderDL);
             break;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_hashigo.c", 531);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

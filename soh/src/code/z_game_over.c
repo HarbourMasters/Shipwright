@@ -75,7 +75,6 @@ void GameOver_Update(GlobalContext* globalCtx) {
 
             Environment_InitGameOverLights(globalCtx);
             gGameOverTimer = 20;
-            if (1) {}
             v90 = VREG(90);
             v91 = VREG(91);
             v92 = VREG(92);
@@ -109,7 +108,6 @@ void GameOver_Update(GlobalContext* globalCtx) {
         case GAMEOVER_REVIVE_RUMBLE:
             gGameOverTimer = 50;
             gameOverCtx->state++;
-            if (1) {}
 
             v90 = VREG(90);
             v91 = VREG(91);

@@ -245,7 +245,7 @@ s32 EnGoroiwa_GetAscendDirection(EnGoroiwa* this, GlobalContext* globalCtx) {
         if (nextPointPos->y == currentPointPos->y) {
             // "Error: Invalid path data (points overlap)"
             osSyncPrintf("Error : レールデータ不正(点が重なっている)");
-            osSyncPrintf("(%s %d)(arg_data 0x%04x)\n", "../z_en_gr.c", 559, this->actor.params);
+            osSyncPrintf("(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__, this->actor.params);
         }
 
         if (nextPointPos->y > currentPointPos->y) {
@@ -375,7 +375,6 @@ s32 EnGoroiwa_MoveDownToNextWaypoint(EnGoroiwa* this, GlobalContext* globalCtx) 
     this->actor.world.pos.x = nextPointPos->x;
     this->actor.world.pos.z = nextPointPos->z;
     thisY = this->actor.world.pos.y;
-    if (1) {}
     this->actor.world.pos.y += this->actor.velocity.y;
     if (this->actor.velocity.y < 0.0f && this->actor.world.pos.y <= nextPointY) {
         if (this->bounceCount == 0) {
@@ -538,14 +537,14 @@ void EnGoroiwa_Init(Actor* thisx, GlobalContext* globalCtx) {
     pathIdx = this->actor.params & 0xFF;
     if (pathIdx == 0xFF) {
         // "Error: Invalid arg_data"
-        osSyncPrintf("Ｅｒｒｏｒ : arg_data が不正(%s %d)(arg_data 0x%04x)\n", "../z_en_gr.c", 1033,
+        osSyncPrintf("Ｅｒｒｏｒ : arg_data が不正(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->actor.params);
         Actor_Kill(&this->actor);
         return;
     }
     if (globalCtx->setupPathList[pathIdx].count < 2) {
         // "Error: Invalid Path Data"
-        osSyncPrintf("Ｅｒｒｏｒ : レールデータ が不正(%s %d)\n", "../z_en_gr.c", 1043);
+        osSyncPrintf("Ｅｒｒｏｒ : レールデータ が不正(%s %d)\n", __FILE__, __LINE__);
         Actor_Kill(&this->actor);
         return;
     }

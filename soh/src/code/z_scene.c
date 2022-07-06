@@ -15,12 +15,10 @@ s32 Object_Spawn(ObjectContext* objectCtx, s16 objectId) {
                  objectCtx->spaceEnd);
 
     ASSERT(((objectCtx->num < OBJECT_EXCHANGE_BANK_MAX) &&
-            (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)),
-           "this->num < OBJECT_EXCHANGE_BANK_MAX && (this->status[this->num].Segment + size) < this->endSegment",
-           "../z_scene.c", 142);
+            (((uintptr_t)objectCtx->status[objectCtx->num].segment + size) < (uintptr_t)objectCtx->spaceEnd)));
 
     DmaMgr_SendRequest1(objectCtx->status[objectCtx->num].segment, gObjectTable[objectId].vromStart, size,
-                        "../z_scene.c", 145);
+                        __FILE__, __LINE__);
 
     if (objectCtx->num < OBJECT_EXCHANGE_BANK_MAX - 1) {
         objectCtx->status[objectCtx->num + 1].segment =
@@ -70,7 +68,7 @@ void Object_InitBank(GlobalContext* globalCtx, ObjectContext* objectCtx) {
     osSyncPrintf(VT_RST);
 
     objectCtx->spaceStart = objectCtx->status[0].segment =
-        GameState_Alloc(&globalCtx->state, spaceSize, "../z_scene.c", 219);
+        GAMESTATE_ALLOC_MC(&globalCtx->state, spaceSize);
     objectCtx->spaceEnd = (void*)((uintptr_t)objectCtx->spaceStart + spaceSize);
 
     objectCtx->mainKeepIndex = Object_Spawn(objectCtx, OBJECT_GAMEPLAY_KEEP);
@@ -92,7 +90,7 @@ void Object_UpdateBank(ObjectContext* objectCtx) {
                 size = objectFile->vromEnd - objectFile->vromStart;
                 osSyncPrintf("OBJECT EXCHANGE BANK-%2d SIZE %8.3fK SEG=%08x\n", i, size / 1024.0f, status->segment);
                 DmaMgr_SendRequest2(&status->dmaRequest, status->segment, objectFile->vromStart, size, 0,
-                                    &status->loadQueue, NULL, "../z_scene.c", 266);
+                                    &status->loadQueue, NULL, __FILE__, __LINE__);
             } else if (!osRecvMesg(&status->loadQueue, NULL, OS_MESG_NOBLOCK)) {
                 status->id = -status->id;
             }
@@ -136,7 +134,7 @@ void func_800981B8(ObjectContext* objectCtx) {
                      objectCtx->status[i].segment);
         osSyncPrintf("num=%d adrs=%x end=%x\n", objectCtx->num, (uintptr_t)objectCtx->status[i].segment + size,
                      objectCtx->spaceEnd);
-        DmaMgr_SendRequest1(objectCtx->status[i].segment, gObjectTable[id].vromStart, size, "../z_scene.c", 342);
+        DmaMgr_SendRequest1(objectCtx->status[i].segment, gObjectTable[id].vromStart, size, __FILE__, __LINE__);
     }
 }
 
@@ -153,9 +151,8 @@ void* func_800982FC(ObjectContext* objectCtx, s32 bankIndex, s16 objectId) {
     osSyncPrintf("OBJECT EXCHANGE NO=%2d BANK=%3d SIZE=%8.3fK\n", bankIndex, objectId, size / 1024.0f);
 
     nextPtr = (void*)ALIGN16((uintptr_t)status->segment + size);
-    if (1) {} // Necessary to match
 
-    ASSERT(nextPtr < objectCtx->spaceEnd, "nextptr < this->endSegment", "../z_scene.c", 381);
+    ASSERT(nextPtr < objectCtx->spaceEnd);
 
     // "Object exchange free size=%08x"
     osSyncPrintf("オブジェクト入れ替え空きサイズ=%08x\n", (uintptr_t)objectCtx->spaceEnd - (uintptr_t)nextPtr);
@@ -295,10 +292,7 @@ void func_8009899C(GlobalContext* globalCtx, SceneCmd* cmd) {
         status++;
     }
 
-    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX, "scene_info->object_bank.num <= OBJECT_EXCHANGE_BANK_MAX",
-           "../z_scene.c", 705);
-
-    if (1) {}
+    ASSERT(cmd->objectList.num <= OBJECT_EXCHANGE_BANK_MAX);
 
     while (k < cmd->objectList.num) {
         nextPtr = func_800982FC(&globalCtx->objectCtx, i, *objectEntry);
@@ -442,8 +436,6 @@ void func_800991A0(GlobalContext* globalCtx, SceneCmd* cmd) {
 
     if (gSaveContext.sceneSetupIndex != 0) {
         altHeader = ((SceneCmd**)SEGMENTED_TO_VIRTUAL(cmd->altHeaders.segment))[gSaveContext.sceneSetupIndex - 1];
-
-        if (1) {}
 
         if (altHeader != NULL) {
             Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));

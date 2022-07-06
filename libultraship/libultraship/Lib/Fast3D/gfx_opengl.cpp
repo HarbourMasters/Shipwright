@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include <map>
+#include <unordered_map>
 
 #ifndef _LANGUAGE_C
 #define _LANGUAGE_C
@@ -872,8 +873,8 @@ void gfx_opengl_select_texture_fb(int fb_id) {
     glBindTexture(GL_TEXTURE_2D, framebuffers[fb_id].clrbuf);
 }
 
-static std::map<std::pair<float, float>, uint16_t> gfx_opengl_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
-    std::map<std::pair<float, float>, uint16_t> res;
+static std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_opengl_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
+    std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
 
     Framebuffer& fb = framebuffers[fb_id];
 

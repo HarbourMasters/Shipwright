@@ -96,7 +96,7 @@ void EffectSsEnIce_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     scale = this->rScale * 0.01f;
     gameplayFrames = globalCtx->gameplayFrames;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_en_ice.c", 235);
+    OPEN_DISPS(gfxCtx);
 
     if (this->rAlphaMode != 0) {
         alpha = this->life * 12;
@@ -113,7 +113,7 @@ void EffectSsEnIce_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
     Matrix_RotateX(this->rPitch * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_en_ice.c", 261),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     hiliteLightDir.x = 89.8f;
@@ -130,7 +130,7 @@ void EffectSsEnIce_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     gDPSetEnvColor(POLY_XLU_DISP++, this->rEnvColorR, this->rEnvColorG, this->rEnvColorB, (u32)alpha);
     gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment2DL);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_en_ice.c", 294);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsEnIce_UpdateFlying(GlobalContext* globalCtx, u32 index, EffectSs* this) {
