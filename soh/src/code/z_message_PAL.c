@@ -1729,9 +1729,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             }
         // Running Man's dream
         } else if (textId == 0x202D && gSaveContext.language == LANGUAGE_ENG) {
-            msgCtx->msgLength = font->msgLength;
-            memcpy(font->msgBuf, src, font->msgLength);
-            font->msgBuf[0x07] = '-';
+            msgCtx->msgLength = font->msgLength - 1;
+            memcpy(font->msgBuf, src, 0x07);
+            memcpy(font->msgBuf + 0x07, src + 0x08, font->msgLength - 0x08);
         // Malon incubation tip
         } else if (textId == 0x2044 && gSaveContext.language == LANGUAGE_ENG) {
             msgCtx->msgLength = font->msgLength + 3;
@@ -1743,11 +1743,11 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             memcpy(font->msgBuf, src, 0x20);
             font->msgBuf[0x20] = 'b';
             memcpy(font->msgBuf + 0x21, src + 0x20, font->msgLength - 0x20);
-        // Running Man's head-start
+        // Running Man's head start
         } else if (textId == 0x607F && gSaveContext.language == LANGUAGE_ENG) {
             msgCtx->msgLength = font->msgLength + 1;
             memcpy(font->msgBuf, src, 0x35);
-            font->msgBuf[0x35] = '-';
+            font->msgBuf[0x35] = ' ';
             memcpy(font->msgBuf + 0x36, src + 0x35, font->msgLength - 0x35);
         // It's an illusion, Michael (buff guy in alley)
         } else if (textId == 0x7114 && gSaveContext.language == LANGUAGE_ENG) {
