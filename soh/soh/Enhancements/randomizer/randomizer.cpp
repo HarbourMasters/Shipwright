@@ -1443,6 +1443,9 @@ std::string sanitize(std::string stringValue) {
     return stringValue;
 }
 
+#pragma optimize("", off)
+#pragma GCC push_options
+#pragma GCC optimize ("O0")
 bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
         std::ifstream spoilerFileStream(sanitize(spoilerFileName));
@@ -1455,6 +1458,8 @@ bool Randomizer::SpoilerFileExists(const char* spoilerFileName) {
 
     return false;
 }
+#pragma GCC pop_options
+#pragma optimize("", on)
 
 void Randomizer::LoadRandomizerSettings(const char* spoilerFileName) {
     if (strcmp(spoilerFileName, "") != 0) {
