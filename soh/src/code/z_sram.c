@@ -603,6 +603,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         fileChooseCtx->n64ddFlag = 1;
         gSaveContext.n64ddFlag = 1;
 
+        // Sets all the dungeons to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/82
+        // Array elements are u8 and should be one byte each, so this division may not be required.
+        // I've included it for thoroughness and future-proofing, although I doubt we'll ever need
+        // to change the type of the array elements.
+        for (u8 i = 0; i < (sizeof(gSaveContext.dungeonsDone)/sizeof(gSaveContext.dungeonsDone[0])); i++) {
+            gSaveContext.dungeonsDone[i] = 0;
+        }
+
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
         gSaveContext.eventChkInf[0xC] |= 0x20; //sheik at tot pedestal
