@@ -244,7 +244,7 @@ void func_80064824(GlobalContext* globalCtx, CutsceneContext* csCtx, CsCmdBase* 
         case 3:
             if (sp3F != 0) {
                 Flags_SetEnv(globalCtx, 0);
-                if (gSaveContext.entranceIndex == 0x0053) {
+                if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
                     Flags_SetEnv(globalCtx, 2);
                 }
             }
