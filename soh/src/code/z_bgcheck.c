@@ -1593,8 +1593,10 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
     //
     // OTRTODO: This is a workaround. The proper solution to fix this crash is to manage object loading / unloading
     // the same as N64.
-    colCtx->dyna.polyListMax *= 2;
-    colCtx->dyna.vtxListMax *= 2;
+    if (globalCtx->sceneNum == SCENE_BMORI1) {
+        colCtx->dyna.polyListMax *= 2;
+        colCtx->dyna.vtxListMax *= 2;
+    }
 
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
               colCtx->colHeader->numPolygons * sizeof(u8) + colCtx->dyna.polyNodesMax * sizeof(SSNode) +
