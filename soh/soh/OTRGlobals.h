@@ -41,6 +41,7 @@ void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
 char* ResourceMgr_LoadJPEG(char* data, int dataSize);
 char* ResourceMgr_LoadTexByName(const char* texPath);
+uint32_t ResourceMgr_LoadTexSizeByName(char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
 AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);

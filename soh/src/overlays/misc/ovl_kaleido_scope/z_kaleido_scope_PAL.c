@@ -2107,7 +2107,8 @@ void KaleidoScope_UpdateNamePanel(GlobalContext* globalCtx) {
                     sp2A += 12;
                 }
 
-                memcpy(pauseCtx->nameSegment, ResourceMgr_LoadTexByName(mapNameTextures[sp2A]), 0x400);
+                const char* textureName = mapNameTextures[sp2A];
+                memcpy(pauseCtx->nameSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
             } else {
                 osSyncPrintf("zoom_name=%d\n", pauseCtx->namedItem);
 
@@ -2120,7 +2121,8 @@ void KaleidoScope_UpdateNamePanel(GlobalContext* globalCtx) {
 
                 osSyncPrintf("J_N=%d  point=%d\n", gSaveContext.language, sp2A);
 
-                memcpy(pauseCtx->nameSegment, ResourceMgr_LoadTexByName(iconNameTextures[sp2A]), 0x400);
+                const char* textureName = iconNameTextures[sp2A];
+                memcpy(pauseCtx->nameSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
             }
 
             pauseCtx->nameDisplayTimer = 0;
@@ -3221,8 +3223,8 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
 void KaleidoScope_LoadDungeonMap(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
-    memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX]), 0x800);
-    memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]), 0x800);
+    memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX]), ResourceMgr_LoadTexSizeByName(sDungeonMapTexs[R_MAP_TEX_INDEX]));
+    memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]), ResourceMgr_LoadTexSizeByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]));
 }
 
 void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx) {
@@ -3400,11 +3402,14 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
 
             if (((void)0, gSaveContext.worldMapArea) < 22) {
                 if (gSaveContext.language == LANGUAGE_ENG) {
-                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[36 + gSaveContext.worldMapArea]), 0xA00);
+                    const char* textureName = mapNameTextures[36 + gSaveContext.worldMapArea];
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
                 } else if (gSaveContext.language == LANGUAGE_GER) {
-                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[58 + gSaveContext.worldMapArea]), 0xA00);
+                    const char* textureName = mapNameTextures[58 + gSaveContext.worldMapArea];
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
                 } else {
-                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(mapNameTextures[80 + gSaveContext.worldMapArea]), 0xA00);
+                    const char* textureName = mapNameTextures[80 + gSaveContext.worldMapArea];
+                    memcpy(pauseCtx->nameSegment + 0x400, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
                 }
             }
             // OTRTODO - player on pause

@@ -2307,7 +2307,7 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
     if (action != DO_ACTION_NONE) {
         //osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
         memcpy(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE), ResourceMgr_LoadTexByName(doAction),
-               DO_ACTION_TEX_SIZE);
+               ResourceMgr_LoadTexSizeByName(doAction));
         //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
                             //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
                             //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
@@ -2394,7 +2394,7 @@ void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action) {
 
     // OTRTODO
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
+    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, ResourceMgr_LoadTexByName(doAction), ResourceMgr_LoadTexSizeByName(doAction));
     //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
                         //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
                         //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
@@ -3359,7 +3359,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 }
                 doAction = newName;
             }
-            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
+            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, ResourceMgr_LoadTexByName(doAction), ResourceMgr_LoadTexSizeByName(doAction));
 
             gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, G_IM_FMT_IA,
                                    DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,

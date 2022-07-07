@@ -173,8 +173,10 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
                         //&_nes_font_staticSegmentRomStart[character * FONT_CHAR_TEX_SIZE], FONT_CHAR_TEX_SIZE,
                         //__FILE__, __LINE__);
 
-    if (character < 0x8B)
-        memcpy(&font->charTexBuf[codePointIndex], ResourceMgr_LoadTexByName(fntTbl[character]), FONT_CHAR_TEX_SIZE);
+    if (character < 0x8B) {
+        const char* textureName = fntTbl[character];
+        memcpy(&font->charTexBuf[codePointIndex], ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
+    }
 }
 
 /**
@@ -183,7 +185,8 @@ void Font_LoadChar(Font* font, u8 character, u16 codePointIndex) {
  * The different icons are given in the MessageBoxIcon enum.
  */
 void Font_LoadMessageBoxIcon(Font* font, u16 icon) {
-    memcpy(font->iconBuf, ResourceMgr_LoadTexByName(msgStaticTbl[4 + icon]), FONT_CHAR_TEX_SIZE);
+    const char* textureName = msgStaticTbl[4 + icon];
+    memcpy(font->iconBuf, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
 }
 
 /**
@@ -218,8 +221,9 @@ void Font_LoadOrderedFont(Font* font) {
             osSyncPrintf("nes_mes_buf[%d]=%d\n", codePointIndex, font->msgBuf[codePointIndex]);
 
             offset = (font->msgBuf[codePointIndex] - '\x20') * FONT_CHAR_TEX_SIZE;
-            memcpy(fontBuf, ResourceMgr_LoadTexByName(fntTbl[offset / FONT_CHAR_TEX_SIZE]), FONT_CHAR_TEX_SIZE);
-            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, __FILE__, __LINE__);
+            const char* textureName = fntTbl[offset / FONT_CHAR_TEX_SIZE];
+            memcpy(fontBuf, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
+            //DmaMgr_SendRequest1(fontBuf, fontStatic + offset, FONT_CHAR_TEX_SIZE, "../z_kanfont.c", 134);
             fontBufIndex += FONT_CHAR_TEX_SIZE / 8;
         }
     }

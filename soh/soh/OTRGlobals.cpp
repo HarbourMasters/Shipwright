@@ -440,6 +440,8 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 
 extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
 
+extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
+
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
 
