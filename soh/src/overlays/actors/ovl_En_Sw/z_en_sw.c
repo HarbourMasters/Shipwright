@@ -994,7 +994,6 @@ void func_80B0EEA4(GlobalContext* globalCtx) {
 }
 
 void EnSw_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    return;
     EnSw* this = (EnSw*)thisx;
     Color_RGBA8 sp30 = { 184, 0, 228, 255 };
 
