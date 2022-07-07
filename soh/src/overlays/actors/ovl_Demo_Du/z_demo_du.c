@@ -798,12 +798,12 @@ void DemoDu_UpdateCs_AG_02(DemoDu* this, GlobalContext* globalCtx) {
 void DemoDu_Draw_02(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     DemoDu* this = (DemoDu*)thisx;
-    SkelAnime* skelAnime = &this->skelAnime;
     s16 eyeTexIndex = this->eyeTexIndex;
+    void* eyeTexture = sEyeTextures[eyeTexIndex];
+    s32 pad;
     s16 mouthTexIndex = this->mouthTexIndex;
-    u16* eyeTexture = ResourceMgr_LoadTexByName(sEyeTextures[eyeTexIndex]);
-    u16* mouthTexture = ResourceMgr_LoadTexByName(sMouthTextures[mouthTexIndex]);
-    u16* DaruniaNoseSeriousTex = ResourceMgr_LoadTexByName(gDaruniaNoseSeriousTex);
+    void* mouthTexture = sMouthTextures[mouthTexIndex];
+    SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -811,7 +811,7 @@ void DemoDu_Draw_02(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
-    gSPSegment(POLY_XLU_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(DaruniaNoseSeriousTex));
+    gSPSegment(POLY_XLU_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gDaruniaNoseSeriousTex));
 
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->shadowAlpha);
 
@@ -993,12 +993,12 @@ void DemoDu_Draw_NoDraw(Actor* thisx, GlobalContext* globalCtx2) {
 void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     DemoDu* this = (DemoDu*)thisx;
-    SkelAnime* skelAnime = &this->skelAnime;
     s16 eyeTexIndex = this->eyeTexIndex;
+    void* eyeTexture = sEyeTextures[eyeTexIndex];
+    s32 pad;
     s16 mouthTexIndex = this->mouthTexIndex;
-    u16* eyeTexture = ResourceMgr_LoadTexByName(sEyeTextures[eyeTexIndex]);
-    u16* mouthTexture = ResourceMgr_LoadTexByName(sMouthTextures[mouthTexIndex]);
-    u16* DaruniaNoseSeriousTex = ResourceMgr_LoadTexByName(gDaruniaNoseSeriousTex);
+    void* mouthTexture = sMouthTextures[mouthTexIndex];
+    SkelAnime* skelAnime = &this->skelAnime;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1006,7 +1006,7 @@ void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
-    gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(DaruniaNoseSeriousTex));
+    gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gDaruniaNoseSeriousTex));
 
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
