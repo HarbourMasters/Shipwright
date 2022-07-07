@@ -199,6 +199,16 @@ extern "C" {
         return (char*)res->imageData;
     }
 
+    uint16_t ResourceMgr_LoadTexWidthByName(char* texPath) {
+        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        return res->width;
+    }
+
+    uint16_t ResourceMgr_LoadTexHeightByName(char* texPath) {
+        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        return res->height;
+    }
+
     uint32_t ResourceMgr_LoadTexSizeByName(char* texPath) {
         const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
         return res->imageDataSize;
