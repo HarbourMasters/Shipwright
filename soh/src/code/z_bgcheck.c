@@ -1590,6 +1590,9 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
 
     // BGCheck needs a higher polygon and vertex count due to removed object dependencies.
     // Otherwise Forest Temple checkered room will crash due to the hallway actor being killed a frame late.
+    //
+    // OTRTODO: This is a workaround. The proper solution to fix this crash is to manage object loading / unloading
+    // the same as N64.
     colCtx->dyna.polyListMax *= 2;
     colCtx->dyna.vtxListMax *= 2;
 
