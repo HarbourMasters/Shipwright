@@ -798,12 +798,12 @@ void DemoDu_UpdateCs_AG_02(DemoDu* this, GlobalContext* globalCtx) {
 void DemoDu_Draw_02(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     DemoDu* this = (DemoDu*)thisx;
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = sEyeTextures[eyeTexIndex];
-    s32 pad;
-    s16 mouthTexIndex = this->mouthTexIndex;
-    void* mouthTexture = sMouthTextures[mouthTexIndex];
     SkelAnime* skelAnime = &this->skelAnime;
+    s16 eyeTexIndex = this->eyeTexIndex;
+    s16 mouthTexIndex = this->mouthTexIndex;
+    u16* eyeTexture = ResourceMgr_LoadTexByName(sEyeTextures[eyeTexIndex]);
+    u16* mouthTexture = ResourceMgr_LoadTexByName(sMouthTextures[mouthTexIndex]);
+    u16* DaruniaNoseSeriousTex = ResourceMgr_LoadTexByName(gDaruniaNoseSeriousTex);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -811,7 +811,7 @@ void DemoDu_Draw_02(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_XLU_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
-    gSPSegment(POLY_XLU_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gDaruniaNoseSeriousTex));
+    gSPSegment(POLY_XLU_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(DaruniaNoseSeriousTex));
 
     gDPSetEnvColor(POLY_XLU_DISP++, 0, 0, 0, this->shadowAlpha);
 
@@ -991,14 +991,15 @@ void DemoDu_Draw_NoDraw(Actor* thisx, GlobalContext* globalCtx2) {
 
 // Similar to DemoDu_Draw_02, but this uses POLY_OPA_DISP. Sets the env color to 255.
 void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
+    printf("The drawing mode is abnormal\n");
     GlobalContext* globalCtx = globalCtx2;
     DemoDu* this = (DemoDu*)thisx;
-    s16 eyeTexIndex = this->eyeTexIndex;
-    void* eyeTexture = sEyeTextures[eyeTexIndex];
-    s32 pad;
-    s16 mouthTexIndex = this->mouthTexIndex;
-    void* mouthTexture = sMouthTextures[mouthTexIndex];
     SkelAnime* skelAnime = &this->skelAnime;
+    s16 eyeTexIndex = this->eyeTexIndex;
+    s16 mouthTexIndex = this->mouthTexIndex;
+    u16* eyeTexture = ResourceMgr_LoadTexByName(sEyeTextures[eyeTexIndex]);
+    u16* mouthTexture = ResourceMgr_LoadTexByName(sMouthTextures[mouthTexIndex]);
+    u16* DaruniaNoseSeriousTex = ResourceMgr_LoadTexByName(gDaruniaNoseSeriousTex);
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -1006,7 +1007,7 @@ void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTexture));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTexture));
-    gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(gDaruniaNoseSeriousTex));
+    gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(DaruniaNoseSeriousTex));
 
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
 
