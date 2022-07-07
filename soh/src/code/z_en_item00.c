@@ -1170,6 +1170,8 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->scale = 0.03f;
                     this->actor.shape.yOffset = 320.0f;
                     this->actor.shape.shadowScale = 6.0f;
+                    this->actor.world.rot.x = 0;
+                    this->actor.shape.rot.y = 0;
                     EnItem00_DrawCollectible(this, globalCtx);
                 }
                 break;
@@ -1238,8 +1240,6 @@ void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
     POLY_OPA_DISP = func_800946E4(POLY_OPA_DISP);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sItemDropTex[texIndex]));
-
-    Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
 
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
