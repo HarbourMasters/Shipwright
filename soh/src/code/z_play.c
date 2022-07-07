@@ -249,7 +249,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
     if (gSaveContext.entranceIndex == 0x05E0) {
         GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
-        if ((!Flags_GetEventChkInf(0xC1) || player->getItemId == getItemId) &&
+        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemId && getItemId != GI_ICE_TRAP)) &&
             player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
             GiveItemWithoutActor(globalCtx, getItemId);
             Flags_SetEventChkInf(0xC1);
