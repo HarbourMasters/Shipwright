@@ -176,7 +176,6 @@ void DemoEffect_InitGetItem(DemoEffect* this) {
  * Main Actor Init function
  */
 void DemoEffect_Init(Actor* thisx, GlobalContext* globalCtx2) {
-    return;
     GlobalContext* globalCtx = globalCtx2;
     DemoEffect* this = (DemoEffect*)thisx;
     s32 effectType;
