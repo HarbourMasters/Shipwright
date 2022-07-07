@@ -715,6 +715,16 @@ void Camera_CopyDataToRegs(Camera* camera, s16 mode) {
         osSyncPrintf("camera: res: stat (%d/%d/%d)\n", camera->thisIdx, camera->setting, mode);
     }
 
+    if (camera->setting < 0) {
+        osSyncPrintf("camera->setting is incorrect\n");
+        osSyncPrintf("camera->setting is incorrect\n");
+        osSyncPrintf("camera->setting is incorrect\n");
+        osSyncPrintf("camera->setting is incorrect\n");
+        osSyncPrintf("camera->setting is incorrect\n");
+        osSyncPrintf("camera->setting is incorrect\n");
+        camera->setting=0;
+    }
+
     values = sCameraSettings[camera->setting].cameraModes[mode].values;
 
     for (i = 0; i < sCameraSettings[camera->setting].cameraModes[mode].valueCnt; i++) {

@@ -991,7 +991,6 @@ void DemoDu_Draw_NoDraw(Actor* thisx, GlobalContext* globalCtx2) {
 
 // Similar to DemoDu_Draw_02, but this uses POLY_OPA_DISP. Sets the env color to 255.
 void DemoDu_Draw_01(Actor* thisx, GlobalContext* globalCtx2) {
-    printf("The drawing mode is abnormal\n");
     GlobalContext* globalCtx = globalCtx2;
     DemoDu* this = (DemoDu*)thisx;
     SkelAnime* skelAnime = &this->skelAnime;
