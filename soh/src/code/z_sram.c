@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#define NUM_DUNGEONS 8
+
 /**
  *  Initialize new save.
  *  This save has an empty inventory with 3 hearts and single magic.
@@ -602,6 +604,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         fileChooseCtx->n64ddFlags[fileChooseCtx->buttonIndex] = 1;
         fileChooseCtx->n64ddFlag = 1;
         gSaveContext.n64ddFlag = 1;
+
+        // Sets all the dungeons to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/82
+        for (u8 i = 0; i < NUM_DUNGEONS; i++) {
+            gSaveContext.dungeonsDone[i] = 0;
+        }
 
         // Set Cutscene flags to skip them
         gSaveContext.eventChkInf[0xC] |= 0x10; // returned to tot with medallions
