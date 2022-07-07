@@ -98,6 +98,7 @@ void BgGjyoBridge_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);

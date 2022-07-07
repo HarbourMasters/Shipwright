@@ -195,6 +195,7 @@ void ObjHamishi_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void ObjHamishi_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);

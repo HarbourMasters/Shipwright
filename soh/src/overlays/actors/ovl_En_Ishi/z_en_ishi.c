@@ -496,6 +496,7 @@ void EnIshi_DrawLarge(EnIshi* this, GlobalContext* globalCtx) {
 static EnIshiDrawFunc sDrawFuncs[] = { EnIshi_DrawSmall, EnIshi_DrawLarge };
 
 void EnIshi_Draw(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     EnIshi* this = (EnIshi*)thisx;
 
     sDrawFuncs[this->actor.params & 1](this, globalCtx);

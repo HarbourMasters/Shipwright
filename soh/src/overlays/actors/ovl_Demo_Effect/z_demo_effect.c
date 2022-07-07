@@ -176,6 +176,7 @@ void DemoEffect_InitGetItem(DemoEffect* this) {
  * Main Actor Init function
  */
 void DemoEffect_Init(Actor* thisx, GlobalContext* globalCtx2) {
+    return;
     GlobalContext* globalCtx = globalCtx2;
     DemoEffect* this = (DemoEffect*)thisx;
     s32 effectType;
@@ -1639,6 +1640,7 @@ void DemoEffect_UpdateDust(DemoEffect* this, GlobalContext* globalCtx) {
  * This is the main Actor Update Function.
  */
 void DemoEffect_Update(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     DemoEffect* this = (DemoEffect*)thisx;
     this->updateFunc(this, globalCtx);
 }

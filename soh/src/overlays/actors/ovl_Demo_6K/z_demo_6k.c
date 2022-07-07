@@ -69,6 +69,7 @@ void Demo6K_SetupAction(Demo6K* this, Demo6KActionFunc actionFunc) {
 }
 
 void Demo6K_Init(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     Demo6K* this = (Demo6K*)thisx;
     s32 pad;
     s32 params = this->actor.params;
@@ -554,6 +555,7 @@ void func_80967F10(Demo6K* this, GlobalContext* globalCtx) {
 }
 
 void Demo6K_Update(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     Demo6K* this = (Demo6K*)thisx;
 
     this->actionFunc(this, globalCtx);

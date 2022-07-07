@@ -38,6 +38,7 @@ void EnWonderTalk2_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void EnWonderTalk2_Init(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     s32 pad;
     EnWonderTalk2* this = (EnWonderTalk2*)thisx;
 
