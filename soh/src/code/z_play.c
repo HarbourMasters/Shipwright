@@ -246,10 +246,10 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
 
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
-    if (gSaveContext.entranceIndex == 0x05E0 && (!Flags_GetEventChkInf(0xC1) || player->getItemId != GI_NONE) && player != NULL &&
+    if (gSaveContext.entranceIndex == 0x05E0 && (!Flags_GetEventChkInf(0xC1) || player->getItemId == getItemId) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player)) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
         GiveItemWithoutActor(globalCtx, getItemId);
         Flags_SetEventChkInf(0xC1);
     }
