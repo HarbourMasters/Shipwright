@@ -483,7 +483,6 @@ void BgHeavyBlock_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgHeavyBlock_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    return;
     static Vec3f D_80884EC8 = { 0.0f, 0.0f, 0.0f };
     static Vec3f D_80884ED4 = { 0.0f, 400.0f, 0.0f };
     BgHeavyBlock* this = (BgHeavyBlock*)thisx;
