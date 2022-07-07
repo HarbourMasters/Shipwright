@@ -1639,7 +1639,6 @@ void DemoEffect_UpdateDust(DemoEffect* this, GlobalContext* globalCtx) {
  * This is the main Actor Update Function.
  */
 void DemoEffect_Update(Actor* thisx, GlobalContext* globalCtx) {
-    return;
     DemoEffect* this = (DemoEffect*)thisx;
     this->updateFunc(this, globalCtx);
 }
@@ -1849,6 +1848,7 @@ void DemoEffect_DrawGodLgt(Actor* thisx, GlobalContext* globalCtx) {
  * Draw function for the Light Effect Actor.
  */
 void DemoEffect_DrawLightEffect(Actor* thisx, GlobalContext* globalCtx) {
+    return;
     DemoEffect* this = (DemoEffect*)thisx;
     u8* alpha;
     Gfx* disp;
