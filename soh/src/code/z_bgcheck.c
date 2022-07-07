@@ -1588,6 +1588,11 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
     colCtx->memSize *= 2;
 #endif
 
+    // BGCheck needs a higher polygon and vertex count due to removed object dependencies.
+    // Otherwise Forest Temple checkered room will crash due to the hallway actor being killed a frame late.
+    colCtx->dyna.polyListMax *= 2;
+    colCtx->dyna.vtxListMax *= 2;
+
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
               colCtx->colHeader->numPolygons * sizeof(u8) + colCtx->dyna.polyNodesMax * sizeof(SSNode) +
               colCtx->dyna.polyListMax * sizeof(CollisionPoly) + colCtx->dyna.vtxListMax * sizeof(Vec3s) +
