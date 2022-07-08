@@ -1924,7 +1924,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if ((!CVar_GetS32("gPauseAnyCursor", 0) || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE)) && !pauseCtx->pageIndex) { // pageIndex == PAUSE_ITEM
+            if (!pauseCtx->pageIndex && (!CVar_GetS32("gPauseAnyCursor", 0) || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                     pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                         WREG(49 + gSaveContext.language);
 
