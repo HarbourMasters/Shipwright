@@ -330,7 +330,7 @@ int main(int argc, char* argv[])
 
 				auto start = std::chrono::steady_clock::now();
 				int fileListSize = fileList.size();
-				Globals::Instance->singleThreaded = false;
+				//Globals::Instance->singleThreaded = false;
 
 				for (int i = 0; i < fileListSize; i++)
 					Globals::Instance->workerData[i] = new FileWorker();

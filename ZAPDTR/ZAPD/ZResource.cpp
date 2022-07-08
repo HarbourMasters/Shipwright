@@ -305,9 +305,13 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 	}
 }
 
-std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix)
+std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix, bool first)
 {
-	static std::set<std::string> myset;
+	static std::set<std::string> totalset;
+	std::string s2 = name;
+	if (first) {
+		totalset.clear();
+	}
 	if (Globals::Instance->otrMode && genOTRDef)
 	{
 		std::string str = "";;
@@ -348,11 +352,13 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		else
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
-		if (myset.find(name) == myset.end()) {
+		if (totalset.find(name) == totalset.end()) {
+#ifdef _WIN32
+			str += StringHelper::Sprintf("\nstatic const __declspec(align(2)) char %s[] = d%s;", name.c_str(), name.c_str());
+#else
 			str += StringHelper::Sprintf("\nstatic const char %s[] __attribute__((aligned (2))) = d%s;", name.c_str(), name.c_str());
-			myset.insert(name);
-		} else {
-			str += StringHelper::Sprintf("\nextern static const char %s[];", name.c_str());
+#endif
+			totalset.insert(name);
 		}
 
 		return str;

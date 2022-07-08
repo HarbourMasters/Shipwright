@@ -116,7 +116,7 @@ public:
 	[[nodiscard]] virtual std::string GetDefaultName(const std::string& prefix) const;
 
 	virtual void GetSourceOutputCode(const std::string& prefix);
-	virtual std::string GetSourceOutputHeader(const std::string& prefix);
+	virtual std::string GetSourceOutputHeader(const std::string& prefix, bool first=true);
 	virtual void CalcHash();
 	/**
 	 * Exports the resource to binary format
