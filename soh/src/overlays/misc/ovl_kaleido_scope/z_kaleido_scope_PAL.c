@@ -1818,7 +1818,8 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
             }
             //TOOD CVAR
-            if (((CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
+            if ((pauseCtx->cursorX[PAUSE_EQUIP] == 0) ||
+                ((CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
                 (pauseCtx->pageIndex != PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) && (pauseCtx->pageIndex != PAUSE_ITEM ||
                 (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) {
                 POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
