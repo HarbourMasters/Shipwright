@@ -1862,6 +1862,7 @@ void DemoEffect_DrawLightEffect(Actor* thisx, GlobalContext* globalCtx) {
         if (this->light.flicker == 0) {
             this->light.flicker = 1;
         } else {
+            disp = (uintptr_t)gEffFlash1DL;
             alpha = &this->light.alpha;
             func_80093D84(globalCtx->state.gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, this->primXluColor[0], this->primXluColor[1],
