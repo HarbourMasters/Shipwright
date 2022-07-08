@@ -950,9 +950,6 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
     skyboxCtx->unk_140 = 0;
     skyboxCtx->rot.x = skyboxCtx->rot.y = skyboxCtx->rot.z = 0.0f;
 
-    // Unconditionally setup the normal skybox as well to avoid the 0xabababab crash.
-    // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
-    Skybox_Setup(globalCtx, skyboxCtx, SKYBOX_NORMAL_SKY);
     Skybox_Setup(globalCtx, skyboxCtx, skyboxId);
     osSyncPrintf("\n\n\n＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊\n\n\n"
                  "ＴＹＰＥ＝%d"
