@@ -1991,7 +1991,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 gDPPipeSync(POLY_KAL_DISP++);
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
                 POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
-                                        D_8082ADD8[gSaveContext.language], 16, 4);
+                                                            D_8082ADD8[gSaveContext.language], 16, 4);
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
             } else if ((pauseCtx->pageIndex == PAUSE_QUEST) && (pauseCtx->cursorSlot[PAUSE_QUEST] >= 6) &&
@@ -3281,9 +3281,9 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
             KaleidoScope_UpdateCursorSize(&globalCtx->pauseCtx);
         }
 
-        // if (pauseCtx->state == 6) {
+        if (pauseCtx->state == 6) {
             KaleidoScope_UpdateNamePanel(globalCtx);
-        // }
+        }
     }
 
     switch (pauseCtx->state) {
