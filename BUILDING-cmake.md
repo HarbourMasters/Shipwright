@@ -61,7 +61,9 @@ All-in-One with packaging support (only 64 bit):
 
 execute at top-level:
 ~~~
-cmake -S . -B build-cmake
+git clone https://github.com/Perlmint/glew-cmake.git external/glew
+
+cmake -H. -Bbuild-cmake -GNinja
 cmake --build build-cmake
 ~~~
 
@@ -86,13 +88,13 @@ git clone https://github.com/Perlmint/glew-cmake.git external/glew
 cd OTRExporter
 
 
-cmake -S . -B build-cmake 
+cmake -H. -Bbuild-cmake -GNinja
 cmake --build build-cmake 
 
 ./extract_assets_cmake.py
   
 cd ../soh
-cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE=CMake/Linux32bit-toolchain.cmake
+cmake -H. -Bbuild-cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=CMake/Linux32bit-toolchain.cmake
 cmake --build build-cmake 
 
 cd ../OTRGui
