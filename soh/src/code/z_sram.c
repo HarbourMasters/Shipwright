@@ -4,6 +4,7 @@
 #include <string.h>
 
 #define NUM_DUNGEONS 8
+#define NUM_TRIALS 6
 
 /**
  *  Initialize new save.
@@ -608,6 +609,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Sets all the dungeons to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/82
         for (u8 i = 0; i < NUM_DUNGEONS; i++) {
             gSaveContext.dungeonsDone[i] = 0;
+        }
+
+        // Sets all Ganon's Trials to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/131
+        for (u8 i = 0; i < NUM_TRIALS; i++) {
+            gSaveContext.trialsDone[i] = 0;
         }
 
         // Set Cutscene flags to skip them
