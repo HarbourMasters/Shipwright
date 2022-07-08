@@ -22,7 +22,8 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-unused-command-line-argument \
 	-Wno-delete-non-abstract-non-virtual-dtor \
 	-Wno-unused-private-field \
-	-Wno-deprecated-copy-with-user-provided-copy
+	-Wno-deprecated-copy-with-user-provided-copy \
+	-Wno-deprecated-declarations
 
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion
