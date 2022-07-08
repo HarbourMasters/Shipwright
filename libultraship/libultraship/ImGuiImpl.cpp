@@ -89,6 +89,39 @@ namespace SohImGui {
         "None"
     };
 
+    const char* powers256[9] = {
+        "Vanilla (1x)",
+        "Double (2x)",
+        "Quadrouple (4x)",
+        "Octuple (8x)",
+        "Hexadecuple (16x)",
+        "Duotrigintuple (32x)",
+        "Quattuorsexagintuple (64x)",
+        "Octoviginticentuple (128x)",
+        "Hexaquinquagintiducentuple (256x)"
+    };
+
+    const char* powers128[8] = {
+        "Vanilla (1x)",
+        "Double (2x)",
+        "Quadrouple (4x)",
+        "Octuple (8x)",
+        "Hexadecuple (16x)",
+        "Duotrigintuple (32x)",
+        "Quattuorsexagintuple (64x)",
+        "Octoviginticentuple (128x)"
+    };
+
+    const char* powers64[7] = {
+        "Vanilla (1x)",
+        "Double (2x)",
+        "Quadrouple (4x)",
+        "Octuple (8x)",
+        "Hexadecuple (16x)",
+        "Duotrigintuple (32x)",
+        "Quattuorsexagintuple (64x)"
+    };
+
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
@@ -934,13 +967,36 @@ namespace SohImGui {
 
                     if (ImGui::BeginMenu("Difficulty Options"))
                     {
-                        // Max damage multiplier increased to 100 to allow for instant death challenges. 1/4 heart * 80 = 20 hearts of damage
-                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 80, "");
-                        Tooltip("Modifies all sources of damage not affected by other sliders");
-                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 80, "");
-                        Tooltip("Modifies all fall damage");
-                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 80, "");
-                        Tooltip("Modifies all void out damage");
+                        ImGui::Text("Damage Multiplier");
+                        EnhancementCombobox("gDamageMul", powers256, 9, 0);
+                        Tooltip("Modifies all sources of damage not affected by other sliders\n\
+2x: Can survive all common attacks from the start of the game\n\
+4x: Dies in 1 hit to any substantial attack from the start of the game\n\
+8x: Can only survive trivial damage from the start of the game\n\
+16x: Can survive all common attacks with max health without double defense\n\
+32x: Can survive all common attacks with max health and double defense\n\
+64x: Can survive trivial damage with max health without double defense\n\
+128x: Can survive trivial damage with max health and double defense\n\
+256x: Cannot survive damage");
+                        ImGui::Text("Fall Damage Multiplier");
+                        EnhancementCombobox("gFallDamageMul", powers128, 8, 0);
+                        Tooltip("Modifies all fall damage\n\
+2x: Can survive all fall damage from the start of the game\n\
+4x: Can only survive short fall damage from the start of the game\n\
+8x: Cannot survive any fall damage from the start of the game\n\
+16x: Can survive all fall damage with max health without double defense\n\
+32x: Can survive all fall damage with max health and double defense\n\
+64x: Can survive short fall damage with double defense\n\
+128x: Cannot survive fall damage");
+                        ImGui::Text("Void Damage Multiplier");
+                        EnhancementCombobox("gVoidDamageMul", powers64, 7, 0);
+                        Tooltip("Modifies all void damage\n\
+2x: Can survive void damage from the start of the game\n\
+4x: Cannot survive void damage from the start of the game\n\
+8x: Can survive void damage twice with max health without double defense\n\
+16x: Can survive void damage with max health without double defense\n\
+32x: Can survive void damage with max health and double defense\n\
+64x: Cannot survive void damage");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
@@ -1129,6 +1185,7 @@ namespace SohImGui {
                     int val = CVar_GetS32(fps_cvar, 20);
                     val = MAX(MIN(val, 250), 20);
                     int fps = val;
+                    const int step_one = 1;
 
                     if (fps == 20)
                     {
@@ -1139,8 +1196,17 @@ namespace SohImGui {
                         ImGui::Text("Frame interpolation: %d FPS", fps);
                     }
 
-                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    if (ImGui::InputScalar("##FPSInterpolation", ImGuiDataType_S32, &val, &step_one, ""))
                     {
+                        if (val > 250)
+                        {
+                            val = 250;
+                        }
+                        else if (val < 20)
+                        {
+                            val = 20;
+                        }
+                        
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
@@ -1149,8 +1215,7 @@ namespace SohImGui {
                         "Set to match your monitor's refresh rate, or a divisor of it.\n"
                         "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
                         "and might give a worse result.\n"
-                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.\n"
-                        "Ctrl+Click for keyboard input.");
+                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.");
                 }
                 if (impl.backend == Backend::DX11)
                 {
