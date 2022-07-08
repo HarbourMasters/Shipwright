@@ -1584,19 +1584,19 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
     BgCheck_SetSubdivisionDimension(colCtx->minBounds.z, colCtx->subdivAmount.z, &colCtx->maxBounds.z,
                                     &colCtx->subdivLength.z, &colCtx->subdivLengthInv.z);
 
-#ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
-    colCtx->memSize *= 2;
-#endif
+// OTRTODO: Re-enable when the below DynaPoly workaround is removed.
+// #ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+//     colCtx->memSize *= 2;
+// #endif
 
     // BGCheck needs a higher polygon and vertex count due to removed object dependencies.
     // Otherwise Forest Temple checkered room will crash due to the hallway actor being killed a frame late.
     //
     // OTRTODO: This is a workaround. The proper solution to fix this crash is to manage object loading / unloading
     // the same as N64.
-    if (globalCtx->sceneNum == SCENE_BMORI1) {
-        colCtx->dyna.polyListMax *= 2;
-        colCtx->dyna.vtxListMax *= 2;
-    }
+    colCtx->memSize *= 2;
+    colCtx->dyna.polyListMax *= 2;
+    colCtx->dyna.vtxListMax *= 2;
 
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
               colCtx->colHeader->numPolygons * sizeof(u8) + colCtx->dyna.polyNodesMax * sizeof(SSNode) +
