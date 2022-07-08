@@ -70,7 +70,7 @@ void EffectSsDeadDb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Mtx* mtx;
     f32 scale;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_dead_db.c", 201);
+    OPEN_DISPS(gfxCtx);
 
     scale = this->rScale * 0.01f;
 
@@ -90,7 +90,7 @@ void EffectSsDeadDb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_dead_db.c", 247);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsDeadDb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

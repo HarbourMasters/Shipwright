@@ -345,7 +345,7 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     s32 objBankIndex;
 
-    OPEN_DISPS(gfxCtx, "../z_en_encount2.c", 642);
+    OPEN_DISPS(gfxCtx);
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_EFC_STAR_FIELD);
 
@@ -362,12 +362,12 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
                 Matrix_Scale(particle->scale, particle->scale, particle->scale, MTXMODE_APPLY);
                 gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 155, 55, 255);
                 gDPSetEnvColor(POLY_OPA_DISP++, 155, 255, 55, 255);
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_encount2.c", 669),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
             }
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_en_encount2.c", 678);
+    CLOSE_DISPS(gfxCtx);
 }

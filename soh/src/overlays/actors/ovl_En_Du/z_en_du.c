@@ -629,7 +629,7 @@ void EnDu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnDu* this = (EnDu*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_du.c", 1470);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeTexIndex]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(mouthTextures[this->mouthTexIndex]));
@@ -637,5 +637,5 @@ void EnDu_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_80034BA0(globalCtx, &this->skelAnime, EnDu_OverrideLimbDraw, EnDu_PostLimbDraw, &this->actor, 255);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_du.c", 1487);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

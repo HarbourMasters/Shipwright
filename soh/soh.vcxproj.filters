@@ -2208,6 +2208,9 @@
     <ClCompile Include="soh\SaveManager.cpp">
       <Filter>Source Files\soh</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\cosmetics\CosmeticsEditor.cpp">
+      <Filter>Header Files\include</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -3781,6 +3784,9 @@
     </ClInclude>
     <ClInclude Include="soh\SaveManager.h">
       <Filter>Source Files\soh</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h">
+      <Filter>Header Files\include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

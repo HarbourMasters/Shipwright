@@ -68,7 +68,7 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, sObjectIds[type]);
     osSyncPrintf("bank_ID = %d\n", objBankIndex);
     if (objBankIndex < 0) {
-        ASSERT(0, "0", "../z_item_etcetera.c", 241);
+        ASSERT(objBankIndex < 0);
     } else {
         this->objBankIndex = objBankIndex;
     }
@@ -137,7 +137,6 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         }
         Actor_Kill(&this->actor);
     } else {
-        if (0) {} // Necessary to match
         func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
@@ -180,8 +179,7 @@ void func_80B85B28(ItemEtcetera* this, GlobalContext* globalCtx) {
 
 void ItemEtcetera_UpdateFireArrow(ItemEtcetera* this, GlobalContext* globalCtx) {
     if ((globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[0] != NULL)) {
-        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action,
-                "../z_item_etcetera.c", 441);
+        LOG_NUM("(game_play->demo_play.npcdemopnt[0]->dousa)", globalCtx->csCtx.npcActions[0]->action);
         if (globalCtx->csCtx.npcActions[0]->action == 2) {
             this->actor.draw = ItemEtcetera_Draw;
             this->actor.gravity = -0.1f;

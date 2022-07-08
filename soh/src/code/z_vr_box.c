@@ -960,25 +960,25 @@ void Skybox_Init(GameState* state, SkyboxContext* skyboxCtx, s16 skyboxId) {
         osSyncPrintf(VT_FGCOL(GREEN));
 
         if (skyboxCtx->unk_140 != 0) {
-            skyboxCtx->dListBuf = GameState_Alloc(state, 8 * 150 * sizeof(Gfx), "../z_vr_box.c", 1636);
-            ASSERT(skyboxCtx->dListBuf != NULL, "vr_box->dpList != NULL", "../z_vr_box.c", 1637);
+            skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 8 * 150 * sizeof(Gfx));
+            ASSERT(skyboxCtx->dListBuf != NULL);
 
-            skyboxCtx->roomVtx = GameState_Alloc(state, 256 * sizeof(Vtx), "../z_vr_box.c", 1639);
-            ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", "../z_vr_box.c", 1640);
+            skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 256 * sizeof(Vtx));
+            ASSERT(skyboxCtx->roomVtx != NULL);
 
             func_800AEFC8(skyboxCtx, skyboxId);
         } else {
-            skyboxCtx->dListBuf = GameState_Alloc(state, 12 * 150 * sizeof(Gfx), "../z_vr_box.c", 1643);
-            ASSERT(skyboxCtx->dListBuf != NULL, "vr_box->dpList != NULL", "../z_vr_box.c", 1644);
+            skyboxCtx->dListBuf = GAMESTATE_ALLOC_MC(state, 12 * 150 * sizeof(Gfx));
+            ASSERT(skyboxCtx->dListBuf != NULL);
 
             if (skyboxId == SKYBOX_CUTSCENE_MAP) {
-                skyboxCtx->roomVtx = GameState_Alloc(state, 192 * sizeof(Vtx), "../z_vr_box.c", 1648);
-                ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", "../z_vr_box.c", 1649);
+                skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 192 * sizeof(Vtx));
+                ASSERT(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 6);
             } else {
-                skyboxCtx->roomVtx = GameState_Alloc(state, 160 * sizeof(Vtx), "../z_vr_box.c", 1653);
-                ASSERT(skyboxCtx->roomVtx != NULL, "vr_box->roomVtx != NULL", "../z_vr_box.c", 1654);
+                skyboxCtx->roomVtx = GAMESTATE_ALLOC_MC(state, 160 * sizeof(Vtx));
+                ASSERT(skyboxCtx->roomVtx != NULL);
 
                 func_800AF178(skyboxCtx, 5);
             }

@@ -143,7 +143,7 @@ void BgSpot09Obj_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->dyna.actor.params &= 0xFF;
     if ((this->dyna.actor.params < 0) || (this->dyna.actor.params >= 5)) {
         osSyncPrintf("Error : Spot 09 object の arg_data が判別出来ない(%s %d)(arg_data 0x%04x)\n",
-                     "../z_bg_spot09_obj.c", 322, this->dyna.actor.params);
+                     __FILE__, __LINE__, this->dyna.actor.params);
     }
 
     if (!func_808B1C70(this, globalCtx)) {
@@ -169,14 +169,14 @@ void BgSpot09Obj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Gfx_DrawDListOpa(globalCtx, sDLists[thisx->params]);
 
     if (thisx->params == 3) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot09_obj.c", 388);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot09_obj.c", 391),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gCarpentersTentEntranceDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot09_obj.c", 396);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

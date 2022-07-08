@@ -133,7 +133,6 @@ void EnGanonMant_Tear(EnGanonMant* this) {
         if ((0 <= tx && tx < MANT_TEX_WIDTH) && (0 <= ty && ty < MANT_TEX_HEIGHT)) {
             for (areaX = 0; areaX <= tearAreaSizes[i]; areaX++) {
                 texIdx = 0;
-                if (1) {}
                 for (areaY = 0; areaY <= tearAreaSizes[i]; areaY++) {
                     texIdx = (s16)((s16)tx + ((s16)ty * MANT_TEX_WIDTH)) + ((s16)areaX + ((s16)areaY * MANT_TEX_WIDTH));
                     if (texIdx < MANT_TEX_WIDTH * MANT_TEX_HEIGHT) {
@@ -364,11 +363,11 @@ void EnGanonMant_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ganon_mant.c", 564);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(0.0f, 0.0f, 0.0f, MTXMODE_NEW);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ganon_mant.c", 572),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     // set texture
@@ -385,7 +384,7 @@ void EnGanonMant_DrawCloak(GlobalContext* globalCtx, EnGanonMant* this) {
     // draw cloak
     gSPDisplayList(POLY_OPA_DISP++, gMantDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ganon_mant.c", 584);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGanonMant_Draw(Actor* thisx, GlobalContext* globalCtx) {
