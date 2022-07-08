@@ -3223,8 +3223,12 @@ void KaleidoScope_UpdateCursorSize(PauseContext* pauseCtx) {
 void KaleidoScope_LoadDungeonMap(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
-    memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX]), ResourceMgr_LoadTexSizeByName(sDungeonMapTexs[R_MAP_TEX_INDEX]));
-    memcpy(interfaceCtx->mapSegment + 0x800, ResourceMgr_LoadTexByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]), ResourceMgr_LoadTexSizeByName(sDungeonMapTexs[R_MAP_TEX_INDEX + 1]));
+    char* firstTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX];
+    char* secondTextureName = sDungeonMapTexs[R_MAP_TEX_INDEX + 1];
+    uint32_t firstTextureSize = ResourceMgr_LoadTexSizeByName(firstTextureName);
+
+    memcpy(interfaceCtx->mapSegment, ResourceMgr_LoadTexByName(firstTextureName), ResourceMgr_LoadTexSizeByName(firstTextureName));
+    memcpy(interfaceCtx->mapSegment + (firstTextureSize / 2), ResourceMgr_LoadTexByName(secondTextureName), ResourceMgr_LoadTexSizeByName(secondTextureName));
 }
 
 void KaleidoScope_UpdateDungeonMap(GlobalContext* globalCtx) {
