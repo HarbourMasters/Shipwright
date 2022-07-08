@@ -2,6 +2,7 @@
 HERE="$(dirname "$(readlink -f "${0}")")"/../..
 
 export PATH="$HERE"/bin:"$HERE"/usr/bin:"$PATH"
+export LD_LIBRARY_PATH="$HERE"/usr/lib:"$LD_LIBRARY_PATH"
 
 while [[ ! -e "$PWD"/oot.otr ]]; do
 	export ASSETDIR="$(mktemp -d /tmp/assets-XXXXX)"
