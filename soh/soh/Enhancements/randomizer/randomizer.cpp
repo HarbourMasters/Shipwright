@@ -3694,7 +3694,8 @@ void DrawRandoEditor(bool& open) {
                             //SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
                             //                               "gRandomizeGanonTrialCount", 0, 6, "");
                             //InsertHelpHoverText("Set the number of trials required to enter\nGanon's Tower.");
-                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials?", "gRandomizeGanonTrialCount");
+                        // RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
+                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
                         InsertHelpHoverText(
                             "Sets whether or not Ganon's Castle Trials are required\nto enter Ganon's Tower.");
 
