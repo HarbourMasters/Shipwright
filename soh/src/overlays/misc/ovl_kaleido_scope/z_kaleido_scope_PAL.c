@@ -1818,11 +1818,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
             }
 
-            if (!(CVar_GetS32("gPauseAnyCursor", 0) &&
-            ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 && !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
-            (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE)))) {
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
-            }
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
         if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gDebugEnabled", 0) != 0) {
@@ -1928,8 +1924,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if (!pauseCtx->pageIndex) { // pageIndex == PAUSE_ITEM
-                if (!CVar_GetS32("gPauseAnyCursor", 0) || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE)) {
+            if ((!CVar_GetS32("gPauseAnyCursor", 0) || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE)) && !pauseCtx->pageIndex) { // pageIndex == PAUSE_ITEM
                     pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                         WREG(49 + gSaveContext.language);
 
@@ -1997,7 +1992,6 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
                     POLY_KAL_DISP = KaleidoScope_QuadTextureIA8(POLY_KAL_DISP, sToEquipTextures[gSaveContext.language],
                                             D_8082ADD8[gSaveContext.language], 16, 4);
-                }
             } else if ((pauseCtx->pageIndex == PAUSE_MAP) && sInDungeonScene) {
 
             } else if ((pauseCtx->pageIndex == PAUSE_QUEST) && (pauseCtx->cursorSlot[PAUSE_QUEST] >= 6) &&
@@ -2098,6 +2092,12 @@ void KaleidoScope_UpdateNamePanel(GlobalContext* globalCtx) {
         sp2A = pauseCtx->namedItem;
 
         osCreateMesgQueue(&pauseCtx->loadQueue, &pauseCtx->loadMsg, 1);
+
+        if (CVar_GetS32("gPauseAnyCursor", 0) &&
+        ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 && !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
+        (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
+            pauseCtx->namedItem = PAUSE_ITEM_NONE;
+        }
 
         if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
             if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
