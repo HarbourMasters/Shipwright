@@ -950,7 +950,7 @@ void func_80986D40(DemoIm* this, GlobalContext* globalCtx) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if (gSaveContext.eventChkInf[8] & 1) {
+    } else if ((gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
     } else if (!(gSaveContext.eventChkInf[5] & 0x200)) {
         this->action = 23;
