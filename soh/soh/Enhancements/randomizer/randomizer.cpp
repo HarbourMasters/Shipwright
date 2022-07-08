@@ -3691,9 +3691,13 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCombobox("gRandomizeGanonTrial", randoGanonsTrial, 2, 0);
                         if (CVar_GetS32("gRandomizeGanonTrial", 0) == 0) {
                         */
-                            SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
-                                                           "gRandomizeGanonTrialCount", 0, 6, "");
-                            InsertHelpHoverText("Set the number of trials required to enter\nGanon's Tower.");
+                            //SohImGui::EnhancementSliderInt("Ganon's Trial Count: %d", "##RandoTrialCount",
+                            //                               "gRandomizeGanonTrialCount", 0, 6, "");
+                            //InsertHelpHoverText("Set the number of trials required to enter\nGanon's Tower.");
+                        // RANDTODO: Switch back to slider when pre-completing some of Ganon's Trials is properly implemnted.
+                        SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
+                        InsertHelpHoverText(
+                            "Sets whether or not Ganon's Castle Trials are required\nto enter Ganon's Tower.");
 
                         // }
                         ImGui::Separator();

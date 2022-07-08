@@ -2475,7 +2475,16 @@ namespace Settings {
     BridgeDungeonCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT]);
     BridgeTokenCount.SetSelectedIndex(cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT]);
     RandomGanonsTrials.SetSelectedIndex(cvarSettings[RSK_RANDOM_TRIALS]);
-    GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    // RANDTODO: Switch this back once Ganon's Trials Count is properly implemented.
+    //GanonsTrialsCount.SetSelectedIndex(cvarSettings[RSK_TRIAL_COUNT]);
+    switch (cvarSettings[RSK_TRIAL_COUNT]) { 
+        case 0:
+            GanonsTrialsCount.SetSelectedIndex(6);
+            break;
+        case 1:
+            GanonsTrialsCount.SetSelectedIndex(0);
+            break;
+    }
 
     ShuffleRewards.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS]);
     ShuffleSongs.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_SONGS]);
