@@ -241,6 +241,7 @@ void DemoKekkai_Update(Actor* thisx, GlobalContext* globalCtx2) {
 }
 
 void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
+    static s32 eventFlags[] = { 0xC3, 0xBC, 0xBF, 0xBE, 0xBD, 0xAD, 0xBB };
     static u16 csFrames[] = { 0, 280, 280, 280, 280, 280, 280 };
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
@@ -266,6 +267,7 @@ void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
                 gSaveContext.trialsDone[0] = 1;
                 break;
         }
+        Flags_SetEventChkInf(eventFlags[thisx->params]);
     }
 
     if (globalCtx->csCtx.frames == csFrames[this->actor.params]) {
