@@ -1,6 +1,6 @@
 CXX ?= g++
 CC ?= gcc
-LD ?= lld
+LD := lld
 AR	:= ar
 FORMAT := clang-format-11
 ZAPD := ../ZAPDTR/ZAPD.out
@@ -210,7 +210,7 @@ build/%.o: %.c
 $(TARGET): $(LIBULTRASHIP)
 
 $(TARGET): $(O_FILES)
-	$(CXX) $^ -o $@ $(LDFLAGS) -fuse-ld=$(LD) $(LDDIRS) $(LDLIBS)
+	$(CXX) $^ -o $@ $(LDFLAGS) $(LDDIRS) $(LDLIBS)
 
 -include $(D_FILES)
 
