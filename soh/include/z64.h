@@ -1454,8 +1454,6 @@ typedef struct {
     /* 0x18 */ s16 (*roomCompassOffsetY)[44]; // dungeon compass icon Y offset by room
     /* 0x1C */ u8*   dgnMinimapCount; // number of room minimaps
     /* 0x20 */ u16*  dgnMinimapTexIndexOffset; // dungeon minimap texture index offset
-    /* 0x24 */ u16*  owMinimapTexSize;
-    /* 0x28 */ u16*  owMinimapTexOffset;
     /* 0x2C */ s16*  owMinimapPosX;
     /* 0x30 */ s16*  owMinimapPosY;
     /* 0x34 */ s16 (*owCompassInfo)[4]; // [X scale, Y scale, X offset, Y offset]
