@@ -26,7 +26,7 @@ void HintTable_Init() {
     ---------------------------*/
     hintTable[NONE]            = HintText::Exclude({Text{"No Hint","Pas d'Indice",""}});
     hintTable[PREFIX]          = HintText::Exclude({Text{"They say that ",              /*french*/"Selon moi, ",                  /*spanish*/"Según dicen, "}});
-    hintTable[WAY_OF_THE_HERO] = HintText::Exclude({Text{" is on the way of the hero.", /*french*/" est sur la voie du héros.", /*spanish*/" conduce a la senda del héroe."}});
+    hintTable[WAY_OF_THE_HERO] = HintText::Exclude({Text{" is on the way of the hero.", /*french*/" est sur la voie du héros."  , /*spanish*/" conduce a la senda del héroe."}});
     hintTable[PLUNDERING]      = HintText::Exclude({Text{"plundering ",                 /*french*/"explorer ",                    /*spanish*/"inspeccionar "}});
     hintTable[FOOLISH]         = HintText::Exclude({Text{" is a foolish choice.",       /*french*/" est futile.",                 /*spanish*/" no es una sabia decisión."}});
     hintTable[CAN_BE_FOUND_AT] = HintText::Exclude({Text{"can be found at",             /*french*/"se trouve dans",               /*spanish*/"aguarda en"}});
@@ -64,18 +64,18 @@ void HintTable_Init() {
 
     hintTable[SONG_FROM_OCARINA_OF_TIME] = HintText::Sometimes({
                        //obscure text
-                       Text{"the #Ocarina of Time# teaches", /*french*/"l'#ocarina du temps# est accompagné par", /*spanish*/"la #Ocarina del Tiempo# enseña"},
+                       Text{"the #Ocarina of Time# teaches", /*french*/"l'#Ocarina du Temps# est accompagné par", /*spanish*/"la #Ocarina del Tiempo# enseña"},
   });
 
     hintTable[SONG_FROM_COMPOSERS_GRAVE] = HintText::Sometimes({
                        //obscure text
-                       Text{"#ReDead in the Composers' Grave# guard", /*french*/"les #Remorts du tombeau des compositeurs# protègent", /*spanish*/"los #ReDeads del Panteón Real# guardan"},
+                       Text{"#ReDead in the Composers' Grave# guard", /*french*/"les #Éffrois du tombeau des compositeurs# protègent", /*spanish*/"los #ReDeads del Panteón Real# guardan"},
                        Text{"the #Composer Brothers wrote#",          /*french*/"le #trésor des compositeurs# est",                    /*spanish*/"los #hermanos compositores escribieron#"},
   });
 
     hintTable[SHEIK_IN_FOREST] = HintText::Sometimes({
                        //obscure text
-                       Text{"#in a meadow# Sheik teaches", /*french*/"Sheik confiera, #dans une clairière#,", /*spanish*/"#en la pradera sagrada# Sheik enseña"},
+                       Text{"#in a meadow# Sheik teaches", /*french*/"Sheik confiera, #dans un bosquet#,", /*spanish*/"#en la pradera sagrada# Sheik enseña"},
   });
 
     hintTable[SHEIK_AT_TEMPLE] = HintText::Sometimes({
@@ -90,12 +90,12 @@ void HintTable_Init() {
 
     hintTable[SHEIK_IN_ICE_CAVERN] = HintText::Sometimes({
                        //obscure text
-                       Text{"the #frozen cavern# echoes with", /*french*/"Sheik confiera, #dans une caverne étoilée#,", /*spanish*/"en la #caverna de hielo# retumban los ecos de"},
+                       Text{"the #frozen cavern# echoes with", /*french*/"Sheik confiera, #dans une caverne enneigée#,", /*spanish*/"en la #caverna de hielo# retumban los ecos de"},
   });
 
     hintTable[SHEIK_IN_KAKARIKO] = HintText::Sometimes({
                        //obscure text
-                       Text{"a #ravaged village# mourns with", /*french*/"Sheik confirera, #au cœur d'un village ravagé#,", /*spanish*/"un #arrasado pueblo# llora"},
+                       Text{"a #ravaged village# mourns with", /*french*/"Sheik confirera, #au coeur d'un village ravagé#,", /*spanish*/"un #arrasado pueblo# llora"},
   });
 
     hintTable[SHEIK_AT_COLOSSUS] = HintText::Sometimes({
@@ -109,12 +109,12 @@ void HintTable_Init() {
                        Text{"#ghost hunters# will be rewarded with", /*french*/"#les chasseurs de fantômes# sont récompensés avec", /*spanish*/"los #cazafantasmas# son premiados con"},
                      }, {},
                        //clear text
-                       Text{"catching #Big Poes# leads to", /*french*/"#d'attraper des fantômes# donne", /*spanish*/"hacerte con #Grandes Poes# conduce a"}
+                       Text{"catching #Big Poes# leads to", /*french*/"#d'attraper des Àmes# donne", /*spanish*/"hacerte con #Grandes Poes# conduce a"}
   );
 
     hintTable[DEKU_THEATER_SKULL_MASK] = HintText::Sometimes({
                        //obscure text
-                       Text{"the #Skull Mask# yields", /*french*/"le #masque de mort# donne", /*spanish*/"la #máscara de calavera# otorga"},
+                       Text{"the #Skull Mask# yields", /*french*/"le #Masque de Mort# donne", /*spanish*/"la #máscara de calavera# otorga"},
   });
 
     hintTable[DEKU_THEATER_MASK_OF_TRUTH] = HintText::Sometimes({
@@ -122,7 +122,7 @@ void HintTable_Init() {
                        Text{"showing a #truthful eye to the crowd# rewards", /*french*/"montrer #l'oeil de vérité à la foule# donne", /*spanish*/"#mostrarle el ojo verdadero# a una multitud brinda"},
                      }, {},
                        //clear text
-                       Text{"the #Mask of Truth# yields", /*french*/"le #masque de vérité# donne", /*spanish*/"la #máscara de la verdad# premia"}
+                       Text{"the #Mask of Truth# yields", /*french*/"le #Masque de Vérité# donne", /*spanish*/"la #máscara de la verdad# premia"}
   );
 
     hintTable[HF_OCARINA_OF_TIME_ITEM] = HintText::Sometimes({
@@ -137,18 +137,18 @@ void HintTable_Init() {
 
     hintTable[DMT_TRADE_EYEDROPS] = HintText::Sometimes({
                        //obscure text
-                       Text{"while you wait, #Biggoron# gives", /*french*/"pendant que tu attends, #Grogoron# donne", /*spanish*/"#Biggoron# está a la espera de otorgar"},
+                       Text{"while you wait, #Biggoron# gives", /*french*/"pendant que tu attends, #Biggoron# donne", /*spanish*/"#Biggoron# está a la espera de otorgar"},
   });
 
     hintTable[DMT_TRADE_CLAIM_CHECK] = HintText::Sometimes({
                        //obscure text
-                       Text{"#Biggoron# crafts", /*french*/"#Grogoron# fabrique", /*spanish*/"#Biggoron# forja"},
+                       Text{"#Biggoron# crafts", /*french*/"#Biggoron# fabrique", /*spanish*/"#Biggoron# forja"},
   });
 
     hintTable[KAK_50_GOLD_SKULLTULA_REWARD] = HintText::Sometimes({
                        //obscure text
                        Text{"#50 bug badges# rewards",           /*french*/"#50 écussons# donnent",             /*spanish*/"#50 medallas de insectos# otorgan"},
-                       Text{"#50 spider souls# yields",          /*french*/"#50 âmes# donnent",                 /*spanish*/"#50 almas de araña# otorgan"},
+                       Text{"#50 spider souls# yields",          /*french*/"#50 âmes d'arachnide# donnent",                 /*spanish*/"#50 almas de araña# otorgan"},
                        Text{"#50 auriferous arachnids# lead to", /*french*/"#50 arachnides aurifères# donnent", /*spanish*/"#50 arácnidos auríferos# otorgan"},
                      }, {},
                        //clear text
@@ -158,7 +158,7 @@ void HintTable_Init() {
     hintTable[KAK_40_GOLD_SKULLTULA_REWARD] = HintText::Sometimes({
                        //obscure text
                        Text{"#40 bug badges# rewards",           /*french*/"#40 écussons# donnent",             /*spanish*/"#40 medallas de insectos# otorgan"},
-                       Text{"#40 spider souls# yields",          /*french*/"#40 âmes# donnent",                 /*spanish*/"#40 almas de araña# otorgan"},
+                       Text{"#40 spider souls# yields",          /*french*/"#40 âmes d'arachnide# donnent",                 /*spanish*/"#40 almas de araña# otorgan"},
                        Text{"#40 auriferous arachnids# lead to", /*french*/"#40 arachnides aurifères# donnent", /*spanish*/"#40 arácnidos auríferos# otorgan"},
                      }, {},
                        //clear text
@@ -168,7 +168,7 @@ void HintTable_Init() {
     hintTable[KAK_30_GOLD_SKULLTULA_REWARD] = HintText::Sometimes({
                        //obscure text
                        Text{"#30 bug badges# rewards",           /*french*/"#30 écussons# donnent",             /*spanish*/"#30 medallas de insectos# otorgan"},
-                       Text{"#30 spider souls# yields",          /*french*/"#30 âmes# donnent",                 /*spanish*/"#30 almas de araña# otorgan"},
+                       Text{"#30 spider souls# yields",          /*french*/"#30 âmes d'arachnide# donnent",                 /*spanish*/"#30 almas de araña# otorgan"},
                        Text{"#30 auriferous arachnids# lead to", /*french*/"#30 arachnides aurifères# donnent", /*spanish*/"#30 arácnidos auríferos# otorgan"},
                      }, {},
                        //clear text
@@ -178,7 +178,7 @@ void HintTable_Init() {
     hintTable[KAK_20_GOLD_SKULLTULA_REWARD] = HintText::Sometimes({
                        //obscure text
                        Text{"#20 bug badges# rewards",           /*french*/"#20 écussons# donnent",             /*spanish*/"#20 medallas de insectos# otorgan"},
-                       Text{"#20 spider souls# yields",          /*french*/"#20 âmes# donnent",                 /*spanish*/"#20 almas de araña# otorgan"},
+                       Text{"#20 spider souls# yields",          /*french*/"#20 âmes d'arachnide# donnent",                 /*spanish*/"#20 almas de araña# otorgan"},
                        Text{"#20 auriferous arachnids# lead to", /*french*/"#20 arachnides aurifères# donnent", /*spanish*/"#20 arácnidos auríferos# otorgan"},
                      }, {},
                        //clear text
@@ -314,7 +314,7 @@ void HintTable_Init() {
 
     hintTable[GV_CHEST] = HintText::Sometimes({
                        //obscure text
-                       Text{"in #Gerudo Valley# the hammer unlocks", /*french*/"dans la #vallée Gerudo#, le marteau donne accès à", /*spanish*/"en el #Valle Gerudo# el martillo desbloquea"},
+                       Text{"in #Gerudo Valley# the hammer unlocks", /*french*/"dans la #Vallée Gerudo#, le marteau donne accès à", /*spanish*/"en el #Valle Gerudo# el martillo desbloquea"},
   });
 
     hintTable[GV_TRADE_SAW] = HintText::Sometimes({
@@ -324,7 +324,7 @@ void HintTable_Init() {
 
     hintTable[GV_COW] = HintText::Sometimes({
                        //obscure text
-                       Text{"a #cow in Gerudo Valley# gifts", /*french*/"la #vache de la vallée Gerudo# donne", /*spanish*/"una #vaca del Valle Gerudo# brinda"},
+                       Text{"a #cow in Gerudo Valley# gifts", /*french*/"la #vache de la Vallée Gerudo# donne", /*spanish*/"una #vaca del Valle Gerudo# brinda"},
   });
 
     hintTable[HC_GS_STORMS_GROTTO] = HintText::Sometimes({
@@ -414,7 +414,7 @@ void HintTable_Init() {
                        Text{"a #spider on a ceiling in a tree# holds", /*french*/"l'#araignée haut-perchée dans un arbre# a", /*spanish*/"una #Skulltula en el techo de un árbol# otorga"},
                      }, {},
                        //clear text
-                       Text{"a #spider on a ceiling in the Deku Tree# holds", /*french*/"la#Skulltula dans le cimetière de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en el techo del Gran Árbol Deku# otorga"}
+                       Text{"a #spider on a ceiling in the Deku Tree# holds", /*french*/"la#Skulltula dans le Cimetière de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en el techo del Gran Árbol Deku# otorga"}
   );
 
     hintTable[DODONGOS_CAVERN_MQ_GS_SONG_OF_TIME_BLOCK_ROOM] = HintText::Sometimes({
@@ -642,7 +642,7 @@ void HintTable_Init() {
 
     hintTable[ZORAS_DOMAIN_TO_ZD_STORMS_GROTTO] = HintText::Entrance({
                      //obscure text
-                     Text{"a #storm within Zora's Domain# reveals", /*french*/"la #tempête dans le domaine des Zoras# révèle", /*spanish*/"una #tormenta en la Región de los Zora# revela"},
+                     Text{"a #storm within Zora's Domain# reveals", /*french*/"la #tempête dans le Domaine Zora# révèle", /*spanish*/"una #tormenta en la Región de los Zora# revela"},
   });
 
     hintTable[HYRULE_CASTLE_GROUNDS_TO_HC_STORMS_GROTTO] = HintText::Entrance({
@@ -677,7 +677,7 @@ void HintTable_Init() {
 
     hintTable[GRAVEYARD_WARP_PAD_REGION_TO_SHADOW_TEMPLE_ENTRYWAY] = HintText::Entrance({
                      //obscure text
-                     Text{"at the #back of the Graveyard#, there is", /*french*/"#derrière le cimetière# gît", /*spanish*/"en la #parte trasera del cementerio# se halla"},
+                     Text{"at the #back of the Graveyard#, there is", /*french*/"#derrière le Cimetière# gît", /*spanish*/"en la #parte trasera del cementerio# se halla"},
   });
 
     hintTable[LAKE_HYLIA_TO_WATER_TEMPLE_LOBBY] = HintText::Entrance({
@@ -707,7 +707,7 @@ void HintTable_Init() {
 
     hintTable[LINKS_POCKET] = HintText::Exclude({
                      //obscure text
-                     Text{"Link's Pocket", /*french*/"les poches de @", /*spanish*/"el bolsillo de @"},
+                     Text{"Link's Pocket", /*french*/"les Poches de @", /*spanish*/"el bolsillo de @"},
   });
 
     hintTable[KOKIRI_FOREST] = HintText::Exclude({
@@ -722,22 +722,22 @@ void HintTable_Init() {
 
     hintTable[SACRED_FOREST_MEADOW] = HintText::Exclude({
                      //obscure text
-                     Text{"Sacred Forest Meadow", /*french*/"le bosquet sacré", /*spanish*/"la pradera sagrada del bosque"},
+                     Text{"Sacred Forest Meadow", /*french*/"le Bosquet Sacré", /*spanish*/"la pradera sagrada del bosque"},
   });
 
     hintTable[HYRULE_FIELD] = HintText::Exclude({
                      //obscure text
-                     Text{"Hyrule Field", /*french*/"la plaine d'Hyrule", /*spanish*/"la Llanura de Hyrule"},
+                     Text{"Hyrule Field", /*french*/"la Plaine d'Hyrule", /*spanish*/"la Llanura de Hyrule"},
   });
 
     hintTable[LAKE_HYLIA] = HintText::Exclude({
                      //obscure text
-                     Text{"Lake Hylia", /*french*/"le lac Hylia", /*spanish*/"el Lago Hylia"},
+                     Text{"Lake Hylia", /*french*/"le Lac Hylia", /*spanish*/"el Lago Hylia"},
   });
 
     hintTable[GERUDO_VALLEY] = HintText::Exclude({
                      //obscure text
-                     Text{"Gerudo Valley", /*french*/"la vallée Gerudo", /*spanish*/"el Valle Gerudo"},
+                     Text{"Gerudo Valley", /*french*/"la Vallée Gerudo", /*spanish*/"el Valle Gerudo"},
   });
 
     hintTable[GERUDO_FORTRESS] = HintText::Exclude({
@@ -747,12 +747,12 @@ void HintTable_Init() {
 
     hintTable[HAUNTED_WASTELAND] = HintText::Exclude({
                      //obscure text
-                     Text{"Haunted Wasteland", /*french*/"le désert hanté", /*spanish*/"el desierto encantado"},
+                     Text{"Haunted Wasteland", /*french*/"le Désert Hanté", /*spanish*/"el desierto encantado"},
   });
 
     hintTable[DESERT_COLOSSUS] = HintText::Exclude({
                      //obscure text
-                     Text{"Desert Colossus", /*french*/"le colosse du désert", /*spanish*/"el Coloso del Desierto"},
+                     Text{"Desert Colossus", /*french*/"le Colosse du Désert", /*spanish*/"el Coloso del Desierto"},
   });
 
     hintTable[THE_MARKET] = HintText::Exclude({
@@ -767,7 +767,7 @@ void HintTable_Init() {
 
     hintTable[HYRULE_CASTLE] = HintText::Exclude({
                      //obscure text
-                     Text{"Hyrule Castle", /*french*/"le château d'Hyrule", /*spanish*/"el Castillo de Hyrule"},
+                     Text{"Hyrule Castle", /*french*/"le Château d'Hyrule", /*spanish*/"el Castillo de Hyrule"},
   });
 
     hintTable[OUTSIDE_GANONS_CASTLE] = HintText::Exclude({
@@ -777,27 +777,27 @@ void HintTable_Init() {
 
     hintTable[KAKARIKO_VILLAGE] = HintText::Exclude({
                      //obscure text
-                     Text{"Kakariko Village", /*french*/"le village Cocorico", /*spanish*/"Kakariko"},
+                     Text{"Kakariko Village", /*french*/"le Village Cocorico", /*spanish*/"Kakariko"},
   });
 
     hintTable[THE_GRAVEYARD] = HintText::Exclude({
                      //obscure text
-                     Text{"the Graveyard", /*french*/"le cimetière", /*spanish*/"el cementerio"},
+                     Text{"the Graveyard", /*french*/"le Cimetière", /*spanish*/"el cementerio"},
   });
 
     hintTable[DEATH_MOUNTAIN_TRAIL] = HintText::Exclude({
                      //obscure text
-                     Text{"Death Mountain Trail", /*french*/"le chemin du mont de la Mort", /*spanish*/"el sendero de la Montaña de la Muerte"},
+                     Text{"Death Mountain Trail", /*french*/"le Chemin du Péril", /*spanish*/"el sendero de la Montaña de la Muerte"},
   });
 
     hintTable[GORON_CITY] = HintText::Exclude({
                      //obscure text
-                     Text{"Goron City", /*french*/"le village Goron", /*spanish*/"la Ciudad Goron"},
+                     Text{"Goron City", /*french*/"le Village Goron", /*spanish*/"la Ciudad Goron"},
   });
 
     hintTable[DEATH_MOUNTAIN_CRATER] = HintText::Exclude({
                      //obscure text
-                     Text{"Death Mountain Crater", /*french*/"le cratère du mont de la Mort", /*spanish*/"el cráter de la Montaña de la Muerte"},
+                     Text{"Death Mountain Crater", /*french*/"le Cratère du Péril", /*spanish*/"el cráter de la Montaña de la Muerte"},
   });
 
     hintTable[ZORAS_RIVER] = HintText::Exclude({
@@ -807,17 +807,17 @@ void HintTable_Init() {
 
     hintTable[ZORAS_DOMAIN] = HintText::Exclude({
                      //obscure text
-                     Text{"Zora's Domain", /*french*/"le domaine des Zoras", /*spanish*/"la Región de los Zora"},
+                     Text{"Zora's Domain", /*french*/"le Domaine Zora", /*spanish*/"la Región de los Zora"},
   });
 
     hintTable[ZORAS_FOUNTAIN] = HintText::Exclude({
                      //obscure text
-                     Text{"Zora's Fountain", /*french*/"la fontaine Zora", /*spanish*/"la Fuente Zora"},
+                     Text{"Zora's Fountain", /*french*/"la Fontaine Zora", /*spanish*/"la Fuente Zora"},
   });
 
     hintTable[LON_LON_RANCH] = HintText::Exclude({
                      //obscure text
-                     Text{"Lon Lon Ranch", /*french*/"le ranch Lon Lon", /*spanish*/"el Rancho Lon Lon"},
+                     Text{"Lon Lon Ranch", /*french*/"le Ranch Lon Lon", /*spanish*/"el Rancho Lon Lon"},
   });
 
 
@@ -837,42 +837,42 @@ void HintTable_Init() {
 
     hintTable[KF_MIDOS_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Mido's house", /*french*/"la #cabane du Grand Mido#", /*spanish*/"la casa de Mido"},
+                     Text{"Mido's house", /*french*/"la #Cabane du Grand Mido#", /*spanish*/"la casa de Mido"},
   });
 
     hintTable[KF_SARIAS_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Saria's House", /*french*/"la #cabane de Saria#", /*spanish*/"la casa de Saria"},
+                     Text{"Saria's House", /*french*/"la #Cabane de Saria#", /*spanish*/"la casa de Saria"},
   });
 
     hintTable[KF_HOUSE_OF_TWINS] = HintText::Region({
                      //obscure text
-                     Text{"the #House of Twins#", /*french*/"la #cabane des jumelles#", /*spanish*/"la casa de las gemelas"},
+                     Text{"the #House of Twins#", /*french*/"la #Cabane des Jumelles#", /*spanish*/"la casa de las gemelas"},
   });
 
     hintTable[KF_KNOW_IT_ALL_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Know-It-All Brothers' House", /*french*/"la #cabane des frères Je-Sais-Tout#", /*spanish*/"la casa de los hermanos Sabelotodo"},
+                     Text{"Know-It-All Brothers' House", /*french*/"la #Cabane des frères Je-Sais-Tout#", /*spanish*/"la casa de los hermanos Sabelotodo"},
   });
 
     hintTable[KF_KOKIRI_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Kokiri Shop#", /*french*/"le #magasin Kokiri#", /*spanish*/"la tienda kokiri"},
+                     Text{"the #Kokiri Shop#", /*french*/"le #Magasin Kokiri#", /*spanish*/"la tienda kokiri"},
   });
 
     hintTable[LH_LAB] = HintText::Region({
                      //obscure text
-                     Text{"the #Lakeside Laboratory#", /*french*/"le #laboratoire du lac#", /*spanish*/"el laboratorio del lago"},
+                     Text{"the #Lakeside Laboratory#", /*french*/"le #Laboratoire du Lac#", /*spanish*/"el laboratorio del lago"},
   });
 
     hintTable[LH_FISHING_HOLE] = HintText::Region({
                      //obscure text
-                     Text{"the #Fishing Pond#", /*french*/"l'#étang#", /*spanish*/"el estanque"},
+                     Text{"the #Fishing Pond#", /*french*/"l'#Étang#", /*spanish*/"el estanque"},
   });
 
     hintTable[GV_CARPENTER_TENT] = HintText::Region({
                      //obscure text
-                     Text{"the #Carpenters' tent#", /*french*/"la #tente des charpentiers#", /*spanish*/"la #tienda de campaña de los carpinteros#"},
+                     Text{"the #Carpenters' tent#", /*french*/"la #Tente des charpentiers#", /*spanish*/"la #tienda de campaña de los carpinteros#"},
   });
 
     hintTable[MARKET_GUARD_HOUSE] = HintText::Region({
@@ -882,7 +882,7 @@ void HintTable_Init() {
 
     hintTable[MARKET_MASK_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Happy Mask Shop#", /*french*/"la #foire aux masques#", /*spanish*/"la tienda de La Máscara Feliz"},
+                     Text{"the #Happy Mask Shop#", /*french*/"la #Foire Aux Masques#", /*spanish*/"la tienda de La Máscara Feliz"},
   });
 
     hintTable[MARKET_BOMBCHU_BOWLING] = HintText::Region({
@@ -907,27 +907,27 @@ void HintTable_Init() {
 
     hintTable[MARKET_MAN_IN_GREEN_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Man in Green's House", /*french*/"la #maison de l'homme en vert#", /*spanish*/"la casa del hombre de verde"},
+                     Text{"Man in Green's House", /*french*/"la #Maison de l'Homme en Vert#", /*spanish*/"la casa del hombre de verde"},
   });
 
     hintTable[KAK_WINDMILL] = HintText::Region({
                      //obscure text
-                     Text{"the #Windmill#", /*french*/"le #moulin#", /*spanish*/"el #molino#"},
+                     Text{"the #Windmill#", /*french*/"le #Moulin#", /*spanish*/"el #molino#"},
   });
 
     hintTable[KAK_CARPENTER_BOSS_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"the #Carpenters' Boss House#", /*french*/"la #maison du chef des ouvriers#", /*spanish*/"la casa del capataz de los carpinteros"},
+                     Text{"the #Carpenters' Boss House#", /*french*/"la #Maison du Chef des ouvriers#", /*spanish*/"la casa del capataz de los carpinteros"},
   });
 
     hintTable[KAK_HOUSE_OF_SKULLTULA] = HintText::Region({
                      //obscure text
-                     Text{"the #House of Skulltula#", /*french*/"la #maison des Skulltulas#", /*spanish*/"la casa de las Skulltulas"},
+                     Text{"the #House of Skulltula#", /*french*/"la #Maison des Skulltulas#", /*spanish*/"la casa de las Skulltulas"},
   });
 
     hintTable[KAK_IMPAS_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Impa's House", /*french*/"la #maison d'Impa#", /*spanish*/"la casa de Impa"},
+                     Text{"Impa's House", /*french*/"la #Maison d'Impa#", /*spanish*/"la casa de Impa"},
   });
 
     hintTable[KAK_IMPAS_HOUSE_BACK] = HintText::Region({
@@ -942,47 +942,47 @@ void HintTable_Init() {
 
     hintTable[GRAVEYARD_DAMPES_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Dampé's Hut", /*french*/"la #cabane du fossoyeur#", /*spanish*/"la cabaña de Dampé"},
+                     Text{"Dampé's Hut", /*french*/"la #Cabane du Fossoyeur#", /*spanish*/"la cabaña de Dampé"},
   });
 
     hintTable[GC_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Goron Shop#", /*french*/"la #boutique Goron#", /*spanish*/"la #tienda goron#"},
+                     Text{"the #Goron Shop#", /*french*/"la #Boutique Goron#", /*spanish*/"la #tienda goron#"},
   });
 
     hintTable[ZD_SHOP] = HintText::Region({
                      //obscure text
-                     Text{"the #Zora Shop#", /*french*/"la #boutique Zora#", /*spanish*/"la #tienda zora#"},
+                     Text{"the #Zora Shop#", /*french*/"la #Boutique Zora#", /*spanish*/"la #tienda zora#"},
   });
 
     hintTable[LLR_TALONS_HOUSE] = HintText::Region({
                      //obscure text
-                     Text{"Talon's House", /*french*/"la #maison de Talon#", /*spanish*/"la casa de Talon"},
+                     Text{"Talon's House", /*french*/"la #Maison de Talon#", /*spanish*/"la casa de Talon"},
   });
 
     hintTable[LLR_STABLES] = HintText::Region({
                      //obscure text
-                     Text{"a #stable#", /*french*/"l'#étable#", /*spanish*/"el establo"},
+                     Text{"a #stable#", /*french*/"l'#Étable#", /*spanish*/"el establo"},
   });
 
     hintTable[LLR_TOWER] = HintText::Region({
                      //obscure text
-                     Text{"the #Lon Lon Tower#", /*french*/"le #silo du ranch Lon Lon#", /*spanish*/"la torre Lon Lon"},
+                     Text{"the #Lon Lon Tower#", /*french*/"le #silo du Ranch Lon Lon#", /*spanish*/"la torre Lon Lon"},
   });
 
     hintTable[MARKET_BAZAAR] = HintText::Region({
                      //obscure text
-                     Text{"the #Market Bazaar#", /*french*/"le #bazar de la Place du Marché#", /*spanish*/"el bazar de la plaza del mercado"},
+                     Text{"the #Market Bazaar#", /*french*/"le #Bazar de la Place du Marché#", /*spanish*/"el bazar de la plaza del mercado"},
   });
 
     hintTable[MARKET_SHOOTING_GALLERY] = HintText::Region({
                      //obscure text
-                     Text{"a #Slingshot Shooting Gallery#", /*french*/"le #jeu d'adresse de la Place du Marché#", /*spanish*/"el Tiro al Blanco con tirachinas"},
+                     Text{"a #Slingshot Shooting Gallery#", /*french*/"le #Jeu d'Adresse de la Place du Marché#", /*spanish*/"el Tiro al Blanco con tirachinas"},
   });
 
     hintTable[KAK_BAZAAR] = HintText::Region({
                      //obscure text
-                     Text{"the #Kakariko Bazaar#", /*french*/"le #bazar de Cocorico#", /*spanish*/"el bazar de Kakariko"},
+                     Text{"the #Kakariko Bazaar#", /*french*/"le #Bazar de Cocorico#", /*spanish*/"el bazar de Kakariko"},
   });
 
     hintTable[KAK_POTION_SHOP_FRONT] = HintText::Region({
@@ -1002,32 +1002,32 @@ void HintTable_Init() {
 
     hintTable[COLOSSUS_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée du colosse#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[HC_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée du château#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[OGC_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée des ruines#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[DMC_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée du volcan#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[DMT_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée de la montagne#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[ZF_GREAT_FAIRY_FOUNTAIN] = HintText::Region({
                      //obscure text
-                     Text{"a #Great Fairy Fountain#", /*french*/"la #grande fée de la fontaine#", /*spanish*/"una fuente de la Gran Hada"},
+                     Text{"a #Great Fairy Fountain#", /*french*/"une #Fontaine Royale des Fées#", /*spanish*/"una fuente de la Gran Hada"},
   });
 
     hintTable[GRAVEYARD_SHIELD_GRAVE] = HintText::Region({
@@ -1037,17 +1037,17 @@ void HintTable_Init() {
 
     hintTable[GRAVEYARD_HEART_PIECE_GRAVE] = HintText::Region({
                      //obscure text
-                     Text{"a chest spawned by #Sun's Song#", /*french*/"le #tombeau avec un mort#", /*spanish*/"la #tumba de la Canción del Sol#"},
+                     Text{"a chest spawned by #Sun's Song#", /*french*/"un #coffre apparaît avec le Chant du Soleil#", /*spanish*/"la #tumba de la Canción del Sol#"},
   });
 
     hintTable[GRAVEYARD_COMPOSERS_GRAVE] = HintText::Region({
                      //obscure text
-                     Text{"the #Composers' Grave#", /*french*/"la #tombe royale#", /*spanish*/"el #Panteón Real#"},
+                     Text{"the #Composers' Grave#", /*french*/"la #Tombe royale#", /*spanish*/"el #Panteón Real#"},
   });
 
     hintTable[GRAVEYARD_DAMPES_GRAVE] = HintText::Region({
                      //obscure text
-                     Text{"Dampé's Grave", /*french*/"la #tombe d'Igor#", /*spanish*/"la #tumba de Dampé#"},
+                     Text{"Dampé's Grave", /*french*/"la #Tombe d'Igor#", /*spanish*/"la #tumba de Dampé#"},
   });
 
     hintTable[DMT_COW_GROTTO] = HintText::Region({
@@ -1291,7 +1291,7 @@ void HintTable_Init() {
 
     hintTable[JUNK15] = HintText::Junk({
                      //obscure text
-                     Text{"They say that Lon Lon Ranch prospered under Ingo.", /*french*/"Selon moi, le ranch Lon Lon était plus prospère sous Ingo.", /*spanish*/"Según dicen, el Rancho Lon Lon prosperó gracias a Ingo."},
+                     Text{"They say that Lon Lon Ranch prospered under Ingo.", /*french*/"Selon moi, le Ranch Lon Lon était plus prospère sous Ingo.", /*spanish*/"Según dicen, el Rancho Lon Lon prosperó gracias a Ingo."},
     });
 
     hintTable[JUNK16] = HintText::Junk({
@@ -1815,7 +1815,7 @@ void HintTable_Init() {
     hintTable[BRIDGE_VANILLA_HINT] = HintText::Bridge({
                      //obscure text
                      Text{"The awakened ones require&the Shadow and Spirit Medallions&as well as the Light Arrows.",
-                /*french*/"Les êtres de sagesse attendront&le héros muni des #médaillons de l'ombre et&l'esprit# et des #flèches de lumière#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni des #Médaillons de&l'Ombre et l'Esprit# et des&#Flèches de Lumière#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga tanto el #Medallón de las&Sombras y el del Espíritu# junto a la #flecha de luz#."},
     });
 
@@ -1836,7 +1836,7 @@ void HintTable_Init() {
     hintTable[BRIDGE_REWARDS_HINT] = HintText::Bridge({
                      //obscure text                                                  singular                     plural
                      Text{"The awakened ones will await&for the Hero to collect&%d |Spiritual Stone or Medallion|Spiritual Stones and Medallions|.",
-                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale&ou Médaillon|Pierres&Ancestrales&ou Médaillons|#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Pierre&Ancestrale ou Médaillon|Pierres&Ancestrales ou Médaillons|#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |piedra espiritual o medallón|piedras espirtuales y medallones|#."},
     });
 
@@ -1850,7 +1850,7 @@ void HintTable_Init() {
     hintTable[BRIDGE_TOKENS_HINT] = HintText::Bridge({
                      //obscure text
                      Text{"The awakened ones will await&for the Hero to collect&%d |Gold Skulltula Token|Gold Skulltula Tokens|.",
-                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Symbole|Symboles| de&Skulltula d'or#.",
+                /*french*/"Les êtres de sagesse attendront&le héros muni de #%d |Symbole|Symboles| &de Skulltula d'or#.",
                /*spanish*/"Los sabios aguardarán a que el héroe&obtenga #%d |símbolo|símbolos| de&skulltula dorada#."},
     });
 
@@ -1868,42 +1868,42 @@ void HintTable_Init() {
     hintTable[GANON_BK_VANILLA_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the evil one's key will&be kept in a big chest&inside its tower.",
-                /*french*/"Aussi, la clé du #Malin# sera encoffrée #dans sa tour#.",
+                /*french*/"Aussi, la clé du #Malin# sera&encoffrée #dans sa tour#.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en un gran cofre de #su torre#."},
     });
 
     hintTable[GANON_BK_OWN_DUNGEON_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the evil one's key will&be hidden somewhere inside&its castle.",
-                /*french*/"Aussi, la clé du #Malin# sera cachée #dans son vaste château#.",
+                /*french*/"Aussi, la clé du #Malin# sera&cachée #dans son vaste château#.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en #algún lugar de su castillo#."},
     });
 
     hintTable[GANON_BK_OVERWORLD_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the #evil one#'s key will be hidden #outside of dungeons# in Hyrule.",
-                /*french*/"Aussi, la clé du #Malin# se trouve #hors des donjons# d'Hyrule.",
+                /*french*/"Aussi, la clé du #Malin# se&trouve #hors des donjons# d'Hyrule.",
                /*spanish*/"Y la llave del #señor del mal# aguardará #fuera de las mazmorras# de Hyrule."},
     });
 
     hintTable[GANON_BK_ANY_DUNGEON_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the #evil one#'s key will be hidden #inside a dungeon# in Hyrule.",
-                /*french*/"Aussi, la clé du #Malin# se trouve #dans un donjon# d'Hyrule.",
+                /*french*/"Aussi, la clé du #Malin# se&trouve #dans un donjon# d'Hyrule.",
                /*spanish*/"Y la llave del #señor del mal# aguardará #en una mazmorra# de Hyrule."},
     });
 
     hintTable[GANON_BK_ANYWHERE_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the #evil one#'s key will be hidden somewhere #in Hyrule#.",
-                /*french*/"Aussi, la clé du #Malin# se trouve quelque part #dans Hyrule#.",
+                /*french*/"Aussi, la clé du #Malin# se&trouve quelque part #dans Hyrule#.",
                /*spanish*/"Y la llave del #señor del mal# aguardará en #cualquier lugar de Hyrule#."},
     });
 
     hintTable[GANON_BK_TRIFORCE_HINT] = HintText::GanonsBossKey({
                      //obscure text
                      Text{"And the #evil one#'s key will be given to the Hero once the #Triforce# is completed.",
-                /*french*/"Aussi, la clé du #Malin# se révèlera une fois la #Triforce# assemblée.",
+                /*french*/"Aussi, la clé du #Malin# se&révèlera une fois la #Triforce#&assemblée.",
                /*spanish*/"Y el héroe recibirá la llave del #señor del mal# cuando haya completado la #Trifuerza#."},
     });
 
@@ -2018,7 +2018,7 @@ void HintTable_Init() {
     hintTable[ADULT_ALTAR_TEXT_END] = HintText::Altar({
                      //obscure text
                      Text{"$kTogether with the Hero of Time,&the awakened ones will return&the light of peace to the world...",
-                /*french*/"Ensemble avec le Héros du Temps,&ces Sages emprisonneront le mal et&réinstaureront la lumière de paix dans&le monde...",
+                /*french*/"$kEnsemble avec le Héros du &Temps, ces Sages emprisonneront&le mal et réinstaureront la&lumière de paix dans le monde...",
                /*spanish*/"Con el Héroe del Tiempo, aquellos&que despierten detendrán el mal y&volverán al mundo de luz la paz..."},
     });
 

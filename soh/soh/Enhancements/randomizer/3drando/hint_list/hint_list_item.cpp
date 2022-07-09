@@ -846,7 +846,7 @@ void HintTable_Init_Item() {
     hintTable[SUNS_SONG] = HintText::Item({
                        //obscure text
                        Text{"Sunny Day",         /*french*/"Zénith",               /*spanish*/"un día soleado"},
-                       Text{"the ReDead's bane", /*french*/"le fléau des Remorts", /*spanish*/"la destructora de Redeads"},
+                       Text{"the ReDead's bane", /*french*/"le fléau des Éffrois", /*spanish*/"la destructora de Redeads"},
                        Text{"the Gibdo's bane",  /*french*/"le fléau des Gibdo",   /*spanish*/"la destructora de Gibdos"},
                      }, {
                        //ambiguous text

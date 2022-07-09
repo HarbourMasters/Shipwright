@@ -6,7 +6,7 @@ void HintTable_Init_Exclude_Dungeon() {
   ---------------------------*/
     hintTable[DEKU_TREE_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
+                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le coeur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
   });
 
     hintTable[DEKU_TREE_SLINGSHOT_CHEST] = HintText::Exclude({
@@ -37,7 +37,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DEKU_TREE_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le cœur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
+                       Text{"in the #center of the Deku Tree# lies", /*french*/"#le coeur de l'Arbre Mojo# recèle", /*spanish*/"al #centro del Gran Árbol Deku# yace"},
   });
 
     hintTable[DEKU_TREE_MQ_COMPASS_CHEST] = HintText::Exclude({
@@ -75,7 +75,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DEKU_TREE_GS_BASEMENT_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
+                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au coeur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
   });
 
     hintTable[DEKU_TREE_GS_BASEMENT_GATE] = HintText::Exclude({
@@ -106,7 +106,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DEKU_TREE_MQ_GS_BASEMENT_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au cœur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
+                       Text{"a #spider deep within the Deku Tree# hides", /*french*/"une #Skulltula au coeur de l'Arbre Mojo# a", /*spanish*/"una #Skulltula en las profundidades del Árbol Deku# otorga"},
   });
 
     hintTable[DEKU_TREE_MQ_DEKU_SCRUB] = HintText::Exclude({
@@ -203,7 +203,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_GS_BACK_ROOM] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider behind a statue# in Dodongo's Cavern holds", /*french*/"une #Skulltula au cœur de la Caverne Dodongo# a", /*spanish*/"una #Skulltula tras una estatua# de la Cueva de los Dodongos otorga"},
+                       Text{"a #spider behind a statue# in Dodongo's Cavern holds", /*french*/"une #Skulltula au coeur de la Caverne Dodongo# a", /*spanish*/"una #Skulltula tras una estatua# de la Cueva de los Dodongos otorga"},
   });
 
     hintTable[DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = HintText::Exclude({
@@ -239,7 +239,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_SIDE_ROOM_NEAR_DODONGOS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
+                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au coeur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
   });
 
     hintTable[DODONGOS_CAVERN_DEKU_SCRUB_NEAR_BOMB_BAG_RIGHT] = HintText::Exclude({
@@ -270,7 +270,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[DODONGOS_CAVERN_MQ_DEKU_SCRUB_SIDE_ROOM_NEAR_LOWER_LIZALFOS] = HintText::Exclude({
                        //obscure text
-                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au cœur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
+                       Text{"a #scrub guarded by Lizalfos# sells", /*french*/"la #peste Mojo au coeur de la Caverne Dodongo# vend", /*spanish*/"un #deku custodiado por Lizalfos# vende"},
   });
 
   /*--------------------------
@@ -324,12 +324,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_SWITCHES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #pair of digested cows# hold", /*french*/"#deux bœufs digérés# détiennent", /*spanish*/"un #par de digeridas vacas# otorgan"},
+                       Text{"a #pair of digested cows# hold", /*french*/"#deux boeufs digérés# détiennent", /*spanish*/"un #par de digeridas vacas# otorgan"},
   });
 
     hintTable[JABU_JABUS_BELLY_MQ_BASEMENT_NEAR_VINES_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"a #pair of digested cows# hold", /*french*/"#deux bœufs digérés# détiennent", /*spanish*/"un #par de digeridas vacas# otorgan"},
+                       Text{"a #pair of digested cows# hold", /*french*/"#deux boeufs digérés# détiennent", /*spanish*/"un #par de digeridas vacas# otorgan"},
   });
 
     hintTable[JABU_JABUS_BELLY_MQ_NEAR_BOSS_CHEST] = HintText::Exclude({
@@ -687,10 +687,10 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_MQ_MEGATON_HAMMER_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"the #Flare Dancer in the depths of a volcano# guards", /*french*/"le #Danse-Flamme au cœur du volcan# a", /*spanish*/"el #Bailafuego en lo profundo del volcán# esconde"},
+                       Text{"the #Flare Dancer in the depths of a volcano# guards", /*french*/"le #Danse-Flamme au coeur du volcan# a", /*spanish*/"el #Bailafuego en lo profundo del volcán# esconde"},
                      }, {},
                        //clear text
-                       Text{"the #Flare Dancer in the depths of the Fire Temple# guards", /*french*/"le #Danse-Flamme au cœur du volcan# a", /*spanish*/"el #Bailafuego en lo profundo del Templo del Fuego# esconde"}
+                       Text{"the #Flare Dancer in the depths of the Fire Temple# guards", /*french*/"le #Danse-Flamme au coeur du volcan# a", /*spanish*/"el #Bailafuego en lo profundo del Templo del Fuego# esconde"}
   );
 
     hintTable[FIRE_TEMPLE_MQ_COMPASS_CHEST] = HintText::Exclude({
@@ -715,7 +715,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[FIRE_TEMPLE_MQ_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"using a #hammer in the depths of the Fire Temple# reveals", "frapper du #marteau au cœur du volcan# révèle", /*spanish*/"usar el #martillo en lo profundo del Templo del Fuego# revela"},
+                       Text{"using a #hammer in the depths of the Fire Temple# reveals", "frapper du #marteau au coeur du volcan# révèle", /*spanish*/"usar el #martillo en lo profundo del Templo del Fuego# revela"},
   });
 
     hintTable[FIRE_TEMPLE_MQ_BOSS_KEY_CHEST] = HintText::Exclude({
@@ -828,7 +828,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[WATER_TEMPLE_CENTRAL_PILLAR_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
+                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #coeur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
   });
 
     hintTable[WATER_TEMPLE_CRACKED_WALL_CHEST] = HintText::Exclude({
@@ -848,12 +848,12 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[WATER_TEMPLE_MQ_CENTRAL_PILLAR_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #cœur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
+                       Text{"in the #depths of the Water Temple# lies", /*french*/"le #coeur du Temple de l'Eau# cache", /*spanish*/"en las #profundidades del Templo del Agua# yace"},
   });
 
     hintTable[WATER_TEMPLE_MQ_BOSS_KEY_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"fire in the Water Temple unlocks a #vast gate# revealing a chest with", /*french*/"des #flammes au cœur du Temple de l'Eau# révèlent", /*spanish*/"el fuego en el Templo del Agua alza una #gran valla# con"},
+                       Text{"fire in the Water Temple unlocks a #vast gate# revealing a chest with", /*french*/"des #flammes au coeur du Temple de l'Eau# révèlent", /*spanish*/"el fuego en el Templo del Agua alza una #gran valla# con"},
   });
 
     hintTable[WATER_TEMPLE_MQ_LONGSHOT_CHEST] = HintText::Exclude({
@@ -1442,7 +1442,7 @@ void HintTable_Init_Exclude_Dungeon() {
 
     hintTable[BOTTOM_OF_THE_WELL_MAP_CHEST] = HintText::Exclude({
                        //obscure text
-                       Text{"in the #depths of the well# lies", /*french*/"#dans le cœur du Puits# gît", /*spanish*/"en las #profundidades del pozo# yace"},
+                       Text{"in the #depths of the well# lies", /*french*/"#dans le coeur du Puits# gît", /*spanish*/"en las #profundidades del pozo# yace"},
   });
 
     hintTable[BOTTOM_OF_THE_WELL_FIRE_KEESE_CHEST] = HintText::Exclude({
