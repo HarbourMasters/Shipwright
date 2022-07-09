@@ -2364,7 +2364,7 @@ GetItemID Randomizer::GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId)
             return GI_NUTS_10;
 
         case RG_DEKU_SEEDS_30:
-            return GI_SEEDS_30;
+            return CUR_UPG_VALUE(UPG_BULLET_BAG) ? GI_SEEDS_30 : GI_RUPEE_BLUE;
 
         case RG_DEKU_STICK_1:
             return GI_STICKS_1;
