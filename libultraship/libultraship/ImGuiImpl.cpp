@@ -806,6 +806,7 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                Tooltip("Allows the D-pad to be used as extra C buttons\nNote: Incompatible with D-pad on pause and file select");
 
                 ImGui::Separator();
 
@@ -856,7 +857,7 @@ namespace SohImGui {
                 Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetS32("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
-                Tooltip("Activates multi-sample anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
+                Tooltip("Activates multi-sample anti-aliasing when above 1x\nup to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
                 if (impl.backend == Backend::DX11)
@@ -882,9 +883,11 @@ namespace SohImGui {
                     }
 
                     Tooltip("When Interpolation FPS setting is at least this threshold,\n"
-                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
-                        "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                        "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS)\n"
+                        "in order to avoid jitter.This setting allows the CPU\n"
+                        "to work on one frame while GPU works on the previous frame.\n"
+                        "This setting should be used when your computer is too slow\n"
+                        "to do CPU + GPU work in time.");
                 }
 
                 EXPERIMENTAL();
@@ -912,22 +915,22 @@ namespace SohImGui {
                         EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                         EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "");
                         EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
-                        Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
+                        Tooltip("Allows you to change the number of days it takes for\nBiggoron to forge the Biggoron Sword");
                         EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                         EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                         EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
                         Tooltip("Prevent forced Navi conversations");
                         EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
-                        Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
+                        Tooltip("Stops the game from freezing the player\nwhen picking up Gold Skulltulas");
                         EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                        Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
+                        Tooltip("Wearing the Bunny Hood grants a speed\nincrease like in Majora's Mask");
                         EnhancementCheckbox("Fast Chests", "gFastChests");
                         Tooltip("Kick open every chest");
                         EnhancementCheckbox("Fast Drops", "gFastDrops");
                         Tooltip("Skip first-time pickup messages for consumable items");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
-                        Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
+                        Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         
                         ImGui::EndMenu();
                     }
@@ -944,7 +947,7 @@ namespace SohImGui {
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
-                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series");
+                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
                         
                         if (ImGui::BeginMenu("Potion Values"))
                         {
@@ -982,7 +985,7 @@ namespace SohImGui {
                             Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Half Milk.\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
                             EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
                             Tooltip("Changes the amount of health restored by Half Milk");
                             EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
@@ -1021,15 +1024,15 @@ namespace SohImGui {
                     }
                     
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
-                    Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
-                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be\nshared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
-                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                     ImGui::EndMenu();
                 }
 
@@ -1080,7 +1083,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
                     Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
-                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that\nwere covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
@@ -1096,17 +1099,17 @@ namespace SohImGui {
                     EnhancementCheckbox("Fix L&Z Page switch in Pause menu", "gNGCKaleidoSwitcher");
                     Tooltip("Makes L and R switch pages like on the GameCube\nZ opens the Debug Menu instead");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                    Tooltip("Removes the dungeon entrance icon on the top-left corner of the screen when no dungeon is present on the current map");
+                    Tooltip("Removes the dungeon entrance icon on the top-left corner\nof the screen when no dungeon is present on the current map");
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
-                    Tooltip("Re-enables the two-handed idle animation, a seemingly finished animation that was disabled on accident in the original game");
+                    Tooltip("Re-enables the two-handed idle animation, a seemingly\nfinished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
-                    Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
+                    Tooltip("Fixes a bug where the Gravedigging Tour Heart\nPiece disappears if the area reloads");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
-                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
+                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from\nbecoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
-                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected\nback at them with the Mirror Shield");
 
                     ImGui::EndMenu();
                 }
@@ -1116,11 +1119,11 @@ namespace SohImGui {
                     EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                     Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                     EnhancementCheckbox("Fish while hovering", "gHoverFishing");
-                    Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
+                    Tooltip("Restore a bug from NTSC 1.0 that allows casting\nthe Fishing Rod while using the Hover Boots");
                     EnhancementCheckbox("N64 Weird Frames", "gN64WeirdFrames");
                     Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
                     EnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB");
-                    Tooltip("Allows bombchus to explode out of bounds similar to GameCube and Wii VC");
+                    Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
 
                     ImGui::EndMenu();
                 }
@@ -1170,12 +1173,12 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
-                Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
+                Tooltip("Turns off the objects draw distance,\nmaking objects being visible from a longer range");
                 if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("The Kokiri are mystical beings that fade into view when approached Enabling this will remove their draw distance");
+                    Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
                 }
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
@@ -1205,7 +1208,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
-                Tooltip("Passive Infinite Sword Glitch. It makes your sword's swing effect and hitbox stay active indefinitely");
+                Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
@@ -1225,15 +1228,15 @@ namespace SohImGui {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select \n(Does not require the Debug Menu, but you will be unable to save there. You can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
+                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select\n(Does not require the Debug Menu, but you will be unable to save there\nYou can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
-                Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
+                Tooltip("Shows the stats window, with your FPS and frametimes,\nand the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
-                Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
+                Tooltip("Enables the console window, allowing you to input commands,\ntype help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
