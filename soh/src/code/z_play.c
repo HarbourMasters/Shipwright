@@ -392,7 +392,7 @@ void Gameplay_Init(GameState* thisx) {
 
         colHeader = BgCheck_GetCollisionHeader(&globalCtx->colCtx, BGCHECK_SCENE);
         // If the player's start cam is out of bounds, set it to 0xFF so it isn't used.
-        if (colHeader != NULL && ((player->actor.params & 0xFF) > colHeader->cameraDataListLen)) {
+        if (colHeader != NULL && ((player->actor.params & 0xFF) >= colHeader->cameraDataListLen)) {
             player->actor.params |= 0xFF;
         }
     }
