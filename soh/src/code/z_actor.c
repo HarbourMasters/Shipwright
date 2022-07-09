@@ -1411,7 +1411,7 @@ void func_8002DE04(GlobalContext* globalCtx, Actor* actorA, Actor* actorB) {
 }
 
 void func_8002DE74(GlobalContext* globalCtx, Player* player) {
-    if ((globalCtx->roomCtx.curRoom.unk_03 != 4) && func_800C0CB8(globalCtx)) {
+    if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_4) && func_800C0CB8(globalCtx)) {
         Camera_ChangeSetting(Gameplay_GetCamera(globalCtx, MAIN_CAM), CAM_SET_HORSE);
     }
 }
@@ -2673,7 +2673,8 @@ void func_8003115C(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** inv
 
     gDPPipeSync(POLY_XLU_DISP++);
 
-    if (globalCtx->roomCtx.curRoom.showInvisActors == 0) {
+    if (globalCtx->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) {
+        // Update both the color frame buffer and the z-buffer
         gDPSetOtherMode(POLY_XLU_DISP++,
                         G_AD_DISABLE | G_CD_MAGICSQ | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_NONE | G_TL_TILE |
                             G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE,
@@ -2709,7 +2710,9 @@ void func_8003115C(GlobalContext* globalCtx, s32 numInvisibleActors, Actor** inv
     // "Magic lens invisible Actor display END"
     gDPNoOpString(POLY_OPA_DISP++, "魔法のメガネ 見えないＡcｔｏｒ表示 END", numInvisibleActors);
 
-    if (globalCtx->roomCtx.curRoom.showInvisActors != 0) {
+    if (globalCtx->roomCtx.curRoom.lensMode != LENS_MODE_HIDE_ACTORS) {
+        // Draw the lens overlay to the color frame buffer
+
         gDPNoOpString(POLY_OPA_DISP++, "青い眼鏡(外側)", 0); // "Blue spectacles (exterior)"
 
         gDPPipeSync(POLY_XLU_DISP++);
@@ -2806,8 +2809,8 @@ void func_800315AC(GlobalContext* globalCtx, ActorContext* actorCtx) {
             if ((HREG(64) != 1) || ((HREG(65) != -1) && (HREG(65) != HREG(66))) || (HREG(71) == 0)) {
                 if ((actor->init == NULL) && (actor->draw != NULL) && (actor->flags & (ACTOR_FLAG_5 | ACTOR_FLAG_6))) {
                     if ((actor->flags & ACTOR_FLAG_7) &&
-                        ((globalCtx->roomCtx.curRoom.showInvisActors == 0) || (globalCtx->actorCtx.unk_03 != 0) ||
-                         (actor->room != globalCtx->roomCtx.curRoom.num))) {
+                        ((globalCtx->roomCtx.curRoom.lensMode == LENS_MODE_HIDE_ACTORS) ||
+                         (globalCtx->actorCtx.unk_03 != 0) || (actor->room != globalCtx->roomCtx.curRoom.num))) {
                         ASSERT(invisibleActorCounter < INVISIBLE_ACTOR_MAX);
                         invisibleActors[invisibleActorCounter] = actor;
                         invisibleActorCounter++;
