@@ -616,6 +616,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.eventChkInf[4] |= 0x20; // master sword pulled
         gSaveContext.eventChkInf[4] |= 0x8000; // entered master sword chamber
         gSaveContext.infTable[0] |= 1;
+        // RANDTODO: Don't skip this scene if Don't Skip Glitch Useful Cutscenes is enabled.
         gSaveContext.infTable[17] |= 0x400; // Darunia in Fire Temple
         gSaveContext.cutsceneIndex = 0;
         Flags_SetEventChkInf(5);
