@@ -1848,10 +1848,28 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
+        // always update "equips" as this is what is currently on the c-buttons
         for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) {
                 gSaveContext.equips.buttonItems[i] = ITEM_LONGSHOT;
                 Interface_LoadItemIcon1(globalCtx, i);
+            }
+        }
+        // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
+        if (gSaveContext.n64ddFlag && LINK_IS_CHILD) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
+                if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
+                    gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
+            }
+        }
+        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
+                if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
             }
         }
         return ITEM_NONE;
