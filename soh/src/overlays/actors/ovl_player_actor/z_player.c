@@ -5338,8 +5338,8 @@ void func_8083BCD0(Player* this, GlobalContext* globalCtx, s32 arg2) {
 s32 func_8083BDBC(Player* this, GlobalContext* globalCtx) {
     s32 sp2C;
 
-    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && (globalCtx->roomCtx.curRoom.unk_03 != 2) &&
-        (D_808535E4 != 7) &&
+    if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) &&
+        (globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) && (D_808535E4 != 7) &&
         (SurfaceType_GetSlope(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId) != 1)) {
         sp2C = this->unk_84B[this->unk_846];
 
@@ -5538,7 +5538,8 @@ s32 func_8083C544(Player* this, GlobalContext* globalCtx) {
 }
 
 s32 func_8083C61C(GlobalContext* globalCtx, Player* this) {
-    if ((globalCtx->roomCtx.curRoom.unk_03 != 2) && (this->actor.bgCheckFlags & 1) && (AMMO(ITEM_NUT) != 0)) {
+    if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+        (this->actor.bgCheckFlags & 1) && (AMMO(ITEM_NUT) != 0)) {
         func_80835C58(globalCtx, this, func_8084E604, 0);
         func_80832264(globalCtx, this, &gPlayerAnim_003048);
         this->unk_6AD = 0;
@@ -7158,9 +7159,8 @@ void func_808409CC(GlobalContext* globalCtx, Player* this) {
         this->stateFlags2 |= PLAYER_STATE2_28;
         if (this->stateFlags1 & PLAYER_STATE1_11) {
             anim = func_80833338(this);
-        }
-        else {
-            sp38 = globalCtx->roomCtx.curRoom.unk_02;
+        } else {
+            sp38 = globalCtx->roomCtx.curRoom.behaviorType2;
             if (heathIsCritical) {
                 if (this->unk_6AC >= 0) {
                     sp38 = 7;
@@ -8398,7 +8398,7 @@ static struct_80832924 D_808545F0[] = {
 
 void func_80843CEC(Player* this, GlobalContext* globalCtx) {
     if (this->currentTunic != PLAYER_TUNIC_GORON && CVar_GetS32("gSuperTunic", 0) == 0) {
-        if ((globalCtx->roomCtx.curRoom.unk_02 == 3) || (D_808535E4 == 9) ||
+        if ((globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) || (D_808535E4 == 9) ||
             ((func_80838144(D_808535E4) >= 0) &&
                 !SurfaceType_IsWallDamage(&globalCtx->colCtx, this->actor.floorPoly, this->actor.floorBgId))) {
             func_8083821C(this);
@@ -9919,13 +9919,13 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
                 else if (!sp1C && (!(this->stateFlags1 & PLAYER_STATE1_22) || func_80833BCC(this) ||
                     !Player_IsChildWithHylianShield(this))) {
                     if ((!(this->stateFlags1 & PLAYER_STATE1_14) && (sp20 <= 0) &&
-                        (func_8008E9C4(this) ||
-                            ((D_808535E4 != 7) &&
-                                (func_80833B2C(this) || ((globalCtx->roomCtx.curRoom.unk_03 != 2) &&
-                                    !(this->stateFlags1 & PLAYER_STATE1_22) && (sp20 == 0))))))) {
+                         (func_8008E9C4(this) ||
+                          ((D_808535E4 != 7) && (func_80833B2C(this) ||
+                                                 ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+                                                  !(this->stateFlags1 & PLAYER_STATE1_22) && (sp20 == 0))))))) {
                         doAction = DO_ACTION_ATTACK;
-                    }
-                    else if ((globalCtx->roomCtx.curRoom.unk_03 != 2) && func_80833BCC(this) && (sp20 > 0)) {
+                    } else if ((globalCtx->roomCtx.curRoom.behaviorType1 != ROOM_BEHAVIOR_TYPE1_2) &&
+                               func_80833BCC(this) && (sp20 > 0)) {
                         doAction = DO_ACTION_JUMP;
                     }
                     else if ((this->heldItemActionParam >= PLAYER_AP_SWORD_MASTER) ||

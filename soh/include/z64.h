@@ -890,13 +890,10 @@ void* xluDL;
 
 typedef struct {
     /* 0x00 */ u8    type;
-    /* 0x01 */ u8    num; // number of dlist entries
-    /* 0x04 */ void* start;
-    /* 0x08 */ void* end;
-} Polygon; // size = 0xC
+} PolygonBase;
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    num; // number of dlist entries
     /* 0x04 */ void* start;
     /* 0x08 */ void* end;
@@ -917,7 +914,7 @@ typedef struct {
 } BgImage; // size = 0x1C
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    format; // 1 = single, 2 = multi
     /* 0x04 */ Gfx*  dlist;
     union {
@@ -955,27 +952,51 @@ typedef struct {
 } PolygonDlist2; // size = 0x8
 
 typedef struct {
-    /* 0x00 */ u8    type;
+    /* 0x00 */ PolygonBase base;
     /* 0x01 */ u8    num; // number of dlist entries
     /* 0x04 */ void* start;
     /* 0x08 */ void* end;
 } PolygonType2; // size = 0xC
 
 typedef union {
-    Polygon      polygon;
+    PolygonBase  base;
     PolygonType0 polygon0;
     PolygonType1 polygon1;
     PolygonType2 polygon2;
-} Mesh; // "Ground Shape"
+} MeshHeader; // "Ground Shape"
+
+typedef enum {
+    /* 0 */ LENS_MODE_HIDE_ACTORS, // lens actors are visible by default, and hidden by using lens (for example, fake walls)
+    /* 1 */ LENS_MODE_SHOW_ACTORS // lens actors are invisible by default, and shown by using lens (for example, invisible enemies)
+} LensMode;
+
+typedef enum {
+    /* 0 */ ROOM_BEHAVIOR_TYPE1_0,
+    /* 1 */ ROOM_BEHAVIOR_TYPE1_1,
+    /* 2 */ ROOM_BEHAVIOR_TYPE1_2,
+    /* 3 */ ROOM_BEHAVIOR_TYPE1_3, // unused
+    /* 4 */ ROOM_BEHAVIOR_TYPE1_4, // unused
+    /* 5 */ ROOM_BEHAVIOR_TYPE1_5
+} RoomBehaviorType1;
+
+typedef enum {
+    /* 0 */ ROOM_BEHAVIOR_TYPE2_0,
+    /* 1 */ ROOM_BEHAVIOR_TYPE2_1,
+    /* 2 */ ROOM_BEHAVIOR_TYPE2_2,
+    /* 3 */ ROOM_BEHAVIOR_TYPE2_3,
+    /* 4 */ ROOM_BEHAVIOR_TYPE2_4,
+    /* 5 */ ROOM_BEHAVIOR_TYPE2_5,
+    /* 6 */ ROOM_BEHAVIOR_TYPE2_6
+} RoomBehaviorType2;
 
 typedef struct {
     /* 0x00 */ s8   num;
     /* 0x01 */ u8   unk_01;
-    /* 0x02 */ u8   unk_02;
-    /* 0x03 */ u8   unk_03;
+    /* 0x02 */ u8   behaviorType2;
+    /* 0x03 */ u8   behaviorType1;
     /* 0x04 */ s8   echo;
-    /* 0x05 */ u8   showInvisActors;
-    /* 0x08 */ Mesh* mesh; // original name: "ground_shape"
+    /* 0x05 */ u8   lensMode;
+    /* 0x08 */ MeshHeader* meshHeader; // original name: "ground_shape"
     /* 0x0C */ void* segment;
     /* 0x10 */ char unk_10[0x4];
 } Room; // size = 0x14
@@ -1244,7 +1265,7 @@ typedef struct GlobalContext {
     /* 0x11DF0 */ RomFile* roomList;
     /* 0x11DF4 */ ActorEntry* linkActorEntry;
     /* 0x11DF8 */ ActorEntry* setupActorList;
-    /* 0x11DFC */ UNK_PTR unk_11DFC;
+    /* 0x11DFC */ void* unk_11DFC;
     /* 0x11E00 */ EntranceEntry* setupEntranceList;
     /* 0x11E04 */ s16* setupExitList;
     /* 0x11E08 */ Path* setupPathList;

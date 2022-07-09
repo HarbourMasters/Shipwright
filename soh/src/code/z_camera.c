@@ -7004,19 +7004,20 @@ void func_80057FC4(Camera* camera) {
     if (camera != &camera->globalCtx->mainCamera) {
         camera->prevSetting = camera->setting = CAM_SET_FREE0;
         camera->unk_14C &= ~0x4;
-    } else if (camera->globalCtx->roomCtx.curRoom.mesh->polygon.type != 1) {
-        switch (camera->globalCtx->roomCtx.curRoom.unk_03) {
-            case 1:
+    } else if (camera->globalCtx->roomCtx.curRoom.meshHeader->base.type != 1) {
+        switch (camera->globalCtx->roomCtx.curRoom.behaviorType1) {
+            case ROOM_BEHAVIOR_TYPE1_1:
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_DUNGEON0;
                 break;
-            case 0:
+            case ROOM_BEHAVIOR_TYPE1_0:
                 osSyncPrintf("camera: room type: default set field\n");
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 break;
             default:
-                osSyncPrintf("camera: room type: default set etc (%d)\n", camera->globalCtx->roomCtx.curRoom.unk_03);
+                osSyncPrintf("camera: room type: default set etc (%d)\n",
+                             camera->globalCtx->roomCtx.curRoom.behaviorType1);
                 Camera_ChangeDoorCam(camera, NULL, -99, 0, 0, 18, 10);
                 camera->prevSetting = camera->setting = CAM_SET_NORMAL0;
                 camera->unk_14C |= 4;
@@ -7323,12 +7324,9 @@ s32 Camera_CheckWater(Camera* camera) {
     //! @bug: doesn't always return a value, but sometimes does.
 }
 
-/**
- * Sets the room to be hot camera quake flag
- */
-s32 Camera_SetRoomHotFlag(Camera* camera) {
+s32 Camera_UpdateHotRoom(Camera* camera) {
     camera->unk_152 &= ~1;
-    if (camera->globalCtx->roomCtx.curRoom.unk_02 == 3) {
+    if (camera->globalCtx->roomCtx.curRoom.behaviorType2 == ROOM_BEHAVIOR_TYPE2_3) {
         camera->unk_152 |= 1;
     }
 
@@ -7507,7 +7505,7 @@ Vec3s Camera_Update(Camera* camera) {
         if (sOOBTimer < 200) {
             if (camera->status == CAM_STAT_ACTIVE) {
                 Camera_CheckWater(camera);
-                Camera_SetRoomHotFlag(camera);
+                Camera_UpdateHotRoom(camera);
             }
 
             if (!(camera->unk_14C & 4)) {
@@ -7844,7 +7842,7 @@ s32 Camera_ChangeModeFlags(Camera* camera, s16 mode, u8 flags) {
                     func_80078884(0);
                     break;
                 case 2:
-                    if (camera->globalCtx->roomCtx.curRoom.unk_03 == 1) {
+                    if (camera->globalCtx->roomCtx.curRoom.behaviorType1 == ROOM_BEHAVIOR_TYPE1_1) {
                         func_80078884(NA_SE_SY_ATTENTION_URGENCY);
                     } else {
                         func_80078884(NA_SE_SY_ATTENTION_ON);
