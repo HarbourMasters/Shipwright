@@ -632,7 +632,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Revert colors to the game original colors (GameCube version)\nOverwrites previously chosen color");
+        Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
     }
 
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
@@ -718,7 +718,7 @@ namespace SohImGui {
             ImGui::DockBuilderRemoveNode(dockId);
             ImGui::DockBuilderAddNode(dockId, ImGuiDockNodeFlags_NoTabBar);
 
-            ImGui::DockBuilderDockWindow("OoT Master Quest", dockId);
+            ImGui::DockBuilderDockWindow("Main Game", dockId);
 
             ImGui::DockBuilderFinish(dockId);
         }
@@ -814,7 +814,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
+                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");  
 
                 ImGui::Separator();
 
@@ -853,10 +853,10 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Graphics"))
             {
                 EnhancementSliderInt("Internal Resolution: %dx", "##IMul", "gInternalResolution", 1, 8, "");
-                Tooltip("Increases the render resolution of the game, up to 8x your output resolution,\nas a more intensive but effective form of anti-aliasing");
+                Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetS32("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
-                Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
+                Tooltip("Activates multi-sample anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
                 if (impl.backend == Backend::DX11)
@@ -939,12 +939,12 @@ namespace SohImGui {
                         EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
                         Tooltip("Modifies all fall damage");
                         EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                        Tooltip("Modifies all void out damage");
+                        Tooltip("Modifies damage taken after falling into a void");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
-                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series.");
+                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off. This simulates Hero Mode from other games in the series");
                         
                         if (ImGui::BeginMenu("Potion Values"))
                         {
@@ -1013,7 +1013,7 @@ namespace SohImGui {
                         EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
                         Tooltip("Disable the low HP beeping sound");
                         EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                        Tooltip("Hides most of the UI when not needed");
+                        Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
                         EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
                         Tooltip("Disables the voice audio when Navi calls you");
 
@@ -1078,7 +1078,7 @@ namespace SohImGui {
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                     EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
-                    Tooltip("Change most 2D items & projectiles to their a 3D version");
+                    Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
                     Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
@@ -1094,13 +1094,13 @@ namespace SohImGui {
                     EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                     Tooltip("Makes the L and R buttons in the pause menu the same color");
                     EnhancementCheckbox("Fix L&Z Page switch in Pause menu", "gNGCKaleidoSwitcher");
-                    Tooltip("Enabling it make L and R be your page switch like on Gamecube\nZ become the button to open Debug Menu");
+                    Tooltip("Makes L and R switch pages like on the GameCube\nZ opens the Debug Menu instead");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                    Tooltip("Show dungeon entrances icon only when it should be");
+                    Tooltip("Removes the dungeon entrance icon on the top-left corner of the screen when no dungeon is present on the current map");
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
-                    Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                    Tooltip("Re-enables the two-handed idle animation, a seemingly finished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
-                    Tooltip("Fixes a bug where you can permanently miss the Gravedigging Tour Heart Piece");
+                    Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
                     Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
@@ -1148,12 +1148,12 @@ namespace SohImGui {
                         needs_save = true;
                     }
 
-                    Tooltip("Interpolate extra frames to get smoother graphics.\n"
-                        "Set to match your monitor's refresh rate, or a divisor of it.\n"
+                    Tooltip("Interpolate extra frames to get smoother graphics\n"
+                        "Set to match your monitor's refresh rate, or a divisor of it\n"
                         "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
                         "and might give a worse result.\n"
-                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.\n"
-                        "Ctrl+Click for keyboard input.");
+                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
+                        "Ctrl+Click for keyboard input");
                 }
                 if (impl.backend == Backend::DX11)
                 {
@@ -1168,17 +1168,17 @@ namespace SohImGui {
                     }
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
-                Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
+                Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
                 Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
                 if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
+                    Tooltip("The Kokiri are mystical beings that fade into view when approached Enabling this will remove their draw distance");
                 }
                 EnhancementCheckbox("Skip Text", "gSkipText");
-                Tooltip("Holding down B skips text.\nKnown to cause a cutscene softlock in Water Temple.\nSoftlock can be fixed by pressing D-Right in Debug mode.");
+                Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
                 ImGui::EndMenu();
             }
@@ -1205,7 +1205,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
-                Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
+                Tooltip("Passive Infinite Sword Glitch. It makes your sword's swing effect and hitbox stay active indefinitely");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
@@ -1215,7 +1215,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand");
 
                 ImGui::EndMenu();
             }
@@ -1225,7 +1225,7 @@ namespace SohImGui {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Directly load the game to selected slot bellow\nUse slot number 4 to load directly in Zelda Map Select\n(Do not require debug menu but you will be unable to save there)\n(you can also load Zelda map select with Debug mod + slot 0).\nWith Slot : 0 you can go directly in File Select menu\nAttention, Loading an empty save will result in crash");
+                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select \n(Does not require the Debug Menu, but you will be unable to save there. You can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
