@@ -23,10 +23,11 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-delete-non-abstract-non-virtual-dtor \
 	-Wno-unused-private-field \
 	-Wno-deprecated-copy-with-user-provided-copy \
-	-Wno-deprecated-declarations
+	-Wno-deprecated-declarations \
+	-Wno-unknown-warning-option
 
 CWARN :=
-CXXWARN := -Wno-deprecated-enum-enum-conversion
+CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
 
 # Detect if CXX is clang++ or g++, in this order.
 COMPILER_VERSION := $(shell $(CXX) --version)
