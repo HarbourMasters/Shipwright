@@ -375,7 +375,7 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[GRAVEYARD_FREESTANDING_POH] = HintText::Exclude({
                        //obscure text
-                       Text{"a #crate in a graveyard# hides", /*french*/"#la boîte dans le cimetière# contient", /*spanish*/"bajo la #caja de un cementerio# yace"},
+                       Text{"a #crate in a graveyard# hides", /*french*/"#la boîte dans le Cimetière# contient", /*spanish*/"bajo la #caja de un cementerio# yace"},
   });
 
     hintTable[GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR] = HintText::Exclude({
@@ -605,12 +605,12 @@ void HintTable_Init_Exclude_Overworld() {
 
     hintTable[GRAVEYARD_GS_WALL] = HintText::Exclude({
                        //obscure text
-                       Text{"night reveals a #spider in a graveyard# holding", /*french*/"une #Skulltula sur une façade du cimetière# a", /*spanish*/"la noche revela una #Skulltula del cementerio# que otorga"},
+                       Text{"night reveals a #spider in a graveyard# holding", /*french*/"une #Skulltula sur une façade du Cimetière# a", /*spanish*/"la noche revela una #Skulltula del cementerio# que otorga"},
   });
 
     hintTable[GRAVEYARD_GS_BEAN_PATCH] = HintText::Exclude({
                        //obscure text
-                       Text{"a #spider buried in a graveyard# holds", /*french*/"une #Skulltula enterrée dans le cimetière# a", /*spanish*/"una #Skulltula enterrada en el cementerio# otorga"},
+                       Text{"a #spider buried in a graveyard# holds", /*french*/"une #Skulltula enterrée dans le Cimetière# a", /*spanish*/"una #Skulltula enterrada en el cementerio# otorga"},
   });
 
 
