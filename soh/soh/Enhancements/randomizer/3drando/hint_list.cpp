@@ -1624,6 +1624,11 @@ void HintTable_Init() {
                      Text{"They say this ship is what all true gamers strive for.", /*french*/HINT_TEXT_NEEDS_TRANSLATION_FR, /*spanish*/"blarg"},
     });
 
+    hintTable[JUNK81] = HintText::Junk({
+                     //obscure text
+                     Text{"They say that Glowsticks can be found in the Raveyard.", /*french*/"On peut trouver des Bâton Lumineux sur le dancefloor du cimetière.", /*spanish*/"blarg"},
+    });
+
     /*--------------------------
     |     DUNGEON HINT TEXT    |
     ---------------------------*/
