@@ -29,7 +29,6 @@ WARN := -Wall -Wextra -Werror \
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
 
-# Detect if CXX is clang++ or g++, in this order.
 COMPILER_VERSION := $(shell $(CXX) --version)
 ifneq '' '$(findstring g++,$(COMPILER_VERSION))'
 	WARN += -Wno-error=stringop-overflow

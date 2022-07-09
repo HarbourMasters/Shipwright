@@ -305,13 +305,8 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 	}
 }
 
-std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix, bool first)
+std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix, std::set<std::string> *nameSet)
 {
-	static std::set<std::string> totalset;
-	std::string s2 = name;
-	if (first) {
-		totalset.clear();
-	}
 	if (Globals::Instance->otrMode && genOTRDef)
 	{
 		std::string str = "";;
@@ -352,13 +347,15 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 		else
 			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
 
-		if (totalset.find(name) == totalset.end()) {
+		if (nameSet && nameSet->find(name) == nameSet->end()) {
 #ifdef _WIN32
 			str += StringHelper::Sprintf("\nstatic const __declspec(align(2)) char %s[] = d%s;", name.c_str(), name.c_str());
 #else
 			str += StringHelper::Sprintf("\nstatic const char %s[] __attribute__((aligned (2))) = d%s;", name.c_str(), name.c_str());
 #endif
-			totalset.insert(name);
+			if (nameSet) {
+				nameSet->insert(name);
+			}
 		}
 
 		return str;

@@ -801,11 +801,10 @@ void ZFile::GenerateSourceHeaderFiles()
 	OutputFormatter formatter;
 
 	formatter.Write("#pragma once\n");
-	bool first = true;
+	std::set<std::string> nameSet;
 	for (ZResource* res : resources)
 	{
-		std::string resSrc = res->GetSourceOutputHeader("", first);
-		first = false;
+		std::string resSrc = res->GetSourceOutputHeader("", &nameSet);
 		formatter.Write(resSrc);
 
 		if (resSrc != "")
@@ -814,7 +813,7 @@ void ZFile::GenerateSourceHeaderFiles()
 
 	for (auto& sym : symbolResources)
 	{
-		formatter.Write(sym.second->GetSourceOutputHeader("", first));
+		formatter.Write(sym.second->GetSourceOutputHeader("", &nameSet));
 	}
 
 	formatter.Write(ProcessExterns());
