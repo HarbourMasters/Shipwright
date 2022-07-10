@@ -1203,8 +1203,8 @@ typedef struct {
     /* 0x14A */ s16 unk_14A;
     /* 0x14C */ s16 unk_14C;
     /* 0x14E */ s16 childCamIdx;
-    /* 0x150 */ s16 unk_150;
-    /* 0x152 */ s16 unk_152;
+    /* 0x150 */ s16 waterDistortionTimer;
+    /* 0x152 */ s16 distortionFlags;
     /* 0x154 */ s16 prevSetting;
     /* 0x156 */ s16 nextCamDataIdx;
     /* 0x158 */ s16 nextBGCheckId;

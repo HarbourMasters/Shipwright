@@ -202,11 +202,11 @@ typedef struct {
     /* 0x00A0 */ Mtx    viewing;
     /* 0x00E0 */ Mtx*   projectionPtr;
     /* 0x00E4 */ Mtx*   viewingPtr;
-    /* 0x00E8 */ Vec3f  unk_E8;
-    /* 0x00F4 */ Vec3f  unk_F4;
-    /* 0x0100 */ f32    unk_100;
-    /* 0x0104 */ Vec3f  unk_104;
-    /* 0x0110 */ Vec3f  unk_110;
+    /* 0x00E8 */ Vec3f  distortionOrientation;
+    /* 0x00F4 */ Vec3f  distortionScale;
+    /* 0x0100 */ f32    distortionSpeed;
+    /* 0x0104 */ Vec3f  curDistortionOrientation;
+    /* 0x0110 */ Vec3f  curDistortionScale;
     /* 0x011C */ u16    normal; // used to normalize the projection matrix
     /* 0x0120 */ s32    flags;
     /* 0x0124 */ s32    unk_124;

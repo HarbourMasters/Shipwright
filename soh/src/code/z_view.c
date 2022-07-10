@@ -64,7 +64,7 @@ void View_Init(View* view, GraphicsContext* gfxCtx) {
 
     view->unk_124 = 0;
     view->flags = 1 | 2 | 4;
-    func_800AA7B8(view);
+    View_InitDistortion(view);
 }
 
 void View_GetParams(View* view, Vec3f* eye, Vec3f* lookAt, Vec3f* up) {
@@ -193,81 +193,87 @@ void func_800AA550(View* view) {
     CLOSE_DISPS(gfxCtx);
 }
 
-void func_800AA76C(View* view, f32 x, f32 y, f32 z) {
-    view->unk_E8.x = x;
-    view->unk_E8.y = y;
-    view->unk_E8.z = z;
+void View_SetDistortionOrientation(View* view, f32 rotX, f32 rotY, f32 rotZ) {
+    view->distortionOrientation.x = rotX;
+    view->distortionOrientation.y = rotY;
+    view->distortionOrientation.z = rotZ;
 }
 
-void func_800AA78C(View* view, f32 x, f32 y, f32 z) {
-    view->unk_F4.x = x;
-    view->unk_F4.y = y;
-    view->unk_F4.z = z;
+void View_SetDistortionScale(View* view, f32 scaleX, f32 scaleY, f32 scaleZ) {
+    view->distortionScale.x = scaleX;
+    view->distortionScale.y = scaleY;
+    view->distortionScale.z = scaleZ;
 }
 
-s32 func_800AA7AC(View* view, f32 arg1) {
-    view->unk_100 = arg1;
+s32 View_SetDistortionSpeed(View* view, f32 speed) {
+    view->distortionSpeed = speed;
 }
 
-void func_800AA7B8(View* view) {
-    view->unk_E8.x = 0.0f;
-    view->unk_E8.y = 0.0f;
-    view->unk_E8.z = 0.0f;
-    view->unk_F4.x = 1.0f;
-    view->unk_F4.y = 1.0f;
-    view->unk_F4.z = 1.0f;
-    view->unk_104 = view->unk_E8;
-    view->unk_110 = view->unk_F4;
-    view->unk_100 = 0.0f;
+void View_InitDistortion(View* view) {
+    view->distortionOrientation.x = 0.0f;
+    view->distortionOrientation.y = 0.0f;
+    view->distortionOrientation.z = 0.0f;
+    view->distortionScale.x = 1.0f;
+    view->distortionScale.y = 1.0f;
+    view->distortionScale.z = 1.0f;
+    view->curDistortionOrientation = view->distortionOrientation;
+    view->curDistortionScale = view->distortionScale;
+    view->distortionSpeed = 0.0f;
 }
 
-void func_800AA814(View* view) {
-    view->unk_E8.x = 0.0f;
-    view->unk_E8.y = 0.0f;
-    view->unk_E8.z = 0.0f;
-    view->unk_F4.x = 1.0f;
-    view->unk_F4.y = 1.0f;
-    view->unk_F4.z = 1.0f;
-    view->unk_100 = 1.0f;
+void View_ClearDistortion(View* view) {
+    view->distortionOrientation.x = 0.0f;
+    view->distortionOrientation.y = 0.0f;
+    view->distortionOrientation.z = 0.0f;
+    view->distortionScale.x = 1.0f;
+    view->distortionScale.y = 1.0f;
+    view->distortionScale.z = 1.0f;
+    view->distortionSpeed = 1.0f;
 }
 
-void func_800AA840(View* view, Vec3f vec1, Vec3f vec2, f32 arg3) {
-    view->unk_E8 = vec1;
-    view->unk_F4 = vec2;
-    view->unk_100 = arg3;
+void View_SetDistortion(View* view, Vec3f orientation, Vec3f scale, f32 speed) {
+    view->distortionOrientation = orientation;
+    view->distortionScale = scale;
+    view->distortionSpeed = speed;
 }
 
-s32 func_800AA890(View* view, Mtx* mtx) {
-    MtxF mf;
+s32 View_StepDistortion(View* view, Mtx* projectionMtx) {
+    MtxF projectionMtxF;
 
-    if (view->unk_100 == 0.0f) {
-        return 0;
-    } else if (view->unk_100 == 1.0f) {
-        view->unk_104 = view->unk_E8;
-        view->unk_110 = view->unk_F4;
-        view->unk_100 = 0.0f;
+    if (view->distortionSpeed == 0.0f) {
+        return false;
+    } else if (view->distortionSpeed == 1.0f) {
+        view->curDistortionOrientation = view->distortionOrientation;
+        view->curDistortionScale = view->distortionScale;
+        view->distortionSpeed = 0.0f;
     } else {
-        view->unk_104.x += ((view->unk_E8.x - view->unk_104.x) * view->unk_100);
-        view->unk_104.y += ((view->unk_E8.y - view->unk_104.y) * view->unk_100);
-        view->unk_104.z += ((view->unk_E8.z - view->unk_104.z) * view->unk_100);
+        view->curDistortionOrientation.x =
+            F32_LERPIMP(view->curDistortionOrientation.x, view->distortionOrientation.x, view->distortionSpeed);
+        view->curDistortionOrientation.y =
+            F32_LERPIMP(view->curDistortionOrientation.y, view->distortionOrientation.y, view->distortionSpeed);
+        view->curDistortionOrientation.z =
+            F32_LERPIMP(view->curDistortionOrientation.z, view->distortionOrientation.z, view->distortionSpeed);
 
-        view->unk_110.x += ((view->unk_F4.x - view->unk_110.x) * view->unk_100);
-        view->unk_110.y += ((view->unk_F4.y - view->unk_110.y) * view->unk_100);
-        view->unk_110.z += ((view->unk_F4.z - view->unk_110.z) * view->unk_100);
+        view->curDistortionScale.x =
+            F32_LERPIMP(view->curDistortionScale.x, view->distortionScale.x, view->distortionSpeed);
+        view->curDistortionScale.y =
+            F32_LERPIMP(view->curDistortionScale.y, view->distortionScale.y, view->distortionSpeed);
+        view->curDistortionScale.z =
+            F32_LERPIMP(view->curDistortionScale.z, view->distortionScale.z, view->distortionSpeed);
     }
 
-    Matrix_MtxToMtxF(mtx, &mf);
-    Matrix_Put(&mf);
-    Matrix_RotateX(view->unk_104.x, MTXMODE_APPLY);
-    Matrix_RotateY(view->unk_104.y, MTXMODE_APPLY);
-    Matrix_RotateZ(view->unk_104.z, MTXMODE_APPLY);
-    Matrix_Scale(view->unk_110.x, view->unk_110.y, view->unk_110.z, MTXMODE_APPLY);
-    Matrix_RotateZ(-view->unk_104.z, MTXMODE_APPLY);
-    Matrix_RotateY(-view->unk_104.y, MTXMODE_APPLY);
-    Matrix_RotateX(-view->unk_104.x, MTXMODE_APPLY);
-    MATRIX_TOMTX(mtx);
+    Matrix_MtxToMtxF(projectionMtx, &projectionMtxF);
+    Matrix_Put(&projectionMtxF);
+    Matrix_RotateX(view->curDistortionOrientation.x, MTXMODE_APPLY);
+    Matrix_RotateY(view->curDistortionOrientation.y, MTXMODE_APPLY);
+    Matrix_RotateZ(view->curDistortionOrientation.z, MTXMODE_APPLY);
+    Matrix_Scale(view->curDistortionScale.x, view->curDistortionScale.y, view->curDistortionScale.z, MTXMODE_APPLY);
+    Matrix_RotateZ(-view->curDistortionOrientation.z, MTXMODE_APPLY);
+    Matrix_RotateY(-view->curDistortionOrientation.y, MTXMODE_APPLY);
+    Matrix_RotateX(-view->curDistortionOrientation.x, MTXMODE_APPLY);
+    Matrix_ToMtx(projectionMtx, "../z_view.c", 566);
 
-    return 1;
+    return true;
 }
 
 void func_800AAA50(View* view, s32 arg1) {
@@ -424,7 +430,7 @@ s32 func_800AAA9C(View* view) {
 
     view->projection = *projection;
 
-    func_800AA890(view, projection);
+    View_StepDistortion(view, projection);
 
     gSPPerspNormalize(POLY_OPA_DISP++, view->normal);
     gSPMatrix(POLY_OPA_DISP++, projection, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_PROJECTION);
