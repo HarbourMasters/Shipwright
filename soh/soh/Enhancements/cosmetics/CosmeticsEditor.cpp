@@ -320,7 +320,7 @@ namespace CosmeticsEditor {
             SohImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
             ImGui::EndTable();
         }
-        SohImGui::EnhancementCheckbox("Custom sword trails color", "gUseTrailsCol");
+        SohImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
         if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Custom Trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader();
