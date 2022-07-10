@@ -938,7 +938,9 @@ namespace SohImGui {
                         Tooltip("Skip first-time pickup messages for consumable items");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
-                        
+                        EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
+                        Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
+
                         ImGui::EndMenu();
                     }
 
