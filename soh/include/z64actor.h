@@ -338,7 +338,8 @@ typedef enum {
     /* 0x08 */ ACTORCAT_MISC,
     /* 0x09 */ ACTORCAT_BOSS,
     /* 0x0A */ ACTORCAT_DOOR,
-    /* 0x0B */ ACTORCAT_CHEST
+    /* 0x0B */ ACTORCAT_CHEST,
+    /* 0x0C */ ACTORCAT_MAX
 } ActorCategory;
 
 //#define DEFINE_ACTOR(_0, enum, _2) enum,

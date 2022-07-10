@@ -269,7 +269,7 @@ void EnAm_SpawnEffects(EnAm* this, GlobalContext* globalCtx) {
     }
 
     Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EN_AMOS_WALK);
-    Actor_SpawnFloorDustRing(globalCtx, &this->dyna.actor, &this->dyna.actor.world.pos, 4.0f, 3, 8.0f, 0x12C, 0xF, 0);
+    Actor_SpawnFloorDustRing(globalCtx, &this->dyna.actor, &this->dyna.actor.world.pos, 4.0f, 3, 8.0f, 300, 15, false);
 }
 
 void EnAm_SetupSleep(EnAm* this) {

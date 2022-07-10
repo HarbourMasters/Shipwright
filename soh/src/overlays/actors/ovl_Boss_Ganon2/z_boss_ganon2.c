@@ -185,11 +185,11 @@ void BossGanon2_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 void func_808FD4D4(BossGanon2* this, GlobalContext* globalCtx, s16 arg2, s16 arg3) {
     if ((arg2 == 0) || (arg2 == 1)) {
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_1D0, 25.0f, arg3, 8.0f, 0x1F4, 0xA, 1);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_1D0, 25.0f, arg3, 8.0f, 500, 10, true);
     }
 
     if ((arg2 == 0) || (arg2 == 2)) {
-        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_1DC, 25.0f, arg3, 8.0f, 0x1F4, 0xA, 1);
+        Actor_SpawnFloorDustRing(globalCtx, &this->actor, &this->unk_1DC, 25.0f, arg3, 8.0f, 500, 10, true);
     }
 
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_MGANON_WALK);
