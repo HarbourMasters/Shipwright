@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 as build
+FROM ubuntu:22.10 as build
 
 ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
@@ -17,6 +17,7 @@ RUN apt-get update && \
 		curl \
 		git \
 		lld \
+		libglew-dev \
 		libsdl2-dev \
 		zlib1g-dev \
 		libbz2-dev \
@@ -28,20 +29,6 @@ RUN apt-get update && \
 	g++ --version
 	
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
-	
-RUN git clone https://github.com/Perlmint/glew-cmake.git && \
-	cmake glew-cmake && \
-	make -j$(nproc) && \
-	make install
-    
-ENV SDL2VER=2.0.22
-RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
-	tar -xzf SDL2-${SDL2VER}.tar.gz && \
-	cd SDL2-${SDL2VER} && \
-	./configure --prefix=/usr && \
-	make && make install && \
-	rm ../SDL2-${SDL2VER}.tar.gz && \
-	cp -av /lib/libSDL* /lib/x86_64-linux-gnu/
 
 RUN mkdir /soh
 WORKDIR /soh
