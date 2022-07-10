@@ -1241,7 +1241,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
 
                 ImGui::EndMenu();
             }
@@ -1316,7 +1316,7 @@ namespace SohImGui {
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
-        ImGui::Begin("OoT Master Quest", nullptr, flags);
+        ImGui::Begin("Main Game", nullptr, flags);
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor();
 
