@@ -25,6 +25,7 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
+#include "../../soh/soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -56,8 +57,6 @@ OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
-
-extern void LoadRainbowColor();
 
 namespace SohImGui {
 
@@ -1339,7 +1338,8 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
-        LoadRainbowColor();
+        //Placed here so it does the rainbow effects even if menu is not on.
+        CosmeticsEditor::LoadRainbowColor();
     }
 
     void CancelFrame() {

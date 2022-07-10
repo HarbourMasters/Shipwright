@@ -1,4 +1,6 @@
 #pragma once
 
-void InitCosmeticsEditor();//Init the menu itself
-void LoadRainbowColor();
+namespace CosmeticsEditor {
+    void InitCosmeticsEditor();//Init the menu itself
+    void LoadRainbowColor();
+}
