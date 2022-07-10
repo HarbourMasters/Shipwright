@@ -1897,7 +1897,7 @@ void EnTest_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, V
             if ((this->unk_7C8 == 0x15) || (this->unk_7C8 == 0x16)) {
                 if (this->actor.speedXZ != 0.0f) {
                     Matrix_MultVec3f(&D_80864658, &sp64);
-                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 0x64, 0xF, 0);
+                    Actor_SpawnFloorDustRing(globalCtx, &this->actor, &sp64, 10.0f, 1, 8.0f, 100, 15, false);
                 }
             }
         }

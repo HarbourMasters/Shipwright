@@ -224,7 +224,7 @@ void Gameplay_Init(GameState* thisx) {
     Audio_SetExtraFilter(0);
     Quake_Init();
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < ARRAY_COUNT(globalCtx->cameraPtrs); i++) {
         globalCtx->cameraPtrs[i] = NULL;
     }
 
