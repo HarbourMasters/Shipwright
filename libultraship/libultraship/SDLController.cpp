@@ -101,13 +101,11 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
-        if (SDL_WasInit(SDL_INIT_GAMECONTROLLER)) {
+        if (Cont != nullptr && SDL_WasInit(SDL_INIT_GAMECONTROLLER)) {
             if (CanRumble()) {
                 SDL_GameControllerRumble(Cont, 0, 0, 0);
             }
-            if (Cont != nullptr) {
-                SDL_GameControllerClose(Cont);
-            }
+            SDL_GameControllerClose(Cont);
         }
         Cont = nullptr;
         guid = "";
