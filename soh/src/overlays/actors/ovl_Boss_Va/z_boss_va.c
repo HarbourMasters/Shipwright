@@ -4035,6 +4035,8 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
 void BossVa_Reset(void) {
     sKillBari = 0;
     sCsCamera = 0;
@@ -4049,4 +4051,7 @@ void BossVa_Reset(void) {
     sZapperRot.z = 0;    
     sPhase2Timer = 0;
     sPhase4HP = 0;
+    for (u8 i = 0; i < ARRAY_SIZE(sBodyBari); i++) {
+        sBodyBari[i] = 0;
+    }
 }
