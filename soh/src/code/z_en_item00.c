@@ -528,7 +528,6 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
     if (!CVar_GetS32("gNewDrops", 0)){
         if ((this->actor.params <= ITEM00_RUPEE_RED) || ((this->actor.params == ITEM00_HEART) && (this->unk_15A < 0)) ||
             (this->actor.params == ITEM00_HEART_PIECE)) {
-            // RANDOTODO verify rando logic here
             this->actor.shape.rot.y += 960;
         } else {
             if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL)) {
