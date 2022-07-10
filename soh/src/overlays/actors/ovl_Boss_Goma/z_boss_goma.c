@@ -2088,7 +2088,7 @@ void BossGoma_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
                                                 childPos.x, childPos.y, childPos.z, childRot.x, childRot.y, childRot.z,
                                                 sDeadLimbLifetime[limbIndex] + 100);
         if (babyGohma != NULL) {
-            babyGohma->bossLimbDl = *dList;
+            babyGohma->bossLimbDL = *dList;
             babyGohma->actor.objBankIndex = this->actor.objBankIndex;
         }
     }

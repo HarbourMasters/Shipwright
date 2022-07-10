@@ -9577,7 +9577,7 @@ void func_80846A68(GlobalContext* globalCtx, Player* this) {
     this->stateFlags1 |= PLAYER_STATE1_29;
 }
 
-static InitChainEntry D_80854708[] = {
+static InitChainEntry sInitChain[] = {
     ICHAIN_F32(targetArrowOffset, 500, ICHAIN_STOP),
 };
 
@@ -9590,7 +9590,7 @@ static Vec3s D_80854730 = { -57, 3377, 0 };
 
 void Player_InitCommon(Player* this, GlobalContext* globalCtx, FlexSkeletonHeader* skelHeader) {
     this->ageProperties = &sAgeProperties[gSaveContext.linkAge];
-    Actor_ProcessInitChain(&this->actor, D_80854708);
+    Actor_ProcessInitChain(&this->actor, sInitChain);
     this->swordEffectIndex = TOTAL_EFFECT_COUNT;
     this->currentYaw = this->actor.world.rot.y;
     func_80834644(globalCtx, this);

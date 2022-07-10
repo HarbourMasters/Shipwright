@@ -651,7 +651,7 @@ void Flags_UnsetSwitch(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Tests if current scene unknown flag is set.
+ * Tests if unknown flag is set.
  */
 s32 Flags_GetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
@@ -662,7 +662,7 @@ s32 Flags_GetUnknown(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Sets current scene unknown flag.
+ * Sets unknown flag.
  */
 void Flags_SetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
@@ -673,7 +673,7 @@ void Flags_SetUnknown(GlobalContext* globalCtx, s32 flag) {
 }
 
 /**
- * Unsets current scene unknown flag.
+ * Unsets unknown flag.
  */
 void Flags_UnsetUnknown(GlobalContext* globalCtx, s32 flag) {
     if (flag < 0x20) {
