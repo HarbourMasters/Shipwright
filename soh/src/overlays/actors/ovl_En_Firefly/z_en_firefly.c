@@ -722,7 +722,7 @@ s32 EnFirefly_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dL
                                void* thisx, Gfx** gfx) {
     EnFirefly* this = (EnFirefly*)thisx;
 
-    if ((this->actor.draw == EnFirefly_DrawInvisible) && (globalCtx->actorCtx.unk_03 == 0)) {
+    if ((this->actor.draw == EnFirefly_DrawInvisible) && !globalCtx->actorCtx.lensActive) {
         *dList = NULL;
     } else if (limbIndex == 1) {
         pos->y += 2300.0f;

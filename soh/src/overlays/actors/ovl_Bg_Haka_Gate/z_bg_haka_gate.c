@@ -298,7 +298,7 @@ void BgHakaGate_FalseSkull(BgHakaGate* this, GlobalContext* globalCtx) {
     if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
         Math_StepToS(&this->vFlameScale, 350, 20);
     }
-    if (globalCtx->actorCtx.unk_03) {
+    if (globalCtx->actorCtx.lensActive) {
         this->dyna.actor.flags |= ACTOR_FLAG_7;
     } else {
         this->dyna.actor.flags &= ~ACTOR_FLAG_7;

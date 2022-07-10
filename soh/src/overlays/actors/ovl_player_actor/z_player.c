@@ -2892,15 +2892,13 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
 
             if (actionParam == PLAYER_AP_LENS) {
                 if (func_80087708(globalCtx, 0, 3)) {
-                    if (globalCtx->actorCtx.unk_03 != 0) {
-                        func_800304B0(globalCtx);
+                    if (globalCtx->actorCtx.lensActive) {
+                        Actor_DisableLens(globalCtx);
+                    } else {
+                        globalCtx->actorCtx.lensActive = true;
                     }
-                    else {
-                        globalCtx->actorCtx.unk_03 = 1;
-                    }
-                    func_80078884((globalCtx->actorCtx.unk_03 != 0) ? NA_SE_SY_GLASSMODE_ON : NA_SE_SY_GLASSMODE_OFF);
-                }
-                else {
+                    func_80078884((globalCtx->actorCtx.lensActive) ? NA_SE_SY_GLASSMODE_ON : NA_SE_SY_GLASSMODE_OFF);
+                } else {
                     func_80078884(NA_SE_SY_ERROR);
                 }
                 return;
@@ -4443,7 +4441,7 @@ s32 func_80839800(Player* this, GlobalContext* globalCtx) {
                         .sides[(doorDirection > 0) ? 0 : 1]
                         .effects;
 
-                    func_800304B0(globalCtx);
+                    Actor_DisableLens(globalCtx);
                 }
             }
             else {
@@ -4501,7 +4499,7 @@ s32 func_80839800(Player* this, GlobalContext* globalCtx) {
 
                 if (this->doorType != PLAYER_DOORTYPE_FAKE) {
                     this->stateFlags1 |= PLAYER_STATE1_29;
-                    func_800304B0(globalCtx);
+                    Actor_DisableLens(globalCtx);
 
                     if (((doorActor->params >> 7) & 7) == 3) {
                         sp4C.x = doorActor->world.pos.x - (sp6C * sp74);
@@ -6162,7 +6160,7 @@ s32 func_8083E0FC(Player* this, GlobalContext* globalCtx) {
         func_80832F54(globalCtx, this, 0x9B);
         this->actor.parent = this->rideActor;
         func_80832224(this);
-        func_800304B0(globalCtx);
+        Actor_DisableLens(globalCtx);
         return 1;
     }
 
