@@ -1033,6 +1033,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
                     Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
+                    EnhancementCheckbox("Pull grave during the day", "gDayGravePull");
+                    Tooltip("Allows graves to be pulled when child during the day");
                     ImGui::EndMenu();
                 }
 
