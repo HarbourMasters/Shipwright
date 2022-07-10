@@ -388,9 +388,8 @@ void Gameplay_Init(GameState* thisx) {
     // CollisionHeader struct to save the length of cameraDataList.
     // Fixes Dodongo's Cavern blue warp crash.
     {
-        CollisionHeader* colHeader;
+        CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&globalCtx->colCtx, BGCHECK_SCENE);
 
-        colHeader = BgCheck_GetCollisionHeader(&globalCtx->colCtx, BGCHECK_SCENE);
         // If the player's start cam is out of bounds, set it to 0xFF so it isn't used.
         if (colHeader != NULL && ((player->actor.params & 0xFF) >= colHeader->cameraDataListLen)) {
             player->actor.params |= 0xFF;
