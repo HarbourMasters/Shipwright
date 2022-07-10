@@ -7,6 +7,7 @@
 #include "WarningHandler.h"
 #include "ZFile.h"
 #include <Globals.h>
+#include <set>
 #include <ZDisplayList.h>
 #include <ZArray.h>
 
@@ -304,7 +305,7 @@ void ZResource::GetSourceOutputCode([[maybe_unused]] const std::string& prefix)
 	}
 }
 
-std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix)
+std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string& prefix, std::set<std::string> *nameSet)
 {
 	if (Globals::Instance->otrMode && genOTRDef)
 	{
@@ -342,9 +343,20 @@ std::string ZResource::GetSourceOutputHeader([[maybe_unused]] const std::string&
 			prefix = "text";
 
 		if (prefix != "")
-			str += StringHelper::Sprintf("#define %s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
+			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s/%s\"", name.c_str(), prefix.c_str(), outName.c_str(), nameStr.c_str());
 		else
-			str += StringHelper::Sprintf("#define %s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
+			str += StringHelper::Sprintf("#define d%s \"__OTR__%s/%s\"", name.c_str(), outName.c_str(), nameStr.c_str());
+
+		if (nameSet && nameSet->find(name) == nameSet->end()) {
+#ifdef _WIN32
+			str += StringHelper::Sprintf("\nstatic const __declspec(align(2)) char %s[] = d%s;", name.c_str(), name.c_str());
+#else
+			str += StringHelper::Sprintf("\nstatic const char %s[] __attribute__((aligned (2))) = d%s;", name.c_str(), name.c_str());
+#endif
+			if (nameSet) {
+				nameSet->insert(name);
+			}
+		}
 
 		return str;
 	}
