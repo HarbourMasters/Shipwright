@@ -220,8 +220,13 @@ void MagicDark_DiamondDraw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateY(this->actor.shape.rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
-        gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        if (CVar_GetS32("gUseSpellsCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gNL_Diamond_ColR",170), CVar_GetS32("gNL_Diamond_ColG",255), CVar_GetS32("gNL_Diamond_ColB",255), (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gNL_Diamond_EnvR",100), CVar_GetS32("gNL_Diamond_EnvG",100), CVar_GetS32("gNL_Diamond_EnvB",255), 128);
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 255, 255, (s32)(this->primAlpha * 0.6f) & 0xFF);
+            gDPSetEnvColor(POLY_XLU_DISP++, 0, 100, 255, 128);
+        }
         gSPDisplayList(POLY_XLU_DISP++, sDiamondMaterialDL);
         gSPDisplayList(POLY_XLU_DISP++,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, gameplayFrames * 2, gameplayFrames * -4, 32, 32, 1,

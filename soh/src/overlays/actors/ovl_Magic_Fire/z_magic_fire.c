@@ -227,8 +227,13 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetColorDither(POLY_XLU_DISP++, G_CD_DISABLE);
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
         func_80093D84(globalCtx->state.gfxCtx);
-        gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 255, 200, 0, (u8)(this->alphaMultiplier * 255));
-        gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, (u8)(this->alphaMultiplier * 255));
+        if (CVar_GetS32("gUseSpellsCol",0)) {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gDF_ColR",255), CVar_GetS32("gDF_ColG",200), CVar_GetS32("gDF_ColB",0), (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gDF_EnvR",255), CVar_GetS32("gDF_EnvG",0), CVar_GetS32("gDF_EnvB",0), (u8)(this->alphaMultiplier * 255));
+        } else {
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 255, 200, 0, (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, (u8)(this->alphaMultiplier * 255));
+        }
         Matrix_Scale(0.15f, 0.15f, 0.15f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
