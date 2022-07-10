@@ -588,8 +588,10 @@ void EnOssan_Init(Actor* thisx, GlobalContext* globalCtx) {
         return;
     }
 
-    // If you've given Zelda's Letter to the Kakariko Guard
-    if (this->actor.params == OSSAN_TYPE_MASK && !(gSaveContext.infTable[7] & 0x40)) {
+    // If you haven't given Zelda's Letter to the Kakariko Guard
+    // or are rando'd and haven't gotten gotten the letter from zelda yet 
+    if (this->actor.params == OSSAN_TYPE_MASK && (!(gSaveContext.infTable[7] & 0x40) || 
+        (gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[4] & 1)))) {
         Actor_Kill(&this->actor);
         return;
     }
