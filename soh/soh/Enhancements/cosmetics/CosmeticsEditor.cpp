@@ -321,9 +321,9 @@ void Draw_ItemsSkills(){
     }
     SohImGui::EnhancementCheckbox("Custom sword trails color", "gUseTrailsCol");
     if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-        ImGui::TableSetupColumn("Custom Swords and Bombchu trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
+        ImGui::TableSetupColumn("Custom Trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Swords slash and Bombchu trails color");
+        Draw_HelpIcon("Affects Swords slash, boomerang and Bombchu trails color");
         SohImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
         SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
         SohImGui::Tooltip("The longer the trails the weirder it become");

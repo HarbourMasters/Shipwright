@@ -1232,7 +1232,7 @@ namespace SohImGui {
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
-        ImGui::Begin("OoT Master Quest", nullptr, flags);
+        ImGui::Begin("Main Game", nullptr, flags);
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor();
 
