@@ -23,7 +23,7 @@ struct XYWidthHeight {
 };
 
 struct GfxDimensions {
-    uint32_t internal_mul;
+    float internal_mul;
     uint32_t width, height;
     float aspect_ratio;
 };
