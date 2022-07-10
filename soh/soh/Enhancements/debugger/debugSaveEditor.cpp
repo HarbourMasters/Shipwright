@@ -199,6 +199,7 @@ std::map<uint32_t, QuestMapEntry> questMapping = {
     QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, dgZoraSapphireIconTex),
     QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, dgStoneOfAgonyIconTex),
     QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, dgGerudosCardIconTex),
+    QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, dgGoldSkulltulaIconTex),
 };
 
 typedef struct {

@@ -22,34 +22,34 @@ std::unordered_map<uint8_t, Sprite> gSeedTextures;
 u8 generated;
 
 Randomizer::Randomizer() {
-    Sprite bowSprite = { gFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
+    Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
     gSeedTextures[0] = bowSprite;
 
-    Sprite bombchuSprite = { gBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 1 };
+    Sprite bombchuSprite = { dgBombchuIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 1 };
     gSeedTextures[1] = bombchuSprite;
 
-    Sprite beansSprite = { gMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 2 };
+    Sprite beansSprite = { dgMagicBeansIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 2 };
     gSeedTextures[2] = beansSprite;
 
-    Sprite milkSprite = { gMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 3 };
+    Sprite milkSprite = { dgMilkFullIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 3 };
     gSeedTextures[3] = milkSprite;
 
-    Sprite frogSprite = { gEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 4 };
+    Sprite frogSprite = { dgEyeBallFrogIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 4 };
     gSeedTextures[4] = frogSprite;
 
-    Sprite mirrorShieldSprite = { gMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 5 };
+    Sprite mirrorShieldSprite = { dgMirrorShieldIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 5 };
     gSeedTextures[5] = mirrorShieldSprite;
 
-    Sprite hoverBootsSprite = { gHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 6 };
+    Sprite hoverBootsSprite = { dgHoverBootsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 6 };
     gSeedTextures[6] = hoverBootsSprite;
 
-    Sprite megatonHammerSprite = { gMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 7 };
+    Sprite megatonHammerSprite = { dgMegatonHammerIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 7 };
     gSeedTextures[7] = megatonHammerSprite;
 
-    Sprite silverGauntletsSprite = { gSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 8 };
+    Sprite silverGauntletsSprite = { dgSilverGauntletsIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 8 };
     gSeedTextures[8] = silverGauntletsSprite;
 
-    Sprite ootOcarinaSprite = { gOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
+    Sprite ootOcarinaSprite = { dgOcarinaofTimeIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 9 };
     gSeedTextures[9] = ootOcarinaSprite;
 }
 
