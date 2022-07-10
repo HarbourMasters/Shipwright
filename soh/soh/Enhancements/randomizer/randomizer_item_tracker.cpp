@@ -175,36 +175,6 @@ typedef struct {
     uint32_t id;
     std::string name;
     std::string nameFaded;
-    std::string texturePath;
-} QuestMapEntry;
-
-#define QUEST_MAP_ENTRY(id, tex)       \
-    {                                  \
-        id, {                          \
-            id, #id, #id "_Faded", tex \
-        }                              \
-    }
-
-// Maps quest items ids to info for use in ImGui
-std::map<uint32_t, QuestMapEntry> questMappingSSS = {
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FOREST, gForestMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_FIRE, gFireMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_WATER, gWaterMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SPIRIT, gSpiritMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_SHADOW, gShadowMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_MEDALLION_LIGHT, gLightMedallionIconTex),
-    QUEST_MAP_ENTRY(QUEST_KOKIRI_EMERALD, gKokiriEmeraldIconTex),
-    QUEST_MAP_ENTRY(QUEST_GORON_RUBY, gGoronRubyIconTex),
-    QUEST_MAP_ENTRY(QUEST_ZORA_SAPPHIRE, gZoraSapphireIconTex),
-    QUEST_MAP_ENTRY(QUEST_STONE_OF_AGONY, gStoneOfAgonyIconTex),
-    QUEST_MAP_ENTRY(QUEST_GERUDO_CARD, gGerudosCardIconTex),
-    // QUEST_MAP_ENTRY(QUEST_SKULL_TOKEN, gGoldSkulltulaIconTex),
-};
-
-typedef struct {
-    uint32_t id;
-    std::string name;
-    std::string nameFaded;
     ImVec4 color;
 } SongMapEntry;
 
