@@ -24,18 +24,13 @@ WARN := \
 	-funsigned-char \
 	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags sdl2 glew) $(shell sdl2-config --cflags)
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags sdl2 glew) $(shell sdl2-config --cflags)
 LDFLAGS :=
 
-ifeq ($(UNAME), Linux) #LINUX
-	CXXFLAGS += -mhard-float -msse2 -mfpmath=sse
-	CFLAGS += -mhard-float -msse2 -mfpmath=sse
-endif
-
-ifeq ($(UNAME), Darwin) #APPLE
-	CXXFLAGS += $(shell pkg-config --cflags sdl2) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
-	CFLAGS += $(shell pkg-config --cflags sdl2) $(shell sdl2-config --cflags) $(shell pkg-config --cflags glew) -framework OpenGL
+ifeq ($(UNAME), Linux)
+	CXXFLAGS += -mhard-float -msse2 -mfpmath=sse $(shell pkg-config --cflags libpulse)
+	CFLAGS += -mhard-float -msse2 -mfpmath=sse $(shell pkg-config --cflags libpulse)
 endif
 
 CPPFLAGS := -MMD
@@ -57,11 +52,11 @@ ifneq ($(LTO),0)
 	LDFLAGS += -flto
 endif
 
-ifeq ($(UNAME), Linux) #LINUX
+ifeq ($(UNAME), Linux)
 TARGET := soh.elf
 endif
 
-ifeq ($(UNAME), Darwin) #APPLE
+ifeq ($(UNAME), Darwin)
 TARGET := soh-$(UNAMEM)
 endif
 
@@ -78,25 +73,15 @@ INC_DIRS := $(addprefix -I, \
 	../libultraship/libultraship/Lib/Fast3D/U64/PR \
 )
 
-ifeq ($(UNAME), Linux) #LINUX
-	INC_DIRS += $(addprefix -I, \
-		/opt/X11/include \
-)
-endif
-
 LDDIRS := $(addprefix -L, \
 	../libultraship/ \
 )
 
-ifeq ($(UNAME), Linux) #LINUX
-	LDDIRS += $(addprefix -L, \
-		/opt/X11/lib \
-)
-endif
-
 LDLIBS := \
 	$(ZAPDUTILS) \
 	$(LIBSTORM) \
+	$(shell sdl2-config --libs) \
+	$(shell pkg-config --libs glew) \
 	$(addprefix -l, \
 	dl \
 	bz2 \
@@ -105,23 +90,15 @@ LDLIBS := \
 	ultraship \
 )
 
-ifeq ($(UNAME), Linux) #LINUX
-LDLIBS += \
-	$(addprefix -l, \
-	X11 \
-	SDL2 \
-	GL \
-	GLEW \
-	pulse \
-)
+ifeq ($(UNAME), Linux)
+LDLIBS += $(shell pkg-config --libs x11 libpulse)
 endif
 
-ifeq ($(UNAME), Darwin) #APPLE
+ifeq ($(UNAME), Darwin)
 LDLIBS += \
 	$(addprefix -framework , \
 	OpenGL \
-) \
-	$(shell sdl2-config --libs) $(shell pkg-config --libs glew)
+)
 endif
 
 ASSET_BIN_DIRS := $(shell find assets/* -type d -not -path "assets/xml*")

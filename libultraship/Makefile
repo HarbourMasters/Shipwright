@@ -37,10 +37,10 @@ endif
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
-CPPFLAGS := -MMD
+CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
-ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
+ifeq ($(UNAME), Darwin)
+	CPPFLAGS += -framework OpenGL
 endif
 
 ifeq ($(UNAME), Linux)
