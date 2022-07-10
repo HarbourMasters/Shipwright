@@ -168,11 +168,11 @@ s32 Scene_ExecuteCommands(GlobalContext* globalCtx, SceneCmd* sceneCmd) {
         osSyncPrintf("*** Scene_Word = { code=%d, data1=%02x, data2=%04x } ***\n", cmdCode, sceneCmd->base.data1,
                      sceneCmd->base.data2);
 
-        if (cmdCode == 0x14) {
+        if (cmdCode == SCENE_CMD_ID_END) {
             break;
         }
 
-        if (cmdCode <= 0x19) {
+        if (cmdCode < ARRAY_COUNT(gSceneCmdHandlers)) {
             gSceneCmdHandlers[cmdCode](globalCtx, sceneCmd);
         } else {
             osSyncPrintf(VT_FGCOL(RED));
@@ -417,7 +417,7 @@ void Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, SceneCmd* cmd) {
 
         if (altHeader != NULL) {
             Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));
-            (cmd + 1)->base.code = 0x14;
+            (cmd + 1)->base.code = SCENE_CMD_ID_END;
         } else {
             // "Coughh! There is no specified dataaaaa!"
             osSyncPrintf("\nげぼはっ！ 指定されたデータがないでええっす！");
@@ -431,7 +431,7 @@ void Scene_CommandAlternateHeaderList(GlobalContext* globalCtx, SceneCmd* cmd) {
 
                 if (altHeader != NULL) {
                     Scene_ExecuteCommands(globalCtx, SEGMENTED_TO_VIRTUAL(altHeader));
-                    (cmd + 1)->base.code = 0x14;
+                    (cmd + 1)->base.code = SCENE_CMD_ID_END;
                 }
             }
         }
@@ -464,7 +464,7 @@ void Scene_CommandMiscSettings(GlobalContext* globalCtx, SceneCmd* cmd) {
     }
 }
 
-void (*gSceneCmdHandlers[])(GlobalContext*, SceneCmd*) = {
+void (*gSceneCmdHandlers[SCENE_CMD_ID_MAX])(GlobalContext*, SceneCmd*) = {
     Scene_CommandSpawnList,           // SCENE_CMD_ID_SPAWN_LIST
     Scene_CommandActorList,           // SCENE_CMD_ID_ACTOR_LIST
     Scene_CommandUnused2,             // SCENE_CMD_ID_UNUSED_2

@@ -105,8 +105,8 @@ void EnFireRock_Init(Actor* thisx, GlobalContext* globalCtx) {
             break;
         case FIRE_ROCK_SPAWNED_FALLING1: // spawned by encount2
             // sets unused vars?
-            this->unk17C.x = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.x);
-            this->unk17C.z = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.z);
+            this->unk_17C.x = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.x);
+            this->unk_17C.z = (f32)(Rand_CenteredFloat(50.0f) + player->actor.world.pos.z);
         case FIRE_ROCK_SPAWNED_FALLING2: // spawned by encount2 and by the ceilling spawner
             this->scale = (Rand_ZeroFloat(2.0f) / 100.0f) + 0.02f;
             Actor_SetScale(&this->actor, this->scale);
