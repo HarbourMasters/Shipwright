@@ -894,7 +894,7 @@ void EnRd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnRd* this = (EnRd*)thisx;
     Vec3f thisPos = thisx->world.pos;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_rd.c", 1679);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->unk_314 == 0xFF) {
         func_80093D18(globalCtx->state.gfxCtx);
@@ -923,5 +923,5 @@ void EnRd_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80033C30(&thisPos, &D_80AE4958, this->unk_314, globalCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_rd.c", 1735);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

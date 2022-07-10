@@ -33,6 +33,8 @@ void Title_PrintBuildInfo(Gfx** gfxp) {
 
 #ifdef _MSC_VER
     GfxPrint_Printf(&printer, "MSVC SHIP");
+#elif __clang__
+    GfxPrint_Printf(&printer, "CLANG SHIP");
 #else
     GfxPrint_Printf(&printer, "GCC SHIP");
 #endif
@@ -166,7 +168,7 @@ void Title_Draw(TitleContext* this) {
     Vec3f v2;
     s32 pad2[2];
 
-    OPEN_DISPS(this->state.gfxCtx, "../z_title.c", 395);
+    OPEN_DISPS(this->state.gfxCtx);
 
     v3.x = 69;
     v3.y = 69;
@@ -188,7 +190,7 @@ void Title_Draw(TitleContext* this) {
     Matrix_Scale(1.0, 1.0, 1.0, MTXMODE_APPLY);
     Matrix_RotateZYX(0, sTitleRotY, 0, MTXMODE_APPLY);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(this->state.gfxCtx, "../z_title.c", 424), G_MTX_LOAD);
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(this->state.gfxCtx), G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, gNintendo64LogoDL);
     func_800944C4(this->state.gfxCtx);
     gDPPipeSync(POLY_OPA_DISP++);
@@ -216,7 +218,7 @@ void Title_Draw(TitleContext* this) {
 
     sTitleRotY += 300;
 
-    CLOSE_DISPS(this->state.gfxCtx, "../z_title.c", 483);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void Title_Main(GameState* thisx) {
@@ -224,7 +226,7 @@ void Title_Main(GameState* thisx) {
 
     if (CVar_GetS32("gSkipLogoTitle",0)!=0) {
         gSaveContext.language = CVar_GetS32("gLanguages", 0);
-        Sram_InitSram(&this->state, &this->sramCtx);
+        Sram_InitSram(&this->state);
         s16 selectedfile = CVar_GetS32("gSaveFileID", 0);
         if (selectedfile == 4) {
             selectedfile = 0xFF;
@@ -242,13 +244,13 @@ void Title_Main(GameState* thisx) {
         }
         if (selectedfile == 0xFF) {
             gSaveContext.fileNum = selectedfile;
-            Sram_OpenSave(&this->sramCtx);
+            Sram_OpenSave();
             gSaveContext.gameMode = 0;
             this->state.running = false;
             SET_NEXT_GAMESTATE(&this->state, Select_Init, SelectContext);
         } else {
             gSaveContext.fileNum = selectedfile;
-            Sram_OpenSave(&this->sramCtx);
+            Sram_OpenSave();
             gSaveContext.gameMode = 0;
             this->state.running = false;
             //return;
@@ -288,7 +290,7 @@ void Title_Main(GameState* thisx) {
         return;
     }
 
-    OPEN_DISPS(this->state.gfxCtx, "../z_title.c", 494);
+    OPEN_DISPS(this->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0, NULL);
     gSPSegment(POLY_OPA_DISP++, 1, this->staticSegment);
@@ -316,13 +318,13 @@ void Title_Main(GameState* thisx) {
             SET_NEXT_GAMESTATE(&this->state, Opening_Init, OpeningContext);
     }
 
-    CLOSE_DISPS(this->state.gfxCtx, "../z_title.c", 541);
+    CLOSE_DISPS(this->state.gfxCtx);
 }
 
 void Title_Destroy(GameState* thisx) {
     TitleContext* this = (TitleContext*)thisx;
 
-    Sram_InitSram(&this->state, &this->sramCtx);
+    Sram_InitSram(&this->state);
 }
 
 void Title_Init(GameState* thisx) {
@@ -331,9 +333,9 @@ void Title_Init(GameState* thisx) {
 
     quote = SetQuote();
 
-    //this->staticSegment = GameState_Alloc(&this->state, size, "../z_title.c", 611);
+    //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
     osSyncPrintf("z_title.c\n");
-    //ASSERT(this->staticSegment != NULL, "this->staticSegment != NULL", "../z_title.c", 614);
+    //ASSERT(this->staticSegment != NULL);
 
     //ResourceMgr_CacheDirectory("nintendo_rogo_static*");
 
@@ -346,7 +348,6 @@ void Title_Init(GameState* thisx) {
     this->state.destroy = Title_Destroy;
     this->exit = false;
     gSaveContext.fileNum = 0xFF;
-    Sram_Alloc(&this->state, &this->sramCtx);
     this->ult = 0;
     this->unk_1D4 = 0x14;
     this->coverAlpha = 255;

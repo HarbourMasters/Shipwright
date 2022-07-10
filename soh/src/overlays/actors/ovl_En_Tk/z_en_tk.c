@@ -9,6 +9,10 @@
 #include "objects/object_tk/object_tk.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
+#define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
+#define ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE 0x1000
+
+bool heartPieceSpawned;
 
 void EnTk_Init(Actor* thisx, GlobalContext* globalCtx);
 void EnTk_Destroy(Actor* thisx, GlobalContext* globalCtx);
@@ -88,13 +92,11 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
     s16 alpha;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 114);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gfxSetup = 0;
 
     func_80093D84(globalCtx->state.gfxCtx);
-
-    if (1) {}
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
@@ -112,7 +114,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
             Matrix_Translate(eff->pos.x, eff->pos.y, eff->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(eff->size, eff->size, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 140),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             imageIdx = eff->timeLeft * ((f32)ARRAY_COUNT(dustTextures) / eff->timeTotal);
@@ -123,7 +125,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
         eff++;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tk_eff.c", 154);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnTkEff_CreateDflt(EnTk* this, Vec3f* pos, u8 duration, f32 size, f32 growth, f32 yAccelMax) {
@@ -505,6 +507,7 @@ void EnTk_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->currentReward = -1;
     this->currentSpot = NULL;
     this->actionFunc = EnTk_Rest;
+    heartPieceSpawned = false;
 }
 
 void EnTk_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -611,13 +614,23 @@ void EnTk_Dig(EnTk* this, GlobalContext* globalCtx) {
                  * Upgrade the purple rupee reward to the heart piece if this
                  * is the first grand prize dig.
                  */
-                if (!(gSaveContext.itemGetInf[1] & 0x1000)) {
-                    gSaveContext.itemGetInf[1] |= 0x1000;
+                // If vanilla itemGetInf flag is not set, it's impossible for the new flag to be set, so return true.
+                // Otherwise if the gGravediggingTourFix is enabled and the new flag hasn't been set, return true.
+                // If true, spawn the heart piece and set the vanilla itemGetInf flag and new temp clear flag.
+                if (!heartPieceSpawned &&
+                    (!(gSaveContext.itemGetInf[1] & ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE) ||
+                     CVar_GetS32("gGravediggingTourFix", 0) &&
+                         !Flags_GetCollectible(globalCtx, COLLECTFLAG_GRAVEDIGGING_HEART_PIECE))) {
                     this->currentReward = 4;
+                    gSaveContext.itemGetInf[1] |= ITEMGETINFFLAG_GRAVEDIGGING_HEART_PIECE;
+                    heartPieceSpawned = true;
                 }
             }
 
-            Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            EnItem00* reward = Item_DropCollectible(globalCtx, &rewardPos, rewardParams[this->currentReward]);
+            if (this->currentReward == 4) {
+                reward->collectibleFlag = COLLECTFLAG_GRAVEDIGGING_HEART_PIECE;
+            }
         }
     }
 
@@ -673,11 +686,11 @@ void EnTk_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void func_80B1D200(GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tk.c", 1188);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPDisplayList(POLY_OPA_DISP++, gDampeShovelDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tk.c", 1190);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnTk_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {
@@ -727,7 +740,7 @@ void EnTk_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnTkEff_Draw(this, globalCtx);
     Matrix_Pop();
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_tk.c", 1294);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -736,5 +749,5 @@ void EnTk_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnTk_OverrideLimbDraw, EnTk_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_tk.c", 1312);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

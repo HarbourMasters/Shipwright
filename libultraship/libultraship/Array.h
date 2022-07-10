@@ -67,6 +67,7 @@ namespace Ship
 		TextureAnimationParams,
 		Vector,
 		Vertex,
+		Audio
 	};
 
 	class ArrayV0 : public ResourceFile

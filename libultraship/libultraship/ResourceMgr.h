@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <thread>
 #include <queue>
@@ -17,7 +17,7 @@ namespace Ship
 	// It works with the original game's assets because the entire ROM is 64MB and fits into RAM of any semi-modern PC.
 	class ResourceMgr {
 	public:
-		ResourceMgr(std::shared_ptr<GlobalCtx2> Context, std::string MainPath, std::string PatchesPath);
+		ResourceMgr(std::shared_ptr<GlobalCtx2> Context, const std::string& MainPath, const std::string& PatchesPath);
 		~ResourceMgr();
 
 		bool IsRunning();
@@ -32,15 +32,16 @@ namespace Ship
 
 		uint32_t GetGameVersion();
 		void SetGameVersion(uint32_t newGameVersion);
-		std::shared_ptr<File> LoadFileAsync(std::string FilePath);
-		std::shared_ptr<File> LoadFile(std::string FilePath);
+		std::shared_ptr<File> LoadFileAsync(const std::string& FilePath);
+		std::shared_ptr<File> LoadFile(const std::string& FilePath);
 		std::shared_ptr<Ship::Resource> GetCachedFile(const char* FilePath) const;
 		std::shared_ptr<Resource> LoadResource(const char* FilePath);
 		std::shared_ptr<Resource> LoadResource(const std::string& FilePath) { return LoadResource(FilePath.c_str()); }
 		std::variant<std::shared_ptr<Resource>, std::shared_ptr<ResourcePromise>> LoadResourceAsync(const char* FilePath);
-		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(std::string SearchMask);
-		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(std::string SearchMask);
+		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> CacheDirectory(const std::string& SearchMask);
+		std::shared_ptr<std::vector<std::shared_ptr<ResourcePromise>>> CacheDirectoryAsync(const std::string& SearchMask);
 		std::shared_ptr<std::vector<std::shared_ptr<Resource>>> DirtyDirectory(std::string SearchMask);
+		std::shared_ptr<std::vector<std::string>> ListFiles(std::string SearchMask);
 
 	protected:
 		void Start();
@@ -51,8 +52,8 @@ namespace Ship
 	private:
 		std::weak_ptr<GlobalCtx2> Context;
 		volatile bool bIsRunning;
-		std::map<std::string, std::shared_ptr<File>> FileCache;
-		std::map<std::string, std::shared_ptr<Resource>, std::less<>> ResourceCache;
+		std::unordered_map<std::string, std::shared_ptr<File>> FileCache;
+		std::unordered_map<std::string, std::shared_ptr<Resource>> ResourceCache;
 		std::queue<std::shared_ptr<File>> FileLoadQueue;
 		std::queue<std::shared_ptr<ResourcePromise>> ResourceLoadQueue;
 		std::shared_ptr<Archive> OTR;

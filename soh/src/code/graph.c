@@ -134,7 +134,7 @@ GameStateOverlay* Graph_GetNextGameState(GameState* gameState) {
         return &gGameStateOverlayTable[5];
     }
 
-    LOG_ADDRESS("game_init_func", gameStateInitFunc, "../graph.c", 696);
+    LOG_ADDRESS("game_init_func", gameStateInitFunc);
     return NULL;
 }
 
@@ -170,12 +170,12 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
 
     D_8016A528 = osGetTime() - sGraphSetTaskTime - D_8016A558;
 
-    osSetTimer(&timer, OS_USEC_TO_CYCLES(3000000), 0, &gfxCtx->queue, (OSMesg)666);
+    osSetTimer(&timer, OS_USEC_TO_CYCLES(3000000), 0, &gfxCtx->queue, OS_MESG_32(666));
 
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_BLOCK);
     osStopTimer(&timer);
     //OTRTODO - Proper GFX crash handler
-    #if 0 
+    #if 0
     if (msg == (OSMesg)666) {
         osSyncPrintf(VT_FGCOL(RED));
         osSyncPrintf("RCPが帰ってきませんでした。"); // "RCP did not return."
@@ -194,7 +194,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
         }
         Fault_AddHungupAndCrashImpl("RCP is HUNG UP!!", "Oh! MY GOD!!");
     }
-    #endif 
+    #endif
     osRecvMesg(&gfxCtx->queue, &msg, OS_MESG_NOBLOCK);
 
     D_8012D260 = gfxCtx->workBuffer;
@@ -225,11 +225,9 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     task->output_buff_size = (u64*)((u8*)gGfxSPTaskOutputBuffer + sizeof(gGfxSPTaskOutputBuffer));
     task->data_ptr = (u64*)gfxCtx->workBuffer;
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 828);
+    OPEN_DISPS(gfxCtx);
     task->data_size = (uintptr_t)WORK_DISP - (uintptr_t)gfxCtx->workBuffer;
-    CLOSE_DISPS(gfxCtx, "../graph.c", 830);
-
-    { s32 pad2; } // Necessary to match stack usage
+    CLOSE_DISPS(gfxCtx);
 
     task->yield_data_ptr = (u64*)gGfxSPTaskYieldBuffer;
     task->yield_data_size = sizeof(gGfxSPTaskYieldBuffer);
@@ -243,7 +241,7 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     }
 
     scTask->msgQ = &gfxCtx->queue;
-    scTask->msg = NULL;
+    scTask->msg.ptr = NULL;
 
     cfb = &sGraphCfbInfos[sGraphCfbInfoIdx++];
     cfb->fb1 = gfxCtx->curFrameBuffer;
@@ -258,11 +256,9 @@ void Graph_TaskSet00(GraphicsContext* gfxCtx) {
     scTask->framebuffer = cfb;
     sGraphCfbInfoIdx = sGraphCfbInfoIdx % ARRAY_COUNT(sGraphCfbInfos);
 
-    if (1) {}
-
     gfxCtx->schedMsgQ = &gSchedContext.cmdQ;
 
-    osSendMesg(&gSchedContext.cmdQ, scTask, OS_MESG_BLOCK);
+    osSendMesgPtr(&gSchedContext.cmdQ, scTask, OS_MESG_BLOCK);
     Sched_SendEntryMsg(&gSchedContext);
 }
 
@@ -272,29 +268,29 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gameState->unk_A0 = 0;
     Graph_InitTHGA(gfxCtx);
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 966);
+    OPEN_DISPS(gfxCtx);
 
     gDPNoOpString(WORK_DISP++, "WORK_DISP 開始", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 開始", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 開始", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 開始", 0);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 975);
+    CLOSE_DISPS(gfxCtx);
 
     GameState_ReqPadData(gameState);
     GameState_Update(gameState);
     Debug_Draw();
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 987);
+    OPEN_DISPS(gfxCtx);
 
     gDPNoOpString(WORK_DISP++, "WORK_DISP 終了", 0);
     gDPNoOpString(POLY_OPA_DISP++, "POLY_OPA_DISP 終了", 0);
     gDPNoOpString(POLY_XLU_DISP++, "POLY_XLU_DISP 終了", 0);
     gDPNoOpString(OVERLAY_DISP++, "OVERLAY_DISP 終了", 0);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 996);
+    CLOSE_DISPS(gfxCtx);
 
-    OPEN_DISPS(gfxCtx, "../graph.c", 999);
+    OPEN_DISPS(gfxCtx);
 
     gSPBranchList(WORK_DISP++, gfxCtx->polyOpaBuffer);
     gSPBranchList(POLY_OPA_DISP++, gfxCtx->polyXluBuffer);
@@ -305,7 +301,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
     gDPFullSync(OVERLAY_DISP++);
     gSPEndDisplayList(OVERLAY_DISP++);
 
-    CLOSE_DISPS(gfxCtx, "../graph.c", 1028);
+    CLOSE_DISPS(gfxCtx);
 
     if (HREG(80) == 10 && HREG(93) == 2) {
         HREG(80) = 7;
@@ -344,14 +340,14 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
             osSyncPrintf("%c", 7);
             // "Dynamic area head is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域先頭が破壊されています\n" VT_RST);
-            Fault_AddHungupAndCrash("../graph.c", 1070);
+            Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
         if (pool->tailMagic != GFXPOOL_TAIL_MAGIC) {
             problem = true;
             osSyncPrintf("%c", 7);
             // "Dynamic region tail is destroyed"
             osSyncPrintf(VT_COL(RED, WHITE) "ダイナミック領域末尾が破壊されています\n" VT_RST);
-            Fault_AddHungupAndCrash("../graph.c", 1076);
+            Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
     }
 
@@ -399,7 +395,7 @@ void Graph_Update(GraphicsContext* gfxCtx, GameState* gameState) {
         sGraphUpdateTime = time;
     }
 
-    if (CVar_GetS32("gDebugEnabled", 0)) 
+    if (CVar_GetS32("gDebugEnabled", 0))
     {
         if (CHECK_BTN_ALL(gameState->input[0].press.button, BTN_Z) &&
             CHECK_BTN_ALL(gameState->input[0].cur.button, BTN_L | BTN_R)) {
@@ -437,6 +433,7 @@ static void RunFrame()
 {
     u32 size;
     char faultMsg[0x50];
+    static bool hasSetupSkybox = false;
 
     switch (runFrameContext.state) {
         case 0:
@@ -458,7 +455,7 @@ static void RunFrame()
         size = runFrameContext.ovl->instanceSize;
         osSyncPrintf("クラスサイズ＝%dバイト\n", size); // "Class size = %d bytes"
 
-        runFrameContext.gameState = SystemArena_MallocDebug(size, "../graph.c", 1196);
+        runFrameContext.gameState = SYSTEM_ARENA_MALLOC_DEBUG(size);
 
         if (!runFrameContext.gameState)
         {
@@ -469,20 +466,28 @@ static void RunFrame()
         }
         GameState_Init(runFrameContext.gameState, runFrameContext.ovl->init, &runFrameContext.gfxCtx);
 
+        // Setup the normal skybox once before entering any game states to avoid the 0xabababab crash.
+        // The crash is due to certain skyboxes not loading all the data they need from Skybox_Setup.
+        if (!hasSetupSkybox) {
+            GlobalContext* globalCtx = (GlobalContext*)runFrameContext.gameState;
+            Skybox_Setup(globalCtx, &globalCtx->skyboxCtx, SKYBOX_NORMAL_SKY);
+            hasSetupSkybox = true;
+        }
+
         uint64_t freq = GetFrequency();
 
         while (GameState_IsRunning(runFrameContext.gameState))
         {
             uint64_t ticksA, ticksB;
             ticksA = GetPerfCounter();
-            
+
             Graph_StartFrame();
 
             // TODO: Workaround for rumble being too long. Implement os thread functions.
             for (int i = 0; i < 3; i++) {
                 PadMgr_ThreadEntry(&gPadMgr);
             }
-            
+
             Graph_Update(&runFrameContext.gfxCtx, runFrameContext.gameState);
             ticksB = GetPerfCounter();
 
@@ -499,7 +504,7 @@ static void RunFrame()
 
         runFrameContext.nextOvl = Graph_GetNextGameState(runFrameContext.gameState);
         GameState_Destroy(runFrameContext.gameState);
-        SystemArena_FreeDebug(runFrameContext.gameState, "../graph.c", 1227);
+        SYSTEM_ARENA_FREE_DEBUG(runFrameContext.gameState);
         Overlay_FreeGameState(runFrameContext.ovl);
     }
     Graph_Destroy(&runFrameContext.gfxCtx);

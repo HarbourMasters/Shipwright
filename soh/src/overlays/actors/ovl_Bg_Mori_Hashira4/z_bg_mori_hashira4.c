@@ -62,7 +62,7 @@ void BgMoriHashira4_InitDynaPoly(BgMoriHashira4* this, GlobalContext* globalCtx,
 
     if (this->dyna.bgId == BG_ACTOR_MAX) {
         // "Warning : move BG login failed"
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_mori_hashira4.c", 155,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -85,7 +85,7 @@ void BgMoriHashira4_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->dyna.actor);
         // "Bank danger!"
         osSyncPrintf("Error : バンク危険！(arg_data 0x%04x)(%s %d)\n", this->dyna.actor.params,
-                     "../z_bg_mori_hashira4.c", 196);
+                     __FILE__, __LINE__);
         return;
     }
     if ((this->dyna.actor.params != 0) && Flags_GetSwitch(globalCtx, this->switchFlag)) {
@@ -162,14 +162,14 @@ void BgMoriHashira4_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriHashira4* this = (BgMoriHashira4*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_hashira4.c", 339);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_hashira4.c", 344),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_OPA_DISP++, sDisplayLists[this->dyna.actor.params]);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_hashira4.c", 348);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

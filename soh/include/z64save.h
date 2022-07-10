@@ -5,8 +5,8 @@
 #include "z64math.h"
 
 typedef struct {
-    /* 0x00 */ u8 buttonItems[4];
-    /* 0x04 */ u8 cButtonSlots[3];
+    /* 0x00 */ u8 buttonItems[8];
+    /* 0x04 */ u8 cButtonSlots[7];
     /* 0x08 */ u16 equipment;
 } ItemEquips; // size = 0x0A
 
@@ -68,7 +68,6 @@ typedef struct {
     /* 0x0010 */ s32 nightFlag;
     /* 0x0014 */ s32 totalDays;
     /* 0x0018 */ s32 bgsDayCount; // increments with totalDays, can be cleared with `Environment_ClearBgsDayCount`
-    /* 0x001C */ char newf[6]; // string "ZELDAZ". start of `info` substruct, originally called "information"
     /* 0x0022 */ u16 deaths;
     /* 0x0024 */ char playerName[8];
     /* 0x002C */ s16 n64ddFlag;
@@ -80,7 +79,6 @@ typedef struct {
     /* 0x0036 */ u16 swordHealth;
     /* 0x0038 */ u16 naviTimer;
     /* 0x003A */ u8 magicAcquired;
-    /* 0x003B */ char unk_3B[0x01];
     /* 0x003C */ u8 doubleMagic;
     /* 0x003D */ u8 doubleDefense;
     /* 0x003E */ u8 bgsFlag;
@@ -88,30 +86,23 @@ typedef struct {
     /* 0x0040 */ ItemEquips childEquips;
     /* 0x004A */ ItemEquips adultEquips;
     /* 0x0054 */ u32 unk_54; // this may be incorrect, currently used for alignement
-    /* 0x0058 */ char unk_58[0x0E];
     /* 0x0066 */ s16 savedSceneNum;
     /* 0x0068 */ ItemEquips equips;
     /* 0x0074 */ Inventory inventory;
     /* 0x00D4 */ SavedSceneFlags sceneFlags[124];
     /* 0x0E64 */ FaroresWindData fw;
-    /* 0x0E8C */ char unk_E8C[0x10];
     /* 0x0E9C */ s32 gsFlags[6];
-    /* 0x0EB4 */ char unk_EB4[0x4];
     /* 0x0EB8 */ s32 highScores[7];
     /* 0x0ED4 */ u16 eventChkInf[14]; // "event_chk_inf"
     /* 0x0EF0 */ u16 itemGetInf[4]; // "item_get_inf"
     /* 0x0EF8 */ u16 infTable[30]; // "inf_table"
-    /* 0x0F34 */ char unk_F34[0x04];
     /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
-    /* 0x0F3C */ char unk_F3C[0x4];
     /* 0x0F40 */ u8 scarecrowCustomSongSet;
     /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
-    /* 0x12A1 */ char unk_12A1[0x24];
     /* 0x12C5 */ u8 scarecrowSpawnSongSet;
     /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
     /* 0x1346 */ char unk_1346[0x02];
     /* 0x1348 */ HorseData horseData;
-    /* 0x1352 */ u16 checksum; // "check_sum"
     /* 0x1354 */ s32 fileNum; // "file_no"
     /* 0x1358 */ char unk_1358[0x0004];
     /* 0x135C */ s32 gameMode;
@@ -120,13 +111,11 @@ typedef struct {
     /* 0x1368 */ RespawnData respawn[3]; // "restart_data"
     /* 0x13BC */ f32 entranceSpeed;
     /* 0x13C0 */ u16 entranceSound;
-    /* 0x13C2 */ char unk_13C2[0x0001];
     /* 0x13C3 */ u8 unk_13C3;
     /* 0x13C4 */ s16 dogParams;
     /* 0x13C6 */ u8 textTriggerFlags;
     /* 0x13C7 */ u8 showTitleCard;
     /* 0x13C8 */ s16 nayrusLoveTimer;
-    /* 0x13CA */ char unk_13CA[0x0002];
     /* 0x13CC */ s16 rupeeAccumulator;
     /* 0x13CE */ s16 timer1State;
     /* 0x13D0 */ s16 timer1Value;
@@ -134,10 +123,9 @@ typedef struct {
     /* 0x13D4 */ s16 timer2Value;
     /* 0x13D6 */ s16 timerX[2];
     /* 0x13DA */ s16 timerY[2];
-    /* 0x13DE */ char unk_13DE[0x0002];
     /* 0x13E0 */ u8 seqId;
     /* 0x13E1 */ u8 natureAmbienceId;
-    /* 0x13E2 */ u8 buttonStatus[5];
+    /* 0x13E2 */ u8 buttonStatus[9];
     /* 0x13E7 */ u8 unk_13E7; // alpha related
     /* 0x13E8 */ u16 unk_13E8; // alpha type?
     /* 0x13EA */ u16 unk_13EA; // also alpha type?
@@ -152,14 +140,11 @@ typedef struct {
     /* 0x1402 */ u16 mapIndex; // intended for maps/minimaps but commonly used as the dungeon index
     /* 0x1404 */ u16 minigameState;
     /* 0x1406 */ u16 minigameScore; // "yabusame_total"
-    /* 0x1408 */ char unk_1408[0x0001];
     /* 0x1409 */ u8 language; // NTSC 0: Japanese; 1: English | PAL 0: English; 1: German; 2: French
     /* 0x140A */ u8 audioSetting;
-    /* 0x140B */ char unk_140B[0x0001];
     /* 0x140C */ u8 zTargetSetting; // 0: Switch; 1: Hold
     /* 0x140E */ u16 forcedSeqId; // immediately start playing the sequence if set
     /* 0x1410 */ u8 unk_1410; // transition related
-    /* 0x1411 */ char unk_1411[0x0001];
     /* 0x1412 */ u16 nextCutsceneIndex;
     /* 0x1414 */ u8 cutsceneTrigger;
     /* 0x1415 */ u8 chamberCutsceneNum;
@@ -169,7 +154,6 @@ typedef struct {
     /* 0x141A */ u16 skyboxTime;
     /* 0x141C */ u8 dogIsLost;
     /* 0x141D */ u8 nextTransition;
-    /* 0x141E */ char unk_141E[0x0002];
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;

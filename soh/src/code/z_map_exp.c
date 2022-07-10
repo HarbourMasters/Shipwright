@@ -410,7 +410,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
             sEntranceIconMapIndex = extendedMapIndex;
             //DmaMgr_SendRequest1(interfaceCtx->mapSegment,
                                 //(uintptr_t)_map_grand_staticSegmentRomStart + gMapData->owMinimapTexOffset[extendedMapIndex],
-                                //gMapData->owMinimapTexSize[mapIndex], "../z_map_exp.c", 309);
+                                //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
             if (sEntranceIconMapIndex < 24)
                 memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableOW[sEntranceIconMapIndex]), gMapData->owMinimapTexSize[mapIndex]);
@@ -443,7 +443,7 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
             //DmaMgr_SendRequest1(globalCtx->interfaceCtx.mapSegment,
                                 //(uintptr_t)_map_i_staticSegmentRomStart +
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
-                                //0xFF0, "../z_map_exp.c", 346);
+                                //0xFF0, __FILE__, __LINE__);
 
             memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]), 0xFF0);
 
@@ -516,11 +516,11 @@ void Map_Init(GlobalContext* globalCtx) {
     interfaceCtx->unk_258 = -1;
     interfaceCtx->unk_25A = -1;
 
-    interfaceCtx->mapSegment = GameState_Alloc(&globalCtx->state, 0x1000, "../z_map_exp.c", 457);
+    interfaceCtx->mapSegment = GAMESTATE_ALLOC_MC(&globalCtx->state, 0x1000);
     // "ＭＡＰ texture initialization scene_data_ID=%d mapSegment=%x"
     osSyncPrintf("\n\n\nＭＡＰ テクスチャ初期化   scene_data_ID=%d\nmapSegment=%x\n\n", globalCtx->sceneNum,
                  interfaceCtx->mapSegment, globalCtx);
-    ASSERT(interfaceCtx->mapSegment != NULL, "parameter->mapSegment != NULL", "../z_map_exp.c", 459);
+    ASSERT(interfaceCtx->mapSegment != NULL);
 
     switch (globalCtx->sceneNum) {
         case SCENE_SPOT00:
@@ -598,48 +598,112 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
     s32 pad;
     Player* player = GET_PLAYER(globalCtx);
     s16 tempX, tempZ;
+    s16 X_Margins_Minimap;
+    s16 Y_Margins_Minimap;
+    if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {
+        if (CVar_GetS32("gMinimapPosType", 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
+        Y_Margins_Minimap = Bottom_MM_Margin;
+    } else {
+        X_Margins_Minimap = 0;
+        Y_Margins_Minimap = 0;
+    }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 565);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->interfaceCtx.minimapAlpha >= 0xAA) {
         func_80094A14(globalCtx->state.gfxCtx);
 
+        //Player current position (yellow arrow)
         gSPMatrix(OVERLAY_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_PRIMITIVE, G_CC_PRIMITIVE);
-        tempX = player->actor.world.pos.x+Right_MM_Margin;
-        tempZ = player->actor.world.pos.z+Bottom_MM_Margin;
+
+        tempX = player->actor.world.pos.x;
+        tempZ = player->actor.world.pos.z;
         tempX /= R_COMPASS_SCALE_X;
         tempZ /= R_COMPASS_SCALE_Y;
-        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(Right_MM_Margin*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Bottom_MM_Margin*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+            if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                    Matrix_Translate(
+                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
+                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                Matrix_Translate(
+                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
+                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                Matrix_Translate(
+                    (R_COMPASS_OFFSET_X + tempX + (CVar_GetS32("gMinimapPosX", 0)*10) / 10.0f), 
+                    (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                Matrix_Translate(
+                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f), 
+                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            }
+        } else {
+            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        }
         Matrix_Scale(0.4f, 0.4f, 0.4f, MTXMODE_APPLY);
         Matrix_RotateX(-1.6f, MTXMODE_APPLY);
         tempX = (0x7FFF - player->actor.shape.rot.y) / 0x400;
         Matrix_RotateY(tempX / 10.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_map_exp.c", 585),
+        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 255, 0, 255);
+        if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetS32("gCCMinimapCPPrimR", 200), CVar_GetS32("gCCMinimapCPPrimG", 255), CVar_GetS32("gCCMinimapCPPrimB", 0), 255);
+        } else {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 255, 0, 255);
+        }
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
-        tempX = sPlayerInitialPosX+Right_MM_Margin;
-        tempZ = sPlayerInitialPosZ+Bottom_MM_Margin;
+        //Player map entry (red arrow)
+        tempX = sPlayerInitialPosX+X_Margins_Minimap;
+        tempZ = sPlayerInitialPosZ+Y_Margins_Minimap;
         tempX /= R_COMPASS_SCALE_X;
         tempZ /= R_COMPASS_SCALE_Y;
-        Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(Right_MM_Margin*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Bottom_MM_Margin*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+            if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                    Matrix_Translate(
+                        OTRGetDimensionFromLeftEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
+                        (R_COMPASS_OFFSET_Y + ((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                Matrix_Translate(
+                    OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X + (X_Margins_Minimap*10) + tempX + (CVar_GetS32("gMinimapPosX", 0)*10)) / 10.0f), 
+                    (R_COMPASS_OFFSET_Y +((Y_Margins_Minimap*10)*-1) - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                Matrix_Translate(
+                    (R_COMPASS_OFFSET_X + tempX + (CVar_GetS32("gMinimapPosX", 0)*10) / 10.0f), 
+                    (R_COMPASS_OFFSET_Y - tempZ + ((CVar_GetS32("gMinimapPosY", 0)*10)*-1)) / 10.0f, 0.0f, MTXMODE_NEW);
+            } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                Matrix_Translate(
+                    (R_COMPASS_OFFSET_X+(9999*10) + tempX / 10.0f), 
+                    (R_COMPASS_OFFSET_Y+(9999*10) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+            }
+        } else {
+            Matrix_Translate(OTRGetDimensionFromRightEdge((R_COMPASS_OFFSET_X+(X_Margins_Minimap*10) + tempX) / 10.0f), (R_COMPASS_OFFSET_Y+((Y_Margins_Minimap*10)*-1) - tempZ) / 10.0f, 0.0f, MTXMODE_NEW);
+        }
         Matrix_Scale(VREG(9) / 100.0f, VREG(9) / 100.0f, VREG(9) / 100.0f, MTXMODE_APPLY);
         Matrix_RotateX(VREG(52) / 10.0f, MTXMODE_APPLY);
         Matrix_RotateY(sPlayerInitialDirection / 10.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_map_exp.c", 603),
+        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 0, 0, 255);
+        if (CVar_GetS32("gHudColors", 1) == 2) {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetS32("gCCMinimapLEPrimR", 200), CVar_GetS32("gCCMinimapLEPrimG", 0), CVar_GetS32("gCCMinimapLEPrimB", 0), 255);
+        } else {
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 0, 0, 255);
+        }
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 607);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Minimap_Draw(GlobalContext* globalCtx) {
@@ -647,9 +711,20 @@ void Minimap_Draw(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 626);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->pauseCtx.state < 4) {
+        //Minimap margins
+        s16 X_Margins_Minimap;
+        s16 Y_Margins_Minimap;
+        if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {
+            if (CVar_GetS32("gMinimapPosType", 0) == 0) {X_Margins_Minimap = Right_MM_Margin;};
+            Y_Margins_Minimap = Bottom_MM_Margin;
+        } else {
+            X_Margins_Minimap = 0;
+            Y_Margins_Minimap = 0;
+        }
+
         switch (globalCtx->sceneNum) {
             case SCENE_YDAN:
             case SCENE_DDAN:
@@ -668,7 +743,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         if (CVar_GetS32("gHudColors", 1) == 2) { //Dungeon minimap
-                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", R_MINIMAP_COLOR(0)), CVar_GetS32("gCCMinimapPrimG", R_MINIMAP_COLOR(1)), CVar_GetS32("gCCMinimapPrimB", R_MINIMAP_COLOR(2)), interfaceCtx->minimapAlpha);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapDGNPrimR", R_MINIMAP_COLOR(0)), CVar_GetS32("gCCMinimapDGNPrimG", R_MINIMAP_COLOR(1)), CVar_GetS32("gCCMinimapDGNPrimB", R_MINIMAP_COLOR(2)), interfaceCtx->minimapAlpha);
                         } else {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
                         }
@@ -678,9 +753,22 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                                G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                        const s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + Right_MM_Margin);
-                        const s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Bottom_MM_Margin;
-
+                        s16 dgnMiniMapX = OTRGetRectDimensionFromRightEdge(R_DGN_MINIMAP_X + X_Margins_Minimap);
+                        s16 dgnMiniMapY = R_DGN_MINIMAP_Y + Y_Margins_Minimap;
+                        if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+                            dgnMiniMapY = R_DGN_MINIMAP_Y+CVar_GetS32("gMinimapPosY", 0)+Y_Margins_Minimap;
+                            if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                                dgnMiniMapX = OTRGetDimensionFromLeftEdge(R_DGN_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);            
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                                dgnMiniMapX = OTRGetDimensionFromRightEdge(R_DGN_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                                dgnMiniMapX = CVar_GetS32("gMinimapPosX", 0);
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                                dgnMiniMapX = -9999;
+                            }
+                        }
                         gSPWideTextureRectangle(OVERLAY_DISP++, dgnMiniMapX << 2, dgnMiniMapY << 2,
                                             (dgnMiniMapX + 96) << 2, (dgnMiniMapY + 85) << 2, G_TX_RENDERTILE,
                                             0, 0, 1 << 10, 1 << 10);
@@ -740,9 +828,22 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                            G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-                    const s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + Right_MM_Margin);
-                    const s16 oWMiniMapY = R_OW_MINIMAP_Y + Bottom_MM_Margin;
-
+                    s16 oWMiniMapX = OTRGetRectDimensionFromRightEdge(R_OW_MINIMAP_X + X_Margins_Minimap);
+                    s16 oWMiniMapY = R_OW_MINIMAP_Y + Y_Margins_Minimap;
+                    if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+                        oWMiniMapY = R_OW_MINIMAP_Y+CVar_GetS32("gMinimapPosY", 0)+Y_Margins_Minimap;
+                        if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                            if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                            oWMiniMapX = OTRGetDimensionFromLeftEdge(R_OW_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                            if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                            oWMiniMapX = OTRGetDimensionFromRightEdge(R_OW_MINIMAP_X+CVar_GetS32("gMinimapPosX", 0)+X_Margins_Minimap);
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                            oWMiniMapX = CVar_GetS32("gMinimapPosX", 0);
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                            oWMiniMapX = -9999;
+                        }
+                    }
                     gSPWideTextureRectangle(OVERLAY_DISP++, oWMiniMapX << 2, oWMiniMapY << 2,
                                            (oWMiniMapX + gMapData->owMinimapWidth[mapIndex]) << 2,
                                            (oWMiniMapY + gMapData->owMinimapHeight[mapIndex]) << 2, G_TX_RENDERTILE, 0,
@@ -755,22 +856,49 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&
                          (globalCtx->sceneNum != SCENE_SPOT08)) ||
                         (LINK_AGE_IN_YEARS != YEARS_ADULT)) {
+                        bool Map0 = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 == 0;
                         s16 IconSize = 8;
-                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex]+Right_MM_Margin;
-                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex]+Bottom_MM_Margin;
+                        s16 PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + (Map0 ? 0 : X_Margins_Minimap);
+                        s16 PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + (Map0 ? 0 : Y_Margins_Minimap);
                         //gFixDungeonMinimapIcon fix both Y position of visible icon and hide these non needed.
-                        if (CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+
+                        s16 TopLeftX = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX) : OTRGetRectDimensionFromRightEdge(PosX)) << 2;
+                        s16 TopLeftY = PosY << 2;
+                        s16 TopLeftW = (Map0 ? OTRGetRectDimensionFromLeftEdge(PosX + IconSize) : OTRGetRectDimensionFromRightEdge(PosX + IconSize)) << 2;
+                        s16 TopLeftH = (PosY + IconSize) << 2;
+                        if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+                            PosX = gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + CVar_GetS32("gMinimapPosX", 0) + X_Margins_Minimap;
+                            PosY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + CVar_GetS32("gMinimapPosY", 0) + Y_Margins_Minimap;
+                            if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                                TopLeftX = OTRGetRectDimensionFromLeftEdge(PosX) << 2;
+                                TopLeftW = OTRGetRectDimensionFromLeftEdge(PosX + IconSize) << 2;
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                                if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                                TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
+                                TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                                TopLeftX = PosX << 2;
+                                TopLeftW = PosX + IconSize << 2;
+                            } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                                TopLeftX = -9999 << 2;
+                                TopLeftW = -9999 + IconSize << 2;
+                            }
+                            if (!CVar_GetS32("gMinimapPosType", 0) != 4 && Map0 && !CVar_GetS32("gFixDungeonMinimapIcon", 0)) { //Force top left icon if fix not applied.
+                                TopLeftX = OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex]) << 2;
+                                TopLeftY = gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2;
+                                TopLeftW = OTRGetRectDimensionFromLeftEdge(gMapData->owEntranceIconPosX[sEntranceIconMapIndex] + IconSize) << 2;
+                                TopLeftH = (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] + IconSize) << 2;
+                            }
+                        }
+                        if (CVar_GetS32("gFixDungeonMinimapIcon", 0) != 0){
                             //No idea why and how Original value work but this does actually fix them all.
                             PosY = PosY+1024;
                         }
-                        s16 TopLeftX = OTRGetRectDimensionFromRightEdge(PosX) << 2;
-                        s16 TopLeftY = PosY << 2;
-                        s16 TopLeftW = OTRGetRectDimensionFromRightEdge(PosX + IconSize) << 2;
-                        s16 TopLeftH = (PosY + IconSize) << 2;
                         if ((gMapData->owEntranceFlag[sEntranceIconMapIndex] == 0xFFFF) ||
                             ((gMapData->owEntranceFlag[sEntranceIconMapIndex] != 0xFFFF) &&
                              (gSaveContext.infTable[26] & gBitFlags[gMapData->owEntranceFlag[mapIndex]]))) {
-                            if (gMapData->owEntranceIconPosY[sEntranceIconMapIndex] << 2 != 0 && CVar_GetS32("gFixDungeonMinimapIcon", 1) != 0){
+                            if (!Map0 || !CVar_GetS32("gFixDungeonMinimapIcon", 0)) {
                                 gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b,
                                                     IconSize, IconSize, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP,
                                                     G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -784,8 +912,23 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         } 
                     }
 
-                    const s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + Right_MM_Margin);  
-                    const s16 entranceY = 154 + Bottom_MM_Margin; 
+                    s16 entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap);
+                    s16 entranceY = 154 + Y_Margins_Minimap; 
+                    if (CVar_GetS32("gMinimapPosType", 0) != 0) {
+                        entranceY = 154 + Y_Margins_Minimap + CVar_GetS32("gMinimapPosY", 0); 
+                        if (CVar_GetS32("gMinimapPosType", 0) == 1) {//Anchor Left
+                            if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Left_MM_Margin;};
+                            entranceX = OTRGetRectDimensionFromLeftEdge(270 + X_Margins_Minimap + CVar_GetS32("gMinimapPosX", 0));
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 2) {//Anchor Right
+                            if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {X_Margins_Minimap = Right_MM_Margin;};
+                            entranceX = OTRGetRectDimensionFromRightEdge(270 + X_Margins_Minimap + CVar_GetS32("gMinimapPosX", 0));
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 3) {//Anchor None
+                            entranceX = 270 + X_Margins_Minimap + CVar_GetS32("gMinimapPosX", 0);
+                        } else if (CVar_GetS32("gMinimapPosType", 0) == 4) {//Hidden
+                            entranceX = -9999;
+                        }
+                    }
+
                     if ((globalCtx->sceneNum == SCENE_SPOT08) && (gSaveContext.infTable[26] & gBitFlags[9])) {
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
                                             8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
@@ -793,6 +936,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                         gSPWideTextureRectangle(OVERLAY_DISP++, entranceX << 2, entranceY << 2, (entranceX + 32) << 2, (entranceY + 8) << 2, 
                                                 G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     } else if ((globalCtx->sceneNum == SCENE_SPOT08) && CVar_GetS32("gAlwaysShowDungeonMinimapIcon", 0) != 0){
+                        
                         gDPLoadTextureBlock(OVERLAY_DISP++, gMapDungeonEntranceIconTex, G_IM_FMT_RGBA, G_IM_SIZ_16b, 8,
                                             8, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK,
                                             G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
@@ -818,7 +962,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_map_exp.c", 782);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s16 Map_GetFloorTextIndexOffset(s32 mapIndex, s32 floor) {
@@ -833,17 +977,10 @@ void Map_Update(GlobalContext* globalCtx) {
     s16 floor;
     s16 i;
 
-    if (CVar_GetS32("gHUDMargins", 0) != 0) {
-        Top_MM_Margin = CVar_GetS32("gHUDMargin_T", 0);
-        Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0);
-        Right_MM_Margin = CVar_GetS32("gHUDMargin_R", 0);
-        Bottom_MM_Margin = CVar_GetS32("gHUDMargin_B", 0);
-    } else {
-        Top_MM_Margin = 0;
-        Left_MM_Margin = 0;
-        Right_MM_Margin = 0;
-        Bottom_MM_Margin = 0;
-    }
+    Top_MM_Margin = CVar_GetS32("gHUDMargin_T", 0);
+    Left_MM_Margin = CVar_GetS32("gHUDMargin_L", 0);
+    Right_MM_Margin = CVar_GetS32("gHUDMargin_R", 0);
+    Bottom_MM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
     if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
         switch (globalCtx->sceneNum) {
@@ -875,7 +1012,6 @@ void Map_Update(GlobalContext* globalCtx) {
                 if (R_MAP_TEX_INDEX != (R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor))) {
                     R_MAP_TEX_INDEX = R_MAP_TEX_INDEX_BASE + Map_GetFloorTextIndexOffset(mapIndex, floor);
                 }
-                if (1) {} // Appears to be necessary to match
 
                 if (interfaceCtx->mapRoomNum != sLastRoomNum) {
                     // "Current floor = %d Current room = %x Number of rooms = %d"

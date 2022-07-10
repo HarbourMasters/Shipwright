@@ -6,11 +6,12 @@
 
 #include <stdint.h>
 #include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 #include "Resource.h"
 //#include "Lib/StrHash64.h"
-#include "Lib/StormLib/StormLib.h"
+#include "StormLib.h"
 
 
 namespace Ship
@@ -45,7 +46,7 @@ namespace Ship
 		std::string PatchesPath;
 		std::map<std::string, HANDLE> mpqHandles;
 		std::vector<std::string> addedFiles;
-		std::map<uint64_t, std::string> hashes;
+		std::unordered_map<uint64_t, std::string> hashes;
 		HANDLE mainMPQ;
 
 		bool LoadMainMPQ(bool enableWriting, bool genCRCMap);

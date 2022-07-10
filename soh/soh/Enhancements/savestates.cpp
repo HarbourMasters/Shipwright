@@ -9,7 +9,7 @@
 #include <soh/OTRGlobals.h>
 #include <soh/OTRAudio.h>
 
-#include <SohImGuiImpl.h>
+#include <ImGuiImpl.h>
 
 #include "z64.h"
 #include "z64save.h"
@@ -263,6 +263,9 @@ typedef struct SaveStateInfo {
 
     uint8_t sKankyoIsSpawned_copy;
     int16_t sTrailingFairies_copy;
+
+    // z_en_heishi1
+    uint32_t sHeishi1PlayerIsCaughtCopy;
 
 
     //Misc static data
@@ -616,6 +619,8 @@ void SaveState::SaveOverlayStaticData(void) {
     info->D_80B5A4BC_copy = D_80B5A4BC;
     info->sKankyoIsSpawned_copy = sKankyoIsSpawned;
     info->sTrailingFairies_copy = sTrailingFairies;
+    
+    info->sHeishi1PlayerIsCaughtCopy = sHeishi1PlayerIsCaught;
 
 }
 
@@ -686,6 +691,8 @@ void SaveState::LoadOverlayStaticData(void) {
     D_80B5A4BC = info->D_80B5A4BC_copy;
     sKankyoIsSpawned = info->sKankyoIsSpawned_copy;
     sTrailingFairies = info->sTrailingFairies_copy;
+
+    sHeishi1PlayerIsCaught = info->sHeishi1PlayerIsCaughtCopy;
 }
 
 void SaveState::SaveMiscCodeData(void) {
@@ -907,8 +914,8 @@ void SaveState::Save(void) {
     memcpy(&info->saveContextCopy, &gSaveContext, sizeof(gSaveContext));
     memcpy(&info->gameInfoCopy, gGameInfo, sizeof(*gGameInfo));
     memcpy(&info->lightBufferCopy, &sLightsBuffer, sizeof(sLightsBuffer));
-    memcpy(&info->mtxStackCopy, &sMatrixStack, sizeof(MtxF) * 20);
-    memcpy(&info->currentMtxCopy, &sCurrentMatrix, sizeof(MtxF));
+    memcpy(&info->mtxStackCopy, sMatrixStack, sizeof(MtxF) * 20);
+    memcpy(&info->currentMtxCopy, sCurrentMatrix, sizeof(MtxF));
 
     //Various static data
     info->blueWarpTimerCopy = sWarpTimerTarget;
@@ -931,8 +938,8 @@ void SaveState::Load(void) {
     memcpy(&gSaveContext, &info->saveContextCopy, sizeof(gSaveContext));
     memcpy(gGameInfo, &info->gameInfoCopy, sizeof(*gGameInfo));
     memcpy(&sLightsBuffer, &info->lightBufferCopy, sizeof(sLightsBuffer));
-    memcpy(&sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
-    memcpy(&sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
+    memcpy(sMatrixStack, &info->mtxStackCopy, sizeof(MtxF) * 20);
+    memcpy(sCurrentMatrix, &info->currentMtxCopy, sizeof(MtxF));
     sWarpTimerTarget = info->blueWarpTimerCopy;
 
     memcpy(gActiveSounds, info->gActiveSoundsCopy, sizeof(gActiveSounds));

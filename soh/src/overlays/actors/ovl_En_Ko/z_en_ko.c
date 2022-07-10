@@ -1080,7 +1080,15 @@ void func_80A98DB4(EnKo* this, GlobalContext* globalCtx) {
         dist = this->actor.xzDistToPlayer;
     }
 
-    Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        this->appearDist = 32767.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+        f32 test = this->appearDist;
+    } else {
+        this->appearDist = 180.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    }
+    
     if (this->modelAlpha < 10.0f) {
         this->actor.flags &= ~ACTOR_FLAG_0;
     } else {
@@ -1340,7 +1348,7 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actor.shape.shadowAlpha = this->modelAlpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2095);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if ((s16)this->modelAlpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    EnKo_SetEnvColor(globalCtx->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, 255));
@@ -1358,5 +1366,5 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
                       this->modelAlpha);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2136);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

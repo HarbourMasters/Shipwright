@@ -39,8 +39,7 @@ extern u64 rspAspMainDataStart[];
 extern u64 rspAspMainDataEnd[];
 
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples) {
-    // OTRTODO: uintptr_t?
-    u32 sp4C;
+    OSMesg sp4C;
 
     gAudioContext.totalTaskCnt++;
 
@@ -51,7 +50,7 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples) {
     if (gAudioContext.resetStatus != 0) {
         if (AudioHeap_ResetStep() == 0) {
             if (gAudioContext.resetStatus == 0) {
-                osSendMesg(gAudioContext.audioResetQueueP, gAudioContext.audioResetSpecIdToLoad, OS_MESG_NOBLOCK);
+                osSendMesg8(gAudioContext.audioResetQueueP, gAudioContext.audioResetSpecIdToLoad, OS_MESG_NOBLOCK);
             }
         }
     }
@@ -59,8 +58,8 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples) {
     int j = 0;
     if (gAudioContext.resetStatus == 0) {
         // msg = 0000RREE R = read pos, E = End Pos
-        while (osRecvMesg(gAudioContext.cmdProcQueueP, (OSMesg*)&sp4C, OS_MESG_NOBLOCK) != -1) {
-            Audio_ProcessCmds(sp4C);
+        while (osRecvMesg(gAudioContext.cmdProcQueueP, &sp4C, OS_MESG_NOBLOCK) != -1) {
+            Audio_ProcessCmds(sp4C.data32);
             j++;
         }
         if ((j == 0) && (gAudioContext.cmdQueueFinished)) {
@@ -85,7 +84,7 @@ AudioTask* func_800E5000(void) {
     s16* currAiBuffer;
     OSTask_t* task;
     s32 index;
-    u32 sp4C;
+    OSMesg sp4C;
     s32 sp48;
     s32 i;
 
@@ -103,7 +102,7 @@ AudioTask* func_800E5000(void) {
         }
     }
 
-    osSendMesg(gAudioContext.taskStartQueueP, gAudioContext.totalTaskCnt, OS_MESG_NOBLOCK);
+    osSendMesg32(gAudioContext.taskStartQueueP, gAudioContext.totalTaskCnt, OS_MESG_NOBLOCK);
     gAudioContext.rspTaskIdx ^= 1;
     gAudioContext.curAIBufIdx++;
     gAudioContext.curAIBufIdx %= 3;
@@ -150,7 +149,7 @@ AudioTask* func_800E5000(void) {
     if (gAudioContext.resetStatus != 0) {
         if (AudioHeap_ResetStep() == 0) {
             if (gAudioContext.resetStatus == 0) {
-                osSendMesg(gAudioContext.audioResetQueueP, gAudioContext.audioResetSpecIdToLoad, OS_MESG_NOBLOCK);
+                osSendMesg8(gAudioContext.audioResetQueueP, gAudioContext.audioResetSpecIdToLoad, OS_MESG_NOBLOCK);
             }
 
             sWaitingAudioTask = NULL;
@@ -187,11 +186,8 @@ AudioTask* func_800E5000(void) {
     j = 0;
     if (gAudioContext.resetStatus == 0) {
         // msg = 0000RREE R = read pos, E = End Pos
-        while (osRecvMesg(gAudioContext.cmdProcQueueP, (OSMesg*)&sp4C, OS_MESG_NOBLOCK) != -1) {
-            if (1) {}
-            if (1) {}
-            if (1) {}
-            Audio_ProcessCmds(sp4C);
+        while (osRecvMesg(gAudioContext.cmdProcQueueP, &sp4C, OS_MESG_NOBLOCK) != -1) {
+            Audio_ProcessCmds(sp4C.data32);
             j++;
         }
         if ((j == 0) && (gAudioContext.cmdQueueFinished)) {
@@ -213,17 +209,12 @@ AudioTask* func_800E5000(void) {
     task = &gAudioContext.currTask->task.t;
     task->type = M_AUDTASK;
     task->flags = 0;
-    //task->ucode_boot = D_801120C0;
     task->ucode_boot_size = 0x1000;
-    //task->ucode_data_size = ((rspAspMainDataEnd - rspAspMainDataStart) * sizeof(u64)) - 1;
-    //task->ucode = D_801120C0;
-    //task->ucode_data = rspAspMainDataStart;
     task->ucode_size = 0x1000;
     task->dram_stack = NULL;
     task->dram_stack_size = 0;
     task->output_buff = NULL;
     task->output_buff_size = NULL;
-    if (1) {}
     task->data_ptr = (u64*)gAudioContext.abiCmdBufs[index];
     task->data_size = abiCmdCnt * sizeof(Acmd);
     task->yield_data_ptr = NULL;
@@ -391,11 +382,11 @@ void Audio_InitMesgQueuesInternal(void) {
                       ARRAY_COUNT(gAudioContext.audioResetMesgs));
 }
 
-void Audio_QueueCmd(u32 opArgs, void** data) {
+void Audio_QueueCmd(u32 opArgs, u32 data) {
     AudioCmd* cmd = &gAudioContext.cmdBuf[gAudioContext.cmdWrPos & 0xFF];
 
     cmd->opArgs = opArgs;
-    cmd->data = *data;
+    cmd->data = data;
 
     gAudioContext.cmdWrPos++;
 
@@ -405,23 +396,28 @@ void Audio_QueueCmd(u32 opArgs, void** data) {
 }
 
 void Audio_QueueCmdF32(u32 opArgs, f32 data) {
-    Audio_QueueCmd(opArgs, (void**)&data);
+    union
+    {
+        f32 f;
+        u32 u;
+    } uData = { .f = data };
+    Audio_QueueCmd(opArgs, uData.u);
 }
 
 void Audio_QueueCmdS32(u32 opArgs, s32 data) {
-    Audio_QueueCmd(opArgs, (void**)&data);
+    Audio_QueueCmd(opArgs, data);
 }
 
 void Audio_QueueCmdS8(u32 opArgs, s8 data) {
     u32 uData = data << 0x18;
 
-    Audio_QueueCmd(opArgs, (void**)&uData);
+    Audio_QueueCmd(opArgs, uData);
 }
 
 void Audio_QueueCmdU16(u32 opArgs, u16 data) {
     u32 uData = data << 0x10;
 
-    Audio_QueueCmd(opArgs, (void**)&uData);
+    Audio_QueueCmd(opArgs, uData);
 }
 
 s32 Audio_ScheduleProcessCmds(void) {
@@ -433,8 +429,8 @@ s32 Audio_ScheduleProcessCmds(void) {
     }
 
     ret =
-        osSendMesg(gAudioContext.cmdProcQueueP,
-                   (void*)(((gAudioContext.cmdRdPos & 0xFF) << 8) | (gAudioContext.cmdWrPos & 0xFF)), OS_MESG_NOBLOCK);
+        osSendMesg32(gAudioContext.cmdProcQueueP,
+                   (((gAudioContext.cmdRdPos & 0xFF) << 8) | (gAudioContext.cmdWrPos & 0xFF)), OS_MESG_NOBLOCK);
     if (ret != -1) {
         gAudioContext.cmdRdPos = gAudioContext.cmdWrPos;
         ret = 0;
@@ -536,11 +532,11 @@ void func_800E5EA4(s32 arg0, u32* arg1, u32* arg2) {
 
 s32 func_800E5EDC(void) {
     s32 pad;
-    s32 sp18;
+    OSMesg sp18;
 
-    if (osRecvMesg(gAudioContext.audioResetQueueP, (OSMesg*)&sp18, OS_MESG_NOBLOCK) == -1) {
+    if (osRecvMesg(gAudioContext.audioResetQueueP, &sp18, OS_MESG_NOBLOCK) == -1) {
         return 0;
-    } else if (gAudioContext.audioResetSpecIdToLoad != sp18) {
+    } else if (gAudioContext.audioResetSpecIdToLoad != sp18.data8) {
         return -1;
     } else {
         return 1;
@@ -550,7 +546,7 @@ s32 func_800E5EDC(void) {
 void func_800E5F34(void) {
     // macro?
     // clang-format off
-    s32 chk = -1; s32 sp28; do {} while (osRecvMesg(gAudioContext.audioResetQueueP, (OSMesg*)&sp28, OS_MESG_NOBLOCK) != chk);
+    s32 chk = -1; OSMesg sp28; do {} while (osRecvMesg(gAudioContext.audioResetQueueP, &sp28, OS_MESG_NOBLOCK) != chk);
     // clang-format on
 }
 
