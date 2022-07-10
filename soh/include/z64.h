@@ -30,7 +30,7 @@
 #include "ichain.h"
 #include "regs.h"
 
-#if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
+#if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__) || defined(__aarch64__) 
 #define _SOH64
 #endif
 

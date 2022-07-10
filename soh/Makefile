@@ -29,8 +29,13 @@ CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --
 LDFLAGS :=
 
 ifeq ($(UNAME), Linux)
-	CXXFLAGS += -mhard-float -msse2 -mfpmath=sse $(shell pkg-config --cflags libpulse)
-	CFLAGS += -mhard-float -msse2 -mfpmath=sse $(shell pkg-config --cflags libpulse)
+	ifeq ($(UNAMEM), x86_64)
+		CXXFLAGS += -msse2 -mfpmath=sse -mfloat-abi=hard
+		CFLAGS += -msse2 -mfpmath=sse -mfloat-abi=hard
+	endif
+
+	CXXFLAGS += $(shell pkg-config --cflags libpulse)
+	CFLAGS += $(shell pkg-config --cflags libpulse)
 endif
 
 CPPFLAGS := -MMD

@@ -265,7 +265,7 @@ void* FaultDrawer_FormatStringFunc(void* arg, const char* str, u32 count) {
     return arg;
 }
 
-void FaultDrawer_VPrintf(const char* str, char* args) { // va_list
+void FaultDrawer_VPrintf(const char* str, va_list args) { // va_list
     _Printf(FaultDrawer_FormatStringFunc, (char*)&sFaultDrawerStruct, str, args);
 }
 
