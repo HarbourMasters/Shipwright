@@ -48,42 +48,43 @@ namespace Ship {
 
 	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
 		// Update the config value.
-		std::string ConfSection = GetBindingConfSection();
-		std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-		ConfigFile& Conf = *pConf.get();
-		Conf[ConfSection][szButtonName] = dwScancode;
-
+		// std::string ConfSection = GetBindingConfSection();
+		// std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+		// ConfigFile& Conf = *pConf.get();
+		// Conf[ConfSection][szButtonName] = std::to_string(dwScancode);
+		//
 		// Reload the button mapping from Config
-		LoadBinding();
+		// LoadBinding();
+		// pConf->Save();
 	}
 
 	void Controller::LoadBinding() {
-		std::string ConfSection = GetBindingConfSection();
-		std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-		ConfigFile& Conf = *pConf.get();
+		// std::string ConfSection = GetBindingConfSection();
+		// std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+		// ConfigFile& Conf = *pConf.get();
 
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT)])] = BTN_CRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT)])] = BTN_CLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN)])] = BTN_CDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP)])] = BTN_CUP;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT + "_2")])] = BTN_CRIGHT;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT + "_2")])] = BTN_CLEFT;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN + "_2")])] = BTN_CDOWN;
-		//ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP + "_2")])] = BTN_CUP;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_R)])] = BTN_R;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_L)])] = BTN_L;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DRIGHT)])] = BTN_DRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DLEFT)])] = BTN_DLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DDOWN)])] = BTN_DDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DUP)])] = BTN_DUP;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_START)])] = BTN_START;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_Z)])] = BTN_Z;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_B)])] = BTN_B;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_A)])] = BTN_A;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKRIGHT)])] = BTN_STICKRIGHT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKLEFT)])] = BTN_STICKLEFT;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKDOWN)])] = BTN_STICKDOWN;
-		ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKUP)])] = BTN_STICKUP;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT)])] = BTN_CRIGHT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT)])] = BTN_CLEFT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN)])] = BTN_CDOWN;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP)])] = BTN_CUP;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CRIGHT + "_2")])] = BTN_CRIGHT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CLEFT + "_2")])] = BTN_CLEFT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CDOWN + "_2")])] = BTN_CDOWN;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_CUP + "_2")])] = BTN_CUP;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_R)])] = BTN_R;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_L)])] = BTN_L;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DRIGHT)])] = BTN_DRIGHT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DLEFT)])] = BTN_DLEFT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DDOWN)])] = BTN_DDOWN;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_DUP)])] = BTN_DUP;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_START)])] = BTN_START;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_Z)])] = BTN_Z;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_B)])] = BTN_B;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_A)])] = BTN_A;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKRIGHT)])] = BTN_STICKRIGHT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKLEFT)])] = BTN_STICKLEFT;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKDOWN)])] = BTN_STICKDOWN;
+		// ButtonMapping[Ship::stoi(Conf[ConfSection][STR(BTN_STICKUP)])] = BTN_STICKUP;
 	}
 
 	std::string Controller::GetConfSection() {

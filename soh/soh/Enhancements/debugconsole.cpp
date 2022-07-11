@@ -16,6 +16,7 @@
 #include <Utils/StringHelper.h>
 #include <Utils/File.h>
 
+#include "Window.h"
 #include "Lib/ImGui/imgui_internal.h"
 #undef PATH_HACK
 #undef Path
@@ -498,8 +499,10 @@ template <typename Numeric> bool is_number(const std::string& s) {
     return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
-void DebugConsole_LoadCVars()
-{
+void DebugConsole_LoadCVars() {
+
+    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
+
     if (File::Exists("cvars.cfg")) {
         const auto lines = File::ReadAllLines("cvars.cfg");
 
@@ -524,16 +527,18 @@ void DebugConsole_LoadCVars()
 
 void DebugConsole_SaveCVars()
 {
-    std::string output;
+    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
 
     for (const auto &cvar : cvars) {
+        const std::string key = "CVars." + cvar.first;
+
         if (cvar.second->type == CVAR_TYPE_STRING)
-            output += StringHelper::Sprintf("%s = \"%s\"\n", cvar.first.c_str(), cvar.second->value.valueStr);
+            pConf->setString(key, cvar.second->value.valueStr);
         else if (cvar.second->type == CVAR_TYPE_S32)
-            output += StringHelper::Sprintf("%s = %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
+            pConf->setInt(key, cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
+            pConf->setFloat(key, cvar.second->value.valueFloat);
     }
 
-    File::WriteAllText("cvars.cfg", output);
+    pConf->save();
 }

@@ -22,6 +22,7 @@
 #endif
 
 #include "../../ImGuiImpl.h"
+#include "../../Hooks.h"
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
@@ -261,6 +262,7 @@ static void gfx_sdl_handle_events(void) {
                 }
                 break;
             case SDL_QUIT:
+                ModInternal::ExecuteHooks<ModInternal::ExitGame>();
                 SDL_Quit(); // bandaid fix for linux window closing issue
                 exit(0);
         }

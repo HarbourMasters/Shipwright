@@ -6,6 +6,8 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <vector>
+
 #define INVALID_SDL_CONTROLLER_GUID (std::string("00000000000000000000000000000000"))
 
 namespace Ship {
@@ -13,8 +15,10 @@ namespace Ship {
 		public:
 			SDLController(int32_t dwControllerNumber);
 			~SDLController();
-
+			
 			void ReadFromSource();
+			const char* GetControllerName();
+			const char* GetButtonName(int button) override;
 			void WriteToSource(ControllerCallback* controller);
 			bool Connected() const { return Cont != nullptr; }
 			bool CanRumble() const {
@@ -28,10 +32,11 @@ namespace Ship {
 
 			bool HasPadConf() const { return true; }
 			std::optional<std::string> GetPadConfSection();
+			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
+			DeviceProfile GetDefaultMapping() override;
 
 		protected:
 			std::string GetControllerType();
-			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
 			std::string GetConfSection();
 			std::string GetBindingConfSection();
 			void CreateDefaultBinding();

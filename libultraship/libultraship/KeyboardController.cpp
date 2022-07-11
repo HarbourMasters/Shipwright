@@ -1,4 +1,8 @@
 #include "KeyboardController.h"
+
+#include <SDL2/SDL_keyboard.h>
+
+#include "Hooks.h"
 #include "GlobalCtx2.h"
 
 namespace Ship {
@@ -11,6 +15,7 @@ namespace Ship {
 	}
 
 	bool KeyboardController::PressButton(int32_t dwScancode) {
+		ModInternal::ExecuteHooks<ModInternal::ControllerRawInput>(this, dwScancode);
 		if (ButtonMapping.contains(dwScancode)) {
 			dwPressedButtons |= ButtonMapping[dwScancode];
 			return true;
@@ -40,6 +45,22 @@ namespace Ship {
 	void KeyboardController::WriteToSource(ControllerCallback* controller)
 	{
 
+	}
+
+	const char* KeyboardController::GetButtonName(int button) {
+		return SDL_GetScancodeName(static_cast<SDL_Scancode>(button));
+	}
+
+
+	DeviceProfile KeyboardController::GetDefaultMapping() {
+		return {
+			.Mappings = {
+				SDL_SCANCODE_V, SDL_SCANCODE_B, SDL_SCANCODE_G, SDL_SCANCODE_H, SDL_SCANCODE_N, SDL_SCANCODE_RETURN,
+				SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
+				SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
+				SDL_SCANCODE_I, SDL_SCANCODE_K, SDL_SCANCODE_J, SDL_SCANCODE_L
+			}
+		};
 	}
 
 	std::string KeyboardController::GetControllerType() {

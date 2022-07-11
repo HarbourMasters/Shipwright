@@ -6,8 +6,6 @@
 #include <string>
 #include <memory>
 #include "Lib/mINI/src/mini/ini.h"
-#include "UltraController.h"
-#include "LUSMacros.h"
 
 namespace Ship {
 	class GlobalCtx2;

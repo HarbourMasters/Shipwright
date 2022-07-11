@@ -29,7 +29,7 @@ namespace Ship {
         return GetInstance();
     }
 
-    GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
+    GlobalCtx2::GlobalCtx2(std::string Name) : Name(std::move(Name)) {
 
     }
 
@@ -40,22 +40,18 @@ namespace Ship {
 
     void GlobalCtx2::InitWindow() {
         InitLogging();
-        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), "shipofharkinian.ini");
-        MainPath = (*Config)["ARCHIVE"]["Main Archive"];
-        if (MainPath.empty()) {
-            MainPath = "oot.otr";
-        }
-        PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
-        if (PatchesPath.empty()) {
-            PatchesPath = "./";
-        }
-        ResMan = std::make_shared<ResourceMgr>(GlobalCtx2::GetInstance(), MainPath, PatchesPath);
-        Win = std::make_shared<Window>(GlobalCtx2::GetInstance());
+        Config = std::make_shared<Mercury>("shipofharkinian.cfg");
+        Config->reload();
+        MainPath = Config->getString("Game.Main Archive", "oot.otr");
+        PatchesPath = Config->getString("Game.Patche Archive", "./mods");
+
+        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        Win = std::make_shared<Window>(GetInstance());
 
         if (!ResMan->DidLoadSuccessfully())
         {
 #ifdef _WIN32
-            MessageBox(NULL, L"Main OTR file not found!", L"Uh oh", MB_OK);
+            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
@@ -79,15 +75,15 @@ namespace Ship {
             Logger = std::make_shared<spdlog::async_logger>(GetName(), Sinks.begin(), Sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
             GetLogger()->set_level(spdlog::level::trace);
             GetLogger()->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%@] [%l] %v");
-            spdlog::register_logger(GetLogger());
-            spdlog::set_default_logger(GetLogger());
+            register_logger(GetLogger());
+            set_default_logger(GetLogger());
         }
         catch (const spdlog::spdlog_ex& ex) {
             std::cout << "Log initialization failed: " << ex.what() << std::endl;
         }
     }
 
-    void GlobalCtx2::WriteSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+    void GlobalCtx2::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr, const size_t size) {
         std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
         saveFile.seekp(addr);
         saveFile.write((char*)dramAddr, size);

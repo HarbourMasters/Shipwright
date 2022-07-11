@@ -20,13 +20,13 @@
 #define _LANGUAGE_C
 #endif
 #include <PR/ultra64/gbi.h>
-
 #include "gfx_window_manager_api.h"
 #include "gfx_rendering_api.h"
 #include "gfx_direct3d_common.h"
 #include "gfx_screen_config.h"
 #include "gfx_pc.h"
 #include "../../ImGuiImpl.h"
+#include "../../Hooks.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
@@ -236,6 +236,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
+            ModInternal::ExecuteHooks<ModInternal::ExitGame>();
             exit(0);
         case WM_PAINT:
             if (dxgi.in_paint) {

@@ -12,11 +12,18 @@
 #define AXIS_SCANCODE_BIT (1 << 9)
 
 namespace Ship {
+
+	struct DeviceProfile {
+		bool UseRumble = false;
+		bool ShowInputs = false;
+		int  Deadzone = 0;
+		int  Mappings[18];
+	};
+
 	class Controller {
 
 		public:
 			Controller(int32_t dwControllerNumber);
-
 			void Read(OSContPad* pad);
 			virtual void ReadFromSource() = 0;
 			virtual void WriteToSource(ControllerCallback* controller) = 0;
@@ -28,8 +35,10 @@ namespace Ship {
 			std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
 			int32_t GetControllerNumber() { return dwControllerNumber; }
 
+			virtual const char* GetButtonName(int btn) = 0;
 			virtual bool HasPadConf() const = 0;
 			virtual std::optional<std::string> GetPadConfSection() = 0;
+			virtual DeviceProfile GetDefaultMapping() = 0;
 
 		protected:
 			int32_t dwPressedButtons;
@@ -38,7 +47,7 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
-			
+
 			virtual std::string GetControllerType() = 0;
 			virtual std::string GetConfSection() = 0;
 			virtual std::string GetBindingConfSection() = 0;
@@ -48,4 +57,10 @@ namespace Ship {
 			std::shared_ptr<ControllerAttachment> Attachment;
 			int32_t dwControllerNumber;
 	};
+
+	struct ControllerEntry {
+		uint8_t* controllerBits;
+		Controller* entryIO;
+	};
+
 }

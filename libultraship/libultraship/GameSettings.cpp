@@ -34,15 +34,15 @@ namespace Game {
     }
 
     void LoadPadSettings() {
-        const std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf;
+        // const std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf;
 
-        for (const auto& [i, controllers] : Ship::Window::Controllers) {
-            for (const auto& controller : controllers) {
-                if (auto padConfSection = controller->GetPadConfSection()) {
-                }
-            }
-        }
+        // for (const auto& [i, controllers] : Ship::Window::Controllers) {
+        //     for (const auto& controller : controllers) {
+        //         if (auto padConfSection = controller->GetPadConfSection()) {
+        //         }
+        //     }
+        // }
     }
 
     void LoadSettings() {
@@ -58,6 +58,7 @@ namespace Game {
         ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode) CVar_GetS32("gTextureFilter", THREE_POINT));
             SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
+            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
             UpdateAudio();
         });
     }

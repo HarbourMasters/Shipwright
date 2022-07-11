@@ -6,6 +6,13 @@
 #include "stox.h"
 #include "Window.h"
 #include "Cvar.h"
+#include <map>
+#include <vector>
+#include <iostream>
+#include <string>
+
+#include "Hooks.h"
+
 #include <Utils/StringHelper.h>
 
 extern "C" uint8_t __osMaxControllers;
@@ -19,25 +26,29 @@ namespace Ship {
         Close();
 	}
 
+    const char* SDLController::GetControllerName() {
+        return SDL_GameControllerName(Cont);
+    }
+
     bool SDLController::IsGuidInUse(const std::string& guid) {
         // Check if the GUID is loaded in any other controller;
-        for (size_t i = 0; i < __osMaxControllers; i++) {
-            for (size_t j = 0; j < Window::Controllers[i].size(); j++) {
-	            SDLController* OtherCont = dynamic_cast<SDLController*>(Window::Controllers[i][j].get());
 
-	            if (OtherCont != nullptr && OtherCont->GetGuid().compare(guid) == 0) {
-	                return true;
-	            }
-			}
-        }
+        // for (size_t i = 0; i < __osMaxControllers; i++) {
+        //     for (size_t j = 0; j < Window::Controllers[i].size(); j++) {
+	    //         SDLController* OtherCont = dynamic_cast<SDLController*>(Window::Controllers[i][j].get());
+	    //         if (OtherCont != nullptr && OtherCont->GetGuid().compare(guid) == 0) {
+	    //             return true;
+	    //         }
+		// 	}
+        // }
 
         return false;
     }
 
     bool SDLController::Open() {
         std::string ConfSection = GetConfSection();
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        // std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf.get();
 
         for (int i = 0; i < SDL_NumJoysticks(); i++) {
             if (SDL_IsGameController(i)) {
@@ -58,8 +69,11 @@ namespace Ship {
                 }
 
                 // If the GUID is blank from the config, OR if the config GUID matches, load the controller.
-                if (Conf[ConfSection]["GUID"].compare("") == 0 || Conf[ConfSection]["GUID"].compare(INVALID_SDL_CONTROLLER_GUID) == 0 || Conf[ConfSection]["GUID"].compare(NewGuid) == 0) {
+                // if (Conf[ConfSection]["GUID"].compare("") == 0 || Conf[ConfSection]["GUID"].compare(INVALID_SDL_CONTROLLER_GUID) == 0 || Conf[ConfSection]["GUID"].compare(NewGuid) == 0) {
+                if(true) {
                     auto NewCont = SDL_GameControllerOpen(i);
+
+                    SPDLOG_INFO("Detected controller: ({})", SDL_GameControllerName(NewCont));
 
                     // We failed to load the controller. Go to next.
                     if (NewCont == nullptr) {
@@ -77,15 +91,15 @@ namespace Ship {
 
                     std::string BindingConfSection = GetBindingConfSection();
                     std::string PadConfSection = *GetPadConfSection();
-                    std::shared_ptr<ConfigFile> config = GlobalCtx2::GetInstance()->GetConfig();
-
-                    if (!config->has(BindingConfSection)) {
-                        CreateDefaultBinding();
-                    }
-
-                    if (!config->has(PadConfSection)) {
-                        CreateDefaultPadConf();
-                    }
+                    // std::shared_ptr<ConfigFile> config = GlobalCtx2::GetInstance()->GetConfig();
+                    //
+                    // if (!config->has(BindingConfSection)) {
+                    //     CreateDefaultBinding();
+                    // }
+                    //
+                    // if (!config->has(PadConfSection)) {
+                    //     CreateDefaultPadConf();
+                    // }
 
                     LoadBinding();
                     LoadAxisThresholds();
@@ -120,17 +134,16 @@ namespace Ship {
 
     void SDLController::LoadAxisThresholds() {
         std::string ConfSection = GetBindingConfSection();
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
-
-        ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTX] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTX) + "_threshold"]);
-        ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTY] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTY) + "_threshold"]);
-        ThresholdMapping[SDL_CONTROLLER_AXIS_RIGHTX] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTX) + "_threshold"]);
-        ThresholdMapping[SDL_CONTROLLER_AXIS_RIGHTY] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTY) + "_threshold"]);
-        ThresholdMapping[SDL_CONTROLLER_AXIS_TRIGGERLEFT] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERLEFT) + "_threshold"]);
-        ThresholdMapping[SDL_CONTROLLER_AXIS_TRIGGERRIGHT] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) + "_threshold"]);
+        // std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf.get();
+        //
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTX] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTX) + "_threshold"]);
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTY] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTY) + "_threshold"]);
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_RIGHTX] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTX) + "_threshold"]);
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_RIGHTY] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTY) + "_threshold"]);
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_TRIGGERLEFT] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERLEFT) + "_threshold"]);
+        // ThresholdMapping[SDL_CONTROLLER_AXIS_TRIGGERRIGHT] = Ship::stoi(Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) + "_threshold"]);
     }
-
 
     void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold) {
         //scale {-32768 ... +32767} to {-84 ... +84}
@@ -165,12 +178,15 @@ namespace Ship {
 
         wStickX = +ax;
         wStickY = -ay;
+
+        ModInternal::ExecuteHooks<ModInternal::ControllerRawInput>(this, wStickX);
+        ModInternal::ExecuteHooks<ModInternal::ControllerRawInput>(this, wStickY);
     }
 
     void SDLController::ReadFromSource() {
         std::string ConfSection = GetBindingConfSection();
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        // std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf.get();
 
         SDL_GameControllerUpdate();
 
@@ -218,13 +234,12 @@ namespace Ship {
         }
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
-            if (ButtonMapping.contains(i)) {
-                if (SDL_GameControllerGetButton(Cont, (SDL_GameControllerButton)i)) {
-                    dwPressedButtons |= ButtonMapping[i];
-                }
-                else {
-                    dwPressedButtons &= ~ButtonMapping[i];
-                }
+            if (SDL_GameControllerGetButton(Cont, (SDL_GameControllerButton)i)) {
+                ModInternal::ExecuteHooks<ModInternal::ControllerRawInput>(this, i);
+                dwPressedButtons |= ButtonMapping[i];
+            }
+            else {
+                dwPressedButtons &= ~ButtonMapping[i];
             }
         }
 
@@ -333,8 +348,7 @@ namespace Ship {
         }
     }
 
-    void SDLController::WriteToSource(ControllerCallback* controller)
-    {
+    void SDLController::WriteToSource(ControllerCallback* controller) {
         if (CanRumble()) {
             if (controller->rumble > 0) {
                 float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", GetControllerNumber()).c_str(), 1.0f);
@@ -362,54 +376,109 @@ namespace Ship {
         }
     }
 
+    const char* ButtonList[] = {
+        "A Button",
+        "B Button",
+        "X Button",
+        "Y Button",
+        "Back Button",
+        "Guide Button",
+        "Start Button",
+        "Left Stick Button",
+        "Right Stick Button",
+        "Left Shoulder Button",
+        "Right Shoulder Button",
+        "DPAD Up Button",
+        "DPAD Down Button",
+        "DPAD Left Button",
+        "DPAD Right Button",
+        "Misc1 Button",
+        "Paddle 1 Button",
+        "Paddle 2 Button",
+        "Paddle 3 Button",
+        "Paddle 4 Button",
+        "Touchpad Button"
+    };
+
+    const char* SDLController::GetButtonName(int button) {
+        if(button < sizeof(ButtonList) / sizeof(char*)) {
+            return ButtonList[button];
+        }
+
+        return "Unknown";
+    }
+
+
+    DeviceProfile SDLController::GetDefaultMapping() {
+        return {
+            .Mappings = {
+                SDL_CONTROLLER_BUTTON_A,
+		SDL_CONTROLLER_BUTTON_B,
+		SDL_CONTROLLER_BUTTON_LEFTSHOULDER,
+		SDL_CONTROLLER_AXIS_TRIGGERRIGHT + AXIS_SCANCODE_BIT,
+                SDL_CONTROLLER_AXIS_TRIGGERLEFT + AXIS_SCANCODE_BIT,
+		SDL_CONTROLLER_BUTTON_START,
+		SDL_CONTROLLER_BUTTON_DPAD_UP,
+		SDL_CONTROLLER_BUTTON_DPAD_DOWN,
+                SDL_CONTROLLER_BUTTON_DPAD_LEFT,
+		SDL_CONTROLLER_BUTTON_DPAD_RIGHT,
+		-(SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT),
+                SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT,
+                -(SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT),
+                SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT,
+                -(SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT),
+                SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT,
+                -(SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT),
+                SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT
+            }
+        };
+    }
+
+
     void SDLController::CreateDefaultBinding() {
         std::string ConfSection = GetBindingConfSection();
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        // std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf.get();
+        //
+        // Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_CUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_R)] = std::to_string((SDL_CONTROLLER_AXIS_TRIGGERRIGHT + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_L)] = std::to_string(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
+        // Conf[ConfSection][STR(BTN_DRIGHT)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
+        // Conf[ConfSection][STR(BTN_DLEFT)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_LEFT);
+        // Conf[ConfSection][STR(BTN_DDOWN)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
+        // Conf[ConfSection][STR(BTN_DUP)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_UP);
+        // Conf[ConfSection][STR(BTN_START)] = std::to_string(SDL_CONTROLLER_BUTTON_START);
+        // Conf[ConfSection][STR(BTN_Z)] = std::to_string((SDL_CONTROLLER_AXIS_TRIGGERLEFT + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_B)] = std::to_string(SDL_CONTROLLER_BUTTON_B);
+        // Conf[ConfSection][STR(BTN_A)] = std::to_string(SDL_CONTROLLER_BUTTON_A);
+        // Conf[ConfSection][STR(BTN_STICKRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_STICKLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_STICKDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
+        // Conf[ConfSection][STR(BTN_STICKUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
+        //
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTX) + "_threshold"] = std::to_string(16.0);
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTY) + "_threshold"] = std::to_string(16.0);
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTX) + "_threshold"] = std::to_string(0x4000);
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTY) + "_threshold"] = std::to_string(0x4000);
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERLEFT) + "_threshold"] = std::to_string(0x1E00);
+        // Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) + "_threshold"] = std::to_string(0x1E00);
 
-        Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
-        //Conf[ConfSection][STR(BTN_CRIGHT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_X);
-        //Conf[ConfSection][STR(BTN_CLEFT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_Y);
-        //Conf[ConfSection][STR(BTN_CDOWN + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
-        //Conf[ConfSection][STR(BTN_CUP + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
-        Conf[ConfSection][STR(BTN_R)] = std::to_string((SDL_CONTROLLER_AXIS_TRIGGERRIGHT + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_L)] = std::to_string(SDL_CONTROLLER_BUTTON_LEFTSHOULDER);
-        Conf[ConfSection][STR(BTN_DRIGHT)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
-        Conf[ConfSection][STR(BTN_DLEFT)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_LEFT);
-        Conf[ConfSection][STR(BTN_DDOWN)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_DOWN);
-        Conf[ConfSection][STR(BTN_DUP)] = std::to_string(SDL_CONTROLLER_BUTTON_DPAD_UP);
-        Conf[ConfSection][STR(BTN_START)] = std::to_string(SDL_CONTROLLER_BUTTON_START);
-        Conf[ConfSection][STR(BTN_Z)] = std::to_string((SDL_CONTROLLER_AXIS_TRIGGERLEFT + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_B)] = std::to_string(SDL_CONTROLLER_BUTTON_B);
-        Conf[ConfSection][STR(BTN_A)] = std::to_string(SDL_CONTROLLER_BUTTON_A);
-        Conf[ConfSection][STR(BTN_STICKRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_STICKLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_STICKDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_STICKUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT));
-
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTX) + "_threshold"] = std::to_string(16.0);
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_LEFTY) + "_threshold"] = std::to_string(16.0);
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTX) + "_threshold"] = std::to_string(0x4000);
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_RIGHTY) + "_threshold"] = std::to_string(0x4000);
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERLEFT) + "_threshold"] = std::to_string(0x1E00);
-        Conf[ConfSection][STR(SDL_CONTROLLER_AXIS_TRIGGERRIGHT) + "_threshold"] = std::to_string(0x1E00);
-
-        Conf.Save();
+        // Conf.Save();
     }
 
     void SDLController::CreateDefaultPadConf() {
         std::string ConfSection = *GetPadConfSection();
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
-
-        Conf.Save();
+        // std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        // ConfigFile& Conf = *pConf.get();
+        //
+        // Conf.Save();
     }
 
     void SDLController::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {
-        if (guid.compare(INVALID_SDL_CONTROLLER_GUID)) {
+        if (guid.compare(INVALID_SDL_CONTROLLER_GUID) == 0) {
             return;
         }
 
