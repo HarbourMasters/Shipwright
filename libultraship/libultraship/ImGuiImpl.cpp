@@ -25,7 +25,6 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
-#include "../../soh/soh/Enhancements/cosmetics/CosmeticsEditor.h"
 
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
@@ -73,6 +72,7 @@ namespace SohImGui {
         "None"
     };
 
+    std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
@@ -1192,13 +1192,21 @@ namespace SohImGui {
                     }
                     ImGui::EndMenu();
                 }
-
             }
 
             ImGui::EndMenuBar();
         }
 
         ImGui::End();
+
+        for (const auto& category : hiddenwindowCategories) {
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::SetNextWindowSize(ImVec2 (0,0));
+            ImGui::SetNextWindowPos(ImVec2 (-100,-100));
+            ImGui::Begin(category.first.c_str(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
 
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
@@ -1338,8 +1346,6 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
-        //Placed here so it does the rainbow effects even if menu is not on.
-        CosmeticsEditor::LoadRainbowColor();
     }
 
     void CancelFrame() {
@@ -1353,18 +1359,22 @@ namespace SohImGui {
         console->Commands[cmd] = std::move(entry);
     }
 
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc) {
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
         if (customWindows.contains(name)) {
             SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
             return;
         }
 
         customWindows[name] = {
-            .enabled = false,
+            .enabled = isEnabled,
             .drawFunc = drawFunc
         };
 
-        windowCategories[category].emplace_back(name);
+        if (isHidden) {
+            hiddenwindowCategories[category].emplace_back(name);
+        } else {
+            windowCategories[category].emplace_back(name);
+        }
     }
 
     ImTextureID GetTextureByName(const std::string& name) {

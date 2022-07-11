@@ -115,7 +115,7 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
-    CosmeticsEditor::InitCosmeticsEditor();
+    InitCosmeticsEditor();
     DebugConsole_Init();
     Debug_Init();
     OTRExtScanner();
