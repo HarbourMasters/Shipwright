@@ -1,3 +1,4 @@
+#include <string.h>
 #include "global.h"
 #include "vt.h"
 
@@ -8,6 +9,9 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+
+// Forward declared, because this in a C++ header.
+int gfx_create_framebuffer(uint32_t width, uint32_t height);
 
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
@@ -143,7 +147,7 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
     Gfx* newDList;
     Gfx* polyOpaP;
 
-    OPEN_DISPS(gfxCtx, "../game.c", 746);
+    OPEN_DISPS(gfxCtx);
 
     newDList = Graph_GfxPlusOne(polyOpaP = POLY_OPA_DISP);
     gSPDisplayList(OVERLAY_DISP++, newDList);
@@ -182,9 +186,7 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
     Graph_BranchDlist(polyOpaP, newDList);
     POLY_OPA_DISP = newDList;
 
-    if (1) {}
-
-    CLOSE_DISPS(gfxCtx, "../game.c", 800);
+    CLOSE_DISPS(gfxCtx);
 
     func_80063D7C(gfxCtx);
 
@@ -195,7 +197,7 @@ void GameState_Draw(GameState* gameState, GraphicsContext* gfxCtx) {
 }
 
 void GameState_SetFrameBuffer(GraphicsContext* gfxCtx) {
-    OPEN_DISPS(gfxCtx, "../game.c", 814);
+    OPEN_DISPS(gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0, 0);
     gSPSegment(POLY_OPA_DISP++, 0xF, gfxCtx->curFrameBuffer);
@@ -207,14 +209,14 @@ void GameState_SetFrameBuffer(GraphicsContext* gfxCtx) {
     gSPSegment(OVERLAY_DISP++, 0xF, gfxCtx->curFrameBuffer);
     gSPSegment(OVERLAY_DISP++, 0xE, gZBuffer);
 
-    CLOSE_DISPS(gfxCtx, "../game.c", 838);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void func_800C49F4(GraphicsContext* gfxCtx) {
     Gfx* newDlist;
     Gfx* polyOpaP;
 
-    OPEN_DISPS(gfxCtx, "../game.c", 846);
+    OPEN_DISPS(gfxCtx);
 
     newDlist = Graph_GfxPlusOne(polyOpaP = POLY_OPA_DISP);
     gSPDisplayList(OVERLAY_DISP++, newDlist);
@@ -223,9 +225,7 @@ void func_800C49F4(GraphicsContext* gfxCtx) {
     Graph_BranchDlist(polyOpaP, newDlist);
     POLY_OPA_DISP = newDlist;
 
-    if (1) {}
-
-    CLOSE_DISPS(gfxCtx, "../game.c", 865);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void PadMgr_RequestPadData(PadMgr*, Input*, s32);
@@ -435,14 +435,14 @@ void GameState_InitArena(GameState* gameState, size_t size) {
     void* arena;
 
     osSyncPrintf("ハイラル確保 サイズ＝%u バイト\n"); // "Hyrule reserved size = %u bytes"
-    arena = GameAlloc_MallocDebug(&gameState->alloc, size, "../game.c", 992);
+    arena = GAMESTATE_MALLOC_DEBUG(&gameState->alloc, size);
     if (arena != NULL) {
         THA_Ct(&gameState->tha, arena, size);
         osSyncPrintf("ハイラル確保成功\n"); // "Successful Hyral"
     } else {
         THA_Ct(&gameState->tha, NULL, 0);
         osSyncPrintf("ハイラル確保失敗\n"); // "Failure to secure Hyrule"
-        Fault_AddHungupAndCrash("../game.c", 999);
+        Fault_AddHungupAndCrash(__FILE__, __LINE__);
     }
 }
 
@@ -470,7 +470,7 @@ void GameState_Realloc(GameState* gameState, size_t size) {
     }
 
     osSyncPrintf("ハイラル再確保 サイズ＝%u バイト\n", size); // "Hyral reallocate size = %u bytes"
-    gameArena = GameAlloc_MallocDebug(alloc, size, "../game.c", 1033);
+    gameArena = GAMESTATE_MALLOC_DEBUG(alloc, size);
     if (gameArena != NULL) {
         THA_Ct(&gameState->tha, gameArena, size);
         osSyncPrintf("ハイラル再確保成功\n"); // "Successful reacquisition of Hyrule"
@@ -478,7 +478,7 @@ void GameState_Realloc(GameState* gameState, size_t size) {
         THA_Ct(&gameState->tha, NULL, 0);
         osSyncPrintf("ハイラル再確保失敗\n"); // "Failure to secure Hyral"
         SystemArena_Display();
-        Fault_AddHungupAndCrash("../game.c", 1044);
+        Fault_AddHungupAndCrash(__FILE__, __LINE__);
     }
 }
 
@@ -516,7 +516,7 @@ void GameState_Init(GameState* gameState, GameStateFunc init, GraphicsContext* g
     osSyncPrintf("init 処理時間 %d us\n", OS_CYCLES_TO_USEC(endTime - startTime));
 
     startTime = endTime;
-    LogUtils_CheckNullPointer("this->cleanup", gameState->destroy, "../game.c", 1088);
+    LOG_CHECK_NULL_POINTER("this->cleanup", gameState->destroy);
     func_800ACE70(&D_801664F0);
     func_800AD920(&D_80166500);
     VisMono_Init(&sMonoColors);
@@ -541,7 +541,7 @@ void GameState_Destroy(GameState* gameState) {
     func_800C3C20();
     func_800F3054();
     osRecvMesg(&gameState->gfxCtx->queue, NULL, OS_MESG_BLOCK);
-    LogUtils_CheckNullPointer("this->cleanup", gameState->destroy, "../game.c", 1139);
+    LOG_CHECK_NULL_POINTER("this->cleanup", gameState->destroy);
     if (gameState->destroy != NULL) {
         gameState->destroy(gameState);
     }

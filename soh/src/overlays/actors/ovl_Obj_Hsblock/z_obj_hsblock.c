@@ -62,7 +62,7 @@ void func_80B93B68(ObjHsblock* this, GlobalContext* globalCtx, CollisionHeader* 
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_obj_hsblock.c", 163,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -149,11 +149,11 @@ void ObjHsblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGB8* color;
     Color_RGB8 defaultColor;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_obj_hsblock.c", 365);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_obj_hsblock.c", 369),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (globalCtx->sceneNum == SCENE_HIDAN) {
@@ -168,5 +168,5 @@ void ObjHsblock_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, color->r, color->g, color->b, 255);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params & 3]);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_obj_hsblock.c", 399);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

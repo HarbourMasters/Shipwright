@@ -306,7 +306,7 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
     f32 sp58;
 
     if ((player->actor.draw != NULL) && (player->rightHandType == 15)) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_arms_hook.c", 850);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         if ((ArmsHook_Shoot != this->actionFunc) || (this->timer <= 0)) {
             Matrix_MultVec3f(&D_80865B70, &this->unk_1E8);
@@ -321,7 +321,7 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         func_80090480(globalCtx, &this->collider, &this->hookInfo, &sp6C, &sp60);
         func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_arms_hook.c", 895),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotTipDL);
         Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, MTXMODE_NEW);
@@ -331,10 +331,10 @@ void ArmsHook_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateY(Math_FAtan2F(sp78.x, sp78.z), MTXMODE_APPLY);
         Matrix_RotateX(Math_FAtan2F(-sp78.y, sp5C), MTXMODE_APPLY);
         Matrix_Scale(0.015f, 0.015f, sqrtf(SQ(sp78.y) + sp58) * 0.01f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_arms_hook.c", 910),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gLinkAdultHookshotChainDL);
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_arms_hook.c", 913);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

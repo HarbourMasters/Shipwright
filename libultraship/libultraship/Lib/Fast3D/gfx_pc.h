@@ -10,6 +10,10 @@
 
 #include "U64/PR/ultra64/types.h"
 
+// TODO figure out why changing these to 640x480 makes the game only render in a quarter of the window
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
+
 struct GfxRenderingAPI;
 struct GfxWindowManagerAPI;
 
@@ -19,7 +23,7 @@ struct XYWidthHeight {
 };
 
 struct GfxDimensions {
-    uint32_t internal_mul;
+    float internal_mul;
     uint32_t width, height;
     float aspect_ratio;
 };
@@ -64,7 +68,7 @@ extern uint32_t gfx_msaa_level;
 
 }
 
-void gfx_init(struct GfxWindowManagerAPI* wapi, struct GfxRenderingAPI* rapi, const char* game_name, bool start_in_fullscreen);
+void gfx_init(struct GfxWindowManagerAPI* wapi, struct GfxRenderingAPI* rapi, const char* game_name, bool start_in_fullscreen, uint32_t width = SCREEN_WIDTH, uint32_t height = SCREEN_HEIGHT);
 struct GfxRenderingAPI* gfx_get_current_rendering_api(void);
 void gfx_start_frame(void);
 void gfx_run(Gfx* commands, const std::unordered_map<Mtx*, MtxF>& mtx_replacements);

@@ -462,7 +462,7 @@ void EnCs_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnCs* this = (EnCs*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_cs.c", 968);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
@@ -478,7 +478,7 @@ void EnCs_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Mtx* mtx;
 
             Matrix_Put(&this->spookyMaskMtx);
-            mtx = Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_cs.c", 1000);
+            mtx = MATRIX_NEWMTX(globalCtx->state.gfxCtx);
             gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[childLinkObjectIndex].segment);
             gSPSegment(POLY_OPA_DISP++, 0x0D, mtx - 7);
             gSPDisplayList(POLY_OPA_DISP++, gLinkChildSpookyMaskDL);
@@ -486,7 +486,7 @@ void EnCs_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_cs.c", 1015);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnCs_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot, void* thisx) {

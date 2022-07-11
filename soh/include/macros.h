@@ -86,30 +86,71 @@
 #define CHECK_FLAG_ALL(flags, mask) (((flags) & (mask)) == (mask))
 
 #ifndef NDEBUG
-#define LOG(exp, value, format, file, line)         \
+#define LOG(exp, value, format)         \
     do {                                            \
-        LogUtils_LogThreadId(file, line);           \
+        LogUtils_LogThreadId(__FILE__, __FILE__);           \
         osSyncPrintf(exp " = " format "\n", value); \
     } while (0)
 #else
-#define LOG(exp, value, format, file, line) ((void)0)
+#define LOG(exp, value, format) ((void)0)
 #endif
 
 #ifndef NDEBUG
-#define LOG_STRING(string, file, line) LOG(#string, string, "%s", file, line)
-#define LOG_ADDRESS(exp, value, file, line) LOG(exp, value, "%08x", file, line)
-#define LOG_TIME(exp, value, file, line) LOG(exp, value, "%lld", file, line)
-#define LOG_NUM(exp, value, file, line) LOG(exp, value, "%d", file, line)
-#define LOG_HEX(exp, value, file, line) LOG(exp, value, "%x", file, line)
-#define LOG_FLOAT(exp, value, file, line) LOG(exp, value, "%f", file, line)
+#define LOG_STRING(string) LOG(#string, string, "%s")
+#define LOG_ADDRESS(exp, value) LOG(exp, value, "%p")
+#define LOG_TIME(exp, value) LOG(exp, value, "%lld")
+#define LOG_NUM(exp, value) LOG(exp, value, "%d")
+#define LOG_HEX(exp, value) LOG(exp, value, "%x")
+#define LOG_FLOAT(exp, value) LOG(exp, value, "%f")
 #else
-#define LOG_STRING(string, file, line) ((void)0)
-#define LOG_ADDRESS(exp, value, file, line) ((void)0)
-#define LOG_TIME(exp, value, file, line) ((void)0)
-#define LOG_NUM(exp, value, file, line) ((void)0)
-#define LOG_HEX(exp, value, file, line) ((void)0)
-#define LOG_FLOAT(exp, value, file, line) ((void)0)
+#define LOG_STRING(string) ((void)0)
+#define LOG_ADDRESS(exp, value) ((void)0)
+#define LOG_TIME(exp, value) ((void)0)
+#define LOG_NUM(exp, value) ((void)0)
+#define LOG_HEX(exp, value) ((void)0)
+#define LOG_FLOAT(exp, value) ((void)0)
 #endif
+
+// LogUtils as macro
+#ifndef NDEBUG
+#define LOG_POINTER(val, max, ptr, name) LogUtils_LogPointer(val, max, ptr, name, __FILE__, __LINE__)
+#define LOG_CHECK_BOUNDARY(name, value, unk) LogUtils_CheckBoundary(name, value, unk, __FILE__, __LINE__)
+#define LOG_CHECK_NULL_POINTER(exp, ptr) LogUtils_CheckNullPointer(exp, ptr,__FILE__, __LINE__)
+#define LOG_CHECK_VALID_POINTER(exp, ptr) LogUtils_CheckValidPointer(exp, ptr,__FILE__, __LINE__)
+#define LOG_THREAD_ID() LogUtils_LogThreadId(__FILE__, __LINE__)
+#define LOG_HUNGUP_THREAD() LogUtils_HungupThread(__FILE__, __LINE__)
+#else
+#define LOG_POINTER(val, max, ptr, name) ((void)0)
+#define LOG_CHECKBOUNDARY(name, value, unk) ((void)0)
+#define LOG_CHECK_NULL_POINTER(exp, ptr) ((void)0)
+#define LOG_CHECK_VALID_POINTER(exp, ptr) ((void)0)
+#define LOG_THREAD_ID() ((void)0)
+#define LOG_HUNGUP_THREAD() ((void)0)
+#endif
+
+#define MATRIX_TOMTX(dest) Matrix_ToMtx(dest, __FILE__, __LINE__)
+#define MATRIX_NEWMTX(gfxCtx) Matrix_NewMtx(gfxCtx, __FILE__, __LINE__)
+#define MATRIX_CHECKFLOATS(mf) Matrix_CheckFloats(mf, __FILE__, __LINE__)
+
+#define ZELDA_ARENA_MALLOC_DEBUG(size) ZeldaArena_MallocDebug(size, __FILE__, __LINE__)
+#define ZELDA_ARENA_MALLOC_RDEBUG(size) ZeldaArena_MallocRDebug(size, __FILE__, __LINE__)
+#define ZELDA_ARENA_REALLOC_DEBUG(ptr, newSize) ZeldaArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define ZELDA_ARENA_FREE_DEBUG(ptr) ZeldaArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define SYSTEM_ARENA_MALLOC_DEBUG(size) SystemArena_MallocDebug(size, __FILE__, __LINE__)
+#define SYSTEM_ARENA_MALLOC_RDEBUG(size) SystemArena_MallocRDebug(size, __FILE__, __LINE__)
+#define SYSTEM_ARENA_REALLOC_DEBUG(ptr, newSize) SystemArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define SYSTEM_ARENA_FREE_DEBUG(ptr) SystemArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define DEBUG_ARENA_MALLOC_DEBUG(size) DebugArena_MallocDebug(size, __FILE__, __LINE__)
+#define DEBUG_ARENA_MALLOC_RDEBUG(size) DebugArena_MallocRDebug(size, __FILE__, __LINE__)
+#define DEBUG_ARENA_REALLOC_DEBUG(ptr, newSize) DebugArena_ReallocDebug(ptr, newSize, __FILE__, __LINE__)
+#define DEBUG_ARENA_FREE_DEBUG(ptr) DebugArena_FreeDebug(ptr, __FILE__, __LINE__)
+
+#define GAMESTATE_ALLOC_MC(gameState, size) GameState_Alloc(gameState, size, __FILE__, __LINE__)
+#define GAMESTATE_MALLOC_DEBUG(gameState, size) GameAlloc_MallocDebug(gameState, size, __FILE__, __LINE__)
+
+#define BGCHECK_POS_ERROR_CHECK(vec3f) BgCheck_PosErrorCheck(vec3f, __FILE__, __LINE__)
 
 #define SET_NEXT_GAMESTATE(curState, newInit, newStruct) \
     do {                                                 \
@@ -140,34 +181,34 @@ extern GraphicsContext* __gfxCtx;
 // __gfxCtx shouldn't be used directly.
 // Use the DISP macros defined above when writing to display buffers.
 #ifndef NDEBUG
-#define OPEN_DISPS(gfxCtx, file, line) \
+#define OPEN_DISPS(gfxCtx) \
     { \
         void FrameInterpolation_RecordOpenChild(const void* a, int b); \
-        FrameInterpolation_RecordOpenChild(file, line); \
+        FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         Gfx* dispRefs[4]; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx; \
-        Graph_OpenDisps(dispRefs, gfxCtx, file, line)
+        Graph_OpenDisps(dispRefs, gfxCtx, __FILE__, __LINE__)
 #else
-#define OPEN_DISPS(gfxCtx, file, line) \
+#define OPEN_DISPS(gfxCtx) \
     { \
         void FrameInterpolation_RecordOpenChild(const void* a, int b); \
-        FrameInterpolation_RecordOpenChild(file, line); \
+        FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         __gfxCtx = gfxCtx; \
         (void)__gfxCtx;
 #endif
 
 #ifndef NDEBUG
-#define CLOSE_DISPS(gfxCtx, file, line) \
+#define CLOSE_DISPS(gfxCtx) \
     {void FrameInterpolation_RecordCloseChild(void); \
     FrameInterpolation_RecordCloseChild();} \
-    Graph_CloseDisps(dispRefs, gfxCtx, file, line); \
+    Graph_CloseDisps(dispRefs, gfxCtx, __FILE__, __LINE__); \
     } \
     (void)0
 #else
-#define CLOSE_DISPS(gfxCtx, file, line) \
+#define CLOSE_DISPS(gfxCtx) \
     {void FrameInterpolation_RecordCloseChild(void); \
     FrameInterpolation_RecordCloseChild();} \
     (void)0; \
@@ -190,13 +231,7 @@ extern GraphicsContext* __gfxCtx;
 
 #define VTX_T(x,y,z,s,t,cr,cg,cb,a) { { x, y, z }, 0, { s, t }, { cr, cg, cb, a } }
 
-#ifdef NDEBUG
-#define ASSERT(cond, msg, file, line) ((void)0)
-#elif defined(REAL_ASSERT_MACRO)
-#define ASSERT(cond, msg, file, line) ((cond) ? ((void)0) : __assert(#cond, __FILE__, __LINE__))
-#else
-#define ASSERT(cond, msg, file, line) ((cond) ? ((void)0) : __assert(msg, file, line))
-#endif
+#define ASSERT(expression) (void)((!!(expression)) || (__assert(#expression, __FILE__, (unsigned)(__LINE__)), 0))
 
 #define gDPSetTileCustom(pkt, fmt, siz, width, height, pal, cms, cmt, masks, maskt, shifts, shiftt)                    \
     do {                                                                                                               \

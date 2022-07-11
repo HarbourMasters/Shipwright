@@ -117,7 +117,7 @@ s32 EnKusa_SnapToFloor(EnKusa* this, GlobalContext* globalCtx, f32 yOffset) {
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "Failure attaching to ground"
-        osSyncPrintf("地面に付着失敗(%s %d)\n", "../z_en_kusa.c", 323);
+        osSyncPrintf("地面に付着失敗(%s %d)\n", __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
         return false;
     }
@@ -137,7 +137,12 @@ void EnKusa_DropCollectible(EnKusa* this, GlobalContext* globalCtx) {
             Item_DropCollectibleRandom(globalCtx, NULL, &this->actor.world.pos, dropParams << 4);
             break;
         case ENKUSA_TYPE_1:
-            if (Rand_ZeroOne() < 0.5f) {
+            if (CVar_GetS32("gNoRandomDrops", 0)) {
+            }
+            else if (CVar_GetS32("gNoHeartDrops", 0)) {
+                Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_SEEDS);
+            }
+            else if (Rand_ZeroOne() < 0.5f) {
                 Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_SEEDS);
             } else {
                 Item_DropCollectible(globalCtx, &this->actor.world.pos, ITEM00_HEART);
@@ -256,7 +261,7 @@ void EnKusa_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->objBankIndex < 0) {
         // "Bank danger!"
-        osSyncPrintf("Error : バンク危険！ (arg_data 0x%04x)(%s %d)\n", thisx->params, "../z_en_kusa.c", 561);
+        osSyncPrintf("Error : バンク危険！ (arg_data 0x%04x)(%s %d)\n", thisx->params, __FILE__, __LINE__);
         Actor_Kill(&this->actor);
         return;
     }

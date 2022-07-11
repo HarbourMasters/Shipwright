@@ -240,7 +240,7 @@ void EnPoDesert_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         if (CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_7)) {
             gDPPipeSync((*gfxP)++);
             gDPSetEnvColor((*gfxP)++, color.r, color.g, color.b, 255);
-            gSPMatrix((*gfxP)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_desert.c", 523),
+            gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternDL);
             gSPDisplayList((*gfxP)++, gPoeFieldLanternTopDL);
@@ -254,7 +254,7 @@ void EnPoDesert_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
 void EnPoDesert_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnPoDesert* this = (EnPoDesert*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_desert.c", 559);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x0A, Gfx_EnvColor(globalCtx->state.gfxCtx, 255, 85, 0, 255));
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -267,5 +267,5 @@ void EnPoDesert_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                    EnPoDesert_OverrideLimbDraw, EnPoDesert_PostLimbDraw, &this->actor, POLY_XLU_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_desert.c", 597);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

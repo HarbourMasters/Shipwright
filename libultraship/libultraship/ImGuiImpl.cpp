@@ -55,6 +55,7 @@ bool oldCursorState = true;
 OSContPad* pads;
 
 std::map<std::string, GameAsset*> DefaultAssets;
+std::vector<std::string> emptyArgs;
 
 namespace SohImGui {
 
@@ -64,40 +65,24 @@ namespace SohImGui {
     GameOverlay* overlay = new GameOverlay;
     bool p_open = false;
     bool needs_save = false;
-    ImVec4 hearts_colors;
-    ImVec4 hearts_dd_colors;
-    ImVec4 a_btn_colors;
-    ImVec4 b_btn_colors;
-    ImVec4 c_btn_colors;
-    ImVec4 start_btn_colors;
-    ImVec4 magic_border_colors;
-    ImVec4 magic_remaining_colors;
-    ImVec4 magic_use_colors;
-    ImVec4 minimap_colors;
-    ImVec4 rupee_colors;
-    ImVec4 smolekey_colors;
-    ImVec4 fileselect_colors;
-    ImVec4 fileselect_text_colors;
-    ImVec4 kokiri_col;
-    ImVec4 goron_col;
-    ImVec4 zora_col;
-    ImVec4 navi_idle_i_col;
-    ImVec4 navi_idle_o_col;
-    ImVec4 navi_npc_i_col;
-    ImVec4 navi_npc_o_col;
-    ImVec4 navi_enemy_i_col;
-    ImVec4 navi_enemy_o_col;
-    ImVec4 navi_prop_i_col;
-    ImVec4 navi_prop_o_col;
 
     const char* RainbowColorCvarList[] = {
         //This is the list of possible CVars that has rainbow effect.
-            "gTunic_Kokiri_","gTunic_Goron_","gTunic_Zora_",
-            "gCCHeartsPrim","gDDCCHeartsPrim",
-            "gCCABtnPrim","gCCBBtnPrim","gCCCBtnPrim","gCCStartBtnPrim",
-            "gCCMagicBorderPrim","gCCMagicPrim","gCCMagicUsePrim",
-            "gCCMinimapPrim","gCCRupeePrim","gCCKeysPrim",
-            "gCCFileChoosePrim", "gCCFileChooseTextPrim"
+        "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
+        "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
+        "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
+        "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol",
+        "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
+        "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
+        "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
+        "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
+        "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
+        "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
+        "gDF_Col", "gDF_Env",
+        "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env", 
+        "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
+        "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
+        "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim", 
     };
 
     const char* filters[3] = {
@@ -605,7 +590,7 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will make a random color for the colors at it's right.\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Chooses a random color\nOverwrites previously chosen color");
     }
 
     void RainbowColor(const char* cvarName, ImVec4* colors) {
@@ -617,7 +602,7 @@ namespace SohImGui {
         MakeInvisible += "Rainbow";
 
         EnhancementCheckbox(MakeInvisible.c_str(), Cvar_RBM.c_str());
-        Tooltip("Clicking this button will make color cycling\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Cycles through colors on a timer\nOverwrites previously chosen color");
     }
 
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
@@ -647,11 +632,12 @@ namespace SohImGui {
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
-        Tooltip("Clicking this button will to the game original color (GameCube version)\nPrevious color will be overwrite and will not be recoverable");
+        Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
     }
 
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
-        std::string Cvar_Red = cvarName;
+        //This will be moved to external cosmetics ed
+	std::string Cvar_Red = cvarName;
         Cvar_Red += "R";
         std::string Cvar_Green = cvarName;
         Cvar_Green += "G";
@@ -688,21 +674,17 @@ namespace SohImGui {
 
         }
         //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
-        ImGui::NewLine();
         ImGui::PushItemWidth(-FLT_MIN);
         ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
         ImGui::SameLine();
         RandomizeColor(cvarName, &ColorRGBA);
         if (allow_rainbow) {
-            
-            if (ImGui::GetWindowSize().x > 560) {
+            if (ImGui::GetContentRegionAvail().x > 185) {
                 ImGui::SameLine();
-            }
-            else {
-                ImGui::NewLine();
             }
             RainbowColor(cvarName, &ColorRGBA);
         }
+        ImGui::NewLine();
         ImGui::PopItemWidth();
     }
 
@@ -715,7 +697,7 @@ namespace SohImGui {
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
-            ImGuiWindowFlags_NoResize;
+            ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
         if (CVar_GetS32("gOpenMenuBar", 0)) window_flags |= ImGuiWindowFlags_MenuBar;
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -736,23 +718,49 @@ namespace SohImGui {
             ImGui::DockBuilderRemoveNode(dockId);
             ImGui::DockBuilderAddNode(dockId, ImGuiDockNodeFlags_NoTabBar);
 
-            ImGui::DockBuilderDockWindow("OoT Master Quest", dockId);
+            ImGui::DockBuilderDockWindow("Main Game", dockId);
 
             ImGui::DockBuilderFinish(dockId);
         }
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
-        ImGuiIO& io = ImGui::GetIO();
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; 
-        if ((ImGui::IsKeyPressed(TOGGLE_BTN)) || (ImGui::IsKeyDown(TOGGLE_PAD_BTN))) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
+        
+            if (CVar_GetS32("gControlNav", 0)) {
+                if (CVar_GetS32("gOpenMenuBar", 0)) {
+                    io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                }
+                else
+                {
+                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+                }
+            }
+            else
+            {
+            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+            }
         }
 
+        #if __APPLE__
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(emptyArgs);
+        }
+        #else
+        if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyPressed(ImGuiKey_R, false)) {
+            console->Commands["reset"].handler(emptyArgs);
+        }
+        #endif
+        
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
@@ -760,8 +768,19 @@ namespace SohImGui {
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
-            ImGui::Text("Shipwright");
-            ImGui::Separator();
+
+            if (ImGui::BeginMenu("Shipwright")) {
+                if (ImGui::MenuItem("Reset",
+                    #if __APPLE__
+                    "Command-R"
+                    #else
+                    "Ctrl+R"
+                    #endif
+                    )) {
+                    console->Commands["reset"].handler(emptyArgs);
+                }
+                ImGui::EndMenu();
+            }            
 
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
@@ -774,8 +793,12 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
-            if (ImGui::BeginMenu("Controller"))
-	    {
+            if (ImGui::BeginMenu("Controller")) {
+	            EnhancementCheckbox("Use Controller Navigation", "gControlNav");
+                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+
+                ImGui::Separator();
+
                 if (!CVar_GetS32("gDpadEquips", 0)) {
                     EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 }
@@ -784,25 +807,25 @@ namespace SohImGui {
                 if (!CVar_GetS32("gDpadPauseName", 0)) {
                     EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 }
+
                 EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
                 Tooltip("Hold the assigned button to limit walking speed");
-
                 if (CVar_GetS32("gEnableWalkModify", 0)) {
                     EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
                     EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
                 }
 
-		ImGui::Separator();
+                ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
                 EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from Show Inputs");  
+                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");  
 
-		ImGui::Separator();  
-		    
+                ImGui::Separator();
+
                 for (const auto& [i, controllers] : Ship::Window::Controllers)
                 {
                     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
@@ -836,11 +859,11 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Graphics"))
             {
-                EnhancementSliderInt("Internal Resolution: %dx", "##IMul", "gInternalResolution", 1, 8, "");
-                Tooltip("Increases the render resolution of the game, up to 8x your output resolution,\nas a more intensive but effective form of anti-aliasing");
-                gfx_current_dimensions.internal_mul = CVar_GetS32("gInternalResolution", 1);
+                EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
+                Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
+                gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
-                Tooltip("Activates anti-aliasing when above 1, up to 8x for 8 samples for every pixel");
+                Tooltip("Activates multi-sample anti-aliasing when above 1x\nup to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
                 if (impl.backend == Backend::DX11)
@@ -866,9 +889,11 @@ namespace SohImGui {
                     }
 
                     Tooltip("When Interpolation FPS setting is at least this threshold,\n"
-                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter.\n"
-                        "This setting allows the CPU to work on one frame while GPU works on the previous frame.\n"
-                        "This setting should be used when your computer is too slow to do CPU + GPU work in time.");
+                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS)\n"
+                        "in order to avoid jitter.This setting allows the CPU\n"
+                        "to work on one frame while GPU works on the previous frame.\n"
+                        "This setting should be used when your computer is too slow\n"
+                        "to do CPU + GPU work in time.");
                 }
 
                 EXPERIMENTAL();
@@ -891,49 +916,131 @@ namespace SohImGui {
             {
                 if (ImGui::BeginMenu("Gameplay"))
                 {
-                    EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
-                    EnhancementSliderInt("King Zora Speed: %dx", "##WEEPSPEED", "gMweepSpeed", 1, 5, "");
-                    EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
-                    Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
-                    EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
-                    EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
-                    Tooltip("Modifies all sources of damage not affected by other sliders");
-                    EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
-                    Tooltip("Modifies all fall damage");
-                    EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                    Tooltip("Modifies all void out damage");
+                    if (ImGui::BeginMenu("Time Savers"))
+                    {
+                        EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                        EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "");
+                        EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                        Tooltip("Allows you to change the number of days it takes for\nBiggoron to forge the Biggoron Sword");
+                        EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
-                    EnhancementCheckbox("Skip Text", "gSkipText");
-                    Tooltip("Holding down B skips text");
-                    EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
-                    Tooltip("Disable the low HP beeping sound");
-                    EnhancementCheckbox("Minimal UI", "gMinimalUI");
-                    Tooltip("Hides most of the UI when not needed");
+                        EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
+                        Tooltip("Prevent forced Navi conversations");
+                        EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
+                        Tooltip("Stops the game from freezing the player\nwhen picking up Gold Skulltulas");
+                        EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
+                        Tooltip("Wearing the Bunny Hood grants a speed\nincrease like in Majora's Mask");
+                        EnhancementCheckbox("Fast Chests", "gFastChests");
+                        Tooltip("Kick open every chest");
+                        EnhancementCheckbox("Fast Drops", "gFastDrops");
+                        Tooltip("Skip first-time pickup messages for consumable items");
+                        EnhancementCheckbox("Better Owl", "gBetterOwl");
+                        Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Difficulty Options"))
+                    {
+                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
+                        Tooltip("Modifies all sources of damage not affected by other sliders");
+                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
+                        Tooltip("Modifies all fall damage");
+                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
+                        Tooltip("Modifies damage taken after falling into a void");
+
+                        EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
+                        Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
+                        EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
+                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
+                        
+                        if (ImGui::BeginMenu("Potion Values"))
+                        {
+                            EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Red Potions");
+                            EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
+                            Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
+                            Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
+                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
+                            Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
+                            Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Blue Potions");
+                            EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
+                            EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+
+                            EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Milk");
+                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Milk");
+                            EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
+                            Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Half Milk");
+                            EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
+                            Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairies");
+                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairies");
+                            EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
+                            Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
+
+                            EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
+                            Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
+                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "");
+                            Tooltip("Changes the amount of health restored by Fairy Revivals");
+                            EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
+                            Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
+
+                            ImGui::EndMenu();
+                        }
+                        
+                        ImGui::EndMenu();
+                    }
+
+                    if (ImGui::BeginMenu("Reduced Clutter"))
+                    {
+                        EnhancementCheckbox("Mute Low HP Alarm", "gLowHpAlarm");
+                        Tooltip("Disable the low HP beeping sound");
+                        EnhancementCheckbox("Minimal UI", "gMinimalUI");
+                        Tooltip("Hides most of the UI when not needed\nNote: Doesn't activate until after loading a new scene");
+                        EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
+                        Tooltip("Disables the voice audio when Navi calls you");
+
+                        ImGui::EndMenu();
+                    }
+                    
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
-                    Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
-                    EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
-                    EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                    Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
-                    EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
-                    Tooltip("Prevent forced Navi conversations");
-                    EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
-                    Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
-                    EnhancementCheckbox("Disable Navi Call Audio", "gDisableNaviCallAudio");
-                    Tooltip("Disables the voice audio when Navi calls you");
-                    EnhancementCheckbox("Fast Chests", "gFastChests");
-                    Tooltip("Kick open every chest");
-                    EnhancementCheckbox("Fast Drops", "gFastDrops");
-                    Tooltip("Skip first-time pickup messages for consumable items");
-                    EnhancementCheckbox("Better Owl", "gBetterOwl");
-                    Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
-                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
+                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be\nshared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
-                    Tooltip("Allows the cursor on the pause menu to be over any slot. Similar to Rando and Spaceworld 97");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
+                    EnhancementCheckbox("Pull grave during the day", "gDayGravePull");
+                    Tooltip("Allows graves to be pulled when child during the day");
                     ImGui::EndMenu();
                 }
 
@@ -982,9 +1089,9 @@ namespace SohImGui {
                     EnhancementCheckbox("N64 Mode", "gN64Mode");
                     Tooltip("Sets aspect ratio to 4:3 and lowers resolution to 240p, the N64's native resolution");
                     EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
-                    Tooltip("Change most 2D items & projectiles to their a 3D version");
+                    Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
-                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that\nwere covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
@@ -998,19 +1105,19 @@ namespace SohImGui {
                     EnhancementCheckbox("Fix L&R Pause menu", "gUniformLR");
                     Tooltip("Makes the L and R buttons in the pause menu the same color");
                     EnhancementCheckbox("Fix L&Z Page switch in Pause menu", "gNGCKaleidoSwitcher");
-                    Tooltip("Enabling it make L and R be your page switch like on Gamecube\nZ become the button to open Debug Menu");
+                    Tooltip("Makes L and R switch pages like on the GameCube\nZ opens the Debug Menu instead");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                    Tooltip("Show dungeon entrances icon only when it should be");
+                    Tooltip("Removes the dungeon entrance icon on the top-left corner\nof the screen when no dungeon is present on the current map");
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
-                    Tooltip("Makes two handed idle animation play, a seemingly finished animation that was disabled on accident in the original game");
+                    Tooltip("Re-enables the two-handed idle animation, a seemingly\nfinished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
-                    Tooltip("Fixes a bug where you can permanently miss the Gravedigging Tour Heart Piece");
+                    Tooltip("Fixes a bug where the Gravedigging Tour Heart\nPiece disappears if the area reloads");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
-                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
+                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from\nbecoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
-                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected\nback at them with the Mirror Shield");
 
                     ImGui::EndMenu();
                 }
@@ -1020,7 +1127,11 @@ namespace SohImGui {
                     EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                     Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                     EnhancementCheckbox("Fish while hovering", "gHoverFishing");
-                    Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
+                    Tooltip("Restore a bug from NTSC 1.0 that allows casting\nthe Fishing Rod while using the Hover Boots");
+                    EnhancementCheckbox("N64 Weird Frames", "gN64WeirdFrames");
+                    Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
+                    EnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB");
+                    Tooltip("Allows bombchus to explode out of bounds\nSimilar to GameCube and Wii VC");
 
                     ImGui::EndMenu();
                 }
@@ -1048,12 +1159,12 @@ namespace SohImGui {
                         needs_save = true;
                     }
 
-                    Tooltip("Interpolate extra frames to get smoother graphics.\n"
-                        "Set to match your monitor's refresh rate, or a divisor of it.\n"
+                    Tooltip("Interpolate extra frames to get smoother graphics\n"
+                        "Set to match your monitor's refresh rate, or a divisor of it\n"
                         "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
                         "and might give a worse result.\n"
-                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20.\n"
-                        "Ctrl+Click for keyboard input.");
+                        "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
+                        "Ctrl+Click for keyboard input");
                 }
                 if (impl.backend == Backend::DX11)
                 {
@@ -1068,33 +1179,18 @@ namespace SohImGui {
                     }
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
-                Tooltip("Turns off the level of detail setting, making models always use their higher poly variants");
+                Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
-                Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
+                Tooltip("Turns off the objects draw distance,\nmaking objects being visible from a longer range");
                 if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
                     EnhancementCheckbox("Kokiri Draw Distance", "gDisableKokiriDrawDistance");
-                    Tooltip("Kokiris are mystical being that appear from a certain distance\nEnable this will remove their draw distance");
+                    Tooltip("The Kokiri are mystical beings that fade into view when approached\nEnabling this will remove their draw distance");
                 }
+                EnhancementCheckbox("Skip Text", "gSkipText");
+                Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Cosmetics"))  {
-                EnhancementCheckbox("Cosmetics editor", "gCosmeticEditor");
-                Tooltip("Edit Navi and Link's Tunics color.");
-                EnhancementCheckbox("HUD Margins editor", "gUseMargins");
-                EnhancementRadioButton("N64 interface", "gHudColors", 0);
-                Tooltip("Change interface color to N64 style.");
-                EnhancementRadioButton("GameCube interface", "gHudColors", 1);
-                Tooltip("Change interface color to GameCube style.");
-                EnhancementRadioButton("Custom interface", "gHudColors", 2);
-                Tooltip("Change interface color to your own made style.");
-                if (CVar_GetS32("gHudColors", 1) == 2) {
-                    EnhancementCheckbox("Interface editor", "gColorsEditor");
-                    Tooltip("Edit the colors used for your own interface");
-                }
                 ImGui::EndMenu();
             }
 
@@ -1106,6 +1202,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
+                    EnhancementCheckbox("Epona Boost", "gInfiniteEpona");
 
                     ImGui::EndMenu();
                 }
@@ -1119,7 +1216,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
-                Tooltip("Automatically activates the Infinite Sword glitch, making you constantly swing your sword");
+                Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
@@ -1129,7 +1226,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
 
                 ImGui::EndMenu();
             }
@@ -1139,186 +1236,25 @@ namespace SohImGui {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Directly load the game to selected slot bellow\nUse slot number 4 to load directly in Zelda Map Select\n(Do not require debug menu but you will be unable to save there)\n(you can also load Zelda map select with Debug mod + slot 0).\nWith Slot : 0 you can go directly in File Select menu\nAttention, Loading an empty save will result in crash");
+                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select\n(Does not require the Debug Menu, but you will be unable to save there\nYou can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
                 }
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
-                Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
+                Tooltip("Shows the stats window, with your FPS and frametimes,\nand the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
-                Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
+                Tooltip("Enables the console window, allowing you to input commands,\ntype help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
-            }
-
-            bool Margins_isOpen = CVar_GetS32("gUseMargins", 0);
-            bool Cosmetics_isOpen = CVar_GetS32("gCosmeticEditor", 0);
-            bool Interface_isOpen = CVar_GetS32("gColorsEditor", 0);
-
-            if (Margins_isOpen) {
-                if (!Margins_isOpen) {
-                    CVar_SetS32("gHUDMargins", 0);
-                    return;
-                }
-                ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Margins Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
-                if (ImGui::BeginTabBar("Margins Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-                    if (ImGui::BeginTabItem("Interface margins")) {
-                        EnhancementCheckbox("Use margins", "gHUDMargins");
-                        Tooltip("Enable/Disable custom margins. \nIf disabled you will have original margins");
-                        EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", -20, 20, "");
-                        EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, 25, "");
-                        EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", -25, 25, "");
-                        EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", -20, 20, "");
-                        ImGui::EndTabItem();
-                    }
-                    ImGui::EndTabBar();
-                }
-                ImGui::End();
-            }
-            if (Cosmetics_isOpen) {
-                if (!Cosmetics_isOpen) {
-                    CVar_SetS32("gCosmeticEditor", 0);
-                    return;
-                }
-                ImGui::SetNextWindowSize(ImVec2(500, 627), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Cosmetics Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
-                if (ImGui::BeginTabBar("Cosmetics Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-                    if (ImGui::BeginTabItem("Navi")) {
-                        EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
-                        Tooltip("Enable/Disable custom Navi's colors. \nIf disabled you will have original colors for Navi.\nColors are refreshed when Navi goes back in your pockets.");
-                        EnhancementColor("Navi Idle Inner", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
-                        Tooltip("Inner color for Navi (idle flying around)");
-                        EnhancementColor("Navi Idle Outer", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
-                        Tooltip("Outer color for Navi (idle flying around)");
-                        ImGui::Separator();
-                        EnhancementColor("Navi NPC Inner", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
-                        Tooltip("Inner color for Navi (when Navi fly around NPCs)");
-                        EnhancementColor("Navi NPC Outer", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
-                        Tooltip("Outer color for Navi (when Navi fly around NPCs)");
-                        ImGui::Separator();
-                        EnhancementColor("Navi Enemy Inner", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
-                        Tooltip("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-                        EnhancementColor("Navi Enemy Outer", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
-                        Tooltip("Outer color for Navi (when Navi fly around Enemies or Bosses)");
-                        ImGui::Separator();
-                        EnhancementColor("Navi Prop Inner", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
-                        Tooltip("Inner color for Navi (when Navi fly around props (signs etc))");
-                        EnhancementColor("Navi Prop Outer", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
-                        Tooltip("Outer color for Navi (when Navi fly around props (signs etc))");
-                        ImGui::EndTabItem();
-                    }
-                    if (ImGui::BeginTabItem("Tunics")) {
-                        EnhancementCheckbox("Custom colors on tunics", "gUseTunicsCol");
-                        Tooltip("Enable/Disable custom Link's tunics colors. \nIf disabled you will have original colors for Link's tunics.");
-                        EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255));
-                        ImGui::Separator();
-                        EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255));
-                        ImGui::Separator();
-                        EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255));
-                        ImGui::EndTabItem();
-                    }
-                    ImGui::EndTabBar();
-                }
-                ImGui::End();
-            }
-            if (Interface_isOpen) {
-                if (!Interface_isOpen) {
-                    CVar_SetS32("gColorsEditor", 0);
-                    return;
-                }
-                ImGui::SetNextWindowSize(ImVec2(215, 627), ImGuiCond_FirstUseEver);
-                ImGui::Begin("Interface Editor", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
-                if (ImGui::BeginTabBar("Interface Editor", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-                    if (ImGui::BeginTabItem("HUD")) {
-                        if (ImGui::BeginTable("tableInterfaceEditor", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                            ImGui::TableSetupColumn("Hearts", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                            ImGui::TableSetupColumn("Magic Bar", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                            ImGui::TableSetupColumn("Buttons", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                            ImGui::TableHeadersRow();
-                            ImGui::TableNextRow();
-                            ImGui::TableNextColumn();
-                            // COLUMN 1.1 - HEARTS
-                            ImGui::PushItemWidth(-FLT_MIN);
-                            EnhancementColor("Hearts inner", "gCCHeartsPrim", hearts_colors, ImVec4(255, 70, 50, 255));
-                            Tooltip("Hearts inner color (red in original)\nAffect both Normal Hearts and the ones in Double Defense");
-                            ImGui::Separator();
-                            EnhancementColor("Hearts double def", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255, 255, 255, 255));
-                            Tooltip("Hearts outline color (white in original)\nAffect Double Defense outline only.");
-                            ImGui::PopItemWidth();
-                            ImGui::Separator();
-                            if (ImGui::BeginTable("tableMisc", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                                ImGui::TableSetupColumn("Misc", ImGuiTableColumnFlags_WidthStretch, 600.0f);
-                                ImGui::TableHeadersRow();
-                                ImGui::TableNextRow();
-                                ImGui::TableNextColumn();
-                                // COLUMN 1.2 - MISC
-                                ImGui::PushItemWidth(-FLT_MIN);
-                                EnhancementColor("Minimap color", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
-                                Tooltip("Affect the Dungeon and Overworld minimaps.");
-                                ImGui::Separator();
-                                EnhancementColor("Rupee icon color", "gCCRupeePrim", rupee_colors, ImVec4(120, 120, 120, 255));
-                                Tooltip("Affect the Rupee icon on interface\nGreen by default.");
-                                ImGui::Separator();
-                                EnhancementColor("Small Keys icon color", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
-                                Tooltip("Affect the Small keys icon on interface\nGray by default.");
-                                ImGui::PopItemWidth();
-                                ImGui::EndTable();
-                            }
-                            ImGui::TableNextColumn();
-                            // COLUMN 2 - MAGIC BAR
-                            ImGui::PushItemWidth(-FLT_MIN);
-                            EnhancementColor("Magic bar borders", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255, 255, 255, 255));
-                            Tooltip("Affect the border of the magic bar when being used\nWhite flash in original game.");
-                            ImGui::Separator();
-                            EnhancementColor("Magic bar main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0, 200, 0, 255));
-                            Tooltip("Affect the magic bar color\nGreen in original game.");
-                            ImGui::Separator();
-                            EnhancementColor("Magic bar being used", "gCCMagicUsePrim", magic_use_colors, ImVec4(250, 250, 0, 255));
-                            Tooltip("Affect the magic bar when being used\nYellow in original game.");
-                            ImGui::Separator();
-                            ImGui::PopItemWidth();
-                            ImGui::TableNextColumn();
-                            // COLUMN 3 - BUTTON
-                            ImGui::PushItemWidth(-FLT_MIN);
-                            EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(90, 90, 255, 255));
-                            Tooltip("A Buttons colors (Green in original GameCube)\nAffect A buttons colors on interface, in shops, messages boxes, ocarina notes and inventory cursors.");
-                            ImGui::Separator();
-                            EnhancementColor("B Buttons", "gCCBBtnPrim", b_btn_colors, ImVec4(0, 150, 0, 255));
-                            Tooltip("B Button colors (Red in original GameCube)\nAffect B button colors on interface");
-                            ImGui::Separator();
-                            EnhancementColor("C Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255));
-                            Tooltip("C Buttons colors (Yellowish / Oranges in originals)\nAffect C buttons colors on interface, in inventory and ocarina notes");
-                            ImGui::Separator();
-                            EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(120, 120, 120, 255));
-                            Tooltip("Start Button colors (gray in GameCube)\nAffect Start button colors in inventory");
-                            ImGui::Separator();
-                            ImGui::PopItemWidth();
-                            ImGui::EndTable();
-                            ImGui::EndTabItem();
-                        }
-                    }
-
-                    if (ImGui::BeginTabItem("File Choose")) {
-                        EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255));
-                        Tooltip("Affect the File Select.");
-                        ImGui::Separator();
-                        EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(0, 100, 255, 255));
-                        Tooltip("Affect the File Select.");
-                        ImGui::EndTabItem();
-                    }
-                    ImGui::EndTabBar();
-                }
-                ImGui::End();
             }
 
             for (const auto& category : windowCategories) {
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
                         std::string varName(name);
-                        varName.erase(std::ranges::remove_if(varName, isspace).begin(), varName.end());
+                        varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
                         std::string toggleName = "g" + varName + "Enabled";
 
                         EnhancementCheckbox(name.c_str(), toggleName.c_str());
@@ -1365,7 +1301,7 @@ namespace SohImGui {
         ImGui::PushStyleVar(ImGuiStyleVar_ChildBorderSize, 0.0f);
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.0f, 0.0f, 0.0f, 0.0f));
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoBackground;
-        ImGui::Begin("OoT Master Quest", nullptr, flags);
+        ImGui::Begin("Main Game", nullptr, flags);
         ImGui::PopStyleVar(3);
         ImGui::PopStyleColor();
 

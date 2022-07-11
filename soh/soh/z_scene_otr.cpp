@@ -158,6 +158,7 @@ bool func_80098674(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
         }
 
         colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
+        colHeader->cameraDataListLen = colRes->camData->entries.size();
 
         for (int i = 0; i < colRes->camData->entries.size(); i++)
         {
@@ -908,7 +909,7 @@ extern "C" s32 OTRfunc_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, 
         roomCtx->curRoom.segment = NULL;
         roomCtx->status = 1;
 
-        ASSERT(roomNum < globalCtx->numRooms, "read_room_ID < game_play->room_rom_address.num", "../z_room.c", 1009);
+        ASSERT(roomNum < globalCtx->numRooms);
 
         if (roomNum >= globalCtx->numRooms)
             return 0; // UH OH
@@ -918,7 +919,7 @@ extern "C" s32 OTRfunc_8009728C(GlobalContext* globalCtx, RoomContext* roomCtx, 
 
         osCreateMesgQueue(&roomCtx->loadQueue, &roomCtx->loadMsg, 1);
         //DmaMgr_SendRequest2(&roomCtx->dmaRequest, roomCtx->unk_34, globalCtx->roomList[roomNum].vromStart, size, 0,
-                            //&roomCtx->loadQueue, NULL, "../z_room.c", 1036);
+                            //&roomCtx->loadQueue, NULL, __FILE__, __LINE__);
 
         auto roomData = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(globalCtx->roomList[roomNum].fileName);
         roomCtx->status = 1;
