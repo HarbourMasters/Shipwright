@@ -44,7 +44,7 @@ cd OTRExporter
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64  "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x64-windows-v142"
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --config Release
 # copy ROM for asset extraction
-#.\extract_assets.py
+.\extract_assets.py
 cd ../soh
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/Win32" -G "Visual Studio 17 2022" -T v142 -A Win32 "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x86-windows-v142"
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
@@ -61,8 +61,6 @@ All-in-One with packaging support (only 64 bit):
 
 execute at top-level:
 ~~~
-git clone https://github.com/Perlmint/glew-cmake.git external/glew
-
 cmake -H. -Bbuild-cmake -GNinja
 cmake --build build-cmake
 ~~~
@@ -79,7 +77,6 @@ using native build (not docker)
 
 ~~~
 cd ShipWright
-git clone https://github.com/Perlmint/glew-cmake.git external/glew
 ~~~
 
 (will be built with below cmake commands) - no extra build needed
