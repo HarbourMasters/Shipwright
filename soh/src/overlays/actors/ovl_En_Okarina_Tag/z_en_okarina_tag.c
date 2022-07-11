@@ -234,7 +234,9 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
     if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_DOOR_OF_TIME) != 2)) {
+            func_80078884(NA_SE_SY_CORRECT_CHIME);
+        }
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(globalCtx, this->switchFlag);
         }
@@ -260,7 +262,10 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
                         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
                          !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
                          !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
+                        func_80078884(NA_SE_SY_OCARINA_ERROR);
                         break;
+                    } else {
+                        func_80078884(NA_SE_SY_CORRECT_CHIME);
                     }
                 }
                 globalCtx->csCtx.segment = D_80ABFB40;
