@@ -728,7 +728,7 @@ namespace SohImGui {
             ImGui::DockBuilderFinish(dockId);
         }
 
-        ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+        ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_NoDockingInCentralNode);
 
         if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
