@@ -96,14 +96,14 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 		{
 		case G_NOOP:
 		{
-			Gfx value = gsDPNoOp();
+			Gfx value = {gsDPNoOp()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_ENDDL:
 		{
-			Gfx value = gsSPEndDisplayList();
+			Gfx value = {gsSPEndDisplayList()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -114,7 +114,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t nnnn = (data & 0x0000FFFF00000000ULL) >> 32;
 			int32_t vvvvvvvv = (data & 0x00000000FFFFFFFFULL);
 
-			Gfx value = gsSPModifyVertex(nnnn / 2, ww, vvvvvvvv);
+			Gfx value = {gsSPModifyVertex(nnnn / 2, ww, vvvvvvvv)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -131,35 +131,35 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t cccccc = (data & 0x00FFFFFF00000000) >> 32;
 			int32_t ssssssss = (data & 0xFFFFFFFF);
 
-			Gfx value = gsSPGeometryMode(~cccccc, ssssssss);
+			Gfx value = {gsSPGeometryMode(~cccccc, ssssssss)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_RDPPIPESYNC:
 		{
-			Gfx value = gsDPPipeSync();
+			Gfx value = {gsDPPipeSync()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_RDPLOADSYNC:
 		{
-			Gfx value = gsDPLoadSync();
+			Gfx value = {gsDPLoadSync()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_RDPTILESYNC:
 		{
-			Gfx value = gsDPTileSync();
+			Gfx value = {gsDPTileSync()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_RDPFULLSYNC:
 		{
-			Gfx value = gsDPFullSync();
+			Gfx value = {gsDPFullSync()};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -169,14 +169,14 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t hhhhhh = (data & 0x00FFFFFF00000000) >> 32;
 			int32_t llllllll = (data & 0x00000000FFFFFFFF);
 
-			Gfx value = gsDPSetOtherMode(hhhhhh, llllllll);
+			Gfx value = {gsDPSetOtherMode(hhhhhh, llllllll)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
 		break;
 		case G_POPMTX:
 		{
-			Gfx value = gsSPPopMatrix(data);
+			Gfx value = {gsSPPopMatrix(data)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -188,7 +188,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			uint8_t b = (uint8_t)((data & 0xFF00FF00) >> 8);
 			uint8_t a = (uint8_t)((data & 0x000000FF) >> 0);
 
-			Gfx value = gsDPSetEnvColor(r, g, b, a);
+			Gfx value = {gsDPSetEnvColor(r, g, b, a)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -204,7 +204,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 				mm = (mm & 0x0FFFFFFF) + 1;
 
-				Gfx value = gsSPMatrix(mm, pp);
+				Gfx value = {gsSPMatrix(mm, pp)};
 				word0 = value.words.w0;
 				word1 = value.words.w1;
 			}
@@ -214,7 +214,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				uint32_t mm = (data & 0x00000000FFFFFFFF);
 				pp ^= G_MTX_PUSH;
 
-				Gfx value = gsSPMatrix(mm, pp);
+				Gfx value = {gsSPMatrix(mm, pp)};
 				word0 = value.words.w0;
 				word1 = value.words.w1;
 
@@ -253,7 +253,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t xxx = (data & 0x0000000000FFF000) >> 12;
 			int32_t ddd = (data & 0x0000000000000FFF);
 
-			Gfx value = gsDPLoadBlock(i, sss, ttt, xxx, ddd);
+			Gfx value = {gsDPLoadBlock(i, sss, ttt, xxx, ddd)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -263,7 +263,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t vvvv = (data & 0xFFFF00000000) >> 32;
 			int32_t wwww = (data & 0x0000FFFF);
 
-			Gfx value = gsSPCullDisplayList(vvvv / 2, wwww / 2);
+			Gfx value = {gsSPCullDisplayList(vvvv / 2, wwww / 2)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -279,7 +279,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				uint32_t z = (data & 0x00000000FFFFFFFF) >> 0;
 				uint32_t h = (data & 0xFFFFFFFF);
 
-				Gfx value = gsSPBranchLessZraw3(h & 0x00FFFFFF);
+				Gfx value = {gsSPBranchLessZraw3(h & 0x00FFFFFF)};
 				word0 = value.words.w0;
 				word1 = value.words.w1;
 			}
@@ -292,7 +292,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			break;
 		case G_RDPHALF_2:
 		{
-			Gfx value = gsDPWordLo(data & 0xFFFFFFFF);
+			Gfx value = {gsDPWordLo(data & 0xFFFFFFFF)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -305,7 +305,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t XXX = (data & 0x0000000000FFF000) >> 12;
 			int32_t YYY = (data & 0x0000000000000FFF);
 
-			Gfx value = gsSPTextureRectangle2(XXX, YYY, xxx, yyy, i);
+			Gfx value = {gsSPTextureRectangle2(XXX, YYY, xxx, yyy, i)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -324,7 +324,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 			int bp = 0;
 
-			Gfx value = gsSPBranchLessZraw2(0xDEADABCD, (a / 5) | (b / 2), z);
+			Gfx value = {gsSPBranchLessZraw2(0xDEADABCD, (a / 5) | (b / 2), z)};
 			word0 = (value.words.w0 & 0x00FFFFFF) + (G_BRANCH_Z_OTR << 24);
 			word1 = value.words.w1;
 
@@ -389,9 +389,9 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				u32 dListVal = (data & 0x0FFFFFFF) + 1;
 
 				if (pp != 0)
-					value = gsSPBranchList(dListVal);
+					value = {gsSPBranchList(dListVal)};
 				else
-					value = gsSPDisplayList(dListVal);
+					value = {gsSPDisplayList(dListVal)};
 
 				word0 = value.words.w0;
 				word1 = value.words.w1;
@@ -469,7 +469,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t ddd = (____ & 0x700) >> 8;
 			int32_t nnnnnnn = (____ & 0xFE) >> 1;
 
-			Gfx value = gsSPTexture(ssss, tttt, lll, ddd, nnnnnnn);
+			Gfx value = {gsSPTexture(ssss, tttt, lll, ddd, nnnnnnn)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -480,7 +480,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t bb = ((data & 0x0000FF0000000000ULL) >> 40) / 2;
 			int32_t cc = ((data & 0x000000FF00000000ULL) >> 32) / 2;
 
-			Gfx test = gsSP1Triangle(aa, bb, cc, 0);
+			Gfx test = {gsSP1Triangle(aa, bb, cc, 0)};
 			word0 = test.words.w0;
 			word1 = test.words.w1;
 		}
@@ -494,7 +494,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t ee = ((data & 0x0000000000FF00ULL) >> 8) / 2;
 			int32_t ff = ((data & 0x000000000000FFULL) >> 0) / 2;
 
-			Gfx test = gsSP2Triangles(aa, bb, cc, 0, dd, ee, ff, 0);
+			Gfx test = {gsSP2Triangles(aa, bb, cc, 0, dd, ee, ff, 0)};
 			word0 = test.words.w0;
 			word1 = test.words.w1;
 		}
@@ -506,7 +506,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t cc = ((data & 0x000000FF00000000ULL) >> 32) / 2;
 			int32_t dd = ((data & 0x000000000000FFULL)) / 2;
 
-			Gfx test = gsSP1Quadrangle(aa, bb, cc, dd, 0);
+			Gfx test = {gsSP1Quadrangle(aa, bb, cc, dd, 0)};
 			word0 = test.words.w0;
 			word1 = test.words.w1;
 		}
@@ -520,7 +520,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t bb = (data & 0x000000000000FF00) >> 8;
 			int32_t aa = (data & 0x00000000000000FF) >> 0;
 
-			Gfx value = gsDPSetPrimColor(mm, ff, rr, gg, bb, aa);
+			Gfx value = {gsDPSetPrimColor(mm, ff, rr, gg, bb, aa)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -534,7 +534,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 
 			// TODO: Output the correct render modes in data
 
-			Gfx value = gsSPSetOtherMode(0xE2, sft, len, dd);
+			Gfx value = {gsSPSetOtherMode(0xE2, sft, len, dd)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -552,11 +552,11 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			if (sft == 14)  // G_MDSFT_TEXTLUT
 			{
 				const char* types[] = { "G_TT_NONE", "G_TT_NONE", "G_TT_RGBA16", "G_TT_IA16" };
-				value = gsDPSetTextureLUT(dd >> 14);
+				value = {gsDPSetTextureLUT(dd >> 14)};
 			}
 			else
 			{
-				value = gsSPSetOtherMode(0xE3, sft, nn + 1, dd);
+				value = {gsSPSetOtherMode(0xE3, sft, nn + 1, dd)};
 			}
 
 			word0 = value.words.w0;
@@ -583,7 +583,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t bbbb = (data & 0b0000000000000000000000000000000000000000000000000000000011110000) >> 4;
 			int32_t uuuu = (data & 0b0000000000000000000000000000000000000000000000000000000000001111);
 
-			Gfx value = gsDPSetTile(fff, ii, nnnnnnnnn, mmmmmmmmm, ttt, pppp, cc, aaaa, ssss, dd, bbbb, uuuu);
+			Gfx value = {gsDPSetTile(fff, ii, nnnnnnnnn, mmmmmmmmm, ttt, pppp, cc, aaaa, ssss, dd, bbbb, uuuu)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -607,7 +607,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t ab1 = (data & 0b00000000000000000000000000000000000000000000000000000000111000) >> 3;
 			int32_t ad1 = (data & 0b00000000000000000000000000000000000000000000000000000000000111) >> 0;
 
-			Gfx value = gsDPSetCombineLERP2(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1);
+			Gfx value = {gsDPSetCombineLERP2(a0, b0, c0, d0, aa0, ab0, ac0, ad0, a1, b1, c1, d1, aa1, ab1, ac1, ad1)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -620,7 +620,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t vvv = (data & 0x0000000000000FFF);
 			int32_t i = (data & 0x000000000F000000) >> 24;
 
-			Gfx value = gsDPSetTileSize(i, sss, ttt, uuu, vvv);
+			Gfx value = {gsDPSetTileSize(i, sss, ttt, uuu, vvv)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -630,7 +630,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int32_t t = (data & 0x0000000007000000) >> 24;
 			int32_t ccc = (data & 0x00000000003FF000) >> 14;
 
-			Gfx value = gsDPLoadTLUTCmd(t, ccc);
+			Gfx value = {gsDPLoadTLUTCmd(t, ccc)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -643,7 +643,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 			int uuu =	(data & 0x0000000000FFF000) >> 12;
 			int vvv=	(data & 0x0000000000000FFF);
 
-			Gfx value = gsDPLoadTile(i, sss, ttt, uuu, vvv);
+			Gfx value = {gsDPLoadTile(i, sss, ttt, uuu, vvv)};
 			word0 = value.words.w0;
 			word1 = value.words.w1;
 		}
@@ -661,7 +661,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				uint32_t fmt = (__ & 0xE0) >> 5;
 				uint32_t siz = (__ & 0x18) >> 3;
 
-				Gfx value = gsDPSetTextureImage(fmt, siz, www + 1, (seg & 0x0FFFFFFF) + 1);
+				Gfx value = {gsDPSetTextureImage(fmt, siz, www + 1, (seg & 0x0FFFFFFF) + 1)};
 				word0 = value.words.w0;
 				word1 = value.words.w1;
 
@@ -679,7 +679,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				uint32_t fmt = (__ & 0xE0) >> 5;
 				uint32_t siz = (__ & 0x18) >> 3;
 
-				Gfx value = gsDPSetTextureImage(fmt, siz, www + 1, __);
+				Gfx value = {gsDPSetTextureImage(fmt, siz, www + 1, __)};
 				word0 = value.words.w0 & 0x00FFFFFF;
 				word0 += (G_SETTIMG_OTR << 24);
 				//word1 = value.words.w1;
@@ -722,7 +722,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				int32_t aa = (data & 0x000000FF00000000ULL) >> 32;
 				int32_t nn = (data & 0x000FF00000000000ULL) >> 44;
 
-				Gfx value = gsSPVertex(data & 0xFFFFFFFF, nn, ((aa >> 1) - nn));
+				Gfx value = {gsSPVertex(data & 0xFFFFFFFF, nn, ((aa >> 1) - nn))};
 
 				word0 = value.words.w0;
 				word1 = value.words.w1 | 1;
@@ -745,7 +745,7 @@ void OTRExporter_DisplayList::Save(ZResource* res, const fs::path& outPath, Bina
 				{
 					uint32_t diff = segOffset - vtxDecl->address;
 
-					Gfx value = gsSPVertex(diff, nn, ((aa >> 1) - nn));
+					Gfx value = {gsSPVertex(diff, nn, ((aa >> 1) - nn))};
 
 					word0 = value.words.w0;
 					word0 &= 0x00FFFFFF;

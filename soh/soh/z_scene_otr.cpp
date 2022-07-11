@@ -158,6 +158,7 @@ bool func_80098674(GlobalContext* globalCtx, Ship::SceneCommand* cmd)
         }
 
         colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
+        colHeader->cameraDataListLen = colRes->camData->entries.size();
 
         for (int i = 0; i < colRes->camData->entries.size(); i++)
         {

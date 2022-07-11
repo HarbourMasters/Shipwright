@@ -2397,6 +2397,8 @@ char* SetQuote();
 void Heaps_Alloc(void);
 void Heaps_Free(void);
 
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
+
 #ifdef __cplusplus
 #undef this
 };

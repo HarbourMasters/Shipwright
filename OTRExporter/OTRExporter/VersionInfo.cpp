@@ -5,7 +5,7 @@ std::map<Ship::ResourceType, uint32_t> resourceVersions;
 
 void InitVersionInfo()
 {
-	resourceVersions = {
+	resourceVersions = std::map<Ship::ResourceType, uint32_t> {
 	{ Ship::ResourceType::Animation, 0 },
 	{ Ship::ResourceType::Model, 0 },
 	{ Ship::ResourceType::Texture, 0 },

@@ -1759,8 +1759,8 @@ void FileChoose_Main(GameState* thisx) {
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
 
         if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChooseTextPrimR", 0),
-                            CVar_GetS32("gCCFileChooseTextPrimG", 100), CVar_GetS32("gCCFileChooseTextPrimB", 255),
+            gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, CVar_GetS32("gCCFileChooseTextPrimR", 100),
+                            CVar_GetS32("gCCFileChooseTextPrimG", 255), CVar_GetS32("gCCFileChooseTextPrimB", 255),
                             this->controlsAlpha);
         } else {
             gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 100, 255, 255, this->controlsAlpha);

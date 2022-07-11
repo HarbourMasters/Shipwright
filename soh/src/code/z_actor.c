@@ -843,8 +843,11 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
         case SCENE_GERUDOWAY:
             texture = gThievesHideoutTitleCardENGTex;
             break;
-        case SCENE_GANONTIKA:
+        case SCENE_GANON_TOU:
             texture = gGanonsCastleTitleCardENGTex;
+            break;
+        case SCENE_GANONTIKA:
+            texture = gInsideGanonsCastleTitleCardENGTex;
             break;
         case SCENE_TAKARAYA:
             texture = gTreasureBoxShopTitleCardENGTex;

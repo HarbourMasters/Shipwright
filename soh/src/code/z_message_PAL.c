@@ -543,6 +543,7 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     s16 envG;
     s16 envB;
     u8* iconTexture = font->iconBuf;
+    gSPInvalidateTexCache(gfx++, iconTexture);
 
     if (sTextIsCredits) {
         return;

@@ -216,9 +216,10 @@ void BossDodongo_Init(Actor* thisx, GlobalContext* globalCtx) {
     Collider_SetJntSph(globalCtx, &this->collider, &this->actor, &sJntSphInit, this->items);
 
     if (Flags_GetClear(globalCtx, globalCtx->roomCtx.curRoom.num)) { // KD is dead
-        temp_s1_3 = SEGMENTED_TO_VIRTUAL(gDodongosCavernBossLavaFloorTex);
-        temp_s2 = SEGMENTED_TO_VIRTUAL(sLavaFloorRockTex);
-
+        u16* LavaFloorTex = ResourceMgr_LoadTexByName(gDodongosCavernBossLavaFloorTex);
+        u16* LavaFloorRockTex = ResourceMgr_LoadTexByName(sLavaFloorRockTex);
+        temp_s1_3 = SEGMENTED_TO_VIRTUAL(LavaFloorTex);
+        temp_s2 = SEGMENTED_TO_VIRTUAL(LavaFloorRockTex);
         Actor_Kill(&this->actor);
         Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_DOOR_WARP1, -890.0f, -1523.76f,
                            -3304.0f, 0, 0, 0, WARP_DUNGEON_CHILD);

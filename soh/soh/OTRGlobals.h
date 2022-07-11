@@ -87,6 +87,7 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void* getN64WeirdFrame(s32 i);
 #endif
 
 #endif

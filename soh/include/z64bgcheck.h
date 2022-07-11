@@ -89,6 +89,7 @@ typedef struct {
     /* 0x20 */ CamData* cameraDataList;
     /* 0x24 */ u16 numWaterBoxes;
     /* 0x28 */ WaterBox* waterBoxes;
+    size_t cameraDataListLen; // OTRTODO: Added to allow for bounds checking the cameraDataList.
 } CollisionHeader; // original name: BGDataInfo
 
 typedef struct {

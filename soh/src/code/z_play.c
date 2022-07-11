@@ -383,6 +383,19 @@ void Gameplay_Init(GameState* thisx) {
     Camera_InitPlayerSettings(&globalCtx->mainCamera, player);
     Camera_ChangeMode(&globalCtx->mainCamera, CAM_MODE_NORMAL);
 
+    // OTRTODO: Bounds check cameraDataList to guard against scenes spawning the player with
+    // an out of bounds background camera index. This requires adding an extra field to the
+    // CollisionHeader struct to save the length of cameraDataList.
+    // Fixes Dodongo's Cavern blue warp crash.
+    {
+        CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&globalCtx->colCtx, BGCHECK_SCENE);
+
+        // If the player's start cam is out of bounds, set it to 0xFF so it isn't used.
+        if (colHeader != NULL && ((player->actor.params & 0xFF) >= colHeader->cameraDataListLen)) {
+            player->actor.params |= 0xFF;
+        }
+    }
+
     playerStartCamId = player->actor.params & 0xFF;
     if (playerStartCamId != 0xFF) {
         osSyncPrintf("player has start camera ID (" VT_FGCOL(BLUE) "%d" VT_RST ")\n", playerStartCamId);

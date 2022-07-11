@@ -566,7 +566,7 @@ static bool gfx_texture_cache_lookup(int i, int tile) {
 static void gfx_texture_cache_delete(const uint8_t* orig_addr)
 {
     while (gfx_texture_cache.map.bucket_count() > 0) {
-        TextureCacheKey key = { orig_addr, 0, 0, 0 }; // bucket index only depends on the address
+        TextureCacheKey key = { orig_addr, {0}, 0, 0 }; // bucket index only depends on the address
         size_t bucket = gfx_texture_cache.map.bucket(key);
         bool again = false;
         for (auto it = gfx_texture_cache.map.begin(bucket); it != gfx_texture_cache.map.end(bucket); ++it) {

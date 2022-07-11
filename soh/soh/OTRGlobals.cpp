@@ -35,6 +35,7 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
@@ -1329,17 +1330,17 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
 }
 
 extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)swappable->sample);
-    swappable->tuningAsU32 = BOMSWAP32((u32)swappable->tuningAsU32);
+    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)(uintptr_t(swappable->sample)));
+    swappable->tuningAsU32 = BOMSWAP32((u32)(swappable->tuningAsU32 & 0xFFFFFFFF));
 }
 
 extern "C" void bswapDrum(Drum* swappable) {
     bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)uintptr_t(swappable->envelope));
 }
 
 extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
+    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)uintptr_t(swappable->envelope));
     bswapSoundFontSound(&swappable->lowNotesSound);
     bswapSoundFontSound(&swappable->normalNotesSound);
     bswapSoundFontSound(&swappable->highNotesSound);
@@ -1354,9 +1355,9 @@ extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
     swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
     swappable->size = (origBitfield) & 0x00FFFFFF;
 
-    swappable->sampleAddr = (u8*)BOMSWAP32((u32)swappable->sampleAddr);
-    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)swappable->loop);
-    swappable->book = (AdpcmBook*)BOMSWAP32((u32)swappable->book);
+    swappable->sampleAddr = (u8*)BOMSWAP32((u32)uintptr_t(swappable->sampleAddr));
+    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)uintptr_t(swappable->loop));
+    swappable->book = (AdpcmBook*)BOMSWAP32((u32)uintptr_t(swappable->book));
 }
 
 extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
@@ -1416,4 +1417,9 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     }
 
     return 0;
+}
+
+extern "C" void* getN64WeirdFrame(s32 i) {
+    char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
+    return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }

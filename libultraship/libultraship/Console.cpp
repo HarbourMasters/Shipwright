@@ -28,7 +28,7 @@ static bool ClearCommand(const std::vector<std::string>&) {
 
 std::string toLowerCase(std::string in) {
 	std::string cpy(in);
-	std::ranges::transform(cpy, cpy.begin(), [](unsigned char c) { return std::tolower(c); });
+	std::transform(cpy.begin(), cpy.end(), cpy.begin(), ::tolower);
 	return cpy;
 }
 
@@ -204,11 +204,11 @@ void Console::Draw() {
 				for (int i = 0; i < static_cast<int>(channel.size()); i++) {
 					ConsoleLine line = channel[i];
 					if(!this->filter.empty() && line.text.find(this->filter) == std::string::npos) continue;
-					if(this->level_filter != NULLSTR && line.priority != (std::ranges::find(priority_filters, this->level_filter) - priority_filters.begin()) - 1) continue;
+					if(this->level_filter != NULLSTR && line.priority != (std::find(priority_filters.begin(), priority_filters.end(), this->level_filter) - priority_filters.begin()) - 1) continue;
 					std::string id = line.text + "##" + std::to_string(i);
 					ImGui::TableNextRow();
 					ImGui::TableSetColumnIndex(0);
-					const bool is_selected = (this->selectedId == i) || std::ranges::find(this->selectedEntries, i) != this->selectedEntries.end();
+					const bool is_selected = (this->selectedId == i) || std::find(this->selectedEntries.begin(), this->selectedEntries.end(), i) != this->selectedEntries.end();
 					ImGui::PushStyleColor(ImGuiCol_Text, this->priority_colors[line.priority]);
 					if (ImGui::Selectable(id.c_str(), is_selected)) {
 						if (ImGui::IsKeyDown(ImGui::GetKeyIndex(ImGuiKey_LeftCtrl)) && !is_selected)
