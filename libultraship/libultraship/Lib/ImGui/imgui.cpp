@@ -872,6 +872,8 @@ CODE
 #include <TargetConditionals.h>
 #endif
 
+#include "GlobalCtx2.h"
+
 // Visual Studio warnings
 #ifdef _MSC_VER
 #pragma warning (disable: 4127)             // condition expression is constant
@@ -1144,14 +1146,16 @@ ImGuiIO::ImGuiIO()
     memset(this, 0, sizeof(*this));
     IM_STATIC_ASSERT(IM_ARRAYSIZE(ImGuiIO::MouseDown) == ImGuiMouseButton_COUNT && IM_ARRAYSIZE(ImGuiIO::MouseClicked) == ImGuiMouseButton_COUNT);
 
+    auto appDirectoryPath = Ship::GlobalCtx2::GetInstance()->GetAppDirectoryPath();
+
     // Settings
     ConfigFlags = ImGuiConfigFlags_None;
     BackendFlags = ImGuiBackendFlags_None;
     DisplaySize = ImVec2(-1.0f, -1.0f);
     DeltaTime = 1.0f / 60.0f;
     IniSavingRate = 5.0f;
-    IniFilename = "imgui.ini"; // Important: "imgui.ini" is relative to current working dir, most apps will want to lock this to an absolute path (e.g. same path as executables).
-    LogFilename = "imgui_log.txt";
+    IniFilename = (appDirectoryPath + "/imgui.ini").c_str(); // Important: "imgui.ini" is relative to current working dir, most apps will want to lock this to an absolute path (e.g. same path as executables).
+    LogFilename = (appDirectoryPath + "/imgui_log.txt").c_str();
     MouseDoubleClickTime = 0.30f;
     MouseDoubleClickMaxDist = 6.0f;
 #ifndef IMGUI_DISABLE_OBSOLETE_KEYIO
