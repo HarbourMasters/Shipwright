@@ -79,7 +79,6 @@ ImVec4 menu_map_colors;
 ImVec4 menu_quest_colors;
 ImVec4 menu_save_colors;
 ImVec4 menu_gameover_colors;*/
-bool RBN_Func = true;
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
     "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
@@ -1112,8 +1111,4 @@ void InitCosmeticsEditor() {
     SohImGui::AddWindow("Cosmetics", "Rainbowfunction", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
     SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", DrawCosmeticsEditor);
-
-
-
-
 }
