@@ -462,15 +462,15 @@ if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
             FetchContent_Declare(
                 glew
                 GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
-                SOURCE_DIR ../../external/glew
+                SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew
             )
             FetchContent_MakeAvailable(glew)
-            add_subdirectory(../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
+            add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
         endif()
     endif()
 
     if (NOT GLEW_FOUND)
-       set(GLEW-INCLUDE ../../external/glew/include)
+       set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../../external/glew/include)
     else()
         set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
     endif()

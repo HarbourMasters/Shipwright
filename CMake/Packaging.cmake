@@ -74,6 +74,7 @@ execute_process(
       OUTPUT=${CPACK_OUTPUT_FILE_PREFIX}/${CPACK_PACKAGE_FILE_NAME}.appimage
       VERSION=$<IF:$<BOOL:${CPACK_PACKAGE_VERSION}>,${CPACK_PACKAGE_VERSION},0.1.0>
     ${LINUXDEPLOY_EXECUTABLE}
+    --appimage-extract-and-run
     --appdir=${CPACK_TEMPORARY_DIRECTORY}
     --executable=$<TARGET_FILE:soh>
     $<$<BOOL:$<TARGET_PROPERTY:soh,APPIMAGE_DESKTOP_FILE>>:--desktop-file=$<TARGET_PROPERTY:soh,APPIMAGE_DESKTOP_FILE>>
