@@ -37,19 +37,6 @@ Gfx sWipeSyncDList[] = {
     gsSPEndDisplayList(),
 };
 
-void TransitionWipe_PatchDisplayList(Gfx* cmd, Gfx replacement) {
-    bool patched = false;
-
-    while (!patched) {
-        const uint32_t opcode = cmd->words.w0 >> 24;
-        if (opcode == G_DL) {
-            *cmd = replacement;
-            patched = true;
-        }
-        ++cmd;
-    }
-}
-
 void TransitionWipe_Start(void* thisx) {
     TransitionWipe* this = (TransitionWipe*)thisx;
 
@@ -112,6 +99,7 @@ void TransitionWipe_Draw(void* thisx, Gfx** gfxP) {
     guTranslate(&modelView[2], 0.0f, 0.0f, 0.0f);
     gDPPipeSync(gfx++);
     tex = Gfx_BranchTexScroll(&gfx, this->texX, this->texY, 0, 0);
+    gSPSegment(gfx++, 8, tex);
     gDPSetPrimColor(gfx++, 0, 0x80, this->color.r, this->color.g, this->color.b, 255);
     gSPMatrix(gfx++, &this->projection, G_MTX_LOAD | G_MTX_PROJECTION);
     gSPPerspNormalize(gfx++, this->normal);
