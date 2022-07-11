@@ -805,16 +805,13 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
-                // TODO mutual exclusions -- gDpadEquips and gDpadPauseName cause conflicts, but nothing stops a user from selecting both
-                // There should be some system to prevent conclifting enhancements from being selected
+                // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                Tooltip("Allows the D-pad to be used as extra C buttons\nNote: Incompatible with D-pad on pause and file select");
-                if(CVar_GetS32("gDpadEquips", 0) != 0) {
-                    EnhancementCheckbox("Modify D-pad Equips", "gModifyDpadEquips");
-                }
+                Tooltip("Allows the D-pad to be used as extra C buttons");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");

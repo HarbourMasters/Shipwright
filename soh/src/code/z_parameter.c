@@ -2919,7 +2919,7 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
                 (msgCtx->msgMode == MSGMODE_NONE) && (globalCtx->gameOverCtx.state == GAMEOVER_INACTIVE) &&
                 (globalCtx->sceneLoadFlag == 0) && (globalCtx->transitionMode == 0) && !Gameplay_InCsMode(globalCtx)) {
                 bool hasLens = false;
-                for (int buttonIndex = 1; buttonIndex < ((CVar_GetS32("gDpadEquips", 0) != 0) && (CVar_GetS32("gModifyDpadEquips", 0) != 0)) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
+                for (int buttonIndex = 1; buttonIndex < (CVar_GetS32("gDpadEquips", 0) != 0) ? ARRAY_COUNT(gSaveContext.equips.buttonItems) : 4; buttonIndex++) {
                     if (gSaveContext.equips.buttonItems[buttonIndex] == ITEM_LENS) {
                         hasLens = true;
                         break;

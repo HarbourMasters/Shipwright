@@ -96,7 +96,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     s16 cursorY;
     s16 oldCursorPoint;
     s16 moveCursorResult;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = (CVar_GetS32("gDpadPauseName", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -351,7 +351,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-                    if ((CVar_GetS32("gDpadEquips", 0) != 0) && (CVar_GetS32("gModifyDpadEquips", 0) != 0)) {
+                    if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
@@ -481,7 +481,7 @@ void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s
         pauseCtx->equipTargetCBtn = 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
         pauseCtx->equipTargetCBtn = 2;
-    } else if ((CVar_GetS32("gDpadEquips", 0) != 0) && (CVar_GetS32("gModifyDpadEquips", 0) != 0)) {
+    } else if (CVar_GetS32("gDpadEquips", 0)) {
         if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
             pauseCtx->equipTargetCBtn = 3;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {

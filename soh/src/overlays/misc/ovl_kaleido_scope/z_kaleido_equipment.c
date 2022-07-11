@@ -164,7 +164,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     s16 cursorX;
     s16 cursorY;
     s16 oldCursorPoint;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = (CVar_GetS32("gDpadPauseName", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -491,7 +491,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if ((CVar_GetS32("gDpadEquips", 0) != 0) && (CVar_GetS32("gModifyDpadEquips", 0) != 0)) {
+        if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
