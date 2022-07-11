@@ -853,7 +853,7 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Graphics"))
             {
-                EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 3.0f, "", 1.0f, true);
+                EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
                 Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
