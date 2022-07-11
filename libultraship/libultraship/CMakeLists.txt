@@ -626,8 +626,8 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
         add_library(glew32s STATIC IMPORTED )
         set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib  )
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib  )
         set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib)
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib)
     endif()
 endif()
