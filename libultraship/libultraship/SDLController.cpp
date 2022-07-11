@@ -101,10 +101,10 @@ namespace Ship {
     }
 
     bool SDLController::Close() {
-        if (CanRumble()) {
-            SDL_GameControllerRumble(Cont, 0, 0, 0);
-        }
-        if (Cont != nullptr) {
+        if (Cont != nullptr && SDL_WasInit(SDL_INIT_GAMECONTROLLER)) {
+            if (CanRumble()) {
+                SDL_GameControllerRumble(Cont, 0, 0, 0);
+            }
             SDL_GameControllerClose(Cont);
         }
         Cont = nullptr;
