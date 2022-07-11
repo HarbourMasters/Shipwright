@@ -5,9 +5,6 @@
 
 #define FLAGS 0
 
-//Used to force variable to be used in different function, feel free to correct me if you have a better way
-static s16 DroppedItemRot = 0;
-
 void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx);
 void EnItem00_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx);
@@ -358,76 +355,16 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     switch (this->actor.params) {
         case ITEM00_RUPEE_GREEN:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-				break;
-            }
         case ITEM00_RUPEE_BLUE:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-            }
         case ITEM00_RUPEE_RED:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.3f);
-				this->scale = 0.3f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-            } else {
-		        Actor_SetScale(&this->actor, 0.015f);
-		        this->scale = 0.015f;
-		        yOffset = 750.0f;
-            }
             break;
         case ITEM00_SMALL_KEY:
             this->unk_158 = 0;
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
-                Actor_SetScale(&this->actor, 0.3f);
-                this->scale = 0.3f;
-                yOffset = 50.0f;
-                shadowScale = 0.5f;
-                this->actor.world.rot.x = 0x4000;
-            } else {
-                Actor_SetScale(&this->actor, 0.03f);
-                this->scale = 0.03f;
-                yOffset = 350.0f;
-            }
             break;
         case ITEM00_HEART_PIECE:
             this->unk_158 = 0;
-            if (CVar_GetS32("gNewDrops", 0) !=0) {
-                Actor_SetScale(&this->actor, 0.5f);
-                this->scale = 0.5f;
-                yOffset = 50.0f;
-                shadowScale = 0.5f;
-                this->actor.world.rot.x = 0x4000;
-            } else {
-                yOffset = 650.0f;
-                Actor_SetScale(&this->actor, 0.02f);
-                this->scale = 0.02f;
-            }
             break;
         case ITEM00_HEART:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-		        this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
-		        yOffset = 25.0f;
-		        Actor_SetScale(&this->actor, 0.3f);
-		        this->scale = 0.3f;
-		        shadowScale = 0.5f;
-            } else {
-		        this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
-		        yOffset = 430.0f;
-		        Actor_SetScale(&this->actor, 0.02f);
-		        this->scale = 0.02f;
-            }
             break;
         case ITEM00_HEART_CONTAINER:
             yOffset = 430.0f;
@@ -436,155 +373,19 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->scale = 0.02f;
             break;
         case ITEM00_ARROWS_SINGLE:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-			} else {
-		        yOffset = 400.0f;
-		        Actor_SetScale(&this->actor, 0.02f);
-		        this->scale = 0.02f;
-			}
-			break;
         case ITEM00_ARROWS_SMALL:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;
-			}
         case ITEM00_ARROWS_MEDIUM:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;
-			}
         case ITEM00_ARROWS_LARGE:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-			} else {
-		        Actor_SetScale(&this->actor, 0.035f);
-		        this->scale = 0.035f;
-		        yOffset = 250.0f;
-			}
-			break;
         case ITEM00_BOMBS_A:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_BOMBS_B:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_NUTS:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_STICK:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_MAGIC_SMALL:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_SEEDS:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-		        Actor_SetScale(&this->actor, 0.2f);
-		        this->scale = 0.2f;
-		        yOffset = 50.0f;
-		        shadowScale = 0.5f;
-		        this->actor.world.rot.x = 0x4000;
-				break;			
-			}
         case ITEM00_BOMBS_SPECIAL:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;		
-			} else {
-				Actor_SetScale(&this->actor, 0.03f);
-				this->scale = 0.03f;
-				yOffset = 320.0f;
-			}
-			break;
         case ITEM00_MAGIC_LARGE:
-			if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.2f);
-				this->scale = 0.2f;
-				yOffset = 50.0f;
-				shadowScale = 0.5f;
-				this->actor.world.rot.x = 0x4000;
-			} else {
-		        Actor_SetScale(&this->actor, 0.045 - 1e-10);
-		        this->scale = 0.045 - 1e-10;
-		        yOffset = 320.0f;
-			}
-			break;
         case ITEM00_RUPEE_ORANGE:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.45f);
-				this->scale = 0.45f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-            } else {
-		        Actor_SetScale(&this->actor, 0.045 - 1e-10);
-		        this->scale = 0.045 - 1e-10;
-		        yOffset = 750.0f;
-            }
-            break;
         case ITEM00_RUPEE_PURPLE:
-        	if (CVar_GetS32("gNewDrops", 0) !=0) {
-				Actor_SetScale(&this->actor, 0.4f);
-				this->scale = 0.4f;
-				yOffset = 50.0f;
-				shadowScale = 0.3f;
-				this->actor.world.rot.x = 0x4000;
-            } else {
-		        Actor_SetScale(&this->actor, 0.03f);
-		        this->scale = 0.03f;
-		        yOffset = 750.0f;
-            }
-            break;
         case ITEM00_FLEXIBLE:
             yOffset = 500.0f;
             Actor_SetScale(&this->actor, 0.01f);
@@ -721,40 +522,30 @@ void EnItem00_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 
 void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
 
-	if (CVar_GetS32("gNewDrops", 0) !=0) { //set the rotation system on selected model only :)
-		if ((this->actor.params == ITEM_RUPEE_GOLD) || (this->actor.params == ITEM_RUPEE_PURPLE) ||
-			(this->actor.params == ITEM00_ARROWS_SINGLE) || (this->actor.params == ITEM00_ARROWS_SMALL) ||
-		    (this->actor.params == ITEM00_ARROWS_MEDIUM) || (this->actor.params == ITEM00_ARROWS_LARGE) ||
-		    (this->actor.params == ITEM00_BOMBS_A) || (this->actor.params == ITEM00_BOMBS_B) ||
-		    (this->actor.params == ITEM00_NUTS) || (this->actor.params == ITEM00_STICK) ||
-		    (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) || (this->actor.params == ITEM00_SMALL_KEY) ||
-		    (this->actor.params == ITEM00_MAGIC_LARGE) || (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL)) {
-		    this->actor.shape.rot.y = DroppedItemRot;
-		}
-	}
-	
-    if ((this->actor.params <= ITEM00_RUPEE_RED) || ((this->actor.params == ITEM00_HEART) && (this->unk_15A < 0)) ||
-        (this->actor.params == ITEM00_HEART_PIECE)) {
-        this->actor.shape.rot.y += 960;
-    } else {
-        if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL)) {
-            if (this->unk_15A == -1) {
-                if (Math_SmoothStepToS(&this->actor.shape.rot.x, this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
-                    0) {
-                    this->unk_15A = -2;
+    if (!CVar_GetS32("gNewDrops", 0)){
+        if ((this->actor.params <= ITEM00_RUPEE_RED) || ((this->actor.params == ITEM00_HEART) && (this->unk_15A < 0)) ||
+            (this->actor.params == ITEM00_HEART_PIECE)) {
+            this->actor.shape.rot.y += 960;
+        } else {
+            if ((this->actor.params >= ITEM00_SHIELD_DEKU) && (this->actor.params != ITEM00_BOMBS_SPECIAL)) {
+                if (this->unk_15A == -1) {
+                    if (Math_SmoothStepToS(&this->actor.shape.rot.x, this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
+                        0) {
+                        this->unk_15A = -2;
+                    }
+                } else {
+                    if (Math_SmoothStepToS(&this->actor.shape.rot.x, -this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
+                        0) {
+                        this->unk_15A = -1;
+                    }
                 }
-            } else {
-                if (Math_SmoothStepToS(&this->actor.shape.rot.x, -this->actor.world.rot.x - 0x4000, 2, 3000, 1500) ==
-                    0) {
-                    this->unk_15A = -1;
-                }
+                Math_SmoothStepToS(&this->actor.world.rot.x, 0, 2, 2500, 500);
             }
-            Math_SmoothStepToS(&this->actor.world.rot.x, 0, 2, 2500, 500);
         }
     }
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
-        if (CVar_GetS32("gNewDrops", 0) !=0) {
+        if (CVar_GetS32("gNewDrops", 0)) {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 50.0f;
         } else {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
@@ -786,7 +577,7 @@ void func_8001E1C8(EnItem00* this, GlobalContext* globalCtx) {
     f32 originalVelocity;
     Vec3f effectPos;
 
-    if (this->actor.params <= ITEM00_RUPEE_RED) {
+    if (this->actor.params <= ITEM00_RUPEE_RED && !CVar_GetS32("gNewDrops", 0)) {
         this->actor.shape.rot.y += 960;
     }
 
@@ -884,9 +675,9 @@ void func_8001E5C8(EnItem00* this, GlobalContext* globalCtx) {
 
     this->actor.world.pos = player->actor.world.pos;
 
-    if (this->actor.params <= ITEM00_RUPEE_RED) {
+    if (this->actor.params <= ITEM00_RUPEE_RED && !CVar_GetS32("gNewDrops", 0)) {
         this->actor.shape.rot.y += 960;
-    } else if (this->actor.params == ITEM00_HEART) {
+    } else if (this->actor.params == ITEM00_HEART && !CVar_GetS32("gNewDrops", 0)) {
         this->actor.shape.rot.y = 0;
     }
 
@@ -910,9 +701,19 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnItem00* this = (EnItem00*)thisx;
     s32 pad;
 
-	if (CVar_GetS32("gNewDrops", 0) !=0) { //Update 3D Model rotation on frame update :)
-	    DroppedItemRot += 250;
-	}
+    if (CVar_GetS32("gNewDrops", 0)) { //set the rotation system on selected model only :)
+
+        if ((this->actor.params == ITEM00_RUPEE_GREEN) || (this->actor.params == ITEM00_RUPEE_BLUE) ||
+            (this->actor.params == ITEM00_RUPEE_RED) || (this->actor.params == ITEM00_ARROWS_SINGLE) || 
+            (this->actor.params == ITEM00_ARROWS_SMALL) || (this->actor.params == ITEM00_ARROWS_MEDIUM) ||
+            (this->actor.params == ITEM00_ARROWS_LARGE) || (this->actor.params == ITEM00_BOMBS_A) || 
+            (this->actor.params == ITEM00_BOMBS_B) || (this->actor.params == ITEM00_NUTS) || 
+            (this->actor.params == ITEM00_MAGIC_SMALL) || (this->actor.params == ITEM00_SEEDS) || 
+            (this->actor.params == ITEM00_SMALL_KEY) ||  (this->actor.params == ITEM00_MAGIC_LARGE) || 
+            (this->actor.params == ITEM00_HEART) || (this->actor.params == ITEM00_BOMBS_SPECIAL) || this->actor.params == ITEM00_HEART_PIECE) {
+            this->actor.shape.rot.y += 960;
+        }
+    }
 
     if (this->unk_15A > 0) {
         this->unk_15A--;
@@ -1120,40 +921,92 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnItem00* this = (EnItem00*)thisx;
     f32 mtxScale;
-	
+
     if (!(this->unk_156 & this->unk_158)) {
         switch (this->actor.params) {
             case ITEM00_RUPEE_GREEN:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-					GetItem_Draw(globalCtx, GID_RUPEE_GREEN);
-					break;
-				}	
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.3f);
+                    this->scale = 0.3f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_RUPEE_GREEN);
+                    break;
+                }    
             case ITEM00_RUPEE_BLUE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_RUPEE_BLUE);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.3f);
+                    this->scale = 0.3f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_RUPEE_BLUE);
+                    break;
+                }
             case ITEM00_RUPEE_RED:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_RUPEE_RED);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.3f);
+                    this->scale = 0.3f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_RUPEE_RED);
+                    break;
+                } else {
+                    this->actor.shape.shadowScale = 6.0f;
+                    Actor_SetScale(&this->actor, 0.015f);
+                    this->scale = 0.015f;
+                    this->actor.shape.yOffset = 750.0f;
+                    EnItem00_DrawRupee(this, globalCtx);
+                    break;
+                }
             case ITEM00_RUPEE_ORANGE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_RUPEE_GOLD);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.45f);
+                    this->scale = 0.45f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_RUPEE_GOLD);
+                    break;
+                } else {
+                    Actor_SetScale(&this->actor, 0.045 - 1e-10);
+                    this->actor.shape.shadowScale = 6.0f;
+                    this->scale = 0.045 - 1e-10;
+                    this->actor.shape.yOffset = 750.0f;
+                    EnItem00_DrawRupee(this, globalCtx);
+                    break;
+                }
             case ITEM00_RUPEE_PURPLE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_RUPEE_PURPLE);
-				} else {
-					EnItem00_DrawRupee(this, globalCtx);
-				}
-                break;
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.4f);
+                    this->scale = 0.4f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_RUPEE_PURPLE);
+                } else {
+                    Actor_SetScale(&this->actor, 0.03f);
+                    this->actor.shape.shadowScale = 6.0f;
+                    this->scale = 0.03f;
+                    this->actor.shape.yOffset = 750.0f;
+                    EnItem00_DrawRupee(this, globalCtx);
+                    break;
+                }
             case ITEM00_HEART_PIECE:
-                if (CVar_GetS32("gNewDrops", 0) !=0) {
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.5f);
+                    this->scale = 0.5f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
                     GetItem_Draw(globalCtx, GID_HEART_PIECE);
                 } else {
+                    this->actor.shape.yOffset = 650.0f;
+                    this->actor.shape.shadowScale = 0.03f;
+                    Actor_SetScale(&this->actor, 0.02f);
+                    this->scale = 0.02f;
                     EnItem00_DrawHeartPiece(this, globalCtx);
                 }
                 break;
@@ -1161,89 +1014,165 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 EnItem00_DrawHeartContainer(this, globalCtx);
                 break;
             case ITEM00_HEART:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-					GetItem_Draw(globalCtx, GID_HEART);
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
+                    this->actor.shape.yOffset = 25.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    Actor_SetScale(&this->actor, 0.3f);
+                    this->scale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_HEART);
                     mtxScale = 16.0f;
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-		            break;
-				} else {
-			        if (this->unk_15A < 0) {
-		                if (this->unk_15A == -1) {
-		                    s8 bankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GI_HEART);
-		                    
-		                    if (Object_IsLoaded(&globalCtx->objectCtx, bankIndex)) {
-		                        this->actor.objBankIndex = bankIndex;
-		                        Actor_SetObjectDependency(globalCtx, &this->actor);
-		                        this->unk_15A = -2;
-		                    }
-		                } else {
-		                    mtxScale = 16.0f;
-		                    Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-		                    GetItem_Draw(globalCtx, GID_HEART);
-		                }
-		                break;
-		            }
+                    break;
+                } else {
+                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
+                    this->actor.shape.yOffset = 430.0f;
+                    this->actor.shape.shadowScale = 0.03f;
+                    Actor_SetScale(&this->actor, 0.02f);
+                    this->scale = 0.02f;
+                    if (this->unk_15A < 0) {
+                        if (this->unk_15A == -1) {
+                            s8 bankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GI_HEART);
+                            
+                            if (Object_IsLoaded(&globalCtx->objectCtx, bankIndex)) {
+                                this->actor.objBankIndex = bankIndex;
+                                Actor_SetObjectDependency(globalCtx, &this->actor);
+                                this->unk_15A = -2;
+                            }
+                        } else {
+                            mtxScale = 16.0f;
+                            Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+                            GetItem_Draw(globalCtx, GID_HEART);
+                        }
+                        break;
+                    }
                 }
             case ITEM00_BOMBS_A:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-					GetItem_Draw(globalCtx, GID_BOMB);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_BOMB);
+                    break;
+                }
             case ITEM00_BOMBS_B:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_BOMB);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_BOMB);
+                    break;
+                }
             case ITEM00_BOMBS_SPECIAL:
             case ITEM00_ARROWS_SINGLE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
-                	break;
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
+                    break;
                 }
             case ITEM00_ARROWS_SMALL:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
-                	break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_ARROWS_SMALL);
+                    break;
+                }
             case ITEM00_ARROWS_MEDIUM:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_ARROWS_MEDIUM);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_ARROWS_MEDIUM);
+                    break;
+                }
             case ITEM00_ARROWS_LARGE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_ARROWS_LARGE);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_ARROWS_LARGE);
+                    break;
+                }
             case ITEM00_NUTS:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-                	GetItem_Draw(globalCtx, GID_NUTS);
-                	break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_NUTS);
+                    break;
+                }
             case ITEM00_STICK:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-		            GetItem_Draw(globalCtx, GID_STICK);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_STICK);
+                    break;
+                }
             case ITEM00_MAGIC_LARGE:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-		            GetItem_Draw(globalCtx, GID_MAGIC_LARGE);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.3f;
+                    GetItem_Draw(globalCtx, GID_MAGIC_LARGE);
+                    break;
+                }
             case ITEM00_MAGIC_SMALL:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-		            GetItem_Draw(globalCtx, GID_MAGIC_SMALL);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_MAGIC_SMALL);
+                    break;
+                }
             case ITEM00_SEEDS:
-				if (CVar_GetS32("gNewDrops", 0) !=0) {
-		            GetItem_Draw(globalCtx, GID_SEEDS);
-					break;
-				}
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.shape.shadowScale = 0.3f;
+                    this->actor.world.rot.x = 0x4000;
+                    GetItem_Draw(globalCtx, GID_SEEDS);
+                    break;
+                }
             case ITEM00_SMALL_KEY:
-            	if (CVar_GetS32("gNewDrops", 0) !=0) {
+                if (CVar_GetS32("gNewDrops", 0)) {
+                    Actor_SetScale(&this->actor, 0.2f);
+                    this->scale = 0.2f;
+                    this->actor.shape.yOffset = 50.0f;
+                    this->actor.world.rot.x = 0x4000;
+                    this->actor.shape.shadowScale = 0.5f;
                     GetItem_Draw(globalCtx, GID_KEY_SMALL);
-            	} else {
+                } else {
+                    Actor_SetScale(&this->actor, 0.03f);
+                    this->scale = 0.03f;
+                    this->actor.shape.yOffset = 320.0f;
+                    this->actor.shape.shadowScale = 6.0f;
+                    this->actor.world.rot.x = 0;
+                    this->actor.shape.rot.y = 0;
                     EnItem00_DrawCollectible(this, globalCtx);
                 }
                 break;

@@ -124,7 +124,7 @@ lib/libgfxd/libgfxd.a:
 .PHONY: StormLib
 StormLib:
 	LDFLAGS="" cmake -B ../StormLib/build -S ../StormLib
-	LDFLAGS="" cmake --build ../StormLib/build
+	$(MAKE) -C ../StormLib/build
 
 .PHONY: ExporterTest
 ExporterTest:
