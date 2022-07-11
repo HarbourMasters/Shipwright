@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19.0 FATAL_ERROR)
 
 set(CMAKE_SYSTEM_VERSION 10.0 CACHE STRING "" FORCE)
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "The C++ standard to use")
-#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile
+#set(CMAKE_C_STANDARD 11 CACHE STRING "The C standard to use") - issue with soh compile with MSVC
 
 project(Ship C CXX)
 
@@ -92,8 +92,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-set (STORM_SKIP_INSTALL true)
-add_subdirectory(StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
 add_subdirectory(libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 add_subdirectory(ZAPDTR/ZAPD ${CMAKE_BINARY_DIR}/ZAPD)
 add_subdirectory(ZAPDTR/ZAPDUtils ${CMAKE_BINARY_DIR}/ZAPDUtils)
@@ -103,7 +101,8 @@ add_subdirectory(OTRGui)
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.desktop")
-set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.png")
+set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
+INSTALL(PROGRAMS "${PROJECT_SOURCE_DIR}/appimage/soh.sh" DESTINATION bin COMPONENT appimage)
 
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py filedata)
 string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out" filedata "${filedata}")
@@ -122,6 +121,16 @@ add_custom_target(ExtractAssets
 add_dependencies(ExtractAssets ZAPD)
 
 add_dependencies(soh ExtractAssets)
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux")
+    find_package(ImageMagick COMPONENTS convert)
+    if (ImageMagick_FOUND)
+        execute_process (
+            COMMAND ${ImageMagick_convert_EXECUTABLE} soh/macosx/sohIcon.png -resize 512x512 ${CMAKE_BINARY_DIR}/sohIcon.png
+            OUTPUT_VARIABLE outVar
+        )
+    endif()
+endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(CPACK_GENERATOR "DEB;ZIP")

@@ -266,7 +266,6 @@ use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 ################################################################################
 # Includes for CMake from *.props
 ################################################################################
-#use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "../../OTRExporter/packages/YY.NuGet.Import.Helper.1.0.0.4/build/native/YY.NuGet.Import.Helper.cmake")
 
 set(ROOT_NAMESPACE ZAPD)
 
@@ -400,13 +399,13 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	target_compile_options(${PROJECT_NAME} PRIVATE
 		-Wall -Wextra -Wno-error
-        	-Wno-unused-parameter
-        	-Wno-unused-function
-        	-Wno-unused-variable
+        -Wno-unused-parameter
+        -Wno-unused-function
+        -Wno-unused-variable
 		-Wno-missing-field-initializers
-        	-Wno-parentheses
-        	-Wno-narrowing
-        	$<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+        -Wno-parentheses
+        -Wno-narrowing
+        $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
 		-pthread
 	)
 	
@@ -430,13 +429,11 @@ add_dependencies(${PROJECT_NAME}
     OTRExporter
     ZAPDUtils
     libultraship
-    storm
 )
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-		#set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:${PROJECT_SOURCE_DIR}/x64/Release/OTRExporter.lib")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"ZAPDUtils;"
 			"-WHOLEARCHIVE:$<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter>"
@@ -446,33 +443,24 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		)
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    find_package(BZip2 REQUIRED)
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
 	find_package(Threads REQUIRED)
-	find_package(SDL2)
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
 		-Wl,-force_load $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter>
 		"libultraship;"
-		storm
 		PNG::PNG
-		BZip2::BZip2
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
 else()
-	find_package(BZip2 REQUIRED)
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
 	find_package(Threads REQUIRED)
-	find_package(X11 REQUIRED)
-	find_package(SDL2)
 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
 		"ZAPDUtils;"
 		-Wl,--whole-archive $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter> -Wl,--no-whole-archive
 		"libultraship;"
-		storm
 		PNG::PNG
-		BZip2::BZip2
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)

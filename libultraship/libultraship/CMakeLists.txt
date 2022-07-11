@@ -345,6 +345,10 @@ set(ALL_FILES
 ################################################################################
 add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
 
+if (NOT TARGET storm)
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
+endif()
+
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
 set(ROOT_NAMESPACE libultraship)
 
@@ -449,13 +453,39 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(SDL2)
+    find_package(GLEW)
+    if (NOT GLEW_FOUND)
+        if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
+            include (FetchContent)
+            FetchContent_Declare(
+                glew
+                GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+                SOURCE_DIR ../../external/glew
+            )
+            FetchContent_MakeAvailable(glew)
+            add_subdirectory(../../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
+        endif()
+    endif()
+
+    if (NOT GLEW_FOUND)
+       set(GLEW-INCLUDE ../../external/glew/include)
+    else()
+        set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
+    endif()
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
+else()
+    set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/)
+    set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL/)
+endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/spdlog/include/
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/Fast3D/U64/
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/Fast3D/U64/PR
-	${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL
-	${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/
+	${SDL2-INCLUDE}
+	${GLEW-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/ImGui/
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
@@ -533,3 +563,71 @@ endif()
 ################################################################################
 # Link with other targets.
 
+find_package(OpenGL QUIET)
+find_package(X11)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_package(PulseAudio)
+endif()
+
+if (NOT GLEW_FOUND)
+    set(GLEW-LIB glew_s)
+else()
+    set(GLEW-LIB  GLEW::GLEW)
+endif()
+ 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+        target_link_libraries(${PROJECT_NAME}
+            "glew32s;"
+            "opengl32;"
+            "storm;"
+        )
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        target_link_libraries(${PROJECT_NAME}
+            "glew32s;"
+            "opengl32;"
+            "storm;"
+        )
+    endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    find_package(SDL2)
+    find_package(GLEW)
+    find_package(OpenGL QUIET)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${PROJECT_NAME}
+       "storm;"
+        SDL2::SDL2
+        GLEW::GLEW
+        ${OPENGL_opengl_LIBRARY}
+        ${CMAKE_DL_LIBS}
+        Threads::Threads
+    )
+else()
+    target_link_libraries(${PROJECT_NAME}
+        SDL2::SDL2
+        ${PULSEAUDIO_LIBRARY}
+        ${GLEW-LIB}
+        ${OPENGL_glx_LIBRARY}
+        ${OPENGL_opengl_LIBRARY}
+        ${X11_LIBRARIES}
+        storm
+    )
+endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
+        add_library(glew32s STATIC IMPORTED )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib  )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/x64/glew32s.lib)
+    elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+        add_library(glew32s STATIC IMPORTED )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib  )
+        set_property(TARGET glew32s PROPERTY
+            IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/Lib/GLEW/x86/glew32s.lib)
+    endif()
+endif()

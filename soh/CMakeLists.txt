@@ -82,14 +82,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
-    add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew EXCLUDE_FROM_ALL)
-endif()
-
-if (NOT TARGET storm)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
-endif()
-
 if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
@@ -1502,6 +1494,12 @@ endif()
 ################################################################################
 # Compile definitions
 ################################################################################
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    find_package(SDL2)
+    set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
+else()
+    set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/)
+endif()
 
 target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/include/
@@ -1512,7 +1510,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE assets
 	${CMAKE_CURRENT_SOURCE_DIR}/../ZAPDTR/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/Fast3D/U64/PR
-	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL
+	${SDL2-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/
 	${CMAKE_CURRENT_SOURCE_DIR}/assets/
 	.
@@ -1649,38 +1647,38 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
-                -Wno-unused-parameter
-                -Wno-unused-function
-                -Wno-unused-variable
+            -Wno-unused-parameter
+            -Wno-unused-function
+            -Wno-unused-variable
             -Wno-missing-field-initializers
-                -Wno-parentheses
-                -Wno-narrowing
-                $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
-                $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-                    -pthread
+            -Wno-parentheses
+            -Wno-narrowing
+            $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
+            $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+            -pthread
         )
 
         target_link_options(${PROJECT_NAME} PRIVATE
-                -pthread
+            -pthread
         )
     else()
         target_compile_options(${PROJECT_NAME} PRIVATE
             -Wall -Wextra -Wno-error
-                -Wno-unused-parameter
-                -Wno-unused-function
-                -Wno-unused-variable
+            -Wno-unused-parameter
+            -Wno-unused-function
+            -Wno-unused-variable
             -Wno-missing-field-initializers
-                -Wno-parentheses
-                -Wno-narrowing
-                -fpermissive
-                $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-                    -pthread
+            -Wno-parentheses
+            -Wno-narrowing
+            $<$<COMPILE_LANGUAGE:CXX>:-fpermissive>
+            $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+            -pthread
             -msse2 -mfpmath=sse
         )
 
         target_link_options(${PROJECT_NAME} PRIVATE
-                -pthread
-                -Wl,-export-dynamic
+            -pthread
+            -Wl,-export-dynamic
         )
     endif()
 endif()
@@ -1688,57 +1686,30 @@ endif()
 # Pre build events
 ################################################################################
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
-	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
-		add_custom_command_if(
-			TARGET ${PROJECT_NAME}
-			PRE_BUILD
-			COMMANDS
-			COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_CURRENT_SOURCE_DIR}/>src\\boot\\build.c +,,
-		)
-	endif()
+	add_custom_command_if(
+		TARGET ${PROJECT_NAME}
+		PRE_BUILD
+		COMMANDS
+		COMMAND   $<CONFIG:Debug> copy /b $<SHELL_PATH:${CMAKE_CURRENT_SOURCE_DIR}/>src\\boot\\build.c +,,
+	)
 endif()
 ################################################################################
 # Dependencies
 ################################################################################
-if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
     libultraship
-    storm
 )
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-add_dependencies(${PROJECT_NAME}
-    ZAPDUtils
-    libultraship
-    storm
-)
-else()
-add_dependencies(${PROJECT_NAME}
-    ZAPDUtils
-    libultraship
-    storm
-    glew_s
-)
-endif()
-
-if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-find_library(SDL2_LIB SDL2 GLEW)
-else()
-find_library(SDL2_LIB SDL2)
-endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
-			"opengl32;"
 			"glu32;"
 			"SDL2;"
 			"SDL2main;"
 			"glfw3dll;"
-			"glew32s;"
-			"storm;"
 			"winmm;"
 			"imm32;"
 			"version;"
@@ -1748,48 +1719,24 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		set(ADDITIONAL_LIBRARY_DEPENDENCIES
 			"libultraship;"
 			"ZAPDUtils;"
-			"opengl32;"
 			"glu32;"
 			"SDL2;"
 			"SDL2main;"
 			"glfw3dll;"
-			"glew32s;"
-			"storm;"
 			"winmm;"
 			"imm32;"
 			"version;"
 			"setupapi"
 		)
 	endif()
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    find_package(SDL2)
-    find_package(GLEW)
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads REQUIRED)
- 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
-        "libultraship;"
-        "ZAPDUtils;"
-    	"storm;"
-		SDL2::SDL2
-		GLEW::GLEW
-		${OPENGL_opengl_LIBRARY}
-		${CMAKE_DL_LIBS}
-		Threads::Threads
-	)
 else()
     find_package(SDL2)
-    find_package(PulseAudio)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         "ZAPDUtils;"
-    	"storm;"
 		SDL2::SDL2
-		${PULSEAUDIO_LIBRARY}
-		glew_s
-		${OPENGL_glx_LIBRARY}
-		${OPENGL_opengl_LIBRARY}
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
@@ -1815,47 +1762,24 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
         set_property(TARGET glfw3dll PROPERTY
             IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
 
-        add_library(glew32s STATIC IMPORTED )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x64/glew32s.lib  )
-        set_property(TARGET glew32s PROPERTY
-            IMPORTED_IMPLIB ${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x64/glew32s.lib)
-
-        #add_library(StormLibRUS32 STATIC IMPORTED )
-        # set_property(TARGET StormLibRUS32 PROPERTY
-        #                 IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
-        # set_property(TARGET StormLibRUS32 PROPERTY
-        #        IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
     elseif("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Win32")
+	    add_library( SDL2 STATIC IMPORTED )
+	    set_property(TARGET SDL2 PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib  )
+	    set_property(TARGET SDL2 PROPERTY
+            IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib)
 
-	add_library( SDL2 STATIC IMPORTED )
-	set_property(TARGET SDL2 PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib  )
-	set_property(TARGET SDL2 PROPERTY
-             IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2.lib)
+	    add_library( SDL2main STATIC IMPORTED )
+	    set_property(TARGET SDL2main PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib  )
+	    set_property(TARGET SDL2main PROPERTY
+            IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib)
 
-	add_library( SDL2main STATIC IMPORTED )
-	set_property(TARGET SDL2main PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib  )
-	set_property(TARGET SDL2main PROPERTY
-             IMPORTED_IMPLIB ../libultraship/libultraship/Lib/SDL/lib/x86/SDL2main.lib)
-
-	add_library(glfw3dll  STATIC IMPORTED )
-	set_property(TARGET glfw3dll PROPERTY
+	    add_library(glfw3dll  STATIC IMPORTED )
+	    set_property(TARGET glfw3dll PROPERTY
 			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib  )
-	set_property(TARGET glfw3dll PROPERTY
-             IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
+	    set_property(TARGET glfw3dll PROPERTY
+            IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLFW/glfw3dll.lib)
 
-	add_library(glew32s STATIC IMPORTED )
-	set_property(TARGET glew32s PROPERTY
-			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x86/glew32s.lib  )
-	set_property(TARGET glew32s PROPERTY
-             IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/Lib/GLEW/x86/glew32s.lib)
-
-     #add_library(StormLibRUS32 STATIC IMPORTED )
-     #	set_property(TARGET StormLibRUS32 PROPERTY
-     #			IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib  )
-     #	set_property(TARGET StormLibRUS32 PROPERTY
-     #        IMPORTED_IMPLIB ${PROJECT_SOURCE_DIR}/../libultraship/libultraship/StormLibRUS32.lib)
-  endif()
+    endif()
 endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
@@ -1864,4 +1788,3 @@ INSTALL(TARGETS soh DESTINATION bin)
 
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION bin)
-

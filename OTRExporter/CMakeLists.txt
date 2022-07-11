@@ -81,10 +81,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-if (NOT TARGET storm)
-    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../StormLib ${CMAKE_BINARY_DIR}/StormLib)
-endif()
-
 if (NOT TARGET libultraship)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libultraship/libultraship ${CMAKE_BINARY_DIR}/libultraship)
 endif()
@@ -100,7 +96,7 @@ endif()
 add_subdirectory(OTRExporter)
 
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/extract_assets.py filedata)
-string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "build-cmake/ZAPD/ZAPD.out" filedata "${filedata}")
+string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out" filedata "${filedata}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" "${filedata}")
 file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/extract_assets_cmake.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
