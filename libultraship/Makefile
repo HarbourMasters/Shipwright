@@ -2,8 +2,7 @@
 
 CXX ?= g++
 CC ?= gcc
-MXX ?= clang++
-AR	:= ar
+AR := ar
 FORMAT := clang-format-11
 UNAME := $(shell uname)
 
@@ -11,6 +10,15 @@ ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
 LTO ?= 0
+
+# flag to save whether the compiler being used is clang or gcc by checking CXX --version
+CXX_IS_CLANG ?= $(shell $(CXX) --version | grep -c clang)
+ifeq ($(CXX_IS_CLANG),1)
+	MXX := $(CXX)
+else
+	MXX ?= clang++
+endif
+
 
 WARN := -Wall -Wextra -Werror \
 	-Wno-unused-variable \
@@ -30,8 +38,7 @@ WARN := -Wall -Wextra -Werror \
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
 
-COMPILER_VERSION := $(shell $(CXX) --version)
-ifneq '' '$(findstring g++,$(COMPILER_VERSION))'
+ifneq ($(CXX_IS_CLANG),1)
 	WARN += -Wno-error=stringop-overflow
 	CXXWARN += -Wno-error=maybe-uninitialized
 endif
@@ -40,16 +47,17 @@ CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
-STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
-CXX_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | tail -n 1)
-MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc -stdlib++-isystem ${STD_ISYSTEM} -cxx-isystem ${CXX_ISYSTEM}
+MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
+
+# if not using clang, ask clang to use gcc standard library
+ifneq ($(CXX_IS_CLANG),1)
+	STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
+	CXX_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | tail -n 1)
+	MMFLAGS += -stdlib++-isystem ${STD_ISYSTEM} -cxx-isystem ${CXX_ISYSTEM}
+endif
 
 ifeq ($(UNAME), Darwin) #APPLE
 	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
-endif
-
-ifeq ($(UNAME), Linux)
-	WARN += -Wno-error=stringop-overflow # This is required with clang on Linux.
 endif
 
 ifneq ($(DEBUG),0)
