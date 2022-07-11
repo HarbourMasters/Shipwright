@@ -280,22 +280,64 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
-        std::string Cvar_Red = cvarname;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarname;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarname;
-        Cvar_Blue += "B";
-        std::string Cvar_Alpha = cvarname;
-        Cvar_Alpha += "A";
+    void LoadRainbowColor() {
+        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
+        for (u8 s = 0; s < arrayLength; s++) {
+            std::string cvarName = RainbowColorCvarList[s];
+            std::string Cvar_Red = cvarName;
+            Cvar_Red += "R";
+            std::string Cvar_Green = cvarName;
+            Cvar_Green += "G";
+            std::string Cvar_Blue = cvarName;
+            Cvar_Blue += "B";
+            std::string Cvar_RBM = cvarName;
+            Cvar_RBM += "RBM";
+            std::string RBM_HUE = cvarName;
+            RBM_HUE += "Hue";
+            f32 Canon = 10.f * s;
+            ImVec4 NewColor;
+            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
+            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
+            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
+            if (newHue >= 360)
+                newHue = 0;
+            CVar_SetFloat(RBM_HUE.c_str(), newHue);
+            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
+            u8 i = current_hue / 60 + 1;
+            u8 a = (-current_hue / 60.0f + i) * 255;
+            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
 
-        ColorArray.x = (float)CVar_GetS32(Cvar_Red.c_str(), default_colors.x) / 255;
-        ColorArray.y = (float)CVar_GetS32(Cvar_Green.c_str(), default_colors.y) / 255;
-        ColorArray.z = (float)CVar_GetS32(Cvar_Blue.c_str(), default_colors.z) / 255;
-        if (has_alpha) {
-            ColorArray.w = (float)CVar_GetS32(Cvar_Alpha.c_str(), default_colors.w) / 255;
+            switch (i) {
+            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
+            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
+            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
+            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
+            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
+            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
+            }
+
+            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
+                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
+                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
+                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
+            }
         }
+    }
+
+    void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha)
+    {
+        Color_RGBA8 defaultColors;
+        defaultColors.r = default_colors.x;
+        defaultColors.g = default_colors.y;
+        defaultColors.b = default_colors.z;
+        defaultColors.a = default_colors.w;
+
+        Color_RGBA8 cvarColor = CVar_GetRGBA(cvarname, defaultColors);
+
+        ColorArray.x = cvarColor.r / 255.0;
+        ColorArray.y = cvarColor.g / 255.0;
+        ColorArray.z = cvarColor.b / 255.0;
+        ColorArray.w = cvarColor.a / 255.0;
     }
 
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint) {
@@ -661,14 +703,6 @@ namespace SohImGui {
     }
 
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
-        std::string Cvar_Alpha = cvarName;
-        Cvar_Alpha += "A";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "Reset";
@@ -680,10 +714,14 @@ namespace SohImGui {
             colors->y = defaultcolors.y / 255;
             colors->z = defaultcolors.z / 255;
             if (has_alpha) { colors->w = defaultcolors.w / 255; };
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
-            if (has_alpha) { CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(colors->w * 255, 0, 255)); };
+
+            Color_RGBA8 colorsRGBA;
+            colorsRGBA.r = defaultcolors.x / 255;
+            colorsRGBA.g = defaultcolors.y / 255;
+            colorsRGBA.b = defaultcolors.z / 255;
+            if (has_alpha) { colorsRGBA.a = defaultcolors.w / 255; };
+
+            CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
             needs_save = true;
         }
@@ -691,42 +729,47 @@ namespace SohImGui {
     }
 
     void EnhancementColor(const char* text, const char* cvarName, ImVec4 ColorRGBA, ImVec4 default_colors, bool allow_rainbow, bool has_alpha, bool TitleSameLine) {
-        //This will be moved to external cosmetics ed
-	std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
-        std::string Cvar_Alpha = cvarName;
-        Cvar_Alpha += "A";
-        std::string Cvar_RBM = cvarName;
-        Cvar_RBM += "RBM";
-
         LoadPickersColors(ColorRGBA, cvarName, default_colors, has_alpha);
+
         ImGuiColorEditFlags flags = ImGuiColorEditFlags_None;
 
         if (!TitleSameLine) {
             ImGui::Text("%s", text);
             flags = ImGuiColorEditFlags_NoLabel;
         }
-        if (!has_alpha) {
-            if (ImGui::ColorEdit3(text, (float*)&ColorRGBA, flags)) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
-                needs_save = true;
-            }
-        } else {
-            if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags)) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
-                CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(ColorRGBA.w * 255, 0, 255));
-                needs_save = true;
-            }
 
+        ImGui::PushID(cvarName);
+
+        if (!has_alpha) {
+            if (ImGui::ColorEdit3(text, (float*)&ColorRGBA, flags))
+            {
+                Color_RGBA8 colors;
+                colors.r = ColorRGBA.x * 255.0;
+                colors.g = ColorRGBA.y * 255.0;
+                colors.b = ColorRGBA.z * 255.0;
+                colors.a = ColorRGBA.w * 255.0;
+
+                CVar_SetRGBA(cvarName, colors);
+                needs_save = true;
+            }
         }
+        else
+        {
+            if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags))
+            {
+                Color_RGBA8 colors;
+                colors.r = ColorRGBA.x / 255;
+                colors.g = ColorRGBA.y / 255;
+                colors.b = ColorRGBA.z / 255;
+                colors.a = ColorRGBA.w / 255;
+
+                CVar_SetRGBA(cvarName, colors);
+                needs_save = true;
+            }
+        }
+
+        ImGui::PopID();
+
         //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
         ImGui::PushItemWidth(-FLT_MIN);
         ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
