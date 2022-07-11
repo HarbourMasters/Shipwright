@@ -19,10 +19,22 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-parentheses \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers \
-	-Wno-error=multichar
+	-Wno-error=multichar \
+	-Wno-unused-command-line-argument \
+	-Wno-delete-non-abstract-non-virtual-dtor \
+	-Wno-unused-private-field \
+	-Wno-deprecated-copy-with-user-provided-copy \
+	-Wno-deprecated-declarations \
+	-Wno-unknown-warning-option
 
 CWARN :=
-CXXWARN := -Wno-deprecated-enum-enum-conversion
+CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
+
+COMPILER_VERSION := $(shell $(CXX) --version)
+ifneq '' '$(findstring g++,$(COMPILER_VERSION))'
+	WARN += -Wno-error=stringop-overflow
+	CXXWARN += -Wno-error=maybe-uninitialized
+endif
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
@@ -34,6 +46,10 @@ MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc -stdlib++
 
 ifeq ($(UNAME), Darwin) #APPLE
 	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
+endif
+
+ifeq ($(UNAME), Linux)
+	WARN += -Wno-error=stringop-overflow # This is required with clang on Linux.
 endif
 
 ifneq ($(DEBUG),0)

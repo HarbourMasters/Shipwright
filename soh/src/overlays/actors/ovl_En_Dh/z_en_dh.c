@@ -547,7 +547,7 @@ void EnDh_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnDh* this = (EnDh*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_dh.c", 1099);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->alpha == 255) {
         func_80093D18(globalCtx->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->alpha);
@@ -574,9 +574,9 @@ void EnDh_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Translate(0.0f, -this->actor.shape.yOffset, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(this->dirtWaveSpread * 0.01f, this->dirtWaveHeight * 0.01f, this->dirtWaveSpread * 0.01f,
                      MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_dh.c", 1160),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, object_dh_DL_007FC0);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_dh.c", 1166);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

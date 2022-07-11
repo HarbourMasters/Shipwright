@@ -164,7 +164,7 @@ void BgTokiSwd_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     BgTokiSwd* this = (BgTokiSwd*)thisx;
     s32 pad[3];
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_toki_swd.c", 727);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -172,9 +172,9 @@ void BgTokiSwd_Draw(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_OPA_DISP++, 0x08,
                Gfx_TexScroll(globalCtx->state.gfxCtx, 0, -(globalCtx->gameplayFrames % 0x80), 32, 32));
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_toki_swd.c", 742),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, object_toki_objects_DL_001BD0);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_toki_swd.c", 776);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

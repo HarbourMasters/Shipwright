@@ -194,9 +194,9 @@ void CreateSphereFace(std::vector<std::tuple<size_t, size_t, size_t>>& faces, in
 
     // Create 3 new verticies at the midpoints
     Vec3f vs[3] = {
-        Vec3f((v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f),
-        Vec3f((v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f),
-        Vec3f((v2.n.ob[0] + v0.n.ob[0]) / 2.0f, (v2.n.ob[1] + v0.n.ob[1]) / 2.0f, (v2.n.ob[2] + v0.n.ob[2]) / 2.0f)
+        Vec3f{(v0.n.ob[0] + v1.n.ob[0]) / 2.0f, (v0.n.ob[1] + v1.n.ob[1]) / 2.0f, (v0.n.ob[2] + v1.n.ob[2]) / 2.0f},
+        Vec3f{(v1.n.ob[0] + v2.n.ob[0]) / 2.0f, (v1.n.ob[1] + v2.n.ob[1]) / 2.0f, (v1.n.ob[2] + v2.n.ob[2]) / 2.0f},
+        Vec3f{(v2.n.ob[0] + v0.n.ob[0]) / 2.0f, (v2.n.ob[1] + v0.n.ob[1]) / 2.0f, (v2.n.ob[2] + v0.n.ob[2]) / 2.0f}
     };
 
     // Normalize vertex positions so they are on the sphere
@@ -221,20 +221,20 @@ void CreateSphereData() {
     float d = (1.0f + sqrtf(5.0f)) / 2.0f;
 
     // Create the 12 starting verticies, 4 on each rectangle
-    base.emplace_back(-1, d, 0);
-    base.emplace_back(1, d, 0);
-    base.emplace_back(-1, -d, 0);
-    base.emplace_back(1, -d, 0);
+    base.emplace_back(Vec3f({-1, d, 0}));
+    base.emplace_back(Vec3f({1, d, 0}));
+    base.emplace_back(Vec3f({-1, -d, 0}));
+    base.emplace_back(Vec3f({1, -d, 0}));
 
-    base.emplace_back(0, -1, d);
-    base.emplace_back(0, 1, d);
-    base.emplace_back(0, -1, -d);
-    base.emplace_back(0, 1, -d);
+    base.emplace_back(Vec3f({0, -1, d}));
+    base.emplace_back(Vec3f({0, 1, d}));
+    base.emplace_back(Vec3f({0, -1, -d}));
+    base.emplace_back(Vec3f({0, 1, -d}));
 
-    base.emplace_back(d, 0, -1);
-    base.emplace_back(d, 0, 1);
-    base.emplace_back(-d, 0, -1);
-    base.emplace_back(-d, 0, 1);
+    base.emplace_back(Vec3f({d, 0, -1}));
+    base.emplace_back(Vec3f({d, 0, 1}));
+    base.emplace_back(Vec3f({-d, 0, -1}));
+    base.emplace_back(Vec3f({-d, 0, 1}));
 
     // Normalize verticies so they are on the unit sphere
     for (Vec3f& v : base) {
@@ -698,7 +698,7 @@ void DrawColViewer() {
         return;
     }
 
-    OPEN_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    OPEN_DISPS(gGlobalCtx->state.gfxCtx);
 
     opaDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_OPA_DISP++, opaDl.data());
@@ -706,5 +706,5 @@ void DrawColViewer() {
     xluDl.push_back(gsSPEndDisplayList());
     gSPDisplayList(POLY_XLU_DISP++, xluDl.data());
 
-    CLOSE_DISPS(gGlobalCtx->state.gfxCtx, "", 0);
+    CLOSE_DISPS(gGlobalCtx->state.gfxCtx);
 }

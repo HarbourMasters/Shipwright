@@ -998,7 +998,6 @@ void func_80083108(GlobalContext* globalCtx) {
                             gSaveContext.buttonStatus[0] = gSaveContext.equips.buttonItems[0];
                         }
                     }
-                    if (1) {} // Necessary to match
                 }
 
                 if (sp28) {
@@ -1495,7 +1494,7 @@ void Interface_LoadItemIcon1(GlobalContext* globalCtx, u16 button) {
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
     DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->iconItemSegment + button * 0x1000,
                         (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
-                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), "../z_parameter.c", 1171);
+                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -1505,7 +1504,7 @@ void Interface_LoadItemIcon2(GlobalContext* globalCtx, u16 button) {
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
     DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_180, interfaceCtx->iconItemSegment + button * 0x1000,
                         (uintptr_t)_icon_item_staticSegmentRomStart + (gSaveContext.equips.buttonItems[button] * 0x1000),
-                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), "../z_parameter.c", 1193);
+                        0x1000, 0, &interfaceCtx->loadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 }
 
@@ -2312,7 +2311,7 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
         //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
                             //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
                             //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
-                            //0, &interfaceCtx->loadQueue, NULL, "../z_parameter.c", 2145);
+                            //0, &interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
         //osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
     } else {
         gSegments[7] = VIRTUAL_TO_PHYSICAL(interfaceCtx->doActionSegment);
@@ -2398,7 +2397,7 @@ void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action) {
     memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
     //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
                         //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
-                        //&interfaceCtx->loadQueue, NULL, "../z_parameter.c", 2228);
+                        //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
     osRecvMesg(&interfaceCtx->loadQueue, NULL, OS_MESG_BLOCK);
 
     interfaceCtx->unk_1FA = 1;
@@ -2701,10 +2700,22 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
             if (gSaveContext.magic <= 0) {
                 gSaveContext.magic = 0;
                 gSaveContext.unk_13F0 = 3;
-                sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    sMagicBorderR = CVar_GetS32("gCCMagicBorderNormPrimR", 255);
+                    sMagicBorderG = CVar_GetS32("gCCMagicBorderNormPrimG", 255);
+                    sMagicBorderB = CVar_GetS32("gCCMagicBorderNormPrimB", 255);
+                } else {
+                    sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                }
             } else if (gSaveContext.magic == gSaveContext.unk_13F8) {
                 gSaveContext.unk_13F0 = 3;
-                sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    sMagicBorderR = CVar_GetS32("gCCMagicBorderNormPrimR", 255);
+                    sMagicBorderG = CVar_GetS32("gCCMagicBorderNormPrimG", 255);
+                    sMagicBorderB = CVar_GetS32("gCCMagicBorderNormPrimB", 255);
+                } else {
+                    sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                }
             }
         case 3:
         case 4:
@@ -2746,7 +2757,13 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
             break;
 
         case 5:
-            sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                sMagicBorderR = CVar_GetS32("gCCMagicBorderNormPrimR", 255);
+                sMagicBorderG = CVar_GetS32("gCCMagicBorderNormPrimG", 255);
+                sMagicBorderB = CVar_GetS32("gCCMagicBorderNormPrimB", 255);
+            } else {
+                sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+            }
             gSaveContext.unk_13F0 = 0;
             break;
 
@@ -2768,7 +2785,13 @@ void Interface_UpdateMagicBar(GlobalContext* globalCtx) {
                     Audio_PlaySoundGeneral(NA_SE_SY_GLASSMODE_OFF, &D_801333D4, 4, &D_801333E0, &D_801333E0,
                                            &D_801333E8);
                     gSaveContext.unk_13F0 = 0;
-                    sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                    if (CVar_GetS32("gHudColors", 1) == 2) {
+                        sMagicBorderR = CVar_GetS32("gCCMagicBorderNormPrimR", 255);
+                        sMagicBorderG = CVar_GetS32("gCCMagicBorderNormPrimG", 255);
+                        sMagicBorderB = CVar_GetS32("gCCMagicBorderNormPrimB", 255);
+                    } else {
+                        sMagicBorderR = sMagicBorderG = sMagicBorderB = 255;
+                    }
                     break;
                 }
 
@@ -2835,35 +2858,81 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s16 magicBarY;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 2650);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (gSaveContext.magicLevel != 0) {
-        if (gSaveContext.healthCapacity > 0xA0) {
-            magicBarY = R_MAGIC_BAR_LARGE_Y + (Top_HUD_Margin*-1);
+        s16 X_Margins;
+        s16 Y_Margins;
+        if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {
+            X_Margins = Left_HUD_Margin;
+            Y_Margins = (Top_HUD_Margin*-1);
         } else {
-            magicBarY = R_MAGIC_BAR_SMALL_Y + (Top_HUD_Margin*-1);
+            X_Margins = 0;
+            Y_Margins = 0;
+        }
+        const s16 magicBarY_original_l = R_MAGIC_BAR_LARGE_Y + Y_Margins;
+        const s16 magicBarY_original_s = R_MAGIC_BAR_SMALL_Y + Y_Margins;
+        const s16 PosX_Start_original = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + X_Margins);
+        const s16 PosX_MidEnd_original = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + X_Margins+8);
+        const s16 rMagicBarX_original = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + X_Margins);
+        const s16 rMagicFillX_original = OTRGetRectDimensionFromLeftEdge(R_MAGIC_FILL_X + X_Margins);
+        s16 PosX_Start;
+        s16 magicBarY;
+        s16 rMagicBarX;
+        s16 PosX_MidEnd;
+        s16 rMagicFillX;
+        if (CVar_GetS32("gMagicBarPosType", 0) != 0) {
+            magicBarY = CVar_GetS32("gMagicBarPosY", 0)+Y_Margins;
+            if (CVar_GetS32("gMagicBarPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {X_Margins = Left_HUD_Margin;};
+                PosX_Start = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
+                rMagicBarX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
+                PosX_MidEnd = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
+                rMagicFillX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
+            } else if (CVar_GetS32("gMagicBarPosType", 0) == 2) {//Anchor Right
+                if (CVar_GetS32("gMagicBarUseMargins", 0) != 0) {X_Margins = Right_HUD_Margin;};
+                PosX_Start = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
+                rMagicBarX = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins);
+                PosX_MidEnd = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
+                rMagicFillX = OTRGetDimensionFromRightEdge(CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8);
+            } else if (CVar_GetS32("gMagicBarPosType", 0) == 3) {//Anchor None
+                PosX_Start = CVar_GetS32("gMagicBarPosX", 0)+X_Margins;
+                rMagicBarX = CVar_GetS32("gMagicBarPosX", 0)+X_Margins;
+                PosX_MidEnd = CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8;
+                rMagicFillX = CVar_GetS32("gMagicBarPosX", 0)+X_Margins+8;
+            } else if (CVar_GetS32("gMagicBarPosType", 0) == 4) {//hidden
+                PosX_Start = -9999;
+                rMagicBarX = -9999;
+                PosX_MidEnd = -9999;
+                rMagicFillX = -9999;
+            }
+        } else {
+            if (gSaveContext.healthCapacity > 0xA0) {
+                magicBarY = magicBarY_original_l;
+            } else {
+                magicBarY = magicBarY_original_s;
+            }
+            PosX_Start = PosX_Start_original;
+            rMagicBarX = rMagicBarX_original;
+            PosX_MidEnd = PosX_MidEnd_original;
+            rMagicFillX = rMagicFillX_original;
         }
 
         func_80094520(globalCtx->state.gfxCtx);
 
-        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, sMagicBorderR, sMagicBorderG, sMagicBorderB, interfaceCtx->magicAlpha);
         if (CVar_GetS32("gHudColors", 1) == 2) {//Original game add color there so to prevent miss match we make it all white :)
-            gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
+            gDPSetEnvColor(OVERLAY_DISP++, 255, 255, 255, 255);
         } else {
             gDPSetEnvColor(OVERLAY_DISP++, 100, 50, 50, 255);
         }
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, sMagicBorderR, sMagicBorderG, sMagicBorderB, interfaceCtx->magicAlpha);
 
-        OVERLAY_DISP =
-            Gfx_TextureIA8(OVERLAY_DISP, gMagicBarEndTex, 8, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1)),
-                                      magicBarY, 8, 16, 1 << 10, 1 << 10);
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicBarEndTex, 8, 16, PosX_Start, magicBarY, 8, 16, 1 << 10, 1 << 10);
 
-        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicBarMidTex, 24, 16, OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1)) + 8, magicBarY,
-                                      gSaveContext.unk_13F4, 16, 1 << 10, 1 << 10);
+        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gMagicBarMidTex, 24, 16, PosX_MidEnd, magicBarY, gSaveContext.unk_13F4, 16, 1 << 10, 1 << 10);
 
         gDPLoadTextureBlock(OVERLAY_DISP++, gMagicBarEndTex, G_IM_FMT_IA, G_IM_SIZ_8b, 8, 16, 0,
                             G_TX_MIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 3, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-
-        const s16 rMagicBarX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_BAR_X + (Left_HUD_Margin*-1));
 
         gSPWideTextureRectangle(OVERLAY_DISP++, ((rMagicBarX + gSaveContext.unk_13F4) + 8) << 2, magicBarY << 2,
                             ((rMagicBarX + gSaveContext.unk_13F4) + 16) << 2, (magicBarY + 16) << 2, G_TX_RENDERTILE,
@@ -2873,8 +2942,6 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE, PRIMITIVE,
                           ENVIRONMENT, TEXEL0, ENVIRONMENT, 0, 0, 0, PRIMITIVE);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
-
-        const s16 rMagicFillX = OTRGetRectDimensionFromLeftEdge(R_MAGIC_FILL_X + (Left_HUD_Margin*-1));
 
         if (gSaveContext.unk_13F0 == 4) {
             // Yellow part of the bar indicating the amount of magic to be subtracted
@@ -2921,7 +2988,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 2731);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80088AA0(s16 arg0) {
@@ -2961,7 +3028,7 @@ void func_80088B34(s16 arg0) {
 }
 
 void Interface_DrawActionLabel(GraphicsContext* gfxCtx, void* texture) {
-    OPEN_DISPS(gfxCtx, "../z_parameter.c", 2820);
+    OPEN_DISPS(gfxCtx);
 
     gDPLoadTextureBlock_4b(OVERLAY_DISP++, texture, G_IM_FMT_IA, DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
@@ -2969,7 +3036,7 @@ void Interface_DrawActionLabel(GraphicsContext* gfxCtx, void* texture) {
 
     gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_parameter.c", 2829);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void Interface_DrawItemButtons(GlobalContext* globalCtx) {
@@ -2983,12 +3050,216 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     s16 width;
     s16 height;
 
-    s16 C_Left_BTN_Pos[]  = { C_LEFT_BUTTON_X+Right_HUD_Margin, C_LEFT_BUTTON_Y+(Top_HUD_Margin*-1) }; //(X,Y)
-    s16 C_Right_BTN_Pos[] = { C_RIGHT_BUTTON_X+Right_HUD_Margin, C_RIGHT_BUTTON_Y+(Top_HUD_Margin*-1) };
-    s16 C_Up_BTN_Pos[]    = { C_UP_BUTTON_X+Right_HUD_Margin, C_UP_BUTTON_Y+(Top_HUD_Margin*-1) };
-    s16 C_Down_BTN_Pos[]  = { C_DOWN_BUTTON_X+Right_HUD_Margin, C_DOWN_BUTTON_Y+(Top_HUD_Margin*-1) };
+    //B Button
+    s16 X_Margins_BtnB;
+    s16 Y_Margins_BtnB;
+    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        Y_Margins_BtnB = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_BtnB = 0;
+        Y_Margins_BtnB = 0;
+    }
+    s16 PosX_BtnB_ori = OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(0)+X_Margins_BtnB);
+    s16 PosY_BtnB_ori = R_ITEM_BTN_Y(0)+Y_Margins_BtnB;
+    s16 PosX_BtnB;
+    s16 PosY_BtnB;
+    if (CVar_GetS32("gBBtnPosType", 0) != 0) {
+        PosY_BtnB = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB;
+        if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            PosX_BtnB = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            PosX_BtnB = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 3) {//Anchor None
+            PosX_BtnB = CVar_GetS32("gBBtnPosX", 0);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 4) {//Hidden
+           PosX_BtnB = -9999;
+        }
+    } else {
+        PosY_BtnB = PosY_BtnB_ori;
+        PosX_BtnB = PosX_BtnB_ori;
+    }
+    //Start Button
+    s16 X_Margins_StartBtn;
+    s16 Y_Margins_StartBtn;
+    if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gStartBtnPosType", 0) == 0) {
+            X_Margins_StartBtn = Right_HUD_Margin;
+        };
+        Y_Margins_StartBtn = Top_HUD_Margin*-1;
+    } else {
+        X_Margins_StartBtn = 0;
+        Y_Margins_StartBtn = 0;
+    }
+    s16 StartBtn_Icon_H = 32;
+    s16 StartBtn_Icon_W = 32;
+    int StartBTN_H_Scaled = StartBtn_Icon_H * 0.75f;
+    int StartBTN_W_Scaled = StartBtn_Icon_W * 0.75f;
+    int StartBTN_W_factor = (1 << 10) * StartBtn_Icon_W / StartBTN_W_Scaled;
+    int StartBTN_H_factor = (1 << 10) * StartBtn_Icon_H / StartBTN_H_Scaled;
+    const s16 rStartLabelX_ori = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+X_Margins_StartBtn);
+    const s16 rStartLabelY_ori = R_START_LABEL_Y(gSaveContext.language)+Y_Margins_StartBtn;
+    const s16 PosX_StartBtn_ori = OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+X_Margins_StartBtn);
+    const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
+    s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH;
+    s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT;
+    int StartBTN_Label_H_Scaled = StartBTN_Label_H * 1.0f;
+    int StartBTN_Label_W_Scaled = StartBTN_Label_W * 1.0f;
+    int StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
+    int StartBTN_Label_H_factor = (1 << 10) * StartBTN_Label_H / StartBTN_Label_H_Scaled;
+    const s16 StartBtn_Label_W_ori = StartBTN_Label_W / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
+    const s16 StartBtn_Label_H_ori = StartBTN_Label_H / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
+    s16 PosX_StartBtn;
+    s16 PosY_StartBtn;
+    s16 rStartLabelX;
+    s16 rStartLabelY;
+    if (CVar_GetS32("gStartBtnPosType", 0) != 0) {
+        PosY_StartBtn = CVar_GetS32("gStartBtnPosY", 0)+Y_Margins_StartBtn;
+        rStartLabelY = CVar_GetS32("gStartBtnPosY", 0)+Y_Margins_StartBtn+3;
+        if (CVar_GetS32("gStartBtnPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Left_HUD_Margin;};
+            PosX_StartBtn = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
+            rStartLabelX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn-12);
+        } else if (CVar_GetS32("gStartBtnPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gStartBtnUseMargins", 0) != 0) {X_Margins_StartBtn = Right_HUD_Margin;};
+            PosX_StartBtn = OTRGetDimensionFromRightEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn);
+            rStartLabelX = OTRGetDimensionFromRightEdge(CVar_GetS32("gStartBtnPosX", 0)+X_Margins_StartBtn-12);
+        } else if (CVar_GetS32("gStartBtnPosType", 0) == 3) {//Anchor None
+            PosX_StartBtn = CVar_GetS32("gStartBtnPosX", 0);
+            rStartLabelX = CVar_GetS32("gStartBtnPosX", 0)-12;
+        } else if (CVar_GetS32("gStartBtnPosType", 0) == 4) {//Hidden
+           PosX_StartBtn = -9999;
+           rStartLabelX = -9999;
+        }
+    } else {
+        PosY_StartBtn = PosY_StartBtn_ori;
+        PosX_StartBtn = PosX_StartBtn_ori;
+        rStartLabelY = rStartLabelY_ori;
+        rStartLabelX = rStartLabelX_ori;
+    }
+    //C Buttons position
+    s16 X_Margins_CL;
+    s16 X_Margins_CR;
+    s16 X_Margins_CU;
+    s16 X_Margins_CD;
+    s16 Y_Margins_CL;
+    s16 Y_Margins_CR;
+    s16 Y_Margins_CU;
+    s16 Y_Margins_CD;
+    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        Y_Margins_CL = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CL = 0;
+        Y_Margins_CL = 0;
+    }
+    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        Y_Margins_CR = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CR = 0;
+        Y_Margins_CR = 0;
+    }
+    if (CVar_GetS32("gCBtnUUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnUPosType", 0) == 0) {X_Margins_CU = Right_HUD_Margin;};
+        Y_Margins_CU = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CU = 0;
+        Y_Margins_CU = 0;
+    }
+    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        Y_Margins_CD = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CD = 0;
+        Y_Margins_CD = 0;
+    }
+    const s16 C_Left_BTN_Pos_ori[]  = { C_LEFT_BUTTON_X+X_Margins_CL, C_LEFT_BUTTON_Y+Y_Margins_CL }; //(X,Y)
+    const s16 C_Right_BTN_Pos_ori[] = { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR };
+    const s16 C_Up_BTN_Pos_ori[]    = { C_UP_BUTTON_X+X_Margins_CU, C_UP_BUTTON_Y+Y_Margins_CU };
+    const s16 C_Down_BTN_Pos_ori[]  = { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD };
+    s16 LabelX_Navi=8;
+    s16 LabelY_Navi=4 - !!CVar_GetS32("gNaviTextFix", 0);
+    s16 C_Left_BTN_Pos[2]; //(X,Y)
+    s16 C_Right_BTN_Pos[2];
+    s16 C_Up_BTN_Pos[2];
+    s16 C_Down_BTN_Pos[2];
+    //C button Left
+    if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+        C_Left_BTN_Pos[1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+        if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            C_Left_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            C_Left_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+            C_Left_BTN_Pos[0] = CVar_GetS32("gCBtnLPosX", 0);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
+            C_Left_BTN_Pos[0] = -9999;
+        }
+    } else {
+        C_Left_BTN_Pos[1] = C_Left_BTN_Pos_ori[1];
+        C_Left_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos_ori[0]);
+    }
+    //C button Right
+    if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+        C_Right_BTN_Pos[1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+        if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            C_Right_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            C_Right_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+            C_Right_BTN_Pos[0] = CVar_GetS32("gCBtnRPosX", 0);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
+            C_Right_BTN_Pos[0] = -9999;
+        }
+    } else {
+        C_Right_BTN_Pos[1] = C_Right_BTN_Pos_ori[1];
+        C_Right_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos_ori[0]);
+    }
+    //C Button Up
+    if (CVar_GetS32("gCBtnUPosType", 0) != 0) {
+        C_Up_BTN_Pos[1] = CVar_GetS32("gCBtnUPosY", 0)+Y_Margins_CU;
+        if (CVar_GetS32("gCBtnUPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnUUseMargins", 0) != 0) {X_Margins_CU = Left_HUD_Margin;};
+            C_Up_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnUPosX", 0)+X_Margins_CU);
+        } else if (CVar_GetS32("gCBtnUPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnUUseMargins", 0) != 0) {X_Margins_CU = Right_HUD_Margin;};
+            C_Up_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnUPosX", 0)+X_Margins_CU);
+        } else if (CVar_GetS32("gCBtnUPosType", 0) == 3) {//Anchor None
+            C_Up_BTN_Pos[0] = CVar_GetS32("gCBtnUPosX", 0);
+        } else if (CVar_GetS32("gCBtnUPosType", 0) == 4) {//Hidden
+            C_Up_BTN_Pos[0] = -9999;
+        }
+    } else {
+        C_Up_BTN_Pos[1] = C_Up_BTN_Pos_ori[1];
+        C_Up_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Up_BTN_Pos_ori[0]);
+    }
+    //C Button down
+    if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+        C_Down_BTN_Pos[1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+        if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            C_Down_BTN_Pos[0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            C_Down_BTN_Pos[0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+            C_Down_BTN_Pos[0] = CVar_GetS32("gCBtnDPosX", 0);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
+            C_Down_BTN_Pos[0] = -9999;
+        }
+    } else {
+        C_Down_BTN_Pos[1] = C_Down_BTN_Pos_ori[1];
+        C_Down_BTN_Pos[0] = OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos_ori[0]);
+    }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 2900);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // B Button Color & Texture
     // Also loads the Item Button Texture reused by other buttons afterwards
@@ -3003,9 +3274,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     }
     gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255);
 
-    OVERLAY_DISP =
-        Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, 32, 32, OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(0)+Right_HUD_Margin), R_ITEM_BTN_Y(0)+(Top_HUD_Margin*-1),
-                       R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_DD(0) << 1, R_ITEM_BTN_DD(0) << 1);
+    OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gButtonBackgroundTex, 32, 32, PosX_BtnB, PosY_BtnB, R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_WIDTH(0), R_ITEM_BTN_DD(0) << 1, R_ITEM_BTN_DD(0) << 1);
 
     // C-Left Button Color & Texture
     gDPPipeSync(OVERLAY_DISP++);
@@ -3013,11 +3282,13 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cLeftAlpha);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cLeftAlpha);
-    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cLeftAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCLBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCLBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cLeftAlpha);
     }
-    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos[0]) << 2, C_Left_BTN_Pos[1] << 2,
-                        (OTRGetRectDimensionFromRightEdge(C_Left_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(1)) << 2,
+    gSPWideTextureRectangle(OVERLAY_DISP++, C_Left_BTN_Pos[0] << 2, C_Left_BTN_Pos[1] << 2,
+                        (C_Left_BTN_Pos[0] + R_ITEM_BTN_WIDTH(1)) << 2,
                         (C_Left_BTN_Pos[1] + R_ITEM_BTN_WIDTH(1)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(1) << 1, R_ITEM_BTN_DD(1) << 1);
 
@@ -3026,11 +3297,13 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cDownAlpha);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cDownAlpha);
-    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cDownAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCDBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCDBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cDownAlpha);
     }
-    gSPWideTextureRectangle(OVERLAY_DISP++,  OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos[0]) << 2, C_Down_BTN_Pos[1] << 2,
-                        (OTRGetRectDimensionFromRightEdge(C_Down_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(2)) << 2,
+    gSPWideTextureRectangle(OVERLAY_DISP++,  C_Down_BTN_Pos[0] << 2, C_Down_BTN_Pos[1] << 2,
+                        (C_Down_BTN_Pos[0] + R_ITEM_BTN_WIDTH(2)) << 2,
                         (C_Down_BTN_Pos[1] + R_ITEM_BTN_WIDTH(2)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(2) << 1, R_ITEM_BTN_DD(2) << 1);
 
@@ -3039,11 +3312,13 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), interfaceCtx->cRightAlpha);
-    } else if (CVar_GetS32("gHudColors", 1) == 2) {
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated",0)) {
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
+    } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCRBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCRBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
     }
-    gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos[0]) << 2, C_Right_BTN_Pos[1] << 2,
-                        (OTRGetRectDimensionFromRightEdge(C_Right_BTN_Pos[0]) + R_ITEM_BTN_WIDTH(3)) << 2,
+    gSPWideTextureRectangle(OVERLAY_DISP++, C_Right_BTN_Pos[0] << 2, C_Right_BTN_Pos[1] << 2,
+                        (C_Right_BTN_Pos[0] + R_ITEM_BTN_WIDTH(3)) << 2,
                         (C_Right_BTN_Pos[1] + R_ITEM_BTN_WIDTH(3)) << 2,
                         G_TX_RENDERTILE, 0, 0, R_ITEM_BTN_DD(3) << 1, R_ITEM_BTN_DD(3) << 1);
 
@@ -3058,9 +3333,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             } else if (CVar_GetS32("gHudColors", 1) == 2) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCStartBtnPrimR", 120), CVar_GetS32("gCCStartBtnPrimG", 120), CVar_GetS32("gCCStartBtnPrimB", 120), interfaceCtx->startAlpha);
             }
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+Right_HUD_Margin) << 2, 68+((Top_HUD_Margin*-1)*4),
-                                (OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+Right_HUD_Margin) + 22) << 2, 156+((Top_HUD_Margin*-1)*4),
-                                G_TX_RENDERTILE, 0, 0, 1462, 1462);
+            gSPWideTextureRectangle(OVERLAY_DISP++, PosX_StartBtn << 2, PosY_StartBtn << 2,
+                                (PosX_StartBtn + StartBTN_W_Scaled) << 2, (PosY_StartBtn + StartBTN_H_Scaled) << 2,
+                                G_TX_RENDERTILE, 0, 0, StartBTN_W_factor, StartBTN_H_factor);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->startAlpha);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -3090,14 +3365,11 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                    DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-            dxdy = (1 << 10) / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
-            width = DO_ACTION_TEX_WIDTH / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
-            height = DO_ACTION_TEX_HEIGHT / (R_START_LABEL_DD(gSaveContext.language) / 100.0f);
-            const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
+            //const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
             gSPWideTextureRectangle(
-                OVERLAY_DISP++, rStartLabelX << 2,
-                R_START_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) << 2, (rStartLabelX + width) << 2,
-                (R_START_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) + height) << 2, G_TX_RENDERTILE, 0, 0, dxdy, dxdy);
+                OVERLAY_DISP++, rStartLabelX << 2, rStartLabelY << 2, 
+                (rStartLabelX + StartBTN_Label_W) << 2,
+                (rStartLabelY + StartBTN_Label_H) << 2, G_TX_RENDERTILE, 0, 0, StartBTN_Label_W_factor, StartBTN_Label_H_factor);
         }
     }
 
@@ -3116,18 +3388,18 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 temp = interfaceCtx->healthAlpha;
             }
 
-            const s16 rCUpBtnX  = OTRGetRectDimensionFromRightEdge(R_C_UP_BTN_X+Right_HUD_Margin);
-            const s16 rCUPIconX = OTRGetRectDimensionFromRightEdge(R_C_UP_ICON_X+Right_HUD_Margin-!!CVar_GetS32("gNaviTextFix", 0));
             if (CVar_GetS32("gHudColors", 1) == 0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), temp);
-            } else if (CVar_GetS32("gHudColors", 1) == 2) {
+            } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated",0)) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), temp);
+            } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated",0)) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCUBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCUBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCUBtnPrimB", R_C_BTN_COLOR(2)), temp);
             }
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rCUpBtnX << 2, R_C_UP_BTN_Y+(Top_HUD_Margin*-1) << 2, (rCUpBtnX + 16) << 2,
-                                (R_C_UP_BTN_Y+(Top_HUD_Margin*-1) + 16) << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, C_Up_BTN_Pos[0] << 2, C_Up_BTN_Pos[1] << 2, (C_Up_BTN_Pos[0] + 16) << 2,
+                                (C_Up_BTN_Pos[1] + 16) << 2, G_TX_RENDERTILE, 0, 0, 2 << 10, 2 << 10);
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, temp);
             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
@@ -3138,8 +3410,9 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                    G_TX_NOLOD, G_TX_NOLOD);
 
-            gSPWideTextureRectangle(OVERLAY_DISP++, rCUPIconX << 2, R_C_UP_ICON_Y+(Top_HUD_Margin*-1) << 2, (rCUPIconX + 32) << 2,
-                                (R_C_UP_ICON_Y+(Top_HUD_Margin*-1) + 8) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+            gSPWideTextureRectangle(OVERLAY_DISP++, C_Up_BTN_Pos[0]-LabelX_Navi << 2, C_Up_BTN_Pos[1]+LabelY_Navi << 2, 
+                        (C_Up_BTN_Pos[0]-LabelX_Navi + 32) << 2, (C_Up_BTN_Pos[1]+LabelY_Navi + 8) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+
         }
 
         sCUpTimer--;
@@ -3154,6 +3427,94 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     // Empty C Button Arrows
     for (temp = 1; temp < 4; temp++) {
         if (gSaveContext.equips.buttonItems[temp] > 0xF0) {
+            s16 X_Margins_CL;
+            s16 X_Margins_CR;
+            s16 X_Margins_CD;
+            s16 Y_Margins_CL;
+            s16 Y_Margins_CR;
+            s16 Y_Margins_CD;
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+                if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+                Y_Margins_CL = (Top_HUD_Margin*-1);
+            } else {
+                X_Margins_CL = 0;
+                Y_Margins_CL = 0;
+            }
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+                if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+                Y_Margins_CR = (Top_HUD_Margin*-1);
+            } else {
+                X_Margins_CR = 0;
+                Y_Margins_CR = 0;
+            }
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+                if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+                Y_Margins_CD = (Top_HUD_Margin*-1);
+            } else {
+                X_Margins_CD = 0;
+                Y_Margins_CD = 0;
+            }
+            const s16 ItemIconPos_ori[3][2] = {
+                { R_ITEM_ICON_X(1)+X_Margins_CL, R_ITEM_ICON_Y(1)+Y_Margins_CL },
+                { R_ITEM_ICON_X(2)+X_Margins_CD, R_ITEM_ICON_Y(2)+Y_Margins_CD },
+                { R_ITEM_ICON_X(3)+X_Margins_CR, R_ITEM_ICON_Y(3)+Y_Margins_CR },
+            };
+            s16 ItemIconPos[3][2]; //(X,Y)
+            //C button Left
+            if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+                ItemIconPos[0][1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+                if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+                    ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+                } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+                    ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+                } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+                    ItemIconPos[0][0] = CVar_GetS32("gCBtnLPosX", 0);
+                } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
+                    ItemIconPos[0][0] = -9999;
+                }
+            } else {
+                ItemIconPos[0][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
+                ItemIconPos[0][1] = ItemIconPos_ori[0][1];
+            }
+            //C Button down
+            if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+                ItemIconPos[1][1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+                if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+                    ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+                } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+                    ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+                } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+                    ItemIconPos[1][0] = CVar_GetS32("gCBtnDPosX", 0);
+                } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
+                    ItemIconPos[1][0] = -9999;
+                }
+            } else {
+                ItemIconPos[1][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
+                ItemIconPos[1][1] = ItemIconPos_ori[1][1];
+            }
+            //C button Right
+            if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+                ItemIconPos[2][1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+                if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+                    ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+                } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+                    ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+                } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+                    ItemIconPos[2][0] = CVar_GetS32("gCBtnRPosX", 0);
+                } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
+                    ItemIconPos[2][0] = -9999;
+                }
+            } else {
+                ItemIconPos[2][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
+                ItemIconPos[2][1] = ItemIconPos_ori[2][1];
+            }
+
             if (temp == 1) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2),
                                 interfaceCtx->cLeftAlpha);
@@ -3165,13 +3526,21 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                                 interfaceCtx->cRightAlpha);
             }
 
-            if (CVar_GetS32("gHudColors", 1) == 2) {
-                //This later will feature color per C button right now that it.
+            if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), interfaceCtx->cRightAlpha);
+            } else if (temp == 1 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCLBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCLBtnPrimB", R_C_BTN_COLOR(2)),
+                                interfaceCtx->cLeftAlpha);
+            } else if (temp == 2 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCDBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCDBtnPrimB", R_C_BTN_COLOR(2)),
+                                interfaceCtx->cDownAlpha);
+            } else if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCRBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCRBtnPrimB", R_C_BTN_COLOR(2)),
+                                interfaceCtx->cRightAlpha);
             }
-
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32,
-                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)+Right_HUD_Margin), R_ITEM_BTN_Y(temp)+(Top_HUD_Margin*-1), R_ITEM_BTN_WIDTH(temp),
+            
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, ((u8*)gButtonBackgroundTex), 32, 32, 
+                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], R_ITEM_BTN_WIDTH(temp),
                                           R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
 
             const char* cButtonIcons[] = { gButtonBackgroundTex, gEquippedItemOutlineTex, gEmptyCLeftArrowTex,
@@ -3179,35 +3548,202 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
             };
 
             OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, cButtonIcons[(temp + 1)], 32, 32,
-                                          OTRGetRectDimensionFromRightEdge(R_ITEM_BTN_X(temp)+Right_HUD_Margin), R_ITEM_BTN_Y(temp)+(Top_HUD_Margin*-1), R_ITEM_BTN_WIDTH(temp),
+                                          ItemIconPos[temp-1][0], ItemIconPos[temp-1][1], R_ITEM_BTN_WIDTH(temp),
                                           R_ITEM_BTN_WIDTH(temp), R_ITEM_BTN_DD(temp) << 1, R_ITEM_BTN_DD(temp) << 1);
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3071);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
-int16_t gItemIconX[] = { B_BUTTON_X, C_LEFT_BUTTON_X, C_DOWN_BUTTON_X, C_RIGHT_BUTTON_X,
-                                DPAD_UP_X,  DPAD_DOWN_X,     DPAD_LEFT_X,     DPAD_RIGHT_X };
-int16_t gItemIconY[] = { B_BUTTON_Y, C_LEFT_BUTTON_Y, C_DOWN_BUTTON_Y, C_RIGHT_BUTTON_Y,
-                                DPAD_UP_Y,  DPAD_DOWN_Y,     DPAD_LEFT_Y,     DPAD_RIGHT_Y };
 int16_t gItemIconWidth[] = { 30, 24, 24, 24, 16, 16, 16, 16 };
 int16_t gItemIconDD[] = { 550, 680, 680, 680, 1024, 1024, 1024, 1024 };
 
 void Interface_DrawItemIconTexture(GlobalContext* globalCtx, void* texture, s16 button) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3079);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+    s16 X_Margins_CL;
+    s16 X_Margins_CR;
+    s16 X_Margins_CD;
+    s16 Y_Margins_CL;
+    s16 Y_Margins_CR;
+    s16 Y_Margins_CD;
+    s16 X_Margins_BtnB;
+    s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
+    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        Y_Margins_BtnB = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_BtnB = 0;
+        Y_Margins_BtnB = 0;
+    }
+    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        Y_Margins_CL = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CL = 0;
+        Y_Margins_CL = 0;
+    }
+    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        Y_Margins_CR = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CR = 0;
+        Y_Margins_CR = 0;
+    }
+    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        Y_Margins_CD = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CD = 0;
+        Y_Margins_CD = 0;
+    }
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[8][2] = {
+        { B_BUTTON_X+X_Margins_BtnB, B_BUTTON_Y+Y_Margins_BtnB },
+        { C_LEFT_BUTTON_X+X_Margins_CL, C_LEFT_BUTTON_Y+Y_Margins_CL },
+        { C_DOWN_BUTTON_X+X_Margins_CD, C_DOWN_BUTTON_Y+Y_Margins_CD },
+        { C_RIGHT_BUTTON_X+X_Margins_CR, C_RIGHT_BUTTON_Y+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y+Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y+Y_Margins_DPad_Items }, 
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y+Y_Margins_DPad_Items }, 
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y+Y_Margins_DPad_Items }
+    };
+    s16 DPad_ItemsOffset[4][2] = {
+        { 7,-8},//Up
+        { 7,24},//Down
+        {-9, 8},//Left
+        {23, 8},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+    s16 ItemIconPos[8][2]; //(X,Y)
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        ItemIconPos[4][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+            ItemIconPos[4][0] = -9999;
+            ItemIconPos[5][0] = -9999;
+            ItemIconPos[6][0] = -9999;
+            ItemIconPos[7][0] = -9999;
+        }
+    } else {
+        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
+        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
+        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
+        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
+        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+    }
+    //B Button
+    if (CVar_GetS32("gBBtnPosType", 0) != 0) {
+        ItemIconPos[0][1] = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB;
+        if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 3) {//Anchor None
+            ItemIconPos[0][0] = CVar_GetS32("gBBtnPosX", 0);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 4) {//Hidden
+           ItemIconPos[0][0] = -9999;
+        }
+    } else {
+        ItemIconPos[0][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
+        ItemIconPos[0][1] = ItemIconPos_ori[0][1];
+    }
+    //C button Left
+    if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+        ItemIconPos[1][1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL;
+        if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+            ItemIconPos[1][0] = CVar_GetS32("gCBtnLPosX", 0);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
+            ItemIconPos[1][0] = -9999;
+        }
+    } else {
+        ItemIconPos[1][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
+        ItemIconPos[1][1] = ItemIconPos_ori[1][1];
+    }
+    //C Button down
+    if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+        ItemIconPos[2][1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD;
+        if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+            ItemIconPos[2][0] = CVar_GetS32("gCBtnDPosX", 0);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
+            ItemIconPos[2][0] = -9999;
+        }
+    } else {
+        ItemIconPos[2][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
+        ItemIconPos[2][1] = ItemIconPos_ori[2][1];
+    }
+    //C button Right
+    if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+        ItemIconPos[3][1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR;
+        if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+            ItemIconPos[3][0] = CVar_GetS32("gCBtnRPosX", 0);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
+            ItemIconPos[3][0] = -9999;
+        }
+    } else {
+        ItemIconPos[3][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[3][0]);
+        ItemIconPos[3][1] = ItemIconPos_ori[3][1];
+    }
 
     gDPLoadTextureBlock(OVERLAY_DISP++, texture, G_IM_FMT_RGBA, G_IM_SIZ_32b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
-    gSPWideTextureRectangle(
-        OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(gItemIconX[button] + Right_HUD_Margin) << 2,
-        gItemIconY[button] + (Top_HUD_Margin * -1) << 2,
-        (OTRGetRectDimensionFromRightEdge(gItemIconX[button] + Right_HUD_Margin) + gItemIconWidth[button]) << 2,
-        (gItemIconY[button] + (Top_HUD_Margin * -1) + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
-        gItemIconDD[button] << 1, gItemIconDD[button] << 1);
+    gSPWideTextureRectangle(OVERLAY_DISP++, ItemIconPos[button][0] << 2, ItemIconPos[button][1] << 2,
+                        (ItemIconPos[button][0] + gItemIconWidth[button]) << 2,
+                        (ItemIconPos[button][1] + gItemIconWidth[button]) << 2, G_TX_RENDERTILE, 0, 0,
+                        gItemIconDD[button] << 1, gItemIconDD[button] << 1);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3094);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 const char* _gAmmoDigit0Tex[] =
@@ -3224,8 +3760,183 @@ static int16_t gItemAmmoY[] = { B_BUTTON_Y + 18, C_LEFT_BUTTON_Y + 17, C_DOWN_BU
 void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
     s16 i;
     s16 ammo;
+    s16 X_Margins_CL;
+    s16 X_Margins_CR;
+    s16 X_Margins_CD;
+    s16 Y_Margins_CL;
+    s16 Y_Margins_CR;
+    s16 Y_Margins_CD;
+    s16 X_Margins_BtnB;
+    s16 Y_Margins_BtnB;
+    s16 X_Margins_DPad_Items;
+    s16 Y_Margins_DPad_Items;
+    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+        if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB = Right_HUD_Margin;};
+        Y_Margins_BtnB = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_BtnB = 0;
+        Y_Margins_BtnB = 0;
+    }
+    if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnLPosType", 0) == 0) {X_Margins_CL = Right_HUD_Margin;};
+        Y_Margins_CL = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CL = 0;
+        Y_Margins_CL = 0;
+    }
+    if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnRPosType", 0) == 0) {X_Margins_CR = Right_HUD_Margin;};
+        Y_Margins_CR = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CR = 0;
+        Y_Margins_CR = 0;
+    }
+    if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {
+        if (CVar_GetS32("gCBtnDPosType", 0) == 0) {X_Margins_CD = Right_HUD_Margin;};
+        Y_Margins_CD = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_CD = 0;
+        Y_Margins_CD = 0;
+    }
+    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+        if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+        Y_Margins_DPad_Items = (Top_HUD_Margin*-1);
+    } else {
+        X_Margins_DPad_Items = 0;
+        Y_Margins_DPad_Items = 0;
+    }
+    const s16 ItemIconPos_ori[8][2] = {
+        { R_ITEM_AMMO_X(0)+X_Margins_BtnB, R_ITEM_AMMO_Y(0)+Y_Margins_BtnB }, //Bow on Epona?
+        { R_ITEM_AMMO_X(1)+X_Margins_CL, R_ITEM_AMMO_Y(1)+Y_Margins_CL },
+        { R_ITEM_AMMO_X(2)+X_Margins_CD, R_ITEM_AMMO_Y(2)+Y_Margins_CD },
+        { R_ITEM_AMMO_X(3)+X_Margins_CR, R_ITEM_AMMO_Y(3)+Y_Margins_CR },
+        { DPAD_UP_X+X_Margins_DPad_Items, DPAD_UP_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_DOWN_X+X_Margins_DPad_Items, DPAD_DOWN_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_LEFT_X+X_Margins_DPad_Items, DPAD_LEFT_Y + 11 + Y_Margins_DPad_Items },
+        { DPAD_RIGHT_X+X_Margins_DPad_Items, DPAD_RIGHT_Y + 11 + Y_Margins_DPad_Items }
+    };
+    s16 ItemIconPos[8][2]; //(X,Y)
+    s16 DPad_ItemsOffset[4][2] = {
+        { 7, 3},//Up
+        { 7,35},//Down
+        {-9,19},//Left
+        {23,19},//Right
+    }; //(X,Y) Used with custom position to place it properly.
+    //DPadItems
+    if (CVar_GetS32("gDPadPosType", 0) != 0) {
+        ItemIconPos[4][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[0][1];//Up
+        ItemIconPos[5][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[1][1];//Down
+        ItemIconPos[6][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[2][1];//Left
+        ItemIconPos[7][1] = CVar_GetS32("gDPadPosY", 0)+Y_Margins_DPad_Items+DPad_ItemsOffset[3][1];//Right
+        if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Left_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_DPad_Items = Right_HUD_Margin;};
+            ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[0][0]);
+            ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[1][0]);
+            ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[2][0]);
+            ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_DPad_Items+DPad_ItemsOffset[3][0]);
+        } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+            ItemIconPos[4][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[0][0];
+            ItemIconPos[5][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[1][0];
+            ItemIconPos[6][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[2][0];
+            ItemIconPos[7][0] = CVar_GetS32("gDPadPosX", 0)+DPad_ItemsOffset[3][0];
+        } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+            ItemIconPos[4][0] = -9999;
+            ItemIconPos[5][0] = -9999;
+            ItemIconPos[6][0] = -9999;
+            ItemIconPos[7][0] = -9999;
+        }
+    } else {
+        ItemIconPos[4][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[4][0]);
+        ItemIconPos[5][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[5][0]);
+        ItemIconPos[6][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[6][0]);
+        ItemIconPos[7][0] = OTRGetDimensionFromRightEdge(ItemIconPos_ori[7][0]);
+        ItemIconPos[4][1] = ItemIconPos_ori[4][1];
+        ItemIconPos[5][1] = ItemIconPos_ori[5][1];
+        ItemIconPos[6][1] = ItemIconPos_ori[6][1];
+        ItemIconPos[7][1] = ItemIconPos_ori[7][1];
+    }
+    //B Button
+    s16 PosX_adjust = 1;
+    s16 PosY_adjust = 17;
+    if (CVar_GetS32("gBBtnPosType", 0) != 0) {
+        ItemIconPos[0][1] = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB+PosY_adjust;
+        if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Left_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB+PosX_adjust);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB = Right_HUD_Margin;};
+            ItemIconPos[0][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB+PosX_adjust);
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 3) {//Anchor None
+            ItemIconPos[0][0] = CVar_GetS32("gBBtnPosX", 0)+PosX_adjust;
+        } else if (CVar_GetS32("gBBtnPosType", 0) == 4) {//Hidden
+           ItemIconPos[0][0] = -9999;
+        }
+    } else {
+        ItemIconPos[0][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[0][0]);
+        ItemIconPos[0][1] = ItemIconPos_ori[0][1];
+    }
+    //C button Left
+    if (CVar_GetS32("gCBtnLPosType", 0) != 0) {
+        ItemIconPos[1][1] = CVar_GetS32("gCBtnLPosY", 0)+Y_Margins_CL+PosY_adjust;
+        if (CVar_GetS32("gCBtnLPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Left_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnLUseMargins", 0) != 0) {X_Margins_CL = Right_HUD_Margin;};
+            ItemIconPos[1][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnLPosX", 0)+X_Margins_CL+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 3) {//Anchor None
+            ItemIconPos[1][0] = CVar_GetS32("gCBtnLPosX", 0)+PosX_adjust;
+        } else if (CVar_GetS32("gCBtnLPosType", 0) == 4) {//Hidden
+            ItemIconPos[1][0] = -9999;
+        }
+    } else {
+        ItemIconPos[1][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[1][0]);
+        ItemIconPos[1][1] = ItemIconPos_ori[1][1];
+    }
+    //C Button down
+    if (CVar_GetS32("gCBtnDPosType", 0) != 0) {
+        ItemIconPos[2][1] = CVar_GetS32("gCBtnDPosY", 0)+Y_Margins_CD+PosY_adjust;
+        if (CVar_GetS32("gCBtnDPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Left_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnDUseMargins", 0) != 0) {X_Margins_CD = Right_HUD_Margin;};
+            ItemIconPos[2][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnDPosX", 0)+X_Margins_CD+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 3) {//Anchor None
+            ItemIconPos[2][0] = CVar_GetS32("gCBtnDPosX", 0)+PosX_adjust;
+        } else if (CVar_GetS32("gCBtnDPosType", 0) == 4) {//Hidden
+            ItemIconPos[2][0] = -9999;
+        }
+    } else {
+        ItemIconPos[2][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[2][0]);
+        ItemIconPos[2][1] = ItemIconPos_ori[2][1];
+    }
+    //C button Right
+    if (CVar_GetS32("gCBtnRPosType", 0) != 0) {
+        ItemIconPos[3][1] = CVar_GetS32("gCBtnRPosY", 0)+Y_Margins_CR+PosY_adjust;
+        if (CVar_GetS32("gCBtnRPosType", 0) == 1) {//Anchor Left
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Left_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 2) {//Anchor Right
+            if (CVar_GetS32("gCBtnRUseMargins", 0) != 0) {X_Margins_CR = Right_HUD_Margin;};
+            ItemIconPos[3][0] = OTRGetDimensionFromRightEdge(CVar_GetS32("gCBtnRPosX", 0)+X_Margins_CR+PosX_adjust);
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 3) {//Anchor None
+            ItemIconPos[3][0] = CVar_GetS32("gCBtnRPosX", 0)+PosX_adjust;
+        } else if (CVar_GetS32("gCBtnRPosType", 0) == 4) {//Hidden
+            ItemIconPos[3][0] = -9999;
+        }
+    } else {
+        ItemIconPos[3][0] = OTRGetRectDimensionFromRightEdge(ItemIconPos_ori[3][0]);
+        ItemIconPos[3][1] = ItemIconPos_ori[3][1];
+    }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3105);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     i = gSaveContext.equips.buttonItems[button];
 
@@ -3268,29 +3979,28 @@ void Interface_DrawAmmoCount(GlobalContext* globalCtx, s16 button, s16 alpha) {
         }
 
         if (i != 0) {
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8,
-                                          OTRGetRectDimensionFromRightEdge(gItemAmmoX[button] + Right_HUD_Margin),
-                                          gItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[i], 8, 8, 
+                                      ItemIconPos[button][0], ItemIconPos[button][1], 8, 8, 1 << 10, 1 << 10);
         }
 
-        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8,
-                                      OTRGetRectDimensionFromRightEdge(gItemAmmoX[button] + Right_HUD_Margin) + 6,
-                                      gItemAmmoY[button] + (Top_HUD_Margin * -1), 8, 8, 1 << 10, 1 << 10);
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, (u8*)_gAmmoDigit0Tex[ammo], 8, 8, 
+                                      ItemIconPos[button][0] + 6, ItemIconPos[button][1], 8, 8, 1 << 10, 1 << 10);
+
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3158);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_DrawActionButton(GlobalContext* globalCtx, f32 x, f32 y) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3172);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(-137.0f + x, 97.0f - y, XREG(18) / 10.0f, MTXMODE_NEW);
     Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
     Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
 
-    gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_parameter.c", 3177),
+    gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[0], 4, 0);
 
@@ -3300,7 +4010,7 @@ void Interface_DrawActionButton(GlobalContext* globalCtx, f32 x, f32 y) {
 
     gSP1Quadrangle(OVERLAY_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3187);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_InitVertices(GlobalContext* globalCtx) {
@@ -3443,7 +4153,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         { 0x82, 0x82, 0xFF }, // Adult's Wallet (Blue)
         { 0xFF, 0x64, 0x64 }, // Giant's Wallet (Red)
     };
-
+    s16 rColor[3] = { 200, 255, 100 };
     static s16 spoilingItemEntrances[] = { 0x01AD, 0x0153, 0x0153 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
@@ -3464,7 +4174,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
     s16 svar6;
     bool fullUi = !CVar_GetS32("gMinimalUI", 0) || !R_MINIMAP_DISABLED || globalCtx->pauseCtx.state != 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 3405);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     // Invalidate Do Action textures as they may have changed
     gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment);
@@ -3486,24 +4196,68 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         if (fullUi) {
             // Rupee Icon
-            s16* rColor;
-
-            if (CVar_GetS32("gDynamicWalletIcon", 0)) {
-                rColor = &rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)];
-            } else {
-              rColor = &rupeeWalletColors[0];
-            }
-
             if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCRupeePrimR", rColor[0]), CVar_GetS32("gCCRupeePrimG", rColor[1]), CVar_GetS32("gCCRupeePrimB", rColor[2]), interfaceCtx->magicAlpha);
-                gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255); //We reset this here so it match user color :)
+                //Custom Color is on but check if Dynamic Wallet is on.
+                if (CVar_GetS32("gDynamicWalletIcon", 0) != 0) {
+                    //if on let's use Dynamic Colors
+                    rColor[0] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][0];
+                    rColor[1] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][1];
+                    rColor[2] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][2];
+                } else {
+                    //else use our custom color
+                    rColor[0] = CVar_GetS32("gCCRupeePrimR", &rupeeWalletColors[0][0]);
+                    rColor[1] = CVar_GetS32("gCCRupeePrimG", &rupeeWalletColors[0][1]);
+                    rColor[2] = CVar_GetS32("gCCRupeePrimB", &rupeeWalletColors[0][2]);
+                }
             } else {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor[0], rColor[1], rColor[2], interfaceCtx->magicAlpha);
-                gDPSetEnvColor(OVERLAY_DISP++, 0, 80, 0, 255);
+                //Custom colors is off so check if Dynamic Wallet is on.
+                if (CVar_GetS32("gDynamicWalletIcon", 0) != 0) {
+                    rColor[0] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][0];
+                    rColor[1] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][1];
+                    rColor[2] = rupeeWalletColors[CUR_UPG_VALUE(UPG_WALLET)][2];
+                } else {
+                    rColor[0] = rupeeWalletColors[0][0];
+                    rColor[1] = rupeeWalletColors[0][1];
+                    rColor[2] = rupeeWalletColors[0][2];
+                }
             }
-
-            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26+(Left_HUD_Margin*-1)),
-                                          206+(Bottom_HUD_Margin), 16, 16, 1 << 10, 1 << 10);
+            if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gDynamicWalletIcon", 0) != 1) {
+                //We reset this here so it match user color only if both HUD is on and Dynamic is off.
+                gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 255); 
+            }
+            //Rupee icon & counter
+            s16 X_Margins_RC;
+            s16 Y_Margins_RC;
+            if (CVar_GetS32("gRCUseMargins", 0) != 0) {
+                if (CVar_GetS32("gRCPosType", 0) == 0) {X_Margins_RC = Left_HUD_Margin;};
+                Y_Margins_RC = Bottom_HUD_Margin;
+            } else {
+                X_Margins_RC = 0;
+                Y_Margins_RC = 0;
+            }
+            s16 PosX_RC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_RC);
+            s16 PosY_RC_ori = 206+Y_Margins_RC;
+            s16 PosX_RC;
+            s16 PosY_RC;
+            if (CVar_GetS32("gRCPosType", 0) != 0) {
+                PosY_RC = CVar_GetS32("gRCPosY", 0)+Y_Margins_RC;
+                if (CVar_GetS32("gRCPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gRCUseMargins", 0) != 0) {X_Margins_RC = Left_HUD_Margin;};
+                    PosX_RC = OTRGetDimensionFromLeftEdge(CVar_GetS32("gRCPosX", 0)+X_Margins_RC);
+                } else if (CVar_GetS32("gRCPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gRCUseMargins", 0) != 0) {X_Margins_RC = Right_HUD_Margin;};
+                    PosX_RC = OTRGetDimensionFromRightEdge(CVar_GetS32("gRCPosX", 0)+X_Margins_RC);
+                } else if (CVar_GetS32("gRCPosType", 0) == 3) {//Anchor None
+                    PosX_RC = CVar_GetS32("gRCPosX", 0);
+                } else if (CVar_GetS32("gRCPosType", 0) == 4) {//Hidden
+                PosX_RC = -9999;
+                }
+            } else {
+                PosY_RC = PosY_RC_ori;
+                PosX_RC = PosX_RC_ori;
+            }
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, rColor[0], rColor[1], rColor[2], interfaceCtx->magicAlpha);
+            OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gRupeeCounterIconTex, 16, 16, PosX_RC, PosY_RC, 16, 16, 1 << 10, 1 << 10);
 
             switch (globalCtx->sceneNum) {
                 case SCENE_BMORI1:
@@ -3521,6 +4275,36 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 case SCENE_GANONTIKA_SONOGO:
                 case SCENE_TAKARAYA:
                     if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] >= 0) {
+                        s16 X_Margins_SKC;
+                        s16 Y_Margins_SKC;
+                        if (CVar_GetS32("gSKCUseMargins", 0) != 0) {
+                            if (CVar_GetS32("gSKCPosType", 0) == 0) {X_Margins_SKC = Left_HUD_Margin;};
+                            Y_Margins_SKC = Bottom_HUD_Margin;
+                        } else {
+                            X_Margins_SKC = 0;
+                            Y_Margins_SKC = 0;
+                        }
+                        s16 PosX_SKC_ori = OTRGetRectDimensionFromLeftEdge(26+X_Margins_SKC);
+                        s16 PosY_SKC_ori = 190+Y_Margins_SKC;
+                        s16 PosX_SKC;
+                        s16 PosY_SKC;
+                        if (CVar_GetS32("gSKCPosType", 0) != 0) {
+                            PosY_SKC = CVar_GetS32("gSKCPosY", 0)+Y_Margins_SKC;
+                            if (CVar_GetS32("gSKCPosType", 0) == 1) {//Anchor Left
+                                if (CVar_GetS32("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Left_HUD_Margin;};
+                                PosX_SKC = OTRGetDimensionFromLeftEdge(CVar_GetS32("gSKCPosX", 0)+X_Margins_SKC);
+                            } else if (CVar_GetS32("gSKCPosType", 0) == 2) {//Anchor Right
+                                if (CVar_GetS32("gSKCUseMargins", 0) != 0) {X_Margins_SKC = Right_HUD_Margin;};
+                                PosX_SKC = OTRGetDimensionFromRightEdge(CVar_GetS32("gSKCPosX", 0)+X_Margins_SKC);
+                            } else if (CVar_GetS32("gSKCPosType", 0) == 3) {//Anchor None
+                                PosX_SKC = CVar_GetS32("gSKCPosX", 0);
+                            } else if (CVar_GetS32("gSKCPosType", 0) == 4) {//Hidden
+                            PosX_SKC = -9999;
+                            }
+                        } else {
+                            PosY_SKC = PosY_SKC_ori;
+                            PosX_SKC = PosX_SKC_ori;
+                        }
                         // Small Key Icon
                         gDPPipeSync(OVERLAY_DISP++);
 
@@ -3531,7 +4315,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 230, 255, interfaceCtx->magicAlpha);
                             gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 20, 255);
                         }
-                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, OTRGetRectDimensionFromLeftEdge(26+(Left_HUD_Margin*-1)), 190+(Bottom_HUD_Margin), 16, 16,
+                        OVERLAY_DISP = Gfx_TextureIA8(OVERLAY_DISP, gSmallKeyCounterIconTex, 16, 16, PosX_SKC, PosY_SKC, 16, 16,
                                                       1 << 10, 1 << 10);
 
                         // Small Key Counter
@@ -3548,17 +4332,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
                             interfaceCtx->counterDigits[3] -= 10;
                         }
 
-                        svar3 = OTRGetRectDimensionFromLeftEdge(42+(Left_HUD_Margin*-1));
-
                         if (interfaceCtx->counterDigits[2] != 0) {
-                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8,
-                                              16, svar3, 190+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
-                            svar3 += 8;
+                            OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)((u8*)digitTextures[interfaceCtx->counterDigits[2]])), 8, 16, PosX_SKC+8, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                         }
 
-                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP,
-                                                    ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16,
-                                          svar3, 190+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
+                        OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[3]]), 8, 16, PosX_SKC+16, PosY_SKC, 8, 16, 1 << 10, 1 << 10);
                     }
                     break;
                 default:
@@ -3599,10 +4377,10 @@ void Interface_Draw(GlobalContext* globalCtx) {
             svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
             svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];
 
-            for (svar1 = 0, svar3 = 42; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
+            for (svar1 = 0, svar3 = 16; svar1 < svar5; svar1++, svar2++, svar3 += 8) {
                 OVERLAY_DISP =
                     Gfx_TextureI8(OVERLAY_DISP, ((u8*)digitTextures[interfaceCtx->counterDigits[svar2]]), 8, 16,
-                        OTRGetRectDimensionFromLeftEdge(svar3+(Left_HUD_Margin*-1)), 206+(Bottom_HUD_Margin), 8, 16, 1 << 10, 1 << 10);
+                        PosX_RC+svar3, PosY_RC, 8, 16, 1 << 10, 1 << 10);
             }
         }
         else {
@@ -3654,6 +4432,47 @@ void Interface_Draw(GlobalContext* globalCtx) {
             }
         } else {
             // B Button Do Action Label
+            s16 PosX_adjust;
+            s16 PosY_adjust;
+            if (gSaveContext.language == 2) {
+                PosX_adjust = -12;
+                PosY_adjust = 5;
+            } else if (gSaveContext.language == 1) { //ger
+                PosY_adjust = 6;
+                PosX_adjust = -9;
+            } else {
+                PosY_adjust = 6;
+                PosX_adjust = -10;
+            }
+            
+            s16 BbtnPosX;
+            s16 BbtnPosY;
+            s16 X_Margins_BtnB_label;
+            s16 Y_Margins_BtnB_label;
+            if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {
+                if (CVar_GetS32("gBBtnPosType", 0) == 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
+                Y_Margins_BtnB_label = (Top_HUD_Margin*-1);
+            } else {
+                X_Margins_BtnB_label = 0;
+                Y_Margins_BtnB_label = 0;
+            }
+            if (CVar_GetS32("gBBtnPosType", 0) != 0) {
+                BbtnPosY = CVar_GetS32("gBBtnPosY", 0)+Y_Margins_BtnB_label+PosY_adjust;
+                if (CVar_GetS32("gBBtnPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB_label = Left_HUD_Margin;};
+                    BbtnPosX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB_label+PosX_adjust);
+                } else if (CVar_GetS32("gBBtnPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gBBtnUseMargins", 0) != 0) {X_Margins_BtnB_label = Right_HUD_Margin;};
+                    BbtnPosX = OTRGetDimensionFromRightEdge(CVar_GetS32("gBBtnPosX", 0)+X_Margins_BtnB_label+PosX_adjust);
+                } else if (CVar_GetS32("gBBtnPosType", 0) == 3) {//Anchor None
+                    BbtnPosX = CVar_GetS32("gBBtnPosX", 0)+PosX_adjust;
+                } else if (CVar_GetS32("gBBtnPosType", 0) == 4) {//Hidden
+                    BbtnPosX = -9999;
+                }
+            } else {
+                BbtnPosX = OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gSaveContext.language)+X_Margins_BtnB_label);
+                BbtnPosY = R_B_LABEL_Y(gSaveContext.language)+Y_Margins_BtnB_label;
+            }
             gDPPipeSync(OVERLAY_DISP++);
             gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
@@ -3664,10 +4483,9 @@ void Interface_Draw(GlobalContext* globalCtx) {
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             R_B_LABEL_DD = (1 << 10) / (WREG(37 + gSaveContext.language) / 100.0f);
-            const s16 rBLabelX = OTRGetRectDimensionFromRightEdge(R_B_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
-            gSPWideTextureRectangle(OVERLAY_DISP++, rBLabelX << 2, R_B_LABEL_Y(gSaveContext.language)+(Top_HUD_Margin*-1) << 2,
-                                (rBLabelX + DO_ACTION_TEX_WIDTH) << 2,
-                                (R_B_LABEL_Y(gSaveContext.language) + DO_ACTION_TEX_HEIGHT) << 2, G_TX_RENDERTILE, 0, 0,
+            gSPWideTextureRectangle(OVERLAY_DISP++, BbtnPosX << 2, BbtnPosY << 2,
+                                (BbtnPosX + DO_ACTION_TEX_WIDTH) << 2,
+                                (BbtnPosY + DO_ACTION_TEX_HEIGHT) << 2, G_TX_RENDERTILE, 0, 0,
                                 R_B_LABEL_DD, R_B_LABEL_DD);
         }
 
@@ -3717,16 +4535,48 @@ void Interface_Draw(GlobalContext* globalCtx) {
                     interfaceCtx->dpadRightAlpha);
 
             // Draw DPad
+            s16 DpadPosX;
+            s16 DpadPosY;
+            s16 X_Margins_Dpad;
+            s16 Y_Margins_Dpad;
+            if (CVar_GetS32("gDPadUseMargins", 0) != 0) {
+                if (CVar_GetS32("gDPadPosType", 0) == 0) {X_Margins_Dpad = Right_HUD_Margin;};
+                Y_Margins_Dpad = (Top_HUD_Margin*-1);
+            } else {
+                Y_Margins_Dpad = 0;
+                X_Margins_Dpad = 0;
+            }
+            if (CVar_GetS32("gDPadPosType", 0) != 0) {
+                DpadPosY = CVar_GetS32("gDPadPosY", 0)+Y_Margins_Dpad;
+                if (CVar_GetS32("gDPadPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Left_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_Dpad);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gDPadUseMargins", 0) != 0) {X_Margins_Dpad = Right_HUD_Margin;};
+                    DpadPosX = OTRGetDimensionFromRightEdge(CVar_GetS32("gDPadPosX", 0)+X_Margins_Dpad);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 3) {//Anchor None
+                    DpadPosX = CVar_GetS32("gDPadPosX", 0);
+                } else if (CVar_GetS32("gDPadPosType", 0) == 4) {//Hidden
+                    DpadPosX = -9999;
+                }
+            } else {
+                DpadPosX = OTRGetRectDimensionFromRightEdge(DPAD_X+X_Margins_Dpad);
+                DpadPosY = DPAD_Y+Y_Margins_Dpad;
+            }
+
             gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
+
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCDpadPrimR", 255), CVar_GetS32("gCCDpadPrimG", 255), CVar_GetS32("gCCDpadPrimB", 255), dpadAlpha);
+            } else {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
+            }
             gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
                                 G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
                                 G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) << 2,
-                                    (DPAD_Y + (Top_HUD_Margin * -1)) << 2,
-                                    (OTRGetRectDimensionFromRightEdge(DPAD_X + Right_HUD_Margin) + 32) << 2,
-                                    (DPAD_Y + 32 + (Top_HUD_Margin * -1)) << 2, G_TX_RENDERTILE, 0, 0, (1 << 10),
-                                    (1 << 10));
+            gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
+                                    (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
+                                    G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
 
             // DPad-Up Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {
@@ -3775,8 +4625,46 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
         // A Button
         func_80094A14(globalCtx->state.gfxCtx);
-        const f32 rABtnX = OTRGetDimensionFromRightEdge(R_A_BTN_X+Right_HUD_Margin);
-        //func_8008A8B8(globalCtx, R_A_BTN_Y, R_A_BTN_Y + 45, rABtnX, rABtnX + 45);
+        s16 X_Margins_BtnA;
+        s16 Y_Margins_BtnA;
+        if (CVar_GetS32("gABtnUseMargins", 0) != 0) {
+            X_Margins_BtnA = Right_HUD_Margin;
+            Y_Margins_BtnA = (Top_HUD_Margin*-1);
+        } else {
+            X_Margins_BtnA = 0;
+            Y_Margins_BtnA = 0;
+        }
+        s16 PosX_BtnA_ori = OTRGetDimensionFromRightEdge(R_A_BTN_X+X_Margins_BtnA);
+        s16 PosY_BtnA_ori = R_A_BTN_Y+Y_Margins_BtnA;
+        const f32 rAIconX_ori = OTRGetDimensionFromRightEdge(R_A_ICON_X+X_Margins_BtnA);
+        const f32 rAIconY_ori = 98.0f - (R_A_ICON_Y+Y_Margins_BtnA);
+        s16 PosX_BtnA;
+        s16 PosY_BtnA;
+        s16 rAIconX;
+        s16 rAIconY;
+        if (CVar_GetS32("gABtnPosType", 0) != 0) {
+            PosY_BtnA = CVar_GetS32("gABtnPosY", 0)+Y_Margins_BtnA;
+            rAIconY = 98.0f - PosY_BtnA;
+            if (CVar_GetS32("gABtnPosType", 0) == 1) {//Anchor Left
+                PosX_BtnA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
+                rAIconX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
+            } else if (CVar_GetS32("gABtnPosType", 0) == 2) {//Anchor Right
+                X_Margins_BtnA = Right_HUD_Margin;
+                PosX_BtnA = OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
+                rAIconX= OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
+            } else if (CVar_GetS32("gABtnPosType", 0) == 3) {//Anchor None
+                PosX_BtnA = CVar_GetS32("gABtnPosX", 0);
+                rAIconX = CVar_GetS32("gABtnPosX", 0);
+            } else if (CVar_GetS32("gABtnPosType", 0) == 4) {//Hidden
+                PosX_BtnA = -9999;
+                rAIconX = -9999;
+            }
+        } else {
+            PosY_BtnA = PosY_BtnA_ori;
+            PosX_BtnA = PosX_BtnA_ori;
+            rAIconY = rAIconY_ori;
+            rAIconX = rAIconX_ori;
+        }
         gSPClearGeometryMode(OVERLAY_DISP++, G_CULL_BOTH);
         gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
         if (CVar_GetS32("gHudColors", 1) == 0) {
@@ -3787,20 +4675,18 @@ void Interface_Draw(GlobalContext* globalCtx) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", R_A_BTN_COLOR(0)), CVar_GetS32("gCCABtnPrimG", R_A_BTN_COLOR(1)), CVar_GetS32("gCCABtnPrimB", R_A_BTN_COLOR(2)), interfaceCtx->aAlpha);
         }
         if (fullUi) {
-            Interface_DrawActionButton(globalCtx, rABtnX, R_A_BTN_Y+(Top_HUD_Margin*-1));
+            Interface_DrawActionButton(globalCtx, PosX_BtnA, PosY_BtnA);
         }
         gDPPipeSync(OVERLAY_DISP++);
-        const f32 rAIconX = OTRGetDimensionFromRightEdge(R_A_ICON_X+Right_HUD_Margin);
-        //func_8008A8B8(globalCtx, R_A_ICON_Y, R_A_ICON_Y + 45, rAIconX, rAIconX + 45);
         gSPSetGeometryMode(OVERLAY_DISP++, G_CULL_BACK);
         gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0,
                           PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
         gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-        Matrix_Translate(-138.0f + rAIconX, 98.0f - (R_A_ICON_Y+(Top_HUD_Margin*-1)), WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
+        Matrix_Translate(-138.0f + rAIconX, rAIconY, WREG(46 + gSaveContext.language) / 10.0f, MTXMODE_NEW);
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(interfaceCtx->unk_1F4 / 10000.0f, MTXMODE_APPLY);
-        gSPMatrix(OVERLAY_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_parameter.c", 3701),
+        gSPMatrix(OVERLAY_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_MODELVIEW | G_MTX_LOAD);
         gSPVertex(OVERLAY_DISP++, &interfaceCtx->actionVtx[4], 4, 0);
 
@@ -3869,14 +4755,31 @@ void Interface_Draw(GlobalContext* globalCtx) {
         if ((globalCtx->pauseCtx.state == 0) && (globalCtx->pauseCtx.debugState == 0)) {
             if (gSaveContext.minigameState != 1) {
                 // Carrots rendering if the action corresponds to riding a horse
-                if (interfaceCtx->unk_1EE == 8) {
+                if (interfaceCtx->unk_1EE == 8 && !CVar_GetS32("gInfiniteEpona", 0)) {
                     // Load Carrot Icon
                     gDPLoadTextureBlock(OVERLAY_DISP++, gCarrotIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 16, 16, 0,
                                         G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                         G_TX_NOLOD, G_TX_NOLOD);
 
                     // Draw 6 carrots
-                    for (svar1 = 1, svar5 = ZREG(14); svar1 < 7; svar1++, svar5 += 16) {
+                    s16 CarrotsPosX = ZREG(14);
+                    s16 CarrotsPosY = ZREG(15);
+                    s16 CarrotsMargins_X = 0;
+                    if (CVar_GetS32("gCarrotsPosType", 0) != 0) {
+                        CarrotsPosY = CVar_GetS32("gCarrotsPosY", 0);
+                        if (CVar_GetS32("gCarrotsPosType", 0) == 1) {//Anchor Left
+                            if (CVar_GetS32("gCarrotsUseMargins", 0) != 0) {CarrotsMargins_X = Left_HUD_Margin;};
+                            CarrotsPosX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gCarrotsPosX", 0)+CarrotsMargins_X);            
+                        } else if (CVar_GetS32("gCarrotsPosType", 0) == 2) {//Anchor Right
+                            if (CVar_GetS32("gCarrotsUseMargins", 0) != 0) {CarrotsMargins_X = Right_HUD_Margin;};
+                            CarrotsPosX = OTRGetDimensionFromRightEdge(CVar_GetS32("gCarrotsPosX", 0)+CarrotsMargins_X);
+                        } else if (CVar_GetS32("gCarrotsPosType", 0) == 3) {//Anchor None
+                            CarrotsPosX = CVar_GetS32("gCarrotsPosX", 0);
+                        } else if (CVar_GetS32("gCarrotsPosType", 0) == 4) {//Hidden
+                            CarrotsPosX = -9999;
+                        }
+                    }
+                    for (svar1 = 1, svar5 = CarrotsPosX; svar1 < 7; svar1++, svar5 += 16) {
                         // Carrot Color (based on availability)
                         if ((interfaceCtx->numHorseBoosts == 0) || (interfaceCtx->numHorseBoosts < svar1)) {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 0, 150, 255, interfaceCtx->aAlpha);
@@ -3884,13 +4787,36 @@ void Interface_Draw(GlobalContext* globalCtx) {
                             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->aAlpha);
                         }
 
-                        gSPTextureRectangle(OVERLAY_DISP++, svar5 << 2, ZREG(15) << 2, (svar5 + 16) << 2,
-                                            (ZREG(15) + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                        gSPWideTextureRectangle(OVERLAY_DISP++, svar5 << 2, CarrotsPosY << 2, (svar5 + 16) << 2,
+                                            (CarrotsPosY + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
                     }
                 }
             } else {
                 // Score for the Horseback Archery
-                svar5 = OTRGetRectDimensionFromRightEdge(WREG(32));
+                s32 X_Margins_Archery;
+                if (CVar_GetS32("gASUseMargins", 0) != 0) {
+                    if (CVar_GetS32("gASPosType", 0) == 0) {X_Margins_Archery = Right_HUD_Margin;};
+                } else {
+                    X_Margins_Archery = 0;
+                }
+                s16 ArcheryPos_Y = ZREG(15);
+                s16 ArcheryPos_X = OTRGetRectDimensionFromRightEdge(WREG(32)+X_Margins_Archery);
+
+                if (CVar_GetS32("gASPosType", 0) != 0) {
+                    ArcheryPos_Y = CVar_GetS32("gASPosY", 0);
+                    if (CVar_GetS32("gASPosType", 0) == 1) {//Anchor Left
+                        if (CVar_GetS32("gASUseMargins", 0) != 0) {X_Margins_Archery = Left_HUD_Margin;};
+                        ArcheryPos_X = OTRGetRectDimensionFromLeftEdge(CVar_GetS32("gASPosX", 0)+X_Margins_Archery);
+                    } else if (CVar_GetS32("gASPosType", 0) == 2) {//Anchor Right
+                        if (CVar_GetS32("gASUseMargins", 0) != 0) {X_Margins_Archery = Right_HUD_Margin;};
+                        ArcheryPos_X = OTRGetRectDimensionFromRightEdge(CVar_GetS32("gASPosX", 0)+X_Margins_Archery);
+                    } else if (CVar_GetS32("gASPosType", 0) == 3) {//Anchor None
+                        ArcheryPos_X = CVar_GetS32("gASPosX", 0)+204+X_Margins_Archery;
+                    } else if (CVar_GetS32("gASPosType", 0) == 4) {//Hidden
+                        ArcheryPos_X = -9999;
+                    }
+                }
+
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
 
                 // Target Icon
@@ -3898,22 +4824,22 @@ void Interface_Draw(GlobalContext* globalCtx) {
                                     G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                     G_TX_NOLOD, G_TX_NOLOD);
 
-                gSPTextureRectangle(OVERLAY_DISP++, (svar5 + 28) << 2, ZREG(15) << 2, (svar5 + 52) << 2,
-                                    (ZREG(15) + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
+                gSPWideTextureRectangle(OVERLAY_DISP++, (ArcheryPos_X + 28) << 2, ArcheryPos_Y << 2, (ArcheryPos_X + 52) << 2,
+                                    (ArcheryPos_Y + 16) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
 
                 // Score Counter
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE,
                                   TEXEL0, 0, PRIMITIVE, 0);
 
-                svar5 = OTRGetRectDimensionFromRightEdge(WREG(32)) + 6 * 9;
+                ArcheryPos_X = ArcheryPos_X + 6 * 9;
 
                 for (svar1 = svar2 = 0; svar1 < 4; svar1++) {
                     if (sHBAScoreDigits[svar1] != 0 || (svar2 != 0) || (svar1 >= 3)) {
                         OVERLAY_DISP = Gfx_TextureI8(
-                            OVERLAY_DISP, digitTextures[sHBAScoreDigits[svar1]], 8, 16, svar5,
-                            (ZREG(15) - 2), digitWidth[0], VREG(42), VREG(43) << 1, VREG(43) << 1);
-                        svar5 += 9;
+                            OVERLAY_DISP, digitTextures[sHBAScoreDigits[svar1]], 8, 16, ArcheryPos_X,
+                            (ArcheryPos_Y - 2), digitWidth[0], VREG(42), VREG(43) << 1, VREG(43) << 1);
+                        ArcheryPos_X += 9;
                         svar2++;
                     }
                 }
@@ -4304,8 +5230,29 @@ void Interface_Draw(GlobalContext* globalCtx) {
                 gDPPipeSync(OVERLAY_DISP++);
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
                 gDPSetEnvColor(OVERLAY_DISP++, 0, 0, 0, 0);
-                svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]);
+                s32 X_Margins_Timer;
+                if (CVar_GetS32("gTimersUseMargins", 0) != 0) {
+                    if (CVar_GetS32("gTimersPosType", 0) == 0) {X_Margins_Timer = Left_HUD_Margin;};
+                } else {
+                    X_Margins_Timer = 0;
+                }
+                svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]+X_Margins_Timer);
                 svar2 = gSaveContext.timerY[svar6];
+                if (CVar_GetS32("gTimersPosType", 0) != 0) {
+                    svar2 = (CVar_GetS32("gTimersPosY", 0));
+                    if (CVar_GetS32("gTimersPosType", 0) == 1) {//Anchor Left
+                        if (CVar_GetS32("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Left_HUD_Margin;};
+                        svar5 = OTRGetRectDimensionFromLeftEdge(CVar_GetS32("gTimersPosX", 0)+X_Margins_Timer);
+                    } else if (CVar_GetS32("gTimersPosType", 0) == 2) {//Anchor Right
+                        if (CVar_GetS32("gTimersUseMargins", 0) != 0) {X_Margins_Timer = Right_HUD_Margin;};
+                        svar5 = OTRGetRectDimensionFromRightEdge(CVar_GetS32("gTimersPosX", 0)+X_Margins_Timer);
+                    } else if (CVar_GetS32("gTimersPosType", 0) == 3) {//Anchor None
+                        svar5 = CVar_GetS32("gTimersPosX", 0)+204+X_Margins_Timer;
+                    } else if (CVar_GetS32("gTimersPosType", 0) == 4) {//Hidden
+                        svar5 = -9999;
+                    }
+                }
+
                 OVERLAY_DISP =
                     Gfx_TextureIA8(OVERLAY_DISP, gClockIconTex, 16, 16, svar5, svar2 + 2, 16, 16, 1 << 10, 1 << 10);
 
@@ -4330,10 +5277,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
                 for (svar1 = 0; svar1 < 5; svar1++) {
                     // clang-format off
-                    svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]);
+                    //svar5 = svar5 + 8;
+                    //svar5 = OTRGetRectDimensionFromLeftEdge(gSaveContext.timerX[svar6]); 
                     OVERLAY_DISP = Gfx_TextureI8(OVERLAY_DISP, digitTextures[timerDigits[svar1]], 8, 16,
                                       svar5 + timerDigitLeftPos[svar1],
-                                      svar2 = gSaveContext.timerY[svar6], digitWidth[svar1], VREG(42), VREG(43) << 1,
+                                      svar2, digitWidth[svar1], VREG(42), VREG(43) << 1,
                                       VREG(43) << 1);
                     // clang-format on
                 }
@@ -4352,7 +5300,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         gDPFillRectangle(OVERLAY_DISP++, 0, 0, gScreenWidth - 1, gScreenHeight - 1);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_parameter.c", 4269);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Interface_Update(GlobalContext* globalCtx) {
@@ -4366,17 +5314,10 @@ void Interface_Update(GlobalContext* globalCtx) {
     u16 action;
     Input* debugInput = &globalCtx->state.input[2];
 
-    if (CVar_GetS32("gHUDMargins", 0) != 0) {
-        Top_HUD_Margin = CVar_GetS32("gHUDMargin_T", 0);
-        Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
-        Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
-        Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
-    } else {
-        Top_HUD_Margin = 0;
-        Left_HUD_Margin = 0;
-        Right_HUD_Margin = 0;
-        Bottom_HUD_Margin = 0;
-    }
+    Top_HUD_Margin = CVar_GetS32("gHUDMargin_T", 0);
+    Left_HUD_Margin = CVar_GetS32("gHUDMargin_L", 0);
+    Right_HUD_Margin = CVar_GetS32("gHUDMargin_R", 0);
+    Bottom_HUD_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
     if (CHECK_BTN_ALL(debugInput->press.button, BTN_DLEFT)) {
         gSaveContext.language = LANGUAGE_ENG;

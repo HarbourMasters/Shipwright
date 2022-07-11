@@ -18,8 +18,11 @@ LTO ?= 0
 
 WARN := \
 	-Wno-return-type \
+	-Wno-unused-command-line-argument \
+	-Wno-implicit-function-declaration \
+	-Wno-c++11-narrowing \
 	-funsigned-char \
-	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
+	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
 CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
@@ -99,7 +102,6 @@ LDLIBS := \
 	bz2 \
 	z \
 	pthread \
-	atomic \
 	ultraship \
 )
 
@@ -116,7 +118,7 @@ endif
 
 ifeq ($(UNAME), Darwin) #APPLE
 LDLIBS += \
-	$(addprefix -framework, \
+	$(addprefix -framework , \
 	OpenGL \
 	Foundation \
 ) \
@@ -209,7 +211,7 @@ build/%.o: %.c
 $(TARGET): $(LIBULTRASHIP)
 
 $(TARGET): $(O_FILES)
-	$(CXX) $^ -o $@ $(LDFLAGS) -fuse-ld=$(LD) $(LDDIRS) $(LDLIBS)
+	$(CXX) $^ -o $@ $(LDFLAGS) $(LDDIRS) $(LDLIBS)
 
 -include $(D_FILES)
 

@@ -52,9 +52,7 @@ void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 scale;
     s16 color;
 
-    if (1) {}
-
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_bomb.c", 168);
+    OPEN_DISPS(gfxCtx);
 
     scale = this->rScale / 100.0f;
 
@@ -79,7 +77,7 @@ void EffectSsBomb_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_bomb.c", 214);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsBomb_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
