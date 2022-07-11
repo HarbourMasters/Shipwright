@@ -662,7 +662,6 @@ void EnSsh_Talk(EnSsh* this, GlobalContext* globalCtx) {
 }
 
 void EnSsh_Idle(EnSsh* this, GlobalContext* globalCtx) {
-    if (1) {}
     if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
         this->actionFunc = EnSsh_Talk;
         if (this->actor.params == ENSSH_FATHER) {
@@ -878,9 +877,9 @@ void EnSsh_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     EnSsh_CheckBodyStickHit(this, globalCtx);
     EnSsh_Sway(this);
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ssh.c", 2333);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(blinkTex[this->blinkState]));
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ssh.c", 2336);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnSsh_OverrideLimbDraw,
                       EnSsh_PostLimbDraw, &this->actor);
 }

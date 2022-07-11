@@ -115,7 +115,7 @@ void EnButte_DrawTransformationEffect(EnButte* this, GlobalContext* globalCtx) {
     s32 alpha;
     Vec3s camDir;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_choo.c", 295);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093C14(globalCtx->state.gfxCtx);
 
@@ -130,13 +130,13 @@ void EnButte_DrawTransformationEffect(EnButte* this, GlobalContext* globalCtx) {
     Matrix_SetTranslateRotateYXZ(this->actor.focus.pos.x + sp5C.x, this->actor.focus.pos.y + sp5C.y,
                                  this->actor.focus.pos.z + sp5C.z, &camDir);
     Matrix_Scale(sTransformationEffectScale, sTransformationEffectScale, sTransformationEffectScale, MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_choo.c", 317),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 200, 200, 180, alpha);
     gDPSetEnvColor(POLY_XLU_DISP++, 200, 200, 210, 255);
     gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffFlash1DL));
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_choo.c", 326);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static InitChainEntry sInitChain[] = {

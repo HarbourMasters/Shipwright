@@ -92,7 +92,7 @@ void BgMoriElevator_Init(Actor* thisx, GlobalContext* globalCtx) {
     if (this->moriTexObjIndex < 0) {
         Actor_Kill(thisx);
         // "Forest Temple obj elevator Bank Danger!"
-        osSyncPrintf("Error : 森の神殿 obj elevator バンク危険！(%s %d)\n", "../z_bg_mori_elevator.c", 277);
+        osSyncPrintf("Error : 森の神殿 obj elevator バンク危険！(%s %d)\n", __FILE__, __LINE__);
     } else {
         switch (sKankyoIsSpawned) {
             case false:
@@ -141,7 +141,7 @@ void BgMoriElevator_WaitAfterInit(BgMoriElevator* this, GlobalContext* globalCtx
                 BgMoriElevator_SetupSetPosition(this);
             } else {
                 // "Error: Forest Temple obj elevator Room setting is dangerous"
-                osSyncPrintf("Error : 森の神殿 obj elevator 部屋設定が危険(%s %d)\n", "../z_bg_mori_elevator.c", 371);
+                osSyncPrintf("Error : 森の神殿 obj elevator 部屋設定が危険(%s %d)\n", __FILE__, __LINE__);
             }
         } else {
             BgMoriElevator_SetupSetPosition(this);
@@ -202,7 +202,7 @@ void BgMoriElevator_SetPosition(BgMoriElevator* this, GlobalContext* globalCtx) 
             BgMoriElevator_StopMovement(this);
         } else {
             // "Error:Forest Temple obj elevator Room setting is dangerous(%s %d)"
-            osSyncPrintf("Error : 森の神殿 obj elevator 部屋設定が危険(%s %d)\n", "../z_bg_mori_elevator.c", 479);
+            osSyncPrintf("Error : 森の神殿 obj elevator 部屋設定が危険(%s %d)\n", __FILE__, __LINE__);
         }
     } else if ((globalCtx->roomCtx.curRoom.num == 2) && (this->dyna.actor.world.pos.y < -275.0f)) {
         this->targetY = 233.0f;
@@ -252,13 +252,13 @@ void BgMoriElevator_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     BgMoriElevator* this = (BgMoriElevator*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_elevator.c", 575);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, globalCtx->objectCtx.status[this->moriTexObjIndex].segment);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mori_elevator.c", 580),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gMoriElevatorDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mori_elevator.c", 584);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
