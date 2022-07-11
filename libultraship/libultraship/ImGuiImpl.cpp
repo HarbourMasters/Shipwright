@@ -1090,6 +1090,8 @@ namespace SohImGui {
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
                     Tooltip("Always shows dungeon entrance icons on the minimap");
+                    EnhancementCheckbox("Use point filtering for pixel art", "gPixelArtPointFilter");
+                    Tooltip("Use sharp point filtering for pixel art graphics\nincluding the debug font, action prompts and ammo counters");
 
                     ImGui::EndMenu();
                 }
