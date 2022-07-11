@@ -171,32 +171,6 @@ u8 gAllAmmoItemsSSS[] = {
     ITEM_BOOMERANG, ITEM_LENS,         ITEM_BEAN,    ITEM_HAMMER,
 };
 
-typedef struct {
-    uint32_t id;
-    std::string name;
-    std::string nameFaded;
-    ImVec4 color;
-} SongMapEntry;
-
-#define SONG_MAP_ENTRY(id, r, g, b) \
-    { id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) }
-
-// Maps song ids to info for use in ImGui
-std::array<SongMapEntry, 12> songMappingSSS = { {
-    SONG_MAP_ENTRY(QUEST_SONG_LULLABY, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_EPONA, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_SARIA, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_SUN, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_TIME, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_STORMS, 255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_MINUET, 150, 255, 100),
-    SONG_MAP_ENTRY(QUEST_SONG_BOLERO, 255, 80, 40),
-    SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_REQUIEM, 255, 160, 0),
-    SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_PRELUDE, 255, 240, 100),
-} };
-
 // Encapsulates what is drawn by the passed-in function within a border
 template <typename T> void DrawGroupWithBorder(T&& drawFunc) {
     // First group encapsulates the inner portion and border
@@ -775,32 +749,57 @@ typedef struct {
     ImVec4 color;
 } ItemTrackerSongEntry;
 
-#define ITEM_TRACKER_SONG_ENTRY(id, r, g, b)     \
+#define ITEM_TRACKER_SONG_ENTRY(id)               \
     {                                             \
         id, {                                     \
-            id, #id, #id "_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
+            id, #id, #id "_Faded"                 \
         }                                         \
     }
 
 // Maps song ids to info for use in ImGui
 std::unordered_map<int32_t, ItemTrackerSongEntry> songTrackerMap = {
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
-    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
+    ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
+};
+
+#define VANILLA_ITEM_TRACKER_SONG_ENTRY(id)           \
+    {                                                 \
+        id, {                                         \
+            id, #id "_Vanilla", #id "_Vanilla_Faded"  \
+        }                                             \
+    }
+
+// Maps song ids to info for use in ImGui
+std::unordered_map<int32_t, ItemTrackerSongEntry> vanillaSongTrackerMap = {
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_LULLABY),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_EPONA),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SARIA),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SUN),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_TIME),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_STORMS),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_MINUET),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_BOLERO),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_SERENADE),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_REQUIEM),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_NOCTURNE),
+    VANILLA_ITEM_TRACKER_SONG_ENTRY(QUEST_SONG_PRELUDE),
 };
 
 void DrawSong(int32_t songId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    const ItemTrackerSongEntry& entry = songTrackerMap[songId];
+    const ItemTrackerSongEntry& entry = CVar_GetS32("gItemTrackeSongColor", 0) ?
+                                        songTrackerMap[songId] :
+                                        vanillaSongTrackerMap[songId];
     uint32_t bitMask = 1 << entry.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
@@ -985,6 +984,8 @@ void DrawItemTracker(bool& open) {
                 minimalSpacingX = 32;
             }
             SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
+            SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
+            SohImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,

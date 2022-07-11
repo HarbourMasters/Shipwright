@@ -216,18 +216,39 @@ typedef struct {
 
 // Maps song ids to info for use in ImGui
 std::array<SongMapEntry, 12> songMapping = { {
-    SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
-    SONG_MAP_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
+    SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  224, 107, 255),
+    SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 195, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_SARIA,    127, 255, 137),
+    SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 60),
+    SONG_MAP_ENTRY(QUEST_SONG_TIME,     119, 236, 255),
+    SONG_MAP_ENTRY(QUEST_SONG_STORMS,   165, 165, 165),
     SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
     SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
     SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
     SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
     SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
     SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
+} };
+
+#define VANILLA_SONG_MAP_ENTRY(id, r, g, b)       \
+    {                                  \
+            id, #id "_Vanilla", #id "_Vanilla_Faded", ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f) \
+    }
+
+// Maps song ids to info for use in ImGui
+std::array<SongMapEntry, 12> vanillaSongMapping = { {
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_LULLABY,  255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_EPONA,    255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SARIA,    255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SUN,      255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_TIME,     255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_STORMS,   255, 255, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_MINUET,   150, 255, 100),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_BOLERO,   255, 80,  40),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_SERENADE, 100, 150, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_REQUIEM,  255, 160, 0),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_NOCTURNE, 255, 100, 255),
+    VANILLA_SONG_MAP_ENTRY(QUEST_SONG_PRELUDE,  255, 240, 100),
 } };
 
 // Encapsulates what is drawn by the passed-in function within a border
@@ -1609,6 +1630,12 @@ void InitSaveEditor() {
         SohImGui::LoadResource(entry.second.nameFaded, entry.second.texturePath, ImVec4(1, 1, 1, 0.3f));
     }
     for (const auto& entry : songMapping) {
+        SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
+        ImVec4 fadedCol = entry.color;
+        fadedCol.w = 0.3f;
+        SohImGui::LoadResource(entry.nameFaded, gSongNoteTex, fadedCol);
+    }
+    for (const auto& entry : vanillaSongMapping) {
         SohImGui::LoadResource(entry.name, gSongNoteTex, entry.color);
         ImVec4 fadedCol = entry.color;
         fadedCol.w = 0.3f;
