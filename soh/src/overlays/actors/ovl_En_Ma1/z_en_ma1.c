@@ -357,26 +357,21 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
 
 void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
     GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+    // Prevents flag from getting set if we weren't able to get the item (i.e. Player is holding shield
+    // when closing the textbox).
     if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {
         Flags_SetTreasure(globalCtx, 0x1F);
+        // puts malon in the action that vanilla has her in after learning the song
+        // (confirmed via breakpoints in a vanilla save).
         malon->actionFunc = func_80AA0D88;
     } else if (!Flags_GetTreasure(globalCtx, 0x1F) &&
         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
         func_8002F434(&malon->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
+    // make malon sing again after giving the item.
     malon->unk_1E8.unk_00 = 0;
     malon->unk_1E0 = 1;
-
-    /*if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
-        !Flags_GetTreasure(globalCtx, 0x1F)) {
-        Flags_SetTreasure(globalCtx, 0x1F);
-    } else if (!Flags_GetTreasure(globalCtx, 0x1F) &&
-               (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE) &&
-               Actor_TextboxIsClosing(&malon->actor, globalCtx) &&
-               (globalCtx->msgCtx.textId == 0x2049 || globalCtx->msgCtx.textId == 0x204A)) {
-        func_8002F434(&malon->actor, globalCtx, getItemId, 10000.0f, 100.0f);
-    }*/
 }
 
 void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
@@ -392,21 +387,20 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
         }
     }
 
-    /*if (gSaveContext.n64ddFlag) {
-        GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
-        return;
-    }*/
-
     if (gSaveContext.eventChkInf[1] & 0x40) {
-        if (player->stateFlags2 & 0x1000000 && (!gSaveContext.n64ddFlag || !Flags_GetTreasure(globalCtx, 0x1F))) {
+        // When the player pulls out the Ocarina while close to Malon
+        if (player->stateFlags2 & 0x1000000) {
             player->stateFlags2 |= 0x2000000;
             player->unk_6A8 = &this->actor;
             this->actor.textId = 0x2061;
             Message_StartTextbox(globalCtx, this->actor.textId, NULL);
             this->unk_1E8.unk_00 = 1;
             this->actor.flags |= ACTOR_FLAG_16;
+            // when rando'ed, skip to the Item Giving. Otherwise go to the song teaching code.
             this->actionFunc = gSaveContext.n64ddFlag ? func_80AA1150 : func_80AA106C;
         } else if (this->actor.xzDistToPlayer < 30.0f + (f32)this->collider.dim.radius) {
+            // somehow flags that the player is close to malon so that pulling out the Ocarina
+            // triggers the code above this.
             player->stateFlags2 |= 0x800000;
         }
         if (gSaveContext.n64ddFlag && Actor_TextboxIsClosing(&this->actor, globalCtx)) {
@@ -434,16 +428,20 @@ void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx) {
 }
 
 void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx) {
+    // Actually give the song check.
     GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
 }
 
 void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
+    // Sets an Ocarina State necessary to not softlock in rando.
+    // This function should only be called in rando.
     if (globalCtx->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = func_80AA0F44;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
     }
 
     if (gSaveContext.n64ddFlag) {
+        // Transition to the giving the song check on the next update run.
         this->actionFunc = EnMa1_WaitForSongGive;
     }
 }
@@ -451,6 +449,7 @@ void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
 void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
     GET_PLAYER(globalCtx)->stateFlags2 |= 0x800000;
 
+    // When rando'ed, trigger the "song learned" Ocarina mode.
     if (gSaveContext.n64ddFlag && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
     }
@@ -463,12 +462,12 @@ void func_80AA1150(EnMa1* this, GlobalContext* globalCtx) {
             globalCtx->sceneLoadFlag = 0x14;
             this->actionFunc = EnMa1_DoNothing;
         } else {
-            if (!Flags_GetTreasure(globalCtx, 0x1F)) {
-                func_80078884(NA_SE_SY_CORRECT_CHIME);
-                this->actionFunc = EnMa1_EndTeachSong;
-                this->actor.flags &= ~ACTOR_FLAG_16;
-                globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
-            }
+            // When rando'ed, skip the cutscene, play the chime, reset some flags,
+            // and give the song on next update.
+            func_80078884(NA_SE_SY_CORRECT_CHIME);
+            this->actionFunc = EnMa1_EndTeachSong;
+            this->actor.flags &= ~ACTOR_FLAG_16;
+            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
         }
     }
 }
