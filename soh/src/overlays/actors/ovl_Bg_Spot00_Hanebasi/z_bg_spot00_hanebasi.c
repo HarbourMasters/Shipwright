@@ -79,8 +79,9 @@ void BgSpot00Hanebasi_Init(Actor* thisx, GlobalContext* globalCtx) {
         }
 
         if (gSaveContext.sceneSetupIndex != 6) {
+            // Don't close the bridge in rando to accomodate hyrule castle exit
             if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) && CHECK_QUEST_ITEM(QUEST_GORON_RUBY) &&
-                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !(gSaveContext.eventChkInf[8] & 1)) {
+                CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE) && !(gSaveContext.eventChkInf[8] & 1) && !(gSaveContext.n64ddFlag)) {
                 this->dyna.actor.shape.rot.x = -0x4000;
             }
         }
