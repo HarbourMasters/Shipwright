@@ -66,31 +66,13 @@ namespace SohImGui {
     bool p_open = false;
     bool needs_save = false;
 
-    const char* RainbowColorCvarList[] = {
-        //This is the list of possible CVars that has rainbow effect.
-        "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-        "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
-        "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
-        "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol",
-        "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
-        "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
-        "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
-        "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
-        "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
-        "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
-        "gDF_Col", "gDF_Env",
-        "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env", 
-        "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
-        "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-        "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim", 
-    };
-
     const char* filters[3] = {
         "Three-Point",
         "Linear",
         "None"
     };
 
+    std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
@@ -246,50 +228,6 @@ namespace SohImGui {
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
-    }
-
-    void LoadRainbowColor() {
-        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
-        for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = RainbowColorCvarList[s];
-            std::string Cvar_Red = cvarName;
-            Cvar_Red += "R";
-            std::string Cvar_Green = cvarName;
-            Cvar_Green += "G";
-            std::string Cvar_Blue = cvarName;
-            Cvar_Blue += "B";
-            std::string Cvar_RBM = cvarName;
-            Cvar_RBM += "RBM";
-            std::string RBM_HUE = cvarName;
-            RBM_HUE += "Hue";
-            f32 Canon = 10.f * s;
-            ImVec4 NewColor;
-            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
-            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
-            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
-            if (newHue >= 360)
-                newHue = 0;
-            CVar_SetFloat(RBM_HUE.c_str(), newHue);
-            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
-            u8 i = current_hue / 60 + 1;
-            u8 a = (-current_hue / 60.0f + i) * 255;
-            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
-
-            switch (i) {
-                case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-                case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-                case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-                case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-                case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-                case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
-            }
-
-            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
-            }
-        }
     }
 
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
@@ -1276,13 +1214,21 @@ namespace SohImGui {
                     }
                     ImGui::EndMenu();
                 }
-
             }
 
             ImGui::EndMenuBar();
         }
 
         ImGui::End();
+
+        for (const auto& category : hiddenwindowCategories) {
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::SetNextWindowSize(ImVec2 (0,0));
+            ImGui::SetNextWindowPos(ImVec2 (-100,-100));
+            ImGui::Begin(category.first.c_str(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
 
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
@@ -1422,8 +1368,6 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
-        //Placed here so it does the rainbow effects even if menu is not on.
-        LoadRainbowColor();
     }
 
     void CancelFrame() {
@@ -1437,18 +1381,22 @@ namespace SohImGui {
         console->Commands[cmd] = std::move(entry);
     }
 
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc) {
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
         if (customWindows.contains(name)) {
             SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
             return;
         }
 
         customWindows[name] = {
-            .enabled = false,
+            .enabled = isEnabled,
             .drawFunc = drawFunc
         };
 
-        windowCategories[category].emplace_back(name);
+        if (isHidden) {
+            hiddenwindowCategories[category].emplace_back(name);
+        } else {
+            windowCategories[category].emplace_back(name);
+        }
     }
 
     ImTextureID GetTextureByName(const std::string& name) {
