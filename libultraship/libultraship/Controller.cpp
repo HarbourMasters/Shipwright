@@ -2,7 +2,12 @@
 #include "GlobalCtx2.h"
 #include "stox.h"
 #include <memory>
+#include <string>
+#if __APPLE__
+#include <SDL_events.h>
+#else
 #include <SDL2/SDL_events.h>
+#endif
 
 namespace Ship {
 	Controller::Controller(int32_t dwControllerNumber) : dwControllerNumber(dwControllerNumber) {
@@ -44,9 +49,8 @@ namespace Ship {
 
 		// Mouse Inputs
 		int x2, y2;
-		Uint32 buttons2;
 		SDL_PumpEvents();
-		buttons2 = SDL_GetRelativeMouseState(&x2, &y2);
+		SDL_GetRelativeMouseState(&x2, &y2);
 		wMouseMoveX = x2;
 		wMouseMoveY = y2;
 
