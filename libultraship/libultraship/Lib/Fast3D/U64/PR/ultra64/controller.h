@@ -112,8 +112,8 @@ typedef struct {
     /* 0x02 */ s8 stick_x;
     /* 0x03 */ s8 stick_y;
     /* 0x04 */ u8 err_no;
-	/* 0x05 */ f32 gyro_x;
-	/* 0x09 */ f32 gyro_y;
+    /* 0x05 */ f32 gyro_x;
+    /* 0x09 */ f32 gyro_y;
     /* 0x1C */ f32 cam_x;
     /* 0x20 */ f32 cam_y;
 } OSContPad; // size = 0x24

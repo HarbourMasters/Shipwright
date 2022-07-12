@@ -1430,9 +1430,6 @@ s32 SetCameraManual(Camera* camera) {
     return 0;
 }
 
-f32 lastMouseX;
-f32 lastMouseY;
-
 s32 Camera_Free(Camera* camera) {
     Normal1* norm1 = (Normal1*)camera->paramData;
 
@@ -1477,11 +1474,7 @@ s32 Camera_Free(Camera* camera) {
     camera->animState = 0;
 
     at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
-    at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
-                                                                     ? Player_GetHeight(camera->player) / 2
-                                                                     : Player_GetHeight(camera->player)) /
-                                                                    1.2f,
-                            camera->at.y, camSpeed, 1.0f);
+    at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL ? Player_GetHeight(camera->player) / 2 : Player_GetHeight(camera->player)) / 1.2f, camera->at.y, camSpeed, 1.0f);
     at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
 
     OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &at, &camera->eye);

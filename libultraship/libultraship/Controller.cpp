@@ -19,9 +19,6 @@ namespace Ship {
 		Attachment = nullptr;
 	}
 
-	SDL_Event ev;
-
-
 	void Controller::Read(OSContPad* pad) {
 		ReadFromSource();
 

@@ -1145,7 +1145,6 @@ namespace SohImGui {
 
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
 
-
                 ImGui::EndMenu();
             }
 
