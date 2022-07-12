@@ -1249,21 +1249,29 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 
 // Function originally not called, so repurposing for DPad input
 void func_800EC960(u8 dpad) {
+    // sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
+    // sOcarinaABtnMap = BTN_A;
+    // sOcarinaCUPBtnMap = BTN_CUP;
+    // sOcarinaCDownBtnMap = BTN_CDOWN;
+    // sOcarinaCLeftBtnMap = BTN_CLEFT;
+    // sOcarinaCRightBtnMap = BTN_CRIGHT;
+
+    // N64 A-down-left-right-up layout remapped to 3DS L-R-Y-X-A
+    sOcarinaAllowedBtnMask =
+        (BTN_A | BTN_L | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_Z | BTN_R);
+    sOcarinaABtnMap = BTN_L | BTN_Z;
+    sOcarinaCUPBtnMap = BTN_A;
+    sOcarinaCDownBtnMap = BTN_CDOWN | BTN_R;  // C down -> Z/R for GCN/Wii
+    sOcarinaCLeftBtnMap = BTN_CRIGHT;         // C left -> Y
+    sOcarinaCRightBtnMap = BTN_CLEFT;         // C right -> X
+
     if (dpad) {
-        sOcarinaAllowedBtnMask =
-            (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
-        sOcarinaABtnMap = BTN_A;
-        sOcarinaCUPBtnMap = BTN_CUP | BTN_DUP;
-        sOcarinaCDownBtnMap = BTN_CDOWN | BTN_DDOWN;
-        sOcarinaCLeftBtnMap = BTN_CLEFT | BTN_DLEFT;
-        sOcarinaCRightBtnMap = BTN_CRIGHT | BTN_DRIGHT;
-    } else {
-        sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-        sOcarinaABtnMap = BTN_A;
-        sOcarinaCUPBtnMap = BTN_CUP;
-        sOcarinaCDownBtnMap = BTN_CDOWN;
-        sOcarinaCLeftBtnMap = BTN_CLEFT;
-        sOcarinaCRightBtnMap = BTN_CRIGHT;
+        sOcarinaAllowedBtnMask |=
+            (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
+        sOcarinaCUPBtnMap |= BTN_DUP;
+        sOcarinaCDownBtnMap |= BTN_DDOWN;
+        sOcarinaCLeftBtnMap |= BTN_DLEFT;
+        sOcarinaCRightBtnMap |= BTN_DRIGHT;
     }
 }
 
