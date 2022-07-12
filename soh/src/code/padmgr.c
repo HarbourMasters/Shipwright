@@ -290,7 +290,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     OTRControllerCallback(&controllerCallback);
 
     PadMgr_UnlockPadData(padMgr);
-   
 }
 
 void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {

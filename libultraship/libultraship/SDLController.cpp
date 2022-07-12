@@ -132,7 +132,7 @@ namespace Ship {
     }
 
 
-    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool rightStick) {
+    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool isRightStick) {
         //scale {-32768 ... +32767} to {-84 ... +84}
         auto ax = wAxisValueX * 85.0 / 32767.0;
         auto ay = wAxisValueY * 85.0 / 32767.0;
