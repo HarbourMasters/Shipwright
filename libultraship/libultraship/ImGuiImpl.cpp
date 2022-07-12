@@ -72,7 +72,7 @@ namespace SohImGui {
         "None"
     };
 
-    const char* powers256[9] = {
+    const char* powers[9] = {
         "Vanilla (1x)",
         "Double (2x)",
         "Quadruple (4x)",
@@ -82,27 +82,6 @@ namespace SohImGui {
         "Quattuorsexagintuple (64x)",
         "Octoviginticentuple (128x)",
         "Hexaquinquagintiducentuple (256x)"
-    };
-
-    const char* powers128[8] = {
-        "Vanilla (1x)",
-        "Double (2x)",
-        "Quadruple (4x)",
-        "Octuple (8x)",
-        "Hexadecuple (16x)",
-        "Duotrigintuple (32x)",
-        "Quattuorsexagintuple (64x)",
-        "Octoviginticentuple (128x)"
-    };
-
-    const char* powers64[7] = {
-        "Vanilla (1x)",
-        "Double (2x)",
-        "Quadruple (4x)",
-        "Octuple (8x)",
-        "Hexadecuple (16x)",
-        "Duotrigintuple (32x)",
-        "Quattuorsexagintuple (64x)"
     };
 
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
@@ -915,7 +894,7 @@ namespace SohImGui {
                     if (ImGui::BeginMenu("Difficulty Options"))
                     {
                         ImGui::Text("Damage Multiplier");
-                        EnhancementCombobox("gDamageMul", powers256, 9, 0);
+                        EnhancementCombobox("gDamageMul", powers, 9, 0);
                         Tooltip("Modifies all sources of damage not affected by other sliders\n\
 2x: Can survive all common attacks from the start of the game\n\
 4x: Dies in 1 hit to any substantial attack from the start of the game\n\
@@ -926,7 +905,7 @@ namespace SohImGui {
 128x: Can survive trivial damage with max health and double defense\n\
 256x: Cannot survive damage");
                         ImGui::Text("Fall Damage Multiplier");
-                        EnhancementCombobox("gFallDamageMul", powers128, 8, 0);
+                        EnhancementCombobox("gFallDamageMul", powers, 8, 0);
                         Tooltip("Modifies all fall damage\n\
 2x: Can survive all fall damage from the start of the game\n\
 4x: Can only survive short fall damage from the start of the game\n\
@@ -936,7 +915,7 @@ namespace SohImGui {
 64x: Can survive short fall damage with double defense\n\
 128x: Cannot survive fall damage");
                         ImGui::Text("Void Damage Multiplier");
-                        EnhancementCombobox("gVoidDamageMul", powers64, 7, 0);
+                        EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
                         Tooltip("Modifies damage taken after falling into a void\n\
 2x: Can survive void damage from the start of the game\n\
 4x: Cannot survive void damage from the start of the game\n\
