@@ -81,9 +81,10 @@ namespace SohImGui {
     void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, CommandEntry entry);
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc);
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled=false, bool isHidden=false);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
+    int ClampFloatToInt(float value, int min, int max);
     void RandomizeColor(const char* cvarName, ImVec4* colors);
     void RainbowColor(const char* cvarName, ImVec4* colors);
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);

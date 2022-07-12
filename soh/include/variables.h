@@ -171,10 +171,6 @@ extern "C"
 #define gTatumsPerBeat (D_8014A6C0[1])
 	extern const AudioContextInitSizes D_8014A6C4;
 	extern s16 gOcarinaSongItemMap[];
-	extern u8 gSoundFontTable[];
-	extern u8 gSequenceFontTable[];
-	extern u8 gSequenceTable[];
-	extern u8 gSampleBankTable[];
 	extern u8 D_80155F50[];
 	extern u8 D_80157580[];
 	extern u8 D_801579A0[];
