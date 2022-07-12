@@ -2,6 +2,12 @@
 #include "GlobalCtx2.h"
 #include "stox.h"
 #include <memory>
+#include <string>
+#if __APPLE__
+#include <SDL_events.h>
+#else
+#include <SDL2/SDL_events.h>
+#endif
 
 namespace Ship {
 	Controller::Controller(int32_t dwControllerNumber) : dwControllerNumber(dwControllerNumber) {
@@ -16,8 +22,12 @@ namespace Ship {
 	void Controller::Read(OSContPad* pad) {
 		ReadFromSource();
 
+		SDL_PumpEvents();
+
+		// Button Inputs
 		pad->button |= dwPressedButtons & 0xFFFF;
 
+		// Stick Inputs
 		if (pad->stick_x == 0) {
 			if (dwPressedButtons & BTN_STICKLEFT) {
 				pad->stick_x = -128;
@@ -42,8 +52,13 @@ namespace Ship {
 			}
 		}
 
+		// Gyro
 		pad->gyro_x = wGyroX;
 		pad->gyro_y = wGyroY;
+
+		// Right Stick
+		pad->cam_x = wCamX;
+		pad->cam_y = wCamY;
 	}
 
 	void Controller::SetButtonMapping(const std::string& szButtonName, int32_t dwScancode) {

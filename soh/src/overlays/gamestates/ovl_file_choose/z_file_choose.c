@@ -415,15 +415,15 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     }
 
     if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0) || 
+        (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
         (!fileSelectSpoilerFileLoaded &&
-        SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+            SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
             CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
         }
         bool silent = true;
-        if((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-           (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+        if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+            (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
             silent = false;
         }
         CVar_SetS32("gNewSeedGenerated", 0);
