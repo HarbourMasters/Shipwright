@@ -750,12 +750,12 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
-                EnhancementCheckbox("Invert Y axis in first person", "gInvertYAxis");
-                Tooltip("When in the first person view or aiming with weapons, invert the Y axis");
-                EnhancementCheckbox("Invert X axis in first person", "gInvertXAxis");
-                Tooltip("When in the first person view or aiming with weapons, invert the X axis");
+                EnhancementCheckbox("Invert camera Y axis", "gInvertYAxis");
+                Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+                EnhancementCheckbox("Invert camera X axis", "gInvertXAxis");
+                Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
                 EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
-                Tooltip("When in the C-Up first person view, auto center the camera");
+                Tooltip("When in the C-Up first-person view, auto center the camera");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");

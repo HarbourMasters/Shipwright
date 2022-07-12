@@ -169,8 +169,8 @@ namespace Ship {
         }
         else {
             //SOHTODO KIRITO: Camera Sensitivity
-            wCamX = +ax * 15.0f;
-            wCamY = -ay * 15.0f;
+            wCamX = +ax * (CVar_GetS32("gInvertXAxis", 0) ? -15.0f : 15.0f);
+            wCamY = +ay * (CVar_GetS32("gInvertYAxis", 0) ? -15.0f : 15.0f);
         }
     }
 
