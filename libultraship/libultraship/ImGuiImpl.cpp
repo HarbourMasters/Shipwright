@@ -1224,12 +1224,13 @@ namespace SohImGui {
         for (const auto& category : hiddenwindowCategories) {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::SetNextWindowSize(ImVec2 (0,0));
-            ImGui::SetNextWindowPos(ImVec2 (-100,-100));
-            ImGui::Begin(category.first.c_str(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus);
+            ImGuiWindowFlags HiddenWndFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings |
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | 
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoDecoration;
+            ImGui::Begin(category.first.c_str(), nullptr, HiddenWndFlags);
             ImGui::End();
             ImGui::PopStyleColor();
         }
-
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
