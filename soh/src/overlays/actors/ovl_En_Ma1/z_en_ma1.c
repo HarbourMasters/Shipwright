@@ -365,8 +365,7 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Randomiz
         // puts malon in the action that vanilla has her in after learning the song
         // (confirmed via breakpoints in a vanilla save).
         malon->actionFunc = func_80AA0D88;
-    } else if (!Flags_GetTreasure(globalCtx, 0x1F) &&
-        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
         func_8002F434(&malon->actor, globalCtx, getItemId, 10000.0f, 100.0f);
     }
     // make malon sing again after giving the item.
@@ -403,7 +402,8 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
             // triggers the code above this.
             player->stateFlags2 |= 0x800000;
         }
-        if (gSaveContext.n64ddFlag && Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+        if (gSaveContext.n64ddFlag && Actor_TextboxIsClosing(&this->actor, globalCtx) &&
+            (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
             this->actionFunc = EnMa1_WaitForSongGive;
         }
     }
