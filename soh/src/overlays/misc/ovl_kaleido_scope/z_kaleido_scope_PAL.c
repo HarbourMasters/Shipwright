@@ -867,6 +867,7 @@ void KaleidoScope_SetDefaultCursor(GlobalContext* globalCtx) {
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     s16 s;
     s16 i;
+    gMaskSelect = false;
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -900,6 +901,7 @@ void KaleidoScope_SetDefaultCursor(GlobalContext* globalCtx) {
 void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     pauseCtx->unk_1E4 = 1;
     pauseCtx->unk_1EA = 0;
+    gMaskSelect = false;
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;
