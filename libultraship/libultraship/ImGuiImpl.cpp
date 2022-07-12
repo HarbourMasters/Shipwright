@@ -1158,7 +1158,6 @@ namespace SohImGui {
                     int val = CVar_GetS32(fps_cvar, 20);
                     val = MAX(MIN(val, 250), 20);
                     int fps = val;
-                    const int step_one = 1;
 
                     if (fps == 20)
                     {
