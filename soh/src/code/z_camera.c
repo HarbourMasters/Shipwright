@@ -29,7 +29,6 @@ s32 Camera_CheckWater(Camera* camera);
 #define FLG_OFFGROUND (1 << 7)
 
 #include "z_camera_data.inc"
-#include "z_camera.h"
 
 /*===============================================================*/
 
@@ -1427,17 +1426,17 @@ s32 SetCameraManual(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
 
-    if ((fabsf(newCamX) >= 200.0f || fabsf(newCamY) >= 200.0f) && manualCamera == false) {
-        manualCamera = true;
+    if ((fabsf(newCamX) >= 200.0f || fabsf(newCamY) >= 200.0f) && camera->globalCtx->manualCamera == false) {
+        camera->globalCtx->manualCamera = true;
 
         VecSph eyeAdjustment;
         OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
 
-        camX = eyeAdjustment.yaw;
-        camY = eyeAdjustment.pitch;
+        camera->globalCtx->camX = eyeAdjustment.yaw;
+        camera->globalCtx->camY = eyeAdjustment.pitch;
     }
 
-    if (manualCamera) {
+    if (camera->globalCtx->manualCamera) {
         return 1;
     }
 
@@ -1462,8 +1461,8 @@ s32 Camera_Free(Camera* camera) {
         VecSph eyeAdjustment1;
         OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &camera->at, &camera->eye);
 
-        camX = eyeAdjustment1.yaw;
-        camY = eyeAdjustment1.pitch;
+        camera->globalCtx->camX = eyeAdjustment1.yaw;
+        camera->globalCtx->camY = eyeAdjustment1.pitch;
 
         CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
         f32 yNormal = (1.0f + PCT(R_CAM_YOFFSET_NORM) - PCT(R_CAM_YOFFSET_NORM) * (68.0f / playerHeight));
@@ -1531,22 +1530,22 @@ s32 Camera_Free(Camera* camera) {
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
 
     if (fabsf(newCamX) >= 200.0f) {
-        camX += newCamX;
+        camera->globalCtx->camX += newCamX;
     }
 
     if (fabsf(newCamY) >= 200.0f) {
-        camY += newCamY;
+        camera->globalCtx->camY += newCamY;
     }
 
-    if (camY > 0x38A4) {
-        camY = 0x38A4;
+    if (camera->globalCtx->camY > 0x38A4) {
+        camera->globalCtx->camY = 0x38A4;
     }
-    if (camY < -0x3C8C) {
-        camY = -0x3C8C;
+    if (camera->globalCtx->camY < -0x3C8C) {
+        camera->globalCtx->camY = -0x3C8C;
     }
 
-    eyeAdjustment.yaw = camX;
-    eyeAdjustment.pitch = camY;
+    eyeAdjustment.yaw = camera->globalCtx->camX;
+    eyeAdjustment.pitch = camera->globalCtx->camY;
 
     Camera_Vec3fVecSphGeoAdd(&camera->eye, &at, &eyeAdjustment);
 
@@ -2161,7 +2160,7 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    manualCamera = false;
+    camera->globalCtx->manualCamera = false;
 
     switch (camera->animState) {
         case 0:

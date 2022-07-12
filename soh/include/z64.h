@@ -1203,6 +1203,9 @@ typedef struct GlobalContext {
     /* 0x00790 */ Camera* cameraPtrs[NUM_CAMS];
     /* 0x007A0 */ s16 activeCamera;
     /* 0x007A2 */ s16 nextCamera;
+    /* 0x007A2 */ bool manualCamera;
+    /* 0x007A2 */ f32 camX;
+    /* 0x007A2 */ f32 camY;
     /* 0x007A4 */ SequenceContext sequenceCtx;
     /* 0x007A8 */ LightContext lightCtx;
     /* 0x007B8 */ FrameAdvanceContext frameAdvCtx;
