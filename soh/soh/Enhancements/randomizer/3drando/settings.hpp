@@ -34,8 +34,8 @@ typedef enum {
 
 typedef enum {
     OPENFOREST_CLOSED,
-    OPENFOREST_OPEN,
     OPENFOREST_CLOSED_DEKU,
+    OPENFOREST_OPEN,
 } OpenForestSetting;
 
 typedef enum {
@@ -44,9 +44,9 @@ typedef enum {
 } OpenKakarikoSetting;
 
 typedef enum {
-    OPENDOOROFTIME_OPEN,
-    OPENDOOROFTIME_CLOSED,
     OPENDOOROFTIME_INTENDED,
+    OPENDOOROFTIME_CLOSED,
+    OPENDOOROFTIME_OPEN,
 } OpenDoorOfTimeSetting;
 
 typedef enum {
@@ -62,8 +62,8 @@ typedef enum {
 } GerudoFortressSetting;
 
 typedef enum {
-    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_VANILLA,
+    RAINBOWBRIDGE_OPEN,
     RAINBOWBRIDGE_STONES,
     RAINBOWBRIDGE_MEDALLIONS,
     RAINBOWBRIDGE_REWARDS,
@@ -212,9 +212,9 @@ typedef enum {
 } BossKeysanitySetting;
 
 typedef enum {
-    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_VANILLA,
     GANONSBOSSKEY_OWN_DUNGEON,
+    GANONSBOSSKEY_START_WITH,
     GANONSBOSSKEY_ANY_DUNGEON,
     GANONSBOSSKEY_OVERWORLD,
     GANONSBOSSKEY_ANYWHERE,
