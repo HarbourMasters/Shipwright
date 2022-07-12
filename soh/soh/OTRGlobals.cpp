@@ -54,7 +54,6 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     context->GetWindow()->Init();
@@ -102,7 +101,7 @@ extern "C" void OTRExtScanner() {
 
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
-    SaveManager::Instance = new SaveManager(OTRGlobals::Instance->context->GetAppDirectoryPath());
+    SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -1149,7 +1148,7 @@ std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
     std::string fileName = Conf.get("SAVE").get("Save Filename");
 
     if (fileName.empty()) {
-        Conf["SAVE"]["Save Filename"] = OTRGlobals::Instance->context->GetAppDirectoryPath() + "/oot_save.sav";
+        Conf["SAVE"]["Save Filename"] = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
         Conf.Save();
     }
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);

@@ -16,13 +16,11 @@
 extern "C" SaveContext gSaveContext;
 
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(appDirectoryPath + "/Save");
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
     return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
-SaveManager::SaveManager(std::string appDirectoryPath) {
-    this->appDirectoryPath = appDirectoryPath;
-
+SaveManager::SaveManager() {
     AddLoadFunction("base", 1, LoadBaseVersion1);
 
     AddSaveFunction("base", 1, SaveBase);
@@ -44,10 +42,10 @@ SaveManager::SaveManager(std::string appDirectoryPath) {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(appDirectoryPath + "/Save");
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
     const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = appDirectoryPath + "/oot_save.sav";
-    auto sOldBackupSavePath = appDirectoryPath + "/oot_save.bak";
+    auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
 
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {

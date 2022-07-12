@@ -366,6 +366,11 @@ namespace SohImGui {
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
         }
 
+        auto imguiIniPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui.ini");
+        auto imguiLogPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui_log.txt");
+        io->IniFilename = strcpy(new char[imguiIniPath.length() + 1], imguiIniPath.c_str());
+        io->LogFilename = strcpy(new char[imguiLogPath.length() + 1], imguiLogPath.c_str());
+
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         }

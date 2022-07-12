@@ -15,6 +15,7 @@
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
     ModManager* INSTANCE;
+
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
         return Context.lock();
     }
@@ -44,6 +45,10 @@ namespace Ship {
 
     }
 
+    std::string GlobalCtx2::GetPathRelativeToAppDirectory(const char* path) {
+        return GlobalCtx2::GetAppDirectoryPath() + "/" + path;
+    }
+
     GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
 
     }
@@ -55,10 +60,10 @@ namespace Ship {
 
     void GlobalCtx2::InitWindow() {
         InitLogging();
-        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), GetAppDirectoryPath() + "/shipofharkinian.ini");
+        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), GetPathRelativeToAppDirectory("shipofharkinian.ini"));
         MainPath = (*Config)["ARCHIVE"]["Main Archive"];
         if (MainPath.empty()) {
-            MainPath = GetAppDirectoryPath() + "/oot.otr";
+            MainPath = GetPathRelativeToAppDirectory("oot.otr");
         }
         PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
         if (PatchesPath.empty()) {
@@ -82,7 +87,7 @@ namespace Ship {
 
     void GlobalCtx2::InitLogging() {
         try {
-            auto logPath = GetAppDirectoryPath() + "/logs/" + GetName() + ".log";
+            auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log").c_str());
 
             // Setup Logging
             spdlog::init_thread_pool(8192, 1);
