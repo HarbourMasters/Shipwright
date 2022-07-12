@@ -1413,7 +1413,7 @@ s32 SetCameraManual(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    if (camera->globalCtx->manualCamera == false) {
+    if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
         camera->globalCtx->manualCamera = true;
 
         VecSph eyeAdjustment;
