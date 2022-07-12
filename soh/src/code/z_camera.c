@@ -1488,18 +1488,19 @@ s32 Camera_Free(Camera* camera) {
 
     camBgChk.pos = camera->eye;
 
+    float maxRadius = 160.0f;
     if (Camera_BGCheckInfo(camera, &at, &camBgChk)) {
         VecSph collSphere;
         OLib_Vec3fDiffToVecSphGeo(&collSphere, &at, &camBgChk.pos);
         float rad = collSphere.r;
 
-        if (rad > 150) {
-            camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
+        if (rad >= maxRadius) {
+            camera->dist = eyeAdjustment.r = Camera_LERPCeilF(maxRadius, camera->dist, camSpeed / 4, 1.0f);
         } else {
             camera->dist = eyeAdjustment.r = rad;
         }
     } else {
-        camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
+        camera->dist = eyeAdjustment.r = Camera_LERPCeilF(maxRadius, camera->dist, camSpeed / 4, 1.0f);
     }
 
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
@@ -1508,11 +1509,11 @@ s32 Camera_Free(Camera* camera) {
     camera->globalCtx->camX += newCamX;
     camera->globalCtx->camY += newCamY;
 
-    if (camera->globalCtx->camY > 0x38A4) {
-        camera->globalCtx->camY = 0x38A4;
+    if (camera->globalCtx->camY > 0x32A4) {
+        camera->globalCtx->camY = 0x32A4;
     }
-    if (camera->globalCtx->camY < -0x3C8C) {
-        camera->globalCtx->camY = -0x3C8C;
+    if (camera->globalCtx->camY < -0x228C) {
+        camera->globalCtx->camY = -0x228C;
     }
 
     eyeAdjustment.yaw = camera->globalCtx->camX;
