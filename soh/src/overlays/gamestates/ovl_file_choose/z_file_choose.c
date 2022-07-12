@@ -492,16 +492,13 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         fileSelectSpoilerFileLoaded = false;
     }
 
-    if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0) || 
-        (!fileSelectSpoilerFileLoaded &&
-        SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+    if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
+        (!fileSelectSpoilerFileLoaded && SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
             CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
         }
         bool silent = true;
-        if((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-           (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+        if ((CVar_GetS32("gNewFileDropped", 0) != 0) || (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
             silent = false;
         }
         CVar_SetS32("gNewSeedGenerated", 0);
@@ -513,7 +510,8 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         LoadHintLocations(fileLoc);
         LoadItemLocations(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
-        
+    }
+
     if (HandleMouseCursor(this, input, 57, 74, 66, 17) == 1) {
         if (this->buttonIndex != FS_BTN_MAIN_FILE_1) {
             this->buttonIndex = FS_BTN_MAIN_FILE_1;
