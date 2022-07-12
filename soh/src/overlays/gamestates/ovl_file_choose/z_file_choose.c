@@ -381,15 +381,6 @@ void DrawSeedHashSprites(FileChooseContext* this) {
 
 u8 generating;
 bool fileSelectSpoilerFileLoaded;
-void HandleMouseInput(Input* input) {
-    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
-        return;
-    }
-
-    if (input->press.left_click) {
-        input->press.button = BTN_A;
-    }
-}
 
 /**
  * Update the cursor and wait for the player to select a button to change menus accordingly.
@@ -1623,7 +1614,7 @@ void FileChoose_ConfirmFile(GameState* thisx) {
             Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
             this->selectMode++;
         }
-    } else if (CHECK_BTN_ALL(input->press.button, BTN_B) || input->press.right_click) {
+    } else if (CHECK_BTN_ALL(input->press.button, BTN_B)) {
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->selectMode++;
     } else if ((ABS(this->stickRelY) >= 30) || (dpad && CHECK_BTN_ANY(input->press.button, BTN_DDOWN | BTN_DUP))) {

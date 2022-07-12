@@ -1409,24 +1409,11 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
-f32 lastMouseX2;
-f32 lastMouseY2;
-
 s32 SetCameraManual(Camera* camera) {
-    f32 mouseX = D_8015BD7C->state.input[0].cur.touch_x - lastMouseX2;
-    lastMouseX2 = D_8015BD7C->state.input[0].cur.touch_x;
-    f32 mouseY = D_8015BD7C->state.input[0].cur.touch_y - lastMouseY2;
-    lastMouseY2 = D_8015BD7C->state.input[0].cur.touch_y;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
-        mouseX = 0.0f;
-        mouseY = 0.0f;
-    }
-
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
-
-    if ((fabsf(newCamX) >= 200.0f || fabsf(newCamY) >= 200.0f) && camera->globalCtx->manualCamera == false) {
+    if (camera->globalCtx->manualCamera == false) {
         camera->globalCtx->manualCamera = true;
 
         VecSph eyeAdjustment;
@@ -1515,27 +1502,11 @@ s32 Camera_Free(Camera* camera) {
         camera->dist = eyeAdjustment.r = Camera_LERPCeilF(150.0f, camera->dist, camSpeed / 4, 1.0f);
     }
 
-    // Mouse Free Camera
-    f32 mouseX = D_8015BD7C->state.input[0].cur.touch_x - lastMouseX;
-    lastMouseX = D_8015BD7C->state.input[0].cur.touch_x;
-    f32 mouseY = D_8015BD7C->state.input[0].cur.touch_y - lastMouseY;
-    lastMouseY = D_8015BD7C->state.input[0].cur.touch_y;
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    if (CVar_GetS32("gMouseTouchEnabled", 0) != 1) {
-        mouseX = 0.0f;
-        mouseY = 0.0f;
-    }
-
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x + -(mouseX * 40.0f);
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y + (mouseY * 40.0f);
-
-    if (fabsf(newCamX) >= 200.0f) {
-        camera->globalCtx->camX += newCamX;
-    }
-
-    if (fabsf(newCamY) >= 200.0f) {
-        camera->globalCtx->camY += newCamY;
-    }
+    camera->globalCtx->camX += newCamX;
+    camera->globalCtx->camY += newCamY;
 
     if (camera->globalCtx->camY > 0x38A4) {
         camera->globalCtx->camY = 0x38A4;

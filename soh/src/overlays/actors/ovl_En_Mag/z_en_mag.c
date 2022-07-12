@@ -341,8 +341,7 @@ void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
         if (this->globalState < MAG_STATE_DISPLAY) {
             if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
                 CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B) ||
-                (CVar_GetS32("gMouseTouchEnabled", 0) != 0 && globalCtx->state.input[0].press.left_click)) {
+                CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
 
                 Audio_PlaySoundGeneral(NA_SE_SY_PIECE_OF_HEART, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
 
@@ -368,8 +367,7 @@ void EnMag_Update(Actor* thisx, GlobalContext* globalCtx) {
             if (sDelayTimer == 0) {
                 if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) ||
                     CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
-                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B) ||
-                    (CVar_GetS32("gMouseTouchEnabled", 0) != 0 && globalCtx->state.input[0].press.left_click)) {
+                    CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_B)) {
 
                     if (globalCtx->sceneLoadFlag != 20) {
                         Audio_SetCutsceneFlag(0);

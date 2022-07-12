@@ -132,7 +132,7 @@ namespace Ship {
     }
 
 
-    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold) {
+    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool rightStick) {
         //scale {-32768 ... +32767} to {-84 ... +84}
         auto ax = wAxisValueX * 85.0 / 32767.0;
         auto ay = wAxisValueY * 85.0 / 32767.0;
@@ -163,8 +163,15 @@ namespace Ship {
             ay *= scale;
         }
 
-        wStickX = +ax;
-        wStickY = -ay;
+        if (!rightStick) {
+            wStickX = +ax;
+            wStickY = -ay;
+        }
+        else {
+            //SOHTODO KIRITO: Camera Sensitivity
+            wCamX = +ax * 15.0f;
+            wCamY = -ay * 15.0f;
+        }
     }
 
     void SDLController::ReadFromSource() {
@@ -187,8 +194,9 @@ namespace Ship {
             }
         }
 
-        wCamX = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTX) / 25;
-        wCamY = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTY) / 25;
+        auto cameraX = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTX);
+        auto cameraY = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTY);
+        NormalizeStickAxis(cameraX, cameraY, ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTX], true);
 
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
@@ -331,7 +339,7 @@ namespace Ship {
             if (StickAxisX != SDL_CONTROLLER_AXIS_INVALID && StickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
                 auto AxisValueX = SDL_GameControllerGetAxis(Cont, StickAxisX);
                 auto AxisValueY = SDL_GameControllerGetAxis(Cont, StickAxisY);
-                NormalizeStickAxis(AxisValueX, AxisValueY, StickDeadzone);
+                NormalizeStickAxis(AxisValueX, AxisValueY, StickDeadzone, false);
             }
         }
     }

@@ -114,12 +114,6 @@ typedef struct {
     /* 0x04 */ u8 err_no;
 	/* 0x05 */ f32 gyro_x;
 	/* 0x09 */ f32 gyro_y;
-    /* 0x0A */ u8 left_click;
-    /* 0x0B */ u8 right_click;
-    /* 0x0C */ f32 touch_x;
-    /* 0x10 */ f32 touch_y;
-    /* 0x14 */ f32 mouse_move_x;
-    /* 0x18 */ f32 mouse_move_y;
     /* 0x1C */ f32 cam_x;
     /* 0x20 */ f32 cam_y;
 } OSContPad; // size = 0x24
