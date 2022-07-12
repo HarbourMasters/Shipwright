@@ -163,7 +163,7 @@ namespace Ship {
             ay *= scale;
         }
 
-        if (!rightStick) {
+        if (!isRightStick) {
             wStickX = +ax;
             wStickY = -ay;
         }
