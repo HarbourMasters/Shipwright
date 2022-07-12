@@ -1351,57 +1351,6 @@ extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
 }
 
-extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)(uintptr_t(swappable->sample)));
-    swappable->tuningAsU32 = BOMSWAP32((u32)(swappable->tuningAsU32 & 0xFFFFFFFF));
-}
-
-extern "C" void bswapDrum(Drum* swappable) {
-    bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)uintptr_t(swappable->envelope));
-}
-
-extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)uintptr_t(swappable->envelope));
-    bswapSoundFontSound(&swappable->lowNotesSound);
-    bswapSoundFontSound(&swappable->normalNotesSound);
-    bswapSoundFontSound(&swappable->highNotesSound);
-}
-
-extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
-    u32 origBitfield = BOMSWAP32(swappable->asU32);
-
-    swappable->codec = (origBitfield >> 28) & 0x0F;
-    swappable->medium = (origBitfield >> 24) & 0x03;
-    swappable->unk_bit26 = (origBitfield >> 22) & 0x01;
-    swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
-    swappable->size = (origBitfield) & 0x00FFFFFF;
-
-    swappable->sampleAddr = (u8*)BOMSWAP32((u32)uintptr_t(swappable->sampleAddr));
-    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)uintptr_t(swappable->loop));
-    swappable->book = (AdpcmBook*)BOMSWAP32((u32)uintptr_t(swappable->book));
-}
-
-extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
-    swappable->start = (u32)BOMSWAP32((u32)swappable->start);
-    swappable->end = (u32)BOMSWAP32((u32)swappable->end);
-    swappable->count = (u32)BOMSWAP32((u32)swappable->count);
-
-    if (swappable->count != 0) {
-        for (int i = 0; i < 16; i++) {
-            swappable->state[i] = (s16)BOMSWAP16(swappable->state[i]);
-        }
-    }
-}
-
-extern "C" void bswapAdpcmBook(AdpcmBook* swappable) {
-    swappable->order = (u32)BOMSWAP32((u32)swappable->order);
-    swappable->npredictors = (u32)BOMSWAP32((u32)swappable->npredictors);
-
-    for (int i = 0; i < swappable->npredictors * swappable->order * sizeof(s16) * 4; i++)
-        swappable->book[i] = (s16)BOMSWAP16(swappable->book[i]);
-}
-
 extern "C" bool AudioPlayer_Init(void) {
     if (OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer() != nullptr) {
         return OTRGlobals::Instance->context->GetWindow()->GetAudioPlayer()->Init();
