@@ -337,7 +337,7 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0EFC;
     } else {
         if (gSaveContext.n64ddFlag) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
             func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
@@ -355,7 +355,7 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_EPONAS_SONG);
 
     if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {

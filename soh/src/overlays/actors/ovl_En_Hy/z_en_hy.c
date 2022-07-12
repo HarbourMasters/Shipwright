@@ -659,7 +659,7 @@ s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    func_80A6F7CC(this, globalCtx, (gSaveContext.infTable[25] & 2) ? GI_RUPEE_BLUE : gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE) : GI_HEART_PIECE);
+                    func_80A6F7CC(this, globalCtx, (gSaveContext.infTable[25] & 2) ? GI_RUPEE_BLUE : gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE) : GI_HEART_PIECE);
                     this->actionFunc = func_80A714C4;
                     break;
             }
