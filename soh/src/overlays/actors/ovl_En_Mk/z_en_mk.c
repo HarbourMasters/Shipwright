@@ -197,14 +197,15 @@ void func_80AACFA0(EnMk* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AACA40;
         gSaveContext.itemGetInf[1] |= 1;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        // not sure when/how/if this is getting called
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
     }
 }
 
 void func_80AAD014(EnMk* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         this->actionFunc = func_80AACFA0;
-        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_LH_LAB_DIVE, GI_HEART_PIECE) : GI_HEART_PIECE, 10000.0f, 50.0f);
     }
 
     this->flags |= 1;

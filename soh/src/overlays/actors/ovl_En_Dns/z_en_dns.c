@@ -370,19 +370,23 @@ void EnDns_Talk(EnDns* this, GlobalContext* globalCtx) {
 
 void func_809EFDD0(EnDns* this, GlobalContext* globalCtx) {
     if (this->actor.params == 0x9) {
-        if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
+        if (gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GetRandomizedItemId(GI_STICK_UPGRADE_30, this->actor.id, this->actor.params, globalCtx->sceneNum), 130.0f, 100.0f);
+        } else if (CUR_UPG_VALUE(UPG_STICKS) < 2) {
             func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_20, 130.0f, 100.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_STICK_UPGRADE_30, 130.0f, 100.0f);
         }
     } else if (this->actor.params == 0xA) {
-        if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
+        if (gSaveContext.n64ddFlag) {
+            func_8002F434(&this->actor, globalCtx, GetRandomizedItemId(GI_NUT_UPGRADE_40, this->actor.id, this->actor.params, globalCtx->sceneNum), 130.0f, 100.0f);
+        } else if (CUR_UPG_VALUE(UPG_NUTS) < 2) {
             func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_30, 130.0f, 100.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_NUT_UPGRADE_40, 130.0f, 100.0f);
         }
     } else {
-        func_8002F434(&this->actor, globalCtx, this->dnsItemEntry->getItemId, 130.0f, 100.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemId(this->dnsItemEntry->getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum) : this->dnsItemEntry->getItemId, 130.0f, 100.0f);
     }
 }
 
