@@ -82,8 +82,6 @@ char* fontMap[256];
 uintptr_t fontStart;
 uint32_t fontOffsets[8192];
 
-bool gUseLegacySD = false;
-
 void AudioLoad_DecreaseSampleDmaTtls(void) {
     u32 i;
 
@@ -483,26 +481,15 @@ void AudioLoad_AsyncLoadFont(s32 fontId, s32 arg1, s32 retData, OSMesgQueue* ret
 u8* AudioLoad_GetFontsForSequence(s32 seqId, u32* outNumFonts) {
     s32 index;
 
-    if (!gUseLegacySD)
-    {
-        if (seqId == 255)
-            return NULL;
+    if (seqId == 255)
+        return NULL;
 
-        SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
-        if (sDat.numFonts == 0)
-            return NULL;
+    if (sDat.numFonts == 0)
+        return NULL;
 
-        return sDat.fonts;
-    } else {
-        index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
-
-        *outNumFonts = gAudioContext.sequenceFontTable[index++];
-        if (*outNumFonts == 0) {
-            return NULL;
-        }
-        return &gAudioContext.sequenceFontTable[index];
-    }
+    return sDat.fonts;
 }
 
 void AudioLoad_DiscardSeqFonts(s32 seqId) {
@@ -578,38 +565,19 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
     s32 numFonts;
     s32 fontId;
 
-    if (gUseLegacySD && seqId >= gAudioContext.numSequences) {
-        return 0;
-    }
-
     AudioSeq_SequencePlayerDisable(seqPlayer);
 
     fontId = 0xFF;
-    index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
-    numFonts = gAudioContext.sequenceFontTable[index++];
+    //index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
+    //numFonts = gAudioContext.sequenceFontTable[index++];
 
-    if (gUseLegacySD) {
-        index = ((u16*)gAudioContext.sequenceFontTable)[seqId];
-        numFonts = gAudioContext.sequenceFontTable[index++];
+    SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
 
-        while (numFonts > 0) {
-            fontId = gAudioContext.sequenceFontTable[index++];
-
-            AudioLoad_SyncLoadFont(fontId); // NOTE: If this is commented out, then enemies will play child link sounds...
-
-            numFonts--;
-        }
-    }
-    else
+    for (int i = 0; i < seqData2.numFonts; i++)
     {
-        SequenceData seqData2 = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
-
-        for (int i = 0; i < seqData2.numFonts; i++)
-        {
-            fontId = seqData2.fonts[i];
-            AudioLoad_SyncLoadFont(fontId); // NOTE: If this is commented out, then enemies will play child link sounds...
-            numFonts--;
-        }
+        fontId = seqData2.fonts[i];
+        AudioLoad_SyncLoadFont(fontId); // NOTE: If this is commented out, then enemies will play child link sounds...
+        //numFonts--;
     }
 
     seqData = AudioLoad_SyncLoadSeq(seqId);
@@ -620,10 +588,7 @@ s32 AudioLoad_SyncInitSeqPlayerInternal(s32 playerIdx, s32 seqId, s32 arg2) {
 
     AudioSeq_ResetSequencePlayer(seqPlayer);
     seqPlayer->seqId = seqId;
-    if (gUseLegacySD)
-        seqPlayer->defaultFont = AudioLoad_GetRealTableIndex(FONT_TABLE, fontId);
-    else
-        seqPlayer->defaultFont = fontId;
+    seqPlayer->defaultFont = fontId;
 
     seqPlayer->seqData = seqData;
     seqPlayer->enabled = 1;
@@ -667,8 +632,8 @@ uintptr_t AudioLoad_TrySyncLoadSampleBank(u32 sampleBankId, u32* outMedium, s32 
         return ret;
     }
 
-    cachePolicy = sampleBankTable->entries[sampleBankId].cachePolicy;
-    if (cachePolicy == 4 || noLoad == true) {
+    //cachePolicy = sampleBankTable->entries[sampleBankId].cachePolicy;
+    if (/* cachePolicy == 4 || */ noLoad == true) {
         *outMedium = sampleBankTable->entries[sampleBankId].medium;
         return sampleBankTable->entries[realTableId].romAddr;
     }
@@ -695,31 +660,24 @@ SoundFontData* AudioLoad_SyncLoadFont(u32 fontId) {
         return NULL;
     }
 
-    if (!gUseLegacySD) {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont
-        (fontMap[fontId]);
+    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
-        sampleBankId1 = sf->sampleBankId1;
-        sampleBankId2 = sf->sampleBankId2;
-    } else {
-
-        sampleBankId1 = gAudioContext.soundFonts[realFontId].sampleBankId1;
-        sampleBankId2 = gAudioContext.soundFonts[realFontId].sampleBankId2;
-    }
+    sampleBankId1 = sf->sampleBankId1;
+    sampleBankId2 = sf->sampleBankId2;
 
     relocInfo.sampleBankId1 = sampleBankId1;
     relocInfo.sampleBankId2 = sampleBankId2;
-    if (sampleBankId1 != 0xFF) {
-        relocInfo.baseAddr1 = AudioLoad_TrySyncLoadSampleBank(sampleBankId1, &relocInfo.medium1, false);
-    } else {
+    //if (sampleBankId1 != 0xFF) {
+        //relocInfo.baseAddr1 = AudioLoad_TrySyncLoadSampleBank(sampleBankId1, &relocInfo.medium1, false);
+    //} else {
         relocInfo.baseAddr1 = 0;
-    }
+    //}
 
-    if (sampleBankId2 != 0xFF) {
-        relocInfo.baseAddr2 = AudioLoad_TrySyncLoadSampleBank(sampleBankId2, &relocInfo.medium2, false);
-    } else {
+    //if (sampleBankId2 != 0xFF) {
+        //relocInfo.baseAddr2 = AudioLoad_TrySyncLoadSampleBank(sampleBankId2, &relocInfo.medium2, false);
+    //} else {
         relocInfo.baseAddr2 = 0;
-    }
+    //}
 
     ret = AudioLoad_SyncLoad(FONT_TABLE, fontId, &didAllocate);
     if (ret == NULL) {
@@ -752,7 +710,7 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
         char* seqData = 0;
         SoundFont* fnt;
 
-        if (!gUseLegacySD && tableType == SEQUENCE_TABLE)
+        if (tableType == SEQUENCE_TABLE)
         {
             SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[id]);
             seqData = sData.seqData;
@@ -761,7 +719,7 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
             cachePolicy = sData.cachePolicy;
             romAddr = 0;
         }
-        else if (!gUseLegacySD && tableType == FONT_TABLE)
+        else if (tableType == FONT_TABLE)
         {
             fnt = ResourceMgr_LoadAudioSoundFont(fontMap[id]);
             size = sizeof(SoundFont);
@@ -771,12 +729,12 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
         }
         else
         {
-            table = AudioLoad_GetLoadTable(tableType);
-            size = table->entries[realId].size;
+            //table = AudioLoad_GetLoadTable(tableType);
+            //size = table->entries[realId].size;
             //size = ALIGN16(size);
-            medium = table->entries[id].medium;
-            cachePolicy = table->entries[id].cachePolicy;
-            romAddr = table->entries[realId].romAddr;
+            //medium = table->entries[id].medium;
+            //cachePolicy = table->entries[id].cachePolicy;
+            //romAddr = table->entries[realId].romAddr;
         }
 
         switch (cachePolicy) {
@@ -811,13 +769,13 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
         if (medium == MEDIUM_UNK) {
             AudioLoad_SyncDmaUnkMedium(romAddr, ret, size, (s16)table->unkMediumParam);
         } else {
-            if (!gUseLegacySD && tableType == SEQUENCE_TABLE && seqData != NULL) {
+            if (tableType == SEQUENCE_TABLE && seqData != NULL) {
                 AudioLoad_SyncDma(seqData, ret, size, medium);
-            } else if (!gUseLegacySD && tableType == FONT_TABLE) {
+            } else if (tableType == FONT_TABLE) {
                 AudioLoad_SyncDma(fnt, ret, size, medium);
             }
             else {
-                AudioLoad_SyncDma(romAddr, ret, size, medium);
+                //AudioLoad_SyncDma(romAddr, ret, size, medium);
             }
         }
 
@@ -843,17 +801,17 @@ uintptr_t AudioLoad_SyncLoad(u32 tableType, u32 id, s32* didAllocate) {
 
 u32 AudioLoad_GetRealTableIndex(s32 tableType, u32 id)
 {
-    if ((tableType == SEQUENCE_TABLE || tableType == FONT_TABLE) && !gUseLegacySD) {
+    if ((tableType == SEQUENCE_TABLE || tableType == FONT_TABLE)) {
         return id;
     }
 
-    AudioTable* table = AudioLoad_GetLoadTable(tableType);
+    //AudioTable* table = AudioLoad_GetLoadTable(tableType);
 
     // If the size is 0, then this entry actually redirects to another entry.
     // The rom address is actually an index into the same table where the "real" data is.
-    if (table->entries[id].size == 0) {
-        id = table->entries[id].romAddr;
-    }
+    //if (table->entries[id].size == 0) {
+        //id = table->entries[id].romAddr;
+    //}
 
     return id;
 }
@@ -906,77 +864,37 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
     s32 numInstruments = 0;
     s32 numSfx = 0;
 
-    if (gUseLegacySD) {
-        numDrums = gAudioContext.soundFonts[fontId].numDrums;
-        numInstruments = gAudioContext.soundFonts[fontId].numInstruments;
-        numSfx = gAudioContext.soundFonts[fontId].numSfx;
-    } else {
-        sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-        numDrums = sf->numDrums;
-        numInstruments = sf->numInstruments;
-        numSfx = sf->numSfx;
-    }
+    sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
+    numDrums = sf->numDrums;
+    numInstruments = sf->numInstruments;
+    numSfx = sf->numSfx;
 
     void** ptrs = (void**)mem;
 
 #define BASE_OFFSET(x) (void*)((u32)(x) + (u32)(mem))
 
     reloc2 = ptrs[0];
-    if ((reloc2 != 0 || !gUseLegacySD) && (numDrums != 0))
+    if ((numDrums != 0))
     {
         ptrs[0] = BASE_OFFSET(reloc2);
         for (i = 0; i < numDrums; i++)
         {
-            if (gUseLegacySD)
-                reloc = ((Drum**)ptrs[0])[i];
+            drum = sf->drums[i];
 
-            if (reloc != 0 || !gUseLegacySD)
+            if (!drum->loaded)
             {
-                if (gUseLegacySD)
-                {
-                    reloc = BASE_OFFSET(reloc);
-                    ((Drum**)ptrs[0])[i] = drum = reloc;
-                }
-
-                if (!gUseLegacySD)
-                    drum = sf->drums[i];
-
-                if (!drum->loaded)
-                {
-                    if (!gUseLegacySD)
-                    {
-                        AudioLoad_RelocateSample(&sf->drums[i]->sound, mem, relocInfo, fontOffsets[fontId]);
-                        //reloc = drum->envelope;
-                        drum->loaded = 1;
-                    }
-                    else
-                    {
-                        AudioLoad_RelocateSample(&drum->sound, mem, relocInfo, fontOffsets[fontId]);
-                        reloc = drum->envelope;
-                        drum->envelope = BASE_OFFSET(reloc);
-                        drum->loaded = 1;
-                    }
-                }
+                AudioLoad_RelocateSample(&sf->drums[i]->sound, mem, relocInfo, fontOffsets[fontId]);
+                drum->loaded = 1;
             }
         }
     }
 
     reloc2 = ptrs[1];
-    if ((reloc2 != 0 || !gUseLegacySD) && (numSfx != 0)) {
+    if (numSfx != 0) {
         ptrs[1] = BASE_OFFSET(reloc2);
         for (i = 0; i < numSfx; i++) {
             reloc = (SoundFontSound*)ptrs[1] + i;
-            if (reloc != 0 || !gUseLegacySD)
-            {
-                if (!gUseLegacySD) {
-                    AudioLoad_RelocateSample(&sf->soundEffects[i].sample, mem, relocInfo, fontOffsets[fontId]);
-                } else {
-                    sfx = reloc;
-                    if (sfx->sample != NULL) {
-                        AudioLoad_RelocateSample(sfx, mem, relocInfo, fontOffsets[fontId]);
-                    }
-                }
-            }
+            AudioLoad_RelocateSample(&sf->soundEffects[i].sample, mem, relocInfo, fontOffsets[fontId]);
         }
     }
 
@@ -984,46 +902,28 @@ void AudioLoad_RelocateFont(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo
         numInstruments = 0x7E;
     }
 
-    int startI = gUseLegacySD ? 2 : 0;
-    int startEC = gUseLegacySD ? 2 + numInstruments - 1 : numInstruments - 1;
-    //for (i = 2; i <= 2 + numInstruments - 1; i++) {
+    int startI = 0;
+    int startEC = numInstruments - 1;
     for (i = startI; i <= startEC; i++) {
-        if (!gUseLegacySD || ptrs[i] != NULL)
-        {
-            ptrs[i] = BASE_OFFSET(ptrs[i]);
+        ptrs[i] = BASE_OFFSET(ptrs[i]);
+        inst = sf->instruments[i];
 
-            if (gUseLegacySD)
-                inst = ptrs[i];
-            else
-                inst = sf->instruments[i];
-
-            if (inst != NULL && !inst->loaded) {
-                if (inst->normalRangeLo != 0)
-                {
-                    AudioLoad_RelocateSample(&inst->lowNotesSound, mem, relocInfo, fontOffsets[fontId]);
-                }
-                AudioLoad_RelocateSample(&inst->normalNotesSound, mem, relocInfo, fontOffsets[fontId]);
-                if (inst->normalRangeHi != 0x7F) {
-                    AudioLoad_RelocateSample(&inst->highNotesSound, mem, relocInfo, fontOffsets[fontId]);
-                }
-
-                reloc = inst->envelope;
-
-                if (gUseLegacySD)
-                    inst->envelope = BASE_OFFSET(reloc);
-
-                inst->loaded = 1;
+        if (inst != NULL && !inst->loaded) {
+            if (inst->normalRangeLo != 0)
+            {
+                AudioLoad_RelocateSample(&inst->lowNotesSound, mem, relocInfo, fontOffsets[fontId]);
             }
+            AudioLoad_RelocateSample(&inst->normalNotesSound, mem, relocInfo, fontOffsets[fontId]);
+            if (inst->normalRangeHi != 0x7F) {
+                AudioLoad_RelocateSample(&inst->highNotesSound, mem, relocInfo, fontOffsets[fontId]);
+            }
+
+            reloc = inst->envelope;
+            inst->loaded = 1;
         }
     }
 
 #undef BASE_OFFSET
-
-    if (gUseLegacySD) {
-        gAudioContext.soundFonts[fontId].drums = ptrs[0];
-        gAudioContext.soundFonts[fontId].soundEffects = ptrs[1];
-        gAudioContext.soundFonts[fontId].instruments = (Instrument**)(ptrs + 2);
-    }
 }
 
 void AudioLoad_SyncDma(uintptr_t devAddr, u8* addr, size_t size, s32 medium) {
@@ -1209,24 +1109,6 @@ s32 AudioLoad_AssertValidAddr(uintptr_t ramAddr, uintptr_t startAddr, size_t siz
 #define BASE_ROM_OFFSET(x) (uintptr_t)((uintptr_t)(x) + (uintptr_t)(romAddr))
 
 void AudioLoad_InitSwapFontSampleHeaders(SoundFontSample* sample, uintptr_t romAddr) {
-    size_t maxSoundFontSize = 0x3AA0; // soundFont 0 is the largest size at 0x3AA0
-    AdpcmLoop* loop;
-    AdpcmBook* book;
-
-    if (((uintptr_t)sample->loop > maxSoundFontSize) || ((uintptr_t)sample->book > maxSoundFontSize) ) {
-        bswapSoundFontSample(sample);
-
-        loop = (AdpcmLoop*)BASE_ROM_OFFSET(sample->loop);
-        if ((uint32_t)loop->end > (uint32_t)0xFFFF) {
-            bswapAdpcmLoop(loop);
-        }
-
-        book = (AdpcmBook*)BASE_ROM_OFFSET(sample->book);
-        if (book->order > 0xFFFF) {
-            bswapAdpcmBook(book);
-        }
-    }
-    return;
 }
 
 void AudioLoad_InitSwapFont(void) {
@@ -1273,7 +1155,6 @@ void AudioLoad_InitSwapFont(void) {
 
                 if (drumList[i] != NULL) {
                     drum = (Drum*)BASE_ROM_OFFSET(drumList[i]);
-                    bswapDrum(drum);
 
                     sample = (SoundFontSample*)BASE_ROM_OFFSET(drum->sound.sample);
                     AudioLoad_InitSwapFontSampleHeaders(sample, romAddr);
@@ -1289,7 +1170,6 @@ void AudioLoad_InitSwapFont(void) {
             for (i = 0; i < numSfxs; i++) {
 
                 sfx = &sfxList[i];
-                bswapSoundFontSound(sfx);
 
                 if (sfx->sample != NULL) {
                     SoundFontSample* sample = (SoundFontSample*)BASE_ROM_OFFSET(sfx->sample);
@@ -1309,7 +1189,6 @@ void AudioLoad_InitSwapFont(void) {
 
             if (instList[i] != NULL) {
                 inst = BASE_ROM_OFFSET(instList[i]);
-                bswapInstrument(inst);
 
                 if (inst->normalRangeLo != 0) {
                     sample = (SoundFontSample*)BASE_ROM_OFFSET(inst->lowNotesSound.sample);
@@ -1402,78 +1281,49 @@ void AudioLoad_Init(void* heap, size_t heapSize) {
         gAudioContext.aiBuffers[i] = AudioHeap_AllocZeroed(&gAudioContext.audioInitPool, AIBUF_LEN * sizeof(s16));
     }
 
-    gAudioContext.sequenceTable = (AudioTable*)gSequenceTable;
-    gAudioContext.soundFontTable = (AudioTable*)gSoundFontTable;
-    gAudioContext.sampleBankTable = (AudioTable*)gSampleBankTable;
-    gAudioContext.sequenceFontTable = gSequenceFontTable;
-    gAudioContext.numSequences = gAudioContext.sequenceTable->numEntries;
+    //gAudioContext.sequenceTable = (AudioTable*)gSequenceTable;
+    //gAudioContext.soundFontTable = (AudioTable*)gSoundFontTable;
+    //gAudioContext.sampleBankTable = (AudioTable*)gSampleBankTable;
+    //gAudioContext.sequenceFontTable = gSequenceFontTable;
+    //gAudioContext.numSequences = gAudioContext.sequenceTable->numEntries;
 
     gAudioContext.audioResetSpecIdToLoad = 0;
     gAudioContext.resetStatus = 1;
 
     AudioHeap_ResetStep();
 
-    uintptr_t seqStart = ResourceMgr_LoadFileRaw(_AudioseqSegmentRomStart);
-    uintptr_t bankStart = ResourceMgr_LoadFileRaw(_AudiobankSegmentRomStart);
-    uintptr_t tableStart = ResourceMgr_LoadFileRaw(_AudiotableSegmentRomStart);
+    int seqListSize = 0;
+    char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
 
-    // If we have the old audioseq files present (and this is a 32-bit build), use the legacy audio system
-    if (seqStart != NULL && bankStart != NULL && tableStart != NULL)
-        gUseLegacySD = true;
-
-    fontStart = bankStart;
-
-    AudioLoad_InitTable(gAudioContext.sequenceTable, seqStart, 0);
-    AudioLoad_InitTable(gAudioContext.soundFontTable, bankStart, 0);
-    AudioLoad_InitTable(gAudioContext.sampleBankTable, tableStart, 0);
-
-    if (gUseLegacySD)
-        numFonts = gAudioContext.soundFontTable->numEntries;
-
-    if (gUseLegacySD)
+    for (size_t i = 0; i < seqListSize; i++)
     {
-        gAudioContext.soundFonts = AudioHeap_Alloc(&gAudioContext.audioInitPool, numFonts * sizeof(SoundFont));
+        SequenceData sDat = ResourceMgr_LoadSeqByName(seqList[i]);
 
-        for (i = 0; i < numFonts; i++) {
-            AudioLoad_InitSoundFontMeta(i);
-        }
+        char* str = malloc(strlen(seqList[i]) + 1);
+        strcpy(str, seqList[i]);
 
-        AudioLoad_InitSwapFont();
-    } else {
-        int seqListSize = 0;
-        char** seqList = ResourceMgr_ListFiles("audio/sequences*", &seqListSize);
+        sequenceMap[sDat.seqNumber] = str;
+    }
 
-        for (size_t i = 0; i < seqListSize; i++)
-        {
-            SequenceData sDat = ResourceMgr_LoadSeqByName(seqList[i]);
+    free(seqList);
 
-            char* str = malloc(strlen(seqList[i]) + 1);
-            strcpy(str, seqList[i]);
+    int fntListSize = 0;
+    char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
 
-            sequenceMap[sDat.seqNumber] = str;
-        }
+    for (int i = 0; i < fntListSize; i++)
+    {
+        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fntList[i]);
 
-        free(seqList);
+        char* str = malloc(strlen(fntList[i]) + 1);
+        strcpy(str, fntList[i]);
 
-        int fntListSize = 0;
-        char** fntList = ResourceMgr_ListFiles("audio/fonts*", &fntListSize);
-
-        for (int i = 0; i < fntListSize; i++)
-        {
-            SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fntList[i]);
-
-            char* str = malloc(strlen(fntList[i]) + 1);
-            strcpy(str, fntList[i]);
-
-            fontMap[sf->fntIndex] = str;
-        }
+        fontMap[sf->fntIndex] = str;
+    }
 
         numFonts = fntListSize;
 
         free(fntList);
         gAudioContext.soundFonts = AudioHeap_Alloc(&gAudioContext.audioInitPool, numFonts * sizeof(SoundFont));
-
-    }
 
 
     if (temp_v0_3 = AudioHeap_Alloc(&gAudioContext.audioInitPool, D_8014A6C4.permanentPoolSize), temp_v0_3 == NULL) {
@@ -1648,11 +1498,6 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     AudioTable* seqTable;
     size_t size;
 
-    if (gUseLegacySD && seqId >= gAudioContext.numSequences) {
-        *isDone = 0;
-        return -1;
-    }
-
     seqId = AudioLoad_GetRealTableIndex(SEQUENCE_TABLE, seqId);
     seqTable = AudioLoad_GetLoadTable(SEQUENCE_TABLE);
     slowLoad = &gAudioContext.slowLoads[gAudioContext.slowLoadPos];
@@ -1663,19 +1508,11 @@ s32 AudioLoad_SlowLoadSeq(s32 seqId, u8* ramAddr, s8* isDone) {
     slowLoad->sample.sampleAddr = NULL;
     slowLoad->isDone = isDone;
 
-    if (!gUseLegacySD)
-    {
-        SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
-        char* seqData = sData.seqData;
-        size = sData.seqDataSize;
-        slowLoad->curDevAddr = seqData;
-        slowLoad->medium = sData.medium;
-    } else {
-        size = seqTable->entries[seqId].size;
-        size = ALIGN16(size);
-        slowLoad->curDevAddr = seqTable->entries[seqId].romAddr;
-        slowLoad->medium = seqTable->entries[seqId].medium;
-    }
+    SequenceData sData = ResourceMgr_LoadSeqByName(sequenceMap[seqId]);
+    char* seqData = sData.seqData;
+    size = sData.seqDataSize;
+    slowLoad->curDevAddr = seqData;
+    slowLoad->medium = sData.medium;
 
     slowLoad->curRamAddr = ramAddr;
     slowLoad->status = LOAD_STATUS_START;
@@ -1889,60 +1726,9 @@ void AudioLoad_AsyncDma(AudioAsyncLoad* asyncLoad, size_t size) {
 void AudioLoad_AsyncDmaUnkMedium(uintptr_t devAddr, uintptr_t ramAddr, size_t size, s16 arg3) {
 }
 
-#define RELOC(v, base) (reloc = (uintptr_t)((uintptr_t)(v) + (uintptr_t)(base)))
-
-void AudioLoad_RelocateSample(SoundFontSound* sound, SoundFontData* mem, RelocInfo* relocInfo, int fontId) {
-    size_t maxSoundBankSize = 0x3EB2A0; // sample bank 0 is largest size at 0x3EB2A0
-    if (gUseLegacySD)
-    {
-        // NOTE: This is hack to detect whether or not the sample has been relocated.
-        if ((uintptr_t)mem <= maxSoundBankSize) {
-            assert("mem for sound font bank is too low.");
-        }
-    }
-
-    SoundFontSample* sample;
-    void* reloc;
-
-    // NOTE: Seems precarious to assume the RAM is never <= 0x3EB2A0, but it largely works.
-    if ((uintptr_t)sound->sample < maxSoundBankSize || !gUseLegacySD)
-    {
-        if (!gUseLegacySD) {
-            SoundFontSample* sample2 = sound;
-        } else {
-            sample = sound->sample = RELOC(sound->sample, mem);
-
-            if (sample->size != 0 && sample->unk_bit25 != 1) {
-                sample->loop = RELOC(sample->loop, mem);
-                sample->book = RELOC(sample->book, mem);
-
-                // Resolve the sample medium 2-bit bitfield into a real value based on relocInfo.
-                switch (sample->medium) {
-                    case 0:
-                        sample->sampleAddr = RELOC(sample->sampleAddr, relocInfo->baseAddr1);
-                        sample->medium = relocInfo->medium1;
-                        break;
-                    case 1:
-                        sample->sampleAddr = RELOC(sample->sampleAddr, relocInfo->baseAddr2);
-                        sample->medium = relocInfo->medium2;
-                        break;
-                    case 2:
-                    case 3:
-                        // Invalid? This leaves sample->medium as MEDIUM_CART and MEDIUM_DISK_DRIVE
-                        // respectively, and the sampleAddr unrelocated.
-                        break;
-                }
-
-                sample->unk_bit25 = 1;
-                if (sample->unk_bit26 && (sample->medium != MEDIUM_RAM)) {
-                    gAudioContext.usedSamples[gAudioContext.numUsedSamples++] = sample;
-                }
-            }
-        }
-    }
+void AudioLoad_RelocateSample(SoundFontSound* sound, SoundFontData* mem, RelocInfo* relocInfo, int fontId) 
+{
 }
-
-#undef RELOC
 
 void AudioLoad_RelocateFontAndPreloadSamples(s32 fontId, SoundFontData* mem, RelocInfo* relocInfo, s32 async) {
     AudioPreloadReq* preload;
@@ -2190,17 +1976,11 @@ void AudioLoad_PreloadSamplesForFont(s32 fontId, s32 async, RelocInfo* relocInfo
 
     gAudioContext.numUsedSamples = 0;
 
-    if (!gUseLegacySD) {
-        SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
+    SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
 
-        numDrums = sf->numDrums;
-        numInstruments = sf->numInstruments;
-        numSfx = sf->numSfx;
-    } else {
-        numDrums = gAudioContext.soundFonts[fontId].numDrums;
-        numInstruments = gAudioContext.soundFonts[fontId].numInstruments;
-        numSfx = gAudioContext.soundFonts[fontId].numSfx;
-    }
+    numDrums = sf->numDrums;
+    numInstruments = sf->numInstruments;
+    numSfx = sf->numSfx;
 
     for (i = 0; i < numInstruments; i++) {
         instrument = Audio_GetInstrumentInner(fontId, i);
@@ -2326,15 +2106,11 @@ void AudioLoad_LoadPermanentSamples(void) {
             fontId = AudioLoad_GetRealTableIndex(FONT_TABLE, gAudioContext.permanentCache[i].id);
             //fontId = gAudioContext.permanentCache[i].id;
 
-            if (!gUseLegacySD) {
-                SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
-                relocInfo.sampleBankId1 = sf->sampleBankId1;
-                relocInfo.sampleBankId2 = sf->sampleBankId2;
-            } else {
-                relocInfo.sampleBankId1 = gAudioContext.soundFonts[fontId].sampleBankId1;
-                relocInfo.sampleBankId2 = gAudioContext.soundFonts[fontId].sampleBankId2;
-            }
+            SoundFont* sf = ResourceMgr_LoadAudioSoundFont(fontMap[fontId]);
+            relocInfo.sampleBankId1 = sf->sampleBankId1;
+            relocInfo.sampleBankId2 = sf->sampleBankId2;
 
+            /*
             if (relocInfo.sampleBankId1 != 0xFF) {
                 relocInfo.sampleBankId1 = AudioLoad_GetRealTableIndex(SAMPLE_TABLE, relocInfo.sampleBankId1);
                 relocInfo.medium1 = sampleBankTable->entries[relocInfo.sampleBankId1].medium;
@@ -2344,6 +2120,8 @@ void AudioLoad_LoadPermanentSamples(void) {
                 relocInfo.sampleBankId2 = AudioLoad_GetRealTableIndex(SAMPLE_TABLE, relocInfo.sampleBankId2);
                 relocInfo.medium2 = sampleBankTable->entries[relocInfo.sampleBankId2].medium;
             }
+            */
+
             AudioLoad_PreloadSamplesForFont(fontId, false, &relocInfo);
         }
     }
