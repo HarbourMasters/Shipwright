@@ -272,6 +272,10 @@ void func_80B3C9EC(EnXc* this) {
     this->action = SHEIK_ACTION_BLOCK_PEDESTAL;
     this->drawMode = SHEIK_DRAW_DEFAULT;
     this->unk_30C = 1;
+    if (gSaveContext.n64ddFlag) {
+        Actor_Kill(&this->actor);
+    }
+    return;
 }
 
 void func_80B3CA38(EnXc* this, GlobalContext* globalCtx) {
@@ -283,6 +287,22 @@ void func_80B3CA38(EnXc* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, RandomizerCheck check, int sheikType, GetItemID ogSongId) {
+    if (sheik->actor.parent != NULL && sheik->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !(gSaveContext.eventChkInf[5] & sheikType)) {
+        gSaveContext.eventChkInf[5] |= sheikType;
+    } else if (!(gSaveContext.eventChkInf[5] & sheikType)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, ogSongId);
+        if (check == RC_SHEIK_AT_TEMPLE && !Flags_GetTreasure(globalCtx, 0x1F)) {
+            if (func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f)) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        } else if (check != RC_SHEIK_AT_TEMPLE) {
+            func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+        }
+    }
+}
+
 s32 EnXc_MinuetCS(EnXc* this, GlobalContext* globalCtx) {
     if (this->actor.params == SHEIK_TYPE_MINUET) {
         Player* player = GET_PLAYER(globalCtx);
@@ -290,10 +310,15 @@ s32 EnXc_MinuetCS(EnXc* this, GlobalContext* globalCtx) {
 
         if (z < -2225.0f) {
             if (!Gameplay_InCsMode(globalCtx)) {
-                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gMinuetCs);
-                gSaveContext.cutsceneTrigger = 1;
-                gSaveContext.eventChkInf[5] |= 1;
-                Item_Give(globalCtx, ITEM_SONG_MINUET);
+                if (!gSaveContext.n64ddFlag) {
+                    globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gMinuetCs);
+                    gSaveContext.cutsceneTrigger = 1;
+                    gSaveContext.eventChkInf[5] |= 1;
+                    Item_Give(globalCtx, ITEM_SONG_MINUET);
+                } else {
+                    GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_FOREST, 1, GI_MINUET_OF_FOREST);
+                    return false;
+                }
                 return true;
             }
         }
@@ -321,10 +346,15 @@ s32 EnXc_BoleroCS(EnXc* this, GlobalContext* globalCtx) {
         if ((posRot->pos.x > -784.0f) && (posRot->pos.x < -584.0f) && (posRot->pos.y > 447.0f) &&
             (posRot->pos.y < 647.0f) && (posRot->pos.z > -446.0f) && (posRot->pos.z < -246.0f) &&
             !Gameplay_InCsMode(globalCtx)) {
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gDeathMountainCraterBoleroCs);
-            gSaveContext.cutsceneTrigger = 1;
-            gSaveContext.eventChkInf[5] |= 2;
-            Item_Give(globalCtx, ITEM_SONG_BOLERO);
+            if (!gSaveContext.n64ddFlag) {
+                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gDeathMountainCraterBoleroCs);
+                gSaveContext.cutsceneTrigger = 1;
+                gSaveContext.eventChkInf[5] |= 2;
+                Item_Give(globalCtx, ITEM_SONG_BOLERO);
+            } else {
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_CRATER, 2, GI_BOLERO_OF_FIRE);
+                return false;
+            }
             return true;
         }
         return false;
@@ -333,6 +363,11 @@ s32 EnXc_BoleroCS(EnXc* this, GlobalContext* globalCtx) {
 }
 
 void EnXc_SetupSerenadeAction(EnXc* this, GlobalContext* globalCtx) {
+    if (gSaveContext.n64ddFlag) {
+        this->action = SHEIK_ACTION_SERENADE;
+        return;
+    }
+
     // Player is adult and does not have iron boots and has not learned Serenade
     if ((!CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) && !(gSaveContext.eventChkInf[5] & 4)) && LINK_IS_ADULT) {
         this->action = SHEIK_ACTION_SERENADE;
@@ -348,12 +383,19 @@ s32 EnXc_SerenadeCS(EnXc* this, GlobalContext* globalCtx) {
         Player* player = GET_PLAYER(globalCtx);
         s32 stateFlags = player->stateFlags1;
 
-        if (CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) && !(gSaveContext.eventChkInf[5] & 4) && !(stateFlags & 0x20000000) &&
+        if (((CHECK_OWNED_EQUIP(EQUIP_BOOTS, 1) && !gSaveContext.n64ddFlag) ||
+             (Flags_GetTreasure(globalCtx, 2) && gSaveContext.n64ddFlag)) &&
+            !(gSaveContext.eventChkInf[5] & 4) && !(stateFlags & 0x20000000) &&
             !Gameplay_InCsMode(globalCtx)) {
-            Cutscene_SetSegment(globalCtx, &gIceCavernSerenadeCs);
-            gSaveContext.cutsceneTrigger = 1;
-            gSaveContext.eventChkInf[5] |= 4; // Learned Serenade of Water Flag
-            Item_Give(globalCtx, ITEM_SONG_SERENADE);
+            if (!gSaveContext.n64ddFlag) {
+                Cutscene_SetSegment(globalCtx, &gIceCavernSerenadeCs);
+                gSaveContext.cutsceneTrigger = 1;
+                gSaveContext.eventChkInf[5] |= 4; // Learned Serenade of Water Flag
+                Item_Give(globalCtx, ITEM_SONG_SERENADE);
+            } else {
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_IN_ICE_CAVERN, 4, GI_SERENADE_OF_WATER);
+                return false;
+            }
             osSyncPrintf("ブーツを取った!!!!!!!!!!!!!!!!!!\n");
             return true;
         }
@@ -2151,12 +2193,19 @@ void EnXc_InitTempleOfTime(EnXc* this, GlobalContext* globalCtx) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimeFirstAdultCs);
             gSaveContext.cutsceneTrigger = 1;
             func_80B3EBF0(this, globalCtx);
-        } else if (!(gSaveContext.eventChkInf[5] & 0x20) && (gSaveContext.eventChkInf[4] & 0x100)) {
-            gSaveContext.eventChkInf[5] |= 0x20;
-            Item_Give(globalCtx, ITEM_SONG_PRELUDE);
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimePreludeCs);
-            gSaveContext.cutsceneTrigger = 1;
-            this->action = SHEIK_ACTION_30;
+        } else if ((!(gSaveContext.eventChkInf[5] & 0x20) && (gSaveContext.eventChkInf[4] & 0x100) &&
+                    !gSaveContext.n64ddFlag) ||
+                   (!(gSaveContext.eventChkInf[5] & 0x20) && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+                    gSaveContext.n64ddFlag)) {
+            if (!gSaveContext.n64ddFlag) {
+                gSaveContext.eventChkInf[5] |= 0x20;
+                Item_Give(globalCtx, ITEM_SONG_PRELUDE);
+                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gTempleOfTimePreludeCs);
+                gSaveContext.cutsceneTrigger = 1;
+                this->action = SHEIK_ACTION_30;
+            } else {
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20, GI_PRELUDE_OF_LIGHT);
+            }
         } else if (!(gSaveContext.eventChkInf[5] & 0x20)) {
             func_80B3C9EC(this);
         } else {
@@ -2293,6 +2342,14 @@ static EnXcActionFunc sActionFuncs[] = {
 void EnXc_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnXc* this = (EnXc*)thisx;
     s32 action = this->action;
+
+    if (this->actor.params == SHEIK_TYPE_9) {
+        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+            if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) && !(gSaveContext.eventChkInf[5] & 0x20)) {
+                GivePlayerRandoRewardSheikSong(this, globalCtx, RC_SHEIK_AT_TEMPLE, 0x20, GI_PRELUDE_OF_LIGHT);
+            }
+        }
+    }
 
     if ((action < 0) || (action >= ARRAY_COUNT(sActionFuncs)) || (sActionFuncs[action] == NULL)) {
         osSyncPrintf(VT_FGCOL(RED) "メインモードがおかしい!!!!!!!!!!!!!!!!!!!!!!!!!\n" VT_RST);
