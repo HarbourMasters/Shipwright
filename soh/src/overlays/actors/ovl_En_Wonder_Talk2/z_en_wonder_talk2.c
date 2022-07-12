@@ -267,6 +267,7 @@ void func_80B3A4F8(EnWonderTalk2* this, GlobalContext* globalCtx) {
                             randoSkipText = true;
                             break;
                         default:
+                            break;
                     }
                     // individual textIds that should be skipped, or that should be preserved
                     // in a scene that otherwise has all wonder talk skipped.
