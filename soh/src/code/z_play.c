@@ -530,6 +530,10 @@ void Gameplay_Update(GlobalContext* globalCtx) {
         ActorOverlayTable_LogPrint();
     }
 
+    if (CVar_GetS32("gFreeCamera", 0) && Player_InCsMode(globalCtx)) {
+        globalCtx->manualCamera = false;
+    }
+
     gSegments[4] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.mainKeepIndex].segment);
     gSegments[5] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.subKeepIndex].segment);
     gSegments[2] = VIRTUAL_TO_PHYSICAL(globalCtx->sceneSegment);
