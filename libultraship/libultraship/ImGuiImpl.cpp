@@ -742,17 +742,12 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
-                // TODO: remove if's and add tooltips once C-Up to equip is implemented
-                if (!CVar_GetS32("gDpadEquips", 0)) {
-                    EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                    // Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
-                }
+                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip to the D-pad");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-                if (!CVar_GetS32("gDpadPauseName", 0)) {
-                    EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                    // Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up\nto equip instead of navigate");
-                }
+                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up\nto equip to the D-pad");
 
                 EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
                 Tooltip("Hold the assigned button to limit walking speed");
