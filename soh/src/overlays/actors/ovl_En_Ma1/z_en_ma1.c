@@ -434,9 +434,9 @@ void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx) {
     GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
 }
 
+// Sets an Ocarina State necessary to not softlock in rando.
+// This function should only be called in rando.
 void EnMa1_EndTeachSong(EnMa1* this, GlobalContext* globalCtx) {
-    // Sets an Ocarina State necessary to not softlock in rando.
-    // This function should only be called in rando.
     if (globalCtx->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = func_80AA0F44;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
