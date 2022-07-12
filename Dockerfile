@@ -30,5 +30,19 @@ RUN apt-get update && \
 	
 RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
 
+RUN git clone https://github.com/Perlmint/glew-cmake.git && \
+	cmake glew-cmake && \
+	make -j$(nproc) && \
+	make install
+
+ENV SDL2VER=2.0.22
+RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
+	tar -xzf SDL2-${SDL2VER}.tar.gz && \
+	cd SDL2-${SDL2VER} && \
+	./configure --prefix=/usr && \
+	make && make install && \
+	rm ../SDL2-${SDL2VER}.tar.gz && \
+	cp -av /lib/libSDL* /lib/x86_64-linux-gnu/
+
 RUN mkdir /soh
 WORKDIR /soh
