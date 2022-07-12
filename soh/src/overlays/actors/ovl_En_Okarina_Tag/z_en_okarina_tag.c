@@ -234,7 +234,9 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
     if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04) {
         this->actionFunc = func_80ABF28C;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_03) {
-        func_80078884(NA_SE_SY_CORRECT_CHIME);
+        if (!gSaveContext.n64ddFlag || (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_DOOR_OF_TIME) != 2)) {
+            func_80078884(NA_SE_SY_CORRECT_CHIME);
+        }
         if (this->switchFlag >= 0) {
             Flags_SetSwitch(globalCtx, this->switchFlag);
         }
@@ -244,18 +246,38 @@ void func_80ABF4C8(EnOkarinaTag* this, GlobalContext* globalCtx) {
                 gSaveContext.eventChkInf[3] |= 0x200;
                 break;
             case 2:
-                globalCtx->csCtx.segment = D_80ABF9D0;
-                gSaveContext.cutsceneTrigger = 1;
+                if (!gSaveContext.n64ddFlag) {
+                    globalCtx->csCtx.segment = D_80ABF9D0;
+                    gSaveContext.cutsceneTrigger = 1;
+                } else {
+                    gSaveContext.eventChkInf[6] |= 0x80;
+                    gSaveContext.eventChkInf[6] |= 0x20;
+                }
                 func_800F574C(1.18921f, 0x5A);
                 break;
             case 4:
+                if (gSaveContext.n64ddFlag) {
+                    int doorOfTime = GetRandoSettingValue(RSK_DOOR_OF_TIME);
+                    if (doorOfTime == 2 &&
+                        (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_OCARINA_TIME ||
+                         !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD) || !CHECK_QUEST_ITEM(QUEST_GORON_RUBY) ||
+                         !CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
+                        func_80078884(NA_SE_SY_OCARINA_ERROR);
+                        break;
+                    } else {
+                        func_80078884(NA_SE_SY_CORRECT_CHIME);
+                    }
+                }
                 globalCtx->csCtx.segment = D_80ABFB40;
                 gSaveContext.cutsceneTrigger = 1;
                 break;
             case 6:
-                globalCtx->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
-                                                         : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
-                gSaveContext.cutsceneTrigger = 1;
+                // Don't start the cutscene in a rando save.
+                if (!(gSaveContext.n64ddFlag)) {
+                    globalCtx->csCtx.segment = LINK_IS_ADULT ? SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_003C80)
+                                                             : SEGMENTED_TO_VIRTUAL(&spot02_scene_Cs_005020);
+                    gSaveContext.cutsceneTrigger = 1;
+                }
                 gSaveContext.eventChkInf[1] |= 0x2000;
                 func_80078884(NA_SE_SY_CORRECT_CHIME);
                 break;
@@ -288,7 +310,7 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
         yawDiff = this->actor.yawTowardsPlayer - this->actor.world.rot.y;
         this->unk_15A++;
         if (!(this->actor.xzDistToPlayer > 120.0f)) {
-            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+            if (CHECK_QUEST_ITEM(QUEST_SONG_SUN) || gSaveContext.n64ddFlag) {
                 this->actor.textId = 0x5021;
             }
             yawDiffNew = ABS(yawDiff);
@@ -300,15 +322,31 @@ void func_80ABF708(EnOkarinaTag* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSunSong(EnOkarinaTag* song, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (song->actor.parent != NULL && song->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+        func_8002F434(&song->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void func_80ABF7CC(EnOkarinaTag* this, GlobalContext* globalCtx) {
     // "Open sesame sesame!"
     osSyncPrintf(VT_FGCOL(PURPLE) "☆☆☆☆☆ 開けゴマゴマゴマ！ ☆☆☆☆☆ %d\n" VT_RST, Message_GetState(&globalCtx->msgCtx));
 
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
         Message_CloseTextbox(globalCtx);
-        if (!CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
-            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
-            gSaveContext.cutsceneTrigger = 1;
+        if (!gSaveContext.n64ddFlag) {
+            if (!CHECK_QUEST_ITEM(QUEST_SONG_SUN)) {
+                globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(&gSunSongGraveSunSongTeachCs);
+                gSaveContext.cutsceneTrigger = 1;
+            }
+        } else {
+            if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+                GivePlayerRandoRewardSunSong(this, globalCtx, RC_SONG_FROM_ROYAL_FAMILYS_TOMB);
+            }
         }
         this->actionFunc = func_80ABF708;
     }

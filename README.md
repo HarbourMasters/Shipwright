@@ -128,5 +128,3 @@ Nightly builds of Ship of Harkinian are available [here](https://builds.shipofha
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link
     AceHeart | Zelda
-    
-###### Lemons

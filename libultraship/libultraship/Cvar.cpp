@@ -64,7 +64,7 @@ void CVar_SetFloat(const char* name, float value) {
     cvar->value.valueFloat = value;
 }
 
-void CVar_SetString(const char* name, const char* value) {
+extern "C" void CVar_SetString(const char* name, const char* value) {
     auto& cvar = cvars[name];
     if (!cvar) {
         cvar = std::make_unique<CVar>();

@@ -10,7 +10,8 @@ typedef struct {
     u32 questItems;
     s8 defense;
     u16 health;
-    u8 n64ddFlag;
+    u8 seedHash[5];
+    u8 randoSave;
 } SaveFileMetaInfo;
 
 #ifdef __cplusplus
@@ -110,6 +111,9 @@ public:
     static void InitFileImpl(bool isDebug);
     static void InitFileNormal();
     static void InitFileDebug();
+
+    static void LoadRandomizerVersion1();
+    static void SaveRandomizer();
 
     static void LoadBaseVersion1();
     static void SaveBase();
