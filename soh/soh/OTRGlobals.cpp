@@ -1,6 +1,7 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <algorithm>
 #include <filesystem>
 #include <locale>
 #include <codecvt>
@@ -35,6 +36,8 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer/randomizer.h"
+#include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
@@ -57,6 +60,7 @@ OTRGlobals::OTRGlobals() {
 
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
+    gRandomizer = std::make_shared<Randomizer>();
     context->GetWindow()->Init();
 }
 
@@ -118,6 +122,8 @@ extern "C" void InitOTR() {
     InitCosmeticsEditor();
     DebugConsole_Init();
     Debug_Init();
+    Rando_Init();
+    InitItemTracker();
     OTRExtScanner();
 }
 
@@ -449,6 +455,10 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else
         return ResourceMgr_LoadTexByName(filePath);
+}
+
+extern "C" Sprite* GetSeedTexture(uint8_t index) {
+    return Randomizer::GetSeedTexture(index);
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
@@ -900,7 +910,6 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         for (size_t i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
 
-
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
         for (size_t i = 0; i < res->rotationIndices.size(); i++) {
@@ -1256,6 +1265,19 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
+int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -1422,4 +1444,139 @@ extern "C" int Controller_ShouldRumble(size_t i) {
 extern "C" void* getN64WeirdFrame(s32 i) {
     char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
+}
+
+extern "C" s16 GetItemModelFromId(s16 itemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
+}
+
+extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
+}
+
+extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
+}
+
+extern "C" void LoadHintLocations(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+}
+
+extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+    return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
+}
+
+extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+    return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
+}
+
+extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+}
+
+extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
+    std::string scrubText("");
+    int language = CVar_GetS32("gLanguages", 0);
+    int price = 0;
+    switch (scrubTextId) {
+        case 0x10A2:
+            price = 10;
+            break;
+        case 0x10DC:
+        case 0x10DD:
+            price = 40;
+            break;
+    }
+    switch (language) { 
+    case 0: default:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "All right! You win! In return for";
+        scrubText += 0x01; // newline
+        scrubText += "sparing me, I will sell you a";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "mysterious item";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price);
+        scrubText += price > 1 ? " Rupees" : " Rupee";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += " it is!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+            break;
+    case 2:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "J'abandonne! Tu veux bien m'acheter";
+        scrubText += 0x01; // newline
+        scrubText += "un ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "objet myst\x96rieux";
+        //scrubText += ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "?";
+        scrubText += 0x01; // newline
+        scrubText += "\x84";
+        scrubText += "a fera ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price) + " Rubis";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+        break;
+    }
+    
+    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
+                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
+    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // so we're just going to let RVO take care of it
+    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
+    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+}
+
+extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+}
+
+extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }

@@ -22,6 +22,7 @@
 #endif
 
 #include "../../ImGuiImpl.h"
+#include "../../Cvar.h"
 
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
@@ -29,6 +30,7 @@
 #include <WTypesbase.h>
 #endif
 #include <time.h>
+#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
@@ -106,7 +108,7 @@ static void set_fullscreen(bool on, bool call_callback) {
         SDL_GetDesktopDisplayMode(0, &mode);
         window_width = mode.w;
         window_height = mode.h;
-        SDL_ShowCursor(false);
+        //SDL_ShowCursor(false);
     } else {
         window_width = DESIRED_SCREEN_WIDTH;
         window_height = DESIRED_SCREEN_HEIGHT;
@@ -132,6 +134,8 @@ static int target_fps = 60;
 
 static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -259,6 +263,11 @@ static void gfx_sdl_handle_events(void) {
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                 }
+                break;
+            case SDL_DROPFILE:
+                CVar_SetString("gDroppedFile", event.drop.file);
+                CVar_SetS32("gNewFileDropped", 1);
+                Game::SaveSettings();
                 break;
             case SDL_QUIT:
                 SDL_Quit(); // bandaid fix for linux window closing issue
