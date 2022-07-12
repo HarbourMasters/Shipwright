@@ -162,7 +162,9 @@ void Lights_BindAll(Lights* lights, LightNode* listHead, Vec3f* vec) {
 
     while (listHead != NULL) {
         info = listHead->info;
-        bindFuncs[info->type](lights, &info->params, vec);
+        if (info->type < 3) { // bandaid fix for death crash issue
+            bindFuncs[info->type](lights, &info->params, vec);
+        }
         listHead = listHead->next;
     }
 }
