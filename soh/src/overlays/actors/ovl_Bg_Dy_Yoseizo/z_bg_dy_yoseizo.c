@@ -67,6 +67,19 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
     NULL,
 };
 
+void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
+
+    if (this->actor.parent == GET_PLAYER(globalCtx) && !Flags_GetTreasure(globalCtx, this->fountainType + 1) &&
+        !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Flags_SetTreasure(globalCtx, this->fountainType + 1);
+        Actor_Kill(&this->actor);
+    } else if (!Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
@@ -182,6 +195,18 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, GlobalContext* globalCtx) {
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx) {
     if (Flags_GetSwitch(globalCtx, 0x38)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+
+        if(gSaveContext.n64ddFlag) {
+            gSaveContext.healthAccumulator = 0x140;
+            Magic_Fill(globalCtx);
+            if(Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+                Actor_Kill(&this->actor);
+            } else {
+                GivePlayerRandoRewardGreatFairy(this, globalCtx);
+            }
+            return;
+        } 
+
         if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
             if (!gSaveContext.magicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
                 Actor_Kill(&this->actor);

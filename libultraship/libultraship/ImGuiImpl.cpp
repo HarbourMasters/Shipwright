@@ -66,31 +66,13 @@ namespace SohImGui {
     bool p_open = false;
     bool needs_save = false;
 
-    const char* RainbowColorCvarList[] = {
-        //This is the list of possible CVars that has rainbow effect.
-        "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-        "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
-        "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
-        "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol",
-        "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
-        "gCCCUBtnPrim", "gCCCLBtnPrim", "gCCCRBtnPrim", "gCCCDBtnPrim", "gCCDpadPrim",
-        "gCCMagicBorderNormPrim", "gCCMagicBorderPrim", "gCCMagicPrim", "gCCMagicUsePrim",
-        "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
-        "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
-        "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
-        "gDF_Col", "gDF_Env",
-        "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env", 
-        "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
-        "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-        "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim", 
-    };
-
     const char* filters[3] = {
         "Three-Point",
         "Linear",
         "None"
     };
 
+    std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
@@ -248,50 +230,6 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadRainbowColor() {
-        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
-        for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = RainbowColorCvarList[s];
-            std::string Cvar_Red = cvarName;
-            Cvar_Red += "R";
-            std::string Cvar_Green = cvarName;
-            Cvar_Green += "G";
-            std::string Cvar_Blue = cvarName;
-            Cvar_Blue += "B";
-            std::string Cvar_RBM = cvarName;
-            Cvar_RBM += "RBM";
-            std::string RBM_HUE = cvarName;
-            RBM_HUE += "Hue";
-            f32 Canon = 10.f * s;
-            ImVec4 NewColor;
-            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
-            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
-            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
-            if (newHue >= 360)
-                newHue = 0;
-            CVar_SetFloat(RBM_HUE.c_str(), newHue);
-            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
-            u8 i = current_hue / 60 + 1;
-            u8 a = (-current_hue / 60.0f + i) * 255;
-            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
-
-            switch (i) {
-            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
-            }
-
-            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
-            }
-        }
-    }
-
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha) {
         std::string Cvar_Red = cvarname;
         Cvar_Red += "R";
@@ -389,7 +327,7 @@ namespace SohImGui {
             LoadTexture("C-Right", "assets/ship_of_harkinian/buttons/CRight.png");
             LoadTexture("C-Up", "assets/ship_of_harkinian/buttons/CUp.png");
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
-            });
+        });
 
         for (const auto& [i, controllers] : Ship::Window::Controllers)
         {
@@ -400,8 +338,14 @@ namespace SohImGui {
 
         ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
-            });
+        });
         Game::InitSettings();
+
+        CVar_SetS32("gRandoGenerating", 0);
+        CVar_SetS32("gNewSeedGenerated", 0);
+        CVar_SetS32("gNewFileDropped", 0);
+        CVar_SetString("gDroppedFile", "");
+        Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -492,9 +436,9 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue)
     {
-        int val = CVar_GetS32(cvarName, 0);
+        int val = CVar_GetS32(cvarName, defaultValue);
 
         ImGui::Text(text, val);
 
@@ -662,8 +606,7 @@ namespace SohImGui {
                 CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(ColorRGBA.z * 255, 0, 255));
                 needs_save = true;
             }
-        }
-        else {
+        } else {
             if (ImGui::ColorEdit4(text, (float*)&ColorRGBA, flags)) {
                 CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(ColorRGBA.x * 255, 0, 255));
                 CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(ColorRGBA.y * 255, 0, 255));
@@ -723,7 +666,7 @@ namespace SohImGui {
             ImGui::DockBuilderFinish(dockId);
         }
 
-        ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
+        ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_NoDockingInCentralNode);
 
         if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
@@ -799,13 +742,16 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
+                // TODO: remove if's and add tooltips once C-Up to equip is implemented
                 if (!CVar_GetS32("gDpadEquips", 0)) {
                     EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                    // Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
                 }
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 if (!CVar_GetS32("gDpadPauseName", 0)) {
                     EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                    // Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up\nto equip instead of navigate");
                 }
 
                 EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
@@ -937,7 +883,9 @@ namespace SohImGui {
                         Tooltip("Skip first-time pickup messages for consumable items");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
-                        
+                        EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
+                        Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
+
                         ImGui::EndMenu();
                     }
 
@@ -1013,7 +961,19 @@ namespace SohImGui {
 
                             ImGui::EndMenu();
                         }
-                        
+
+                        if (ImGui::BeginMenu("Fishing")) {
+                            EnhancementCheckbox("Instant Fishing", "gInstantFishing");
+                            Tooltip("All fish will be caught instantly");
+                            EnhancementCheckbox("Guarantee Bite", "gGuaranteeFishingBite");
+                            Tooltip("When a line is stable, guarantee bite. Otherwise use default logic");
+                            EnhancementSliderInt("Child Minimum Weight: %d", "##cMinimumWeight", "gChildMinimumWeightFish", 6, 10, "", 10);
+                            Tooltip("The minimum weight for the unique fishing reward as a child");
+                            EnhancementSliderInt("Adult Minimum Weight: %d", "##aMinimumWeight", "gAdultMinimumWeightFish", 8, 13, "", 13);
+                            Tooltip("The minimum weight for the unique fishing reward as an adult");
+                            ImGui::EndMenu();
+                        }
+
                         ImGui::EndMenu();
                     }
 
@@ -1039,6 +999,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
                     Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
+                    EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
+                    Tooltip("Injects Golden Skulltula total count in pickup messages");
                     EnhancementCheckbox("Pull grave during the day", "gDayGravePull");
                     Tooltip("Allows graves to be pulled when child during the day");
                     ImGui::EndMenu();
@@ -1262,13 +1224,21 @@ namespace SohImGui {
                     }
                     ImGui::EndMenu();
                 }
-
             }
 
             ImGui::EndMenuBar();
         }
 
         ImGui::End();
+
+        for (const auto& category : hiddenwindowCategories) {
+            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
+            ImGui::SetNextWindowSize(ImVec2 (0,0));
+            ImGui::SetNextWindowPos(ImVec2 (-100,-100));
+            ImGui::Begin(category.first.c_str(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus);
+            ImGui::End();
+            ImGui::PopStyleColor();
+        }
 
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
@@ -1408,8 +1378,6 @@ namespace SohImGui {
             ImGui::UpdatePlatformWindows();
             ImGui::RenderPlatformWindowsDefault();
         }
-        //Placed here so it does the rainbow effects even if menu is not on.
-        LoadRainbowColor();
     }
 
     void CancelFrame() {
@@ -1423,18 +1391,22 @@ namespace SohImGui {
         console->Commands[cmd] = std::move(entry);
     }
 
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc) {
+    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
         if (customWindows.contains(name)) {
             SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
             return;
         }
 
         customWindows[name] = {
-            .enabled = false,
+            .enabled = isEnabled,
             .drawFunc = drawFunc
         };
 
-        windowCategories[category].emplace_back(name);
+        if (isHidden) {
+            hiddenwindowCategories[category].emplace_back(name);
+        } else {
+            windowCategories[category].emplace_back(name);
+        }
     }
 
     ImTextureID GetTextureByName(const std::string& name) {

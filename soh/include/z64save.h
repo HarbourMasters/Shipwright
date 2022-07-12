@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "z64math.h"
+#include <randomizerTypes.h>
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];
@@ -59,6 +60,21 @@ typedef struct {
     /* 0x20 */ s32 tempSwchFlags;
     /* 0x24 */ s32 tempCollectFlags;
 } FaroresWindData; // size = 0x28
+
+typedef struct {
+    RandomizerCheck check;
+    RandomizerGet get;
+} ItemLocationRando;
+
+typedef struct {
+    RandomizerCheck check;
+    char hintText[200];
+} HintLocationRando;
+
+typedef struct {
+    RandomizerSettingKey key;
+    u8 value;
+} RandoSetting;
 
 typedef struct {
     /* 0x0000 */ s32 entranceIndex; // start of `save` substruct, originally called "memory"
@@ -157,6 +173,17 @@ typedef struct {
     /* 0x1420 */ s16 worldMapArea;
     /* 0x1422 */ s16 sunsSongState; // controls the effects of suns song
     /* 0x1424 */ s16 healthAccumulator;
+    RandoSetting randoSettings[300];
+    ItemLocationRando itemLocations[500];
+    HintLocationRando hintLocations[50];
+    char childAltarText[250];
+    char adultAltarText[750];
+    char ganonHintText[150];
+    char ganonText[250];
+    u8 seedIcons[5];
+    u8 dungeonsDone[8];
+    u8 trialsDone[6];
+    u8 temporaryWeapon;
 } SaveContext; // size = 0x1428
 
 typedef enum {
