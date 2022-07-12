@@ -25,6 +25,7 @@ void func_80AA106C(EnMa1* this, GlobalContext* globalCtx);
 void func_80AA10EC(EnMa1* this, GlobalContext* globalCtx);
 void func_80AA1150(EnMa1* this, GlobalContext* globalCtx);
 void EnMa1_DoNothing(EnMa1* this, GlobalContext* globalCtx);
+void EnMa1_WaitForSongGive(EnMa1* this, GlobalContext* globalCtx);
 
 const ActorInit En_Ma1_InitVars = {
     ACTOR_EN_MA1,
@@ -356,7 +357,6 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
 
 void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
     GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
-    malon->actionFunc = func_80AA0D88;
     if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {
         Flags_SetTreasure(globalCtx, 0x1F);
@@ -364,7 +364,6 @@ void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, Randomiz
     } else if (!Flags_GetTreasure(globalCtx, 0x1F) &&
         (INV_CONTENT(ITEM_OCARINA_FAIRY) != ITEM_NONE || INV_CONTENT(ITEM_OCARINA_TIME) != ITEM_NONE)) {
         func_8002F434(&malon->actor, globalCtx, getItemId, 10000.0f, 100.0f);
-        malon->actionFunc = func_80AA0F44;
     }
     malon->unk_1E8.unk_00 = 0;
     malon->unk_1E0 = 1;
@@ -411,7 +410,7 @@ void func_80AA0F44(EnMa1* this, GlobalContext* globalCtx) {
             player->stateFlags2 |= 0x800000;
         }
         if (gSaveContext.n64ddFlag && Actor_TextboxIsClosing(&this->actor, globalCtx)) {
-            GivePlayerRandoRewardMalon(this, globalCtx, RC_SONG_FROM_MALON);
+            this->actionFunc = EnMa1_WaitForSongGive;
         }
     }
 }
