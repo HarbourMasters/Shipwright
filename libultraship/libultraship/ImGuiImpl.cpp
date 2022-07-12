@@ -756,8 +756,6 @@ namespace SohImGui {
                 Tooltip("When in the first person view or aiming with weapons, invert the X axis");
                 EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
                 Tooltip("When in the C-Up first person view, auto center the camera");
-                EnhancementCheckbox("Use right stick for first person aiming", "gRightStickAim");
-                Tooltip("Use the right stick for aiming instead of the left stick");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
