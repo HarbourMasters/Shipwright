@@ -1499,7 +1499,7 @@ s32 Camera_Free(Camera* camera) {
     f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
     f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
 
-    camera->globalCtx->camX += newCamX * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+    camera->globalCtx->camX += newCamX * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
     camera->globalCtx->camY += newCamY * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);
 
     if (camera->globalCtx->camY > 0x32A4) {
