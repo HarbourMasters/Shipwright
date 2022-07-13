@@ -78,7 +78,7 @@ namespace Ship {
             ax *= scale;
             ay *= scale;
         }
-        
+
         if (!isRightStick) {
             wStickX = +ax;
             wStickY = -ay;
@@ -337,7 +337,7 @@ namespace Ship {
                     dwPressedButtons[slot] &= ~PosButton;
                     dwPressedButtons[slot] &= ~NegButton;
                 }
-                
+
             } else {
                 if (PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT) {
                     if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisX != Axis) {
