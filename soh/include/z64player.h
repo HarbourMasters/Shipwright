@@ -481,7 +481,7 @@ typedef struct Player {
     /* 0x042D */ s8         doorDirection;
     /* 0x042E */ s16        doorTimer;
     /* 0x0430 */ Actor* doorActor;
-    /* 0x0434 */ s8         getItemId;
+    /* 0x0434 */ s16        getItemId;
     /* 0x0436 */ u16        getItemDirection;
     /* 0x0438 */ Actor* interactRangeActor;
     /* 0x043C */ s8         mountSide;

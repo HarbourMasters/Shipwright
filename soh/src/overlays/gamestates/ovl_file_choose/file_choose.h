@@ -203,6 +203,11 @@ void FileChoose_DrawOptions(GameState* thisx);
 void FileChoose_DrawNameEntry(GameState* thisx);
 void FileChoose_DrawCharacter(GraphicsContext* gfxCtx, void* texture, s16 vtx);
 
+void HandleMouseInput(Input* input);
+u8 HandleMouseCursor(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy);
+Vec2f HandleMouseCursorSplit(FileChooseContext* this, Input* input, int minx, int miny, int maxx, int maxy, int countx,
+                             int county);
+
 extern s16 D_808123F0[];
 
 #endif

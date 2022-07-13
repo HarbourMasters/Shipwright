@@ -1817,13 +1817,8 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             } else {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, 255);
             }
-            //TOOD CVAR
-            if (((CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
-                (pauseCtx->pageIndex != PAUSE_EQUIP) && (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) && (pauseCtx->pageIndex != PAUSE_ITEM ||
-                (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) {
-                POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
-            }
 
+            POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
         if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gDebugEnabled", 0) != 0) {
@@ -1929,7 +1924,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 }
             }
         } else {
-            if (!pauseCtx->pageIndex) { // pageIndex == PAUSE_ITEM
+            if (!pauseCtx->pageIndex && (!CVar_GetS32("gPauseAnyCursor", 0) || (gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] != ITEM_NONE))) { // pageIndex == PAUSE_ITEM
                 pauseCtx->infoPanelVtx[16].v.ob[0] = pauseCtx->infoPanelVtx[18].v.ob[0] =
                     WREG(49 + gSaveContext.language);
 
@@ -2097,6 +2092,12 @@ void KaleidoScope_UpdateNamePanel(GlobalContext* globalCtx) {
         sp2A = pauseCtx->namedItem;
 
         osCreateMesgQueue(&pauseCtx->loadQueue, &pauseCtx->loadMsg, 1);
+
+        if (CVar_GetS32("gPauseAnyCursor", 0) &&
+        ((pauseCtx->pageIndex == PAUSE_EQUIP && pauseCtx->cursorX[PAUSE_EQUIP] != 0 && !CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) ||
+        (pauseCtx->pageIndex == PAUSE_ITEM && gSaveContext.inventory.items[pauseCtx->cursorPoint[PAUSE_ITEM]] == ITEM_NONE))) {
+            pauseCtx->namedItem = PAUSE_ITEM_NONE;
+        }
 
         if (pauseCtx->namedItem != PAUSE_ITEM_NONE) {
             if ((pauseCtx->pageIndex == PAUSE_MAP) && !sInDungeonScene) {
@@ -2664,7 +2665,7 @@ void KaleidoScope_InitVertices(GlobalContext* globalCtx, GraphicsContext* gfxCtx
 
     for (phi_t3 = 1; phi_t3 < ARRAY_COUNT(gSaveContext.equips.buttonItems); phi_t3++, phi_t2 += 4) {
         if (gSaveContext.equips.cButtonSlots[phi_t3 - 1] != ITEM_NONE &&
-            ((phi_t3 < 4) || (CVar_GetS32("gDpadEquips", 0) != 0))) {
+            ((phi_t3 < 4) || CVar_GetS32("gDpadEquips", 0))) {
             phi_t4 = gSaveContext.equips.cButtonSlots[phi_t3 - 1] * 4;
 
             pauseCtx->itemVtx[phi_t2 + 0].v.ob[0] = pauseCtx->itemVtx[phi_t2 + 2].v.ob[0] =
@@ -3836,7 +3837,17 @@ void KaleidoScope_Update(GlobalContext* globalCtx)
                                                    &D_801333E8);
                             Gameplay_SaveSceneFlags(globalCtx);
                             gSaveContext.savedSceneNum = globalCtx->sceneNum;
-                            Save_SaveFile();
+                            if (gSaveContext.temporaryWeapon) {
+                                gSaveContext.equips.buttonItems[0] = ITEM_NONE;
+                                player->currentSwordItem = ITEM_NONE;
+                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_NONE);
+                                Save_SaveFile();
+                                gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+                                player->currentSwordItem = ITEM_SWORD_KOKIRI;
+                                Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+                            } else {
+                                Save_SaveFile();
+                            }
                             pauseCtx->unk_1EC = 4;
                             D_8082B25C = 3;
                         }

@@ -631,7 +631,7 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, GlobalContext* globalCtx) {
 
         Actor_SetScale(thisx, 0.20f);
 
-        if (gSaveContext.entranceIndex == 0x0053) {
+        if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
             switch (globalCtx->csCtx.npcActions[this->csActionId]->action) {
                 case 2:
                     DemoEffect_MedalSparkle(this, globalCtx, 0);
@@ -643,7 +643,8 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, GlobalContext* globalCtx) {
         }
         switch (globalCtx->csCtx.npcActions[this->csActionId]->action) {
             case 2:
-                if (gSaveContext.entranceIndex == 0x0053) {
+                if (gSaveContext.entranceIndex == 0x0053 ||
+                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -658,7 +659,8 @@ void DemoEffect_UpdateGetItem(DemoEffect* this, GlobalContext* globalCtx) {
                 if (this->getItem.drawId != GID_ARROW_LIGHT) {
                     this->actor.shape.rot.y += this->getItem.rotation;
                 }
-                if (gSaveContext.entranceIndex == 0x0053) {
+                if (gSaveContext.entranceIndex == 0x0053 ||
+                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
                     Audio_PlayActorSound2(thisx, NA_SE_EV_MEDAL_APPEAR_L - SFX_FLAG);
                 } else {
                     func_800788CC(NA_SE_EV_MEDAL_APPEAR_S - SFX_FLAG);
@@ -1581,14 +1583,15 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, GlobalContext* globalCtx) {
                 return;
             default:
                 DemoEffect_MoveToCsEndpoint(this, globalCtx, this->csActionId, 0);
-                if (gSaveContext.entranceIndex == 0x0053) {
+                if (gSaveContext.entranceIndex == 0x0053 ||
+                    (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
                     DemoEffect_MoveJewelSplit(&thisx->world, this);
                 }
                 break;
         }
     }
 
-    if (gSaveContext.entranceIndex == 0x0053) {
+    if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
         if (!(gSaveContext.eventChkInf[4] & 0x800)) {
             hasCmdAction = globalCtx->csCtx.state && globalCtx->csCtx.npcActions[this->csActionId];
             if (!hasCmdAction) {
@@ -1859,6 +1862,7 @@ void DemoEffect_DrawLightEffect(Actor* thisx, GlobalContext* globalCtx) {
         if (this->light.flicker == 0) {
             this->light.flicker = 1;
         } else {
+            disp = (uintptr_t)gEffFlash1DL;
             alpha = &this->light.alpha;
             func_80093D84(globalCtx->state.gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, this->primXluColor[0], this->primXluColor[1],
