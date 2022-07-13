@@ -37,7 +37,7 @@ void Ship::ControlDeck::ScanPhysicalDevices() {
 	}
 
 	for (int i = 0; i < MAXCONTROLLERS; i++) {
-		virtualDevices.push_back(0);
+		virtualDevices.push_back(i == 0 ? 0 : static_cast<int>(physicalDevices.size()) - 1);
 	}
 
 	LoadControllerSettings();
