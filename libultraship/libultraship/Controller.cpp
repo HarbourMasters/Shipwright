@@ -1,5 +1,6 @@
 #include "Controller.h"
 #include <memory>
+#include <algorithm>
 #if __APPLE__
 #include <SDL_events.h>
 #else
@@ -8,7 +9,7 @@
 
 namespace Ship {
 
-	Controller::Controller() : isRumbling(false), wStickX(0), wStickY(0), dwPressedButtons(0), wGyroX(0), wGyroY(0) {
+	Controller::Controller() : isRumbling(false), wStickX(0), wStickY(0),  wGyroX(0), wGyroY(0), dwPressedButtons(0){
 		Attachment = nullptr;
 		profiles.resize(MAXCONTROLLERS);
 		for(int slot = 0; slot < MAXCONTROLLERS; slot++) {

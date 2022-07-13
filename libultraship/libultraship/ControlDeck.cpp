@@ -92,7 +92,7 @@ void Ship::ControlDeck::LoadControllerSettings() {
 			profile.GyroThresholds.clear();
 			profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
 			profile.RumbleStrength = Config->getBool(NESTED("Rumble.Strength", ""));
-			profile.UseGyro = Config->getBool(NESTED("Gyro.Enabled"));
+			profile.UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
 
 			for (auto const& val : rawProfile["Gyro"]["Thresholds"].items()) {
 				profile.GyroThresholds[std::stoi(val.key())] = val.value();
