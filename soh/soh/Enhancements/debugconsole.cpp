@@ -500,7 +500,6 @@ template <typename Numeric> bool is_number(const std::string& s) {
 }
 
 void DebugConsole_LoadLegacyCVars() {
-{
     auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
     if (File::Exists(cvarsConfig)) {
         const auto lines = File::ReadAllLines(cvarsConfig);

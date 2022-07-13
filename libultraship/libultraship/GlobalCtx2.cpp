@@ -48,7 +48,7 @@ namespace Ship {
         return GlobalCtx2::GetAppDirectoryPath() + "/" + path;
     }
 
-    GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
+    GlobalCtx2::GlobalCtx2(std::string Name) : Name(std::move(Name)) {
 
     }
 
