@@ -25,6 +25,9 @@ namespace Ship {
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
 			std::shared_ptr<Mercury> GetConfig() { return Config; }
 
+			static std::string GetAppDirectoryPath();
+			static std::string GetPathRelativeToAppDirectory(const char* path);
+
 			void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
 			void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
 

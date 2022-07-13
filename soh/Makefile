@@ -18,8 +18,11 @@ LTO ?= 0
 
 WARN := \
 	-Wno-return-type \
+	-Wno-unused-command-line-argument \
+	-Wno-implicit-function-declaration \
+	-Wno-c++11-narrowing \
 	-funsigned-char \
-	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -fno-toplevel-reorder -ffreestanding -fwrapv \
+	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
 CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib
 CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib
@@ -99,7 +102,6 @@ LDLIBS := \
 	bz2 \
 	z \
 	pthread \
-	atomic \
 	ultraship \
 )
 
@@ -116,8 +118,9 @@ endif
 
 ifeq ($(UNAME), Darwin) #APPLE
 LDLIBS += \
-	$(addprefix -framework, \
+	$(addprefix -framework , \
 	OpenGL \
+	Foundation \
 ) \
 	$(shell sdl2-config --libs) $(shell pkg-config --libs glew)
 endif
@@ -208,7 +211,7 @@ build/%.o: %.c
 $(TARGET): $(LIBULTRASHIP)
 
 $(TARGET): $(O_FILES)
-	$(CXX) $^ -o $@ $(LDFLAGS) -fuse-ld=$(LD) $(LDDIRS) $(LDLIBS)
+	$(CXX) $^ -o $@ $(LDFLAGS) $(LDDIRS) $(LDLIBS)
 
 -include $(D_FILES)
 
@@ -222,9 +225,6 @@ appbundle: macosx/$(APPNAME).icns
 	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
 	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
 	cp $(TARGET) $(APPBUNDLEEXE)/soh
-	cp macosx/launcher.sh $(APPBUNDLEEXE)/launcher.sh
-	clang -ObjC macosx/appsupport.m -arch arm64 -arch x86_64 -framework Foundation -o macosx/appsupport
-	cp macosx/appsupport $(APPBUNDLEEXE)/appsupport
 	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
 
 macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
@@ -242,7 +242,3 @@ macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
 	cp macosx/$(APPNAME)Icon.png macosx/$(APPNAME).iconset/icon_512x512@2x.png
 	iconutil -c icns -o macosx/$(APPNAME).icns macosx/$(APPNAME).iconset
 	rm -r macosx/$(APPNAME).iconset
-
-filledappbundle: appbundle
-	cp ./oot.otr $(APPBUNDLEEXE)/oot.otr
-

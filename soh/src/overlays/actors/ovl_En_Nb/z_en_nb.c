@@ -1100,7 +1100,7 @@ void EnNb_LookUp(EnNb* this, GlobalContext* globalCtx) {
 }
 
 void EnNb_CrawlspaceSpawnCheck(EnNb* this, GlobalContext* globalCtx) {
-    if (!(gSaveContext.eventChkInf[9] & 0x20) && LINK_IS_CHILD) {
+    if (!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[9] & 0x20) && LINK_IS_CHILD) {
         EnNb_UpdatePath(this, globalCtx);
 
         // looking into crawlspace

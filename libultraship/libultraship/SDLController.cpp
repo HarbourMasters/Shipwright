@@ -78,6 +78,16 @@ namespace Ship {
 
         wStickX = +ax;
         wStickY = -ay;
+/* SOHTODO KIRITO: Camera Sensitivity
+        if (!isRightStick) {
+            wStickX = +ax;
+            wStickY = -ay;
+        }
+        else {
+            wCamX = +ax * 15.0f;
+            wCamY = -ay * 15.0f;
+        }
+*/
     }
 
     int32_t SDLController::ReadRawPress() {

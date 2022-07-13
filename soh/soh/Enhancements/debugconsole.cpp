@@ -500,18 +500,18 @@ template <typename Numeric> bool is_number(const std::string& s) {
 }
 
 void DebugConsole_LoadLegacyCVars() {
-    if (File::Exists("cvars.cfg")) {
-        const auto lines = File::ReadAllLines("cvars.cfg");
+{
+    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
+    if (File::Exists(cvarsConfig)) {
+        const auto lines = File::ReadAllLines(cvarsConfig);
 
         for (const std::string& line : lines) {
             std::vector<std::string> cfg = StringHelper::Split(line, " = ");
-            if (line.empty())
-                continue;
-            if (cfg.size() < 2)
-                continue;
+            if (line.empty()) continue;
+            if (cfg.size() < 2) continue;
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
-                value.erase(std::ranges::remove(value, '\"').begin(), value.end());
+                value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
                 CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
             }
             if (is_number<float>(cfg[1])) {

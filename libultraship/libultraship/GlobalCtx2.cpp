@@ -8,6 +8,9 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/sohconsole_sink.h"
 #include "ModManager.h"
+#ifdef __APPLE__
+#include "OSXFolderManager.h"
+#endif
 
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
@@ -29,7 +32,23 @@ namespace Ship {
         return GetInstance();
     }
 
-    GlobalCtx2::GlobalCtx2(std::string Name) : Name(std::move(Name)) {
+    std::string GlobalCtx2::GetAppDirectoryPath() {
+        #ifdef __APPLE__
+            FolderManager folderManager;
+            std::string fpath = std::string(folderManager.pathForDirectory(NSApplicationSupportDirectory, NSUserDomainMask));
+            fpath.append("/com.shipofharkinian.soh");
+            return fpath;
+        #endif
+
+        return ".";
+
+    }
+
+    std::string GlobalCtx2::GetPathRelativeToAppDirectory(const char* path) {
+        return GlobalCtx2::GetAppDirectoryPath() + "/" + path;
+    }
+
+    GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
 
     }
 
@@ -42,6 +61,16 @@ namespace Ship {
         InitLogging();
         Config = std::make_shared<Mercury>("shipofharkinian.cfg");
         Config->reload();
+
+/* OTRTODO: figure out how to make app directory paths play nice with this
+        if (MainPath.empty()) {
+            MainPath = GetPathRelativeToAppDirectory("oot.otr");
+        }
+        PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
+        if (PatchesPath.empty()) {
+            PatchesPath = GetAppDirectoryPath() + "/";
+        }
+*/
         MainPath = Config->getString("Game.Main Archive", "oot.otr");
         PatchesPath = Config->getString("Game.Patche Archive", "./mods");
 
@@ -63,11 +92,13 @@ namespace Ship {
 
     void GlobalCtx2::InitLogging() {
         try {
+            auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log").c_str());
+
             // Setup Logging
             spdlog::init_thread_pool(8192, 1);
             auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
             auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/" + GetName() + ".log", 1024 * 1024 * 10, 10);
+            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
             SohConsoleSink->set_level(spdlog::level::trace);
             ConsoleSink->set_level(spdlog::level::trace);
             FileSink->set_level(spdlog::level::trace);
@@ -75,8 +106,8 @@ namespace Ship {
             Logger = std::make_shared<spdlog::async_logger>(GetName(), Sinks.begin(), Sinks.end(), spdlog::thread_pool(), spdlog::async_overflow_policy::block);
             GetLogger()->set_level(spdlog::level::trace);
             GetLogger()->set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%@] [%l] %v");
-            register_logger(GetLogger());
-            set_default_logger(GetLogger());
+            spdlog::register_logger(GetLogger());
+            spdlog::set_default_logger(GetLogger());
         }
         catch (const spdlog::spdlog_ex& ex) {
             std::cout << "Log initialization failed: " << ex.what() << std::endl;

@@ -59,6 +59,8 @@ namespace Ship {
 			std::vector<int32_t> dwPressedButtons;
 			float wGyroX;
 			float wGyroY;
+		  	float wCamX;
+		  	float wCamY;
 			std::string GUID;
 
 			void LoadBinding();
