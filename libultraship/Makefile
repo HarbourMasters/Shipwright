@@ -2,7 +2,7 @@
 
 CXX ?= g++
 CC ?= gcc
-AR	:= ar
+AR := ar
 FORMAT := clang-format-11
 UNAME := $(shell uname)
 
@@ -10,6 +10,15 @@ ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
 LTO ?= 0
+
+# flag to save whether the compiler being used is clang or gcc by checking CXX --version
+CXX_IS_CLANG ?= $(shell $(CXX) --version | grep -c clang)
+ifeq ($(CXX_IS_CLANG),1)
+	MXX := $(CXX)
+else
+	MXX ?= clang++
+endif
+
 
 WARN := -Wall -Wextra -Werror \
 	-Wno-unused-variable \
@@ -29,8 +38,7 @@ WARN := -Wall -Wextra -Werror \
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
 
-COMPILER_VERSION := $(shell $(CXX) --version)
-ifneq '' '$(findstring g++,$(COMPILER_VERSION))'
+ifneq ($(CXX_IS_CLANG),1)
 	WARN += -Wno-error=stringop-overflow
 	CXXWARN += -Wno-error=maybe-uninitialized
 endif
@@ -39,12 +47,17 @@ CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
-ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL
+MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
+
+# if not using clang, ask clang to use gcc standard library
+ifneq ($(CXX_IS_CLANG),1)
+	STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
+	CXX_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | tail -n 1)
+	MMFLAGS += -stdlib++-isystem ${STD_ISYSTEM} -cxx-isystem ${CXX_ISYSTEM}
 endif
 
-ifeq ($(UNAME), Linux)
-	WARN += -Wno-error=stringop-overflow # This is required with clang on Linux.
+ifeq ($(UNAME), Darwin) #APPLE
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
 endif
 
 ifneq ($(DEBUG),0)
@@ -78,11 +91,18 @@ C_FILES := \
 	libultraship/mixer.c \
 	libultraship/Lib/stb/stb_impl.c
 
+MM_FILES := \
+	libultraship/OSXFolderManager.mm
+
 FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
 O_FILES   := \
 	$(CXX_FILES:%.cpp=build/%.o) \
 	$(C_FILES:%.c=build/%.o)
+
+ifeq ($(UNAME), Darwin) #APPLE
+	O_FILES += $(MM_FILES:%.mm=build/%.o)
+endif
 
 D_FILES   := $(O_FILES:%.o=%.d)
 
@@ -116,6 +136,9 @@ build/%.o: %.cpp
 
 build/%.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(OPTFLAGS) $(INC_DIRS) -c $< -o $@
+
+build/%.o: %.mm
+	$(MXX) $(MMFLAGS) $(CXXFLAGS) $(OPTFLAGS) $(INC_DIRS) -c $< -o $@
 
 $(LIB): $(O_FILES)
 	$(AR) rcs $@ $^

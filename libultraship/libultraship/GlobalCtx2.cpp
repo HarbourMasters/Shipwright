@@ -8,10 +8,14 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/sohconsole_sink.h"
 #include "ModManager.h"
+#ifdef __APPLE__
+#include "OSXFolderManager.h"
+#endif
 
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
     ModManager* INSTANCE;
+
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
         return Context.lock();
     }
@@ -29,6 +33,22 @@ namespace Ship {
         return GetInstance();
     }
 
+    std::string GlobalCtx2::GetAppDirectoryPath() {
+        #ifdef __APPLE__
+            FolderManager folderManager;
+            std::string fpath = std::string(folderManager.pathForDirectory(NSApplicationSupportDirectory, NSUserDomainMask));
+            fpath.append("/com.shipofharkinian.soh");
+            return fpath;
+        #endif
+
+        return ".";
+
+    }
+
+    std::string GlobalCtx2::GetPathRelativeToAppDirectory(const char* path) {
+        return GlobalCtx2::GetAppDirectoryPath() + "/" + path;
+    }
+
     GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
 
     }
@@ -40,14 +60,14 @@ namespace Ship {
 
     void GlobalCtx2::InitWindow() {
         InitLogging();
-        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), "shipofharkinian.ini");
+        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), GetPathRelativeToAppDirectory("shipofharkinian.ini"));
         MainPath = (*Config)["ARCHIVE"]["Main Archive"];
         if (MainPath.empty()) {
-            MainPath = "oot.otr";
+            MainPath = GetPathRelativeToAppDirectory("oot.otr");
         }
         PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
         if (PatchesPath.empty()) {
-            PatchesPath = "./";
+            PatchesPath = GetAppDirectoryPath() + "/";
         }
         ResMan = std::make_shared<ResourceMgr>(GlobalCtx2::GetInstance(), MainPath, PatchesPath);
         Win = std::make_shared<Window>(GlobalCtx2::GetInstance());
@@ -67,11 +87,13 @@ namespace Ship {
 
     void GlobalCtx2::InitLogging() {
         try {
+            auto logPath = GetPathRelativeToAppDirectory(("logs/" + GetName() + ".log").c_str());
+
             // Setup Logging
             spdlog::init_thread_pool(8192, 1);
             auto SohConsoleSink = std::make_shared<spdlog::sinks::soh_sink_mt>();
             auto ConsoleSink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
-            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>("logs/" + GetName() + ".log", 1024 * 1024 * 10, 10);
+            auto FileSink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(logPath, 1024 * 1024 * 10, 10);
             SohConsoleSink->set_level(spdlog::level::trace);
             ConsoleSink->set_level(spdlog::level::trace);
             FileSink->set_level(spdlog::level::trace);

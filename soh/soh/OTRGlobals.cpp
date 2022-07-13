@@ -57,7 +57,6 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
     gRandomizer = std::make_shared<Randomizer>();
@@ -1158,7 +1157,7 @@ std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
     std::string fileName = Conf.get("SAVE").get("Save Filename");
 
     if (fileName.empty()) {
-        Conf["SAVE"]["Save Filename"] = "oot_save.sav";
+        Conf["SAVE"]["Save Filename"] = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
         Conf.Save();
     }
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
