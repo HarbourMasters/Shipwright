@@ -72,6 +72,18 @@ namespace SohImGui {
         "None"
     };
 
+    const char* powers[9] = {
+        "Vanilla (1x)",
+        "Double (2x)",
+        "Quadruple (4x)",
+        "Octuple (8x)",
+        "Hexadecuple (16x)",
+        "Duotrigintuple (32x)",
+        "Quattuorsexagintuple (64x)",
+        "Octoviginticentuple (128x)",
+        "Hexaquinquagintiducentuple (256x)"
+    };
+
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
@@ -303,6 +315,11 @@ namespace SohImGui {
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
         }
+
+        auto imguiIniPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui.ini");
+        auto imguiLogPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui_log.txt");
+        io->IniFilename = strcpy(new char[imguiIniPath.length() + 1], imguiIniPath.c_str());
+        io->LogFilename = strcpy(new char[imguiLogPath.length() + 1], imguiLogPath.c_str());
 
         if (UseViewports()) {
             io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -881,12 +898,36 @@ namespace SohImGui {
 
                     if (ImGui::BeginMenu("Difficulty Options"))
                     {
-                        EnhancementSliderInt("Damage Multiplier %dx", "##DAMAGEMUL", "gDamageMul", 1, 4, "");
-                        Tooltip("Modifies all sources of damage not affected by other sliders");
-                        EnhancementSliderInt("Fall Damage Multiplier %dx", "##FALLDAMAGEMUL", "gFallDamageMul", 1, 4, "");
-                        Tooltip("Modifies all fall damage");
-                        EnhancementSliderInt("Void Damage Multiplier %dx", "##VOIDDAMAGEMUL", "gVoidDamageMul", 1, 4, "");
-                        Tooltip("Modifies damage taken after falling into a void");
+                        ImGui::Text("Damage Multiplier");
+                        EnhancementCombobox("gDamageMul", powers, 9, 0);
+                        Tooltip("Modifies all sources of damage not affected by other sliders\n\
+2x: Can survive all common attacks from the start of the game\n\
+4x: Dies in 1 hit to any substantial attack from the start of the game\n\
+8x: Can only survive trivial damage from the start of the game\n\
+16x: Can survive all common attacks with max health without double defense\n\
+32x: Can survive all common attacks with max health and double defense\n\
+64x: Can survive trivial damage with max health without double defense\n\
+128x: Can survive trivial damage with max health and double defense\n\
+256x: Cannot survive damage");
+                        ImGui::Text("Fall Damage Multiplier");
+                        EnhancementCombobox("gFallDamageMul", powers, 8, 0);
+                        Tooltip("Modifies all fall damage\n\
+2x: Can survive all fall damage from the start of the game\n\
+4x: Can only survive short fall damage from the start of the game\n\
+8x: Cannot survive any fall damage from the start of the game\n\
+16x: Can survive all fall damage with max health without double defense\n\
+32x: Can survive all fall damage with max health and double defense\n\
+64x: Can survive short fall damage with double defense\n\
+128x: Cannot survive fall damage");
+                        ImGui::Text("Void Damage Multiplier");
+                        EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
+                        Tooltip("Modifies damage taken after falling into a void\n\
+2x: Can survive void damage from the start of the game\n\
+4x: Cannot survive void damage from the start of the game\n\
+8x: Can survive void damage twice with max health without double defense\n\
+16x: Can survive void damage with max health without double defense\n\
+32x: Can survive void damage with max health and double defense\n\
+64x: Cannot survive void damage");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
@@ -1143,6 +1184,8 @@ namespace SohImGui {
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
+                EnhancementCheckbox("Free Camera", "gFreeCamera");
+
                 ImGui::EndMenu();
             }
 
@@ -1224,12 +1267,13 @@ namespace SohImGui {
         for (const auto& category : hiddenwindowCategories) {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::SetNextWindowSize(ImVec2 (0,0));
-            ImGui::SetNextWindowPos(ImVec2 (-100,-100));
-            ImGui::Begin(category.first.c_str(), nullptr, ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus);
+            ImGuiWindowFlags HiddenWndFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings |
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | 
+                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoDecoration;
+            ImGui::Begin(category.first.c_str(), nullptr, HiddenWndFlags);
             ImGui::End();
             ImGui::PopStyleColor();
         }
-
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));

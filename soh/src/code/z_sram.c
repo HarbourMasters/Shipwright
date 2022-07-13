@@ -826,6 +826,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Go away ruto (water temple first cutscene)
         gSaveContext.sceneFlags[05].swch |= (1 << 0x10);
 
+        // Opens locked Water Temple door to prevent softlocks
+        // West door on the middle level that leads to the water raising thing
+        // Happens in 3DS rando and N64 rando as well
+        gSaveContext.sceneFlags[05].swch |= (1 << 0x15);
+
         // Skip intro cutscene when bombing mud wall in Dodongo's cavern
         // this also makes the lower jaw render, and the eyes react to explosives
         Flags_SetEventChkInf(0xB0);

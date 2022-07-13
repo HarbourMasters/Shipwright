@@ -52,7 +52,7 @@ LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --lib
 INC += $(shell pkg-config --cflags libpng)
 
 ifeq ($(UNAME), Darwin)
-  LDFLAGS += -framework OpenGL
+  LDFLAGS += -framework OpenGL -framework Foundation
 endif
 
 ifeq ($(UNAME), Linux)
