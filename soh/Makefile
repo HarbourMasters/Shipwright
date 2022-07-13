@@ -30,8 +30,8 @@ LDFLAGS :=
 
 ifeq ($(UNAME), Linux)
 	ifeq ($(UNAMEM), x86_64)
-		CXXFLAGS += -msse2 -mfpmath=sse -mfloat-abi=hard
-		CFLAGS += -msse2 -mfpmath=sse -mfloat-abi=hard
+		CXXFLAGS += -msse2 -mfpmath=sse -mhard-float
+		CFLAGS += -msse2 -mfpmath=sse -mhard-float
 	endif
 
 	CXXFLAGS += $(shell pkg-config --cflags libpulse)

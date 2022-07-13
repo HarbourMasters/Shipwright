@@ -7,8 +7,9 @@ RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y \
 		binutils \
-		gcc-10 \
-		g++-10 \
+		file \
+		gcc-12 \
+		g++-12 \
 		patchelf \
 		p7zip-full \
 		python3.9 \
@@ -23,8 +24,8 @@ RUN apt-get update && \
 		libbz2-dev \
 		libpng-dev \
 		libgles2-mesa-dev && \    
-	ln -s /usr/bin/g++-10 /usr/bin/g++ && \
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 10 && \
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 10 && \
 	gcc --version && \
 	g++ --version
 	
