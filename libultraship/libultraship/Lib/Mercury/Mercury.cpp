@@ -58,7 +58,7 @@ json Mercury::nested(const std::string& key) {
 
 std::string Mercury::getString(const std::string& key, const std::string& def) {
     json n = this->nested(key);
-    if (n.is_string())
+    if (n.is_string() && !n.get<std::string>().empty())
         return n;
     return def;
 }

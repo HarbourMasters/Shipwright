@@ -541,6 +541,7 @@ void DebugConsole_LoadCVars() {
             case nlohmann::detail::value_t::boolean:
                 CVar_SetS32(item.key().c_str(), value.get<bool>());
                 break;
+            case nlohmann::detail::value_t::number_unsigned:
             case nlohmann::detail::value_t::number_integer:
                 CVar_SetS32(item.key().c_str(), value.get<int>());
                 break;
@@ -548,6 +549,9 @@ void DebugConsole_LoadCVars() {
                 CVar_SetFloat(item.key().c_str(), value.get<float>());
                 break;
             default: ;
+        }
+        if (item.key() == "gOpenMenuBar") {
+            int bp = 0;
         }
     }
 
@@ -559,10 +563,10 @@ void DebugConsole_SaveCVars()
     std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
 
     for (const auto &cvar : cvars) {
-        const std::string key = "CVars." + cvar.first;
+        const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
 
-        if (cvar.second->type == CVAR_TYPE_STRING)
-            pConf->setString(key, cvar.second->value.valueStr);
+        if (cvar.second->type == CVAR_TYPE_STRING && cvar.second->value.valueStr != nullptr)
+            pConf->setString(key, std::string(cvar.second->value.valueStr));
         else if (cvar.second->type == CVAR_TYPE_S32)
             pConf->setInt(key, cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)

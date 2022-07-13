@@ -368,8 +368,8 @@ namespace SohImGui {
         CVar_SetS32("gRandoGenerating", 0);
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
-        CVar_SetString("gDroppedFile", "");
-        Game::SaveSettings();
+        CVar_SetString("gDroppedFile", "None");
+        // Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -712,18 +712,18 @@ namespace SohImGui {
 
         #if __APPLE__
         if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
-             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
             console->Commands["reset"].handler(emptyArgs);
         }
         #else
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
-             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
             console->Commands["reset"].handler(emptyArgs);
         }
         #endif
-        
+
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
@@ -1274,7 +1274,7 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::SetNextWindowSize(ImVec2 (0,0));
             ImGuiWindowFlags HiddenWndFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings |
-                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | 
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoDecoration;
             ImGui::Begin(category.first.c_str(), nullptr, HiddenWndFlags);
             ImGui::End();

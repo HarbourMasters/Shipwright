@@ -37,7 +37,7 @@ void Ship::ControlDeck::ScanPhysicalDevices() {
 	}
 
 	for (int i = 0; i < MAXCONTROLLERS; i++) {
-		virtualDevices.push_back(static_cast<int>(physicalDevices.size()) - 1);
+		virtualDevices.push_back(0);
 	}
 
 	LoadControllerSettings();
@@ -59,6 +59,22 @@ void Ship::ControlDeck::WriteToPad(OSContPad* pad) const {
 
 void Ship::ControlDeck::LoadControllerSettings() {
 	std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+
+	for (auto const& val : Config->rjson["Controllers"]["Deck"].items()) {
+		int slot = std::stoi(val.key().substr(5));
+
+		for (size_t dev = 0; dev < physicalDevices.size(); dev++) {
+			std::string guid = physicalDevices[dev]->GetGuid();
+			if(guid != val.value()) continue;
+
+			virtualDevices[slot] = dev;
+		}
+	}
+
+	for (size_t i = 0; i < virtualDevices.size(); i++) {
+		std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+		Config->setString(StringHelper::Sprintf("Controllers.Deck.Slot_%d", (int)i), backend->GetGuid());
+	}
 
 	for (const auto& device : physicalDevices) {
 
@@ -92,6 +108,11 @@ void Ship::ControlDeck::LoadControllerSettings() {
 
 void Ship::ControlDeck::SaveControllerSettings() {
 	std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+
+	for (size_t i = 0; i < virtualDevices.size(); i++) {
+		std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+		Config->setString(StringHelper::Sprintf("Controllers.Deck.Slot_%d", (int)i), backend->GetGuid());
+	}
 
 	for (const auto& device : physicalDevices) {
 
