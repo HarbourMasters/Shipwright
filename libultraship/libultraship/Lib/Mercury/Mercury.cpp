@@ -108,6 +108,10 @@ void Mercury::setUInt(const std::string& key, uint32_t value) {
     this->vjson[formatNestedKey(key)] = value;
 }
 
+void Mercury::erase(const std::string& key) {
+    this->vjson.erase(formatNestedKey(key));
+}
+
 void Mercury::reload() {
     if (this->path_ == "None" || !fs::exists(this->path_) || !fs::is_regular_file(this->path_)) {
         this->isNewInstance = true;

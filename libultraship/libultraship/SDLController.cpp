@@ -442,7 +442,7 @@ namespace Ship {
 
     char buffer[50];
     const char* SDLController::GetButtonName(int slot, int n64Button) {
-        std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+        std::map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
         const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
             return pair.second == n64Button;
         });
@@ -468,6 +468,7 @@ namespace Ship {
 
     void SDLController::CreateDefaultBinding(int32_t slot) {
         DeviceProfile& profile = profiles[slot];
+        profile.Mappings.clear();
 
         profile.UseRumble = true;
         profile.RumbleStrength = 1.0f;

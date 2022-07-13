@@ -80,7 +80,7 @@ namespace Ship {
 	}
 
 	void Controller::SetButtonMapping(int slot, int32_t n64Button, int32_t dwScancode) {
-		std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+		std::map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
 		std::erase_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
 		Mappings[dwScancode] = n64Button;
 	}

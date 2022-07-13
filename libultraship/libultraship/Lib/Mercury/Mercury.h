@@ -25,6 +25,7 @@ public:
     void setBool(const std::string& key, bool value);
     void setInt(const std::string& key, int value);
     void setUInt(const std::string& key, uint32_t value);
+    void erase(const std::string& key);
     void set(const std::string& key, std::any value);
     template< typename T > void setArray(const std::string& key, std::vector<T> array);
 

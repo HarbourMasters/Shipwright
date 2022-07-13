@@ -74,7 +74,7 @@ namespace Ship {
 	}
 
 	const char* KeyboardController::GetButtonName(int slot, int n64Button) {
-		std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+		std::map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
 		const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
 			return pair.second == n64Button;
 		});

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <map>
 #include <memory>
 #include <string>
 #include "stdint.h"
@@ -29,8 +30,8 @@ namespace Ship {
 		bool UseGyro = false;
 		float RumbleStrength = 1.0f;
 		std::unordered_map<ControllerThresholds, int32_t> Thresholds;
-		std::unordered_map<int32_t, int32_t> Mappings;
 		std::unordered_map<int32_t, int32_t> GyroThresholds;
+		std::map<int32_t, int32_t> Mappings;
 	};
 
 	class Controller {
