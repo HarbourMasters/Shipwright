@@ -132,7 +132,7 @@ namespace Ship {
     }
 
 
-    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold) {
+    void SDLController::NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool isRightStick) {
         //scale {-32768 ... +32767} to {-84 ... +84}
         auto ax = wAxisValueX * 85.0 / 32767.0;
         auto ay = wAxisValueY * 85.0 / 32767.0;
@@ -163,8 +163,15 @@ namespace Ship {
             ay *= scale;
         }
 
-        wStickX = +ax;
-        wStickY = -ay;
+        if (!isRightStick) {
+            wStickX = +ax;
+            wStickY = -ay;
+        }
+        else {
+            //SOHTODO KIRITO: Camera Sensitivity
+            wCamX = +ax * 15.0f;
+            wCamY = -ay * 15.0f;
+        }
     }
 
     void SDLController::ReadFromSource() {
@@ -186,6 +193,10 @@ namespace Ship {
                 return;
             }
         }
+
+        auto cameraX = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTX);
+        auto cameraY = SDL_GameControllerGetAxis(Cont, SDL_CONTROLLER_AXIS_RIGHTY);
+        NormalizeStickAxis(cameraX, cameraY, ThresholdMapping[SDL_CONTROLLER_AXIS_LEFTX], true);
 
         if (SDL_GameControllerHasSensor(Cont, SDL_SENSOR_GYRO))
         {
@@ -328,7 +339,7 @@ namespace Ship {
             if (StickAxisX != SDL_CONTROLLER_AXIS_INVALID && StickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
                 auto AxisValueX = SDL_GameControllerGetAxis(Cont, StickAxisX);
                 auto AxisValueY = SDL_GameControllerGetAxis(Cont, StickAxisY);
-                NormalizeStickAxis(AxisValueX, AxisValueY, StickDeadzone);
+                NormalizeStickAxis(AxisValueX, AxisValueY, StickDeadzone, false);
             }
         }
     }
@@ -365,12 +376,13 @@ namespace Ship {
     void SDLController::CreateDefaultBinding() {
         std::string ConfSection = GetBindingConfSection();
         std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
         ConfigFile& Conf = *pConf.get();
 
-        Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTX + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string((SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
-        Conf[ConfSection][STR(BTN_CUP)] = std::to_string(-(SDL_CONTROLLER_AXIS_RIGHTY + AXIS_SCANCODE_BIT));
+        Conf[ConfSection][STR(BTN_CRIGHT)] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);
+        Conf[ConfSection][STR(BTN_CLEFT)] = std::to_string(SDL_CONTROLLER_BUTTON_Y);
+        Conf[ConfSection][STR(BTN_CDOWN)] = std::to_string(SDL_CONTROLLER_BUTTON_X);
+        Conf[ConfSection][STR(BTN_CUP)] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSTICK);
         //Conf[ConfSection][STR(BTN_CRIGHT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_X);
         //Conf[ConfSection][STR(BTN_CLEFT + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_Y);
         //Conf[ConfSection][STR(BTN_CDOWN + "_2")] = std::to_string(SDL_CONTROLLER_BUTTON_RIGHTSHOULDER);

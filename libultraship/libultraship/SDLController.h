@@ -44,7 +44,7 @@ namespace Ship {
 			std::map<int32_t, int16_t> ThresholdMapping;
 
 			void LoadAxisThresholds();
-			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold);
+			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool isRightStick);
 			bool Open();
 			bool Close();
 	};

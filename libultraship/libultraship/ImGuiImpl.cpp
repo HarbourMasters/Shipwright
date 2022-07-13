@@ -1148,6 +1148,8 @@ namespace SohImGui {
                 EnhancementCheckbox("Skip Text", "gSkipText");
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
+                EnhancementCheckbox("Free Camera", "gFreeCamera");
+
                 ImGui::EndMenu();
             }
 
