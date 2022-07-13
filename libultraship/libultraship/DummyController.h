@@ -5,20 +5,22 @@
 
 class DummyController final : public Ship::Controller {
 public:
-	DummyController(int32_t dwControllerNumber) : Controller(dwControllerNumber) {}
-	~DummyController(){}
+	DummyController() {
+		GUID = "Disconnected";
+	}
 
 	std::map<std::vector<std::string>, int32_t> ReadButtonPress();
-	void ReadFromSource() {}
-	const char* GetControllerName() { return "Dummy"; }
-	const char* GetButtonName(int button) override { return "None"; }
-	void WriteToSource(ControllerCallback* controller) { }
+	void ReadFromSource(int32_t slot) {}
+	const char* GetControllerName() { return "Disconnected"; }
+	const char* GetButtonName(int slot, int n64Button) override { return "None"; }
+	void WriteToSource(int32_t slot, ControllerCallback* controller) { }
 	bool Connected() const { return false; }
 	bool CanRumble() const { return false; }
 
+	int32_t ReadRawPress() override { return -1; }
 	bool HasPadConf() const { return true; }
 	std::optional<std::string> GetPadConfSection() { return "Unk"; }
-	Ship::DeviceProfile GetDefaultMapping() override { return { .Mappings = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0} }; }
+	void CreateDefaultBinding(int32_t slot){}
 protected:
 	std::string GetControllerType() { return "Unk"; }
 	std::string GetConfSection() { return "Unk"; }

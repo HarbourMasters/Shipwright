@@ -347,7 +347,8 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_get_time,
     gfx_sdl_set_target_fps,
     gfx_sdl_set_maximum_frame_latency,
-    gfx_sdl_get_detected_hz
+    gfx_sdl_get_detected_hz,
+    translate_scancode
 };
 
 #endif

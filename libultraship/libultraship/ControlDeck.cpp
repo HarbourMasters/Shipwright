@@ -5,6 +5,7 @@
 #include "DummyController.h"
 #include "KeyboardController.h"
 #include "SDLController.h"
+#include <Utils/StringHelper.h>
 
 uint8_t* controllerBits;
 
@@ -20,32 +21,104 @@ void Ship::ControlDeck::ScanPhysicalDevices() {
 
 	for (int i = 0; i < SDL_NumJoysticks(); i++) {
 		if (SDL_IsGameController(i)) {
-			Window::ControllerApi->BindPhysicalDevice(std::make_shared<DeviceEntry>(
-				SDL_GameControllerNameForIndex(i), "Unk", std::make_shared<SDLController>(0)
-			));
+			auto sdl = std::make_shared<SDLController>(i);
+			sdl->Open();
+			physicalDevices.push_back(sdl);
 		}
 	}
 
-	physicalDevices.push_back(std::make_shared<DeviceEntry>("Keyboard", "Keyboard", std::make_shared<KeyboardController>(0)));
-	physicalDevices.push_back(std::make_shared<DeviceEntry>("Disconnected", "Unk", std::make_shared<DummyController>(0)));
+	physicalDevices.push_back(std::make_shared<KeyboardController>());
+	physicalDevices.push_back(std::make_shared<DummyController>());
+
+	for (const auto& device : physicalDevices) {
+		for (int i = 0; i < MAXCONTROLLERS; i++) {
+			device->CreateDefaultBinding(i);
+		}
+	}
 
 	for (int i = 0; i < MAXCONTROLLERS; i++) {
-		virtualDevices.push_back((int)physicalDevices.size() - 1);
+		virtualDevices.push_back(static_cast<int>(physicalDevices.size()) - 1);
 	}
-}
 
-void Ship::ControlDeck::BindPhysicalDevice(const std::shared_ptr<DeviceEntry>& entry) {
-	this->physicalDevices.push_back(entry);
+	LoadControllerSettings();
 }
 
 void Ship::ControlDeck::SetPhysicalDevice(int slot, int deviceSlot) {
-	int state = physicalDevices[deviceSlot]->Backend->Connected();
+	const std::shared_ptr<Controller> backend = physicalDevices[deviceSlot];
 	virtualDevices[slot] = deviceSlot;
-	*controllerBits |= state << slot;
+	*controllerBits |= (backend->Connected()) << slot;
 }
 
 void Ship::ControlDeck::WriteToPad(OSContPad* pad) const {
 	for (size_t i = 0; i < virtualDevices.size(); i++) {
-		physicalDevices[virtualDevices[i]]->Backend->Read(&pad[i]);
+		physicalDevices[virtualDevices[i]]->Read(&pad[i], i);
 	}
+}
+
+#define NESTED(key, ...) StringHelper::Sprintf("Controllers.%s.Slot_%d." key, device->GetGuid().c_str(), slot, __VA_ARGS__)
+
+void Ship::ControlDeck::LoadControllerSettings() {
+	std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+
+	for (const auto& device : physicalDevices) {
+
+		std::string guid = device->GetGuid();
+
+		for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
+			
+			if (!(Config->rjson["Controllers"].contains(guid) && Config->rjson["Controllers"][guid].contains(StringHelper::Sprintf("Slot_%d", slot)))) continue;
+
+			auto& profile = device->profiles[slot];
+			auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", slot)];
+
+			profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled"));
+			profile.RumbleStrength = Config->getBool(NESTED("Rumble.Strength"));
+			// Config->setBool(NESTED("Gyro.Enabled")), true);
+
+			for (auto const& val : rawProfile["Gyro"]["Thresholds"].items()) {
+				profile.GyroThresholds[std::stoi(val.key())] = val.value();
+			}
+
+			for (auto const& val : rawProfile["Thresholds"].items()) {
+				profile.Thresholds[static_cast<ControllerThresholds>(std::stoi(val.key()))] = val.value();
+			}
+			
+			for (auto const& val : rawProfile["Mappings"].items()) {
+				profile.Mappings[val.value()] = std::stoi(val.key().substr(4));
+			}
+		}
+	}
+}
+
+void Ship::ControlDeck::SaveControllerSettings() {
+	std::shared_ptr<Mercury> Config = GlobalCtx2::GetInstance()->GetConfig();
+
+	for (const auto& device : physicalDevices) {
+
+		int slot = 0;
+		for (const auto& profile : device->profiles) {
+
+			if (!device->Connected()) continue;
+
+			Config->setBool(NESTED("Rumble.Enabled"), profile.UseRumble);
+			Config->setFloat(NESTED("Rumble.Strength"), profile.RumbleStrength);
+			Config->setBool(NESTED("Gyro.Enabled"), true);
+
+			for (auto const& [key, val] : profile.GyroThresholds) {
+				Config->setInt(NESTED("Gyro.Thresholds.%d", key), val);
+			}
+
+			for (auto const& [key, val] : profile.Thresholds) {
+				Config->setInt(NESTED("Thresholds.%d", key), val);
+			}
+
+			for (auto const& [key, val] : profile.Mappings) {
+				Config->setInt(NESTED("Mappings.BTN_%d", val), key);
+			}
+
+			slot++;
+		}
+	}
+
+	Config->save();
 }

@@ -732,7 +732,7 @@ namespace SohImGui {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
-            GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
+
             ShowCursor(menu_bar, Dialogues::dMenubar);
 
             if (CVar_GetS32("gControlNav", 0)) {

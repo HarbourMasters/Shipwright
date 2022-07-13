@@ -4,74 +4,102 @@
 
 #include "Hooks.h"
 #include "GlobalCtx2.h"
+#include "Window.h"
 
 namespace Ship {
-	KeyboardController::KeyboardController(int32_t dwControllerNumber) : Controller(dwControllerNumber) {
-		LoadBinding();
-	}
 
-	KeyboardController::~KeyboardController() {
-		
+	uint32_t lastKey = -1;
+
+	KeyboardController::KeyboardController() : Controller(), lastScancode(-1) {
+		GUID = "Keyboard";
 	}
 
 	bool KeyboardController::PressButton(int32_t dwScancode) {
-		ModInternal::ExecuteHooks<ModInternal::ControllerRawInput>(this, dwScancode);
-		if (ButtonMapping.contains(dwScancode)) {
-			dwPressedButtons |= ButtonMapping[dwScancode];
-			return true;
+		lastKey = dwScancode;
+		for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
+
+			if (profiles[slot].Mappings.contains(dwScancode)) {
+				dwPressedButtons[slot] |= profiles[slot].Mappings[dwScancode];
+				return true;
+			}
 		}
 
 		return false;
 	}
 
 	bool KeyboardController::ReleaseButton(int32_t dwScancode) {
-		if (ButtonMapping.contains(dwScancode)) {
-			dwPressedButtons &= ~ButtonMapping[dwScancode];
-			return true;
+		for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
+			if (profiles[slot].Mappings.contains(dwScancode)) {
+				dwPressedButtons[slot] &= ~profiles[slot].Mappings[dwScancode];
+				return true;
+			}
 		}
 
 		return false;
 	}
 
 	void KeyboardController::ReleaseAllButtons() {
-		dwPressedButtons = 0;
+		for(int slot = 0; slot < MAXCONTROLLERS; slot++) {
+			dwPressedButtons[slot] = 0;
+		}
 	}
 
-	void KeyboardController::ReadFromSource() {
+	void KeyboardController::ReadFromSource(int32_t slot) {
 		wStickX = 0;
 		wStickY = 0;
 	}
 
-	void KeyboardController::WriteToSource(ControllerCallback* controller)
+
+	int32_t KeyboardController::ReadRawPress() {
+
+		if(lastKey != -1) {
+			const int32_t key = lastKey;
+			lastKey = -1;
+			return key;
+		}
+
+		return -1;
+	}
+
+
+	void KeyboardController::WriteToSource(int32_t slot, ControllerCallback* controller)
 	{
 
 	}
 
-	const char* KeyboardController::GetButtonName(int button) {
-		return SDL_GetScancodeName(static_cast<SDL_Scancode>(button));
+	const char* KeyboardController::GetButtonName(int slot, int n64Button) {
+		std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
+		const auto find = std::ranges::find_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
+
+		if (find == Mappings.end()) return "Unknown";
+		const char* name = SDL_GetScancodeName(static_cast<SDL_Scancode>(GlobalCtx2::GetInstance()->GetWindow()->GetTranslatedKey(find->first)));
+		return strlen(name) == 0 ? "Unknown" : name;
 	}
 
 
-	DeviceProfile KeyboardController::GetDefaultMapping() {
-		return {
-			.Mappings = {
-				SDL_SCANCODE_V, SDL_SCANCODE_B, SDL_SCANCODE_G, SDL_SCANCODE_H, SDL_SCANCODE_N, SDL_SCANCODE_RETURN,
-				SDL_SCANCODE_1, SDL_SCANCODE_2, SDL_SCANCODE_3, SDL_SCANCODE_4,
-				SDL_SCANCODE_W, SDL_SCANCODE_S, SDL_SCANCODE_A, SDL_SCANCODE_D,
-				SDL_SCANCODE_I, SDL_SCANCODE_K, SDL_SCANCODE_J, SDL_SCANCODE_L
-			}
-		};
+	void KeyboardController::CreateDefaultBinding(int32_t slot) {
+		DeviceProfile& profile = profiles[slot];
+		profile.Mappings[0x14D] = BTN_CRIGHT;
+		profile.Mappings[0x14B] = BTN_CLEFT;
+		profile.Mappings[0x150] = BTN_CDOWN;
+		profile.Mappings[0x148] = BTN_CUP;
+		profile.Mappings[0x13]  = BTN_R;
+		profile.Mappings[0x12]  = BTN_L;
+		profile.Mappings[0x023] = BTN_DRIGHT;
+		profile.Mappings[0x021] = BTN_DLEFT;
+		profile.Mappings[0x022] = BTN_DDOWN;
+		profile.Mappings[0x014] = BTN_DUP;
+		profile.Mappings[0x039] = BTN_START;
+		profile.Mappings[0x02C] = BTN_Z;
+		profile.Mappings[0x02E] = BTN_B;
+		profile.Mappings[0x02D] = BTN_A;
+		profile.Mappings[0x020] = BTN_STICKRIGHT;
+		profile.Mappings[0x01E] = BTN_STICKLEFT;
+		profile.Mappings[0x01F] = BTN_STICKDOWN;
+		profile.Mappings[0x011] = BTN_STICKUP;
 	}
 
-	std::string KeyboardController::GetControllerType() {
-		return "KEYBOARD";
-	}
-
-	std::string KeyboardController::GetConfSection() {
-		return GetControllerType() + " CONTROLLER " + std::to_string(GetControllerNumber() + 1);
-	}
-
-	std::string KeyboardController::GetBindingConfSection() {
-		return GetControllerType() + " CONTROLLER BINDING " + std::to_string(GetControllerNumber() + 1);
+	const char* KeyboardController::GetControllerName() {
+		return "Keyboard";
 	}
 }

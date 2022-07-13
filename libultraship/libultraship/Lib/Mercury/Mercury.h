@@ -1,4 +1,5 @@
 #pragma once
+#include <any>
 #include <vector>
 #include <string>
 #include "../nlohmann/json.hpp"
@@ -10,6 +11,7 @@ public:
     explicit Mercury(std::string path);
 
     nlohmann::json vjson;
+    nlohmann::json rjson;
     nlohmann::json nested(const std::string& key);
     static std::string formatNestedKey(const std::string& key);
     std::string getString(const std::string& key, const std::string& def = "");
@@ -22,6 +24,8 @@ public:
     void setFloat(const std::string& key, float value);
     void setBool(const std::string& key, bool value);
     void setInt(const std::string& key, int value);
+    void setUInt(const std::string& key, uint32_t value);
+    void set(const std::string& key, std::any value);
     template< typename T > void setArray(const std::string& key, std::vector<T> array);
 
     void reload();
@@ -37,8 +41,6 @@ std::vector<T> Mercury::getArray(const std::string& key) {
 };
 
 template <typename T>
-void Mercury::setArray(const std::string& key, std::vector<T> array)
-{
-	for (int i = 0; i < array.size(); i++)
-		this->vjson[formatNestedKey(key) + "/" + std::to_string(i)] = array[i];
+void Mercury::setArray(const std::string& key, std::vector<T> array) {
+    this->vjson[formatNestedKey(key)] = nlohmann::json(array);
 }

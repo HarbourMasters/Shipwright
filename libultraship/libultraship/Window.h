@@ -8,6 +8,8 @@
 #include "ControlDeck.h"
 #include <string>
 
+#include "Lib/Fast3D/gfx_window_manager_api.h"
+
 namespace Ship {
 	class AudioPlayer;
 
@@ -38,6 +40,7 @@ namespace Ship {
 			uint32_t dwMenubar;
 			std::shared_ptr<GlobalCtx2> GetContext() { return Context.lock(); }
 			std::shared_ptr<AudioPlayer> GetAudioPlayer() { return APlayer; }
+			int GetTranslatedKey(int scancode) { return WmApi->get_translated_scancode(scancode); }
 
 		protected:
 		private:
@@ -50,8 +53,8 @@ namespace Ship {
 			std::weak_ptr<GlobalCtx2> Context;
 			std::shared_ptr<AudioPlayer> APlayer;
 
-			GfxWindowManagerAPI* WmApi;
 			GfxRenderingAPI* RenderingApi;
+			GfxWindowManagerAPI* WmApi;
 			bool bIsFullscreen;
 			uint32_t dwWidth;
 			uint32_t dwHeight;

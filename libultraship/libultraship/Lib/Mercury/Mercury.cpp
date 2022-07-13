@@ -47,13 +47,13 @@ json Mercury::nested(const std::string& key) {
 
     if (dots.size() > 1) {
         for (auto& key : dots) {
-            if (gjson.contains(key))
+            if (key == "*" || gjson.contains(key))
                 gjson = gjson[key];
         }
         return gjson;
     }
 
-    return gjson[dots[0]];
+    return gjson[key];
 }
 
 std::string Mercury::getString(const std::string& key, const std::string& def) {
@@ -104,14 +104,20 @@ void Mercury::setInt(const std::string& key, int value) {
     this->vjson[formatNestedKey(key)] = value;
 }
 
+void Mercury::setUInt(const std::string& key, uint32_t value) {
+    this->vjson[formatNestedKey(key)] = value;
+}
+
 void Mercury::reload() {
-    if (!fs::exists(this->path_) || !fs::is_regular_file(this->path_)) {
+    if (this->path_ == "None" || !fs::exists(this->path_) || !fs::is_regular_file(this->path_)) {
         this->isNewInstance = true;
+        this->vjson = json::object();
         return;
     }
     std::ifstream ifs(this->path_);
     try {
-        this->vjson = json::parse(ifs).flatten();
+        this->rjson = json::parse(ifs);
+        this->vjson = this->rjson.flatten();
     }
     catch (...) {
         this->vjson = json::object();

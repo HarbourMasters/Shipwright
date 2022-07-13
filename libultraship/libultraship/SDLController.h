@@ -6,20 +6,14 @@
 #include <SDL2/SDL.h>
 #endif
 
-#include <vector>
-
-#define INVALID_SDL_CONTROLLER_GUID (std::string("00000000000000000000000000000000"))
-
 namespace Ship {
 	class SDLController : public Controller {
 		public:
-			SDLController(int32_t dwControllerNumber);
-			~SDLController();
-			
-			void ReadFromSource();
+			SDLController(int slot) : Controller(), Cont(nullptr), physicalSlot(slot) { }
+			void ReadFromSource(int32_t slot) override;
 			const char* GetControllerName();
-			const char* GetButtonName(int button) override;
-			void WriteToSource(ControllerCallback* controller);
+			const char* GetButtonName(int slot, int n64Button) override;
+			void WriteToSource(int32_t slot, ControllerCallback* controller);
 			bool Connected() const { return Cont != nullptr; }
 			bool CanRumble() const {
 #if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
@@ -28,29 +22,16 @@ namespace Ship {
 				return true;
 			}
 
-			std::string GetGuid() { return guid; };
-
-			bool HasPadConf() const { return true; }
-			std::optional<std::string> GetPadConfSection();
-			void SetButtonMapping(const std::string& szButtonName, int32_t dwScancode);
-			DeviceProfile GetDefaultMapping() override;
+			bool Open();
+			int32_t ReadRawPress() override;
 
 		protected:
-			std::string GetControllerType();
-			std::string GetConfSection();
-			std::string GetBindingConfSection();
-			void CreateDefaultBinding();
-			void CreateDefaultPadConf();
-			static bool IsGuidInUse(const std::string& guid);
+			void CreateDefaultBinding(int32_t slot) override;
 
 		private:
 			SDL_GameController* Cont;
-			std::string guid;
-			std::map<int32_t, int16_t> ThresholdMapping;
-
-			void LoadAxisThresholds();
+			int physicalSlot;
 			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold);
-			bool Open();
 			bool Close();
 	};
 }

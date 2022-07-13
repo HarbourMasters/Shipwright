@@ -1275,8 +1275,8 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     const auto controllers = Ship::Window::ControllerApi->virtualDevices;
 
-    for (const auto virtual_entry : controllers) {
-        Ship::Window::ControllerApi->physicalDevices[virtual_entry]->Backend->WriteToSource(controller);
+    for (int i = 0; i < controllers.size(); ++i) {
+        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
     }
 }
 
@@ -1385,7 +1385,7 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     const auto controllers = Ship::Window::ControllerApi->virtualDevices;
 
     for (const auto virtual_entry : controllers) {
-        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->Backend->CanRumble()) {
+        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
             return 1;
         }
     }

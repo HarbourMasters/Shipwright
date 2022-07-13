@@ -55,30 +55,6 @@ extern "C" {
 
         Ship::Window::ControllerApi->Init(controllerBits);
 
-        // for (int32_t i = 0; i < __osMaxControllers; i++) {
-        //     std::string ControllerType = Conf["CONTROLLERS"]["CONTROLLER " + std::to_string(i+1)];
-        //     mINI::INIStringUtil::toLower(ControllerType);
-        //
-        //     if (ControllerType == "auto") {
-        //         Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
-        //         Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
-        //     } else if (ControllerType == "keyboard") {
-        //         Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
-        //     } else if (ControllerType == "usb") {
-        //         Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
-        //     } else if (ControllerType == "unplugged") {
-        //         // Do nothing for unplugged controllers
-        //     } else {
-        //         SPDLOG_ERROR("Invalid Controller Type: {}", ControllerType);
-        //     }
-        // }
-
-        // for (size_t i = 0; i < __osMaxControllers; i++) {
-        //     if (Ship::Window::Controllers[i].size() > 0) {
-        //         *controllerBits |= 1 << i;
-        //     }
-        // }
-
         return 0;
     }
 
@@ -264,6 +240,10 @@ namespace Ship {
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
+
+        ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
+            ControllerApi->SaveControllerSettings();
+        });
     }
 
     void Window::StartFrame() {
@@ -328,7 +308,7 @@ namespace Ship {
         // lastScancode = -1;
 
         bool bIsProcessed = false;
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2]->Backend.get());
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
 	if (pad != nullptr) {
 
             if(pad->GetLastScancode() == -1)
@@ -345,7 +325,7 @@ namespace Ship {
     bool Window::KeyDown(int32_t dwScancode) {
         bool bIsProcessed = false;
 
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2]->Backend.get());
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
         if (pad != nullptr) {
 
             pad->SetLastScancode(dwScancode);
@@ -362,7 +342,7 @@ namespace Ship {
 
 
     void Window::AllKeysUp(void) {
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2]->Backend.get());
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
         if (pad != nullptr) {
             pad->ReleaseAllButtons();
         }

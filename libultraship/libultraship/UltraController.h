@@ -101,6 +101,10 @@
 #define BTN_STICKRIGHT  0x20000
 #define BTN_STICKDOWN   0x40000
 #define BTN_STICKUP     0x80000
+#define BTN_VSTICKUP    0x100000
+#define BTN_VSTICKDOWN  0x200000
+#define BTN_VSTICKLEFT  0x400000
+#define BTN_VSTICKRIGHT 0x800000
 
 typedef struct {
     /* 0x00 */ int32_t ram[15];

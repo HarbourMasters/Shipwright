@@ -316,7 +316,7 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
-    switch (rtn) { 
+    switch (rtn) {
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
@@ -330,7 +330,7 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
 static bool LoadStateHandler(const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
-    
+
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Loaded state from slot %u", slot);
@@ -343,7 +343,7 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
             return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
-            return CMD_FAILED;            
+            return CMD_FAILED;
     }
 
 }
@@ -361,7 +361,7 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
         ERROR("[SOH] SaveState slot value must be a number.");
         return CMD_FAILED;
     }
-    
+
     if (slot < 0) {
         ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
         return CMD_FAILED;
@@ -499,17 +499,16 @@ template <typename Numeric> bool is_number(const std::string& s) {
     return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
-void DebugConsole_LoadCVars() {
-
-    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-
+void DebugConsole_LoadLegacyCVars() {
     if (File::Exists("cvars.cfg")) {
         const auto lines = File::ReadAllLines("cvars.cfg");
 
         for (const std::string& line : lines) {
             std::vector<std::string> cfg = StringHelper::Split(line, " = ");
-            if (line.empty()) continue;
-            if (cfg.size() < 2) continue;
+            if (line.empty())
+                continue;
+            if (cfg.size() < 2)
+                continue;
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
                 value.erase(std::ranges::remove(value, '\"').begin(), value.end());
@@ -522,7 +521,38 @@ void DebugConsole_LoadCVars() {
                 CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
             }
         }
+
+        fs::remove("cvars.cfg");
     }
+}
+
+void DebugConsole_LoadCVars() {
+
+    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
+    pConf->reload();
+
+    for (const auto& item : pConf->rjson["CVars"].items()) {
+        auto value = item.value();
+        switch (value.type()) {
+            case nlohmann::detail::value_t::array:
+                break;
+            case nlohmann::detail::value_t::string:
+                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
+                break;
+            case nlohmann::detail::value_t::boolean:
+                CVar_SetS32(item.key().c_str(), value.get<bool>());
+                break;
+            case nlohmann::detail::value_t::number_integer:
+                CVar_SetS32(item.key().c_str(), value.get<int>());
+                break;
+            case nlohmann::detail::value_t::number_float:
+                CVar_SetFloat(item.key().c_str(), value.get<float>());
+                break;
+            default: ;
+        }
+    }
+
+    DebugConsole_LoadLegacyCVars();
 }
 
 void DebugConsole_SaveCVars()
@@ -539,6 +569,4 @@ void DebugConsole_SaveCVars()
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
             pConf->setFloat(key, cvar.second->value.valueFloat);
     }
-
-    pConf->save();
 }
