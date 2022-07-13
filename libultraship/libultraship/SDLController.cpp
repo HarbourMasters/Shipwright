@@ -78,8 +78,7 @@ namespace Ship {
             ax *= scale;
             ay *= scale;
         }
-
-        //OTRTODO: Camera Sensitivity
+        
         if (!isRightStick) {
             wStickX = +ax;
             wStickY = -ay;
@@ -178,9 +177,9 @@ namespace Ship {
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
-            float gyro_drift_x = profile.GyroThresholds[DRIFT_X];
-            float gyro_drift_y = profile.GyroThresholds[DRIFT_Y];
-            const float gyro_sensitivity = profile.GyroThresholds[SENSITIVITY];
+            float gyro_drift_x = profile.GyroThresholds[DRIFT_X] / 100.0f;
+            float gyro_drift_y = profile.GyroThresholds[DRIFT_Y] / 100.0f;
+            const float gyro_sensitivity = profile.GyroThresholds[SENSITIVITY] / 100.0f;
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroData[0];
@@ -190,8 +189,8 @@ namespace Ship {
                 gyro_drift_y = gyroData[1];
             }
 
-            profile.GyroThresholds[DRIFT_X] = gyro_drift_x;
-            profile.GyroThresholds[DRIFT_Y] = gyro_drift_y;
+            profile.GyroThresholds[DRIFT_X] = (int) gyro_drift_x * 100;
+            profile.GyroThresholds[DRIFT_Y] = (int) gyro_drift_y * 100;
 
             wGyroX = gyroData[0] - gyro_drift_x;
             wGyroY = gyroData[1] - gyro_drift_y;
@@ -227,7 +226,6 @@ namespace Ship {
             const auto PosButton = profile.Mappings[PosScancode];
             const auto NegButton = profile.Mappings[NegScancode];
             const auto AxisValue = SDL_GameControllerGetAxis(Cont, Axis);
-            bool isRightStick = false;
 
 #ifdef TARGET_WEB
             // Firefox has a bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1606562
@@ -313,6 +311,12 @@ namespace Ship {
                 }
             }
 
+            if (LStickAxisX != SDL_CONTROLLER_AXIS_INVALID && LStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
+                const auto AxisValueX = SDL_GameControllerGetAxis(Cont, LStickAxisX);
+                const auto AxisValueY = SDL_GameControllerGetAxis(Cont, LStickAxisY);
+                NormalizeStickAxis(AxisValueX, AxisValueY, LStickDeadzone, false, profile.Thresholds[SENSITIVITY]);
+            }
+
             // Right Stick
             // If the axis is NOT mapped to the control stick.
             if (!(
@@ -333,9 +337,7 @@ namespace Ship {
                     dwPressedButtons[slot] &= ~PosButton;
                     dwPressedButtons[slot] &= ~NegButton;
                 }
-                isRightStick = true;
-                wCamX = 0;
-                wCamY = 0;
+                
             } else {
                 if (PosButton == BTN_VSTICKLEFT || PosButton == BTN_VSTICKRIGHT) {
                     if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisX != Axis) {
@@ -348,7 +350,6 @@ namespace Ship {
 
                     RStickDeadzone = AxisThreshold;
                     RStickAxisX = Axis;
-                    isRightStick = true;
                 }
 
                 if (PosButton == BTN_VSTICKUP || PosButton == BTN_VSTICKDOWN) {
@@ -362,7 +363,6 @@ namespace Ship {
 
                     RStickDeadzone = AxisThreshold;
                     RStickAxisY = Axis;
-                    isRightStick = true;
                 }
 
                 if (NegButton == BTN_VSTICKLEFT || NegButton == BTN_VSTICKRIGHT) {
@@ -376,7 +376,6 @@ namespace Ship {
 
                     RStickDeadzone = AxisThreshold;
                     RStickAxisX = Axis;
-                    isRightStick = true;
                 }
 
                 if (NegButton == BTN_VSTICKUP || NegButton == BTN_VSTICKDOWN) {
@@ -390,14 +389,13 @@ namespace Ship {
 
                     RStickDeadzone = AxisThreshold;
                     RStickAxisY = Axis;
-                    isRightStick = true;
                 }
             }
 
-            if ((LStickAxisX != SDL_CONTROLLER_AXIS_INVALID && LStickAxisY != SDL_CONTROLLER_AXIS_INVALID) || RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
-                const auto AxisValueX = SDL_GameControllerGetAxis(Cont, isRightStick ? RStickAxisX : LStickAxisX);
-                const auto AxisValueY = SDL_GameControllerGetAxis(Cont, isRightStick ? RStickAxisY : LStickAxisY);
-                NormalizeStickAxis(AxisValueX, AxisValueY, isRightStick ? RStickDeadzone : LStickDeadzone, isRightStick, profile.Thresholds[SENSITIVITY]);
+            if (RStickAxisX != SDL_CONTROLLER_AXIS_INVALID && RStickAxisY != SDL_CONTROLLER_AXIS_INVALID) {
+                const auto AxisValueX = SDL_GameControllerGetAxis(Cont, RStickAxisX);
+                const auto AxisValueY = SDL_GameControllerGetAxis(Cont, RStickAxisY);
+                NormalizeStickAxis(AxisValueX, AxisValueY, RStickDeadzone, true, profile.Thresholds[SENSITIVITY]);
             }
         }
     }
