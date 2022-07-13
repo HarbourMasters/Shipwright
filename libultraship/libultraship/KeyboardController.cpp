@@ -8,7 +8,7 @@
 
 namespace Ship {
 
-	uint32_t lastKey = -1;
+	int32_t lastKey = -1;
 
 	KeyboardController::KeyboardController() : Controller(), lastScancode(-1) {
 		GUID = "Keyboard";

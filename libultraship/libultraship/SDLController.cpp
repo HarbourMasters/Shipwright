@@ -347,7 +347,7 @@ namespace Ship {
         "Start Button"
     };
 
-
+    char buffer[50];
     const char* SDLController::GetButtonName(int slot, int n64Button) {
         std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
         const auto find = std::ranges::find_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
@@ -355,7 +355,6 @@ namespace Ship {
         if (find == Mappings.end()) return "Unknown";
 
         int btn = abs(find->first);
-        char buffer[50];
 
         if(btn >= AXIS_SCANCODE_BIT) {
             btn -= AXIS_SCANCODE_BIT;

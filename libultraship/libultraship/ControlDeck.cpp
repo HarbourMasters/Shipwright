@@ -71,8 +71,8 @@ void Ship::ControlDeck::LoadControllerSettings() {
 			auto& profile = device->profiles[slot];
 			auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", slot)];
 
-			profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled"));
-			profile.RumbleStrength = Config->getBool(NESTED("Rumble.Strength"));
+			profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
+			profile.RumbleStrength = Config->getBool(NESTED("Rumble.Strength", ""));
 			// Config->setBool(NESTED("Gyro.Enabled")), true);
 
 			for (auto const& val : rawProfile["Gyro"]["Thresholds"].items()) {
@@ -100,9 +100,9 @@ void Ship::ControlDeck::SaveControllerSettings() {
 
 			if (!device->Connected()) continue;
 
-			Config->setBool(NESTED("Rumble.Enabled"), profile.UseRumble);
-			Config->setFloat(NESTED("Rumble.Strength"), profile.RumbleStrength);
-			Config->setBool(NESTED("Gyro.Enabled"), true);
+			Config->setBool(NESTED("Rumble.Enabled", ""), profile.UseRumble);
+			Config->setFloat(NESTED("Rumble.Strength", ""), profile.RumbleStrength);
+			Config->setBool(NESTED("Gyro.Enabled", ""), true);
 
 			for (auto const& [key, val] : profile.GyroThresholds) {
 				Config->setInt(NESTED("Gyro.Thresholds.%d", key), val);
