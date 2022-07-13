@@ -20,12 +20,13 @@ namespace Ship {
 		RIGHT_TRIGGER = 4,
 		DRIFT_X = 5,
 		DRIFT_Y = 6,
-		SENSITIVITY = 7
+		SENSITIVITY = 7,
+		GYRO_SENSITIVITY = 8
 	};
 
 	struct DeviceProfile {
 		bool UseRumble = false;
-		bool ShowInputs = false;
+		bool UseGyro = false;
 		float RumbleStrength = 1.0f;
 		std::unordered_map<ControllerThresholds, int32_t> Thresholds;
 		std::unordered_map<int32_t, int32_t> Mappings;
@@ -41,6 +42,7 @@ namespace Ship {
 			virtual void WriteToSource(int32_t slot, ControllerCallback* controller) = 0;
 			virtual bool Connected() const = 0;
 			virtual bool CanRumble() const = 0;
+			virtual bool CanGyro() const = 0;
 			virtual void CreateDefaultBinding(int32_t slot) = 0;
 			bool isRumbling;
 			std::vector<DeviceProfile> profiles;
@@ -55,13 +57,13 @@ namespace Ship {
 
 			int8_t wStickX;
 			int8_t wStickY;
+			float wGyroX;
+			float wGyroY;
+			float wCamX;
+			float wCamY;
 
 		protected:
 			std::vector<int32_t> dwPressedButtons;
-			float wGyroX;
-			float wGyroY;
-		  	float wCamX;
-		  	float wCamY;
 			std::string GUID;
 
 			void LoadBinding();

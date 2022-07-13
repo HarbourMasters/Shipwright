@@ -15,6 +15,7 @@ namespace Ship {
 			const char* GetButtonName(int slot, int n64Button) override;
 			void WriteToSource(int32_t slot, ControllerCallback* controller) override;
 			bool Connected() const override { return Cont != nullptr; }
+			bool CanGyro() const override { return supportsGyro; }
 			bool CanRumble() const override {
 #if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
 				return SDL_GameControllerHasRumble(Cont);
@@ -31,7 +32,8 @@ namespace Ship {
 		private:
 			SDL_GameController* Cont;
 			int physicalSlot;
-			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold);
+			bool supportsGyro;
+			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool isRightStick, float sensitivity);
 			bool Close();
 	};
 }

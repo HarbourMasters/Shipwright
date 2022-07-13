@@ -12,7 +12,7 @@ namespace Ship {
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
 	void ControllerHud::Init() {
-
+		BtnReading = -1;
 	}
 
 	std::shared_ptr<Controller> GetControllerPerSlot(int slot) {
@@ -47,13 +47,9 @@ namespace Ship {
 			}
 		}
 
-		if(backend->Connected()) {
-			int bp = 0;
-		}
-		
 		const char* BtnName = backend->GetButtonName(CurrentPort, n64Btn);
 
-		if (ImGui::Button( readingMode ? "Press a Key..." : BtnName)) {
+		if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName, n64Btn).c_str())) {
 			BtnReading = n64Btn;
 		}
 
@@ -90,6 +86,8 @@ namespace Ship {
 
 		std::shared_ptr<Controller> Backend = devices[vDevices[CurrentPort]];
 		DeviceProfile& profile =Backend->profiles[CurrentPort];
+		float sensitivity = profile.Thresholds[SENSITIVITY];
+		bool IsKeyboard = Backend->GetGuid() == "Keyboard" || !Backend->Connected();
 
 		if (ImGui::BeginCombo("##ControllerEntries", Backend->GetControllerName())) {
 			for (uint8_t i = 0; i < devices.size(); i++) {
@@ -114,7 +112,7 @@ namespace Ship {
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
 			SEPARATION();
-		SohImGui::EndGroupPanel();
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
@@ -122,7 +120,7 @@ namespace Ship {
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
-		SohImGui::EndGroupPanel();
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
@@ -130,46 +128,93 @@ namespace Ship {
 			DrawButton("Left", BTN_STICKLEFT);
 			DrawButton("Right", BTN_STICKRIGHT);
 
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-			DrawVirtualStick("##MainVirtualStick", ImVec2(Backend->wStickX, Backend->wStickY));
-			ImGui::SameLine();
+			if (!IsKeyboard) {
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
+				DrawVirtualStick("##MainVirtualStick", ImVec2(Backend->wStickX, Backend->wStickY));
+				ImGui::SameLine();
 
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 
-			ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
+				ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
 				ImGui::Text("Deadzone");
 				ImGui::PushItemWidth(80);
 				ImGui::InputInt("##MDZone", &profile.Thresholds[LEFT_STICK]);
 				ImGui::PopItemWidth();
-			ImGui::EndChild();
-		SohImGui::EndGroupPanel();
+				ImGui::EndChild();
+			} else {
+				ImGui::Dummy(ImVec2(0, 6));
+			}
+		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
 		ImGui::SameLine();
 
-		ImGui::SameLine();
-		SohImGui::BeginGroupPanel("Camera Stick", ImVec2(150, 20));
-			DrawButton("Up", BTN_VSTICKUP);
-			DrawButton("Down", BTN_VSTICKDOWN);
-			DrawButton("Left", BTN_VSTICKLEFT);
-			DrawButton("Right", BTN_VSTICKRIGHT);
+		if (!IsKeyboard) {
+			ImGui::SameLine();
+			SohImGui::BeginGroupPanel("Camera Stick", ImVec2(150, 20));
+				DrawButton("Up", BTN_VSTICKUP);
+				DrawButton("Down", BTN_VSTICKDOWN);
+				DrawButton("Left", BTN_VSTICKLEFT);
+				DrawButton("Right", BTN_VSTICKRIGHT);
 
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
-			DrawVirtualStick("##CameraVirtualStick", ImVec2(0, 0));
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 8);
+				DrawVirtualStick("##CameraVirtualStick", ImVec2(Backend->wCamX / sensitivity, Backend->wCamY / sensitivity));
+
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::BeginChild("##CSInput", ImVec2(90, 85), false);
+					ImGui::Text("Deadzone");
+					ImGui::PushItemWidth(80);
+					ImGui::InputInt("##MDZone", &profile.Thresholds[RIGHT_STICK]);
+					ImGui::PopItemWidth();
+					ImGui::Text("Sensitivity");
+					ImGui::PushItemWidth(80);
+					ImGui::InputInt("##MSensitivity", &profile.Thresholds[SENSITIVITY]);
+					ImGui::PopItemWidth();
+				ImGui::EndChild();
+			SohImGui::EndGroupPanel(14.0f);
+		}
+
+		if(Backend->CanGyro()) {
+			ImGui::SameLine();
+
+			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
+			float cursorX = ImGui::GetCursorPosX() + 5;
+			ImGui::SetCursorPosX(cursorX);
+			ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
+			ImGui::SetCursorPosX(cursorX);
+			ImGui::Text("Gyro Sensitivity: %d%%", profile.Thresholds[GYRO_SENSITIVITY]);
+			ImGui::PushItemWidth(135.0f);
+			ImGui::SetCursorPosX(cursorX);
+			ImGui::SliderInt("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0, 100, "");
+			ImGui::PopItemWidth();
+			ImGui::Dummy(ImVec2(0, 1));
+			ImGui::SetCursorPosX(cursorX);
+			if (ImGui::Button("Recalibrate Gyro##RGyro")) {
+				profile.Thresholds[DRIFT_X] = 0;
+				profile.Thresholds[DRIFT_Y] = 0;
+			}
+			ImGui::SetCursorPosX(cursorX);
+			DrawVirtualStick("##GyroPreview", ImVec2(Backend->wGyroX, Backend->wGyroY));
 
 			ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::BeginChild("##CSInput", ImVec2(90, 50), false);
-				ImGui::Text("Deadzone");
-				ImGui::PushItemWidth(80);
-				ImGui::InputInt("##MDZone", &profile.Thresholds[RIGHT_STICK]);
-				ImGui::PopItemWidth();
+			ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+			ImGui::Text("Drift X");
+			ImGui::PushItemWidth(80);
+			ImGui::InputInt("##GDriftX", &profile.Thresholds[DRIFT_X]);
+			ImGui::PopItemWidth();
+			ImGui::Text("Drift Y");
+			ImGui::PushItemWidth(80);
+			ImGui::InputInt("##GDriftY", &profile.Thresholds[DRIFT_Y]);
+			ImGui::PopItemWidth();
 			ImGui::EndChild();
-		SohImGui::EndGroupPanel();
+			SohImGui::EndGroupPanel(14.0f);
+		}
+
 		ImGui::SameLine();
 
+		const ImVec2 cursor = ImGui::GetCursorPos();
 
-		ImVec2 cursor = ImGui::GetCursorPos();
-
-		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(150, 20));
+		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
 			DrawButton("Up", BTN_CUP);
 			DrawButton("Down", BTN_CDOWN);
 			DrawButton("Left", BTN_CLEFT);
@@ -179,23 +224,32 @@ namespace Ship {
 
 		ImGui::SetCursorPosX(cursor.x);
 		ImGui::SetCursorPosY(cursor.y + 120);
-		SohImGui::BeginGroupPanel("Options", ImVec2(150, 20));
+		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
+			if (Backend->CanRumble()) {
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
+			}
 			ImGui::SetCursorPosX(cursorX);
-			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
+			ImGui::Text("Rumble Force: %d%%", static_cast<int>(100 * profile.RumbleStrength));
 			ImGui::SetCursorPosX(cursorX);
-			ImGui::Checkbox("Show Inputs", &profile.ShowInputs);
+			ImGui::PushItemWidth(135.0f);
+			ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0, 1.0f, "");
+			ImGui::PopItemWidth();
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel();
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
 	}
 
 	void ControllerHud::DrawHud() {
 
 		__enableGameInput = true;
 
-		if (!this->Opened) return;
+		if (!this->Opened) {
+			BtnReading = -1;
+			return;
+		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(681, 290), ImVec2(990, 290));
+		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
 		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::BeginTabBar("##Controllers");

@@ -17,6 +17,7 @@ public:
 	void WriteToSource(int32_t slot, ControllerCallback* controller) override { }
 	bool Connected() const override { return false; }
 	bool CanRumble() const override { return false; }
+	bool CanGyro()   const override { return false; }
 
 	int32_t ReadRawPress() override { return -1; }
 	bool HasPadConf() const { return true; }

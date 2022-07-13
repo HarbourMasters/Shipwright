@@ -51,6 +51,8 @@ namespace Ship {
 	void KeyboardController::ReadFromSource(int32_t slot) {
 		wStickX = 0;
 		wStickY = 0;
+		wCamX = 0;
+		wCamY = 0;
 	}
 
 

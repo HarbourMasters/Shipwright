@@ -350,13 +350,6 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         });
 
-        // for (const auto& [i, controllers] : Ship::Window::Controllers)
-        // {
-        //     CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
-        //     CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
-        //     needs_save = true;
-        // }
-
         ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
         });
@@ -777,41 +770,9 @@ namespace SohImGui {
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
                 Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
-
-                ImGui::Separator();
-
-                // for (const auto& [i, controllers] : Ship::Window::Controllers)
-                // {
-                //     bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
-                //         return c->HasPadConf() && c->Connected();
-                //         }) != controllers.end();
-                //
-                //         if (!hasPad) continue;
-                //
-                //         auto menuLabel = "Controller " + std::to_string(i + 1);
-                //         if (ImGui::BeginMenu(menuLabel.c_str()))
-                //         {
-                //             EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
-                //
-                //             if (ImGui::Button("Recalibrate Gyro"))
-                //             {
-                //                 CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
-                //                 CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
-                //                 needs_save = true;
-                //             }
-                //
-                //             ImGui::Separator();
-                //
-                //             EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
-                //
-                //             ImGui::EndMenu();
-                //         }
-                //         ImGui::Separator();
-                // }
 
                 ImGui::EndMenu();
             }
@@ -1514,7 +1475,7 @@ namespace SohImGui {
         s_GroupPanelLabelStack.push_back(ImRect(labelMin, labelMax));
     }
 
-    void EndGroupPanel() {
+    void EndGroupPanel(float minHeight) {
         ImGui::PopItemWidth();
 
         auto itemSpacing = ImGui::GetStyle().ItemSpacing;
@@ -1532,7 +1493,7 @@ namespace SohImGui {
 
         ImGui::SameLine(0.0f, 0.0f);
         ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
-        ImGui::Dummy(ImVec2(0.0, frameHeight - frameHeight * 0.5f - itemSpacing.y));
+        ImGui::Dummy(ImVec2(0.0, std::max(frameHeight - frameHeight * 0.5f - itemSpacing.y, minHeight)));
 
         ImGui::EndGroup();
 

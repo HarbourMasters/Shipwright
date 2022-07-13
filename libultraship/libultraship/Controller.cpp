@@ -49,18 +49,46 @@ namespace Ship {
 			}
 		}
 
+		// Stick Inputs
+		if (pad->cam_x == 0) {
+			if (dwPressedButtons[slot] & BTN_VSTICKLEFT) {
+				pad->cam_x = -128 * 10.0f;
+			}
+			else if (dwPressedButtons[slot] & BTN_VSTICKRIGHT) {
+				pad->cam_x = 127 * 10.0f;
+			}
+			else {
+				pad->cam_x = wCamX;
+			}
+		}
+		if (pad->cam_y == 0) {
+			if (dwPressedButtons[slot] & BTN_VSTICKDOWN) {
+				pad->cam_y = -128 * 10.0f;
+			}
+			else if (dwPressedButtons[slot] & BTN_VSTICKUP) {
+				pad->cam_y = 127 * 10.0f;
+			}
+			else {
+				pad->cam_y = wCamY;
+			}
+		}
+
 		// Gyro
 		pad->gyro_x = wGyroX;
 		pad->gyro_y = wGyroY;
-
-		// Right Stick
-		pad->cam_x = wCamX;
-		pad->cam_y = wCamY;
 	}
 
 	void Controller::SetButtonMapping(int slot, int32_t n64Button, int32_t dwScancode) {
 		std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
-		std::erase_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
+
+		const auto& find = std::ranges::find_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& pair) {
+			return pair.second == n64Button;
+		});
+
+		if (find != Mappings.end()) {
+			Mappings[find->first] = -1;
+		}
+
 		Mappings[dwScancode] = n64Button;
 	}
 }
