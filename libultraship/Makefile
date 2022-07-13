@@ -39,14 +39,6 @@ CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
-ifeq ($(UNAME), Darwin)
-	CPPFLAGS += -framework OpenGL
-endif
-
-ifeq ($(UNAME), Linux)
-	WARN += -Wno-error=stringop-overflow # This is required with clang on Linux.
-endif
-
 ifneq ($(DEBUG),0)
 	CXXFLAGS += -g -D_DEBUG
 	CFLAGS += -g -D_DEBUG
