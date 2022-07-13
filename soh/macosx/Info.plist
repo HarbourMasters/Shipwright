@@ -7,7 +7,7 @@
     <key>CFBundleName</key>
     <string>Ship of Harkinian</string>
     <key>CFBundleExecutable</key>
-    <string>launcher.sh</string>
+    <string>soh</string>
     <key>CFBundleGetInfoString</key>
     <string>2.0.0</string>
     <key>CFBundleIconFile</key>
