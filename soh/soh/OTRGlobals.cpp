@@ -1580,5 +1580,5 @@ extern "C" int GetSkulltulaCountMessage(char* buffer, char* src, const int maxBu
         memcpy(buffer, str.c_str(), copiedCharLen);
         return copiedCharLen;
     }
-    return 0
+    return 0;
 }
