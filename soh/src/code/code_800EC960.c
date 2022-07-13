@@ -1257,11 +1257,10 @@ void func_800EC960(u8 dpad) {
     // sOcarinaCRightBtnMap = BTN_CRIGHT;
 
     // N64 A-down-left-right-up layout remapped to 3DS L-R-Y-X-A
-    sOcarinaAllowedBtnMask =
-        (BTN_A | BTN_L | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT | BTN_Z | BTN_R);
-    sOcarinaABtnMap = BTN_L | BTN_Z;
+    sOcarinaAllowedBtnMask = (BTN_A | BTN_L | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
+    sOcarinaABtnMap = BTN_L;
     sOcarinaCUPBtnMap = BTN_A;
-    sOcarinaCDownBtnMap = BTN_CDOWN | BTN_R;  // C down -> Z/R for GCN/Wii
+    sOcarinaCDownBtnMap = BTN_CDOWN;  // C down -> Z/R for GCN/Wii
     sOcarinaCLeftBtnMap = BTN_CRIGHT;         // C left -> Y
     sOcarinaCRightBtnMap = BTN_CLEFT;         // C right -> X
 
@@ -1503,10 +1502,10 @@ void func_800ED200(void) {
     u8 j;
     u8 k;
 
-    if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
-        func_800ECC04((u16)D_80130F3C);
-        return;
-    }
+    //if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
+    //    func_800ECC04((u16)D_80130F3C);
+    //    return;
+    //}
 
     func_800ECDBC();
 
