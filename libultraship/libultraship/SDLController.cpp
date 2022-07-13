@@ -170,7 +170,7 @@ namespace Ship {
         else {
             //SOHTODO KIRITO: Camera Sensitivity
             wCamX = +ax * 15.0f;
-            wCamY = +ay * 15.0f;
+            wCamY = -ay * 15.0f;
         }
     }
 
