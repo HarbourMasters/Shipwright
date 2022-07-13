@@ -354,8 +354,6 @@ namespace SohImGui {
             pads = cont_pad;
         });
 
-        ModInternal::RegisterHook<ModInternal::ExitGame>(Game::SaveSettings);
-
         Game::InitSettings();
 
         CVar_SetS32("gRandoGenerating", 0);
