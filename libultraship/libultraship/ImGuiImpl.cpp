@@ -743,6 +743,15 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
+                EnhancementCheckbox("Invert camera Y axis", "gInvertYAxis");
+                Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+                EnhancementCheckbox("Invert camera X axis", "gInvertXAxis");
+                Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+                EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
+                Tooltip("When in the C-Up first-person view, auto center the camera");
+
+                ImGui::Separator();
+
                 // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
@@ -750,12 +759,6 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
-                EnhancementCheckbox("Invert camera Y axis", "gInvertYAxis");
-                Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-                EnhancementCheckbox("Invert camera X axis", "gInvertXAxis");
-                Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-                EnhancementCheckbox("Auto center first-person view", "gAutoCenterView");
-                Tooltip("When in the C-Up first-person view, auto center the camera");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
