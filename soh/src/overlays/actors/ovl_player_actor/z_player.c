@@ -12696,7 +12696,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                     (this->getItemId == GI_SUNS_SONG) || (this->getItemId == GI_SONG_OF_TIME) ||
                     (this->getItemId == GI_PRELUDE_OF_LIGHT) || (this->getItemId == GI_MINUET_OF_FOREST) ||
                     (this->getItemId == GI_BOLERO_OF_FIRE) || (this->getItemId == GI_NOCTURNE_OF_SHADOW) ||
-                    (this->getItemId == GI_REQUIEM_OF_SPIRIT) || (this->getItemId == GI_PRELUDE_OF_LIGHT)) {
+                    (this->getItemId == GI_REQUIEM_OF_SPIRIT) || (this->getItemId == GI_ZELDAS_LULLABY)) {
                     temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
                 }
             }
