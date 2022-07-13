@@ -81,12 +81,12 @@ void Ship::ControlDeck::LoadControllerSettings() {
 		std::string guid = device->GetGuid();
 
 		for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
-			
+
 			if (!(Config->rjson["Controllers"].contains(guid) && Config->rjson["Controllers"][guid].contains(StringHelper::Sprintf("Slot_%d", slot)))) continue;
 
 			auto& profile = device->profiles[slot];
 			auto  rawProfile = Config->rjson["Controllers"][guid][StringHelper::Sprintf("Slot_%d", slot)];
-			
+
 			profile.Mappings.clear();
 			profile.Thresholds.clear();
 			profile.GyroThresholds.clear();
@@ -101,7 +101,7 @@ void Ship::ControlDeck::LoadControllerSettings() {
 			for (auto const& val : rawProfile["Thresholds"].items()) {
 				profile.Thresholds[static_cast<ControllerThresholds>(std::stoi(val.key()))] = val.value();
 			}
-			
+
 			for (auto const& val : rawProfile["Mappings"].items()) {
 				device->SetButtonMapping(slot, std::stoi(val.key().substr(4)), val.value());
 			}

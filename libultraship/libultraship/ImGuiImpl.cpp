@@ -691,7 +691,7 @@ namespace SohImGui {
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
-
+            GlobalCtx2::GetInstance()->GetConfig()->save();
             if (CVar_GetS32("gControlNav", 0)) {
                 if (CVar_GetS32("gOpenMenuBar", 0)) {
                     io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
