@@ -25,7 +25,7 @@ RUN apt-get update && \
 		libpng-dev \
 		libgles2-mesa-dev && \    
 	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 10 && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 10 && \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 10 && \
 	gcc --version && \
 	g++ --version
 	
