@@ -568,4 +568,6 @@ void DebugConsole_SaveCVars()
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
             pConf->setFloat(key, cvar.second->value.valueFloat);
     }
+
+    pConf->save();
 }
