@@ -12675,6 +12675,33 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             else {
                 temp1 = temp2 = (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
+
+            // In Rando, if we get special quest items (medallions/stones/songs), play their respective unique fanfares
+            // instead of the default "get item" fanfare
+            if (gSaveContext.n64ddFlag) {
+                // If the item we're getting is a medallion, play the "get a medallion" fanfare
+                if ((this->getItemId == GI_MEDALLION_FOREST) || (this->getItemId == GI_MEDALLION_FIRE) ||
+                    (this->getItemId == GI_MEDALLION_WATER) || (this->getItemId == GI_MEDALLION_SHADOW) ||
+                    (this->getItemId == GI_MEDALLION_SPIRIT) || (this->getItemId == GI_MEDALLION_LIGHT)) {
+                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                }
+                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                if ((this->getItemId == GI_STONE_KOKIRI) || (this->getItemId == GI_STONE_GORON) ||
+                    (this->getItemId == GI_STONE_ZORA)) {
+                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                }
+                // If the item we're getting is a song, play the "learned a song" fanfare
+                if ((this->getItemId == GI_SONG_OF_STORMS) || (this->getItemId == GI_SERENADE_OF_WATER) ||
+                    (this->getItemId == GI_EPONAS_SONG) || (this->getItemId == GI_SARIAS_SONG) ||
+                    (this->getItemId == GI_SUNS_SONG) || (this->getItemId == GI_SONG_OF_TIME) ||
+                    (this->getItemId == GI_PRELUDE_OF_LIGHT) || (this->getItemId == GI_MINUET_OF_FOREST) ||
+                    (this->getItemId == GI_BOLERO_OF_FIRE) || (this->getItemId == GI_NOCTURNE_OF_SHADOW) ||
+                    (this->getItemId == GI_REQUIEM_OF_SPIRIT) || (this->getItemId == GI_PRELUDE_OF_LIGHT)) {
+                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                }
+            }
+            // ***************************************************************************************
+
             Audio_PlayFanfare(temp1);
         }
     }
