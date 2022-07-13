@@ -59,20 +59,11 @@ namespace Ship {
 
     void GlobalCtx2::InitWindow() {
         InitLogging();
-        Config = std::make_shared<Mercury>("shipofharkinian.cfg");
+        Config = std::make_shared<Mercury>(GetPathRelativeToAppDirectory("shipofharkinian.cfg"));
         Config->reload();
 
-/* OTRTODO: figure out how to make app directory paths play nice with this
-        if (MainPath.empty()) {
-            MainPath = GetPathRelativeToAppDirectory("oot.otr");
-        }
-        PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
-        if (PatchesPath.empty()) {
-            PatchesPath = GetAppDirectoryPath() + "/";
-        }
-*/
-        MainPath = Config->getString("Game.Main Archive", "oot.otr");
-        PatchesPath = Config->getString("Game.Patche Archive", "./mods");
+        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+        PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
 
         ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
         Win = std::make_shared<Window>(GetInstance());

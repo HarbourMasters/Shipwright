@@ -11,11 +11,11 @@ namespace Ship {
 		public:
 			SDLController(int slot) : Controller(), Cont(nullptr), physicalSlot(slot) { }
 			void ReadFromSource(int32_t slot) override;
-			const char* GetControllerName();
+			const char* GetControllerName() override;
 			const char* GetButtonName(int slot, int n64Button) override;
-			void WriteToSource(int32_t slot, ControllerCallback* controller);
-			bool Connected() const { return Cont != nullptr; }
-			bool CanRumble() const {
+			void WriteToSource(int32_t slot, ControllerCallback* controller) override;
+			bool Connected() const override { return Cont != nullptr; }
+			bool CanRumble() const override {
 #if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
 				return SDL_GameControllerHasRumble(Cont);
 #endif

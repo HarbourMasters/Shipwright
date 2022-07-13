@@ -7,12 +7,12 @@ namespace Ship {
 		public:
 			KeyboardController();
 
-			void ReadFromSource(int32_t slot);
-			void WriteToSource(int32_t slot, ControllerCallback* controller);
-			bool Connected() const { return true; }
-			bool CanRumble() const { return false; }
+			void ReadFromSource(int32_t slot) override;
+			void WriteToSource(int32_t slot, ControllerCallback* controller) override;
+			bool Connected() const override { return true; }
+			bool CanRumble() const override { return false; }
 			
-			const char* GetControllerName();
+			const char* GetControllerName() override;
 			const char* GetButtonName(int slot, int n64Button) override;
 			bool PressButton(int32_t dwScancode);
 			bool ReleaseButton(int32_t dwScancode);

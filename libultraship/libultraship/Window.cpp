@@ -213,9 +213,9 @@ namespace Ship {
             pConf->setInt("Window.Fullscreen.Width", 640);
             pConf->setInt("Window.Fullscreen.Height", 480);
 
-            pConf->setString("Game.SaveName", "oot_save.sav");
-            pConf->setString("Game.Main Archive", "oot.otr");
-            pConf->setString("Game.Patches Archive", "./mods");
+            pConf->setString("Game.SaveName", "");
+            pConf->setString("Game.Main Archive", "");
+            pConf->setString("Game.Patches Archive", "");
 
             pConf->setInt("Shortcuts.Fullscreen", 0x044);
             pConf->setInt("Shortcuts.Console", 0x029);

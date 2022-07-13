@@ -360,7 +360,9 @@ namespace Ship {
     char buffer[50];
     const char* SDLController::GetButtonName(int slot, int n64Button) {
         std::unordered_map<int32_t, int32_t>& Mappings = profiles[slot].Mappings;
-        const auto find = std::ranges::find_if(Mappings, [n64Button](const std::pair<int32_t, int32_t>& bin) { return bin.second == n64Button; });
+        const auto find = std::find_if(Mappings.begin(), Mappings.end(), [n64Button](const std::pair<int32_t, int32_t>& pair) {
+            return pair.second == n64Button;
+        });
 
         if (find == Mappings.end()) return "Unknown";
 

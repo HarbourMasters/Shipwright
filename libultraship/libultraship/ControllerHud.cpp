@@ -30,7 +30,7 @@ namespace Ship {
 		ImVec2 pos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosY(pos.y + len.y / 4);
 		ImGui::SetCursorPosX(pos.x + abs(len.x - size));
-		ImGui::Text(label);
+		ImGui::Text("%s", label);
 		ImGui::SameLine();
 		ImGui::SetCursorPosY(pos.y);
 

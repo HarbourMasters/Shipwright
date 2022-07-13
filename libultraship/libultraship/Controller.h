@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include "stdint.h"
 #include "UltraController.h"
 #include "ControllerAttachment.h"
