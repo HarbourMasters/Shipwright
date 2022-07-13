@@ -12678,7 +12678,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
             // In Rando, if we get special quest items (medallions/stones/songs), play their respective unique fanfares
             // instead of the default "get item" fanfare (if we have the setting toggled on)
-            if (gSaveContext.n64ddFlag && CVar_GetS32("gRandoFanfareByItemType", 0)) {
+            if (gSaveContext.n64ddFlag && CVar_GetS32("gRandoFanfareByItemType", 0) != 0) {
                 // If the item we're getting is a medallion, play the "get a medallion" fanfare
                 if ((this->getItemId == GI_MEDALLION_FOREST) || (this->getItemId == GI_MEDALLION_FIRE) ||
                     (this->getItemId == GI_MEDALLION_WATER) || (this->getItemId == GI_MEDALLION_SHADOW) ||
