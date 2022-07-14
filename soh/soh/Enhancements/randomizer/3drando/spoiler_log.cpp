@@ -26,7 +26,9 @@
 #include <filesystem>
 #include <variables.h>
 
-extern std::string GlobalCtx2_GetPathRelativeToAppDirectory(const char* path);
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
+#include "GlobalCtx2.h"
 
 using json = nlohmann::json;
 
