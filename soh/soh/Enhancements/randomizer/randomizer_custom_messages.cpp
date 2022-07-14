@@ -28,7 +28,7 @@ std::string MESSAGE_END() {
 }
 
 std::string ITEM_OBTAINED(uint8_t x) {
-    return "\x08\x13"s + char(x);
+    return "\x13"s + char(x);
 }
 
 std::string NEWLINE() {
@@ -37,4 +37,8 @@ std::string NEWLINE() {
 
 std::string COLOR(uint8_t x) {
     return "\x05"s + char(x);
+}
+
+std::string WAIT_FOR_INPUT() {
+    return "\x04"s;
 }

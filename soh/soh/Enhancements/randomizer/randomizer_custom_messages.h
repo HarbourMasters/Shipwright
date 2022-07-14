@@ -16,3 +16,4 @@ std::string MESSAGE_END();
 std::string ITEM_OBTAINED(uint8_t x);
 std::string NEWLINE();
 std::string COLOR(uint8_t x);
+std::string WAIT_FOR_INPUT();
