@@ -736,6 +736,10 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::Separator();
+
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
 
@@ -746,6 +750,8 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Controller"))
             {
@@ -774,6 +780,8 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Graphics"))
             {
@@ -823,12 +831,16 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Languages")) {
                 EnhancementRadioButton("English", "gLanguages", 0);
                 EnhancementRadioButton("German", "gLanguages", 1);
                 EnhancementRadioButton("French", "gLanguages", 2);
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Enhancements"))
             {
@@ -866,33 +878,33 @@ namespace SohImGui {
                         ImGui::Text("Damage Multiplier");
                         EnhancementCombobox("gDamageMul", powers, 9, 0);
                         Tooltip("Modifies all sources of damage not affected by other sliders\n\
-2x: Can survive all common attacks from the start of the game\n\
-4x: Dies in 1 hit to any substantial attack from the start of the game\n\
-8x: Can only survive trivial damage from the start of the game\n\
-16x: Can survive all common attacks with max health without double defense\n\
-32x: Can survive all common attacks with max health and double defense\n\
-64x: Can survive trivial damage with max health without double defense\n\
-128x: Can survive trivial damage with max health and double defense\n\
-256x: Cannot survive damage");
+                                    2x: Can survive all common attacks from the start of the game\n\
+                                    4x: Dies in 1 hit to any substantial attack from the start of the game\n\
+                                    8x: Can only survive trivial damage from the start of the game\n\
+                                    16x: Can survive all common attacks with max health without double defense\n\
+                                    32x: Can survive all common attacks with max health and double defense\n\
+                                    64x: Can survive trivial damage with max health without double defense\n\
+                                    128x: Can survive trivial damage with max health and double defense\n\
+                                    256x: Cannot survive damage");
                         ImGui::Text("Fall Damage Multiplier");
                         EnhancementCombobox("gFallDamageMul", powers, 8, 0);
                         Tooltip("Modifies all fall damage\n\
-2x: Can survive all fall damage from the start of the game\n\
-4x: Can only survive short fall damage from the start of the game\n\
-8x: Cannot survive any fall damage from the start of the game\n\
-16x: Can survive all fall damage with max health without double defense\n\
-32x: Can survive all fall damage with max health and double defense\n\
-64x: Can survive short fall damage with double defense\n\
-128x: Cannot survive fall damage");
+                                    2x: Can survive all fall damage from the start of the game\n\
+                                    4x: Can only survive short fall damage from the start of the game\n\
+                                    8x: Cannot survive any fall damage from the start of the game\n\
+                                    16x: Can survive all fall damage with max health without double defense\n\
+                                    32x: Can survive all fall damage with max health and double defense\n\
+                                    64x: Can survive short fall damage with double defense\n\
+                                    128x: Cannot survive fall damage");
                         ImGui::Text("Void Damage Multiplier");
                         EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
                         Tooltip("Modifies damage taken after falling into a void\n\
-2x: Can survive void damage from the start of the game\n\
-4x: Cannot survive void damage from the start of the game\n\
-8x: Can survive void damage twice with max health without double defense\n\
-16x: Can survive void damage with max health without double defense\n\
-32x: Can survive void damage with max health and double defense\n\
-64x: Cannot survive void damage");
+                                2x: Can survive void damage from the start of the game\n\
+                                4x: Cannot survive void damage from the start of the game\n\
+                                8x: Can survive void damage twice with max health without double defense\n\
+                                16x: Can survive void damage with max health without double defense\n\
+                                32x: Can survive void damage with max health and double defense\n\
+                                64x: Cannot survive void damage");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
@@ -1154,6 +1166,8 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Cheats"))
             {
                 if (ImGui::BeginMenu("Infinite...")) {
@@ -1191,6 +1205,8 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
@@ -1211,6 +1227,7 @@ namespace SohImGui {
             }
 
             for (const auto& category : windowCategories) {
+                ImGui::SetCursorPosY(0.0f);
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
                         std::string varName(name);
