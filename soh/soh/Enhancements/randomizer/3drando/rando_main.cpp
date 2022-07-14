@@ -7,6 +7,8 @@
 // #include <soh/Enhancements/randomizer.h>
 #include <Cvar.h>
 #include <GameSettings.h>
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
 #include <GlobalCtx2.h>
 
 #define TICKS_PER_SEC 268123480.0
