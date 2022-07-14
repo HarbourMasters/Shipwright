@@ -406,3 +406,8 @@ oot.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
+
+# Xcode
+xcuserdata/
+xcshareddata/
+/soh/soh.xcconfig
