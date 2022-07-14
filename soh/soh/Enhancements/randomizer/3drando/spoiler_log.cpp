@@ -26,7 +26,7 @@
 #include <filesystem>
 #include <variables.h>
 
-#include <GlobalCtx2.h>
+extern std::string GlobalCtx2_GetPathRelativeToAppDirectory(const char* path);
 
 using json = nlohmann::json;
 
@@ -723,12 +723,13 @@ const char* SpoilerLog_Write(int language) {
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations(language);
     
-    if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists(GlobalCtx2_GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(GlobalCtx2_GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
-    std::ofstream jsonFile(Ship::GlobalCtx2::GetPathRelativeToAppDirectory((std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
+    std::ofstream jsonFile(GlobalCtx2_GetPathRelativeToAppDirectory(
+        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 

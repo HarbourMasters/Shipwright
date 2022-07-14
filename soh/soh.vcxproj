@@ -254,6 +254,7 @@
     <ClCompile Include="soh\z_message_OTR.cpp" />
     <ClCompile Include="soh\z_play_otr.cpp" />
     <ClCompile Include="soh\z_scene_otr.cpp" />
+    <ClCompile Include="src\GetAppDirectory.cpp" />
     <ClCompile Include="src\boot\assert.c" />
     <ClCompile Include="src\boot\boot_main.c" />
     <ClCompile Include="src\boot\build.c" />
@@ -941,6 +942,7 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark_data.c" />
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
+    
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h" />
