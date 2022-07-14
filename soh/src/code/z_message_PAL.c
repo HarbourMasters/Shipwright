@@ -1735,6 +1735,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             } else {
                 msgCtx->msgLength = font->msgLength = CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
             }
+        } else if (gSaveContext.n64ddFlag && textId == 0xF8) {
+            msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
+                GET_PLAYER(globalCtx)->getItemId, font->msgBuf, sizeof(font->msgBuf));
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;

@@ -42,6 +42,7 @@ class Randomizer {
     std::string GetHintFromCheck(RandomizerCheck check);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+    std::string GetCustomGetItemMessage(GetItemID giid);
 };
 
 #ifdef __cplusplus

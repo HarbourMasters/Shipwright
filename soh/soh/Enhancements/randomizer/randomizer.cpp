@@ -2419,6 +2419,17 @@ GetItemID Randomizer::GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomiz
     return GetItemFromGet(this->itemLocations[randomizerCheck], ogId);
 }
 
+std::string Randomizer::GetCustomGetItemMessage(GetItemID giid) {
+    if (!gSaveContext.n64ddFlag) {
+        return "Not Randomized.";
+    }
+
+    switch (giid) { 
+        default:
+            "There is no custom message for this item.";
+    }
+}
+
 RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     if (!gSaveContext.n64ddFlag) {
         return RC_UNKNOWN_CHECK;

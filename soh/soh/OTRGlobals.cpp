@@ -1528,3 +1528,8 @@ extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams,
 extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
+
+extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+    const std::string& getItemText = OTRGlobals::Instance->gRandomizer->GetCustomGetItemMessage(giid);
+    return CopyStringToCharBuffer(getItemText, buffer, maxBufferSize);
+}
