@@ -230,6 +230,15 @@ static int translate_scancode(int scancode) {
     }
 }
 
+static int untranslate_scancode(int translatedScancode) {
+    for (int i = 0; i < 512; i++) {
+        if (inverted_scancode_table[i] == translatedScancode) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 static void gfx_sdl_onkeydown(int scancode) {
     int key = translate_scancode(scancode);
     if (on_key_down_callback != NULL) {
@@ -342,7 +351,7 @@ static float gfx_sdl_get_detected_hz(void) {
 }
 
 static const char* gfx_sdl_get_key_name(int scancode) {
-    return SDL_GetScancodeName((SDL_Scancode) translate_scancode(scancode));
+    return SDL_GetScancodeName((SDL_Scancode) untranslate_scancode(scancode));
 }
 
 struct GfxWindowManagerAPI gfx_sdl = {
