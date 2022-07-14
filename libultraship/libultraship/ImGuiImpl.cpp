@@ -763,10 +763,6 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
-                EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
-                Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
-                EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
-                Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
                 EnhancementCheckbox("Auto Center First-Person View", "gAutoCenterView");
                 Tooltip("When in the C-Up first-person view, auto center the camera");
 
