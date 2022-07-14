@@ -1247,20 +1247,21 @@ void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
 
-// Function originally not called, so repurposing for DPad input
+// Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(u8 dpad) {
-    // sOcarinaD5BtnMap = BTN_CUP;
-    // sOcarinaB4BtnMap = BTN_CLEFT;
-    // sOcarinaA4BtnMap = BTN_CRIGHT;
-    // sOcarinaF4BtnMap = BTN_CDOWN;
-    // sOcarinaD4BtnMap = BTN_A;
-
-    // N64 A-down-left-right-up layout remapped to 3DS L-R-Y-X-A
-    sOcarinaD5BtnMap = BTN_A;
-    sOcarinaB4BtnMap = BTN_CRIGHT;  // C right = X
-    sOcarinaA4BtnMap = BTN_CLEFT;   // C left  = Y
-    sOcarinaF4BtnMap = BTN_CDOWN;   // C down  = R
-    sOcarinaD4BtnMap = BTN_L;
+    if (CVar_GetS32("gOcarina3DS", 0)) {  // 3DS controls
+        sOcarinaD5BtnMap = BTN_A;
+        sOcarinaB4BtnMap = BTN_CRIGHT; // C right = X
+        sOcarinaA4BtnMap = BTN_CLEFT;  // C left  = Y
+        sOcarinaF4BtnMap = BTN_CDOWN;  // C down  = R
+        sOcarinaD4BtnMap = BTN_L;
+    } else {                                            // N64 controls
+        sOcarinaD5BtnMap = BTN_CUP;
+        sOcarinaB4BtnMap = BTN_CLEFT;
+        sOcarinaA4BtnMap = BTN_CRIGHT;
+        sOcarinaF4BtnMap = BTN_CDOWN;
+        sOcarinaD4BtnMap = BTN_A;
+    }
 
     if (dpad) {
         sOcarinaD5BtnMap |= BTN_DUP;
@@ -1506,13 +1507,16 @@ void func_800ED200(void) {
     u8 j;
     u8 k;
 
-    // Commenting this out stops the L button from disabling ocarina songs
-    // It probably doesn't because it specifically checks for L, but it may have some other effect
-    // 
-    // if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
-    //     func_800ECC04((u16)D_80130F3C);
-    //     return;
-    // }
+    // This causes L to disable ocarina songs. Because L is used for a note with
+    // 3DS controls, turning on the option will disable this.
+    if (
+        CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L)
+        && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
+        && !CVar_GetS32("gOcarina3DS", 0)
+    ) {
+        func_800ECC04((u16)D_80130F3C);
+        return;
+    }
 
     func_800ECDBC();
 
