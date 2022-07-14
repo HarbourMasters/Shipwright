@@ -1249,7 +1249,6 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 
 // Function originally not called, so repurposing for DPad input
 void Audio_OcaUpdateBtnMap(u8 dpad) {
-    // sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
     // sOcarinaD5BtnMap = BTN_CUP;
     // sOcarinaB4BtnMap = BTN_CLEFT;
     // sOcarinaA4BtnMap = BTN_CRIGHT;
@@ -1257,7 +1256,6 @@ void Audio_OcaUpdateBtnMap(u8 dpad) {
     // sOcarinaD4BtnMap = BTN_A;
 
     // N64 A-down-left-right-up layout remapped to 3DS L-R-Y-X-A
-    sOcarinaAllowedBtnMask = (BTN_A | BTN_L | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
     sOcarinaD5BtnMap = BTN_A;
     sOcarinaB4BtnMap = BTN_CRIGHT;  // C right = X
     sOcarinaA4BtnMap = BTN_CLEFT;   // C left  = Y
@@ -1265,13 +1263,19 @@ void Audio_OcaUpdateBtnMap(u8 dpad) {
     sOcarinaD4BtnMap = BTN_L;
 
     if (dpad) {
-        sOcarinaAllowedBtnMask |=
-            (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
         sOcarinaD5BtnMap |= BTN_DUP;
         sOcarinaB4BtnMap |= BTN_DLEFT;
         sOcarinaA4BtnMap |= BTN_DRIGHT;
         sOcarinaF4BtnMap |= BTN_DDOWN;
     }
+
+    sOcarinaAllowedBtnMask = (
+        sOcarinaD5BtnMap |
+        sOcarinaB4BtnMap |
+        sOcarinaA4BtnMap |
+        sOcarinaF4BtnMap |
+        sOcarinaD4BtnMap
+    );
 }
 
 void Audio_GetOcaInput(void) {
