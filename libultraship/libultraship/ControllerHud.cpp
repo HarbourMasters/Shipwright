@@ -226,16 +226,16 @@ namespace Ship {
 		ImGui::SetCursorPosY(cursor.y + 120);
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
+			ImGui::SetCursorPosX(cursorX);
+			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
 			if (Backend->CanRumble()) {
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
+				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100 * profile.RumbleStrength));
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::PushItemWidth(135.0f);
+				ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0, 1.0f, "");
+				ImGui::PopItemWidth();
 			}
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::Text("Rumble Force: %d%%", static_cast<int>(100 * profile.RumbleStrength));
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::PushItemWidth(135.0f);
-			ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0, 1.0f, "");
-			ImGui::PopItemWidth();
 			ImGui::Dummy(ImVec2(0, 5));
 		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
 	}
