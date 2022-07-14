@@ -26,52 +26,45 @@ namespace Ship {
 		pad->button |= dwPressedButtons[slot] & 0xFFFF;
 
 		// Stick Inputs
-		if (pad->stick_x == 0) {
+		if (wStickX == 0) {
 			if (dwPressedButtons[slot] & BTN_STICKLEFT) {
 				pad->stick_x = -128;
-			}
-			else if (dwPressedButtons[slot] & BTN_STICKRIGHT) {
+			} else if (dwPressedButtons[slot] & BTN_STICKRIGHT) {
 				pad->stick_x = 127;
 			}
-			else {
-				pad->stick_x = wStickX;
-			}
+		} else {
+			pad->stick_x = wStickX;
 		}
 
-		if (pad->stick_y == 0) {
+		if (wStickY == 0) {
 			if (dwPressedButtons[slot] & BTN_STICKDOWN) {
 				pad->stick_y = -128;
-			}
-			else if (dwPressedButtons[slot] & BTN_STICKUP) {
+			} else if (dwPressedButtons[slot] & BTN_STICKUP) {
 				pad->stick_y = 127;
 			}
-			else {
-				pad->stick_y = wStickY;
-			}
+		} else {
+			pad->stick_y = wStickY;
 		}
 
 		// Stick Inputs
-		if (pad->cam_x == 0) {
+		if (wCamX == 0) {
 			if (dwPressedButtons[slot] & BTN_VSTICKLEFT) {
 				pad->cam_x = -128 * 10.0f;
-			}
-			else if (dwPressedButtons[slot] & BTN_VSTICKRIGHT) {
+			} else if (dwPressedButtons[slot] & BTN_VSTICKRIGHT) {
 				pad->cam_x = 127 * 10.0f;
 			}
-			else {
-				pad->cam_x = wCamX;
-			}
+		} else {
+			pad->cam_x = wCamX;
 		}
-		if (pad->cam_y == 0) {
+
+		if (wCamY == 0) {
 			if (dwPressedButtons[slot] & BTN_VSTICKDOWN) {
 				pad->cam_y = -128 * 10.0f;
-			}
-			else if (dwPressedButtons[slot] & BTN_VSTICKUP) {
+			} else if (dwPressedButtons[slot] & BTN_VSTICKUP) {
 				pad->cam_y = 127 * 10.0f;
 			}
-			else {
-				pad->cam_y = wCamY;
-			}
+		} else {
+			pad->cam_y = wCamY;
 		}
 
 		// Gyro
