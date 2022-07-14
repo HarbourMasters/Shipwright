@@ -1,5 +1,4 @@
 #include "SaveManager.h"
-#include "OTRGlobals.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -15,9 +14,11 @@
 
 extern "C" SaveContext gSaveContext;
 
+static const std::filesystem::path sSavePath("Save"); // TODO maybe let this be user-configurable?
+static const std::filesystem::path sGlobalPath = sSavePath / "global.sav";
+
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
-    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
+    return sSavePath / (std::string("file") + std::to_string(fileNum + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
@@ -127,20 +128,15 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
-    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
-    const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
-    auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
-    auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
-
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
         std::filesystem::create_directory(sSavePath);
     }
 
     // If there is a lingering unversioned save, convert it
-    if (std::filesystem::exists(sOldSavePath)) {
+    if (std::filesystem::exists("oot_save.sav")) {
         ConvertFromUnversioned();
-        std::filesystem::rename(sOldSavePath, sOldBackupSavePath);
+        std::filesystem::rename("oot_save.sav", "oot_save.bak");
     }
 
     // If the global save file exist, load it. Otherwise, create it.

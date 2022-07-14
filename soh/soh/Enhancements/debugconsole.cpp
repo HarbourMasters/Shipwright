@@ -500,9 +500,8 @@ template <typename Numeric> bool is_number(const std::string& s) {
 
 void DebugConsole_LoadCVars()
 {
-    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
-    if (File::Exists(cvarsConfig)) {
-        const auto lines = File::ReadAllLines(cvarsConfig);
+    if (File::Exists("cvars.cfg")) {
+        const auto lines = File::ReadAllLines("cvars.cfg");
 
         for (const std::string& line : lines) {
             std::vector<std::string> cfg = StringHelper::Split(line, " = ");
@@ -536,7 +535,5 @@ void DebugConsole_SaveCVars()
             output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
     }
 
-
-    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
-    File::WriteAllText(cvarsConfig, output);
+    File::WriteAllText("cvars.cfg", output);
 }
