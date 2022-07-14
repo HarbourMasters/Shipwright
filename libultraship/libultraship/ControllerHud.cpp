@@ -186,6 +186,7 @@ namespace Ship {
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::PushItemWidth(135.0f);
 				EnhancementCheckbox("Invert X Axis", "gInvertXAxis");
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 				EnhancementCheckbox("Invert Y Axis", "gInvertYAxis");
@@ -268,7 +269,7 @@ namespace Ship {
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
+		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 340));
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
