@@ -235,6 +235,7 @@
     <ClCompile Include="soh\Enhancements\randomizer\3drando\trial.cpp" />
     <ClCompile Include="soh\Enhancements\randomizer\3drando\utils.cpp" />
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\randomizer_custom_messages.cpp" />
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp" />
     <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
@@ -983,6 +984,7 @@
     <ClInclude Include="soh\Enhancements\randomizer\3drando\trial.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp" />
     <ClInclude Include="randomizerTypes.h" />
+    <ClInclude Include="soh\Enhancements\randomizer\randomizer_custom_messages.h" />
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
