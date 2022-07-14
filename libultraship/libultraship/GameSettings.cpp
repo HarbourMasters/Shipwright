@@ -7,7 +7,6 @@
 #include <PR/ultra64/pi.h>
 #include <PR/ultra64/message.h>
 
-#include "ConfigFile.h"
 #include "Cvar.h"
 #include "GlobalCtx2.h"
 #include "ImGuiImpl.h"
@@ -31,18 +30,6 @@ namespace Game {
         Audio_SetGameVolume(SEQ_BGM_SUB, CVar_GetFloat("gSubMusicVolume", 1));
         Audio_SetGameVolume(SEQ_FANFARE, CVar_GetFloat("gSFXMusicVolume", 1));
         Audio_SetGameVolume(SEQ_SFX, CVar_GetFloat("gFanfareVolume", 1));
-    }
-
-    void LoadPadSettings() {
-        // const std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        // ConfigFile& Conf = *pConf;
-
-        // for (const auto& [i, controllers] : Ship::Window::Controllers) {
-        //     for (const auto& controller : controllers) {
-        //         if (auto padConfSection = controller->GetPadConfSection()) {
-        //         }
-        //     }
-        // }
     }
 
     void LoadSettings() {
