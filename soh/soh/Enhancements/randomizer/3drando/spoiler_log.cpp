@@ -26,10 +26,6 @@
 #include <filesystem>
 #include <variables.h>
 
-#define NOGDI
-#define WIN32_LEAN_AND_MEAN
-#include "GlobalCtx2.h"
-
 using json = nlohmann::json;
 
 json jsonData;
@@ -725,13 +721,12 @@ const char* SpoilerLog_Write(int language) {
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations(language);
     
-    if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
-        std::filesystem::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
+    if (!std::filesystem::exists("./Randomizer")) {
+        std::filesystem::create_directory("./Randomizer");
     }
 
     std::string jsonString = jsonData.dump(4);
-    std::ofstream jsonFile(Ship::GlobalCtx2::GetPathRelativeToAppDirectory(
-        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
+    std::ofstream jsonFile("./Randomizer/" + Settings::seed + ".json");
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 
