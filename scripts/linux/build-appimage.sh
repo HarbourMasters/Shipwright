@@ -6,7 +6,7 @@ curl -sSfLO "https://github.com/AppImage/AppImageKit/releases/download/continuou
 chmod a+x appimagetool*.AppImage
  
 mkdir -p AppDir/usr/bin
-cp .ci/linux/{soh.desktop,soh.sh} AppDir/
+cp scripts/linux/{soh.desktop,soh.sh} AppDir/
 cp soh/macosx/sohIcon.png AppDir/soh.png
 curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o AppDir/usr/bin/gamecontrollerdb.txt
 

@@ -41,7 +41,7 @@ RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
 	tar -xzf SDL2-${SDL2VER}.tar.gz && \
 	cd SDL2-${SDL2VER} && \
 	./configure --prefix=/usr && \
-	make && make install && \
+	make -j$(nproc) && make install && \
 	rm ../SDL2-${SDL2VER}.tar.gz && \
 	cp -av /lib/libSDL* /lib/x86_64-linux-gnu/
 
