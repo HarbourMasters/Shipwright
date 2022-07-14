@@ -24,8 +24,8 @@ WARN := \
 	-funsigned-char \
 	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags sdl2 glew) $(shell sdl2-config --cflags)
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags sdl2 glew) $(shell sdl2-config --cflags)
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
+CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
 LDFLAGS :=
 
 ifeq ($(UNAME), Linux)
