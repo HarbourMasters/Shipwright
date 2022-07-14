@@ -736,6 +736,10 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::Separator();
+
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
 
@@ -746,6 +750,8 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Controller"))
             {
@@ -774,6 +780,8 @@ namespace SohImGui {
 
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Graphics"))
             {
@@ -823,12 +831,16 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Languages")) {
                 EnhancementRadioButton("English", "gLanguages", 0);
                 EnhancementRadioButton("German", "gLanguages", 1);
                 EnhancementRadioButton("French", "gLanguages", 2);
                 ImGui::EndMenu();
             }
+
+            ImGui::SetCursorPosY(0.0f);
 
             if (ImGui::BeginMenu("Enhancements"))
             {
@@ -1154,6 +1166,8 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Cheats"))
             {
                 if (ImGui::BeginMenu("Infinite...")) {
@@ -1191,6 +1205,8 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
@@ -1211,6 +1227,7 @@ namespace SohImGui {
             }
 
             for (const auto& category : windowCategories) {
+                ImGui::SetCursorPosY(0.0f);
                 if (ImGui::BeginMenu(category.first.c_str())) {
                     for (const std::string& name : category.second) {
                         std::string varName(name);
