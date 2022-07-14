@@ -212,10 +212,10 @@ void Draw_Npcs(){
         SohImGui::EnhancementColor("Fire Primary color", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255));
         Table_NextCol();
         Draw_HelpIcon("Affects the primary color of the Ice itself of the Keese");
-        SohImGui::EnhancementColor("Ice Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
+        SohImGui::EnhancementColor("Fire Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
         Table_NextLine();
         Draw_HelpIcon("Affects the secondary color of the Fire itself of the Keese");
-        SohImGui::EnhancementColor("Fire Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
+        SohImGui::EnhancementColor("Ice Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
         Table_NextCol();
         Draw_HelpIcon("Affects the secondary color of the Ice itself of the Keese");
         SohImGui::EnhancementColor("Ice Secondary color", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255));
