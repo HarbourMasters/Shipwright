@@ -5,11 +5,23 @@
 #include "ImGuiImpl.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "Cvar.h"
 
 namespace Ship {
 
 	extern "C" uint8_t __enableGameInput;
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
+
+	bool needs_save = false;
+
+	void EnhancementCheckbox(const char* text, const char* cvarName)
+    {
+        bool val = (bool)CVar_GetS32(cvarName, 0);
+        if (ImGui::Checkbox(text, &val)) {
+            CVar_SetS32(cvarName, val);
+            needs_save = true;
+        }
+    }
 
 	void InputEditor::Init() {
 		BtnReading = -1;
@@ -115,7 +127,7 @@ namespace Ship {
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 93.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
@@ -123,7 +135,7 @@ namespace Ship {
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 139.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
@@ -147,7 +159,7 @@ namespace Ship {
 			} else {
 				ImGui::Dummy(ImVec2(0, 6));
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 69.0f);
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -173,7 +185,12 @@ namespace Ship {
 					ImGui::InputInt("##MSensitivity", &profile.Thresholds[SENSITIVITY]);
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
-			SohImGui::EndGroupPanel(14.0f);
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::PushItemWidth(135.0f);
+				EnhancementCheckbox("Invert X Axis", "gInvertXAxis");
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				EnhancementCheckbox("Invert Y Axis", "gInvertYAxis");
+			SohImGui::EndGroupPanel(13.0f);
 		}
 
 		if(Backend->CanGyro()) {
@@ -210,7 +227,7 @@ namespace Ship {
 			ImGui::InputInt("##GDriftY", &profile.Thresholds[DRIFT_Y]);
 			ImGui::PopItemWidth();
 			ImGui::EndChild();
-			SohImGui::EndGroupPanel(14.0f);
+			SohImGui::EndGroupPanel(60.0f);
 		}
 
 		ImGui::SameLine();
@@ -240,7 +257,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 46.0f);
 	}
 
 	void InputEditor::DrawHud() {
@@ -252,7 +269,7 @@ namespace Ship {
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
+		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 340));
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
