@@ -366,6 +366,9 @@
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
     </ClCompile>
+    <ClCompile Include="ControllerHud.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
