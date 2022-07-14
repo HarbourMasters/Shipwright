@@ -31,9 +31,6 @@
     <Filter Include="Source Files\Globals">
       <UniqueIdentifier>{c0f07350-c627-444e-9f66-23e19407ad9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Config">
-      <UniqueIdentifier>{9cf4833f-e90c-4a9d-8747-d47cde657beb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Resources\Files">
       <UniqueIdentifier>{2aa34c3b-6148-480f-a4fc-19c4e0f8c822}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,15 @@
     </Filter>
     <Filter Include="Source Files\Lib\dr_libs">
       <UniqueIdentifier>{db6e02cc-fc4c-4138-8219-1d281ad93ec2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lib\nlohmann">
+      <UniqueIdentifier>{2be7c90f-ba21-455d-8a11-6f99452be15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lib\Mercury">
+      <UniqueIdentifier>{7e415dd2-403b-4d4d-b4f2-3e311f91db19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Controller\InputEditor">
+      <UniqueIdentifier>{010dc29b-d1f6-4793-a4e7-4156aa4fcdd6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +170,6 @@
     </ClCompile>
     <ClCompile Include="MemoryPack.cpp">
       <Filter>Source Files\Controller\Attachment</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfigFile.cpp">
-      <Filter>Source Files\Config</Filter>
     </ClCompile>
     <ClCompile Include="CollisionHeader.cpp">
       <Filter>Source Files\Resources\Files</Filter>
@@ -354,6 +357,15 @@
     <ClCompile Include="Factories\AudioFactory.cpp">
       <Filter>Source Files\Resources\Factories</Filter>
     </ClCompile>
+    <ClCompile Include="InputEditor.cpp">
+      <Filter>Source Files\Controller\InputEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlDeck.cpp">
+      <Filter>Source Files\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Lib\Mercury\Mercury.cpp">
+      <Filter>Source Files\Lib\Mercury</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
@@ -385,9 +397,6 @@
     </ClInclude>
     <ClInclude Include="MemoryPack.h">
       <Filter>Source Files\Controller\Attachment</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigFile.h">
-      <Filter>Source Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="ResourceMgr.h">
       <Filter>Source Files\Resources</Filter>
@@ -658,6 +667,21 @@
     </ClInclude>
     <ClInclude Include="Lib\dr_libs\wav.h">
       <Filter>Source Files\Lib\dr_libs</Filter>
+    </ClInclude>
+    <ClInclude Include="InputEditor.h">
+      <Filter>Source Files\Controller\InputEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlDeck.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="DisconnectedController.h">
+      <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\nlohmann\json.hpp">
+      <Filter>Source Files\Lib\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib\Mercury\Mercury.h">
+      <Filter>Source Files\Lib\Mercury</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

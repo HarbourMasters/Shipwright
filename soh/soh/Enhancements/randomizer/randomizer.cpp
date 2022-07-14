@@ -1,5 +1,5 @@
 #include "randomizer.h"
-#include "soh/Lib/nlohmann/json.hpp"
+#include "Lib/nlohmann/json.hpp"
 #include <fstream>
 #include <variables.h>
 #include <macros.h>
