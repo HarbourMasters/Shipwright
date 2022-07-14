@@ -448,6 +448,7 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
+s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId);
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId);
 void func_8002F580(Actor* actor, GlobalContext* globalCtx);
@@ -558,6 +559,7 @@ void ActorOverlayTable_Cleanup(void);
 u16 DynaSSNodeList_GetNextNodeIdx(DynaSSNodeList*);
 void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest);
 f32 CollisionPoly_GetPointDistanceFromPlane(CollisionPoly* poly, Vec3f* point);
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 void CollisionPoly_GetVerticesByBgId(CollisionPoly* poly, s32 bgId, CollisionContext* colCtx, Vec3f* dest);
 s32 BgCheck_CheckStaticCeiling(StaticLookup* lookup, u16 xpFlags, CollisionContext* colCtx, f32* outY, Vec3f* pos,
                                f32 checkHeight, CollisionPoly** outPoly);
@@ -2396,6 +2398,8 @@ char* SetQuote();
 
 void Heaps_Alloc(void);
 void Heaps_Free(void);
+
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 
 #ifdef __cplusplus
 #undef this
