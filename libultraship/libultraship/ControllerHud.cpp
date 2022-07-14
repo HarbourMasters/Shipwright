@@ -90,8 +90,9 @@ namespace Ship {
 		DeviceProfile& profile =Backend->profiles[CurrentPort];
 		float sensitivity = profile.Thresholds[SENSITIVITY];
 		bool IsKeyboard = Backend->GetGuid() == "Keyboard" || !Backend->Connected();
+		const char* ControllerName = Backend->GetControllerName();
 
-		if (ImGui::BeginCombo("##ControllerEntries", Backend->GetControllerName())) {
+		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {
 			for (uint8_t i = 0; i < devices.size(); i++) {
 				if (ImGui::Selectable(devices[i]->GetControllerName(), i == vDevices[CurrentPort])) {
 					Window::ControllerApi->SetPhysicalDevice(CurrentPort, i);
