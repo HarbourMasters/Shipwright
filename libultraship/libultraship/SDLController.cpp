@@ -473,6 +473,8 @@ namespace Ship {
         profile.Thresholds[RIGHT_STICK] = 16.0f;
         profile.Thresholds[LEFT_TRIGGER] = 0x1E00;
         profile.Thresholds[RIGHT_TRIGGER] = 0x1E00;
+        profile.Thresholds[DRIFT_X] = 0.0f;
+        profile.Thresholds[DRIFT_Y] = 0.0f;
         profile.Thresholds[SENSITIVITY] = 16.0f;
         profile.Thresholds[GYRO_SENSITIVITY] = 1.0f;
     }
