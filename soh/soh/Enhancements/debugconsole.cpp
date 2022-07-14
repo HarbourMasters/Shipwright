@@ -521,7 +521,7 @@ void DebugConsole_LoadLegacyCVars() {
             }
         }
 
-        fs::remove("cvars.cfg");
+        fs::remove(cvarsConfig);
     }
 }
 
