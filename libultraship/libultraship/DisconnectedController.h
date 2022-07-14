@@ -4,9 +4,9 @@
 
 #include "Controller.h"
 
-class DummyController final : public Ship::Controller {
+class DisconnectedController final : public Ship::Controller {
 public:
-	DummyController() {
+	DisconnectedController() {
 		GUID = "Disconnected";
 	}
 

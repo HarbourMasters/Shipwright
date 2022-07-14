@@ -31,9 +31,6 @@
     <Filter Include="Source Files\Globals">
       <UniqueIdentifier>{c0f07350-c627-444e-9f66-23e19407ad9a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Config">
-      <UniqueIdentifier>{9cf4833f-e90c-4a9d-8747-d47cde657beb}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Resources\Files">
       <UniqueIdentifier>{2aa34c3b-6148-480f-a4fc-19c4e0f8c822}</UniqueIdentifier>
     </Filter>
@@ -173,9 +170,6 @@
     </ClCompile>
     <ClCompile Include="MemoryPack.cpp">
       <Filter>Source Files\Controller\Attachment</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfigFile.cpp">
-      <Filter>Source Files\Config</Filter>
     </ClCompile>
     <ClCompile Include="CollisionHeader.cpp">
       <Filter>Source Files\Resources\Files</Filter>
@@ -403,9 +397,6 @@
     </ClInclude>
     <ClInclude Include="MemoryPack.h">
       <Filter>Source Files\Controller\Attachment</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigFile.h">
-      <Filter>Source Files\Config</Filter>
     </ClInclude>
     <ClInclude Include="ResourceMgr.h">
       <Filter>Source Files\Resources</Filter>
@@ -683,7 +674,7 @@
     <ClInclude Include="ControlDeck.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="DummyController.h">
+    <ClInclude Include="DisconnectedController.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
     <ClInclude Include="Lib\nlohmann\json.hpp">

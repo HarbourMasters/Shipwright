@@ -282,7 +282,6 @@
     <ClCompile Include="Factories\TextureFactory.cpp" />
     <ClCompile Include="Factories\VtxFactory.cpp" />
     <ClCompile Include="Array.cpp" />
-    <ClCompile Include="ConfigFile.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="ImGuiImpl.cpp" />
@@ -353,7 +352,7 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="ControlDeck.h" />
     <ClInclude Include="Cvar.h" />
-    <ClInclude Include="DummyController.h" />
+    <ClInclude Include="DisconnectedController.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="ControllerHud.h" />
@@ -412,7 +411,6 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="stox.h" />
     <ClInclude Include="Lib\mINI\src\mini\ini.h" />
-    <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="KeyboardController.h" />
     <ClInclude Include="Factories\CollisionHeaderFactory.h" />

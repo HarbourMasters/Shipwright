@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "Controller.h"
-#include "DummyController.h"
+#include "DisconnectedController.h"
 #include "KeyboardController.h"
 #include "SDLController.h"
 #include <Utils/StringHelper.h>
@@ -28,7 +28,7 @@ void Ship::ControlDeck::ScanPhysicalDevices() {
 	}
 
 	physicalDevices.push_back(std::make_shared<KeyboardController>());
-	physicalDevices.push_back(std::make_shared<DummyController>());
+	physicalDevices.push_back(std::make_shared<DisconnectedController>());
 
 	for (const auto& device : physicalDevices) {
 		for (int i = 0; i < MAXCONTROLLERS; i++) {
