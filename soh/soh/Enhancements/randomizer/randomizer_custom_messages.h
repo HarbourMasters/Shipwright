@@ -2,7 +2,6 @@
 
 #include <string>
 #include "../../../include/z64item.h"
-#include "randomizer.h"
 
 #define QM_WHITE 0x00
 #define QM_RED 0x41

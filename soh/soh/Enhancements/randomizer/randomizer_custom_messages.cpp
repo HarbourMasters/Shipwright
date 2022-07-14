@@ -1,4 +1,5 @@
 #include "randomizer_custom_messages.h"
+#include "randomizer.h"
 #include <variables.h>
 
 using namespace std::literals::string_literals;
@@ -31,7 +32,7 @@ std::string ITEM_OBTAINED(uint8_t x) {
 }
 
 std::string NEWLINE() {
-    return "\x02"s;
+    return "\x01"s;
 }
 
 std::string COLOR(uint8_t x) {
