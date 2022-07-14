@@ -28,7 +28,6 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers \
 	-Wno-error=multichar \
-	-Wno-unused-command-line-argument \
 	-Wno-delete-non-abstract-non-virtual-dtor \
 	-Wno-unused-private-field \
 	-Wno-deprecated-copy-with-user-provided-copy \

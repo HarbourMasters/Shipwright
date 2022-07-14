@@ -16,17 +16,26 @@ DEBUG ?= 1
 OPTFLAGS ?= -O0
 LTO ?= 0
 
+# flag to save whether the compiler being used is clang or gcc by checking CXX --version
+CXX_IS_CLANG ?= $(shell $(CXX) --version | grep -c clang)
+
 WARN := \
 	-Wno-return-type \
-	-Wno-unused-command-line-argument \
-	-Wno-implicit-function-declaration \
-	-Wno-c++11-narrowing \
 	-funsigned-char \
 	-fno-stack-protector -fno-common -fno-zero-initialized-in-bss -fno-strict-aliasing -fno-inline-functions -fno-inline-small-functions -ffreestanding -fwrapv \
 
-CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -no-pie -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
-CFLAGS := $(WARN) -std=c99 -D_GNU_SOURCE -no-pie -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
+ifeq ($(CXX_IS_CLANG),1)
+	WARN += -Wno-c++11-narrowing
+endif
+
+CXXFLAGS := $(WARN) -std=c++20 -D_GNU_SOURCE -fpermissive -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
+CFLAGS := $(WARN) -std=c99 -Wno-implicit-function-declaration -D_GNU_SOURCE -nostdlib $(shell pkg-config --cflags glew) $(shell sdl2-config --cflags)
 LDFLAGS :=
+
+ifneq ($(CXX_IS_CLANG),1)
+	CXXFLAGS += -no-pie
+	CFLAGS += -no-pie
+endif
 
 ifeq ($(UNAME), Linux)
 	ifeq ($(UNAMEM), x86_64)
