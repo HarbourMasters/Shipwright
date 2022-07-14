@@ -23,6 +23,11 @@ namespace Ship {
         }
     }
 
+	void Tooltip(const char* text) {
+        if (ImGui::IsItemHovered())
+            ImGui::SetTooltip("%s", text);
+    }
+
 	void InputEditor::Init() {
 		BtnReading = -1;
 	}
@@ -157,9 +162,15 @@ namespace Ship {
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
-				ImGui::Dummy(ImVec2(0, 6));
+				ImGui::PushItemWidth(135.0f);
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 2);
+				EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+				Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 2);
+				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 69.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 16.0f : 69.0f);
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -187,9 +198,11 @@ namespace Ship {
 				ImGui::EndChild();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 				ImGui::PushItemWidth(135.0f);
-				EnhancementCheckbox("Invert X Axis", "gInvertXAxis");
+				EnhancementCheckbox("Invert Camera X Axis", "gInvertXAxis");
+				Tooltip("Inverts the X axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				EnhancementCheckbox("Invert Y Axis", "gInvertYAxis");
+				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
+				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
 			SohImGui::EndGroupPanel(13.0f);
 		}
 
