@@ -102,11 +102,11 @@ namespace Ship {
 	        const auto Axis = static_cast<SDL_GameControllerAxis>(i);
             const auto AxisValue = SDL_GameControllerGetAxis(Cont, Axis) / 32767.0f;
 
-            if (AxisValue < -0.75f) {
+            if (AxisValue < -0.7f) {
                 return -(Axis + AXIS_SCANCODE_BIT);
             }
 
-            if (AxisValue > 0.75f) {
+            if (AxisValue > 0.7f) {
                 return (Axis + AXIS_SCANCODE_BIT);
             }
         }
