@@ -3,7 +3,6 @@
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
-#include "InputEditor.h"
 
 struct GameAsset {
     uint32_t textureId;
@@ -60,13 +59,12 @@ namespace SohImGui {
     } CustomWindow;
 
     extern Console* console;
-    extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
     void Init(WindowImpl window_impl);
     void Update(EventImpl event);
     void Tooltip(const char* text);
-
+    
     void EnhancementRadioButton(const char* text, const char* cvarName, int id);
     void EnhancementCheckbox(const char* text, const char* cvarName);
     void EnhancementButton(const char* text, const char* cvarName);
@@ -77,7 +75,7 @@ namespace SohImGui {
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue = 0);
 
     void DrawMainMenuAndCalculateGameSize(void);
-
+    
     void DrawFramebufferAndGameInput(void);
     void Render(void);
     void CancelFrame(void);
@@ -92,6 +90,4 @@ namespace SohImGui {
     void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
-    void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
-    void EndGroupPanel(float minHeight = 0.0f);
 }
