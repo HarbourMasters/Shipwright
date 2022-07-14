@@ -19,7 +19,7 @@ public:
 	bool CanRumble() const override { return false; }
 	bool CanGyro()   const override { return false; }
 
-	void ClearRawPress() {}
+	void ClearRawPress() override {}
 	int32_t ReadRawPress() override { return -1; }
 	bool HasPadConf() const { return true; }
 	std::optional<std::string> GetPadConfSection() { return "Unk"; }

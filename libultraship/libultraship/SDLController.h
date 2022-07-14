@@ -24,7 +24,7 @@ namespace Ship {
 			}
 
 			bool Open();
-			void ClearRawPress(){}
+			void ClearRawPress() override {}
 			int32_t ReadRawPress() override;
 
 		protected:

@@ -6,7 +6,7 @@
 
 namespace Ship {
 
-	class ControllerHud {
+	class InputEditor {
 		int CurrentPort = 0;
 		int BtnReading = -1;
 	public:

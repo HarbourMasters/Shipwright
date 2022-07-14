@@ -3,7 +3,7 @@
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
-#include "ControllerHud.h"
+#include "InputEditor.h"
 
 struct GameAsset {
     uint32_t textureId;
@@ -60,7 +60,7 @@ namespace SohImGui {
     } CustomWindow;
 
     extern Console* console;
-    extern Ship::ControllerHud* controller;
+    extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
     void Init(WindowImpl window_impl);

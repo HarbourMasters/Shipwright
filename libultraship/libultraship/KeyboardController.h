@@ -16,11 +16,11 @@ namespace Ship {
 			const char* GetButtonName(int slot, int n64Button) override;
 			bool PressButton(int32_t dwScancode);
 			bool ReleaseButton(int32_t dwScancode);
-			
-			void ClearRawPress() {
+
+			void ClearRawPress() override {
 				lastKey = -1;
 			}
-			
+
 			int32_t ReadRawPress() override;
 			void ReleaseAllButtons();
 

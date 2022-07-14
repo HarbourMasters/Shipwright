@@ -64,7 +64,7 @@ namespace SohImGui {
     ImGuiIO* io;
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
-    ControllerHud* controller = new ControllerHud;
+    InputEditor* controller = new InputEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
