@@ -9,7 +9,6 @@
 namespace Ship {
 
 	extern "C" uint8_t __enableGameInput;
-	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
 	void InputEditor::Init() {
 		BtnReading = -1;
@@ -114,17 +113,32 @@ namespace Ship {
 			DrawButton("R", BTN_R);
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
-			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+			ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel(IsKeyboard ? 30.0f : 48.0f);
 		ImGui::SameLine();
-		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
+
+		ImVec2 cursor = ImGui::GetCursorPos();
+		ImGui::BeginChild("##ExtraButtons", ImVec2(202, 208), false);
+		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(202, 20));
 			DrawButton("Up", BTN_DUP);
 			DrawButton("Down", BTN_DDOWN);
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
-			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+			ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel();
+
+		SohImGui::BeginGroupPanel("Modifiers", ImVec2(202, 20));
+			float cursorX = ImGui::GetCursorPosX() - 24;
+			ImGui::SetCursorPosX(cursorX);
+			DrawButton("Modifier 1", BTN_MODIFIER1);
+			cursorX = ImGui::GetCursorPosX() - 24;
+			ImGui::SetCursorPosX(cursorX);
+			DrawButton("Modifier 2", BTN_MODIFIER2);
+			ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 20.0f);
+		ImGui::EndChild();
 		ImGui::SameLine();
+		
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
 			DrawButton("Down", BTN_STICKDOWN);
@@ -147,7 +161,7 @@ namespace Ship {
 			} else {
 				ImGui::Dummy(ImVec2(0, 6));
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 75.0f : 24.0f);
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -210,12 +224,12 @@ namespace Ship {
 			ImGui::InputInt("##GDriftY", &profile.Thresholds[DRIFT_Y]);
 			ImGui::PopItemWidth();
 			ImGui::EndChild();
-			SohImGui::EndGroupPanel(14.0f);
+			SohImGui::EndGroupPanel(15.0f);
 		}
 
 		ImGui::SameLine();
 
-		const ImVec2 cursor = ImGui::GetCursorPos();
+		cursor = ImGui::GetCursorPos();
 
 		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
 			DrawButton("Up", BTN_CUP);
@@ -228,7 +242,7 @@ namespace Ship {
 		ImGui::SetCursorPosX(cursor.x);
 		ImGui::SetCursorPosY(cursor.y + 120);
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
-			float cursorX = ImGui::GetCursorPosX() + 5;
+			cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
 			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
 			if (Backend->CanRumble()) {
@@ -240,7 +254,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 25.0f : 3.0f);
 	}
 
 	void InputEditor::DrawHud() {
