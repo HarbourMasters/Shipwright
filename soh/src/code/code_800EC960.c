@@ -825,11 +825,11 @@ NatureAmbienceDataIO sNatureAmbienceDataIO[20] = {
 };
 
 u32 sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-s32 sOcarinaABtnMap = BTN_A;
-s32 sOcarinaCUPBtnMap = BTN_CUP;
-s32 sOcarinaCDownBtnMap = BTN_CDOWN;
-s32 sOcarinaCLeftBtnMap = BTN_CLEFT;
-s32 sOcarinaCRightBtnMap = BTN_CRIGHT;
+s32 sOcarinaD5BtnMap = BTN_CUP;
+s32 sOcarinaB4BtnMap = BTN_CLEFT;
+s32 sOcarinaA4BtnMap = BTN_CRIGHT;
+s32 sOcarinaF4BtnMap = BTN_CDOWN;
+s32 sOcarinaD4BtnMap = BTN_A;
 u8 sOcarinaInpEnabled = 0;
 s8 D_80130F10 = 0; // "OCA", ocarina active?
 u8 sCurOcarinaBtnVal = 0xFF;
@@ -1013,9 +1013,9 @@ OcarinaNote sOcarinaSongs[OCARINA_SONG_MAX][20] = {
 
 OcarinaNote* sPlaybackSong = sOcarinaSongs[0];
 u8 sFrogsSongNotes[14] = {
-    OCARINA_NOTE_A,       OCARINA_NOTE_C_LEFT,  OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_DOWN, OCARINA_NOTE_C_LEFT,
-    OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_DOWN,  OCARINA_NOTE_A,       OCARINA_NOTE_C_DOWN, OCARINA_NOTE_A,
-    OCARINA_NOTE_C_DOWN,  OCARINA_NOTE_C_RIGHT, OCARINA_NOTE_C_LEFT,  OCARINA_NOTE_A,
+    OCARINA_NOTE_D4, OCARINA_NOTE_B4, OCARINA_NOTE_A4, OCARINA_NOTE_F4, OCARINA_NOTE_B4,
+    OCARINA_NOTE_A4, OCARINA_NOTE_F4, OCARINA_NOTE_D4, OCARINA_NOTE_F4, OCARINA_NOTE_D4,
+    OCARINA_NOTE_F4, OCARINA_NOTE_A4, OCARINA_NOTE_B4, OCARINA_NOTE_D4,
 };
 u8* gFrogsSongPtr = sFrogsSongNotes;
 u8 sRecordingState = 0;
@@ -1044,124 +1044,124 @@ OcarinaSongInfo gOcarinaSongNotes[OCARINA_SONG_MAX] = {
     // Minuet
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
       } },
     // Bolero
     { 8,
       {
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
       } },
     // Serenade
     { 5,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
       } },
     // Requiem
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_A,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D4,
       } },
     // Nocturne
     { 7,
       {
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
       } },
     // Prelude
     { 6,
       {
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
       } },
     // Sarias
     { 6,
       {
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
       } },
     // Epona
     { 6,
       {
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_A4,
       } },
     // Lullaby
     { 6,
       {
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_LEFT,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_B4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
       } },
     // Suns
     { 6,
       {
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
       } },
     // Song of Time
     { 6,
       {
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_RIGHT,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_A4,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
       } },
     // Storms
     { 6,
       {
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
-          OCARINA_NOTE_A,
-          OCARINA_NOTE_C_DOWN,
-          OCARINA_NOTE_C_UP,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
+          OCARINA_NOTE_D4,
+          OCARINA_NOTE_F4,
+          OCARINA_NOTE_D5,
       } },
     // Scarecrow
     { 8, { 0, 0, 0, 0, 0, 0, 0, 0 } },
@@ -1248,29 +1248,29 @@ void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
 
 // Function originally not called, so repurposing for DPad input
-void func_800EC960(u8 dpad) {
+void Audio_OcaUpdateBtnMap(u8 dpad) {
     // sOcarinaAllowedBtnMask = (BTN_A | BTN_CUP | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-    // sOcarinaABtnMap = BTN_A;
-    // sOcarinaCUPBtnMap = BTN_CUP;
-    // sOcarinaCDownBtnMap = BTN_CDOWN;
-    // sOcarinaCLeftBtnMap = BTN_CLEFT;
-    // sOcarinaCRightBtnMap = BTN_CRIGHT;
+    // sOcarinaD5BtnMap = BTN_CUP;
+    // sOcarinaB4BtnMap = BTN_CLEFT;
+    // sOcarinaA4BtnMap = BTN_CRIGHT;
+    // sOcarinaF4BtnMap = BTN_CDOWN;
+    // sOcarinaD4BtnMap = BTN_A;
 
     // N64 A-down-left-right-up layout remapped to 3DS L-R-Y-X-A
     sOcarinaAllowedBtnMask = (BTN_A | BTN_L | BTN_CDOWN | BTN_CLEFT | BTN_CRIGHT);
-    sOcarinaABtnMap = BTN_L;
-    sOcarinaCUPBtnMap = BTN_A;
-    sOcarinaCDownBtnMap = BTN_CDOWN;  // C down -> Z/R for GCN/Wii
-    sOcarinaCLeftBtnMap = BTN_CRIGHT;         // C left -> Y
-    sOcarinaCRightBtnMap = BTN_CLEFT;         // C right -> X
+    sOcarinaD5BtnMap = BTN_A;
+    sOcarinaB4BtnMap = BTN_CRIGHT;  // C right = X
+    sOcarinaA4BtnMap = BTN_CLEFT;   // C left  = Y
+    sOcarinaF4BtnMap = BTN_CDOWN;   // C down  = R
+    sOcarinaD4BtnMap = BTN_L;
 
     if (dpad) {
         sOcarinaAllowedBtnMask |=
             (BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
-        sOcarinaCUPBtnMap |= BTN_DUP;
-        sOcarinaCDownBtnMap |= BTN_DDOWN;
-        sOcarinaCLeftBtnMap |= BTN_DLEFT;
-        sOcarinaCRightBtnMap |= BTN_DRIGHT;
+        sOcarinaD5BtnMap |= BTN_DUP;
+        sOcarinaB4BtnMap |= BTN_DLEFT;
+        sOcarinaA4BtnMap |= BTN_DRIGHT;
+        sOcarinaF4BtnMap |= BTN_DDOWN;
     }
 }
 
@@ -1502,10 +1502,13 @@ void func_800ED200(void) {
     u8 j;
     u8 k;
 
-    //if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
-    //    func_800ECC04((u16)D_80130F3C);
-    //    return;
-    //}
+    // Commenting this out stops the L button from disabling ocarina songs
+    // It probably doesn't because it specifically checks for L, but it may have some other effect
+    // 
+    // if (CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L) && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)) {
+    //     func_800ECC04((u16)D_80130F3C);
+    //     return;
+    // }
 
     func_800ECDBC();
 
@@ -1574,29 +1577,30 @@ void func_800ED458(s32 arg0) {
             D_8016BA18 &= phi_v1_2;
         }
 
-        func_800EC960(dpad);
-        if (D_8016BA18 & sOcarinaABtnMap) {
-            osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaABtnMap);
+        Audio_OcaUpdateBtnMap(dpad);
+        if (D_8016BA18 & sOcarinaD4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
             sCurOcarinaBtnIdx = 0;
-        } else if (D_8016BA18 & sOcarinaCDownBtnMap) {
-            osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaCDownBtnMap);
+        } else if (D_8016BA18 & sOcarinaF4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_F4 %08x\n", sOcarinaF4BtnMap);
             sCurOcarinaBtnVal = 5;
             sCurOcarinaBtnIdx = 1;
-        } else if (D_8016BA18 & sOcarinaCRightBtnMap) {
-            osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaCRightBtnMap);
+        } else if (D_8016BA18 & sOcarinaA4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_A4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 9;
             sCurOcarinaBtnIdx = 2;
-        } else if (D_8016BA18 & sOcarinaCLeftBtnMap) {
-            osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaCRightBtnMap);
+        } else if (D_8016BA18 & sOcarinaB4BtnMap) {
+            osSyncPrintf("Presss NA_KEY_B4 %08x\n", sOcarinaA4BtnMap);
             sCurOcarinaBtnVal = 0xB;
             sCurOcarinaBtnIdx = 3;
-        } else if (D_8016BA18 & sOcarinaCUPBtnMap) {
-            osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaCUPBtnMap);
+        } else if (D_8016BA18 & sOcarinaD5BtnMap) {
+            osSyncPrintf("Presss NA_KEY_D5 %08x\n", sOcarinaD5BtnMap);
             sCurOcarinaBtnVal = 0xE;
             sCurOcarinaBtnIdx = 4;
         }
 
+        // These two conditionals appear to handle Z and R shifting the pitch of the played note
         if (sCurOcarinaBtnVal != 0xFF && sCurOcarinaBtnPress & 0x10 && sRecordingState != 2) {
             sCurOcarinaBtnIdx += 0x80;
             sCurOcarinaBtnVal++;
