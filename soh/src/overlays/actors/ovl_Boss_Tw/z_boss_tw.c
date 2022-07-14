@@ -2360,10 +2360,15 @@ void BossTw_DeathCSMsgSfx(BossTw* this, GlobalContext* globalCtx) {
     koumeAnim = 0;
     sp35 = 0;
 
+    // Skip ahead to last part of the cutscene in rando
+    if (this->work[CS_TIMER_2] == 10 && gSaveContext.n64ddFlag) {
+        this->work[CS_TIMER_2] = 860;
+    }
+
     if (this->work[CS_TIMER_2] == 80) {
         koumeAnim = 1;
     }
-
+    
     if (this->work[CS_TIMER_2] == 80) {
         msgId2 = 0x604B;
         sp35 = 50;
@@ -2537,6 +2542,16 @@ void BossTw_DeathCSMsgSfx(BossTw* this, GlobalContext* globalCtx) {
 
     if (this->work[CS_TIMER_2] >= 120 && this->work[CS_TIMER_2] < 500) {
         Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
+    }
+
+    // Add seperate timings for the "beam" that opens and closes around the sisters
+    // Needed because we skip ahead in cutscene timer value so it never gets called otherwise
+    if (gSaveContext.n64ddFlag) {
+        if (this->work[CS_TIMER_2] < 900) {
+            Math_ApproachF(&this->workf[UNK_F18], 255.0f, 0.1f, 5.0f);
+        } else if (this->work[CS_TIMER_2] > 910) {
+            Math_ApproachF(&this->workf[UNK_F18], 0.0f, 1.0f, 3.0f);
+        }
     }
 
     if (this->work[CS_TIMER_2] >= 150) {

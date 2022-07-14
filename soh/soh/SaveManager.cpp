@@ -1,4 +1,5 @@
 #include "SaveManager.h"
+#include "OTRGlobals.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -14,17 +15,17 @@
 
 extern "C" SaveContext gSaveContext;
 
-static const std::filesystem::path sSavePath("Save"); // TODO maybe let this be user-configurable?
-static const std::filesystem::path sGlobalPath = sSavePath / "global.sav";
-
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    return sSavePath / (std::string("file") + std::to_string(fileNum + 1) + ".sav");
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
     AddLoadFunction("base", 1, LoadBaseVersion1);
-
     AddSaveFunction("base", 1, SaveBase);
+
+    AddLoadFunction("randomizer", 1, LoadRandomizerVersion1);
+    AddSaveFunction("randomizer", 1, SaveRandomizer);
 
     AddInitFunction(InitFileImpl);
 
@@ -38,20 +39,108 @@ SaveManager::SaveManager() {
         info.questItems = 0;
         info.defense = 0;
         info.health = 0;
-        info.n64ddFlag = 0;
+
+        for (int i = 0; i < ARRAY_COUNT(info.seedHash); i++) {
+            info.seedHash[i] = 0;
+        }
+
+        info.randoSave = 0;
+    }
+}
+
+void SaveManager::LoadRandomizerVersion1() {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
+        SaveManager::Instance->LoadData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
+        SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
+        SaveManager::Instance->LoadData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
+        SaveManager::Instance->LoadData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
+        SaveManager::Instance->LoadData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.hintLocations); i++) {
+        SaveManager::Instance->LoadData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
+        for (int j = 0; j < ARRAY_COUNT(gSaveContext.hintLocations[i].hintText); j++) {
+            SaveManager::Instance->LoadData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
+        }
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.childAltarText); i++) {
+        SaveManager::Instance->LoadData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
+        SaveManager::Instance->LoadData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonHintText); i++) {
+        SaveManager::Instance->LoadData("ght" + std::to_string(i), gSaveContext.ganonHintText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
+        SaveManager::Instance->LoadData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
+    }
+}
+
+void SaveManager::SaveRandomizer() {
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
+        SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
+        SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.seedIcons); i++) {
+        SaveManager::Instance->SaveData("seed" + std::to_string(i), gSaveContext.seedIcons[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.randoSettings); i++) {
+        SaveManager::Instance->SaveData("sk" + std::to_string(i), gSaveContext.randoSettings[i].key);
+        SaveManager::Instance->SaveData("sv" + std::to_string(i), gSaveContext.randoSettings[i].value);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.hintLocations); i++) {
+        SaveManager::Instance->SaveData("hc" + std::to_string(i), gSaveContext.hintLocations[i].check);
+        for (int j = 0; j < ARRAY_COUNT(gSaveContext.hintLocations[i].hintText); j++) {
+            SaveManager::Instance->SaveData("ht" + std::to_string(i) + "-" + std::to_string(j), gSaveContext.hintLocations[i].hintText[j]);
+        }
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.childAltarText); i++) {
+        SaveManager::Instance->SaveData("cat" + std::to_string(i), gSaveContext.childAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.adultAltarText); i++) {
+        SaveManager::Instance->SaveData("aat" + std::to_string(i), gSaveContext.adultAltarText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonHintText); i++) {
+        SaveManager::Instance->SaveData("ght" + std::to_string(i), gSaveContext.ganonHintText[i]);
+    }
+
+    for (int i = 0; i < ARRAY_COUNT(gSaveContext.ganonText); i++) {
+        SaveManager::Instance->SaveData("gt" + std::to_string(i), gSaveContext.ganonText[i]);
     }
 }
 
 void SaveManager::Init() {
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
+    auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
+
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
         std::filesystem::create_directory(sSavePath);
     }
 
     // If there is a lingering unversioned save, convert it
-    if (std::filesystem::exists("oot_save.sav")) {
+    if (std::filesystem::exists(sOldSavePath)) {
         ConvertFromUnversioned();
-        std::filesystem::rename("oot_save.sav", "oot_save.bak");
+        std::filesystem::rename(sOldSavePath, sOldBackupSavePath);
     }
 
     // If the global save file exist, load it. Otherwise, create it.
@@ -101,7 +190,12 @@ void SaveManager::InitMeta(int fileNum) {
     fileMetaInfo[fileNum].questItems = gSaveContext.inventory.questItems;
     fileMetaInfo[fileNum].defense = gSaveContext.inventory.defenseHearts;
     fileMetaInfo[fileNum].health = gSaveContext.health;
-    fileMetaInfo[fileNum].n64ddFlag = gSaveContext.n64ddFlag;
+
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[fileNum].seedHash); i++) {
+        fileMetaInfo[fileNum].seedHash[i] = gSaveContext.seedIcons[i];
+    }
+
+    fileMetaInfo[fileNum].randoSave = gSaveContext.n64ddFlag;
 }
 
 void SaveManager::InitFile(bool isDebug) {
@@ -235,6 +329,8 @@ void SaveManager::InitFileNormal() {
     gSaveContext.magicLevel = 0;
     gSaveContext.infTable[29] = 1;
     gSaveContext.sceneFlags[5].swch = 0x40000000;
+
+    //RANDOTODO (ADD ITEMLOCATIONS TO GSAVECONTEXT)
 }
 
 void SaveManager::InitFileDebug() {
@@ -602,6 +698,13 @@ void SaveManager::LoadBaseVersion1() {
         });
         SaveManager::Instance->LoadData("angle", gSaveContext.horseData.angle);
     });
+
+    SaveManager::Instance->LoadArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.dungeonsDone[i]);
+    });
+
+    SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
+                                     [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
 }
 
 void SaveManager::SaveBase() {
@@ -735,6 +838,13 @@ void SaveManager::SaveBase() {
         });
         SaveManager::Instance->SaveData("angle", gSaveContext.horseData.angle);
     });
+
+    SaveManager::Instance->SaveArray("dungeonsDone", ARRAY_COUNT(gSaveContext.dungeonsDone), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.dungeonsDone[i]);
+    });
+
+    SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
+                                     [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {
@@ -817,11 +927,14 @@ void SaveManager::CopyZeldaFile(int from, int to) {
     for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].playerName); i++) {
         fileMetaInfo[to].playerName[i] = fileMetaInfo[from].playerName[i];
     }
+    for (int i = 0; i < ARRAY_COUNT(fileMetaInfo[to].seedHash); i++) {
+        fileMetaInfo[to].seedHash[i] = fileMetaInfo[from].seedHash[i];
+    }
     fileMetaInfo[to].healthCapacity = fileMetaInfo[from].healthCapacity;
     fileMetaInfo[to].questItems = fileMetaInfo[from].questItems;
     fileMetaInfo[to].defense = fileMetaInfo[from].defense;
     fileMetaInfo[to].health = fileMetaInfo[from].health;
-    fileMetaInfo[to].n64ddFlag = fileMetaInfo[from].n64ddFlag;
+    fileMetaInfo[to].randoSave = fileMetaInfo[from].randoSave;
 }
 
 void SaveManager::DeleteZeldaFile(int fileNum) {
@@ -829,6 +942,7 @@ void SaveManager::DeleteZeldaFile(int fileNum) {
         std::filesystem::remove(GetFileName(fileNum));
     }
     fileMetaInfo[fileNum].valid = false;
+    fileMetaInfo[fileNum].randoSave = false;
 }
 
 // Functionality required to convert old saves into versioned saves

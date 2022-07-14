@@ -1,6 +1,7 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <algorithm>
 #include <filesystem>
 #include <locale>
 #include <codecvt>
@@ -35,6 +36,8 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer/randomizer.h"
+#include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
@@ -54,9 +57,9 @@ OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
+    gRandomizer = std::make_shared<Randomizer>();
     context->GetWindow()->Init();
 }
 
@@ -118,6 +121,8 @@ extern "C" void InitOTR() {
     InitCosmeticsEditor();
     DebugConsole_Init();
     Debug_Init();
+    Rando_Init();
+    InitItemTracker();
     OTRExtScanner();
 }
 
@@ -449,6 +454,10 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
         return (char*)(std::static_pointer_cast<Ship::Array>(res))->vertices.data();
     else
         return ResourceMgr_LoadTexByName(filePath);
+}
+
+extern "C" Sprite* GetSeedTexture(uint8_t index) {
+    return Randomizer::GetSeedTexture(index);
 }
 
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
@@ -900,7 +909,6 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         for (size_t i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
 
-
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
         for (size_t i = 0; i < res->rotationIndices.size(); i++) {
@@ -1145,34 +1153,27 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
     return (s32*)res->commands.data();
 }
 
-std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
-    std::string fileName = Conf.get("SAVE").get("Save Filename");
-
-    if (fileName.empty()) {
-        Conf["SAVE"]["Save Filename"] = "oot_save.sav";
-        Conf.Save();
-    }
+std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
-    if (!std::filesystem::exists(saveFile.parent_path())) {
-        std::filesystem::create_directories(saveFile.parent_path());
+    if (!exists(saveFile.parent_path())) {
+        create_directories(saveFile.parent_path());
     }
 
     return saveFile;
 }
 
 std::filesystem::path GetSaveFile() {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
+    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
 
-    return GetSaveFile(Conf);
+    return GetSaveFile(pConf);
 }
 
-void OTRGlobals::CheckSaveFile(size_t sramSize) {
-    std::shared_ptr<Ship::ConfigFile> pConf = context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
+void OTRGlobals::CheckSaveFile(size_t sramSize) const {
+    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
 
-    std::filesystem::path savePath = GetSaveFile(Conf);
+    std::filesystem::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     if (saveFile.fail()) {
         saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
@@ -1189,25 +1190,6 @@ extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
 
 extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
     OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
-}
-
-/* Remember to free after use of value */
-extern "C" char* Config_getValue(char* category, char* key) {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
-
-    std::string data = Conf.get(std::string(category)).get(std::string(key));
-    char* retval = (char*)malloc(data.length()+1);
-    strcpy(retval, data.c_str());
-
-    return retval;
-}
-
-extern "C" bool Config_setValue(char* category, char* key, char* value)  {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
-    Conf[std::string(category)][std::string(key)] = std::string(value);
-    return Conf.Save();
 }
 
 std::wstring StringToU16(const std::string& s) {
@@ -1256,6 +1238,19 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
+int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -1298,11 +1293,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controllers = OTRGlobals::Instance->context->GetWindow()->Controllers;
-    for (size_t i = 0; i < controllers.size(); i++) {
-        for (int j = 0; j < controllers[i].size(); j++) {
-            OTRGlobals::Instance->context->GetWindow()->Controllers[i][j]->WriteToSource(controller);
-        }
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (int i = 0; i < controllers.size(); ++i) {
+        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
     }
 }
 
@@ -1327,57 +1321,6 @@ extern "C" int16_t OTRGetRectDimensionFromLeftEdge(float v) {
 
 extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
-}
-
-extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)swappable->sample);
-    swappable->tuningAsU32 = BOMSWAP32((u32)swappable->tuningAsU32);
-}
-
-extern "C" void bswapDrum(Drum* swappable) {
-    bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
-}
-
-extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
-    bswapSoundFontSound(&swappable->lowNotesSound);
-    bswapSoundFontSound(&swappable->normalNotesSound);
-    bswapSoundFontSound(&swappable->highNotesSound);
-}
-
-extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
-    u32 origBitfield = BOMSWAP32(swappable->asU32);
-
-    swappable->codec = (origBitfield >> 28) & 0x0F;
-    swappable->medium = (origBitfield >> 24) & 0x03;
-    swappable->unk_bit26 = (origBitfield >> 22) & 0x01;
-    swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
-    swappable->size = (origBitfield) & 0x00FFFFFF;
-
-    swappable->sampleAddr = (u8*)BOMSWAP32((u32)swappable->sampleAddr);
-    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)swappable->loop);
-    swappable->book = (AdpcmBook*)BOMSWAP32((u32)swappable->book);
-}
-
-extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
-    swappable->start = (u32)BOMSWAP32((u32)swappable->start);
-    swappable->end = (u32)BOMSWAP32((u32)swappable->end);
-    swappable->count = (u32)BOMSWAP32((u32)swappable->count);
-
-    if (swappable->count != 0) {
-        for (int i = 0; i < 16; i++) {
-            swappable->state[i] = (s16)BOMSWAP16(swappable->state[i]);
-        }
-    }
-}
-
-extern "C" void bswapAdpcmBook(AdpcmBook* swappable) {
-    swappable->order = (u32)BOMSWAP32((u32)swappable->order);
-    swappable->npredictors = (u32)BOMSWAP32((u32)swappable->npredictors);
-
-    for (int i = 0; i < swappable->npredictors * swappable->order * sizeof(s16) * 4; i++)
-        swappable->book[i] = (s16)BOMSWAP16(swappable->book[i]);
 }
 
 extern "C" bool AudioPlayer_Init(void) {
@@ -1407,11 +1350,11 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    for (const auto& controller : Ship::Window::Controllers.at(i))
-    {
-        float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 1.0f);
 
-        if (controller->CanRumble() && rumble_strength > 0.001f) {
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (const auto virtual_entry : controllers) {
+        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
             return 1;
         }
     }
@@ -1422,4 +1365,139 @@ extern "C" int Controller_ShouldRumble(size_t i) {
 extern "C" void* getN64WeirdFrame(s32 i) {
     char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
+}
+
+extern "C" s16 GetItemModelFromId(s16 itemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
+}
+
+extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
+}
+
+extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
+}
+
+extern "C" void LoadHintLocations(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+}
+
+extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+    return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
+}
+
+extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+    return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
+}
+
+extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+}
+
+extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
+    std::string scrubText("");
+    int language = CVar_GetS32("gLanguages", 0);
+    int price = 0;
+    switch (scrubTextId) {
+        case 0x10A2:
+            price = 10;
+            break;
+        case 0x10DC:
+        case 0x10DD:
+            price = 40;
+            break;
+    }
+    switch (language) { 
+    case 0: default:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "All right! You win! In return for";
+        scrubText += 0x01; // newline
+        scrubText += "sparing me, I will sell you a";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "mysterious item";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price);
+        scrubText += price > 1 ? " Rupees" : " Rupee";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += " it is!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+            break;
+    case 2:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "J'abandonne! Tu veux bien m'acheter";
+        scrubText += 0x01; // newline
+        scrubText += "un ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "objet myst\x96rieux";
+        //scrubText += ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "?";
+        scrubText += 0x01; // newline
+        scrubText += "\x84";
+        scrubText += "a fera ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price) + " Rubis";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+        break;
+    }
+    
+    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
+                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
+    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // so we're just going to let RVO take care of it
+    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
+    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+}
+
+extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+}
+
+extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
