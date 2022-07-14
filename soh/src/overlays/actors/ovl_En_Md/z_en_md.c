@@ -485,10 +485,7 @@ u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
     if (globalCtx->sceneNum == SCENE_SPOT04) {
         if (gSaveContext.n64ddFlag) {
             // if we have beaten deku tree or have open forest turned on
-            // or have already shown mido we have an equipped sword/shield
-            if (gSaveContext.dungeonsDone[1] ||
-                GetRandoSettingValue(RSK_FOREST) == 1 ||
-                gSaveContext.eventChkInf[0] & 0x10) {
+            if (gSaveContext.dungeonsDone[1] || GetRandoSettingValue(RSK_FOREST) == 1) {
                 return 0;
             }
             return 1;
