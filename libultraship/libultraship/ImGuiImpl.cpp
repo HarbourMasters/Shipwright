@@ -68,11 +68,26 @@ namespace SohImGui {
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
+    int lastBackendID = 0;
 
     const char* filters[3] = {
         "Three-Point",
         "Linear",
         "None"
+    };
+
+    const char* backendNames[] = {
+#ifdef _WIN32
+        "DirectX",
+#endif
+        "OpenGL"
+    };
+
+    const char* backendAPI[] = {
+#ifdef _WIN32
+        "dx11",
+#endif
+        "sdl"
     };
 
     const char* powers[9] = {
@@ -90,6 +105,21 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
+
+    int GetBackendID(std::shared_ptr<Mercury> cfg) {
+        std::string backend = cfg->getString("Window.GfxBackend");
+        if (backend.empty()) {
+            return 0;
+        }
+
+        for (size_t i = 0; i < (sizeof(backendAPI) / sizeof(backendAPI[0])); i++) {
+            if(backend == backendAPI[i]) {
+				return i;
+			}
+        }
+
+        return 0;
+    }
 
     int ClampFloatToInt(float value, int min, int max) {
         return fmin(fmax(value, min), max);
@@ -315,6 +345,8 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
+
+        lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
         }
@@ -653,6 +685,8 @@ namespace SohImGui {
         ImGui::NewFrame();
 
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
+        const std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
             ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
@@ -820,6 +854,18 @@ namespace SohImGui {
                         "to work on one frame while GPU works on the previous frame.\n"
                         "This setting should be used when your computer is too slow\n"
                         "to do CPU + GPU work in time.");
+                }
+
+
+                ImGui::Text("Renderer API (Needs reload)");
+                if (ImGui::BeginCombo("##RApi", backendNames[lastBackendID])) {
+                    for (uint8_t i = 0; i < sizeof(backendAPI) / sizeof(backendAPI[0]); i++) {
+                        if (ImGui::Selectable(backendNames[i], i == lastBackendID)) {
+                            pConf->setString("Window.GfxBackend", backendAPI[i]);
+                            lastBackendID = i;
+                        }
+                    }
+                    ImGui::EndCombo();
                 }
 
                 EXPERIMENTAL();
