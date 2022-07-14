@@ -31,3 +31,4 @@ export UPD_INFO="gh-releases-zsync|HarbourMasters|Shipwright-linux|develop|SOH-L
 cd /soh
  
 VERSION=Linux ./mkappimage.AppImage --appimage-extract-and-run ./AppDir # "SOH-Linux-x86_64.AppImage"
+mv SOH-Linux-x86_64.AppImage SOH-Linux.AppImage # Keep Original Name
