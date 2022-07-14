@@ -720,8 +720,10 @@ void ThrowIfFailed(HRESULT res, HWND h_wnd, const char *message) {
     }
 }
 
-int get_translated_scancode(int scancode) {
-    return scancode;
+const char* gfx_dxgi_get_key_name(int scancode) {
+    TCHAR* Text = new TCHAR[64];
+    GetKeyNameText(scancode << 16, Text, 64);
+    return (char*) Text;
 }
 
 extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
@@ -740,7 +742,7 @@ extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_set_target_fps,
     gfx_dxgi_set_maximum_frame_latency,
     gfx_dxgi_get_detected_hz,
-    get_translated_scancode
+    gfx_dxgi_get_key_name
 };
 
 #endif

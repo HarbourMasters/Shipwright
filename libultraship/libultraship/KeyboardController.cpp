@@ -80,7 +80,7 @@ namespace Ship {
 		});
 
 		if (find == Mappings.end()) return "Unknown";
-		const char* name = SDL_GetScancodeName(static_cast<SDL_Scancode>(GlobalCtx2::GetInstance()->GetWindow()->GetTranslatedKey(find->first)));
+		const char* name = GlobalCtx2::GetInstance()->GetWindow()->GetKeyName(find->first);
 		return strlen(name) == 0 ? "Unknown" : name;
 	}
 

@@ -341,6 +341,10 @@ static float gfx_sdl_get_detected_hz(void) {
     return 0;
 }
 
+static const char* gfx_sdl_get_key_name(int scancode) {
+    return SDL_GetScancodeName((SDL_Scancode) translate_scancode(scancode));
+}
+
 struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_init,
     gfx_sdl_set_keyboard_callbacks,
@@ -357,7 +361,7 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_set_target_fps,
     gfx_sdl_set_maximum_frame_latency,
     gfx_sdl_get_detected_hz,
-    translate_scancode
+    gfx_sdl_get_key_name
 };
 
 #endif

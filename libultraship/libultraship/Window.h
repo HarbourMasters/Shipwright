@@ -40,7 +40,7 @@ namespace Ship {
 			uint32_t dwMenubar;
 			std::shared_ptr<GlobalCtx2> GetContext() { return Context.lock(); }
 			std::shared_ptr<AudioPlayer> GetAudioPlayer() { return APlayer; }
-			int GetTranslatedKey(int scancode) { return WmApi->get_translated_scancode(scancode); }
+			const char* GetKeyName(int scancode) { return WmApi->get_key_name(scancode); }
 
 		protected:
 		private:
