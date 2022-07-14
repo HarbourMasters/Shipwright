@@ -11,7 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "soh/Lib/nlohmann/json.hpp"
+#include "Lib/nlohmann/json.hpp"
 
 #include <cstdio>
 #include <cstdlib>

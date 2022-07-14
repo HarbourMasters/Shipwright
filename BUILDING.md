@@ -63,9 +63,10 @@ make setup -j8 DEBUG=0
 # Compile the code (watch the -j parameter as above)
 make -j8 DEBUG=0
 # Create macOS app bundle
-make filledappbundle
+make appbundle
 ```
-9. Launch soh app in the soh folder!
+9. Copy your OTR file to ~/Library/Application\ Support/com.shipofharkinian.soh
+10. Launch soh app in the soh folder!
 
 # Compatible Roms
 ```
