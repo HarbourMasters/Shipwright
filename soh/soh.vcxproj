@@ -254,7 +254,6 @@
     <ClCompile Include="soh\z_message_OTR.cpp" />
     <ClCompile Include="soh\z_play_otr.cpp" />
     <ClCompile Include="soh\z_scene_otr.cpp" />
-    <ClCompile Include="src\GetAppDirectory.cpp" />
     <ClCompile Include="src\boot\assert.c" />
     <ClCompile Include="src\boot\boot_main.c" />
     <ClCompile Include="src\boot\build.c" />
