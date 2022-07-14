@@ -945,18 +945,24 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         return;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, BTN_R)) {
+    if (CHECK_BTN_ALL(input->press.button, BTN_R) && pauseCtx->debugState <= 0) {
         KaleidoScope_SwitchPage(pauseCtx, 2);
         return;
     }
 
-    if (CHECK_BTN_ALL(input->press.button, PageLeft_BTN)) {
+    if (CHECK_BTN_ALL(input->press.button, PageLeft_BTN) && pauseCtx->debugState <= 0) {
         KaleidoScope_SwitchPage(pauseCtx, 0);
         return;
     }
 
+    if (CHECK_BTN_ALL(input->press.button, BTN_A) && CVar_GetS32("gKaleidoProgress", 0) && D_8082ABEC[pauseCtx->mode] != PAUSE_EQUIP && D_8082ABEC[pauseCtx->mode] != 7) {//this should not open while being in equipement section or save menu.
+        //debug state 99 should be unique, if someone find it is bot please tell me :)
+        pauseCtx->debugState = 99;
+        return;
+    }
+
     bool dpad = CVar_GetS32("gDpadPauseName", 0);
-    if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT) {
+    if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_LEFT && pauseCtx->debugState <= 0) {
         if ((pauseCtx->stickRelX < -30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
@@ -965,7 +971,7 @@ void KaleidoScope_HandlePageToggles(PauseContext* pauseCtx, Input* input) {
         } else {
             pauseCtx->pageSwitchTimer = -1;
         }
-    } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT) {
+    } else if (pauseCtx->cursorSpecialPos == PAUSE_CURSOR_PAGE_RIGHT && pauseCtx->debugState <= 0) {
         if ((pauseCtx->stickRelX > 30) || (dpad && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT))) {
             pauseCtx->pageSwitchTimer++;
             if ((pauseCtx->pageSwitchTimer >= 10) || (pauseCtx->pageSwitchTimer == 0)) {
@@ -3057,6 +3063,11 @@ void KaleidoScope_Draw(GlobalContext* globalCtx) {
 
     if ((pauseCtx->debugState == 1) || (pauseCtx->debugState == 2)) {
         KaleidoScope_DrawDebugEditor(globalCtx);
+    }
+
+    if (pauseCtx->debugState == 99) {
+        //This will draw our progress page when debug state is set at 99 like we made ~
+        KaleidoScope_ProgressPage(globalCtx);
     }
 
     func_800AAA50(&globalCtx->view, 15);

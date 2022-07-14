@@ -1019,7 +1019,12 @@ namespace SohImGui {
 
                         ImGui::EndMenu();
                     }
-                    
+                    EnhancementCheckbox("Pause menu progress page", "gKaleidoProgress");
+                    Tooltip("Press button A in pause menu to open a progress page menu.\nIt will work only when you are not in save or equips menu.");
+                    if (CVar_GetS32("gKaleidoProgress", 0) != 0) {
+                        EnhancementCheckbox("Colored labels progress page", "gKaleidoProgressColored");
+                        Tooltip("Color the labels of Progress page to match their theme.");
+                    }
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");

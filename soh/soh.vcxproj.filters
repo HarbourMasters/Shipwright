@@ -762,6 +762,9 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_scope_PAL.c">
       <Filter>Source Files\src\overlays\misc\ovl_kaleido_scope</Filter>
     </ClCompile>
+    <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_kaleido_progress.c">
+      <Filter>Source Files\src\overlays\misc\ovl_kaleido_scope</Filter>
+    </ClCompile>
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark.c">
       <Filter>Source Files\src\overlays\misc\ovl_kaleido_scope</Filter>
     </ClCompile>
@@ -2382,6 +2385,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
+      <Filter>Source Files\src\overlays\misc\ovl_kaleido_scope</Filter>
+    </ClInclude>
+    <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_progress.h">
       <Filter>Source Files\src\overlays\misc\ovl_kaleido_scope</Filter>
     </ClInclude>
     <ClInclude Include="include\alloca.h">
