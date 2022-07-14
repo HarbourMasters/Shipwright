@@ -153,9 +153,9 @@ namespace Ship {
             float gyroData[3];
             SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_GYRO, gyroData, 3);
 
-            float gyro_drift_x = profile.GyroThresholds[DRIFT_X] / 100.0f;
-            float gyro_drift_y = profile.GyroThresholds[DRIFT_Y] / 100.0f;
-            const float gyro_sensitivity = profile.GyroThresholds[SENSITIVITY] / 100.0f;
+            float gyro_drift_x = profile.Thresholds[DRIFT_X] / 100.0f;
+            float gyro_drift_y = profile.Thresholds[DRIFT_Y] / 100.0f;
+            const float gyro_sensitivity = profile.Thresholds[GYRO_SENSITIVITY];
 
             if (gyro_drift_x == 0) {
                 gyro_drift_x = gyroData[0];
@@ -165,8 +165,8 @@ namespace Ship {
                 gyro_drift_y = gyroData[1];
             }
 
-            profile.GyroThresholds[DRIFT_X] = (int) gyro_drift_x * 100;
-            profile.GyroThresholds[DRIFT_Y] = (int) gyro_drift_y * 100;
+            profile.Thresholds[DRIFT_X] = gyro_drift_x * 100.0f;
+            profile.Thresholds[DRIFT_Y] = gyro_drift_y * 100.0f;
 
             wGyroX = gyroData[0] - gyro_drift_x;
             wGyroY = gyroData[1] - gyro_drift_y;
@@ -198,7 +198,7 @@ namespace Ship {
             const auto Axis = static_cast<SDL_GameControllerAxis>(i);
             const auto PosScancode = i + AXIS_SCANCODE_BIT;
             const auto NegScancode = -PosScancode;
-            const auto AxisThreshold = profile.Thresholds[SDLAxisToThreshold(i)];
+            const auto AxisThreshold = static_cast<int>(profile.Thresholds[SDLAxisToThreshold(i)]);
             const auto PosButton = profile.Mappings[PosScancode];
             const auto NegButton = profile.Mappings[NegScancode];
             const auto AxisValue = SDL_GameControllerGetAxis(Cont, Axis);
@@ -467,10 +467,11 @@ namespace Ship {
         profile.Mappings[-(SDL_CONTROLLER_AXIS_LEFTX + AXIS_SCANCODE_BIT)] = BTN_STICKLEFT;
         profile.Mappings[SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT] = BTN_STICKDOWN;
         profile.Mappings[-(SDL_CONTROLLER_AXIS_LEFTY + AXIS_SCANCODE_BIT)] = BTN_STICKUP;
-        profile.Thresholds[LEFT_STICK] = 16.0;
-        profile.Thresholds[RIGHT_STICK] = 16.0;
+        profile.Thresholds[LEFT_STICK] = 16.0f;
+        profile.Thresholds[RIGHT_STICK] = 16.0f;
         profile.Thresholds[LEFT_TRIGGER] = 0x1E00;
         profile.Thresholds[RIGHT_TRIGGER] = 0x1E00;
-        profile.Thresholds[SENSITIVITY] = 16.0;
+        profile.Thresholds[SENSITIVITY] = 16.0f;
+        profile.Thresholds[GYRO_SENSITIVITY] = 1.0f;
     }
 }

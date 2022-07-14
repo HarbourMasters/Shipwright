@@ -29,8 +29,7 @@ namespace Ship {
 		bool UseRumble = false;
 		bool UseGyro = false;
 		float RumbleStrength = 1.0f;
-		std::unordered_map<ControllerThresholds, int32_t> Thresholds;
-		std::unordered_map<int32_t, int32_t> GyroThresholds;
+		std::unordered_map<ControllerThresholds, float> Thresholds;
 		std::map<int32_t, int32_t> Mappings;
 	};
 
