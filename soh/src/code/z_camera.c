@@ -1481,7 +1481,7 @@ s32 Camera_Free(Camera* camera) {
 
     camBgChk.pos = camera->eye;
 
-    float maxRadius = 160.0f;
+    float maxRadius = 150.0f;
     if (Camera_BGCheckInfo(camera, &at, &camBgChk)) {
         VecSph collSphere;
         OLib_Vec3fDiffToVecSphGeo(&collSphere, &at, &camBgChk.pos);

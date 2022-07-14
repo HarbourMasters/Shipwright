@@ -20,7 +20,7 @@ extern BootCommandFunc BootCommands_Command_LoadFileSelect(char** argv, s32 argc
 static BootCommand sCommands[] = { { "--skiplogo", BootCommands_Command_SkipLogo },
                                    { "--loadfileselect", BootCommands_Command_LoadFileSelect } };
 
-void BootCommands_Init() 
+void BootCommands_Init()
 {
     CVar_RegisterS32("gDisableLOD", 0);
     CVar_RegisterS32("gDebugEnabled", 0);
@@ -30,7 +30,6 @@ void BootCommands_Init()
     CVar_RegisterS32("gHoverFishing", 0);
     CVar_RegisterS32("gN64WeirdFrames", 0);
     CVar_RegisterS32("gBombchusOOB", 0);
-    CVar_RegisterS32("gRumbleEnabled", 0);
     CVar_RegisterS32("gUniformLR", 0);
     CVar_RegisterS32("gTwoHandedIdle", 0);
     CVar_RegisterS32("gDekuNutUpgradeFix", 0);
