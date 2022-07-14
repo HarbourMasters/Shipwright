@@ -76,19 +76,13 @@ namespace SohImGui {
         "None"
     };
 
-    const char* backendNames[] = {
+    std::pair<const char*, const char*> backends[] = {
 #ifdef _WIN32
-        "DirectX",
+        { "dx11", "DirectX" },
 #endif
-        "OpenGL"
+        { "sdl", "OpenGL" }
     };
 
-    const char* backendAPI[] = {
-#ifdef _WIN32
-        "dx11",
-#endif
-        "sdl"
-    };
 
     const char* powers[9] = {
         "Vanilla (1x)",
@@ -112,8 +106,8 @@ namespace SohImGui {
             return 0;
         }
 
-        for (size_t i = 0; i < (sizeof(backendAPI) / sizeof(backendAPI[0])); i++) {
-            if(backend == backendAPI[i]) {
+        for (size_t i = 0; i < (sizeof(backends) / sizeof(backends[0])); i++) {
+            if(backend == backends[i].first) {
 				return i;
 			}
         }
@@ -858,10 +852,10 @@ namespace SohImGui {
 
 
                 ImGui::Text("Renderer API (Needs reload)");
-                if (ImGui::BeginCombo("##RApi", backendNames[lastBackendID])) {
-                    for (uint8_t i = 0; i < sizeof(backendAPI) / sizeof(backendAPI[0]); i++) {
-                        if (ImGui::Selectable(backendNames[i], i == lastBackendID)) {
-                            pConf->setString("Window.GfxBackend", backendAPI[i]);
+                if (ImGui::BeginCombo("##RApi", backends[lastBackendID].second)) {
+                    for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
+                        if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
+                            pConf->setString("Window.GfxBackend", backends[i].first);
                             lastBackendID = i;
                         }
                     }
