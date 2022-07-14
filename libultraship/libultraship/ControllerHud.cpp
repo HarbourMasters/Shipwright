@@ -41,6 +41,7 @@ namespace Ship {
 
 		if(readingMode) {
 			const int32_t btn = backend->ReadRawPress();
+
 			if(btn != -1) {
 				backend->SetButtonMapping(CurrentPort, n64Btn, btn);
 				BtnReading = -1;
@@ -51,6 +52,7 @@ namespace Ship {
 
 		if (ImGui::Button(StringHelper::Sprintf("%s##HBTNID_%d", readingMode ? "Press a Key..." : BtnName, n64Btn).c_str())) {
 			BtnReading = n64Btn;
+			backend->ClearRawPress();
 		}
 
 		if(disabled) {
@@ -250,6 +252,8 @@ namespace Ship {
 		}
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
+		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
+		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::BeginTabBar("##Controllers");

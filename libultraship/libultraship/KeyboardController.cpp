@@ -12,14 +12,14 @@
 
 namespace Ship {
 
-	int32_t lastKey = -1;
-
 	KeyboardController::KeyboardController() : Controller(), lastScancode(-1) {
 		GUID = "Keyboard";
 	}
 
 	bool KeyboardController::PressButton(int32_t dwScancode) {
+
 		lastKey = dwScancode;
+		
 		for (int slot = 0; slot < MAXCONTROLLERS; slot++) {
 
 			if (profiles[slot].Mappings.contains(dwScancode)) {
@@ -55,16 +55,8 @@ namespace Ship {
 		wCamY = 0;
 	}
 
-
 	int32_t KeyboardController::ReadRawPress() {
-
-		if(lastKey != -1) {
-			const int32_t key = lastKey;
-			lastKey = -1;
-			return key;
-		}
-
-		return -1;
+		return lastKey;
 	}
 
 

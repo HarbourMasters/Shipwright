@@ -296,30 +296,28 @@ namespace Ship {
     void Window::MainLoop(void (*MainFunction)(void)) {
         WmApi->main_loop(MainFunction);
     }
+	
     bool Window::KeyUp(int32_t dwScancode) {
         std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
-        // if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_FULLSCREEN"])) {
-        //     GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
-        // }
+        if (dwScancode == pConf->getInt("Shortcuts.Fullscreen", 0x044)) {
+            GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
+        }
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
         //}
-        // lastScancode = -1;
+		
+        lastScancode = -1;
 
         bool bIsProcessed = false;
         const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
-	if (pad != nullptr) {
-
-            if(pad->GetLastScancode() == -1)
-				pad->SetLastScancode(dwScancode);
-
-		if (pad->ReleaseButton(dwScancode)) {
-			bIsProcessed = true;
-		}
-	}
+        if (pad != nullptr) {
+            if (pad->ReleaseButton(dwScancode)) {
+                bIsProcessed = true;
+            }
+        }
 
         return bIsProcessed;
     }
@@ -329,9 +327,6 @@ namespace Ship {
 
         const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
         if (pad != nullptr) {
-
-            pad->SetLastScancode(dwScancode);
-
             if (pad->PressButton(dwScancode)) {
                 bIsProcessed = true;
             }

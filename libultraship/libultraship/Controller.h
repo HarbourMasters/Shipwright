@@ -48,6 +48,7 @@ namespace Ship {
 			bool isRumbling;
 			std::vector<DeviceProfile> profiles;
 
+			virtual void ClearRawPress() = 0;
 			virtual int32_t ReadRawPress() = 0;
 			void SetButtonMapping(int slot, int32_t n64Button, int32_t dwScancode);
 			std::shared_ptr<ControllerAttachment> GetAttachment() { return Attachment; }
