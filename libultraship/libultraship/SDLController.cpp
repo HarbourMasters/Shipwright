@@ -100,13 +100,13 @@ namespace Ship {
 
         for (int32_t i = SDL_CONTROLLER_AXIS_LEFTX; i < SDL_CONTROLLER_AXIS_MAX; i++) {
 	        const auto Axis = static_cast<SDL_GameControllerAxis>(i);
-            const auto AxisValue = SDL_GameControllerGetAxis(Cont, Axis) / 32767;
+            const auto AxisValue = SDL_GameControllerGetAxis(Cont, Axis) / 32767.0f;
 
-            if(AxisValue < 0) {
+            if (AxisValue < -0.75f) {
                 return -(Axis + AXIS_SCANCODE_BIT);
             }
 
-            if (AxisValue > 0) {
+            if (AxisValue > 0.75f) {
                 return (Axis + AXIS_SCANCODE_BIT);
             }
         }
@@ -174,6 +174,8 @@ namespace Ship {
             wGyroX *= gyro_sensitivity;
             wGyroY *= gyro_sensitivity;
         }
+
+        dwPressedButtons[slot] = 0;
 
         for (int32_t i = SDL_CONTROLLER_BUTTON_A; i < SDL_CONTROLLER_BUTTON_MAX; i++) {
             if (profile.Mappings.contains(i)) {
