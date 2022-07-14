@@ -15,7 +15,6 @@
 namespace Ship {
     std::weak_ptr<GlobalCtx2> GlobalCtx2::Context;
     ModManager* INSTANCE;
-
     std::shared_ptr<GlobalCtx2> GlobalCtx2::GetInstance() {
         return Context.lock();
     }
@@ -49,7 +48,7 @@ namespace Ship {
         return GlobalCtx2::GetAppDirectoryPath() + "/" + path;
     }
 
-    GlobalCtx2::GlobalCtx2(const std::string& Name) : Name(Name), MainPath(""), PatchesPath("") {
+    GlobalCtx2::GlobalCtx2(std::string Name) : Name(std::move(Name)) {
 
     }
 
@@ -60,22 +59,19 @@ namespace Ship {
 
     void GlobalCtx2::InitWindow() {
         InitLogging();
-        Config = std::make_shared<ConfigFile>(GlobalCtx2::GetInstance(), GetPathRelativeToAppDirectory("shipofharkinian.ini"));
-        MainPath = (*Config)["ARCHIVE"]["Main Archive"];
-        if (MainPath.empty()) {
-            MainPath = GetPathRelativeToAppDirectory("oot.otr");
-        }
-        PatchesPath = (*Config)["ARCHIVE"]["Patches Directory"];
-        if (PatchesPath.empty()) {
-            PatchesPath = GetAppDirectoryPath() + "/";
-        }
-        ResMan = std::make_shared<ResourceMgr>(GlobalCtx2::GetInstance(), MainPath, PatchesPath);
-        Win = std::make_shared<Window>(GlobalCtx2::GetInstance());
+        Config = std::make_shared<Mercury>(GetPathRelativeToAppDirectory("shipofharkinian.json"));
+        Config->reload();
+
+        MainPath = Config->getString("Game.Main Archive", GetPathRelativeToAppDirectory("oot.otr"));
+        PatchesPath = Config->getString("Game.Patches Archive", GetAppDirectoryPath() + "/mods");
+
+        ResMan = std::make_shared<ResourceMgr>(GetInstance(), MainPath, PatchesPath);
+        Win = std::make_shared<Window>(GetInstance());
 
         if (!ResMan->DidLoadSuccessfully())
         {
 #ifdef _WIN32
-            MessageBox(NULL, L"Main OTR file not found!", L"Uh oh", MB_OK);
+            MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
@@ -109,7 +105,7 @@ namespace Ship {
         }
     }
 
-    void GlobalCtx2::WriteSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size) {
+    void GlobalCtx2::WriteSaveFile(const std::filesystem::path& savePath, const uintptr_t addr, void* dramAddr, const size_t size) {
         std::ofstream saveFile = std::ofstream(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
         saveFile.seekp(addr);
         saveFile.write((char*)dramAddr, size);

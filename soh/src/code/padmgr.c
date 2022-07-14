@@ -269,7 +269,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
     }
 
-    controllerCallback.rumble = CVar_GetS32("gRumbleEnabled", 0) && (padMgr->rumbleEnable[0] > 0);
+    controllerCallback.rumble = (padMgr->rumbleEnable[0] > 0);
 
     if (HealthMeter_IsCritical()) {
         controllerCallback.ledColor = 0;

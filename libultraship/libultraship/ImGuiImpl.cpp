@@ -12,6 +12,7 @@
 #include "GameSettings.h"
 #include "Console.h"
 #include "Hooks.h"
+#define IMGUI_DEFINE_MATH_OPERATORS
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
@@ -63,6 +64,8 @@ namespace SohImGui {
     ImGuiIO* io;
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
+    InputEditor* controller = new InputEditor;
+    static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
 
@@ -326,6 +329,7 @@ namespace SohImGui {
         }
         console->Init();
         overlay->Init();
+        controller->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
 
@@ -346,23 +350,17 @@ namespace SohImGui {
             LoadTexture("C-Down", "assets/ship_of_harkinian/buttons/CDown.png");
         });
 
-        for (const auto& [i, controllers] : Ship::Window::Controllers)
-        {
-            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
-            CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
-            needs_save = true;
-        }
-
         ModInternal::RegisterHook<ModInternal::ControllerRead>([](OSContPad* cont_pad) {
             pads = cont_pad;
         });
+
         Game::InitSettings();
 
         CVar_SetS32("gRandoGenerating", 0);
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
-        CVar_SetString("gDroppedFile", "");
-        Game::SaveSettings();
+        CVar_SetString("gDroppedFile", "None");
+        // Game::SaveSettings();
     }
 
     void Update(EventImpl event) {
@@ -511,7 +509,7 @@ namespace SohImGui {
     }
 
     void EnhancementCombo(const std::string& name, const char* cvarName, const std::vector<std::string>& items, int defaultValue) {
-      
+
         if (ImGui::BeginCombo(name.c_str(), items[static_cast<int>(CVar_GetS32(cvarName, defaultValue))].c_str())) {
             for (int settingIndex = 0; settingIndex < (int) items.size(); settingIndex++) {
                 if (ImGui::Selectable(items[settingIndex].c_str())) {
@@ -691,36 +689,32 @@ namespace SohImGui {
             needs_save = true;
             GlobalCtx2::GetInstance()->GetWindow()->dwMenubar = menu_bar;
             ShowCursor(menu_bar, Dialogues::dMenubar);
-        
+            GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->SaveControllerSettings();
             if (CVar_GetS32("gControlNav", 0)) {
                 if (CVar_GetS32("gOpenMenuBar", 0)) {
                     io->ConfigFlags |=ImGuiConfigFlags_NavEnableGamepad | ImGuiConfigFlags_NavEnableKeyboard;
+                } else {
+                    io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
                 }
-                else
-                {
-                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
-                }
-            }
-            else
-            {
-            io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad; 
+            } else {
+                io->ConfigFlags &= ~ImGuiConfigFlags_NavEnableGamepad;
             }
         }
 
         #if __APPLE__
         if ((ImGui::IsKeyDown(ImGuiKey_LeftSuper) ||
-             ImGui::IsKeyDown(ImGuiKey_RightSuper)) && 
+             ImGui::IsKeyDown(ImGuiKey_RightSuper)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
             console->Commands["reset"].handler(emptyArgs);
         }
         #else
         if ((ImGui::IsKeyDown(ImGuiKey_LeftCtrl) ||
-             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) && 
+             ImGui::IsKeyDown(ImGuiKey_RightCtrl)) &&
              ImGui::IsKeyPressed(ImGuiKey_R, false)) {
             console->Commands["reset"].handler(emptyArgs);
         }
         #endif
-        
+
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
@@ -740,7 +734,7 @@ namespace SohImGui {
                     console->Commands["reset"].handler(emptyArgs);
                 }
                 ImGui::EndMenu();
-            }            
+            }
 
             if (ImGui::BeginMenu("Audio")) {
                 EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
@@ -758,6 +752,9 @@ namespace SohImGui {
                 EnhancementCheckbox("Use Controller Navigation", "gControlNav");
                 Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
 
+                EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
+                controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+
                 ImGui::Separator();
 
                 // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
@@ -771,41 +768,9 @@ namespace SohImGui {
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
                 Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-                EnhancementCheckbox("Rumble Enabled", "gRumbleEnabled");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");  
-
-                ImGui::Separator();
-
-                for (const auto& [i, controllers] : Ship::Window::Controllers)
-                {
-                    bool hasPad = std::find_if(controllers.begin(), controllers.end(), [](const auto& c) {
-                        return c->HasPadConf() && c->Connected();
-                        }) != controllers.end();
-
-                        if (!hasPad) continue;
-
-                        auto menuLabel = "Controller " + std::to_string(i + 1);
-                        if (ImGui::BeginMenu(menuLabel.c_str()))
-                        {
-                            EnhancementSliderFloat("Gyro Sensitivity: %d %%", "##GYROSCOPE", StringHelper::Sprintf("gCont%i_GyroSensitivity", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
-
-                            if (ImGui::Button("Recalibrate Gyro"))
-                            {
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftX", i).c_str(), 0);
-                                CVar_SetFloat(StringHelper::Sprintf("gCont%i_GyroDriftY", i).c_str(), 0);
-                                needs_save = true;
-                            }
-
-                            ImGui::Separator();
-
-                            EnhancementSliderFloat("Rumble Strength: %d %%", "##RUMBLE", StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 0.0f, 1.0f, "", 1.0f, true);
-
-                            ImGui::EndMenu();
-                        }
-                        ImGui::Separator();
-                }
+                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
 
                 ImGui::EndMenu();
             }
@@ -933,7 +898,7 @@ namespace SohImGui {
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
-                        
+
                         if (ImGui::BeginMenu("Potion Values"))
                         {
                             EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
@@ -942,7 +907,7 @@ namespace SohImGui {
                             Tooltip("Changes the amount of health restored by Red Potions");
                             EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
                             Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
-                            
+
                             EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                             Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
                             EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
@@ -956,7 +921,7 @@ namespace SohImGui {
                             Tooltip("Changes the amount of health restored by Blue Potions");
                             EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
                             Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
-                            
+
                             EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
                             Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
                             EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
@@ -1019,7 +984,7 @@ namespace SohImGui {
 
                         ImGui::EndMenu();
                     }
-                    
+
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
                     Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
@@ -1268,7 +1233,7 @@ namespace SohImGui {
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
             ImGui::SetNextWindowSize(ImVec2 (0,0));
             ImGuiWindowFlags HiddenWndFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings |
-                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs | 
+                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs |
                 ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoDecoration;
             ImGui::Begin(category.first.c_str(), nullptr, HiddenWndFlags);
             ImGui::End();
@@ -1292,6 +1257,7 @@ namespace SohImGui {
         }
 
         console->Draw();
+        controller->DrawHud();
 
         for (auto& windowIter : customWindows) {
             CustomWindow& window = windowIter.second;
@@ -1456,5 +1422,125 @@ namespace SohImGui {
         }
 #endif
         return reinterpret_cast<ImTextureID>(id);
+    }
+
+    void BeginGroupPanel(const char* name, const ImVec2& size)
+    {
+        ImGui::BeginGroup();
+
+        // auto cursorPos = ImGui::GetCursorScreenPos();
+        auto itemSpacing = ImGui::GetStyle().ItemSpacing;
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+
+        auto frameHeight = ImGui::GetFrameHeight();
+        ImGui::BeginGroup();
+
+        ImVec2 effectiveSize = size;
+        if (size.x < 0.0f)
+            effectiveSize.x = ImGui::GetContentRegionAvail().x;
+        else
+            effectiveSize.x = size.x;
+        ImGui::Dummy(ImVec2(effectiveSize.x, 0.0f));
+
+        ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::BeginGroup();
+        ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::TextUnformatted(name);
+        auto labelMin = ImGui::GetItemRectMin();
+        auto labelMax = ImGui::GetItemRectMax();
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::Dummy(ImVec2(0.0, frameHeight + itemSpacing.y));
+        ImGui::BeginGroup();
+
+        //ImGui::GetWindowDrawList()->AddRect(labelMin, labelMax, IM_COL32(255, 0, 255, 255));
+
+        ImGui::PopStyleVar(2);
+
+#if IMGUI_VERSION_NUM >= 17301
+        ImGui::GetCurrentWindow()->ContentRegionRect.Max.x -= frameHeight * 0.5f;
+        ImGui::GetCurrentWindow()->WorkRect.Max.x -= frameHeight * 0.5f;
+        ImGui::GetCurrentWindow()->InnerRect.Max.x -= frameHeight * 0.5f;
+#else
+        ImGui::GetCurrentWindow()->ContentsRegionRect.Max.x -= frameHeight * 0.5f;
+#endif
+        ImGui::GetCurrentWindow()->Size.x -= frameHeight;
+
+        auto itemWidth = ImGui::CalcItemWidth();
+        ImGui::PushItemWidth(ImMax(0.0f, itemWidth - frameHeight));
+        s_GroupPanelLabelStack.push_back(ImRect(labelMin, labelMax));
+    }
+
+    void EndGroupPanel(float minHeight) {
+        ImGui::PopItemWidth();
+
+        auto itemSpacing = ImGui::GetStyle().ItemSpacing;
+
+        ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0.0f, 0.0f));
+        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0.0f, 0.0f));
+
+        auto frameHeight = ImGui::GetFrameHeight();
+
+        ImGui::EndGroup();
+
+        //ImGui::GetWindowDrawList()->AddRectFilled(ImGui::GetItemRectMin(), ImGui::GetItemRectMax(), IM_COL32(0, 255, 0, 64), 4.0f);
+
+        ImGui::EndGroup();
+
+        ImGui::SameLine(0.0f, 0.0f);
+        ImGui::Dummy(ImVec2(frameHeight * 0.5f, 0.0f));
+        ImGui::Dummy(ImVec2(0.0, std::max(frameHeight - frameHeight * 0.5f - itemSpacing.y, minHeight)));
+
+        ImGui::EndGroup();
+
+        auto itemMin = ImGui::GetItemRectMin();
+        auto itemMax = ImGui::GetItemRectMax();
+        //ImGui::GetWindowDrawList()->AddRectFilled(itemMin, itemMax, IM_COL32(255, 0, 0, 64), 4.0f);
+
+        auto labelRect = s_GroupPanelLabelStack.back();
+        s_GroupPanelLabelStack.pop_back();
+
+        ImVec2 halfFrame = ImVec2(frameHeight * 0.25f, frameHeight) * 0.5f;
+        ImRect frameRect = ImRect(itemMin + halfFrame, itemMax - ImVec2(halfFrame.x, 0.0f));
+        labelRect.Min.x -= itemSpacing.x;
+        labelRect.Max.x += itemSpacing.x;
+        for (int i = 0; i < 4; ++i)
+        {
+            switch (i)
+            {
+                // left half-plane
+            case 0: ImGui::PushClipRect(ImVec2(-FLT_MAX, -FLT_MAX), ImVec2(labelRect.Min.x, FLT_MAX), true); break;
+                // right half-plane
+            case 1: ImGui::PushClipRect(ImVec2(labelRect.Max.x, -FLT_MAX), ImVec2(FLT_MAX, FLT_MAX), true); break;
+                // top
+            case 2: ImGui::PushClipRect(ImVec2(labelRect.Min.x, -FLT_MAX), ImVec2(labelRect.Max.x, labelRect.Min.y), true); break;
+                // bottom
+            case 3: ImGui::PushClipRect(ImVec2(labelRect.Min.x, labelRect.Max.y), ImVec2(labelRect.Max.x, FLT_MAX), true); break;
+            }
+
+            ImGui::GetWindowDrawList()->AddRect(
+                frameRect.Min, frameRect.Max,
+                ImColor(ImGui::GetStyleColorVec4(ImGuiCol_Border)),
+                halfFrame.x);
+
+            ImGui::PopClipRect();
+        }
+
+        ImGui::PopStyleVar(2);
+
+#if IMGUI_VERSION_NUM >= 17301
+        ImGui::GetCurrentWindow()->ContentRegionRect.Max.x += frameHeight * 0.5f;
+        ImGui::GetCurrentWindow()->WorkRect.Max.x += frameHeight * 0.5f;
+        ImGui::GetCurrentWindow()->InnerRect.Max.x += frameHeight * 0.5f;
+#else
+        ImGui::GetCurrentWindow()->ContentsRegionRect.Max.x += frameHeight * 0.5f;
+#endif
+        ImGui::GetCurrentWindow()->Size.x += frameHeight;
+
+        ImGui::Dummy(ImVec2(0.0f, 0.0f));
+
+        ImGui::EndGroup();
     }
 }
