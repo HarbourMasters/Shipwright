@@ -130,30 +130,6 @@ namespace Ship {
         }
     }
 
-    bool isBindToButton(int32_t btn) {
-	    switch(btn) {
-		    case BTN_A:
-	        case BTN_B:
-	        case BTN_L:
-	        case BTN_R:
-		    case BTN_Z:
-	        case BTN_STICKUP:
-	        case BTN_STICKDOWN:
-	        case BTN_STICKLEFT:
-	        case BTN_STICKRIGHT:
-	        case BTN_CUP:
-	        case BTN_CDOWN:
-	        case BTN_CLEFT:
-		    case BTN_CRIGHT:
-	        case BTN_DUP:
-	        case BTN_DDOWN:
-	        case BTN_DLEFT:
-	        case BTN_DRIGHT:
-	            return true;
-	    }
-        return false;
-    }
-
     void SDLController::ReadFromSource(int32_t slot) {
         DeviceProfile& profile = profiles[slot];
 
