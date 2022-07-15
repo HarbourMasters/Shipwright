@@ -111,6 +111,8 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCEnvR = 10;
     sOcarinaNoteCEnvG = 10;
     sOcarinaNoteCEnvB = 10;
+
+    // Set basic A and C colors
     if (CVar_GetS32("gHudColors", 1) == 0) { 
         sOcarinaNoteAPrimR = 80;
         sOcarinaNoteAPrimG = 150;
@@ -127,11 +129,15 @@ void Message_ResetOcarinaNoteState(void) {
         sOcarinaNoteCPrimB = 50;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
         sOcarinaNoteAPrimR = CVar_GetS32("gCCABtnPrimR", 80);
-        sOcarinaNoteAPrimG = CVar_GetS32("gCCABtnPrimR", 255);
-        sOcarinaNoteAPrimB = CVar_GetS32("gCCABtnPrimR", 150);
+        sOcarinaNoteAPrimG = CVar_GetS32("gCCABtnPrimG", 255);
+        sOcarinaNoteAPrimB = CVar_GetS32("gCCABtnPrimB", 150);
         sOcarinaNoteCPrimR = CVar_GetS32("gCCCBtnPrimR", 255);
         sOcarinaNoteCPrimG = CVar_GetS32("gCCCBtnPrimG", 255);
         sOcarinaNoteCPrimB = CVar_GetS32("gCCCBtnPrimB", 50);
+    }
+
+    // Set individual C colors based on whether they're separated
+    if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
         sOcarinaNoteCUpPrimR = CVar_GetS32("gCCCUBtnPrimR", 255);
         sOcarinaNoteCUpPrimG = CVar_GetS32("gCCCUBtnPrimG", 255);
         sOcarinaNoteCUpPrimB = CVar_GetS32("gCCCUBtnPrimB", 50);
@@ -144,6 +150,19 @@ void Message_ResetOcarinaNoteState(void) {
         sOcarinaNoteCRightPrimR = CVar_GetS32("gCCCRBtnPrimR", 255);
         sOcarinaNoteCRightPrimG = CVar_GetS32("gCCCRBtnPrimG", 255);
         sOcarinaNoteCRightPrimB = CVar_GetS32("gCCCRBtnPrimB", 50);
+    } else {
+        sOcarinaNoteCUpPrimR = sOcarinaNoteCPrimR;
+        sOcarinaNoteCUpPrimG = sOcarinaNoteCPrimG;
+        sOcarinaNoteCUpPrimB = sOcarinaNoteCPrimB;
+        sOcarinaNoteCLeftPrimR = sOcarinaNoteCPrimR;
+        sOcarinaNoteCLeftPrimG = sOcarinaNoteCPrimG;
+        sOcarinaNoteCLeftPrimB = sOcarinaNoteCPrimB;
+        sOcarinaNoteCDownPrimR = sOcarinaNoteCPrimR;
+        sOcarinaNoteCDownPrimG = sOcarinaNoteCPrimG;
+        sOcarinaNoteCDownPrimB = sOcarinaNoteCPrimB;
+        sOcarinaNoteCRightPrimR = sOcarinaNoteCPrimR;
+        sOcarinaNoteCRightPrimG = sOcarinaNoteCPrimG;
+        sOcarinaNoteCRightPrimB = sOcarinaNoteCPrimB;
     }
 }
 
@@ -3180,31 +3199,37 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                     }
 
                     gDPPipeSync(gfx++);
-                    if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D4) {
-                        if (CVar_GetS32("gHudColors", 1) == 0) { //A buttons :)
-                            gDPSetPrimColor(gfx++, 0, 0, 80, 150, 255, sOcarinaNotesAlphaValues[i]);
-                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
+                    if (CVar_GetS32("gOcarina3DS", 0)) {
+                        if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D5) {  // A
                             gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCABtnPrimR", 80), CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 150), sOcarinaNotesAlphaValues[i]);
-                        }
-                        gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
-                    } else {
-                        if (CVar_GetS32("gHudColors", 1) == 0) { //C buttons :)
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCPrimR, sOcarinaNoteCPrimG, sOcarinaNoteCPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(gfx++, 0, 0, CVar_GetS32("gCCCBtnPrimR", 255), CVar_GetS32("gCCCBtnPrimG", 255), CVar_GetS32("gCCCBtnPrimB", 180), sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D5 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCUpPrimR, sOcarinaNoteCUpPrimG, sOcarinaNoteCUpPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_B4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftPrimR, sOcarinaNoteCLeftPrimG, sOcarinaNoteCLeftPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_B4) {  // X
                             gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCRightPrimR, sOcarinaNoteCRightPrimG, sOcarinaNoteCRightPrimB, sOcarinaNotesAlphaValues[i]);
-                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_F4 && CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A4) {  // Y
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftPrimR, sOcarinaNoteCLeftPrimG, sOcarinaNoteCLeftPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_F4) {  // R
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownPrimR, sOcarinaNoteCDownPrimG, sOcarinaNoteCDownPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D4) {  // L
                             gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownPrimR, sOcarinaNoteCDownPrimG, sOcarinaNoteCDownPrimB, sOcarinaNotesAlphaValues[i]);
                         }
+                    } else {
+                        if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D5) {  // C-up
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCUpPrimR, sOcarinaNoteCUpPrimG, sOcarinaNoteCUpPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_B4) {  // C-left
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCLeftPrimR, sOcarinaNoteCLeftPrimG, sOcarinaNoteCLeftPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_A4) {  // C-right
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCRightPrimR, sOcarinaNoteCRightPrimG, sOcarinaNoteCRightPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_F4) {  // C-down
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteCDownPrimR, sOcarinaNoteCDownPrimG, sOcarinaNoteCDownPrimB, sOcarinaNotesAlphaValues[i]);
+                        } else if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D4) {  // L
+                            gDPSetPrimColor(gfx++, 0, 0, sOcarinaNoteAPrimR, sOcarinaNoteAPrimG, sOcarinaNoteAPrimB, sOcarinaNotesAlphaValues[i]);
+                        }
+                    }
+
+                    // Since I don't know what exactly these Env vars are used for, I elected keep their usage consistent with the note played,
+                    // rather than having AEnv be used for whatever note A happens to play at the moment and CEnv for everything else
+                    if (sOcarinaNoteBuf[i] == OCARINA_NOTE_D4) {
+                        gDPSetEnvColor(gfx++, sOcarinaNoteAEnvR, sOcarinaNoteAEnvG, sOcarinaNoteAEnvB, 0);
+                    } else {
                         gDPSetEnvColor(gfx++, sOcarinaNoteCEnvR, sOcarinaNoteCEnvG, sOcarinaNoteCEnvB, 0);
                     }
 
