@@ -67,6 +67,14 @@ struct TextureDataMetal {
     bool linear_filtering;
 };
 
+struct FramebufferMetal {
+    MTLRenderPassDescriptor* render_pass_descriptor;
+    id<MTLTexture> depth_texture;
+    uint32_t texture_id;
+    bool has_depth_buffer;
+    uint32_t msaa_level;
+};
+
 static struct {
     // Elements that only need to be setup once
     SDL_Renderer* renderer = nullptr;
@@ -79,6 +87,7 @@ static struct {
     std::unordered_map<std::pair<uint64_t, uint32_t>, id<MTLRenderPipelineState>, hash_pair_shader_ids> pipeline_cache;
 
     std::vector<struct TextureDataMetal> textures;
+    std::vector<FramebufferMetal> framebuffers;
     FrameUniforms frame_uniforms;
     id<MTLBuffer> frame_uniform_buffer = nullptr;
 
@@ -86,11 +95,10 @@ static struct {
     struct ShaderProgramMetal* shader_program;
     id<MTLCommandBuffer> current_command_buffer = nullptr;
     id<MTLRenderCommandEncoder> current_command_encoder = nullptr;
-    MTLRenderPassDescriptor* current_render_pass = nullptr;
-    id<CAMetalDrawable> current_drawable = nullptr;
 
     int current_tile;
     uint32_t current_texture_ids[2];
+    int current_framebuffer;
     size_t current_vertex_buffer_offset;
     FilteringMode current_filter_mode = FILTER_THREE_POINT;
 
@@ -275,7 +283,7 @@ void Metal_SetRenderer(SDL_Renderer* renderer) {
 
 bool Metal_Init() {
     mctx.layer = (__bridge CAMetalLayer*)SDL_RenderGetMetalLayer(mctx.renderer);
-    mctx.layer.pixelFormat = MTLPixelFormatBGRA8Unorm;
+    mctx.layer.pixelFormat = MTLPixelFormatRGBA8Unorm;
 
     mctx.device = mctx.layer.device;
     mctx.command_queue = [mctx.device newCommandQueue];
@@ -288,21 +296,9 @@ void Metal_NewFrame() {
     SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
     mctx.layer.drawableSize = CGSizeMake(width, height);
 
-    MTLRenderPassDescriptor* renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
-
-    id<CAMetalDrawable> drawable = [mctx.layer nextDrawable];
-    //NSAssert(drawable != nil, @"Could not retrieve drawable from Metal layer");
-
-    renderPassDescriptor.colorAttachments[0].texture = drawable.texture;
-    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
-
-    mctx.current_command_buffer = [mctx.command_queue commandBuffer];
-    mctx.current_drawable = drawable;
-    mctx.current_render_pass = renderPassDescriptor;
-
-    ImGui_ImplMetal_NewFrame(mctx.current_render_pass);
+    // this will be more appropriately be called later, but we do it here to setup the font textures
+    MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
+    ImGui_ImplMetal_NewFrame(current_render_pass);
 }
 
 void Metal_RenderDrawData(ImDrawData* draw_data) {
@@ -315,7 +311,16 @@ static const char* gfx_metal_get_name() {
     return "Metal";
 }
 
-static void gfx_metal_init(void) {}
+// Forward declare this method
+int gfx_metal_create_framebuffer(void);
+
+static void gfx_metal_init(void) {
+    // Create the default framebuffer which represents the window
+    FramebufferMetal& fb = mctx.framebuffers[gfx_metal_create_framebuffer()];
+    fb.msaa_level = 1;
+
+//    mctx.imgui_render_pass_descriptor = [MTLRenderPassDescriptor new];
+}
 
 static struct GfxClipParameters gfx_metal_get_clip_parameters() {
     return { true, false };
@@ -578,7 +583,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         pipelineDescriptor.fragmentFunction = [library newFunctionWithName:@"fragmentShader"];
         pipelineDescriptor.vertexDescriptor = vertexDescriptor;
 
-        pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
+        pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatRGBA8Unorm;
         pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormatDepth32Float;
         if (cc_features.opt_alpha) {
             pipelineDescriptor.colorAttachments[0].blendingEnabled = YES;
@@ -756,14 +761,22 @@ static void gfx_metal_start_frame(void) {
         mctx.frame_uniform_buffer = [mctx.device newBufferWithLength:sizeof(FrameUniforms) options:MTLResourceCPUCacheModeDefaultCache];
     }
 
-    mctx.current_command_encoder = [mctx.current_command_buffer renderCommandEncoderWithDescriptor:mctx.current_render_pass];
     mctx.current_vertex_buffer_offset = 0;
 }
 
 void gfx_metal_end_frame(void) {
     [mctx.current_command_encoder endEncoding];
-    [mctx.current_command_buffer presentDrawable:mctx.current_drawable];
 
+    // Copy over the framebuffer's texture to the drawable!
+    id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
+    int texture_id = mctx.framebuffers[mctx.current_framebuffer].texture_id;
+    id<MTLTexture> texToCopy = mctx.textures[texture_id].texture;
+
+    id<MTLBlitCommandEncoder> blitEncoder = [mctx.current_command_buffer blitCommandEncoder];
+    [blitEncoder copyFromTexture:texToCopy toTexture:drawable.texture];
+    [blitEncoder endEncoding];
+
+    [mctx.current_command_buffer presentDrawable:drawable];
     pop_buffer_and_wait_to_requeue();
     [mctx.current_command_buffer commit];
 }
@@ -771,14 +784,68 @@ void gfx_metal_end_frame(void) {
 static void gfx_metal_finish_render(void) {}
 
 int gfx_metal_create_framebuffer(void) {
-    // TODO: implement
+    uint32_t texture_id = gfx_metal_new_texture();
+    TextureDataMetal& t = mctx.textures[texture_id];
+
+    size_t index = mctx.framebuffers.size();
+    mctx.framebuffers.resize(mctx.framebuffers.size() + 1);
+    FramebufferMetal& data = mctx.framebuffers.back();
+    data.texture_id = texture_id;
+
+    uint32_t tile = 0;
+    uint32_t saved = mctx.current_texture_ids[tile];
+    mctx.current_texture_ids[tile] = texture_id;
+    gfx_metal_set_sampler_parameters(0, true, G_TX_WRAP, G_TX_WRAP);
+    mctx.current_texture_ids[tile] = saved;
+
+    return (int)index;
 }
 
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
     // TODO: implement
-    
-    if (has_depth_buffer) {
-        // TODO: Reuse the depth texture to not recreate this every time
+    FramebufferMetal& fb = mctx.framebuffers[fb_id];
+    TextureDataMetal& tex = mctx.textures[fb.texture_id];
+
+    width = std::max(width, 1U);
+    height = std::max(height, 1U);
+//    while (msaa_level > 1 && mctx.msaa_num_quality_levels[msaa_level - 1] == 0) {
+//        --msaa_level;
+//    }
+
+    bool diff = tex.width != width || tex.height != height || fb.msaa_level != msaa_level;
+
+    // TODO: something about diff and creating textures
+
+    if (diff || (fb.render_pass_descriptor != nil) != render_target) {
+        // create drawable texture
+        MTLTextureDescriptor *texDescriptor = [MTLTextureDescriptor new];
+        texDescriptor.textureType = MTLTextureType2D;
+        texDescriptor.width = width;
+        texDescriptor.height = height;
+        texDescriptor.sampleCount = msaa_level;
+        texDescriptor.mipmapLevelCount = 1;
+        texDescriptor.pixelFormat = MTLPixelFormatRGBA8Unorm;
+        texDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0) | (msaa_level <= 1 ? MTLTextureUsageShaderRead : 0);
+
+        tex.texture = [mctx.device newTextureWithDescriptor:texDescriptor];
+
+        if (render_target) {
+            MTLRenderPassDescriptor* renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
+
+            MTLClearColor clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
+            renderPassDescriptor.colorAttachments[0].texture = tex.texture;
+            renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+            renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+            renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
+
+            fb.render_pass_descriptor = renderPassDescriptor;
+        }
+
+        tex.width = width;
+        tex.height = height;
+    }
+
+    if (has_depth_buffer && (diff || !fb.has_depth_buffer || (fb.depth_texture != nil) != can_extract_depth)) {
         MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
                                                                                                 width:width
                                                                                                height:height
@@ -787,20 +854,36 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         depthTexDesc.storageMode = MTLStorageModePrivate;
         depthTexDesc.sampleCount = msaa_level;
         depthTexDesc.arrayLength = 1;
-        depthTexDesc.usage = MTLTextureUsageRenderTarget;
-        id<MTLTexture> depthTexture = [mctx.device newTextureWithDescriptor:depthTexDesc];
-
-        mctx.current_render_pass.depthAttachment.texture = depthTexture;
-        mctx.current_render_pass.depthAttachment.loadAction = MTLLoadActionClear;
-        mctx.current_render_pass.depthAttachment.storeAction = MTLStoreActionStore;
-        mctx.current_render_pass.depthAttachment.clearDepth = 1;
-    } else {
-        mctx.current_render_pass.depthAttachment = nil;
+        depthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+        fb.depth_texture = [mctx.device newTextureWithDescriptor:depthTexDesc];
     }
+
+    if (has_depth_buffer) {
+        fb.render_pass_descriptor.depthAttachment.texture = fb.depth_texture;
+        fb.render_pass_descriptor.depthAttachment.loadAction = MTLLoadActionClear;
+        fb.render_pass_descriptor.depthAttachment.storeAction = MTLStoreActionStore;
+        fb.render_pass_descriptor.depthAttachment.clearDepth = 1;
+    } else {
+        fb.render_pass_descriptor.depthAttachment = nil;
+    }
+
+    fb.has_depth_buffer = has_depth_buffer;
+    fb.msaa_level = msaa_level;
 }
 
 void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
-    // TODO: implement
+    // TODO: Implement
+    FramebufferMetal& fb = mctx.framebuffers[fb_id];
+    mctx.current_framebuffer = fb_id;
+
+    mctx.current_command_buffer = [mctx.command_queue commandBuffer];
+    mctx.current_command_buffer.label = @"Frame Command Buffer";
+    MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
+    ImGui_ImplMetal_NewFrame(current_render_pass);
+
+    mctx.current_command_encoder = [mctx.current_command_buffer renderCommandEncoderWithDescriptor:current_render_pass];
+    mctx.current_command_encoder.label = @"Frame Render Pass";
+
     if (noise_scale != 0.0f) {
         mctx.frame_uniforms.noiseScale = 1.0f / noise_scale;
     }
@@ -823,11 +906,12 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
 }
 
 void *gfx_metal_get_framebuffer_texture_id(int fb_id) {
-    // TODO: implement
+    return (__bridge void*)mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
 }
 
 void gfx_metal_select_texture_fb(int fb_id) {
-    // TODO: implement
+    int tile = 0;
+    gfx_metal_select_texture(tile, mctx.framebuffers[fb_id].texture_id);
 }
 
 void gfx_metal_set_texture_filter(FilteringMode mode) {
@@ -837,6 +921,10 @@ void gfx_metal_set_texture_filter(FilteringMode mode) {
 
 FilteringMode gfx_metal_get_texture_filter(void) {
     return mctx.current_filter_mode;
+}
+
+ImTextureID gfx_metal_get_texture_by_id(int id) {
+    return (__bridge void*)mctx.textures[id].texture;
 }
 
 struct GfxRenderingAPI gfx_metal_api = {

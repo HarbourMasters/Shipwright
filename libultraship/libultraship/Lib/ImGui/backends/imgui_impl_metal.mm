@@ -543,7 +543,7 @@ static void ImGui_ImplMetal_InvalidateDeviceObjectsForPlatformWindows()
     {
         _sampleCount = renderPassDescriptor.colorAttachments[0].texture.sampleCount;
         _colorPixelFormat = renderPassDescriptor.colorAttachments[0].texture.pixelFormat;
-        _depthPixelFormat = MTLPixelFormatDepth32Float; // TODO: Fix this implementation
+        _depthPixelFormat = renderPassDescriptor.depthAttachment.texture.pixelFormat;
         _stencilPixelFormat = renderPassDescriptor.stencilAttachment.texture.pixelFormat;
     }
     return self;

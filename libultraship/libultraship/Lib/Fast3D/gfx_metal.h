@@ -8,6 +8,8 @@
 
 extern struct GfxRenderingAPI gfx_metal_api;
 
+ImTextureID gfx_metal_get_texture_by_id(int id);
+
 void Metal_SetRenderer(SDL_Renderer* renderer);
 
 bool Metal_Init();

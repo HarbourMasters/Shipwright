@@ -1466,6 +1466,12 @@ namespace SohImGui {
             return gfx_d3d11_get_texture_by_id(id);
         }
 #endif
+#ifdef ENABLE_METAL
+        if (impl.sdl.gfx_api == SDLGfxApi::Metal)
+        {
+            return gfx_metal_get_texture_by_id(id);
+        }
+#endif
         return reinterpret_cast<ImTextureID>(id);
     }
 
