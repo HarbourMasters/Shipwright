@@ -10,6 +10,16 @@ std::string Randomizer::GetCustomGetItemMessage(GetItemID giid) {
     }
 
     switch (giid) {
+        case GI_BOTTLE_WITH_BLUE_FIRE:
+            switch (gSaveContext.language) { 
+                case LANGUAGE_FRA:
+                case LANGUAGE_GER:
+                case LANGUAGE_ENG:
+                default:
+                    return ITEM_OBTAINED(ITEM_BLUE_FIRE) + "You got a " + COLOR(QM_RED) + "Bottle with Blue " +
+                           NEWLINE() + "Fire" + COLOR(QM_WHITE) + "! Use it to melt Red Ice!" +
+                           MESSAGE_END();
+            }
         default:
             switch (gSaveContext.language) { 
                 case LANGUAGE_FRA:
