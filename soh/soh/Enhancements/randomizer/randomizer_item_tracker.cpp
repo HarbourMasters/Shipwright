@@ -1015,5 +1015,5 @@ void DrawItemTracker(bool& open) {
 }
 
 void InitItemTracker() {
-    SohImGui::AddWindow("Randomizer", "Item Tracker", DrawItemTracker);
+    SohImGui::AddWindow("Randomizer", "Item Tracker", "gItemTrackerEnabled", DrawItemTracker);
 }

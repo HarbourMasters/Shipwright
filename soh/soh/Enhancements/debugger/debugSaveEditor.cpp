@@ -1630,7 +1630,7 @@ void DrawSaveEditor(bool& open) {
 }
 
 void InitSaveEditor() {
-    SohImGui::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
+    SohImGui::AddWindow("Developer Tools", "Save Editor", "gSaveEditorEnabled", DrawSaveEditor);
 
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {

@@ -1167,7 +1167,8 @@ void InitCosmeticsEditor() {
     //This allow to hide a window without disturbing the player nor adding things in menu
     //LoadRainbowColor() will this way run in background once it's window is activated
     //ImGui::SetNextItemWidth(0.0f);
-    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", LoadRainbowColor, true, true);
+    // TODO hidden windows seem wrong...
+    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", "gRainbowfunctionEnabled", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", DrawCosmeticsEditor);
+    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", "gCosmeticsEditorEnabled", DrawCosmeticsEditor);
 }

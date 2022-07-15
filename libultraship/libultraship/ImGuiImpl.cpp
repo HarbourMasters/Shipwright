@@ -6,6 +6,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <memory>
 
 #include "Archive.h"
 #include "Environment.h"
@@ -106,9 +107,9 @@ namespace SohImGui {
         "Hexaquinquagintiducentuple (256x)"
     };
 
-    std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
-    std::map<std::string, std::vector<std::string>> windowCategories;
-    std::map<std::string, CustomWindow> customWindows;
+    std::map<std::string, std::vector<std::shared_ptr<CustomWindow>>> hiddenwindowCategories;
+    std::map<std::string, std::vector<std::shared_ptr<CustomWindow>>> windowCategories;
+    std::map<std::string, std::shared_ptr<CustomWindow>> customWindows;
 
     int GetBackendID(std::shared_ptr<Mercury> cfg) {
         std::string backend = cfg->getString("Window.GfxBackend");
@@ -1443,16 +1444,12 @@ namespace SohImGui {
                 ImGui::EndMenu();
             }
 
-            for (const auto& category : windowCategories) {
+            for (auto& category : windowCategories) {
                 ImGui::SetCursorPosY(0.0f);
                 if (ImGui::BeginMenu(category.first.c_str())) {
-                    for (const std::string& name : category.second) {
-                        std::string varName(name);
-                        varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
-                        std::string toggleName = "g" + varName + "Enabled";
-
-                        EnhancementCheckbox(name.c_str(), toggleName.c_str());
-                        customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
+                    for (std::shared_ptr<CustomWindow>& window : category.second) {
+                        EnhancementCheckbox(window->name.c_str(), window->cVar.c_str());
+                        window->enabled = CVar_GetS32(window->cVar.c_str(), 0);
                     }
                     ImGui::EndMenu();
                 }
@@ -1496,7 +1493,7 @@ namespace SohImGui {
         controller->DrawHud();
 
         for (auto& windowIter : customWindows) {
-            CustomWindow& window = windowIter.second;
+            CustomWindow& window = *windowIter.second;
             if (window.drawFunc != nullptr) {
                 window.drawFunc(window.enabled);
             }
@@ -1627,21 +1624,24 @@ namespace SohImGui {
         console->Commands[cmd] = std::move(entry);
     }
 
-    void AddWindow(const std::string& category, const std::string& name, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
-        if (customWindows.contains(name)) {
-            SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
-            return;
-        }
+    void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
+        // TODO fix
+        //if (customWindows.contains(name)) {
+        //    SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
+        //    return;
+        //}
 
-        customWindows[name] = {
+        customWindows[name] = std::make_shared<CustomWindow>(CustomWindow{
             .enabled = isEnabled,
-            .drawFunc = drawFunc
-        };
+            .drawFunc = drawFunc,
+            .name = name,
+            .cVar = cVar
+        });
 
         if (isHidden) {
-            hiddenwindowCategories[category].emplace_back(name);
+            hiddenwindowCategories[category].emplace_back(customWindows[name]);
         } else {
-            windowCategories[category].emplace_back(name);
+            windowCategories[category].emplace_back(customWindows[name]);
         }
     }
 
