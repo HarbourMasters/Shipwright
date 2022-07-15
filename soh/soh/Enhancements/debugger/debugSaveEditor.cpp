@@ -1561,6 +1561,14 @@ void DrawPlayerTab() {
             ImGui::InputScalar("C Down", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[2], &one, NULL);
             ImGui::SameLine();
             ImGui::InputScalar("C Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[3], &one, NULL);
+            ImGui::NewLine();
+            ImGui::Text("Current Dpad Equips");
+            ImGui::InputScalar("Dpad Up", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[4], &one, NULL);
+            ImGui::SameLine();
+            ImGui::InputScalar("Dpad Down", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[5], &one, NULL);
+            ImGui::InputScalar("Dpad Left", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[6], &one, NULL);
+            ImGui::SameLine();
+            ImGui::InputScalar("Dpad Right", ImGuiDataType_U8, &gSaveContext.equips.buttonItems[7], &one, NULL);
         });
 
     } else {
