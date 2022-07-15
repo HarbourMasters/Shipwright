@@ -132,7 +132,7 @@ namespace Ship {
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 93.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 116.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
@@ -140,7 +140,7 @@ namespace Ship {
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 139.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 162.0f);
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
@@ -170,7 +170,7 @@ namespace Ship {
 				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
 				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 16.0f : 69.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 16.0f : 92.0f);
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -203,6 +203,9 @@ namespace Ship {
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 				EnhancementCheckbox("Invert Camera Y Axis", "gInvertYAxis");
 				Tooltip("Inverts the Y axis when:\n-Aiming with weapons\n-In the C-Up first-person view\n-Using free camera");
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				EnhancementCheckbox("Right Stick Aiming", "gRightStickAiming");
+				Tooltip("Allows you to use the right stick when:\n-Aiming with weapons\n-In the C-Up first-person view");
 			SohImGui::EndGroupPanel(13.0f);
 		}
 
@@ -240,7 +243,7 @@ namespace Ship {
 			ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
 			ImGui::PopItemWidth();
 			ImGui::EndChild();
-			SohImGui::EndGroupPanel(60.0f);
+			SohImGui::EndGroupPanel(83.0f);
 		}
 
 		ImGui::SameLine();
@@ -270,7 +273,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 46.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 69.0f);
 	}
 
 	void InputEditor::DrawHud() {
@@ -282,7 +285,7 @@ namespace Ship {
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 340));
+		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 360));
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);

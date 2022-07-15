@@ -11295,6 +11295,10 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
             if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
                 this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
             }
+            
+            if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+            this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+		    }
 
             this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
@@ -11309,6 +11313,10 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
             if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
                 this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
             }
+
+            if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+            this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		    }
         }
     }
     else {
@@ -11320,6 +11328,10 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
         }
+        
+        if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+            this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+		}
 
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
@@ -11334,6 +11346,10 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
             this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
         }
+
+        if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+            this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		}
     }
 
     this->unk_6AE |= 2;
