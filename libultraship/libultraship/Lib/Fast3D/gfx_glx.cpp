@@ -15,7 +15,7 @@
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
 
-#define GFX_API_NAME "GLX - OpenGL"
+#define GFX_BACKEND_NAME "GLX"
 
 #ifdef VERSION_EU
 #define FRAME_INTERVAL_US_NUMERATOR 40000
@@ -298,7 +298,7 @@ static bool gfx_glx_check_extension(const char *extensions, const char *extensio
     return false;
 }
 
-static void gfx_glx_init(const char *game_name, bool start_in_fullscreen, u_int32_t width, uint32_t height) {
+static void gfx_glx_init(const char *game_name, const char *gfx_api_name, bool start_in_fullscreen, u_int32_t width, uint32_t height) {
     // On NVIDIA proprietary driver, make the driver queue up to two frames on glXSwapBuffers,
     // which means that glXSwapBuffers should be non-blocking,
     // if we are sure to wait at least one vsync interval between calls.
@@ -335,7 +335,7 @@ static void gfx_glx_init(const char *game_name, bool start_in_fullscreen, u_int3
     }
 
     char title[512];
-    int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
+    int len = sprintf(title, "%s (%s - %s)", game_name, GFX_BACKEND_NAME, gfx_api_name);
 
     XStoreName(glx.dpy, glx.win, title);
     GLXContext glc = glXCreateContext(glx.dpy, vi, NULL, GL_TRUE);

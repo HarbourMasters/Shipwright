@@ -49,7 +49,7 @@ LDFLAGS := -lm -ldl \
   -L../StormLib/build -L../libultraship -lbz2 -pthread -lultraship -lstorm
 
 ifeq ($(UNAME), Darwin)
-  LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs) -framework OpenGL -framework Foundation
+  LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs) -framework OpenGL -framework Foundation -framework Metal -framework QuartzCore
   INC += $(shell pkg-config --cflags libpng)
 else
   LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2 -lpulse

@@ -27,10 +27,15 @@
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
+#ifdef ENABLE_METAL
+#include "Lib/Fast3D/gfx_metal.h"
+#include "Lib/ImGui/backends/imgui_impl_metal.h"
+#include "Lib/ImGui/backends/imgui_impl_sdl.h"
+#endif
+
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
-
 #endif
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -103,8 +108,14 @@ namespace SohImGui {
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
-            break;
+            switch (impl.sdl.gfx_api) {
+                case SDLGfxApi::Metal:
+                    ImGui_ImplSDL2_InitForMetal(static_cast<SDL_Window*>(impl.sdl.window));
+                    break;
+                case SDLGfxApi::OpenGL:
+                    ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_Init(impl.dx11.window);
@@ -119,13 +130,18 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
-        #if defined(__APPLE__)
-            ImGui_ImplOpenGL3_Init("#version 410 core");
-        #else
-            ImGui_ImplOpenGL3_Init("#version 120");
-        #endif
-            break;
-
+            switch (impl.sdl.gfx_api) {
+                case SDLGfxApi::Metal:
+                    Metal_Init();
+                    break;
+                case SDLGfxApi::OpenGL:
+                #if defined(__APPLE__)
+                    ImGui_ImplOpenGL3_Init("#version 410 core");
+                #else
+                    ImGui_ImplOpenGL3_Init("#version 120");
+                #endif
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_Init(static_cast<ID3D11Device*>(impl.dx11.device), static_cast<ID3D11DeviceContext*>(impl.dx11.device_context));
@@ -154,7 +170,7 @@ namespace SohImGui {
     void ImGuiWMNewFrame() {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(impl.sdl.window));
+            ImGui_ImplSDL2_NewFrame();
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -169,8 +185,14 @@ namespace SohImGui {
     void ImGuiBackendNewFrame() {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplOpenGL3_NewFrame();
-            break;
+            switch (impl.sdl.gfx_api) {
+                case SDLGfxApi::Metal:
+                    Metal_NewFrame();
+                    break;
+                case SDLGfxApi::OpenGL:
+                    ImGui_ImplOpenGL3_NewFrame();
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_NewFrame();
@@ -184,8 +206,14 @@ namespace SohImGui {
     void ImGuiRenderDrawData(ImDrawData* data) {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplOpenGL3_RenderDrawData(data);
-            break;
+            switch (impl.sdl.gfx_api) {
+                case SDLGfxApi::Metal:
+                    Metal_RenderDrawData(data);
+                    break;
+                case SDLGfxApi::OpenGL:
+                    ImGui_ImplOpenGL3_RenderDrawData(data);
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_RenderDrawData(data);

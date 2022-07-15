@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#if defined(ENABLE_OPENGL)
+#if defined(ENABLE_OPENGL) || defined(ENABLE_METAL)
 
 #ifdef __MINGW32__
 #define FOR_WINDOWS 1
@@ -15,6 +15,7 @@
 #include "SDL_opengl.h"
 #elif __APPLE__
 #include <SDL.h>
+#include "gfx_metal.h"
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
@@ -33,10 +34,11 @@
 #include <time.h>
 #include "../../GameSettings.h"
 
-#define GFX_API_NAME "SDL2 - OpenGL"
+#define GFX_BACKEND_NAME "SDL"
 
 static SDL_Window *wnd;
 static SDL_GLContext ctx;
+static SDL_Renderer* renderer;
 static int inverted_scancode_table[512];
 static int vsync_enabled = 0;
 static int window_width = DESIRED_SCREEN_WIDTH;
@@ -133,19 +135,30 @@ static int target_fps = 60;
 #define FRAME_INTERVAL_US_NUMERATOR 1000000
 #define FRAME_INTERVAL_US_DENOMINATOR (target_fps)
 
-static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
+static void gfx_sdl_init(const char *game_name, const char *gfx_api_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
+#if defined(ENABLE_METAL)
+    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+        SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+        SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    } else {
+        SDL_SetHint(SDL_HINT_RENDER_DRIVER, "metal");
+    }
+#else
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+#endif
 
 #if defined(__APPLE__)
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+     if (strcmp(gfx_api_name, "OpenGL") == 0) {
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+        SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    }
 #endif
 
 #ifdef _WIN32
@@ -156,26 +169,55 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
     char title[512];
-    int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
+    int len = sprintf(title, "%s (%s - %s)", game_name, GFX_BACKEND_NAME, gfx_api_name);
 
     window_width = width;
     window_height = height;
 
-    wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-            window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    Uint32 flags = SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
+
+#if defined(ENABLE_METAL)
+    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+        flags = flags | SDL_WINDOW_OPENGL;
+    } else {
+        flags = flags | SDL_WINDOW_METAL;
+    }
+#else
+    flags = flags | SDL_WINDOW_OPENGL;
+#endif
+
+    wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, flags);
     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
     }
 
-    ctx = SDL_GL_CreateContext(wnd);
+#if defined(ENABLE_METAL)
+    if (strcmp(gfx_api_name, "OpenGL") == 0) {
+        SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+        ctx = SDL_GL_CreateContext(wnd);
+        SDL_GL_SetSwapInterval(1);
+    } else {
+        renderer  = SDL_CreateRenderer(wnd, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        if (renderer == NULL)
+        {
+            printf("Error creating renderer: %s\n", SDL_GetError());
+            return;
+        }
 
+        SDL_GetRendererOutputSize(renderer, &window_width, &window_height);
+        Metal_SetRenderer(renderer);
+    }
+#else
+    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+    ctx = SDL_GL_CreateContext(wnd);
     SDL_GL_SetSwapInterval(1);
+#endif
 
     SohImGui::WindowImpl window_impl;
     window_impl.backend = SohImGui::Backend::SDL;
-    window_impl.sdl = { wnd, ctx };
+    window_impl.sdl = { wnd, ctx, strcmp(gfx_api_name, "OpenGL") == 0 ? SohImGui::SDLGfxApi::OpenGL : SohImGui::SDLGfxApi::Metal  };
     SohImGui::Init(window_impl);
 
     for (size_t i = 0; i < sizeof(windows_scancode_table) / sizeof(SDL_Scancode); i++) {
@@ -281,6 +323,7 @@ static void gfx_sdl_handle_events(void) {
                 break;
             case SDL_QUIT:
                 ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+                SDL_DestroyRenderer(renderer);
                 SDL_Quit(); // bandaid fix for linux window closing issue
                 exit(0);
         }

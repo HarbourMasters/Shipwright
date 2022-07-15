@@ -185,7 +185,7 @@ extern "C" {
 }
 
 extern GfxWindowManagerAPI gfx_sdl;
-void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend);
+void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend, const std::string& gfx_api);
 
 namespace Ship {
 
@@ -210,6 +210,7 @@ namespace Ship {
             pConf->setInt("Window.Height", 480);
             pConf->setBool("Window.Options", false);
             pConf->setString("Window.GfxBackend", "");
+            pConf->setString("Window.GfxApi", "");
 
             pConf->setBool("Window.Fullscreen.Enabled", false);
             pConf->setInt("Window.Fullscreen.Width", 640);
@@ -237,7 +238,8 @@ namespace Ship {
         dwHeight = pConf->getInt("Window.Fullscreen.Height", bIsFullscreen ? 1080 : 480);
         dwMenubar = pConf->getBool("Window.Options", false);
         const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
-        SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
+        const std::string& gfx_api = pConf->getString("Window.GfxApi");
+        SetWindowManager(&WmApi, &RenderingApi, gfx_backend, gfx_api);
 
         gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);

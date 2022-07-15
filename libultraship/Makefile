@@ -33,7 +33,8 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-unused-private-field \
 	-Wno-deprecated-copy-with-user-provided-copy \
 	-Wno-deprecated-declarations \
-	-Wno-unknown-warning-option
+	-Wno-unknown-warning-option \
+	-Wno-return-type # TODO: remove this when Metal implementation is done
 
 CWARN :=
 CXXWARN := -Wno-deprecated-enum-enum-conversion -Wno-deprecated-copy
@@ -57,7 +58,9 @@ ifneq ($(CXX_IS_CLANG),1)
 endif
 
 ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
+	CXXFLAGS += -DENABLE_METAL
+	CFLAGS += -DENABLE_METAL
+	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation -framework Metal -framework QuartzCore
 endif
 
 ifneq ($(DEBUG),0)
@@ -93,7 +96,9 @@ C_FILES := \
 	libultraship/Lib/stb/stb_impl.c
 
 MM_FILES := \
-	libultraship/OSXFolderManager.mm
+	libultraship/OSXFolderManager.mm \
+	$(shell find libultraship/Lib/Fast3D -name *.mm) \
+	libultraship/Lib/ImGui/backends/imgui_impl_metal.mm
 
 FMT_FILES := $(shell find libultraship/ -type f \( -name "*.cpp" -o -name "*.h" \) -a -not -path "libultraship/Lib/*")
 
