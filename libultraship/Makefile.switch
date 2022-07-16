@@ -77,8 +77,6 @@ SOURCEFILES_CPP :=	\
 		libultraship/Factories/VtxFactory.cpp \
 		libultraship/Array.cpp \
 		libultraship/Audio.cpp \
-		libultraship/ConfigFile.cpp \
-		libultraship/Controller.cpp \
 		libultraship/Hooks.cpp \
 		libultraship/Factories/CollisionHeaderFactory.cpp \
 		libultraship/Factories/DisplayListFactory.cpp \
