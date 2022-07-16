@@ -79,7 +79,7 @@ SOURCEFILES_CPP :=	\
 		libultraship/Audio.cpp \
 		libultraship/ConfigFile.cpp \
 		libultraship/Controller.cpp \
-		libultraship/SohHooks.cpp \
+		libultraship/Hooks.cpp \
 		libultraship/Factories/CollisionHeaderFactory.cpp \
 		libultraship/Factories/DisplayListFactory.cpp \
 		libultraship/Factories/MaterialFactory.cpp \
@@ -124,10 +124,10 @@ SOURCEFILES_CPP :=	\
 		libultraship/ \
 		libultraship/GameOverlay.cpp \
 		libultraship/SwitchImpl.cpp \
-		libultraship/SohConsole.cpp \
+		libultraship/Console.cpp \
 		libultraship/KeyboardController.cpp \
 		libultraship/SDLController.cpp \
-		libultraship/SohImGuiImpl.cpp \
+		libultraship/ImGuiImpl.cpp \
 		libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 		libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 		libultraship/Lib/ImGui/imgui.cpp \
