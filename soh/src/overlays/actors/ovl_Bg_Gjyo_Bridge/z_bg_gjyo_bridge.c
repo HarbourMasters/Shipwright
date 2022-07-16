@@ -50,7 +50,8 @@ void BgGjyoBridge_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
 
-    if (gSaveContext.eventChkInf[4] & 0x2000) {
+    int bridge = GetRandoSettingValue(RSK_RAINBOW_BRIDGE);
+    if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == 0)) {
         this->actionFunc = func_808787A4;
     } else {
         this->dyna.actor.draw = NULL;
@@ -68,17 +69,155 @@ void BgGjyoBridge_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 void func_808787A4(BgGjyoBridge* this, GlobalContext* globalCtx) {
 }
 
+void LaunchBridgeCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) {
+    globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gRainbowBridgeCs);
+    gSaveContext.cutsceneTrigger = 1;
+    this->actionFunc = BgGjyoBridge_SpawnBridge;
+}
+
+u8 CheckPlayerPosition(Player* player, GlobalContext* globalCtx) {
+    return (player->actor.world.pos.x > -70.0f) && (player->actor.world.pos.x < 300.0f) &&
+           (player->actor.world.pos.y > 1340.0f) && (player->actor.world.pos.z > 1340.0f) &&
+           (player->actor.world.pos.z < 1662.0f) && !Gameplay_InCsMode(globalCtx);
+}
+
+u8 CheckStoneCount() {
+    u8 stoneCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+        stoneCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+        stoneCount++;
+    }
+
+    return stoneCount;
+}
+
+u8 CheckMedallionCount() {
+    u8 medallionCount = 0;
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
+        medallionCount++;
+    }
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_LIGHT)) {
+        medallionCount++;
+    }
+
+    return medallionCount;
+}
+
+u8 CheckDungeonCount() {
+    u8 dungeonCount = 0;
+
+    if (gSaveContext.dungeonsDone[0] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[1] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[2] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[3] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[4] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[5] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[6] == 1) {
+        dungeonCount++;
+    }
+
+    if (gSaveContext.dungeonsDone[7] == 1) {
+        dungeonCount++;
+    }
+
+    return dungeonCount;
+}
+
 void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
-        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && (player->actor.world.pos.x > -70.0f) &&
-        (player->actor.world.pos.x < 300.0f) && (player->actor.world.pos.y > 1340.0f) &&
-        (player->actor.world.pos.z > 1340.0f) && (player->actor.world.pos.z < 1662.0f) &&
-        !Gameplay_InCsMode(globalCtx)) {
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gRainbowBridgeCs);
-        gSaveContext.cutsceneTrigger = 1;
-        this->actionFunc = BgGjyoBridge_SpawnBridge;
+    if (!gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+            (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) && CheckPlayerPosition(player, globalCtx)) {
+            LaunchBridgeCutscene(this, globalCtx);
+        }
+    } else {
+        int bridge = GetRandoSettingValue(RSK_RAINBOW_BRIDGE);
+        int bridgeStoneCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_STONE_COUNT);
+        int bridgeMedallionCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT);
+        int bridgeRewardCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_REWARD_COUNT);
+        int bridgeDungeonCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
+        int bridgeTokenCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
+
+        if (CheckPlayerPosition(player, globalCtx)) {
+            switch (bridge) {
+                case 1:
+                    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
+                        (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT)) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+                case 2:
+                    if (CheckStoneCount() >= bridgeStoneCount) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+                case 3:
+                    if (CheckMedallionCount() >= bridgeMedallionCount) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+                case 4:
+                    if ((CheckMedallionCount() + CheckStoneCount()) >= bridgeRewardCount) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+                case 5:
+                    if (CheckDungeonCount() >= bridgeDungeonCount) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+                case 6:
+                    if (gSaveContext.inventory.gsTokens >= bridgeTokenCount) {
+                        LaunchBridgeCutscene(this, globalCtx);
+                    }
+                    break;
+            }
+        }
     }
 }
 
@@ -100,7 +239,7 @@ void BgGjyoBridge_Update(Actor* thisx, GlobalContext* globalCtx) {
 void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgGjyoBridge* this = (BgGjyoBridge*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 260);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -112,10 +251,10 @@ void BgGjyoBridge_Draw(Actor* thisx, GlobalContext* globalCtx) {
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, -globalCtx->gameplayFrames & 127, 32, 32, 1, 0,
                                 globalCtx->gameplayFrames & 127, 32, 32));
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 281),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     gSPDisplayList(POLY_XLU_DISP++, gRainbowBridgeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gjyo_bridge.c", 285);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

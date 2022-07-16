@@ -1,25 +1,25 @@
 #include "global.h"
 
 void ViMode_LogPrint(OSViMode* osViMode) {
-    LOG_ADDRESS("osvimodep", osViMode, "../z_vimode.c", 87);
-    LOG_ADDRESS("osvimodep->comRegs.ctrl", osViMode->comRegs.ctrl, "../z_vimode.c", 88);
-    LOG_ADDRESS("osvimodep->comRegs.width", osViMode->comRegs.width, "../z_vimode.c", 89);
-    LOG_ADDRESS("osvimodep->comRegs.burst", osViMode->comRegs.burst, "../z_vimode.c", 90);
-    LOG_ADDRESS("osvimodep->comRegs.vSync", osViMode->comRegs.vSync, "../z_vimode.c", 91);
-    LOG_ADDRESS("osvimodep->comRegs.hSync", osViMode->comRegs.hSync, "../z_vimode.c", 92);
-    LOG_ADDRESS("osvimodep->comRegs.leap", osViMode->comRegs.leap, "../z_vimode.c", 93);
-    LOG_ADDRESS("osvimodep->comRegs.hStart", osViMode->comRegs.hStart, "../z_vimode.c", 94);
-    LOG_ADDRESS("osvimodep->comRegs.xScale", osViMode->comRegs.xScale, "../z_vimode.c", 95);
-    LOG_ADDRESS("osvimodep->fldRegs[0].vStart", osViMode->fldRegs[0].vStart, "../z_vimode.c", 96);
-    LOG_ADDRESS("osvimodep->fldRegs[0].vBurst", osViMode->fldRegs[0].vBurst, "../z_vimode.c", 97);
-    LOG_ADDRESS("osvimodep->fldRegs[0].origin", osViMode->fldRegs[0].origin, "../z_vimode.c", 98);
-    LOG_ADDRESS("osvimodep->fldRegs[0].yScale", osViMode->fldRegs[0].yScale, "../z_vimode.c", 99);
-    LOG_ADDRESS("osvimodep->fldRegs[0].vIntr", osViMode->fldRegs[0].vIntr, "../z_vimode.c", 100);
-    LOG_ADDRESS("osvimodep->fldRegs[1].vStart", osViMode->fldRegs[1].vStart, "../z_vimode.c", 101);
-    LOG_ADDRESS("osvimodep->fldRegs[1].vBurst", osViMode->fldRegs[1].vBurst, "../z_vimode.c", 102);
-    LOG_ADDRESS("osvimodep->fldRegs[1].origin", osViMode->fldRegs[1].origin, "../z_vimode.c", 103);
-    LOG_ADDRESS("osvimodep->fldRegs[1].yScale", osViMode->fldRegs[1].yScale, "../z_vimode.c", 104);
-    LOG_ADDRESS("osvimodep->fldRegs[1].vIntr", osViMode->fldRegs[1].vIntr, "../z_vimode.c", 105);
+    LOG_ADDRESS("osvimodep", osViMode);
+    LOG_ADDRESS("osvimodep->comRegs.ctrl", osViMode->comRegs.ctrl);
+    LOG_ADDRESS("osvimodep->comRegs.width", osViMode->comRegs.width);
+    LOG_ADDRESS("osvimodep->comRegs.burst", osViMode->comRegs.burst);
+    LOG_ADDRESS("osvimodep->comRegs.vSync", osViMode->comRegs.vSync);
+    LOG_ADDRESS("osvimodep->comRegs.hSync", osViMode->comRegs.hSync);
+    LOG_ADDRESS("osvimodep->comRegs.leap", osViMode->comRegs.leap);
+    LOG_ADDRESS("osvimodep->comRegs.hStart", osViMode->comRegs.hStart);
+    LOG_ADDRESS("osvimodep->comRegs.xScale", osViMode->comRegs.xScale);
+    LOG_ADDRESS("osvimodep->fldRegs[0].vStart", osViMode->fldRegs[0].vStart);
+    LOG_ADDRESS("osvimodep->fldRegs[0].vBurst", osViMode->fldRegs[0].vBurst);
+    LOG_ADDRESS("osvimodep->fldRegs[0].origin", osViMode->fldRegs[0].origin);
+    LOG_ADDRESS("osvimodep->fldRegs[0].yScale", osViMode->fldRegs[0].yScale);
+    LOG_ADDRESS("osvimodep->fldRegs[0].vIntr", osViMode->fldRegs[0].vIntr);
+    LOG_ADDRESS("osvimodep->fldRegs[1].vStart", osViMode->fldRegs[1].vStart);
+    LOG_ADDRESS("osvimodep->fldRegs[1].vBurst", osViMode->fldRegs[1].vBurst);
+    LOG_ADDRESS("osvimodep->fldRegs[1].origin", osViMode->fldRegs[1].origin);
+    LOG_ADDRESS("osvimodep->fldRegs[1].yScale", osViMode->fldRegs[1].yScale);
+    LOG_ADDRESS("osvimodep->fldRegs[1].vIntr", osViMode->fldRegs[1].vIntr);
 }
 
 // This function configures the custom VI mode (`viMode.customViMode`) based on the other flags in `viMode`.

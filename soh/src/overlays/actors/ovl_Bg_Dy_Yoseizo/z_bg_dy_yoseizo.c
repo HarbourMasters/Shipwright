@@ -67,6 +67,19 @@ const ActorInit Bg_Dy_Yoseizo_InitVars = {
     NULL,
 };
 
+void GivePlayerRandoRewardGreatFairy(BgDyYoseizo* this, GlobalContext* globalCtx) {
+    Player* player = GET_PLAYER(globalCtx);
+    GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->fountainType + 1, globalCtx->sceneNum);
+
+    if (this->actor.parent == GET_PLAYER(globalCtx) && !Flags_GetTreasure(globalCtx, this->fountainType + 1) &&
+        !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        Flags_SetTreasure(globalCtx, this->fountainType + 1);
+        Actor_Kill(&this->actor);
+    } else if (!Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void BgDyYoseizo_Init(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
@@ -182,6 +195,18 @@ void BgDyYoseizo_Bob(BgDyYoseizo* this, GlobalContext* globalCtx) {
 void BgDyYoseizo_CheckMagicAcquired(BgDyYoseizo* this, GlobalContext* globalCtx) {
     if (Flags_GetSwitch(globalCtx, 0x38)) {
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+
+        if(gSaveContext.n64ddFlag) {
+            gSaveContext.healthAccumulator = 0x140;
+            Magic_Fill(globalCtx);
+            if(Flags_GetTreasure(globalCtx, this->fountainType + 1)) {
+                Actor_Kill(&this->actor);
+            } else {
+                GivePlayerRandoRewardGreatFairy(this, globalCtx);
+            }
+            return;
+        } 
+
         if (globalCtx->sceneNum == SCENE_DAIYOUSEI_IZUMI) {
             if (!gSaveContext.magicAcquired && (this->fountainType != FAIRY_UPGRADE_MAGIC)) {
                 Actor_Kill(&this->actor);
@@ -894,7 +919,7 @@ static void* sMouthTextures[] = {
 void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BgDyYoseizo* this = (BgDyYoseizo*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1609);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->actionFunc != BgDyYoseizo_Vanish) {
         func_80093D18(globalCtx->state.gfxCtx);
 
@@ -909,7 +934,7 @@ void BgDyYoseizo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, BgDyYoseizo_OverrideLimbDraw, NULL, this);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_dy_yoseizo.c", 1629);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     BgDyYoseizo_ParticleDraw(this, globalCtx);
 }
 
@@ -1010,7 +1035,7 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
     BgDyYoseizoParticle* particle = this->particles;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1767);
+    OPEN_DISPS(gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, particle++) {
@@ -1031,11 +1056,11 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
             Matrix_Scale(particle->scale, particle->scale, 1.0f, MTXMODE_APPLY);
             Matrix_RotateZ(particle->roll, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_bg_dy_yoseizo.c", 1810),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gGreatFairyParticleAliveDL));
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_bg_dy_yoseizo.c", 1819);
+    CLOSE_DISPS(gfxCtx);
 }

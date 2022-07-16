@@ -79,7 +79,7 @@ void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 scale;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_ss_hitmark.c", 297);
+    OPEN_DISPS(gfxCtx);
 
     SkinMatrix_SetTranslate(&mfTrans, this->pos.x, this->pos.y, this->pos.z);
     scale = this->rScale / 100.0f;
@@ -98,7 +98,7 @@ void EffectSsHitMark_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         gDPSetEnvColor(POLY_XLU_DISP++, this->rEnvColorR, this->rEnvColorG, this->rEnvColorB, 0);
         gSPDisplayList(POLY_XLU_DISP++, this->gfx);
     }
-    CLOSE_DISPS(gfxCtx, "../z_eff_ss_hitmark.c", 341);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsHitMark_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

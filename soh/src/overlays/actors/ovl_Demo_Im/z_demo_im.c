@@ -524,7 +524,7 @@ void DemoIm_DrawTranslucent(DemoIm* this, GlobalContext* globalCtx) {
     void* eyeTex = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_im_inKenjyanomaDemo02.c", 281);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -536,7 +536,7 @@ void DemoIm_DrawTranslucent(DemoIm* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                                        NULL, NULL, NULL, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_im_inKenjyanomaDemo02.c", 308);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80985E60(DemoIm* this, GlobalContext* globalCtx) {
@@ -898,13 +898,35 @@ void func_80986BF8(DemoIm* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardImpa(Actor* impa, GlobalContext* globalCtx, RandomizerCheck check) {
+    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+
+    if (impa->parent != NULL && impa->parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F) && !GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA)) {
+        func_8002F434(impa, globalCtx, getItemId, 75.0f, 50.0f);
+    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        gSaveContext.eventChkInf[5] |= 0x200;
+        globalCtx->sceneLoadFlag = 0x14;
+        globalCtx->fadeTransition = 3;
+        gSaveContext.nextTransition = 3;
+        globalCtx->nextEntranceIndex = 0x0594;
+        gSaveContext.nextCutsceneIndex = 0;
+    }
+}
+
 void func_80986C30(DemoIm* this, GlobalContext* globalCtx) {
     if (func_80986A5C(this, globalCtx)) {
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
-        gSaveContext.cutsceneTrigger = 1;
-        gSaveContext.eventChkInf[5] |= 0x200;
-        Item_Give(globalCtx, ITEM_SONG_LULLABY);
-        func_80985F54(this);
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoRewardImpa(this, globalCtx, RC_SONG_FROM_IMPA);
+        } else {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gZeldasCourtyardLullabyCs);
+            gSaveContext.cutsceneTrigger = 1;
+            gSaveContext.eventChkInf[5] |= 0x200;
+            Item_Give(globalCtx, ITEM_SONG_LULLABY);
+            func_80985F54(this);
+        }
     }
 }
 
@@ -928,7 +950,7 @@ void func_80986D40(DemoIm* this, GlobalContext* globalCtx) {
     if (gSaveContext.sceneSetupIndex == 6) {
         this->action = 19;
         this->drawConfig = 1;
-    } else if (gSaveContext.eventChkInf[8] & 1) {
+    } else if ((gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) {
         Actor_Kill(&this->actor);
     } else if (!(gSaveContext.eventChkInf[5] & 0x200)) {
         this->action = 23;
@@ -1187,7 +1209,7 @@ void DemoIm_DrawSolid(DemoIm* this, GlobalContext* globalCtx) {
     void* eyeTexture = sEyeTextures[eyeIndex];
     SkelAnime* skelAnime = &this->skelAnime;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_im.c", 904);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -1199,7 +1221,7 @@ void DemoIm_DrawSolid(DemoIm* this, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, skelAnime->skeleton, skelAnime->jointTable, skelAnime->dListCount,
                           DemoIm_OverrideLimbDraw, DemoIm_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_im.c", 925);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DemoIm_Draw(Actor* thisx, GlobalContext* globalCtx) {

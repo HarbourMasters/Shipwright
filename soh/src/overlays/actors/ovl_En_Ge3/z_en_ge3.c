@@ -142,7 +142,7 @@ void EnGe3_WaitTillCardGiven(EnGe3* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe3_Wait;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
@@ -151,7 +151,7 @@ void EnGe3_GiveCard(EnGe3* this, GlobalContext* globalCtx) {
         Message_CloseTextbox(globalCtx);
         this->actor.flags &= ~ACTOR_FLAG_16;
         this->actionFunc = EnGe3_WaitTillCardGiven;
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
@@ -241,7 +241,7 @@ s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 
         // This is a hack to fix the color-changing clothes this Gerudo has on N64 versions
         default:
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge3.c", 547);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             switch (limbIndex) {
                 case GELDB_LIMB_NECK:
                     break;
@@ -260,7 +260,7 @@ s32 EnGe3_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
                     gDPSetEnvColor(POLY_OPA_DISP++, 140, 0, 0, 255);
                     break;
             }
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge3.c", 566);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
             break;
     }
     return false;
@@ -284,7 +284,7 @@ void EnGe3_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     EnGe3* this = (EnGe3*)thisx;
     GlobalContext* globalCtx = globalCtx2;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge3.c", 614);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
@@ -292,5 +292,5 @@ void EnGe3_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe3_OverrideLimbDraw, EnGe3_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge3.c", 631);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

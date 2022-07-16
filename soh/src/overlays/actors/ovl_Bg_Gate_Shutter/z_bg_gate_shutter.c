@@ -44,7 +44,9 @@ void BgGateShutter_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->somePos.x = thisx->world.pos.x;
     this->somePos.y = thisx->world.pos.y;
     this->somePos.z = thisx->world.pos.z;
-    if (((gSaveContext.infTable[7] & 0x40) || (gSaveContext.eventChkInf[4] & 0x20)) &&
+    if (((gSaveContext.infTable[7] & 0x40) ||
+         (!gSaveContext.n64ddFlag && (gSaveContext.eventChkInf[4] & 0x20)) ||
+         (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_KAK_GATE))) &&
         (globalCtx->sceneNum == SCENE_SPOT01)) {
         thisx->world.pos.x = -89.0f;
         thisx->world.pos.z = -1375.0f;
@@ -124,13 +126,13 @@ void BgGateShutter_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgGateShutter_Draw(Actor* thisx, GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_gate_shutter.c", 323);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_gate_shutter.c", 328),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_OPA_DISP++, gKakarikoGuardGateDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_gate_shutter.c", 333);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

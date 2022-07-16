@@ -59,7 +59,12 @@ void ItemBHeart_Update(Actor* thisx, GlobalContext* globalCtx) {
         Flags_SetCollectible(globalCtx, 0x1F);
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 40.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_CONTAINER_2, 30.0f, 40.0f);
+        }
     }
 }
 
@@ -81,7 +86,7 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Actor* actorIt;
     u8 flag = false;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_item_b_heart.c", 506);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     actorIt = globalCtx->actorCtx.actorLists[ACTORCAT_ITEMACTION].head;
 
@@ -93,19 +98,24 @@ void ItemBHeart_Draw(Actor* thisx, GlobalContext* globalCtx) {
         actorIt = actorIt->next;
     }
 
-    if (flag) {
-        func_80093D84(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_item_b_heart.c", 551),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
-        gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
+    if (gSaveContext.n64ddFlag) {
+        GetItem_Draw(globalCtx,
+                     GetItemModelFromId(GetRandomizedItemId(GI_HEART_CONTAINER_2, this->actor.id, this->actor.params, globalCtx->sceneNum)));
     } else {
-        func_80093D18(globalCtx->state.gfxCtx);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_item_b_heart.c", 557),
-                  G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
-        gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);
-        gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
+        if (flag) {
+            func_80093D84(globalCtx->state.gfxCtx);
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_XLU_DISP++, gGiHeartBorderDL);
+            gSPDisplayList(POLY_XLU_DISP++, gGiHeartContainerDL);
+        } else {
+            func_80093D18(globalCtx->state.gfxCtx);
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                      G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
+            gSPDisplayList(POLY_OPA_DISP++, gGiHeartBorderDL);
+            gSPDisplayList(POLY_OPA_DISP++, gGiHeartContainerDL);
+        }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_item_b_heart.c", 561);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

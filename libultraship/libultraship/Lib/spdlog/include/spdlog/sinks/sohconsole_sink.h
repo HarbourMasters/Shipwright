@@ -8,7 +8,7 @@
 #include <spdlog/details/os.h>
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/details/synchronous_factory.h>
-#include "SohImGuiImpl.h"
+#include "ImGuiImpl.h"
 #include "GameSettings.h"
 #include "Cvar.h"
 #include <chrono>

@@ -949,7 +949,6 @@ s32 func_800458D4(Camera* camera, VecSph* eyeAtDir, f32 arg2, f32* arg3, s16 arg
     eyeAtAngle = Math_FAtan2F(deltaY, OLib_Vec3fDistXZ(&camera->at, &camera->eye));
 
     if (eyeAtAngle > DEGF_TO_RADF(OREG(32))) {
-        if (1) {}
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(eyeAtAngle - OREG(32)));
     } else if (eyeAtAngle < DEGF_TO_RADF(OREG(33))) {
         phi_f2 = 1.0f - sinf(DEGF_TO_RADF(OREG(33)) - eyeAtAngle);
@@ -1410,7 +1409,125 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
+s32 SetCameraManual(Camera* camera) {
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+
+    if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
+        camera->globalCtx->manualCamera = true;
+
+        VecSph eyeAdjustment;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
+
+        camera->globalCtx->camX = eyeAdjustment.yaw;
+        camera->globalCtx->camY = eyeAdjustment.pitch;
+    }
+
+    if (camera->globalCtx->manualCamera) {
+        return 1;
+    }
+
+    return 0;
+}
+
+s32 Camera_Free(Camera* camera) {
+    Normal1* norm1 = (Normal1*)camera->paramData;
+
+    f32 playerHeight = Player_GetHeight(camera->player);
+    f32 sp94;
+    CamColChk camBgChk;
+    PosRot* playerPosRot = &camera->playerPosRot;
+    Vec3f at;
+
+    sCameraInterfaceFlags = norm1->interfaceFlags;
+
+    if (RELOAD_PARAMS) {
+        VecSph eyeAdjustment1;
+        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment1, &camera->at, &camera->eye);
+
+        camera->globalCtx->camX = eyeAdjustment1.yaw;
+        camera->globalCtx->camY = eyeAdjustment1.pitch;
+
+        CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
+        f32 yNormal = (1.0f + PCT(R_CAM_YOFFSET_NORM) - PCT(R_CAM_YOFFSET_NORM) * (68.0f / playerHeight));
+        sp94 = yNormal * PCT(playerHeight);
+
+        norm1->yOffset = NEXTSETTING * sp94;
+        norm1->distMin = NEXTSETTING * sp94;
+        norm1->distMax = NEXTSETTING * sp94;
+        norm1->pitchTarget = DEGF_TO_BINANG(NEXTSETTING);
+        norm1->unk_0C = NEXTSETTING;
+        norm1->unk_10 = NEXTSETTING;
+        norm1->unk_14 = NEXTPCT;
+        norm1->fovTarget = NEXTSETTING;
+        norm1->atLERPScaleMax = NEXTPCT;
+        norm1->interfaceFlags = NEXTSETTING;
+    }
+
+    if (R_RELOAD_CAM_PARAMS) {
+        Camera_CopyPREGToModeValues(camera);
+    }
+
+    VecSph eyeAdjustment;
+    const f32 camSpeed = 0.5f;
+
+    camera->animState = 0;
+
+    at.x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, camSpeed, 1.0f);
+    at.y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL ? Player_GetHeight(camera->player) / 2 : Player_GetHeight(camera->player)) / 1.2f, camera->at.y, camSpeed, 1.0f);
+    at.z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, camSpeed, 1.0f);
+
+    OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &at, &camera->eye);
+
+    camBgChk.pos = camera->eye;
+
+    float maxRadius = 150.0f;
+    if (Camera_BGCheckInfo(camera, &at, &camBgChk)) {
+        VecSph collSphere;
+        OLib_Vec3fDiffToVecSphGeo(&collSphere, &at, &camBgChk.pos);
+        float rad = collSphere.r;
+
+        if (rad >= maxRadius) {
+            camera->dist = eyeAdjustment.r = Camera_LERPCeilF(maxRadius, camera->dist, camSpeed / 4, 1.0f);
+        } else {
+            camera->dist = eyeAdjustment.r = rad;
+        }
+    } else {
+        camera->dist = eyeAdjustment.r = Camera_LERPCeilF(maxRadius, camera->dist, camSpeed / 4, 1.0f);
+    }
+
+    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
+    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
+
+    camera->globalCtx->camX += newCamX;
+    camera->globalCtx->camY += newCamY;
+
+    if (camera->globalCtx->camY > 0x32A4) {
+        camera->globalCtx->camY = 0x32A4;
+    }
+    if (camera->globalCtx->camY < -0x228C) {
+        camera->globalCtx->camY = -0x228C;
+    }
+
+    eyeAdjustment.yaw = camera->globalCtx->camX;
+    eyeAdjustment.pitch = camera->globalCtx->camY;
+
+    Camera_Vec3fVecSphGeoAdd(&camera->eye, &at, &eyeAdjustment);
+
+    camera->at = at;
+    camera->fov = Camera_LERPCeilF(60.0f, camera->fov, camSpeed / 2, 1.0f);
+    camera->roll = 0;
+    camera->eyeNext = camera->eye;
+
+    return 1;
+}
+
 s32 Camera_Normal1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1638,6 +1755,11 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1804,6 +1926,11 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1876,7 +2003,6 @@ s32 Camera_Normal3(Camera* camera) {
                                                     camera->yawUpdateRateInv, sp98, 0.1f);
         camera->pitchUpdateRateInv = Camera_LERPCeilF((f32)OREG(7) + (anim->swing.swingUpdateRateTimer * 2),
                                                       camera->pitchUpdateRateInv, sp94, 0.1f);
-        if (1) {}
         anim->swing.swingUpdateRateTimer--;
     } else {
         camera->yawUpdateRateInv = Camera_LERPCeilF(norm3->yawUpdateSpeed, camera->yawUpdateRateInv, sp98, 0.1f);
@@ -1998,6 +2124,8 @@ s32 Camera_Parallel1(Camera* camera) {
 
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
+
+    camera->globalCtx->manualCamera = false;
 
     switch (camera->animState) {
         case 0:
@@ -2164,6 +2292,11 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2309,6 +2442,11 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2491,6 +2629,11 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2948,6 +3091,11 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4478,6 +4626,11 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
+    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
+        Camera_Free(camera);
+        return 1;
+    }
+
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -5401,7 +5554,6 @@ s32 Camera_Unique9(Camera* camera) {
             }
 
             spB4 = scratchSph.r;
-            if (1) {}
             scratchSph.r =
                 !(spB4 < anim->curKeyFrame->eyeTargetInit.z)
                     ? Camera_LERPCeilF(anim->curKeyFrame->eyeTargetInit.z, spB4, anim->curKeyFrame->lerpStepScale, 1.0f)
@@ -6666,7 +6818,6 @@ s32 Camera_Special9(Camera* camera) {
     sCameraInterfaceFlags = params->interfaceFlags;
 
     switch (camera->animState) {
-        if (1) {}
 
         case 0:
             camera->unk_14C &= ~(0x4 | 0x2);
@@ -6751,7 +6902,6 @@ s32 Camera_Special9(Camera* camera) {
             }
             break;
     }
-    if (1) {}
     spAC = playerPosRot->pos;
     spAC.y += playerYOffset;
     camera->dist = OLib_Vec3fDist(&spAC, eye);
@@ -6762,7 +6912,7 @@ s32 Camera_Special9(Camera* camera) {
 }
 
 Camera* Camera_Create(View* view, CollisionContext* colCtx, GlobalContext* globalCtx) {
-    Camera* newCamera = ZeldaArena_MallocDebug(sizeof(*newCamera), "../z_camera.c", 9370);
+    Camera* newCamera = ZELDA_ARENA_MALLOC_DEBUG(sizeof(*newCamera));
 
     if (newCamera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: create --- allocate %d byte" VT_RST "\n", sizeof(*newCamera) * 4);
@@ -6776,7 +6926,7 @@ Camera* Camera_Create(View* view, CollisionContext* colCtx, GlobalContext* globa
 void Camera_Destroy(Camera* camera) {
     if (camera != NULL) {
         osSyncPrintf(VT_FGCOL(BLUE) "camera: destroy ---" VT_RST "\n");
-        ZeldaArena_FreeDebug(camera, "../z_camera.c", 9391);
+        ZELDA_ARENA_FREE_DEBUG(camera);
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK) "camera: destroy: already cleared\n" VT_RST);
     }
@@ -7782,7 +7932,6 @@ s16 Camera_ChangeSettingFlags(Camera* camera, s16 setting, s16 flags) {
     }
 
     if (flags & 8) {
-        if (1) {}
         camera->camDataIdx = camera->prevCamDataIdx;
         camera->prevCamDataIdx = -1;
     } else if (!(flags & 4)) {

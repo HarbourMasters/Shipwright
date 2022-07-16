@@ -1012,7 +1012,7 @@ s32 EnPeehat_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     }
     if (limbIndex == 3 || (limbIndex == 23 && (this->state == PEAHAT_STATE_DYING || this->state == PEAHAT_STATE_3 ||
                                                this->state == PEAHAT_STATE_4))) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1946);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Push();
         Matrix_Scale(1.0f, 1.0f, 1.0f, MTXMODE_APPLY);
         Matrix_RotateX(this->jiggleRot * 0.115f, MTXMODE_APPLY);
@@ -1022,11 +1022,11 @@ s32 EnPeehat_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
         Matrix_RotateZ(-(this->jiggleRot * 0.1f), MTXMODE_APPLY);
         Matrix_RotateY(-(this->jiggleRot * 0.13f), MTXMODE_APPLY);
         Matrix_RotateX(-(this->jiggleRot * 0.115f), MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1959),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1963);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
         return true;
     }
     return false;
@@ -1046,7 +1046,7 @@ void EnPeehat_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
     // is Adult Peahat
     if (limbIndex == 3 && this->actor.params <= 0) {
         damageYRot = 0.0f;
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1981);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Push();
         Matrix_Translate(-1000.0f, 0.0f, 0.0f, MTXMODE_APPLY);
         Collider_UpdateSpheres(0, &this->colJntSph);
@@ -1056,11 +1056,11 @@ void EnPeehat_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
         }
         Matrix_RotateY(3.2f + damageYRot, MTXMODE_APPLY);
         Matrix_Scale(0.3f, 0.2f, 0.2f, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1990),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, *dList);
         Matrix_Pop();
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_peehat.c", 1994);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

@@ -26,6 +26,9 @@ void EnGe1_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void EnGe1_Update(Actor* thisx, GlobalContext* globalCtx);
 void EnGe1_Draw(Actor* thisx, GlobalContext* globalCtx);
 
+void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx);
+void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx);
+
 s32 EnGe1_CheckCarpentersFreed(void);
 void EnGe1_WatchForPlayerFrontOnly(EnGe1* this, GlobalContext* globalCtx);
 void EnGe1_SetNormalText(EnGe1* this, GlobalContext* globalCtx);
@@ -210,8 +213,15 @@ void EnGe1_SetAnimationIdle(EnGe1* this) {
 }
 
 s32 EnGe1_CheckCarpentersFreed(void) {
-    u16 carpenterFlags = gSaveContext.eventChkInf[9];
+    if (gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
 
+    u16 carpenterFlags = gSaveContext.eventChkInf[9];
     if (!((carpenterFlags & 1) && (carpenterFlags & 2) && (carpenterFlags & 4) && (carpenterFlags & 8))) {
         return 0;
     }
@@ -495,7 +505,16 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
     s32 getItemId;
 
     if (Actor_HasParent(&this->actor, globalCtx)) {
-        this->actionFunc = EnGe1_SetupWait_Archery;
+        if (gSaveContext.n64ddFlag && gSaveContext.minigameScore >= 1500 && !(gSaveContext.infTable[25] & 1)) {
+            gSaveContext.itemGetInf[0] |= 0x8000;
+            gSaveContext.infTable[25] |= 1;
+            this->stateFlags |= GE1_STATE_GIVE_QUIVER;
+            this->actor.parent = NULL;
+            return;
+        } else {
+            this->actionFunc = EnGe1_SetupWait_Archery;
+        }
+
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
             gSaveContext.itemGetInf[0] |= 0x8000;
         } else {
@@ -503,17 +522,26 @@ void EnGe1_WaitTillItemGiven_Archery(EnGe1* this, GlobalContext* globalCtx) {
         }
     } else {
         if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-                //! @bug Asschest. See next function for details
-                case 1:
-                    getItemId = GI_QUIVER_40;
-                    break;
-                case 2:
-                    getItemId = GI_QUIVER_50;
-                    break;
+            if (!gSaveContext.n64ddFlag) {
+                switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                    //! @bug Asschest. See next function for details
+                    case 1:
+                        getItemId = GI_QUIVER_40;
+                        break;
+                    case 2:
+                        getItemId = GI_QUIVER_50;
+                        break;
+                }
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(
+                    RC_GF_HBA_1500_POINTS, CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
             }
         } else {
-            getItemId = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                getItemId = GI_HEART_PIECE;
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+            }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
     }
@@ -528,20 +556,26 @@ void EnGe1_BeginGiveItem_Archery(EnGe1* this, GlobalContext* globalCtx) {
     }
 
     if (this->stateFlags & GE1_STATE_GIVE_QUIVER) {
-        switch (CUR_UPG_VALUE(UPG_QUIVER)) {
-            //! @bug Asschest: the compiler inserts a default assigning *(sp+0x24) to getItemId, which is junk data left
-            //! over from the previous function run in EnGe1_Update, namely EnGe1_CueUpAnimation. The top stack variable
-            //! in that function is &this->skelAnime = thisx + 198, and depending on where this loads in memory, the
-            //! getItemId changes.
-            case 1:
-                getItemId = GI_QUIVER_40;
-                break;
-            case 2:
-                getItemId = GI_QUIVER_50;
-                break;
+        if (!gSaveContext.n64ddFlag) {
+            switch (CUR_UPG_VALUE(UPG_QUIVER)) {
+                //! @bug Asschest. See next function for details
+                case 1:
+                    getItemId = GI_QUIVER_40;
+                    break;
+                case 2:
+                    getItemId = GI_QUIVER_50;
+                    break;
+            }
+        } else {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1500_POINTS,
+                                                          CUR_UPG_VALUE(UPG_QUIVER) == 1 ? GI_QUIVER_40 : GI_QUIVER_50);
         }
     } else {
-        getItemId = GI_HEART_PIECE;
+        if (!gSaveContext.n64ddFlag) {
+            getItemId = GI_HEART_PIECE;
+        } else {
+            getItemId = GetRandomizedItemIdFromKnownCheck(RC_GF_HBA_1000_POINTS, GI_HEART_PIECE);
+        }
     }
 
     func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
@@ -628,8 +662,8 @@ void EnGe1_TalkNoPrize_Archery(EnGe1* this, GlobalContext* globalCtx) {
 
 void EnGe1_TalkAfterGame_Archery(EnGe1* this, GlobalContext* globalCtx) {
     gSaveContext.eventInf[0] &= ~0x100;
-    LOG_NUM("z_common_data.yabusame_total", gSaveContext.minigameScore, "../z_en_ge1.c", 1110);
-    LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", HIGH_SCORE(HS_HBA), "../z_en_ge1.c", 1111);
+    LOG_NUM("z_common_data.yabusame_total", gSaveContext.minigameScore);
+    LOG_NUM("z_common_data.memory.information.room_inf[127][ 0 ]", HIGH_SCORE(HS_HBA));
     this->actor.flags |= ACTOR_FLAG_16;
 
     if (HIGH_SCORE(HS_HBA) < gSaveContext.minigameScore) {
@@ -789,26 +823,26 @@ s32 EnGe1_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 void EnGe1_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     EnGe1* this = (EnGe1*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge1.c", 1419);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == GE1_LIMB_HEAD) {
         gSPDisplayList(POLY_OPA_DISP++, sHairstyleDLists[this->hairstyle]);
         Matrix_MultVec3f(&D_80A327A8, &this->actor.focus.pos);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge1.c", 1427);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGe1_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGe1* this = (EnGe1*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge1.c", 1442);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIndex]));
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe1_OverrideLimbDraw, EnGe1_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge1.c", 1459);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

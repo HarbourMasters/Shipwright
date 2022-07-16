@@ -141,7 +141,8 @@ void EnPoRelay_SetupRace(EnPoRelay* this) {
     EnPoRelay_Vec3sToVec3f(&vec, &D_80AD8C30[this->pathIndex]);
     this->actionTimer = ((s16)(this->actor.shape.rot.y - this->actor.world.rot.y - 0x8000) >> 0xB) % 32U;
     func_80088B34(0);
-    this->hookshotSlotFull = INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE;
+    this->hookshotSlotFull = (INV_CONTENT(ITEM_HOOKSHOT) != ITEM_NONE && !gSaveContext.n64ddFlag) ||
+                             (gSaveContext.n64ddFlag && Flags_GetTreasure(gGlobalCtx, 0x1E));
     this->unk_19A = Actor_WorldYawTowardPoint(&this->actor, &vec);
     this->actor.flags |= ACTOR_FLAG_27;
     Audio_PlayActorSound2(&this->actor, NA_SE_EN_PO_LAUGH);
@@ -204,6 +205,7 @@ void EnPoRelay_Race(EnPoRelay* this, GlobalContext* globalCtx) {
                 multiplier = 0.0f;
             }
             speed = 30.0f * multiplier;
+            
             Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_HONOTRAP,
                         Math_CosS(this->unk_19A) * speed + this->actor.world.pos.x, this->actor.world.pos.y,
                         Math_SinS(this->unk_19A) * speed + this->actor.world.pos.z, 0,
@@ -327,21 +329,42 @@ void EnPoRelay_DisappearAndReward(EnPoRelay* this, GlobalContext* globalCtx) {
         }
     }
     if (Math_StepToF(&this->actor.scale.x, 0.0f, 0.001f) != 0) {
-        if (this->hookshotSlotFull != 0) {
+        if(!gSaveContext.n64ddFlag) {
+            if (this->hookshotSlotFull != 0) {
+                sp60.x = this->actor.world.pos.x;
+                sp60.y = this->actor.floorHeight;
+                sp60.z = this->actor.world.pos.z;
+                if (gSaveContext.timer1Value < HIGH_SCORE(HS_DAMPE_RACE)) {
+                    HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+                }
+                if (Flags_GetCollectible(globalCtx, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
+                    Item_DropCollectible2(globalCtx, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
+                } else {
+                    Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
+                }
+            } else {
+                Flags_SetTempClear(globalCtx, 4);
+                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+            }            
+        } else {
             sp60.x = this->actor.world.pos.x;
             sp60.y = this->actor.floorHeight;
             sp60.z = this->actor.world.pos.z;
+
+            if (this->hookshotSlotFull == 0) {
+                Flags_SetTempClear(globalCtx, 4);
+                Flags_SetTreasure(gGlobalCtx, 0x1E);
+                HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
+            }
+
             if (gSaveContext.timer1Value < HIGH_SCORE(HS_DAMPE_RACE)) {
                 HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
             }
             if (Flags_GetCollectible(globalCtx, this->actor.params) == 0 && gSaveContext.timer1Value <= 60) {
                 Item_DropCollectible2(globalCtx, &sp60, (this->actor.params << 8) + (0x4000 | ITEM00_HEART_PIECE));
-            } else {
+            } else if (Flags_GetCollectible(globalCtx, this->actor.params) != 0) {
                 Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_EN_ITEM00, sp60.x, sp60.y, sp60.z, 0, 0, 0, 2);
             }
-        } else {
-            Flags_SetTempClear(globalCtx, 4);
-            HIGH_SCORE(HS_DAMPE_RACE) = gSaveContext.timer1Value;
         }
         Actor_Kill(&this->actor);
     }
@@ -381,7 +404,7 @@ void EnPoRelay_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         f32 rand;
         Vec3f vec;
 
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 885);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         rand = Rand_ZeroOne();
         this->lightColor.r = (s16)(rand * 30.0f) + 225;
         this->lightColor.g = (s16)(rand * 100.0f) + 155;
@@ -389,27 +412,26 @@ void EnPoRelay_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList
         gDPPipeSync(POLY_OPA_DISP++);
         gDPSetEnvColor(POLY_OPA_DISP++, this->lightColor.r, this->lightColor.g, this->lightColor.b, 128);
         gSPDisplayList(POLY_OPA_DISP++, gDampeLanternDL);
-        if (1) {}
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 901);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
         Matrix_MultVec3f(&D_80AD8D48, &vec);
         Lights_PointNoGlowSetInfo(&this->lightInfo, vec.x, vec.y, vec.z, this->lightColor.r, this->lightColor.g,
                                   this->lightColor.b, 200);
     } else if (limbIndex == 8) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 916);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 918),
+        OPEN_DISPS(globalCtx->state.gfxCtx);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gDampeHaloDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 922);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
 void EnPoRelay_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnPoRelay* this = (EnPoRelay*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 940);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesTextures[this->eyeTextureIdx]));
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, EnPoRelay_PostLimbDraw, &this->actor);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_relay.c", 954);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

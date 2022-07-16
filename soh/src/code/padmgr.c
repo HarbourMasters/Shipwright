@@ -73,7 +73,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                     if (padMgr->rumbleEnable[i] != 0) {
                         if (padMgr->rumbleCounter[i] < 3) {
                             // clang-format off
-                            if (1) {} osSyncPrintf(VT_FGCOL(YELLOW));
+                            osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
 
                             // "Vibration pack jumble jumble"?
@@ -95,7 +95,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
                     } else {
                         if (padMgr->rumbleCounter[i] != 0) {
                             // clang-format off
-                            if (1) {} osSyncPrintf(VT_FGCOL(YELLOW));
+                            osSyncPrintf(VT_FGCOL(YELLOW));
                             // clang-format on
 
                             // "Stop vibration pack"
@@ -154,7 +154,7 @@ void PadMgr_RumbleControl(PadMgr* padMgr) {
             } else if (var4 == 11) {
                 padMgr->pakType[i] = 2;
             } else if (var4 == 4) {
-                LOG_NUM("++errcnt", ++errcnt, "../padmgr.c", 282);
+                LOG_NUM("++errcnt", ++errcnt);
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Controller pack communication error"
                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "コントローラパックの通信エラー");
@@ -223,8 +223,6 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
     for (i = 0; i < padMgr->nControllers; i++, input++, padnow1++) {
         input->prev = input->cur;
 
-        if (1) {} // Necessary to match
-
         switch (padnow1->err_no) {
             case 0:
                 input->cur = *padnow1;
@@ -237,7 +235,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 break;
             case 4:
                 input->cur = input->prev;
-                LOG_NUM("this->Key_switch[i]", padMgr->ctrlrIsConnected[i], "../padmgr.c", 380);
+                LOG_NUM("this->Key_switch[i]", padMgr->ctrlrIsConnected[i]);
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 // "Overrun error occurred"
                 osSyncPrintf("padmgr: %dコン: %s\n", i + 1, "オーバーランエラーが発生");
@@ -259,8 +257,8 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
                 }
                 break;
             default:
-                LOG_HEX("padnow1->errno", padnow1->err_no, "../padmgr.c", 396);
-                Fault_AddHungupAndCrash("../padmgr.c", 397);
+                LOG_HEX("padnow1->errno", padnow1->err_no);
+                Fault_AddHungupAndCrash(__FILE__, __LINE__);
         }
 
         buttonDiff = input->prev.button ^ input->cur.button;
@@ -271,7 +269,7 @@ void PadMgr_ProcessInputs(PadMgr* padMgr) {
         input->press.stick_y += (s8)(input->cur.stick_y - input->prev.stick_y);
     }
 
-    controllerCallback.rumble = CVar_GetS32("gRumbleEnabled", 0) && (padMgr->rumbleEnable[0] > 0);
+    controllerCallback.rumble = (padMgr->rumbleEnable[0] > 0);
 
     if (HealthMeter_IsCritical()) {
         controllerCallback.ledColor = 0;
@@ -325,7 +323,7 @@ void PadMgr_HandleRetraceMsg(PadMgr* padMgr) {
             if (padMgr->padStatus[i].type == CONT_TYPE_NORMAL) {
                 mask |= 1 << i;
             } else {
-                //LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type, "../padmgr.c", 458);
+                //LOG_HEX("this->pad_status[i].type", padMgr->padStatus[i].type);
                 // "An unknown type of controller is connected"
                 //osSyncPrintf("知らない種類のコントローラが接続されています\n");
             }
@@ -400,7 +398,7 @@ void PadMgr_ThreadEntry(PadMgr* padMgr) {
         }
 
         osRecvMesg(&padMgr->interruptMsgQ, (OSMesg*)&mesg, OS_MESG_BLOCK);
-        //LogUtils_CheckNullPointer("msg", mesg, "../padmgr.c", 563);
+        //LOG_CHECK_NULL_POINTER("msg", mesg);
 
         PadMgr_HandleRetraceMsg(padMgr);
         break;

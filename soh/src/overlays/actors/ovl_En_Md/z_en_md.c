@@ -372,7 +372,8 @@ u16 EnMd_GetTextKokiriForest(GlobalContext* globalCtx, EnMd* this) {
     this->unk_208 = 0;
     this->unk_209 = TEXT_STATE_NONE;
 
-    if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+    if ((!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) ||
+        (gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[1])) {
         return 0x1045;
     }
 
@@ -482,6 +483,17 @@ s16 func_80AAAF04(GlobalContext* globalCtx, Actor* thisx) {
 
 u8 EnMd_ShouldSpawn(EnMd* this, GlobalContext* globalCtx) {
     if (globalCtx->sceneNum == SCENE_SPOT04) {
+        if (gSaveContext.n64ddFlag) {
+            // if we have beaten deku tree or have open forest turned on
+            // or have already shown mido we have an equipped sword/shield
+            if (gSaveContext.dungeonsDone[1] ||
+                GetRandoSettingValue(RSK_FOREST) == 1 ||
+                gSaveContext.eventChkInf[0] & 0x10) {
+                return 0;
+            }
+            return 1;
+        }
+
         if (!(gSaveContext.eventChkInf[1] & 0x1000) && !(gSaveContext.eventChkInf[4] & 1)) {
             return 1;
         }
@@ -859,7 +871,7 @@ void EnMd_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnMd* this = (EnMd*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_md.c", 1280);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeTextures[this->eyeIdx]));
@@ -869,5 +881,5 @@ void EnMd_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnMd_OverrideLimbDraw, EnMd_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_md.c", 1317);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

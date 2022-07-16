@@ -453,7 +453,7 @@ void func_809EEA00(EnDivingGame* this, GlobalContext* globalCtx) {
     if ((this->unk_292 == Message_GetState(&globalCtx->msgCtx) && Message_ShouldAdvance(globalCtx))) {
         Message_CloseTextbox(globalCtx);
         this->actor.parent = NULL;
-        func_8002F434(&this->actor, globalCtx, GI_SCALE_SILVER, 90.0f, 10.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER) : GI_SCALE_SILVER, 90.0f, 10.0f);
         this->actionFunc = func_809EEA90;
     }
 }
@@ -463,7 +463,7 @@ void func_809EEA90(EnDivingGame* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actionFunc = func_809EEAF8;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_SCALE_SILVER, 90.0f, 10.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_ZD_DIVING_MINIGAME, GI_SCALE_SILVER) : GI_SCALE_SILVER, 90.0f, 10.0f);
     }
 }
 
@@ -497,8 +497,6 @@ void EnDivingGame_Update(Actor* thisx, GlobalContext* globalCtx2) {
     if (this->spawnRuppyTimer != 0) {
         this->spawnRuppyTimer--;
     }
-
-    if (1) {}
 
     if (gSaveContext.timer1Value == 10) {
         func_800F5918();
@@ -562,7 +560,7 @@ void EnDivingGame_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDivingGame* this = (EnDivingGame*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_diving_game.c", 1212);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
     gSPSegment(POLY_OPA_DISP++, 0x0C, EnDivingGame_EmptyDList(globalCtx->state.gfxCtx));
@@ -570,5 +568,5 @@ void EnDivingGame_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnDivingGame_OverrideLimbDraw, NULL, this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_diving_game.c", 1232);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

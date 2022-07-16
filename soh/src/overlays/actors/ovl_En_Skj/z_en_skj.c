@@ -827,7 +827,6 @@ void EnSkj_Fight(EnSkj* this, GlobalContext* globalCtx) {
         Matrix_MultVec3f(&pos1, &pos2);
         prevPosX = this->actor.world.pos.x;
         prevPosZ = this->actor.world.pos.z;
-        if (1) {}
         this->actor.world.pos.x = this->center.x + pos2.x;
         this->actor.world.pos.z = this->center.z + pos2.z;
 
@@ -1036,7 +1035,7 @@ void EnSkj_SariaSongTalk(EnSkj* this, GlobalContext* globalCtx) {
             EnSkj_SetupWaitInRange(this);
         } else {
             func_80AFFE24(this);
-            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
+            func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE) : GI_HEART_PIECE, EnSkj_GetItemXzRange(this),
                           EnSkj_GetItemYRange(this));
         }
     }
@@ -1051,7 +1050,7 @@ void func_80AFFE44(EnSkj* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         EnSkj_SetupPostSariasSong(this);
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_LW_SKULL_KID, GI_HEART_PIECE) : GI_HEART_PIECE, EnSkj_GetItemXzRange(this), EnSkj_GetItemYRange(this));
     }
 }
 
@@ -1528,7 +1527,12 @@ void EnSkj_WonOcarinaMiniGame(EnSkj* this, GlobalContext* globalCtx) {
 
 void EnSkj_WaitToGiveReward(EnSkj* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        func_8002F434(&this->actor, globalCtx,
+                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
+                          ? GetRandomizedItemIdFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE)
+                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
+                      26.0f, 26.0f);
+
         this->actionFunc = EnSkj_GiveOcarinaGameReward;
     }
 }
@@ -1538,7 +1542,11 @@ void EnSkj_GiveOcarinaGameReward(EnSkj* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnSkj_FinishOcarinaGameRound;
     } else {
-        func_8002F434(&this->actor, globalCtx, sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum], 26.0f, 26.0f);
+        func_8002F434(&this->actor, globalCtx,
+                      gSaveContext.n64ddFlag && gSaveContext.ocarinaGameRoundNum != 3
+                          ? GetRandomizedItemIdFromKnownCheck(RC_LW_OCARINA_MEMORY_GAME, GI_HEART_PIECE)
+                          : sOcarinaGameRewards[gSaveContext.ocarinaGameRoundNum],
+                      26.0f, 26.0f);
     }
 }
 
@@ -1550,7 +1558,11 @@ void EnSkj_FinishOcarinaGameRound(EnSkj* this, GlobalContext* globalCtx) {
             gSaveContext.ocarinaGameRoundNum++;
         }
 
-        if (ocarinaGameRoundNum == 2) {
+        if (gSaveContext.n64ddFlag) {
+            gSaveContext.ocarinaGameRoundNum = 3;
+        }
+
+        if (ocarinaGameRoundNum == 2 || gSaveContext.n64ddFlag) {
             gSaveContext.itemGetInf[1] |= 0x80;
             this->actionFunc = EnSkj_CleanupOcarinaGame;
         } else {
@@ -1602,19 +1614,19 @@ s32 EnSkj_OverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList,
 }
 
 void EnSkj_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_skj.c", 2417);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if ((limbIndex == 11) && (gSaveContext.itemGetInf[3] & 0x200)) {
         func_80093D18(globalCtx->state.gfxCtx);
         Matrix_Push();
         Matrix_RotateZYX(-0x4000, 0, 0, MTXMODE_APPLY);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_skj.c", 2430),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gSKJskullMaskDL);
         Matrix_Pop();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_skj.c", 2437);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 Gfx* EnSkj_TranslucentDL(GraphicsContext* gfxCtx, u32 alpha) {
@@ -1646,7 +1658,7 @@ void EnSkj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnSkj* this = (EnSkj*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_skj.c", 2475);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -1659,5 +1671,5 @@ void EnSkj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnSkj_OverrideLimbDraw, EnSkj_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_skj.c", 2495);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
