@@ -613,17 +613,9 @@ void func_80B0D878(EnSw* this, GlobalContext* globalCtx) {
         x = (this->unk_364.x * 10.0f);
         y = (this->unk_364.y * 10.0f);
         z = (this->unk_364.z * 10.0f);
-        if (!(gSaveContext.n64ddFlag)) {
-            temp_v0 = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI,
-                                         this->actor.world.pos.x + x, this->actor.world.pos.y + y,
-                                         this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
-        } else {
-            s32 getItemId = GI_NONE;
-            getItemId = GetRandomizedItemId(getItemId, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            temp_v0 = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, getItemId,
-                                         this->actor.world.pos.x + x, this->actor.world.pos.y + y,
-                                         this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
-        }
+        temp_v0 = Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_SI,
+                                        this->actor.world.pos.x + x, this->actor.world.pos.y + y,
+                                        this->actor.world.pos.z + z, 0, 0, 0, this->actor.params);
         
         if (temp_v0 != NULL) {
             temp_v0->parent = NULL;

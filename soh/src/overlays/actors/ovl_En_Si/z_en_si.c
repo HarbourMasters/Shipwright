@@ -93,7 +93,12 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
-                Item_Give(globalCtx, ITEM_SKULL_TOKEN);
+                s32 getItemId = ITEM_SKULL_TOKEN;
+                if (gSaveContext.n64ddFlag) {
+                    getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                }
+                //getItemId = ITEM_DINS_FIRE;
+                Item_Give(globalCtx, getItemId);
                 if (CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
                     player->actor.freezeTimer = 20;
                 }
@@ -117,7 +122,12 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
-        Item_Give(globalCtx, ITEM_SKULL_TOKEN);
+        s32 getItemId = ITEM_SKULL_TOKEN;
+        if (gSaveContext.n64ddFlag) {
+            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+        }
+        //getItemId = ITEM_DINS_FIRE;
+        Item_Give(globalCtx, getItemId);
         Message_StartTextbox(globalCtx, 0xB4, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
@@ -150,6 +160,18 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (this->actionFunc != func_80AFB950) {
         func_8002ED80(&this->actor, globalCtx, 0);
         func_8002EBCC(&this->actor, globalCtx, 0);
-        GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
+        if (!gSaveContext.n64ddFlag) {
+            GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
+        } else {
+            f32 mtxScale = 1.5f;
+            Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+            s32 randoGetItemId =
+                GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+            }
+            GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        }
+        
     }
 }
