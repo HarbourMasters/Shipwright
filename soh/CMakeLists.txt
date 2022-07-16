@@ -172,6 +172,50 @@ set(Header_Files__soh__Enhancements__debugger
 )
 source_group("Header Files\\soh\\Enhancements\\debugger" FILES ${Header_Files__soh__Enhancements__debugger})
 
+set(Header_Files__soh__Enhancements__randomizer
+    "soh/Enhancements/randomizer/randomizer.h"
+    "soh/Enhancements/randomizer/randomizer_item_tracker.h"
+)
+source_group("Header Files\\soh\\Enhancements\\randomizer" FILES ${Header_Files__soh__Enhancements__randomizer})
+
+set(Header_Files__soh__Enhancements__randomizer__3drando
+    "soh/Enhancements/randomizer/3drando/category.hpp"
+    "soh/Enhancements/randomizer/3drando/cosmetics.hpp"
+    "soh/Enhancements/randomizer/3drando/custom_messages.hpp"
+    "soh/Enhancements/randomizer/3drando/debug.hpp"
+    "soh/Enhancements/randomizer/3drando/dungeon.hpp"
+    "soh/Enhancements/randomizer/3drando/entrance.hpp"
+    "soh/Enhancements/randomizer/3drando/fill.hpp"
+    "soh/Enhancements/randomizer/3drando/hint_list.hpp"
+    "soh/Enhancements/randomizer/3drando/hints.hpp"
+    "soh/Enhancements/randomizer/3drando/item.hpp"
+    "soh/Enhancements/randomizer/3drando/item_list.hpp"
+    "soh/Enhancements/randomizer/3drando/item_location.hpp"
+    "soh/Enhancements/randomizer/3drando/item_pool.hpp"
+    "soh/Enhancements/randomizer/3drando/keys.hpp"
+    "soh/Enhancements/randomizer/3drando/location_access.hpp"
+    "soh/Enhancements/randomizer/3drando/logic.hpp"
+    "soh/Enhancements/randomizer/3drando/menu.hpp"
+    "soh/Enhancements/randomizer/3drando/music.hpp"
+    "soh/Enhancements/randomizer/3drando/patch.hpp"
+    "soh/Enhancements/randomizer/3drando/playthrough.hpp"
+    "soh/Enhancements/randomizer/3drando/pool_functions.hpp"
+    "soh/Enhancements/randomizer/3drando/preset.hpp"
+    "soh/Enhancements/randomizer/3drando/rando_main.hpp"
+    "soh/Enhancements/randomizer/3drando/random.hpp"
+    "soh/Enhancements/randomizer/3drando/setting_descriptions.hpp"
+    "soh/Enhancements/randomizer/3drando/settings.hpp"
+    "soh/Enhancements/randomizer/3drando/shops.hpp"
+    "soh/Enhancements/randomizer/3drando/sound_effects.hpp"
+    "soh/Enhancements/randomizer/3drando/spoiler_log.hpp"
+    "soh/Enhancements/randomizer/3drando/starting_inventory.hpp"
+    "soh/Enhancements/randomizer/3drando/text.hpp"
+    "soh/Enhancements/randomizer/3drando/tinyxml2.h"
+    "soh/Enhancements/randomizer/3drando/trial.hpp"
+    "soh/Enhancements/randomizer/3drando/utils.hpp"
+)
+source_group("Header Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Header_Files__soh__Enhancements__randomizer__3drando})
+
 set(Source_Files__soh
     "soh/GbiWrap.cpp"
     "soh/OTRAudio.h"
@@ -212,6 +256,76 @@ set(Source_Files__soh__Enhancements__debugger
     "soh/Enhancements/debugger/ImGuiHelpers.cpp"
 )
 source_group("Source Files\\soh\\Enhancements\\debugger" FILES ${Source_Files__soh__Enhancements__debugger})
+
+set(Source_Files__soh__Enhancements__randomizer
+    "soh/Enhancements/randomizer/randomizer.cpp"
+    "soh/Enhancements/randomizer/randomizer_item_tracker.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\randomizer" FILES ${Source_Files__soh__Enhancements__randomizer})
+
+set(Source_Files__soh__Enhancements__randomizer__3drando
+    "soh/Enhancements/randomizer/3drando/cosmetics.cpp"
+    "soh/Enhancements/randomizer/3drando/custom_messages.cpp"
+    "soh/Enhancements/randomizer/3drando/debug.cpp"
+    "soh/Enhancements/randomizer/3drando/dungeon.cpp"
+    "soh/Enhancements/randomizer/3drando/entrance.cpp"
+    "soh/Enhancements/randomizer/3drando/fill.cpp"
+    "soh/Enhancements/randomizer/3drando/hint_list.cpp"
+    "soh/Enhancements/randomizer/3drando/hints.cpp"
+    "soh/Enhancements/randomizer/3drando/item.cpp"
+    "soh/Enhancements/randomizer/3drando/item_list.cpp"
+    "soh/Enhancements/randomizer/3drando/item_location.cpp"
+    "soh/Enhancements/randomizer/3drando/item_pool.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access.cpp"
+    "soh/Enhancements/randomizer/3drando/logic.cpp"
+    "soh/Enhancements/randomizer/3drando/menu.cpp"
+    "soh/Enhancements/randomizer/3drando/music.cpp"
+    "soh/Enhancements/randomizer/3drando/patch.cpp"
+    "soh/Enhancements/randomizer/3drando/playthrough.cpp"
+    "soh/Enhancements/randomizer/3drando/preset.cpp"
+    "soh/Enhancements/randomizer/3drando/rando_main.cpp"
+    "soh/Enhancements/randomizer/3drando/random.cpp"
+    "soh/Enhancements/randomizer/3drando/setting_descriptions.cpp"
+    "soh/Enhancements/randomizer/3drando/settings.cpp"
+    "soh/Enhancements/randomizer/3drando/shops.cpp"
+    "soh/Enhancements/randomizer/3drando/sound_effects.cpp"
+    "soh/Enhancements/randomizer/3drando/spoiler_log.cpp"
+    "soh/Enhancements/randomizer/3drando/starting_inventory.cpp"
+    "soh/Enhancements/randomizer/3drando/tinyxml2.cpp"
+    "soh/Enhancements/randomizer/3drando/trial.cpp"
+    "soh/Enhancements/randomizer/3drando/utils.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando" FILES ${Source_Files__soh__Enhancements__randomizer__3drando})
+
+set(Source_Files__soh__Enhancements__randomizer__3drando__hint_list
+    "soh/Enhancements/randomizer/3drando/hint_list/hint_list_exclude_dungeon.cpp"
+    "soh/Enhancements/randomizer/3drando/hint_list/hint_list_exclude_overworld.cpp"
+    "soh/Enhancements/randomizer/3drando/hint_list/hint_list_item.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando\\hint_list" FILES ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}) 
+
+set(Source_Files__soh__Enhancements__randomizer__3drando__location_access
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_bottom_of_the_well.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_castle_town.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_death_mountain.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_deku_tree.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_dodongos_cavern.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_fire_temple.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_forest_temple.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_ganons_castle.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_gerudo_training_grounds.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_gerudo_valley.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_hyrule_field.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_ice_cavern.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_jabujabus_belly.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_kakariko.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_lost_woods.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_shadow_temple.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_spirit_temple.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_water_temple.cpp"
+    "soh/Enhancements/randomizer/3drando/location_access/locacc_zoras_domain.cpp"
+)
+source_group("Source Files\\soh\\Enhancements\\randomizer\\3drando\\location_access" FILES ${Source_Files__soh__Enhancements__randomizer__3drando__location_access})   
 
 set(Source_Files__src__boot
     "src/boot/assert.c"
@@ -1417,12 +1531,18 @@ set(ALL_FILES
     ${Header_Files}
     ${Header_Files__include}
     ${Header_Files__soh__Enhancements}
-    ${Header_Files__soh__Enhancements__debugger}
     ${Header_Files__soh__Enhancements__cosmetics}
+    ${Header_Files__soh__Enhancements__debugger}
+    ${Header_Files__soh__Enhancements__randomizer}
+    ${Header_Files__soh__Enhancements__randomizer__3drando}
     ${Source_Files__soh}
     ${Source_Files__soh__Enhancements}
     ${Source_Files__soh__Enhancements__cosmetics}
     ${Source_Files__soh__Enhancements__debugger}
+    ${Source_Files__soh__Enhancements__randomizer}
+    ${Source_Files__soh__Enhancements__randomizer__3drando}
+    ${Source_Files__soh__Enhancements__randomizer__3drando__hint_list}
+    ${Source_Files__soh__Enhancements__randomizer__3drando__location_access}
     ${Source_Files__src__boot}
     ${Source_Files__src__buffers}
     ${Source_Files__src__code}

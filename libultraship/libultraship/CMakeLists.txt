@@ -70,15 +70,18 @@ endif ()
 
 source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
 
-set(Source_Files__Config
-    "ConfigFile.cpp"
-    "ConfigFile.h"
-)
 source_group("Source Files\\Config" FILES ${Source_Files__Config})
 
 set(Source_Files__Controller
+    "ControlDeck.cpp"
+    "ControlDeck.h"
     "Controller.cpp"
     "Controller.h"
+    "ControllerAttachment.cpp"
+    "ControllerAttachment.h"
+    "DisconnectedController.h"
+    "InputEditor.cpp"
+    "InputEditor.h"
     "KeyboardController.cpp"
     "KeyboardController.h"
     "SDLController.cpp"
@@ -212,6 +215,12 @@ set(Source_Files__Lib__ImGui__Windows
 endif ()
 source_group("Source Files\\Lib\\ImGui" FILES ${Source_Files__Lib__ImGui} ${Source_Files__Lib__ImGui__Windows})
 
+set(Source_Files__Lib__Mercury
+    "Lib/Mercury/Mercury.cpp"
+    "Lib/Mercury/Mercury.h"
+)
+source_group("Source Files\\Lib\\Mercury" FILES ${Source_Files__Lib__Mercury})
+
 set(Source_Files__Lib__stb
     "Lib/stb/stb_image.h"
     "Lib/stb/stb_image_write.h"
@@ -315,7 +324,6 @@ set(ALL_FILES
     ${Header_Files__Resources__Files}
     ${Source_Files__Audio}
     ${Source_Files__Audio__extra}
-    ${Source_Files__Config}
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
     ${Source_Files__CustomImpl}
@@ -328,6 +336,7 @@ set(ALL_FILES
     ${Source_Files__Lib__Fast3D__extra}
     ${Source_Files__Lib__ImGui}
     ${Source_Files__Lib__ImGui__Windows}
+    ${Source_Files__Lib__Mercury}
     ${Source_Files__Lib__stb}
     ${Source_Files__Lib__dr_libs}
     ${Source_Files__Lib__tinyxml2}
@@ -456,6 +465,7 @@ endif()
 if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
     find_package(SDL2)
     find_package(GLEW)
+    find_package(X11)
     if (NOT GLEW_FOUND)
         if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
             include (FetchContent)
