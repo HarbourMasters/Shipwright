@@ -129,7 +129,7 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
                (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
         link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
     } else if(AllowStickRotation && input->cur.cam_x != 0){
-        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.cam_x*RotationSpeed);
+        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.cam_x*(RotationSpeed/150));
     }
 
     if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) || // reset rotation
