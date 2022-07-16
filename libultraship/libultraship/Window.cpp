@@ -212,8 +212,8 @@ namespace Ship {
             pConf->setString("Window.GfxBackend", "");
 
             pConf->setBool("Window.Fullscreen.Enabled", false);
-            pConf->setInt("Window.Fullscreen.Width", 640);
-            pConf->setInt("Window.Fullscreen.Height", 480);
+            pConf->setInt("Window.Fullscreen.Width", 1920);
+            pConf->setInt("Window.Fullscreen.Height", 1080);
 
             pConf->setString("Game.SaveName", "");
             pConf->setString("Game.Main Archive", "");
