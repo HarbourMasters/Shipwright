@@ -33,7 +33,9 @@
 #else
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
-// #define GL_GLEXT_PROTOTYPES 1
+#ifndef __SWITCH__
+#define GL_GLEXT_PROTOTYPES 1
+#endif
 // #include <SDL2/SDL_opengles2.h>
 #endif
 
