@@ -413,6 +413,7 @@ static bool ImGui_ImplSDL2_Init(SDL_Window* window, SDL_Renderer* renderer, void
     // Our mouse update function expect PlatformHandle to be filled for the main viewport
     ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     main_viewport->PlatformHandle = (void*)window;
+#if defined(_WIN32) || defined(__APPLE__)
     SDL_SysWMinfo info;
     SDL_VERSION(&info.version);
     if (SDL_GetWindowWMInfo(window, &info))
@@ -423,6 +424,7 @@ static bool ImGui_ImplSDL2_Init(SDL_Window* window, SDL_Renderer* renderer, void
         main_viewport->PlatformHandleRaw = (void*)info.info.cocoa.window;
 #endif
     }
+#endif
 
     // Set SDL hint to receive mouse click events on window focus, otherwise SDL doesn't emit the event.
     // Without this, when clicking to gain focus, our widgets wouldn't activate even though they showed as hovered.
@@ -769,6 +771,7 @@ static void ImGui_ImplSDL2_CreateWindow(ImGuiViewport* viewport)
         SDL_GL_MakeCurrent(vd->Window, backup_context);
 
     viewport->PlatformHandle = (void*)vd->Window;
+#if defined(_WIN32) || defined(__APPLE__)
     SDL_SysWMinfo info;
     SDL_VERSION(&info.version);
     if (SDL_GetWindowWMInfo(vd->Window, &info))
@@ -779,6 +782,7 @@ static void ImGui_ImplSDL2_CreateWindow(ImGuiViewport* viewport)
         viewport->PlatformHandleRaw = (void*)info.info.cocoa.window;
 #endif
     }
+#endif
 }
 
 static void ImGui_ImplSDL2_DestroyWindow(ImGuiViewport* viewport)
