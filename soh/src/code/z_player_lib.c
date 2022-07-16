@@ -1777,7 +1777,48 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
                 if (FrameCountSinceLastAnim >= SwitchAtFrame) {
                     LastAnim = SelectedAnim;
                     if(LastAnim==1){
-                        SelectedAnim = (rand() % (6 - 2 + 1)) + 2;
+                        if((CUR_EQUIP_VALUE(EQUIP_SWORD)!=PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!= PLAYER_SHIELD_NONE)){ // if the player has a sword and shield equipped
+                            if((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)){ // if he's an adult or a kid with the deku shield
+                                SelectedAnim = (rand() % (6 - 2 + 1)) + 2; // select any 5 animations that aren't the default standing anim
+                            }else{ //else if he's a child with a shield that isn't the deku shield
+                                s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                                if(randval==4){ //if its the shield anim
+                                    SelectedAnim==6; // set to yawn anim
+                                }else{
+                                    SelectedAnim=randval;
+                                }
+                            }
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) != PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)){ // if the player has a sword equipped but no shield
+                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                            if(randval==4){ //if its the shield anim
+                                SelectedAnim==6; // set to yawn anim
+                            }else{
+                                SelectedAnim=randval;
+                            }
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!=PLAYER_SHIELD_NONE)){ //if the player has a shield equipped but no sword
+                            if((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)){// if he's an adult or a kid with the deku shield
+                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                            if(randval==5){ //if its the sword anim
+                                SelectedAnim==6; // set to yawn anim
+                            }else{
+                                SelectedAnim=randval;
+                            }
+                            }else{
+                                s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
+                                if(randval==4){ //if its the shield anim
+                                    SelectedAnim==6; // set to yawn anim
+                                }else{
+                                    SelectedAnim=randval;
+                                }
+                            } 
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)){ // if the player has no sword or shield equipped
+                            s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
+                            if(randval==4){ //if its the shield anim
+                                SelectedAnim==6; // set to yawn anim
+                            }else{
+                                SelectedAnim=randval;
+                            }
+                        }
                     } else{
                         SelectedAnim = 1;
                     }
