@@ -128,6 +128,7 @@ pipeline {
                     environment {
                         CC = 'clang -arch arm64 -arch x86_64'
                         CXX = 'clang++ -arch arm64 -arch x86_64'
+                        MACOSX_DEPLOYMENT_TARGET = 10.15
                     }
                     steps {
                         checkout([
