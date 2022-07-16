@@ -332,6 +332,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SkeletonLimb.cpp" />
+    <ClCompile Include="OcarinaEditor.cpp" />
     <ClCompile Include="Text.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureMod.cpp" />
@@ -344,6 +345,7 @@
     <ClCompile Include="SDLController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="OcarinaEditor.h" />
     <ClInclude Include="Lib\Mercury\Mercury.h" />
     <ClInclude Include="Lib\nlohmann\json.hpp" />
     <ClInclude Include="abi.h" />

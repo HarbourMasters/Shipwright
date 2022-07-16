@@ -100,6 +100,9 @@
     <Filter Include="Source Files\Controller\InputEditor">
       <UniqueIdentifier>{010dc29b-d1f6-4793-a4e7-4156aa4fcdd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Controller\OcarinaEditor">
+      <UniqueIdentifier>{1d1c5826-31e6-4ed1-a821-759aab1e7447}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">
@@ -365,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClCompile>
+    <ClCompile Include="OcarinaEditor.cpp">
+      <Filter>Source Files\Controller\OcarinaEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -682,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="Lib\Mercury\Mercury.h">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClInclude>
+    <ClInclude Include="OcarinaEditor.h">
+      <Filter>Source Files\Controller\OcarinaEditor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

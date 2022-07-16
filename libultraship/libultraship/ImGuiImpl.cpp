@@ -65,6 +65,7 @@ namespace SohImGui {
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
+    OcarinaEditor* ocarina = new OcarinaEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
@@ -772,13 +773,8 @@ namespace SohImGui {
                 Tooltip("Allows the D-pad to be used as extra C buttons");
                 ImGui::Separator();
 
-                EnhancementCheckbox("Use 3DS ocarina controls", "gOcarina3DS");
-                Tooltip(
-                    "Changes the ocarina controls to match Ocarina of Time 3D\n"
-                    "This assumes the Virtual Console button mapping, so the\n"
-                    "new notes from low to high are L, R, down, left, right, A\n"
-                    "to match the 3DS L, R, Y, X, and A"
-                );
+                EnhancementCheckbox("Ocarina Configuration", "gOcarinaConfigurationEnabled");
+                ocarina->Opened = CVar_GetS32("gOcarinaConfigurationEnabled", 0);
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
@@ -1284,6 +1280,7 @@ namespace SohImGui {
 
         console->Draw();
         controller->DrawHud();
+        ocarina->DrawHud();
 
         for (auto& windowIter : customWindows) {
             CustomWindow& window = windowIter.second;

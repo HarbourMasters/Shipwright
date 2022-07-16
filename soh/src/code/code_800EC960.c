@@ -1249,18 +1249,18 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(u8 dpad) {
-    if (CVar_GetS32("gOcarina3DS", 0)) {  // 3DS controls
-        sOcarinaD5BtnMap = BTN_A;
-        sOcarinaB4BtnMap = BTN_CRIGHT; // C right = X
-        sOcarinaA4BtnMap = BTN_CLEFT;  // C left  = Y
-        sOcarinaF4BtnMap = BTN_CDOWN;  // C down  = R
-        sOcarinaD4BtnMap = BTN_L;
-    } else {                                            // N64 controls
+    if (CVar_GetS32("gOcarinaControls", 0) == 0) {  // N64 controls
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
         sOcarinaA4BtnMap = BTN_CRIGHT;
         sOcarinaF4BtnMap = BTN_CDOWN;
         sOcarinaD4BtnMap = BTN_A;
+    } else {                            // 3DS controls
+        sOcarinaD5BtnMap = BTN_A;
+        sOcarinaB4BtnMap = BTN_CRIGHT;  // C right = X
+        sOcarinaA4BtnMap = BTN_CLEFT;   // C left  = Y
+        sOcarinaF4BtnMap = BTN_CDOWN;   // C down  = R
+        sOcarinaD4BtnMap = BTN_L;
     }
 
     if (dpad) {
@@ -1512,7 +1512,7 @@ void func_800ED200(void) {
     if (
         CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L)
         && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
-        && !CVar_GetS32("gOcarina3DS", 0)
+        && CVar_GetS32("gOcarinaControls", 0) == 0
     ) {
         func_800ECC04((u16)D_80130F3C);
         return;
