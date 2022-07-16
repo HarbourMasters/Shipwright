@@ -233,8 +233,14 @@ namespace Ship {
         SetAudioPlayer();
         bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
 
-        dwWidth = pConf->getInt("Window.Fullscreen.Width", bIsFullscreen ? 1920 : 640);
-        dwHeight = pConf->getInt("Window.Fullscreen.Height", bIsFullscreen ? 1080 : 480);
+        if (bIsFullscreen) {
+            dwWidth = pConf->getInt("Window.Fullscreen.Width", 1920);
+            dwHeight = pConf->getInt("Window.Fullscreen.Height", 1080);
+        } else {
+            dwWidth = pConf->getInt("Window.Width", 640);
+            dwHeight = pConf->getInt("Window.Height", 480);
+        }
+
         dwMenubar = pConf->getBool("Window.Options", false);
         const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
