@@ -107,7 +107,6 @@ namespace SohImGui {
         "Hexaquinquagintiducentuple (256x)"
     };
 
-    std::map<std::string, std::vector<std::shared_ptr<CustomWindow>>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::shared_ptr<CustomWindow>>> windowCategories;
     std::map<std::string, std::shared_ptr<CustomWindow>> customWindows;
 
@@ -1460,16 +1459,6 @@ namespace SohImGui {
 
         ImGui::End();
 
-        for (const auto& category : hiddenwindowCategories) {
-            ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::SetNextWindowSize(ImVec2 (0,0));
-            ImGuiWindowFlags HiddenWndFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoBackground | ImGuiWindowFlags_NoSavedSettings |
-                ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoNavInputs |
-                ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoMouseInputs | ImGuiWindowFlags_NoDecoration;
-            ImGui::Begin(category.first.c_str(), nullptr, HiddenWndFlags);
-            ImGui::End();
-            ImGui::PopStyleColor();
-        }
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
@@ -1624,7 +1613,7 @@ namespace SohImGui {
         console->Commands[cmd] = std::move(entry);
     }
 
-    void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc, bool isEnabled, bool isHidden) {
+    void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc) {
         // TODO fix
         //if (customWindows.contains(name)) {
         //    SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
@@ -1632,17 +1621,13 @@ namespace SohImGui {
         //}
 
         customWindows[name] = std::make_shared<CustomWindow>(CustomWindow{
-            .enabled = isEnabled,
+            .enabled = false,
             .drawFunc = drawFunc,
             .name = name,
             .cVar = cVar
         });
 
-        if (isHidden) {
-            hiddenwindowCategories[category].emplace_back(customWindows[name]);
-        } else {
-            windowCategories[category].emplace_back(customWindows[name]);
-        }
+        windowCategories[category].emplace_back(customWindows[name]);
     }
 
     ImTextureID GetTextureByName(const std::string& name) {

@@ -1124,6 +1124,10 @@ void Draw_General(){
     }
 }
 void DrawCosmeticsEditor(bool& open) {
+    // Always cycle through rainbow colors even when the window is not open
+    // TODO this feels like it should be seperated from the imgui code
+    LoadRainbowColor(open);
+
     if (!open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
         return;
@@ -1164,11 +1168,6 @@ void DrawCosmeticsEditor(bool& open) {
     ImGui::End();
 }
 void InitCosmeticsEditor() {
-    //This allow to hide a window without disturbing the player nor adding things in menu
-    //LoadRainbowColor() will this way run in background once it's window is activated
-    //ImGui::SetNextItemWidth(0.0f);
-    // TODO hidden windows seem wrong...
-    SohImGui::AddWindow("Cosmetics", "Rainbowfunction", "gRainbowfunctionEnabled", LoadRainbowColor, true, true);
     //Draw the bar in the menu.
     SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", "gCosmeticsEditorEnabled", DrawCosmeticsEditor);
 }
