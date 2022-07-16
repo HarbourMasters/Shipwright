@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <PR/ultra64/gbi.h>
-#include "imgui_internal.h"
+#include "Lib/ImGui/imgui_internal.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
