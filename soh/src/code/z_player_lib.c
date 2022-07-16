@@ -1712,7 +1712,6 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
             // Link is idle so revert to 0
             EquipedStance = 0;
         }
-
         if (SelectedMode == 16) {
             // Apply Random function
             s16 SwitchAtFrame = 0;
@@ -1742,6 +1741,48 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
                     SelectedAnim = rand() % (AnimArraySize - 0);
                     if (SelectedAnim == 0) {
                         // prevent loading 0 that would result to a crash.
+                        SelectedAnim = 1;
+                    }
+                    FrameCountSinceLastAnim = 1;
+                }
+                anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
+            }
+            FrameCountSinceLastAnim++;
+        }else if(SelectedMode == 17){
+            // Apply Random function
+            s16 SwitchAtFrame = 0;
+            s16 CurAnimDuration = 0;
+            s16 LastAnim;
+            if (FrameCountSinceLastAnim == 0) {
+                // When opening Kaleido this will be passed one time
+                SelectedAnim = (rand() % (6 - 1 + 1)) + 1;
+                if (SelectedAnim == 0) {
+                    // prevent loading 0 that would result to a crash.
+                    SelectedAnim = 1;
+                }
+            } else if (FrameCountSinceLastAnim >= 1) {
+                SwitchAtFrame = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                CurAnimDuration = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                if (SwitchAtFrame < MinFrameCount) {
+                    // Animation frame count is lower than minimal wait time then we wait for another round.
+                    // This will be looped to always add current animation time if that still lower than minimum time
+                    while (SwitchAtFrame < MinFrameCount) {
+                        SwitchAtFrame = SwitchAtFrame + CurAnimDuration;
+                    }
+                } else if (CurAnimDuration >= MinFrameCount) {
+                    // Since we have more (or same) animation time than min duration we set the wait time to animation
+                    // time.
+                    SwitchAtFrame = CurAnimDuration;
+                }
+                if (FrameCountSinceLastAnim >= SwitchAtFrame) {
+                    LastAnim = SelectedAnim;
+                    if(LastAnim==1){
+                        SelectedAnim = (rand() % (6 - 2 + 1)) + 2;
+                    } else{
+                        SelectedAnim = 1;
+                    }
+                    if (SelectedAnim == 0) {
+                        // prevent loading 0 that would result to a crash. Also makes sure default idle is every other anim
                         SelectedAnim = 1;
                     }
                     FrameCountSinceLastAnim = 1;
