@@ -512,7 +512,8 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     if (CVar_GetS32("gEquipmentCanBeRemoved", 0)) {
                         
                         // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 && CUR_EQUIP_VALUE(EQUIP_SWORD) == 3) {
+                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
+                            && CUR_EQUIP_VALUE(EQUIP_SWORD) == 3 && CHECK_OWNED_EQUIP(0,1)){ // And we have the Master Sword
                             Inventory_ChangeEquipment(EQUIP_SWORD, 2); // "Unequip" it by equipping Master Sword
                             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
                             gSaveContext.infTable[29] = 0;
