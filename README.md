@@ -66,6 +66,13 @@ Other shortcuts:
 
 Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
 
+### Minimum Requirements
+Supported OSes:
+* Windows 10/11
+* macOS 10.15 or greater
+
+* OpenGL 3.3 (for OTRGui) / OpenGL 2.1 (for SoH)
+
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?
 Take [this survey](https://retroarchopenhardware.com/survey.php) to increase chances of this becoming reality.
