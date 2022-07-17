@@ -1662,7 +1662,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
-    if (CustomMessage_RetrieveIfExists(globalCtx, font->msgBuf, sizeof(font->msgBuf))) {
+    if (CustomMessage_RetrieveIfExists(globalCtx)) {
         osSyncPrintf("Found custom message");
     } else if (sTextIsCredits) {
         Message_FindCreditsMessage(globalCtx, textId);

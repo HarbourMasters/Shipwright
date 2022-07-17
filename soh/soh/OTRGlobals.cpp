@@ -1513,13 +1513,15 @@ extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, 
     return CopyStringToCharBuffer(getItemText, buffer, maxBufferSize);
 }
 
-extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx, char* buffer, const int maxBufferSize) {
+extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &msgCtx->font;
+    char* buffer = font->msgBuf;
+    const int maxBufferSize = sizeof(font->msgBuf);
     if (gSaveContext.n64ddFlag) {
         if (msgCtx->textId == 0xF8) {
             if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
-                    (GetItemID)GET_PLAYER(globalCtx)->getItemId, font->msgBuf, sizeof(font->msgBuf))) {
+                    (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
                 font->charTexBuf[0] = 0x23;
                 return true;
             } else {
