@@ -180,8 +180,6 @@ void EnAnubiceFire_Update(Actor* thisx, GlobalContext* globalCtx) {
     func_8002D7EC(&this->actor);
     this->unk_160[0] = this->actor.world.pos;
 
-    if (1) {}
-
     for (i = 4; i >= 0; i--) {
         this->unk_160[i + 1] = this->unk_160[i];
     }
@@ -222,7 +220,7 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad[2];
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 503);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 0, 255);
@@ -244,7 +242,7 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_RotateZ(this->actor.world.rot.z + i * 1000.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 546),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
@@ -256,5 +254,5 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     Matrix_Pop();
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_anubice_fire.c", 556);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

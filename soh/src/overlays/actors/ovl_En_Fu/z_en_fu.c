@@ -148,11 +148,30 @@ void EnFu_WaitChild(EnFu* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSongOfStorms(EnFu* windmillGuy, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (windmillGuy->actor.parent != NULL && windmillGuy->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+        windmillGuy->actionFunc = func_80A1DBD4;
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_STORMS);
+        func_8002F434(&windmillGuy->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
+void func_WaitForSongGive(EnFu* this, GlobalContext* globalCtx) {
+    GivePlayerRandoRewardSongOfStorms(this, globalCtx, RC_SONG_FROM_WINDMILL);
+}
+
 void func_80A1DB60(EnFu* this, GlobalContext* globalCtx) {
     if (globalCtx->csCtx.state == CS_STATE_IDLE) {
         this->actionFunc = EnFu_WaitAdult;
         gSaveContext.eventChkInf[5] |= 0x800;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+    }
+
+    if (gSaveContext.n64ddFlag) {
+        this->actionFunc = func_WaitForSongGive;
     }
 }
 
@@ -165,6 +184,10 @@ void func_80A1DBA0(EnFu* this, GlobalContext* globalCtx) {
 void func_80A1DBD4(EnFu* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
+    if (gSaveContext.n64ddFlag && (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING)) {
+        globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_03;
+    }
+
     if (globalCtx->msgCtx.ocarinaMode >= OCARINA_MODE_04) {
         this->actionFunc = EnFu_WaitAdult;
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
@@ -173,9 +196,13 @@ void func_80A1DBD4(EnFu* this, GlobalContext* globalCtx) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         this->actionFunc = func_80A1DB60;
         this->actor.flags &= ~ACTOR_FLAG_16;
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
-        gSaveContext.cutsceneTrigger = 1;
-        Item_Give(globalCtx, ITEM_SONG_STORMS);
+
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gSongOfStormsCs);
+            gSaveContext.cutsceneTrigger = 1;
+            Item_Give(globalCtx, ITEM_SONG_STORMS);
+        }
+
         globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_00;
         gSaveContext.eventChkInf[6] |= 0x20;
     } else if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_02) {
@@ -220,7 +247,7 @@ void EnFu_WaitAdult(EnFu* this, GlobalContext* globalCtx) {
     } else if (player->stateFlags2 & 0x1000000) {
         this->actor.textId = 0x5035;
         Message_StartTextbox(globalCtx, this->actor.textId, NULL);
-        this->actionFunc = EnFu_TeachSong;
+        this->actionFunc = gSaveContext.n64ddFlag ? func_80A1DBD4 : EnFu_TeachSong;
         this->behaviorFlags |= FU_WAIT;
     } else if (Actor_ProcessTalkRequest(&this->actor, globalCtx)) {
         this->actionFunc = func_80A1DBA0;
@@ -298,7 +325,7 @@ void EnFu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnFu* this = (EnFu*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_fu.c", 773);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyesSegments[this->facialExpression]));
@@ -306,5 +333,5 @@ void EnFu_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           EnFu_OverrideLimbDraw, EnFu_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_fu.c", 791);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

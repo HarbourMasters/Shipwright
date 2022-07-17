@@ -351,8 +351,6 @@ void SkinMatrix_SetRotateZYX(MtxF* mf, s16 x, s16 y, s16 z) {
 
     } else {
         mf->xx = cosZ;
-        if (1) {}
-        if (1) {}
         xz = sinZ; // required to match
         mf->yx = sinZ;
         mf->zx = mf->xz = mf->yz = 0;
@@ -368,7 +366,6 @@ void SkinMatrix_SetRotateZYX(MtxF* mf, s16 x, s16 y, s16 z) {
         mf->xy = (xy * cos) + (xz * sin);
         mf->xz = (xz * cos) - (xy * sin);
 
-        if (1) {}
         yz = mf->yz;
         yy = mf->yy;
         mf->yy = (yy * cos) + (yz * sin);
@@ -419,8 +416,6 @@ void SkinMatrix_SetRotateYXZ(MtxF* mf, s16 x, s16 y, s16 z) {
 
     } else {
         mf->zz = cosY;
-        if (1) {}
-        if (1) {}
         xy = sinY; // required to match
         mf->xz = sinY;
         mf->xy = mf->zy = mf->yz = 0;
@@ -434,7 +429,6 @@ void SkinMatrix_SetRotateYXZ(MtxF* mf, s16 x, s16 y, s16 z) {
         xy = mf->xy;
         mf->xx = (xx * cos) + (xy * sin);
         mf->xy = xy * cos - (xx * sin);
-        if (1) {}
         zy = mf->zy;
         zx = mf->zx;
         mf->zx = (zx * cos) + (zy * sin);

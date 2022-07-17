@@ -461,6 +461,44 @@ s32 DoorWarp1_PlayerInRange(DoorWarp1* this, GlobalContext* globalCtx) {
     return ret;
 }
 
+void GivePlayerRandoReward(DoorWarp1* this, Player* player, GlobalContext* globalCtx, u8 ruto, u8 adult) {
+    GetItemID getItemId = GetRandomizedItemId(GI_NONE, this->actor.id, this->actor.params, globalCtx->sceneNum);
+
+    if (this->actor.parent != NULL && this->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    } else if (!Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        if (adult) {
+            OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
+            func_8002DF54(globalCtx, &this->actor, 10);
+            player->unk_450.x = this->actor.world.pos.x;
+            player->unk_450.z = this->actor.world.pos.z;
+            this->unk_1B2 = 20;
+            DoorWarp1_SetupAction(this, func_8099A508);
+        } else {
+            if (ruto) {
+                this->rutoWarpState = WARP_BLUE_RUTO_STATE_ENTERED;
+                func_8002DF54(globalCtx, &this->actor, 10);
+                this->unk_1B2 = 1;
+                DoorWarp1_SetupAction(this, func_80999EE0);
+            } else {
+                Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
+                                       &D_801333E8);
+                OnePointCutscene_Init(globalCtx, 0x25E7, 999, &this->actor, MAIN_CAM);
+                func_8002DF54(globalCtx, &this->actor, 10);
+
+                player->unk_450.x = this->actor.world.pos.x;
+                player->unk_450.z = this->actor.world.pos.z;
+                this->unk_1B2 = 1;
+
+                DoorWarp1_SetupAction(this, DoorWarp1_ChildWarpOut);
+            }
+        }
+    }
+}
+
 void DoorWarp1_ChildWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
     Player* player;
 
@@ -468,6 +506,11 @@ void DoorWarp1_ChildWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (DoorWarp1_PlayerInRange(this, globalCtx)) {
         player = GET_PLAYER(globalCtx);
+        
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, player, globalCtx, 0, 0);
+            return;
+        }
 
         Audio_PlaySoundGeneral(NA_SE_EV_LINK_WARP, &player->actor.projectedPos, 4, &D_801333E0, &D_801333E0,
                                &D_801333E8);
@@ -503,20 +546,32 @@ void DoorWarp1_ChildWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_DDAN_BOSS) {
             if (!Flags_GetEventChkInf(0x25)) {
                 Flags_SetEventChkInf(0x25);
-                Item_Give(globalCtx, ITEM_GORON_RUBY);
-                globalCtx->nextEntranceIndex = 0x13D;
-                gSaveContext.nextCutsceneIndex = 0xFFF1;
+                gSaveContext.dungeonsDone[0] = 1;
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x47A;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_GORON_RUBY);
+                    globalCtx->nextEntranceIndex = 0x13D;
+                    gSaveContext.nextCutsceneIndex = 0xFFF1;
+                }
             } else {
                 globalCtx->nextEntranceIndex = 0x47A;
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_YDAN_BOSS) {
-            if (!Flags_GetEventChkInf(7)) {
+            if (!Flags_GetEventChkInf(7) || gSaveContext.n64ddFlag) {
                 Flags_SetEventChkInf(7);
                 Flags_SetEventChkInf(9);
-                Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
-                globalCtx->nextEntranceIndex = 0xEE;
-                gSaveContext.nextCutsceneIndex = 0xFFF1;
+                gSaveContext.dungeonsDone[1] = 1;
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x0457;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_KOKIRI_EMERALD);
+                    globalCtx->nextEntranceIndex = 0xEE;
+                    gSaveContext.nextCutsceneIndex = 0xFFF1;
+                }
             } else {
                 globalCtx->nextEntranceIndex = 0x457;
                 gSaveContext.nextCutsceneIndex = 0;
@@ -546,6 +601,12 @@ void DoorWarp1_RutoWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
     Audio_PlayActorSound2(&this->actor, NA_SE_EV_WARP_HOLE - SFX_FLAG);
 
     if (this->rutoWarpState != WARP_BLUE_RUTO_STATE_INITIAL && DoorWarp1_PlayerInRange(this, globalCtx)) {
+
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, GET_PLAYER(globalCtx), globalCtx, 1, 0);
+            return;
+        }
+
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_ENTERED;
         func_8002DF54(globalCtx, &this->actor, 10);
         this->unk_1B2 = 1;
@@ -575,7 +636,9 @@ void func_80999EE0(DoorWarp1* this, GlobalContext* globalCtx) {
         Gameplay_CameraSetAtEye(globalCtx, sRutoWarpSubCamId, &at, &eye);
         Gameplay_CameraSetFov(globalCtx, sRutoWarpSubCamId, 90.0f);
         this->rutoWarpState = WARP_BLUE_RUTO_STATE_TALKING;
-        Message_StartTextbox(globalCtx, 0x4022, NULL);
+        if (!gSaveContext.n64ddFlag) {
+            Message_StartTextbox(globalCtx, 0x4022, NULL);
+        }
         DoorWarp1_SetupAction(this, func_80999FE4);
     }
 }
@@ -608,9 +671,17 @@ void DoorWarp1_RutoWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (this->warpTimer > sWarpTimerTarget && gSaveContext.nextCutsceneIndex == 0xFFEF) {
         gSaveContext.eventChkInf[3] |= 0x80;
-        Item_Give(globalCtx, ITEM_ZORA_SAPPHIRE);
-        globalCtx->nextEntranceIndex = 0x10E;
-        gSaveContext.nextCutsceneIndex = 0xFFF0;
+        gSaveContext.dungeonsDone[2] = 1;
+
+        if (gSaveContext.n64ddFlag) {
+            globalCtx->nextEntranceIndex = 0x10E;
+            gSaveContext.nextCutsceneIndex = 0;
+        } else {
+            Item_Give(globalCtx, ITEM_ZORA_SAPPHIRE);
+            globalCtx->nextEntranceIndex = 0x10E;
+            gSaveContext.nextCutsceneIndex = 0xFFF0;
+        }
+
         globalCtx->sceneLoadFlag = 0x14;
         globalCtx->fadeTransition = 7;
     }
@@ -651,6 +722,11 @@ void DoorWarp1_AdultWarpIdle(DoorWarp1* this, GlobalContext* globalCtx) {
 
     if (DoorWarp1_PlayerInRange(this, globalCtx)) {
         player = GET_PLAYER(globalCtx);
+
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoReward(this, player, globalCtx, 0, 1);
+            return;
+        }
 
         OnePointCutscene_Init(globalCtx, 0x25E8, 999, &this->actor, MAIN_CAM);
         func_8002DF54(globalCtx, &this->actor, 10);
@@ -709,10 +785,17 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         if (globalCtx->sceneNum == SCENE_MORIBOSSROOM) {
             if (!(gSaveContext.eventChkInf[4] & 0x100)) {
                 gSaveContext.eventChkInf[4] |= 0x100;
-                Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
+                gSaveContext.dungeonsDone[3] = 1;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x608;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_FOREST);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_FOREST;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x600;
@@ -724,9 +807,16 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_FIRE_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x200)) {
                 gSaveContext.eventChkInf[4] |= 0x200;
-                Item_Give(globalCtx, ITEM_MEDALLION_FIRE);
-                globalCtx->nextEntranceIndex = 0xDB;
-                gSaveContext.nextCutsceneIndex = 0xFFF3;
+                gSaveContext.dungeonsDone[4] = 1;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x564;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_FIRE);
+                    globalCtx->nextEntranceIndex = 0xDB;
+                    gSaveContext.nextCutsceneIndex = 0xFFF3;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x4F6;
@@ -738,10 +828,17 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
         } else if (globalCtx->sceneNum == SCENE_MIZUSIN_BS) {
             if (!(gSaveContext.eventChkInf[4] & 0x400)) {
                 gSaveContext.eventChkInf[4] |= 0x400;
-                Item_Give(globalCtx, ITEM_MEDALLION_WATER);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
+                gSaveContext.dungeonsDone[5] = 1;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x60C;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_WATER);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_WATER;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x604;
@@ -751,11 +848,18 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_JYASINBOSS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT)) {
-                Item_Give(globalCtx, ITEM_MEDALLION_SPIRIT);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) || gSaveContext.n64ddFlag) {
+                gSaveContext.dungeonsDone[6] = 1;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x610;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_SPIRIT);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_SPIRIT;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x1F1;
@@ -765,11 +869,18 @@ void DoorWarp1_AdultWarpOut(DoorWarp1* this, GlobalContext* globalCtx) {
                 gSaveContext.nextCutsceneIndex = 0;
             }
         } else if (globalCtx->sceneNum == SCENE_HAKADAN_BS) {
-            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW)) {
-                Item_Give(globalCtx, ITEM_MEDALLION_SHADOW);
-                globalCtx->nextEntranceIndex = 0x6B;
-                gSaveContext.nextCutsceneIndex = 0;
-                gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
+            if (!CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) || gSaveContext.n64ddFlag) {
+                gSaveContext.dungeonsDone[7] = 1;
+
+                if (gSaveContext.n64ddFlag) {
+                    globalCtx->nextEntranceIndex = 0x580;
+                    gSaveContext.nextCutsceneIndex = 0;
+                } else {
+                    Item_Give(globalCtx, ITEM_MEDALLION_SHADOW);
+                    globalCtx->nextEntranceIndex = 0x6B;
+                    gSaveContext.nextCutsceneIndex = 0;
+                    gSaveContext.chamberCutsceneNum = CHAMBER_CS_SHADOW;
+                }
             } else {
                 if (!LINK_IS_ADULT) {
                     globalCtx->nextEntranceIndex = 0x568;
@@ -881,7 +992,7 @@ void DoorWarp1_Update(Actor* thisx, GlobalContext* globalCtx) {
 void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2078);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -891,7 +1002,7 @@ void DoorWarp1_DrawBlueCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2098);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkelAnime_Update(&this->skelAnime);
 }
@@ -904,7 +1015,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     eye.y = (Math_CosS(globalCtx->state.frames * 200) * 120.0f) * 80.0f;
     eye.z = (Math_CosS(globalCtx->state.frames * 200) * 120.0f) * 80.0f;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2122);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
     func_8002EB44(&this->actor.world.pos, &eye, &eye, globalCtx->state.gfxCtx);
@@ -915,7 +1026,7 @@ void DoorWarp1_DrawPurpleCrystal(DoorWarp1* this, GlobalContext* globalCtx) {
     POLY_XLU_DISP = SkelAnime_Draw(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, NULL, NULL,
                                    &this->actor, POLY_XLU_DISP);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2152);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkelAnime_Update(&this->skelAnime);
 }
@@ -929,7 +1040,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     f32 xzScale;
     f32 temp_f0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2173);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     temp_f0 = 1.0f - (2.0f - this->unk_194) / 1.7f;
     if (this->actor.params != WARP_YELLOW && this->actor.params != WARP_DESTINATION &&
@@ -967,7 +1078,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     gDPSetColorDither(POLY_XLU_DISP++, G_AD_NOTPATTERN | G_CD_MAGICSQ);
 
     Matrix_Translate(this->actor.world.pos.x, this->actor.world.pos.y + 1.0f, this->actor.world.pos.z, MTXMODE_NEW);
-    gSPSegment(POLY_XLU_DISP++, 0x0A, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2247));
+    gSPSegment(POLY_XLU_DISP++, 0x0A, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
     Matrix_Push();
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -978,7 +1089,7 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
     Matrix_Translate(0.0f, this->unk_194 * 230.0f, 0.0f, MTXMODE_APPLY);
     xzScale = (((f32)this->unk_1AE * spE8) / 100.0f) + 1.0f;
     Matrix_Scale(xzScale, 1.0f, xzScale, MTXMODE_APPLY);
-    gSPSegment(POLY_XLU_DISP++, 0x09, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2267));
+    gSPSegment(POLY_XLU_DISP++, 0x09, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
     gSPDisplayList(POLY_XLU_DISP++, gWarpPortalDL);
     Matrix_Pop();
 
@@ -1016,11 +1127,11 @@ void DoorWarp1_DrawWarp(DoorWarp1* this, GlobalContext* globalCtx) {
         xzScale = (((f32)this->unk_1B0 * spE4) / 100.0f) + 1.0f;
         Matrix_Scale(xzScale, 1.0f, xzScale, MTXMODE_APPLY);
 
-        gSPSegment(POLY_XLU_DISP++, 0x09, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2336));
+        gSPSegment(POLY_XLU_DISP++, 0x09, MATRIX_NEWMTX(globalCtx->state.gfxCtx));
         gSPDisplayList(POLY_XLU_DISP++, gWarpPortalDL);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_door_warp1.c", 2340);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DoorWarp1_Draw(Actor* thisx, GlobalContext* globalCtx) {

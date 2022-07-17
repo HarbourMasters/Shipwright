@@ -1169,10 +1169,18 @@ void func_80A99048(EnKo* this, GlobalContext* globalCtx) {
         Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ELF, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
         if (ENKO_TYPE == ENKO_TYPE_CHILD_3) {
-            if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-                this->collider.dim.height += 200;
-                this->actionFunc = func_80A995CC;
-                return;
+            if (!gSaveContext.n64ddFlag) {
+                if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+                    this->collider.dim.height += 200;
+                    this->actionFunc = func_80A995CC;
+                    return;
+                }
+            } else {
+                if (!Flags_GetEventChkInf(7)) {
+                    this->collider.dim.height += 200;
+                    this->actionFunc = func_80A995CC;
+                    return;
+                }
             }
             Path_CopyLastPoint(this->path, &this->actor.world.pos);
         }
@@ -1348,7 +1356,7 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actor.shape.shadowAlpha = this->modelAlpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2095);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if ((s16)this->modelAlpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    EnKo_SetEnvColor(globalCtx->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, 255));
@@ -1366,5 +1374,5 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
                       this->modelAlpha);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2136);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

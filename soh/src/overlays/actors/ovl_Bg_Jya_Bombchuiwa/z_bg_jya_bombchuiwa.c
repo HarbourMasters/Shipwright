@@ -183,7 +183,7 @@ void BgJyaBombchuiwa_SpawnLightRay(BgJyaBombchuiwa* this, GlobalContext* globalC
     if (Actor_Spawn(&globalCtx->actorCtx, globalCtx, ACTOR_MIR_RAY, this->actor.world.pos.x, this->actor.world.pos.y,
                     this->actor.world.pos.z, 0, 0, 0, 0) == NULL) {
         // "Occurrence failure"
-        osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", "../z_bg_jya_bombchuiwa.c", 410,
+        osSyncPrintf("Ｅｒｒｏｒ : Mir_Ray 発生失敗(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->actor.params);
     }
 }
@@ -197,27 +197,27 @@ void BgJyaBombchuiwa_Update(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void BgJyaBombchuiwa_DrawRock(GlobalContext* globalCtx) {
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 436);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 439),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwa2DL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 443);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgJyaBombchuiwa_DrawLight(Actor* thisx, GlobalContext* globalCtx) {
     BgJyaBombchuiwa* this = (BgJyaBombchuiwa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 453);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 457),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, CLAMP_MAX((u32)(this->lightRayIntensity * 153.0f), 153));
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwaLight1DL);
     gDPPipeSync(POLY_XLU_DISP++);
     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, CLAMP_MAX((u32)(this->lightRayIntensity * 255.0f), 255));
     gSPDisplayList(POLY_XLU_DISP++, gBombchuiwaLight2DL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_jya_bombchuiwa.c", 472);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgJyaBombchuiwa_Draw(Actor* thisx, GlobalContext* globalCtx) {

@@ -156,7 +156,7 @@ void EnGe2_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->actor.targetMode = 6;
             break;
         default:
-            ASSERT(0, "0", "../z_en_ge2.c", 418);
+            ASSERT(0);
     }
 
     this->stateFlags = 0;
@@ -223,6 +223,14 @@ s32 Ge2_DetectPlayerInUpdate(GlobalContext* globalCtx, EnGe2* this, Vec3f* pos, 
 }
 
 s32 EnGe2_CheckCarpentersFreed(void) {
+    if (gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } 
+
     if ((u8)(gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
         return 1;
     }
@@ -449,7 +457,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe2_SetActionAfterTalk;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
@@ -458,7 +466,7 @@ void EnGe2_GiveCard(EnGe2* this, GlobalContext* globalCtx) {
         Message_CloseTextbox(globalCtx);
         this->actor.flags &= ~ACTOR_FLAG_16;
         this->actionFunc = EnGe2_WaitTillCardGiven;
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
@@ -646,7 +654,7 @@ void EnGe2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     EnGe2* this = (EnGe2*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ge2.c", 1274);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->eyeIndex]));
@@ -654,5 +662,5 @@ void EnGe2_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnGe2_OverrideLimbDraw, EnGe2_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ge2.c", 1291);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

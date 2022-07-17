@@ -70,7 +70,7 @@ void BgJyaZurerukabe_InitDynaPoly(BgJyaZurerukabe* this, GlobalContext* globalCt
     CollisionHeader_GetVirtual(collision, &colHeader);
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, &this->dyna.actor, colHeader);
     if (this->dyna.bgId == BG_ACTOR_MAX) {
-        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", "../z_bg_jya_zurerukabe.c", 194,
+        osSyncPrintf("Warning : move BG 登録失敗(%s %d)(name %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.id, this->dyna.actor.params);
     }
 }
@@ -124,7 +124,7 @@ void BgJyaZurerukabe_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     if (i == ARRAY_COUNT(D_8089B9F0)) {
         osSyncPrintf(VT_COL(RED, WHITE));
-        osSyncPrintf("home pos が変更されたみたい(%s %d)(arg_data 0x%04x)\n", "../z_bg_jya_zurerukabe.c", 299,
+        osSyncPrintf("home pos が変更されたみたい(%s %d)(arg_data 0x%04x)\n", __FILE__, __LINE__,
                      this->dyna.actor.params);
         osSyncPrintf(VT_RST);
     }

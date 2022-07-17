@@ -128,7 +128,7 @@ void EnSth_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     osSyncPrintf("bank_ID = %d\n", objectBankIdx);
     if (objectBankIdx < 0) {
-        ASSERT(0, "0", "../z_en_sth.c", 1564);
+        ASSERT(objectBankIdx < 0);
     }
     this->objectBankIdx = objectBankIdx;
     this->drawFunc = EnSth_Draw;
@@ -239,20 +239,42 @@ void EnSth_ParentRewardObtainedWait(EnSth* this, GlobalContext* globalCtx) {
 
 void EnSth_GivePlayerItem(EnSth* this, GlobalContext* globalCtx) {
     u16 getItemId = sGetItemIds[this->actor.params];
+    
+    if (gSaveContext.n64ddFlag) {
+        switch (getItemId) {
+            case GI_RUPEE_GOLD:
+                break;
+            case GI_WALLET_ADULT:
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_10_GOLD_SKULLTULA_REWARD, GI_WALLET_ADULT);
+                break;
+            case GI_STONE_OF_AGONY:
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_20_GOLD_SKULLTULA_REWARD, GI_STONE_OF_AGONY);
+                break;
+            case GI_WALLET_GIANT:
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_30_GOLD_SKULLTULA_REWARD, GI_WALLET_GIANT);
+                break;
+            case GI_BOMBCHUS_10:
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_40_GOLD_SKULLTULA_REWARD, GI_BOMBCHUS_10);
+                break;
+            case GI_HEART_PIECE:
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_50_GOLD_SKULLTULA_REWARD, GI_HEART_PIECE);
+                break;
+        }
+    } else {
+        switch (this->actor.params) {
+            case 1:
+            case 3:
+                switch (CUR_UPG_VALUE(UPG_WALLET)) {
+                    case 0:
+                        getItemId = GI_WALLET_ADULT;
+                        break;
 
-    switch (this->actor.params) {
-        case 1:
-        case 3:
-            switch (CUR_UPG_VALUE(UPG_WALLET)) {
-                case 0:
-                    getItemId = GI_WALLET_ADULT;
-                    break;
-
-                case 1:
-                    getItemId = GI_WALLET_GIANT;
-                    break;
-            }
-            break;
+                    case 1:
+                        getItemId = GI_WALLET_GIANT;
+                        break;
+                }
+                break;
+        }
     }
 
     func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 50.0f);
@@ -369,11 +391,11 @@ void EnSth_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Ve
     if (limbIndex == 15) {
         Matrix_MultVec3f(&D_80B0B49C, &this->actor.focus.pos);
         if (this->actor.params != 0) { // Children
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sth.c", 2079);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             gSPDisplayList(POLY_OPA_DISP++, D_80B0A3C0);
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sth.c", 2081);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }
@@ -392,7 +414,7 @@ void EnSth_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnSth* this = (EnSth*)thisx;
     Color_RGB8* envColor1;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sth.c", 2133);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSegments[6] = PHYSICAL_TO_VIRTUAL(globalCtx->objectCtx.status[this->objectBankIdx].segment);
     func_800943C8(globalCtx->state.gfxCtx);
@@ -409,5 +431,5 @@ void EnSth_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnSth_OverrideLimbDraw, EnSth_PostLimbDraw, &this->actor);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sth.c", 2176);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

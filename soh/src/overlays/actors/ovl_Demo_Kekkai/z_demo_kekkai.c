@@ -73,6 +73,36 @@ s32 DemoKekkai_CheckEventFlag(s32 params) {
     return Flags_GetEventChkInf(eventFlags[params]);
 }
 
+u32 TrialsDoneCount() {
+    u8 trialCount = 0;
+
+    if (gSaveContext.trialsDone[0] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[1] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[2] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[3] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[4] == 1) {
+        trialCount++;
+    }
+
+    if (gSaveContext.trialsDone[5] == 1) {
+        trialCount++;
+    }
+
+    return trialCount;
+}
+
 void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
@@ -96,6 +126,14 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->collider2.dim.radius = thisx->scale.x * 6100.0f;
             this->collider2.dim.height = thisx->scale.y * 5000.0f;
             this->collider2.dim.yShift = 300;
+
+            if (gSaveContext.n64ddFlag) {
+                int trialsToComplete = GetRandoSettingValue(RSK_TRIAL_COUNT);
+                if (trialsToComplete <= TrialsDoneCount()) {
+                    Actor_Kill(thisx);
+                    return;
+                }
+            }
             break;
         case KEKKAI_WATER:
         case KEKKAI_LIGHT:
@@ -203,9 +241,34 @@ void DemoKekkai_Update(Actor* thisx, GlobalContext* globalCtx2) {
 }
 
 void DemoKekkai_TrialBarrierDispel(Actor* thisx, GlobalContext* globalCtx) {
+    static s32 eventFlags[] = { 0xC3, 0xBC, 0xBF, 0xBE, 0xBD, 0xAD, 0xBB };
     static u16 csFrames[] = { 0, 280, 280, 280, 280, 280, 280 };
     s32 pad;
     DemoKekkai* this = (DemoKekkai*)thisx;
+
+    if (gSaveContext.n64ddFlag) {
+        switch (thisx->params) {
+            case KEKKAI_WATER:
+                gSaveContext.trialsDone[2] = 1;
+                break;
+            case KEKKAI_LIGHT:
+                gSaveContext.trialsDone[5] = 1;
+                break;
+            case KEKKAI_FIRE:
+                gSaveContext.trialsDone[1] = 1;
+                break;
+            case KEKKAI_SHADOW:
+                gSaveContext.trialsDone[3] = 1;
+                break;
+            case KEKKAI_SPIRIT:
+                gSaveContext.trialsDone[4] = 1;
+                break;
+            case KEKKAI_FOREST:
+                gSaveContext.trialsDone[0] = 1;
+                break;
+        }
+        Flags_SetEventChkInf(eventFlags[thisx->params]);
+    }
 
     if (globalCtx->csCtx.frames == csFrames[this->actor.params]) {
         func_800F3F3C(0xA);
@@ -253,7 +316,7 @@ void DemoKekkai_TrialBarrierIdle(Actor* thisx, GlobalContext* globalCtx) {
     if (this->collider2.base.acFlags & AC_HIT) {
         func_80078884(NA_SE_SY_CORRECT_CHIME);
         // "I got it"
-        LOG_STRING("当ったよ", "../z_demo_kekkai.c", 572);
+        LOG_STRING("当ったよ");
         this->actor.update = DemoKekkai_TrialBarrierDispel;
         this->timer = 0;
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(sSageCutscenes[this->actor.params]);
@@ -278,7 +341,6 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
 
     if (this->orbScale != 0.0f) {
-        if (1) {}
         alphas[2] = (s32)(this->energyAlpha * 202.0f);
         alphas[1] = (s32)(this->energyAlpha * 126.0f);
         alphas[0] = 0;
@@ -286,20 +348,20 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, GlobalContext* globalCtx2) {
             energyVtx[i].v.cn[3] = alphas[alphaIndex[i]];
         }
         colorIndex = (this->actor.params - 1) * 6;
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 632);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
         Matrix_Push();
         Matrix_Translate(0.0f, 1200.0f, 0.0f, MTXMODE_APPLY);
         Matrix_Scale(this->orbScale, this->orbScale, this->orbScale, MTXMODE_APPLY);
         Matrix_Translate(0.0f, -1200.0f, 0.0f, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 639),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, frames * 5, frames * -10, 0x20, 0x20, 1, frames * 5,
                                     frames * -10, 0x20, 0x20));
         gSPDisplayList(POLY_XLU_DISP++, gTrialBarrierOrbDL);
         Matrix_Pop();
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 656),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 50, 0, 100, 255);
@@ -315,7 +377,7 @@ void DemoKekkai_DrawTrialBarrier(Actor* thisx, GlobalContext* globalCtx2) {
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, frames * 5, frames * -10, 0x20, 0x20, 1, frames * 5,
                                     frames * -10, 0x20, 0x40));
         gSPDisplayList(POLY_XLU_DISP++, gTrialBarrierEnergyDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 696);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -325,16 +387,16 @@ void DemoKekkai_DrawTowerBarrier(Actor* thisx, GlobalContext* globalCtx) {
     s32 scroll;
 
     scroll = (s32)this->barrierScroll & 0xFFFF;
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 705);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 707),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 255, 170, 255, 255);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, scroll * 2, scroll * -4, 0x20, 0x40, 1, scroll * 2,
                                 scroll * -4, 0x20, 0x40));
     gSPDisplayList(POLY_XLU_DISP++, gTowerBarrierDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo_kekkai.c", 722);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void DemoKekkai_Reset(void) {

@@ -70,7 +70,7 @@ void ItemOcarina_Init(Actor* thisx, GlobalContext* globalCtx) {
             return;
     }
 
-    LOG_NUM("no", params, "../z_item_ocarina.c", 210);
+    LOG_NUM("no", params);
     this->spinRotOffset = 0x400;
 }
 
@@ -169,8 +169,16 @@ void ItemOcarina_DoNothing(ItemOcarina* this, GlobalContext* globalCtx) {
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
-        globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
-        gSaveContext.cutsceneTrigger = 1;
+        if (!gSaveContext.n64ddFlag) {
+            globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
+            gSaveContext.cutsceneTrigger = 1;
+        } else {
+            globalCtx->sceneLoadFlag = 0x14;
+            globalCtx->fadeTransition = 3;
+            gSaveContext.nextTransition = 3;
+            globalCtx->nextEntranceIndex = 0x050F;
+            gSaveContext.nextCutsceneIndex = 0;
+        }
     }
 }
 
@@ -181,7 +189,11 @@ void ItemOcarina_WaitInWater(ItemOcarina* this, GlobalContext* globalCtx) {
         this->actionFunc = ItemOcarina_StartSoTCutscene;
         this->actor.draw = NULL;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_OCARINA_OOT, 30.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx,
+                      gSaveContext.n64ddFlag
+                          ? GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT)
+                          : GI_OCARINA_OOT,
+                      30.0f, 50.0f);
 
         if ((globalCtx->gameplayFrames & 13) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
@@ -200,5 +212,15 @@ void ItemOcarina_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     func_8002EBCC(thisx, globalCtx, 0);
     func_8002ED80(thisx, globalCtx, 0);
+
+    if (gSaveContext.n64ddFlag) {
+        s32 randoGetItemId = GetRandomizedItemIdFromKnownCheck(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT);
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        return;
+    }
+
     GetItem_Draw(globalCtx, GID_OCARINA_TIME);
 }

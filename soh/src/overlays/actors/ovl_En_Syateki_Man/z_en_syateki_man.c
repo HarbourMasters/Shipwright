@@ -288,7 +288,6 @@ void EnSyatekiMan_WaitForGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
     EnSyatekiItm* gallery;
 
     SkelAnime_Update(&this->skelAnime);
-    if (1) {}
     gallery = ((EnSyatekiItm*)this->actor.parent);
     if ((gallery->actor.update != NULL) && (gallery->signal == ENSYATEKI_END)) {
         this->csCam = OnePointCutscene_Init(globalCtx, 8002, -99, &this->actor, MAIN_CAM);
@@ -336,7 +335,10 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                     this->tempGallery = this->actor.parent;
                     this->actor.parent = NULL;
                     if (!LINK_IS_ADULT) {
-                        if (!(gSaveContext.itemGetInf[0] & 0x2000)) {
+                        if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1E)) {
+                            this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
+                            Flags_SetTreasure(globalCtx, 0x1E);
+                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_BULLET_BAG));
                             if (CUR_UPG_VALUE(UPG_BULLET_BAG) == 1) {
@@ -348,7 +350,10 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                             this->getItemId = GI_RUPEE_PURPLE;
                         }
                     } else {
-                        if (!(gSaveContext.itemGetInf[0] & 0x4000)) {
+                        if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
+                            this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
+                            Flags_SetTreasure(globalCtx, 0x1F);
+                        } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
                                          CUR_UPG_VALUE(UPG_QUIVER));
                             switch (CUR_UPG_VALUE(UPG_QUIVER)) {

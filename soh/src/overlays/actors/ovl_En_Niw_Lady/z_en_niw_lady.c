@@ -200,7 +200,7 @@ void func_80ABA244(EnNiwLady* this, GlobalContext* globalCtx) {
     EnNiw* currentCucco;
     s32 phi_s1;
 
-    this->cuccosInPen = 0;
+    this->cuccosInPen = gSaveContext.n64ddFlag ? (7 - GetRandoSettingValue(RSK_CUCCO_COUNT)) : 0;
     currentCucco = (EnNiw*)globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (currentCucco != NULL) {
         if (currentCucco->actor.id == ACTOR_EN_NIW) {
@@ -303,8 +303,15 @@ void func_80ABA654(EnNiwLady* this, GlobalContext* globalCtx) {
         this->unk_26E = 0xB;
         if (!(gSaveContext.itemGetInf[0] & 0x1000)) {
             this->actor.parent = NULL;
-            this->getItemId = GI_BOTTLE;
-            func_8002F434(&this->actor, globalCtx, GI_BOTTLE, 100.0f, 50.0f);
+
+            if (gSaveContext.n64ddFlag) {
+                s32 itemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_CHILD, GI_BOTTLE);
+                func_8002F434(&this->actor, globalCtx, itemId, 100.0f, 50.0f);
+            } else {
+                this->getItemId = GI_BOTTLE;
+                func_8002F434(&this->actor, globalCtx, GI_BOTTLE, 100.0f, 50.0f);
+            }
+
             this->actionFunc = func_80ABAC00;
             return;
         }
@@ -386,7 +393,14 @@ void func_80ABA9B8(EnNiwLady* this, GlobalContext* globalCtx) {
             case 0:
                 Message_CloseTextbox(globalCtx);
                 this->actor.parent = NULL;
-                func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
+
+                if (gSaveContext.n64ddFlag) {
+                    s32 itemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+                    func_8002F434(&this->actor, globalCtx, itemId, 200.0f, 100.0f);
+                } else {
+                    func_8002F434(&this->actor, globalCtx, GI_POCKET_EGG, 200.0f, 100.0f);
+                }
+
                 this->actionFunc = func_80ABAC00;
                 break;
             case 1:
@@ -439,6 +453,10 @@ void func_80ABAC00(EnNiwLady* this, GlobalContext* globalCtx) {
         getItemId = this->getItemId;
         if (LINK_IS_ADULT) {
             getItemId = !(gSaveContext.itemGetInf[2] & 0x1000) ? GI_POCKET_EGG : GI_COJIRO;
+
+            if (gSaveContext.n64ddFlag && getItemId == GI_POCKET_EGG) {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_ANJU_AS_ADULT, GI_POCKET_EGG);
+            }
         }
         func_8002F434(&this->actor, globalCtx, getItemId, 200.0f, 100.0f);
     }
@@ -532,7 +550,6 @@ void EnNiwLady_Update(Actor* thisx, GlobalContext* globalCtx) {
             }
             Actor_UpdateBgCheckInfo(globalCtx, thisx, 20.0f, 20.0f, 60.0f, 0x1D);
             Collider_UpdateCylinder(thisx, &this->collider);
-            if (1) {}
             CollisionCheck_SetOC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
         }
     }
@@ -572,7 +589,7 @@ void EnNiwLady_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnNiwLady* this = (EnNiwLady*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_niw_lady.c", 1347);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_27E != 0) {
         func_80093D18(globalCtx->state.gfxCtx);
         gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, 255);
@@ -581,5 +598,5 @@ void EnNiwLady_Draw(Actor* thisx, GlobalContext* globalCtx) {
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnNiwLady_OverrideLimbDraw, NULL, this);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_niw_lady.c", 1370);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

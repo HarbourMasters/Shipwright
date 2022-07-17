@@ -100,7 +100,7 @@ static int FillWritableHandle(
     pFileEntry->dwFlags  = dwFlags | MPQ_FILE_EXISTS;
 
     // Initialize the file time, CRC32 and MD5
-    assert(sizeof(hf->hctx) >= sizeof(hash_state));
+    //assert(sizeof(hf->hctx) >= sizeof(hash_state));
     memset(pFileEntry->md5, 0, MD5_DIGEST_SIZE);
     md5_init((hash_state *)hf->hctx);
     pFileEntry->dwCrc32 = crc32(0, Z_NULL, 0);

@@ -400,10 +400,17 @@ ZAPD/BuildInfo.h
 
 DebugObj/*
 ReleaseObj/*
+.tags
+tags
+oot.otr
+*.sav
+shipofharkinian.ini
+shipofharkinian.json
 
-// Switch Stuff
+# Switch Stuff
 
 *.nro
 *.nacp
 ZAPDTR/ZAPDUtils/lib/*
 !/soh/icon.jpg
+

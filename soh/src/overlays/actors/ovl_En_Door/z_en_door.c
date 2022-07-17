@@ -159,6 +159,13 @@ void EnDoor_SetupType(EnDoor* this, GlobalContext* globalCtx) {
         }
         this->actor.world.rot.y = 0x0000;
         if (doorType == DOOR_LOCKED) {
+            // unlock the door behind the hammer blocks
+            // in the fire temple entryway when rando'd
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 4) {
+                // RANDOTODO don't do this when keysanity is enabled
+                Flags_SetSwitch(globalCtx, 0x17);
+            }
+
             if (!Flags_GetSwitch(globalCtx, this->actor.params & 0x3F)) {
                 this->lockTimer = 10;
             }
@@ -333,13 +340,12 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnDoor* this = (EnDoor*)thisx;
 
     if (this->actor.objBankIndex == this->requiredObjBankIndex) {
-        OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 910);
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D18(globalCtx->state.gfxCtx);
         SkelAnime_DrawOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, EnDoor_OverrideLimbDraw,
                           NULL, &this->actor);
         if (this->actor.world.rot.y != 0) {
-            if (1) {}
             if (this->actor.world.rot.y > 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDoorRightDL);
             } else {
@@ -350,6 +356,6 @@ void EnDoor_Draw(Actor* thisx, GlobalContext* globalCtx) {
             Actor_DrawDoorLock(globalCtx, this->lockTimer, DOORLOCK_NORMAL);
         }
 
-        CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_door.c", 941);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

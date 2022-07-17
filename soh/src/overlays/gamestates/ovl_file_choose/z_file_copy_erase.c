@@ -822,7 +822,7 @@ void FileChoose_EraseConfirm(GameState* thisx) {
         this->actionTimer = 8;
         Audio_PlaySoundGeneral(NA_SE_SY_FSEL_CLOSE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
     } else if (CHECK_BTN_ANY(input->press.button, BTN_A | BTN_START)) {
-        Save_GetSaveMetaInfo(this->selectedFileIndex)->n64ddFlag = this->connectorAlpha[this->selectedFileIndex] = 0;
+        this->connectorAlpha[this->selectedFileIndex] = 0;
         Audio_PlaySoundGeneral(NA_SE_EV_DIAMOND_SWITCH, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
         this->actionTimer = 8;
         this->configMode = CM_ERASE_ANIM_1;
@@ -931,7 +931,6 @@ void FileChoose_EraseAnim1(GameState* thisx) {
 
             // probably a fake match, there should be a better chained assignment
             this->confirmButtonAlpha[0] = this->confirmButtonAlpha[1] = 0;
-            if (1) {}
             this->fileInfoAlpha[this->selectedFileIndex] = this->nameBoxAlpha[this->selectedFileIndex] =
                 this->confirmButtonAlpha[1];
 

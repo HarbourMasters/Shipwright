@@ -1008,11 +1008,26 @@ void BossGanondrof_Death(BossGanondrof* this, GlobalContext* globalCtx) {
         case DEATH_THROES:
             switch (this->work[GND_ACTION_STATE]) {
                 case DEATH_SPASM:
-                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME])) {
+                    if (Animation_OnFrame(&this->skelAnime, this->fwork[GND_END_FRAME]) && !gSaveContext.n64ddFlag) {
                         this->fwork[GND_END_FRAME] = Animation_GetLastFrame(&gPhantomGanonAirDamageAnim);
                         Animation_Change(&this->skelAnime, &gPhantomGanonAirDamageAnim, 0.5f, 0.0f,
-                                         this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
+                                            this->fwork[GND_END_FRAME], ANIMMODE_ONCE_INTERP, 0.0f);
                         this->work[GND_ACTION_STATE] = DEATH_LIMP;
+                    } else if (gSaveContext.n64ddFlag) {
+                        // Skip to death scream animation and move ganondrof to middle
+                        this->deathState = DEATH_SCREAM;
+                        this->timers[0] = 50;
+                        Animation_MorphToLoop(&this->skelAnime, &gPhantomGanonScreamAnim, -10.0f);
+                        this->actor.world.pos.x = GND_BOSSROOM_CENTER_X;
+                        this->actor.world.pos.y = GND_BOSSROOM_CENTER_Y + 83.0f;
+                        this->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
+                        this->actor.shape.rot.y = 0;
+                        this->work[GND_BODY_DECAY_INDEX] = 0;
+                        Audio_PlayActorSound2(&this->actor, NA_SE_EN_FANTOM_LAST);
+
+                        // Move Player out of the center of the room
+                        player->actor.world.pos.x = GND_BOSSROOM_CENTER_X - 200.0f;
+                        player->actor.world.pos.z = GND_BOSSROOM_CENTER_Z;
                     }
                     break;
                 case DEATH_LIMP:
@@ -1024,6 +1039,9 @@ void BossGanondrof_Death(BossGanondrof* this, GlobalContext* globalCtx) {
                 case DEATH_HUNCHED:
                     bodyDecayLevel = 1;
                     break;
+            }
+            if (gSaveContext.n64ddFlag) {
+                break;
             }
             Math_ApproachS(&this->actor.shape.rot.y, this->work[GND_VARIANCE_TIMER] * -100, 5, 0xBB8);
             Math_ApproachF(&this->cameraNextEye.z, this->targetPos.z + 60.0f, 0.02f, 0.5f);
@@ -1505,7 +1523,7 @@ void BossGanondrof_Draw(Actor* thisx, GlobalContext* globalCtx) {
     BossGanondrof* this = (BossGanondrof*)thisx;
     EnfHG* horse;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_ganondrof.c", 3716);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     osSyncPrintf("MOVE P = %x\n", this->actor.update);
     osSyncPrintf("STOP TIMER = %d ==============\n", this->actor.freezeTimer);
     horse = (EnfHG*)this->actor.child;
@@ -1537,6 +1555,6 @@ void BossGanondrof_Draw(Actor* thisx, GlobalContext* globalCtx) {
                       BossGanondrof_PostLimbDraw, this);
     osSyncPrintf("DRAW 22\n");
     POLY_OPA_DISP = Gameplay_SetFog(globalCtx, POLY_OPA_DISP);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_ganondrof.c", 3814);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     osSyncPrintf("DRAW END %d\n", this->actor.params);
 }

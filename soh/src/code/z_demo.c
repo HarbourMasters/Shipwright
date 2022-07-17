@@ -244,7 +244,7 @@ void func_80064824(GlobalContext* globalCtx, CutsceneContext* csCtx, CsCmdBase* 
         case 3:
             if (sp3F != 0) {
                 Flags_SetEnv(globalCtx, 0);
-                if (gSaveContext.entranceIndex == 0x0053) {
+                if (gSaveContext.entranceIndex == 0x0053 || (gSaveContext.n64ddFlag && gSaveContext.entranceIndex == 0x05F4)) {
                     Flags_SetEnv(globalCtx, 2);
                 }
             }
@@ -491,6 +491,12 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
     Player* player = GET_PLAYER(globalCtx);
     s32 temp = 0;
 
+    // Automatically skip certain cutscenes when in rando
+    // cmd->base == 33: Zelda escaping with impa cutscene
+    bool randoCsSkip = (gSaveContext.n64ddFlag && cmd->base == 33);
+    bool debugCsSkip = (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
+                        (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0));
+
     if ((gSaveContext.gameMode != 0) && (gSaveContext.gameMode != 3) && (globalCtx->sceneNum != SCENE_SPOT00) &&
         (csCtx->frames > 20) &&
         (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_A) ||
@@ -501,9 +507,8 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
         temp = 1;
     }
 
-    if ((csCtx->frames == cmd->startFrame) || (temp != 0) ||
-        ((csCtx->frames > 20) && CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
-         (gSaveContext.fileNum != 0xFEDC)) && CVar_GetS32("gDebugEnabled", 0)) {
+    if ((csCtx->frames == cmd->startFrame) || (temp != 0) || ((csCtx->frames > 20) && (randoCsSkip || debugCsSkip))) {
+
         csCtx->state = CS_STATE_UNSKIPPABLE_EXEC;
         Audio_SetCutsceneFlag(0);
         gSaveContext.unk_1410 = 1;
@@ -1910,13 +1915,10 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
     Gfx* displayList;
     Gfx* prevDisplayList;
 
-    if (0) {} // Necessary to match
-
     if (gSaveContext.cutsceneIndex >= 0xFFF0) {
-        if (0) {} // Also necessary to match
 
         if (BREG(0) != 0) {
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_demo.c", 4101);
+            OPEN_DISPS(globalCtx->state.gfxCtx);
 
             prevDisplayList = POLY_OPA_DISP;
             displayList = Graph_GfxPlusOne(POLY_OPA_DISP);
@@ -1926,7 +1928,7 @@ void func_80068C3C(GlobalContext* globalCtx, CutsceneContext* csCtx) {
             Graph_BranchDlist(prevDisplayList, displayList);
             POLY_OPA_DISP = displayList;
 
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_demo.c", 4108);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         csCtx->frames++;
@@ -2050,6 +2052,18 @@ void Cutscene_HandleEntranceTriggers(GlobalContext* globalCtx) {
     u8 requiredAge;
     s16 i;
 
+    if (gSaveContext.n64ddFlag &&
+        // don't skip epona escape cutscenes 
+        gSaveContext.entranceIndex != 650 &&
+        gSaveContext.entranceIndex != 654 &&
+        gSaveContext.entranceIndex != 658 &&
+        gSaveContext.entranceIndex != 1142 &&
+        // don't skip nabooru iron knuckle cs
+        gSaveContext.entranceIndex != 141) {
+        gSaveContext.showTitleCard = false;
+        return;
+    }
+
     for (i = 0; i < ARRAY_COUNT(sEntranceCutsceneTable); i++) {
         entranceCutscene = &sEntranceCutsceneTable[i];
 
@@ -2076,29 +2090,43 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC)) {
-            Flags_SetEventChkInf(0xAC);
-            gSaveContext.entranceIndex = 0x0123;
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xAC);
+                gSaveContext.entranceIndex = 0x0123;
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if ((gSaveContext.entranceIndex == 0x00DB) && LINK_IS_ADULT && (gSaveContext.eventChkInf[4] & 0x0100) &&
                    (gSaveContext.eventChkInf[4] & 0x0200) && (gSaveContext.eventChkInf[4] & 0x0400) &&
                    !Flags_GetEventChkInf(0xAA)) {
-            Flags_SetEventChkInf(0xAA);
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xAA);
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if ((gSaveContext.entranceIndex == 0x05E0) && !Flags_GetEventChkInf(0xC1)) {
-            Flags_SetEventChkInf(0xC1);
-            Item_Give(globalCtx, ITEM_OCARINA_FAIRY);
-            gSaveContext.entranceIndex = 0x011E;
-            gSaveContext.cutsceneIndex = 0xFFF0;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xC1);
+                Item_Give(globalCtx, ITEM_OCARINA_FAIRY);
+                gSaveContext.entranceIndex = 0x011E;
+                gSaveContext.cutsceneIndex = 0xFFF0;
+            }
         } else if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) &&
                    LINK_IS_ADULT && !Flags_GetEventChkInf(0xC4) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA)) {
-            Flags_SetEventChkInf(0xC4);
-            gSaveContext.entranceIndex = 0x0053;
-            gSaveContext.cutsceneIndex = 0xFFF8;
+            if (!gSaveContext.n64ddFlag) {
+                Flags_SetEventChkInf(0xC4);
+                gSaveContext.entranceIndex = 0x0053;
+                gSaveContext.cutsceneIndex = 0xFFF8;
+            }
         } else if (!Flags_GetEventChkInf(0xC7) &&
                    (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO)) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
+
+            // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
+            // and exit.
+            if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
+                return;
+            }
             gSaveContext.cutsceneIndex = 0xFFF0;
         }
     }

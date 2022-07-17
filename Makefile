@@ -15,7 +15,7 @@ ZAPDUtils:
 
 StormLib:
 	@echo "Building $@..."
-	LDFLAGS="" aarch64-none-elf-cmake -DCMAKE_TOOLCHAIN_FILE=${DEVKITPRO}/cmake/Switch.cmake -DCMAKE_BUILD_TYPE=Release -B $(CURDIR)/StormLib/nxbuild -S $(CURDIR)/StormLib
+	LDFLAGS="" ${DEVKITPRO}/portlibs/switch/bin/aarch64-none-elf-cmake -DCMAKE_TOOLCHAIN_FILE=${DEVKITPRO}/cmake/Switch.cmake -DCMAKE_BUILD_TYPE=Release -B $(CURDIR)/StormLib/nxbuild -S $(CURDIR)/StormLib
 	@$(MAKE) --no-print-directory -C $(CURDIR)/StormLib/nxbuild -f $(CURDIR)/StormLib/nxbuild/Makefile
 
 libultraship: StormLib ZAPDUtils

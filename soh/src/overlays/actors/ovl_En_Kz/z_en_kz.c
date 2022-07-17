@@ -72,7 +72,8 @@ static AnimationInfo sAnimationInfo[] = {
 u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+    if ((gSaveContext.n64ddFlag && gSaveContext.dungeonsDone[2]) ||
+        (!gSaveContext.n64ddFlag && CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE))) {
         return 0x402B;
     } else if (gSaveContext.eventChkInf[3] & 8) {
         return 0x401C;
@@ -85,10 +86,11 @@ u16 EnKz_GetTextNoMaskChild(GlobalContext* globalCtx, EnKz* this) {
 u16 EnKz_GetTextNoMaskAdult(GlobalContext* globalCtx, EnKz* this) {
     Player* player = GET_PLAYER(globalCtx);
 
+    // this works because both ITEM_NONE and later trade items are > ITEM_FROG
     if (INV_CONTENT(ITEM_TRADE_ADULT) >= ITEM_FROG) {
         if (!(gSaveContext.infTable[19] & 0x200)) {
-            if (CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2)) {
-                return 0x401F;
+            if (!gSaveContext.n64ddFlag) {
+                return CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
             } else {
                 return 0x4012;
             }
@@ -236,7 +238,7 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (func_80A9C95C(globalCtx, this, &this->unk_1E0.unk_00, 340.0f, EnKz_GetText, func_80A9C6C0)) {
-        if ((this->actor.textId == 0x401A) && !(gSaveContext.eventChkInf[3] & 8)) {
+        if (((gSaveContext.n64ddFlag && LINK_IS_CHILD) || this->actor.textId == 0x401A) && !(gSaveContext.eventChkInf[3] & 8)) {
             if (func_8002F368(globalCtx) == EXCH_ITEM_LETTER_RUTO) {
                 this->actor.textId = 0x401B;
                 this->sfxPlayed = false;
@@ -250,11 +252,13 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
         if (LINK_IS_ADULT) {
             if ((INV_CONTENT(ITEM_TRADE_ADULT) == ITEM_PRESCRIPTION) &&
                 (func_8002F368(globalCtx) == EXCH_ITEM_PRESCRIPTION)) {
-                this->actor.textId = 0x4014;
-                this->sfxPlayed = false;
-                player->actor.textId = this->actor.textId;
-                this->isTrading = true;
-                return;
+                if (!gSaveContext.n64ddFlag || !Flags_GetTreasure(globalCtx, 0x1F)) {
+                    this->actor.textId = 0x4014;
+                    this->sfxPlayed = false;
+                    player->actor.textId = this->actor.textId;
+                    this->isTrading = true;
+                    return;
+                }
             }
 
             this->isTrading = false;
@@ -262,7 +266,12 @@ void func_80A9CB18(EnKz* this, GlobalContext* globalCtx) {
                 this->actor.textId = CHECK_QUEST_ITEM(QUEST_SONG_SERENADE) ? 0x4045 : 0x401A;
                 player->actor.textId = this->actor.textId;
             } else {
-                this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                if (!gSaveContext.n64ddFlag) {
+                    this->actor.textId = CHECK_OWNED_EQUIP(EQUIP_TUNIC, 2) ? 0x401F : 0x4012;
+                } else {
+                    this->actor.textId = 0x4012;
+                }
+
                 player->actor.textId = this->actor.textId;
             }
         }
@@ -330,8 +339,29 @@ void EnKz_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->unk_1E0.unk_00 = 0;
     Animation_ChangeByInfo(&this->skelanime, sAnimationInfo, ENKZ_ANIM_0);
 
-    if (gSaveContext.eventChkInf[3] & 8) {
-        EnKz_SetMovedPos(this, globalCtx);
+    if (!gSaveContext.n64ddFlag) {
+        if (gSaveContext.eventChkInf[3] & 8) {
+            EnKz_SetMovedPos(this, globalCtx);
+        }
+    } else {
+        int zorasFountain = GetRandoSettingValue(RSK_ZORAS_FOUNTAIN);
+        switch (zorasFountain) {
+            case 0:
+                if (gSaveContext.eventChkInf[3] & 8) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                }
+                break;
+            case 1:
+                if (LINK_IS_ADULT) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                } else if (gSaveContext.eventChkInf[3] & 8) {
+                    EnKz_SetMovedPos(this, globalCtx);
+                }
+                break;
+            case 2:
+                EnKz_SetMovedPos(this, globalCtx);
+                break;
+        }
     }
 
     if (LINK_IS_ADULT) {
@@ -432,7 +462,16 @@ void EnKz_SetupGetItem(EnKz* this, GlobalContext* globalCtx) {
         this->unk_1E0.unk_00 = 1;
         this->actionFunc = EnKz_StartTimer;
     } else {
-        getItemId = this->isTrading == true ? GI_FROG : GI_TUNIC_ZORA;
+        if (gSaveContext.n64ddFlag) {
+            if (this->isTrading) {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_TRADE_PRESCRIPTION, GI_FROG);
+                Flags_SetTreasure(globalCtx, 0x1F);
+            } else {
+                getItemId = GetRandomizedItemIdFromKnownCheck(RC_ZD_KING_ZORA_THAWED, GI_TUNIC_ZORA);
+            }
+        } else {
+            getItemId = this->isTrading ? GI_FROG : GI_TUNIC_ZORA;
+        }
         yRange = fabsf(this->actor.yDistToPlayer) + 1.0f;
         xzRange = this->actor.xzDistToPlayer + 1.0f;
         func_8002F434(&this->actor, globalCtx, getItemId, xzRange, yRange);
@@ -496,12 +535,12 @@ void EnKz_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnKz* this = (EnKz*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_kz.c", 1259);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sEyeSegments[this->eyeIdx]));
     func_800943C8(globalCtx->state.gfxCtx);
     SkelAnime_DrawFlexOpa(globalCtx, this->skelanime.skeleton, this->skelanime.jointTable, this->skelanime.dListCount,
                           EnKz_OverrideLimbDraw, EnKz_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_kz.c", 1281);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

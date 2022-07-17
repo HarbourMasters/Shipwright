@@ -126,7 +126,12 @@ void func_809B0558(EnAni* this, GlobalContext* globalCtx) {
         }
         gSaveContext.itemGetInf[1] |= 0x20;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+            func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+        }
     }
 }
 
@@ -134,7 +139,13 @@ void func_809B05F0(EnAni* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         EnAni_SetupAction(this, func_809B0558);
     }
-    func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+
+    if (gSaveContext.n64ddFlag) {
+        s32 getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
+    } else {
+        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+    }
 }
 
 void func_809B064C(EnAni* this, GlobalContext* globalCtx) {
@@ -319,7 +330,7 @@ void EnAni_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnAni* this = (EnAni*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ani.c", 719);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800943C8(globalCtx->state.gfxCtx);
 
@@ -328,5 +339,5 @@ void EnAni_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnAni_OverrideLimbDraw, EnAni_PostLimbDraw, this);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ani.c", 736);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

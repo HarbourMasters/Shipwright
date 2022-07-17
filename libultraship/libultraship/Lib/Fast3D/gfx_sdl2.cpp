@@ -13,24 +13,30 @@
 #include "SDL.h"
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
-#elif !defined(__SWITCH__)
-#include <SDL2/SDL.h>
-#define GL_GLEXT_PROTOTYPES 1
-#include <SDL2/SDL_opengles2.h>
-#else
+#elif __APPLE__
+#include <SDL.h>
+#elif __SWITCH__
 #include <SDL2/SDL.h>
 #include <switch.h>
 #include "glad/glad.h"
+#else
+#include <SDL2/SDL.h>
+#define GL_GLEXT_PROTOTYPES 1
+#include <SDL2/SDL_opengles2.h>
 #endif
 
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 #include "../../SwitchImpl.h"
+#include "../../Cvar.h"
+#include "../../Hooks.h"
+
 #include "gfx_window_manager_api.h"
 #include "gfx_screen_config.h"
 #ifdef _WIN32
 #include <WTypesbase.h>
 #endif
 #include <time.h>
+#include "../../GameSettings.h"
 
 #define GFX_API_NAME "SDL2 - OpenGL"
 
@@ -133,11 +139,20 @@ static int target_fps = 60;
 #define FRAME_INTERVAL_US_NUMERATOR 1000000
 #define FRAME_INTERVAL_US_DENOMINATOR (target_fps)
 
-static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
+static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32_t width, uint32_t height) {
     SDL_Init(SDL_INIT_VIDEO);
+
+    SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
 
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+#if defined(__APPLE__)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG); // Always required on Mac
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+#endif
 
 #ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
@@ -152,6 +167,9 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen) {
 
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
+
+    window_width = width;
+    window_height = height;
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
@@ -240,6 +258,15 @@ static int translate_scancode(int scancode) {
     }
 }
 
+static int untranslate_scancode(int translatedScancode) {
+    for (int i = 0; i < 512; i++) {
+        if (inverted_scancode_table[i] == translatedScancode) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 static void gfx_sdl_onkeydown(int scancode) {
     int key = translate_scancode(scancode);
     if (on_key_down_callback != NULL) {
@@ -278,8 +305,15 @@ static void gfx_sdl_handle_events(void) {
                     SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
                 }
                 break;
+            case SDL_DROPFILE:
+                CVar_SetString("gDroppedFile", event.drop.file);
+                CVar_SetS32("gNewFileDropped", 1);
+                Game::SaveSettings();
+                break;
             case SDL_QUIT:
-                is_running = false;
+                ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+                SDL_Quit(); // bandaid fix for linux window closing issue
+                exit(0);
         }
     }
 }
@@ -347,6 +381,10 @@ static float gfx_sdl_get_detected_hz(void) {
     return 0;
 }
 
+static const char* gfx_sdl_get_key_name(int scancode) {
+    return SDL_GetScancodeName((SDL_Scancode) untranslate_scancode(scancode));
+}
+
 struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_init,
     gfx_sdl_set_keyboard_callbacks,
@@ -362,7 +400,8 @@ struct GfxWindowManagerAPI gfx_sdl = {
     gfx_sdl_get_time,
     gfx_sdl_set_target_fps,
     gfx_sdl_set_maximum_frame_latency,
-    gfx_sdl_get_detected_hz
+    gfx_sdl_get_detected_hz,
+    gfx_sdl_get_key_name
 };
 
 #endif

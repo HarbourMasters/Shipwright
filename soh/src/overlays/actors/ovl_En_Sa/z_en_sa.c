@@ -387,6 +387,9 @@ s32 func_80AF5DFC(EnSa* this, GlobalContext* globalCtx) {
         return 1;
     }
     if (globalCtx->sceneNum == SCENE_SPOT05 && (gSaveContext.eventChkInf[4] & 1)) {
+        if (gSaveContext.n64ddFlag) {
+            return 5;
+        }
         return CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ? 2 : 5;
     }
     if (globalCtx->sceneNum == SCENE_SPOT04 && !CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
@@ -614,10 +617,27 @@ void func_80AF67D0(EnSa* this, GlobalContext* globalCtx) {
     }
 }
 
+void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, RandomizerCheck check) {
+    GetItemID getItemId =
+        GetRandomizedItemIdFromKnownCheck(check, GI_SARIAS_SONG);
+
+    if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1F)) {
+        Flags_SetTreasure(globalCtx, 0x1F);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1F)) {
+        func_8002F434(&saria->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    }
+}
+
 void func_80AF683C(EnSa* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(player->actor.world.pos.z >= -2220.0f) && !Gameplay_InCsMode(globalCtx)) {
+        if (gSaveContext.n64ddFlag) {
+            GivePlayerRandoRewardSaria(this, globalCtx, RC_SONG_FROM_SARIA);
+            return;
+        }
+
         globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(spot05_scene_Cs_005730);
         gSaveContext.cutsceneTrigger = 1;
         this->actionFunc = func_80AF68E4;
@@ -803,7 +823,7 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     };
     EnSa* this = (EnSa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1444);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (this->alpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTextures[this->rightEyeIndex]));
@@ -817,5 +837,5 @@ void EnSa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnSa_OverrideLimbDraw, EnSa_PostLimbDraw, &this->actor, this->alpha);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_sa.c", 1497);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

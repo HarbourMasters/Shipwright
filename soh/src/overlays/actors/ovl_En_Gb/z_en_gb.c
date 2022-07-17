@@ -351,7 +351,7 @@ void func_80A2FA50(EnGb* this, GlobalContext* globalCtx) {
 
 void func_80A2FB40(EnGb* this, GlobalContext* globalCtx) {
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE && Message_ShouldAdvance(globalCtx)) {
-        func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
         this->actionFunc = func_80A2FBB0;
     }
 }
@@ -361,7 +361,7 @@ void func_80A2FBB0(EnGb* this, GlobalContext* globalCtx) {
         this->dyna.actor.parent = NULL;
         this->actionFunc = func_80A2FC0C;
     } else {
-        func_8002F434(&this->dyna.actor, globalCtx, GI_BOTTLE, 100.0f, 10.0f);
+        func_8002F434(&this->dyna.actor, globalCtx, gSaveContext.n64ddFlag ? GetRandomizedItemIdFromKnownCheck(RC_MARKET_10_BIG_POES, GI_BOTTLE) : GI_BOTTLE, 100.0f, 10.0f);
     }
 }
 
@@ -423,7 +423,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnGb* this = (EnGb*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 763);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -436,7 +436,7 @@ void EnGb_Draw(Actor* thisx, GlobalContext* globalCtx) {
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           NULL, NULL, &this->dyna.actor);
     EnGb_DrawCagedSouls(this, globalCtx);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 796);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGb_UpdateCagedSouls(EnGb* this, GlobalContext* globalCtx) {
@@ -517,7 +517,7 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 914);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D84(globalCtx->state.gfxCtx);
 
@@ -543,12 +543,12 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         }
         Matrix_Scale(0.007f, 0.007f, 1.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_gb.c", 955),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_gb.c", 962);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

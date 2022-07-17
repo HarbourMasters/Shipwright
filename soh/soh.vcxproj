@@ -143,7 +143,7 @@
     <ClCompile>
       <WarningLevel>TurnOffAllWarnings</WarningLevel>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>INCLUDE_GAME_PRINTF;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;ENABLE_DX11;%(PreprocessorDefinitions)GLEW_STATIC </PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;ENABLE_DX11;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -179,7 +179,63 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\Enhancements\cosmetics\CosmeticsEditor.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\actorViewer.cpp" />
+    <ClCompile Include="soh\Enhancements\gfx.c" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_dungeon.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_overworld.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_item.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_castle_town.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_kakariko.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_shadow_temple.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_spirit_temple.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_forest_temple.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_training_grounds.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_deku_tree.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ice_cavern.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_fire_temple.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_lost_woods.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_bottom_of_the_well.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_hyrule_field.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_valley.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ganons_castle.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_water_temple.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_zoras_domain.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_jabujabus_belly.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_dodongos_cavern.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_death_mountain.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\cosmetics.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\custom_messages.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\debug.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\dungeon.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\entrance.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\fill.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hints.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\item.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\item_list.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\item_location.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\item_pool.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\logic.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\menu.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\music.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\patch.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\playthrough.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\preset.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\random.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\rando_main.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\settings.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\setting_descriptions.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\shops.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\sound_effects.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\spoiler_log.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\starting_inventory.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\tinyxml2.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\trial.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\3drando\utils.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\randomizer.cpp" />
+    <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp" />
     <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
@@ -885,9 +941,50 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark_data.c" />
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
+    
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\actorViewer.h" />
+    <ClCompile Include="soh\Enhancements\randomizer\randomizer.h" />
+    <ClInclude Include="soh\Enhancements\gfx.h" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\category.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\cosmetics.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\custom_messages.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\debug.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\dungeon.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\entrance.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\fill.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\hints.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\hint_list.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\item.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\item_list.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\item_location.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\item_pool.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\keys.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\location_access.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\logic.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\menu.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\music.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\patch.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\playthrough.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\pool_functions.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\preset.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\random.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\randomizer.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\rando_main.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\settings.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\setting_descriptions.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\shops.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\sound_effects.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\spoiler_log.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\starting_inventory.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\text.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\tinyxml2.h" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\trial.hpp" />
+    <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp" />
+    <ClInclude Include="randomizerTypes.h" />
+    <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />
@@ -942,7 +1039,6 @@
     <ClInclude Include="soh\Enhancements\debugger\debugSaveEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\ImGuiHelpers.h" />
     <ClInclude Include="soh\gameconsole.h" />
-    <ClInclude Include="soh\Lib\nlohmann\json.hpp" />
     <ClInclude Include="soh\OTRAudio.h" />
     <ClInclude Include="soh\OTRGlobals.h" />
     <ClInclude Include="soh\SaveManager.h" />

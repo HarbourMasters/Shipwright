@@ -227,10 +227,27 @@ u16 EnZl4_GetText(GlobalContext* globalCtx, Actor* thisx) {
     return ret;
 }
 
+void GivePlayerRandoRewardZeldaChild(EnZl4* zelda, GlobalContext* globalCtx, RandomizerCheck check) {
+    if (zelda->actor.parent != NULL && zelda->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
+        !Flags_GetTreasure(globalCtx, 0x1E)) {
+        Flags_SetTreasure(globalCtx, 0x1E);
+    } else if (!Flags_GetTreasure(globalCtx, 0x1E) && !GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA) && Actor_TextboxIsClosing(&zelda->actor, globalCtx) &&
+               (globalCtx->msgCtx.textId == 0x703C || globalCtx->msgCtx.textId == 0x703D)) {
+        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_LETTER_ZELDA);
+        func_8002F434(&zelda->actor, globalCtx, getItemId, 10000.0f, 100.0f);
+    } else if (Flags_GetTreasure(globalCtx, 0x1E) && !Player_InBlockingCsMode(globalCtx, GET_PLAYER(globalCtx))) {
+        gSaveContext.unk_13EE = 0x32;
+        gSaveContext.eventChkInf[4] |= 1;
+    }
+}
+
 s16 func_80B5B9B0(GlobalContext* globalCtx, Actor* thisx) {
+    EnZl4* this = (EnZl4*)thisx;
+
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
         return false;
     }
+
     return true;
 }
 
@@ -372,6 +389,12 @@ void EnZl4_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.textId = -1;
     this->eyeExpression = this->mouthExpression = ZL4_MOUTH_NEUTRAL;
 
+    if (gSaveContext.n64ddFlag) {
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
+        this->actionFunc = EnZl4_Idle;
+        return;
+    }
+
     if (gSaveContext.sceneSetupIndex >= 4) {
         Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ZL4_ANIM_0);
         this->actionFunc = EnZl4_TheEnd;
@@ -389,6 +412,7 @@ void EnZl4_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->csState = ZL4_CS_LEGEND;
             this->talkState = 0;
         }
+
         this->actionFunc = EnZl4_Cutscene;
     }
 }
@@ -434,6 +458,7 @@ s32 EnZl4_CsWaitForPlayer(EnZl4* this, GlobalContext* globalCtx) {
             return false;
         }
     }
+
     playerx->world.pos = this->actor.world.pos;
     rotY = this->actor.shape.rot.y;
     playerx->world.pos.x += 56.0f * Math_SinS(rotY);
@@ -1196,7 +1221,13 @@ void EnZl4_Cutscene(EnZl4* this, GlobalContext* globalCtx) {
 void EnZl4_Idle(EnZl4* this, GlobalContext* globalCtx) {
     func_800343CC(globalCtx, &this->actor, &this->unk_1E0.unk_00, this->collider.dim.radius + 60.0f, EnZl4_GetText,
                   func_80B5B9B0);
+
     func_80B5BB78(this, globalCtx);
+    
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardZeldaChild(this, globalCtx, RC_HC_ZELDAS_LETTER);
+        return;
+    }
 }
 
 void EnZl4_TheEnd(EnZl4* this, GlobalContext* globalCtx) {
@@ -1289,12 +1320,12 @@ void EnZl4_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gChildZeldaEyeSquintTex, gChildZeldaEyeOutTex,   gChildZeldaEyeInTex,
     };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_zl4.c", 2012);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(eyeTex[this->rightEyeState]));
     gSPSegment(POLY_OPA_DISP++, 0x09, SEGMENTED_TO_VIRTUAL(eyeTex[this->leftEyeState]));
     gSPSegment(POLY_OPA_DISP++, 0x0A, SEGMENTED_TO_VIRTUAL(mouthTex[this->mouthState]));
     func_80093D18(globalCtx->state.gfxCtx);
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           EnZl4_OverrideLimbDraw, EnZl4_PostLimbDraw, this);
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_zl4.c", 2043);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
