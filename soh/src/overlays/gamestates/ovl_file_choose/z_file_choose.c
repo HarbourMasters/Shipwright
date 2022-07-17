@@ -419,7 +419,7 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         (!fileSelectSpoilerFileLoaded &&
             SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
-            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
+            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
         }
         bool silent = true;
         if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
@@ -1894,7 +1894,7 @@ void FileChoose_Main(GameState* thisx) {
     };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-    
+
     if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
     }

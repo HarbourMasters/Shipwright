@@ -1,5 +1,4 @@
-#ifndef RANDOMIZER_H
-#define RANDOMIZER_H
+#pragma once
 
 #include <unordered_map>
 #include <string>
@@ -54,5 +53,3 @@ void Rando_Init(void);
 }
 #endif
 
-
-#endif

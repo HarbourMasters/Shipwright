@@ -82,12 +82,6 @@
     <Filter Include="Source Files\soh\Enhancements\debugger">
       <UniqueIdentifier>{04fc1c52-49ff-48e2-ae23-2c00867374f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\soh\Lib">
-      <UniqueIdentifier>{dbcf07c4-80b1-4c88-ac54-2bbdd8f53ee4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\soh\Lib\nlohmann">
-      <UniqueIdentifier>{9c880c8e-492b-48f6-b230-1fd269ea74b1}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -3946,9 +3940,6 @@
     </ClInclude>
     <ClInclude Include="soh\OTRAudio.h">
       <Filter>Source Files\soh</Filter>
-    </ClInclude>
-    <ClInclude Include="soh\Lib\nlohmann\json.hpp">
-      <Filter>Source Files\soh\Lib\nlohmann</Filter>
     </ClInclude>
     <ClInclude Include="soh\SaveManager.h">
       <Filter>Source Files\soh</Filter>

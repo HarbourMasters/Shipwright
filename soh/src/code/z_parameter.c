@@ -1710,6 +1710,8 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             } else {
                 gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
             }
+        } else {
+            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
