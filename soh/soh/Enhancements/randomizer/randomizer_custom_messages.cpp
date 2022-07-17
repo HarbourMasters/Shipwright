@@ -1,8 +1,6 @@
 #include "randomizer.h"
 #include "soh/Enhancements/custom_message/CustomMessage.h"
 
-using namespace std::literals::string_literals;
-
 #define MESSAGES(eng, ger, fra) (new std::string[]{eng, ger, fra})
 
 void Randomizer::CreateCustomMessages() {

@@ -1507,5 +1507,8 @@ extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck
 
 extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
     const std::string& getItemText = OTRGlobals::Instance->gRandomizer->GetCustomGetItemMessage(giid);
+    if (getItemText == "") {
+        return false;
+    }
     return CopyStringToCharBuffer(getItemText, buffer, maxBufferSize);
 }

@@ -60,8 +60,6 @@ void CustomMessage::CreateGetItemMessage(GetItemID giid, ItemID iid, std::string
             ReplaceColors(formattedMessage);
             formattedMessage += MESSAGE_END();
             this->getItemMessageTable[i].emplace(giid, formattedMessage);
-        } else {
-            this->getItemMessageTable[i].emplace(giid, MESSAGE_END());
         }
     }
 }
@@ -70,15 +68,7 @@ std::string CustomMessage::RetrieveGetItemMessage(GetItemID giid) {
     std::unordered_map<GetItemID, std::string>::const_iterator result =
         getItemMessageTable[gSaveContext.language].find(giid);
     if (result == getItemMessageTable[gSaveContext.language].end()) {
-        switch (gSaveContext.language) {
-            case LANGUAGE_FRA:
-                return "Il n'y a pas de message personnalisé pour cet élément.";
-            case LANGUAGE_GER:
-                return "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.";
-            case LANGUAGE_ENG:
-            default:
-                return "There is no custom message for this item.";
-        }
+        return "";
     }
     return result->second;
 }
