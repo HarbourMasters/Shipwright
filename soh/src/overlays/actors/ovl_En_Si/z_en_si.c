@@ -101,7 +101,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                     itemGiveId = sGetItemTable[getItemId - 1].itemId;
                 }
                 Item_Give(globalCtx, itemGiveId);
-                if (CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
+                if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || itemGiveId != ITEM_SKULL_TOKEN) {
                     player->actor.freezeTimer = 20;
                 }
                 Message_StartTextbox(globalCtx, textId, NULL);

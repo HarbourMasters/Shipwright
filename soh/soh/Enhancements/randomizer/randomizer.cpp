@@ -2960,6 +2960,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_COW_GROTTO_GOSSIP_STONE;
                 case 14355:
                     return RC_HC_STORMS_GROTTO_GOSSIP_STONE;
+                case 10753:
+                    return RC_HF_GS_COW_GROTTO;
+                case 10754:
+                    return RC_HF_GS_NEAR_KAK_GROTTO;
+                case 11778:
+                    return RC_HC_GS_STORMS_GROTTO;
                 default:
                     return RC_UNKNOWN_CHECK;
             }
@@ -2996,6 +3002,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             switch (actorParams) {
                 case 262:
                     return RC_LLR_FREESTANDING_POH;
+            }
+            break;
+        case 77:
+            switch (actorParams) {
+                case -29176:
+                    return RC_MARKET_GS_GUARD_HOUSE;
             }
             break;
         case 82:
@@ -3044,6 +3056,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE;
                 case 14623:
                     return RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE;
+                case 19458:
+                    return RC_KF_GS_KNOW_IT_ALL_HOUSE;
+                case 27649:
+                    return RC_KF_GS_BEAN_PATCH;
+                case 19460:
+                    return RC_KF_GS_HOUSE_OF_TWINS;
             }
             break;
         case 86:
@@ -3054,6 +3072,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SFM_MAZE_UPPER_GOSSIP_STONE;
                 case 14876:
                     return RC_SFM_SARIA_GOSSIP_STONE;
+                case 19720:
+                    return RC_SFM_GS;
             }
             break;
         case 87:
@@ -3116,6 +3136,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                 case 14365:
                     return RC_LW_GOSSIP_STONE;
+                case 27905:
+                    return RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE;
+                case 27906:
+                    return RC_LW_GS_BEAN_PATCH_NEAR_THEATER;
+                case 19716:
+                    return RC_LW_GS_ABOVE_THEATER;
             }
             break;
         case 92:
@@ -3149,6 +3175,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HC_MALON_GOSSIP_STONE;
                 case 14347:
                     return RC_HC_ROCK_WALL_GOSSIP_STONE;
+                case -29180:
+                    return RC_HC_GS_TREE;
             }
             break;
         case 96:
