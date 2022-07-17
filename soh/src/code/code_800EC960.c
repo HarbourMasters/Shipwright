@@ -1249,18 +1249,18 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(u8 dpad) {
-    if (CVar_GetS32("gOcarinaControls", 0) == 0) {  // N64 controls
+    if (CVar_GetS32("gOcarinaControls", 0) == 0) {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
         sOcarinaA4BtnMap = BTN_CRIGHT;
         sOcarinaF4BtnMap = BTN_CDOWN;
         sOcarinaD4BtnMap = BTN_A;
-    } else {                            // 3DS controls
-        sOcarinaD5BtnMap = BTN_A;
-        sOcarinaB4BtnMap = BTN_CRIGHT;  // C right = X
-        sOcarinaA4BtnMap = BTN_CLEFT;   // C left  = Y
-        sOcarinaF4BtnMap = BTN_CDOWN;   // C down  = R
-        sOcarinaD4BtnMap = BTN_L;
+    } else {
+        sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
+        sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
+        sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
+        sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
+        sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
     }
 
     if (dpad) {
@@ -1507,12 +1507,16 @@ void func_800ED200(void) {
     u8 j;
     u8 k;
 
-    // This causes L to disable ocarina songs. Because L is used for a note with
-    // 3DS controls, turning on the option will disable this.
+    u32 disableSongBtnMap;
+    if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+        disableSongBtnMap = BTN_L;
+    } else {
+        disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    }
+
     if (
-        CHECK_BTN_ANY(sCurOcarinaBtnPress, BTN_L)
+        CHECK_BTN_ANY(sCurOcarinaBtnPress, disableSongBtnMap)
         && CHECK_BTN_ANY(sCurOcarinaBtnPress, sOcarinaAllowedBtnMask)
-        && CVar_GetS32("gOcarinaControls", 0) == 0
     ) {
         func_800ECC04((u16)D_80130F3C);
         return;
@@ -1608,13 +1612,24 @@ void func_800ED458(s32 arg0) {
             sCurOcarinaBtnIdx = 4;
         }
 
-        // These two conditionals appear to handle Z and R shifting the pitch of the played note
-        if (sCurOcarinaBtnVal != 0xFF && sCurOcarinaBtnPress & 0x10 && sRecordingState != 2) {
+        u32 noteSharpBtnMap;
+        if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+            noteSharpBtnMap = BTN_R;
+        } else {
+            noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+        }
+        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteSharpBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x80;
             sCurOcarinaBtnVal++;
         }
 
-        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & 0x2000) && (sRecordingState != 2)) {
+        u32 noteFlatBtnMap;
+        if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+            noteFlatBtnMap = BTN_Z;
+        } else {
+            noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+        }
+        if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteFlatBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x40;
             sCurOcarinaBtnVal--;
         }

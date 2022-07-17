@@ -331,6 +331,7 @@ namespace SohImGui {
         console->Init();
         overlay->Init();
         controller->Init();
+        ocarina->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
 
