@@ -4748,6 +4748,7 @@ void DrawRandoEditor(bool& open) {
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
+    Randomizer::CreateCustomMessages();
 }
 
 extern "C" {

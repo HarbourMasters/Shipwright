@@ -1,54 +1,33 @@
-#include "randomizer_custom_messages.h"
 #include "randomizer.h"
-#include <variables.h>
+#include "soh/Enhancements/custom_message/CustomMessage.h"
 
 using namespace std::literals::string_literals;
+
+#define MESSAGES(eng, ger, fra) (new std::string[]{eng, ger, fra})
+
+void Randomizer::CreateCustomMessages() {
+    CustomMessage* customMessage = CustomMessage::Instance;
+    customMessage->CreateGetItemMessage(
+        GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+        MESSAGES("You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!", "", ""));
+    customMessage->CreateGetItemMessage(
+        GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+        MESSAGES("You got a %rBig Poe in a bottle%w!&Sell it to the Ghost Shop!", "", ""));
+    customMessage->CreateGetItemMessage(
+        GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+        MESSAGES("You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!", "", ""));
+    customMessage->CreateGetItemMessage(
+        GI_BOTTLE_WITH_FISH, ITEM_FISH,
+        MESSAGES("You got a %rFish in a bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!", "",
+                 ""));
+
+
+}
 
 std::string Randomizer::GetCustomGetItemMessage(GetItemID giid) {
     if (!gSaveContext.n64ddFlag) {
         return "Not Randomized.";
     }
 
-    switch (giid) {
-        case GI_BOTTLE_WITH_BLUE_FIRE:
-            switch (gSaveContext.language) { 
-                case LANGUAGE_FRA:
-                case LANGUAGE_GER:
-                case LANGUAGE_ENG:
-                default:
-                    return ITEM_OBTAINED(ITEM_BLUE_FIRE) + "You got a " + COLOR(QM_RED) + "Bottle with Blue " +
-                           NEWLINE() + "Fire" + COLOR(QM_WHITE) + "! Use it to melt Red Ice!" +
-                           MESSAGE_END();
-            }
-        default:
-            switch (gSaveContext.language) { 
-                case LANGUAGE_FRA:
-                    return "Il n'y a pas de message personnalisé pour cet élément.";
-                case LANGUAGE_GER:
-                    return "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.";
-                case LANGUAGE_ENG:
-                default:
-                    return "There is no custom message for this item.";
-            }
-    }
-}
-
-std::string MESSAGE_END() {
-    return "\x02"s;
-}
-
-std::string ITEM_OBTAINED(uint8_t x) {
-    return "\x13"s + char(x);
-}
-
-std::string NEWLINE() {
-    return "\x01"s;
-}
-
-std::string COLOR(uint8_t x) {
-    return "\x05"s + char(x);
-}
-
-std::string WAIT_FOR_INPUT() {
-    return "\x04"s;
+    return CustomMessage::Instance->RetrieveGetItemMessage(giid);
 }

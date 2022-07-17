@@ -9,7 +9,6 @@
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
-
 class OTRGlobals
 {
 public:

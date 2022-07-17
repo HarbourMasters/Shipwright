@@ -38,6 +38,7 @@
 #include "Enhancements/debugger/debugger.h"
 #include "Enhancements/randomizer/randomizer.h"
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
+#include <soh/Enhancements/custom_message/CustomMessage.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
@@ -55,6 +56,7 @@
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
+CustomMessage* CustomMessage::Instance;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
@@ -106,6 +108,7 @@ extern "C" void OTRExtScanner() {
 extern "C" void InitOTR() {
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
+    CustomMessage::Instance = new CustomMessage();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)

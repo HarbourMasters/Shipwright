@@ -179,6 +179,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="soh\Enhancements\custom_message\CustomMessage.cpp" />
     <ClCompile Include="soh\Enhancements\cosmetics\CosmeticsEditor.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\actorViewer.cpp" />
     <ClCompile Include="soh\Enhancements\gfx.c" />
@@ -942,9 +943,9 @@
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark.c" />
     <ClCompile Include="src\overlays\misc\ovl_kaleido_scope\z_lmap_mark_data.c" />
     <ClCompile Include="src\overlays\misc\ovl_map_mark_data\z_map_mark_data.c" />
-    
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="soh\Enhancements\custom_message\CustomMessage.h" />
     <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h" />
     <ClInclude Include="soh\Enhancements\debugger\actorViewer.h" />
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h" />
@@ -985,7 +986,6 @@
     <ClInclude Include="soh\Enhancements\randomizer\3drando\trial.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp" />
     <ClInclude Include="randomizerTypes.h" />
-    <ClInclude Include="soh\Enhancements\randomizer\randomizer_custom_messages.h" />
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />

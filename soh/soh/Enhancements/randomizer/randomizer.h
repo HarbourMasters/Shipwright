@@ -5,6 +5,7 @@
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
 #include <randomizerTypes.h>
+#include <memory>
 
 class Randomizer {
   private:
@@ -42,6 +43,7 @@ class Randomizer {
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     std::string GetCustomGetItemMessage(GetItemID giid);
+    static void CreateCustomMessages();
 };
 
 #ifdef __cplusplus
