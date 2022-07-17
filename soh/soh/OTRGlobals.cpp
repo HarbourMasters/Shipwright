@@ -1515,11 +1515,12 @@ extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, 
 
 extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
+    uint16_t textId = msgCtx->textId;
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
     if (gSaveContext.n64ddFlag) {
-        if (msgCtx->textId == 0xF8) {
+        if (textId == 0xF8) {
             if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
                     (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
                 font->charTexBuf[0] = 0x23;
@@ -1528,15 +1529,15 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
                 switch (gSaveContext.language) {
                     case LANGUAGE_FRA:
                         return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "Il n'y a pas de message personnalisé pour cet élément.", buffer, maxBufferSize);
+                                   "Il n'y a pas de message personnalisé pour cet élément.\x02", buffer, maxBufferSize);
                     case LANGUAGE_GER:
                         return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.", buffer,
+                                   "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.\x02", buffer,
                                    maxBufferSize);
                     case LANGUAGE_ENG:
                     default:
                         return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "There is no custom message for this item.", buffer, maxBufferSize);
+                                   "There is no custom message for this item.\x02", buffer, maxBufferSize);
                 }
             }
         }
