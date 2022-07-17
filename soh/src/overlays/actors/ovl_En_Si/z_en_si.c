@@ -93,16 +93,18 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
-                s32 getItemId = ITEM_SKULL_TOKEN;
+                s32 textId = 0xB4;
+                s32 itemGiveId = ITEM_SKULL_TOKEN;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                    s32 getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                    textId = sGetItemTable[getItemId - 1].textId;
+                    itemGiveId = sGetItemTable[getItemId - 1].itemId;
                 }
-                //getItemId = ITEM_DINS_FIRE;
-                Item_Give(globalCtx, getItemId);
+                Item_Give(globalCtx, itemGiveId);
                 if (CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
                     player->actor.freezeTimer = 20;
                 }
-                Message_StartTextbox(globalCtx, 0xB4, NULL);
+                Message_StartTextbox(globalCtx, textId, NULL);
                 Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 this->actionFunc = func_80AFB950;
             } else {
@@ -122,13 +124,15 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
-        s32 getItemId = ITEM_SKULL_TOKEN;
+        s32 textId = 0xB4;
+        s32 itemGiveId = ITEM_SKULL_TOKEN;
         if (gSaveContext.n64ddFlag) {
-            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            s32 getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            textId = sGetItemTable[getItemId - 1].textId;
+            itemGiveId = sGetItemTable[getItemId - 1].itemId;
         }
-        //getItemId = ITEM_DINS_FIRE;
-        Item_Give(globalCtx, getItemId);
-        Message_StartTextbox(globalCtx, 0xB4, NULL);
+        Item_Give(globalCtx, itemGiveId);
+        Message_StartTextbox(globalCtx, textId, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
     }
