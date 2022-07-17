@@ -1512,3 +1512,32 @@ extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, 
     }
     return CopyStringToCharBuffer(getItemText, buffer, maxBufferSize);
 }
+
+extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx, char* buffer, const int maxBufferSize) {
+    MessageContext* msgCtx = &globalCtx->msgCtx;
+    Font* font = &msgCtx->font;
+    if (gSaveContext.n64ddFlag) {
+        if (msgCtx->textId == 0xF8) {
+            if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
+                    (GetItemID)GET_PLAYER(globalCtx)->getItemId, font->msgBuf, sizeof(font->msgBuf))) {
+                font->charTexBuf[0] = 0x23;
+                return true;
+            } else {
+                switch (gSaveContext.language) {
+                    case LANGUAGE_FRA:
+                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
+                                   "Il n'y a pas de message personnalisé pour cet élément.", buffer, maxBufferSize);
+                    case LANGUAGE_GER:
+                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
+                                   "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.", buffer,
+                                   maxBufferSize);
+                    case LANGUAGE_ENG:
+                    default:
+                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
+                                   "There is no custom message for this item.", buffer, maxBufferSize);
+                }
+            }
+        }
+    }
+    return false;
+}

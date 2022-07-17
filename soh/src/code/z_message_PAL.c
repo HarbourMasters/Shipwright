@@ -1662,7 +1662,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
         gSaveContext.eventInf[0] = gSaveContext.eventInf[1] = gSaveContext.eventInf[2] = gSaveContext.eventInf[3] = 0;
     }
 
-    if (sTextIsCredits) {
+    if (CustomMessage_RetrieveIfExists(globalCtx, font->msgBuf, sizeof(font->msgBuf))) {
+        osSyncPrintf("Found custom message");
+    } else if (sTextIsCredits) {
         Message_FindCreditsMessage(globalCtx, textId);
         msgCtx->msgLength = font->msgLength;
         char* src = (uintptr_t)font->msgOffset;
@@ -1735,11 +1737,11 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             } else {
                 msgCtx->msgLength = font->msgLength = CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
             }
-        } else if (gSaveContext.n64ddFlag && textId == 0xF8) {
+        } /*else if (gSaveContext.n64ddFlag && textId == 0xF8) {
             msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
                 GET_PLAYER(globalCtx)->getItemId, font->msgBuf, sizeof(font->msgBuf));
             font->charTexBuf[0] = 0x23;
-        } else {
+        }*/ else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
             memcpy(font->msgBuf, src, font->msgLength);
