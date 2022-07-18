@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined(__linux__) && defined(X11_SUPPORTED)
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
