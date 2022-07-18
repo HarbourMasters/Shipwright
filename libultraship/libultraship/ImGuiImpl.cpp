@@ -1202,6 +1202,7 @@ namespace SohImGui {
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
+                Tooltip("Enables camera control\nNote: You must remap C buttons off of\nthe right stick in the controller\nconfig menu, and map the camera stick\nto the right stick.");
 
                 ImGui::EndMenu();
             }
