@@ -477,16 +477,38 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton)
     {
         int val = CVar_GetS32(cvarName, defaultValue);
-
         ImGui::Text(text, val);
+        if(PlusMinusButton) {
+            std::string MinusBTNName = " - ##";
+            MinusBTNName += cvarName;
+            if (ImGui::Button(MinusBTNName.c_str())) {
+                val--;
+                CVar_SetS32(cvarName, val);
+                needs_save = true;
+            }
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+        }
 
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVar_SetS32(cvarName, val);
             needs_save = true;
+        }
+
+        if(PlusMinusButton) {
+            std::string PlusBTNName = " + ##";
+            PlusBTNName += cvarName;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            if (ImGui::Button(PlusBTNName.c_str())) {
+                val++;
+                CVar_SetS32(cvarName, val);
+                needs_save = true;
+            }
         }
 
         if (val < min)
@@ -504,7 +526,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage)
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton)
     {
         float val = CVar_GetFloat(cvarName, defaultValue);
 
@@ -513,10 +535,34 @@ namespace SohImGui {
         else
             ImGui::Text(text, static_cast<int>(100 * val));
 
+        if(PlusMinusButton) {
+            std::string MinusBTNName = " - ##";
+            MinusBTNName += cvarName;
+            if (ImGui::Button(MinusBTNName.c_str())) {
+                val -= 0.1f;
+                CVar_SetFloat(cvarName, val);
+                needs_save = true;
+            }
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+        }
+
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
             CVar_SetFloat(cvarName, val);
             needs_save = true;
+        }
+
+        if(PlusMinusButton) {
+            std::string PlusBTNName = " + ##";
+            PlusBTNName += cvarName;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            if (ImGui::Button(PlusBTNName.c_str())) {
+                val += 0.1f;
+                CVar_SetFloat(cvarName, val);
+                needs_save = true;
+            }
         }
 
         if (val < min)
@@ -836,6 +882,16 @@ namespace SohImGui {
                         ImGui::Text("Jitter fix: >= %d FPS", fps);
                     }
 
+                    std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
+                    std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
+                    if (ImGui::Button(MinusBTNELT.c_str())) {
+                        val--;
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
                     if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 250, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(cvar, val);
@@ -848,6 +904,14 @@ namespace SohImGui {
                         "to work on one frame while GPU works on the previous frame.\n"
                         "This setting should be used when your computer is too slow\n"
                         "to do CPU + GPU work in time.");
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(PlusBTNELT.c_str())) {
+                        val++;
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
                 }
 
 
@@ -955,54 +1019,54 @@ namespace SohImGui {
                         {
                             EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Red Potions");
-                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "");
+                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Red Potions");
                             EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
                             Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                             Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
+                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
                             EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
                             Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                             EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
                             Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
-                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Blue Potions");
                             EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
                             Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
 
-                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
                             EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
                             Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                             EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Milk");
-                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "");
+                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Milk");
                             EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
                             Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
-                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
+                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Half Milk");
                             EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
                             Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Fairies");
-                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "");
+                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairies");
                             EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
                             Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
-                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "");
+                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairy Revivals");
                             EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
                             Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
@@ -1091,7 +1155,7 @@ namespace SohImGui {
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
                         Tooltip("Randomize the animation played on the menu after a certain time");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
-                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
+                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "", 0, true);
                         }
 
                         ImGui::EndMenu();
@@ -1163,6 +1227,16 @@ namespace SohImGui {
                         ImGui::Text("Frame interpolation: %d FPS", fps);
                     }
 
+                    std::string MinusBTNFPSI = " - ##FPSInterpolation";
+                    std::string PlusBTNFPSI = " + ##FPSInterpolation";
+                    if (ImGui::Button(MinusBTNFPSI.c_str())) {
+                        val--;
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
                     if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(fps_cvar, val);
@@ -1175,6 +1249,14 @@ namespace SohImGui {
                         "and might give a worse result.\n"
                         "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
                         "Ctrl+Click for keyboard input");
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(PlusBTNFPSI.c_str())) {
+                        val++;
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
                 }
                 if (impl.backend == Backend::DX11)
                 {
