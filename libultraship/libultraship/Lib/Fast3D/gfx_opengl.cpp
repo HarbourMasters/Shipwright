@@ -476,6 +476,11 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "texel.rgb = mix(texel.rgb, new_texel, vGrayscaleColor.a);");
     }
 
+    if(cc_features.opt_grayscale) {
+        append_line(fs_buf, &fs_len, "float light = (texel.r + texel.g + texel.b) / 7.0;");
+        append_line(fs_buf, &fs_len, "texel.rgb = vec3(light, light, light);");
+    }
+
     if (cc_features.opt_alpha) {
         if (cc_features.opt_alpha_threshold) {
             append_line(fs_buf, &fs_len, "if (texel.a < 8.0 / 256.0) discard;");
@@ -849,9 +854,7 @@ void gfx_opengl_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     if (noise_scale != 0.0f) {
         current_noise_scale = 1.0f / noise_scale;
     }
-
     glBindFramebuffer(GL_FRAMEBUFFER, fb.fbo);
-
     current_framebuffer = fb_id;
 }
 
