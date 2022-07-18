@@ -1,3 +1,5 @@
+#pragma once
+
 /*  RetroArch - A frontend for libretro.
  *  Copyright (C) 2018-2018 - Natinusala
  *  Copyright (C) 2018-2018 - M4xw
@@ -12,10 +14,7 @@
  *
  *  You should have received a copy of the GNU General Public License along with RetroArch.
  *  If not, see <http://www.gnu.org/licenses/>.
- */
-
-#ifndef __SWITCH_PERFORMANCE_PROFILES_H
-#define __SWITCH_PERFORMANCE_PROFILES_H
+*/
 
 static const char *SWITCH_CPU_PROFILES[] = {
     "Maximum Performance",
@@ -27,19 +26,6 @@ static const char *SWITCH_CPU_PROFILES[] = {
     "Powersaving Mode 3",
 };
 
-#define SWITCH_DEFAULT_CPU_PROFILE 3 /* Stock Performance */
-#define LIBNX_MAX_CPU_PROFILE 0 /* Max Performance */
-
-static const char *SWITCH_CPU_SPEEDS[] = {
-    "1785 MHz",
-    "1581 MHz",
-    "1224 MHz",
-    "1020 MHz",
-    "918 MHz",
-    "816 MHz",
-    "714 MHz"
-};
-
 static unsigned SWITCH_CPU_SPEEDS_VALUES[] = {
     1785000000,
     1581000000,
@@ -49,5 +35,3 @@ static unsigned SWITCH_CPU_SPEEDS_VALUES[] = {
     816000000,
     714000000
 };
-
-#endif

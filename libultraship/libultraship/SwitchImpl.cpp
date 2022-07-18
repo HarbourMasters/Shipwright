@@ -26,7 +26,6 @@ static bool hasFocus  = true;
 
 void InitKeyboard(){
     Result rc = 0;
-    char tmpoutstr[16] = {0};
     rc = swkbdCreate(&kbd, 0);
     if (R_SUCCEEDED(rc))
         swkbdConfigMakePresetDefault(&kbd);
@@ -37,14 +36,15 @@ void InitKeyboard(){
 void UpdateKeyboard() {
     ImGuiIO* io = &ImGui::GetIO();
     int length = 512;
-    char* message;
+    char* message = nullptr;
 
     if(WaitFramesToUpdate > 0)
         WaitFramesToUpdate--;
 
     if(WaitFramesToUpdate){
         ImGui::ClearActiveID();
-        free(message);
+        if(message != nullptr)
+            free(message);
     }
 
     if(io->WantTextInput && !WaitFramesToUpdate){
@@ -58,7 +58,8 @@ void UpdateKeyboard() {
 
         if(R_SUCCEEDED(rc)){
             state->ClearText();
-            state->OverwriteData = &message[0];
+            state->OverwriteData = message;
+            state->OnKeyPressed(ImGuiKey_Enter);
         }
 
         WaitFramesToUpdate = 2;
@@ -137,11 +138,11 @@ const char* RandomTexts[] = {
     "This is the port all true gamers dock at"
     "Enhancements? Times Savers? Cheats? You want them? They're yours my friend!",
     "They say you gotta have the BIIIIG salad",
-    "They say Louis stopped working on the imports so he can focus on the exports.",
+    "They say Louis stopped working on the imports so he can focus on the exports",
     "They say that the harbour masters loves a game with the right amount of 'o'",
-    "They say ZAPD is good software.",
+    "They say ZAPD is good software",
     "You can't play your port on the bathroom? thats lame",
-    "They say their 60fps mode is broken."
+    "They say their 60fps mode is broken"
 };
 
 void DetectAppletMode(){
@@ -229,7 +230,9 @@ void Ship::Switch::Update(){
 }
 
 void Ship::Switch::Exit(){
+#ifdef DEBUG
     socketExit();
+#endif
     clkrstExit();
     appletSetGamePlayRecordingState(false);
 }
@@ -263,5 +266,7 @@ float Ship::Switch::GetDPI(){
         case HANDHELD_MODE:
             return 236.8717f;
     }
+
+    return 1.0f;
 }
 #endif
