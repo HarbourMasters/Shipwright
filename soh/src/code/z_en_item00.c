@@ -1297,7 +1297,7 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
  * Draw Function used for most collectible types of En_Item00 (ammo, bombs, sticks, nuts, magic...).
  */
 void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
-    if ((gSaveContext.n64ddFlag && this->getItemId != GI_NONE) || this->actor.params == ITEM00_SMALL_KEY) {
+    if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
         s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
