@@ -46,7 +46,7 @@ void CustomMessage::ReplaceColors(std::string& string) {
     }
 }
 
-void CustomMessage::FormatMessage(std::string& message, ItemID iid) {
+void CustomMessage::FormatCustomMessage(std::string& message, ItemID iid) {
     message.insert(0, ITEM_OBTAINED(iid));
     size_t start_pos = 0;
     std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
@@ -63,9 +63,9 @@ void CustomMessage::FormatMessage(std::string& message, ItemID iid) {
 
 
 bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
-    FormatMessage(messages.english, iid);
-    FormatMessage(messages.german, iid);
-    FormatMessage(messages.french, iid);
+    FormatCustomMessage(messages.english, iid);
+    FormatCustomMessage(messages.german, iid);
+    FormatCustomMessage(messages.french, iid);
     const uint16_t textID = giid;
     auto result = messageTables.find(tableID);
     if (result == messageTables.end()) {

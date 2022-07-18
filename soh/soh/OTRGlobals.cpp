@@ -1542,5 +1542,20 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             }
         }
     }
+    if (textId == 0x00B4 || textId == 0x00B5) {
+        if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            font->charTexBuf[0] = 0x03;
+            std::string message;
+            if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
+                textId = 0x00B4;
+            } else {
+                textId = 0x00B5;
+            }
+            message = CustomMessage::Instance->RetrieveMessage("BaseGameOverrides", textId);
+            if (message != "") {
+                return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(message, buffer, maxBufferSize);
+            }
+        }
+    }
     return false;
 }

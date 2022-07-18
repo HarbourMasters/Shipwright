@@ -6,12 +6,15 @@
 #include "global.h"
 #include "vt.h"
 #include <Text.h>
+#include <soh/Enhancements/custom_message/CustomMessage.h>
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
 extern "C" MessageTableEntry* sFraMessageEntryTablePtr;
 extern "C" MessageTableEntry* sStaffMessageEntryTablePtr;
 //extern "C" MessageTableEntry* _message_0xFFFC_nes;	
+
+const std::string customMessageTableID = "BaseGameOverrides";
 
 MessageTableEntry* OTRMessage_LoadTable(const char* filePath, bool isNES) {
     auto file = std::static_pointer_cast<Ship::Text>(OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath));
@@ -92,4 +95,19 @@ extern "C" void OTRMessage_Init()
 		sStaffMessageEntryTablePtr[i].segment = file2->messages[i].msg.c_str();
 		sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
 	}
+
+    CustomMessage::Instance->AddCustomMessageTable(customMessageTableID);
+    CustomMessage::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)0x00B4, ITEM_SKULL_TOKEN,
+        { 
+            "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!\x0E\x3C",
+            "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!\x0E\x3C",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!\x0E\x3C"
+        }
+    );
+    CustomMessage::Instance->CreateGetItemMessage(
+        customMessageTableID, (GetItemID)0x00B5, ITEM_SKULL_TOKEN,
+        { "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!",
+          "Du erhälst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!",
+          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collecté %r\x19\%w symboles en tout!" });
 }

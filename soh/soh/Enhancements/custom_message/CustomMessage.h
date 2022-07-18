@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include "variables.h"
 
+#undef MESSAGE_END
+
 #define QM_WHITE 0x00
 #define QM_RED 0x41
 #define QM_GREEN 0x42
@@ -28,7 +30,7 @@ class CustomMessage {
 
     void ReplaceSpecialCharacters(std::string &string);
     void ReplaceColors(std::string& string);
-    void FormatMessage(std::string& message, ItemID iid);
+    void FormatCustomMessage(std::string& message, ItemID iid);
 
     std::string MESSAGE_END();
     std::string ITEM_OBTAINED(uint8_t x);
