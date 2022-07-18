@@ -116,7 +116,59 @@ static void on_applet_hook(AppletHookType hook, void *param) {
    }
 }
 
+const char* const RandomTexts[] = {
+    "Psst, don't forget to blame melon",
+    "I knew it, we have the right amount of O",
+    "Who told Kenix that he is a developer?",
+    "Welcome to *** wooooorld!",
+    "Welcome to ***** wooooorld!",
+    "Pot sanity when ?",
+    "Why are you acting so random?",
+    "Can't forget my ship sails in the morning",
+    "Do you want 2 or 7 of those?",
+    "Im not gonna play that, its not accurate damnit!",
+    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rupees",
+    "You can build it yourself",
+    "Descargar para android",
+    "Made with <3 by the Harbour Masters!",
+    "They say that Kenix is not a developer",
+    "Squadala we're off",
+    "They say one once saw an equals not get set equals",
+    "This is the port all true gamers dock at"
+    "Enhancements? Times Savers? Cheats? You want them? They're yours my friend!",
+    "They say you gotta have the BIIIIG salad",
+    "They say Louis stopped working on the imports so he can focus on the exports.",
+    "They say that the harbour masters loves a game with the right amount of 'o'",
+    "They say ZAPD is good software.",
+    "You can't play your port on the bathroom? thats lame",
+    "They say their 60fps mode is broken."
+};
+
+void DetectAppletMode(){
+
+    AppletType at = appletGetAppletType();
+
+    if (at == AppletType_Application || at == AppletType_SystemApplication){
+        return;
+    }
+
+    consoleInit(NULL);
+
+    printf("\x1b[2;2HDon't launch from the album directly, damnit!");
+    printf("\x1b[4;2HRelaunch the Ship on app mode.");
+    printf("\x1b[5;2HPress R when opening a game to launch the HBMenu.");
+
+    printf("\x1b[44;2H%s.", RandomTexts[rand() % (sizeof(RandomTexts) / sizeof(RandomTexts[0]))]);
+
+    while(appletMainLoop()){
+        consoleUpdate(NULL);
+    }
+
+    consoleExit(NULL);
+}
+
 void Ship::Switch::Init(){
+    DetectAppletMode();
     appletInitializeGamePlayRecording();
 #ifdef DEBUG
     socketInitializeDefault();
