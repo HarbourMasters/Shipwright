@@ -336,7 +336,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                     this->actor.parent = NULL;
                     if (!LINK_IS_ADULT) {
                         if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1E)) {
-                            this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
+                            this->getItemId = Randomizer_GetItemIdFromKnownCheck(RC_MARKET_SHOOTING_GALLERY_REWARD, GI_BULLET_BAG_50);
                             Flags_SetTreasure(globalCtx, 0x1E);
                         } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x2000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Pachinko ☆☆☆☆☆ %d\n" VT_RST,
@@ -351,7 +351,7 @@ void EnSyatekiMan_EndGame(EnSyatekiMan* this, GlobalContext* globalCtx) {
                         }
                     } else {
                         if(gSaveContext.n64ddFlag && !Flags_GetTreasure(globalCtx, 0x1F)) {
-                            this->getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
+                            this->getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_SHOOTING_GALLERY_REWARD, GI_QUIVER_50);
                             Flags_SetTreasure(globalCtx, 0x1F);
                         } else if (!gSaveContext.n64ddFlag && !(gSaveContext.itemGetInf[0] & 0x4000)) {
                             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ Equip_Bow ☆☆☆☆☆ %d\n" VT_RST,
