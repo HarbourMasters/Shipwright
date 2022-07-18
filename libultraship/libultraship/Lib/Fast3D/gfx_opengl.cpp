@@ -752,6 +752,9 @@ static void gfx_opengl_start_frame(void) {
     frame_count++;
 }
 
+static void gfx_opengl_finished_flush(void) {
+}
+
 static void gfx_opengl_end_frame(void) {
     glFlush();
 }
@@ -969,6 +972,7 @@ struct GfxRenderingAPI gfx_opengl_api = {
     gfx_opengl_init,
     gfx_opengl_on_resize,
     gfx_opengl_start_frame,
+    gfx_opengl_finished_flush,
     gfx_opengl_end_frame,
     gfx_opengl_finish_render,
     gfx_opengl_create_framebuffer,

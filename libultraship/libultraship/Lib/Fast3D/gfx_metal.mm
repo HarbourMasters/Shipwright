@@ -68,11 +68,15 @@ struct TextureDataMetal {
 };
 
 struct FramebufferMetal {
+    id<MTLCommandBuffer> command_buffer;
     MTLRenderPassDescriptor* render_pass_descriptor;
+    id<MTLRenderCommandEncoder> command_encoder;
+
     id<MTLTexture> depth_texture;
     uint32_t texture_id;
     bool has_depth_buffer;
     uint32_t msaa_level;
+    bool render_target;
 };
 
 static struct {
@@ -93,9 +97,8 @@ static struct {
 
     // Current state
     struct ShaderProgramMetal* shader_program;
-    id<MTLCommandBuffer> current_command_buffer = nullptr;
     id<MTLRenderCommandEncoder> current_command_encoder = nullptr;
-    std::vector<std::pair<int, id<MTLRenderCommandEncoder>>> frame_encoders;
+    std::set<int> drawn_framebuffers;
     NSAutoreleasePool* frame_autorelease_pool = nullptr;
 
     int current_tile;
@@ -172,11 +175,11 @@ static id<MTLBuffer> next_available_buffer() {
     return mctx.buffer_pool.front();
 }
 
-static void pop_buffer_and_wait_to_requeue() {
+static void pop_buffer_and_wait_to_requeue(id<MTLCommandBuffer> command_buffer) {
     id<MTLBuffer> buffer = mctx.buffer_pool.front();
     mctx.buffer_pool.pop();
 
-    [mctx.current_command_buffer addCompletedHandler:^(id<MTLCommandBuffer>) {
+    [command_buffer addCompletedHandler:^(id<MTLCommandBuffer>) {
         SPDLOG_DEBUG("Metal: buffer pool size: {}", mctx.buffer_pool.size());
         if (mctx.buffer_pool.size() <= kMaxBufferPoolSize) {
             mctx.buffer_pool.push(buffer);
@@ -304,7 +307,8 @@ void Metal_NewFrame() {
 }
 
 void Metal_RenderDrawData(ImDrawData* draw_data) {
-    ImGui_ImplMetal_RenderDrawData(draw_data, mctx.current_command_buffer, mctx.current_command_encoder);
+    auto framebuffer = mctx.framebuffers[0];
+    ImGui_ImplMetal_RenderDrawData(draw_data, framebuffer.command_buffer, framebuffer.command_encoder);
 }
 
 // MARK: - Metal Graphics Rendering API
@@ -320,8 +324,6 @@ static void gfx_metal_init(void) {
     // Create the default framebuffer which represents the window
     FramebufferMetal& fb = mctx.framebuffers[gfx_metal_create_framebuffer()];
     fb.msaa_level = 1;
-
-//    mctx.imgui_render_pass_descriptor = [MTLRenderPassDescriptor new];
 }
 
 static struct GfxClipParameters gfx_metal_get_clip_parameters() {
@@ -704,7 +706,7 @@ static void gfx_metal_set_depth_test_and_mask(bool depth_test, bool depth_mask) 
     [depthDescriptor setDepthCompareFunction: depth_test ? MTLCompareFunctionLessEqual : MTLCompareFunctionAlways];
 
     id<MTLDepthStencilState> depthStencilState = [mctx.device newDepthStencilStateWithDescriptor: depthDescriptor];
-    [mctx.current_command_encoder setDepthStencilState:depthStencilState];\
+    [mctx.current_command_encoder setDepthStencilState:depthStencilState];
 }
 
 static void gfx_metal_set_zmode_decal(bool zmode_decal) {
@@ -772,29 +774,41 @@ static void gfx_metal_start_frame(void) {
     mctx.frame_autorelease_pool = [[NSAutoreleasePool alloc] init];
 }
 
+static void gfx_metal_finished_flush(void) {
+    std::set<int>::iterator it = mctx.drawn_framebuffers.begin();
+    it++;
+
+    while (it != mctx.drawn_framebuffers.end()) {
+        auto framebuffer = mctx.framebuffers[*it];
+        [framebuffer.command_encoder endEncoding];
+        pop_buffer_and_wait_to_requeue(framebuffer.command_buffer);
+        [framebuffer.command_buffer commit];
+        [framebuffer.command_buffer waitUntilCompleted];
+
+        it++;
+    }
+}
+
 void gfx_metal_end_frame(void) {
-    for (int i = (int)mctx.frame_encoders.size() - 1; i >= 0; i--) {
-        [mctx.frame_encoders[i].second endEncoding];
-    }
+    auto screenFramebuffer = mctx.framebuffers[0];
+    [screenFramebuffer.command_encoder endEncoding];
 
-    if (mctx.current_framebuffer == 0) {
-        id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
-        id<MTLBlitCommandEncoder> blitEncoder = [mctx.current_command_buffer blitCommandEncoder];
+    id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
+    id<MTLBlitCommandEncoder> blitEncoder = [screenFramebuffer.command_buffer blitCommandEncoder];
 
-        // // Copy over the framebuffer's texture to the drawable!
-        int texture_id = mctx.framebuffers[mctx.current_framebuffer].texture_id;
-        id<MTLTexture> texToCopy = mctx.textures[texture_id].texture;
+    // // Copy over the 0 framebuffer's texture to the drawable!
+    int texture_id = mctx.framebuffers[0].texture_id;
+    id<MTLTexture> texToCopy = mctx.textures[texture_id].texture;
 
-        [blitEncoder copyFromTexture:texToCopy toTexture:drawable.texture];
-        [blitEncoder endEncoding];
+    [blitEncoder copyFromTexture:texToCopy toTexture:drawable.texture];
+    [blitEncoder endEncoding];
 
-        [mctx.current_command_buffer presentDrawable:drawable];
-    }
+    [screenFramebuffer.command_buffer presentDrawable:drawable];
 
-    pop_buffer_and_wait_to_requeue();
-    [mctx.current_command_buffer commit];
+    pop_buffer_and_wait_to_requeue(screenFramebuffer.command_buffer);
+    [screenFramebuffer.command_buffer commit];
 
-    mctx.frame_encoders.clear();
+    mctx.drawn_framebuffers.clear();
     [mctx.frame_autorelease_pool release];
 }
 
@@ -884,6 +898,15 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         fb.render_pass_descriptor.depthAttachment = nil;
     }
 
+    if (render_target) {
+        fb.command_buffer = [mctx.command_queue commandBuffer];
+        fb.command_buffer.label = [NSString stringWithFormat:@"FrameBuffer (%d) Command Buffer", fb_id];
+
+        fb.command_encoder = [fb.command_buffer renderCommandEncoderWithDescriptor:fb.render_pass_descriptor];
+        fb.command_encoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Render Pass", fb_id];
+    }
+
+    fb.render_target = render_target;
     fb.has_depth_buffer = has_depth_buffer;
     fb.msaa_level = msaa_level;
 }
@@ -892,15 +915,13 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     // TODO: Implement
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     mctx.current_framebuffer = fb_id;
+    SPDLOG_ERROR("Being asked to draw to framebuffer: {}", fb_id);
 
-    mctx.current_command_buffer = [mctx.command_queue commandBuffer];
-    mctx.current_command_buffer.label = [NSString stringWithFormat:@"FrameBuffer (%d) Command Buffer", fb_id];
     MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 
-    mctx.current_command_encoder = [mctx.current_command_buffer renderCommandEncoderWithDescriptor:current_render_pass];
-    mctx.current_command_encoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Render Pass", fb_id];
-    mctx.frame_encoders.push_back(std::make_pair(fb_id, mctx.current_command_encoder));
+    mctx.current_command_encoder = mctx.framebuffers[mctx.current_framebuffer].command_encoder;
+    mctx.drawn_framebuffers.insert(fb_id);
 
     if (noise_scale != 0.0f) {
         mctx.frame_uniforms.noiseScale = 1.0f / noise_scale;
@@ -924,6 +945,10 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
 }
 
 void *gfx_metal_get_framebuffer_texture_id(int fb_id) {
+    if (fb_id != 0) {
+        auto texture = mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
+        SPDLOG_ERROR("Being asked for texture framebuffer: {}", fb_id);
+    }
     return (__bridge void*)mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
 }
 
@@ -966,6 +991,7 @@ struct GfxRenderingAPI gfx_metal_api = {
     gfx_metal_init,
     gfx_metal_on_resize,
     gfx_metal_start_frame,
+    gfx_metal_finished_flush,
     gfx_metal_end_frame,
     gfx_metal_finish_render,
     gfx_metal_create_framebuffer,
