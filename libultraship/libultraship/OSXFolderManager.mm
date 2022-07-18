@@ -10,6 +10,14 @@
 
 using namespace Ship;
 
+FolderManager::FolderManager() {
+    m_autoreleasePool = [[NSAutoreleasePool alloc] init];
+}
+
+FolderManager::~FolderManager() {
+    [(NSAutoreleasePool *)m_autoreleasePool release];
+}
+
 const char * FolderManager::pathForDirectory(SearchPathDirectory directory, SearchPathDomainMask domainMask) {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *URLs = [fileManager URLsForDirectory:(NSSearchPathDirectory)directory inDomains:domainMask];

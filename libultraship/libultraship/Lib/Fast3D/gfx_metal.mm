@@ -95,6 +95,8 @@ static struct {
     struct ShaderProgramMetal* shader_program;
     id<MTLCommandBuffer> current_command_buffer = nullptr;
     id<MTLRenderCommandEncoder> current_command_encoder = nullptr;
+    std::vector<std::pair<int, id<MTLRenderCommandEncoder>>> frame_encoders;
+    NSAutoreleasePool* frame_autorelease_pool = nullptr;
 
     int current_tile;
     uint32_t current_texture_ids[2];
@@ -669,6 +671,10 @@ static void gfx_metal_upload_texture(const uint8_t *rgba32_buf, uint32_t width, 
     NSUInteger bytesPerRow = bytesPerPixel * width;
     [texture replaceRegion:region mipmapLevel:0 withBytes:rgba32_buf bytesPerRow:bytesPerRow];
 
+
+    if (texture_data->texture != nil)
+        [texture_data->texture release];
+
     texture_data->texture = texture;
 }
 
@@ -679,7 +685,7 @@ static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint3
     // This function is called twice per texture, the first one only to set default values.
     // Maybe that could be skipped? Anyway, make sure to release the first default sampler
     // state before setting the actual one.
-    //   [texture_data->sampler release];
+    [texture_data->sampler release];
 
     MTLSamplerDescriptor *samplerDescriptor = [MTLSamplerDescriptor new];
     MTLSamplerMinMagFilter filter = linear_filter && mctx.current_filter_mode == FILTER_LINEAR ? MTLSamplerMinMagFilterLinear : MTLSamplerMinMagFilterNearest;
@@ -762,23 +768,34 @@ static void gfx_metal_start_frame(void) {
     }
 
     mctx.current_vertex_buffer_offset = 0;
+
+    mctx.frame_autorelease_pool = [[NSAutoreleasePool alloc] init];
 }
 
 void gfx_metal_end_frame(void) {
-    [mctx.current_command_encoder endEncoding];
+    for (int i = (int)mctx.frame_encoders.size() - 1; i >= 0; i--) {
+        [mctx.frame_encoders[i].second endEncoding];
+    }
 
-    // Copy over the framebuffer's texture to the drawable!
-    id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
-    int texture_id = mctx.framebuffers[mctx.current_framebuffer].texture_id;
-    id<MTLTexture> texToCopy = mctx.textures[texture_id].texture;
+    if (mctx.current_framebuffer == 0) {
+        id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
+        id<MTLBlitCommandEncoder> blitEncoder = [mctx.current_command_buffer blitCommandEncoder];
 
-    id<MTLBlitCommandEncoder> blitEncoder = [mctx.current_command_buffer blitCommandEncoder];
-    [blitEncoder copyFromTexture:texToCopy toTexture:drawable.texture];
-    [blitEncoder endEncoding];
+        // // Copy over the framebuffer's texture to the drawable!
+        int texture_id = mctx.framebuffers[mctx.current_framebuffer].texture_id;
+        id<MTLTexture> texToCopy = mctx.textures[texture_id].texture;
 
-    [mctx.current_command_buffer presentDrawable:drawable];
+        [blitEncoder copyFromTexture:texToCopy toTexture:drawable.texture];
+        [blitEncoder endEncoding];
+
+        [mctx.current_command_buffer presentDrawable:drawable];
+    }
+
     pop_buffer_and_wait_to_requeue();
     [mctx.current_command_buffer commit];
+
+    mctx.frame_encoders.clear();
+    [mctx.frame_autorelease_pool release];
 }
 
 static void gfx_metal_finish_render(void) {}
@@ -877,12 +894,13 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     mctx.current_framebuffer = fb_id;
 
     mctx.current_command_buffer = [mctx.command_queue commandBuffer];
-    mctx.current_command_buffer.label = @"Frame Command Buffer";
+    mctx.current_command_buffer.label = [NSString stringWithFormat:@"FrameBuffer (%d) Command Buffer", fb_id];
     MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 
     mctx.current_command_encoder = [mctx.current_command_buffer renderCommandEncoderWithDescriptor:current_render_pass];
-    mctx.current_command_encoder.label = @"Frame Render Pass";
+    mctx.current_command_encoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Render Pass", fb_id];
+    mctx.frame_encoders.push_back(std::make_pair(fb_id, mctx.current_command_encoder));
 
     if (noise_scale != 0.0f) {
         mctx.frame_uniforms.noiseScale = 1.0f / noise_scale;
@@ -923,8 +941,8 @@ FilteringMode gfx_metal_get_texture_filter(void) {
     return mctx.current_filter_mode;
 }
 
-ImTextureID gfx_metal_get_texture_by_id(int id) {
-    return (__bridge void*)mctx.textures[id].texture;
+ImTextureID gfx_metal_get_texture_by_id(int fb_id) {
+    return (__bridge void*)mctx.textures[fb_id].texture;
 }
 
 struct GfxRenderingAPI gfx_metal_api = {

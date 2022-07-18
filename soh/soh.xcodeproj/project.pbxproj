@@ -6658,7 +6658,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/Release";
 				EXECUTABLE_PREFIX = lib;
@@ -6721,7 +6720,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = arm64;
-				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				CONFIGURATION_BUILD_DIR = "$(SRCROOT)/Debug";
 				EXECUTABLE_PREFIX = lib;
@@ -6859,7 +6857,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Ship of Harikinian";
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "  $(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7049,7 +7047,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Ship of Harikinian";
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "  $(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
