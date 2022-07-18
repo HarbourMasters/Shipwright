@@ -4052,7 +4052,7 @@
     <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="randomizerTypes.h">
+    <ClInclude Include="soh\Enhancements\randomizer\randomizerTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\gfx.h">

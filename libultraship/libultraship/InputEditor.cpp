@@ -5,6 +5,7 @@
 #include "ImGuiImpl.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "Cvar.h"
 
 namespace Ship {
 
@@ -249,13 +250,14 @@ namespace Ship {
 
 		if (!this->Opened) {
 			BtnReading = -1;
+			CVar_SetS32("gControllerConfigurationEnabled", 0);
 			return;
 		}
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Controller Configuration", &this->Opened, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::BeginTabBar("##Controllers");
 

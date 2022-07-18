@@ -4,9 +4,14 @@ import os, sys, shutil
 import shutil
 from rom_info import Z64Rom
 import rom_chooser
+import struct
 
 def BuildOTR(xmlPath, rom):
     shutil.copytree("assets", "Extract/assets")
+
+    checksum = int(Z64Rom(rom).checksum.value, 16)
+    with open("Extract/version", "wb") as f:
+        f.write(struct.pack('<L', checksum))
 
     execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
     execStr += " ed -i %s -b %s -fl CFG/filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, rom)
