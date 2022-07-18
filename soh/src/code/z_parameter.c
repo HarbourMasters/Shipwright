@@ -1685,7 +1685,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
                 }
             }
             
-
         } else if (item == ITEM_SWORD_MASTER) {
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             gSaveContext.equips.equipment &= 0xFFF0;
