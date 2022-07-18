@@ -116,7 +116,7 @@ static void on_applet_hook(AppletHookType hook, void *param) {
    }
 }
 
-const char* const RandomTexts[] = {
+const char* RandomTexts[] = {
     "Psst, don't forget to blame melon",
     "I knew it, we have the right amount of O",
     "Who told Kenix that he is a developer?",
@@ -127,7 +127,7 @@ const char* const RandomTexts[] = {
     "Can't forget my ship sails in the morning",
     "Do you want 2 or 7 of those?",
     "Im not gonna play that, its not accurate damnit!",
-    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rupees",
+    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rubies",
     "You can build it yourself",
     "Descargar para android",
     "Made with <3 by the Harbour Masters!",
@@ -158,7 +158,9 @@ void DetectAppletMode(){
     printf("\x1b[4;2HRelaunch the Ship on app mode.");
     printf("\x1b[5;2HPress R when opening a game to launch the HBMenu.");
 
-    printf("\x1b[44;2H%s.", RandomTexts[rand() % (sizeof(RandomTexts) / sizeof(RandomTexts[0]))]);
+    srand(time(0));
+    const char* text = RandomTexts[rand() % 25];
+    printf("\x1b[44;2H%s.", text);
 
     while(appletMainLoop()){
         consoleUpdate(NULL);
