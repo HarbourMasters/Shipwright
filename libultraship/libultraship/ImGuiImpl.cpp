@@ -364,7 +364,9 @@ namespace SohImGui {
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "None");
+    #ifdef __SWITCH__
         Switch::ApplyOverclock();
+    #endif
     }
 
     void Update(EventImpl event) {
