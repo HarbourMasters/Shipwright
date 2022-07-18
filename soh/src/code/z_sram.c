@@ -416,7 +416,7 @@ void GiveLinkDungeonReward(GetItemID getItemId) {
 }
 
 void GiveLinksPocketMedallion() {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
+    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LINKS_POCKET, RG_NONE);
 
     GiveLinkDungeonReward(getItemId);
 }
@@ -644,7 +644,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Give Link's pocket item
         GiveLinksPocketMedallion();
 
-        int openForest = GetRandoSettingValue(RSK_FOREST);
+        int openForest = Randomizer_GetSettingValue(RSK_FOREST);
         switch (openForest) {
             case 0: // closed
                 break;
@@ -657,28 +657,28 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
                 break;
         }
 
-        int doorOfTime = GetRandoSettingValue(RSK_DOOR_OF_TIME);
+        int doorOfTime = Randomizer_GetSettingValue(RSK_DOOR_OF_TIME);
         switch (doorOfTime) {
             case 0: // open
                 gSaveContext.eventChkInf[4] |= 0x800;
                 break;
         }
 
-        int kakGate = GetRandoSettingValue(RSK_KAK_GATE);
+        int kakGate = Randomizer_GetSettingValue(RSK_KAK_GATE);
         switch (kakGate) {
             case 1: // open
                 gSaveContext.infTable[7] |= 0x40;
                 break;
         }
       
-        if(GetRandoSettingValue(RSK_STARTING_KOKIRI_SWORD)) GiveLinkKokiriSword();
-        if(GetRandoSettingValue(RSK_STARTING_DEKU_SHIELD)) GiveLinkDekuShield();
+        if(Randomizer_GetSettingValue(RSK_STARTING_KOKIRI_SWORD)) GiveLinkKokiriSword();
+        if(Randomizer_GetSettingValue(RSK_STARTING_DEKU_SHIELD)) GiveLinkDekuShield();
 
-        if(GetRandoSettingValue(RSK_STARTING_OCARINA)) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_OCARINA)) {
             INV_CONTENT(ITEM_OCARINA_FAIRY) = ITEM_OCARINA_FAIRY;
         }
 
-        if(GetRandoSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
+        if(Randomizer_GetSettingValue(RSK_STARTING_MAPS_COMPASSES)) {
             uint32_t mapBitMask = 1 << 1;
             uint32_t compassBitMask = 1 << 2;
             uint32_t startingDungeonItemsBitMask = mapBitMask | compassBitMask;
@@ -687,13 +687,13 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             }
         }
 
-        if (GetRandoSettingValue(RSK_STARTING_CONSUMABLES)) {
+        if (Randomizer_GetSettingValue(RSK_STARTING_CONSUMABLES)) {
             GiveLinkDekuSticks(10);
             GiveLinkDekuNuts(20);
         }
 
-        if(GetRandoSettingValue(RSK_SKIP_CHILD_ZELDA)) {
-            s32 giid = GetRandomizedItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
+        if(Randomizer_GetSettingValue(RSK_SKIP_CHILD_ZELDA)) {
+            s32 giid = Randomizer_GetItemIdFromKnownCheck(RC_SONG_FROM_IMPA, GI_ZELDAS_LULLABY);
             
             if(giid >= GI_ZELDAS_LULLABY && giid <= GI_PRELUDE_OF_LIGHT) {
                 GiveLinkSong(giid);
@@ -780,7 +780,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             } else if (giid == GI_DOUBLE_DEFENSE) {
                 GiveLinkDoubleDefense();
             } else {
-                s32 iid = GetItemIDFromGetItemID(giid);
+                s32 iid = Randomizer_GetItemIDFromGetItemID(giid);
                 if (iid != -1) INV_CONTENT(iid) = iid;
             }
 
@@ -801,18 +801,18 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             INV_CONTENT(ITEM_LETTER_ZELDA) = ITEM_LETTER_ZELDA;
         }
 
-        if (GetRandoSettingValue(RSK_FULL_WALLETS)) {
+        if (Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             GiveLinkRupees(9001);
         }
 
         // For Ganon's boss key "Start With" is 0
-        if(GetRandoSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
+        if(Randomizer_GetSettingValue(RSK_GANONS_BOSS_KEY) == 0) {
             gSaveContext.inventory.dungeonItems[10] |= 1;
         }
 
-        HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * GetRandoSettingValue(RSK_BIG_POE_COUNT));
+        HIGH_SCORE(HS_POE_POINTS) = 1000 - (100 * Randomizer_GetSettingValue(RSK_BIG_POE_COUNT));
 
-        if(GetRandoSettingValue(RSK_SKIP_EPONA_RACE)) {
+        if(Randomizer_GetSettingValue(RSK_SKIP_EPONA_RACE)) {
             gSaveContext.eventChkInf[1] |= (1 << 8);
         }
 
@@ -839,7 +839,7 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         gSaveContext.infTable[25] |= 0x20;
 
         // fast gerudo fortress
-        if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 1 || GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 1 || Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
             gSaveContext.eventChkInf[9] |= 2;
             gSaveContext.eventChkInf[9] |= 4;
             gSaveContext.eventChkInf[9] |= 8;
@@ -858,14 +858,14 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         }
 
         // open gerudo fortress
-        if (GetRandoSettingValue(RSK_GERUDO_FORTRESS) == 2) {
+        if (Randomizer_GetSettingValue(RSK_GERUDO_FORTRESS) == 2) {
             gSaveContext.eventChkInf[9] |= 1;
             gSaveContext.sceneFlags[12].swch |= (1 << 0x01);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x05);
             gSaveContext.sceneFlags[12].swch |= (1 << 0x11);
             gSaveContext.sceneFlags[12].collect |= (1 << 0x0C);
 
-            if (!GetRandoSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
+            if (!Randomizer_GetSettingValue(RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD)) {
                 GiveLinkGerudoCard();
             }
         }

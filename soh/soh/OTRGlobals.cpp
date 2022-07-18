@@ -1367,23 +1367,23 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
-extern "C" s16 GetItemModelFromId(s16 itemId) {
+extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
 }
 
-extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
 }
 
-extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
 
-extern "C" void LoadHintLocations(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
-extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
+extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
 
@@ -1391,11 +1391,11 @@ extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
 
-extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }
 
-extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
@@ -1471,33 +1471,33 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
     const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
                                                    : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
     return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
 }
 
-extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
 
-extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
