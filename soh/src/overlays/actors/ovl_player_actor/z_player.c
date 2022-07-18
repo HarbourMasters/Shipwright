@@ -6,7 +6,6 @@
 
 #include "ultra64.h"
 #include "global.h"
-#include "z64player.h"
 
 #include "overlays/actors/ovl_Bg_Heavy_Block/z_bg_heavy_block.h"
 #include "overlays/actors/ovl_Door_Shutter/z_door_shutter.h"

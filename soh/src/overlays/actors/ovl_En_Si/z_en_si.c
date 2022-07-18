@@ -18,6 +18,10 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx);
 
+s32 textId = 0xB4;
+s32 giveItemId = ITEM_SKULL_TOKEN;
+s32 getItemId;
+
 static ColliderCylinderInit sCylinderInit = {
     {
         COLTYPE_NONE,
@@ -93,15 +97,13 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
 
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
-                s32 textId = 0xB4;
-                s32 itemGiveId = ITEM_SKULL_TOKEN;
                 if (gSaveContext.n64ddFlag) {
-                    s32 getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+                    getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
                     textId = sGetItemTable[getItemId - 1].textId;
-                    itemGiveId = sGetItemTable[getItemId - 1].itemId;
+                    giveItemId = sGetItemTable[getItemId - 1].itemId;
                 }
-                Item_Give(globalCtx, itemGiveId);
-                if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || itemGiveId != ITEM_SKULL_TOKEN) {
+                Item_Give(globalCtx, giveItemId);
+                if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) {
                     player->actor.freezeTimer = 20;
                 }
                 Message_StartTextbox(globalCtx, textId, NULL);
@@ -124,14 +126,12 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     this->actor.shape.rot.y += 0x400;
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
-        s32 textId = 0xB4;
-        s32 itemGiveId = ITEM_SKULL_TOKEN;
         if (gSaveContext.n64ddFlag) {
-            s32 getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            giveItemId = sGetItemTable[getItemId - 1].itemId;
             textId = sGetItemTable[getItemId - 1].textId;
-            itemGiveId = sGetItemTable[getItemId - 1].itemId;
         }
-        Item_Give(globalCtx, itemGiveId);
+        Item_Give(globalCtx, giveItemId);
         Message_StartTextbox(globalCtx, textId, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
@@ -141,7 +141,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
-    if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING && CVar_GetS32("gSkulltulaFreeze", 0) != 1) {
+    if (Message_GetState(&globalCtx->msgCtx) != TEXT_STATE_CLOSING && (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN)) {
         player->actor.freezeTimer = 10;
     } else {
         SET_GS_FLAGS((this->actor.params & 0x1F00) >> 8, this->actor.params & 0xFF);
@@ -167,14 +167,16 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
-            f32 mtxScale = 1.5f;
-            Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-            s32 randoGetItemId =
-                GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
-                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+            f32 mtxScale;
+            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_DEFENSE) {
+                EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemId);
             }
-            GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+            if (getItemId != ITEM_SKULL_TOKEN) {
+                mtxScale = 1.5f;
+                Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
+            }
+            GetItem_Draw(globalCtx, GetItemModelFromId(getItemId));
         }
         
     }
