@@ -3018,6 +3018,18 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     } else {
                         return RC_KAK_ANJU_AS_CHILD;
                     }
+                case -28640:
+                    return RC_KAK_GS_TREE;
+                case 20482:
+                    return RC_KAK_GS_GUARDS_HOUSE;
+                case 20484:
+                    return RC_KAK_GS_WATCHTOWER;
+                case 20496:
+                    return RC_KAK_GS_SKULLTULA_HOUSE;
+                case 20488:
+                    return RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION;
+                case 20544:
+                    return RC_KAK_GS_ABOVE_IMPAS_HOUSE;
             }
             break;
         case 83:
@@ -3028,10 +3040,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR;
                 case 14346:
                     return RC_GY_GOSSIP_STONE;
+                case 28673:
+                    return RC_GRAVEYARD_GS_BEAN_PATCH;
                 case 20608:
                     return RC_GRAVEYARD_GS_WALL;
-                //case 0:
-                    //return RC_GRAVEYARD_GS_BEAN_PATCH;
             }
             break;
         case 84:
@@ -3044,6 +3056,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZR_NEAR_GROTTOS_GOSSIP_STONE;
                 case 14860:
                     return RC_ZR_NEAR_DOMAIN_GOSSIP_STONE;
+                case -28414:
+                    return RC_ZR_GS_TREE;
+                case 20737:
+                    return RC_ZR_GS_LADDER;
+                case 20752:
+                    return RC_ZR_GS_NEAR_RAISED_GROTTOS;
+                case 20744:
+                    return RC_ZR_GS_ABOVE_BRIDGE;
             }
             break;
         case 85:
@@ -3102,6 +3122,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZD_CHEST;
                 case 14345:
                     return RC_ZD_GOSSIP_STONE;
+                case 20800:
+                    return RC_ZD_GS_FROZEN_WATERFALL;
             }
             break;
         case 89:
@@ -3116,6 +3138,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 14849:
                 case 14337:
                     return RC_FAIRY_GOSSIP_STONE;
+                case 20740:
+                    return RC_ZF_GS_ABOVE_THE_LOG;
+                case -28288:
+                    return RC_ZF_GS_TREE;
+                case 20768:
+                    return RC_ZF_GS_HIDDEN_CAVE;
             }
             break;
         case 90:
@@ -3187,6 +3215,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DMT_CHEST;
                 case 14340:
                     return RC_DMT_GOSSIP_STONE;
+                case 12036:
+                    return RC_DMT_GS_NEAR_KAK;
+                case 28418:
+                    return RC_DMT_GS_BEAN_PATCH;
+                case 20232:
+                    return RC_DMT_GS_ABOVE_DODONGOS_CAVERN;
+                case 20240:
+                    return RC_DMT_GS_FALLING_ROCKS_PATH;
             }
             break;
         case 97:
@@ -3197,6 +3233,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DMC_WALL_FREESTANDING_POH;
                 case 14341:
                     return RC_DMC_GOSSIP_STONE;
+                case -28800:
+                    return RC_DMC_GS_CRATE;
+                case 28417:
+                    return RC_DMC_GS_BEAN_PATCH;
             }
             break;
         case 98:
@@ -3213,6 +3253,22 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GC_MAZE_GOSSIP_STONE;
                 case 14873:
                     return RC_GC_MEDIGORON_GOSSIP_STONE;
+                case 12064:
+                    return RC_GC_GS_CENTER_PLATFORM;
+                case -28864:
+                    return RC_GC_GS_BOULDER_MAZE;
+            }
+            break;
+        case 99:
+            switch (actorParams) {
+                case 11012:
+                    return RC_LLR_GS_HOUSE_WINDOW;
+                case -29944:
+                    return RC_LLR_GS_TREE;
+                case 11010:
+                    return RC_LLR_GS_RAIN_SHED;
+                case 11009:
+                    return RC_LLR_GS_BACK_WALL;
             }
             break;
     }
