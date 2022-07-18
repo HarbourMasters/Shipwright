@@ -2,7 +2,7 @@
 
 #include <string>
 #include <unordered_map>
-#include "randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 #define MAIN_MENU 0
 #define OPTION_SUB_MENU 1
