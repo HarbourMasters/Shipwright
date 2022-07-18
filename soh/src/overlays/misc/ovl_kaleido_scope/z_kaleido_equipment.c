@@ -652,7 +652,10 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
-                KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
+
+                if (!((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment))) { // Don't draw the full BGS icon when we have a broken Giant's Knife
+                    KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
+                }
                 gsSPGrayscale(POLY_KAL_DISP++, false);
             }
         }
