@@ -1521,9 +1521,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     const int maxBufferSize = sizeof(font->msgBuf);
     if (gSaveContext.n64ddFlag) {
         if (textId == 0xF8) {
+            font->charTexBuf[0] = 0x23;
             if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
                     (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
-                font->charTexBuf[0] = 0x23;
                 return true;
             } else {
                 switch (gSaveContext.language) {

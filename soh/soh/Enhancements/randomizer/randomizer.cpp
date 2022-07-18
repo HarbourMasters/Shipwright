@@ -21,6 +21,8 @@ std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
 u8 generated;
 
+const std::string Randomizer::customMessageTableID = "Randomizer";
+
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
     gSeedTextures[0] = bowSprite;

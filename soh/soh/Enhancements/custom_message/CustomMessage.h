@@ -12,14 +12,23 @@
 #define QM_YELLOW 0x46
 #define QM_BLACK 0x47
 
+typedef struct {
+    std::string english;
+    std::string german;
+    std::string french;
+} CustomMessageEntry;
+
+typedef std::unordered_map<uint16_t, CustomMessageEntry> CustomMessageTable;
+
 class CustomMessage {
   private: 
     std::unordered_map<std::string, char> textBoxSpecialCharacters;
     std::unordered_map<std::string, char> colors;
-    std::unordered_map<GetItemID, std::string> getItemMessageTable[LANGUAGE_MAX];
+    std::unordered_map<std::string, CustomMessageTable> messageTables;
 
     void ReplaceSpecialCharacters(std::string &string);
     void ReplaceColors(std::string& string);
+    void FormatMessage(std::string& message, ItemID iid);
 
     std::string MESSAGE_END();
     std::string ITEM_OBTAINED(uint8_t x);
@@ -34,6 +43,7 @@ class CustomMessage {
     CustomMessage();
     ~CustomMessage();
 
-    void CreateGetItemMessage(GetItemID giid, ItemID iid, std::string messages[LANGUAGE_MAX]);
-    std::string RetrieveGetItemMessage(GetItemID giid);
+    bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
+    std::string RetrieveMessage(std::string tableID, uint16_t textID);
+    bool AddCustomMessageTable(std::string tableID);
 };

@@ -17,6 +17,8 @@ CustomMessage::CustomMessage() {
 
 CustomMessage::~CustomMessage() {
     this->textBoxSpecialCharacters.clear();
+    this->colors.clear();
+    this->messageTables.clear();
 }
 
 void CustomMessage::ReplaceSpecialCharacters(std::string& string) {
@@ -44,33 +46,61 @@ void CustomMessage::ReplaceColors(std::string& string) {
     }
 }
 
-void CustomMessage::CreateGetItemMessage(GetItemID giid, ItemID iid, std::string messages[LANGUAGE_MAX]) {
-    for (int i = 0; i < LANGUAGE_MAX; i++) {
-        if (!(messages[i].empty())) {
-            std::string message = messages[i];
-            std::string formattedMessage = ITEM_OBTAINED(iid) + message;
-            size_t start_pos = 0;
-            std::replace(formattedMessage.begin(), formattedMessage.end(), '&', NEWLINE()[0]);
-            while ((start_pos = formattedMessage.find('^', start_pos)) != std::string::npos) {
-                formattedMessage.replace(start_pos, 1, WAIT_FOR_INPUT() + ITEM_OBTAINED(iid));
-                start_pos += 3;
-            }
-            std::replace(formattedMessage.begin(), formattedMessage.end(), '@', PLAYER_NAME()[0]);
-            ReplaceSpecialCharacters(formattedMessage);
-            ReplaceColors(formattedMessage);
-            formattedMessage += MESSAGE_END();
-            this->getItemMessageTable[i].emplace(giid, formattedMessage);
-        }
+void CustomMessage::FormatMessage(std::string& message, ItemID iid) {
+    message.insert(0, ITEM_OBTAINED(iid));
+    size_t start_pos = 0;
+    std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
+    while ((start_pos = message.find('^', start_pos)) != std::string::npos) {
+        message.replace(start_pos, 1, WAIT_FOR_INPUT() + ITEM_OBTAINED(iid));
+        start_pos += 3;
+    }
+    std::replace(message.begin(), message.end(), '@', PLAYER_NAME()[0]);
+    ReplaceSpecialCharacters(message);
+    ReplaceColors(message);
+    message += MESSAGE_END();
+}
+
+
+
+bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
+    FormatMessage(messages.english, iid);
+    FormatMessage(messages.german, iid);
+    FormatMessage(messages.french, iid);
+    const uint16_t textID = giid;
+    auto result = messageTables.find(tableID);
+    if (result == messageTables.end()) {
+        return false;
+    }
+    auto& messageTable = result->second;
+    auto success = messageTable.emplace(textID, messages);
+    return success.second;
+}
+
+std::string CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID) {
+    std::unordered_map<std::string, CustomMessageTable>::const_iterator result = messageTables.find(tableID);
+    if (result == messageTables.end()) {
+        return "";
+    }
+    CustomMessageTable messageTable = result->second;
+    std::unordered_map<uint16_t, CustomMessageEntry>::const_iterator message_pair = messageTable.find(textID);
+    if (message_pair == messageTable.end()) {
+        return "";
+    }
+    CustomMessageEntry messages = message_pair->second;
+    switch (gSaveContext.language) { 
+        case LANGUAGE_FRA:
+            return messages.french;
+        case LANGUAGE_GER:
+            return messages.german;
+        case LANGUAGE_ENG:
+        default:
+            return messages.english;
     }
 }
 
-std::string CustomMessage::RetrieveGetItemMessage(GetItemID giid) {
-    std::unordered_map<GetItemID, std::string>::const_iterator result =
-        getItemMessageTable[gSaveContext.language].find(giid);
-    if (result == getItemMessageTable[gSaveContext.language].end()) {
-        return "";
-    }
-    return result->second;
+bool CustomMessage::AddCustomMessageTable(std::string tableID) { 
+    CustomMessageTable newMessageTable;
+    return messageTables.emplace(tableID, newMessageTable).second;
 }
 
 std::string CustomMessage::MESSAGE_END() {

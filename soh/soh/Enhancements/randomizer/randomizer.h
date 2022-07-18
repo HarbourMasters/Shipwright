@@ -16,6 +16,7 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
+    static const std::string customMessageTableID;
     GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
     GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
