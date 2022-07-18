@@ -30,8 +30,8 @@ while [[ ! -e "$PWD"/oot.otr ]]; do
   			exit;;
 		esac
 		if [ -n "$ZENITY" ]; then
-			(echo "# 25%"; echo "25"; sleep 1; echo "# 50%"; echo "50"; sleep 1; echo "# 75%"; echo "75"; sleep 1; echo "# 100%"; echo "100"; sleep 1) |
-			zenity --progress --title="OTR Generating..." --timeout=5 --percentage=0 --icon-name=soh --window-icon=soh.png --height=80 --width=400 &
+			(echo "# 25%"; echo "25"; sleep 2; echo "# 50%"; echo "50"; sleep 3; echo "# 75%"; echo "75"; sleep 2; echo "# 100%"; echo "100"; sleep 3) |
+			zenity --progress --title="OTR Generating..." --timeout=10 --percentage=0 --icon-name=soh --window-icon=soh.png --height=80 --width=400 &
 		else
 			echo "Processing..."
 		fi
