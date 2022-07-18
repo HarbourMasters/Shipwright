@@ -98,11 +98,17 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
             if (this->collider.base.ocFlags2 & OC2_HIT_PLAYER) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (gSaveContext.n64ddFlag) {
-                    getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-                    textId = sGetItemTable[getItemId - 1].textId;
-                    giveItemId = sGetItemTable[getItemId - 1].itemId;
+                    if (getItemId == GI_ICE_TRAP) {
+                        GiveItemWithoutActor(globalCtx, getItemId);
+                        textId = 0xF8;
+                    } else {
+                        textId = sGetItemTable[getItemId - 1].textId;
+                        giveItemId = sGetItemTable[getItemId - 1].itemId;
+                    }
                 }
-                Item_Give(globalCtx, giveItemId);
+                if (getItemId != GI_ICE_TRAP) {
+                    Item_Give(globalCtx, giveItemId);
+                }
                 if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) {
                     player->actor.freezeTimer = 20;
                 }
@@ -127,11 +133,17 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
-            giveItemId = sGetItemTable[getItemId - 1].itemId;
-            textId = sGetItemTable[getItemId - 1].textId;
+            if (getItemId == GI_ICE_TRAP) {
+                GiveItemWithoutActor(globalCtx, getItemId);
+                textId = 0xF8;
+            } else {
+                textId = sGetItemTable[getItemId - 1].textId;
+                giveItemId = sGetItemTable[getItemId - 1].itemId;
+            }
         }
-        Item_Give(globalCtx, giveItemId);
+        if (getItemId != GI_ICE_TRAP) {
+            Item_Give(globalCtx, giveItemId);
+        }
         Message_StartTextbox(globalCtx, textId, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;

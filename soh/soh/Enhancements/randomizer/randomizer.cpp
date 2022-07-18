@@ -3018,6 +3018,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     } else {
                         return RC_KAK_ANJU_AS_CHILD;
                     }
+            }
+            switch (actorParams) {
                 case -28640:
                     return RC_KAK_GS_TREE;
                 case 20482:
