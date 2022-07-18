@@ -33,7 +33,6 @@ namespace ModInternal {
     DEFINE_HOOK(AudioInit, void());
     DEFINE_HOOK(LoadTexture, void(const char* path, uint8_t** texture));
     DEFINE_HOOK(GfxInit, void());
-    DEFINE_HOOK(OnConfigSave, void());
     DEFINE_HOOK(RequestConfigSave, void());
     DEFINE_HOOK(ExitGame, void());
 

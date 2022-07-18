@@ -131,7 +131,6 @@ void Mercury::reload() {
 }
 
 void Mercury::save() const {
-    ModInternal::ExecuteHooks<ModInternal::OnConfigSave>();
     std::ofstream file(this->path_);
     file << this->vjson.unflatten().dump(4);
 }
