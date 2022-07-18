@@ -67,7 +67,7 @@ void UpdateKeyboard() {
 }
 
 void Ship::Switch::ApplyOverclock(void) {
-    SwitchProfiles perfMode = (SwitchProfiles) CVar_GetS32("gSwitchPerfMode", (int) Ship::STOCK);
+    SwitchProfiles perfMode = (SwitchProfiles) CVar_GetS32("gSwitchPerfMode", (int) Ship::MAXIMUM);
 
     if (perfMode >= 0 && perfMode <= Ship::POWERSAVINGM3) {
         if (hosversionBefore(8, 0, 0)) {
@@ -97,11 +97,11 @@ static void on_applet_hook(AppletHookType hook, void *param) {
 
             if (!hasFocus) {
                 if (hosversionBefore(8, 0, 0)) {
-                    pcvSetClockRate(PcvModule_CpuBus, 1020000000);
+                    pcvSetClockRate(PcvModule_CpuBus, SWITCH_CPU_SPEEDS_VALUES[ Ship::STOCK ]);
                 } else {
                     ClkrstSession session = {0};
                     clkrstOpenSession(&session, PcvModuleId_CpuBus, 3);
-                    clkrstSetClockRate(&session, 1020000000);
+                    clkrstSetClockRate(&session, SWITCH_CPU_SPEEDS_VALUES[ Ship::STOCK ]);
                     clkrstCloseSession(&session);
                 }
             } else
@@ -183,6 +183,9 @@ void Ship::Switch::Init(){
     InitKeyboard();
     appletHook(&applet_hook_cookie, on_applet_hook, NULL);
     appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
+    if (!hosversionBefore(8, 0, 0)) {
+        clkrstInitialize();
+    }
 }
 
 void PushSDLEvent(Uint32 type, Uint8 button){
@@ -227,6 +230,7 @@ void Ship::Switch::Update(){
 
 void Ship::Switch::Exit(){
     socketExit();
+    clkrstExit();
     appletSetGamePlayRecordingState(false);
 }
 
