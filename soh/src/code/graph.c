@@ -482,8 +482,8 @@ static void RunFrame()
             ticksA = GetPerfCounter();
 
 #ifdef __SWITCH__
-            #define SAMPLES_HIGH 560
-            #define SAMPLES_LOW 528
+            #define SAMPLES_HIGH 752
+            #define SAMPLES_LOW 720
 
             #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
             #define NUM_AUDIO_CHANNELS 2

@@ -248,6 +248,10 @@ namespace Ship {
         ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
             ControllerApi->SaveControllerSettings();
         });
+
+        ModInternal::RegisterHook<ModInternal::RequestConfigSave>([]() {
+            ControllerApi->SaveControllerSettings();
+        });
     }
 
     void Window::StartFrame() {
@@ -309,7 +313,7 @@ namespace Ship {
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
         //}
-		
+
         lastScancode = -1;
 
         bool bIsProcessed = false;

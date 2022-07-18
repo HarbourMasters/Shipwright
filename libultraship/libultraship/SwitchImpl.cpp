@@ -6,6 +6,7 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include "SwitchPerformanceProfiles.h"
 #include "Cvar.h"
+#include "Hooks.h"
 
 extern "C" s32 CVar_GetS32(const char* name, s32 defaultValue);
 extern "C" void CVar_SetS32(const char* name, s32 value);
@@ -144,6 +145,7 @@ void Ship::Switch::Update(){
 
     if (kDown & HidNpadButton_Minus){
         CVar_SetS32("gOpenMenuBar", !CVar_GetS32("gOpenMenuBar", 0));
+        ModInternal::ExecuteHooks<ModInternal::RequestConfigSave>();
     }
 
     if (hidGetTouchScreenStates(&TouchState, 1)) {

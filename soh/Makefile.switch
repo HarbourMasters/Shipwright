@@ -82,7 +82,7 @@ SOURCEFILES_CPP := \
 
 APP_TITLE	:= Ship of Harkinian
 APP_AUTHOR	:= Harbour Masters
-APP_VERSION	:= Roy-Alfa
+APP_VERSION	:= Rachael-Alfa
 
 #---------------------------------------------------------------------------------
 # options for code generation

@@ -334,7 +334,7 @@ namespace SohImGui {
         ImGuiWMInit();
         ImGuiBackendInit();
     #ifdef __SWITCH__
-        ImGui::GetStyle().ScaleAllSizes(Ship::Switch::GetDPI() / 96.0f);
+        ImGui::GetStyle().ScaleAllSizes(2);
     #endif
 
         ModInternal::RegisterHook<ModInternal::GfxInit>([] {
@@ -364,7 +364,7 @@ namespace SohImGui {
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "None");
-        // Game::SaveSettings();
+        Switch::ApplyOverclock();
     }
 
     void Update(EventImpl event) {
@@ -726,8 +726,13 @@ namespace SohImGui {
 
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
+            #ifdef __SWITCH__
+                ImVec2 iconSize = ImVec2(20.0f, 20.0f);
+            #else
+                ImVec2 iconSize = ImVec2(16.0f, 16.0f);
+            #endif
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), iconSize);
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -1119,8 +1124,16 @@ namespace SohImGui {
 
                 const char* fps_cvar = "gInterpolationFPS";
                 {
-                    int val = CVar_GetS32(fps_cvar, 20);
-                    val = MAX(MIN(val, 250), 20);
+                #ifdef __SWITCH__
+                    int minFps = 20;
+                    int maxFps = 60;
+                #else
+                    int minFps = 20;
+                    int maxFps = 250;
+                #endif
+
+                    int val = CVar_GetS32(fps_cvar, minFps);
+                    val = MAX(MIN(val, maxFps), 20);
                     int fps = val;
 
                     if (fps == 20)
@@ -1132,7 +1145,7 @@ namespace SohImGui {
                         ImGui::Text("Frame interpolation: %d FPS", fps);
                     }
 
-                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
@@ -1180,6 +1193,7 @@ namespace SohImGui {
                         if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
                             INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
                             CVar_SetS32("gSwitchPerfMode", sId);
+                            Switch::ApplyOverclock();
                             needs_save = true;
                         }
 

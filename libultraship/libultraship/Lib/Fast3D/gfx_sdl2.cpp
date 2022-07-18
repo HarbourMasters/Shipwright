@@ -163,13 +163,13 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     Ship::Switch::GetDisplaySize(&window_width, &window_height);
+#else
+    window_width = width;
+    window_height = height;
 #endif
 
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
-
-    window_width = width;
-    window_height = height;
 
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
@@ -239,6 +239,7 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 #ifdef __SWITCH__
     Ship::Switch::Exit();
 #endif
+    ModInternal::ExecuteHooks<ModInternal::ExitGame>();
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
