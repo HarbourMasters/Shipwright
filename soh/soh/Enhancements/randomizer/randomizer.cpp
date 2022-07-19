@@ -2439,6 +2439,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST;
                 case 22788:
                     return RC_DEKU_TREE_BASEMENT_CHEST;
+                case 8200:
+                    return RC_DEKU_TREE_GS_COMPASS_ROOM;
+                case 8196:
+                    return RC_DEKU_TREE_GS_BASEMENT_VINES;
+                case 8194:
+                    return RC_DEKU_TREE_GS_BASEMENT_GATE;
+                case 8193:
+                    return RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM;
             }
             break;
         case 1:

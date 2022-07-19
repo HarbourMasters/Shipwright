@@ -10977,6 +10977,10 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
 
     Collider_ResetQuadAC(globalCtx, &this->shieldQuad.base);
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
+
+    if (this->iceTrapped != 0) {
+        GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
+    }
 }
 
 static Vec3f D_80854838 = { 0.0f, 0.0f, -30.0f };

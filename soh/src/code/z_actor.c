@@ -1981,6 +1981,9 @@ s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId) {
                 player->getItemId = getItemId;
                 player->interactRangeActor = &player->actor;
                 player->getItemDirection = player->actor.shape.rot.y;
+                if (player->stateFlags1 & (PLAYER_STATE1_26)) {
+                    player->iceTrapped = 0;
+                }
                 return true;
             }
         }

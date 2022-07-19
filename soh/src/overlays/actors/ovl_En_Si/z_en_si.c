@@ -99,14 +99,14 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 this->collider.base.ocFlags2 &= ~OC2_HIT_PLAYER;
                 if (gSaveContext.n64ddFlag) {
                     if (getItemId == GI_ICE_TRAP) {
-                        GiveItemWithoutActor(globalCtx, getItemId);
+                        player->getItemId = GI_ICE_TRAP;
+                        player->iceTrapped = 1;
                         textId = 0xF8;
                     } else {
                         textId = sGetItemTable[getItemId - 1].textId;
                         giveItemId = sGetItemTable[getItemId - 1].itemId;
                     }
-                }
-                if (getItemId != GI_ICE_TRAP) {
+                } else {
                     Item_Give(globalCtx, giveItemId);
                 }
                 if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) {
@@ -134,14 +134,13 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
     if (!CHECK_FLAG_ALL(this->actor.flags, ACTOR_FLAG_13)) {
         if (gSaveContext.n64ddFlag) {
             if (getItemId == GI_ICE_TRAP) {
-                GiveItemWithoutActor(globalCtx, getItemId);
+                GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
                 textId = 0xF8;
             } else {
                 textId = sGetItemTable[getItemId - 1].textId;
                 giveItemId = sGetItemTable[getItemId - 1].itemId;
             }
-        }
-        if (getItemId != GI_ICE_TRAP) {
+        } else {
             Item_Give(globalCtx, giveItemId);
         }
         Message_StartTextbox(globalCtx, textId, NULL);
