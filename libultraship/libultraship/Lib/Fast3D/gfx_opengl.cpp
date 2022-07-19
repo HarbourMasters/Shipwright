@@ -33,14 +33,10 @@
 #include <GL/glew.h>
 #elif __SWITCH__
 #include <SDL2/SDL.h>
-#include "glad/glad.h"
+#include <glad/glad.h>
 #else
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
-#ifndef __SWITCH__
-#define GL_GLEXT_PROTOTYPES 1
-#endif
-// #include <SDL2/SDL_opengles2.h>
 #endif
 
 #include "gfx_cc.h"
@@ -474,11 +470,6 @@ static struct ShaderProgram* gfx_opengl_create_and_load_new_shader(uint64_t shad
         append_line(fs_buf, &fs_len, "float intensity = (texel.r + texel.g + texel.b) / 3.0;");
         append_line(fs_buf, &fs_len, "vec3 new_texel = vGrayscaleColor.rgb * intensity;");
         append_line(fs_buf, &fs_len, "texel.rgb = mix(texel.rgb, new_texel, vGrayscaleColor.a);");
-    }
-
-    if(cc_features.opt_grayscale) {
-        append_line(fs_buf, &fs_len, "float light = (texel.r + texel.g + texel.b) / 7.0;");
-        append_line(fs_buf, &fs_len, "texel.rgb = vec3(light, light, light);");
     }
 
     if (cc_features.opt_alpha) {

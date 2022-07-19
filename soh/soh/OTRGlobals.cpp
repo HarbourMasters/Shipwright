@@ -44,7 +44,10 @@
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+
+#ifdef __SWITCH__
 #include "SwitchImpl.h"
+#endif
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -1422,7 +1425,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
             price = 40;
             break;
     }
-    switch (language) { 
+    switch (language) {
     case 0: default:
         scrubText += 0x12; // add the sound
         scrubText += 0x38; // sound id
@@ -1477,7 +1480,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += 0xA3; // message id
         break;
     }
-    
+
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
@@ -1498,7 +1501,7 @@ extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
 }
 
 extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);

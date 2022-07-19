@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <PR/ultra64/gbi.h>
-#include "Lib/ImGui/imgui_internal.h"
+#include "imgui_int32_ternal.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
@@ -14,7 +14,7 @@ extern "C" CVar* CVar_Get(const char* name) {
     return (it != cvars.end()) ? it->second.get() : nullptr;
 }
 
-extern "C" int CVar_GetS32(const char* name, int defaultValue) {
+extern "C" int32_t CVar_GetS32(const char* name, int32_t defaultValue) {
     CVar* cvar = CVar_Get(name);
 
     if (cvar) {
@@ -47,7 +47,7 @@ extern "C" const char* CVar_GetString(const char* name, const char* defaultValue
     return defaultValue;
 }
 
-extern "C" void CVar_SetS32(const char* name, int value) {
+extern "C" void CVar_SetS32(const char* name, int32_t value) {
     auto& cvar = cvars[name];
     if (!cvar) {
         cvar = std::make_unique<CVar>();
@@ -74,7 +74,7 @@ extern "C" void CVar_SetString(const char* name, const char* value) {
     cvar->value.valueStr = ImStrdup(value);
 }
 
-extern "C" void CVar_RegisterS32(const char* name, int defaultValue) {
+extern "C" void CVar_RegisterS32(const char* name, int32_t defaultValue) {
     if (!CVar_Get(name))
         CVar_SetS32(name, defaultValue);
 }

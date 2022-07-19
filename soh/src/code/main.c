@@ -41,8 +41,6 @@ void main(int argc, char** argv)
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
-
-    // BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
     Main(0);
 }
 

@@ -18,7 +18,8 @@
 #elif __SWITCH__
 #include <SDL2/SDL.h>
 #include <switch.h>
-#include "glad/glad.h"
+#include <glad/glad.h>
+#include "../../SwitchImpl.h"
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
@@ -26,7 +27,6 @@
 #endif
 
 #include "../../ImGuiImpl.h"
-#include "../../SwitchImpl.h"
 #include "../../Cvar.h"
 #include "../../Hooks.h"
 
