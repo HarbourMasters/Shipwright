@@ -1335,7 +1335,7 @@ namespace SohImGui {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Bootup the game to selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
+                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     const char* FastFileSelect[5] = {
                         "File N.1",
@@ -1346,7 +1346,7 @@ namespace SohImGui {
                     };
                     ImGui::Text("Loading :");
                     EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
-                    EnhancementCheckbox("Create a new save if none ?", "gCreateNewSave");
+                    EnhancementCheckbox("Create a new save if none", "gCreateNewSave");
                     Tooltip("Enable the creation of a new save file\nif none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text\nelse your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
                 };
                 ImGui::Separator();
