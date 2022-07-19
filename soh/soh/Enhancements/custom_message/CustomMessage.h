@@ -31,6 +31,8 @@ class CustomMessage {
     void ReplaceSpecialCharacters(std::string &string);
     void ReplaceColors(std::string& string);
     void FormatCustomMessage(std::string& message, ItemID iid);
+    void FormatCustomMessage(std::string& message);
+    bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
 
     std::string MESSAGE_END();
     std::string ITEM_OBTAINED(uint8_t x);
@@ -46,6 +48,7 @@ class CustomMessage {
     ~CustomMessage();
 
     bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
+    bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
     std::string RetrieveMessage(std::string tableID, uint16_t textID);
     bool AddCustomMessageTable(std::string tableID);
 };

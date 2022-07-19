@@ -60,13 +60,20 @@ void CustomMessage::FormatCustomMessage(std::string& message, ItemID iid) {
     message += MESSAGE_END();
 }
 
+void CustomMessage::FormatCustomMessage(std::string& message) {
+    size_t start_pos = 0;
+    std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
+    while ((start_pos = message.find('^', start_pos)) != std::string::npos) {
+        message.replace(start_pos, 1, WAIT_FOR_INPUT());
+        start_pos += 3;
+    }
+    std::replace(message.begin(), message.end(), '@', PLAYER_NAME()[0]);
+    ReplaceSpecialCharacters(message);
+    ReplaceColors(message);
+    message += MESSAGE_END();
+}
 
-
-bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
-    FormatCustomMessage(messages.english, iid);
-    FormatCustomMessage(messages.german, iid);
-    FormatCustomMessage(messages.french, iid);
-    const uint16_t textID = giid;
+bool CustomMessage::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
     auto result = messageTables.find(tableID);
     if (result == messageTables.end()) {
         return false;
@@ -74,6 +81,23 @@ bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, It
     auto& messageTable = result->second;
     auto success = messageTable.emplace(textID, messages);
     return success.second;
+}
+
+
+
+bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
+    FormatCustomMessage(messages.english, iid);
+    FormatCustomMessage(messages.german, iid);
+    FormatCustomMessage(messages.french, iid);
+    const uint16_t textID = giid;
+    return InsertCustomMessage(tableID, textID, messages);
+}
+
+bool CustomMessage::CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
+    FormatCustomMessage(messages.english);
+    FormatCustomMessage(messages.german);
+    FormatCustomMessage(messages.french);
+    return InsertCustomMessage(tableID, textID, messages);
 }
 
 std::string CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID) {
