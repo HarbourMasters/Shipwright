@@ -1,13 +1,11 @@
 #include "Mercury.h"
 
-#include "Hooks.h"
-#include <any>
 #include <fstream>
 #include <sstream>
 #include <string>
 #include <filesystem>
 #include <unordered_map>
-
+#include <any>
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
