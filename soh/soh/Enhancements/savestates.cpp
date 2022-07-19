@@ -865,7 +865,7 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
         SohImGui::overlay->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
-    
+
     switch (request.type) { 
         case RequestType::SAVE:
             requests.push(request);
