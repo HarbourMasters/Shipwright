@@ -409,7 +409,9 @@ void GameState_Update(GameState* gameState) {
     // Unrestricted Items
     if (CVar_GetS32("gNoRestrictItems", 0) != 0) {
         if (gGlobalCtx) {
+            u8 sunsBackup = gGlobalCtx->interfaceCtx.restrictions.sunsSong;
             memset(&gGlobalCtx->interfaceCtx.restrictions, 0, sizeof(gGlobalCtx->interfaceCtx.restrictions));
+            gGlobalCtx->interfaceCtx.restrictions.sunsSong = sunsBackup;
         }
     }
 
