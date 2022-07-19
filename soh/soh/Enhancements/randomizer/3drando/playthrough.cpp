@@ -6,7 +6,7 @@
 #include "logic.hpp"
 #include "random.hpp"
 #include "spoiler_log.hpp"
-#include "randomizerTypes.h"
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 namespace Playthrough {
 

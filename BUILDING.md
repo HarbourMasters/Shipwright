@@ -12,7 +12,7 @@
  8. Build the solution.
  9. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
  10. Run `soh/soh.sln`
- 11. Switch the solution to `Release x86`.
+ 11. Switch the solution to `Release x86` or `Release x64`.
  12. Build the solution.
  13. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  14. Launch `soh.exe`.
@@ -63,9 +63,10 @@ make setup -j8 DEBUG=0
 # Compile the code (watch the -j parameter as above)
 make -j8 DEBUG=0
 # Create macOS app bundle
-make filledappbundle
+make appbundle
 ```
-9. Launch soh app in the soh folder!
+9. Copy your OTR file to ~/Library/Application\ Support/com.shipofharkinian.soh
+10. Launch soh app in the soh folder!
 
 # Compatible Roms
 ```
