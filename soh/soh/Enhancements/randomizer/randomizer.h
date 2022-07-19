@@ -4,7 +4,7 @@
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
-#include <randomizerTypes.h>
+#include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 class Randomizer {
   private:
