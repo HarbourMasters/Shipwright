@@ -415,15 +415,15 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
     }
 
     if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-        (CVar_GetS32("gNewSeedGenerated", 0) != 0) ||
+        (CVar_GetS32("gNewSeedGenerated", 0) != 0) || 
         (!fileSelectSpoilerFileLoaded &&
-            SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
+        SpoilerFileExists(CVar_GetString("gSpoilerLog", "")))) {
         if (CVar_GetS32("gNewFileDropped", 0) != 0) {
-            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", "None"));
+            CVar_SetString("gSpoilerLog", CVar_GetString("gDroppedFile", ""));
         }
         bool silent = true;
-        if ((CVar_GetS32("gNewFileDropped", 0) != 0) ||
-            (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
+        if((CVar_GetS32("gNewFileDropped", 0) != 0) ||
+           (CVar_GetS32("gNewSeedGenerated", 0) != 0)) {
             silent = false;
         }
         CVar_SetS32("gNewSeedGenerated", 0);
@@ -431,9 +431,9 @@ void FileChoose_UpdateMainMenu(GameState* thisx) {
         CVar_SetString("gDroppedFile", "");
         fileSelectSpoilerFileLoaded = false;
         const char* fileLoc = CVar_GetString("gSpoilerLog", "");
-        Randomizer_LoadSettings(fileLoc);
-        Randomizer_LoadHintLocations(fileLoc);
-        Randomizer_LoadItemLocations(fileLoc, silent);
+        LoadRandomizerSettings(fileLoc);
+        LoadHintLocations(fileLoc);
+        LoadItemLocations(fileLoc, silent);
         fileSelectSpoilerFileLoaded = true;
     }
 
@@ -1740,9 +1740,9 @@ void FileChoose_LoadGame(GameState* thisx) {
         this->state.running = false;
     }
 
-    Randomizer_LoadSettings("");
-    Randomizer_LoadHintLocations("");
-    Randomizer_LoadItemLocations("", true);
+    LoadRandomizerSettings("");
+    LoadHintLocations("");
+    LoadItemLocations("", true);
 
     gSaveContext.respawn[0].entranceIndex = -1;
     gSaveContext.respawnFlag = 0;
@@ -1894,7 +1894,7 @@ void FileChoose_Main(GameState* thisx) {
     };
     FileChooseContext* this = (FileChooseContext*)thisx;
     Input* input = &this->state.input[0];
-
+    
     if (CVar_GetS32("gTimeFlowFileSelect", 0) != 0) {
         gSaveContext.skyboxTime += 0x10;
     }

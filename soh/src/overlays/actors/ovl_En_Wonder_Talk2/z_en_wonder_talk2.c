@@ -252,18 +252,12 @@ void func_80B3A4F8(EnWonderTalk2* this, GlobalContext* globalCtx) {
             }
             this->unk_158 = 0;
             if (!this->unk_156) {
-                // Whether or not to skip the text in rando
+                // whether or not to skip the text in rando
                 bool randoSkipText = false;
                 if (gSaveContext.n64ddFlag) {
-                    // Scenes for which all of this type of wonder talk should be skipped.
-                    switch (globalCtx->sceneNum) {
-                        case 0x0007: // Shadow Temple
-                            randoSkipText = true;
-                            break;
-                        case 0x000B: // Gerudo Training Grounds
-                            randoSkipText = true;
-                            break;
-                        case 0x000C: // Inside Gerudo Fortress
+                    // scenes for which all of this type of wonder talk should be skipped.
+                    switch (globalCtx->sceneNum) { 
+                        case 0x0007: //shadow temple
                             randoSkipText = true;
                             break;
                         default:

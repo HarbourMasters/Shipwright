@@ -5044,7 +5044,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                                 HIGH_SCORE(HS_FISHING) |= 0x400;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE) :
+                                                GetRandomizedItemIdFromKnownCheck(RC_LH_CHILD_FISHING, GI_HEART_PIECE) :
                                                 GI_HEART_PIECE; 
                             }
                         }
@@ -5054,7 +5054,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                                 HIGH_SCORE(HS_FISHING) |= 0x800;
                                 sSinkingLureLocation = (u8)Rand_ZeroFloat(3.999f) + 1;
                                 getItemId = gSaveContext.n64ddFlag ?
-                                                Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD) :
+                                                GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD) :
                                                 GI_SCALE_GOLD; 
                             }
                         }
@@ -5130,7 +5130,7 @@ void Fishing_HandleOwnerDialog(Fishing* this, GlobalContext* globalCtx) {
                     func_8002F434(&this->actor, globalCtx, GI_SCALE_GOLD, 2000.0f, 1000.0f);
                 } else {
                     func_8002F434(&this->actor, globalCtx,
-                                  Randomizer_GetItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD), 2000.0f,
+                                  GetRandomizedItemIdFromKnownCheck(RC_LH_ADULT_FISHING, GI_SCALE_GOLD), 2000.0f,
                                   1000.0f);
                 }
             }

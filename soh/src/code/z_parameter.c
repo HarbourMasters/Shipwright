@@ -1710,8 +1710,6 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             } else {
                 gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
             }
-        } else {
-            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
         }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
@@ -1810,13 +1808,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
-        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
         return ITEM_NONE;

@@ -23,7 +23,7 @@ public:
     ~OTRGlobals();
 
 private:
-	void CheckSaveFile(size_t sramSize) const;
+	void CheckSaveFile(size_t sramSize);
 };
 #endif
 
@@ -61,6 +61,8 @@ SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
 void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
 void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+char* Config_getValue(char* category, char* key);
+bool Config_setValue(char* category, char* key, char* value);
 
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
@@ -84,19 +86,19 @@ void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
 void* getN64WeirdFrame(s32 i);
 Sprite* GetSeedTexture(uint8_t index);
-void Randomizer_LoadSettings(const char* spoilerFileName);
-u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
-RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
-int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
-int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
-int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
-void Randomizer_LoadHintLocations(const char* spoilerFileName);
-void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
-s16 Randomizer_GetItemModelFromId(s16 itemId);
-s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
-s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+void LoadRandomizerSettings(const char* spoilerFileName);
+u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey);
+RandomizerCheck GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+int CopyAltarMessage(char* buffer, const int maxBufferSize);
+int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
+int CopyGanonText(char* buffer, const int maxBufferSize);
+int CopyGanonHintText(char* buffer, const int maxBufferSize);
+void LoadHintLocations(const char* spoilerFileName);
+void LoadItemLocations(const char* spoilerFileName, bool silent);
+s16 GetItemModelFromId(s16 itemId);
+s32 GetItemIDFromGetItemID(s32 getItemId);
+s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif

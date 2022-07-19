@@ -28,7 +28,6 @@
 #include "gfx_pc.h"
 #include "../../ImGuiImpl.h"
 #include "../../Cvar.h"
-#include "../../Hooks.h"
 
 #define DECLARE_GFX_DXGI_FUNCTIONS
 #include "gfx_dxgi.h"
@@ -229,8 +228,9 @@ static void onkeyup(WPARAM w_param, LPARAM l_param) {
     }
 }
 
+char fileName[256];
+
 static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_param, LPARAM l_param) {
-    char fileName[256];
     SohImGui::EventImpl event_impl;
     event_impl.win32 = { h_wnd, static_cast<int>(message), static_cast<int>(w_param), static_cast<int>(l_param) };
     SohImGui::Update(event_impl);
@@ -240,7 +240,6 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
-            ModInternal::ExecuteHooks<ModInternal::ExitGame>();
             exit(0);
         case WM_PAINT:
             if (dxgi.in_paint) {
@@ -719,12 +718,6 @@ void ThrowIfFailed(HRESULT res, HWND h_wnd, const char *message) {
     }
 }
 
-const char* gfx_dxgi_get_key_name(int scancode) {
-    TCHAR* Text = new TCHAR[64];
-    GetKeyNameText(scancode << 16, Text, 64);
-    return (char*) Text;
-}
-
 extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_init,
     gfx_dxgi_set_keyboard_callbacks,
@@ -741,7 +734,6 @@ extern "C" struct GfxWindowManagerAPI gfx_dxgi_api = {
     gfx_dxgi_set_target_fps,
     gfx_dxgi_set_maximum_frame_latency,
     gfx_dxgi_get_detected_hz,
-    gfx_dxgi_get_key_name
 };
 
 #endif

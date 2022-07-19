@@ -3,7 +3,7 @@
 
 #include "ultra64.h"
 #include "z64math.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include <randomizerTypes.h>
 
 typedef struct {
     /* 0x00 */ u8 buttonItems[8];

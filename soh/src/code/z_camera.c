@@ -1409,115 +1409,7 @@ s32 Camera_Noop(Camera* camera) {
     return true;
 }
 
-s32 SetCameraManual(Camera* camera) {
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
-
-    if ((fabsf(newCamX) >= 15.0f || fabsf(newCamY) >= 15.0f) && camera->globalCtx->manualCamera == false) {
-        camera->globalCtx->manualCamera = true;
-
-        VecSph eyeAdjustment;
-        OLib_Vec3fDiffToVecSphGeo(&eyeAdjustment, &camera->at, &camera->eye);
-
-        camera->globalCtx->camX = eyeAdjustment.yaw;
-        camera->globalCtx->camY = eyeAdjustment.pitch;
-    }
-
-    if (camera->globalCtx->manualCamera) {
-        return 1;
-    }
-
-    return 0;
-}
-
-s32 Camera_Free(Camera* camera) {
-    Vec3f* eye = &camera->eye;
-    Vec3f* at = &camera->at;
-    Vec3f* eyeNext = &camera->eyeNext;
-    VecSph spA8;
-    CamColChk sp6C;
-    Parallel1* para1 = (Parallel1*)camera->paramData;
-    f32 playerHeight;
-
-    at->x = Camera_LERPCeilF(camera->player->actor.world.pos.x, camera->at.x, 0.5f, 1.0f);
-    at->y = Camera_LERPCeilF(camera->player->actor.world.pos.y + (camera->player->rideActor != NULL
-                                                                      ? Player_GetHeight(camera->player) / 2
-                                                                      : Player_GetHeight(camera->player)) /
-                                                                     1.2f,
-                             camera->at.y, 0.5f, 1.0f);
-    at->z = Camera_LERPCeilF(camera->player->actor.world.pos.z, camera->at.z, 0.5f, 1.0f);
-
-    playerHeight = Player_GetHeight(camera->player);
-
-    if (RELOAD_PARAMS) {
-        OLib_Vec3fDiffToVecSphGeo(&spA8, &camera->at, &camera->eye);
-
-        camera->globalCtx->camX = spA8.yaw;
-        camera->globalCtx->camY = spA8.pitch;
-
-        CameraModeValue* values = sCameraSettings[camera->setting].cameraModes[camera->mode].values;
-        f32 yNormal = (1.0f + PCT(OREG(46))) - (PCT(OREG(46)) * (68.0f / playerHeight));
-
-        para1->yOffset = NEXTPCT * playerHeight * yNormal;
-        para1->distTarget = NEXTPCT * playerHeight * yNormal;
-        para1->pitchTarget = DEGF_TO_BINANG(NEXTSETTING);
-        para1->yawTarget = DEGF_TO_BINANG(NEXTSETTING);
-        para1->unk_08 = NEXTSETTING;
-        para1->unk_0C = NEXTSETTING;
-        para1->fovTarget = NEXTSETTING;
-        para1->unk_14 = NEXTPCT;
-        para1->interfaceFlags = NEXTSETTING;
-        para1->unk_18 = NEXTPCT * playerHeight * yNormal;
-        para1->unk_1C = NEXTPCT;
-    }
-
-    if (R_RELOAD_CAM_PARAMS) {
-        Camera_CopyPREGToModeValues(camera);
-    }
-
-    sCameraInterfaceFlags = 1;
-
-    camera->animState = 1;
-
-    f32 newCamX = -D_8015BD7C->state.input[0].cur.cam_x;
-    f32 newCamY = D_8015BD7C->state.input[0].cur.cam_y;
-
-    camera->globalCtx->camX += newCamX;
-    camera->globalCtx->camY += newCamY;
-
-    if (camera->globalCtx->camY > 0x32A4) {
-        camera->globalCtx->camY = 0x32A4;
-    }
-    if (camera->globalCtx->camY < -0x228C) {
-        camera->globalCtx->camY = -0x228C;
-    }
-
-    camera->dist = Camera_LERPCeilF(para1->distTarget, camera->dist, 1.0f / camera->rUpdateRateInv, 0.0f);
-    OLib_Vec3fDiffToVecSphGeo(&spA8, at, eyeNext);
-
-    spA8.r = camera->dist;
-    spA8.yaw = camera->globalCtx->camX;
-    spA8.pitch = camera->globalCtx->camY;
-
-    Camera_Vec3fVecSphGeoAdd(eyeNext, at, &spA8);
-    if (camera->status == CAM_STAT_ACTIVE) {
-        sp6C.pos = *eyeNext;
-        Camera_BGCheckInfo(camera, at, &sp6C);
-        *eye = sp6C.pos;
-    }
-
-    camera->fov = Camera_LERPCeilF(65.0f, camera->fov, camera->fovUpdateRate, 1.0f);
-    camera->roll = Camera_LERPCeilS(0, camera->roll, 0.5, 0xA);
-
-    return 1;
-}
-
 s32 Camera_Normal1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1745,11 +1637,6 @@ s32 Camera_Normal1(Camera* camera) {
 }
 
 s32 Camera_Normal2(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -1916,11 +1803,6 @@ s32 Camera_Normal2(Camera* camera) {
 
 // riding epona
 s32 Camera_Normal3(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2115,8 +1997,6 @@ s32 Camera_Parallel1(Camera* camera) {
     OLib_Vec3fDiffToVecSphGeo(&atToEyeDir, at, eye);
     OLib_Vec3fDiffToVecSphGeo(&atToEyeNextDir, at, eyeNext);
 
-    camera->globalCtx->manualCamera = false;
-
     switch (camera->animState) {
         case 0:
         case 0xA:
@@ -2282,11 +2162,6 @@ s32 Camera_Parallel0(Camera* camera) {
  * Generic jump, jumping off ledges
  */
 s32 Camera_Jump1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2432,11 +2307,6 @@ s32 Camera_Jump1(Camera* camera) {
 
 // Climbing ladders/vines
 s32 Camera_Jump2(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -2619,11 +2489,6 @@ s32 Camera_Jump2(Camera* camera) {
 
 // swimming
 s32 Camera_Jump3(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -3081,11 +2946,6 @@ s32 Camera_Battle3(Camera* camera) {
  * setting value.
  */
 s32 Camera_Battle4(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;
@@ -4616,11 +4476,6 @@ s32 Camera_Data4(Camera* camera) {
  * Hanging off of a ledge
  */
 s32 Camera_Unique1(Camera* camera) {
-    if (CVar_GetS32("gFreeCamera", 0) && SetCameraManual(camera) == 1) {
-        Camera_Free(camera);
-        return 1;
-    }
-
     Vec3f* eye = &camera->eye;
     Vec3f* at = &camera->at;
     Vec3f* eyeNext = &camera->eyeNext;

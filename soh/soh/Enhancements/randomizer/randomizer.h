@@ -1,10 +1,11 @@
-#pragma once
+#ifndef RANDOMIZER_H
+#define RANDOMIZER_H
 
 #include <unordered_map>
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
-#include "soh/Enhancements/randomizer/randomizerTypes.h"
+#include <randomizerTypes.h>
 
 class Randomizer {
   private:
@@ -53,3 +54,5 @@ void Rando_Init(void);
 }
 #endif
 
+
+#endif
