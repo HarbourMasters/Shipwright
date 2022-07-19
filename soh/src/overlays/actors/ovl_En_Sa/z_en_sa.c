@@ -619,7 +619,7 @@ void func_80AF67D0(EnSa* this, GlobalContext* globalCtx) {
 
 void GivePlayerRandoRewardSaria(EnSa* saria, GlobalContext* globalCtx, RandomizerCheck check) {
     GetItemID getItemId =
-        GetRandomizedItemIdFromKnownCheck(check, GI_SARIAS_SONG);
+        Randomizer_GetItemIdFromKnownCheck(check, GI_SARIAS_SONG);
 
     if (saria->actor.parent != NULL && saria->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&
         !Flags_GetTreasure(globalCtx, 0x1F)) {
