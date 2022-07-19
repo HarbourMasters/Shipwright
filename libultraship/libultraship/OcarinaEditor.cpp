@@ -62,8 +62,8 @@ namespace Ship {
 	}
 
 	void OcarinaEditor::DrawMapping(const char* label, const char* id, uint32_t n64Btn, float width) {
-		const char* cVar = StringHelper::Sprintf("gOcarina%sBtnMap", id).c_str();
-		uint32_t currentButton = CVar_GetS32(cVar, n64Btn);
+		std::string cVar = StringHelper::Sprintf("gOcarina%sBtnMap", id);
+		uint32_t currentButton = CVar_GetS32(cVar.c_str(), n64Btn);
 
 		const char* preview;
 		if (buttonmap.contains(currentButton)) {
@@ -90,7 +90,7 @@ namespace Ship {
 					continue;
 				}
 				if (ImGui::Selectable(i->second, i->first == currentButton)) {
-					CVar_SetS32(cVar, i->first);
+					CVar_SetS32(cVar.c_str(), i->first);
 				}
 			}
 			ImGui::EndCombo();
