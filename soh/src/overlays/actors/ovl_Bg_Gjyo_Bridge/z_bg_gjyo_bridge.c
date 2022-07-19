@@ -50,7 +50,7 @@ void BgGjyoBridge_Init(Actor* thisx, GlobalContext* globalCtx) {
 
     this->dyna.bgId = DynaPoly_SetBgActor(globalCtx, &globalCtx->colCtx.dyna, thisx, colHeader);
 
-    int bridge = GetRandoSettingValue(RSK_RAINBOW_BRIDGE);
+    int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
     if (gSaveContext.eventChkInf[4] & 0x2000 || (gSaveContext.n64ddFlag && bridge == 0)) {
         this->actionFunc = func_808787A4;
     } else {
@@ -176,12 +176,12 @@ void BgGjyoBridge_TriggerCutscene(BgGjyoBridge* this, GlobalContext* globalCtx) 
             LaunchBridgeCutscene(this, globalCtx);
         }
     } else {
-        int bridge = GetRandoSettingValue(RSK_RAINBOW_BRIDGE);
-        int bridgeStoneCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_STONE_COUNT);
-        int bridgeMedallionCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT);
-        int bridgeRewardCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_REWARD_COUNT);
-        int bridgeDungeonCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
-        int bridgeTokenCount = GetRandoSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
+        int bridge = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE);
+        int bridgeStoneCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_STONE_COUNT);
+        int bridgeMedallionCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_MEDALLION_COUNT);
+        int bridgeRewardCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_REWARD_COUNT);
+        int bridgeDungeonCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_DUNGEON_COUNT);
+        int bridgeTokenCount = Randomizer_GetSettingValue(RSK_RAINBOW_BRIDGE_TOKEN_COUNT);
 
         if (CheckPlayerPosition(player, globalCtx)) {
             switch (bridge) {

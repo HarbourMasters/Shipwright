@@ -2,8 +2,8 @@
   
 curl -sSfLO "https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage"
 chmod a+x linuxdeploy*.AppImage
-curl -sSfLO "https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage" 
-chmod a+x appimagetool*.AppImage
+curl -sSfL https://github.com$(curl https://github.com/probonopd/go-appimage/releases | grep "mkappimage-.*-x86_64.AppImage" | head -n 1 | cut -d '"' -f 2) -o mkappimage.AppImage
+chmod a+x mkappimage.AppImage
  
 mkdir -p AppDir/usr/bin
 cp appimage/{soh.desktop,soh.sh} AppDir/
@@ -30,5 +30,5 @@ export UPD_INFO="gh-releases-zsync|HarbourMasters|Shipwright-linux|develop|SOH-L
 
 cd /soh
  
-./appimagetool-x86_64.AppImage --appimage-extract-and-run ./AppDir "SOH-Linux.AppImage"
-
+VERSION=Linux ./mkappimage.AppImage --appimage-extract-and-run ./AppDir # "SOH-Linux-x86_64.AppImage"
+mv SOH-Linux-x86_64.AppImage SOH-Linux.AppImage # Keep Original Name

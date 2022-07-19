@@ -45,8 +45,8 @@ ifneq ($(DEPRECATION_ON),0)
 endif
 # CXXFLAGS += -DTEXTURE_DEBUG
 
-LDFLAGS := -lm -ldl \
-  -L../StormLib/build -L../libultraship -lbz2 -pthread -lultraship -lstorm
+LDFLAGS := -Llib/libgfxd -L../libultraship -L../StormLib/build \
+  -pthread -lgfxd -lultraship ZAPDUtils/ZAPDUtils.a -lstorm -lbz2 -lm -ldl
 
 ifeq ($(UNAME), Darwin)
   LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs) -framework OpenGL -framework Foundation
@@ -137,4 +137,4 @@ ZAPDUtils:
 
 # Linking
 ZAPD.out: $(O_FILES) lib/libgfxd/libgfxd.a ExporterTest ZAPDUtils StormLib
-	$(CXX) $(CXXFLAGS) $(O_FILES) lib/libgfxd/libgfxd.a ZAPDUtils/ZAPDUtils.a ../StormLib/build/libstorm.a $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)
+	$(CXX) $(CXXFLAGS) $(O_FILES) $(EXPORTERS) $(LDFLAGS) $(OUTPUT_OPTION)
