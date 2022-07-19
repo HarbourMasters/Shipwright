@@ -865,14 +865,16 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
         SohImGui::overlay->TextDrawNotification(1.0f, true, "states not available here", request.slot);
         return SaveStateReturn::FAIL_WRONG_GAMESTATE;
     }
-
+    
     switch (request.type) { 
         case RequestType::SAVE:
             requests.push(request);
+            return SaveStateReturn::SUCCESS;
             break;
         case RequestType::LOAD:
             if (states.contains(request.slot)) {
                 requests.push(request);
+                return SaveStateReturn::SUCCESS;
             } else {
                 SPDLOG_ERROR("Invalid SaveState slot: {}", request.type);
                 SohImGui::overlay->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
