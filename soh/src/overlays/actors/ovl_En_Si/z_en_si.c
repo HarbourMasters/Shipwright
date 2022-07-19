@@ -180,7 +180,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
             f32 mtxScale;
-            getItemId = GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
+            getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_DEFENSE) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemId);
             }
@@ -188,7 +188,7 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 mtxScale = 1.5f;
                 Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
             }
-            GetItem_Draw(globalCtx, GetItemModelFromId(getItemId));
+            GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(getItemId));
         }
         
     }
