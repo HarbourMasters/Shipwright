@@ -503,49 +503,12 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                 (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                  ((void)0, gSaveContext.linkAge))) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {
-
-                    // Allow Link to remove his equipment from the equipment subscreen by toggling on/off
-                    // Shields will be un-equipped entirely, and tunics/boots will revert to Kokiri Tunic/Kokiri Boots
-                    // Only BGS/Giant's Knife is affected, and it will revert to Master Sword.
-
-                    // If we have the feature toggled on
-                    if (CVar_GetS32("gEquipmentCanBeRemoved", 0)) {
-                        
-                        // If we're on the "swords" section of the equipment screen AND we're on a currently-equipped BGS/Giant's Knife
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 0 && pauseCtx->cursorX[PAUSE_EQUIP] == 3 
-                            && CUR_EQUIP_VALUE(EQUIP_SWORD) == 3 && CHECK_OWNED_EQUIP(0,1)){ // And we have the Master Sword
-                            Inventory_ChangeEquipment(EQUIP_SWORD, 2); // "Unequip" it by equipping Master Sword
-                            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
-                            gSaveContext.infTable[29] = 0;
-                            goto RESUME_EQUIPMENT_SWORD;               // Skip to here so we don't re-equip it
-                        }
-
-                        // If we're on the "shields" section of the equipment screen AND we're on a currently-equipped shield
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 1 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_SHIELD)) {
-                            Inventory_ChangeEquipment(EQUIP_SHIELD, 0); // Unequip it
-                            goto RESUME_EQUIPMENT;                      // Skip to here so we don't re-equip it
-                        }
-
-                        // If we're on the "tunics" section of the equipment screen AND we're on a currently-equipped tunic
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 2 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_TUNIC)) {
-                            Inventory_ChangeEquipment(EQUIP_TUNIC, 1); // "Unequip" it (by equipping Kokiri Tunic)
-                            goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
-                        }
-
-                        // If we're on the "boots" section of the equipment screen AND we're on currently-equipped boots
-                        if (pauseCtx->cursorY[PAUSE_EQUIP] == 3 && pauseCtx->cursorX[PAUSE_EQUIP] == CUR_EQUIP_VALUE(EQUIP_BOOTS)) {
-                            Inventory_ChangeEquipment(EQUIP_BOOTS, 1); // "Unequip" it (by equipping Kokiri Boots)
-                            goto RESUME_EQUIPMENT;                     // Skip to here so we don't re-equip it
-                        }
-                    }
-
                     if (CHECK_OWNED_EQUIP(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP] - 1)) {
                         Inventory_ChangeEquipment(pauseCtx->cursorY[PAUSE_EQUIP], pauseCtx->cursorX[PAUSE_EQUIP]);
                     } else {
                         goto EQUIP_FAIL;
                     }
 
-                    RESUME_EQUIPMENT:
                     if (pauseCtx->cursorY[PAUSE_EQUIP] == 0) {
                         gSaveContext.infTable[29] = 0;
                         gSaveContext.equips.buttonItems[0] = cursorItem;
@@ -562,7 +525,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                                 gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KNIFE;
                             }
                         }
-                        RESUME_EQUIPMENT_SWORD:
+
                         Interface_LoadItemIcon1(globalCtx, 0);
                     }
 
@@ -689,10 +652,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                     gsSPGrayscale(POLY_KAL_DISP++, true);
                 }
-
-                if (!((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment))) { // Don't draw the full BGS icon when we have a broken Giant's Knife
-                    KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
-                }
+                KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
                 gsSPGrayscale(POLY_KAL_DISP++, false);
             }
         }
