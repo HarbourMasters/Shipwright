@@ -104,7 +104,7 @@ const char* MarginCvarList[] {
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
 
-void SetMarginAll(char* ButtonName, bool SetActivated) {
+void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
         //MarginCvarNonAnchor is an array that list every element that has No anchor by default, because if that the case this function will not touch it with pose type 0.
