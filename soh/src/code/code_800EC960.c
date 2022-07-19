@@ -1247,6 +1247,12 @@ void func_800F56A8(void);
 void Audio_PlayNatureAmbienceSequence(u8 natureAmbienceId);
 s32 Audio_SetGanonDistVol(u8 targetVol);
 
+// Right stick as virtual C buttons
+#define RSTICK_UP    0x100000
+#define RSTICK_DOWN  0x200000
+#define RSTICK_LEFT  0x400000
+#define RSTICK_RIGHT 0x800000
+
 // Function originally not called, so repurposing for control mapping
 void Audio_OcaUpdateBtnMap(u8 dpad) {
     if (CVar_GetS32("gOcarinaControls", 0) == 0) {
@@ -1270,6 +1276,13 @@ void Audio_OcaUpdateBtnMap(u8 dpad) {
         sOcarinaF4BtnMap |= BTN_DDOWN;
     }
 
+    if (CVar_GetS32("gRStickOcarina", 0)) {
+        sOcarinaD5BtnMap |= RSTICK_UP;
+        sOcarinaB4BtnMap |= RSTICK_LEFT;
+        sOcarinaA4BtnMap |= RSTICK_RIGHT;
+        sOcarinaF4BtnMap |= RSTICK_DOWN;
+    }
+
     sOcarinaAllowedBtnMask = (
         sOcarinaD5BtnMap |
         sOcarinaB4BtnMap |
@@ -1290,6 +1303,23 @@ void Audio_GetOcaInput(void) {
     sPrevOcarinaBtnPress = sp18;
     sCurOcaStick.x = input->rel.stick_x;
     sCurOcaStick.y = input->rel.stick_y;
+
+    f32 rstick_x = input->cur.cam_x;
+    f32 rstick_y = input->cur.cam_y;
+    printf("%f %f\n", rstick_x, rstick_y);
+    const f32 sensitivity = 500;
+    if (rstick_x > sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_RIGHT;
+    }
+    if (rstick_x < -sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_LEFT;
+    }
+    if (rstick_y > sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_UP;
+    }
+    if (rstick_y < -sensitivity) {
+        sCurOcarinaBtnPress |= RSTICK_DOWN;
+    }
 }
 
 f32 Audio_OcaAdjStick(s8 inp) {

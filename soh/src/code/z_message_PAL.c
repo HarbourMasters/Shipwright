@@ -107,12 +107,18 @@ void Message_SetCustomOrGeneralCColor(OcarinaNoteColor* color, bool separate, ch
     color->b = CVar_GetS32(cVar, 50);
 }
 
+typedef struct {
+    bool separateC;
+    bool dpad;
+    bool rightStick;
+} CustomNoteOptions;
+
 // Set the non-null button color corresponding to the button map
 //
-// If, after removing the d pad, the button mask is A, a C button, or Start,
-// then it'll be colored to the corresponding CVar. Otherwise, its color will
-// be equal to sOcarinaNoteCBtnPrim.
-void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool separateC, bool dpad) {
+// If the assigned button is A, a C button, Start, or the D-pad, then it'll be
+// colored to the corresponding CVar. Otherwise, its color will be equal to
+// sOcarinaNoteCBtnPrim.
+void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, CustomNoteOptions* flags) {
     switch (btnMap) {
         case BTN_A:
             color->r = CVar_GetS32("gCCABtnPrimR", 80);
@@ -120,16 +126,16 @@ void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool
             color->b = CVar_GetS32("gCCABtnPrimB", 150);
             break;
         case BTN_CUP:
-            Message_SetCustomOrGeneralCColor(color, separateC, 'U');
+            Message_SetCustomOrGeneralCColor(color, flags->separateC, 'U');
             break;
         case BTN_CDOWN:
-            Message_SetCustomOrGeneralCColor(color, separateC, 'D');
+            Message_SetCustomOrGeneralCColor(color, flags->separateC, 'D');
             break;
         case BTN_CLEFT:
-            Message_SetCustomOrGeneralCColor(color, separateC, 'L');
+            Message_SetCustomOrGeneralCColor(color, flags->separateC, 'L');
             break;
         case BTN_CRIGHT:
-            Message_SetCustomOrGeneralCColor(color, separateC, 'R');
+            Message_SetCustomOrGeneralCColor(color, flags->separateC, 'R');
             break;
         case BTN_START:
             color->r = CVar_GetS32("gCCStartBtnPrim", 200);
@@ -145,7 +151,7 @@ void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool
             color->b = CVar_GetS32("gCCDpadPrimB", 255) * 103 / 255;
             break;
         case 0:
-            if (dpad) {
+            if (flags->dpad && !flags->rightStick) {
                 // D pad is dark gray even when set to white, so emulate that.
                 color->r = CVar_GetS32("gCCDpadPrimR", 255) * 103 / 255;
                 color->g = CVar_GetS32("gCCDpadPrimG", 255) * 103 / 255;
@@ -187,20 +193,24 @@ void Message_ResetOcarinaNoteState(void) {
         sOcarinaNoteCBtnPrim.r = CVar_GetS32("gCCCBtnPrimR", 255);
         sOcarinaNoteCBtnPrim.g = CVar_GetS32("gCCCBtnPrimG", 255);
         sOcarinaNoteCBtnPrim.b = CVar_GetS32("gCCCBtnPrimB", 50);
-        bool separateC = CVar_GetS32("gCCparated", 0);
+
+        CustomNoteOptions options = (CustomNoteOptions){
+            .separateC = CVar_GetS32("gCCparated", 0),
+            .dpad = CVar_GetS32("gDpadOcarina", 0),
+            .rightStick = CVar_GetS32("gDpadRStick", 0),
+        };
 
         if (CVar_GetS32("gOcarinaControls", 0) == 1) {
-            bool dpad = CVar_GetS32("gDpadOcarina", 0);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD5Prim, CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP), separateC, dpad);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteB4Prim, CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT), separateC, dpad);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteA4Prim, CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT), separateC, dpad);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteF4Prim, CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN), separateC, dpad);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD4Prim, CVar_GetS32("gOcarinaD4BtnMap", BTN_A), separateC, dpad);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD5Prim, CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP), &options);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteB4Prim, CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT), &options);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteA4Prim, CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT), &options);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteF4Prim, CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN), &options);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD4Prim, CVar_GetS32("gOcarinaD4BtnMap", BTN_A), &options);
         } else {
-            Message_SetCustomOrGeneralCColor(&sOcarinaNoteD5Prim, separateC, 'U');
-            Message_SetCustomOrGeneralCColor(&sOcarinaNoteB4Prim, separateC, 'L');
-            Message_SetCustomOrGeneralCColor(&sOcarinaNoteA4Prim, separateC, 'R');
-            Message_SetCustomOrGeneralCColor(&sOcarinaNoteF4Prim, separateC, 'D');
+            Message_SetCustomOrGeneralCColor(&sOcarinaNoteD5Prim, options.separateC, 'U');
+            Message_SetCustomOrGeneralCColor(&sOcarinaNoteB4Prim, options.separateC, 'L');
+            Message_SetCustomOrGeneralCColor(&sOcarinaNoteA4Prim, options.separateC, 'R');
+            Message_SetCustomOrGeneralCColor(&sOcarinaNoteF4Prim, options.separateC, 'D');
             sOcarinaNoteD4Prim.r = CVar_GetS32("gCCABtnPrimR", 80);
             sOcarinaNoteD4Prim.g = CVar_GetS32("gCCABtnPrimG", 255);
             sOcarinaNoteD4Prim.b = CVar_GetS32("gCCABtnPrimB", 150);

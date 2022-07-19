@@ -102,12 +102,13 @@ namespace Ship {
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(300, 0), ImVec2(1200, 290));
+		ImGui::SetNextWindowSizeConstraints(ImVec2(410, 0), ImVec2(1200, 290));
 		if (!ImGui::Begin("Ocarina Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize)) {
 			ImGui::End();
 			return;
 		}
 
+		float column2x;
 		if (ImGui::BeginTable("tableOcarinaScheme", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
 			ImGui::TableSetupColumn("N64 Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
 			ImGui::TableSetupColumn("Custom Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
@@ -115,6 +116,7 @@ namespace Ship {
 			Draw_HelpIcon("Play the ocarina with A and the C buttons");
 			SohImGui::EnhancementRadioButton("N64 Controls", "gOcarinaControls", 0);
 			Table_NextCol();
+			column2x = ImGui::GetCursorPosX();
 			Draw_HelpIcon("Customize the ocarina controls to your liking");
 			SohImGui::EnhancementRadioButton("Custom Controls", "gOcarinaControls", 1);
 			ImGui::EndTable();
@@ -131,7 +133,7 @@ namespace Ship {
 				DrawMapping("F4", "F4", BTN_CDOWN, width);
 				DrawMapping("D4", "D4", BTN_A, width);
 				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel(10);
+			SohImGui::EndGroupPanel(33);
 
 			ImGui::SameLine();
 
@@ -150,11 +152,16 @@ namespace Ship {
 				float cursorX = ImGui::GetCursorPosX() + 10;
 				ImGui::SetCursorPosX(cursorX);
 				SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+				ImGui::SetCursorPosX(cursorX);
+				SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
 				ImGui::Dummy(ImVec2(0, 5));
 			SohImGui::EndGroupPanel();
 		} else {
 			ImGui::Dummy(ImVec2(0, 5));
 			SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+			ImGui::SameLine();
+			ImGui::SetCursorPosX(column2x);
+			SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
 			ImGui::Dummy(ImVec2(0, 5));
 			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the menu at the top.");
 		}
