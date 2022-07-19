@@ -338,7 +338,9 @@ namespace SohImGui {
         ImGui::SetCurrentContext(ctx);
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-		::SetProcessDPIAware();
+        #ifdef _WIN32
+		    ::SetProcessDPIAware();
+        #endif
         io->Fonts->AddFontDefault();
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
