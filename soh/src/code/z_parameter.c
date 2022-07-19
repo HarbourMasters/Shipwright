@@ -1677,7 +1677,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
             gSaveContext.swordHealth = 8;
 
             if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF 
-                ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD))) { // In rando, when buying Giant's Knife, also check
+                ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) { // In rando, when buying Giant's Knife, also check
                 gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; // for 0xE in case we don't have Kokiri Sword
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
