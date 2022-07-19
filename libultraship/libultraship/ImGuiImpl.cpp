@@ -763,6 +763,9 @@ namespace SohImGui {
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
 
+                EnhancementCheckbox("Ocarina Configuration", "gOcarinaConfigurationEnabled");
+                ocarina->Opened = CVar_GetS32("gOcarinaConfigurationEnabled", 0);
+
                 ImGui::Separator();
 
                 // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
@@ -772,10 +775,6 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
-                ImGui::Separator();
-
-                EnhancementCheckbox("Ocarina Configuration", "gOcarinaConfigurationEnabled");
-                ocarina->Opened = CVar_GetS32("gOcarinaConfigurationEnabled", 0);
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");

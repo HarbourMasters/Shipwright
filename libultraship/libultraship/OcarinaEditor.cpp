@@ -120,8 +120,6 @@ namespace Ship {
 			ImGui::EndTable();
 		}
 
-		SohImGui::EnhancementCheckbox("Play notes with D-pad", "gDpadOcarina");
-
 		if (CVar_GetS32("gOcarinaControls", 0) == 1) {
 			float width;
 
@@ -133,18 +131,31 @@ namespace Ship {
 				DrawMapping("F4", "F4", BTN_CDOWN, width);
 				DrawMapping("D4", "D4", BTN_A, width);
 				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel();
+			SohImGui::EndGroupPanel(10);
 
 			ImGui::SameLine();
 
+			const ImVec2 cursor = ImGui::GetCursorPos();
 			SohImGui::BeginGroupPanel("Misc.", ImVec2(158, 20));
-				width = ImGui::CalcTextSize("Play sharp note").x + 10;
+				width = ImGui::CalcTextSize("Disable songs").x + 10;
 				DrawMapping("Disable songs", "Disable", BTN_L, width);
-				DrawMapping("Play sharp note", "Sharp", BTN_R, width);
-				DrawMapping("Play flat note", "Flat", BTN_Z, width);
+				DrawMapping("Pitch up", "Sharp", BTN_R, width);
+				DrawMapping("Pitch down", "Flat", BTN_Z, width);
 				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel(48);
+			SohImGui::EndGroupPanel();
+
+			ImGui::SetCursorPosX(cursor.x);
+			ImGui::SetCursorPosY(cursor.y + 100);
+			SohImGui::BeginGroupPanel("Alternate controls", ImVec2(225.5, 20));
+				float cursorX = ImGui::GetCursorPosX() + 10;
+				ImGui::SetCursorPosX(cursorX);
+				SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+				ImGui::Dummy(ImVec2(0, 5));
+			SohImGui::EndGroupPanel();
 		} else {
+			ImGui::Dummy(ImVec2(0, 5));
+			SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+			ImGui::Dummy(ImVec2(0, 5));
 			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the menu at the top.");
 		}
 
