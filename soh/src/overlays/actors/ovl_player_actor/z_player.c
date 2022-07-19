@@ -13101,11 +13101,11 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
     if (LinkAnimation_Update(globalCtx, &this->skelAnime)) {
         if (this->unk_84F != 0) {
             if (this->unk_850 == 0) {
-                Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor);
+                if (!CVar_GetS32("gFastDrops", 0)) { Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor); }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 this->unk_850 = 1;
             }
-            else if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
+            else if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING || CVar_GetS32("gFastDrops", 0)) {
                 this->unk_84F = 0;
                 func_8005B1A4(Gameplay_GetCamera(globalCtx, 0));
             }
@@ -13140,8 +13140,10 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
                             this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(globalCtx, this, catchInfo->itemId, ABS(catchInfo->actionParam));
-                            func_808322D0(globalCtx, this, sp24->unk_04);
-                            func_80835EA4(globalCtx, 4);
+                            if (!CVar_GetS32("gFastDrops", 0)) {
+                                func_808322D0(globalCtx, this, sp24->unk_04);
+                                func_80835EA4(globalCtx, 4);
+                            }
                         }
                     }
                 }
