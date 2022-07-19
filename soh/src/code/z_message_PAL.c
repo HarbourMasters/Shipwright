@@ -112,12 +112,8 @@ void Message_SetCustomOrGeneralCColor(OcarinaNoteColor* color, bool separate, ch
 // If, after removing the d pad, the button mask is A, a C button, or Start,
 // then it'll be colored to the corresponding CVar. Otherwise, its color will
 // be equal to sOcarinaNoteCBtnPrim.
-void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool separateC) {
-    s32 removeDpadMask = ~(BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT);
-    s32 mainBtnMask = btnMap & removeDpadMask;
-
-    // With the d-pad removed, there should be at most one button mapped to any note.
-    switch (mainBtnMask) {
+void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool separateC, bool dpad) {
+    switch (btnMap) {
         case BTN_A:
             color->r = CVar_GetS32("gCCABtnPrimR", 80);
             color->g = CVar_GetS32("gCCABtnPrimG", 255);
@@ -140,6 +136,22 @@ void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, bool
             color->g = CVar_GetS32("gCCStartBtnPrim", 0);
             color->b = CVar_GetS32("gCCStartBtnPrim", 0);
             break;
+        case BTN_DUP:
+        case BTN_DDOWN:
+        case BTN_DLEFT:
+        case BTN_DRIGHT:
+            color->r = CVar_GetS32("gCCDpadPrimR", 255) * 103 / 255;
+            color->g = CVar_GetS32("gCCDpadPrimG", 255) * 103 / 255;
+            color->b = CVar_GetS32("gCCDpadPrimB", 255) * 103 / 255;
+            break;
+        case 0:
+            if (dpad) {
+                // D pad is dark gray even when set to white, so emulate that.
+                color->r = CVar_GetS32("gCCDpadPrimR", 255) * 103 / 255;
+                color->g = CVar_GetS32("gCCDpadPrimG", 255) * 103 / 255;
+                color->b = CVar_GetS32("gCCDpadPrimB", 255) * 103 / 255;
+                break;
+            }  // else fall through
         default:
             *color = sOcarinaNoteCBtnPrim;
             break;
@@ -178,11 +190,12 @@ void Message_ResetOcarinaNoteState(void) {
         bool separateC = CVar_GetS32("gCCparated", 0);
 
         if (CVar_GetS32("gOcarinaControls", 0) == 1) {
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD5Prim, CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP), separateC);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteB4Prim, CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT), separateC);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteA4Prim, CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT), separateC);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteF4Prim, CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN), separateC);
-            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD4Prim, CVar_GetS32("gOcarinaD4BtnMap", BTN_A), separateC);
+            bool dpad = CVar_GetS32("gDpadOcarina", 0);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD5Prim, CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP), separateC, dpad);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteB4Prim, CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT), separateC, dpad);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteA4Prim, CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT), separateC, dpad);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteF4Prim, CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN), separateC, dpad);
+            Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD4Prim, CVar_GetS32("gOcarinaD4BtnMap", BTN_A), separateC, dpad);
         } else {
             Message_SetCustomOrGeneralCColor(&sOcarinaNoteD5Prim, separateC, 'U');
             Message_SetCustomOrGeneralCColor(&sOcarinaNoteB4Prim, separateC, 'L');
@@ -256,7 +269,7 @@ void Message_HandleChoiceSelection(GlobalContext* globalCtx, u8 numChoices) {
     static s16 sAnalogStickHeld = false;
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Input* input = &globalCtx->state.input[0];
-    bool dpad = CVar_GetS32("gDpadOcarinaText", 0);
+    bool dpad = CVar_GetS32("gDpadText", 0);
 
     if ((input->rel.stick_y >= 30 && !sAnalogStickHeld) || (dpad && CHECK_BTN_ALL(input->press.button, BTN_DUP))) {
         sAnalogStickHeld = true;

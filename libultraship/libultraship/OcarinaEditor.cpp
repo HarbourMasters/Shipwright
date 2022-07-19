@@ -54,6 +54,10 @@ namespace Ship {
 		addButton(BTN_Z,		"Z");
 		addButton(BTN_R,		"R");
 		addButton(BTN_START,	"Start");
+		addButton(BTN_DUP,		"D-pad up");
+		addButton(BTN_DDOWN,	"D-pad down");
+		addButton(BTN_DLEFT,	"D-pad left");
+		addButton(BTN_DRIGHT,	"D-pad right");
 		addButton(0,			"None");
 	}
 
@@ -76,9 +80,15 @@ namespace Ship {
 		ImGui::SameLine();
 		ImGui::SetCursorPosY(pos.y);
 
+		bool dpad = CVar_GetS32("gDpadOcarina", 0);
+		uint32_t dpadMask = BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+
 		ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
 		if (ImGui::BeginCombo(StringHelper::Sprintf("##OcarinaMap%s", id).c_str(), preview)) {
 			for (auto i = buttons.begin(); i != buttons.end(); i++) {
+				if (dpad && (i->first & dpadMask) != 0) {  // Hide d-pad options if d-pad check button set
+					continue;
+				}
 				if (ImGui::Selectable(i->second, i->first == currentButton)) {
 					CVar_SetS32(cVar, i->first);
 				}
@@ -110,6 +120,8 @@ namespace Ship {
 			ImGui::EndTable();
 		}
 
+		SohImGui::EnhancementCheckbox("Play notes with D-pad", "gDpadOcarina");
+
 		if (CVar_GetS32("gOcarinaControls", 0) == 1) {
 			float width;
 
@@ -133,7 +145,7 @@ namespace Ship {
 				ImGui::Dummy(ImVec2(0, 5));
 			SohImGui::EndGroupPanel(48);
 		} else {
-			ImGui::TextWrapped("To modify ocarina controls, select \"Custom Controls\" from the menu at the top.");
+			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the menu at the top.");
 		}
 
 		ImGui::End();

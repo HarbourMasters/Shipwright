@@ -1570,7 +1570,7 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    bool dpad = CVar_GetS32("gDpadOcarinaText", 0);
+    bool dpad = CVar_GetS32("gDpadOcarina", 0);
 
     if (D_80130F3C != 0 && D_80131880 != 0) {
         D_80131880--;
