@@ -340,8 +340,15 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         #ifdef _WIN32
 		    ::SetProcessDPIAware();
+            ImFontConfig imConfig;
+            UINT dpi = GetDpiForSystem();
+            int points = 12;
+            float size = ceilf(points * dpi / 72.f);
+            imConfig.SizePixels = size;
+            io->Fonts->AddFontDefault(&imConfig);
+        #else
+            io->Fonts->AddFontDefault();
         #endif
-        io->Fonts->AddFontDefault();
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
