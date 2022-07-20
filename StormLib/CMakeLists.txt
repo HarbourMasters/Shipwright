@@ -15,13 +15,6 @@ option(STORM_BUILD_TESTS
 #   "BUILD_TESTING" OFF # Stay coherent with CTest variables
 )
 
-if(DEFINED _initial_CMAKE_TOOLCHAIN_FILE
-   AND NOT _initial_CMAKE_TOOLCHAIN_FILE STREQUAL CMAKE_TOOLCHAIN_FILE)
-  message(WARNING "The CMAKE_TOOLCHAIN_FILE cannot be changed")
-elseif(DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(_initial_CMAKE_TOOLCHAIN_FILE "${CMAKE_TOOLCHAIN_FILE}" CACHE INTERNAL "")
-endif()
-
 set(SRC_FILES
            src/adpcm/adpcm.cpp
            src/huffman/huff.cpp
@@ -289,7 +282,7 @@ set(TEST_SRC_FILES
            test/StormTest.cpp
 )
 
-add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI -D_POSIX_C_SOURCE=200809L)
+add_definitions(-D_7ZIP_ST -DBZ_STRICT_ANSI)
 set(LINK_LIBS)
 
 find_package(ZLIB)
@@ -328,6 +321,11 @@ endif()
 if(${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
     message(STATUS "Using FreeBSD port")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DO_LARGEFILE=0 -Dstat64=stat -Dlstat64=lstat -Dlseek64=lseek -Doff64_t=off_t -Dfstat64=fstat -Dftruncate64=ftruncate")
+endif()
+
+if(NOT WIN32 AND NOT APPLE AND NOT ${CMAKE_SYSTEM_NAME} STREQUAL FreeBSD)
+  # Enable POSIX extensions such as `readlink` and `ftruncate`.
+  add_definitions(-D_POSIX_C_SOURCE=200809L)
 endif()
 
 add_library(${LIBRARY_NAME} ${LIB_TYPE} ${SRC_FILES} ${SRC_ADDITIONAL_FILES} ${STORM_DEF_FILES})
