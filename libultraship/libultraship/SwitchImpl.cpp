@@ -189,46 +189,6 @@ void Ship::Switch::Init(){
     }
 }
 
-void PushSDLEvent(Uint32 type, Uint8 button){
-    SDL_Event event;
-    event.type = type;
-    event.button.button = button;
-    SDL_PushEvent(&event);
-}
-
-void Ship::Switch::Update(){
-    UpdateKeyboard();
-    padUpdate(&pad);
-    uint64_t kDown = padGetButtonsDown(&pad);
-
-    if (kDown & HidNpadButton_Minus){
-        CVar_SetS32("gOpenMenuBar", !CVar_GetS32("gOpenMenuBar", 0));
-        ModInternal::ExecuteHooks<ModInternal::RequestConfigSave>();
-    }
-
-    if (hidGetTouchScreenStates(&TouchState, 1)) {
-        if (TouchState.count != Prev_TouchCount) {
-            Prev_TouchCount = TouchState.count;
-            PushSDLEvent(SDL_MOUSEBUTTONUP, SDL_BUTTON_LEFT);
-            PushSDLEvent(SDL_MOUSEBUTTONUP, SDL_BUTTON_RIGHT);
-        }
-
-        for(s32 i = 0; i < TouchState.count; i++) {
-            MouseX = TouchState.touches[0].x * internalMultiplier;
-            MouseY = TouchState.touches[0].y * internalMultiplier;
-        }
-
-        if(TouchState.count == 1) {
-            PushSDLEvent(SDL_MOUSEBUTTONDOWN, SDL_BUTTON_LEFT);
-            return;
-        }
-
-        if(TouchState.count > 1) {
-            PushSDLEvent(SDL_MOUSEBUTTONDOWN, SDL_BUTTON_RIGHT);
-        }
-    }
-}
-
 void Ship::Switch::Exit(){
 #ifdef DEBUG
     socketExit();
@@ -252,11 +212,6 @@ void Ship::Switch::GetDisplaySize(int *width, int *height) {
             *height = 720  * internalMultiplier;
             break;
     }
-}
-
-void Ship::Switch::GetTouchPosition(int *touchX, int *touchY) {
-    *touchX = MouseX;
-    *touchY = MouseY;
 }
 
 float Ship::Switch::GetDPI(){

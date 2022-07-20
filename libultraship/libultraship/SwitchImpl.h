@@ -22,7 +22,6 @@ public:
     static void Update();
     static bool IsRunning();
     static void GetDisplaySize(int *width, int *height);
-    static void GetTouchPosition(int *touchX, int *touchY);
     static void ApplyOverclock();
     static float GetDPI();
 };

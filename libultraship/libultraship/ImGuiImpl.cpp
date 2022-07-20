@@ -27,6 +27,12 @@
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
+#if __APPLE__
+#include <SDL_hints.h>
+#else
+#include <SDL2/SDL_hints.h>
+#endif
+
 #ifdef __SWITCH__
 #include "SwitchImpl.h"
 #endif
@@ -131,6 +137,7 @@ namespace SohImGui {
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
+            SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -399,11 +406,6 @@ namespace SohImGui {
     }
 
     void Update(EventImpl event) {
-    #ifdef __SWITCH__
-        int xPos, yPos;
-        Switch::GetTouchPosition(&xPos, &yPos);
-        io->MousePos = ImVec2(xPos, yPos);
-    #endif
         if (needs_save) {
             Game::SaveSettings();
             needs_save = false;
