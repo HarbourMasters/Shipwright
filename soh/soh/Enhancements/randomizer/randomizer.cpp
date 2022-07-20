@@ -2464,6 +2464,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST;
                 case 4372:
                     return RC_DODONGOS_CAVERN_GOSSIP_STONE;
+                case 8464:
+                    return RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS;
+                case 8450:
+                    return RC_DODONGOS_CAVERN_GS_SCARECROW;
+                case 8452:
+                    return RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS;
+                case 8449:
+                    return RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS;
+                case 8456:
+                    return RC_DODONGOS_CAVERN_GS_BACK_ROOM;
             }
             break;
         case 2:
@@ -2474,6 +2484,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_JABU_JABUS_BELLY_MAP_CHEST;
                 case -18428:
                     return RC_JABU_JABUS_BELLY_COMPASS_CHEST;
+                case 8712:
+                    return RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM;
+                case 8705:
+                    return RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER;
+                case 8706:
+                    return RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER;
+                case 8708:
+                    return RC_JABU_JABUS_BELLY_GS_NEAR_BOSS;
             }
             break;
         case 3:
@@ -2504,6 +2522,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST;
                 case 22827:
                     return RC_FOREST_TEMPLE_BASEMENT_CHEST;
+                case 8962:
+                    return RC_FOREST_TEMPLE_GS_FIRST_ROOM;
+                case 8968:
+                    return RC_FOREST_TEMPLE_GS_LOBBY;
+                case 8961:
+                    return RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD;
+                case 8964:
+                    return RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD;
+                case 8976:
+                    return RC_FOREST_TEMPLE_GS_BASEMENT;
             }
             break;
         case 4:
@@ -2536,6 +2564,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST;
                 case 22601:
                     return RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST;
+                case 9218:
+                    return RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP;
+                case 9217:
+                    return RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM;
+                case 9220:
+                    return RC_FIRE_TEMPLE_GS_BOULDER_MAZE;
+                case 9232:
+                    return RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB;
+                case 9224:
+                    return RC_FIRE_TEMPLE_GS_SCARECROW_TOP;
             }
             break;
         case 5:
@@ -2560,6 +2598,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_WATER_TEMPLE_RIVER_CHEST;
                 case 22602:
                     return RC_WATER_TEMPLE_DRAGON_CHEST;
+                case 9473:
+                    return RC_WATER_TEMPLE_GS_BEHIND_GATE;
+                case 9480:
+                    return RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST;
+                case 9476:
+                    return RC_WATER_TEMPLE_GS_CENTRAL_PILLAR;
+                case 9474:
+                    return RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM;
+                case 9488:
+                    return RC_WATER_TEMPLE_GS_RIVER;
             }
             break;
         case 6:
@@ -2598,6 +2646,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST;
                 case -29454:
                     return RC_SPIRIT_TEMPLE_TOPMOST_CHEST;
+                case 9744:
+                    return RC_SPIRIT_TEMPLE_GS_METAL_FENCE;
+                case 9736:
+                    return RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM;
+                case 9729:
+                    return RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM;
+                case 9732:
+                    return RC_SPIRIT_TEMPLE_GS_LOBBY;
+                case 9730:
+                    return RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM;
             }
             break;
         case 7:
@@ -2636,6 +2694,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SHADOW_TEMPLE_BOSS_KEY_CHEST;
                 case 30797:
                     return RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
+                case 9992:
+                    return RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM;
+                case 9986:
+                    return RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM;
+                case 9985:
+                    return RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT;
+                case 10000:
+                    return RC_SHADOW_TEMPLE_GS_NEAR_SHIP;
+                case 9988:
+                    return RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT;
             }
             break;
         case 8:
@@ -2668,6 +2736,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST;
                 case 27348:
                     return RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
+                case 10244:
+                    return RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM;
+                case 10242:
+                    return RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM;
+                case 10241:
+                    return RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE;
             }
             break;
         case 9:
@@ -2680,6 +2754,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ICE_CAVERN_IRON_BOOTS_CHEST;
                 case 262:
                     return RC_ICE_CAVERN_FREESTANDING_POH;
+                case 10498:
+                    return RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM;
+                case 10500:
+                    return RC_ICE_CAVERN_GS_HEART_PIECE_ROOM;
+                case 10497:
+                    return RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM;
             }
             break;
         case 10:
