@@ -100,7 +100,7 @@ bool CustomMessage::CreateMessage(std::string tableID, uint16_t textID, CustomMe
     return InsertCustomMessage(tableID, textID, messages);
 }
 
-std::string CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID) {
+std::string CustomMessage::RetrieveMessage(GlobalContext* globalCtx, std::string tableID, uint16_t textID) {
     std::unordered_map<std::string, CustomMessageTable>::const_iterator result = messageTables.find(tableID);
     if (result == messageTables.end()) {
         return "";
@@ -111,6 +111,9 @@ std::string CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID)
         return "";
     }
     CustomMessageEntry messages = message_pair->second;
+    MessageContext* msgCtx = &globalCtx->msgCtx;
+    Font* font = &msgCtx->font;
+    font->charTexBuf[0] = (messages.textBoxType << 4) | messages.textBoxPos;
     switch (gSaveContext.language) { 
         case LANGUAGE_FRA:
             return messages.french;

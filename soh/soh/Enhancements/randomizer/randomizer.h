@@ -4,8 +4,8 @@
 #include <string>
 #include "../../../include/ultra64.h"
 #include "../../../include/z64item.h"
-#include <randomizerTypes.h>
 #include <memory>
+#include <soh/Enhancements/randomizer/randomizerTypes.h>
 
 class Randomizer {
   private:
@@ -16,7 +16,6 @@ class Randomizer {
     std::string ganonHintText;
     std::string ganonText;
     std::unordered_map<RandomizerSettingKey, u8> randoSettings;
-    static const std::string customMessageTableID;
     GetItemID GetItemFromGet(RandomizerGet randoGet, GetItemID ogItemId);
     GetItemID GetItemFromActor(s16 actorId, s16 actorParams, s16 sceneNum, GetItemID ogItemId);
     void ParseRandomizerSettingsFile(const char* spoilerFileName);
@@ -26,6 +25,8 @@ class Randomizer {
   public:
     Randomizer();
     ~Randomizer();
+
+    static const std::string customMessageTableID;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
@@ -43,7 +44,7 @@ class Randomizer {
     std::string GetHintFromCheck(RandomizerCheck check);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-    std::string GetCustomGetItemMessage(GetItemID giid);
+    //std::string GetCustomGetItemMessage(GlobalContext* globalCtx, GetItemID giid);
     static void CreateCustomMessages();
 };
 

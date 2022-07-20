@@ -1709,7 +1709,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             msgCtx->msgLength = font->msgLength = Randomizer_CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
         } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
             // rando hints at altar
-            msgCtx->msgLength = font->msgLength = CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
+            msgCtx->msgLength = font->msgLength = Randomizer_CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
         } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
             msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
         } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {

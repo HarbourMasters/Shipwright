@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "variables.h"
+#include "z64.h"
+#include <message_data_static.h>
 
 #undef MESSAGE_END
 
@@ -15,6 +16,8 @@
 #define QM_BLACK 0x47
 
 typedef struct {
+    TextBoxType textBoxType;
+    TextBoxPosition textBoxPos;
     std::string english;
     std::string german;
     std::string french;
@@ -49,6 +52,6 @@ class CustomMessage {
 
     bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
     bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
-    std::string RetrieveMessage(std::string tableID, uint16_t textID);
+    std::string RetrieveMessage(GlobalContext* globalCtx, std::string tableID, uint16_t textID);
     bool AddCustomMessageTable(std::string tableID);
 };

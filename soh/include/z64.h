@@ -30,6 +30,9 @@
 #include "ichain.h"
 #include "regs.h"
 
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
+
 #if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
 #define _SOH64
 #endif

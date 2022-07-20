@@ -1505,8 +1505,8 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
 
-extern "C" int Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
-    const std::string& getItemText = OTRGlobals::Instance->gRandomizer->GetCustomGetItemMessage(giid);
+extern "C" int Randomizer_GetCustomGetItemMessage(GlobalContext* globalCtx, GetItemID giid, char* buffer, const int maxBufferSize) {
+    const std::string& getItemText = CustomMessage::Instance->RetrieveMessage(globalCtx, Randomizer::customMessageTableID, giid);
     if (getItemText == "") {
         return false;
     }
@@ -1523,7 +1523,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         if (textId == 0xF8) {
             font->charTexBuf[0] = 0x23;
             if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
-                    (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
+                    globalCtx, (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
                 return true;
             } else {
                 switch (gSaveContext.language) {
@@ -1551,7 +1551,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 textId = 0x00B5;
             }
-            message = CustomMessage::Instance->RetrieveMessage("BaseGameOverrides", textId);
+            message = CustomMessage::Instance->RetrieveMessage(globalCtx, "BaseGameOverrides", textId);
             if (message != "") {
                 return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(message, buffer, maxBufferSize);
             }
