@@ -3802,106 +3802,10 @@ void DrawRandoEditor(bool& open) {
                         ImGui::Separator();
 
                         // Shuffle Tokens
-                        ImGui::Text("Shuffle Tokens");
+                        ImGui::Text(Settings::Tokensanity.GetName().c_str());
                         InsertHelpHoverText("Spoopy");
                         SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
                         ImGui::Separator();
-
-                        // todo implement shops
-                        // // Shopsanity
-                        // ImGui::Text("Shopsanity");
-                        // switch (CVar_GetS32("gRandomizeShopsanity", 0)) {
-                        //     case 0:
-                        //         InsertHelpHoverText("All shop items will be the same as vanilla.");
-                        //         break;
-                        //     case 1:
-                        //         InsertHelpHoverText("Vanilla shop items will be shuffled among\ndifferent shops.");
-                        //         break;
-                        //     case 2:
-                        //         InsertHelpHoverText(
-                        //             "Vanilla shop items will be shuffled among different shops, and each "
-                        //             "shop will contain\n1 non-vanilla shop item.");
-                        //         break;
-                        //     case 3:
-                        //         InsertHelpHoverText(
-                        //             "Vanilla shop items will be shuffled among different shops, and each "
-                        //             "shop will contain\n2 non-vanilla shop items.");
-                        //         break;
-                        //     case 4:
-                        //         InsertHelpHoverText(
-                        //             "Vanilla shop items will be shuffled among different shops, and each "
-                        //             "shop will contain\n3 non-vanilla shop items.");
-                        //         break;
-                        //     case 5:
-                        //         InsertHelpHoverText(
-                        //             "Vanilla shop items will be shuffled among different shops, and each "
-                        //             "shop will contain\n4 non-vanilla shop items.");
-                        //         break;
-                        //     case 6:
-                        //         InsertHelpHoverText(
-                        //             "Vanilla shop items will be shuffled among different shops, and each "
-                        //             "shop will contain\n1 to 4 non-vanilla shop items.");
-                        //         break;
-                        // }
-                        // SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
-                        // ImGui::Separator();
-
-                        // todo implement GS checks
-                        // // Tokensanity
-                        // ImGui::Text("Tokensanity");
-                        // switch (CVar_GetS32("gRandomizeTokensanity", 0)) {
-                        //     case 0:
-                        //         InsertHelpHoverText("65 location will not be shuffled.");
-                        //         break;
-                        //     case 1:
-                        //         InsertHelpHoverText(
-                        //             "This only shuffles 65 location that are\nwithing dungeons, increasing the value "
-                        //             "of "
-                        //             "most\ndungeons and making internal dungeon exploration\nmore diverse.");
-                        //         break;
-                        //     case 2:
-                        //         InsertHelpHoverText(
-                        //             "This only shuffles the 65 locations that are\noutside of dungeons.");
-                        //         break;
-                        //     case 3:
-                        //         InsertHelpHoverText("Effectively adds 100 new locations for items to\nappear.");
-                        //         break;
-                        // }
-                        // SohImGui::EnhancementCombobox("gRandomizeTokensanity", randoTokensanity, 4, 0);
-                        // ImGui::Separator();
-
-                        // todo implement scrub shuffle
-                        // // Shuffle Scrubs
-                        // ImGui::Text("Shuffle Scrubs");
-                        // switch (CVar_GetS32("gRandomizeShuffleScrubs", 0)) {
-                        //     case 0:
-                        //         InsertHelpHoverText(
-                        //             "Only the 3 Scrubs that give one-time items in the\nvanilla game (PoH, "
-                        //             "Deku Nut capacity, and Deku\nStick capacity) will have random items.");
-                        //         break;
-                        //     case 1:
-                        //         InsertHelpHoverText("All Scrub prices will be reduced to 10 rupees each.");
-                        //         break;
-                        //     case 2:
-                        //         InsertHelpHoverText("All Scrub prices will be their vanilla prices.\nThis will require "
-                        //                             "spending over 1000 rupees on\nSrubs.");
-                        //         break;
-                        //     case 3:
-                        //         InsertHelpHoverText("All Scrub prices will be between 0 to 95 rupees.\nThis will on "
-                        //                             "average be very, very expensive overall.");
-                        //         break;
-                        // }
-                        // SohImGui::EnhancementCombobox("gRandomizeShuffleScrubs", randoShuffleScrubs, 4, 0);
-                        // ImGui::Separator();
-
-                        // todo implement cow shuffle
-                        // // Shuffle Cows
-                        // ImGui::Text("Shuffle Cows");
-                        // InsertHelpHoverText(
-                        //     "Enabling this will let cows give you items upon\nperforming Epona's Song in "
-                        //     "front of them. There\nare 9 cows.");
-                        // SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
-                        // ImGui::Separator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
                             // Shuffle Kokiri Sword
