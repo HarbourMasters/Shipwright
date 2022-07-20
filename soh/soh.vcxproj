@@ -983,7 +983,7 @@
     <ClInclude Include="soh\Enhancements\randomizer\3drando\tinyxml2.h" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\trial.hpp" />
     <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp" />
-    <ClInclude Include="randomizerTypes.h" />
+    <ClInclude Include="soh\Enhancements\randomizer\randomizerTypes.h" />
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h" />
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />

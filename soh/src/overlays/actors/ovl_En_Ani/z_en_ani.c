@@ -127,7 +127,7 @@ void func_809B0558(EnAni* this, GlobalContext* globalCtx) {
         gSaveContext.itemGetInf[1] |= 0x20;
     } else {
         if (gSaveContext.n64ddFlag) {
-            s32 getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
             func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
@@ -141,7 +141,7 @@ void func_809B05F0(EnAni* this, GlobalContext* globalCtx) {
     }
 
     if (gSaveContext.n64ddFlag) {
-        s32 getItemId = GetRandomizedItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+        s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
         func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
     } else {
         func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);

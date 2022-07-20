@@ -5,6 +5,7 @@
 #include "ImGuiImpl.h"
 #include "Utils/StringHelper.h"
 #include "Lib/ImGui/imgui_internal.h"
+#include "Cvar.h"
 
 namespace Ship {
 
@@ -155,7 +156,7 @@ namespace Ship {
 				ImGui::BeginChild("##MSInput", ImVec2(90, 50), false);
 				ImGui::Text("Deadzone");
 				ImGui::PushItemWidth(80);
-				ImGui::InputInt("##MDZone", &profile.Thresholds[LEFT_STICK]);
+				ImGui::InputFloat("##MDZone", &profile.Thresholds[LEFT_STICK], 1.0f, 0.0f, "%.0f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 			} else {
@@ -180,11 +181,11 @@ namespace Ship {
 				ImGui::BeginChild("##CSInput", ImVec2(90, 85), false);
 					ImGui::Text("Deadzone");
 					ImGui::PushItemWidth(80);
-					ImGui::InputInt("##MDZone", &profile.Thresholds[RIGHT_STICK]);
+					ImGui::InputFloat("##MDZone", &profile.Thresholds[RIGHT_STICK], 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 					ImGui::Text("Sensitivity");
 					ImGui::PushItemWidth(80);
-					ImGui::InputInt("##MSensitivity", &profile.Thresholds[SENSITIVITY]);
+					ImGui::InputFloat("##MSensitivity", &profile.Thresholds[SENSITIVITY], 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 			SohImGui::EndGroupPanel(14.0f);
@@ -198,30 +199,30 @@ namespace Ship {
 			ImGui::SetCursorPosX(cursorX);
 			ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
 			ImGui::SetCursorPosX(cursorX);
-			ImGui::Text("Gyro Sensitivity: %d%%", profile.Thresholds[GYRO_SENSITIVITY]);
+			ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
 			ImGui::PushItemWidth(135.0f);
 			ImGui::SetCursorPosX(cursorX);
-			ImGui::SliderInt("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0, 100, "");
+			ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
 			ImGui::PopItemWidth();
 			ImGui::Dummy(ImVec2(0, 1));
 			ImGui::SetCursorPosX(cursorX);
 			if (ImGui::Button("Recalibrate Gyro##RGyro")) {
-				profile.Thresholds[DRIFT_X] = 0;
-				profile.Thresholds[DRIFT_Y] = 0;
+				profile.Thresholds[DRIFT_X] = 0.0f;
+				profile.Thresholds[DRIFT_Y] = 0.0f;
 			}
 			ImGui::SetCursorPosX(cursorX);
-			DrawVirtualStick("##GyroPreview", ImVec2(Backend->wGyroX, Backend->wGyroY));
+			DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
 
 			ImGui::SameLine();
 			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
 			ImGui::Text("Drift X");
 			ImGui::PushItemWidth(80);
-			ImGui::InputInt("##GDriftX", &profile.Thresholds[DRIFT_X]);
+			ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
 			ImGui::PopItemWidth();
 			ImGui::Text("Drift Y");
 			ImGui::PushItemWidth(80);
-			ImGui::InputInt("##GDriftY", &profile.Thresholds[DRIFT_Y]);
+			ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
 			ImGui::PopItemWidth();
 			ImGui::EndChild();
 			SohImGui::EndGroupPanel(15.0f);
@@ -247,10 +248,10 @@ namespace Ship {
 			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
 			if (Backend->CanRumble()) {
 				ImGui::SetCursorPosX(cursorX);
-				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100 * profile.RumbleStrength));
+				ImGui::Text("Rumble Force: %d%%", static_cast<int>(100.0f * profile.RumbleStrength));
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::PushItemWidth(135.0f);
-				ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0, 1.0f, "");
+				ImGui::SliderFloat("##RStrength", &profile.RumbleStrength, 0.0f, 1.0f, "");
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
@@ -263,13 +264,14 @@ namespace Ship {
 
 		if (!this->Opened) {
 			BtnReading = -1;
+			CVar_SetS32("gControllerConfigurationEnabled", 0);
 			return;
 		}
 
 		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
-		ImGui::Begin("Controller Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
+		ImGui::Begin("Controller Configuration", &this->Opened, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);
 
 		ImGui::BeginTabBar("##Controllers");
 

@@ -89,14 +89,9 @@ void Ship::ControlDeck::LoadControllerSettings() {
 
 			profile.Mappings.clear();
 			profile.Thresholds.clear();
-			profile.GyroThresholds.clear();
 			profile.UseRumble = Config->getBool(NESTED("Rumble.Enabled", ""));
-			profile.RumbleStrength = Config->getBool(NESTED("Rumble.Strength", ""));
+			profile.RumbleStrength = Config->getFloat(NESTED("Rumble.Strength", ""));
 			profile.UseGyro = Config->getBool(NESTED("Gyro.Enabled", ""));
-
-			for (auto const& val : rawProfile["Gyro"]["Thresholds"].items()) {
-				profile.GyroThresholds[std::stoi(val.key())] = val.value();
-			}
 
 			for (auto const& val : rawProfile["Thresholds"].items()) {
 				profile.Thresholds[static_cast<ControllerThresholds>(std::stoi(val.key()))] = val.value();
@@ -135,12 +130,8 @@ void Ship::ControlDeck::SaveControllerSettings() {
 				Config->setInt(NESTED("Mappings.%s", val.key().c_str()), -1);
 			}
 
-			for (auto const& [key, val] : profile.GyroThresholds) {
-				Config->setInt(NESTED("Gyro.Thresholds.%d", key), val);
-			}
-
 			for (auto const& [key, val] : profile.Thresholds) {
-				Config->setInt(NESTED("Thresholds.%d", key), val);
+				Config->setFloat(NESTED("Thresholds.%d", key), val);
 			}
 
 			for (auto const& [key, val] : profile.Mappings) {
