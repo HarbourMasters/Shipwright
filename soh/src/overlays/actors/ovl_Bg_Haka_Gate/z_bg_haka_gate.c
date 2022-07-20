@@ -106,6 +106,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
         if (thisx->params == BGHAKAGATE_STATUE) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_0131C4, &colHeader);
             this->vTimer = 0;
+            sStatueRotY = 0;
             sStatueDistToPlayer = 0.0f;
             if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
                 this->actionFunc = BgHakaGate_StatueInactive;
