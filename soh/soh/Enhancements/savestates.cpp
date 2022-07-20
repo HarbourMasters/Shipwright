@@ -870,7 +870,6 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
         case RequestType::SAVE:
             requests.push(request);
             return SaveStateReturn::SUCCESS;
-            break;
         case RequestType::LOAD:
             if (states.contains(request.slot)) {
                 requests.push(request);
@@ -880,12 +879,9 @@ SaveStateReturn SaveStateMgr::AddRequest(const SaveStateRequest request) {
                 SohImGui::overlay->TextDrawNotification(1.0f, true, "state slot %u empty", request.slot);
                 return SaveStateReturn::FAIL_INVALID_SLOT;
             }
-            break;
         [[unlikely]] default: 
             SPDLOG_ERROR("Invalid SaveState request type: {}", request.type);
             return SaveStateReturn::FAIL_BAD_REQUEST;
-            break;
-        
     }
 }
 
