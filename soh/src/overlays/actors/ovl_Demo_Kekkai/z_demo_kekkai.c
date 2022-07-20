@@ -128,7 +128,7 @@ void DemoKekkai_Init(Actor* thisx, GlobalContext* globalCtx) {
             this->collider2.dim.yShift = 300;
 
             if (gSaveContext.n64ddFlag) {
-                int trialsToComplete = GetRandoSettingValue(RSK_TRIAL_COUNT);
+                int trialsToComplete = Randomizer_GetSettingValue(RSK_TRIAL_COUNT);
                 if (trialsToComplete <= TrialsDoneCount()) {
                     Actor_Kill(thisx);
                     return;
