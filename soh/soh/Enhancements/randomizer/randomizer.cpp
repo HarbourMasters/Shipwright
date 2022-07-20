@@ -2895,6 +2895,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
             }
             break;
+        case 56:
+            switch (actorParams) {
+                case -28152:
+                    return RC_LH_GS_LAB_CRATE;
+            }
+            break;
         case 59:
             // using fountainType as actorParams
             switch (actorParams) {
@@ -3125,6 +3131,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LH_SOUTHWEST_GOSSIP_STONE;
                 case 14863:
                     return RC_LH_SOUTHEAST_GOSSIP_STONE;
+                case 29185:
+                    return RC_LH_GS_BEAN_PATCH;
+                case 20996:
+                    return RC_LH_GS_LAB_WALL;
+                case 20994:
+                    return RC_LH_GS_SMALL_ISLAND;
+                case 21008:
+                    return RC_LH_GS_TREE;
             }
             break;
         case 88:
@@ -3167,6 +3181,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GV_CRATE_FREESTANDING_POH;
                 case 14353:
                     return RC_GV_GOSSIP_STONE;
+                case 21250:
+                    return RC_GV_GS_SMALL_BRIDGE;
+                case 29441:
+                    return RC_GV_GS_BEAN_PATCH;
+                case 21256:
+                    return RC_GV_GS_BEHIND_TENT;
+                case 21252:
+                    return RC_GV_GS_PILLAR;
             }
             break;
         case 91:
@@ -3193,6 +3215,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_COLOSSUS_FREESTANDING_POH;
                 case 14362:
                     return RC_COLOSSUS_GOSSIP_STONE;
+                case 29953:
+                    return RC_COLOSSUS_GS_BEAN_PATCH;
+                case 21768:
+                    return RC_COLOSSUS_GS_TREE;
+                case 21764:
+                    return RC_COLOSSUS_GS_HILL;
             }
             break;
         case 93:
@@ -3200,12 +3228,18 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                 case 1984:
                     return RC_GF_CHEST;
+                case 21506:
+                    return RC_GF_GS_TOP_FLOOR;
+                case 21505:
+                    return RC_GF_GS_ARCHERY_RANGE;
             }
             break;
         case 94:
             switch (actorParams) {
                 case -30048:
                     return RC_WASTELAND_CHEST;
+                case 13570:
+                    return RC_WASTELAND_GS;
             }
             break;
         case 95:
@@ -3280,6 +3314,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LLR_GS_RAIN_SHED;
                 case 11009:
                     return RC_LLR_GS_BACK_WALL;
+            }
+            break;
+        case 100:
+            switch (actorParams) {
+                case 11777:
+                    return RC_OGC_GS;
             }
             break;
     }
