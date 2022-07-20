@@ -3474,6 +3474,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
 
+    cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
+
     RandoMain::GenerateRando(cvarSettings);
 
     CVar_SetS32("gRandoGenerating", 0);
@@ -3709,7 +3711,7 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-        ImGui::SetNextWindowSize(ImVec2(720, 530), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(750, 530), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
             return;
@@ -4200,8 +4202,8 @@ void DrawRandoEditor(bool& open) {
                 if (ImGui::BeginTable("tableRandoDetailedLogic", 3,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    // Add empty columns to keep them 1/3rd of the width
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Misc Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // Add empty column to keep them 1/3rd of the width
                     ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -4222,8 +4224,17 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
                     ImGui::Separator();
 
-                    // Add empty columns to keep them 1/3rd of the width
+                    // COLUMN 2 - MISC OPTIONS
                     ImGui::TableNextColumn();
+                    ImGui::Separator();
+                    SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                    InsertHelpHoverText(
+                        "All Golden Skulltulas that require nighttime to appear will only be\n"
+                        "expected to be collected after getting Sun's Song."
+                    );
+                    ImGui::Separator();
+
+                    // Add empty column to keep them 1/3rd of the width
                     ImGui::TableNextColumn();
 
                     ImGui::EndTable();

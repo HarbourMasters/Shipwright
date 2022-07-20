@@ -2540,6 +2540,8 @@ namespace Settings {
 
     SkipTowerEscape.SetSelectedIndex(cvarSettings[RSK_SKIP_TOWER_ESCAPE]);
 
+    NightGSExpectSuns.SetSelectedIndex(cvarSettings[RSK_SKULLS_SUNS_SONG]);
+
     // RANDOTODO implement chest shuffle with keysanity
     // ShuffleChestMinigame.SetSelectedIndex(cvarSettings[RSK_SHUFFLE_CHEST_MINIGAME]);
     
