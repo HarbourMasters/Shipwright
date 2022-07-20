@@ -103,6 +103,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                         player->iceTrapped = 1;
                         textId = 0xF8;
                     } else {
+                        getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
                         textId = sGetItemTable[getItemId - 1].textId;
                         giveItemId = sGetItemTable[getItemId - 1].itemId;
                     }
@@ -136,6 +137,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
                 GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
                 textId = 0xF8;
             } else {
+                getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
                 textId = sGetItemTable[getItemId - 1].textId;
                 giveItemId = sGetItemTable[getItemId - 1].itemId;
             }
