@@ -11274,83 +11274,83 @@ void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
-    s32 temp1;
-    s16 temp2;
-    s16 temp3;
+	s32 temp1;
+	s16 temp2;
+	s16 temp3;
 
-    if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
-        if (CVar_GetS32("gAutoCenterView", 0) != 0) {
-            temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);
-            Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
+	if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
+		if (CVar_GetS32("gAutoCenterView", 0) != 0) {
+			temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1);
+			Math_SmoothStepToS(&this->actor.focus.rot.x, temp2, 14, 4000, 30);
 
-            temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
-            temp2 = CLAMP(temp2, -3000, 3000);
-            this->actor.focus.rot.y += temp2;
-        } else {
-            temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-            temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
-            this->actor.focus.rot.x += temp3;
+			temp2 = sControlInput->rel.stick_x * -16.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1);
+			temp2 = CLAMP(temp2, -3000, 3000);
+			this->actor.focus.rot.y += temp2;
+		} else {
+			temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+			temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+				(s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+			this->actor.focus.rot.x += temp3;
 
-            if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-                this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
-            }
+			if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+				this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+			}
             
-            if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
-		    }
+			if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+				this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+			}
 
-            this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
+			this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
-            temp1 = 19114;
-            temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-            temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-                (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
-            temp2 += temp3;
+			temp1 = 19114;
+			temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+			temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+				(s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+			temp2 += temp3;
 
-            this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
+			this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
-            if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-                this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
-            }
+			if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+				this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+			}
 
-            if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
-		    }
-        }
-    }
-    else {
-        temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
-        temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
-        this->actor.focus.rot.x += temp3;
+			if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+			}
+		}
+}
+	else {
+		temp1 = (this->stateFlags1 & PLAYER_STATE1_23) ? 3500 : 14000;
+		temp3 = ((sControlInput->rel.stick_y >= 0) ? 1 : -1) *
+			(s32)((1.0f - Math_CosS(sControlInput->rel.stick_y * 200)) * 1500.0f * (CVar_GetS32("gInvertYAxis", 0) ? 1 : -1));
+		this->actor.focus.rot.x += temp3;
 
-        if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
-            this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
-        }
+		if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
+			this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
+		}
         
-        if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
+		if (fabsf(sControlInput->cur.cam_y) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.x -= (sControlInput->cur.cam_y) * (CVar_GetS32("gInvertYAxis", 0) ? -1 : 1);
 		}
 
-        this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
+		this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
-        temp1 = 19114;
-        temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
-        temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
-            (s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
-        temp2 += temp3;
+		temp1 = 19114;
+		temp2 = this->actor.focus.rot.y - this->actor.shape.rot.y;
+		temp3 = ((sControlInput->rel.stick_x >= 0) ? 1 : -1) *
+			(s32)((1.0f - Math_CosS(sControlInput->rel.stick_x * 200)) * -1500.0f * (CVar_GetS32("gInvertXAxis", 0) ? -1 : 1));
+		temp2 += temp3;
 
-        this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
+		this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
-        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
-        }
-
-        if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
-            this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
+			this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
 		}
-    }
+
+		if (fabsf(sControlInput->cur.cam_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
+			this->actor.focus.rot.y += (sControlInput->cur.cam_x) * (CVar_GetS32("gInvertXAxis", 0) ? 1 : -1);
+		}
+	}
 
     this->unk_6AE |= 2;
     return func_80836AB8(this, (globalCtx->shootingGalleryStatus != 0) || func_8002DD78(this) || func_808334B4(this)) -

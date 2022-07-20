@@ -15,18 +15,18 @@ namespace Ship {
 	bool needs_save = false;
 
 	void EnhancementCheckbox(const char* text, const char* cvarName)
-    {
-        bool val = (bool)CVar_GetS32(cvarName, 0);
-        if (ImGui::Checkbox(text, &val)) {
-            CVar_SetS32(cvarName, val);
-            needs_save = true;
-        }
-    }
+	{
+		bool val = (bool)CVar_GetS32(cvarName, 0);
+		if (ImGui::Checkbox(text, &val)) {
+			CVar_SetS32(cvarName, val);
+			needs_save = true;
+		}
+	}
 
 	void Tooltip(const char* text) {
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text);
-    }
+		if (ImGui::IsItemHovered())
+			ImGui::SetTooltip("%s", text);
+	}
 
 	void InputEditor::Init() {
 		BtnReading = -1;
