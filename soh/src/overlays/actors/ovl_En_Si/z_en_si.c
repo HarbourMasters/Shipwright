@@ -106,9 +106,8 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                         textId = sGetItemTable[getItemId - 1].textId;
                         giveItemId = sGetItemTable[getItemId - 1].itemId;
                     }
-                } else {
-                    Item_Give(globalCtx, giveItemId);
                 }
+                Item_Give(globalCtx, giveItemId);
                 if (CVar_GetS32("gSkulltulaFreeze", 0) != 1 || giveItemId != ITEM_SKULL_TOKEN) {
                     player->actor.freezeTimer = 20;
                 }
@@ -140,9 +139,8 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
                 textId = sGetItemTable[getItemId - 1].textId;
                 giveItemId = sGetItemTable[getItemId - 1].itemId;
             }
-        } else {
-            Item_Give(globalCtx, giveItemId);
         }
+        Item_Give(globalCtx, giveItemId);
         Message_StartTextbox(globalCtx, textId, NULL);
         Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         this->actionFunc = func_80AFB950;
@@ -178,13 +176,12 @@ void EnSi_Draw(Actor* thisx, GlobalContext* globalCtx) {
         if (!gSaveContext.n64ddFlag) {
             GetItem_Draw(globalCtx, GID_SKULL_TOKEN_2);
         } else {
-            f32 mtxScale;
             getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             if (getItemId >= GI_MINUET_OF_FOREST && getItemId <= GI_DOUBLE_DEFENSE) {
                 EnItem00_CustomItemsParticles(&this->actor, globalCtx, getItemId);
             }
             if (getItemId != ITEM_SKULL_TOKEN) {
-                mtxScale = 1.5f;
+                f32 mtxScale = 1.5f;
                 Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
             }
             GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(getItemId));

@@ -3923,7 +3923,17 @@ void DrawRandoEditor(bool& open) {
 
                         // Shuffle Tokens
                         ImGui::Text(Settings::Tokensanity.GetName().c_str());
-                        InsertHelpHoverText("Spoopy");
+                        InsertHelpHoverText(
+                            "Shuffles Golden Skulltula Tokens into the item pool.\n"
+                            "\n"
+                            "Off - GS tokens will not be shuffled.\n"
+                            "\n"
+                            "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
+                            "\n"
+                            "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
+                            "\n"
+                            "All Tokens - Shuffle all 100 GS tokens."
+                        );
                         SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
                         ImGui::Separator();
 
