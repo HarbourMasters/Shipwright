@@ -973,6 +973,7 @@ typedef enum {
     RSK_STARTING_MAPS_COMPASSES, //RANDOTODO more options for this, rn it's just start with or own dungeon
     RSK_SHUFFLE_DUNGEON_REWARDS,
     RSK_SHUFFLE_SONGS,
+    RSK_SHUFFLE_TOKENS,
     RSK_SHUFFLE_WEIRD_EGG,
     RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD,
     RSK_ITEM_POOL,
@@ -996,5 +997,6 @@ typedef enum {
     RSK_CUCCO_COUNT,
     RSK_BIG_POE_COUNT,
     RSK_SKIP_EPONA_RACE,
-    RSK_SKIP_TOWER_ESCAPE
+    RSK_SKIP_TOWER_ESCAPE,
+    RSK_SKULLS_SUNS_SONG
 } RandomizerSettingKey;

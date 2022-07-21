@@ -2440,6 +2440,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DEKU_TREE_COMPASS_ROOM_SIDE_CHEST;
                 case 22788:
                     return RC_DEKU_TREE_BASEMENT_CHEST;
+                case 8200:
+                    return RC_DEKU_TREE_GS_COMPASS_ROOM;
+                case 8196:
+                    return RC_DEKU_TREE_GS_BASEMENT_VINES;
+                case 8194:
+                    return RC_DEKU_TREE_GS_BASEMENT_GATE;
+                case 8193:
+                    return RC_DEKU_TREE_GS_BASEMENT_BACK_ROOM;
             }
             break;
         case 1:
@@ -2456,6 +2464,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DODONGOS_CAVERN_END_OF_BRIDGE_CHEST;
                 case 4372:
                     return RC_DODONGOS_CAVERN_GOSSIP_STONE;
+                case 8464:
+                    return RC_DODONGOS_CAVERN_GS_SIDE_ROOM_NEAR_LOWER_LIZALFOS;
+                case 8450:
+                    return RC_DODONGOS_CAVERN_GS_SCARECROW;
+                case 8452:
+                    return RC_DODONGOS_CAVERN_GS_ALCOVE_ABOVE_STAIRS;
+                case 8449:
+                    return RC_DODONGOS_CAVERN_GS_VINES_ABOVE_STAIRS;
+                case 8456:
+                    return RC_DODONGOS_CAVERN_GS_BACK_ROOM;
             }
             break;
         case 2:
@@ -2466,6 +2484,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_JABU_JABUS_BELLY_MAP_CHEST;
                 case -18428:
                     return RC_JABU_JABUS_BELLY_COMPASS_CHEST;
+                case 8712:
+                    return RC_JABU_JABUS_BELLY_GS_WATER_SWITCH_ROOM;
+                case 8705:
+                    return RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_LOWER;
+                case 8706:
+                    return RC_JABU_JABUS_BELLY_GS_LOBBY_BASEMENT_UPPER;
+                case 8708:
+                    return RC_JABU_JABUS_BELLY_GS_NEAR_BOSS;
             }
             break;
         case 3:
@@ -2496,6 +2522,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_FOREST_TEMPLE_FALLING_CEILING_ROOM_CHEST;
                 case 22827:
                     return RC_FOREST_TEMPLE_BASEMENT_CHEST;
+                case 8962:
+                    return RC_FOREST_TEMPLE_GS_FIRST_ROOM;
+                case 8968:
+                    return RC_FOREST_TEMPLE_GS_LOBBY;
+                case 8961:
+                    return RC_FOREST_TEMPLE_GS_RAISED_ISLAND_COURTYARD;
+                case 8964:
+                    return RC_FOREST_TEMPLE_GS_LEVEL_ISLAND_COURTYARD;
+                case 8976:
+                    return RC_FOREST_TEMPLE_GS_BASEMENT;
             }
             break;
         case 4:
@@ -2528,6 +2564,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_FIRE_TEMPLE_MEGATON_HAMMER_CHEST;
                 case 22601:
                     return RC_FIRE_TEMPLE_HIGHEST_GORON_CHEST;
+                case 9218:
+                    return RC_FIRE_TEMPLE_GS_BOSS_KEY_LOOP;
+                case 9217:
+                    return RC_FIRE_TEMPLE_GS_SONG_OF_TIME_ROOM;
+                case 9220:
+                    return RC_FIRE_TEMPLE_GS_BOULDER_MAZE;
+                case 9232:
+                    return RC_FIRE_TEMPLE_GS_SCARECROW_CLIMB;
+                case 9224:
+                    return RC_FIRE_TEMPLE_GS_SCARECROW_TOP;
             }
             break;
         case 5:
@@ -2552,6 +2598,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_WATER_TEMPLE_RIVER_CHEST;
                 case 22602:
                     return RC_WATER_TEMPLE_DRAGON_CHEST;
+                case 9473:
+                    return RC_WATER_TEMPLE_GS_BEHIND_GATE;
+                case 9480:
+                    return RC_WATER_TEMPLE_GS_NEAR_BOSS_KEY_CHEST;
+                case 9476:
+                    return RC_WATER_TEMPLE_GS_CENTRAL_PILLAR;
+                case 9474:
+                    return RC_WATER_TEMPLE_GS_FALLING_PLATFORM_ROOM;
+                case 9488:
+                    return RC_WATER_TEMPLE_GS_RIVER;
             }
             break;
         case 6:
@@ -2590,6 +2646,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SPIRIT_TEMPLE_BOSS_KEY_CHEST;
                 case -29454:
                     return RC_SPIRIT_TEMPLE_TOPMOST_CHEST;
+                case 9744:
+                    return RC_SPIRIT_TEMPLE_GS_METAL_FENCE;
+                case 9736:
+                    return RC_SPIRIT_TEMPLE_GS_SUN_ON_FLOOR_ROOM;
+                case 9729:
+                    return RC_SPIRIT_TEMPLE_GS_HALL_AFTER_SUN_BLOCK_ROOM;
+                case 9732:
+                    return RC_SPIRIT_TEMPLE_GS_LOBBY;
+                case 9730:
+                    return RC_SPIRIT_TEMPLE_GS_BOULDER_ROOM;
             }
             break;
         case 7:
@@ -2628,6 +2694,16 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SHADOW_TEMPLE_BOSS_KEY_CHEST;
                 case 30797:
                     return RC_SHADOW_TEMPLE_INVISIBLE_FLOORMASTER_CHEST;
+                case 9992:
+                    return RC_SHADOW_TEMPLE_GS_LIKE_LIKE_ROOM;
+                case 9986:
+                    return RC_SHADOW_TEMPLE_GS_FALLING_SPIKES_ROOM;
+                case 9985:
+                    return RC_SHADOW_TEMPLE_GS_SINGLE_GIANT_POT;
+                case 10000:
+                    return RC_SHADOW_TEMPLE_GS_NEAR_SHIP;
+                case 9988:
+                    return RC_SHADOW_TEMPLE_GS_TRIPLE_GIANT_POT;
             }
             break;
         case 8:
@@ -2660,6 +2736,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_BOTTOM_OF_THE_WELL_LENS_OF_TRUTH_CHEST;
                 case 27348:
                     return RC_BOTTOM_OF_THE_WELL_INVISIBLE_CHEST;
+                case 10244:
+                    return RC_BOTTOM_OF_THE_WELL_GS_WEST_INNER_ROOM;
+                case 10242:
+                    return RC_BOTTOM_OF_THE_WELL_GS_EAST_INNER_ROOM;
+                case 10241:
+                    return RC_BOTTOM_OF_THE_WELL_GS_LIKE_LIKE_CAGE;
             }
             break;
         case 9:
@@ -2672,6 +2754,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ICE_CAVERN_IRON_BOOTS_CHEST;
                 case 262:
                     return RC_ICE_CAVERN_FREESTANDING_POH;
+                case 10498:
+                    return RC_ICE_CAVERN_GS_SPINNING_SCYTHE_ROOM;
+                case 10500:
+                    return RC_ICE_CAVERN_GS_HEART_PIECE_ROOM;
+                case 10497:
+                    return RC_ICE_CAVERN_GS_PUSH_BLOCK_ROOM;
             }
             break;
         case 10:
@@ -2887,6 +2975,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
             }
             break;
+        case 56:
+            switch (actorParams) {
+                case -28152:
+                    return RC_LH_GS_LAB_CRATE;
+            }
+            break;
         case 59:
             // using fountainType as actorParams
             switch (actorParams) {
@@ -2961,6 +3055,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_COW_GROTTO_GOSSIP_STONE;
                 case 14355:
                     return RC_HC_STORMS_GROTTO_GOSSIP_STONE;
+                case 10753:
+                    return RC_HF_GS_COW_GROTTO;
+                case 10754:
+                    return RC_HF_GS_NEAR_KAK_GROTTO;
+                case 11778:
+                    return RC_HC_GS_STORMS_GROTTO;
                 default:
                     return RC_UNKNOWN_CHECK;
             }
@@ -2999,6 +3099,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LLR_FREESTANDING_POH;
             }
             break;
+        case 77:
+            switch (actorParams) {
+                case -29176:
+                    return RC_MARKET_GS_GUARD_HOUSE;
+            }
+            break;
         case 82:
             switch (actorId) {
                 case 316:
@@ -3007,6 +3113,20 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     } else {
                         return RC_KAK_ANJU_AS_CHILD;
                     }
+            }
+            switch (actorParams) {
+                case -28640:
+                    return RC_KAK_GS_TREE;
+                case 20482:
+                    return RC_KAK_GS_GUARDS_HOUSE;
+                case 20484:
+                    return RC_KAK_GS_WATCHTOWER;
+                case 20496:
+                    return RC_KAK_GS_SKULLTULA_HOUSE;
+                case 20488:
+                    return RC_KAK_GS_HOUSE_UNDER_CONSTRUCTION;
+                case 20544:
+                    return RC_KAK_GS_ABOVE_IMPAS_HOUSE;
             }
             break;
         case 83:
@@ -3017,6 +3137,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GRAVEYARD_DAMPE_GRAVEDIGGING_TOUR;
                 case 14346:
                     return RC_GY_GOSSIP_STONE;
+                case 28673:
+                    return RC_GRAVEYARD_GS_BEAN_PATCH;
+                case 20608:
+                    return RC_GRAVEYARD_GS_WALL;
             }
             break;
         case 84:
@@ -3029,6 +3153,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZR_NEAR_GROTTOS_GOSSIP_STONE;
                 case 14860:
                     return RC_ZR_NEAR_DOMAIN_GOSSIP_STONE;
+                case -28414:
+                    return RC_ZR_GS_TREE;
+                case 20737:
+                    return RC_ZR_GS_LADDER;
+                case 20752:
+                    return RC_ZR_GS_NEAR_RAISED_GROTTOS;
+                case 20744:
+                    return RC_ZR_GS_ABOVE_BRIDGE;
             }
             break;
         case 85:
@@ -3041,6 +3173,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_KF_DEKU_TREE_RIGHT_GOSSIP_STONE;
                 case 14623:
                     return RC_KF_DEKU_TREE_LEFT_GOSSIP_STONE;
+                case 19458:
+                    return RC_KF_GS_KNOW_IT_ALL_HOUSE;
+                case 27649:
+                    return RC_KF_GS_BEAN_PATCH;
+                case 19460:
+                    return RC_KF_GS_HOUSE_OF_TWINS;
             }
             break;
         case 86:
@@ -3051,6 +3189,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_SFM_MAZE_UPPER_GOSSIP_STONE;
                 case 14876:
                     return RC_SFM_SARIA_GOSSIP_STONE;
+                case 19720:
+                    return RC_SFM_GS;
             }
             break;
         case 87:
@@ -3071,6 +3211,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LH_SOUTHWEST_GOSSIP_STONE;
                 case 14863:
                     return RC_LH_SOUTHEAST_GOSSIP_STONE;
+                case 29185:
+                    return RC_LH_GS_BEAN_PATCH;
+                case 20996:
+                    return RC_LH_GS_LAB_WALL;
+                case 20994:
+                    return RC_LH_GS_SMALL_ISLAND;
+                case 21008:
+                    return RC_LH_GS_TREE;
             }
             break;
         case 88:
@@ -3079,6 +3227,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_ZD_CHEST;
                 case 14345:
                     return RC_ZD_GOSSIP_STONE;
+                case 20800:
+                    return RC_ZD_GS_FROZEN_WATERFALL;
             }
             break;
         case 89:
@@ -3093,6 +3243,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 14849:
                 case 14337:
                     return RC_FAIRY_GOSSIP_STONE;
+                case 20740:
+                    return RC_ZF_GS_ABOVE_THE_LOG;
+                case -28288:
+                    return RC_ZF_GS_TREE;
+                case 20768:
+                    return RC_ZF_GS_HIDDEN_CAVE;
             }
             break;
         case 90:
@@ -3105,6 +3261,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GV_CRATE_FREESTANDING_POH;
                 case 14353:
                     return RC_GV_GOSSIP_STONE;
+                case 21250:
+                    return RC_GV_GS_SMALL_BRIDGE;
+                case 29441:
+                    return RC_GV_GS_BEAN_PATCH;
+                case 21256:
+                    return RC_GV_GS_BEHIND_TENT;
+                case 21252:
+                    return RC_GV_GS_PILLAR;
             }
             break;
         case 91:
@@ -3113,6 +3277,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_LW_DEKU_SCRUB_NEAR_BRIDGE;
                 case 14365:
                     return RC_LW_GOSSIP_STONE;
+                case 27905:
+                    return RC_LW_GS_BEAN_PATCH_NEAR_BRIDGE;
+                case 27906:
+                    return RC_LW_GS_BEAN_PATCH_NEAR_THEATER;
+                case 19716:
+                    return RC_LW_GS_ABOVE_THEATER;
             }
             break;
         case 92:
@@ -3125,6 +3295,12 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_COLOSSUS_FREESTANDING_POH;
                 case 14362:
                     return RC_COLOSSUS_GOSSIP_STONE;
+                case 29953:
+                    return RC_COLOSSUS_GS_BEAN_PATCH;
+                case 21768:
+                    return RC_COLOSSUS_GS_TREE;
+                case 21764:
+                    return RC_COLOSSUS_GS_HILL;
             }
             break;
         case 93:
@@ -3132,12 +3308,18 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                 case 262:
                 case 1984:
                     return RC_GF_CHEST;
+                case 21506:
+                    return RC_GF_GS_TOP_FLOOR;
+                case 21505:
+                    return RC_GF_GS_ARCHERY_RANGE;
             }
             break;
         case 94:
             switch (actorParams) {
                 case -30048:
                     return RC_WASTELAND_CHEST;
+                case 13570:
+                    return RC_WASTELAND_GS;
             }
             break;
         case 95:
@@ -3146,6 +3328,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HC_MALON_GOSSIP_STONE;
                 case 14347:
                     return RC_HC_ROCK_WALL_GOSSIP_STONE;
+                case -29180:
+                    return RC_HC_GS_TREE;
             }
             break;
         case 96:
@@ -3156,6 +3340,14 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DMT_CHEST;
                 case 14340:
                     return RC_DMT_GOSSIP_STONE;
+                case 12036:
+                    return RC_DMT_GS_NEAR_KAK;
+                case 28418:
+                    return RC_DMT_GS_BEAN_PATCH;
+                case 20232:
+                    return RC_DMT_GS_ABOVE_DODONGOS_CAVERN;
+                case 20240:
+                    return RC_DMT_GS_FALLING_ROCKS_PATH;
             }
             break;
         case 97:
@@ -3166,6 +3358,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_DMC_WALL_FREESTANDING_POH;
                 case 14341:
                     return RC_DMC_GOSSIP_STONE;
+                case -28800:
+                    return RC_DMC_GS_CRATE;
+                case 28417:
+                    return RC_DMC_GS_BEAN_PATCH;
             }
             break;
         case 98:
@@ -3182,6 +3378,28 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_GC_MAZE_GOSSIP_STONE;
                 case 14873:
                     return RC_GC_MEDIGORON_GOSSIP_STONE;
+                case 12064:
+                    return RC_GC_GS_CENTER_PLATFORM;
+                case -28864:
+                    return RC_GC_GS_BOULDER_MAZE;
+            }
+            break;
+        case 99:
+            switch (actorParams) {
+                case 11012:
+                    return RC_LLR_GS_HOUSE_WINDOW;
+                case -29944:
+                    return RC_LLR_GS_TREE;
+                case 11010:
+                    return RC_LLR_GS_RAIN_SHED;
+                case 11009:
+                    return RC_LLR_GS_BACK_WALL;
+            }
+            break;
+        case 100:
+            switch (actorParams) {
+                case 11777:
+                    return RC_OGC_GS;
             }
             break;
     }
@@ -3219,7 +3437,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_STARTING_MAPS_COMPASSES] = CVar_GetS32("gRandomizeStartingMapsCompasses", 0);
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
-    
+    cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3255,6 +3473,8 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SKIP_CHILD_STEALTH] = CVar_GetS32("gRandomizeSkipChildStealth", 0);
     cvarSettings[RSK_SKIP_EPONA_RACE] = CVar_GetS32("gRandomizeSkipEponaRace", 0);
     cvarSettings[RSK_SKIP_TOWER_ESCAPE] = CVar_GetS32("gRandomizeSkipTowerEscape", 0);
+
+    cvarSettings[RSK_SKULLS_SUNS_SONG] = CVar_GetS32("gRandomizeGsExpectSunsSong", 0);
 
     RandoMain::GenerateRando(cvarSettings);
 
@@ -3301,7 +3521,8 @@ void DrawRandoEditor(bool& open) {
     // Shuffle Settings
     const char* randoShuffleDungeonRewards[4] = { "End of dungeons", "Any dungeon", "Overworld", "Anywhere" };
     const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
-    const char* randoShuffleSongs[3] = { "Song locations", "Dungeon rewards", "Anywhere" };
+    const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
+    const char* randoShuffleTokens[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
@@ -3490,7 +3711,7 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-        ImGui::SetNextWindowSize(ImVec2(720, 530), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(750, 530), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
             return;
@@ -3700,6 +3921,23 @@ void DrawRandoEditor(bool& open) {
                         );
 
                         SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
+                        ImGui::Separator();
+
+                        // Shuffle Tokens
+                        ImGui::Text(Settings::Tokensanity.GetName().c_str());
+                        InsertHelpHoverText(
+                            "Shuffles Golden Skulltula Tokens into the item pool. This means\n"
+                            "Golden Skulltulas can contain other items as well.\n"
+                            "\n"
+                            "Off - GS tokens will not be shuffled.\n"
+                            "\n"
+                            "Dungeons - Only shuffle GS tokens that are within dungeons.\n"
+                            "\n"
+                            "Overworld - Only shuffle GS tokens that are outside of dungeons.\n"
+                            "\n"
+                            "All Tokens - Shuffle all 100 GS tokens."
+                        );
+                        SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
                         ImGui::Separator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
@@ -3965,8 +4203,8 @@ void DrawRandoEditor(bool& open) {
                 if (ImGui::BeginTable("tableRandoDetailedLogic", 3,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    // Add empty columns to keep them 1/3rd of the width
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Misc Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    // Add empty column to keep them 1/3rd of the width
                     ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableHeadersRow();
                     ImGui::TableNextRow();
@@ -3987,8 +4225,17 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
                     ImGui::Separator();
 
-                    // Add empty columns to keep them 1/3rd of the width
+                    // COLUMN 2 - MISC OPTIONS
                     ImGui::TableNextColumn();
+                    ImGui::Separator();
+                    SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                    InsertHelpHoverText(
+                        "All Golden Skulltulas that require nighttime to appear will only be\n"
+                        "expected to be collected after getting Sun's Song."
+                    );
+                    ImGui::Separator();
+
+                    // Add empty column to keep them 1/3rd of the width
                     ImGui::TableNextColumn();
 
                     ImGui::EndTable();

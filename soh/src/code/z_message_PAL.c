@@ -1735,6 +1735,20 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
             } else {
                 msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
             }
+        } else if (textId == 0xF8 && GET_PLAYER(globalCtx)->getItemId == GI_ICE_TRAP) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_FRA:
+                    strcpy(font->msgBuf, "\x08\x06\x50\x05\x43IDIOT\x0E\x20\x02");
+                    break;
+                case LANGUAGE_GER:
+                    strcpy(font->msgBuf, "\x08\x06\x15 Du bist ein\x05\x43 DUMMKOPF\x05\x40!\x0E\x20\x02");
+                    break;
+                case LANGUAGE_ENG:
+                default:
+                    strcpy(font->msgBuf, "\x08\x06\x30You are a\x05\x43 FOWL\x05\x40!\x0E\x20\x02");
+                    break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
         } else {
             msgCtx->msgLength = font->msgLength;
             char* src = (uintptr_t)font->msgOffset;
