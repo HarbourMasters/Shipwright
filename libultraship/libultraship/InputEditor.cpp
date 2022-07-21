@@ -26,7 +26,7 @@ namespace Ship {
 
 		float size = 40;
 		bool readingMode = BtnReading == n64Btn;
-		bool disabled = BtnReading != -1 && !readingMode || !backend->Connected();
+		bool disabled = (BtnReading != -1 && !readingMode) || !backend->Connected() || backend->GetGuid() == "Auto";
 		ImVec2 len = ImGui::CalcTextSize(label);
 		ImVec2 pos = ImGui::GetCursorPos();
 		ImGui::SetCursorPosY(pos.y + len.y / 4);
@@ -90,7 +90,7 @@ namespace Ship {
 		std::shared_ptr<Controller> Backend = devices[vDevices[CurrentPort]];
 		DeviceProfile& profile =Backend->profiles[CurrentPort];
 		float sensitivity = profile.Thresholds[SENSITIVITY];
-		bool IsKeyboard = Backend->GetGuid() == "Keyboard" || !Backend->Connected();
+		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();
 		const char* ControllerName = Backend->GetControllerName();
 
 		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {

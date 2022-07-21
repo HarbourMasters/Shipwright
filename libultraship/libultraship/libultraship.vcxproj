@@ -344,6 +344,7 @@
     <ClCompile Include="SDLController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="VirtualController.h" />
     <ClInclude Include="Lib\Mercury\Mercury.h" />
     <ClInclude Include="Lib\nlohmann\json.hpp" />
     <ClInclude Include="abi.h" />
@@ -352,7 +353,6 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="ControlDeck.h" />
     <ClInclude Include="Cvar.h" />
-    <ClInclude Include="DisconnectedController.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="InputEditor.h" />
