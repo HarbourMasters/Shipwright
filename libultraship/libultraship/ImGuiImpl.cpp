@@ -1194,6 +1194,14 @@ namespace SohImGui {
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
                     Tooltip("Make Anubis fireballs do fire damage when reflected\nback at them with the Mirror Shield");
+                    EnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix");
+                    Tooltip("Make the Megaton Hammer's crouch stab able to destroy\nrocks without first swinging it normally");
+                    if (CVar_GetS32("gCrouchStabHammerFix", 0) == 0) {
+                        CVar_SetS32("gCrouchStabFix", 0);
+                    } else {
+                        EnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix");
+                        Tooltip("Make crouch stabbing always do the same damage as a regular slash");
+                    }
 
                     ImGui::EndMenu();
                 }
