@@ -5191,7 +5191,7 @@ s32 func_8083B644(Player* this, GlobalContext* globalCtx) {
                             this->stateFlags2 |= PLAYER_STATE2_21;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVar_GetS32("gNaviOnL", 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5247,7 +5247,8 @@ s32 func_8083B998(Player* this, GlobalContext* globalCtx) {
         (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_0 | ACTOR_FLAG_18) || (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_21;
     }
-    else if ((this->naviTextId == 0) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    else if ((this->naviTextId == 0 || CVar_GetS32("gNaviOnL", 0)) &&
+             !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
         (YREG(15) != 0x10) && (YREG(15) != 0x20) && !func_8083B8F4(this, globalCtx)) {
         func_80078884(NA_SE_SY_ERROR);
     }
