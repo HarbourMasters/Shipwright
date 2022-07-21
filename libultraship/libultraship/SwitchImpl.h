@@ -24,5 +24,6 @@ namespace Ship {
             static bool IsRunning();
             static void GetDisplaySize(int *width, int *height);
             static void ApplyOverclock();
+            static void PrintErrorMessageToScreen(const char *str, ...);
     };
 };

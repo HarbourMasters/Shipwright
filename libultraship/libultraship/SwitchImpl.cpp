@@ -16,6 +16,10 @@ static AppletHookCookie applet_hook_cookie;
 static bool isRunning = true;
 static bool hasFocus  = true;
 
+void DetectAppletMode();
+
+static void on_applet_hook(AppletHookType hook, void *param);
+
 void Ship::Switch::Init(){
     DetectAppletMode();
     appletInitializeGamePlayRecording();
@@ -111,6 +115,21 @@ void Ship::Switch::ApplyOverclock(void) {
    }
 }
 
+void Ship::Switch::PrintErrorMessageToScreen(const char *str, ...) {
+    consoleInit(NULL);
+
+    va_list args;
+    va_start(args, str);    
+    vprintf(str, args);
+    va_end(args);
+
+    while(appletMainLoop()){
+        consoleUpdate(NULL);
+    }
+
+    consoleExit(NULL);
+}
+
 static void on_applet_hook(AppletHookType hook, void *param) {
    AppletFocusState focus_state;
 
@@ -152,12 +171,12 @@ const char* RandomTexts[] = {
     "Who told Kenix that he is a developer?",
     "Welcome to *** wooooorld!",
     "Welcome to ***** wooooorld!",
-    "Pot sanity when ?",
+    "Potsanity when?",
     "Why are you acting so random?",
     "Can't forget my ship sails in the morning",
     "Do you want 2 or 7 of those?",
     "Im not gonna play that, its not accurate damnit!",
-    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rubies",
+    "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rupees",
     "You can build it yourself",
     "Descargar para android",
     "Made with <3 by the Harbour Masters!",
@@ -168,33 +187,23 @@ const char* RandomTexts[] = {
     "Enhancements? Times Savers? Cheats? You want them? They're yours my friend!",
     "They say you gotta have the BIIIIG salad",
     "They say Louis stopped working on the imports so he can focus on the exports",
-    "They say that the harbour masters loves a game with the right amount of 'o'",
+    "They say that The Harbour Masters love a game with the right amount of 'o'",
     "They say ZAPD is good software",
-    "You can't play your port on the bathroom? thats lame",
+    "You can't play your port while on the toilet? That's lame",
     "They say their 60fps mode is broken"
 };
 
-void DetectAppletMode(){
+void DetectAppletMode() {
     AppletType at = appletGetAppletType();
-
-    if (at == AppletType_Application || at == AppletType_SystemApplication){
+    if (at == AppletType_Application || at == AppletType_SystemApplication)
         return;
-    }
-
-    consoleInit(NULL);
-
-    printf("\x1b[2;2HDon't launch from the album directly, damnit!");
-    printf("\x1b[4;2HRelaunch the Ship on app mode.");
-    printf("\x1b[5;2HPress R when opening a game to launch the HBMenu.");
 
     srand(time(0));
-    const char* text = RandomTexts[rand() % 25];
-    printf("\x1b[44;2H%s.", text);
-
-    while(appletMainLoop()){
-        consoleUpdate(NULL);
-    }
-
-    consoleExit(NULL);
+    Ship::Switch::PrintErrorMessageToScreen(
+        "\x1b[2;2HYou've launched the Ship while in Applet mode."
+        "\x1b[4;2HPlease relaunch while in full-memory mode."
+        "\x1b[5;2HHold R when opening any game to enter HBMenu."
+        "\x1b[44;2H%s."
+    , RandomTexts[rand() % 25]);
 }
 #endif
