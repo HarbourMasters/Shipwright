@@ -42,7 +42,7 @@ static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::seed.size(); i++) {
+    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
         int number = Settings::seed[i] - '0';
         Settings::hashIconIndexes[i] = number;
     }
