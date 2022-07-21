@@ -1530,64 +1530,64 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                 // this is annoying but the same strings are used in different orders
                 // and i don't want the spoilerfile to just have numbers instead of
                 // human readable settings values so it'll have to do for now
-                switch(gSaveContext.randoSettings[index].key) {
+                switch (gSaveContext.randoSettings[index].key) {
                     case RSK_FOREST:
-                        if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Open") {
+                        if (it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Open") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Closed Deku") {
+                        } else if (it.value() == "Closed Deku") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_KAK_GATE:
-                        if(it.value() == "Closed") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Open") {
+                        if (it.value() == "Closed") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Open") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_DOOR_OF_TIME:
-                        if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Closed") {
+                        if (it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Closed") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Intended") {
+                        } else if (it.value() == "Intended") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_ZORAS_FOUNTAIN:
-                        if(it.value() == "Normal") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Adult") {
+                        if (it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Adult") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Open") {
+                        } else if (it.value() == "Open") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_GERUDO_FORTRESS:
-                        if(it.value() == "Normal") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Fast") {
+                        if (it.value() == "Normal") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Fast") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Open") {
+                        } else if (it.value() == "Open") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_RAINBOW_BRIDGE:
-                        if(it.value() == "Open") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Vanilla") {
+                        if (it.value() == "Open") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Vanilla") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Stones") {
+                        } else if (it.value() == "Stones") {
                             gSaveContext.randoSettings[index].value = 2;
-                        } else if(it.value() == "Medallions") {
+                        } else if (it.value() == "Medallions") {
                             gSaveContext.randoSettings[index].value = 3;
-                        } else if(it.value() == "Rewards") {
+                        } else if (it.value() == "Rewards") {
                             gSaveContext.randoSettings[index].value = 4;
-                        } else if(it.value() == "Dungeons") {
+                        } else if (it.value() == "Dungeons") {
                             gSaveContext.randoSettings[index].value = 5;
-                        } else if(it.value() == "Tokens") {
+                        } else if (it.value() == "Tokens") {
                             gSaveContext.randoSettings[index].value = 6;
                         }
                         break;
@@ -1603,82 +1603,86 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         gSaveContext.randoSettings[index].value = std::stoi(numericValueString);
                         break;
                     case RSK_RANDOM_TRIALS:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "On") {
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_STARTING_MAPS_COMPASSES:
-                        if(it.value() == "Own Dungeon") {
-                            gSaveContext.randoSettings[index].value = 0; 
+                        if (it.value() == "Own Dungeon") {
+                            gSaveContext.randoSettings[index].value = 0;
                         } else if (it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = 1; 
+                            gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_STARTING_DEKU_SHIELD:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "On") {
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_STARTING_KOKIRI_SWORD:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "On") {
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_STARTING_OCARINA:
-                        if(it.value() == "Off") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Fairy Ocarina") {
+                        if (it.value() == "Off") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Fairy Ocarina") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
                     case RSK_GOSSIP_STONE_HINTS:
-                        if(it.value() == "No Hints") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Need Nothing") {
+                        if (it.value() == "No Hints") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Need Nothing") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Mask of Truth") {
+                        } else if (it.value() == "Mask of Truth") {
                             gSaveContext.randoSettings[index].value = 2;
-                        } else if(it.value() == "Stone of Agony") {
+                        } else if (it.value() == "Stone of Agony") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
                     case RSK_HINT_CLARITY:
-                        if(it.value() == "Obscure") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Ambiguous") {
+                        if (it.value() == "Obscure") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Ambiguous") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Clear") {
+                        } else if (it.value() == "Clear") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_HINT_DISTRIBUTION:
-                        if(it.value() == "Useless") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Balanced") {
+                        if (it.value() == "Useless") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Balanced") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Strong") {
+                        } else if (it.value() == "Strong") {
                             gSaveContext.randoSettings[index].value = 2;
-                        } else if(it.value() == "Very Strong") {
+                        } else if (it.value() == "Very Strong") {
                             gSaveContext.randoSettings[index].value = 3;
                         }
                         break;
                     case RSK_GANONS_BOSS_KEY:
-                        if(it.value() == "Start With") {
-                            gSaveContext.randoSettings[index].value = 0;            
-                        } else if(it.value() == "Vanilla") {
+                        if (it.value() == "Start With") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "Vanilla") {
                             gSaveContext.randoSettings[index].value = 1;
-                        } else if(it.value() == "Own Dungeon") {
+                        } else if (it.value() == "Own Dungeon") {
                             gSaveContext.randoSettings[index].value = 2;
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
-                        gSaveContext.randoSettings[index].value = it.value();
+                        if (it.value() == "false") {
+                            gSaveContext.randoSettings[index].value = 0;
+                        } else if (it.value() == "true") {
+                            gSaveContext.randoSettings[index].value = 1;
+                        }
                         break;
                     case RSK_STARTING_CONSUMABLES:
                     case RSK_FULL_WALLETS:
