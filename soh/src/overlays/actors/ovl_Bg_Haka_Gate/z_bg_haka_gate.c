@@ -34,6 +34,7 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Update(Actor* thisx, GlobalContext* globalCtx);
 void BgHakaGate_Draw(Actor* this, GlobalContext* globalCtx);
+void BgHakaGate_Reset(void);
 
 void BgHakaGate_DoNothing(BgHakaGate* this, GlobalContext* globalCtx);
 void BgHakaGate_StatueInactive(BgHakaGate* this, GlobalContext* globalCtx);
@@ -62,7 +63,7 @@ const ActorInit Bg_Haka_Gate_InitVars = {
     (ActorFunc)BgHakaGate_Destroy,
     (ActorFunc)BgHakaGate_Update,
     (ActorFunc)BgHakaGate_Draw,
-    NULL,
+    (ActorResetFunc)BgHakaGate_Reset,
 };
 
 static InitChainEntry sInitChain[] = {
@@ -106,7 +107,6 @@ void BgHakaGate_Init(Actor* thisx, GlobalContext* globalCtx) {
         if (thisx->params == BGHAKAGATE_STATUE) {
             CollisionHeader_GetVirtual(&object_haka_objects_Col_0131C4, &colHeader);
             this->vTimer = 0;
-            sStatueRotY = 0;
             sStatueDistToPlayer = 0.0f;
             if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
                 this->actionFunc = BgHakaGate_StatueInactive;
@@ -378,4 +378,8 @@ void BgHakaGate_Draw(Actor* thisx, GlobalContext* globalCtx) {
     if (thisx->params == BGHAKAGATE_SKULL) {
         BgHakaGate_DrawFlame(this, globalCtx);
     }
+}
+
+void BgHakaGate_Reset(void) {
+    sStatueRotY = 0;
 }
