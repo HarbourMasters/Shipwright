@@ -194,7 +194,7 @@ void Table_InitHeader(bool has_header = true) {
     ImGui::TableNextColumn();
     ImGui::AlignTextToFramePadding(); //This is to adjust Vertical pos of item in a cell to be normlized.
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 2);
-    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
 void Table_NextCol() {
     ImGui::TableNextColumn();
@@ -210,6 +210,7 @@ void Table_NextLine() {
 
 void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 0) {
     // place the ? button to the most of the right side of the cell it is using.
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
     ImGui::SmallButton("?");
     SohImGui::Tooltip(helptext.c_str());
@@ -217,6 +218,7 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
         //I do not use ImGui::SameLine(); because it make some element vanish.
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
     }
+    ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
 void Draw_Npcs(){
     SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
