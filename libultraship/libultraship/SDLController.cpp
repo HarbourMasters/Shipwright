@@ -4,6 +4,10 @@
 #include "Window.h"
 #include <Utils/StringHelper.h>
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
 extern "C" uint8_t __osMaxControllers;
 
 namespace Ship {
