@@ -351,7 +351,7 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
     #ifdef __SWITCH__
-        Ship::Switch::SetupFont(io->Fonts);
+        // Ship::Switch::SetupFont(io->Fonts);
     #endif
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
@@ -958,8 +958,6 @@ namespace SohImGui {
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
                 EnhancementCombobox("gTextureFilter", filters, 3, 0);
-                GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
