@@ -137,7 +137,8 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
         if (gSaveContext.n64ddFlag) {
             getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             if (getItemId == GI_ICE_TRAP) {
-                GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
+                player->getItemId = GI_ICE_TRAP;
+                player->iceTrapped = 1;
                 textId = 0xF8;
             } else {
                 textId = sGetItemTable[getItemId - 1].textId;
