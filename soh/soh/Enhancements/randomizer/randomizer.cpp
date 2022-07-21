@@ -1678,9 +1678,9 @@ void Randomizer::ParseRandomizerSettingsFile(const char* spoilerFileName) {
                         }
                         break;
                     case RSK_SKIP_CHILD_ZELDA:
-                        if (it.value() == "No") {
+                        if (it.value() == "Off") {
                             gSaveContext.randoSettings[index].value = 0;
-                        } else if (it.value() == "Yes") {
+                        } else if (it.value() == "On") {
                             gSaveContext.randoSettings[index].value = 1;
                         }
                         break;
