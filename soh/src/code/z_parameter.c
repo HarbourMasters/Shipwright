@@ -4796,10 +4796,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
             PosY_BtnA = CVar_GetS32("gABtnPosY", 0)+Y_Margins_BtnA;
             rAIconY = 98.0f - PosY_BtnA;
             if (CVar_GetS32("gABtnPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Left_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 2) {//Anchor Right
-                X_Margins_BtnA = Right_HUD_Margin;
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Right_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX= OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 3) {//Anchor None
