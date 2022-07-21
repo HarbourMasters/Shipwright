@@ -284,7 +284,6 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
-        printf("Audio processing\n");
     }
 #endif
 

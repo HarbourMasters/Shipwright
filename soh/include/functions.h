@@ -1872,7 +1872,7 @@ void FaultDrawer_SetCharPad(s8, s8);
 void FaultDrawer_SetCursor(s32, s32);
 void FaultDrawer_FillScreen();
 void* FaultDrawer_FormatStringFunc(void*, const char*, u32);
-void FaultDrawer_VPrintf(const char*, char*);
+void FaultDrawer_VPrintf(const char*, va_list);
 void FaultDrawer_Printf(const char*, ...);
 void FaultDrawer_DrawText(s32, s32, const char*, ...);
 void FaultDrawer_SetDrawerFB(void*, u16, u16);
