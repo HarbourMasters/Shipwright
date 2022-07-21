@@ -2090,6 +2090,8 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
     osSyncPrintf("\ngame_info.mode=[%d] restart_flag", ((void)0, gSaveContext.respawnFlag));
 
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
+        const bool bShouldTowerRandoSkip =
+            (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE));
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC)) {
             if (!gSaveContext.n64ddFlag) {
                 Flags_SetEventChkInf(0xAC);
@@ -2118,14 +2120,15 @@ void Cutscene_HandleConditionalTriggers(GlobalContext* globalCtx) {
                 gSaveContext.entranceIndex = 0x0053;
                 gSaveContext.cutsceneIndex = 0xFFF8;
             }
-        } else if (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO ||
-                   gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_FINAL) {
+        } else if ((!Flags_GetEventChkInf(0xC7) &&
+                       gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_DEMO) ||
+                   (bShouldTowerRandoSkip &&
+                    gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_GANON_FINAL)) {
             Flags_SetEventChkInf(0xC7);
             gSaveContext.entranceIndex = 0x0517;
-
             // If we are rando and tower escape skip is on, then set the flag to say we saw the towers fall
             // and exit.
-            if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_TOWER_ESCAPE)) {
+            if (bShouldTowerRandoSkip) {
                 return;
             }
             gSaveContext.cutsceneIndex = 0xFFF0;
