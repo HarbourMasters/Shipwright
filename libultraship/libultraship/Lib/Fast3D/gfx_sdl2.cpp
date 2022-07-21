@@ -152,30 +152,30 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+#elif defined(__SWITCH__)
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 #endif
 
 #ifdef _WIN32
     timer = CreateWaitableTimer(nullptr, false, nullptr);
 #endif
 
-#ifdef __SWITCH__
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    Ship::Switch::GetDisplaySize(&window_width, &window_height);
-#else
-    window_width = width;
-    window_height = height;
-#endif
-
     char title[512];
     int len = sprintf(title, "%s (%s)", game_name, GFX_API_NAME);
 
+#ifdef __SWITCH__
+    // For Switch we need to set the window width before creating the window
+    Ship::Switch::GetDisplaySize(&window_width, &window_height);
+#endif
+
     wnd = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
             window_width, window_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
 
 #ifndef __SWITCH__
+    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+
     if (start_in_fullscreen) {
         set_fullscreen(true, false);
     }
@@ -243,12 +243,8 @@ static void gfx_sdl_main_loop(void (*run_one_game_iter)(void)) {
 }
 
 static void gfx_sdl_get_dimensions(uint32_t *width, uint32_t *height) {
-#ifdef __SWITCH__
-    Ship::Switch::GetDisplaySize((int*) width, (int*) height);
-#else
     *width  = window_width;
     *height = window_height;
-#endif
 }
 
 static int translate_scancode(int scancode) {
@@ -300,7 +296,11 @@ static void gfx_sdl_handle_events(void) {
 #endif
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+                    #ifdef __SWITCH__
+                        Ship::Switch::GetDisplaySize(&window_width, &window_height);
+                    #else
+                        SDL_GL_GetDrawableSize(wnd, &window_width, &window_height);
+                    #endif
                 }
                 break;
             case SDL_DROPFILE:

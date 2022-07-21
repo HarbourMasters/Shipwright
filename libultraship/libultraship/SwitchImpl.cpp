@@ -18,7 +18,6 @@ static int WaitFramesToUpdate;
 static HidTouchScreenState TouchState = {0};
 static SwkbdConfig kbd;
 static PadState pad;
-static float internalMultiplier = 1.0f;
 static AppletHookCookie applet_hook_cookie;
 static bool isRunning = true;
 static bool hasFocus  = true;
@@ -247,8 +246,8 @@ void Ship::Switch::GetDisplaySize(int *width, int *height) {
             *height = 1080;
             break;
         case HANDHELD_MODE:
-            *width  = 1280 * internalMultiplier;
-            *height = 720  * internalMultiplier;
+            *width  = 1280;
+            *height = 720;
             break;
     }
 }
