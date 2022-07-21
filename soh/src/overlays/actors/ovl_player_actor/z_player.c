@@ -10978,7 +10978,7 @@ void Player_UpdateCommon(Player* this, GlobalContext* globalCtx, Input* input) {
     Collider_ResetQuadAC(globalCtx, &this->shieldQuad.base);
     Collider_ResetQuadAT(globalCtx, &this->shieldQuad.base);
 
-    if (this->iceTrapped != 0) {
+    if (this->pendingIceTrap == true) {
         GiveItemWithoutActor(globalCtx, GI_ICE_TRAP);
     }
 }

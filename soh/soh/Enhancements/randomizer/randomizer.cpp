@@ -3926,7 +3926,8 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Tokens
                         ImGui::Text(Settings::Tokensanity.GetName().c_str());
                         InsertHelpHoverText(
-                            "Shuffles Golden Skulltula Tokens into the item pool.\n"
+                            "Shuffles Golden Skulltula Tokens into the item pool. This means\n"
+                            "Golden Skulltulas can contain other items as well.\n"
                             "\n"
                             "Off - GS tokens will not be shuffled.\n"
                             "\n"

@@ -101,7 +101,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                     getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
                     if (getItemId == GI_ICE_TRAP) {
                         player->getItemId = GI_ICE_TRAP;
-                        player->iceTrapped = 1;
+                        player->pendingIceTrap = true;
                         textId = 0xF8;
                     } else {
                         textId = sGetItemTable[getItemId - 1].textId;
@@ -138,7 +138,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
             getItemId = Randomizer_GetRandomizedItemId(GI_SKULL_TOKEN, this->actor.id, this->actor.params, globalCtx->sceneNum);
             if (getItemId == GI_ICE_TRAP) {
                 player->getItemId = GI_ICE_TRAP;
-                player->iceTrapped = 1;
+                player->pendingIceTrap = true;
                 textId = 0xF8;
             } else {
                 textId = sGetItemTable[getItemId - 1].textId;
