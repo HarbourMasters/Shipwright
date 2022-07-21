@@ -2,7 +2,6 @@
 #include "SwitchImpl.h"
 #include <switch.h>
 #include <SDL2/SDL.h>
-#include "Lib/ImGui/imgui_internal.h"
 #include "SwitchPerformanceProfiles.h"
 #include "Cvar.h"
 #include "Hooks.h"
@@ -13,55 +12,87 @@ extern "C" void CVar_SetS32(const char* name, s32 value);
 #define DOCKED_MODE 1
 #define HANDHELD_MODE 0
 
-static int MouseX, MouseY, Prev_TouchCount;
-static int WaitFramesToUpdate;
-static HidTouchScreenState TouchState = {0};
-static SwkbdConfig kbd;
-static PadState pad;
 static AppletHookCookie applet_hook_cookie;
 static bool isRunning = true;
 static bool hasFocus  = true;
 
-void InitKeyboard(){
-    Result rc = 0;
-    rc = swkbdCreate(&kbd, 0);
-    if (R_SUCCEEDED(rc))
-        swkbdConfigMakePresetDefault(&kbd);
+void Ship::Switch::Init(){
+    DetectAppletMode();
+    appletInitializeGamePlayRecording();
+#ifdef DEBUG
+    socketInitializeDefault();
+    nxlinkStdio();
+#endif
+    appletSetGamePlayRecordingState(true);
+    appletHook(&applet_hook_cookie, on_applet_hook, NULL);
+    appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
+    if (!hosversionBefore(8, 0, 0)) {
+        clkrstInitialize();
+    }
 }
 
-// TODO: Fully Implement Keyboard
+void Ship::Switch::Exit(){
+#ifdef DEBUG
+    socketExit();
+#endif
+    clkrstExit();
+    appletSetGamePlayRecordingState(false);
+}
 
-void UpdateKeyboard() {
-    ImGuiIO* io = &ImGui::GetIO();
-    int length = 512;
-    char* message = nullptr;
+void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
+    plInitialize(PlServiceType_System);
+    static PlFontData stdFontData, extFontData;
 
-    if(WaitFramesToUpdate > 0)
-        WaitFramesToUpdate--;
+    PlFontData fonts_std;
+    PlFontData fonts_ext;
+    
+    plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
+    plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
 
-    if(WaitFramesToUpdate){
-        ImGui::ClearActiveID();
-        if(message != nullptr)
-            free(message);
-    }
+    ImFontConfig config;
+    config.FontDataOwnedByAtlas = false;
 
-    if(io->WantTextInput && !WaitFramesToUpdate){
-        message = (char*)malloc(length);
-        ImGuiInputTextState* state = ImGui::GetInputTextState(ImGui::GetActiveID());
-        if(!state->InitialTextA.empty()){
-            swkbdConfigSetInitialText(&kbd, state->InitialTextA.Data);
-        }
+    strcpy(config.Name, "Nintendo Standard");
+    fonts->AddFontFromMemoryTTF (fonts_std.address, fonts_std.size, 24.0f, &config, fonts->GetGlyphRangesCyrillic());
 
-        Result rc = swkbdShow(&kbd, message, length);
+    strcpy(config.Name, "Nintendo Ext");
+    static const ImWchar ranges[] =
+        {
+            0xE000, 0xE06B,
+            0xE070, 0xE07E,
+            0xE080, 0xE099,
+            0xE0A0, 0xE0BA,
+            0xE0C0, 0xE0D6,
+            0xE0E0, 0xE0F5,
+            0xE100, 0xE105,
+            0xE110, 0xE116,
+            0xE121, 0xE12C,
+            0xE130, 0xE13C,
+            0xE140, 0xE14D,
+            0xE150, 0xE153,
+            0,
+        };
 
-        if(R_SUCCEEDED(rc)){
-            state->ClearText();
-            state->OverwriteData = message;
-            state->OnKeyPressed(ImGuiKey_Enter);
-        }
+    fonts->AddFontFromMemoryTTF (fonts_ext.address, fonts_ext.size, 24.0f, &config, ranges);
+    fonts->Build ();
 
-        WaitFramesToUpdate = 2;
-        io->WantTextInput = false;
+    plExit();
+}
+
+bool Ship::Switch::IsRunning(){
+    return isRunning;
+}
+
+void Ship::Switch::GetDisplaySize(int *width, int *height) {
+    switch (appletGetOperationMode()) {
+        case DOCKED_MODE:
+            *width  = 1920;
+            *height = 1080;
+            break;
+        case HANDHELD_MODE:
+            *width  = 1280;
+            *height = 720;
+            break;
     }
 }
 
@@ -144,7 +175,6 @@ const char* RandomTexts[] = {
 };
 
 void DetectAppletMode(){
-
     AppletType at = appletGetAppletType();
 
     if (at == AppletType_Application || at == AppletType_SystemApplication){
@@ -166,89 +196,5 @@ void DetectAppletMode(){
     }
 
     consoleExit(NULL);
-}
-
-void Ship::Switch::Init(){
-    DetectAppletMode();
-    appletInitializeGamePlayRecording();
-#ifdef DEBUG
-    socketInitializeDefault();
-    nxlinkStdio();
-#endif
-    appletSetGamePlayRecordingState(true);
-    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
-    padInitializeDefault(&pad);
-    hidInitializeTouchScreen();
-    InitKeyboard();
-    appletHook(&applet_hook_cookie, on_applet_hook, NULL);
-    appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
-    if (!hosversionBefore(8, 0, 0)) {
-        clkrstInitialize();
-    }
-}
-
-void Ship::Switch::Exit(){
-#ifdef DEBUG
-    socketExit();
-#endif
-    clkrstExit();
-    appletSetGamePlayRecordingState(false);
-}
-
-bool Ship::Switch::IsRunning(){
-    return isRunning;
-}
-
-void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
-    plInitialize(PlServiceType_System);
-    static PlFontData stdFontData, extFontData;
-
-    PlFontData fonts_std;
-    PlFontData fonts_ext;
-    
-    plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
-    plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
-
-    ImFontConfig config;
-    config.FontDataOwnedByAtlas = false;
-
-    strcpy(config.Name, "Nintendo Standard");
-    fonts->AddFontFromMemoryTTF (fonts_std.address, fonts_std.size, 24.0f, &config, fonts->GetGlyphRangesCyrillic());
-
-    strcpy(config.Name, "Nintendo Ext");
-    static const ImWchar ranges[] =
-        {
-            0xE000, 0xE06B,
-            0xE070, 0xE07E,
-            0xE080, 0xE099,
-            0xE0A0, 0xE0BA,
-            0xE0C0, 0xE0D6,
-            0xE0E0, 0xE0F5,
-            0xE100, 0xE105,
-            0xE110, 0xE116,
-            0xE121, 0xE12C,
-            0xE130, 0xE13C,
-            0xE140, 0xE14D,
-            0xE150, 0xE153,
-            0,
-        };
-
-    fonts->AddFontFromMemoryTTF (fonts_ext.address, fonts_ext.size, 24.0f, &config, ranges);
-    fonts->Build ();
-
-    plExit();
-}
-
-void Ship::Switch::GetDisplaySize(int *width, int *height) {
-    switch (appletGetOperationMode()) {
-        case DOCKED_MODE:
-            *width  = 1920;
-            *height = 1080;
-            break;
-        case HANDHELD_MODE:
-            *width  = 1280;
-            *height = 720;
-            break;
-    }
 }
 #endif
