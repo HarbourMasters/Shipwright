@@ -844,6 +844,8 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
+                EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+                Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
