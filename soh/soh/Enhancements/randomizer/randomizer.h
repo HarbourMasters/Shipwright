@@ -26,7 +26,8 @@ class Randomizer {
     Randomizer();
     ~Randomizer();
 
-    static const std::string customMessageTableID;
+    static const std::string getItemMessageTableID;
+    static const std::string hintMessageTableID;
 
     static Sprite* GetSeedTexture(uint8_t index);
     s16 GetItemModelFromId(s16 itemId);
@@ -41,7 +42,7 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    std::string GetHintFromCheck(RandomizerCheck check);
+    //CustomMessageEntry GetHintFromCheck(RandomizerCheck check);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
     //std::string GetCustomGetItemMessage(GlobalContext* globalCtx, GetItemID giid);

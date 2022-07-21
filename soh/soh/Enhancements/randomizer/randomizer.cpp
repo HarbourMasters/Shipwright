@@ -14,6 +14,7 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
+#include <soh/Enhancements/custom_message/CustomMessage.h>
 
 using json = nlohmann::json;
 
@@ -21,7 +22,8 @@ std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
 u8 generated;
 
-const std::string Randomizer::customMessageTableID = "Randomizer";
+const std::string Randomizer::getItemMessageTableID = "Randomizer";
+const std::string Randomizer::hintMessageTableID = "RandomizerHints";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -1479,6 +1481,22 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
+    CustomMessage::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
+    CustomMessage::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
+
+    CustomMessage::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, 0x7040,
+        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText, "", "" });
+    CustomMessage::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, 0x7088,
+        { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText, "", "" });
+    CustomMessage::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, 0x70CC,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText, "", "" });
+    CustomMessage::Instance->CreateMessage(
+        Randomizer::hintMessageTableID, 0x70CD,
+        { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText, "", "" });
+
     this->childAltarText = gSaveContext.childAltarText;
     this->adultAltarText = gSaveContext.adultAltarText;
     this->ganonHintText = gSaveContext.ganonHintText;
@@ -1487,6 +1505,8 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
+        CustomMessage::Instance->CreateMessage(
+            Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, "", "" });
     }
 }
 
@@ -2409,9 +2429,9 @@ std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
 }
 
-std::string Randomizer::GetHintFromCheck(RandomizerCheck check) {
-    return this->hintLocations[check];
-}
+//CustomMessageEntry Randomizer::GetHintFromCheck(RandomizerCheck check) {
+//    return CustomMessage::Instance->RetrieveMessage(hintMessageTableID, check);
+//}
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
@@ -4747,6 +4767,46 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
     }*/
 
+
+void Randomizer::CreateCustomMessages() {
+        CustomMessage* customMessage = CustomMessage::Instance;
+        customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+                                              "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!", "",
+                                              "" });
+        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+                                              "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", "",
+                                              "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+              "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!", "", "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_FISH, ITEM_FISH,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+              "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!", "", "" });
+        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+                                              "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!", "",
+                                              "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, "You got a %rFairy in a Bottle%w!&Use it wisely!", "", "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+              "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!", "", "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+              "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!", "", "" });
+        customMessage->CreateGetItemMessage(
+            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_POE, ITEM_POE,
+            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
+              "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...", "", "" });
+    }
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);

@@ -100,29 +100,27 @@ bool CustomMessage::CreateMessage(std::string tableID, uint16_t textID, CustomMe
     return InsertCustomMessage(tableID, textID, messages);
 }
 
-std::string CustomMessage::RetrieveMessage(GlobalContext* globalCtx, std::string tableID, uint16_t textID) {
+CustomMessageEntry CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID) {
     std::unordered_map<std::string, CustomMessageTable>::const_iterator result = messageTables.find(tableID);
     if (result == messageTables.end()) {
-        return "";
+        return NULL_CUSTOM_MESSAGE;
     }
     CustomMessageTable messageTable = result->second;
     std::unordered_map<uint16_t, CustomMessageEntry>::const_iterator message_pair = messageTable.find(textID);
     if (message_pair == messageTable.end()) {
-        return "";
+        return NULL_CUSTOM_MESSAGE;
     }
-    CustomMessageEntry messages = message_pair->second;
-    MessageContext* msgCtx = &globalCtx->msgCtx;
-    Font* font = &msgCtx->font;
-    font->charTexBuf[0] = (messages.textBoxType << 4) | messages.textBoxPos;
-    switch (gSaveContext.language) { 
-        case LANGUAGE_FRA:
-            return messages.french;
-        case LANGUAGE_GER:
-            return messages.german;
-        case LANGUAGE_ENG:
-        default:
-            return messages.english;
+    CustomMessageEntry message = message_pair->second;
+    return message;
+}
+
+bool CustomMessage::ClearMessageTable(std::string tableID) {
+    auto result = messageTables.find(tableID);
+    if (result == messageTables.end()) {
+        return false;
     }
+    auto& messageTable = result->second;
+    messageTable.clear();
 }
 
 bool CustomMessage::AddCustomMessageTable(std::string tableID) { 

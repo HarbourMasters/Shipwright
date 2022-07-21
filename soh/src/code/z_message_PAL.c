@@ -1675,39 +1675,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, __FILE__, __LINE__);
     } else {
         Message_FindMessage(globalCtx, textId);
-        // if we're rando'd and talking to a gossip stone
-        if (gSaveContext.n64ddFlag &&
-            textId == 0x2053 &&
-            Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
-                (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
-                    Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
-                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
-                   CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
-
-            s16 actorParams = msgCtx->talkActor->params;
-
-            // if we're in a generic grotto
-            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
-                // look for the chest in the actorlist to determine
-                // which grotto we're in
-                int numOfActorLists = sizeof(globalCtx->actorCtx.actorLists)/sizeof(globalCtx->actorCtx.actorLists[0]);
-                for(int i = 0; i < numOfActorLists; i++) {
-                    if(globalCtx->actorCtx.actorLists[i].length) {
-                        if(globalCtx->actorCtx.actorLists[i].head->id == 10) {
-                            // set the params for the hint check to be negative chest params
-                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
-                        }
-                    }
-                }
-            }
-
-            RandomizerCheck hintCheck = Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
-
-            // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
-            // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
-            msgCtx->msgLength = font->msgLength = Randomizer_CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
-        } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
+        if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
             // rando hints at altar
             msgCtx->msgLength = font->msgLength = Randomizer_CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
         } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {

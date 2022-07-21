@@ -9,6 +9,7 @@
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
+
 class OTRGlobals
 {
 public:
@@ -87,7 +88,6 @@ void Randomizer_LoadSettings(const char* spoilerFileName);
 u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
 RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
 int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
-int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
 int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
 int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
 void Randomizer_LoadHintLocations(const char* spoilerFileName);

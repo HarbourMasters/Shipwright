@@ -1,7 +1,6 @@
 #include "OTRGlobals.h"
 #include "ResourceMgr.h"
 #include "Scene.h"
-#include "message_data_static.h"
 #include "Utils/StringHelper.h"
 #include "global.h"
 #include "vt.h"

@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <unordered_map>
-#include "z64.h"
 #include <message_data_static.h>
 
 #undef MESSAGE_END
@@ -22,6 +21,9 @@ typedef struct {
     std::string german;
     std::string french;
 } CustomMessageEntry;
+
+#define NULL_CUSTOM_MESSAGE \
+    { (TextBoxType)(-1), (TextBoxPosition)(-1), "", "", "" }
 
 typedef std::unordered_map<uint16_t, CustomMessageEntry> CustomMessageTable;
 
@@ -52,6 +54,7 @@ class CustomMessage {
 
     bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
     bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
-    std::string RetrieveMessage(GlobalContext* globalCtx, std::string tableID, uint16_t textID);
+    CustomMessageEntry RetrieveMessage(std::string tableID, uint16_t textID);
+    bool ClearMessageTable(std::string tableID);
     bool AddCustomMessageTable(std::string tableID);
 };

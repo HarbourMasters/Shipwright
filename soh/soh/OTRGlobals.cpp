@@ -36,15 +36,14 @@
 #include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
-#include "Enhancements/randomizer/randomizer.h"
 #include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
-#include <soh/Enhancements/custom_message/CustomMessage.h>
 #include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include <soh/Enhancements/custom_message/CustomMessage.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -1490,11 +1489,11 @@ extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSiz
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+extern "C" CustomMessageEntry Randomizer_CopyHintFromCheck(RandomizerCheck check) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
-    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
-    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+    const CustomMessageEntry hintText = CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
+    return hintText;
 }
 
 extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
@@ -1505,12 +1504,9 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
 
-extern "C" int Randomizer_GetCustomGetItemMessage(GlobalContext* globalCtx, GetItemID giid, char* buffer, const int maxBufferSize) {
-    const std::string& getItemText = CustomMessage::Instance->RetrieveMessage(globalCtx, Randomizer::customMessageTableID, giid);
-    if (getItemText == "") {
-        return false;
-    }
-    return CopyStringToCharBuffer(getItemText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
+    const CustomMessageEntry getItemText = CustomMessage::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    return getItemText;
 }
 
 extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
@@ -1519,42 +1515,67 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     Font* font = &msgCtx->font;
     char* buffer = font->msgBuf;
     const int maxBufferSize = sizeof(font->msgBuf);
+    CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
         if (textId == 0xF8) {
-            font->charTexBuf[0] = 0x23;
-            if (msgCtx->msgLength = font->msgLength = Randomizer_GetCustomGetItemMessage(
-                    globalCtx, (GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize)) {
-                return true;
-            } else {
-                switch (gSaveContext.language) {
-                    case LANGUAGE_FRA:
-                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "Il n'y a pas de message personnalisé pour cet élément.\x02", buffer, maxBufferSize);
-                    case LANGUAGE_GER:
-                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "Für diesen Artikel gibt es keine benutzerdefinierte Nachricht.\x02", buffer,
-                                   maxBufferSize);
-                    case LANGUAGE_ENG:
-                    default:
-                        return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(
-                                   "There is no custom message for this item.\x02", buffer, maxBufferSize);
+            messageEntry =
+                Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
+        }
+        if (textId == 0x2053 && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+            (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+              Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 && CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+
+            s16 actorParams = msgCtx->talkActor->params;
+
+            // if we're in a generic grotto
+            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+                // look for the chest in the actorlist to determine
+                // which grotto we're in
+                int numOfActorLists =
+                    sizeof(globalCtx->actorCtx.actorLists) / sizeof(globalCtx->actorCtx.actorLists[0]);
+                for (int i = 0; i < numOfActorLists; i++) {
+                    if (globalCtx->actorCtx.actorLists[i].length) {
+                        if (globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                            // set the params for the hint check to be negative chest params
+                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                        }
+                    }
                 }
             }
+
+            RandomizerCheck hintCheck =
+                Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+
+            messageEntry = Randomizer_CopyHintFromCheck(hintCheck);
         }
     }
     if (textId == 0x00B4 || textId == 0x00B5) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
             font->charTexBuf[0] = 0x03;
-            std::string message;
             if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
                 textId = 0x00B4;
             } else {
                 textId = 0x00B5;
             }
-            message = CustomMessage::Instance->RetrieveMessage(globalCtx, "BaseGameOverrides", textId);
-            if (message != "") {
-                return msgCtx->msgLength = font->msgLength = CopyStringToCharBuffer(message, buffer, maxBufferSize);
-            }
+            messageEntry = CustomMessage::Instance->RetrieveMessage("BaseGameOverrides", textId);
+        }
+    }
+    if (messageEntry.textBoxType != -1) {
+        font->charTexBuf[0] = (messageEntry.textBoxType << 4) | messageEntry.textBoxPos;
+        switch (gSaveContext.language) {
+            case LANGUAGE_FRA:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.french, buffer, maxBufferSize);
+            case LANGUAGE_GER:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.german, buffer, maxBufferSize);
+
+            case LANGUAGE_ENG:
+            default:
+                return msgCtx->msgLength = font->msgLength =
+                           CopyStringToCharBuffer(messageEntry.english, buffer, maxBufferSize);
         }
     }
     return false;
