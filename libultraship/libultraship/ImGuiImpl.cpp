@@ -351,7 +351,7 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
     #ifdef __SWITCH__
-        // Ship::Switch::SetupFont(io->Fonts);
+        Ship::Switch::SetupFont(io->Fonts);
     #endif
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
