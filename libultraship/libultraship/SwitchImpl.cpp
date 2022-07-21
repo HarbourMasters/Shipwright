@@ -2,7 +2,6 @@
 #include "SwitchImpl.h"
 #include <switch.h>
 #include <SDL2/SDL.h>
-#include "Lib/ImGui/imgui.h"
 #include "Lib/ImGui/imgui_internal.h"
 #include "SwitchPerformanceProfiles.h"
 #include "Cvar.h"
@@ -201,6 +200,46 @@ bool Ship::Switch::IsRunning(){
     return isRunning;
 }
 
+void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
+    plInitialize(PlServiceType_System);
+    static PlFontData stdFontData, extFontData;
+
+    PlFontData fonts_std;
+    PlFontData fonts_ext;
+    
+    plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
+    plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
+
+    ImFontConfig config;
+    config.FontDataOwnedByAtlas = false;
+
+    strcpy(config.Name, "Nintendo Standard");
+    fonts->AddFontFromMemoryTTF (fonts_std.address, fonts_std.size, 24.0f, &config, fonts->GetGlyphRangesCyrillic());
+
+    strcpy(config.Name, "Nintendo Ext");
+    static const ImWchar ranges[] =
+        {
+            0xE000, 0xE06B,
+            0xE070, 0xE07E,
+            0xE080, 0xE099,
+            0xE0A0, 0xE0BA,
+            0xE0C0, 0xE0D6,
+            0xE0E0, 0xE0F5,
+            0xE100, 0xE105,
+            0xE110, 0xE116,
+            0xE121, 0xE12C,
+            0xE130, 0xE13C,
+            0xE140, 0xE14D,
+            0xE150, 0xE153,
+            0,
+        };
+
+    fonts->AddFontFromMemoryTTF (fonts_ext.address, fonts_ext.size, 24.0f, &config, ranges);
+    fonts->Build ();
+
+    plExit();
+}
+
 void Ship::Switch::GetDisplaySize(int *width, int *height) {
     switch (appletGetOperationMode()) {
         case DOCKED_MODE:
@@ -212,16 +251,5 @@ void Ship::Switch::GetDisplaySize(int *width, int *height) {
             *height = 720  * internalMultiplier;
             break;
     }
-}
-
-float Ship::Switch::GetDPI(){
-    switch (appletGetOperationMode()) {
-        case DOCKED_MODE:
-            return 56.48480f;
-        case HANDHELD_MODE:
-            return 236.8717f;
-    }
-
-    return 1.0f;
 }
 #endif

@@ -1,28 +1,29 @@
 #pragma once
 
 #include <cstdint>
+
+#include "Lib/ImGui/imgui.h"
 #include "SwitchPerformanceProfiles.h"
 
 namespace Ship {
+    enum SwitchProfiles {
+        MAXIMUM,
+        HIGH,
+        BOOST,
+        STOCK,
+        POWERSAVINGM1,
+        POWERSAVINGM2,
+        POWERSAVINGM3
+    };
 
-enum SwitchProfiles {
-    MAXIMUM,
-    HIGH,
-    BOOST,
-    STOCK,
-    POWERSAVINGM1,
-    POWERSAVINGM2,
-    POWERSAVINGM3
-};
-
-class Switch {
-public:
-    static void Init();
-    static void Exit();
-    static void Update();
-    static bool IsRunning();
-    static void GetDisplaySize(int *width, int *height);
-    static void ApplyOverclock();
-    static float GetDPI();
-};
+    class Switch {
+        public:
+            static void Init();
+            static void Exit();
+            static void SetupFont(ImFontAtlas* fonts);
+            static void Update();
+            static bool IsRunning();
+            static void GetDisplaySize(int *width, int *height);
+            static void ApplyOverclock();
+    };
 };
