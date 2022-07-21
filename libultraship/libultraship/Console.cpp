@@ -230,8 +230,8 @@ void Console::Draw() {
 		// Renders input textfield
 		constexpr ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackEdit |
 			                                  ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-		ImGui::PushItemWidth(-1);
-		if(ImGui::InputTextWithHint("CMDInput", ">", this->InputBuffer, MAX_BUFFER_SIZE, flags, &Console::CallbackStub, this)) {
+		ImGui::PushItemWidth(-53);
+		if(ImGui::InputTextWithHint("##CMDInput", ">", this->InputBuffer, MAX_BUFFER_SIZE, flags, &Console::CallbackStub, this)) {
 			input_focus = true;
 			if(this->InputBuffer[0] != '\0' && this->InputBuffer[0] != ' ')
 				this->Dispatch(std::string(this->InputBuffer));
@@ -248,6 +248,13 @@ void Console::Draw() {
 				ImGui::PopTextWrapPos();
 				ImGui::EndTooltip();
 			}
+		}
+
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 50);
+		if(ImGui::Button("Submit") && !input_focus && this->InputBuffer[0] != '\0' && this->InputBuffer[0] != ' '){
+				this->Dispatch(std::string(this->InputBuffer));
+			memset(this->InputBuffer, 0, MAX_BUFFER_SIZE);
 		}
 
 		ImGui::SetItemDefaultFocus();
