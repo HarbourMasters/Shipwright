@@ -584,8 +584,11 @@ static void ImGui_ImplSDL2_UpdateMouseCursor()
 static void ImGui_ImplSDL2_UpdateGamepads()
 {
     ImGuiIO& io = ImGui::GetIO();
-    if ((io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
-        return;
+
+    // Remove this check because we always want to be able to trigger the menu via controller
+    // The ImGuiConfigFlags_NavEnableGamepad is still separately used by ImGui for enabling imgui navigation 
+    // if ((io.ConfigFlags & ImGuiConfigFlags_NavEnableGamepad) == 0)
+    //     return;
 
     // Get gamepad
     io.BackendFlags &= ~ImGuiBackendFlags_HasGamepad;
