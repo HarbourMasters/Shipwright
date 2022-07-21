@@ -7847,15 +7847,35 @@ s32 func_8084285C(Player* this, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s32 func_808428D8(Player* this, GlobalContext* globalCtx) {
-    if (!Player_IsChildWithHylianShield(this) && Player_GetSwordHeld(this) && D_80853614) {
-        func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
-        this->unk_84F = 1;
-        this->swordAnimation = 0xC;
-        this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+    if (Player_IsChildWithHylianShield(this) || !Player_GetSwordHeld(this) || !D_80853614) {
+        return 0;
+    }
+
+    func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
+    this->unk_84F = 1;
+    this->swordAnimation = 0xC;
+    this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+
+    if (!CVar_GetS32("gCrouchStabHammerFix", 0)) {
         return 1;
     }
 
-    return 0;
+    u32 swordId;
+    if (Player_HoldsBrokenKnife(this)) {
+        swordId = 1;
+    } else {
+        swordId = Player_GetSwordHeld(this) - 1;
+    }
+
+    if (swordId != 4 && !CVar_GetS32("gCrouchStabFix", 0)) { // 4 = Megaton Hammer
+        return 1;
+    }
+
+    u32 flags = D_80854488[swordId][0];
+    func_80837918(this, 0, flags);
+    func_80837918(this, 1, flags);
+
+    return 1;
 }
 
 s32 func_80842964(Player* this, GlobalContext* globalCtx) {
