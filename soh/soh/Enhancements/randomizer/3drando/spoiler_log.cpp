@@ -374,7 +374,7 @@ static void WriteSettings(const bool printAll = false) {
   }
 
   // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
-  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda ? "On" : "Off";
+  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
 
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
