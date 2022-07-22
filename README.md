@@ -83,7 +83,7 @@ Refer to the [building instructions](BUILDING.md) to compile SoH.
 - Confirm that `zapd.exe` exists in the `/assets/extractor` folder
 
 ## Nightly Builds
-Nightly builds of Ship of Harkinian are available [here](https://builds.shipofharkinian.com/job/SoH_Multibranch/job/develop)
+Nightly builds of Ship of Harkinian are available [here](https://builds.shipofharkinian.com/job/SoH_Multibranch/job/develop-zhora)
 
 
 ## The Harbour Masters Are...
