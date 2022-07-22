@@ -198,7 +198,7 @@ void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck c
 
     if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
         GiveItemWithoutActor(globalCtx, getItemId);
         Flags_SetTreasure(globalCtx, 0x1F);
     }
@@ -212,7 +212,7 @@ void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck che
          gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
         CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
         !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
         GiveItemWithoutActor(globalCtx, getItemId);
         Flags_SetEventChkInf(0xAA);
     }
@@ -224,7 +224,7 @@ void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck chec
     if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
         if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
             !Player_InBlockingCsMode(globalCtx, player)) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
             GiveItemWithoutActor(globalCtx, getItemId);
             Flags_SetEventChkInf(0xAC);
         }
@@ -238,7 +238,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
         globalCtx->sceneLoadFlag == 0 && player->getItemId == GI_NONE) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
         Flags_SetTreasure(globalCtx, 0x1E);
     }
@@ -247,7 +247,7 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
 void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
     Player* player = GET_PLAYER(globalCtx);
     if (gSaveContext.entranceIndex == 0x05E0) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
 
         if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemId && getItemId != GI_ICE_TRAP)) &&
             player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
@@ -271,7 +271,7 @@ void Gameplay_Init(GameState* thisx) {
     u8 tempSetupIndex;
     s32 pad[2];
 
-    if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
         if (gSaveContext.entranceIndex == 0x7A) {
             gSaveContext.entranceIndex = 0x400;
         } else if (gSaveContext.entranceIndex == 0x296) {

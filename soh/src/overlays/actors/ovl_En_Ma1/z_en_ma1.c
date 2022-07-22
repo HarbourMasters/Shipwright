@@ -290,7 +290,8 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
+        (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {
@@ -338,7 +339,7 @@ void func_80AA0EA0(EnMa1* this, GlobalContext* globalCtx) {
         this->actionFunc = func_80AA0EFC;
     } else {
         if (gSaveContext.n64ddFlag) {
-            GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
+            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(RC_HC_MALON_EGG, GI_WEIRD_EGG);
             func_8002F434(&this->actor, globalCtx, getItemId, 120.0f, 10.0f);
         } else {
             func_8002F434(&this->actor, globalCtx, GI_WEIRD_EGG, 120.0f, 10.0f);
@@ -356,7 +357,7 @@ void func_80AA0EFC(EnMa1* this, GlobalContext* globalCtx) {
 }
 
 void GivePlayerRandoRewardMalon(EnMa1* malon, GlobalContext* globalCtx, RandomizerCheck check) {
-    GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, GI_EPONAS_SONG);
+    GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_EPONAS_SONG);
     // Prevents flag from getting set if we weren't able to get the item (i.e. Player is holding shield
     // when closing the textbox).
     if (malon->actor.parent != NULL && malon->actor.parent->id == GET_PLAYER(globalCtx)->actor.id &&

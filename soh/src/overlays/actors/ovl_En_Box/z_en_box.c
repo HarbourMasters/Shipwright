@@ -421,7 +421,7 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         Flags_SetTreasure(globalCtx, this->dyna.actor.params & 0x1F);
 
         // treasure chest game rando
-        if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+        if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
             if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
                 if((this->dyna.actor.params & 0xF) < 2) {
                     Flags_SetCollectible(globalCtx, 0x1B);
@@ -445,10 +445,10 @@ void EnBox_WaitOpen(EnBox* this, GlobalContext* globalCtx) {
         func_8002DBD0(&this->dyna.actor, &sp4C, &player->actor.world.pos);
         if (sp4C.z > -50.0f && sp4C.z < 0.0f && fabsf(sp4C.y) < 10.0f && fabsf(sp4C.x) < 20.0f &&
             Player_IsFacingActor(&this->dyna.actor, 0x3000, globalCtx)) {
-            int32_t item = GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
+            int32_t item = Randomizer_GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F, this->dyna.actor.id, this->dyna.actor.params, globalCtx->sceneNum);
             
             // RANDOTODO treasure chest game rando
-            if (GetRandoSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
+            if (Randomizer_GetSettingValue(RSK_SHUFFLE_CHEST_MINIGAME)) {
                 if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 16 && (this->dyna.actor.params & 0x60) != 0x20) {
                     if((this->dyna.actor.params & 0xF) < 2) {
                         if(Flags_GetCollectible(globalCtx, 0x1B)) {
@@ -590,7 +590,7 @@ void EnBox_Update(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if (((!gSaveContext.n64ddFlag && ((this->dyna.actor.params >> 5 & 0x7F) == 0x7C)) ||
-         (gSaveContext.n64ddFlag && GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F,
+         (gSaveContext.n64ddFlag && Randomizer_GetRandomizedItemId(this->dyna.actor.params >> 5 & 0x7F,
                                                         this->dyna.actor.id, this->dyna.actor.params,
                                                         globalCtx->sceneNum) == GI_ICE_TRAP)) && 
         this->actionFunc == EnBox_Open && this->skelanime.curFrame > 45 &&

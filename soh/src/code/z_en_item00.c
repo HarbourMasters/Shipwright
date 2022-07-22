@@ -509,7 +509,7 @@ void EnItem00_Init(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     if ((gSaveContext.n64ddFlag || getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
-        getItemId = GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
 
@@ -548,7 +548,7 @@ void func_8001DFC8(EnItem00* this, GlobalContext* globalCtx) {
     }
 
     if (this->actor.params == ITEM00_HEART_PIECE) {
-        if ((CVar_GetS32("gNewDrops", 0) !=0) && !gSaveContext.n64ddFlag) {
+        if (CVar_GetS32("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 20.0f + 50.0f;
         } else {
             this->actor.shape.yOffset = Math_SinS(this->actor.shape.rot.y) * 150.0f + 850.0f;
@@ -881,7 +881,7 @@ void EnItem00_Update(Actor* thisx, GlobalContext* globalCtx) {
 
     if ((getItemId != GI_NONE) && !Actor_HasParent(&this->actor, globalCtx)) {
         if (gSaveContext.n64ddFlag) {
-            getItemId = GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+            getItemId = Randomizer_GetRandomizedItemId(getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         }
         func_8002F554(&this->actor, globalCtx, getItemId);
     }
@@ -1035,15 +1035,9 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     break;
                 } else {
-                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
-                    this->actor.shape.yOffset = 430.0f;
-                    this->actor.shape.shadowScale = 0.03f;
-                    Actor_SetScale(&this->actor, 0.02f);
-                    this->scale = 0.02f;
                     if (this->unk_15A < 0) {
                         if (this->unk_15A == -1) {
                             s8 bankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GI_HEART);
-                            
                             if (Object_IsLoaded(&globalCtx->objectCtx, bankIndex)) {
                                 this->actor.objBankIndex = bankIndex;
                                 Actor_SetObjectDependency(globalCtx, &this->actor);
@@ -1056,7 +1050,16 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         }
                         break;
                     }
+                    //Big hearts workaround
+                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
+                    this->actor.shape.yOffset = 430.0f;
+                    this->actor.shape.shadowScale = 6.0f;
+                    Actor_SetScale(&this->actor, 0.02f);
+                    this->scale = 0.02f;
+                    EnItem00_DrawCollectible(this, globalCtx);
+                    break;
                 }
+                
             case ITEM00_BOMBS_A:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
@@ -1297,14 +1300,14 @@ void EnItem00_DrawRupee(EnItem00* this, GlobalContext* globalCtx) {
  * Draw Function used for most collectible types of En_Item00 (ammo, bombs, sticks, nuts, magic...).
  */
 void EnItem00_DrawCollectible(EnItem00* this, GlobalContext* globalCtx) {
-    if ((gSaveContext.n64ddFlag && this->getItemId != GI_NONE) || this->actor.params == ITEM00_SMALL_KEY) {
+    if (gSaveContext.n64ddFlag && (this->getItemId != GI_NONE || this->actor.params == ITEM00_SMALL_KEY)) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        s32 randoGetItemId = Randomizer_GetRandomizedItemId(this->getItemId, this->actor.id, this->ogParams, globalCtx->sceneNum);
         if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
-        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
     } else {
         s32 texIndex = this->actor.params - 3;
 
@@ -1360,11 +1363,11 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         f32 mtxScale = 16.0f;
         Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
-        s32 randoGetItemId = GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
+        s32 randoGetItemId = Randomizer_GetRandomizedItemId(GI_HEART_PIECE, this->actor.id, this->ogParams, globalCtx->sceneNum);
         if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
-        GetItem_Draw(globalCtx, GetItemModelFromId(randoGetItemId));
+        GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
     } else {
         s32 pad;
 
