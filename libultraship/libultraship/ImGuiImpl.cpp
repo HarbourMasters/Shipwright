@@ -975,7 +975,8 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                         Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
-
+                        EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
+                        Tooltip("Allow Link to put items away without having to wait around");
                         ImGui::EndMenu();
                     }
 
@@ -1249,6 +1250,15 @@ namespace SohImGui {
 
                     if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
                     {
+                        if (val > 250)
+                        {
+                            val = 250;
+                        }
+                        else if (val < 20)
+                        {
+                            val = 20;
+                        }
+                        
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
