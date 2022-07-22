@@ -1,4 +1,5 @@
 #include "SaveManager.h"
+#include "OTRGlobals.h"
 
 #include "z64.h"
 #include "functions.h"
@@ -14,11 +15,9 @@
 
 extern "C" SaveContext gSaveContext;
 
-static const std::filesystem::path sSavePath("Save"); // TODO maybe let this be user-configurable?
-static const std::filesystem::path sGlobalPath = sSavePath / "global.sav";
-
 std::filesystem::path SaveManager::GetFileName(int fileNum) {
-    return sSavePath / (std::string("file") + std::to_string(fileNum + 1) + ".sav");
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    return sSavePath / ("file" + std::to_string(fileNum + 1) + ".sav");
 }
 
 SaveManager::SaveManager() {
@@ -128,15 +127,20 @@ void SaveManager::SaveRandomizer() {
 }
 
 void SaveManager::Init() {
+    const std::filesystem::path sSavePath(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Save"));
+    const std::filesystem::path sGlobalPath = sSavePath / std::string("global.sav");
+    auto sOldSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
+    auto sOldBackupSavePath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.bak");
+
     // If the save directory does not exist, create it
     if (!std::filesystem::exists(sSavePath)) {
         std::filesystem::create_directory(sSavePath);
     }
 
     // If there is a lingering unversioned save, convert it
-    if (std::filesystem::exists("oot_save.sav")) {
+    if (std::filesystem::exists(sOldSavePath)) {
         ConvertFromUnversioned();
-        std::filesystem::rename("oot_save.sav", "oot_save.bak");
+        std::filesystem::rename(sOldSavePath, sOldBackupSavePath);
     }
 
     // If the global save file exist, load it. Otherwise, create it.
@@ -511,6 +515,19 @@ void SaveManager::LoadFile(int fileNum) {
             break;
     }
     InitMeta(fileNum);
+}
+
+bool SaveManager::SaveFile_Exist(int fileNum) {
+    
+    try {
+        std::filesystem::exists(GetFileName(fileNum));
+        printf("File[%d] - exist \n",fileNum);
+        return true;
+    }
+    catch(std::filesystem::filesystem_error const& ex) {
+        printf("File[%d] - do not exist \n",fileNum);
+        return false;
+    }
 }
 
 void SaveManager::AddInitFunction(InitFunc func) {
@@ -1327,4 +1344,8 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+}
+
+extern "C" bool Save_Exist(int fileNum) {
+    return SaveManager::Instance->SaveFile_Exist(fileNum);
 }

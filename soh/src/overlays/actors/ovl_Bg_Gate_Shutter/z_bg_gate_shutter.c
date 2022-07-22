@@ -46,7 +46,7 @@ void BgGateShutter_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->somePos.z = thisx->world.pos.z;
     if (((gSaveContext.infTable[7] & 0x40) ||
          (!gSaveContext.n64ddFlag && (gSaveContext.eventChkInf[4] & 0x20)) ||
-         (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_KAK_GATE))) &&
+         (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_KAK_GATE))) &&
         (globalCtx->sceneNum == SCENE_SPOT01)) {
         thisx->world.pos.x = -89.0f;
         thisx->world.pos.z = -1375.0f;

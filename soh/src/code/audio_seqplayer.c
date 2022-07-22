@@ -1176,9 +1176,13 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
-                            int8_t idx = (sDat.numFonts - result - 1);
 
-                            command = sDat.fonts[abs(idx)];
+                            // The game apparantely would sometimes do negative array lookups, the result of which would get rejected by AudioHeap_SearchCaches, never
+                            // changing the actual fontid.
+                            if (result > sDat.numFonts)
+                                break;
+
+                            command = sDat.fonts[(sDat.numFonts - result - 1)];
                         }
 
                         if (AudioHeap_SearchCaches(FONT_TABLE, CACHE_EITHER, command)) 

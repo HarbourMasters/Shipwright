@@ -620,7 +620,7 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS, GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x3C, 0x80, CHEST_ANIM_LONG), // Ice Traps
+    GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x3C, 0x80, CHEST_ANIM_SHORT), // Ice Traps
     GET_ITEM_NONE,
 
     GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
@@ -3603,7 +3603,7 @@ s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u
     s32 modifiedDamage = damage;
     if (modified)
     {
-       modifiedDamage *= CVar_GetS32("gDamageMul", 1);
+       modifiedDamage *= (1 << CVar_GetS32("gDamageMul", 0));
     }
 
     return Health_ChangeBy(globalCtx, modifiedDamage);
@@ -3836,7 +3836,7 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
 
     if (this->unk_A86 != 0) {
         if (!Player_InBlockingCsMode(globalCtx, this)) {
-            Player_InflictDamageModified(globalCtx, -16 * CVar_GetS32("gVoidDamageMul", 1), false);
+            Player_InflictDamageModified(globalCtx, -16 * (1 << CVar_GetS32("gVoidDamageMul", 0)), false);
             this->unk_A86 = 0;
         }
     }
@@ -5191,7 +5191,7 @@ s32 func_8083B644(Player* this, GlobalContext* globalCtx) {
                             this->stateFlags2 |= PLAYER_STATE2_21;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVar_GetS32("gNaviOnL", 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5247,7 +5247,8 @@ s32 func_8083B998(Player* this, GlobalContext* globalCtx) {
         (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_0 | ACTOR_FLAG_18) || (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_21;
     }
-    else if ((this->naviTextId == 0) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    else if ((this->naviTextId == 0 || CVar_GetS32("gNaviOnL", 0)) &&
+             !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
         (YREG(15) != 0x10) && (YREG(15) != 0x20) && !func_8083B8F4(this, globalCtx)) {
         func_80078884(NA_SE_SY_ERROR);
     }
@@ -7846,15 +7847,35 @@ s32 func_8084285C(Player* this, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s32 func_808428D8(Player* this, GlobalContext* globalCtx) {
-    if (!Player_IsChildWithHylianShield(this) && Player_GetSwordHeld(this) && D_80853614) {
-        func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
-        this->unk_84F = 1;
-        this->swordAnimation = 0xC;
-        this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+    if (Player_IsChildWithHylianShield(this) || !Player_GetSwordHeld(this) || !D_80853614) {
+        return 0;
+    }
+
+    func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
+    this->unk_84F = 1;
+    this->swordAnimation = 0xC;
+    this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+
+    if (!CVar_GetS32("gCrouchStabHammerFix", 0)) {
         return 1;
     }
 
-    return 0;
+    u32 swordId;
+    if (Player_HoldsBrokenKnife(this)) {
+        swordId = 1;
+    } else {
+        swordId = Player_GetSwordHeld(this) - 1;
+    }
+
+    if (swordId != 4 && !CVar_GetS32("gCrouchStabFix", 0)) { // 4 = Megaton Hammer
+        return 1;
+    }
+
+    u32 flags = D_80854488[swordId][0];
+    func_80837918(this, 0, flags);
+    func_80837918(this, 1, flags);
+
+    return 1;
 }
 
 s32 func_80842964(Player* this, GlobalContext* globalCtx) {
@@ -8407,7 +8428,7 @@ s32 func_80843E64(GlobalContext* globalCtx, Player* this) {
 
         impactInfo = &D_80854600[impactIndex];
 
-        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * CVar_GetS32("gFallDamageMul", 1), false)) {
+        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * (1 << CVar_GetS32("gFallDamageMul", 0)), false)) {
             return -1;
         }
 
@@ -9884,8 +9905,15 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
             this->unk_837 = 20;
         }
         else if (this->unk_837 != 0) {
-            doAction = DO_ACTION_NONE;
-            this->unk_837--;
+            if (CVar_GetS32("gInstantPutaway", 0) != 0)
+            {
+                this->unk_837 = 0;
+            }
+            else
+            {
+                doAction = DO_ACTION_NONE;
+                this->unk_837--;
+            }
         }
 
         Interface_SetDoAction(globalCtx, doAction);
