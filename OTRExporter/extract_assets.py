@@ -5,6 +5,7 @@ import shutil
 from rom_info import Z64Rom
 import rom_chooser
 import struct
+import subprocess
 
 def BuildOTR(xmlPath, rom):
     shutil.copytree("assets", "Extract/assets")
@@ -13,11 +14,13 @@ def BuildOTR(xmlPath, rom):
     with open("Extract/version", "wb") as f:
         f.write(struct.pack('<L', checksum))
 
-    execStr = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
-    execStr += " ed -i %s -b %s -fl CFG/filelists -o placeholder -osf placeholder -gsf 1 -rconf CFG/Config.xml -se OTR" % (xmlPath, rom)
+    zapd_exe = "x64\\Release\\ZAPD.exe" if sys.platform == "win32" else "../ZAPDTR/ZAPD.out"
+    exec_cmd = [zapd_exe, "ed", "-i", xmlPath, "-b", rom, "-fl", "CFG/filelists",
+            "-o", "placeholder", "-osf", "placeholder", "-gsf", "1",
+            "-rconf", "CFG/Config.xml", "-se", "OTR"]
 
-    print(execStr)
-    exitValue = os.system(execStr)
+    print(exec_cmd)
+    exitValue = subprocess.call(exec_cmd)
     if exitValue != 0:
         print("\n")
         print("Error when building the OTR file...", file=os.sys.stderr)
