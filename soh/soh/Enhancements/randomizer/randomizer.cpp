@@ -3439,11 +3439,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-
-    // if we skip child zelda, we start with zelda's letter, and malon starts
-    // at the ranch, so we should *not* shuffle the weird egg
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
-                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
