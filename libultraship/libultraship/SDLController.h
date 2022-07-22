@@ -12,6 +12,7 @@ namespace Ship {
 			void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) override;
 			bool Connected() const override;
 			bool CanGyro() const override;
+			bool CanAccel() const override;
 			bool CanRumble() const override;
 			bool Open();
 			void ClearRawPress() override;
@@ -35,6 +36,7 @@ namespace Ship {
 			SDL_GameController* Cont;
 			int32_t physicalSlot;
 			bool supportsGyro;
+			bool supportsAccel;
 			void NormalizeStickAxis(SDL_GameControllerAxis axisX, SDL_GameControllerAxis axisY, int16_t axisThreshold, int32_t virtualSlot);
 			bool Close();
 	};

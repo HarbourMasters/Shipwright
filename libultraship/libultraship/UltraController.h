@@ -126,9 +126,11 @@ typedef struct {
     /* 0x04 */ uint8_t err_no;
     /* 0x05 */ float gyro_x;
     /* 0x09 */ float gyro_y;
-    /* 0x1C */ int8_t right_stick_x;
-    /* 0x20 */ int8_t right_stick_y;
-} OSContPad; // size = 0x24
+    /* 0x1C */ float gyro_z;
+    /* 0x20 */ int8_t right_stick_x;
+    /* 0x21 */ int8_t right_stick_y;
+    /* 0x22 */ float accel_pitch;
+} OSContPad; // size = 0x26
 
 typedef struct {
     /* 0x00 */ uint8_t rumble;

@@ -35,6 +35,10 @@ namespace Ship {
 		return false;
 	}
 
+	bool DummyController::CanAccel() const {
+		return false;
+	}
+
 	void DummyController::CreateDefaultBinding(int32_t slot) {
 		
 	}

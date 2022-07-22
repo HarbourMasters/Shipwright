@@ -16,7 +16,14 @@ namespace Ship {
 	enum GyroData {
 		DRIFT_X,
 		DRIFT_Y,
-		GYRO_SENSITIVITY
+		GYRO_SENSITIVITY,
+		DRIFT_Z // After sensitivity for backwards compatibility
+	};
+
+	enum AccelData {
+		ACCEL_X,
+		ACCEL_Y,
+		ACCEL_Z
 	};
 
 	enum DeviceProfileVersion {
@@ -34,6 +41,7 @@ namespace Ship {
 		std::unordered_map<int32_t, float> AxisDeadzones;
 		std::unordered_map<int32_t, float> AxisMinimumPress;
 		std::unordered_map<int32_t, float> GyroData;
+		std::unordered_map<int32_t, float> AccelData;
 		std::map<int32_t, int32_t> Mappings;
 	};
 
@@ -46,6 +54,7 @@ namespace Ship {
 		virtual bool Connected() const = 0;
 		virtual bool CanRumble() const = 0;
 		virtual bool CanGyro() const = 0;
+		virtual bool CanAccel() const = 0;
 		virtual void CreateDefaultBinding(int32_t virtualSlot) = 0;
 		virtual void ClearRawPress() = 0;
 		virtual int32_t ReadRawPress() = 0;
@@ -62,6 +71,8 @@ namespace Ship {
 		int32_t& getPressedButtons(int32_t virtualSlot);
 		float& getGyroX(int32_t virtualSlot);
 		float& getGyroY(int32_t virtualSlot);
+		float& getGyroZ(int32_t virtualSlot);
+		float& getAccelPitch(int32_t virtualSlot);
 		bool IsRumbling();
 		std::string GetGuid();
 
@@ -81,6 +92,8 @@ namespace Ship {
 				int8_t rightStickY = 0;
 				float gyroX = 0.0f;
 				float gyroY = 0.0f;
+				float gyroZ = 0.0f;
+				float accelPitch = 0.0f;
 			};
 
 			std::unordered_map<int32_t, std::shared_ptr<DeviceProfile>> profiles;

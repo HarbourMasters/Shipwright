@@ -14,6 +14,7 @@ namespace Ship {
             void WriteToSource(int32_t virtualSlot, ControllerCallback* controller) override;
             bool Connected() const override { return connected; };
             bool CanGyro() const override { return true; }
+            bool CanAccel() const override { return true; }
             bool CanRumble() const override { return true; };
 
             void ClearRawPress() override;

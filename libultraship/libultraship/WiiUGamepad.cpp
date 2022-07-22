@@ -1,6 +1,7 @@
 #ifdef __WIIU__
 #include "WiiUGamepad.h"
 #include "ImGuiImpl.h"
+#include <numbers>
 
 #include "WiiUImpl.h"
 
@@ -33,6 +34,8 @@ namespace Ship {
             getRightStickY(i) = 0;
             getGyroX(i) = 0;
             getGyroY(i) = 0;
+            getGyroZ(i) = 0;
+            getAccelPitch(i) = 0;
         }
     }
 
@@ -53,6 +56,8 @@ namespace Ship {
         getRightStickY(virtualSlot) = 0;
         getGyroX(virtualSlot) = 0;
         getGyroY(virtualSlot) = 0;
+        getGyroZ(virtualSlot) = 0;
+        getAccelPitch(virtualSlot) = 0;
 
         if (error != VPAD_READ_SUCCESS) {
             return; 
@@ -101,10 +106,12 @@ namespace Ship {
 
         if (profile->UseGyro) {
             float gyroX = status->gyro.x * -8.0f;
-            float gyroY = status->gyro.z * 8.0f;
+            float gyroY = status->gyro.y * 8.0f;
+            float gyroZ = status->gyro.z * 8.0f;
 
             float gyro_drift_x = profile->GyroData[DRIFT_X] / 100.0f;
             float gyro_drift_y = profile->GyroData[DRIFT_Y] / 100.0f;
+            float gyro_drift_z = profile->GyroData[DRIFT_Z] / 100.0f;
             const float gyro_sensitivity = profile->GyroData[GYRO_SENSITIVITY];
 
             if (gyro_drift_x == 0) {
@@ -115,14 +122,63 @@ namespace Ship {
                 gyro_drift_y = gyroY;
             }
 
+            if (gyro_drift_z == 0) {
+                gyro_drift_z = gyroZ;
+            }
+
             profile->GyroData[DRIFT_X] = gyro_drift_x * 100.0f;
             profile->GyroData[DRIFT_Y] = gyro_drift_y * 100.0f;
+            profile->GyroData[DRIFT_Z] = gyro_drift_z * 100.0f;
 
             getGyroX(virtualSlot) = gyroX - gyro_drift_x;
             getGyroY(virtualSlot) = gyroY - gyro_drift_y;
+            getGyroZ(virtualSlot) = gyroZ - gyro_drift_z;
 
             getGyroX(virtualSlot) *= gyro_sensitivity;
             getGyroY(virtualSlot) *= gyro_sensitivity;
+            getGyroZ(virtualSlot) *= gyro_sensitivity;
+
+			float accelX = status->accelorometer.acc.x;
+			float accelY = status->accelorometer.acc.y;
+			float accelZ = status->accelorometer.acc.z;
+
+            float gravity_accel_x = profile->AccelData[ACCEL_X];
+            float gravity_accel_y = profile->AccelData[ACCEL_Y];
+            float gravity_accel_z = profile->AccelData[ACCEL_Z];
+
+            if (gravity_accel_x == 0 && gravity_accel_y == 0 && gravity_accel_z == 0) {
+                gravity_accel_x = accelX;
+                gravity_accel_y = accelY;
+                gravity_accel_z = accelZ;
+
+                profile->AccelData[ACCEL_X] = gravity_accel_x;
+                profile->AccelData[ACCEL_Y] = gravity_accel_y;
+                profile->AccelData[ACCEL_Z] = gravity_accel_z;
+            }
+
+            float gravity_accel = std::hypot(gravity_accel_y, gravity_accel_z);
+            float curr_accel = std::hypot(accelY, accelZ);
+
+            // While an acceleration equal to the measured acceleration
+            // due to gravity isn't necessarily countering gravity, it
+            // seems safe to assume that it is for normal play.
+
+            // So if (to this standard) the controller isn't accelerating,
+            // measure its pitch by comparing it with the angle of gravity
+            // on a flat surface. Otherwise, use the gyroscope to estimate
+            // its current angle until it's still again.
+
+            // Even if the estimate drifts away from the actual value for a
+            // bit, it'll be measured for real soon enough. The pitch is
+            // only used to determine which axis to use for aim anyway.
+            if (std::abs(gravity_accel - curr_accel) < 0.1) {
+                float gravity_direction = std::atan2(gravity_accel_y, gravity_accel_z);
+                float curr_direction = std::atan2(accelY, accelZ);
+                getAccelPitch(virtualSlot) = curr_direction - gravity_direction;
+            } else {
+                // Convert gyro data from degrees to radians
+                getAccelPitch(virtualSlot) += getGyroX(virtualSlot) * std::numbers::pi / 180;
+            }
         }
     }
 

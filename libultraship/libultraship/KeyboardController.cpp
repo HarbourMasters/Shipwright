@@ -114,6 +114,10 @@ namespace Ship {
 		return false;
 	}
 
+	bool KeyboardController::CanAccel() const {
+		return false;
+	}
+
 	void KeyboardController::ClearRawPress() {
 		lastKey = -1;
 	}

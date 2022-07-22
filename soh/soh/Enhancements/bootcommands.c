@@ -30,6 +30,9 @@ void BootCommands_Init()
 #if defined(__SWITCH__) || defined(__WIIU__)
     CVar_RegisterS32("gControlNav", 1); // always enable controller nav on switch/wii u
 #endif
+#ifdef __WIIU__
+    CVar_RegisterS32("gGyroAxis", 1); // default to Z-axis instead of Y because of how the gamepad is held
+#endif
 }
 
 //void BootCommands_ParseBootArgs(char* str)

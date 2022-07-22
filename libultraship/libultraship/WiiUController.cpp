@@ -43,6 +43,8 @@ namespace Ship {
             getRightStickY(i) = 0;
             getGyroX(i) = 0;
             getGyroY(i) = 0;
+            getGyroZ(i) = 0;
+            getAccelPitch(i) = 0;
         }
     }
 
@@ -69,6 +71,8 @@ namespace Ship {
         getRightStickY(virtualSlot) = 0;
         getGyroX(virtualSlot) = 0;
         getGyroY(virtualSlot) = 0;
+        getGyroZ(virtualSlot) = 0;
+        getAccelPitch(virtualSlot) = 0;
 
         if (error != KPAD_ERROR_OK) {
             return;

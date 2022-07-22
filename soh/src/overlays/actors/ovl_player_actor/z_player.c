@@ -11228,6 +11228,24 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
     s16 temp2;
     s16 temp3;
 
+    // Determine gyro axis (or mix) for vertical aim
+    float yGyroAim, yAxisAmt, zAxisAmt, effectiveY, effectiveZ;
+    switch (CVar_GetS32("gGyroAxis", 0)) {
+        case 0:
+            yGyroAim = sControlInput->cur.gyro_y;
+            break;
+        case 1:
+            yGyroAim = sControlInput->cur.gyro_z;
+            break;
+        case 2:
+            yAxisAmt = cosf(sControlInput->cur.accel_pitch);
+            zAxisAmt = sinf(sControlInput->cur.accel_pitch);
+            effectiveY = sControlInput->cur.gyro_y * yAxisAmt;
+            effectiveZ = sControlInput->cur.gyro_z * zAxisAmt;
+            yGyroAim = effectiveY - effectiveZ;
+            break;
+    }
+
     if (!func_8002DD78(this) && !func_808334B4(this) && (arg2 == 0)) {
         if (!CVar_GetS32("gDisableAutoCenterView", 0)) {
             temp2 = sControlInput->rel.stick_y * 240.0f * (CVar_GetS32("gInvertYAxis", 1) ? 1 : -1); // Sensitivity not applied here because higher than default sensitivies will allow the camera to escape the autocentering, and glitch out massively
@@ -11263,8 +11281,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
             this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
-            if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-                this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+            if (fabsf(yGyroAim) > 0.01f) {
+                this->actor.focus.rot.y += (yGyroAim) * 750.0f;
             }
 
             if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {
@@ -11299,8 +11317,8 @@ s16 func_8084ABD8(PlayState* play, Player* this, s32 arg2, s16 arg3) {
 
         this->actor.focus.rot.y = CLAMP(temp2, -temp1, temp1) + this->actor.shape.rot.y;
 
-        if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
-            this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+        if (fabsf(yGyroAim) > 0.01f) {
+            this->actor.focus.rot.y += (yGyroAim) * 750.0f;
         }
 
         if (fabsf(sControlInput->cur.right_stick_x) > 15.0f && CVar_GetS32("gRightStickAiming", 0) != 0) {

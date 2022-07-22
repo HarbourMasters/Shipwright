@@ -16,6 +16,7 @@ namespace Ship {
 		bool Connected() const override;
 		bool CanRumble() const override;
 		bool CanGyro() const override;
+		bool CanAccel()  const override;
 		void ClearRawPress() override;
 		int32_t ReadRawPress() override;
 		bool HasPadConf() const;

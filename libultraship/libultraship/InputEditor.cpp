@@ -124,9 +124,13 @@ namespace Ship {
 			DrawButton("START", BTN_START, CurrentPort, &BtnReading);
 			SEPARATION();
 	#ifdef __SWITCH__
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f :
+								Backend->CanGyro() ? 90.0f :
+								56.0f);
 	#else
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f :
+								Backend->CanGyro() ? 82.0f :
+								48.0f);
 	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
@@ -136,9 +140,13 @@ namespace Ship {
 			DrawButton("Right", BTN_DRIGHT, CurrentPort, &BtnReading);
 			SEPARATION();
 	#ifdef __SWITCH__
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f :
+								Backend->CanGyro() ? 156.0f :
+								122.0f);
 	#else
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f :
+								Backend->CanGyro() ? 128.0f :
+								94.0f);
 	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
@@ -177,9 +185,13 @@ namespace Ship {
 				ImGui::Dummy(ImVec2(0, 6));
 			}
 		#ifdef __SWITCH__
-			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f :
+									Backend->CanGyro() ? 86.0f :
+									52.0f);
 		#else
-			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f :
+									Backend->CanGyro() ? 58.0f :
+									24.0f);
 		#endif
 		ImGui::SameLine();
 
@@ -218,9 +230,9 @@ namespace Ship {
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
-			SohImGui::EndGroupPanel(43.0f);
+			SohImGui::EndGroupPanel(Backend->CanGyro() ? 77.0f : 43.0f);
 		#else
-			SohImGui::EndGroupPanel(14.0f);
+			SohImGui::EndGroupPanel(Backend->CanGyro() ? 48.0f : 14.0f);
 		#endif
 		}
 
@@ -247,6 +259,10 @@ namespace Ship {
 				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
 					profile->GyroData[DRIFT_X] = 0.0f;
 					profile->GyroData[DRIFT_Y] = 0.0f;
+					profile->GyroData[DRIFT_Z] = 0.0f;
+					profile->AccelData[ACCEL_X] = 0.0f;
+					profile->AccelData[ACCEL_Y] = 0.0f;
+					profile->AccelData[ACCEL_Z] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
 				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->getGyroY(CurrentPort), 10.0f * Backend->getGyroX(CurrentPort)));
@@ -254,9 +270,9 @@ namespace Ship {
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
 			#ifdef __WIIU__
-				ImGui::BeginChild("##GyInput", ImVec2(90 * 2, 85 * 2), false);
+				ImGui::BeginChild("##GyInput", ImVec2(90 * 2, 120 * 2), false);
 			#else
-				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+				ImGui::BeginChild("##GyInput", ImVec2(90, 120), false);
 			#endif
 				ImGui::Text("Drift X");
 			#ifdef __WIIU__
@@ -273,6 +289,14 @@ namespace Ship {
 				ImGui::PushItemWidth(80);
 			#endif
 				ImGui::InputFloat("##GDriftY", &profile->GyroData[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::Text("Drift Z");
+			#ifdef __WIIU__
+				ImGui::PushItemWidth(80 * 2);
+			#else
+				ImGui::PushItemWidth(80);
+			#endif
+				ImGui::InputFloat("##GDriftZ", &profile->GyroData[DRIFT_Z], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
@@ -319,7 +343,9 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f :
+								Backend->CanGyro() ? 37.0f :
+								2.0f);
 	}
 
 	void InputEditor::DrawHud() {
@@ -331,13 +357,13 @@ namespace Ship {
 
 #ifdef __SWITCH__
 		ImVec2 minSize = ImVec2(641, 250);
-		ImVec2 maxSize = ImVec2(2200, 505);
+		ImVec2 maxSize = ImVec2(2200, 540);
 #elif defined(__WIIU__)
 		ImVec2 minSize = ImVec2(641 * 2, 250 * 2);
-		ImVec2 maxSize = ImVec2(1200 * 2, 290 * 2);
+		ImVec2 maxSize = ImVec2(1200 * 2, 325 * 2);
 #else
 		ImVec2 minSize = ImVec2(641, 250);
-		ImVec2 maxSize = ImVec2(1200, 290);
+		ImVec2 maxSize = ImVec2(1200, 325);
 #endif
 
 		ImGui::SetNextWindowSizeConstraints(minSize, maxSize);

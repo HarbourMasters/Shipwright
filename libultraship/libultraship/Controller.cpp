@@ -76,6 +76,10 @@ namespace Ship {
 		// Gyro
 		padToBuffer.gyro_x = getGyroX(virtualSlot);
 		padToBuffer.gyro_y = getGyroY(virtualSlot);
+		padToBuffer.gyro_z = getGyroZ(virtualSlot);
+
+		// Accel
+		padToBuffer.accel_pitch = getAccelPitch(virtualSlot);
 
 		padBuffer.push_front(padToBuffer);
 		if (pad != nullptr) {
@@ -85,8 +89,10 @@ namespace Ship {
 			if (pad->stick_y == 0) pad->stick_y = padFromBuffer.stick_y;
 			if (pad->gyro_x == 0) pad->gyro_x = padFromBuffer.gyro_x;
 			if (pad->gyro_y == 0) pad->gyro_y = padFromBuffer.gyro_y;
+			if (pad->gyro_z == 0) pad->gyro_z = padFromBuffer.gyro_z;
 			if (pad->right_stick_x == 0) pad->right_stick_x = padFromBuffer.right_stick_x;
 			if (pad->right_stick_y == 0) pad->right_stick_y = padFromBuffer.right_stick_y;
+			if (pad->accel_pitch == 0) pad->accel_pitch = padFromBuffer.accel_pitch;
 		}
 
 		while (padBuffer.size() > 6) {
@@ -126,6 +132,14 @@ namespace Ship {
 
 	float& Controller::getGyroY(int32_t virtualSlot) {
 		return ButtonData[virtualSlot]->gyroY;
+	}
+
+	float& Controller::getGyroZ(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->gyroZ;
+	}
+
+	float& Controller::getAccelPitch(int32_t virtualSlot) {
+		return ButtonData[virtualSlot]->accelPitch;
 	}
 
 	std::shared_ptr<DeviceProfile> Controller::getProfile(int32_t virtualSlot) {

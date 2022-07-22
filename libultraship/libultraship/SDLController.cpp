@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "Window.h"
 #include <Utils/StringHelper.h>
+#include <numbers>
 
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -29,6 +30,12 @@ namespace Ship {
         if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_GYRO)) {
             SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_GYRO, SDL_TRUE);
             supportsGyro = true;
+        }
+
+		supportsAccel = false;
+        if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_ACCEL)) {
+            SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_ACCEL, SDL_TRUE);
+            supportsAccel = true;
         }
 
         char GuidBuf[33];
@@ -152,6 +159,7 @@ namespace Ship {
 
             float gyro_drift_x = profile->GyroData[DRIFT_X] / 100.0f;
             float gyro_drift_y = profile->GyroData[DRIFT_Y] / 100.0f;
+            float gyro_drift_z = profile->GyroData[DRIFT_Z] / 100.0f;
             const float gyro_sensitivity = profile->GyroData[GYRO_SENSITIVITY];
 
             if (gyro_drift_x == 0) {
@@ -162,14 +170,66 @@ namespace Ship {
                 gyro_drift_y = gyroData[1];
             }
 
+            if (gyro_drift_z == 0) {
+                gyro_drift_z = gyroData[2];
+            }
+
             profile->GyroData[DRIFT_X] = gyro_drift_x * 100.0f;
             profile->GyroData[DRIFT_Y] = gyro_drift_y * 100.0f;
+            profile->GyroData[DRIFT_Z] = gyro_drift_z * 100.0f;
 
             getGyroX(virtualSlot) = gyroData[0] - gyro_drift_x;
             getGyroY(virtualSlot) = gyroData[1] - gyro_drift_y;
+            getGyroZ(virtualSlot) = gyroData[2] - gyro_drift_z;
 
             getGyroX(virtualSlot) *= gyro_sensitivity;
             getGyroY(virtualSlot) *= gyro_sensitivity;
+            getGyroZ(virtualSlot) *= gyro_sensitivity;
+
+            if (supportsAccel) {
+                float accelData[3];
+                SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_ACCEL, accelData, 3);
+
+                float gravity_accel_x = profile->AccelData[ACCEL_X];
+                float gravity_accel_y = profile->AccelData[ACCEL_Y];
+                float gravity_accel_z = profile->AccelData[ACCEL_Z];
+
+                if (gravity_accel_x == 0 && gravity_accel_y == 0 && gravity_accel_z == 0) {
+                    gravity_accel_x = accelData[0];
+                    gravity_accel_y = accelData[1];
+                    gravity_accel_z = accelData[2];
+
+                    profile->AccelData[ACCEL_X] = gravity_accel_x;
+                    profile->AccelData[ACCEL_Y] = gravity_accel_y;
+                    profile->AccelData[ACCEL_Z] = gravity_accel_z;
+                }
+
+                float gravity_accel = std::hypot(gravity_accel_y, gravity_accel_z);
+                float curr_accel = std::hypot(accelData[1], accelData[2]);
+
+                // While an acceleration equal to the measured acceleration
+                // due to gravity isn't necessarily countering gravity, it
+                // seems safe to assume that it is for normal play.
+
+                // So if (to this standard) the controller isn't accelerating,
+                // measure its pitch by comparing it with the angle of gravity
+                // on a flat surface. Otherwise, use the gyroscope to estimate
+                // its current angle until it's still again.
+
+                // Even if the estimate drifts away from the actual value for a
+                // bit, it'll be measured for real soon enough. The pitch is
+                // only used to determine which axis to use for aim anyway.
+                if (std::abs(gravity_accel - curr_accel) < 0.1) {
+                    float gravity_direction = std::atan2(gravity_accel_y, gravity_accel_z);
+                    float curr_direction = std::atan2(accelData[1], accelData[2]);
+                    getAccelPitch(virtualSlot) = curr_direction - gravity_direction;
+                } else {
+                    // Convert gyro data from degrees to radians
+                    getAccelPitch(virtualSlot) += getGyroX(virtualSlot) * std::numbers::pi / 180;
+                }
+            } else {
+                getAccelPitch(virtualSlot) = 0;
+            }
         }
         else {
             getGyroX(virtualSlot) = 0;
@@ -467,6 +527,10 @@ namespace Ship {
 
     bool SDLController::CanGyro() const {
 	    return supportsGyro;
+    }
+
+    bool SDLController::CanAccel() const {
+	    return supportsAccel;
     }
 
     bool SDLController::CanRumble() const {
