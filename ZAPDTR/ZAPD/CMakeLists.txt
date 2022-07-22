@@ -396,7 +396,7 @@ if(MSVC)
     endif()
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU|Clang|AppleClang")
 	target_compile_options(${PROJECT_NAME} PRIVATE
 		-Wall -Wextra -Wno-error
         -Wno-unused-parameter
