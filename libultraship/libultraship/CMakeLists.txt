@@ -358,7 +358,7 @@ set(ALL_FILES
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
-    ${Source_Files__Resources__Darwin}
+    ${Source_Files__Darwin}
 )
 
 ################################################################################
