@@ -352,7 +352,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     if (CVar_GetS32("gMaskSelect", 0) && (gSaveContext.eventChkInf[8] & 0x8000) &&
-                        cursorSlot == SLOT_TRADE_CHILD && CHECK_BTN_ALL(input->press.button, BTN_A) && ) {
+                        cursorSlot == SLOT_TRADE_CHILD && CHECK_BTN_ALL(input->press.button, BTN_A)) {
                         Audio_PlaySoundGeneral(NA_SE_SY_DECIDE, &D_801333D4, 4, &D_801333E0, &D_801333E0, &D_801333E8);
                         gSelectingMask = !gSelectingMask;
                     }
