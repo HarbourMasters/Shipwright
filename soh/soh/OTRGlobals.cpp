@@ -47,10 +47,12 @@
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
-#elif defined(__SWITCH__)
-#include "SwitchImpl.h"
 #else
 #include <SDL2/SDL_scancode.h>
+#endif
+
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
 #endif
 
 #include <Audio.h>
