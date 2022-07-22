@@ -3711,6 +3711,8 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
+    bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+
         ImGui::SetNextWindowSize(ImVec2(750, 530), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
@@ -3968,17 +3970,21 @@ void DrawRandoEditor(bool& open) {
 
                         // Shuffle Weird Egg
                         // Disabled when Skip Child Zelda is active
-                        if (CVar_GetS32("gRandomizeSkipChildZelda", 0) != 0) {
-                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(130, 130, 130, 255));
+                        if (disableZeldaRelatedOptions) {
                             CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
-                        } else {
-                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
                         }
+                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
+                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                                            ImGui::GetStyle().Alpha * disableZeldaRelatedOptions ? 0.5f : 1.0f);
                         SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
-                        ImGui::PopStyleColor();
+                        ImGui::PopStyleVar();
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disableZeldaRelatedOptions) {
+                            ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
+                        }
+                        ImGui::PopItemFlag();
                         InsertHelpHoverText(
-                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling Skip\n"
-                            "Child Zelda disables this feature.\n"
+                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling\n"
+                            "\"Skip Child Zelda\" disables this feature.\n"
                             "\n"
                             "The Weird Egg is required to unlock several events:\n"
                             "  - Zelda's Lullaby from Impa\n"
@@ -4079,17 +4085,21 @@ void DrawRandoEditor(bool& open) {
 
                     // Skip child stealth
                     // Disabled when Skip Child Zelda is active
-                    if (CVar_GetS32("gRandomizeSkipChildZelda", 0) != 0) {
-                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(130, 130, 130, 255));
+                    if (disableZeldaRelatedOptions) {
                         CVar_SetS32("gRandomizeSkipChildStealth", 0);
                         // Also disable Weird Egg because it's on a different tab and wouldn't be updated otherwise
                         CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
-                    } else {
-                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
                     }
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
+                    ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                                        ImGui::GetStyle().Alpha * disableZeldaRelatedOptions ? 0.5f : 1.0f);
                     SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
-                                                    "gRandomizeSkipChildStealth");
-                    ImGui::PopStyleColor();
+                                                  "gRandomizeSkipChildStealth");
+                    ImGui::PopStyleVar();
+                    if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disableZeldaRelatedOptions) {
+                        ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
+                    }
+                    ImGui::PopItemFlag();
                     InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
                                         "the guards.");
                     ImGui::Separator();
