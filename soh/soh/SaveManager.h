@@ -41,6 +41,7 @@ public:
     void SaveFile(int fileNum);
     void SaveGlobal();
     void LoadFile(int fileNum);
+    bool SaveFile_Exist(int fileNum);
 
     // Adds a function that is called when we are intializing a save, including when we are loading a save.
     void AddInitFunction(InitFunc func);
@@ -149,5 +150,5 @@ void Save_AddSaveFunction(char* name, int version, Save_SaveFunc func);
 SaveFileMetaInfo* Save_GetSaveMetaInfo(int fileNum);
 void Save_CopyFile(int from, int to);
 void Save_DeleteFile(int fileNum);
-
+bool Save_Exist(int fileNum);
 #endif
