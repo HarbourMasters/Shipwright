@@ -1035,15 +1035,9 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     Matrix_Scale(mtxScale, mtxScale, mtxScale, MTXMODE_APPLY);
                     break;
                 } else {
-                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
-                    this->actor.shape.yOffset = 430.0f;
-                    this->actor.shape.shadowScale = 0.03f;
-                    Actor_SetScale(&this->actor, 0.02f);
-                    this->scale = 0.02f;
                     if (this->unk_15A < 0) {
                         if (this->unk_15A == -1) {
                             s8 bankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_GI_HEART);
-                            
                             if (Object_IsLoaded(&globalCtx->objectCtx, bankIndex)) {
                                 this->actor.objBankIndex = bankIndex;
                                 Actor_SetObjectDependency(globalCtx, &this->actor);
@@ -1056,7 +1050,16 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         }
                         break;
                     }
+                    //Big hearts workaround
+                    this->actor.home.rot.z = Rand_CenteredFloat(65535.0f);
+                    this->actor.shape.yOffset = 430.0f;
+                    this->actor.shape.shadowScale = 6.0f;
+                    Actor_SetScale(&this->actor, 0.02f);
+                    this->scale = 0.02f;
+                    EnItem00_DrawCollectible(this, globalCtx);
+                    break;
                 }
+                
             case ITEM00_BOMBS_A:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.2f);
