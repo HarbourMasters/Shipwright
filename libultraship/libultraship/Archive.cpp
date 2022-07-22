@@ -6,6 +6,10 @@
 #include "Lib/StrHash64.h"
 #include <filesystem>
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 namespace Ship {
 	Archive::Archive(const std::string& MainPath, bool enableWriting) : Archive(MainPath, "", enableWriting)
 	{
@@ -68,7 +72,7 @@ namespace Ship {
 		//}
 
 		if (!attempt) {
-			printf("(%i) Failed to open file { %s } from mpq archive { %s }\n", GetLastError(), filePath.c_str(), MainPath.c_str());
+			SPDLOG_ERROR("({}) Failed to open file {} from mpq archive  {}.", GetLastError(), filePath.c_str(), MainPath.c_str());
 			std::unique_lock<std::mutex> Lock(FileToLoad->FileLoadMutex);
 			FileToLoad->bHasLoadError = true;
 			return FileToLoad;
@@ -338,6 +342,10 @@ namespace Ship {
 #else
 		if (!SFileOpenArchive(fullPath.c_str(), 0, enableWriting ? 0 : MPQ_OPEN_READ_ONLY, &mpqHandle)) {
 #endif
+
+	#ifdef __SWITCH__
+			Switch::ThrowMissingOTR(fullPath);
+	#endif
 			SPDLOG_ERROR("({}) Failed to open main mpq file {}.", GetLastError(), fullPath.c_str());
 			return false;
 		}

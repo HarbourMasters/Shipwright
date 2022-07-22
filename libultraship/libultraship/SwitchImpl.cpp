@@ -20,18 +20,24 @@ void DetectAppletMode();
 
 static void on_applet_hook(AppletHookType hook, void *param);
 
-void Ship::Switch::Init(){
-    DetectAppletMode();
-    appletInitializeGamePlayRecording();
-#ifdef DEBUG
-    socketInitializeDefault();
-    nxlinkStdio();
-#endif
-    appletSetGamePlayRecordingState(true);
-    appletHook(&applet_hook_cookie, on_applet_hook, NULL);
-    appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
-    if (!hosversionBefore(8, 0, 0)) {
-        clkrstInitialize();
+void Ship::Switch::Init(SwitchPhase phase){
+    switch(phase){
+        case PreInitPhase:
+            DetectAppletMode();
+            break;
+        case PostInitPhase:
+            appletInitializeGamePlayRecording();
+        #ifdef DEBUG
+            socketInitializeDefault();
+            nxlinkStdio();
+        #endif
+            appletSetGamePlayRecordingState(true);
+            appletHook(&applet_hook_cookie, on_applet_hook, NULL);
+            appletSetFocusHandlingMode(AppletFocusHandlingMode_NoSuspend);
+            if (!hosversionBefore(8, 0, 0)) {
+                clkrstInitialize();
+            }
+            break;
     }
 }
 
@@ -49,7 +55,7 @@ void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
 
     PlFontData fonts_std;
     PlFontData fonts_ext;
-    
+
     plGetSharedFontByType(&fonts_std, PlSharedFontType_Standard);
     plGetSharedFontByType(&fonts_ext, PlSharedFontType_NintendoExt);
 
@@ -119,7 +125,7 @@ void Ship::Switch::PrintErrorMessageToScreen(const char *str, ...) {
     consoleInit(NULL);
 
     va_list args;
-    va_start(args, str);    
+    va_start(args, str);
     vprintf(str, args);
     va_end(args);
 
@@ -205,5 +211,14 @@ void DetectAppletMode() {
         "\x1b[5;2HHold R when opening any game to enter HBMenu."
         "\x1b[44;2H%s."
     , RandomTexts[rand() % 25]);
+}
+
+void Ship::Switch::ThrowMissingOTR(std::string OTRPath){
+    srand(time(0));
+    Ship::Switch::PrintErrorMessageToScreen(
+        "\x1b[2;2HYou've launched the Ship without the OTR file."
+        "\x1b[4;2HPlease relaunch making sure %s exists."
+        "\x1b[44;2H%s."
+    , OTRPath.c_str(), RandomTexts[rand() % 25]);
 }
 #endif

@@ -45,12 +45,10 @@
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
-#ifdef __SWITCH__
-#include "SwitchImpl.h"
-#endif
-
 #ifdef __APPLE__
 #include <SDL_scancode.h>
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
 #else
 #include <SDL2/SDL_scancode.h>
 #endif
@@ -109,7 +107,7 @@ extern "C" void OTRExtScanner() {
 
 extern "C" void InitOTR() {
 #ifdef __SWITCH__
-    Ship::Switch::Init();
+    Ship::Switch::Init(Ship::PreInitPhase);
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
@@ -263,16 +261,12 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
                 int samples_left = AudioPlayer_Buffered();
                 u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
 
-
                 // 3 is the maximum authentic frame divisor.
                 s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
                 for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
                     AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
                 }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
                 audio.processing = false;
@@ -1500,7 +1494,7 @@ extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSiz
 }
 
 extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);

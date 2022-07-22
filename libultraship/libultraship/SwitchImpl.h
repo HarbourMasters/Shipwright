@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 #include "Lib/ImGui/imgui.h"
 #include "SwitchPerformanceProfiles.h"
@@ -16,14 +17,20 @@ namespace Ship {
         POWERSAVINGM3
     };
 
+    enum SwitchPhase {
+        PreInitPhase,
+        PostInitPhase
+    };
+
     class Switch {
         public:
-            static void Init();
+            static void Init(SwitchPhase phase);
             static void Exit();
             static void SetupFont(ImFontAtlas* fonts);
             static bool IsRunning();
             static void GetDisplaySize(int *width, int *height);
             static void ApplyOverclock();
+            static void ThrowMissingOTR(std::string OTRPath);
             static void PrintErrorMessageToScreen(const char *str, ...);
     };
 };

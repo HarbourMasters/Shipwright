@@ -10,6 +10,8 @@
 #include "ModManager.h"
 #ifdef __APPLE__
 #include "OSXFolderManager.h"
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
 #endif
 
 namespace Ship {
@@ -79,6 +81,9 @@ namespace Ship {
 #endif
             exit(1);
         }
+    #ifdef __SWITCH__
+        Ship::Switch::Init(PostInitPhase);
+    #endif
         INSTANCE = new ModManager(ResMan);
         INSTANCE->Init();
     }
