@@ -210,6 +210,7 @@ namespace Ship {
 				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
 					profile.Thresholds[DRIFT_X] = 0.0f;
 					profile.Thresholds[DRIFT_Y] = 0.0f;
+					profile.Thresholds[DRIFT_Z] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
 				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
@@ -224,6 +225,10 @@ namespace Ship {
 				ImGui::Text("Drift Y");
 				ImGui::PushItemWidth(80);
 				ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::Text("Drift Z");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftZ", &profile.Thresholds[DRIFT_Z], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__

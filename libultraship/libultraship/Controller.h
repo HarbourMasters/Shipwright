@@ -21,8 +21,9 @@ namespace Ship {
 		RIGHT_TRIGGER = 4,
 		DRIFT_X = 5,
 		DRIFT_Y = 6,
-		SENSITIVITY = 7,
-		GYRO_SENSITIVITY = 8
+		DRIFT_Z = 7,
+		SENSITIVITY = 8,
+		GYRO_SENSITIVITY = 9
 	};
 
 	struct DeviceProfile {
@@ -60,6 +61,7 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
+			float wGyroZ;
 			float wCamX;
 			float wCamY;
 

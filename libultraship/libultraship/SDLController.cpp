@@ -164,6 +164,7 @@ namespace Ship {
 
             float gyro_drift_x = profile.Thresholds[DRIFT_X] / 100.0f;
             float gyro_drift_y = profile.Thresholds[DRIFT_Y] / 100.0f;
+            float gyro_drift_z = profile.Thresholds[DRIFT_Z] / 100.0f;
             const float gyro_sensitivity = profile.Thresholds[GYRO_SENSITIVITY];
 
             if (gyro_drift_x == 0) {
@@ -174,14 +175,21 @@ namespace Ship {
                 gyro_drift_y = gyroData[1];
             }
 
+            if (gyro_drift_z == 0) {
+                gyro_drift_z = gyroData[2];
+            }
+
             profile.Thresholds[DRIFT_X] = gyro_drift_x * 100.0f;
             profile.Thresholds[DRIFT_Y] = gyro_drift_y * 100.0f;
+            profile.Thresholds[DRIFT_Z] = gyro_drift_z * 100.0f;
 
             wGyroX = gyroData[0] - gyro_drift_x;
             wGyroY = gyroData[1] - gyro_drift_y;
+            wGyroZ = gyroData[2] - gyro_drift_z;
 
             wGyroX *= gyro_sensitivity;
             wGyroY *= gyro_sensitivity;
+            wGyroZ *= gyro_sensitivity;
         }
 
         dwPressedButtons[slot] = 0;

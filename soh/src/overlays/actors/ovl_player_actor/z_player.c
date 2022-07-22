@@ -11323,7 +11323,7 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
         if (fabsf(sControlInput->cur.gyro_x) > 0.01f) {
             this->actor.focus.rot.x -= (sControlInput->cur.gyro_x) * 750.0f;
         }
-
+        
         this->actor.focus.rot.x = CLAMP(this->actor.focus.rot.x, -temp1, temp1);
 
         temp1 = 19114;
@@ -11336,6 +11336,10 @@ s16 func_8084ABD8(GlobalContext* globalCtx, Player* this, s32 arg2, s16 arg3) {
 
         if (fabsf(sControlInput->cur.gyro_y) > 0.01f) {
             this->actor.focus.rot.y += (sControlInput->cur.gyro_y) * 750.0f;
+        }
+        
+        if (fabsf(sControlInput->cur.gyro_z) > 0.01f) {
+            this->actor.focus.rot.y -= (sControlInput->cur.gyro_z) * 750.0f;
         }
     }
 
