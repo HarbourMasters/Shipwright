@@ -950,6 +950,33 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Enhancements"))
             {
+
+                const char* enhancementPresets[3] = { "Disable All", "Vanilla Plus", "Randomizer" };
+                ImGui::Text("Enhancement Presets");
+                /*
+                InsertHelpHoverText(
+                    "\n"
+                );
+                */
+                SohImGui::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 3, 0);
+                if (ImGui::Button("Apply Preset")) {
+                    switch (CVar_GetS32("gSelectEnhancementPresets", 0)) {
+                        // Disable All
+                        case 0:
+                            CVar_SetS32("gTextSpeed", 1);
+                            break;
+                        // Vanilla Plus
+                        case 1:
+                            CVar_SetS32("gTextSpeed", 2);
+                            break;
+                        // Randomizer
+                        case 2: 
+                            CVar_SetS32("gTextSpeed", 5);
+                            break;
+                    }
+                }
+                ImGui::Separator();
+
                 if (ImGui::BeginMenu("Gameplay"))
                 {
                     if (ImGui::BeginMenu("Time Savers"))
