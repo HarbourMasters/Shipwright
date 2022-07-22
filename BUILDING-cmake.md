@@ -46,8 +46,8 @@ cd  .\build\x64
 & 'C:\Program Files\CMake\bin\cpack.exe' -G ZIP
 ~~~
 
-Classical build
----------------
+Classical build (soh 32 bit)
+----------------------------
 ~~~
 #
 # build SoH
@@ -85,8 +85,8 @@ cpack -G ZIP
 cpack -G External	(does appimage - experimental)
 ~~~
 
-using native build (not docker)
--------------------------------
+Classical build (soh 32 bit)
+----------------------------
 
 ~~~
 cd ShipWright
