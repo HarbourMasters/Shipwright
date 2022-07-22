@@ -3850,6 +3850,7 @@ void DrawRandoEditor(bool& open) {
                             "Tokens - Obtain the specified amount of Skulltula tokens."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                        ImGui::PopItemWidth();
                         switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
                             case 0:
                                 break;
@@ -3857,23 +3858,23 @@ void DrawRandoEditor(bool& open) {
                                 break;
                             case 2:
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                               "gRandomizeStoneCount", 0, 3, "", 3);
+                                                               "gRandomizeStoneCount", 0, 3, "", 3, true);
                                 break;
                             case 3:
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                               "gRandomizeMedallionCount", 0, 6, "", 6);
+                                                               "gRandomizeMedallionCount", 0, 6, "", 6, true);
                                 break;
                             case 4:
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                               "gRandomizeRewardCount", 0, 9, "", 9);
+                                                               "gRandomizeRewardCount", 0, 9, "", 9, true);
                                 break;
                             case 5:
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                               "gRandomizeDungeonCount", 0, 8, "", 8);
+                                                               "gRandomizeDungeonCount", 0, 8, "", 8, true);
                                 break;
                             case 6:
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                               "gRandomizeTokenCount", 0, 100, "", 100);
+                                                               "gRandomizeTokenCount", 0, 100, "", 100, true);
                                 break;
                         }
                         ImGui::Separator();
@@ -4065,7 +4066,7 @@ void DrawRandoEditor(bool& open) {
 
                     // Cuccos to return
                     SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
-                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7, true);
                     InsertHelpHoverText(
                         "The amount of cuccos needed to claim the reward from Anju the cucco lady"
                     );
@@ -4073,7 +4074,7 @@ void DrawRandoEditor(bool& open) {
 
                     // Big Poe Target Count
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10, true);
                     InsertHelpHoverText(
                         "The Poe collector will give a reward for turning in this many Big Poes."
                     );
