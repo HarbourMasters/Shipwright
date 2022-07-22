@@ -1582,6 +1582,10 @@ else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "soh.elf"
 	)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        set_target_properties(${PROJECT_NAME} PROPERTIES
+        OUTPUT_NAME "soh.app"
+        )
 endif()
 ################################################################################
 # MSVC runtime library
