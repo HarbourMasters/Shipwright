@@ -1250,9 +1250,9 @@ namespace SohImGui {
 
                     if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 360, "", ImGuiSliderFlags_AlwaysClamp))
                     {
-                        if (val > 250)
+                        if (val > 360)
                         {
-                            val = 250;
+                            val = 360;
                         }
                         else if (val < 20)
                         {
