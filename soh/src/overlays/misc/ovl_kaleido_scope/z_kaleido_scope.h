@@ -10,7 +10,7 @@ extern s16 D_8082AB2C[];
 extern u8 gSlotAgeReqs[];
 extern u8 gEquipAgeReqs[][4];
 extern u8 gAreaGsFlags[];
-extern bool gMaskSelect;
+extern bool gSelectingMask;
 
 void KaleidoScope_DrawQuestStatus(GlobalContext* globalCtx, GraphicsContext* gfxCtx);
 s32 KaleidoScope_UpdateQuestStatusPoint(PauseContext* pauseCtx, s32 point);
