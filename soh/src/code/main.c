@@ -3,6 +3,15 @@
 #include <soh/Enhancements/bootcommands.h>
 #include "soh/OTRGlobals.h"
 
+#ifdef _MSC_VER
+#define NOGDI
+#include <Windows.h>
+#include <DbgHelp.h>
+#include <inttypes.h>
+#include <stdio.h>
+#include <winnt.h>
+#pragma comment(lib, "Dbghelp.lib")
+#endif
 
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
@@ -36,7 +45,9 @@ void Main_LogSystemHeap(void) {
     osSyncPrintf(VT_RST);
 }
 
-void main(int argc, char** argv)
+
+
+void Main1(int argc, char** argv)
 {
     GameConsole_Init();
     InitOTR();
@@ -44,6 +55,12 @@ void main(int argc, char** argv)
 
     BootCommands_ParseBootArgs(argc - 1, (char**)&argv[1]);
     Main(0);
+}
+
+void main(int argc, char** argv) {
+    __try {
+        Main1WS(argc, argv);
+    } __except (seh_filter(GetExceptionInformation())) { puts("UH OH"); }
 }
 
 void Main(void* arg) {
@@ -134,4 +151,122 @@ void Main(void* arg) {
     osSyncPrintf("mainproc 実行終了\n"); // "End of execution"
 
     Heaps_Free();
+}
+
+
+
+void printStack(CONTEXT* ctx) {
+    BOOL result;
+    HANDLE process;
+    HANDLE thread;
+    HMODULE hModule;
+    ULONG frame;
+    DWORD64 displacement;
+    DWORD disp;
+
+#if defined(_M_AMD64)
+    STACKFRAME64 stack;
+    memset(&stack, 0, sizeof(STACKFRAME64));
+#else
+    STACKFRAME stack;
+    memset(&stack, 0, sizeof(STACKFRAME));
+#endif
+
+    char buffer[sizeof(SYMBOL_INFO) + MAX_SYM_NAME + sizeof(TCHAR)];
+    // char name[256];
+    char module[512];
+
+    PSYMBOL_INFO symbol = (PSYMBOL_INFO)buffer;
+
+    CONTEXT ctx2;
+    memcpy(&ctx2, ctx, sizeof(CONTEXT));
+
+    process = GetCurrentProcess();
+    thread = GetCurrentThread();
+    SymInitialize(process, NULL, true);
+    LUS_PRINT(5, "Register dump");
+
+    const DWORD machineType =
+#if defined(_M_AMD64)
+        IMAGE_FILE_MACHINE_AMD64;
+#else
+        IMAGE_FILE_MACHINE_I386;
+#endif
+    displacement = 0;
+#if !defined(_M_AMD64)
+    stack.AddrPC.Offset = (*ctx).Eip;
+    stack.AddrPC.Mode = AddrModeFlat;
+    stack.AddrStack.Offset = (*ctx).Esp;
+    stack.AddrStack.Mode = AddrModeFlat;
+    stack.AddrFrame.Offset = (*ctx).Ebp;
+    stack.AddrFrame.Mode = AddrModeFlat;
+    LUS_PRINT(5, "Edi: 0x% " PRIX32, ctx->Edi);
+    LUS_PRINT(5, "Esi: 0x% " PRIX32, ctx->Esi);
+    LUS_PRINT(5, "Ebx: 0x% " PRIX32, ctx->Ebx);
+    LUS_PRINT(5, "Ecx: 0x% " PRIX32, ctx->Ecx);
+    LUS_PRINT(5, "Eax: 0x% " PRIX32, ctx->Eax);
+    LUS_PRINT(5, "Ebp: 0x% " PRIX32, ctx->Ebp);
+    LUS_PRINT(5, "Esp: 0x% " PRIX32, ctx->Esp);
+    LUS_PRINT(5, "EFlags: 0x% " PRIX32, ctx->EFlags);
+    LUS_PRINT(5, "Eip: 0x% " PRIX32, ctx->Eip);
+#else
+
+    LUS_PRINT(5, "Rax: 0x% " PRIX64 , ctx->Rax);
+    LUS_PRINT(5, "Rcx: 0x% " PRIX64 , ctx->Rcx);
+    LUS_PRINT(5, "Rdx: 0x% " PRIX64 , ctx->Rdx);
+    LUS_PRINT(5, "Rbx: 0x% " PRIX64 , ctx->Rbx);
+    LUS_PRINT(5, "Rsp: 0x% " PRIX64 , ctx->Rsp);
+    LUS_PRINT(5, "Rbp: 0x% " PRIX64 , ctx->Rbp);
+    LUS_PRINT(5, "Rsi: 0x% " PRIX64 , ctx->Rsi);
+    LUS_PRINT(5, "Rdi: 0x% " PRIX64 , ctx->Rdi);
+    LUS_PRINT(5, "R9: 0x% " PRIX64 , ctx->R9);
+    LUS_PRINT(5, "R10: 0x% " PRIX64 , ctx->R10);
+    LUS_PRINT(5, "R11: 0x% " PRIX64 , ctx->R11);
+    LUS_PRINT(5, "R12: 0x% " PRIX64 , ctx->R12);
+    LUS_PRINT(5, "R13: 0x% " PRIX64 , ctx->R13);
+    LUS_PRINT(5, "R14: 0x% " PRIX64 , ctx->R14);
+    LUS_PRINT(5, "R15: 0x% " PRIX64 , ctx->R15);
+    LUS_PRINT(5, "PC: 0x%" PRIX64 , ctx->Rip);
+    LUS_PRINT(5, "EFlags: 0x%" PRIX32 , ctx->EFlags);
+#endif
+
+    for (frame = 0;; frame++) {
+        result = StackWalk(machineType, process, thread, &stack, &ctx2, NULL, SymFunctionTableAccess,
+                           SymGetModuleBase, NULL);
+        if (!result) {
+            break;
+        }
+        symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+        symbol->MaxNameLen = MAX_SYM_NAME;
+        SymFromAddr(process, (ULONG64)stack.AddrPC.Offset, &displacement, symbol);
+#if defined(_M_AMD64)
+        IMAGEHLP_LINE64 line;
+        line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
+#else
+        IMAGEHLP_LINE line;
+        line.SizeOfStruct = sizeof(IMAGEHLP_LINE);
+#endif
+        if (SymGetLineFromAddr(process, stack.AddrPC.Offset, &disp, &line)) {
+            LUS_PRINT(5, "%s in %s: line: %lu: ", symbol->Name, line.FileName, line.LineNumber);
+        }
+        
+        else {
+            LUS_PRINT(5, "at % s, addr 0x%0X", symbol->Name, symbol->Address);
+            hModule = NULL;
+            GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                              (LPCTSTR)(stack.AddrPC.Offset), &hModule);
+
+            if (hModule != NULL) {
+                GetModuleFileNameA(hModule, module, 512 - 1);
+            }
+            LUS_PRINT(5, "In %s\n", module);
+        }
+    }
+
+}
+
+int seh_filter(EXCEPTION_POINTERS* ex) {
+    LUS_PRINT(5, "EXCEPTION 0x%x occured\n", ex->ExceptionRecord->ExceptionCode);
+    printStack(ex->ContextRecord);
+    return EXCEPTION_EXECUTE_HANDLER;
 }

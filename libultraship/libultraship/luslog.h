@@ -11,4 +11,5 @@ extern "C" {
 #endif
 
 #define LUS_LOG(level, msg) luslog(__FILE__, __LINE__, level, msg)
+#define LUS_PRINT(level, msg,...) lusprintf(__FILE__, __LINE__, level, msg, __VA_ARGS__)
 
