@@ -3768,7 +3768,7 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Open - Mido no longer blocks the path to the Deku Tree. Kokiri\n"
                             "boy no longer blocks the path out of the forest.");
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
                         ImGui::Separator();
                         // Kakariko Gate
                         ImGui::Text(Settings::OpenKakariko.GetName().c_str());
@@ -3779,7 +3779,7 @@ void DrawRandoEditor(bool& open) {
                             "Open - The gate is always open. The happy mask shop\n"
                             "will open immediately after obtaining Zelda's letter."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
                         ImGui::Separator();
 
                         // Door of Time
@@ -3825,7 +3825,7 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Open - The bridge is repaired from the start."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
                         ImGui::Separator();
 
                         // Rainbow Bridge
@@ -3851,13 +3851,15 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Tokens - Obtain the specified amount of Skulltula tokens."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
-                        switch (CVar_GetS32("gRandomizeRainbowBridge", 3)) {
+                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                        switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
+                            case 0:
+                                break;
                             case 1:
                                 break;
                             case 2:
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                               "gRandomizeStoneCount", 0, 3, "");
+                                                               "gRandomizeStoneCount", 0, 3, "", 3);
                                 break;
                             case 3:
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
@@ -3865,15 +3867,15 @@ void DrawRandoEditor(bool& open) {
                                 break;
                             case 4:
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                               "gRandomizeRewardCount", 0, 9, "");
+                                                               "gRandomizeRewardCount", 0, 9, "", 9);
                                 break;
                             case 5:
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                               "gRandomizeDungeonCount", 0, 8, "");
+                                                               "gRandomizeDungeonCount", 0, 8, "", 8);
                                 break;
                             case 6:
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                               "gRandomizeTokenCount", 0, 100, "");
+                                                               "gRandomizeTokenCount", 0, 100, "", 100);
                                 break;
                         }
                         ImGui::Separator();
