@@ -9905,8 +9905,15 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
             this->unk_837 = 20;
         }
         else if (this->unk_837 != 0) {
-            doAction = DO_ACTION_NONE;
-            this->unk_837--;
+            if (CVar_GetS32("gInstantPutaway", 0) != 0)
+            {
+                this->unk_837 = 0;
+            }
+            else
+            {
+                doAction = DO_ACTION_NONE;
+                this->unk_837--;
+            }
         }
 
         Interface_SetDoAction(globalCtx, doAction);
