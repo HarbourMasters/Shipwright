@@ -3707,7 +3707,6 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-    bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
         ImGui::SetNextWindowSize(ImVec2(750, 530), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
@@ -3717,6 +3716,10 @@ void DrawRandoEditor(bool& open) {
 
         bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) ||
                                            CVar_GetS32("gOnFileSelectNameEntry", 0);
+        bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0);
+        if (disableEditingRandoSettings) {
+            disableZeldaRelatedOptions = true;
+        }
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                             ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
