@@ -1,10 +1,11 @@
 Windows
 =======
 
-libpng and zlib will be used from VCPKG.
+libpng, zlib and bzip2 will be used from VCPKG.
 My vcpkg is located at d:/VCPKG
-I also created a new triplet to be used.
+I also created a new triplets to be used.
 
+For 64 bit:
 ~~~
 x64-windows-v142:
 set(VCPKG_TARGET_ARCHITECTURE x64)
@@ -12,10 +13,22 @@ set(VCPKG_CRT_LINKAGE static)
 set(VCPKG_LIBRARY_LINKAGE static)
 set(VCPKG_PLATFORM_TOOLSET v142)
 ~~~
-
-prepare libpng:
+same for 32 bit (only required for classical build):
 ~~~
-D:\vcpkg\vcpkg.exe install libpng --triple=x86-windows-v142
+x86-windows-v142:
+set(VCPKG_TARGET_ARCHITECTURE x86)
+set(VCPKG_CRT_LINKAGE static)
+set(VCPKG_LIBRARY_LINKAGE static)
+set(VCPKG_PLATFORM_TOOLSET v142)
+~~~
+prepare libs:
+~~~
+D:\vcpkg\vcpkg.exe install libpng --triple=x86-windows-v142 (only required for classical build)
+D:\vcpkg\vcpkg.exe install libpng --triple=x64-windows-v142
+D:\vcpkg\vcpkg.exe install zlib   --triple=x86-windows-v142 (only required for classical build)
+D:\vcpkg\vcpkg.exe install zlib   --triple=x64-windows-v142
+D:\vcpkg\vcpkg.exe install bzip2  --triple=x86-windows-v142 (only required for classical build)
+D:\vcpkg\vcpkg.exe install bzip2  --triple=x64-windows-v142
 ~~~
 
 ~~~
@@ -50,7 +63,7 @@ cd ../soh
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
 cd ../OTRGui
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64 "-DCMAKE_TOOLCHAIN_FILE=D:\vcpkg\scripts\buildsystems\vcpkg.cmake" "-DVCPKG_TARGET_TRIPLET=x64-windows-v142"
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\Win32 --config Release
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --config Release
 ~~~
 
 Linux (Ubuntu 22.04)
