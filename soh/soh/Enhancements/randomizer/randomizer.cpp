@@ -3966,22 +3966,28 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();
                         }
 
-                        // hide this option if we're skipping child zelda
-                        if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
-                            // Shuffle Weird Egg
-                            SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
-                            InsertHelpHoverText(
-                                "Shuffles the Weird Egg from Malon in to the item pool.\n"
-                                "\n"
-                                "The Weird Egg is required to unlock several events:\n"
-                                "  - Zelda's Lullaby from Impa\n"
-                                "  - Saria's song in Sacred Forest Meadow\n"
-                                "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
-                                "  - Zelda's letter for Kakariko gate (if set to closed)\n"
-                                "  - Happy Mask Shop sidequest\n"
-                            );
-                            ImGui::Separator();
+                        // Shuffle Weird Egg
+                        // Disabled when Skip Child Zelda is active
+                        if (CVar_GetS32("gRandomizeSkipChildZelda", 0) != 0) {
+                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(130, 130, 130, 255));
+                            CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
+                        } else {
+                            ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
                         }
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
+                        ImGui::PopStyleColor();
+                        InsertHelpHoverText(
+                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling Skip\n"
+                            "Child Zelda disables this feature.\n"
+                            "\n"
+                            "The Weird Egg is required to unlock several events:\n"
+                            "  - Zelda's Lullaby from Impa\n"
+                            "  - Saria's song in Sacred Forest Meadow\n"
+                            "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
+                            "  - Zelda's letter for Kakariko gate (if set to closed)\n"
+                            "  - Happy Mask Shop sidequest\n"
+                        );
+                        ImGui::Separator();
 
                         // Shuffle Gerudo Membership Card
                         SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
@@ -4072,12 +4078,23 @@ void DrawRandoEditor(bool& open) {
                     ImGui::Separator();
 
                     // Skip child stealth
-                    SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth");
-                    InsertHelpHoverText(
-                        "The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
-                        "the guards."
-                    );
+                    // Disabled when Skip Child Zelda is active
+                    if (CVar_GetS32("gRandomizeSkipChildZelda", 0) != 0) {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(130, 130, 130, 255));
+                        CVar_SetS32("gRandomizeSkipChildStealth", 0);
+                        // Also disable Weird Egg because it's on a different tab and wouldn't be updated otherwise
+                        CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
+                    } else {
+                        ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 255));
+                    }
+                    SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
+                                                    "gRandomizeSkipChildStealth");
+                    ImGui::PopStyleColor();
+                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
+                                        "the guards.");
                     ImGui::Separator();
+
+                    // Skip child zelda
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                     InsertHelpHoverText(
                         "Start with Zelda's Letter in your inventory and skip the sequence up\n"
