@@ -283,7 +283,6 @@ void EnAObj_BoulderFragment(EnAObj* this, GlobalContext* globalCtx) {
     if (this->dyna.actor.speedXZ != 0.0f && this->dyna.actor.bgCheckFlags & 0x8) {
         this->dyna.actor.world.rot.y =
             this->dyna.actor.wallYaw - this->dyna.actor.world.rot.y + this->dyna.actor.wallYaw - 0x8000;
-        if (1) {}
         this->dyna.actor.bgCheckFlags &= ~0x8;
     }
 
@@ -348,7 +347,7 @@ void EnAObj_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnAObj_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 type = thisx->params;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_a_keep.c", 701);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
 
@@ -360,9 +359,9 @@ void EnAObj_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 1, 60, 60, 60, 50);
     }
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_a_keep.c", 712),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, sDLists[type]);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_a_keep.c", 715);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

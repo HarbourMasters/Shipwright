@@ -129,6 +129,18 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
     static Vec3f zeroVec = { 0.0f, 0.0f, 0.0f };
     Vec3f pos;
 
+    // We want to do most of the same things in rando, but we're not in a cutscene and the flag for
+    // destroying the royal tombstone is already set.
+    if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0x2000) {
+        Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
+        this->timer = 25;
+        pos.x = (Math_SinS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.x;
+        pos.y = this->dyna.actor.world.pos.y + 30.0f;
+        pos.z = (Math_CosS(this->dyna.actor.shape.rot.y) * 50.0f) + this->dyna.actor.world.pos.z;
+        EffectSsBomb2_SpawnLayered(globalCtx, &pos, &zeroVec, &zeroVec, 70, 30);
+        this->actionFunc = func_808ACA08;
+    }
+
     if (globalCtx->csCtx.state != 0) {
         if (globalCtx->csCtx.npcActions[3] != NULL && globalCtx->csCtx.npcActions[3]->action == 2) {
             Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_GRAVE_EXPLOSION);
@@ -146,19 +158,23 @@ void func_808AC908(BgSpot02Objects* this, GlobalContext* globalCtx) {
 void func_808ACA08(BgSpot02Objects* this, GlobalContext* globalCtx) {
     Player* player = GET_PLAYER(globalCtx);
 
+    // The visual effects play the same way whether in rando or not, we just don't want
+    // to play the damage animation on link.
     if (this->timer != 0) {
         this->timer--;
     }
 
     if (this->timer == 20) {
         this->dyna.actor.draw = NULL;
-        EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS, 20,
-                                 object_spot02_objects_DL_012D30);
+        EffectSsHahen_SpawnBurst(globalCtx, &this->dyna.actor.world.pos, 30.0f, 0, 25, 5, 40, OBJECT_SPOT02_OBJECTS,
+                                    20, object_spot02_objects_DL_012D30);
     } else if (this->timer == 0) {
         Actor_Kill(&this->dyna.actor);
     }
 
-    if (globalCtx->csCtx.frames == 402) {
+    // This shouldn't execute in rando even without the check since we never
+    // enter the cutscene context.
+    if (globalCtx->csCtx.frames == 402 && !(gSaveContext.n64ddFlag)) {
         if (!LINK_IS_ADULT) {
             func_8002F7DC(&player->actor, NA_SE_VO_LI_DEMO_DAMAGE_KID);
         } else {
@@ -201,6 +217,13 @@ void BgSpot02Objects_Draw(Actor* thisx, GlobalContext* globalCtx) {
 }
 
 void func_808ACC34(BgSpot02Objects* this, GlobalContext* globalCtx) {
+    // This is the actionFunc that the game settles on when you load the Graveyard
+    // When we're in rando and the flag for the gravestone being destroyed gets set,
+    // set the actionFunc to the function where the gravestone explodes.
+    if (gSaveContext.n64ddFlag && gSaveContext.eventChkInf[1] & 0X2000) {
+        this->actionFunc = func_808AC908;
+    }
+
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL &&
         globalCtx->csCtx.npcActions[0]->action == 2) {
         this->unk_16A++;
@@ -226,7 +249,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
     u8 greenEnv;
     u8 blueEnv;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 600);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[0] != NULL &&
         globalCtx->csCtx.npcActions[0]->action == 2) {
@@ -257,7 +280,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, redPrim, greenPrim, bluePrim, 255);
         gDPSetEnvColor(POLY_XLU_DISP++, redEnv, greenEnv, blueEnv, 255);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 679),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_808AD850[this->unk_16A]));
         gDPPipeSync(POLY_XLU_DISP++);
@@ -265,7 +288,7 @@ void func_808ACCB8(Actor* thisx, GlobalContext* globalCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 692);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_808AD3D4(BgSpot02Objects* this, GlobalContext* globalCtx) {
@@ -288,7 +311,7 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
     f32 lerp;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 736);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (globalCtx->csCtx.state != 0 && globalCtx->csCtx.npcActions[2] != NULL) {
         u16 temp_v1 = globalCtx->csCtx.npcActions[2]->urot.z * 0.00549325f;
@@ -318,7 +341,7 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, 128);
             gDPSetEnvColor(POLY_XLU_DISP++, 150, 120, 0, 128);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 795),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 2 * this->timer, -3 * this->timer, 32, 64, 1,
@@ -329,5 +352,5 @@ void func_808AD450(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_spot02_objects.c", 818);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

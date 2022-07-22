@@ -946,7 +946,7 @@ void EnAm_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp68;
     EnAm* this = (EnAm*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_am.c", 1580);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, this->textureBlend);
@@ -954,7 +954,6 @@ void EnAm_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->iceTimer != 0) {
         this->dyna.actor.colorFilterTimer++;
-        if (1) {};
         this->iceTimer--;
 
         if ((this->iceTimer % 4) == 0) {
@@ -971,5 +970,5 @@ void EnAm_Draw(Actor* thisx, GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_am.c", 1605);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

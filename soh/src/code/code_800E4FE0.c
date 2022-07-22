@@ -187,9 +187,6 @@ AudioTask* func_800E5000(void) {
     if (gAudioContext.resetStatus == 0) {
         // msg = 0000RREE R = read pos, E = End Pos
         while (osRecvMesg(gAudioContext.cmdProcQueueP, &sp4C, OS_MESG_NOBLOCK) != -1) {
-            if (1) {}
-            if (1) {}
-            if (1) {}
             Audio_ProcessCmds(sp4C.data32);
             j++;
         }
@@ -218,7 +215,6 @@ AudioTask* func_800E5000(void) {
     task->dram_stack_size = 0;
     task->output_buff = NULL;
     task->output_buff_size = NULL;
-    if (1) {}
     task->data_ptr = (u64*)gAudioContext.abiCmdBufs[index];
     task->data_size = abiCmdCnt * sizeof(Acmd);
     task->yield_data_ptr = NULL;

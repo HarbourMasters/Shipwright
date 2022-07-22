@@ -363,9 +363,7 @@ void BgMizuMovebg_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames;
 
-    if (1) {}
-
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_movebg.c", 754);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     frames = globalCtx->gameplayFrames;
     func_80093D18(globalCtx->state.gfxCtx);
@@ -386,12 +384,12 @@ void BgMizuMovebg_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                Gfx_TwoTexScrollEnvColor(globalCtx->state.gfxCtx, 0, frames * 3, 0, 32, 32, 1, 0, 0, 32, 32, 0, 0, 0,
                                         this->scrollAlpha4));
 
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_bg_mizu_movebg.c", 788),
+    gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
     if (this->dlist != NULL) {
         gSPDisplayList(POLY_OPA_DISP++, this->dlist);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_bg_mizu_movebg.c", 795);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

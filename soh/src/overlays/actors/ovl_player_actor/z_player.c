@@ -555,7 +555,7 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_SCALE_GOLDEN, OBJECT_GI_SCALE, GID_SCALE_GOLDEN, 0xCE, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_STONE_OF_AGONY, OBJECT_GI_MAP, GID_STONE_OF_AGONY, 0x68, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_GERUDO_CARD, OBJECT_GI_GERUDO, GID_GERUDO_CARD, 0x7B, 0x80, CHEST_ANIM_LONG),
-    GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x3A, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_OCARINA_FAIRY, OBJECT_GI_OCARINA_0, GID_OCARINA_FAIRY, 0x4A, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_SEEDS, OBJECT_GI_SEED, GID_SEEDS, 0xDC, 0x50, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_HEART_CONTAINER, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xC6, 0x80, CHEST_ANIM_LONG),
     GET_ITEM(ITEM_HEART_PIECE_2, OBJECT_GI_HEARTS, GID_HEART_PIECE, 0xC2, 0x80, CHEST_ANIM_LONG),
@@ -620,6 +620,48 @@ static GetItemEntry sGetItemTable[] = {
     GET_ITEM(ITEM_NUT_UPGRADE_30, OBJECT_GI_NUTS, GID_NUTS, 0xA7, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_NUT_UPGRADE_40, OBJECT_GI_NUTS, GID_NUTS, 0xA8, 0x80, CHEST_ANIM_SHORT),
     GET_ITEM(ITEM_BULLET_BAG_50, OBJECT_GI_DEKUPOUCH, GID_BULLET_BAG_50, 0x6C, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_ARROW_ICE, OBJECT_GI_M_ARROW, GID_ARROW_ICE, 0x3C, 0x80, CHEST_ANIM_SHORT), // Ice Traps
+    GET_ITEM_NONE,
+
+    GET_ITEM(ITEM_MEDALLION_LIGHT, OBJECT_GI_MEDAL, GID_MEDALLION_LIGHT, 0x40, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_MEDALLION_FOREST, OBJECT_GI_MEDAL, GID_MEDALLION_FOREST, 0x3E, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_MEDALLION_FIRE, OBJECT_GI_MEDAL, GID_MEDALLION_FIRE, 0x3C, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_MEDALLION_WATER, OBJECT_GI_MEDAL, GID_MEDALLION_WATER, 0x3D, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_MEDALLION_SHADOW, OBJECT_GI_MEDAL, GID_MEDALLION_SHADOW, 0x41, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_MEDALLION_SPIRIT, OBJECT_GI_MEDAL, GID_MEDALLION_SPIRIT, 0x3F, 0x80, CHEST_ANIM_LONG),
+
+    GET_ITEM(ITEM_KOKIRI_EMERALD, OBJECT_GI_JEWEL, GID_KOKIRI_EMERALD, 0x80, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_GORON_RUBY, OBJECT_GI_JEWEL, GID_GORON_RUBY, 0x81, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_ZORA_SAPPHIRE, OBJECT_GI_JEWEL, GID_ZORA_SAPPHIRE, 0x82, 0x80, CHEST_ANIM_LONG),
+
+    GET_ITEM(ITEM_SONG_LULLABY, OBJECT_GI_MELODY, GID_SONG_ZELDA, 0xD4, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_SUN, OBJECT_GI_MELODY, GID_SONG_SUN, 0xD3, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_EPONA, OBJECT_GI_MELODY, GID_SONG_EPONA, 0xD2, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_STORMS, OBJECT_GI_MELODY, GID_SONG_STORM, 0xD6, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_TIME, OBJECT_GI_MELODY, GID_SONG_TIME, 0xD5, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_SARIA, OBJECT_GI_MELODY, GID_SONG_SARIA, 0xD1, 0x80, CHEST_ANIM_LONG),
+
+    GET_ITEM(ITEM_SONG_MINUET, OBJECT_GI_MELODY, GID_SONG_MINUET, 0x73, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_BOLERO, OBJECT_GI_MELODY, GID_SONG_BOLERO, 0x74, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_SERENADE, OBJECT_GI_MELODY, GID_SONG_SERENADE, 0x75, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_NOCTURNE, OBJECT_GI_MELODY, GID_SONG_NOCTURNE, 0x77, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_REQUIEM, OBJECT_GI_MELODY, GID_SONG_REQUIEM, 0x76, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_SONG_PRELUDE, OBJECT_GI_MELODY, GID_SONG_PRELUDE, 0x78, 0x80, CHEST_ANIM_LONG),
+
+    GET_ITEM(ITEM_SINGLE_MAGIC, OBJECT_GI_MAGICPOT, GID_MAGIC_SMALL, 0xE4, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_DOUBLE_MAGIC, OBJECT_GI_MAGICPOT, GID_MAGIC_LARGE, 0xE8, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_DOUBLE_DEFENSE, OBJECT_GI_HEARTS, GID_HEART_CONTAINER, 0xE9, 0x80, CHEST_ANIM_LONG),
+
+    GET_ITEM(ITEM_BOTTLE_WITH_RED_POTION, OBJECT_GI_LIQUID, GID_POTION_RED, 0x43, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_GREEN_POTION, OBJECT_GI_LIQUID, GID_POTION_GREEN, 0x44, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_POTION, OBJECT_GI_LIQUID, GID_POTION_BLUE, 0x45, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FAIRY, OBJECT_GI_BOTTLE, GID_BOTTLE, 0x46, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_FISH, OBJECT_GI_FISH, GID_FISH, 0x47, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BLUE_FIRE, OBJECT_GI_FIRE, GID_BLUE_FIRE, 0x5D, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BUGS, OBJECT_GI_INSECT, GID_BUG, 0x7A, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_POE, OBJECT_GI_GHOST, GID_POE, 0x97, 0x80, CHEST_ANIM_LONG),
+    GET_ITEM(ITEM_BOTTLE_WITH_BIG_POE, OBJECT_GI_GHOST, GID_BIG_POE, 0xF9, 0x80, CHEST_ANIM_LONG),
+
     GET_ITEM_NONE,
     GET_ITEM_NONE,
 };
@@ -909,6 +951,8 @@ static s8 sItemActionParams[] = {
     PLAYER_AP_BOOTS_IRON,
     PLAYER_AP_BOOTS_HOVER,
 };
+
+static u8 sMaskMemory;
 
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
@@ -1909,7 +1953,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
             if (gSaveContext.equips.buttonItems[0] != maskItem && gSaveContext.equips.buttonItems[1] != maskItem &&
                 gSaveContext.equips.buttonItems[2] != maskItem && gSaveContext.equips.buttonItems[3] != maskItem &&
                 !hasOnDpad) {
-                this->currentMask = PLAYER_MASK_NONE;
+                this->currentMask = sMaskMemory = PLAYER_MASK_NONE;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
             }
         } else {
@@ -1921,7 +1965,7 @@ void func_80833DF8(Player* this, GlobalContext* globalCtx) {
                 }
             }
             if (!func_80833C98(C_BTN_ITEM(0), maskActionParam) && !func_80833C98(C_BTN_ITEM(1), maskActionParam) &&
-                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && hasOnDpad) {
+                !func_80833C98(C_BTN_ITEM(2), maskActionParam) && !hasOnDpad) {
                 this->currentMask = PLAYER_MASK_NONE;
             }
         }
@@ -2886,6 +2930,7 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
                 else {
                     this->currentMask = actionParam - PLAYER_AP_MASK_KEATON + 1;
                 }
+                sMaskMemory = this->currentMask;
                 func_808328EC(this, NA_SE_PL_CHANGE_ARMS);
                 return;
             }
@@ -3558,7 +3603,7 @@ s32 func_80837B18_modified(GlobalContext* globalCtx, Player* this, s32 damage, u
     s32 modifiedDamage = damage;
     if (modified)
     {
-       modifiedDamage *= CVar_GetS32("gDamageMul", 1);
+       modifiedDamage *= (1 << CVar_GetS32("gDamageMul", 0));
     }
 
     return Health_ChangeBy(globalCtx, modifiedDamage);
@@ -3791,7 +3836,7 @@ s32 func_808382DC(Player* this, GlobalContext* globalCtx) {
 
     if (this->unk_A86 != 0) {
         if (!Player_InBlockingCsMode(globalCtx, this)) {
-            Player_InflictDamageModified(globalCtx, -16 * CVar_GetS32("gVoidDamageMul", 1), false);
+            Player_InflictDamageModified(globalCtx, -16 * (1 << CVar_GetS32("gVoidDamageMul", 0)), false);
             this->unk_A86 = 0;
         }
     }
@@ -4574,6 +4619,7 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
             this->interactRangeActor->parent = &this->actor;
             func_80835C58(globalCtx, this, func_8084F608, 0);
             this->stateFlags1 |= PLAYER_STATE1_29;
+            sMaskMemory = PLAYER_MASK_NONE;
         }
         else {
             LinkAnimationHeader* anim;
@@ -4900,11 +4946,11 @@ void func_8083AE40(Player* this, s16 objectId) {
 
         size = gObjectTable[objectId].vromEnd - gObjectTable[objectId].vromStart;
 
-        LOG_HEX("size", size, "../z_player.c", 9090);
-        ASSERT(size <= 1024 * 8, "size <= 1024 * 8", "../z_player.c", 9091);
+        LOG_HEX("size", size);
+        ASSERT(size <= 1024 * 8);
 
         DmaMgr_SendRequest2(&this->giObjectDmaRequest, (uintptr_t)this->giObjectSegment, gObjectTable[objectId].vromStart,
-            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), "../z_player.c", 9099);
+            size, 0, &this->giObjectLoadQueue, OS_MESG_PTR(NULL), __FILE__, __LINE__);
     }
 }
 
@@ -5145,7 +5191,7 @@ s32 func_8083B644(Player* this, GlobalContext* globalCtx) {
                             this->stateFlags2 |= PLAYER_STATE2_21;
                         }
 
-                        if (!CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) && !sp28) {
+                        if (!CHECK_BTN_ALL(sControlInput->press.button, CVar_GetS32("gNaviOnL", 0) ? BTN_L : BTN_CUP) && !sp28) {
                             return 0;
                         }
 
@@ -5201,7 +5247,8 @@ s32 func_8083B998(Player* this, GlobalContext* globalCtx) {
         (CHECK_FLAG_ALL(this->unk_664->flags, ACTOR_FLAG_0 | ACTOR_FLAG_18) || (this->unk_664->naviEnemyId != 0xFF))) {
         this->stateFlags2 |= PLAYER_STATE2_21;
     }
-    else if ((this->naviTextId == 0) && !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
+    else if ((this->naviTextId == 0 || CVar_GetS32("gNaviOnL", 0)) &&
+             !func_8008E9C4(this) && CHECK_BTN_ALL(sControlInput->press.button, BTN_CUP) &&
         (YREG(15) != 0x10) && (YREG(15) != 0x20) && !func_8083B8F4(this, globalCtx)) {
         func_80078884(NA_SE_SY_ERROR);
     }
@@ -6204,12 +6251,29 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
 
                 iREG(67) = false;
 
+                if (gSaveContext.n64ddFlag && this->getItemId == GI_ICE_TRAP) {
+                    this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
+                    this->actor.colChkInfo.damage = 0;
+                    func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                    return;
+                }
+
                 s32 drop = giEntry->objectId;
 
-                if ((globalCtx->sceneNum == SCENE_BOWLING) || !(CVar_GetS32("gFastDrops", 0) &&
+                if (gSaveContext.n64ddFlag || (globalCtx->sceneNum == SCENE_BOWLING) || !(CVar_GetS32("gFastDrops", 0) &&
                     ((drop == OBJECT_GI_BOMB_1) || (drop == OBJECT_GI_NUTS) || (drop == OBJECT_GI_STICK) ||
                     (drop == OBJECT_GI_SEED) || (drop == OBJECT_GI_MAGICPOT) || (drop == OBJECT_GI_ARROW))) &&
                     (Item_CheckObtainability(giEntry->itemId) == ITEM_NONE)) {
+
+                    if (gSaveContext.n64ddFlag &&
+                        ((interactedActor->id == ACTOR_EN_ITEM00 &&
+                          (interactedActor->params != 6 && interactedActor->params != 17)) ||
+                         (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA))) {
+                        func_8083E4C4(globalCtx, this, giEntry);
+                        this->getItemId = GI_NONE;
+                        return 0;
+                    }                    
+
                     func_808323B4(globalCtx, this);
                     func_8083AE40(this, giEntry->objectId);
 
@@ -6227,13 +6291,12 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 func_8083E4C4(globalCtx, this, giEntry);
                 this->getItemId = GI_NONE;
             }
-        }
-        else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
-            !(this->stateFlags2 & PLAYER_STATE2_10)) {
+        } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
+                   !(this->stateFlags2 & PLAYER_STATE2_10)) {
             if (this->getItemId != GI_NONE) {
                 GetItemEntry* giEntry = &sGetItemTable[-this->getItemId - 1];
                 EnBox* chest = (EnBox*)interactedActor;
-                if(CVar_GetS32("gFastChests", 0) != 0) {
+                if (CVar_GetS32("gFastChests", 0) != 0) {
                     giEntry->gi = -1 * abs(giEntry->gi);
                 }
 
@@ -6261,8 +6324,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     func_80832F54(globalCtx, this, 0x28F);
                     chest->unk_1F4 = 1;
                     Camera_ChangeSetting(Gameplay_GetCamera(globalCtx, 0), CAM_SET_SLOW_CHEST_CS);
-                }
-                else {
+                } else {
                     func_80832264(globalCtx, this, &gPlayerAnim_002DF8);
                     chest->unk_1F4 = -1;
                 }
@@ -6282,12 +6344,10 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     if (sp24 == PLAYER_AP_SWORD_MASTER) {
                         this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_AP_LAST_USED);
                         func_8083399C(globalCtx, this, PLAYER_AP_LAST_USED);
-                    }
-                    else {
+                    } else {
                         func_80835F44(globalCtx, this, ITEM_LAST_USED);
                     }
-                }
-                else {
+                } else {
                     s32 strength = Player_GetStrength();
 
                     if ((interactedActor->id == ACTOR_EN_ISHI) && ((interactedActor->params & 0xF) == 1) &&
@@ -6877,8 +6937,6 @@ void func_8084029C(Player* this, f32 arg1) {
     else if (arg1 > 7.25f) {
         arg1 = 7.25f;
     }
-
-    if (1) {}
 
     if ((this->currentBoots == PLAYER_BOOTS_HOVER) && !(this->actor.bgCheckFlags & 1) && (this->hoverBootsTimer != 0)) {
         func_8002F8F0(&this->actor, NA_SE_PL_HOBBERBOOTS_LV - SFX_FLAG);
@@ -7789,15 +7847,35 @@ s32 func_8084285C(Player* this, f32 arg1, f32 arg2, f32 arg3) {
 }
 
 s32 func_808428D8(Player* this, GlobalContext* globalCtx) {
-    if (!Player_IsChildWithHylianShield(this) && Player_GetSwordHeld(this) && D_80853614) {
-        func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
-        this->unk_84F = 1;
-        this->swordAnimation = 0xC;
-        this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+    if (Player_IsChildWithHylianShield(this) || !Player_GetSwordHeld(this) || !D_80853614) {
+        return 0;
+    }
+
+    func_80832264(globalCtx, this, &gPlayerAnim_002EC8);
+    this->unk_84F = 1;
+    this->swordAnimation = 0xC;
+    this->currentYaw = this->actor.shape.rot.y + this->unk_6BE;
+
+    if (!CVar_GetS32("gCrouchStabHammerFix", 0)) {
         return 1;
     }
 
-    return 0;
+    u32 swordId;
+    if (Player_HoldsBrokenKnife(this)) {
+        swordId = 1;
+    } else {
+        swordId = Player_GetSwordHeld(this) - 1;
+    }
+
+    if (swordId != 4 && !CVar_GetS32("gCrouchStabFix", 0)) { // 4 = Megaton Hammer
+        return 1;
+    }
+
+    u32 flags = D_80854488[swordId][0];
+    func_80837918(this, 0, flags);
+    func_80837918(this, 1, flags);
+
+    return 1;
 }
 
 s32 func_80842964(Player* this, GlobalContext* globalCtx) {
@@ -8232,7 +8310,21 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
                     LinkAnimation_Change(globalCtx, &this->skelAnime, &gPlayerAnim_002878, 1.0f, 99.0f,
                         Animation_GetLastFrame(&gPlayerAnim_002878), ANIMMODE_ONCE, 0.0f);
                 }
-                gSaveContext.healthAccumulator = 0x140;
+                if (CVar_GetS32("gFairyReviveEffect", 0))
+                {
+                    if (CVar_GetS32("gFairyRevivePercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyReviveHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gFairyReviveHealth", 20) * 16;
+                    }
+                }
+                else
+                {
+                    gSaveContext.healthAccumulator = 0x140;
+                }
                 this->unk_850 = -1;
             }
         }
@@ -8257,6 +8349,7 @@ void func_80843AE8(GlobalContext* globalCtx, Player* this) {
     }
     else if (globalCtx->gameOverCtx.state == GAMEOVER_DEATH_WAIT_GROUND) {
         globalCtx->gameOverCtx.state = GAMEOVER_DEATH_DELAY_MENU;
+        sMaskMemory = PLAYER_MASK_NONE;
     }
 }
 
@@ -8335,7 +8428,7 @@ s32 func_80843E64(GlobalContext* globalCtx, Player* this) {
 
         impactInfo = &D_80854600[impactIndex];
 
-        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * CVar_GetS32("gFallDamageMul", 1), false)) {
+        if (Player_InflictDamageModified(globalCtx, impactInfo->damage * (1 << CVar_GetS32("gFallDamageMul", 0)), false)) {
             return -1;
         }
 
@@ -9525,8 +9618,20 @@ void Player_Init(Actor* thisx, GlobalContext* globalCtx2) {
     func_80835F44(globalCtx, this, ITEM_NONE);
     Player_SetEquipmentData(globalCtx, this);
     this->prevBoots = this->currentBoots;
+    if (CVar_GetS32("gMMBunnyHood", 0)) {
+        if (INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_SOLD_OUT) { sMaskMemory = PLAYER_MASK_NONE; }
+        this->currentMask = sMaskMemory;
+        for (uint16_t cSlotIndex = 0; cSlotIndex < ARRAY_COUNT(gSaveContext.equips.cButtonSlots); cSlotIndex++) {
+            if (gSaveContext.equips.cButtonSlots[cSlotIndex] == SLOT_TRADE_CHILD &&
+                (gItemAgeReqs[gSaveContext.equips.buttonItems[cSlotIndex+1]] != 9 &&
+                 LINK_IS_ADULT && !CVar_GetS32("gNoRestrictAge", 0))) {
+                gSaveContext.equips.cButtonSlots[cSlotIndex] = SLOT_NONE;
+                gSaveContext.equips.buttonItems[cSlotIndex+1] = ITEM_NONE;
+            }
+        }
+    }
     Player_InitCommon(this, globalCtx, gPlayerSkelHeaders[((void)0, gSaveContext.linkAge)]);
-    this->giObjectSegment = (void*)(((uintptr_t)ZeldaArena_MallocDebug(0x3008, "../z_player.c", 17175) + 8) & ~0xF);
+    this->giObjectSegment = (void*)(((uintptr_t)ZELDA_ARENA_MALLOC_DEBUG(0x3008) + 8) & ~0xF);
 
     sp50 = gSaveContext.respawnFlag;
 
@@ -9800,8 +9905,15 @@ void func_808473D4(GlobalContext* globalCtx, Player* this) {
             this->unk_837 = 20;
         }
         else if (this->unk_837 != 0) {
-            doAction = DO_ACTION_NONE;
-            this->unk_837--;
+            if (CVar_GetS32("gInstantPutaway", 0) != 0)
+            {
+                this->unk_837 = 0;
+            }
+            else
+            {
+                doAction = DO_ACTION_NONE;
+                this->unk_837--;
+            }
         }
 
         Interface_SetDoAction(globalCtx, doAction);
@@ -10386,28 +10498,68 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
         /*Prevent it on horse, while jumping and on title screen.
         If you fly around no stone of agony for you! */
         if (CVar_GetS32("gVisualAgony", 0) !=0 && !this->stateFlags1) {
-            int rectLeft    = OTRGetRectDimensionFromLeftEdge(26); //Left X Pos
-            int rectTop     = 60; //Top Y Pos
-            int rectWidth   = 24; //Texture Width
-            int rectHeight  = 24; //Texture Heigh
-            int DefaultIconA= 50; //Default icon alphe (55 on 255)
-
-            if (CVar_GetS32("gHUDMargins", 0) != 0) {
-                rectLeft = OTRGetRectDimensionFromLeftEdge(26+(CVar_GetS32("gHUDMargin_L", 0)*-1));
-                rectTop = 60+(CVar_GetS32("gHUDMargin_T", 0)*-1);
+            s16 Top_Margins = (CVar_GetS32("gHUDMargin_T", 0)*-1);
+            s16 Left_Margins = CVar_GetS32("gHUDMargin_L", 0);
+            s16 Right_Margins = CVar_GetS32("gHUDMargin_R", 0);
+            s16 X_Margins_VSOA;
+            s16 Y_Margins_VSOA;
+            if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {
+                if (CVar_GetS32("gVSOAPosType", 0) == 0) {X_Margins_VSOA = Left_Margins;};
+                Y_Margins_VSOA = Top_Margins;
             } else {
-                rectTop = 60;
-                rectLeft = OTRGetRectDimensionFromLeftEdge(26);
+                X_Margins_VSOA = 0;
+                Y_Margins_VSOA = 0;
+            }
+            s16 PosX_VSOA_ori = OTRGetRectDimensionFromLeftEdge(26)+X_Margins_VSOA;
+            s16 PosY_VSOA_ori = 60+Y_Margins_VSOA;
+            s16 PosX_VSOA;
+            s16 PosY_VSOA;
+            if (CVar_GetS32("gVSOAPosType", 0) != 0) {
+                PosY_VSOA = CVar_GetS32("gVSOAPosY", 0)+Y_Margins_VSOA;
+                if (CVar_GetS32("gVSOAPosType", 0) == 1) {//Anchor Left
+                    if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {X_Margins_VSOA = Left_Margins;};
+                    PosX_VSOA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gVSOAPosX", 0)+X_Margins_VSOA);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 2) {//Anchor Right
+                    if (CVar_GetS32("gVSOAUseMargins", 0) != 0) {X_Margins_VSOA = Right_Margins;};
+                    PosX_VSOA = OTRGetDimensionFromRightEdge(CVar_GetS32("gVSOAPosX", 0)+X_Margins_VSOA);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 3) {//Anchor None
+                    PosX_VSOA = CVar_GetS32("gVSOAPosX", 0);
+                } else if (CVar_GetS32("gVSOAPosType", 0) == 4) {//Hidden
+                   PosX_VSOA = -9999;
+                }
+            } else {
+                PosY_VSOA = PosY_VSOA_ori;
+                PosX_VSOA = PosX_VSOA_ori;
             }
 
-            OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 2824);
+            int rectLeft    = PosX_VSOA; //Left X Pos
+            int rectTop     = PosY_VSOA; //Top Y Pos
+            int rectWidth   = 24; //Texture Width
+            int rectHeight  = 24; //Texture Heigh
+            int DefaultIconA= 50; //Default icon alpha (55 on 255)
+
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPPipeSync(OVERLAY_DISP++);
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
-            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
-            if (this->unk_6A0 > 4000000.0f) {
-                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+
+            if (CVar_GetS32("gHudColors", 1) == 2) {
+                gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+            }
+
+            gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+            if (this->unk_6A0 > 4000000.0f) {
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), 255);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, 255);
+                }
+            } else {
+                if (CVar_GetS32("gHudColors", 1) == 2) {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCVSOAPrimR", 255), CVar_GetS32("gCCVSOAPrimG", 255), CVar_GetS32("gCCVSOAPrimB", 255), DefaultIconA);
+                } else {
+                    gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, DefaultIconA);
+                }
             }
             if (temp == 0 || temp <= 0.1f) {
                /*Fail check, it is used to draw off the icon when
@@ -10420,7 +10572,7 @@ void func_80848EF8(Player* this, GlobalContext* globalCtx) {
             gDPLoadTextureBlock(OVERLAY_DISP++, gStoneOfAgonyIconTex, G_IM_FMT_RGBA, G_IM_SIZ_32b, 24, 24, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
             gDPSetOtherMode(OVERLAY_DISP++, G_AD_DISABLE | G_CD_DISABLE | G_CK_NONE | G_TC_FILT | G_TF_BILERP | G_TT_IA16 | G_TL_TILE | G_TD_CLAMP | G_TP_NONE | G_CYC_1CYCLE | G_PM_NPRIMITIVE, G_AC_NONE | G_ZS_PRIM | G_RM_XLU_SURF | G_RM_XLU_SURF2);
             gSPWideTextureRectangle(OVERLAY_DISP++, rectLeft << 2, rectTop << 2, (rectLeft + rectWidth) << 2, (rectTop + rectHeight) << 2, G_TX_RENDERTILE, 0, 0, 1 << 10, 1 << 10);
-            CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 3500);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         if (this->unk_6A0 > 4000000.0f) {
@@ -10933,7 +11085,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
     OverrideLimbDrawOpa overrideLimbDraw) {
     static s32 D_8085486C = 255;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19228);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_OPA_DISP++, 0x0C, cullDList);
     gSPSegment(POLY_XLU_DISP++, 0x0C, cullDList);
@@ -10954,13 +11106,13 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
             sp68.y = D_80858AC8.unk_04 + 0xDBE;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, -240.0f, &sp68);
-            Matrix_ToMtx(sp70++, "../z_player.c", 19273);
+            MATRIX_TOMTX(sp70++);
 
             sp68.x = D_80858AC8.unk_02 - 0x3E2;
             sp68.y = -0xDBE - D_80858AC8.unk_04;
             sp68.z = D_80858AC8.unk_00 - 0x348A;
             Matrix_SetTranslateRotateYXZ(97.0f, -1203.0f, 240.0f, &sp68);
-            Matrix_ToMtx(sp70, "../z_player.c", 19279);
+            MATRIX_TOMTX(sp70);
         }
 
         gSPDisplayList(POLY_OPA_DISP++, sMaskDlists[this->currentMask - 1]);
@@ -10992,7 +11144,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
                 this->actor.world.pos.z, &D_80854864);
             Matrix_Scale(4.0f, 4.0f, 4.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19317),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                 Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 32, 1, 0,
@@ -11003,7 +11155,7 @@ void Player_DrawGameplay(GlobalContext* globalCtx, Player* this, s32 lod, Gfx* c
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19328);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
@@ -11037,7 +11189,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     rot.y = 32300;
     rot.x = rot.z = 0;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19346);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
 
     if (!(this->stateFlags2 & PLAYER_STATE2_29)) {
@@ -11120,7 +11272,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                     0, (globalCtx->gameplayFrames * -2) % 128, 32, 32));
 
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_player.c", 19459),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                 G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, 255);
             gSPDisplayList(POLY_XLU_DISP++, gEffIceFragment3DL);
@@ -11131,7 +11283,7 @@ void Player_Draw(Actor* thisx, GlobalContext* globalCtx2) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_player.c", 19473);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Player_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -12527,6 +12679,12 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         giEntry = &sGetItemTable[this->getItemId - 1];
         this->unk_84F = 1;
 
+        // make sure we get the BGS instead of giant's knife
+        if(this->getItemId == GI_SWORD_BGS) {
+            gSaveContext.bgsFlag = 1;
+            gSaveContext.swordHealth = 8;       
+        }
+
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
 
@@ -12550,7 +12708,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     }
     else {
         if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_CLOSING) {
-            if (this->getItemId == GI_GAUNTLETS_SILVER) {
+            if (this->getItemId == GI_GAUNTLETS_SILVER && !gSaveContext.n64ddFlag) {
                 globalCtx->nextEntranceIndex = 0x0123;
                 globalCtx->sceneLoadFlag = 0x14;
                 gSaveContext.nextCutsceneIndex = 0xFFF1;
@@ -12834,17 +12992,100 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
             }
             else {
                 s32 sp28 = D_808549FC[this->itemActionParam - PLAYER_AP_BOTTLE_POTION_RED];
-
-                if (sp28 & 1) {
-                    gSaveContext.healthAccumulator = 0x140;
+                
+                if (CVar_GetS32("gRedPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_RED)
+                {
+                    if (CVar_GetS32("gRedPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gRedPotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gRedPotionHealth", 20) * 16;
+                    }
                 }
+                else if (CVar_GetS32("gBluePotionEffects", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_BLUE)
+                {
+                    if (CVar_GetS32("gBlueHealthPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gBluePotionHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gBluePotionHealth", 20) * 16;
+                    }
 
-                if (sp28 & 2) {
-                    Magic_Fill(globalCtx);
+                    if (CVar_GetS32("gBlueManaPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMana", 100), 5);;
+                    }
                 }
+                else if (CVar_GetS32("gGreenPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN)
+                {
+                    if (CVar_GetS32("gGreenPercentRestore", 0))
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
 
-                if (sp28 & 4) {
-                    gSaveContext.healthAccumulator = 0x50;
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                    }
+                    else
+                    {
+                        if (gSaveContext.unk_13F0 != 10) {
+                            Magic_Fill(globalCtx);
+                        }
+
+                        func_80087708(globalCtx, CVar_GetS32("gGreenPotionMana", 100), 5);;
+                    }
+                }
+                else if (CVar_GetS32("gMilkEffect", 0) && (this->itemActionParam == PLAYER_AP_BOTTLE_MILK || this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF))
+                {
+                    if (CVar_GetS32("gMilkPercentRestore", 0))
+                    {
+                        gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gMilkHealth", 100) / 100 + 15) / 16 * 16;
+                    }
+                    else
+                    {
+                        gSaveContext.healthAccumulator = CVar_GetS32("gMilkHealth", 5) * 16;
+                    }
+                    if  (CVar_GetS32("gSeparateHalfMilkEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF)
+                    {
+                        if (CVar_GetS32("gHalfMilkPercentRestore", 0))
+                        {
+                            gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gHalfMilkHealth", 100) / 100 + 15) / 16 * 16;
+                        }
+                        else
+                        {
+                            gSaveContext.healthAccumulator = CVar_GetS32("gHalfMilkHealth", 5) * 16;
+                        }
+                    }
+                }
+                else
+                {
+                    if (sp28 & 1) {
+                        gSaveContext.healthAccumulator = 0x140;
+                    }
+
+                    if (sp28 & 2) {
+                        Magic_Fill(globalCtx);
+                    }
+
+                    if (sp28 & 4) {
+                        gSaveContext.healthAccumulator = 0x50;
+                    }
                 }
             }
 
@@ -12957,7 +13198,21 @@ void func_8084EED8(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_EV_FIATY_HEAL - SFX_FLAG);
     }
     else if (LinkAnimation_OnFrame(&this->skelAnime, 47.0f)) {
-        gSaveContext.healthAccumulator = 0x140;
+        if (CVar_GetS32("gFairyEffect", 0))
+        {
+            if (CVar_GetS32("gFairyPercentRestore", 0))
+            {
+                gSaveContext.healthAccumulator = (gSaveContext.healthCapacity * CVar_GetS32("gFairyHealth", 100) / 100 + 15) / 16 * 16;
+            }
+            else
+            {
+                gSaveContext.healthAccumulator = CVar_GetS32("gFairyHealth", 8) * 16;
+            }
+        }
+        else
+        {
+            gSaveContext.healthAccumulator = 0x140;
+        }
     }
 }
 
@@ -14851,6 +15106,17 @@ s32 Player_IsDroppingFish(GlobalContext* globalCtx) {
 
 s32 Player_StartFishing(GlobalContext* globalCtx) {
     Player* this = GET_PLAYER(globalCtx);
+
+    if (gSaveContext.linkAge == 1) {
+        if (!CHECK_OWNED_EQUIP(EQUIP_SWORD, 0)) {
+            gSaveContext.temporaryWeapon = true;
+        }
+        if (this->heldItemId == ITEM_NONE) {
+            this->currentSwordItem = ITEM_SWORD_KOKIRI;
+            gSaveContext.equips.buttonItems[0] = ITEM_SWORD_KOKIRI;
+            Inventory_ChangeEquipment(EQUIP_SWORD, PLAYER_SWORD_KOKIRI);
+        }
+    }
 
     func_80832564(globalCtx, this);
     func_80835F44(globalCtx, this, ITEM_FISHING_POLE);

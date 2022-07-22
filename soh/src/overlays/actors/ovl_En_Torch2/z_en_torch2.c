@@ -770,7 +770,7 @@ void EnTorch2_Draw(Actor* thisx, GlobalContext* globalCtx2) {
     Player* this = (Player*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_torch2.c", 1050);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093C80(globalCtx);
     func_80093D84(globalCtx->state.gfxCtx);
     if (sAlpha == 255) {
@@ -790,5 +790,5 @@ void EnTorch2_Draw(Actor* thisx, GlobalContext* globalCtx2) {
                                            this->skelAnime.dListCount, EnTorch2_OverrideLimbDraw, EnTorch2_PostLimbDraw,
                                            this, POLY_XLU_DISP);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_torch2.c", 1114);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

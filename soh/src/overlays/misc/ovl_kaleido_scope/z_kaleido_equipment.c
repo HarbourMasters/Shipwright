@@ -27,7 +27,7 @@ void KaleidoScope_DrawEquipmentImage(GlobalContext* globalCtx, void* source, u32
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 68);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetCombineMode(POLY_KAL_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
@@ -86,7 +86,7 @@ void KaleidoScope_DrawEquipmentImage(GlobalContext* globalCtx, void* source, u32
         vtxIndex += 4;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 122);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 Vec3s link_kaleido_rot = { 0, 32300, 0 }; // Default rotation link face us.
@@ -164,9 +164,9 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
     s16 cursorX;
     s16 cursorY;
     s16 oldCursorPoint;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = (CVar_GetS32("gDpadPauseName", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 219);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     gDPPipeSync(POLY_KAL_DISP++);
     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, ZREG(39), ZREG(40), ZREG(41), pauseCtx->alpha);
@@ -491,7 +491,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         KaleidoScope_SetCursorVtx(pauseCtx, cursorSlot * 4, pauseCtx->equipVtx);
 
         u16 buttonsToCheck = BTN_A | BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-        if (CVar_GetS32("gDpadEquips", 0) != 0) {
+        if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
             buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
         }
 
@@ -622,7 +622,6 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
         if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
             point = CUR_UPG_VALUE(sChildUpgrades[i]);
-            if (1) {}
             if ((point != 0) && (CUR_UPG_VALUE(sChildUpgrades[i]) != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx,
                                                    gItemIcons[sChildUpgradeItemBases[i] + point - 1], 32, 32, 0);
@@ -638,24 +637,23 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1], 32, 32, 0);
             }
         }
-
+        // Draw inventory screen icons
         for (k = 0, bit = rowStart, point = 4; k < 3; k++, point += 4, temp++, bit++) {
 
+            int itemId = ITEM_SWORD_KOKIRI + temp;
+            bool age_restricted = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            if (age_restricted) {
+                gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gsSPGrayscale(POLY_KAL_DISP++, true);
+            }
             if (((u32)i == 0) && (k == 2) && (gSaveContext.bgsFlag != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBiggoronSwordIconTex, 32, 32, point);
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBrokenGiantsKnifeIconTex, 32, 32, point);
-            }
-            if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
-                int itemId = ITEM_SWORD_KOKIRI + temp;
-                bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
-                if (not_acquired) {
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gsSPGrayscale(POLY_KAL_DISP++, true);
-                }
+            } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
-                gsSPGrayscale(POLY_KAL_DISP++, false);
             }
+            gsSPGrayscale(POLY_KAL_DISP++, false);
         }
     }
 
@@ -687,5 +685,5 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
 
     if (gUpgradeMasks[0]) {}
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_equipment.c", 609);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -78,8 +78,6 @@ void EnChanger_Init(Actor* thisx, GlobalContext* globalCtx2) {
     s16 new_var;
     s32 rewardParams;
 
-    if (1) {}
-
     minigameRoomNum = globalCtx->roomCtx.curRoom.num - 1;
     if (minigameRoomNum < 0) {
         minigameRoomNum = 0;

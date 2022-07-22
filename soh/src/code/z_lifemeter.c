@@ -181,17 +181,10 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     s16 gFactor;
     s16 bFactor;
 
-    if (CVar_GetS32("gHUDMargins", 0) != 0) {
-        Top_LM_Margin = CVar_GetS32("gHUDMargin_T", 0);
-        Left_LM_Margin = CVar_GetS32("gHUDMargin_L", 0);
-        Right_LM_Margin = CVar_GetS32("gHUDMargin_R", 0);
-        Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
-    } else {
-        Top_LM_Margin = 0;
-        Left_LM_Margin = 0;
-        Right_LM_Margin = 0;
-        Bottom_LM_Margin = 0;
-    }
+    Top_LM_Margin = CVar_GetS32("gHUDMargin_T", 0);
+    Left_LM_Margin = CVar_GetS32("gHUDMargin_L", 0);
+    Right_LM_Margin = CVar_GetS32("gHUDMargin_R", 0);
+    Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
         HeartInner[0] = CVar_GetS32("gCCHeartsPrimR", sHeartsPrimColors[0][0]);
@@ -274,21 +267,25 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     sHeartsDDEnv[0][2] = HeartDDInner[2];
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        sHeartsDDPrim[2][0] = HeartInner[0];
-        sHeartsDDPrim[2][1] = HeartInner[1];
-        sHeartsDDPrim[2][2] = HeartInner[2];
+        sHeartsDDPrim[2][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
+        sHeartsDDPrim[2][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
+        sHeartsDDPrim[2][2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
 
         sHeartsDDPrim[1][0] = HeartDDOutline[0];
         sHeartsDDPrim[1][1] = HeartDDOutline[1];
         sHeartsDDPrim[1][2] = HeartDDOutline[2];
 
-        sHeartsDDEnv[1][0] = HeartDDInner[0];
-        sHeartsDDEnv[1][1] = HeartDDInner[1];
-        sHeartsDDEnv[1][2] = HeartDDInner[2];
+        sHeartsDDEnv[1][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
+        sHeartsDDEnv[1][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
+        sHeartsDDEnv[1][2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
 
-        HeartDDInner[0] = HeartInner[0];
-        HeartDDInner[1] = HeartInner[1];
-        HeartDDInner[2] = HeartInner[2];
+        HeartDDInner[0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
+        HeartDDInner[1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
+        HeartDDInner[2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
+
+        sHeartsDDEnv[0][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
+        sHeartsDDEnv[0][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
+        sHeartsDDEnv[0][2] = CVar_GetS32("gCCDDHeartsPrimB", 0);
 
         rFactor = sHeartsDDPrimFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
@@ -305,18 +302,22 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         sBeatingHeartsDDEnv[0] = (u8)(rFactor + HeartDDInner[0]) & 0xFF;
         sBeatingHeartsDDEnv[1] = (u8)(gFactor + HeartDDInner[1]) & 0xFF;
         sBeatingHeartsDDEnv[2] = (u8)(bFactor + HeartDDInner[2]) & 0xFF;
-    } else {
-        // sHeartsDDPrim[2][0] = HEARTS_PRIM_R;
-        // sHeartsDDPrim[2][1] = HEARTS_PRIM_G;
-        // sHeartsDDPrim[2][2] = HEARTS_PRIM_B;
+    } else {    
+        sHeartsDDPrim[0][0] = HEARTS_DD_PRIM_R;
+        sHeartsDDPrim[0][1] = HEARTS_DD_PRIM_G;
+        sHeartsDDPrim[0][2] = HEARTS_DD_PRIM_B;
 
-        sHeartsDDPrim[1][0] = HEARTS_DD_PRIM_R;
-        sHeartsDDPrim[1][1] = HEARTS_DD_PRIM_G;
-        sHeartsDDPrim[1][2] = HEARTS_DD_PRIM_B;
+        sHeartsDDEnv[0][0] = HEARTS_DD_ENV_R;
+        sHeartsDDEnv[0][1] = HEARTS_DD_ENV_G;
+        sHeartsDDEnv[0][2] = HEARTS_DD_ENV_B;
 
-        sHeartsDDEnv[1][0] = HEARTS_PRIM_R;
-        sHeartsDDEnv[1][1] = HEARTS_PRIM_G;
-        sHeartsDDEnv[1][2] = HEARTS_PRIM_B;
+        sHeartsDDPrim[1][0] = sHeartsDDPrimColors[ddType][0];
+        sHeartsDDPrim[1][1] = sHeartsDDPrimColors[ddType][1];
+        sHeartsDDPrim[1][2] = sHeartsDDPrimColors[ddType][2];
+
+        sHeartsDDEnv[1][0] = sHeartsDDEnvColors[ddType][0];
+        sHeartsDDEnv[1][1] = sHeartsDDEnvColors[ddType][1];
+        sHeartsDDEnv[1][2] = sHeartsDDEnvColors[ddType][2];
 
         rFactor = sHeartsDDPrimFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
@@ -330,9 +331,9 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
         gFactor = sHeartsDDEnvFactors[ddType][1] * ddFactor;
         bFactor = sHeartsDDEnvFactors[ddType][2] * ddFactor;
 
-        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HEARTS_PRIM_R) & 0xFF;
-        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HEARTS_PRIM_G) & 0xFF;
-        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HEARTS_PRIM_B) & 0xFF;
+        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HEARTS_DD_ENV_R) & 0xFF;
+        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HEARTS_DD_ENV_G) & 0xFF;
+        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HEARTS_DD_ENV_B) & 0xFF;
     }
 
 }
@@ -412,15 +413,40 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
 
-    OPEN_DISPS(gfxCtx, "../z_lifemeter.c", 353);
+    OPEN_DISPS(gfxCtx);
 
     if (!(gSaveContext.health % 0x10)) {
         fullHeartCount--;
     }
 
     curColorSet = -1;
-    offsetY = 0.0f+(Top_LM_Margin*-1);
-    offsetX = OTRGetDimensionFromLeftEdge(0.0f)+(Left_LM_Margin*-1);
+    s16 X_Margins;
+    s16 Y_Margins;
+    if (CVar_GetS32("gHeartsUseMargins", 0) != 0) {
+        X_Margins = Left_LM_Margin;
+        Y_Margins = (Top_LM_Margin*-1);
+    } else {
+        X_Margins = 0;
+        Y_Margins = 0;
+    }
+    s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
+    s16 PosY_original = 0.0f+Y_Margins;
+    if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
+        offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins;
+        if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
+            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
+            X_Margins = Right_LM_Margin;
+            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
+            offsetX = CVar_GetS32("gHeartsPosX", 0);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
+            offsetX = -9999;
+        }
+    } else {
+        offsetY = PosY_original;
+        offsetX = PosX_original;
+    }
 
     for (i = 0; i < totalHeartCount; i++) {
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
@@ -579,12 +605,28 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
 
         offsetX += 10.0f;
         if (i == 9) {
-            offsetY += 10.0f;
-            offsetX = OTRGetDimensionFromLeftEdge(0.0f)+(Left_LM_Margin*-1);
+            PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
+            PosY_original = 10.0f+Y_Margins;
+            if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
+                offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins+10.0f;
+                if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
+                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
+                    X_Margins = Right_LM_Margin;
+                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
+                    offsetX = CVar_GetS32("gHeartsPosX", 0);
+                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
+                    offsetX = -9999;
+                }
+            } else {
+                offsetY = PosY_original;
+                offsetX = PosX_original;
+            }
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_lifemeter.c", 606);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void HealthMeter_HandleCriticalAlarm(GlobalContext* globalCtx) {

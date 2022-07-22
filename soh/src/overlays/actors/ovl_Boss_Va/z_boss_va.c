@@ -121,6 +121,7 @@ void BossVa_Init(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Update(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BossVa_Reset(void);
 
 void BossVa_UpdateEffects(GlobalContext* globalCtx);
 void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx);
@@ -204,7 +205,7 @@ const ActorInit Boss_Va_InitVars = {
     (ActorFunc)BossVa_Destroy,
     (ActorFunc)BossVa_Update,
     (ActorFunc)BossVa_Draw,
-    NULL,
+    (ActorResetFunc)BossVa_Reset,
 };
 
 static ColliderCylinderInit sCylinderInit = {
@@ -593,6 +594,8 @@ void BossVa_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     switch (this->actor.params) {
         case BOSSVA_BODY:
+            //sFightPhase = 0;
+            //sBodyState = 1;
             SkelAnime_Init(globalCtx, &this->skelAnime, &gBarinadeBodySkel, &gBarinadeBodyAnim, NULL, NULL, 0);
             this->actor.flags |= ACTOR_FLAG_24;
             break;
@@ -2874,7 +2877,7 @@ s32 BossVa_BodyOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
     BossVa* this = (BossVa*)thisx;
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4156);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 20) {
         gDPPipeSync(POLY_OPA_DISP++);
@@ -2894,7 +2897,7 @@ s32 BossVa_BodyOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
         rot->x -= 0xCCC;
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4183);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     return false;
 }
 
@@ -2903,7 +2906,7 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
     Vec3f sp78 = { 0.0f, 0.0f, 0.0f };
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4192);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 6) {
         if (sFightPhase < PHASE_3) {
@@ -2914,11 +2917,11 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_MultVec3f(&sp78, &this->unk_1D8);
     } else if ((limbIndex >= 10) && (limbIndex < 20) && (sBodyBari[limbIndex - 10] != 0)) {
         if (((limbIndex >= 16) || (limbIndex == 10)) && (sFightPhase <= PHASE_3)) {
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4208),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008BB8);
         } else if ((limbIndex >= 11) && (sFightPhase <= PHASE_2)) {
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4212),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008BB8);
         }
@@ -2933,11 +2936,11 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         gSPSegment(POLY_XLU_DISP++, 0x09,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, (globalCtx->gameplayFrames * 10) % 128, 16, 32, 1, 0,
                                     (globalCtx->gameplayFrames * 5) % 128, 16, 32));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4232),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008D70);
     } else if ((*dList != NULL) && (limbIndex >= 29) && (limbIndex < 56)) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4236),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, *dList);
     } else if ((limbIndex == 24) && (sCsState < DEATH_START)) {
@@ -2966,7 +2969,7 @@ void BossVa_BodyPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLis
         Matrix_MultVec3f(&sp78, &this->unk_274);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4264);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 BossVa_SupportOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3f* pos, Vec3s* rot,
@@ -3157,22 +3160,22 @@ s32 BossVa_BariOverrideLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** d
 void BossVa_BariPostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dList, Vec3s* rot, void* thisx) {
     BossVa* this = (BossVa*)thisx;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4494);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     if (limbIndex == 2) {
         gSPSegment(POLY_XLU_DISP++, 0x0A,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, (globalCtx->gameplayFrames * 10) % 32, 16, 32, 1, 0,
                                     (globalCtx->gameplayFrames * -5) % 32, 16, 32));
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4508),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_000FA0);
     } else if ((limbIndex == 3) || (limbIndex == 4)) {
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 4512),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, *dList);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4517);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
@@ -3187,7 +3190,7 @@ void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Vec3f sp74 = { -15.0f, 40.0f, 0.0f };
     Color_RGBA8 unused = { 250, 250, 230, 200 };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4542);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_80093D18(globalCtx->state.gfxCtx);
     paramsPtr = &this->actor.params;
@@ -3292,7 +3295,7 @@ void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         BossVa_DrawDoor(globalCtx, sDoorState);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 4673);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 static s32 sUnkValue = 0x009B0000; // Unreferenced? Possibly a color
@@ -3459,7 +3462,6 @@ void BossVa_UpdateEffects(GlobalContext* globalCtx) {
                 } else if (effect->mode == GORE_FADING) {
                     if (effect->timer == 0) {
                         effect->type = VA_NONE;
-                        if (1) {}
                     }
 
                 } else {
@@ -3501,7 +3503,6 @@ void BossVa_UpdateEffects(GlobalContext* globalCtx) {
                         }
                         break;
                 }
-                if (1) {}
             }
         }
     }
@@ -3518,7 +3519,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
     BossVaEffect* effectHead = effect;
     Camera* camera = Gameplay_GetCamera(globalCtx, sCsCamera);
 
-    OPEN_DISPS(gfxCtx, "../z_boss_va.c", 4953);
+    OPEN_DISPS(gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_LARGE_SPARK) {
@@ -3535,7 +3536,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale * 0.0185f, effect->scale * 0.0185f, 1.0f, MTXMODE_APPLY);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 4976),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
             FrameInterpolation_RecordCloseChild();
@@ -3556,7 +3557,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5002),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sSparkBallTex[effect->mode]));
@@ -3595,7 +3596,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
             gDPPipeSync(POLY_XLU_DISP++);
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5052),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_009468);
             FrameInterpolation_RecordCloseChild();
@@ -3620,7 +3621,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
                 Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
                 Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
 
-                gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5080),
+                gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012948);
             }
@@ -3654,7 +3655,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateY(-(effect->offset.x * 0.13f), MTXMODE_APPLY);
             Matrix_RotateX(-(effect->offset.x * 0.115f), MTXMODE_APPLY);
 
-            gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5124),
+            gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012C50);
             FrameInterpolation_RecordCloseChild();
@@ -3679,7 +3680,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateZYX(effect->rot.x, effect->rot.y, 0, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, effect->scale, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5152),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_013638);
             FrameInterpolation_RecordCloseChild();
@@ -3703,7 +3704,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateZ((effect->rot.z / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale * 0.02f, effect->scale * 0.02f, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5180),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
             FrameInterpolation_RecordCloseChild();
@@ -3727,14 +3728,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             Matrix_RotateY((effect->rot.y / (f32)0x8000) * 3.1416f, MTXMODE_APPLY);
             Matrix_Scale(effect->scale, effect->scale, 1.0f, MTXMODE_APPLY);
 
-            gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_boss_va.c", 5208),
+            gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008F70);
             FrameInterpolation_RecordCloseChild();
         }
     }
 
-    CLOSE_DISPS(gfxCtx, "../z_boss_va.c", 5215);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void BossVa_SpawnSpark(GlobalContext* globalCtx, BossVaEffect* effect, BossVa* this, Vec3f* offset, s16 scale,
@@ -4006,7 +4007,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     f32 segAngle = 0.0f;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 5600);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     Matrix_Translate(0.0f, 80.0f, 400.0f, MTXMODE_NEW);
     Matrix_RotateY(M_PI, MTXMODE_APPLY);
@@ -4026,13 +4027,15 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
         Matrix_RotateZ(segAngle, MTXMODE_APPLY);
         Matrix_Translate(0.0f, doorPieceLength[i] * yScale, 0.0f, MTXMODE_APPLY);
 
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_boss_va.c", 5621),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, doorPieceDispList[i]);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_boss_va.c", 5629);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
+
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 void BossVa_Reset(void) {
     sKillBari = 0;
@@ -4048,4 +4051,7 @@ void BossVa_Reset(void) {
     sZapperRot.z = 0;    
     sPhase2Timer = 0;
     sPhase4HP = 0;
+    for (u8 i = 0; i < ARRAY_SIZE(sBodyBari); i++) {
+        sBodyBari[i] = 0;
+    }
 }

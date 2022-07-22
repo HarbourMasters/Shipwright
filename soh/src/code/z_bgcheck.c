@@ -87,7 +87,7 @@ void SSNodeList_SetSSListHead(SSNodeList* nodeList, SSList* ssList, s16* polyId)
 void DynaSSNodeList_SetSSListHead(DynaSSNodeList* nodeList, SSList* ssList, s16* polyId) {
     u16 newNodeId = DynaSSNodeList_GetNextNodeIdx(nodeList);
 
-    ASSERT(newNodeId != SS_NULL, "new_node != SS_NULL", "../z_bgcheck.c", 1776);
+    ASSERT(newNodeId != SS_NULL);
     SSNode_SetValue(&nodeList->tbl[newNodeId], polyId, ssList->head);
     ssList->head = newNodeId;
 }
@@ -106,7 +106,7 @@ void DynaSSNodeList_Initialize(GlobalContext* globalCtx, DynaSSNodeList* nodeLis
 void DynaSSNodeList_Alloc(GlobalContext* globalCtx, DynaSSNodeList* nodeList, s32 max) {
     nodeList->tbl = THA_AllocEndAlign(&globalCtx->state.tha, max * sizeof(SSNode), -2);
 
-    ASSERT(nodeList->tbl != NULL, "psst->tbl != NULL", "../z_bgcheck.c", 1811);
+    ASSERT(nodeList->tbl != NULL);
 
     nodeList->max = max;
     nodeList->count = 0;
@@ -216,7 +216,6 @@ void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest) {
         phi_f12 = -(nz * inv_phi_f2);
     } else {
         phi_f14 = sqrtf(1.0f - SQ(ny));
-        if (1) {}
         if (!IS_ZERO(phi_f14)) {
             inv_phi_f14 = (1.0f / phi_f14);
             phi_f12 = nx * inv_phi_f14;
@@ -700,7 +699,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 2854);
+        ASSERT(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nz) * invNormalXZ;
@@ -781,7 +780,7 @@ s32 BgCheck_SphVsStaticWall(StaticLookup* lookup, CollisionContext* colCtx, u16 
             }
         }
 
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 2964);
+        ASSERT(!IS_ZERO(normalXZ));
 
         invNormalXZ = 1.0f / normalXZ;
         temp_f16 = fabsf(nx) * invNormalXZ;
@@ -1570,7 +1569,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         &globalCtx->state.tha,
         colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z, ~1);
     if (colCtx->lookupTbl == NULL) {
-        LogUtils_HungupThread("../z_bgcheck.c", 4176);
+        LOG_HUNGUP_THREAD();
     }
     colCtx->minBounds.x = colCtx->colHeader->minBounds.x;
     colCtx->minBounds.y = colCtx->colHeader->minBounds.y;
@@ -1585,9 +1584,19 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
     BgCheck_SetSubdivisionDimension(colCtx->minBounds.z, colCtx->subdivAmount.z, &colCtx->maxBounds.z,
                                     &colCtx->subdivLength.z, &colCtx->subdivLengthInv.z);
 
-#ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+// OTRTODO: Re-enable when the below DynaPoly workaround is removed.
+// #ifdef _SOH64 // BGCheck needs more memory on 64 bits because it crashes on some areas
+//     colCtx->memSize *= 2;
+// #endif
+
+    // BGCheck needs a higher polygon and vertex count due to removed object dependencies.
+    // Otherwise Forest Temple checkered room will crash due to the hallway actor being killed a frame late.
+    //
+    // OTRTODO: This is a workaround. The proper solution to fix this crash is to manage object loading / unloading
+    // the same as N64.
     colCtx->memSize *= 2;
-#endif
+    colCtx->dyna.polyListMax *= 2;
+    colCtx->dyna.vtxListMax *= 2;
 
     memSize = colCtx->subdivAmount.x * sizeof(StaticLookup) * colCtx->subdivAmount.y * colCtx->subdivAmount.z +
               colCtx->colHeader->numPolygons * sizeof(u8) + colCtx->dyna.polyNodesMax * sizeof(SSNode) +
@@ -1599,7 +1608,7 @@ void BgCheck_Allocate(CollisionContext* colCtx, GlobalContext* globalCtx, Collis
         tblMax = customNodeListMax;
     } else {
         if (colCtx->memSize < memSize) {
-            LogUtils_HungupThread("../z_bgcheck.c", 4230);
+            LOG_HUNGUP_THREAD();
         }
         tblMax = (colCtx->memSize - memSize) / sizeof(SSNode);
     }
@@ -1677,7 +1686,7 @@ f32 BgCheck_RaycastFloorImpl(GlobalContext* globalCtx, CollisionContext* colCtx,
         if (checkPos.y < colCtx->minBounds.y) {
             break;
         }
-        if (BgCheck_PosErrorCheck(&checkPos, "../z_bgcheck.c", 4410)) {
+        if (BGCHECK_POS_ERROR_CHECK(&checkPos)) {
             if (actor != NULL) {
                 osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
             }
@@ -1892,8 +1901,8 @@ s32 BgCheck_CheckWallImpl(CollisionContext* colCtx, u16 xpFlags, Vec3f* posResul
     dy = posNext->y - posPrev->y;
     dz = posNext->z - posPrev->z;
 
-    if (BgCheck_PosErrorCheck(posNext, "../z_bgcheck.c", 4831) == true ||
-        BgCheck_PosErrorCheck(posPrev, "../z_bgcheck.c", 4832) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posNext) == true ||
+        BGCHECK_POS_ERROR_CHECK(posPrev) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2081,7 +2090,7 @@ s32 BgCheck_CheckCeilingImpl(CollisionContext* colCtx, u16 xpFlags, f32* outY, V
 
     *outBgId = BGCHECK_SCENE;
     *outY = pos->y;
-    if (BgCheck_PosErrorCheck(pos, "../z_bgcheck.c", 5206) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(pos) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2155,8 +2164,8 @@ s32 BgCheck_CheckLineImpl(CollisionContext* colCtx, u16 xpFlags1, u16 xpFlags2, 
     s32 temp_lo;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(posA, "../z_bgcheck.c", 5334) == true ||
-        BgCheck_PosErrorCheck(posB, "../z_bgcheck.c", 5335) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(posA) == true ||
+        BGCHECK_POS_ERROR_CHECK(posB) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         } else {
@@ -2369,7 +2378,7 @@ s32 BgCheck_SphVsFirstPolyImpl(CollisionContext* colCtx, u16 xpFlags, CollisionP
     StaticLookup* lookup;
 
     *outBgId = BGCHECK_SCENE;
-    if (BgCheck_PosErrorCheck(center, "../z_bgcheck.c", 5852) == true) {
+    if (BGCHECK_POS_ERROR_CHECK(center) == true) {
         if (actor != NULL) {
             osSyncPrintf("こいつ,pself_actor->name %d\n", actor->id);
         }
@@ -2427,11 +2436,11 @@ void SSNodeList_Alloc(GlobalContext* globalCtx, SSNodeList* this, s32 tblMax, s3
     this->count = 0;
     this->tbl = THA_AllocEndAlign(&globalCtx->state.tha, tblMax * sizeof(SSNode), -2);
 
-    ASSERT(this->tbl != NULL, "this->short_slist_node_tbl != NULL", "../z_bgcheck.c", 5975);
+    ASSERT(this->tbl != NULL);
 
-    this->polyCheckTbl = GameState_Alloc(&globalCtx->state, numPolys, "../z_bgcheck.c", 5979);
+    this->polyCheckTbl = GAMESTATE_ALLOC_MC(&globalCtx->state, numPolys);
 
-    ASSERT(this->polyCheckTbl != NULL, "this->polygon_check != NULL", "../z_bgcheck.c", 5981);
+    ASSERT(this->polyCheckTbl != NULL);
 }
 
 /**
@@ -2441,8 +2450,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
     SSNode* result = &this->tbl[this->count];
 
     this->count++;
-    ASSERT(this->count < this->max, "this->short_slist_node_last_index < this->short_slist_node_size", "../z_bgcheck.c",
-           5998);
+    ASSERT(this->count < this->max);
     if (!(this->count < this->max)) {
         return NULL;
     }
@@ -2455,7 +2463,7 @@ SSNode* SSNodeList_GetNextNode(SSNodeList* this) {
 u16 SSNodeList_GetNextNodeIdx(SSNodeList* this) {
     u16 new_index = this->count++;
 
-    ASSERT(new_index < this->max, "new_index < this->short_slist_node_size", "../z_bgcheck.c", 6021);
+    ASSERT(new_index < this->max);
     return new_index;
 }
 
@@ -2561,7 +2569,7 @@ void DynaPoly_NullPolyList(CollisionPoly** polyList) {
  */
 void DynaPoly_AllocPolyList(GlobalContext* globalCtx, CollisionPoly** polyList, s32 numPolys) {
     *polyList = THA_AllocEndAlign(&globalCtx->state.tha, numPolys * sizeof(CollisionPoly), -2);
-    ASSERT(*polyList != NULL, "ptbl->pbuf != NULL", "../z_bgcheck.c", 6247);
+    ASSERT(*polyList != NULL);
 }
 
 /**
@@ -2576,7 +2584,7 @@ void DynaPoly_NullVtxList(Vec3s** vtxList) {
  */
 void DynaPoly_AllocVtxList(GlobalContext* globalCtx, Vec3s** vtxList, s32 numVtx) {
     *vtxList = THA_AllocEndAlign(&globalCtx->state.tha, numVtx * sizeof(Vec3s), -2);
-    ASSERT(*vtxList != NULL, "ptbl->pbuf != NULL", "../z_bgcheck.c", 6277);
+    ASSERT(*vtxList != NULL);
 }
 
 /**
@@ -2793,10 +2801,8 @@ void DynaPoly_ExpandSRT(GlobalContext* globalCtx, DynaCollisionContext* dyna, s3
                      *vtxStartIndex + pbgdata->numVertices, dyna->vtxListMax);
     }
 
-    ASSERT(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons,
-           "pdyna_poly_info->poly_num >= *pstart_poly_index + pbgdata->poly_num", "../z_bgcheck.c", 6687);
-    ASSERT(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices,
-           "pdyna_poly_info->vert_num >= *pstart_vert_index + pbgdata->vtx_num", "../z_bgcheck.c", 6688);
+    ASSERT(dyna->polyListMax >= *polyStartIndex + pbgdata->numPolygons);
+    ASSERT(dyna->vtxListMax >= *vtxStartIndex + pbgdata->numVertices);
 
     if (!(dyna->bitFlag & DYNAPOLY_INVALIDATE_LOOKUP) &&
         (BgActor_IsTransformUnchanged(&dyna->bgActors[bgId]) == true)) {
@@ -3229,7 +3235,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 7382);
+        ASSERT(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {
@@ -3302,7 +3308,7 @@ s32 BgCheck_SphVsDynaWallInBgActor(CollisionContext* colCtx, u16 xpFlags, DynaCo
         poly = &dyna->polyList[polyId];
         CollisionPoly_GetNormalF(poly, &nx, &ny, &nz);
         normalXZ = sqrtf(SQ(nx) + SQ(nz));
-        ASSERT(!IS_ZERO(normalXZ), "!IS_ZERO(ac_size)", "../z_bgcheck.c", 7489);
+        ASSERT(!IS_ZERO(normalXZ));
 
         planeDist = Math3D_DistPlaneToPos(nx, ny, nz, poly->dist, &resultPos);
         if (radius < fabsf(planeDist) || COLPOLY_VIA_FLAG_TEST(poly->flags_vIA, xpFlags)) {

@@ -179,6 +179,12 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 pad;
 
+    // Skip Poe Intro Cutscene
+    if (gSaveContext.n64ddFlag && thisx->params == 4124) {
+        Flags_SetSwitch(globalCtx, 0x1B);
+        Actor_Kill(thisx);
+    }
+
     Actor_ProcessInitChain(&this->actor, sInitChain);
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 50.0f);
     SkelAnime_Init(globalCtx, &this->skelAnime, &gPoeSistersSkel, &gPoeSistersSwayAnim, this->jointTable,
@@ -195,7 +201,6 @@ void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     CollisionCheck_SetInfo(&this->actor.colChkInfo, &sDamageTable, &sColChkInfoInit);
     this->unk_194 = (thisx->params >> 8) & 3;
     this->actor.naviEnemyId = this->unk_194 + 0x50;
-    if (1) {}
     this->unk_195 = (thisx->params >> 0xA) & 3;
     this->unk_196 = 32;
     this->unk_197 = 20;
@@ -851,6 +856,11 @@ void func_80ADB338(EnPoSisters* this, GlobalContext* globalCtx) {
         if (Actor_WorldDistXZToPoint(&player->actor, &this->actor.home.pos) < 600.0f) {
             if (this->unk_19C != 0) {
                 this->unk_19C--;
+
+                // Force Meg to respawn instantly after getting hit
+                if (gSaveContext.n64ddFlag) {
+                    this->unk_19C = 0;
+                }
             }
         } else {
             this->unk_19C = 100;
@@ -1303,7 +1313,7 @@ void EnPoSisters_PostLimbDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx** dLi
     s32 pad;
 
     if (this->actionFunc == func_80ADAFC0 && this->unk_19A >= 8 && limbIndex == 9) {
-        gSPMatrix((*gfxP)++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 2876),
+        gSPMatrix((*gfxP)++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList((*gfxP)++, gPoSistersBurnDL);
     }
@@ -1349,7 +1359,7 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Color_RGBA8* temp_s7 = &D_80ADD6F0[this->unk_194];
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 2989);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80ADC55C(this);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -1368,7 +1378,7 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
     if (!(this->unk_199 & 0x80)) {
         Matrix_Put(&this->unk_2F8);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3034),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, gPoSistersTorchDL);
     }
@@ -1412,11 +1422,11 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
             phi_f20 = CLAMP(phi_f20, 0.5f, 0.8f) * 0.007f;
         }
         Matrix_Scale(phi_f20, phi_f20, phi_f20, MTXMODE_APPLY);
-        gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3132),
+        gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_po_sisters.c", 3139);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoSisters_Reset(void) {

@@ -479,7 +479,7 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Mtx* mtx = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx) * 14);
     Vec3f unused = { 0.0f, 0.0f, 448.0f };
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ba.c", 933);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     if (this->actor.params < EN_BA_DEAD_BLOB) {
         Matrix_Push();
@@ -503,10 +503,10 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         break;
                 }
             }
-            Matrix_ToMtx(mtx, "../z_en_ba.c", 970);
+            MATRIX_TOMTX(mtx);
         }
         Matrix_Pop();
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ba.c", 973),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_000890);
     } else {
@@ -516,9 +516,9 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                                     (globalCtx->gameplayFrames * -5) % 128, (globalCtx->gameplayFrames * -5) % 128, 32,
                                     32));
         gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 125, 100, 255);
-        gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ba.c", 991),
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_001D80);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ba.c", 995);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

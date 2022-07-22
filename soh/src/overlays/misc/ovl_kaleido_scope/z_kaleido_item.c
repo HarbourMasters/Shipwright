@@ -20,7 +20,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
     s16 ammo;
     s16 i;
 
-    OPEN_DISPS(gfxCtx, "../z_kaleido_item.c", 69);
+    OPEN_DISPS(gfxCtx);
 
     ammo = AMMO(item);
 
@@ -67,7 +67,7 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);
 
-    CLOSE_DISPS(gfxCtx, "../z_kaleido_item.c", 116);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void KaleidoScope_SetCursorVtx(PauseContext* pauseCtx, u16 index, Vtx* vtx) {
@@ -96,9 +96,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
     s16 cursorY;
     s16 oldCursorPoint;
     s16 moveCursorResult;
-    bool dpad = CVar_GetS32("gDpadPauseName", 0);
+    bool dpad = (CVar_GetS32("gDpadPauseName", 0) && !CHECK_BTN_ALL(input->cur.button, BTN_CUP));
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 234);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
     func_800949A8(globalCtx->state.gfxCtx);
 
@@ -338,6 +338,9 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             pauseCtx->cursorItem[PAUSE_ITEM] = cursorItem;
             pauseCtx->cursorSlot[PAUSE_ITEM] = cursorSlot;
 
+            gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
+                (CVar_GetS32("gMMBunnyHood", 0) && INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY) ? 9 : 1;
+
             if (!((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge)))) {
                 pauseCtx->nameColorSet = 1;
             }
@@ -348,7 +351,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
                 if ((pauseCtx->debugState == 0) && (pauseCtx->state == 6) && (pauseCtx->unk_1E4 == 0)) {
                     u16 buttonsToCheck = BTN_CLEFT | BTN_CDOWN | BTN_CRIGHT;
-                    if (CVar_GetS32("gDpadEquips", 0) != 0) {
+                    if (CVar_GetS32("gDpadEquips", 0) && (!CVar_GetS32("gDpadPauseName", 0) || CHECK_BTN_ALL(input->cur.button, BTN_CUP))) {
                         buttonsToCheck |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
@@ -465,7 +468,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
         }
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_kaleido_item.c", 516);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s16 animX, s16 animY) {
@@ -478,7 +481,7 @@ void KaleidoScope_SetupItemEquip(GlobalContext* globalCtx, u16 item, u16 slot, s
         pauseCtx->equipTargetCBtn = 1;
     } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
         pauseCtx->equipTargetCBtn = 2;
-    } else if (CVar_GetS32("gDpadEquips", 0) != 0) {
+    } else if (CVar_GetS32("gDpadEquips", 0)) {
         if (CHECK_BTN_ALL(input->press.button, BTN_DUP)) {
             pauseCtx->equipTargetCBtn = 3;
         } else if (CHECK_BTN_ALL(input->press.button, BTN_DDOWN)) {

@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <PR/ultra64/gbi.h>
+#include "imgui_internal.h"
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
@@ -64,13 +65,13 @@ void CVar_SetFloat(const char* name, float value) {
     cvar->value.valueFloat = value;
 }
 
-void CVar_SetString(const char* name, const char* value) {
+extern "C" void CVar_SetString(const char* name, const char* value) {
     auto& cvar = cvars[name];
     if (!cvar) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVAR_TYPE_STRING;
-    cvar->value.valueStr = value;
+    cvar->value.valueStr = ImStrdup(value);
 }
 
 extern "C" void CVar_RegisterS32(const char* name, s32 defaultValue) {
