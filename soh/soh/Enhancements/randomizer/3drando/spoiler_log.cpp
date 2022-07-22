@@ -42,7 +42,7 @@ static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::seed.size(); i++) {
+    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
         int number = Settings::seed[i] - '0';
         Settings::hashIconIndexes[i] = number;
     }
@@ -371,10 +371,11 @@ static void WriteSettings(const bool printAll = false) {
       //   }
       // }
     }
-
-    // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
-    jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
   }
+
+  // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
+  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
+
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
   //     for (const uint32_t key : allLocations) {
