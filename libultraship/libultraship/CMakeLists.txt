@@ -1,5 +1,10 @@
 set(PROJECT_NAME libultraship)
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    enable_language(OBJCXX)
+    #set(CMAKE_OBJCXX_FLAGS "-Wno-deprecated-declarations -ObjC++")
+endif()
+
 ################################################################################
 # Source groups
 ################################################################################
@@ -70,8 +75,6 @@ endif ()
 
 source_group("Source Files\\Audio" FILES ${Source_Files__Audio} ${Source_Files__Audio__extra})
 
-source_group("Source Files\\Config" FILES ${Source_Files__Config})
-
 set(Source_Files__Controller
     "ControlDeck.cpp"
     "ControlDeck.h"
@@ -79,7 +82,6 @@ set(Source_Files__Controller
     "Controller.h"
     "ControllerAttachment.cpp"
     "ControllerAttachment.h"
-    "DisconnectedController.h"
     "InputEditor.cpp"
     "InputEditor.h"
     "KeyboardController.cpp"
@@ -87,6 +89,7 @@ set(Source_Files__Controller
     "SDLController.cpp"
     "SDLController.h"
     "UltraController.h"
+    "VirtualController.h"
 )
 source_group("Source Files\\Controller" FILES ${Source_Files__Controller})
 
@@ -319,6 +322,14 @@ set(Source_Files__Resources__mpq
 )
 source_group("Source Files\\Resources\\mpq" FILES ${Source_Files__Resources__mpq})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+set(Source_Files__Darwin
+    "OSXFolderManager.mm"
+    "OSXFolderManager.h"
+)
+source_group("Source Files\\Darwin" FILES ${Source_Files__Darwin})
+endif()
+
 set(ALL_FILES
     ${Header_Files__Resources__Factories}
     ${Header_Files__Resources__Files}
@@ -347,6 +358,7 @@ set(ALL_FILES
     ${Source_Files__Resources__Factories}
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
+    ${Source_Files__Resources__Darwin}
 )
 
 ################################################################################
@@ -604,6 +616,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     find_package(SDL2)
     find_package(GLEW)
     find_package(OpenGL QUIET)
+    find_Library(OSX_FOUNDATION Foundation)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
     find_package(Threads REQUIRED)
     target_link_libraries(${PROJECT_NAME}
@@ -613,6 +626,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         ${OPENGL_opengl_LIBRARY}
         ${CMAKE_DL_LIBS}
         Threads::Threads
+	${OSX_FOUNDATION}
     )
 else()
     target_link_libraries(${PROJECT_NAME}
