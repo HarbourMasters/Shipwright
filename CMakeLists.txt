@@ -121,6 +121,8 @@ file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PE
 
 find_package(Python COMPONENTS Interpreter)
 
+file(REMOVE OTRExporter/oot.otr)
+
 add_custom_target(ExtractAssets
     COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter

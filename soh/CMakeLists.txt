@@ -1911,9 +1911,7 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
-endif()
 
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
