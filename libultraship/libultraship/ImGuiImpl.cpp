@@ -975,7 +975,7 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                         Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
-                        EnhancementCheckbox("Unlimited Ocarina Speed", "gDpadNoDropOcarinaInput");
+                        EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
                         Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
