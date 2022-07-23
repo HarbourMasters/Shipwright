@@ -1580,7 +1580,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	endif()
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
-    OUTPUT_NAME "soh-${CMAKE_SYSTEM_PROCESSOR}"
+    OUTPUT_NAME "soh-macos"
     )
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -1916,10 +1916,10 @@ INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 
-if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Darwin")
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 install(CODE "
     include(InstallRequiredSystemLibraries)
     include(BundleUtilities)
-    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-\${CMAKE_SYSTEM_PROCESSOR}\" \"\" \"${dirs}\")
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
     ")
 endif()
