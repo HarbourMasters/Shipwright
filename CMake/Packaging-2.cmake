@@ -19,6 +19,6 @@ if (CPACK_GENERATOR MATCHES "Bundle")
     set(CPACK_BUNDLE_NAME "soh")
     set(CPACK_BUNDLE_PLIST "../soh/macosx/Info.plist")
     set(CPACK_BUNDLE_ICON "macosx/soh.icns")
-    set(CPACK_BUNDLE_STARTUP_COMMAND "soh/soh.app")
+    set(CPACK_BUNDLE_STARTUP_COMMAND "soh/soh-${CMAKE_SYSTEM_PROCESSOR}")
 endif()
 

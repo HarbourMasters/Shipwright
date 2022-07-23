@@ -1578,14 +1578,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 		)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+    OUTPUT_NAME "soh-${CMAKE_SYSTEM_PROCESSOR}"
+    )
 else()
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "soh.elf"
 	)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-        set_target_properties(${PROJECT_NAME} PROPERTIES
-        OUTPUT_NAME "soh.app"
-        )
 endif()
 ################################################################################
 # MSVC runtime library
