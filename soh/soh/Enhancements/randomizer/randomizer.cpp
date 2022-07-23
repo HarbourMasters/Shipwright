@@ -3896,7 +3896,6 @@ void DrawRandoEditor(bool& open) {
                             "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
                         ImGui::Separator();
                     }
-                    ImGui::PopItemWidth();
                     
                     // COLUMN 2 - Shuffle Settings
                     ImGui::TableNextColumn();
