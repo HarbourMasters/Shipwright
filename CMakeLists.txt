@@ -163,6 +163,10 @@ add_custom_target(CreateOSXIcons
 add_dependencies(soh CreateOSXIcons)
 endif()
 
+if(CMAKE_SYSTEM_NAME MATCHES "Windows")
+INSTALL(FILES ${CMAKE_SOURCE_DIR}/README.md DESTINATION . COMPONENT ship RENAME readme.txt )
+endif()
+
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
     set(CPACK_GENERATOR "DEB;ZIP")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
