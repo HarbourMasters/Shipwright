@@ -962,14 +962,15 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->actor.shape.shadowScale = 0.3f;
                     this->actor.world.rot.x = 0x4000;
                     GetItem_Draw(globalCtx, GID_RUPEE_RED);
+                    break;
                 } else {
                     this->actor.shape.shadowScale = 6.0f;
                     Actor_SetScale(&this->actor, 0.015f);
                     this->scale = 0.015f;
                     this->actor.shape.yOffset = 750.0f;
                     EnItem00_DrawRupee(this, globalCtx);
+                    break;
                 }
-                break;
             case ITEM00_RUPEE_ORANGE:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.45f);
@@ -978,14 +979,15 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->actor.shape.shadowScale = 0.3f;
                     this->actor.world.rot.x = 0x4000;
                     GetItem_Draw(globalCtx, GID_RUPEE_GOLD);
+                    break;
                 } else {
                     Actor_SetScale(&this->actor, 0.045 - 1e-10);
                     this->actor.shape.shadowScale = 6.0f;
                     this->scale = 0.045 - 1e-10;
                     this->actor.shape.yOffset = 750.0f;
                     EnItem00_DrawRupee(this, globalCtx);
+                    break;
                 }
-                break;
             case ITEM00_RUPEE_PURPLE:
                 if (CVar_GetS32("gNewDrops", 0)) {
                     Actor_SetScale(&this->actor, 0.4f);
@@ -994,15 +996,15 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->actor.shape.shadowScale = 0.3f;
                     this->actor.world.rot.x = 0x4000;
                     GetItem_Draw(globalCtx, GID_RUPEE_PURPLE);
+                    break;
                 } else {
                     Actor_SetScale(&this->actor, 0.03f);
                     this->actor.shape.shadowScale = 6.0f;
                     this->scale = 0.03f;
                     this->actor.shape.yOffset = 750.0f;
                     EnItem00_DrawRupee(this, globalCtx);
-                    
+                    break;
                 }
-                break;
             case ITEM00_HEART_PIECE:
                 if (CVar_GetS32("gNewDrops", 0) && !gSaveContext.n64ddFlag) {
                     Actor_SetScale(&this->actor, 0.5f);
