@@ -1552,7 +1552,7 @@ void func_800ED458(s32 arg0) {
 
     if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
         sOcarinaDropInputTimer--;
-        if (CVar_GetS32 ("gDpadNoDropOcarinaInput", 0) == 0) {
+        if (!CVar_GetS32("gDpadNoDropOcarinaInput", 0)) {
             return;
         }
     }
