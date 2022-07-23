@@ -3414,17 +3414,17 @@ void GenerateRandomizerImgui() {
     Game::SaveSettings();
     
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
-    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 1);
-    cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 1);
+    cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
+    cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
     cvarSettings[RSK_ZORAS_FOUNTAIN] = CVar_GetS32("gRandomizeZorasFountain", 0);
-    cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 1);
-    cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 3);
-    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 1);
-    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVar_GetS32("gRandomizeMedallionCount", 6);
-    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 1);
-    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 1);
-    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 1);
+    cvarSettings[RSK_GERUDO_FORTRESS] = CVar_GetS32("gRandomizeGerudoFortress", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE] = CVar_GetS32("gRandomizeRainbowBridge", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE_STONE_COUNT] = CVar_GetS32("gRandomizeStoneCount", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE_MEDALLION_COUNT] = CVar_GetS32("gRandomizeMedallionCount", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE_REWARD_COUNT] = CVar_GetS32("gRandomizeRewardCount", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE_DUNGEON_COUNT] = CVar_GetS32("gRandomizeDungeonCount", 0);
+    cvarSettings[RSK_RAINBOW_BRIDGE_TOKEN_COUNT] = CVar_GetS32("gRandomizeTokenCount", 0);
     cvarSettings[RSK_RANDOM_TRIALS] = CVar_GetS32("gRandomizeGanonTrial", 0);
     cvarSettings[RSK_TRIAL_COUNT] = CVar_GetS32("gRandomizeGanonTrialCount", 0);
     cvarSettings[RSK_STARTING_OCARINA] = CVar_GetS32("gRandomizeStartingOcarina", 0);
@@ -3442,8 +3442,7 @@ void GenerateRandomizerImgui() {
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
     // at the ranch, so we should *not* shuffle the weird egg
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) &&
-                                            CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) && CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
@@ -3717,12 +3716,10 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
-        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) ||
-                                           CVar_GetS32("gOnFileSelectNameEntry", 0);
+        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                            ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
-
+                            ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
@@ -3768,7 +3765,7 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Open - Mido no longer blocks the path to the Deku Tree. Kokiri\n"
                             "boy no longer blocks the path out of the forest.");
-                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
                         ImGui::Separator();
                         // Kakariko Gate
                         ImGui::Text(Settings::OpenKakariko.GetName().c_str());
@@ -3779,7 +3776,7 @@ void DrawRandoEditor(bool& open) {
                             "Open - The gate is always open. The happy mask shop\n"
                             "will open immediately after obtaining Zelda's letter."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
                         ImGui::Separator();
 
                         // Door of Time
@@ -3825,7 +3822,7 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Open - The bridge is repaired from the start."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 1);
+                        SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
                         ImGui::Separator();
 
                         // Rainbow Bridge
@@ -3851,29 +3848,32 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Tokens - Obtain the specified amount of Skulltula tokens."
                         );
-                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 3);
-                        switch (CVar_GetS32("gRandomizeRainbowBridge", 3)) {
+                        SohImGui::EnhancementCombobox("gRandomizeRainbowBridge", randoRainbowBridge, 7, 0);
+                        ImGui::PopItemWidth();
+                        switch (CVar_GetS32("gRandomizeRainbowBridge", 0)) {
+                            case 0:
+                                break;
                             case 1:
                                 break;
                             case 2:
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
-                                                               "gRandomizeStoneCount", 0, 3, "");
+                                                               "gRandomizeStoneCount", 1, 3, "", 3, true);
                                 break;
                             case 3:
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
-                                                               "gRandomizeMedallionCount", 0, 6, "", 6);
+                                                               "gRandomizeMedallionCount", 1, 6, "", 6, true);
                                 break;
                             case 4:
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
-                                                               "gRandomizeRewardCount", 0, 9, "");
+                                                               "gRandomizeRewardCount", 1, 9, "", 9, true);
                                 break;
                             case 5:
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
-                                                               "gRandomizeDungeonCount", 0, 8, "");
+                                                               "gRandomizeDungeonCount", 1, 8, "", 8, true);
                                 break;
                             case 6:
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
-                                                               "gRandomizeTokenCount", 0, 100, "");
+                                                               "gRandomizeTokenCount", 1, 100, "", 100, true);
                                 break;
                         }
                         ImGui::Separator();
@@ -3964,22 +3964,36 @@ void DrawRandoEditor(bool& open) {
                             ImGui::Separator();
                         }
 
-                        // hide this option if we're skipping child zelda
-                        if(CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) {
-                            // Shuffle Weird Egg
-                            SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
-                            InsertHelpHoverText(
-                                "Shuffles the Weird Egg from Malon in to the item pool.\n"
-                                "\n"
-                                "The Weird Egg is required to unlock several events:\n"
-                                "  - Zelda's Lullaby from Impa\n"
-                                "  - Saria's song in Sacred Forest Meadow\n"
-                                "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
-                                "  - Zelda's letter for Kakariko gate (if set to closed)\n"
-                                "  - Happy Mask Shop sidequest\n"
-                            );
-                            ImGui::Separator();
+                        // Shuffle Weird Egg
+                        // Disabled when Skip Child Zelda is active
+                        if (!disableEditingRandoSettings) {
+                            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
+                            ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                                                ImGui::GetStyle().Alpha *
+                                                    (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
                         }
+                        SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
+                        if (!disableEditingRandoSettings) {
+                            ImGui::PopStyleVar();
+                            if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+                                CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
+                                ImGui::SetTooltip("%s",
+                                                  "This option is disabled because \"Skip Child Zelda\" is enabled");
+                            }
+                            ImGui::PopItemFlag();
+                        }
+                        InsertHelpHoverText(
+                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling\n"
+                            "\"Skip Child Zelda\" disables this feature.\n"
+                            "\n"
+                            "The Weird Egg is required to unlock several events:\n"
+                            "  - Zelda's Lullaby from Impa\n"
+                            "  - Saria's song in Sacred Forest Meadow\n"
+                            "  - Epona's song and chicken minigame at Lon Lon Ranch\n"
+                            "  - Zelda's letter for Kakariko gate (if set to closed)\n"
+                            "  - Happy Mask Shop sidequest\n"
+                        );
+                        ImGui::Separator();
 
                         // Shuffle Gerudo Membership Card
                         SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
@@ -4055,7 +4069,7 @@ void DrawRandoEditor(bool& open) {
 
                     // Cuccos to return
                     SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
-                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7);
+                                                    "gRandomizeCuccosToReturn", 0, 7, "", 7, true);
                     InsertHelpHoverText(
                         "The amount of cuccos needed to claim the reward from Anju the cucco lady"
                     );
@@ -4063,19 +4077,35 @@ void DrawRandoEditor(bool& open) {
 
                     // Big Poe Target Count
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
-                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10);
+                                                    "gRandomizeBigPoeTargetCount", 1, 10, "", 10, true);
                     InsertHelpHoverText(
                         "The Poe collector will give a reward for turning in this many Big Poes."
                     );
                     ImGui::Separator();
 
                     // Skip child stealth
-                    SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(), "gRandomizeSkipChildStealth");
-                    InsertHelpHoverText(
-                        "The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
-                        "the guards."
-                    );
+                    // Disabled when Skip Child Zelda is active
+                    if (!disableEditingRandoSettings) {
+                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
+                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
+                                            ImGui::GetStyle().Alpha *
+                                                (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
+                    }
+                    SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
+                                                  "gRandomizeSkipChildStealth");
+                    if (!disableEditingRandoSettings) {
+                        ImGui::PopStyleVar();
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+                            CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
+                            ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
+                        }
+                        ImGui::PopItemFlag();
+                    }
+                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
+                                        "the guards.");
                     ImGui::Separator();
+
+                    // Skip child zelda
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                     InsertHelpHoverText(
                         "Start with Zelda's Letter in your inventory and skip the sequence up\n"
