@@ -3717,7 +3717,6 @@ void DrawRandoEditor(bool& open) {
         }
 
         bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
-        bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0);
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                             ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
@@ -3968,15 +3967,16 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Weird Egg
                         // Disabled when Skip Child Zelda is active
                         if (!disableEditingRandoSettings) {
-                            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
+                            ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
                             ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                                ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
+                                                ImGui::GetStyle().Alpha *
+                                                    (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
                         }
                         SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
                         if (!disableEditingRandoSettings) {
                             ImGui::PopStyleVar();
                             if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
-                                disableZeldaRelatedOptions) {
+                                CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
                                 ImGui::SetTooltip("%s",
                                                   "This option is disabled because \"Skip Child Zelda\" is enabled");
                             }
@@ -4086,15 +4086,17 @@ void DrawRandoEditor(bool& open) {
                     // Skip child stealth
                     // Disabled when Skip Child Zelda is active
                     if (!disableEditingRandoSettings) {
-                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
+                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, CVar_GetS32("gRandomizeSkipChildZelda", 0));
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                            ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
+                                            ImGui::GetStyle().Alpha *
+                                                (CVar_GetS32("gRandomizeSkipChildZelda", 0) ? 0.5f : 1.0f));
                     }
                     SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
                                                   "gRandomizeSkipChildStealth");
                     if (!disableEditingRandoSettings) {
                         ImGui::PopStyleVar();
-                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disableZeldaRelatedOptions) {
+                        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) &&
+                            CVar_GetS32("gRandomizeSkipChildZelda", 0)) {
                             ImGui::SetTooltip("%s", "This option is disabled because \"Skip Child Zelda\" is enabled");
                         }
                         ImGui::PopItemFlag();
