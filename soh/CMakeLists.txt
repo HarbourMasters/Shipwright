@@ -1911,10 +1911,10 @@ endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
 
-INSTALL(TARGETS soh DESTINATION bin COMPONENT ship)
+INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION bin COMPONENT ship)
+INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 
 install(CODE "
     include(InstallRequiredSystemLibraries)
