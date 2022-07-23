@@ -51,12 +51,6 @@ namespace Ship
         F64 = 10
     };
 
-    enum class Endianess
-    {
-        Little = 0,
-        Big = 1,
-    };
-
     enum class Version
     {
         // BR

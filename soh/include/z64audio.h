@@ -1,6 +1,8 @@
 #ifndef Z64_AUDIO_H
 #define Z64_AUDIO_H
 
+#include "endianess.h"
+
 #define MK_CMD(b0,b1,b2,b3) ((((b0) & 0xFF) << 0x18) | (((b1) & 0xFF) << 0x10) | (((b2) & 0xFF) << 0x8) | (((b3) & 0xFF) << 0))
 
 #define NO_LAYER ((SequenceLayer*)(-1))
@@ -685,6 +687,35 @@ typedef struct {
 } AudioPreloadReq; // size = 0x14
 
 typedef struct {
+#ifdef IS_BIGENDIAN
+    union{
+        u32 opArgs;
+        struct {
+            u8 op;
+            u8 arg0;
+            u8 arg1;
+            u8 arg2;
+        };
+    };
+    union {
+        void* data;
+        f32 asFloat;
+        s32 asInt;
+        struct {
+            u16 asUShort;
+            u8 pad2[2];
+        };
+        struct {
+            s8 asSbyte;
+            u8 pad1[3];
+        };
+        struct {
+            u8 asUbyte;
+            u8 pad0[3];
+        };
+        u32 asUInt;
+    };
+#else
     union{
         u32 opArgs;
         struct {
@@ -712,6 +743,7 @@ typedef struct {
         };
         u32 asUInt;
     };
+#endif
 } AudioCmd;
 
 typedef struct {

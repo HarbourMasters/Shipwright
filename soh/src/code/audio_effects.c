@@ -246,7 +246,11 @@ f32 Audio_AdsrUpdate(AdsrState* adsr) {
 
         retry:
         case ADSR_STATE_LOOP:
+#ifdef IS_BIGENDIAN
+            adsr->delay = adsr->envelope[adsr->envIndex].delay;
+#else
             adsr->delay = (s16)BOMSWAP16(adsr->envelope[adsr->envIndex].delay);
+#endif
             switch (adsr->delay) {
                 case ADSR_DISABLE:
                     adsr->action.s.state = ADSR_STATE_DISABLED;
@@ -255,7 +259,11 @@ f32 Audio_AdsrUpdate(AdsrState* adsr) {
                     adsr->action.s.state = ADSR_STATE_HANG;
                     break;
                 case ADSR_GOTO:
+#ifdef IS_BIGENDIAN
+                    adsr->envIndex = adsr->envelope[adsr->envIndex].arg;
+#else
                     adsr->envIndex = (s16)BOMSWAP16(adsr->envelope[adsr->envIndex].arg);
+#endif
                     goto retry;
                 case ADSR_RESTART:
                     adsr->action.s.state = ADSR_STATE_INITIAL;
@@ -266,7 +274,11 @@ f32 Audio_AdsrUpdate(AdsrState* adsr) {
                     if (adsr->delay == 0) {
                         adsr->delay = 1;
                     }
+#ifdef IS_BIGENDIAN
+                    adsr->target = adsr->envelope[adsr->envIndex].arg / 32767.0f;
+#else
                     adsr->target = (s16)BOMSWAP16(adsr->envelope[adsr->envIndex].arg) / 32767.0f;
+#endif
                     adsr->target = adsr->target * adsr->target;
                     adsr->velocity = (adsr->target - adsr->current) / adsr->delay;
                     adsr->action.s.state = ADSR_STATE_FADE;

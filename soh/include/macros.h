@@ -1,6 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#include "endianess.h"
+
 #define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
 #define ARRAY_COUNTU(arr) (u32)(sizeof(arr) / sizeof(arr[0]))
 
@@ -254,12 +256,5 @@ extern GraphicsContext* __gfxCtx;
 
 #define SEG_ADDR(seg, addr) (addr | (seg << 24) | 1)
 
-#ifdef _MSC_VER
-#define BOMSWAP16 _byteswap_ushort
-#define BOMSWAP32 _byteswap_ulong
-#else
-#define BOMSWAP16 __builtin_bswap16
-#define BOMSWAP32 __builtin_bswap32
-#endif
 
 #endif
