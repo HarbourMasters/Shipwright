@@ -47,9 +47,10 @@ add_dependencies(${PROJECT_NAME} Assets1 Assets2 Assets3)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib)
 
-INSTALL(TARGETS OTRGui DESTINATION bin)
+INSTALL(TARGETS OTRGui DESTINATION bin COMPONENT ship)
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/assets
         DESTINATION bin
+	COMPONENT ship
 )
-INSTALL(TARGETS ZAPD DESTINATION bin/assets/extractor)
+INSTALL(TARGETS ZAPD DESTINATION bin/assets/extractor COMPONENT ship)
 
