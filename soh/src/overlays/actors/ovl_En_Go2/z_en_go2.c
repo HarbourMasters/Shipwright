@@ -1344,10 +1344,10 @@ void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(globalCtx, 4200, -99, &this->actor, MAIN_CAM);
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, (CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_14 : ENGO2_ANIM_10);
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ((CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_10 : ENGO2_ANIM_14));
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, (CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_13 : ENGO2_ANIM_1);
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ((CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_1 : ENGO2_ANIM_13));
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;
@@ -1678,11 +1678,6 @@ void EnGo2_CurledUp(EnGo2* this, GlobalContext* globalCtx) {
 void func_80A46B40(EnGo2* this, GlobalContext* globalCtx) {
     u8 index = (this->actor.params & 0x1F);
     f32 height;
-    if (CVar_GetS32("gGoronSpeen", 0) == 1) {
-        // The morphFrames value seems to be what causes the spin.
-        this->skelAnime.morphRate = 0.0f;
-        this->skelAnime.morphWeight = 0.0f;
-    }
 
     if (this->unk_211 == true) {
         EnGo2_BiggoronAnimation(this);

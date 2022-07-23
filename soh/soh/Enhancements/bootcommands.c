@@ -44,7 +44,6 @@ void BootCommands_Init()
     CVar_RegisterS32("gUseTunicsCol", 0);
     CVar_RegisterS32("gGuardVision", 0);
     CVar_RegisterS32("gTimeFlowFileSelect", 0);
-    CVar_RegisterS32("gGoronSpeen", 0);
 }
 
 //void BootCommands_ParseBootArgs(char* str)
