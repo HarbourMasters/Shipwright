@@ -1,3 +1,4 @@
+CC ?= gcc
 CFLAGS = -Wall -O2 -g
 UC_OBJ = uc_f3d.o uc_f3db.o uc_f3dex.o uc_f3dexb.o uc_f3dex2.o
 OBJ = gfxd.o $(UC_OBJ)

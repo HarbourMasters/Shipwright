@@ -1,6 +1,8 @@
 ﻿#include "OTRGlobals.h"
 #include "OTRAudio.h"
 #include <iostream>
+#include <algorithm>
+#include <filesystem>
 #include <locale>
 #include <codecvt>
 #include "GlobalCtx2.h"
@@ -26,30 +28,48 @@
 #include <Cutscene.h>
 #include <Texture.h>
 #include "Lib/stb/stb_image.h"
+#define DRMP3_IMPLEMENTATION
+#include "Lib/dr_libs/mp3.h"
+#define DRWAV_IMPLEMENTATION
+#include "Lib/dr_libs/wav.h"
 #include "AudioPlayer.h"
+#include "Enhancements/cosmetics/CosmeticsEditor.h"
 #include "Enhancements/debugconsole.h"
 #include "Enhancements/debugger/debugger.h"
+#include "Enhancements/randomizer/randomizer.h"
+#include <soh/Enhancements/randomizer/randomizer_item_tracker.h>
+#include "Enhancements/n64_weird_frame_data.inc"
 #include "soh/frame_interpolation.h"
 #include "Utils/BitConverter.h"
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
 
+#ifdef __APPLE__
+#include <SDL_scancode.h>
+#else
 #include <SDL2/SDL_scancode.h>
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
 
 OTRGlobals::OTRGlobals() {
-
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
     gSaveStateMgr = std::make_shared<SaveStateMgr>();
+    gRandomizer = std::make_shared<Randomizer>();
     context->GetWindow()->Init();
 }
 
 OTRGlobals::~OTRGlobals() {
 }
+
+struct ExtensionEntry {
+    std::string path;
+    std::string ext;
+};
 
 extern uintptr_t clearMtx;
 extern "C" Mtx gMtxClear;
@@ -61,12 +81,26 @@ extern "C" int AudioPlayer_Buffered(void);
 extern "C" int AudioPlayer_GetDesiredBuffered(void);
 extern "C" void ResourceMgr_CacheDirectory(const char* resName);
 extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path);
+std::unordered_map<std::string, ExtensionEntry> ExtensionCache;
 
 // C->C++ Bridge
-extern "C" void OTRAudio_Init() 
+extern "C" void OTRAudio_Init()
 {
     // Precache all our samples, sequences, etc...
     ResourceMgr_CacheDirectory("audio");
+}
+
+extern "C" void OTRExtScanner() {
+    auto lst = *OTRGlobals::Instance->context->GetResourceManager()->ListFiles("*.*").get();
+
+    for (auto& rPath : lst) {
+        std::vector<std::string> raw = StringHelper::Split(rPath, ".");
+        std::string ext = raw[raw.size() - 1];
+        std::string nPath = rPath.substr(0, rPath.size() - (ext.size() + 1));
+        replace(nPath.begin(), nPath.end(), '\\', '/');
+
+        ExtensionCache[nPath] = { rPath, ext };
+    }
 }
 
 extern "C" void InitOTR() {
@@ -84,8 +118,12 @@ extern "C" void InitOTR() {
     clearMtx = (uintptr_t)&gMtxClear;
     OTRMessage_Init();
     OTRAudio_Init();
+    InitCosmeticsEditor();
     DebugConsole_Init();
     Debug_Init();
+    Rando_Init();
+    InitItemTracker();
+    OTRExtScanner();
 }
 
 #ifdef _WIN32
@@ -334,13 +372,12 @@ extern "C" char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize)
     auto lst = OTRGlobals::Instance->context->GetResourceManager()->ListFiles(searchMask);
     char** result = (char**)malloc(lst->size() * sizeof(char*));
 
-    for (int i = 0; i < lst->size(); i++) {
+    for (size_t i = 0; i < lst->size(); i++) {
         char* str = (char*)malloc(lst.get()[0][i].size() + 1);
         memcpy(str, lst.get()[0][i].data(), lst.get()[0][i].size());
         str[lst.get()[0][i].size()] = '\0';
         result[i] = str;
     }
-    
     *resultSize = lst->size();
 
     return result;
@@ -419,6 +456,10 @@ extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
         return ResourceMgr_LoadTexByName(filePath);
 }
 
+extern "C" Sprite* GetSeedTexture(uint8_t index) {
+    return Randomizer::GetSeedTexture(index);
+}
+
 extern "C" char* ResourceMgr_LoadPlayerAnimByName(const char* animPath) {
     auto anim = std::static_pointer_cast<Ship::PlayerAnimation>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(animPath));
@@ -457,7 +498,7 @@ extern "C" char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path) {
     {
         Vec3s* data = (Vec3s*)malloc(sizeof(Vec3s) * res->scalars.size());
 
-        for (int i = 0; i < res->scalars.size(); i += 3) {
+        for (size_t i = 0; i < res->scalars.size(); i += 3) {
             data[(i / 3)].x = res->scalars[i + 0].s16;
             data[(i / 3)].y = res->scalars[i + 1].s16;
             data[(i / 3)].z = res->scalars[i + 2].s16;
@@ -489,7 +530,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
     colHeader->vtxList = (Vec3s*)malloc(sizeof(Vec3s) * colRes->vertices.size());
     colHeader->numVertices = colRes->vertices.size();
 
-    for (int i = 0; i < colRes->vertices.size(); i++)
+    for (size_t i = 0; i < colRes->vertices.size(); i++)
     {
         colHeader->vtxList[i].x = colRes->vertices[i].x;
         colHeader->vtxList[i].y = colRes->vertices[i].y;
@@ -499,7 +540,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
     colHeader->polyList = (CollisionPoly*)malloc(sizeof(CollisionPoly) * colRes->polygons.size());
     colHeader->numPolygons = colRes->polygons.size();
 
-    for (int i = 0; i < colRes->polygons.size(); i++)
+    for (size_t i = 0; i < colRes->polygons.size(); i++)
     {
         colHeader->polyList[i].type = colRes->polygons[i].type;
         colHeader->polyList[i].flags_vIA = colRes->polygons[i].vtxA;
@@ -513,7 +554,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 
     colHeader->surfaceTypeList = (SurfaceType*)malloc(colRes->polygonTypes.size() * sizeof(SurfaceType));
 
-    for (int i = 0; i < colRes->polygonTypes.size(); i++)
+    for (size_t i = 0; i < colRes->polygonTypes.size(); i++)
     {
         colHeader->surfaceTypeList[i].data[0] = colRes->polygonTypes[i] >> 32;
         colHeader->surfaceTypeList[i].data[1] = colRes->polygonTypes[i] & 0xFFFFFFFF;
@@ -521,7 +562,7 @@ extern "C" CollisionHeader* ResourceMgr_LoadColByName(const char* path)
 
     colHeader->cameraDataList = (CamData*)malloc(sizeof(CamData) * colRes->camData->entries.size());
 
-    for (int i = 0; i < colRes->camData->entries.size(); i++)
+    for (size_t i = 0; i < colRes->camData->entries.size(); i++)
     {
         colHeader->cameraDataList[i].cameraSType = colRes->camData->entries[i]->cameraSType;
         colHeader->cameraDataList[i].numCameras = colRes->camData->entries[i]->numData;
@@ -569,7 +610,7 @@ extern "C" Vtx* ResourceMgr_LoadVtxByName(const char* path)
 	return (Vtx*)res->vertices.data();
 }
 
-extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path) 
+extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
 {
     auto file = std::static_pointer_cast<Ship::AudioSequence>(OTRGlobals::Instance->context->GetResourceManager()
                     ->LoadResource(path));
@@ -591,7 +632,63 @@ extern "C" SequenceData ResourceMgr_LoadSeqByName(const char* path)
 
 std::map<std::string, SoundFontSample*> cachedCustomSFs;
 
-extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path) 
+extern "C" SoundFontSample* ReadCustomSample(const char* path) {
+
+    if (!ExtensionCache.contains(path))
+        return nullptr;
+
+    ExtensionEntry entry = ExtensionCache[path];
+
+    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(entry.path);
+    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
+    uint8_t* strem2 = (uint8_t*)strem;
+
+    SoundFontSample* sampleC = new SoundFontSample;
+
+    if (entry.ext == "wav") {
+        drwav_uint32 channels;
+        drwav_uint32 sampleRate;
+        drwav_uint64 totalPcm;
+        drmp3_int16* pcmData =
+            drwav_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &channels, &sampleRate, &totalPcm, NULL);
+        sampleC->size = totalPcm;
+        sampleC->sampleAddr = (uint8_t*)pcmData;
+        sampleC->codec = CODEC_S16;
+
+        sampleC->loop = new AdpcmLoop;
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size - 1;
+        sampleC->loop->count = 0;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = sampleRate;
+
+        cachedCustomSFs[path] = sampleC;
+        return sampleC;
+    } else if (entry.ext == "mp3") {
+        drmp3_config mp3Info;
+        drmp3_uint64 totalPcm;
+        drmp3_int16* pcmData =
+            drmp3_open_memory_and_read_pcm_frames_s16(strem2, sampleRaw->dwBufferSize, &mp3Info, &totalPcm, NULL);
+
+        sampleC->size = totalPcm * mp3Info.channels * sizeof(short);
+        sampleC->sampleAddr = (uint8_t*)pcmData;
+        sampleC->codec = CODEC_S16;
+
+        sampleC->loop = new AdpcmLoop;
+        sampleC->loop->start = 0;
+        sampleC->loop->end = sampleC->size;
+        sampleC->loop->count = 0;
+        sampleC->sampleRateMagicValue = 'RIFF';
+        sampleC->sampleRate = mp3Info.sampleRate;
+
+        cachedCustomSFs[path] = sampleC;
+        return sampleC;
+    }
+
+    return nullptr;
+}
+
+extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
 {
     if (std::string(path) == "")
         return nullptr;
@@ -599,56 +696,25 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
     if (cachedCustomSFs.find(path) != cachedCustomSFs.end())
         return cachedCustomSFs[path];
 
-    // Check if our file is actually a wav...
-    auto sampleRaw = OTRGlobals::Instance->context->GetResourceManager()->LoadFile(path);
-    uint32_t* strem = (uint32_t*)sampleRaw->buffer.get();
-    uint8_t* strem2 = (uint8_t*)strem;
+    SoundFontSample* cSample = ReadCustomSample(path);
 
-    if (strem2[0] == 'R' && strem2[1] == 'I' && strem2[2] == 'F' && strem2[3] == 'F') 
-    {
-        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
-
-        *strem++; // RIFF
-        *strem++; // size
-        *strem++; // WAVE
-
-        *strem++; // fmt
-        int fmtChunkSize = *strem++;
-        *strem++; // wFormatTag + wChannels
-        int32_t sampleRate = *strem++; // dwSamplesPerSec
-        // OTRTODO: Make sure wav format is what the audio driver wants!
-
-        strem = (uint32_t*)&strem2[0x0C + fmtChunkSize + 8 + 4];
-        sampleC->size = *strem++;
-        sampleC->sampleAddr = (uint8_t*)strem;
-        sampleC->codec = CODEC_S16;
-
-        // OTRTODO: Grab loop data from wav
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
-        sampleC->loop->start = 0;
-        sampleC->loop->end = sampleC->size / 2; // OTRTODO: This calculation is probably incorrect... Sometimes it goes past the sample, sometimes it stops too early...
-        sampleC->loop->count = 0;
-        sampleC->sampleRateMagicValue = 'RIFF';
-        sampleC->sampleRate = sampleRate;
-
-        cachedCustomSFs[path] = sampleC;
-        return sampleC;
-    }
+    if (cSample != nullptr)
+        return cSample;
 
     auto sample = std::static_pointer_cast<Ship::AudioSample>(
         OTRGlobals::Instance->context->GetResourceManager()->LoadResource(path));
-    
+
     if (sample == nullptr)
         return NULL;
 
-    if (sample->cachedGameAsset != nullptr) 
+    if (sample->cachedGameAsset != nullptr)
     {
         SoundFontSample* sampleC = (SoundFontSample*)sample->cachedGameAsset;
         return (SoundFontSample*)sample->cachedGameAsset;
     }
-    else 
+    else
     {
-        SoundFontSample* sampleC = (SoundFontSample*)malloc(sizeof(SoundFontSample));
+        SoundFontSample* sampleC = new SoundFontSample;
 
         sampleC->sampleAddr = sample->data.data();
 
@@ -658,14 +724,14 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         sampleC->unk_bit26 = sample->unk_bit26;
         sampleC->unk_bit25 = sample->unk_bit25;
 
-        sampleC->book = (AdpcmBook*)malloc(sizeof(AdpcmBook) + (sample->book.books.size() * sizeof(int16_t)));
+        sampleC->book = new AdpcmBook[sample->book.books.size() * sizeof(int16_t)];
         sampleC->book->npredictors = sample->book.npredictors;
         sampleC->book->order = sample->book.order;
 
-        for (int i = 0; i < sample->book.books.size(); i++)
+        for (size_t i = 0; i < sample->book.books.size(); i++)
             sampleC->book->book[i] = sample->book.books[i];
 
-        sampleC->loop = (AdpcmLoop*)malloc(sizeof(AdpcmLoop));
+        sampleC->loop = new AdpcmLoop;
         sampleC->loop->start = sample->loop.start;
         sampleC->loop->end = sample->loop.end;
         sampleC->loop->count = sample->loop.count;
@@ -673,7 +739,7 @@ extern "C" SoundFontSample* ResourceMgr_LoadAudioSample(const char* path)
         for (int i = 0; i < 16; i++)
             sampleC->loop->state[i] = 0;
 
-        for (int i = 0; i < sample->loop.states.size(); i++)
+        for (size_t i = 0; i < sample->loop.states.size(); i++)
             sampleC->loop->state[i] = sample->loop.states[i];
 
         sample->cachedGameAsset = sampleC;
@@ -688,11 +754,11 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
     if (soundFont == nullptr)
         return NULL;
 
-    if (soundFont->cachedGameAsset != nullptr) 
+    if (soundFont->cachedGameAsset != nullptr)
     {
         return (SoundFont*)soundFont->cachedGameAsset;
     }
-    else 
+    else
     {
         SoundFont* soundFontC = (SoundFont*)malloc(sizeof(SoundFont));
 
@@ -705,7 +771,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
         soundFontC->drums = (Drum**)malloc(sizeof(Drum*) * soundFont->drums.size());
 
-        for (int i = 0; i < soundFont->drums.size(); i++)
+        for (size_t i = 0; i < soundFont->drums.size(); i++)
         {
             Drum* drum = (Drum*)malloc(sizeof(Drum));
 
@@ -719,7 +785,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
             {
                 drum->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->drums[i].env.size());
 
-                for (int k = 0; k < soundFont->drums[i].env.size(); k++) 
+                for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
                     drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
                     drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
@@ -734,9 +800,9 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
         soundFontC->instruments = (Instrument**)malloc(sizeof(Instrument*) * soundFont->instruments.size());
 
-        for (int i = 0; i < soundFont->instruments.size(); i++) {
+        for (size_t i = 0; i < soundFont->instruments.size(); i++) {
 
-            if (soundFont->instruments[i].isValidEntry) 
+            if (soundFont->instruments[i].isValidEntry)
             {
                 Instrument* inst = (Instrument*)malloc(sizeof(Instrument));
 
@@ -747,17 +813,17 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 if (soundFont->instruments[i].env.size() == 0)
                     inst->envelope = NULL;
-                else 
+                else
                 {
                     inst->envelope = (AdsrEnvelope*)malloc(sizeof(AdsrEnvelope) * soundFont->instruments[i].env.size());
-                    
-                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++) 
+
+                    for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
                         inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
                         inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
                     }
                 }
-                if (soundFont->instruments[i].lowNotesSound != nullptr) 
+                if (soundFont->instruments[i].lowNotesSound != nullptr)
                 {
                     inst->lowNotesSound.sample =
                         ResourceMgr_LoadAudioSample(soundFont->instruments[i].lowNotesSound->sampleFileName.c_str());
@@ -787,7 +853,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
                 }
 
                 soundFontC->instruments[i] = inst;
-            } else 
+            }
+            else
             {
                 soundFontC->instruments[i] = nullptr;
             }
@@ -795,7 +862,7 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
         soundFontC->soundEffects = (SoundFontSound*)malloc(sizeof(SoundFontSound) * soundFont->soundEffects.size());
 
-        for (int i = 0; i < soundFont->soundEffects.size(); i++)
+        for (size_t i = 0; i < soundFont->soundEffects.size(); i++)
         {
             soundFontC->soundEffects[i].sample = ResourceMgr_LoadAudioSample(soundFont->soundEffects[i]->sampleFileName.c_str());
             soundFontC->soundEffects[i].tuning = soundFont->soundEffects[i]->tuning;
@@ -810,10 +877,12 @@ extern "C" int ResourceMgr_OTRSigCheck(char* imgData)
 {
 	uintptr_t i = (uintptr_t)(imgData);
 
-    if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+// if (i == 0xD9000000 || i == 0xE7000000 || (i & 1) == 1)
+    if ((i & 1) == 1)
         return 0;
 
-    if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+// if ((i & 0xFF000000) != 0xAB000000 && (i & 0xFF000000) != 0xCD000000 && i != 0) {
+    if (i != 0) {
         if (imgData[0] == '_' && imgData[1] == '_' && imgData[2] == 'O' && imgData[3] == 'T' && imgData[4] == 'R' &&
             imgData[5] == '_' && imgData[6] == '_')
             return 1;
@@ -837,12 +906,12 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         animNormal->common.frameCount = res->frameCount;
         animNormal->frameData = (int16_t*)malloc(res->rotationValues.size() * sizeof(int16_t));
 
-        for (int i = 0; i < res->rotationValues.size(); i++)
+        for (size_t i = 0; i < res->rotationValues.size(); i++)
             animNormal->frameData[i] = res->rotationValues[i];
 
         animNormal->jointIndices = (JointIndex*)malloc(res->rotationIndices.size() * sizeof(Vec3s));
 
-        for (int i = 0; i < res->rotationIndices.size(); i++) {
+        for (size_t i = 0; i < res->rotationIndices.size(); i++) {
             animNormal->jointIndices[i].x = res->rotationIndices[i].x;
             animNormal->jointIndices[i].y = res->rotationIndices[i].y;
             animNormal->jointIndices[i].z = res->rotationIndices[i].z;
@@ -858,12 +927,12 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
 
         animCurve->copyValues = (s16*)malloc(res->copyValuesArr.size() * sizeof(s16));
 
-        for (int i = 0; i < res->copyValuesArr.size(); i++)
+        for (size_t i = 0; i < res->copyValuesArr.size(); i++)
             animCurve->copyValues[i] = res->copyValuesArr[i];
 
         animCurve->transformData = (TransformData*)malloc(res->transformDataArr.size() * sizeof(TransformData));
 
-        for (int i = 0; i < res->transformDataArr.size(); i++)
+        for (size_t i = 0; i < res->transformDataArr.size(); i++)
         {
             animCurve->transformData[i].unk_00 = res->transformDataArr[i].unk_00;
             animCurve->transformData[i].unk_02 = res->transformDataArr[i].unk_02;
@@ -873,7 +942,7 @@ extern "C" AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path) {
         }
 
         animCurve->refIndex = (u8*)malloc(res->refIndexArr.size());
-        for (int i = 0; i < res->refIndexArr.size(); i++)
+        for (size_t i = 0; i < res->refIndexArr.size(); i++)
             animCurve->refIndex[i] = res->refIndexArr[i];
 
         anim = (AnimationHeaderCommon*)animCurve;
@@ -923,7 +992,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
         baseHeader->segment = (void**)malloc(sizeof(StandardLimb*) * res->limbTable.size());
     }
 
-    for (int i = 0; i < res->limbTable.size(); i++) {
+    for (size_t i = 0; i < res->limbTable.size(); i++) {
         std::string limbStr = res->limbTable[i];
         auto limb = std::static_pointer_cast<Ship::SkeletonLimb>(
             OTRGlobals::Instance->context->GetResourceManager()->LoadResource(limbStr.c_str()));
@@ -1020,7 +1089,7 @@ extern "C" SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path) {
                 animData->limbModifications = new SkinLimbModif[animData->limbModifCount];
                 animData->dlist = ResourceMgr_LoadGfxByName(limb->skinDList2.c_str());
 
-                for (int i = 0; i < skinDataSize; i++)
+                for (size_t i = 0; i < skinDataSize; i++)
                 {
                     animData->limbModifications[i].vtxCount = limb->skinData[i].unk_8_arr.size();
                     animData->limbModifications[i].transformCount = limb->skinData[i].unk_C_arr.size();
@@ -1084,6 +1153,45 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
     return (s32*)res->commands.data();
 }
 
+std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
+    std::filesystem::path saveFile = std::filesystem::absolute(fileName);
+
+    if (!exists(saveFile.parent_path())) {
+        create_directories(saveFile.parent_path());
+    }
+
+    return saveFile;
+}
+
+std::filesystem::path GetSaveFile() {
+    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
+
+    return GetSaveFile(pConf);
+}
+
+void OTRGlobals::CheckSaveFile(size_t sramSize) const {
+    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
+
+    std::filesystem::path savePath = GetSaveFile(pConf);
+    std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
+    if (saveFile.fail()) {
+        saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
+        for (int i = 0; i < sramSize; ++i) {
+            saveFile.write("\0", 1);
+        }
+    }
+    saveFile.close();
+}
+
+extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->ReadSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
+extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
+    OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
+}
+
 std::wstring StringToU16(const std::string& s) {
     std::vector<unsigned long> result;
     size_t i = 0;
@@ -1130,6 +1238,19 @@ std::wstring StringToU16(const std::string& s) {
     return utf16;
 }
 
+int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int maxBufferSize) {
+    if (!inputStr.empty()) {
+        // Prevent potential horrible overflow due to implicit conversion of maxBufferSize to an unsigned. Prevents negatives.
+        memset(buffer, 0, std::max<int>(0, maxBufferSize));
+        // Gaurentee that this value will be greater than 0, regardless of passed variables.
+        const int copiedCharLen = std::min<int>(std::max<int>(0, maxBufferSize - 1), inputStr.length());
+        memcpy(buffer, inputStr.c_str(), copiedCharLen);
+        return copiedCharLen;
+    }
+
+    return 0;
+}
+
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
     const std::vector<uint32_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
@@ -1172,11 +1293,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controllers = OTRGlobals::Instance->context->GetWindow()->Controllers;
-    for (int i = 0; i < controllers.size(); i++) {
-        for (int j = 0; j < controllers[i].size(); j++) {
-            OTRGlobals::Instance->context->GetWindow()->Controllers[i][j]->WriteToSource(controller);
-        }
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (int i = 0; i < controllers.size(); ++i) {
+        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
     }
 }
 
@@ -1201,57 +1321,6 @@ extern "C" int16_t OTRGetRectDimensionFromLeftEdge(float v) {
 
 extern "C" int16_t OTRGetRectDimensionFromRightEdge(float v) {
     return ((int)ceilf(OTRGetDimensionFromRightEdge(v)));
-}
-
-extern "C" void bswapSoundFontSound(SoundFontSound* swappable) {
-    swappable->sample = (SoundFontSample*)BOMSWAP32((u32)swappable->sample);
-    swappable->tuningAsU32 = BOMSWAP32((u32)swappable->tuningAsU32);
-}
-
-extern "C" void bswapDrum(Drum* swappable) {
-    bswapSoundFontSound(&swappable->sound);
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
-}
-
-extern "C" void bswapInstrument(Instrument* swappable) {
-    swappable->envelope = (AdsrEnvelope*)BOMSWAP32((u32)swappable->envelope);
-    bswapSoundFontSound(&swappable->lowNotesSound);
-    bswapSoundFontSound(&swappable->normalNotesSound);
-    bswapSoundFontSound(&swappable->highNotesSound);
-}
-
-extern "C" void bswapSoundFontSample(SoundFontSample* swappable) {
-    u32 origBitfield = BOMSWAP32(swappable->asU32);
-
-    swappable->codec = (origBitfield >> 28) & 0x0F;
-    swappable->medium = (origBitfield >> 24) & 0x03;
-    swappable->unk_bit26 = (origBitfield >> 22) & 0x01;
-    swappable->unk_bit25 = (origBitfield >> 21) & 0x01;
-    swappable->size = (origBitfield) & 0x00FFFFFF;
-
-    swappable->sampleAddr = (u8*)BOMSWAP32((u32)swappable->sampleAddr);
-    swappable->loop = (AdpcmLoop*)BOMSWAP32((u32)swappable->loop);
-    swappable->book = (AdpcmBook*)BOMSWAP32((u32)swappable->book);
-}
-
-extern "C" void bswapAdpcmLoop(AdpcmLoop* swappable) {
-    swappable->start = (u32)BOMSWAP32((u32)swappable->start);
-    swappable->end = (u32)BOMSWAP32((u32)swappable->end);
-    swappable->count = (u32)BOMSWAP32((u32)swappable->count);
-
-    if (swappable->count != 0) {
-        for (int i = 0; i < 16; i++) {
-            swappable->state[i] = (s16)BOMSWAP16(swappable->state[i]);
-        }
-    }
-}
-
-extern "C" void bswapAdpcmBook(AdpcmBook* swappable) {
-    swappable->order = (u32)BOMSWAP32((u32)swappable->order);
-    swappable->npredictors = (u32)BOMSWAP32((u32)swappable->npredictors);
-
-    for (int i = 0; i < swappable->npredictors * swappable->order * sizeof(s16) * 4; i++)
-        swappable->book[i] = (s16)BOMSWAP16(swappable->book[i]);
 }
 
 extern "C" bool AudioPlayer_Init(void) {
@@ -1281,14 +1350,154 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    for (const auto& controller : Ship::Window::Controllers.at(i))
-    {
-        float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 1.0f);
 
-        if (controller->CanRumble() && rumble_strength > 0.001f) {
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (const auto virtual_entry : controllers) {
+        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
             return 1;
         }
     }
 
     return 0;
+}
+
+extern "C" void* getN64WeirdFrame(s32 i) {
+    char* weirdFrameBytes = reinterpret_cast<char*>(n64WeirdFrames);
+    return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
+}
+
+extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
+}
+
+extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
+    return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
+}
+
+extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
+}
+
+extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
+    OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
+}
+
+extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
+    OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
+}
+
+extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
+    return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
+}
+
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
+    return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
+}
+
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+    return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
+}
+
+extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
+    std::string scrubText("");
+    int language = CVar_GetS32("gLanguages", 0);
+    int price = 0;
+    switch (scrubTextId) {
+        case 0x10A2:
+            price = 10;
+            break;
+        case 0x10DC:
+        case 0x10DD:
+            price = 40;
+            break;
+    }
+    switch (language) { 
+    case 0: default:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "All right! You win! In return for";
+        scrubText += 0x01; // newline
+        scrubText += "sparing me, I will sell you a";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "mysterious item";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x01; // newline
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price);
+        scrubText += price > 1 ? " Rupees" : " Rupee";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += " it is!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+            break;
+    case 2:
+        scrubText += 0x12; // add the sound
+        scrubText += 0x38; // sound id
+        scrubText += 0x82; // sound id
+        scrubText += "J'abandonne! Tu veux bien m'acheter";
+        scrubText += 0x01; // newline
+        scrubText += "un ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x42; // green
+        scrubText += "objet myst\x96rieux";
+        //scrubText += ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "?";
+        scrubText += 0x01; // newline
+        scrubText += "\x84";
+        scrubText += "a fera ";
+        scrubText += 0x05; // change the color
+        scrubText += 0x41; // red
+        scrubText += std::to_string(price) + " Rubis";
+        scrubText += 0x05; // change the color
+        scrubText += 0x40; // white
+        scrubText += "!";
+        scrubText += 0x07; // go to a new message
+        scrubText += 0x10; // message id
+        scrubText += 0xA3; // message id
+        break;
+    }
+    
+    return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
+}
+
+extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
+    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
+                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
+    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+}
+
+extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
+    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
+    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+}
+
+extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // so we're just going to let RVO take care of it
+    const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
+    return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
+}
+
+extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
+}
+
+extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }

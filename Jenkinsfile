@@ -17,7 +17,7 @@ pipeline {
                         MSBUILD='C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\Msbuild\\Current\\Bin\\msbuild.exe'
                         CONFIG='Release'
                         OTRPLATFORM='x64'
-                        PLATFORM='x86'
+                        PLATFORM='x64'
                         ZIP='C:\\Program Files\\7-Zip\\7z.exe'
                         PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
                         CMAKE='C:\\Program Files\\CMake\\bin\\cmake.exe'
@@ -57,7 +57,7 @@ pipeline {
                             
                             cd "..\\..\\"
                             
-                            move "soh\\Release\\soh.exe" ".\\"
+                            move "soh\\x64\\Release\\soh.exe" ".\\"
                             move "OTRGui\\build\\assets" ".\\"
                             move ".\\OTRExporter\\x64\\Release\\ZAPD.exe" ".\\assets\\extractor\\"
                             move ".\\OTRGui\\build\\Release\\OTRGui.exe" ".\\"
@@ -104,16 +104,52 @@ pipeline {
                             mv OTRGui/build/OTRGui build/
                             mv OTRGui/build/assets build/
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
-                            mv README.md build/readme.txt
-                            cd build
-
-                            7z a soh-linux.7z soh.elf OTRGui assets readme.txt
-                            mv soh-linux.7z ../
+                            mv README.md readme.txt
+			    
+                            docker exec sohcont appimage/appimage.sh
+			    
+                            7z a soh-linux.7z SOH-Linux.AppImage readme.txt
                             
                             '''
                         }
                         sh 'sudo docker container stop sohcont'
                         archiveArtifacts artifacts: 'soh-linux.7z', followSymlinks: false, onlyIfSuccessful: true
+                    }
+                    post {
+                        always {
+                            step([$class: 'WsCleanup']) // Clean workspace
+                        }
+                    }
+                }
+                stage ('Build macOS') {
+                    agent {
+                        label "SoH-Mac-Builders"
+                    }
+                    environment {
+                        CC = 'clang -arch arm64 -arch x86_64'
+                        CXX = 'clang++ -arch arm64 -arch x86_64'
+                        MACOSX_DEPLOYMENT_TARGET = 10.15
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            sh '''
+                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            cd soh
+                            make setup -j4 OPTFLAGS=-O2 DEBUG=0 LD="ld"
+                            make -j4 DEBUG=0 OPTFLAGS=-O2 LD="ld"
+                            make -j4 appbundle
+                            mv ../README.md readme.txt
+                            7z a soh-mac.7z soh.app readme.txt
+                            '''
+                        }
+                        archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
                     }
                     post {
                         always {

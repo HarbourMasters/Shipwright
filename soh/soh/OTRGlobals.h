@@ -8,6 +8,8 @@
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
+#include "Enhancements/randomizer/randomizer.h"
+
 class OTRGlobals
 {
 public:
@@ -15,12 +17,13 @@ public:
 
     std::shared_ptr<Ship::GlobalCtx2> context;
     std::shared_ptr<SaveStateMgr> gSaveStateMgr;
+    std::shared_ptr<Randomizer> gRandomizer;
 
     OTRGlobals();
     ~OTRGlobals();
 
 private:
-
+	void CheckSaveFile(size_t sramSize) const;
 };
 #endif
 
@@ -39,21 +42,29 @@ void ResourceMgr_CacheDirectory(const char* resName);
 char** ResourceMgr_ListFiles(const char* searchMask, int* resultSize);
 void ResourceMgr_LoadFile(const char* resName);
 char* ResourceMgr_LoadFileFromDisk(const char* filePath);
+char* ResourceMgr_LoadJPEG(char* data, int dataSize);
 char* ResourceMgr_LoadTexByName(const char* texPath);
 char* ResourceMgr_LoadTexOrDListByName(const char* filePath);
 char* ResourceMgr_LoadPlayerAnimByName(const char* animPath);
+AnimationHeaderCommon* ResourceMgr_LoadAnimByName(const char* path);
 char* ResourceMgr_GetNameByCRC(uint64_t crc, char* alloc);
 Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc);
 Gfx* ResourceMgr_LoadGfxByName(const char* path);
 Gfx* ResourceMgr_PatchGfxByName(const char* path, int size);
+char* ResourceMgr_LoadArrayByNameAsVec3s(const char* path);
 Vtx* ResourceMgr_LoadVtxByCRC(uint64_t crc);
+
 Vtx* ResourceMgr_LoadVtxByName(const char* path);
 SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path);
 SequenceData ResourceMgr_LoadSeqByName(const char* path);
 SoundFontSample* ResourceMgr_LoadAudioSample(const char* path);
 CollisionHeader* ResourceMgr_LoadColByName(const char* path);
+void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size);
+
 uint64_t GetPerfCounter();
 struct SkeletonHeader* ResourceMgr_LoadSkeletonByName(const char* path);
+s32* ResourceMgr_LoadCSByName(const char* path);
 int ResourceMgr_OTRSigCheck(char* imgData);
 uint64_t osGetTime(void);
 uint32_t osGetCount(void);
@@ -64,12 +75,6 @@ float OTRGetDimensionFromLeftEdge(float v);
 float OTRGetDimensionFromRightEdge(float v);
 int16_t OTRGetRectDimensionFromLeftEdge(float v);
 int16_t OTRGetRectDimensionFromRightEdge(float v);
-void bswapDrum(Drum* swappable);
-void bswapInstrument(Instrument* swappable);
-bool bswapSoundFontSound(SoundFontSound* swappable);
-void bswapSoundFontSample(SoundFontSample* swappable);
-void bswapAdpcmLoop(AdpcmLoop* swappable);
-void bswapAdpcmBook(AdpcmBook* swappable);
 char* ResourceMgr_LoadFileRaw(const char* resName);
 bool AudioPlayer_Init(void);
 int AudioPlayer_Buffered(void);
@@ -77,6 +82,21 @@ int AudioPlayer_GetDesiredBuffered(void);
 void AudioPlayer_Play(const uint8_t* buf, uint32_t len);
 void AudioMgr_CreateNextAudioBuffer(s16* samples, u32 num_samples);
 int Controller_ShouldRumble(size_t i);
+void* getN64WeirdFrame(s32 i);
+Sprite* GetSeedTexture(uint8_t index);
+void Randomizer_LoadSettings(const char* spoilerFileName);
+u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey);
+RandomizerCheck Randomizer_GetCheckFromActor(s16 actorId, s16 actorParams, s16 sceneNum);
+int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize);
+int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize);
+int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize);
+int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize);
+void Randomizer_LoadHintLocations(const char* spoilerFileName);
+void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent);
+s16 Randomizer_GetItemModelFromId(s16 itemId);
+s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
+s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
+s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif

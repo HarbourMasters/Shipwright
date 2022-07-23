@@ -113,8 +113,6 @@
 				<Sequence Name="108_Timed_Minigame"/>
 				<Sequence Name="109_Cutscene_Effects"/>
 			</Sequences>
-		
-		
 			<Samples Bank="0">
 				<Sample Name="Bird Chirp 1">
 					<Offset Version="MQDebug" At="0"/>

@@ -51,7 +51,7 @@ void aEnvMixerImpl(uint16_t in_addr, uint16_t n_samples, bool swap_reverb,
                    int32_t wet_dry_addr, u32 unk);
 void aMixImpl(uint16_t count, int16_t gain, uint16_t in_addr, uint16_t out_addr);
 void aS8DecImpl(uint8_t flags, ADPCM_STATE state);
-void aAddMixerImpl(uint16_t in_addr, uint16_t out_addr, uint16_t count);
+void aAddMixerImpl(uint16_t count, uint16_t in_addr, uint16_t out_addr);
 void aDuplicateImpl(uint16_t count, uint16_t in_addr, uint16_t out_addr);
 void aResampleZohImpl(uint16_t pitch, uint16_t start_fract);
 void aInterlImpl(uint16_t in_addr, uint16_t out_addr, uint16_t n_samples);

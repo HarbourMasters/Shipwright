@@ -4,9 +4,11 @@
 #pragma once
 
 #ifdef __cplusplus
+#include <filesystem>
 #include <memory>
+#include <fstream>
 #include "spdlog/spdlog.h"
-#include "ConfigFile.h"
+#include "Lib/Mercury/Mercury.h"
 
 namespace Ship {
 	class ResourceMgr;
@@ -21,9 +23,15 @@ namespace Ship {
 			std::shared_ptr<Window> GetWindow() { return Win; }
 			std::shared_ptr<ResourceMgr> GetResourceManager() { return ResMan; }
 			std::shared_ptr<spdlog::logger> GetLogger() { return Logger; }
-			std::shared_ptr<ConfigFile> GetConfig() { return Config; }
+			std::shared_ptr<Mercury> GetConfig() { return Config; }
 
-			GlobalCtx2(const std::string& Name);
+			static std::string GetAppDirectoryPath();
+			static std::string GetPathRelativeToAppDirectory(const char* path);
+
+			void WriteSaveFile(const std::filesystem::path& savePath, uintptr_t addr, void* dramAddr, size_t size);
+			void ReadSaveFile(std::filesystem::path savePath, uintptr_t addr, void* dramAddr, size_t size);
+
+			GlobalCtx2(std::string Name);
 			~GlobalCtx2();
 
 		protected:
@@ -34,7 +42,7 @@ namespace Ship {
 			static std::weak_ptr <GlobalCtx2> Context;
 			std::shared_ptr<spdlog::logger> Logger;
 			std::shared_ptr<Window> Win;
-			std::shared_ptr<ConfigFile> Config; // Config needs to be after the Window because we call the Window during it's destructor.
+			std::shared_ptr<Mercury> Config; // Config needs to be after the Window because we call the Window during it's destructor.
 			std::shared_ptr<ResourceMgr> ResMan;
 			std::string Name;
 			std::string MainPath;

@@ -49,7 +49,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     f32 xzScale;
     f32 scale;
 
-    OPEN_DISPS(gfxCtx, "../z_eff_fcircle.c", 149);
+    OPEN_DISPS(gfxCtx);
 
     scale = (this->rScale * (0.5f + (this->life * 0.025f))) * 0.01f;
     yScale = (this->rHeight * 0.001f) * scale;
@@ -58,7 +58,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     Matrix_Translate(this->pos.x, this->pos.y, this->pos.z, MTXMODE_NEW);
     Matrix_Scale(xzScale, yScale, xzScale, MTXMODE_APPLY);
     Matrix_RotateY(this->rYaw * (M_PI / 0x8000), MTXMODE_APPLY);
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(gfxCtx, "../z_eff_fcircle.c", 163),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     func_80093D84(globalCtx->state.gfxCtx);
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -68,7 +68,7 @@ void EffectSsFcircle_Draw(GlobalContext* globalCtx, u32 index, EffectSs* this) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
     gSPDisplayList(POLY_XLU_DISP++, this->gfx);
 
-    CLOSE_DISPS(gfxCtx, "../z_eff_fcircle.c", 186);
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsFcircle_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {

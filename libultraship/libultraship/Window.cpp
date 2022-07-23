@@ -18,12 +18,16 @@
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
 #include "stox.h"
+#if __APPLE__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 #include <map>
 #include <string>
 #include <chrono>
-#include "SohHooks.h"
-#include "SohConsole.h"
+#include "Hooks.h"
+#include "Console.h"
 
 #include <iostream>
 
@@ -34,8 +38,7 @@ extern "C" {
     uint8_t __enableGameInput = 1;
 
     int32_t osContInit(OSMesgQueue* mq, uint8_t* controllerBits, OSContStatus* status) {
-        std::shared_ptr<Ship::ConfigFile> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
-        Ship::ConfigFile& Conf = *pConf.get();
+        *controllerBits = 0;
 
         if (SDL_Init(SDL_INIT_GAMECONTROLLER) != 0) {
             SPDLOG_ERROR("Failed to initialize SDL game controllers ({})", SDL_GetError());
@@ -50,43 +53,7 @@ extern "C" {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
         }
 
-        // TODO: This for loop is debug. Burn it with fire.
-        for (int i = 0; i < SDL_NumJoysticks(); i++) {
-            if (SDL_IsGameController(i)) {
-                // Get the GUID from SDL
-                char buf[33];
-                SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(i), buf, sizeof(buf));
-                auto guid = std::string(buf);
-                auto name = std::string(SDL_GameControllerNameForIndex(i));
-
-                SPDLOG_INFO("Found Controller \"{}\" with ID \"{}\"", name, guid);
-            }
-        }
-
-        for (int32_t i = 0; i < __osMaxControllers; i++) {
-            std::string ControllerType = Conf["CONTROLLERS"]["CONTROLLER " + std::to_string(i+1)];
-            mINI::INIStringUtil::toLower(ControllerType);
-
-            if (ControllerType == "auto") {
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
-            } else if (ControllerType == "keyboard") {
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::KeyboardController>(i));
-            } else if (ControllerType == "usb") {
-                Ship::Window::Controllers[i].push_back(std::make_shared<Ship::SDLController>(i));
-            } else if (ControllerType == "unplugged") {
-                // Do nothing for unplugged controllers
-            } else {
-                SPDLOG_ERROR("Invalid Controller Type: {}", ControllerType);
-            }
-        }
-
-        *controllerBits = 0;
-        for (size_t i = 0; i < __osMaxControllers; i++) {
-            if (Ship::Window::Controllers[i].size() > 0) {
-                *controllerBits |= 1 << i;
-            }
-        }
+        Ship::Window::ControllerApi->Init(controllerBits);
 
         return 0;
     }
@@ -99,17 +66,14 @@ extern "C" {
         pad->button = 0;
         pad->stick_x = 0;
         pad->stick_y = 0;
+        pad->cam_x = 0;
+        pad->cam_y = 0;
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-        if (__enableGameInput)
-        {
-            for (size_t i = 0; i < __osMaxControllers; i++) {
-                for (size_t j = 0; j < Ship::Window::Controllers[i].size(); j++) {
-                    Ship::Window::Controllers[i][j]->Read(&pad[i]);
-                }
-            }
+        if (__enableGameInput) {
+            Ship::Window::ControllerApi->WriteToPad(pad);
         }
 
         ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
@@ -125,15 +89,10 @@ extern "C" {
 
         if (hashStr != nullptr) {
             auto res = std::static_pointer_cast<Ship::Array>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
+            return (Vtx*)res->vertices.data();
+        }
 
-            //if (res != nullptr)
-                return (Vtx*)res->vertices.data();
-            //else
-                //return (Vtx*)Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadFile(hashStr)->buffer.get();
-        }
-        else {
-            return nullptr;
-        }
+        return nullptr;
     }
 
     int32_t* ResourceMgr_LoadMtxByCRC(uint64_t crc) {
@@ -142,9 +101,9 @@ extern "C" {
         if (hashStr != nullptr) {
             auto res = std::static_pointer_cast<Ship::Matrix>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()));
             return (int32_t*)res->mtx.data();
-        } else {
-            return nullptr;
         }
+
+        return nullptr;
     }
 
     Gfx* ResourceMgr_LoadGfxByCRC(uint64_t crc) {
@@ -229,7 +188,7 @@ extern GfxWindowManagerAPI gfx_sdl;
 void SetWindowManager(GfxWindowManagerAPI** WmApi, GfxRenderingAPI** RenderingApi, const std::string& gfx_backend);
 
 namespace Ship {
-    std::map<size_t, std::vector<std::shared_ptr<Controller>>> Window::Controllers;
+
     int32_t Window::lastScancode;
 
     Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr) {
@@ -244,23 +203,55 @@ namespace Ship {
         SPDLOG_INFO("destruct window");
     }
 
+    void Window::CreateDefaults() {
+	    const std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+        if (pConf->isNewInstance) {
+            pConf->setInt("Window.Width", 640);
+            pConf->setInt("Window.Height", 480);
+            pConf->setBool("Window.Options", false);
+            pConf->setString("Window.GfxBackend", "");
+
+            pConf->setBool("Window.Fullscreen.Enabled", false);
+            pConf->setInt("Window.Fullscreen.Width", 1920);
+            pConf->setInt("Window.Fullscreen.Height", 1080);
+
+            pConf->setString("Game.SaveName", "");
+            pConf->setString("Game.Main Archive", "");
+            pConf->setString("Game.Patches Archive", "");
+
+            pConf->setInt("Shortcuts.Fullscreen", 0x044);
+            pConf->setInt("Shortcuts.Console", 0x029);
+            pConf->save();
+        }
+    }
+
     void Window::Init() {
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
+        CreateDefaults();
 
         SetAudioPlayer();
-        bIsFullscreen = Ship::stob(Conf["WINDOW"]["FULLSCREEN"]);
-        dwWidth = Ship::stoi(Conf["WINDOW"]["WINDOW WIDTH"], 320);
-        dwHeight = Ship::stoi(Conf["WINDOW"]["WINDOW HEIGHT"], 240);
-        dwWidth = Ship::stoi(Conf["WINDOW"]["FULLSCREEN WIDTH"], 1920);
-        dwHeight = Ship::stoi(Conf["WINDOW"]["FULLSCREEN HEIGHT"], 1080);
-        dwMenubar = Ship::stoi(Conf["WINDOW"]["menubar"], 0);
-        const std::string& gfx_backend = Conf["WINDOW"]["GFX BACKEND"];
+        bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
+
+        if (bIsFullscreen) {
+            dwWidth = pConf->getInt("Window.Fullscreen.Width", 1920);
+            dwHeight = pConf->getInt("Window.Fullscreen.Height", 1080);
+        } else {
+            dwWidth = pConf->getInt("Window.Width", 640);
+            dwHeight = pConf->getInt("Window.Height", 480);
+        }
+
+        dwMenubar = pConf->getBool("Window.Options", false);
+        const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
 
-        gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen);
-        WmApi->set_fullscreen_changed_callback(Window::OnFullscreenChanged);
-        WmApi->set_keyboard_callbacks(Window::KeyDown, Window::KeyUp, Window::AllKeysUp);
+        gfx_init(WmApi, RenderingApi, GetContext()->GetName().c_str(), bIsFullscreen, dwWidth, dwHeight);
+        WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
+        WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
+
+        ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
+            ControllerApi->SaveControllerSettings();
+        });
     }
 
     void Window::StartFrame() {
@@ -311,30 +302,26 @@ namespace Ship {
     void Window::MainLoop(void (*MainFunction)(void)) {
         WmApi->main_loop(MainFunction);
     }
+	
     bool Window::KeyUp(int32_t dwScancode) {
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
-        if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_FULLSCREEN"])) {
+        if (dwScancode == pConf->getInt("Shortcuts.Fullscreen", 0x044)) {
             GlobalCtx2::GetInstance()->GetWindow()->ToggleFullscreen();
         }
-
-        
 
         // OTRTODO: Rig with Kirito's console?
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
         //}
+		
+        lastScancode = -1;
 
         bool bIsProcessed = false;
-        for (size_t i = 0; i < __osMaxControllers; i++) {
-            for (size_t j = 0; j < Controllers[i].size(); j++) {
-                KeyboardController* pad = dynamic_cast<KeyboardController*>(Ship::Window::Controllers[i][j].get());
-                if (pad != nullptr) {
-                    if (pad->ReleaseButton(dwScancode)) {
-                        bIsProcessed = true;
-                    }
-                }
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        if (pad != nullptr) {
+            if (pad->ReleaseButton(dwScancode)) {
+                bIsProcessed = true;
             }
         }
 
@@ -343,14 +330,11 @@ namespace Ship {
 
     bool Window::KeyDown(int32_t dwScancode) {
         bool bIsProcessed = false;
-        for (size_t i = 0; i < __osMaxControllers; i++) {
-            for (size_t j = 0; j < Controllers[i].size(); j++) {
-                KeyboardController* pad = dynamic_cast<KeyboardController*>(Ship::Window::Controllers[i][j].get());
-                if (pad != nullptr) {
-                    if (pad->PressButton(dwScancode)) {
-                        bIsProcessed = true;
-                    }
-                }
+
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        if (pad != nullptr) {
+            if (pad->PressButton(dwScancode)) {
+                bIsProcessed = true;
             }
         }
 
@@ -361,21 +345,17 @@ namespace Ship {
 
 
     void Window::AllKeysUp(void) {
-        for (size_t i = 0; i < __osMaxControllers; i++) {
-            for (size_t j = 0; j < Controllers[i].size(); j++) {
-                KeyboardController* pad = dynamic_cast<KeyboardController*>(Ship::Window::Controllers[i][j].get());
-                if (pad != nullptr) {
-                    pad->ReleaseAllButtons();
-                }
-            }
+        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        if (pad != nullptr) {
+            pad->ReleaseAllButtons();
         }
     }
 
     void Window::OnFullscreenChanged(bool bIsFullscreen) {
-        std::shared_ptr<ConfigFile> pConf = GlobalCtx2::GetInstance()->GetConfig();
-        ConfigFile& Conf = *pConf.get();
+        std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
         GlobalCtx2::GetInstance()->GetWindow()->bIsFullscreen = bIsFullscreen;
-        Conf["WINDOW"]["FULLSCREEN"] = std::to_string(bIsFullscreen);
+        pConf->setBool("Window.Fullscreen.Enabled", bIsFullscreen);
         GlobalCtx2::GetInstance()->GetWindow()->ShowCursor(!bIsFullscreen);
     }
 

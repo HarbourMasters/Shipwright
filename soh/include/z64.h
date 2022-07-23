@@ -30,8 +30,11 @@
 #include "ichain.h"
 #include "regs.h"
 
-//#define AUDIO_HEAP_SIZE 0x38000
-#define AUDIO_HEAP_SIZE 0x3800000 // The original audio heap size was too small. The heap would exceed capacity and corrupt everything in its path.
+#if defined(_WIN64) || defined(__x86_64__) || defined(__arm64__)
+#define _SOH64
+#endif
+
+#define AUDIO_HEAP_SIZE  0x3800000
 #define SYSTEM_HEAP_SIZE (1024 * 1024 * 4)
 
 #ifdef __cplusplus
@@ -254,9 +257,11 @@ typedef struct {
     /* 0x0A */ u8       durationTimer; // how long the title card appears for before fading
     /* 0x0B */ u8       delayTimer; // how long the title card waits to appear
     /* 0x0C */ s16      alpha;
-    /* 0x0E */ s16      intensity;
-    /* ---- */ s16     isBossCard; //To detect if that a Boss name title card.
-    /* ---- */ s16     hasTranslation; // to detect if the current title card has translation (used for bosses only)
+    /* ---- */ s16      intensityR; //Splited intensity per channel to support precise recolor
+    /* ---- */ s16      intensityG;
+    /* ---- */ s16      intensityB;
+    /* ---- */ s16      isBossCard; //To detect if that a Boss name title card.
+    /* ---- */ s16      hasTranslation; // to detect if the current title card has translation (used for bosses only)
 } TitleCardContext; // size = 0x10
 
 typedef struct {
@@ -537,9 +542,9 @@ typedef enum {
     /*  4 */ TEXT_STATE_CHOICE,
     /*  5 */ TEXT_STATE_EVENT,
     /*  6 */ TEXT_STATE_DONE,
-    /*  7 */ TEXT_STATE_SONG_DEMO_DONE, 
-    /*  8 */ TEXT_STATE_8, 
-    /*  9 */ TEXT_STATE_9, 
+    /*  7 */ TEXT_STATE_SONG_DEMO_DONE,
+    /*  8 */ TEXT_STATE_8,
+    /*  9 */ TEXT_STATE_9,
     /* 10 */ TEXT_STATE_AWAITING_NEXT
 } TextState;
 
@@ -702,6 +707,10 @@ typedef struct {
     /* 0x024C */ u16    cDownAlpha;
     /* 0x024E */ u16    cRightAlpha;
     /* 0x0250 */ u16    healthAlpha; // also max C-Up alpha
+    /* 0x024E */ u16    dpadUpAlpha;
+    /* 0x024E */ u16    dpadDownAlpha;
+    /* 0x024E */ u16    dpadLeftAlpha;
+    /* 0x024E */ u16    dpadRightAlpha;
     /* 0x0252 */ u16    magicAlpha; // also Rupee and Key counters alpha
     /* 0x0254 */ u16    minimapAlpha;
     /* 0x0256 */ s16    startAlpha;
@@ -1194,6 +1203,9 @@ typedef struct GlobalContext {
     /* 0x00790 */ Camera* cameraPtrs[NUM_CAMS];
     /* 0x007A0 */ s16 activeCamera;
     /* 0x007A2 */ s16 nextCamera;
+    /* 0x007A2 */ bool manualCamera;
+    /* 0x007A2 */ f32 camX;
+    /* 0x007A2 */ f32 camY;
     /* 0x007A4 */ SequenceContext sequenceCtx;
     /* 0x007A8 */ LightContext lightCtx;
     /* 0x007B8 */ FrameAdvanceContext frameAdvCtx;
@@ -1284,6 +1296,7 @@ typedef struct {
     /* 0x1C9EC */ Vtx* keyboardVtx;
     /* 0x1C9F0 */ Vtx* nameEntryVtx;
     /* 0x1C9F4 */ u8 n64ddFlag;
+    /* 0x1CA28 */ s16 n64ddFlags[3];
     /* 0x1CA38 */ s16 buttonIndex;
     /* 0x1CA3A */ s16 confirmButtonIndex; // 0: yes, 1: quit
     /* 0x1CA3C */ s16 menuMode;

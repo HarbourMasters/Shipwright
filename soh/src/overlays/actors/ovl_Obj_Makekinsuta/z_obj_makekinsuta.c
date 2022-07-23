@@ -39,7 +39,7 @@ void ObjMakekinsuta_Init(Actor* thisx, GlobalContext* globalCtx) {
     } else {
         osSyncPrintf(VT_COL(YELLOW, BLACK));
         // "Invalid Argument (arg_data %x)(%s %d)"
-        osSyncPrintf("引数不正 (arg_data %x)(%s %d)\n", this->actor.params, "../z_obj_makekinsuta.c", 119);
+        osSyncPrintf("引数不正 (arg_data %x)(%s %d)\n", this->actor.params, __FILE__, __LINE__);
         osSyncPrintf(VT_RST);
     }
     this->actionFunc = func_80B98320;

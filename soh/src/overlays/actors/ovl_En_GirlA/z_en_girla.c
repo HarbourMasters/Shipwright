@@ -384,7 +384,7 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("引数がおかしいよ(arg_data=%d)！！\n", this->actor.params);
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", "../z_en_girlA.c", 1421);
+        ASSERT((params >= SI_MAX) && (params < 0));
         return;
     }
 
@@ -395,7 +395,7 @@ void EnGirlA_InitItem(EnGirlA* this, GlobalContext* globalCtx) {
         osSyncPrintf(VT_COL(RED, WHITE));
         osSyncPrintf("バンクが無いよ！！(%s)\n", sShopItemDescriptions[params]);
         osSyncPrintf(VT_RST);
-        ASSERT(0, "0", "../z_en_girlA.c", 1434);
+        ASSERT(this->objBankIndex < 0);
         return;
     }
 
@@ -433,7 +433,7 @@ s32 EnGirlA_CanBuy_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombs(GlobalContext* globalCtx, EnGirlA* this) {
-    if (!CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_BOMB) >= CUR_CAPACITY(UPG_BOMB_BAG)) {
@@ -452,7 +452,7 @@ s32 EnGirlA_CanBuy_DekuNuts(GlobalContext* globalCtx, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if (Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) {
+    if ((Item_CheckObtainability(ITEM_NUT) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -465,7 +465,7 @@ s32 EnGirlA_CanBuy_DekuSticks(GlobalContext* globalCtx, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if (Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) {
+    if ((Item_CheckObtainability(ITEM_STICK) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;
@@ -652,7 +652,7 @@ s32 EnGirlA_CanBuy_DekuSeeds(GlobalContext* globalCtx, EnGirlA* this) {
     if (gSaveContext.rupees < this->basePrice) {
         return CANBUY_RESULT_NEED_RUPEES;
     }
-    if (Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) {
+    if ((Item_CheckObtainability(ITEM_SEEDS) == ITEM_NONE) && !CVar_GetS32("gFastDrops", 0)) {
         return CANBUY_RESULT_SUCCESS_FANFARE;
     }
     return CANBUY_RESULT_SUCCESS;

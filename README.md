@@ -62,8 +62,9 @@ Other shortcuts:
 | F7 | Load state |
 | F10 | Fullscreen (OpenGL) |
 | Alt+Enter | Fullscreen (DirectX) |
+| Ctrl+R | Reset |
 
-Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
+Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.json` configuration file in notepad and add `sdl` to the quotes in `"GfxBackend": ""` for OpenGL or leave blank for DirectX.
 
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?
@@ -127,5 +128,3 @@ Nightly builds of Ship of Harkinian are available [here](https://builds.shipofha
     MicTheMicrophone | Gwonam / The King
     Amphibibro | Link
     AceHeart | Zelda
-    
-###### Lemons

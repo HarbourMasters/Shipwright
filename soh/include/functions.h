@@ -60,7 +60,9 @@ void Locale_ResetRegion(void);
 u32 func_80001F48(void);
 u32 func_80001F8C(void);
 u32 Locale_IsRegionNative(void);
+#ifndef __APPLE__
 void __assert(const char* exp, const char* file, s32 line);
+#endif
 void isPrintfInit(void);
 void osSyncPrintfUnused(const char* fmt, ...);
 //void osSyncPrintf(const char* fmt, ...);
@@ -446,6 +448,7 @@ u32 Actor_TextboxIsClosing(Actor* actor, GlobalContext* globalCtx);
 s8 func_8002F368(GlobalContext* globalCtx);
 void Actor_GetScreenPos(GlobalContext* globalCtx, Actor* actor, s16* x, s16* y);
 u32 Actor_HasParent(Actor* actor, GlobalContext* globalCtx);
+s32 GiveItemWithoutActor(GlobalContext* globalCtx, s32 getItemId);
 s32 func_8002F434(Actor* actor, GlobalContext* globalCtx, s32 getItemId, f32 xzRange, f32 yRange);
 void func_8002F554(Actor* actor, GlobalContext* globalCtx, s32 getItemId);
 void func_8002F580(Actor* actor, GlobalContext* globalCtx);
@@ -556,6 +559,7 @@ void ActorOverlayTable_Cleanup(void);
 u16 DynaSSNodeList_GetNextNodeIdx(DynaSSNodeList*);
 void func_80038A28(CollisionPoly* poly, f32 tx, f32 ty, f32 tz, MtxF* dest);
 f32 CollisionPoly_GetPointDistanceFromPlane(CollisionPoly* poly, Vec3f* point);
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 void CollisionPoly_GetVerticesByBgId(CollisionPoly* poly, s32 bgId, CollisionContext* colCtx, Vec3f* dest);
 s32 BgCheck_CheckStaticCeiling(StaticLookup* lookup, u16 xpFlags, CollisionContext* colCtx, f32* outY, Vec3f* pos,
                                f32 checkHeight, CollisionPoly** outPoly);
@@ -1900,7 +1904,7 @@ void AudioHeap_AllocPoolInit(AudioAllocPool* pool, void* mem, size_t size);
 void AudioHeap_PersistentCacheClear(AudioPersistentCache* persistent);
 void AudioHeap_TemporaryCacheClear(AudioTemporaryCache* temporary);
 void AudioHeap_PopCache(s32 tableType);
-void AudioHeap_InitMainPools(ptrdiff_t sizeForAudioInitPool);
+void AudioHeap_InitMainPools(size_t sizeForAudioInitPool);
 void* AudioHeap_AllocCached(s32 tableType, ptrdiff_t size, s32 cache, s32 id);
 void* AudioHeap_SearchCaches(s32 tableType, s32 arg1, s32 id);
 void* AudioHeap_SearchRegularCaches(s32 tableType, s32 cache, s32 id);
@@ -1912,7 +1916,7 @@ void* AudioHeap_AllocPermanent(s32 tableType, s32 id, size_t size);
 void* AudioHeap_AllocSampleCache(size_t size, s32 fontId, void* sampleAddr, s8 medium, s32 cache);
 void AudioHeap_ApplySampleBankCache(s32 sampleBankId);
 void AudioLoad_DecreaseSampleDmaTtls(void);
-void* AudioLoad_DmaSampleData(u32 devAddr, size_t size, s32 arg2, u8* dmaIndexRef, s32 medium);
+uintptr_t AudioLoad_DmaSampleData(uintptr_t devAddr, size_t size, s32 arg2, u8* dmaIndexRef, s32 medium);
 void AudioLoad_InitSampleDmaBuffers(s32 arg0);
 s32 AudioLoad_IsFontLoadComplete(s32 fontId);
 s32 AudioLoad_IsSeqLoadComplete(s32 seqId);
@@ -1929,7 +1933,7 @@ s32 AudioLoad_SyncInitSeqPlayer(s32 playerIdx, s32 seqId, s32 arg2);
 s32 AudioLoad_SyncInitSeqPlayerSkipTicks(s32 playerIdx, s32 seqId, s32 arg2);
 void AudioLoad_ProcessLoads(s32 resetStatus);
 void AudioLoad_SetDmaHandler(DmaHandler callback);
-void AudioLoad_Init(void* heap, u32 heapSize);
+void AudioLoad_Init(void* heap, size_t heapSize);
 void AudioLoad_InitSlowLoads(void);
 s32 AudioLoad_SlowLoadSample(s32 arg0, s32 arg1, s8* arg2);
 s32 AudioLoad_SlowLoadSeq(s32 playerIdx, u8* ramAddr, s8* arg2);
@@ -2167,10 +2171,10 @@ f32 Math_FAtanF(f32 x);
 f32 Math_FAtan2F(f32 y, f32 x);
 f32 Math_FAsinF(f32 x);
 f32 Math_FAcosF(f32 x);
-f32 ceilf(f32 x);
+/*f32 ceilf(f32 x);
 f32 truncf(f32 x);
 f32 roundf(f32 x);
-f32 nearbyintf(f32 x);
+f32 nearbyintf(f32 x);*/
 void SystemArena_CheckPointer(void* ptr, size_t size, const char* name, const char* action);
 void* SystemArena_Malloc(size_t size);
 void* SystemArena_MallocDebug(size_t size, const char* file, s32 line);
@@ -2394,6 +2398,8 @@ char* SetQuote();
 
 void Heaps_Alloc(void);
 void Heaps_Free(void);
+
+CollisionHeader* BgCheck_GetCollisionHeader(CollisionContext* colCtx, s32 bgId);
 
 #ifdef __cplusplus
 #undef this

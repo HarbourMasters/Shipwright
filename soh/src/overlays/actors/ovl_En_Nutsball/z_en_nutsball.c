@@ -6,6 +6,7 @@
 
 #include "z_en_nutsball.h"
 #include "overlays/effects/ovl_Effect_Ss_Hahen/z_eff_ss_hahen.h"
+#include "objects/object_gi_nuts/object_gi_nuts.h"
 #include "objects/object_dekunuts/object_dekunuts.h"
 #include "objects/object_hintnuts/object_hintnuts.h"
 #include "objects/object_shopnuts/object_shopnuts.h"
@@ -57,6 +58,10 @@ static ColliderCylinderInit sCylinderInit = {
 
 static s16 sObjectIDs[] = {
     OBJECT_DEKUNUTS, OBJECT_HINTNUTS, OBJECT_SHOPNUTS, OBJECT_DNS, OBJECT_DNK,
+};
+
+static Gfx* sDListsNew[] = {
+    gGiNutDL, gGiNutDL, gGiNutDL, gGiNutDL, gGiNutDL,
 };
 
 static Gfx* sDLists[] = {
@@ -165,14 +170,28 @@ void EnNutsball_Update(Actor* thisx, GlobalContext* globalCtx) {
 void EnNutsball_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 327);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
 
-    func_80093D18(globalCtx->state.gfxCtx);
-    Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
-    Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
-    gSPMatrix(POLY_OPA_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 333),
-              G_MTX_MODELVIEW | G_MTX_LOAD);
-    gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
+    if (CVar_GetS32("gNewDrops", 0) != 0) {
+        func_80093D18(globalCtx->state.gfxCtx);
+        gSPSegment(POLY_OPA_DISP++, 0x08,
+                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 1 * (globalCtx->state.frames * 6),
+                                    1 * (globalCtx->state.frames * 6), 32, 32, 1, 1 * (globalCtx->state.frames * 6),
+                                    1 * (globalCtx->state.frames * 6), 32, 32));
+        Matrix_Scale(25.0f,25.0f,25.0f,MTXMODE_APPLY);
+        Matrix_RotateX(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, sDListsNew[thisx->params]);
+    } else {
+        func_80093D18(globalCtx->state.gfxCtx);
+        Matrix_Mult(&globalCtx->billboardMtxF, MTXMODE_APPLY);
+        
+        Matrix_RotateZ(thisx->home.rot.z * 9.58738e-05f, MTXMODE_APPLY);
+        gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
+                G_MTX_MODELVIEW | G_MTX_LOAD);
+        gSPDisplayList(POLY_OPA_DISP++, sDLists[thisx->params]);
+    }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_nutsball.c", 337);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

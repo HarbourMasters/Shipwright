@@ -1,660 +1,199 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Lib">
-      <UniqueIdentifier>{50e27c70-2679-4f41-9127-fca2c66989ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\Fast3D">
-      <UniqueIdentifier>{19d4557f-ea31-4405-88d5-15504070f479}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resources">
-      <UniqueIdentifier>{12c0e217-75b9-47a5-bc2e-a2ea4e5dd992}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Controller">
-      <UniqueIdentifier>{bec61d88-f3a8-466d-b3e8-cf2e7d963f1b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Controller\Attachment">
-      <UniqueIdentifier>{ad191ad0-c9eb-495d-9d45-5d12b9e7c269}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Globals">
-      <UniqueIdentifier>{c0f07350-c627-444e-9f66-23e19407ad9a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Config">
-      <UniqueIdentifier>{9cf4833f-e90c-4a9d-8747-d47cde657beb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resources\Files">
-      <UniqueIdentifier>{2aa34c3b-6148-480f-a4fc-19c4e0f8c822}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\tinyxml2">
-      <UniqueIdentifier>{6b6658ad-694d-4943-83b8-c9dbd31ca67d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Resources">
-      <UniqueIdentifier>{ef3683ce-934c-44c3-ae84-99cf22764875}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Resources\Files">
-      <UniqueIdentifier>{58ff8972-9dba-4719-aec5-6edc5e6b033d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resources\mpq">
-      <UniqueIdentifier>{dde367c4-c14a-4bf3-b6d9-bc0d2d7d34e6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resources\Files\Zelda">
-      <UniqueIdentifier>{1f5e0ba2-0f3f-456c-9b66-873ed62e9fbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resources\Factories">
-      <UniqueIdentifier>{3376a196-8303-4613-9721-62f31e746b0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Resources\Factories">
-      <UniqueIdentifier>{cf7f1b29-bb9a-4844-9ea5-4ac085f942e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\stb">
-      <UniqueIdentifier>{70cd453d-a4dc-4c56-b64e-e50394fd18ee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\ImGui">
-      <UniqueIdentifier>{a66f6337-5cde-4e46-8f49-a6c991ea2fe7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl">
-      <UniqueIdentifier>{11039197-0b49-4fb9-b9e6-56196220c9d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Audio">
-      <UniqueIdentifier>{ccd6359f-e357-41ca-9b89-5f509dd30649}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl\Environment">
-      <UniqueIdentifier>{94ca4b98-cee2-48e6-a88b-68b8d2fed287}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl\Utils">
-      <UniqueIdentifier>{0dca2d94-45ba-4916-b03a-1dd5f949114c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl\Hooks">
-      <UniqueIdentifier>{cc8de11b-7305-4482-853f-7f0f843eef28}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Logging">
-      <UniqueIdentifier>{bd6557f1-9480-413b-b0cd-843f8efc1939}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\CustomImpl\Overlay">
-      <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\Textures">
-      <UniqueIdentifier>{853d11de-3ffb-42bd-b1b6-dd453527a83a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Lib\Textures\Loaders">
-      <UniqueIdentifier>{89726db4-c46b-4850-b002-aa2972123143}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Audio.cpp" />
+    <ClCompile Include="Blob.cpp" />
+    <ClCompile Include="ControlDeck.cpp" />
+    <ClCompile Include="Cvar.cpp" />
+    <ClCompile Include="Environment.cpp" />
+    <ClCompile Include="Factories\AudioFactory.cpp" />
+    <ClCompile Include="InputEditor.cpp" />
+    <ClCompile Include="GameOverlay.cpp" />
+    <ClCompile Include="GameSettings.cpp" />
+    <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Lib\ImGui\backends\imgui_impl_win32.cpp" />
+    <ClCompile Include="Lib\Mercury\Mercury.cpp" />
+    <ClCompile Include="luslog.cpp" />
+    <ClCompile Include="mixer.c" />
+    <ClCompile Include="SDLAudioPlayer.cpp" />
+    <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Factories\AnimationFactory.cpp" />
+    <ClCompile Include="Factories\ArrayFactory.cpp" />
+    <ClCompile Include="Factories\BlobFactory.cpp" />
+    <ClCompile Include="Factories\CutsceneFactory.cpp" />
+    <ClCompile Include="Factories\MtxFactory.cpp" />
+    <ClCompile Include="Factories\PathFactory.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Factories\TextFactory.cpp" />
+    <ClCompile Include="Factories\TextureFactory.cpp" />
+    <ClCompile Include="Factories\VtxFactory.cpp" />
+    <ClCompile Include="Array.cpp" />
+    <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="Hooks.cpp" />
+    <ClCompile Include="ImGuiImpl.cpp" />
+    <ClCompile Include="KeyboardController.cpp" />
+    <ClCompile Include="Factories\CollisionHeaderFactory.cpp" />
+    <ClCompile Include="Factories\DisplayListFactory.cpp" />
+    <ClCompile Include="Factories\MaterialFactory.cpp" />
+    <ClCompile Include="Factories\PlayerAnimationFactory.cpp" />
+    <ClCompile Include="Factories\ResourceLoader.cpp" />
+    <ClCompile Include="Factories\SceneFactory.cpp" />
+    <ClCompile Include="Factories\SkeletonFactory.cpp" />
+    <ClCompile Include="Factories\SkeletonLimbFactory.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_cc.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_direct3d11.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_direct3d12.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_direct3d_common.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_dxgi.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_glx.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_opengl.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_pc.cpp" />
+    <ClCompile Include="Lib\Fast3D\gfx_sdl2.cpp" />
+    <ClCompile Include="Lib\ImGui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp" />
+    <ClCompile Include="Lib\ImGui\imgui.cpp" />
+    <ClCompile Include="Lib\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Lib\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Lib\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Lib\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Lib\stb\stb_impl.c" />
+    <ClCompile Include="Lib\StrHash64.cpp" />
+    <ClCompile Include="Lib\tinyxml2\tinyxml2.cpp" />
+    <ClCompile Include="Archive.cpp" />
+    <ClCompile Include="CollisionHeader.cpp" />
+    <ClCompile Include="ControllerAttachment.cpp" />
+    <ClCompile Include="Cutscene.cpp" />
+    <ClCompile Include="DisplayList.cpp" />
+    <ClCompile Include="GlobalCtx2.cpp" />
+    <ClCompile Include="File.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MemoryPack.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Path.cpp" />
+    <ClCompile Include="PlayerAnimation.cpp" />
+    <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceMgr.cpp" />
+    <ClCompile Include="RumblePack.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="SkeletonLimb.cpp" />
+    <ClCompile Include="Text.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Vertex.cpp" />
+    <ClCompile Include="WasapiAudioPlayer.cpp" />
+    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="WindowShim.cpp" />
+    <ClCompile Include="stox.cpp" />
+    <ClCompile Include="SDLController.cpp" />
+    <ClCompile Include="TexLoader.cpp" />
+    <ClCompile Include="DDSTexLoader.cpp" />
+    <ClCompile Include="DefaultTexLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Factories\MaterialFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\ResourceLoader.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_opengl.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_pc.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_sdl2.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Source Files\Resources\mpq</Filter>
-    </ClCompile>
-    <ClCompile Include="Archive.cpp">
-      <Filter>Source Files\Resources\mpq</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\StrHash64.cpp">
-      <Filter>Source Files\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\tinyxml2\tinyxml2.cpp">
-      <Filter>Source Files\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\SceneFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\CollisionHeaderFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\DisplayListFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\PlayerAnimationFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\SkeletonFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\SkeletonLimbFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="KeyboardController.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Source Files\Globals</Filter>
-    </ClCompile>
-    <ClCompile Include="GlobalCtx2.cpp">
-      <Filter>Source Files\Globals</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowShim.cpp">
-      <Filter>Source Files\Globals</Filter>
-    </ClCompile>
-    <ClCompile Include="ControllerAttachment.cpp">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClCompile>
-    <ClCompile Include="RumblePack.cpp">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryPack.cpp">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClCompile>
-    <ClCompile Include="ConfigFile.cpp">
-      <Filter>Source Files\Config</Filter>
-    </ClCompile>
-    <ClCompile Include="CollisionHeader.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayList.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAnimation.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Skeleton.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SkeletonLimb.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceMgr.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="stox.cpp">
-      <Filter>Source Files\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\AnimationFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Cutscene.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\VtxFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="SDLController.cpp">
-      <Filter>Source Files\Controller</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\CutsceneFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Path.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\PathFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Array.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\ArrayFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Resource.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_cc.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_direct3d_common.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_direct3d11.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_direct3d12.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_dxgi.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\Fast3D\gfx_glx.cpp">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\TextureFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\TextFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\BlobFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Blob.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\stb\stb_impl.c">
-      <Filter>Source Files\Lib\stb</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\MtxFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\imgui.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\imgui_demo.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\imgui_draw.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\imgui_tables.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\imgui_widgets.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="SohImGuiImpl.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="SohConsole.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Lib\ImGui\backends\imgui_impl_win32.cpp">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="mixer.c">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="SDLAudioPlayer.cpp">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Environment.cpp">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files\CustomImpl\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="WasapiAudioPlayer.cpp">
-      <Filter>Source Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Cvar.cpp">
-      <Filter>Source Files\Globals</Filter>
-    </ClCompile>
-    <ClCompile Include="SohHooks.cpp">
-      <Filter>Source Files\CustomImpl\Hooks</Filter>
-    </ClCompile>
-    <ClCompile Include="luslog.cpp">
-      <Filter>Source Files\Logging</Filter>
-    </ClCompile>
-    <ClCompile Include="GameSettings.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverlay.cpp">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
-    </ClCompile>
-    <ClCompile Include="Audio.cpp">
-      <Filter>Source Files\Resources\Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Factories\AudioFactory.cpp">
-      <Filter>Source Files\Resources\Factories</Filter>
-    </ClCompile>
-    <ClCompile Include="TexLoader.cpp">
-      <Filter>Source Files\Lib\Textures</Filter>
-    </ClCompile>
-    <ClCompile Include="DefaultTexLoader.cpp">
-      <Filter>Source Files\Lib\Textures\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="DDSTexLoader.cpp">
-      <Filter>Source Files\Lib\Textures\Loaders</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Lib\tinyxml2\tinyxml2.h">
-      <Filter>Source Files\Lib\tinyxml2</Filter>
-    </ClInclude>
-    <ClInclude Include="Controller.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyboardController.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
-      <Filter>Source Files\Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="GlobalCtx2.h">
-      <Filter>Source Files\Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\mINI\src\mini\ini.h">
-      <Filter>Source Files\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="UltraController.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="ControllerAttachment.h">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClInclude>
-    <ClInclude Include="RumblePack.h">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryPack.h">
-      <Filter>Source Files\Controller\Attachment</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigFile.h">
-      <Filter>Source Files\Config</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceMgr.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Archive.h">
-      <Filter>Source Files\Resources\mpq</Filter>
-    </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Source Files\Resources\mpq</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_opengl.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_pc.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_sdl.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\StrHash64.h">
-      <Filter>Source Files\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="LUSMacros.h">
-      <Filter>Source Files\Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="stox.h">
-      <Filter>Source Files\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="SDLController.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_rendering_api.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_screen_config.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_window_manager_api.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowShim.h">
-      <Filter>Source Files\Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_cc.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_direct3d_common.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_direct3d11.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_direct3d12.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_direct3d12_guids.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_dxgi.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\Fast3D\gfx_glx.h">
-      <Filter>Source Files\Lib\Fast3D</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\AnimationFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\ArrayFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\BlobFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\CollisionHeaderFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\CutsceneFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\DisplayListFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\MaterialFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\PathFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\PlayerAnimationFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\SceneFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\SkeletonFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\SkeletonLimbFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\TextFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\TextureFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\VtxFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Array.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Blob.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CollisionHeader.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Cutscene.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayList.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAnimation.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\ResourceLoader.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Skeleton.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SkeletonLimb.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Text.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\stb\stb_image.h">
-      <Filter>Source Files\Lib\stb</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\MtxFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imconfig.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imgui.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imgui_internal.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imstb_rectpack.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imstb_textedit.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\imstb_truetype.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\backends\imgui_impl_opengl3.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="SohImGuiImpl.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
-    <ClInclude Include="SohConsole.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h">
-      <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Environment.h">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Source Files\CustomImpl\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="mixer.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="abi.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioPlayer.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="SDLAudioPlayer.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="WasapiAudioPlayer.h">
-      <Filter>Source Files\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Cvar.h">
-      <Filter>Source Files\Globals</Filter>
-    </ClInclude>
-    <ClInclude Include="Lib\stb\stb_image_write.h">
-      <Filter>Source Files\Lib\stb</Filter>
-    </ClInclude>
-    <ClInclude Include="SohHooks.h">
-      <Filter>Source Files\CustomImpl\Hooks</Filter>
-    </ClInclude>
-    <ClInclude Include="luslog.h">
-      <Filter>Source Files\Logging</Filter>
-    </ClInclude>
-    <ClInclude Include="GameSettings.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
-    <ClInclude Include="GameVersions.h">
-      <Filter>Source Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="GameOverlay.h">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
-    </ClInclude>
-    <ClInclude Include="Audio.h">
-      <Filter>Header Files\Resources\Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Factories\AudioFactory.h">
-      <Filter>Header Files\Resources\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="TexLoader.h">
-      <Filter>Source Files\Lib\Textures</Filter>
-    </ClInclude>
-    <ClInclude Include="TexIOLoader.h">
-      <Filter>Source Files\Lib\Textures\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DefaultTexLoader.h">
-      <Filter>Source Files\Lib\Textures\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="DDSTexLoader.h">
-      <Filter>Source Files\Lib\Textures\Loaders</Filter>
-    </ClInclude>
+    <ClInclude Include="VirtualController.h" />
+    <ClInclude Include="Lib\Mercury\Mercury.h" />
+    <ClInclude Include="Lib\nlohmann\json.hpp" />
+    <ClInclude Include="abi.h" />
+    <ClInclude Include="Audio.h" />
+    <ClInclude Include="AudioPlayer.h" />
+    <ClInclude Include="Blob.h" />
+    <ClInclude Include="ControlDeck.h" />
+    <ClInclude Include="Cvar.h" />
+    <ClInclude Include="Environment.h" />
+    <ClInclude Include="Factories\AudioFactory.h" />
+    <ClInclude Include="InputEditor.h" />
+    <ClInclude Include="GameOverlay.h" />
+    <ClInclude Include="GameSettings.h" />
+    <ClInclude Include="GameVersions.h" />
+    <ClInclude Include="Lib\dr_libs\mp3.h" />
+    <ClInclude Include="Lib\dr_libs\wav.h" />
+    <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h" />
+    <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h" />
+    <ClInclude Include="Lib\stb\stb_image_write.h" />
+    <ClInclude Include="luslog.h" />
+    <ClInclude Include="mixer.h" />
+    <ClInclude Include="ModModule.h" />
+    <ClInclude Include="SDLAudioPlayer.h" />
+    <ClInclude Include="Console.h" />
+    <ClInclude Include="Factories\ArrayFactory.h" />
+    <ClInclude Include="Factories\BlobFactory.h" />
+    <ClInclude Include="Factories\CutsceneFactory.h" />
+    <ClInclude Include="Factories\AnimationFactory.h" />
+    <ClInclude Include="Factories\MtxFactory.h" />
+    <ClInclude Include="Factories\PathFactory.h" />
+    <ClInclude Include="Factories\TextFactory.h" />
+    <ClInclude Include="Factories\TextureFactory.h" />
+    <ClInclude Include="Factories\VtxFactory.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="Array.h" />
+    <ClInclude Include="Cutscene.h" />
+    <ClInclude Include="Hooks.h" />
+    <ClInclude Include="ImGuiImpl.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_cc.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_direct3d11.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_direct3d12.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_direct3d12_guids.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_direct3d_common.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_dxgi.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_glx.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_rendering_api.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_screen_config.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_window_manager_api.h" />
+    <ClInclude Include="Lib\ImGui\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h" />
+    <ClInclude Include="Lib\ImGui\imconfig.h" />
+    <ClInclude Include="Lib\ImGui\imgui.h" />
+    <ClInclude Include="Lib\ImGui\imgui_internal.h" />
+    <ClInclude Include="Lib\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Lib\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Lib\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Lib\stb\stb_image.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="Text.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="Vertex.h" />
+    <ClInclude Include="stox.h" />
+    <ClInclude Include="Lib\mINI\src\mini\ini.h" />
+    <ClInclude Include="Controller.h" />
+    <ClInclude Include="KeyboardController.h" />
+    <ClInclude Include="Factories\CollisionHeaderFactory.h" />
+    <ClInclude Include="Factories\DisplayListFactory.h" />
+    <ClInclude Include="Factories\MaterialFactory.h" />
+    <ClInclude Include="Factories\PlayerAnimationFactory.h" />
+    <ClInclude Include="Factories\ResourceLoader.h" />
+    <ClInclude Include="Factories\SceneFactory.h" />
+    <ClInclude Include="Factories\SkeletonFactory.h" />
+    <ClInclude Include="Factories\SkeletonLimbFactory.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_opengl.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_pc.h" />
+    <ClInclude Include="Lib\Fast3D\gfx_sdl.h" />
+    <ClInclude Include="Lib\StrHash64.h" />
+    <ClInclude Include="Lib\tinyxml2\tinyxml2.h" />
+    <ClInclude Include="Archive.h" />
+    <ClInclude Include="CollisionHeader.h" />
+    <ClInclude Include="ControllerAttachment.h" />
+    <ClInclude Include="DisplayList.h" />
+    <ClInclude Include="GlobalCtx2.h" />
+    <ClInclude Include="File.h" />
+    <ClInclude Include="LUSMacros.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MemoryPack.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="PlayerAnimation.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceMgr.h" />
+    <ClInclude Include="RumblePack.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="SkeletonLimb.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="WasapiAudioPlayer.h" />
+    <ClInclude Include="Window.h" />
+    <ClInclude Include="UltraController.h" />
+    <ClInclude Include="SDLController.h" />
+    <ClInclude Include="WindowShim.h" />
   </ItemGroup>
 </Project>

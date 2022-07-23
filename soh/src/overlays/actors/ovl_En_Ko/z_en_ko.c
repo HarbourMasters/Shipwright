@@ -1053,7 +1053,7 @@ void func_80A98CD8(EnKo* this) {
     this->actor.targetMode = info->targetMode;
     this->lookDist = info->lookDist;
     this->lookDist += this->collider.dim.radius;
-    this->appearDist = CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0 ? 32767 : info->appearDist;
+    this->appearDist = info->appearDist;
 }
 
 // Used to fetch actor animation?
@@ -1080,7 +1080,15 @@ void func_80A98DB4(EnKo* this, GlobalContext* globalCtx) {
         dist = this->actor.xzDistToPlayer;
     }
 
-    Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    if (CVar_GetS32("gDisableKokiriDrawDistance", 0) != 0) {
+        this->appearDist = 32767.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+        f32 test = this->appearDist;
+    } else {
+        this->appearDist = 180.0f;
+        Math_SmoothStepToF(&this->modelAlpha, (this->appearDist < dist) ? 0.0f : 255.0f, 0.3f, 40.0f, 1.0f);
+    }
+    
     if (this->modelAlpha < 10.0f) {
         this->actor.flags &= ~ACTOR_FLAG_0;
     } else {
@@ -1161,10 +1169,18 @@ void func_80A99048(EnKo* this, GlobalContext* globalCtx) {
         Actor_SpawnAsChild(&globalCtx->actorCtx, &this->actor, globalCtx, ACTOR_EN_ELF, this->actor.world.pos.x,
                            this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 3);
         if (ENKO_TYPE == ENKO_TYPE_CHILD_3) {
-            if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
-                this->collider.dim.height += 200;
-                this->actionFunc = func_80A995CC;
-                return;
+            if (!gSaveContext.n64ddFlag) {
+                if (!CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+                    this->collider.dim.height += 200;
+                    this->actionFunc = func_80A995CC;
+                    return;
+                }
+            } else {
+                if (!Flags_GetEventChkInf(7)) {
+                    this->collider.dim.height += 200;
+                    this->actionFunc = func_80A995CC;
+                    return;
+                }
             }
             Path_CopyLastPoint(this->path, &this->actor.world.pos);
         }
@@ -1340,7 +1356,7 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     this->actor.shape.shadowAlpha = this->modelAlpha;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2095);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     if ((s16)this->modelAlpha == 255) {
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    EnKo_SetEnvColor(globalCtx->state.gfxCtx, tunicColor.r, tunicColor.g, tunicColor.b, 255));
@@ -1358,5 +1374,5 @@ void EnKo_Draw(Actor* thisx, GlobalContext* globalCtx) {
         func_80034CC4(globalCtx, &this->skelAnime, EnKo_OverrideLimbDraw, EnKo_PostLimbDraw, &this->actor,
                       this->modelAlpha);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ko.c", 2136);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

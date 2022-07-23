@@ -5,6 +5,13 @@
 #define strdup _strdup
 #endif
 
+namespace math {
+	float clamp(float d, float min, float max) {
+		const float t = d < min ? min : d;
+		return t > max ? max : t;
+	}
+}
+
 namespace Utils {
 	std::vector<std::string> SplitText(const std::string text, char separator = ' ', bool keep_quotes = false) {
 		std::vector<std::string> args;

@@ -5,17 +5,22 @@
 #include "UltraController.h"
 #include "Controller.h"
 #include "GlobalCtx2.h"
+#include "ControlDeck.h"
+#include <string>
+
+#include "Lib/Fast3D/gfx_window_manager_api.h"
 
 namespace Ship {
 	class AudioPlayer;
 
 	class Window {
 		public:
-			static std::map<size_t, std::vector<std::shared_ptr<Controller>>> Controllers;
 			static int32_t lastScancode;
+			inline static ControlDeck* ControllerApi = new ControlDeck;
 
 			Window(std::shared_ptr<GlobalCtx2> Context);
 			~Window();
+			void CreateDefaults();
 			void MainLoop(void (*MainFunction)(void));
 			void Init();
 			void StartFrame();
@@ -31,9 +36,11 @@ namespace Ship {
 			bool IsFullscreen() { return bIsFullscreen; }
 			uint32_t GetCurrentWidth();
 			uint32_t GetCurrentHeight();
+			ControlDeck* GetControlDeck() { return ControllerApi; };
 			uint32_t dwMenubar;
 			std::shared_ptr<GlobalCtx2> GetContext() { return Context.lock(); }
 			std::shared_ptr<AudioPlayer> GetAudioPlayer() { return APlayer; }
+			const char* GetKeyName(int scancode) { return WmApi->get_key_name(scancode); }
 
 		protected:
 		private:
@@ -46,11 +53,10 @@ namespace Ship {
 			std::weak_ptr<GlobalCtx2> Context;
 			std::shared_ptr<AudioPlayer> APlayer;
 
-			GfxWindowManagerAPI* WmApi;
 			GfxRenderingAPI* RenderingApi;
+			GfxWindowManagerAPI* WmApi;
 			bool bIsFullscreen;
 			uint32_t dwWidth;
 			uint32_t dwHeight;
 	};
 }
-

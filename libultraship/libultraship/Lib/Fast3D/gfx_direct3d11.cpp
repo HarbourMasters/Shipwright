@@ -4,6 +4,9 @@
 #include <vector>
 #include <cmath>
 
+#include <map>
+#include <unordered_map>
+
 #include <windows.h>
 #include <versionhelpers.h>
 #include <wrl/client.h>
@@ -24,7 +27,7 @@
 #include "gfx_dxgi.h"
 
 #include "gfx_screen_config.h"
-#include "../../SohImGuiImpl.h"
+#include "../../ImGuiImpl.h"
 
 #include "gfx_cc.h"
 #include "gfx_rendering_api.h"
@@ -134,7 +137,7 @@ static struct {
     //uint32_t current_width, current_height;
     uint32_t render_target_height;
     int current_framebuffer;
-    FilteringMode current_filter_mode = NONE;
+    FilteringMode current_filter_mode = FILTER_NONE;
 
     int8_t depth_test;
     int8_t depth_mask;
@@ -410,7 +413,7 @@ static struct ShaderProgram *gfx_d3d11_create_and_load_new_shader(uint64_t shade
     char buf[4096];
     size_t len, num_floats;
 
-    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, d3d.current_filter_mode == THREE_POINT);
+    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, d3d.current_filter_mode == FILTER_THREE_POINT);
 
     ComPtr<ID3DBlob> vs, ps;
     ComPtr<ID3DBlob> error_blob;
@@ -577,7 +580,7 @@ static void gfx_d3d11_set_sampler_parameters(int tile, bool linear_filter, uint3
     D3D11_SAMPLER_DESC sampler_desc;
     ZeroMemory(&sampler_desc, sizeof(D3D11_SAMPLER_DESC));
 
-    sampler_desc.Filter = linear_filter && d3d.current_filter_mode == LINEAR ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+    sampler_desc.Filter = linear_filter && d3d.current_filter_mode == FILTER_LINEAR ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
 
     sampler_desc.AddressU = gfx_cm_to_d3d11(cms);
     sampler_desc.AddressV = gfx_cm_to_d3d11(cmt);
@@ -682,7 +685,7 @@ static void gfx_d3d11_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
                 d3d.last_resource_views[i] = d3d.textures[d3d.current_texture_ids[i]].resource_view.Get();
                 d3d.context->PSSetShaderResources(i, 1, d3d.textures[d3d.current_texture_ids[i]].resource_view.GetAddressOf());
 
-                if (d3d.current_filter_mode == THREE_POINT) {
+                if (d3d.current_filter_mode == FILTER_THREE_POINT) {
                     d3d.per_draw_cb_data.textures[i].width = d3d.textures[d3d.current_texture_ids[i]].width;
                     d3d.per_draw_cb_data.textures[i].height = d3d.textures[d3d.current_texture_ids[i]].height;
                     d3d.per_draw_cb_data.textures[i].linear_filtering = d3d.textures[d3d.current_texture_ids[i]].linear_filtering;
@@ -902,7 +905,7 @@ FilteringMode gfx_d3d11_get_texture_filter(void) {
     return d3d.current_filter_mode;
 }
 
-std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
+std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_d3d11_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     Framebuffer& fb = d3d.framebuffers[fb_id];
     TextureData& td = d3d.textures[fb.texture_id];
 
@@ -990,7 +993,7 @@ std::map<std::pair<float, float>, uint16_t> gfx_d3d11_get_pixel_depth(int fb_id,
 
     d3d.context->CopyResource(d3d.depth_value_output_buffer_copy.Get(), d3d.depth_value_output_buffer.Get());
     ThrowIfFailed(d3d.context->Map(d3d.depth_value_output_buffer_copy.Get(), 0, D3D11_MAP_READ, 0, &ms));
-    std::map<std::pair<float, float>, uint16_t> res;
+    std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
     {
         size_t i = 0;
         for (const auto& coord : coordinates) {

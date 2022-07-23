@@ -375,7 +375,7 @@ void EnIceHono_Draw(Actor* thisx, GlobalContext* globalCtx) {
     EnIceHono* this = (EnIceHono*)thisx;
     u32 pad;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx, "../z_en_ice_hono.c", 695);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -390,9 +390,9 @@ void EnIceHono_Draw(Actor* thisx, GlobalContext* globalCtx) {
                        (M_PI / 0x8000),
                    MTXMODE_APPLY);
 
-    gSPMatrix(POLY_XLU_DISP++, Matrix_NewMtx(globalCtx->state.gfxCtx, "../z_en_ice_hono.c", 718),
+    gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx, "../z_en_ice_hono.c", 722);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
