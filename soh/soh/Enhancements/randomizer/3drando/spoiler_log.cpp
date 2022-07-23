@@ -426,11 +426,11 @@ static void WriteStartingInventory() {
       // doesn't work, and because it'd be bad to set every single possible starting
       // inventory item as "false" in the json, we're just going to check
       // to see if the name is one of the 3 we're using rn
-      if(setting->GetName() == "Deku Shield" || setting->GetName() == "Kokiri Sword" || setting->GetName() == "Ocarina") {
-        jsonData["settings"]["Start With " + setting->GetName()] = setting->GetSelectedOptionText();
-      }
-
-      if (setting->GetName() == "Start with Consumables" || setting->GetName() == "Start with Max Rupees") {
+      if (setting->GetName() == "Start with Consumables" ||
+          setting->GetName() == "Start with Max Rupees" ||
+          setting->GetName() == "Start with Fairy Ocarina" ||
+          setting->GetName() == "Start with Kokiri Sword" ||
+          setting->GetName() == "Start with Deku Shield") {
         jsonData["settings"][setting->GetName()] = setting->GetSelectedOptionText();
       }
     }
