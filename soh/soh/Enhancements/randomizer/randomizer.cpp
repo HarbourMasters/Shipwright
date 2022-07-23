@@ -3714,16 +3714,11 @@ void DrawRandoEditor(bool& open) {
             return;
         }
 
-        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) ||
-                                           CVar_GetS32("gOnFileSelectNameEntry", 0);
-        bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-        if (disableEditingRandoSettings) {
-            disableZeldaRelatedOptions = true;
-        }
+        bool disableEditingRandoSettings = CVar_GetS32("gRandoGenerating", 0) || CVar_GetS32("gOnFileSelectNameEntry", 0);
+        bool disableZeldaRelatedOptions = CVar_GetS32("gRandomizeSkipChildZelda", 0) || disableEditingRandoSettings;
         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableEditingRandoSettings);
         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                            ImGui::GetStyle().Alpha * disableEditingRandoSettings ? 0.5f : 1.0f);
-
+                            ImGui::GetStyle().Alpha * (disableEditingRandoSettings ? 0.5f : 1.0f));
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
@@ -3975,7 +3970,7 @@ void DrawRandoEditor(bool& open) {
                         }
                         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                            ImGui::GetStyle().Alpha * disableZeldaRelatedOptions ? 0.5f : 1.0f);
+                                            ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
                         SohImGui::EnhancementCheckbox(Settings::ShuffleWeirdEgg.GetName().c_str(), "gRandomizeShuffleWeirdEgg");
                         ImGui::PopStyleVar();
                         if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled) && disableZeldaRelatedOptions) {
@@ -4092,7 +4087,7 @@ void DrawRandoEditor(bool& open) {
                     }
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
-                                        ImGui::GetStyle().Alpha * disableZeldaRelatedOptions ? 0.5f : 1.0f);
+                                        ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
                     SohImGui::EnhancementCheckbox(Settings::SkipChildStealth.GetName().c_str(),
                                                   "gRandomizeSkipChildStealth");
                     ImGui::PopStyleVar();
