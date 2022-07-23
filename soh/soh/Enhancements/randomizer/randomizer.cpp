@@ -3439,7 +3439,10 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
-    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = CVar_GetS32("gRandomizeShuffleWeirdEgg", 0);
+
+    // if we skip child zelda, we start with zelda's letter, and malon starts
+    // at the ranch, so we should *not* shuffle the weird egg
+    cvarSettings[RSK_SHUFFLE_WEIRD_EGG] = ((CVar_GetS32("gRandomizeSkipChildZelda", 0) == 0) && CVar_GetS32("gRandomizeShuffleWeirdEgg", 0));
     
     cvarSettings[RSK_SHUFFLE_GERUDO_MEMBERSHIP_CARD] = CVar_GetS32("gRandomizeShuffleGerudoToken", 0);
     cvarSettings[RSK_ITEM_POOL] = CVar_GetS32("gRandomizeItemPool", 1);
@@ -3965,9 +3968,6 @@ void DrawRandoEditor(bool& open) {
 
                         // Shuffle Weird Egg
                         // Disabled when Skip Child Zelda is active
-                        if (disableZeldaRelatedOptions) {
-                            CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
-                        }
                         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                                             ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
@@ -4080,11 +4080,6 @@ void DrawRandoEditor(bool& open) {
 
                     // Skip child stealth
                     // Disabled when Skip Child Zelda is active
-                    if (disableZeldaRelatedOptions) {
-                        CVar_SetS32("gRandomizeSkipChildStealth", 0);
-                        // Also disable Weird Egg because it's on a different tab and wouldn't be updated otherwise
-                        CVar_SetS32("gRandomizeShuffleWeirdEgg", 0);
-                    }
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, disableZeldaRelatedOptions);
                     ImGui::PushStyleVar(ImGuiStyleVar_Alpha,
                                         ImGui::GetStyle().Alpha * (disableZeldaRelatedOptions ? 0.5f : 1.0f));
