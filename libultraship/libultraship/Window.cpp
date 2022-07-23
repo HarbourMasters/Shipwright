@@ -28,6 +28,7 @@
 #include <chrono>
 #include "Hooks.h"
 #include "Console.h"
+#include "Cvar.h"
 
 #include <iostream>
 
@@ -35,7 +36,6 @@ extern "C" {
     struct OSMesgQueue;
 
     uint8_t __osMaxControllers = MAXCONTROLLERS;
-    uint8_t __enableGameInput = 1;
 
     int32_t osContInit(OSMesgQueue* mq, uint8_t* controllerBits, OSContStatus* status) {
         *controllerBits = 0;
@@ -74,7 +74,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-        if (__enableGameInput) {
+        if (!CVar_GetS32("gOpenMenuBar", 0)) {
             Ship::Window::ControllerApi->WriteToPad(pad);
         }
 

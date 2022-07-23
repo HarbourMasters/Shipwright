@@ -50,6 +50,7 @@ void Ship::Switch::Exit(){
 }
 
 void Ship::Switch::SetupFont(ImFontAtlas* fonts) {
+    return;
     plInitialize(PlServiceType_System);
     static PlFontData stdFontData, extFontData;
 

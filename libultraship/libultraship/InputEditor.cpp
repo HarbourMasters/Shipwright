@@ -9,7 +9,6 @@
 
 namespace Ship {
 
-	extern "C" uint8_t __enableGameInput;
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
 	void InputEditor::Init() {
@@ -269,9 +268,6 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawHud() {
-
-		__enableGameInput = true;
-
 		if (!this->Opened) {
 			BtnReading = -1;
 			CVar_SetS32("gControllerConfigurationEnabled", 0);

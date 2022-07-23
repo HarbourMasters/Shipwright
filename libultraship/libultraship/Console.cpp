@@ -98,20 +98,14 @@ void Console::Update() {
 	}
 }
 
-extern "C" uint8_t __enableGameInput;
-
 void Console::Draw() {
 	bool input_focus = false;
-	__enableGameInput = true;
 	if (!this->opened) return;
 
 	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
-
-		__enableGameInput = !ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
-
 		// SohImGui::ShowCursor(ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows | ImGuiHoveredFlags_RectOnly), SohImGui::Dialogues::dConsole);
 
 		// Renders autocomplete window
