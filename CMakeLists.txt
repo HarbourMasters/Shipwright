@@ -108,7 +108,10 @@ endif()
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.desktop")
 set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
+
+if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(PROGRAMS "${PROJECT_SOURCE_DIR}/appimage/soh.sh" DESTINATION . COMPONENT appimage)
+endif()
 
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py filedata)
 string(REGEX REPLACE "../ZAPDTR/ZAPD.out" "${CMAKE_BINARY_DIR}/ZAPD/ZAPD.out" filedata "${filedata}")
