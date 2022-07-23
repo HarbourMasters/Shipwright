@@ -62,6 +62,7 @@ namespace SohImGui {
 
     WindowImpl impl;
     ImGuiIO* io;
+    auto dpi_scale = 1.F;
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
@@ -263,7 +264,14 @@ namespace SohImGui {
 
         api->select_texture(0, asset->textureId);
         api->set_sampler_parameters(0, false, 0, 0);
-        api->upload_texture(img_data, asset->width, asset->height);
+     
+
+        int width = ceil(asset->width * dpi_scale);
+        int height = ceil(asset->height * dpi_scale);
+        uint32_t uwidth = *(uint32_t*)&width;
+        uint32_t uheight = *(uint32_t*)&height;
+
+        api->upload_texture(img_data, uwidth, uheight);
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
@@ -344,10 +352,29 @@ namespace SohImGui {
             UINT dpi = GetDpiForSystem();
             int points = 12;
             float size = ceilf(points * dpi / 72.f);
+            dpi_scale = ceilf(dpi / 72.f);
             imConfig.SizePixels = size;
             io->Fonts->AddFontDefault(&imConfig);
+        #elif __linux_
+                std::array<char, 128> buffer;
+                std::string result;
+                std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("xrdb -query |grep dpi", "r"), pclose);
+                if (!pipe) {
+                    throw std::runtime_error("popen() failed!");
+                }
+                while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                    result += buffer.data();
+                }
+
+                std::string delimiter = '\t';
+                std::string token = result.substr(result.find(delimiter), (result.length - result.find(delimiter)));
+                int points = 12;
+                int dpi = (int)token;
+                float size = ceilf(points * dpi / 72.f);
+                imConfig.SizePixels = size;
+                io->Fonts->AddFontDefault(&imConfig);
         #else
-            io->Fonts->AddFontDefault();
+                io->Fonts->AddFontDefault();
         #endif
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
