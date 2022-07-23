@@ -1916,9 +1916,10 @@ INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 
+if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "Darwin")
 install(CODE "
     include(InstallRequiredSystemLibraries)
     include(BundleUtilities)
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-\${CMAKE_SYSTEM_PROCESSOR}\" \"\" \"${dirs}\")
     ")
-
+endif()
