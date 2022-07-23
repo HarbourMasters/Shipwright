@@ -139,7 +139,9 @@ typedef enum {
     /*  9 */ ENGO2_ANIM_9,
     /* 10 */ ENGO2_ANIM_10,
     /* 11 */ ENGO2_ANIM_11,
-    /* 12 */ ENGO2_ANIM_12
+    /* 12 */ ENGO2_ANIM_12,
+    /* 13 */ ENGO2_ANIM_13, // Fixed Goron Wakeup Animation
+    /* 14 */ ENGO2_ANIM_14 //Fixed Biggoron Wakeup Animation
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
@@ -149,7 +151,8 @@ static AnimationInfo sAnimationInfo[] = {
     { &gGoronAnim_002D80, 1.0f, 0.0f, -1.0f, 0x02, -8.0f }, { &gGoronAnim_00161C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_001A00, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_0021D0, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
     { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x01, -8.0f }, { &gGoronAnim_000750, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
-    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f },
+    { &gGoronAnim_000D5C, 1.0f, 0.0f, -1.0f, 0x00, -8.0f }, { &gGoronAnim_004930, 0.0f, 0.0f, -1.0f, 0x00, 0.0f },
+    { &gGoronAnim_004930, 0.0f, 1.0f, -1.0f, 0x01, 0.0f },
 };
 
 static EnGo2DustEffectData sDustEffectData[2][4] = {
@@ -1341,10 +1344,10 @@ void EnGo2_WakeUp(EnGo2* this, GlobalContext* globalCtx) {
     }
     if ((this->actor.params & 0x1F) == GORON_DMT_BIGGORON) {
         OnePointCutscene_Init(globalCtx, 4200, -99, &this->actor, MAIN_CAM);
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_10);
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, (CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_14 : ENGO2_ANIM_10);
         this->skelAnime.playSpeed = 0.5f;
     } else {
-        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, ENGO2_ANIM_1);
+        Animation_ChangeByInfo(&this->skelAnime, sAnimationInfo, (CVar_GetS32("gGoronSpeen", 0) == 1) ? ENGO2_ANIM_13 : ENGO2_ANIM_1);
         this->skelAnime.playSpeed = 1.0f;
     }
     this->actionFunc = func_80A46B40;
@@ -1675,6 +1678,11 @@ void EnGo2_CurledUp(EnGo2* this, GlobalContext* globalCtx) {
 void func_80A46B40(EnGo2* this, GlobalContext* globalCtx) {
     u8 index = (this->actor.params & 0x1F);
     f32 height;
+    if (CVar_GetS32("gGoronSpeen", 0) == 1) {
+        // The morphFrames value seems to be what causes the spin.
+        this->skelAnime.morphRate = 0.0f;
+        this->skelAnime.morphWeight = 0.0f;
+    }
 
     if (this->unk_211 == true) {
         EnGo2_BiggoronAnimation(this);
