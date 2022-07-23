@@ -1248,7 +1248,7 @@ void EnItem00_CustomItemsParticles(Actor* Parent, GlobalContext* globalCtx, s16 
         { 177, 122, 35 },  // Requiem Color
         { 177, 28, 212 },  // Nocturne Color
         { 255, 255, 92 },  // Prelude Color
-        { 31, 152, 49 },  // Stick Upgrade Color
+        { 31, 152, 49 },   // Stick Upgrade Color
         { 222, 182, 20 },  // Nut Upgrade Color
         { 255, 255, 255 }  // White Color placeholder
     };
