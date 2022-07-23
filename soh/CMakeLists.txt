@@ -1914,4 +1914,11 @@ target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES
 INSTALL(TARGETS soh DESTINATION bin COMPONENT ship)
 
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION bin)
+INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION bin COMPONENT ship)
+
+install(CODE "
+    include(InstallRequiredSystemLibraries)
+    include(BundleUtilities)
+    fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-\${CMAKE_SYSTEM_PROCESSOR}\" \"\" \"${dirs}\")
+    ")
+
