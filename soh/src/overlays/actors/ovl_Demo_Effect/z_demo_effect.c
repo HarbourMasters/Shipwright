@@ -1540,7 +1540,26 @@ void DemoEffect_UpdateJewelAdult(DemoEffect* this, GlobalContext* globalCtx) {
     this->jewel.timer++;
     this->actor.shape.rot.y += 0x0400;
     DemoEffect_PlayJewelSfx(this, globalCtx);
+
+    if (gSaveContext.n64ddFlag) {
+        switch (this->jewel.type) {
+            case DEMO_EFFECT_JEWEL_KOKIRI:
+                if (gSaveContext.inventory.questItems == QUEST_KOKIRI_EMERALD) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else if (gSaveContext.inventory.questItems == !QUEST_KOKIRI_EMERALD) {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+                break;
+            case DEMO_EFFECT_JEWEL_GORON:
+                DemoEffect_SetJewelColor(this, 0.5f);
+                break;
+            case DEMO_EFFECT_JEWEL_ZORA:
+                DemoEffect_SetJewelColor(this, 1.0f);
+                break;
+        }
+    } else {
     DemoEffect_SetJewelColor(this, 1.0f);
+    }
 }
 
 /**
