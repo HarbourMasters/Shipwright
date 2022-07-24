@@ -185,7 +185,7 @@ void Audio_PlayFanfare_Rando() {
             temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
         }
         // If the setting is toggled on and we get special quest items (longer fanfares):
-        if (CVar_GetS32("gRandoFanfareByItemType", 0) != 0) {
+        if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
             // If we get a medallion, play the "get a medallion" fanfare
             if ((getItemId >= GI_MEDALLION_LIGHT) && (getItemId <= GI_MEDALLION_SPIRIT)) {
                 temp1 = NA_BGM_MEDALLION_GET | 0x900;
