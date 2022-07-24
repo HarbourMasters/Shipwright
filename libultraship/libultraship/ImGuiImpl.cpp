@@ -1396,8 +1396,8 @@ namespace SohImGui {
                 }
             }
 
+            // Randomizer Menu
             ImGui::SetCursorPosY(0.0f);
-
             if (ImGui::BeginMenu("Randomizer"))
             {
                 EnhancementCheckbox("Randomizer Settings", "gRandomizerSettingsEnabled");
@@ -1414,13 +1414,10 @@ namespace SohImGui {
                         "of item that is obtained. This can make fanfares\n"
                         "longer than usual in some cases."
                     );
-
                     ImGui::EndMenu();
                 }
-
                 ImGui::EndMenu();
             }
-
             ImGui::EndMenuBar();
         }
 
