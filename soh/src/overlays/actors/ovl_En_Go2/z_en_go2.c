@@ -141,7 +141,7 @@ typedef enum {
     /* 11 */ ENGO2_ANIM_11,
     /* 12 */ ENGO2_ANIM_12,
     /* 13 */ ENGO2_ANIM_13, // Fixed Goron Wakeup Animation
-    /* 14 */ ENGO2_ANIM_14 //Fixed Biggoron Wakeup Animation
+    /* 14 */ ENGO2_ANIM_14 // Fixed Biggoron Wakeup Animation
 } EnGo2Animation;
 
 static AnimationInfo sAnimationInfo[] = {
