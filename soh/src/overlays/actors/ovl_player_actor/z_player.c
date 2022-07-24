@@ -12993,7 +12993,7 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
                             Magic_Fill(globalCtx);
                         }
 
-                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gBluePotionMagic", 100) / 100 + 15) / 16 * 16, 5);
                     }
                     else
                     {
@@ -13001,7 +13001,7 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
                             Magic_Fill(globalCtx);
                         }
 
-                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMana", 100), 5);;
+                        func_80087708(globalCtx, CVar_GetS32("gBluePotionMagic", 100), 5);;
                     }
                 }
                 else if (CVar_GetS32("gGreenPotionEffect", 0) && this->itemActionParam == PLAYER_AP_BOTTLE_POTION_GREEN)
@@ -13012,7 +13012,7 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
                             Magic_Fill(globalCtx);
                         }
 
-                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotionMana", 100) / 100 + 15) / 16 * 16, 5);
+                        func_80087708(globalCtx, (gSaveContext.magicLevel * 48 * CVar_GetS32("gGreenPotionMagic", 100) / 100 + 15) / 16 * 16, 5);
                     }
                     else
                     {
@@ -13020,7 +13020,7 @@ void func_8084EAC0(Player* this, GlobalContext* globalCtx) {
                             Magic_Fill(globalCtx);
                         }
 
-                        func_80087708(globalCtx, CVar_GetS32("gGreenPotionMana", 100), 5);;
+                        func_80087708(globalCtx, CVar_GetS32("gGreenPotionMagic", 100), 5);;
                     }
                 }
                 else if (CVar_GetS32("gMilkEffect", 0) && (this->itemActionParam == PLAYER_AP_BOTTLE_MILK || this->itemActionParam == PLAYER_AP_BOTTLE_MILK_HALF))

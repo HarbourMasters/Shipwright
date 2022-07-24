@@ -830,7 +830,7 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Controller"))
             {
                 EnhancementCheckbox("Use Controller Navigation", "gControlNav");
-                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to\ngrab focus on the menu bar");
 
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
@@ -847,10 +847,10 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
-                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
+                Tooltip("Shows currently pressed inputs on the bottom right\nof the screen");
 
                 EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+                Tooltip("Sets the on screen size of the displayed inputs\nfrom the Show Inputs setting");
 
                 ImGui::EndMenu();
             }
@@ -982,94 +982,94 @@ namespace SohImGui {
                         ImGui::Text("Damage Multiplier");
                         EnhancementCombobox("gDamageMul", powers, 9, 0);
                         Tooltip("Modifies all sources of damage not affected by other sliders\n\
-2x: Can survive all common attacks from the start of the game\n\
-4x: Dies in 1 hit to any substantial attack from the start of the game\n\
-8x: Can only survive trivial damage from the start of the game\n\
-16x: Can survive all common attacks with max health without double defense\n\
-32x: Can survive all common attacks with max health and double defense\n\
-64x: Can survive trivial damage with max health without double defense\n\
-128x: Can survive trivial damage with max health and double defense\n\
-256x: Cannot survive damage");
+                        2x: Can survive all common attacks from the start of the game\n\
+                        4x: Dies in 1 hit to any substantial attack from the start of the game\n\
+                        8x: Can only survive trivial damage from the start of the game\n\
+                        16x: Can survive all common attacks with max health without double defense\n\
+                        32x: Can survive all common attacks with max health and double defense\n\
+                        64x: Can survive trivial damage with max health without double defense\n\
+                        128x: Can survive trivial damage with max health and double defense\n\
+                        256x: Cannot survive damage");
                         ImGui::Text("Fall Damage Multiplier");
                         EnhancementCombobox("gFallDamageMul", powers, 8, 0);
                         Tooltip("Modifies all fall damage\n\
-2x: Can survive all fall damage from the start of the game\n\
-4x: Can only survive short fall damage from the start of the game\n\
-8x: Cannot survive any fall damage from the start of the game\n\
-16x: Can survive all fall damage with max health without double defense\n\
-32x: Can survive all fall damage with max health and double defense\n\
-64x: Can survive short fall damage with double defense\n\
-128x: Cannot survive fall damage");
+                        2x: Can survive all fall damage from the start of the game\n\
+                        4x: Can only survive short fall damage from the start of the game\n\
+                        8x: Cannot survive any fall damage from the start of the game\n\
+                        16x: Can survive all fall damage with max health without double defense\n\
+                        32x: Can survive all fall damage with max health and double defense\n\
+                        64x: Can survive short fall damage with double defense\n\
+                        128x: Cannot survive fall damage");
                         ImGui::Text("Void Damage Multiplier");
                         EnhancementCombobox("gVoidDamageMul", powers, 7, 0);
                         Tooltip("Modifies damage taken after falling into a void\n\
-2x: Can survive void damage from the start of the game\n\
-4x: Cannot survive void damage from the start of the game\n\
-8x: Can survive void damage twice with max health without double defense\n\
-16x: Can survive void damage with max health without double defense\n\
-32x: Can survive void damage with max health and double defense\n\
-64x: Cannot survive void damage");
+                        2x: Can survive void damage from the start of the game\n\
+                        4x: Cannot survive void damage from the start of the game\n\
+                        8x: Can survive void damage twice with max health without double defense\n\
+                        16x: Can survive void damage with max health without double defense\n\
+                        32x: Can survive void damage with max health and double defense\n\
+                        64x: Cannot survive void damage");
 
                         EnhancementCheckbox("No Random Drops", "gNoRandomDrops");
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
-                        Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
+                        Tooltip("Disables heart drops, but not heart placements, like\nfrom a Deku Scrub running off\n\nThis simulates Hero Mode from other games in the series");
 
                         if (ImGui::BeginMenu("Potion Values"))
                         {
                             EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Red Potions");
+                            Tooltip("Enable the following changes to the amount of\nhealth restored by Red Potions");
                             EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Red Potions");
                             EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
-                            Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Red Potions restoring a fixed amount of health\nto a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
-                            Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true);
-                            Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
+                            Tooltip("Enable the following changes to the amount of\nmagic restored by Green Potions");
+                            EnhancementSliderInt("Green Potion Magic: %d", "##GREENPOTIONMAGIC", "gGreenPotionMagic", 1, 100, "", 0, true);
+                            Tooltip("Changes the amount of magic restored by Green Potions\nBase max magic is 48\nMax upgraded magic is 96");
                             EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
-                            Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+                            Tooltip("Toggles from Green Potions restoring a fixed amount\nof magic to a percent of the player's current max magic");
 
                             EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
-                            Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
+                            Tooltip("Enable the following changes to the amount of\nhealth and magic restored by Blue Potions");
                             EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Blue Potions");
                             EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
-                            Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of\nhealth to a percent of the player's current max health");
 
-                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true);
-                            Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
-                            EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
-                            Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
+                            EnhancementSliderInt("Blue Potion Magic: %d", "##BLUEPOTIONMAGIC", "gBluePotionMagic", 1, 100, "", 0, true);
+                            Tooltip("Changes the amount of magic restored by Blue Potions\nBase max magic is 48\nMax upgraded magic is 96");
+                            EnhancementCheckbox("Blue Potion Magic Percent Restore", "gBlueMagicPercentRestore");
+                            Tooltip("Toggles from Blue Potions restoring a fixed amount of\nmagic to a percent of the player's current max magic");
 
                             EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Milk");
+                            Tooltip("Enable the following changes to the amount of\nhealth restored by Milk");
                             EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Milk");
                             EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
-                            Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Milk restoring a fixed amount of\nhealth to a percent of the player's current max health");
 
                             EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
+                            Tooltip("Enable the following changes to the amount of\nhealth restored by Half Milk\nIf this is disabled, Half Milk will behave the same\nas Full Milk.");
                             EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Half Milk");
                             EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
-                            Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Half Milk restoring a fixed amount of\nhealth to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Fairies");
+                            Tooltip("Enable the following changes to the amount of\nhealth restored by Fairies");
                             EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairies");
                             EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
-                            Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Fairies restoring a fixed amount of\nhealth to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
-                            Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
+                            Tooltip("Enable the following changes to the amount of\nhealth restored by Fairy Revivals");
                             EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairy Revivals");
                             EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
-                            Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
+                            Tooltip("Toggles from Fairy Revivals restoring a fixed amount of\nhealth to a percent of the player's current max health");
 
                             ImGui::EndMenu();
                         }
@@ -1102,7 +1102,7 @@ namespace SohImGui {
                     }
 
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
-                    Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony\nThis should be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
@@ -1199,7 +1199,7 @@ namespace SohImGui {
                 if (ImGui::BeginMenu("Restoration"))
                 {
                     EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
-                    Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
+                    Tooltip("Restore the original red blood from NTSC 1.0/1.1\nDisable for green blood");
                     EnhancementCheckbox("Fish while hovering", "gHoverFishing");
                     Tooltip("Restore a bug from NTSC 1.0 that allows casting\nthe Fishing Rod while using the Hover Boots");
                     EnhancementCheckbox("N64 Weird Frames", "gN64WeirdFrames");
@@ -1271,7 +1271,7 @@ namespace SohImGui {
                     }
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
-                Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
+                Tooltip("Turns off the Level of Detail setting, making models use\ntheir higher-poly variants at any distance");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
                 Tooltip("Turns off the objects draw distance,\nmaking objects being visible from a longer range");
                 if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
@@ -1319,11 +1319,11 @@ namespace SohImGui {
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
                 EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
-                Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
+                Tooltip("Drops from enemies, grass, etc. don't disappear after a\nset amount of time");
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                Tooltip("This allows you to put up your shield with any two-handed\nweapon in hand except for Deku Sticks");
 
                 ImGui::EndMenu();
             }
@@ -1333,9 +1333,9 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
-                Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
+                Tooltip("Enables Debug Mode, allowing you to use a pletora of options\nSelect maps with L + R + Z\nNoclip with L + D-pad Right,\nInventory editor with L on the pause screen");
                 EnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled");
-                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map\nicons (boss key, compass, map screen locations, etc) will set the GS bits in that\narea. USE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
+                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu\nabove various map icons (boss key, compass, map screen locations,\netc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
                 Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
