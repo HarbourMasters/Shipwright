@@ -1473,10 +1473,9 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
-extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
-    const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
-                                                   : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
-    return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_CopyAltarMessage() {
+    return (LINK_IS_ADULT) ? CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7088)
+                           : CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7040);
 }
 
 extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
@@ -1520,8 +1519,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         if (textId == 0xF8) {
             messageEntry =
                 Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
-        }
-        if (textId == 0x2053 && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+        } else if (textId == 0x2053 && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
               Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
@@ -1549,6 +1547,9 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
                 Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
 
             messageEntry = Randomizer_CopyHintFromCheck(hintCheck);
+        } else if (textId == 0x7040 || textId == 0x7088) {
+            // rando hints at altar
+            messageEntry = Randomizer_CopyAltarMessage();
         }
     }
     if (textId == 0x00B4 || textId == 0x00B5) {
