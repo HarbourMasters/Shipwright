@@ -3,10 +3,7 @@ FROM ubuntu:20.04 as build
 ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 
-RUN  apt-get install -y software-properties-common gpg && \
-	wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null && \
-        apt-add-repository "deb https://apt.kitware.com/ubuntu/ focal main" && \
-	apt-get update && \
+RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y \
 		binutils \
@@ -26,6 +23,7 @@ RUN  apt-get install -y software-properties-common gpg && \
 		libgles2-mesa-dev \
 		wget \
 		gpg && \
+	apt-get install -y software-properties-common && \ 
 	wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null && \
 	apt-add-repository "deb https://apt.kitware.com/ubuntu/ focal main" && \
 	apt-get update && \
