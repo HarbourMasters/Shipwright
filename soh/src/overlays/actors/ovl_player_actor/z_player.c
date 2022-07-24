@@ -12721,7 +12721,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                         temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
                     }
                 }
-            }// ***************************************************************************************
+            }
 
             Audio_PlayFanfare(temp1);
         }
