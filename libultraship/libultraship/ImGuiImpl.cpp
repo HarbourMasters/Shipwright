@@ -1381,30 +1381,44 @@ namespace SohImGui {
 
             for (const auto& category : windowCategories) {
                 ImGui::SetCursorPosY(0.0f);
-                if (ImGui::BeginMenu(category.first.c_str())) {
-                    if (category.first == "Randomizer") {
-                        if (ImGui::BeginMenu("Rando Enhancements"))
-                        {
-                            EnhancementCheckbox("Dynamic Item Fanfares", "gRandoFanfareByItemType");
-                            Tooltip(
-                                "Change what fanfare is played to match the type of item that is\n"
-                                "obtained. This can make fanfares longer than usual in some cases."
-                            );
+                if (category.first != "Randomizer") {
+                    if (ImGui::BeginMenu(category.first.c_str())) {
+                        for (const std::string& name : category.second) {
+                            std::string varName(name);
+                            varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
+                            std::string toggleName = "g" + varName + "Enabled";
 
-                            ImGui::EndMenu();
+                            EnhancementCheckbox(name.c_str(), toggleName.c_str());
+                            customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
                         }
-                        ImGui::Separator();
+                        ImGui::EndMenu();
                     }
-                    for (const std::string& name : category.second) {
-                        std::string varName(name);
-                        varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
-                        std::string toggleName = "g" + varName + "Enabled";
+                }
+            }
 
-                        EnhancementCheckbox(name.c_str(), toggleName.c_str());
-                        customWindows[name].enabled = CVar_GetS32(toggleName.c_str(), 0);
-                    }
+            ImGui::SetCursorPosY(0.0f);
+
+            if (ImGui::BeginMenu("Randomizer"))
+            {
+                EnhancementCheckbox("Randomizer Settings", "gRandomizerSettingsEnabled");
+                customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                EnhancementCheckbox("Item Tracker", "gItemTrackerEnabled");
+                customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+
+                ImGui::Separator();
+                if (ImGui::BeginMenu("Rando Enhancements"))
+                {
+                    EnhancementCheckbox("Dynamic Item Fanfares", "gRandoFanfareByItemType");
+                    Tooltip(
+                        "Change what fanfare is played to match the type\n"
+                        "of item that is obtained. This can make fanfares\n"
+                        "longer than usual in some cases."
+                    );
+
                     ImGui::EndMenu();
                 }
+
+                ImGui::EndMenu();
             }
 
             ImGui::EndMenuBar();
