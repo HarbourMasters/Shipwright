@@ -4779,7 +4779,7 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessage* customMessage = CustomMessage::Instance;
     customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
                                             { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
                                               messageEntry.english, messageEntry.german,
                                               messageEntry.french });
