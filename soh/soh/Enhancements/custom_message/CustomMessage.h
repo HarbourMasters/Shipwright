@@ -22,6 +22,15 @@ typedef struct {
     std::string french;
 } CustomMessageEntry;
 
+// Message Entry without the text type and position, useful for when
+// you need an array of these to loop over for registration
+// that will all have the same textbox type and position.
+typedef struct {
+    std::string english;
+    std::string german;
+    std::string french;
+} CustomMessageMinimal;
+
 #define NULL_CUSTOM_MESSAGE \
     { (TextBoxType)(-1), (TextBoxPosition)(-1), "", "", "" }
 

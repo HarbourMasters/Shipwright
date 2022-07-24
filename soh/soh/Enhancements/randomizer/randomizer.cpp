@@ -4767,46 +4767,68 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
     }*/
 
+typedef struct {
+    GetItemID giid;
+    ItemID iid;
+    std::string english;
+    std::string german;
+    std::string french;
+} GetItemMessage;
 
-void Randomizer::CreateCustomMessages() {
-        CustomMessage* customMessage = CustomMessage::Instance;
-        customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
+    CustomMessage* customMessage = CustomMessage::Instance;
+    customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+    for (GetItemMessage messageEntry : messageEntries) {
         customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
                                             { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-                                              "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!", "",
-                                              "" });
-        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-                                              "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!", "",
-                                              "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-              "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!", "", "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_FISH, ITEM_FISH,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-              "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!", "", "" });
-        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_BUGS, ITEM_BUG,
-                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-                                              "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!", "",
-                                              "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, "You got a %rFairy in a Bottle%w!&Use it wisely!", "", "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-              "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!", "", "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-              "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!", "", "" });
-        customMessage->CreateGetItemMessage(
-            Randomizer::getItemMessageTableID, GI_BOTTLE_WITH_POE, ITEM_POE,
-            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
-              "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...", "", "" });
+                                              messageEntry.english, messageEntry.german,
+                                              messageEntry.french });
     }
+}
+
+#define GIMESSAGE(giid, iid, english, german, french) \
+    { giid, iid, english, german, french }
+
+void Randomizer::CreateCustomMessages() {
+    const std::vector<GetItemMessage> getItemMessages = {
+        GIMESSAGE(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
+                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
+        GIMESSAGE(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
+                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
+        GIMESSAGE(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
+                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
+        GIMESSAGE(GI_BOTTLE_WITH_FISH, ITEM_FISH,
+                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
+        GIMESSAGE(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
+                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
+        GIMESSAGE(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
+                    "You got a %rFairy in a Bottle%w!&Use it wisely!",
+                    "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
+                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
+        GIMESSAGE(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
+                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
+        GIMESSAGE(GI_BOTTLE_WITH_POE, ITEM_POE,
+                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
+    };
+    CreateGetItemMessages(getItemMessages);
+}
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);
