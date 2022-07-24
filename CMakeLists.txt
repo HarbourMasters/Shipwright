@@ -14,6 +14,12 @@ set(PROJECT_VERSION_MAJOR "3")
 set(PROJECT_VERSION_MINOR "0")
 set(PROJECT_VERSION_PATCH "0")
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+include(cmake/automate-vcpkg.cmake)
+
+vcpkg_bootstrap()
+vcpkg_install_packages(zlib bzip2 libpng)
+endif()
 
 ################################################################################
 # Set target arch type if empty. Visual studio solution generator provides it.
@@ -109,7 +115,7 @@ set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.desktop")
 set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
 
-if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 INSTALL(PROGRAMS "${PROJECT_SOURCE_DIR}/appimage/soh.sh" DESTINATION . COMPONENT appimage)
 endif()
 
