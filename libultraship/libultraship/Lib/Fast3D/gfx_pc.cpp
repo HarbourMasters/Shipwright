@@ -20,6 +20,8 @@
 #include <string>
 #include <iostream>
 
+#include "../../Cvar.h"
+
 #include "gfx_pc.h"
 #include "gfx_cc.h"
 #include "gfx_window_manager_api.h"
@@ -2649,7 +2651,8 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
     gfx_wapi->init(game_name, start_in_fullscreen, width, height);
     gfx_rapi->init();
     gfx_rapi->update_framebuffer_parameters(0, width, height, 1, false, true, true, true);
-    gfx_current_dimensions.internal_mul = 1;
+    gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
+    gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
     gfx_current_dimensions.width = width;
     gfx_current_dimensions.height = height;
     game_framebuffer = gfx_rapi->create_framebuffer();
