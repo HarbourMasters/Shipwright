@@ -13140,10 +13140,10 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
                         if (i < 4) {
                             this->unk_84F = i + 1;
                             this->unk_850 = 0;
-                            this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(globalCtx, this, catchInfo->itemId, ABS(catchInfo->actionParam));
                             if (!CVar_GetS32("gFastDrops", 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                                 func_808322D0(globalCtx, this, sp24->unk_04);
                                 func_80835EA4(globalCtx, 4);
                             }
