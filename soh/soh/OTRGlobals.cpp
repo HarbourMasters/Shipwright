@@ -1478,14 +1478,12 @@ extern "C" CustomMessageEntry Randomizer_CopyAltarMessage() {
                            : CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7040);
 }
 
-extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_CopyGanonText() {
+    return CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CD);
 }
 
-extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
-    const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
-    return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
+extern "C" CustomMessageEntry Randomizer_CopyGanonHintText() {
+    return CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CC);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyHintFromCheck(RandomizerCheck check) {
@@ -1550,6 +1548,12 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
         } else if (textId == 0x7040 || textId == 0x7088) {
             // rando hints at altar
             messageEntry = Randomizer_CopyAltarMessage();
+        } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                messageEntry = Randomizer_CopyGanonText();
+            } else {
+                messageEntry = Randomizer_CopyGanonHintText();
+            }
         }
     }
     if (textId == 0x00B4 || textId == 0x00B5) {
