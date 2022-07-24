@@ -18,7 +18,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(cmake/automate-vcpkg.cmake)
 
 vcpkg_bootstrap()
-vcpkg_install_packages(zlib bzip2 libpng)
+vcpkg_install_packages(zlib bzip2 libpng python3)
 endif()
 
 ################################################################################
