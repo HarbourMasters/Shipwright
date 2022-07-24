@@ -827,7 +827,6 @@ void DrawItemTracker(bool& open) {
     if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
-        char trackerNotes[] = "This is a test";
 
         if (ImGui::BeginTabItem("Item Tracker")) {
 
