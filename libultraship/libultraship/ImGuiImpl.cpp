@@ -1382,6 +1382,19 @@ namespace SohImGui {
             for (const auto& category : windowCategories) {
                 ImGui::SetCursorPosY(0.0f);
                 if (ImGui::BeginMenu(category.first.c_str())) {
+                    if (category.first == "Randomizer") {
+                        if (ImGui::BeginMenu("Rando Enhancements"))
+                        {
+                            EnhancementCheckbox("Dynamic Item Fanfares", "gRandoFanfareByItemType");
+                            Tooltip(
+                                "Change what fanfare is played to match the type of item that is\n"
+                                "obtained. This can make fanfares longer than usual in some cases."
+                            );
+
+                            ImGui::EndMenu();
+                        }
+                        ImGui::Separator();
+                    }
                     for (const std::string& name : category.second) {
                         std::string varName(name);
                         varName.erase(std::remove_if(varName.begin(), varName.end(), [](unsigned char x) { return std::isspace(x); }), varName.end());
