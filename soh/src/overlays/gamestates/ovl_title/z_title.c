@@ -333,6 +333,7 @@ void Title_Init(GameState* thisx) {
     } else {
         quote = SetQuote();
 
+        this->staticSegment = NULL;
         //this->staticSegment = GAMESTATE_ALLOC_MC(&this->state, size);
         osSyncPrintf("z_title.c\n");
         //ASSERT(this->staticSegment != NULL);
