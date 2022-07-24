@@ -960,20 +960,7 @@ namespace SohImGui {
                 */
                 SohImGui::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 3, 0);
                 if (ImGui::Button("Apply Preset")) {
-                    switch (CVar_GetS32("gSelectEnhancementPresets", 0)) {
-                        // Disable All
-                        case 0:
-                            CVar_SetS32("gTextSpeed", 1);
-                            break;
-                        // Vanilla Plus
-                        case 1:
-                            CVar_SetS32("gTextSpeed", 2);
-                            break;
-                        // Randomizer
-                        case 2: 
-                            CVar_SetS32("gTextSpeed", 5);
-                            break;
-                    }
+                    applyEnhancementPresets();
                 }
                 ImGui::Separator();
 
@@ -1745,5 +1732,137 @@ namespace SohImGui {
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
 
         ImGui::EndGroup();
+    }
+
+    void applyEnhancementPresets(void) {
+        switch (CVar_GetS32("gSelectEnhancementPresets", 0)) {
+
+            // Default
+            case 0:
+                // Text Speed (1 to 5)
+                CVar_SetS32("gTextSpeed", 1);
+                // King Zora Speed (1 to 5)
+                CVar_SetS32("gMweepSpeed", 1);
+                // Biggoron Forge Time (0 to 3)
+                CVar_SetS32("gForgeTime", 3);
+                // Vine/Ladder Climb speed (+0 to +12)
+                CVar_SetS32("gClimbSpeed", 0);
+                // Faster Block Push
+                CVar_SetS32("gFasterBlockPush", 0);
+                // No Forced Navi
+                CVar_SetS32("gNoForcedNavi", 0);
+                // No Skulltula Freeze
+                CVar_SetS32("gSkulltulaFreeze", 0);
+                // MM Bunny Hood
+                CVar_SetS32("gMMBunnyHood", 0);
+                // Fast Chests
+                CVar_SetS32("gFastChests", 0);
+                // Fast Drops
+                CVar_SetS32("gFastDrops", 0);
+                // Better Owl
+                CVar_SetS32("gBetterOwl", 0);
+                // Fast Ocarina Playback
+                CVar_SetS32("gFastOcarinaPlayback", 0);
+                // Prevent Dropped Ocarina Inputs
+                CVar_SetS32("gDpadNoDropOcarinaInput", 0);
+                // Instant Putaway
+                CVar_SetS32("gInstantPutaway", 0);
+                // Mask Select in Inventory
+                CVar_SetS32("gMaskSelect", 0);
+
+                // Instant Fishing
+                CVar_SetS32("gInstantFishing", 0);
+                // Guarantee Bite
+                CVar_SetS32("gGuaranteeFishingBite", 0);
+                // Child Minimum Weight (6 to 10)
+                CVar_SetS32("gChildMinimumWeightFish", 10);
+                // Adult Minimum Weight (8 to 13)
+                CVar_SetS32("gAdultMinimumWeightFish", 13);
+
+                // Mute Low HP Alarm
+                CVar_SetS32("gLowHpAlarm", 0);
+                // Minimal UI
+                CVar_SetS32("gMinimalUI", 0);
+                // Disable Navi Call Audio
+                CVar_SetS32("gDisableNaviCallAudio", 0);
+
+                // Visual Stone of Agony
+                CVar_SetS32("gVisualAgony", 0);
+                // Assignable Tunics and Boots
+                CVar_SetS32("gAssignableTunicsAndBoots", 0);
+                // Link's Cow in Both Time Periods
+                CVar_SetS32("gCowOfTime", 0);
+                // Enable visible guard vision
+                CVar_SetS32("gGuardVision", 0);
+                // Enable passage of time on file select
+                CVar_SetS32("gTimeFlowFileSelect", 0);
+                // Allow the cursor to be on any slot
+                CVar_SetS32("gPauseAnyCursor", 0);
+                // Count Golden Skulltulas
+                CVar_SetS32("gInjectSkulltulaCount", 0);
+                // Pull grave during the day
+                CVar_SetS32("gDayGravePull", 0);
+
+                // Rotate link (0 to 2)
+                CVar_SetS32("gPauseLiveLinkRotation", 0);
+                // Pause link animation (0 to 16)
+                CVar_SetS32("gPauseLiveLink", 0);
+
+                // N64 Mode
+                CVar_SetS32("gN64Mode", 0);
+                // Enable 3D Dropped items/projectiles
+                CVar_SetS32("gNewDrops", 0);
+                // Disable Black Bar Letterboxes
+                CVar_SetS32("gDisableBlackBars", 0);
+                // Dynamic Wallet Icon
+                CVar_SetS32("gDynamicWalletIcon", 0);
+                // Always show dungeon entrances
+                CVar_SetS32("gAlwaysShowDungeonMinimapIcon", 0);
+
+                // Fix L&R Pause menu
+                CVar_SetS32("gUniformLR", 0);
+                // Fix L&Z Page switch in Pause menu
+                CVar_SetS32("gNGCKaleidoSwitcher", 0);
+                // Fix Dungeon entrances
+                CVar_SetS32("gFixDungeonMinimapIcon", 0);
+                // Fix Two Handed idle animations
+                CVar_SetS32("gTwoHandedIdle", 0);
+                // Fix the Gravedigging Tour Glitch
+                CVar_SetS32("gGravediggingTourFix", 0);
+                // Fix Deku Nut upgrade
+                CVar_SetS32("gDekuNutUpgradeFix", 0);
+                // Fix Navi text HUD position
+                CVar_SetS32("gNaviTextFix", 0);
+                // Fix Anubis fireballs
+                CVar_SetS32("gAnubisFix", 0);
+                // Fix Megaton Hammer crouch stab
+                CVar_SetS32("gCrouchStabHammerFix", 0);
+                // Fix all crouch stab
+                CVar_SetS32("gCrouchStabFix", 0);
+
+                // Red Ganon blood
+                CVar_SetS32("gRedGanonBlood", 0);
+                // Fish while hovering
+                CVar_SetS32("gHoverFishing", 0);
+                // N64 Weird Frames
+                CVar_SetS32("gN64WeirdFrames", 0);
+                // Bombchus out of bounds
+                CVar_SetS32("gBombchusOOB", 0);
+                break;
+
+            // Vanilla Plus
+            case 1:
+                
+                break;
+            // Randomizer
+            case 2:
+                
+                break;
+
+            // Time Savers Only
+            case 3:
+
+                break;
+        }
     }
 }
