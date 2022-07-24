@@ -827,6 +827,7 @@ void DrawItemTracker(bool& open) {
     if (ImGui::BeginTabBar("Item Tracker", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         int spacingX = CVar_GetS32("gRandoTrackIconSpacingX", 0);
         int spacingY = CVar_GetS32("gRandoTrackIconSpacingY", 0);
+        char trackerNotes[] = "This is a test";
 
         if (ImGui::BeginTabItem("Item Tracker")) {
 
@@ -973,6 +974,38 @@ void DrawItemTracker(bool& open) {
             ImGui::SameLine(spacingX * 5);
             DrawSong(QUEST_SONG_PRELUDE);
             ImGui::EndGroup();
+
+            // Item Tracker Custom Notes area
+            if (CVar_GetS32("gItemTrackerNotes", 0)) {
+            ImGui::BeginGroup();
+            struct ItemTrackerNotes {
+                static int TrackerNotesResizeCallback(ImGuiInputTextCallbackData* data) {
+                    if (data->EventFlag == ImGuiInputTextFlags_CallbackResize) {
+                        ImVector<char>* itemTrackerNotes = (ImVector<char>*)data->UserData;
+                        IM_ASSERT(itemTrackerNotes->begin() == data->Buf);
+                        itemTrackerNotes->resize(
+                            data->BufSize); // NB: On resizing calls, generally data->BufSize == data->BufTextLen + 1
+                        data->Buf = itemTrackerNotes->begin();
+                    }
+                    return 0;
+                }
+                static bool TrackerNotesInputTextMultiline(const char* label, ImVector<char>* itemTrackerNotes, const ImVec2& size = ImVec2(0, 0),
+                                                           ImGuiInputTextFlags flags = 0) {
+                    IM_ASSERT((flags & ImGuiInputTextFlags_CallbackResize) == 0);
+                    return ImGui::InputTextMultiline(label, itemTrackerNotes->begin(), (size_t)itemTrackerNotes->size(),
+                                                     size, flags | ImGuiInputTextFlags_CallbackResize,
+                                                     ItemTrackerNotes::TrackerNotesResizeCallback,
+                                                     (void*)itemTrackerNotes);
+                }
+            };
+            static ImVector<char> itemTrackerNotes;
+            if (itemTrackerNotes.empty()) {
+                itemTrackerNotes.push_back(0);
+            }
+            ItemTrackerNotes::TrackerNotesInputTextMultiline("##ItemTrackerNotes", &itemTrackerNotes, ImVec2(-FLT_MIN, ImGui::GetTextLineHeight() * 16), ImGuiInputTextFlags_AllowTabInput);
+            ImGui::EndGroup();
+            }
+
             ImGui::EndTabItem();
         }
         
@@ -986,6 +1019,8 @@ void DrawItemTracker(bool& open) {
             SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
             SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
             SohImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
+            SohImGui::EnhancementCheckbox("Personnal notes space", "gItemTrackerNotes");
+            SohImGui::Tooltip("Adds a personal space under the item list to\n write eyour own notes.");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
