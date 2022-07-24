@@ -16,6 +16,7 @@ pipeline {
                     }
                     environment {
                         PLATFORM='x64'
+                        PYTHON='C:\\Users\\jenkins\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
                         CMAKE='C:\\Program Files\\CMake\\bin\\cmake.exe'
                         CPACK='C:\\Program Files\\CMake\\bin\\cpack.exe'
                         TOOLSET='v142'
@@ -35,13 +36,13 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             bat """ 
                             
-                            "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM}
+                            "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D PYTHON_LIBRARIES=${env.PYTHON}
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
                             "${env.CPACK}" -G ZIP
                             cd "..\\..\\"
 
-                            move "_packages/*.zip" "soh.zip"
+                            move "_packages\\*.zip" "soh.zip"
                             """
                             archiveArtifacts artifacts: 'soh.zip', followSymlinks: false, onlyIfSuccessful: true
                         }
