@@ -1408,11 +1408,11 @@ namespace SohImGui {
                 ImGui::Separator();
                 if (ImGui::BeginMenu("Rando Enhancements"))
                 {
-                    EnhancementCheckbox("Dynamic Item Fanfares", "gRandoFanfareByItemType");
+                    EnhancementCheckbox("Quest Item Fanfares", "gRandoQuestItemFanfares");
                     Tooltip(
-                        "Change what fanfare is played to match the type\n"
-                        "of item that is obtained. This can make fanfares\n"
-                        "longer than usual in some cases."
+                        "Play unique fanfares when obtaining quest items\n"
+                        "(medallions/stones/songs). Note that these fanfares\n"
+                        "are longer than usual."
                     );
                     ImGui::EndMenu();
                 }
