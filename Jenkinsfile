@@ -35,7 +35,7 @@ pipeline {
                             
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             bat """ 
-                            
+
                             xcopy "..\\..\\ZELOOTD.z64" "OTRExporter\\"
                             
                             "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON}
@@ -118,7 +118,8 @@ pipeline {
                             7z a soh-mac.7z soh.app readme.txt
 =======
 
-                            cmake -H. -Bbuild-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_OBJCXX_COMPILER=clang++ -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+                            cmake -H. -Bbuild-cmake -GNinja
+                            cmake --build build-cmake
                             (cd build-cmake && cpack)
 
                             mv README.md readme.txt		
