@@ -36,6 +36,8 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             bat """ 
                             
+                            xcopy "..\\..\\ZELOOTD.z64" "OTRExporter\\"
+                            
                             "${env.CMAKE}" -S . -B "build\\${env.PLATFORM}" -G "Visual Studio 17 2022" -T ${env.TOOLSET} -A ${env.PLATFORM} -D Python_EXECUTABLE=${env.PYTHON}
                             "${env.CMAKE}" --build ".\\build\\${env.PLATFORM}" --config Release
                             cd  ".\\build\\${env.PLATFORM}"
