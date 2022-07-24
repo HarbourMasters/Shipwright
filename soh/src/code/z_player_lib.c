@@ -1673,7 +1673,7 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
     Vec3s* srcTable;
     s32 i;
     bool canswitchrnd = false;
-    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 1);
+    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 0);
     MinFrameCount = CVar_GetS32("gMinFrameCount", 200);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
@@ -1699,7 +1699,7 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
     };
     s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-    if (CVar_GetS32("gPauseLiveLink", !0) || CVar_GetS32("gPauseTriforce", 0)) {
+    if (CVar_GetS32("gPauseLiveLink", 0) || CVar_GetS32("gPauseTriforce", 0)) {
         uintptr_t anim = 0; // Initialise anim
 
         if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3) {

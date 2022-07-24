@@ -975,8 +975,12 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                         Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
+                        EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
+                        Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
+                        EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
+                        Tooltip("After completing the mask trading sub-quest,\npress A and any direction on the mask slot to change masks");
                         ImGui::EndMenu();
                     }
 
@@ -1017,6 +1021,8 @@ namespace SohImGui {
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
+                        EnhancementCheckbox("Always Win Goron Pot", "gGoronPot");
+                        Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
 
                         if (ImGui::BeginMenu("Potion Values"))
                         {
