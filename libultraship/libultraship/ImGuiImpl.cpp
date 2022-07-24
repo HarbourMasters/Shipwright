@@ -977,6 +977,8 @@ namespace SohImGui {
                         Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
+                        EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
+                        Tooltip("After completing the mask trading sub-quest,\npress A and any direction on the mask slot to change masks");
                         ImGui::EndMenu();
                     }
 
