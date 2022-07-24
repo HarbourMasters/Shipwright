@@ -1544,18 +1544,26 @@ void DemoEffect_UpdateJewelAdult(DemoEffect* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         switch (this->jewel.type) {
             case DEMO_EFFECT_JEWEL_KOKIRI:
-                if (gSaveContext.inventory.questItems == QUEST_KOKIRI_EMERALD) {
+                if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
                     DemoEffect_SetJewelColor(this, 1.0f);
-                } else if (gSaveContext.inventory.questItems == !QUEST_KOKIRI_EMERALD) {
+                } else {
                     DemoEffect_SetJewelColor(this, 0.0f);
                 }
-                break;
+            break;
             case DEMO_EFFECT_JEWEL_GORON:
-                DemoEffect_SetJewelColor(this, 0.5f);
-                break;
+                if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+            break;
             case DEMO_EFFECT_JEWEL_ZORA:
-                DemoEffect_SetJewelColor(this, 1.0f);
-                break;
+                if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+            break;
         }
     } else {
     DemoEffect_SetJewelColor(this, 1.0f);
@@ -1623,6 +1631,32 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, GlobalContext* globalCtx) {
     thisx->shape.rot.y += 0x0400;
     DemoEffect_PlayJewelSfx(this, globalCtx);
     this->effectFlags &= ~1;
+
+    if (gSaveContext.n64ddFlag) {
+        switch (this->jewel.type) {
+            case DEMO_EFFECT_JEWEL_KOKIRI:
+                if (CHECK_QUEST_ITEM(QUEST_KOKIRI_EMERALD)) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+                break;
+            case DEMO_EFFECT_JEWEL_GORON:
+                if (CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+                break;
+            case DEMO_EFFECT_JEWEL_ZORA:
+                if (CHECK_QUEST_ITEM(QUEST_ZORA_SAPPHIRE)) {
+                    DemoEffect_SetJewelColor(this, 1.0f);
+                } else {
+                    DemoEffect_SetJewelColor(this, 0.0f);
+                }
+                break;
+        }
+    }
 }
 
 /**
