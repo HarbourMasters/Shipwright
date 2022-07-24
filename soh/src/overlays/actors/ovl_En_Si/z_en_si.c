@@ -115,7 +115,50 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                     player->actor.freezeTimer = 20;
                 }
                 Message_StartTextbox(globalCtx, textId, NULL);
-                Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+
+                // Restore appropriate item fanfares in rando when we're obtaining items outside of their
+                // normal contexts (this code more or less copied from z_player.c)
+                if (gSaveContext.n64ddFlag) {
+                    s32 temp1;
+
+                    if (((getItemId >= GI_RUPEE_GREEN) && (getItemId <= GI_RUPEE_RED)) ||
+                        ((getItemId >= GI_RUPEE_PURPLE) && (getItemId <= GI_RUPEE_GOLD)) ||
+                        ((getItemId >= GI_RUPEE_GREEN_LOSE) && (getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
+                        (getItemId == GI_HEART)) {
+                        Audio_PlaySoundGeneral(NA_SE_SY_GET_BOXITEM, &D_801333D4, 4, &D_801333E0, &D_801333E0,
+                                               &D_801333E8);
+                    } else {
+                        if ((getItemId == GI_HEART_CONTAINER_2) || (getItemId == GI_HEART_CONTAINER) ||
+                            ((getItemId == GI_HEART_PIECE) &&
+                             ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000))) {
+                            temp1 = NA_BGM_HEART_GET | 0x900;
+                        } else {
+                            temp1 = (getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
+                        }
+                        // If we get a skulltula token, play "get small item"
+                        if (getItemId == GI_SKULL_TOKEN) {
+                            temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+                        }
+                        // If the setting is toggled on and we get special quest items (longer fanfares):
+                        if (CVar_GetS32("gRandoFanfareByItemType", 0) != 0) {
+                            // If we get a medallion, play the "get a medallion" fanfare
+                            if ((getItemId >= GI_MEDALLION_LIGHT) && (getItemId <= GI_MEDALLION_SPIRIT)) {
+                                temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                            }
+                            // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                            if ((getItemId >= GI_STONE_KOKIRI) && (getItemId <= GI_STONE_ZORA)) {
+                                temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                            }
+                            // If the item we're getting is a song, play the "learned a song" fanfare
+                            if ((getItemId >= GI_ZELDAS_LULLABY) && (getItemId <= GI_PRELUDE_OF_LIGHT)) {
+                                temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                            }
+                        }
+                        Audio_PlayFanfare(temp1);
+                    }// *********************************************
+                } else {
+                    Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+                }
                 this->actionFunc = func_80AFB950;
             } else {
                 Collider_UpdateCylinder(&this->actor, &this->collider);

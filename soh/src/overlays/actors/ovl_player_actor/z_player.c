@@ -12700,21 +12700,28 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
                 temp1 = temp2 = (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
 
-            // In Rando, if we get special quest items (medallions/stones/songs), play their respective unique fanfares
-            // instead of the default "get item" fanfare (if we have the setting toggled on)
-            if (gSaveContext.n64ddFlag && CVar_GetS32("gRandoFanfareByItemType", 0) != 0) {
-                if ((this->getItemId >= GI_MEDALLION_LIGHT) && (this->getItemId <= GI_MEDALLION_SPIRIT)) {
-                    temp1 = NA_BGM_MEDALLION_GET | 0x900;
+            // Restore appropriate item fanfares in rando when we're obtaining items outside of their normal contexts
+            if (gSaveContext.n64ddFlag) {
+                // If we get a skulltula token, play "get small item" (for tokensanity)
+                if (this->getItemId == GI_SKULL_TOKEN) {
+                    temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+                 }
+                // If the setting is toggled on and we get special quest items (longer fanfares):
+                if (CVar_GetS32("gRandoFanfareByItemType", 0) != 0) {
+                     // If we get a medallion, play the "get a medallion" fanfare
+                    if ((this->getItemId >= GI_MEDALLION_LIGHT) && (this->getItemId <= GI_MEDALLION_SPIRIT)) {
+                        temp1 = NA_BGM_MEDALLION_GET | 0x900;
+                    }
+                    // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
+                    if ((this->getItemId >= GI_STONE_KOKIRI) && (this->getItemId <= GI_STONE_ZORA)) {
+                        temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
+                    }
+                    // If the item we're getting is a song, play the "learned a song" fanfare
+                    if ((this->getItemId >= GI_ZELDAS_LULLABY) && (this->getItemId <= GI_PRELUDE_OF_LIGHT)) {
+                        temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
+                    }
                 }
-                // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
-                if ((this->getItemId >= GI_STONE_KOKIRI) && (this->getItemId <= GI_STONE_ZORA)) {
-                    temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
-                }
-                // If the item we're getting is a song, play the "learned a song" fanfare
-                if ((this->getItemId >= GI_ZELDAS_LULLABY) && (this->getItemId <= GI_PRELUDE_OF_LIGHT)) {
-                    temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
-                }
-            } // ***************************************************************************************
+            }// ***************************************************************************************
 
             Audio_PlayFanfare(temp1);
         }
