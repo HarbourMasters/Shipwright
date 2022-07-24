@@ -23,7 +23,13 @@ RUN  apt-get install -y software-properties-common gpg && \
 		zlib1g-dev \
 		libbz2-dev \
 		libpng-dev \
-		libgles2-mesa-dev && \    
+		libgles2-mesa-dev \
+		wget \
+		gpg && \
+	wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /etc/apt/trusted.gpg.d/kitware.gpg >/dev/null && \
+	apt-add-repository "deb https://apt.kitware.com/ubuntu/ focal main" && \
+	apt-get update && \
+        apt-get upgrade -y && \
 	ln -s /usr/bin/g++-10 /usr/bin/g++ && \
 	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
 	gcc --version && \
