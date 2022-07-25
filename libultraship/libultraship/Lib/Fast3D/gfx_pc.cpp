@@ -2775,7 +2775,6 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
-    gfx_rapi->finished_flush();
     SohUtils::saveEnvironmentVar("framebuffer", string());
     if (game_renders_to_framebuffer) {
         gfx_rapi->start_draw_to_framebuffer(0, 1);

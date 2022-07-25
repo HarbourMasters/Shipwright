@@ -1,6 +1,7 @@
 #ifdef ENABLE_METAL
 
 #include <vector>
+#include <algorithm>
 #include <unordered_map>
 #include <queue>
 #include <time.h>
@@ -715,7 +716,15 @@ static void gfx_metal_set_viewport(int x, int y, int width, int height) {
 }
 
 static void gfx_metal_set_scissor(int x, int y, int width, int height) {
-    [mctx.current_command_encoder setScissorRect:{ x, y, width, height }];
+    FramebufferMetal& fb = mctx.framebuffers[mctx.current_framebuffer];
+    TextureDataMetal& tex = mctx.textures[fb.texture_id];
+
+    // clamp to viewport size as metal does not support larger values than viewport size
+    x = std::max(0, std::min<int>(x, tex.width));
+    y = std::max(0, std::min<int>(y, tex.height));
+    width = std::max(0, std::min<int>(width,  tex.width));
+    height = std::max(0, std::min<int>(height, tex.height));
+    [mctx.current_command_encoder setScissorRect:(MTLScissorRect){ x, y, width, height }];
 }
 
 static void gfx_metal_set_use_alpha(bool use_alpha) {
@@ -796,7 +805,8 @@ static void gfx_metal_start_frame(void) {
 
 }
 
-static void gfx_metal_finished_flush(void) {
+void gfx_metal_end_frame(void) {
+    SPDLOG_ERROR("[end frame]");
     std::set<int>::iterator it = mctx.drawn_framebuffers.begin();
     it++;
 
@@ -804,20 +814,17 @@ static void gfx_metal_finished_flush(void) {
         auto framebuffer = mctx.framebuffers[*it];
 
         [framebuffer.command_encoder endEncoding];
-        SPDLOG_ERROR("End encoding for fb: {}", *it);
+        SPDLOG_ERROR("End encoding for framebuffer: {}", *it);
         pop_buffer_and_wait_to_requeue(framebuffer.command_buffer);
         [framebuffer.command_buffer commit];
         [framebuffer.command_buffer waitUntilCompleted];
 
         it++;
     }
-}
 
-void gfx_metal_end_frame(void) {
-    SPDLOG_ERROR("[end frame]");
     auto screenFramebuffer = mctx.framebuffers[0];
     [screenFramebuffer.command_encoder endEncoding];
-    SPDLOG_ERROR("End encoding for fb: {}", 0);
+    SPDLOG_ERROR("End encoding for framebuffer: {}", 0);
 
     id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
     id<MTLBlitCommandEncoder> blitEncoder = [screenFramebuffer.command_buffer blitCommandEncoder];
@@ -1029,7 +1036,6 @@ struct GfxRenderingAPI gfx_metal_api = {
     gfx_metal_init,
     gfx_metal_on_resize,
     gfx_metal_start_frame,
-    gfx_metal_finished_flush,
     gfx_metal_end_frame,
     gfx_metal_finish_render,
     gfx_metal_create_framebuffer,
