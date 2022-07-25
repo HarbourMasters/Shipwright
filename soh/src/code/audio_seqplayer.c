@@ -1340,21 +1340,13 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         break;
                     case 0xB2:
                         offset = (u16)parameters[0];
-#ifdef IS_BIGENDIAN
-                        channel->unk_22 = *(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2));
-#else
-                        channel->unk_22 = BOMSWAP16(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
-#endif
+                        channel->unk_22 = BE16SWAP(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
                         break;
                     case 0xB4:
                         channel->dynTable = (void*)&seqPlayer->seqData[channel->unk_22];
                         break;
                     case 0xB5:
-#ifdef IS_BIGENDIAN
-                        channel->unk_22 = ((u16*)(channel->dynTable))[scriptState->value];
-#else
-                        channel->unk_22 = BOMSWAP16(((u16*)(channel->dynTable))[scriptState->value]);
-#endif
+                        channel->unk_22 = BE16SWAP(((u16*)(channel->dynTable))[scriptState->value]);
                         break;
                     case 0xB6:
                         scriptState->value = (*channel->dynTable)[0][scriptState->value];

@@ -15,4 +15,20 @@
 #define IS_BIGENDIAN
 #endif
 
+#ifdef IS_BIGENDIAN
+#define BE16SWAP(x) (x)
+#define BE32SWAP(x) (x)
+#define BE64SWAP(x) (x)
+#define LE16SWAP(x) BOMSWAP16(x)
+#define LE32SWAP(x) BOMSWAP32(x)
+#define LE64SWAP(x) BOMSWAP64(x)
+#else
+#define BE16SWAP(x) BOMSWAP16(x)
+#define BE32SWAP(x) BOMSWAP32(x)
+#define BE64SWAP(x) BOMSWAP64(x)
+#define LE16SWAP(x) (x)
+#define LE32SWAP(x) (x)
+#define LE64SWAP(x) (x)
+#endif
+
 #endif
