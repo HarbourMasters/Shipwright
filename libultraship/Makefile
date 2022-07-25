@@ -48,7 +48,7 @@ CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CPPFLAGS := -MMD
 
-MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
+MMFLAGS := -Wno-deprecated-declarations -ObjC++
 
 # if not using clang, ask clang to use gcc standard library
 ifneq ($(CXX_IS_CLANG),1)

@@ -155,9 +155,11 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::SDL:
             switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
                 case SDLGfxApi::Metal:
                     Metal_Init();
                     break;
+#endif
                 case SDLGfxApi::OpenGL:
                 #if defined(__APPLE__)
                     ImGui_ImplOpenGL3_Init("#version 410 core");
@@ -210,9 +212,11 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::SDL:
             switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
                 case SDLGfxApi::Metal:
                     Metal_NewFrame();
                     break;
+#endif
                 case SDLGfxApi::OpenGL:
                     ImGui_ImplOpenGL3_NewFrame();
                     break;
@@ -231,9 +235,11 @@ namespace SohImGui {
         switch (impl.backend) {
         case Backend::SDL:
             switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
                 case SDLGfxApi::Metal:
                     Metal_RenderDrawData(data);
                     break;
+#endif
                 case SDLGfxApi::OpenGL:
                     ImGui_ImplOpenGL3_RenderDrawData(data);
                     break;
