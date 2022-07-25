@@ -39,7 +39,12 @@ include $(DEVKITPRO)/libnx/switch_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	ultraship
 BUILD		:=	build
-SOURCES		:=
+SOURCES		:= \
+		libultraship/Factories   \
+		libultraship/Lib/Fast3D  \
+		libultraship/Lib/ImGui   \
+		libultraship/Lib/Mercury \
+		libultraship
 DATA		:=
 INCLUDES	:=	\
 		../ZAPDTR/ZAPDUtils \
@@ -53,16 +58,12 @@ INCLUDES	:=	\
 #-------------------------------------------------------------------------------
 # source files
 #-------------------------------------------------------------------------------
+
 SOURCEFILES_C :=    \
 		libultraship/mixer.c \
 		libultraship/Lib/stb/stb_impl.c \
 
 SOURCEFILES_CPP :=	\
-	$(shell find libultraship/Factories -name "*.cpp") \
-	$(shell find libultraship/Lib/Fast3D -name "*.cpp") \
-	$(shell find libultraship -maxdepth 1 -name "*.cpp") \
-	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name "*.cpp") \
-	$(shell find libultraship/Lib/Mercury -maxdepth 1 -name "*.cpp") \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -75,10 +76,10 @@ ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
 
 CFLAGS	:=	-g -Wall -ffunction-sections \
 			$(ARCH) $(DEFINES) \
-            -DSPDLOG_NO_THREAD_ID -DSPDLOG_NO_TLS \
+            -DSPDLOG_NO_THREAD_ID \
 		    -DSTBI_NO_THREAD_LOCALS -DDEBUG
 
-CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -DENABLE_OPENGL -DSDL_BYTEORDER
+CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -DENABLE_OPENGL
 
 CXXFLAGS	:= $(CFLAGS) -std=gnu++20
 CFLAGS  +=  -std=gnu11

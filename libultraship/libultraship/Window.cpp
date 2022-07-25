@@ -254,10 +254,6 @@ namespace Ship {
         ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
             ControllerApi->SaveControllerSettings();
         });
-
-        ModInternal::RegisterHook<ModInternal::RequestConfigSave>([]() {
-            ControllerApi->SaveControllerSettings();
-        });
     }
 
     void Window::StartFrame() {

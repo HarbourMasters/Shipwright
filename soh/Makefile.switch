@@ -93,7 +93,7 @@ CFLAGS	:=	-O2 -ffunction-sections \
 			$(ARCH) $(DEFINES)
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ \
-            -DSPDLOG_NO_THREAD_ID -DSPDLOG_NO_TLS \
+            -DSPDLOG_NO_THREAD_ID \
             -DSTBI_NO_THREAD_LOCALS \
 			`sdl2-config --cflags`
 
