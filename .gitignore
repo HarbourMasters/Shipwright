@@ -409,5 +409,10 @@ shipofharkinian.json
 
 # Xcode
 xcuserdata/
-xcshareddata/
-/soh/soh.xcconfig
+*.xcconfig
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings

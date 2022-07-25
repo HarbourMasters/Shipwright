@@ -6857,7 +6857,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Ship of Harikinian";
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "  $(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -7047,7 +7047,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "Ship of Harikinian";
 				INSTALL_PATH = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
-				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "  $(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (

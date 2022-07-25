@@ -2,7 +2,7 @@
 
 #include "Window.h"
 #include "Controller.h"
-#include "DisconnectedController.h"
+#include "VirtualController.h"
 #include "KeyboardController.h"
 #include "SDLController.h"
 #include <Utils/StringHelper.h>
@@ -27,8 +27,9 @@ void Ship::ControlDeck::ScanPhysicalDevices() {
 		}
 	}
 
+	physicalDevices.push_back(std::make_shared<VirtualController>("Auto", "Auto", true));
 	physicalDevices.push_back(std::make_shared<KeyboardController>());
-	physicalDevices.push_back(std::make_shared<DisconnectedController>());
+	physicalDevices.push_back(std::make_shared<VirtualController>("Disconnected", "None", false));
 
 	for (const auto& device : physicalDevices) {
 		for (int i = 0; i < MAXCONTROLLERS; i++) {
@@ -51,7 +52,14 @@ void Ship::ControlDeck::SetPhysicalDevice(int slot, int deviceSlot) {
 
 void Ship::ControlDeck::WriteToPad(OSContPad* pad) const {
 	for (size_t i = 0; i < virtualDevices.size(); i++) {
-		physicalDevices[virtualDevices[i]]->Read(&pad[i], i);
+		const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
+		if (backend->GetGuid() == "Auto") {
+			for (const auto& device : physicalDevices) {
+				device->Read(&pad[i], i);
+			}
+			continue;
+		}
+		backend->Read(&pad[i], i);
 	}
 }
 

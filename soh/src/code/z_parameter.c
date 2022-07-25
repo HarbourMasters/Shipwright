@@ -1676,13 +1676,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF) {
-                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD];
+            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF 
+                ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) { // In rando, when buying Giant's Knife, also check
+                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; // for 0xE in case we don't have Kokiri Sword
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
                     Interface_LoadItemIcon1(globalCtx, 0);
                 }
             }
+            
         } else if (item == ITEM_SWORD_MASTER) {
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             gSaveContext.equips.equipment &= 0xFFF0;
@@ -1810,13 +1812,13 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
-        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(200);
         }
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
-        if (gSaveContext.n64ddFlag && GetRandoSettingValue(RSK_FULL_WALLETS)) {
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
             Rupees_ChangeBy(500);
         }
         return ITEM_NONE;
@@ -4796,10 +4798,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
             PosY_BtnA = CVar_GetS32("gABtnPosY", 0)+Y_Margins_BtnA;
             rAIconY = 98.0f - PosY_BtnA;
             if (CVar_GetS32("gABtnPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Left_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 2) {//Anchor Right
-                X_Margins_BtnA = Right_HUD_Margin;
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Right_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX= OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 3) {//Anchor None

@@ -213,8 +213,8 @@ namespace Ship {
             pConf->setString("Window.GfxApi", "");
 
             pConf->setBool("Window.Fullscreen.Enabled", false);
-            pConf->setInt("Window.Fullscreen.Width", 640);
-            pConf->setInt("Window.Fullscreen.Height", 480);
+            pConf->setInt("Window.Fullscreen.Width", 1920);
+            pConf->setInt("Window.Fullscreen.Height", 1080);
 
             pConf->setString("Game.SaveName", "");
             pConf->setString("Game.Main Archive", "");
@@ -234,8 +234,14 @@ namespace Ship {
         SetAudioPlayer();
         bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
 
-        dwWidth = pConf->getInt("Window.Fullscreen.Width", bIsFullscreen ? 1920 : 640);
-        dwHeight = pConf->getInt("Window.Fullscreen.Height", bIsFullscreen ? 1080 : 480);
+        if (bIsFullscreen) {
+            dwWidth = pConf->getInt("Window.Fullscreen.Width", 1920);
+            dwHeight = pConf->getInt("Window.Fullscreen.Height", 1080);
+        } else {
+            dwWidth = pConf->getInt("Window.Width", 640);
+            dwHeight = pConf->getInt("Window.Height", 480);
+        }
+
         dwMenubar = pConf->getBool("Window.Options", false);
         const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
         const std::string& gfx_api = pConf->getString("Window.GfxApi");

@@ -517,6 +517,19 @@ void SaveManager::LoadFile(int fileNum) {
     InitMeta(fileNum);
 }
 
+bool SaveManager::SaveFile_Exist(int fileNum) {
+    
+    try {
+        std::filesystem::exists(GetFileName(fileNum));
+        printf("File[%d] - exist \n",fileNum);
+        return true;
+    }
+    catch(std::filesystem::filesystem_error const& ex) {
+        printf("File[%d] - do not exist \n",fileNum);
+        return false;
+    }
+}
+
 void SaveManager::AddInitFunction(InitFunc func) {
     initFuncs.emplace_back(func);
 }
@@ -1331,4 +1344,8 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+}
+
+extern "C" bool Save_Exist(int fileNum) {
+    return SaveManager::Instance->SaveFile_Exist(fileNum);
 }

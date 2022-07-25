@@ -292,7 +292,7 @@ void GivePlayerRandoRewardSheikSong(EnXc* sheik, GlobalContext* globalCtx, Rando
         !(gSaveContext.eventChkInf[5] & sheikType)) {
         gSaveContext.eventChkInf[5] |= sheikType;
     } else if (!(gSaveContext.eventChkInf[5] & sheikType)) {
-        GetItemID getItemId = GetRandomizedItemIdFromKnownCheck(check, ogSongId);
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, ogSongId);
         if (check == RC_SHEIK_AT_TEMPLE && !Flags_GetTreasure(globalCtx, 0x1F)) {
             if (func_8002F434(&sheik->actor, globalCtx, getItemId, 10000.0f, 100.0f)) {
                 Flags_SetTreasure(globalCtx, 0x1F);
