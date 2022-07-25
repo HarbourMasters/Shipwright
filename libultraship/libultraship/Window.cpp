@@ -31,6 +31,8 @@
 
 #include <iostream>
 
+#define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+
 extern "C" {
     struct OSMesgQueue;
 
@@ -121,8 +123,7 @@ extern "C" {
         const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr)  {
-            const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get());
-
+            const auto res = LOAD_TEX(hashStr->c_str());
             ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
@@ -149,28 +150,28 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
     uint16_t ResourceMgr_LoadTexWidthByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         return res->width;
     }
 
     uint16_t ResourceMgr_LoadTexHeightByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         return res->height;
     }
 
     uint32_t ResourceMgr_LoadTexSizeByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         return res->imageDataSize;
     }
 
     void ResourceMgr_WriteTexS16ByName(char* texPath, size_t index, s16 value) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
 
         if (res != nullptr)
         {
