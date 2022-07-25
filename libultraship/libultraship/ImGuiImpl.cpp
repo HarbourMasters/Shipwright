@@ -1740,5 +1740,4 @@ namespace SohImGui {
 
         ImGui::EndGroup();
     }
-
 }
