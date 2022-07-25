@@ -996,6 +996,7 @@ void EnItem00_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     this->actor.shape.shadowScale = 0.3f;
                     this->actor.world.rot.x = 0x4000;
                     GetItem_Draw(globalCtx, GID_RUPEE_PURPLE);
+                    break;
                 } else {
                     Actor_SetScale(&this->actor, 0.03f);
                     this->actor.shape.shadowScale = 6.0f;
