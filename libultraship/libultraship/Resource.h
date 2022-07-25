@@ -63,8 +63,7 @@ namespace Ship
         Deckard     = 0,
         Roy         = 1,
         Rachael     = 2,
-        Leon        = 3,
-        Zhora       = 4,
+        Zhora       = 3,
         // ...
     };
 

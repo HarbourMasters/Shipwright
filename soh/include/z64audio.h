@@ -20,7 +20,6 @@
 
 #define CALC_RESAMPLE_FREQ(sampleRate) ((float)sampleRate / (s32)gAudioContext.audioBufferParameters.frequency)
 
-extern bool gUseLegacySD;
 extern char* fontMap[256];
 
 typedef enum {

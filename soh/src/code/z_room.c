@@ -402,6 +402,12 @@ BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
 
     camera = GET_ACTIVE_CAM(globalCtx);
     camId = camera->camDataIdx;
+    if (camId == -1 && CVar_GetS32("gNoRestrictItems", 0)) {
+        // This prevents a crash when using items that change the
+        // camera (such as din's fire) on scenes with prerendered backgrounds
+        return NULL;
+    }
+    
     // jfifid
     camId2 = func_80041C10(&globalCtx->colCtx, camId, BGCHECK_SCENE)[2].y;
     if (camId2 >= 0) {

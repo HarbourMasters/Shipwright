@@ -791,7 +791,12 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
             break;
         case 4100:
             csInfo->keyFrames = D_801225D4;
-            csInfo->keyFrameCnt = 5;
+            // RANDO: Waterfall opening cutscene skips to the end of the cutscene data earlier by doing this
+            if (!(gSaveContext.n64ddFlag)) {
+                csInfo->keyFrameCnt = 5;
+            } else {
+                csInfo->keyFrameCnt = 2;
+            }
 
             player->actor.shape.rot.y = player->actor.world.rot.y = player->currentYaw = 0x3FFC;
             func_800C0808(globalCtx, camIdx, player, CAM_SET_CS_C);

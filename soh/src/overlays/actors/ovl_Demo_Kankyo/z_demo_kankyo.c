@@ -788,7 +788,14 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
                 this->unk_150[i].unk_0.y = (s16)((Rand_ZeroOne() - 0.5f) * 16.0f * temp_f22);
                 this->unk_150[i].unk_0.z = (s16)((Rand_ZeroOne() - 0.5f) * 16.0f * temp_f22);
                 this->unk_150[i].unk_23 = 0;
-                this->unk_150[i].unk_22++;
+
+                // Skip the first part of warp song cutscenes in rando
+                if (gSaveContext.n64ddFlag && this->actor.params == DEMOKANKYO_WARP_OUT) {
+                    this->unk_150[i].unk_22 = 2;
+                } else {
+                    this->unk_150[i].unk_22++;
+                }
+
             case 1:
                 if (this->actor.params == DEMOKANKYO_WARP_OUT) {
                     if (func_800BB2B4(&camPos, &sWarpRoll, &sWarpFoV, sWarpOutCameraPoints, &this->unk_150[i].unk_20,

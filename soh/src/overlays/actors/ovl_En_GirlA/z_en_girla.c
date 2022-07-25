@@ -433,7 +433,7 @@ s32 EnGirlA_CanBuy_Arrows(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_Bombs(GlobalContext* globalCtx, EnGirlA* this) {
-    if (!CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
+    if (!gSaveContext.n64ddFlag && !CHECK_QUEST_ITEM(QUEST_GORON_RUBY)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (AMMO(ITEM_BOMB) >= CUR_CAPACITY(UPG_BOMB_BAG)) {

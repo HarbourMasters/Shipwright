@@ -1203,6 +1203,9 @@ typedef struct GlobalContext {
     /* 0x00790 */ Camera* cameraPtrs[NUM_CAMS];
     /* 0x007A0 */ s16 activeCamera;
     /* 0x007A2 */ s16 nextCamera;
+    /* 0x007A2 */ bool manualCamera;
+    /* 0x007A2 */ f32 camX;
+    /* 0x007A2 */ f32 camY;
     /* 0x007A4 */ SequenceContext sequenceCtx;
     /* 0x007A8 */ LightContext lightCtx;
     /* 0x007B8 */ FrameAdvanceContext frameAdvCtx;
@@ -1293,6 +1296,7 @@ typedef struct {
     /* 0x1C9EC */ Vtx* keyboardVtx;
     /* 0x1C9F0 */ Vtx* nameEntryVtx;
     /* 0x1C9F4 */ u8 n64ddFlag;
+    /* 0x1CA28 */ s16 n64ddFlags[3];
     /* 0x1CA38 */ s16 buttonIndex;
     /* 0x1CA3A */ s16 confirmButtonIndex; // 0: yes, 1: quit
     /* 0x1CA3C */ s16 menuMode;

@@ -47,6 +47,7 @@ typedef struct EnTk {
     /* 0x0296 */ Vec3s      morphTable[18];
     /* 0x0304 */ Vec3f      v3f_304;
     /* 0x0310 */ EnTkEff    eff[20];
+    u8 heartPieceSpawned;
 } EnTk; // size = 0x0770
 
 #endif

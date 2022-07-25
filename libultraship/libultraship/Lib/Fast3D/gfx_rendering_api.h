@@ -17,9 +17,9 @@ struct GfxClipParameters {
 };
 
 enum FilteringMode {
-    THREE_POINT,
-    LINEAR,
-    NONE
+    FILTER_THREE_POINT,
+    FILTER_LINEAR,
+    FILTER_NONE
 };
 
 // A hash function used to hash a: pair<float, float>

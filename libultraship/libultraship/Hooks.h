@@ -5,6 +5,7 @@
 #include <functional>
 
 #include "UltraController.h"
+#include "Controller.h"
 
 #define DEFINE_HOOK(name, type) struct name { typedef std::function<type> fn; }
 
@@ -28,12 +29,11 @@ namespace ModInternal {
     }
 
     DEFINE_HOOK(ControllerRead, void(OSContPad* cont_pad));
-
+    DEFINE_HOOK(ControllerRawInput, void(Ship::Controller* backend, uint32_t raw));
     DEFINE_HOOK(AudioInit, void());
-
     DEFINE_HOOK(LoadTexture, void(const char* path, uint8_t** texture));
-
     DEFINE_HOOK(GfxInit, void());
+    DEFINE_HOOK(ExitGame, void());
 
 }
 

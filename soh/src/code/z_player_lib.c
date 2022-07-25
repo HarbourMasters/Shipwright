@@ -763,7 +763,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
         color->r = CVar_GetS32("gTunic_Zora_R", sTunicColors[PLAYER_TUNIC_ZORA].r);
         color->g = CVar_GetS32("gTunic_Zora_G", sTunicColors[PLAYER_TUNIC_ZORA].g);
         color->b = CVar_GetS32("gTunic_Zora_B", sTunicColors[PLAYER_TUNIC_ZORA].b);
-    } else if (!CVar_GetS32("gUseTunicsCol",0)){
+    } else if (!CVar_GetS32("gUseTunicsCol",0)) {
         if (tunic >= 3) {
             color->r = sOriginalTunicColors[0].r;
             color->g = sOriginalTunicColors[0].g;
@@ -1673,7 +1673,7 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
     Vec3s* srcTable;
     s32 i;
     bool canswitchrnd = false;
-    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 1);
+    s16 SelectedMode = CVar_GetS32("gPauseLiveLink", 0);
     MinFrameCount = CVar_GetS32("gMinFrameCount", 200);
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(segment + 0x3800);
@@ -1699,7 +1699,7 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
     };
     s16 AnimArraySize = ARRAY_COUNT(PauseMenuAnimSet);
 
-    if (CVar_GetS32("gPauseLiveLink", !0) || CVar_GetS32("gPauseTriforce", 0)) {
+    if (CVar_GetS32("gPauseLiveLink", 0) || CVar_GetS32("gPauseTriforce", 0)) {
         uintptr_t anim = 0; // Initialise anim
 
         if (CUR_EQUIP_VALUE(EQUIP_SWORD) >= 3) {
@@ -1712,7 +1712,6 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
             // Link is idle so revert to 0
             EquipedStance = 0;
         }
-
         if (SelectedMode == 16) {
             // Apply Random function
             s16 SwitchAtFrame = 0;
@@ -1742,6 +1741,89 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
                     SelectedAnim = rand() % (AnimArraySize - 0);
                     if (SelectedAnim == 0) {
                         // prevent loading 0 that would result to a crash.
+                        SelectedAnim = 1;
+                    }
+                    FrameCountSinceLastAnim = 1;
+                }
+                anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
+            }
+            FrameCountSinceLastAnim++;
+        } else if (SelectedMode == 17) {
+            // Apply Random function
+            s16 SwitchAtFrame = 0;
+            s16 CurAnimDuration = 0;
+            s16 LastAnim;
+            if (FrameCountSinceLastAnim == 0) {
+                // When opening Kaleido this will be passed one time
+                SelectedAnim = (rand() % (6 - 1 + 1)) + 1;
+                if (SelectedAnim == 0) {
+                    // prevent loading 0 that would result to a crash.
+                    SelectedAnim = 1;
+                }
+            } else if (FrameCountSinceLastAnim >= 1) {
+                SwitchAtFrame = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                CurAnimDuration = Animation_GetLastFrame(PauseMenuAnimSet[SelectedAnim][EquipedStance]);
+                if (SwitchAtFrame < MinFrameCount) {
+                    // Animation frame count is lower than minimal wait time then we wait for another round.
+                    // This will be looped to always add current animation time if that still lower than minimum time
+                    while (SwitchAtFrame < MinFrameCount) {
+                        SwitchAtFrame = SwitchAtFrame + CurAnimDuration;
+                    }
+                } else if (CurAnimDuration >= MinFrameCount) {
+                    // Since we have more (or same) animation time than min duration we set the wait time to animation
+                    // time.
+                    SwitchAtFrame = CurAnimDuration;
+                }
+                if (FrameCountSinceLastAnim >= SwitchAtFrame) {
+                    LastAnim = SelectedAnim;
+                    if (LastAnim==1) {
+                        if ((CUR_EQUIP_VALUE(EQUIP_SWORD)!=PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!= PLAYER_SHIELD_NONE)) { // if the player has a sword and shield equipped
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) { // if he's an adult or a kid with the deku shield
+                                SelectedAnim = (rand() % (6 - 2 + 1)) + 2; // select any 5 animations that aren't the default standing anim
+                            } else { //else if he's a child with a shield that isn't the deku shield
+                                s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                                if (randval==4) { //if its the shield anim
+                                    SelectedAnim==6; // set to yawn anim
+                                } else {
+                                    SelectedAnim=randval;
+                                }
+                            }
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) != PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has a sword equipped but no shield
+                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                            if (randval==4) { //if its the shield anim
+                                SelectedAnim==6; // set to yawn anim
+                            } else {
+                                SelectedAnim=randval;
+                            }
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!=PLAYER_SHIELD_NONE)) { //if the player has a shield equipped but no sword
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {// if he's an adult or a kid with the deku shield
+                            s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
+                            if (randval==5) { //if its the sword anim
+                                SelectedAnim==6; // set to yawn anim
+                            } else {
+                                SelectedAnim=randval;
+                            }
+                            } else {
+                                s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
+                                if (randval==4) { //if its the shield anim
+                                    SelectedAnim==6; // set to yawn anim
+                                } else {
+                                    SelectedAnim=randval;
+                                }
+                            } 
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has no sword or shield equipped
+                            s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
+                            if (randval==4) { //if its the shield anim
+                                SelectedAnim==6; // set to yawn anim
+                            } else {
+                                SelectedAnim=randval;
+                            }
+                        }
+                    } else {
+                        SelectedAnim = 1;
+                    }
+                    if (SelectedAnim == 0) {
+                        // prevent loading 0 that would result to a crash. Also makes sure default idle is every other anim
                         SelectedAnim = 1;
                     }
                     FrameCountSinceLastAnim = 1;

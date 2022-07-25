@@ -137,7 +137,7 @@ static struct {
     //uint32_t current_width, current_height;
     uint32_t render_target_height;
     int current_framebuffer;
-    FilteringMode current_filter_mode = NONE;
+    FilteringMode current_filter_mode = FILTER_NONE;
 
     int8_t depth_test;
     int8_t depth_mask;
@@ -413,7 +413,7 @@ static struct ShaderProgram *gfx_d3d11_create_and_load_new_shader(uint64_t shade
     char buf[4096];
     size_t len, num_floats;
 
-    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, d3d.current_filter_mode == THREE_POINT);
+    gfx_direct3d_common_build_shader(buf, len, num_floats, cc_features, false, d3d.current_filter_mode == FILTER_THREE_POINT);
 
     ComPtr<ID3DBlob> vs, ps;
     ComPtr<ID3DBlob> error_blob;
@@ -580,7 +580,7 @@ static void gfx_d3d11_set_sampler_parameters(int tile, bool linear_filter, uint3
     D3D11_SAMPLER_DESC sampler_desc;
     ZeroMemory(&sampler_desc, sizeof(D3D11_SAMPLER_DESC));
 
-    sampler_desc.Filter = linear_filter && d3d.current_filter_mode == LINEAR ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
+    sampler_desc.Filter = linear_filter && d3d.current_filter_mode == FILTER_LINEAR ? D3D11_FILTER_MIN_MAG_MIP_LINEAR : D3D11_FILTER_MIN_MAG_MIP_POINT;
 
     sampler_desc.AddressU = gfx_cm_to_d3d11(cms);
     sampler_desc.AddressV = gfx_cm_to_d3d11(cmt);
@@ -685,7 +685,7 @@ static void gfx_d3d11_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
                 d3d.last_resource_views[i] = d3d.textures[d3d.current_texture_ids[i]].resource_view.Get();
                 d3d.context->PSSetShaderResources(i, 1, d3d.textures[d3d.current_texture_ids[i]].resource_view.GetAddressOf());
 
-                if (d3d.current_filter_mode == THREE_POINT) {
+                if (d3d.current_filter_mode == FILTER_THREE_POINT) {
                     d3d.per_draw_cb_data.textures[i].width = d3d.textures[d3d.current_texture_ids[i]].width;
                     d3d.per_draw_cb_data.textures[i].height = d3d.textures[d3d.current_texture_ids[i]].height;
                     d3d.per_draw_cb_data.textures[i].linear_filtering = d3d.textures[d3d.current_texture_ids[i]].linear_filtering;

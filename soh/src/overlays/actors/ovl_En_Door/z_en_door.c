@@ -159,6 +159,13 @@ void EnDoor_SetupType(EnDoor* this, GlobalContext* globalCtx) {
         }
         this->actor.world.rot.y = 0x0000;
         if (doorType == DOOR_LOCKED) {
+            // unlock the door behind the hammer blocks
+            // in the fire temple entryway when rando'd
+            if (gSaveContext.n64ddFlag && globalCtx->sceneNum == 4) {
+                // RANDOTODO don't do this when keysanity is enabled
+                Flags_SetSwitch(globalCtx, 0x17);
+            }
+
             if (!Flags_GetSwitch(globalCtx, this->actor.params & 0x3F)) {
                 this->lockTimer = 10;
             }

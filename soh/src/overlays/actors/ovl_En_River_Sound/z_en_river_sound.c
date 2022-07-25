@@ -40,7 +40,9 @@ void EnRiverSound_Init(Actor* thisx, GlobalContext* globalCtx) {
         Audio_PlayNatureAmbienceSequence(NATURE_ID_KOKIRI_REGION);
         Actor_Kill(&this->actor);
     } else if (this->actor.params == RS_SARIAS_SONG) {
-        if (!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) || CHECK_QUEST_ITEM(QUEST_SONG_SARIA)) {
+        if (!CHECK_QUEST_ITEM(QUEST_SONG_LULLABY) ||
+             CHECK_QUEST_ITEM(QUEST_SONG_SARIA) ||
+             gSaveContext.n64ddFlag) {
             Actor_Kill(&this->actor);
         }
     }

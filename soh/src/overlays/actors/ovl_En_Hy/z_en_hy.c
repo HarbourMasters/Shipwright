@@ -659,7 +659,7 @@ s16 func_80A70058(GlobalContext* globalCtx, Actor* thisx) {
                     gSaveContext.dogParams = 0;
                     break;
                 case 0x709F:
-                    func_80A6F7CC(this, globalCtx, (gSaveContext.infTable[25] & 2) ? GI_RUPEE_BLUE : GI_HEART_PIECE);
+                    func_80A6F7CC(this, globalCtx, (gSaveContext.infTable[25] & 2) ? GI_RUPEE_BLUE : gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_MARKET_LOST_DOG, GI_HEART_PIECE) : GI_HEART_PIECE);
                     this->actionFunc = func_80A714C4;
                     break;
             }
@@ -1057,19 +1057,26 @@ void func_80A714C4(EnHy* this, GlobalContext* globalCtx) {
 
 void func_80A71530(EnHy* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_DONE) && Message_ShouldAdvance(globalCtx)) {
-        switch (this->unkGetItemId) {
-            case GI_HEART_PIECE:
-                gSaveContext.dogParams = 0;
-                gSaveContext.dogIsLost = false;
+        if (gSaveContext.n64ddFlag) {
+            if (!(gSaveContext.infTable[25] & 2)) {
                 gSaveContext.infTable[25] |= 2;
-                break;
-            case GI_RUPEE_BLUE:
-                Rupees_ChangeBy(5);
-                gSaveContext.dogParams = 0;
-                gSaveContext.dogIsLost = false;
-                break;
+            }
+            gSaveContext.dogParams = 0;
+            gSaveContext.dogIsLost = false;
+        } else {
+            switch (this->unkGetItemId) {
+                case GI_HEART_PIECE:
+                    gSaveContext.dogParams = 0;
+                    gSaveContext.dogIsLost = false;
+                    gSaveContext.infTable[25] |= 2;
+                    break;
+                case GI_RUPEE_BLUE:
+                    Rupees_ChangeBy(5);
+                    gSaveContext.dogParams = 0;
+                    gSaveContext.dogIsLost = false;
+                    break;
+            }
         }
-
         this->actionFunc = func_80A7127C;
     }
 }

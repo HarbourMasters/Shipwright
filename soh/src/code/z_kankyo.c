@@ -2095,10 +2095,8 @@ void func_80075B44(GlobalContext* globalCtx) {
             {
                 // OTRTODO: This is where corrupt audio happens. Commenting this out seems to not introduce any side effects?
                 // Further investigation is needed...
-
-                if (gUseLegacySD)
-                    Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_CRITTER_4 << 4 | NATURE_CHANNEL_CRITTER_5,
-                                                    CHANNEL_IO_PORT_1, 1);
+                //Audio_SetNatureAmbienceChannelIO(NATURE_CHANNEL_CRITTER_4 << 4 | NATURE_CHANNEL_CRITTER_5,
+                                                    //CHANNEL_IO_PORT_1, 1);
             }
             globalCtx->envCtx.unk_E0++;
             break;

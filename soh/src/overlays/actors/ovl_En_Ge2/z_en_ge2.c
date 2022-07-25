@@ -223,6 +223,14 @@ s32 Ge2_DetectPlayerInUpdate(GlobalContext* globalCtx, EnGe2* this, Vec3f* pos, 
 }
 
 s32 EnGe2_CheckCarpentersFreed(void) {
+    if (gSaveContext.n64ddFlag) {
+        if (CHECK_QUEST_ITEM(QUEST_GERUDO_CARD)) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } 
+
     if ((u8)(gSaveContext.eventChkInf[9] & 0xF) == 0xF) {
         return 1;
     }
@@ -449,7 +457,7 @@ void EnGe2_WaitTillCardGiven(EnGe2* this, GlobalContext* globalCtx) {
         this->actor.parent = NULL;
         this->actionFunc = EnGe2_SetActionAfterTalk;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
@@ -458,7 +466,7 @@ void EnGe2_GiveCard(EnGe2* this, GlobalContext* globalCtx) {
         Message_CloseTextbox(globalCtx);
         this->actor.flags &= ~ACTOR_FLAG_16;
         this->actionFunc = EnGe2_WaitTillCardGiven;
-        func_8002F434(&this->actor, globalCtx, GI_GERUDO_CARD, 10000.0f, 50.0f);
+        func_8002F434(&this->actor, globalCtx, gSaveContext.n64ddFlag ? Randomizer_GetItemIdFromKnownCheck(RC_GF_GERUDO_MEMBERSHIP_CARD, GI_GERUDO_CARD) : GI_GERUDO_CARD, 10000.0f, 50.0f);
     }
 }
 
