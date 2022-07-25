@@ -12702,10 +12702,15 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
             // Restore appropriate item fanfares in rando when we're obtaining items outside of their normal contexts
             if (gSaveContext.n64ddFlag) {
-                // If we get a skulltula token, play "get small item" (for tokensanity)
-                if (this->getItemId == GI_SKULL_TOKEN) {
+                // If we get a skulltula token (in tokensanity) or the "WINNER" heart, play "get small item"
+                if (this->getItemId == GI_SKULL_TOKEN || this->getItemId == GI_HEART_PIECE_WIN) {
                     temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
-                 }
+                }
+                // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
+                if (this->getItemId == GI_HEART_PIECE_WIN &&
+                    ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
+                     temp1 = NA_BGM_HEART_GET | 0x900;
+                }
                 // If the setting is toggled on and we get special quest items (longer fanfares):
                 if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
                      // If we get a medallion, play the "get a medallion" fanfare

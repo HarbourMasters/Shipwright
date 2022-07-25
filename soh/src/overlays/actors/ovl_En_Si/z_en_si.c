@@ -180,9 +180,13 @@ void Audio_PlayFanfare_Rando() {
         } else {
             temp1 = (getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
         }
-        // If we get a skulltula token, play "get small item"
-        if (getItemId == GI_SKULL_TOKEN) {
+        // If we get a skulltula token or the "WINNER" heart, play "get small item"
+        if (getItemId == GI_SKULL_TOKEN || getItemId == GI_HEART_PIECE_WIN) {
             temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
+        }
+        // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
+        if (getItemId == GI_HEART_PIECE_WIN && ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
+            temp1 = NA_BGM_HEART_GET | 0x900;
         }
         // If the setting is toggled on and we get special quest items (longer fanfares):
         if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
