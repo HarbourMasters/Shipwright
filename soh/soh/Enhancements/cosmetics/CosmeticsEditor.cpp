@@ -461,6 +461,8 @@ void Draw_Placements(){
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            SohImGui::EnhancementSliderInt("Heart line length : %d", "##HeartLineLength", "gHeartsLineLength", 0, 20, "", 10);
+            SohImGui::Tooltip("This will set the length of a row of hearts. Set to 0 for unlimited length.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -481,6 +483,8 @@ void Draw_Placements(){
             SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
             SohImGui::EnhancementRadioButton("Hidden", "gMagicBarPosType", 4);
             SohImGui::Tooltip("This will make your elements hidden");
+            SohImGui::EnhancementRadioButton("Anchor to life bar", "gMagicBarPosType", 5);
+            SohImGui::Tooltip("This will make your elements follow the bottom of the life meter");
             SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
             SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
             SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
