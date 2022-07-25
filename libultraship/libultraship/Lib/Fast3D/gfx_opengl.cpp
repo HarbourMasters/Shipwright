@@ -34,6 +34,11 @@
 #elif __SWITCH__
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
+#elif NO_GLEW
+ #define GL_GLEXT_PROTOTYPES 1
+ #include <SDL2/SDL_opengles2.h>
+ #include <GL/gl.h>
+ #include <GL/glext.h>
 #else
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
@@ -716,7 +721,7 @@ static void gfx_opengl_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_
 }
 
 static void gfx_opengl_init(void) {
-#ifndef __SWITCH__
+#if !(defined(__SWITCH__) || defined(NO_GLEW))
     glewInit();
 #endif
 
