@@ -243,16 +243,11 @@ static void on_applet_hook(AppletHookType hook, void *param) {
 }
 
 const char* RandomTexts[] = {
-    "Psst, don't forget to blame melon",
-    "I knew it, we have the right amount of O",
-    "Who told Kenix that he is a developer?",
-    "Welcome to *** wooooorld!",
-    "Welcome to ***** wooooorld!",
+    "Psst, don't forget to blame Melon",
     "Potsanity when?",
     "Why are you acting so random?",
-    "Can't forget my ship sails in the morning",
+    "Enough! My ship sails in the morning",
     "Do you want 2 or 7 of those?",
-    "Im not gonna play that, its not accurate damnit!",
     "Lamp oil, rope, bombs you want it, it's yours my friend as long as you have enough rupees",
     "You can build it yourself",
     "Descargar para android",
@@ -264,10 +259,7 @@ const char* RandomTexts[] = {
     "Enhancements? Times Savers? Cheats? You want them? They're yours my friend!",
     "They say you gotta have the BIIIIG salad",
     "They say Louis stopped working on the imports so he can focus on the exports",
-    "They say that The Harbour Masters love a game with the right amount of 'o'",
     "They say ZAPD is good software",
-    "You can't play your port while on the toilet? That's lame",
-    "They say their 60fps mode is broken"
 };
 
 void DetectAppletMode() {
