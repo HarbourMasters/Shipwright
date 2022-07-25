@@ -55,9 +55,12 @@ void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI
     if (gfx_backend == "sdl") {
         if (gfx_api == "opengl") {
             *RenderingApi = &gfx_opengl_api;
-        } else {
+        }
+#ifdef ENABLE_METAL
+        else {
             *RenderingApi = &gfx_metal_api;
         }
+#endif
         *WmApi = &gfx_sdl;
     }
 #ifdef __linux__
