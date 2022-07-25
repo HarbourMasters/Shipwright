@@ -405,3 +405,14 @@ tags
 oot.otr
 *.sav
 shipofharkinian.ini
+shipofharkinian.json
+
+# Xcode
+xcuserdata/
+*.xcconfig
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings

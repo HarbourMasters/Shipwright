@@ -150,7 +150,9 @@ void BgSpot06Objects_Init(Actor* thisx, GlobalContext* globalCtx) {
             Actor_ProcessInitChain(thisx, sInitChainWaterPlane);
             thisx->flags = ACTOR_FLAG_4 | ACTOR_FLAG_5;
 
-            if (LINK_IS_ADULT && !(gSaveContext.eventChkInf[6] & 0x200)) {
+            if (LINK_IS_ADULT &&
+                ((!gSaveContext.n64ddFlag && !(gSaveContext.eventChkInf[6] & 0x200)) ||
+                 (gSaveContext.n64ddFlag && !gSaveContext.dungeonsDone[5])))  {
                 if (gSaveContext.sceneSetupIndex < 4) {
                     this->lakeHyliaWaterLevel = -681.0f;
                     globalCtx->colCtx.colHeader->waterBoxes[LHWB_GERUDO_VALLEY_RIVER_LOWER].ySurface =
@@ -225,7 +227,7 @@ void BgSpot06Objects_GateSpawnBubbles(BgSpot06Objects* this, GlobalContext* glob
 void BgSpot06Objects_GateWaitForSwitch(BgSpot06Objects* this, GlobalContext* globalCtx) {
     s32 i;
 
-    if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+    if ((CVar_GetS32("gWaterTempleGateFix", 0) == 0 || LINK_IS_ADULT) && Flags_GetSwitch(globalCtx, this->switchFlag)) {
         this->timer = 100;
         this->dyna.actor.world.pos.y += 3.0f;
         this->actionFunc = BgSpot06Objects_GateWaitToOpen;

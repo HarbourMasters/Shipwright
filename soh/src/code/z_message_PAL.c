@@ -520,12 +520,12 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
         sIconEnvColors[1][1] = 255;
         sIconEnvColors[1][2] = 130;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 50)/255)*95;
-        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 255)/255)*95;
-        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 130)/255)*95;
-        sIconPrimColors[1][0] = CVar_GetS32("gCCABtnPrimR", 50);
-        sIconPrimColors[1][1] = CVar_GetS32("gCCABtnPrimG", 255);
-        sIconPrimColors[1][2] = CVar_GetS32("gCCABtnPrimB", 130);
+        sIconPrimColors[0][0] = (CVar_GetS32("gCCABtnPrimR", 0)/255)*95;
+        sIconPrimColors[0][1] = (CVar_GetS32("gCCABtnPrimG", 200)/255)*95;
+        sIconPrimColors[0][2] = (CVar_GetS32("gCCABtnPrimB", 80)/255)*95;
+        sIconPrimColors[1][0] = CVar_GetS32("gCCABtnPrimR", 0);
+        sIconPrimColors[1][1] = CVar_GetS32("gCCABtnPrimG", 200);
+        sIconPrimColors[1][2] = CVar_GetS32("gCCABtnPrimB", 80);
         sIconEnvColors[0][0] = 0;
         sIconEnvColors[0][1] = 0;
         sIconEnvColors[0][2] = 0;
@@ -543,6 +543,7 @@ void Message_DrawTextboxIcon(GlobalContext* globalCtx, Gfx** p, s16 x, s16 y) {
     s16 envG;
     s16 envB;
     u8* iconTexture = font->iconBuf;
+    gSPInvalidateTexCache(gfx++, iconTexture);
 
     if (sTextIsCredits) {
         return;
@@ -1672,9 +1673,73 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, __FILE__, __LINE__);
     } else {
         Message_FindMessage(globalCtx, textId);
-        msgCtx->msgLength = font->msgLength;
-        char* src = (uintptr_t)font->msgOffset;
-        memcpy(font->msgBuf, src, font->msgLength);
+        // if we're rando'd and talking to a gossip stone
+        if (gSaveContext.n64ddFlag &&
+            textId == 0x2053 &&
+            Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+                (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
+                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
+                    Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
+                   (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 3 &&
+                   CHECK_QUEST_ITEM(QUEST_STONE_OF_AGONY)))) {
+
+            s16 actorParams = msgCtx->talkActor->params;
+
+            // if we're in a generic grotto
+            if (globalCtx->sceneNum == 62 && actorParams == 14360) {
+                // look for the chest in the actorlist to determine
+                // which grotto we're in
+                int numOfActorLists = sizeof(globalCtx->actorCtx.actorLists)/sizeof(globalCtx->actorCtx.actorLists[0]);
+                for(int i = 0; i < numOfActorLists; i++) {
+                    if(globalCtx->actorCtx.actorLists[i].length) {
+                        if(globalCtx->actorCtx.actorLists[i].head->id == 10) {
+                            // set the params for the hint check to be negative chest params
+                            actorParams = 0 - globalCtx->actorCtx.actorLists[i].head->params;
+                        }
+                    }
+                }
+            }
+
+            RandomizerCheck hintCheck = Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
+
+            // Pass the sizeof the message buffer so we don't hardcode any sizes and can rely on globals.
+            // If no hint can be found, this just returns 0 size and doesn't modify the buffer, so no worries.
+            msgCtx->msgLength = font->msgLength = Randomizer_CopyHintFromCheck(hintCheck, font->msgBuf, sizeof(font->msgBuf));
+        } else if (gSaveContext.n64ddFlag && (textId == 0x7040 || textId == 0x7088)) {
+            // rando hints at altar
+            msgCtx->msgLength = font->msgLength = Randomizer_CopyAltarMessage(font->msgBuf, sizeof(font->msgBuf));
+        } else if (textId == 0x00b4 && CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
+            switch (gSaveContext.language) {
+                case LANGUAGE_FRA:
+                    strcpy(font->msgBuf, "\x08\x13\x71Vous obtenez un \x05\x41Symbole de\x01Skulltula d'or\x05\x40! "
+                                         "Vous avez\x01\collect\x96 "
+                                         "\x05\x41\x19\x05\x40 symboles en tout!\x02");
+                    break;
+                case LANGUAGE_GER:
+                    strcpy(font->msgBuf, "\x08\x13\x71\Du erh\x93lst ein \x05\x41Goldene\x01Skulltula-Symbol\x05\x40\! "
+                                         "Du hast\x01insgesamt "
+                                         "\x05\x41\x19\x05\x40 symbol gesammelt!\x02");
+                        break;
+                    case LANGUAGE_ENG: default:
+                        strcpy(font->msgBuf,
+                               "\x08\x13\x71You got a \x05\x41Gold Skulltula Token\x05\x40!\x01You've collected "
+                               "\x05\x41\x19\x05\x40 tokens\x01in total!\x02");
+                        break;
+            }
+            msgCtx->msgLength = font->msgLength = strlen(font->msgBuf);
+        } else if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
+            msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
+        } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {
+            if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
+                msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonText(font->msgBuf, sizeof(font->msgBuf));
+            } else {
+                msgCtx->msgLength = font->msgLength = Randomizer_CopyGanonHintText(font->msgBuf, sizeof(font->msgBuf));
+            }
+        } else {
+            msgCtx->msgLength = font->msgLength;
+            char* src = (uintptr_t)font->msgOffset;
+            memcpy(font->msgBuf, src, font->msgLength);
+        }
     }
 
     msgCtx->textBoxProperties = font->charTexBuf[0];
@@ -1725,8 +1790,15 @@ void Message_StartTextbox(GlobalContext* globalCtx, u16 textId, Actor* actor) {
     osSyncPrintf(VT_RST);
 
     msgCtx->ocarinaAction = 0xFFFF;
-    Message_OpenText(globalCtx, textId);
-    msgCtx->talkActor = actor;
+    // we need the talkActor for gossip stones in rando
+    // so we need to switch the order of these lines
+    if (gSaveContext.n64ddFlag && textId == 0x2053) {
+        msgCtx->talkActor = actor;
+        Message_OpenText(globalCtx, textId);        
+    } else {
+        Message_OpenText(globalCtx, textId);
+        msgCtx->talkActor = actor;
+    }
     msgCtx->msgMode = MSGMODE_TEXT_START;
     msgCtx->stateTimer = 0;
     msgCtx->textDelayTimer = 0;
@@ -2166,14 +2238,14 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                         }
                     } else {
                         osSyncPrintf("Na_StartOcarinaSinglePlayCheck2( message->ocarina_no );\n");
-                        func_800ECC04((1 << msgCtx->ocarinaAction) + 0x8000);
+                        func_800ECC04((1 << (msgCtx->ocarinaAction % 32)) + 0x8000);
                     }
                     msgCtx->msgMode = MSGMODE_OCARINA_PLAYING;
                 } else if (msgCtx->msgMode == MSGMODE_SONG_DEMONSTRATION_STARTING) {
                     msgCtx->stateTimer = 20;
                     msgCtx->msgMode = MSGMODE_SONG_DEMONSTRATION_SELECT_INSTRUMENT;
                 } else {
-                    func_800ECC04((1 << (msgCtx->ocarinaAction + 0x11)) + 0x8000);
+                    func_800ECC04((1 << ((msgCtx->ocarinaAction + 0x11) % 32)) + 0x8000);
                     // "Performance Check"
                     osSyncPrintf("演奏チェック=%d\n", msgCtx->ocarinaAction - OCARINA_ACTION_PLAYBACK_MINUET);
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK;
@@ -2579,10 +2651,18 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 }
                 break;
             case MSGMODE_SETUP_DISPLAY_SONG_PLAYED:
-                Message_DrawText(globalCtx, &gfx);
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetInstrument(1);
-                Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 ||
+                    globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME ||
+                    globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
+                    globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
+                    Message_DrawText(globalCtx, &gfx);
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetSongPlayback(msgCtx->lastPlayedSong + 1, 1);
+                } else {
+                    Audio_OcaSetInstrument(1);
+                    Audio_OcaSetInstrument(1);
+                }
                 if (msgCtx->lastPlayedSong != OCARINA_SONG_SCARECROW) {
                     Audio_PlayFanfare(sOcarinaSongFanfares[msgCtx->lastPlayedSong]);
                     Audio_SetSoundBanksMute(0x20);
@@ -2625,7 +2705,15 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 Message_ContinueTextbox(globalCtx, msgCtx->lastPlayedSong + 0x893); // You played [song name]
                 Message_Decode(globalCtx);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
-                msgCtx->stateTimer = 20;
+                
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME 
+                    || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
+                    globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
+                    msgCtx->stateTimer = 20;
+                } else {
+                    msgCtx->stateTimer = 1;
+                }
+                
                 Message_DrawText(globalCtx, &gfx);
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED_TEXT:
@@ -2732,7 +2820,11 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                                  msgCtx->ocarinaStaff->state);
                     msgCtx->lastPlayedSong = msgCtx->ocarinaStaff->state;
                     msgCtx->msgMode = MSGMODE_SONG_PLAYBACK_SUCCESS;
-                    Item_Give(globalCtx, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
+
+                    if (!gSaveContext.n64ddFlag) {
+                        Item_Give(globalCtx, ITEM_SONG_MINUET + gOcarinaSongItemMap[msgCtx->ocarinaStaff->state]);
+                    }
+
                     osSyncPrintf(VT_FGCOL(YELLOW));
                     // "z_message.c Song Acquired"
                     osSyncPrintf("z_message.c 取得メロディ＝%d\n", ITEM_SONG_MINUET + msgCtx->ocarinaStaff->state);
@@ -3137,6 +3229,8 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
  * the last value being saved in a static variable.
  */
 void Message_DrawDebugVariableChanged(s16* var, GraphicsContext* gfxCtx) {
+    if (!CVar_GetS32("gDebugEnabled", 0)) { return; }
+
     static s16 sVarLastValue = 0;
     static s16 sFillTimer = 0;
     s32 pad;
@@ -3213,13 +3307,13 @@ void Message_Update(GlobalContext* globalCtx) {
     static s16 sTextboxXPositions[] = {
         34, 34, 34, 34, 34, 34,
     };
-    static s16 sTextboxMidYPositions[] = {
+    static s16 sTextboxLowerYPositions[] = {
         142, 142, 142, 142, 174, 142,
     };
     static s16 sTextboxUpperYPositions[] = {
         38, 38, 38, 38, 174, 38,
     };
-    static s16 sTextboxLowerYPositions[] = {
+    static s16 sTextboxMidYPositions[] = {
         90, 90, 90, 90, 174, 90,
     };
     static s16 sTextboxEndIconYOffset[] = {
@@ -3313,20 +3407,20 @@ void Message_Update(GlobalContext* globalCtx) {
                 if (!msgCtx->textBoxPos) { // variable position
                     if (YREG(15) != 0 || globalCtx->sceneNum == SCENE_HAIRAL_NIWA) {
                         if (averageY < XREG(92)) {
-                            R_TEXTBOX_Y_TARGET = sTextboxMidYPositions[var];
+                            R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {
                             R_TEXTBOX_Y_TARGET = sTextboxUpperYPositions[var];
                         }
                     } else if (globalCtx->sceneNum == SCENE_MARKET_DAY || globalCtx->sceneNum == SCENE_MARKET_NIGHT ||
                                globalCtx->sceneNum == SCENE_MARKET_RUINS) {
                         if (averageY < XREG(93)) {
-                            R_TEXTBOX_Y_TARGET = sTextboxMidYPositions[var];
+                            R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {
                             R_TEXTBOX_Y_TARGET = sTextboxUpperYPositions[var];
                         }
                     } else {
                         if (averageY < XREG(94)) {
-                            R_TEXTBOX_Y_TARGET = sTextboxMidYPositions[var];
+                            R_TEXTBOX_Y_TARGET = sTextboxLowerYPositions[var];
                         } else {
                             R_TEXTBOX_Y_TARGET = sTextboxUpperYPositions[var];
                         }

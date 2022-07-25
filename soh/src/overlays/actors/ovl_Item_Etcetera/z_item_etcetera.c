@@ -82,7 +82,8 @@ void ItemEtcetera_Init(Actor* thisx, GlobalContext* globalCtx) {
         case ITEM_ETC_LETTER:
             Actor_SetScale(&this->actor, 0.5f);
             this->futureActionFunc = func_80B858B4;
-            if (gSaveContext.eventChkInf[3] & 2) {
+            if ((gSaveContext.eventChkInf[3] & 2 && !gSaveContext.n64ddFlag) ||
+                (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1E))) {
                 Actor_Kill(&this->actor);
             }
             break;
@@ -119,13 +120,24 @@ void func_80B857D0(ItemEtcetera* this, GlobalContext* globalCtx) {
 
 void func_80B85824(ItemEtcetera* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
+        if ((this->actor.params & 0xFF) == 7) {
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1F);
+            }
+        }
+
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
         }
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        }
     }
 }
 
@@ -134,10 +146,22 @@ void func_80B858B4(ItemEtcetera* this, GlobalContext* globalCtx) {
         if ((this->actor.params & 0xFF) == 1) {
             gSaveContext.eventChkInf[3] |= 2;
             Flags_SetSwitch(globalCtx, 0xB);
+
+            if (gSaveContext.n64ddFlag) {
+                Flags_SetTreasure(globalCtx, 0x1E);
+            }
         }
         Actor_Kill(&this->actor);
     } else {
-        func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        if (0) {} // Necessary to match
+
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+            func_8002F434(&this->actor, globalCtx, getItemId, 30.0f, 50.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, this->getItemId, 30.0f, 50.0f);
+        }
+
         if ((globalCtx->gameplayFrames & 0xD) == 0) {
             EffectSsBubble_Spawn(globalCtx, &this->actor.world.pos, 0.0f, 0.0f, 10.0f, 0.13f);
         }
@@ -203,12 +227,42 @@ void ItemEtcetera_DrawThroughLens(Actor* thisx, GlobalContext* globalCtx) {
     if (globalCtx->actorCtx.unk_03 != 0) {
         func_8002EBCC(&this->actor, globalCtx, 0);
         func_8002ED80(&this->actor, globalCtx, 0);
+
+        if(gSaveContext.n64ddFlag && globalCtx->sceneNum == 16) {
+            s32 randoGetItemId = GetChestGameRandoGetItemId(this->actor.room, this->giDrawId, globalCtx);
+            if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+                EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+            }
+            if (randoGetItemId != GI_NONE) {
+                GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
+                return;
+            }
+        }
+        
         GetItem_Draw(globalCtx, this->giDrawId);
     }
 }
 
 void ItemEtcetera_Draw(Actor* thisx, GlobalContext* globalCtx) {
     ItemEtcetera* this = (ItemEtcetera*)thisx;
+    s32 type = this->actor.params & 0xFF;
+
+    if (gSaveContext.n64ddFlag) {
+        s32 randoGetItemId = GI_NONE;
+        if (type == ITEM_ETC_ARROW_FIRE) {
+            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_SUN, GI_ARROW_FIRE);
+        } else if (type == ITEM_ETC_LETTER) {
+            randoGetItemId = Randomizer_GetItemIdFromKnownCheck(RC_LH_UNDERWATER_ITEM, GI_LETTER_RUTO);
+        }
+
+        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+            EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
+        }
+
+        if (randoGetItemId != GI_NONE) {
+            this->giDrawId = Randomizer_GetItemModelFromId(randoGetItemId);
+        }
+    }
 
     func_8002EBCC(&this->actor, globalCtx, 0);
     func_8002ED80(&this->actor, globalCtx, 0);

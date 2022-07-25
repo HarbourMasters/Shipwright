@@ -126,7 +126,12 @@ void func_809B0558(EnAni* this, GlobalContext* globalCtx) {
         }
         gSaveContext.itemGetInf[1] |= 0x20;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+        if (gSaveContext.n64ddFlag) {
+            s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+            func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
+        } else {
+            func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+        }
     }
 }
 
@@ -134,7 +139,13 @@ void func_809B05F0(EnAni* this, GlobalContext* globalCtx) {
     if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
         EnAni_SetupAction(this, func_809B0558);
     }
-    func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+
+    if (gSaveContext.n64ddFlag) {
+        s32 getItemId = Randomizer_GetItemIdFromKnownCheck(RC_KAK_MAN_ON_ROOF, GI_HEART_PIECE);
+        func_8002F434(&this->actor, globalCtx, getItemId, 10000.0f, 200.0f);
+    } else {
+        func_8002F434(&this->actor, globalCtx, GI_HEART_PIECE, 10000.0f, 200.0f);
+    }
 }
 
 void func_809B064C(EnAni* this, GlobalContext* globalCtx) {

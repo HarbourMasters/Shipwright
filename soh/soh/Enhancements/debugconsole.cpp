@@ -16,6 +16,7 @@
 #include <Utils/StringHelper.h>
 #include <Utils/File.h>
 
+#include "Window.h"
 #include "Lib/ImGui/imgui_internal.h"
 #undef PATH_HACK
 #undef Path
@@ -315,7 +316,7 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
 
-    switch (rtn) { 
+    switch (rtn) {
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Saved state to slot %u", slot);
             return CMD_SUCCESS;
@@ -329,7 +330,7 @@ static bool SaveStateHandler(const std::vector<std::string>& args) {
 static bool LoadStateHandler(const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::LOAD });
-    
+
     switch (rtn) {
         case SaveStateReturn::SUCCESS:
             INFO("[SOH] Loaded state from slot %u", slot);
@@ -342,7 +343,7 @@ static bool LoadStateHandler(const std::vector<std::string>& args) {
             return CMD_FAILED;
         case SaveStateReturn::FAIL_WRONG_GAMESTATE:
             ERROR("[SOH] Can not load a state outside of \"GamePlay\"");
-            return CMD_FAILED;            
+            return CMD_FAILED;
     }
 
 }
@@ -360,7 +361,7 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
         ERROR("[SOH] SaveState slot value must be a number.");
         return CMD_FAILED;
     }
-    
+
     if (slot < 0) {
         ERROR("[SOH] Invalid slot passed.  Slot must be between 0 and 2");
         return CMD_FAILED;
@@ -498,10 +499,10 @@ template <typename Numeric> bool is_number(const std::string& s) {
     return ((std::istringstream(s) >> n >> std::ws).eof());
 }
 
-void DebugConsole_LoadCVars()
-{
-    if (File::Exists("cvars.cfg")) {
-        const auto lines = File::ReadAllLines("cvars.cfg");
+void DebugConsole_LoadLegacyCVars() {
+    auto cvarsConfig = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("cvars.cfg");
+    if (File::Exists(cvarsConfig)) {
+        const auto lines = File::ReadAllLines(cvarsConfig);
 
         for (const std::string& line : lines) {
             std::vector<std::string> cfg = StringHelper::Split(line, " = ");
@@ -509,7 +510,7 @@ void DebugConsole_LoadCVars()
             if (cfg.size() < 2) continue;
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
-                value.erase(std::ranges::remove(value, '\"').begin(), value.end());
+                value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
                 CVar_SetString(cfg[0].c_str(), ImStrdup(value.c_str()));
             }
             if (is_number<float>(cfg[1])) {
@@ -519,21 +520,58 @@ void DebugConsole_LoadCVars()
                 CVar_SetS32(cfg[0].c_str(), std::stoi(cfg[1]));
             }
         }
+
+        fs::remove(cvarsConfig);
     }
+}
+
+void DebugConsole_LoadCVars() {
+
+    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
+    pConf->reload();
+
+    for (const auto& item : pConf->rjson["CVars"].items()) {
+        auto value = item.value();
+        switch (value.type()) {
+            case nlohmann::detail::value_t::array:
+                break;
+            case nlohmann::detail::value_t::string:
+                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
+                break;
+            case nlohmann::detail::value_t::boolean:
+                CVar_SetS32(item.key().c_str(), value.get<bool>());
+                break;
+            case nlohmann::detail::value_t::number_unsigned:
+            case nlohmann::detail::value_t::number_integer:
+                CVar_SetS32(item.key().c_str(), value.get<int>());
+                break;
+            case nlohmann::detail::value_t::number_float:
+                CVar_SetFloat(item.key().c_str(), value.get<float>());
+                break;
+            default: ;
+        }
+        if (item.key() == "gOpenMenuBar") {
+            int bp = 0;
+        }
+    }
+
+    DebugConsole_LoadLegacyCVars();
 }
 
 void DebugConsole_SaveCVars()
 {
-    std::string output;
+    std::shared_ptr<Mercury> pConf = Ship::GlobalCtx2::GetInstance()->GetConfig();
 
     for (const auto &cvar : cvars) {
-        if (cvar.second->type == CVAR_TYPE_STRING)
-            output += StringHelper::Sprintf("%s = \"%s\"\n", cvar.first.c_str(), cvar.second->value.valueStr);
+        const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
+
+        if (cvar.second->type == CVAR_TYPE_STRING && cvar.second->value.valueStr != nullptr)
+            pConf->setString(key, std::string(cvar.second->value.valueStr));
         else if (cvar.second->type == CVAR_TYPE_S32)
-            output += StringHelper::Sprintf("%s = %i\n", cvar.first.c_str(), cvar.second->value.valueS32);
+            pConf->setInt(key, cvar.second->value.valueS32);
         else if (cvar.second->type == CVAR_TYPE_FLOAT)
-            output += StringHelper::Sprintf("%s = %f\n", cvar.first.c_str(), cvar.second->value.valueFloat);
+            pConf->setFloat(key, cvar.second->value.valueFloat);
     }
 
-    File::WriteAllText("cvars.cfg", output);
+    pConf->save();
 }

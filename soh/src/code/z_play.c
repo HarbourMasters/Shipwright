@@ -193,6 +193,70 @@ void Gameplay_Destroy(GameState* thisx) {
     gGlobalCtx = NULL;
 }
 
+void GivePlayerRandoRewardSongOfTime(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (gSaveContext.entranceIndex == 0x050F && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
+        !Flags_GetTreasure(globalCtx, 0x1F) && gSaveContext.nextTransition == 0xFF) {
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetTreasure(globalCtx, 0x1F);
+    }
+}
+
+void GivePlayerRandoRewardNocturne(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if ((gSaveContext.entranceIndex == 0x00DB ||
+         gSaveContext.entranceIndex == 0x0191 ||
+         gSaveContext.entranceIndex == 0x0195) && LINK_IS_ADULT && CHECK_QUEST_ITEM(QUEST_MEDALLION_FOREST) &&
+        CHECK_QUEST_ITEM(QUEST_MEDALLION_FIRE) && CHECK_QUEST_ITEM(QUEST_MEDALLION_WATER) && player != NULL &&
+        !Player_InBlockingCsMode(globalCtx, player) && !Flags_GetEventChkInf(0xAA)) {
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_NOCTURNE_OF_SHADOW);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetEventChkInf(0xAA);
+    }
+}
+
+void GivePlayerRandoRewardRequiem(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if ((gSaveContext.gameMode == 0) && (gSaveContext.respawnFlag <= 0) && (gSaveContext.cutsceneIndex < 0xFFF0)) {
+        if ((gSaveContext.entranceIndex == 0x01E1) && !Flags_GetEventChkInf(0xAC) && player != NULL &&
+            !Player_InBlockingCsMode(globalCtx, player)) {
+            GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_SONG_OF_TIME);
+            GiveItemWithoutActor(globalCtx, getItemId);
+            Flags_SetEventChkInf(0xAC);
+        }
+    }
+}
+
+void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+
+    if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
+        (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
+        !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
+        globalCtx->sceneLoadFlag == 0 && player->getItemId == GI_NONE) {
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
+        GiveItemWithoutActor(globalCtx, getItemId);
+        Flags_SetTreasure(globalCtx, 0x1E);
+    }
+}
+
+void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck check) {
+    Player* player = GET_PLAYER(globalCtx);
+    if (gSaveContext.entranceIndex == 0x05E0) {
+        GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ZELDAS_LULLABY);
+
+        if ((!Flags_GetEventChkInf(0xC1) || (player->getItemId == getItemId && getItemId != GI_ICE_TRAP)) &&
+            player != NULL && !Player_InBlockingCsMode(globalCtx, player)) {
+            GiveItemWithoutActor(globalCtx, getItemId);
+            Flags_SetEventChkInf(0xC1);
+        }
+    }
+}
+
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
@@ -206,6 +270,14 @@ void Gameplay_Init(GameState* thisx) {
     s32 i;
     u8 tempSetupIndex;
     s32 pad[2];
+
+    if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_SKIP_CHILD_STEALTH)) {
+        if (gSaveContext.entranceIndex == 0x7A) {
+            gSaveContext.entranceIndex = 0x400;
+        } else if (gSaveContext.entranceIndex == 0x296) {
+            gSaveContext.entranceIndex = 0x23D;
+        }
+    }
 
     if (gSaveContext.entranceIndex == -1) {
         gSaveContext.entranceIndex = 0;
@@ -383,6 +455,19 @@ void Gameplay_Init(GameState* thisx) {
     Camera_InitPlayerSettings(&globalCtx->mainCamera, player);
     Camera_ChangeMode(&globalCtx->mainCamera, CAM_MODE_NORMAL);
 
+    // OTRTODO: Bounds check cameraDataList to guard against scenes spawning the player with
+    // an out of bounds background camera index. This requires adding an extra field to the
+    // CollisionHeader struct to save the length of cameraDataList.
+    // Fixes Dodongo's Cavern blue warp crash.
+    {
+        CollisionHeader* colHeader = BgCheck_GetCollisionHeader(&globalCtx->colCtx, BGCHECK_SCENE);
+
+        // If the player's start cam is out of bounds, set it to 0xFF so it isn't used.
+        if (colHeader != NULL && ((player->actor.params & 0xFF) >= colHeader->cameraDataListLen)) {
+            player->actor.params |= 0xFF;
+        }
+    }
+
     playerStartCamId = player->actor.params & 0xFF;
     if (playerStartCamId != 0xFF) {
         osSyncPrintf("player has start camera ID (" VT_FGCOL(BLUE) "%d" VT_RST ")\n", playerStartCamId);
@@ -422,7 +507,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
 
     input = globalCtx->state.input;
 
-        if ((SREG(1) < 0) || (DREG(0) != 0)) {
+    if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
     }
@@ -443,6 +528,10 @@ void Gameplay_Update(GlobalContext* globalCtx) {
     if ((HREG(81) == 18) && (HREG(82) < 0)) {
         HREG(82) = 0;
         ActorOverlayTable_LogPrint();
+    }
+
+    if (CVar_GetS32("gFreeCamera", 0) && Player_InCsMode(globalCtx)) {
+        globalCtx->manualCamera = false;
     }
 
     gSegments[4] = VIRTUAL_TO_PHYSICAL(globalCtx->objectCtx.status[globalCtx->objectCtx.mainKeepIndex].segment);
@@ -1042,6 +1131,14 @@ skip:
 
     Environment_Update(globalCtx, &globalCtx->envCtx, &globalCtx->lightCtx, &globalCtx->pauseCtx, &globalCtx->msgCtx,
                        &globalCtx->gameOverCtx, globalCtx->state.gfxCtx);
+
+    if (gSaveContext.n64ddFlag) {
+        GivePlayerRandoRewardSariaGift(globalCtx, RC_LW_GIFT_FROM_SARIA);
+        GivePlayerRandoRewardSongOfTime(globalCtx, RC_SONG_FROM_OCARINA_OF_TIME);
+        GivePlayerRandoRewardZeldaLightArrowsGift(globalCtx, RC_TOT_LIGHT_ARROWS_CUTSCENE);
+        GivePlayerRandoRewardNocturne(globalCtx, RC_SHEIK_IN_KAKARIKO);
+        GivePlayerRandoRewardRequiem(globalCtx, RC_SHEIK_AT_COLOSSUS);
+    }
 }
 
 void Gameplay_DrawOverlayElements(GlobalContext* globalCtx) {

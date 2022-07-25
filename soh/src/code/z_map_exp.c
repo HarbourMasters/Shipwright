@@ -716,6 +716,11 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
+    // If any of these CVars are enabled, disable toggling the minimap with L, unless gEnableMapToggle is set
+    bool enableMapToggle =
+        !(CVar_GetS32("gDebugEnabled", 0) || CVar_GetS32("gMoonJumpOnL", 0) || CVar_GetS32("gTurboOnL", 0)) ||
+        CVar_GetS32("gEnableMapToggle", 0);
+
     if (globalCtx->pauseCtx.state < 4) {
         //Minimap margins
         s16 X_Margins_Minimap;
@@ -784,7 +789,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     }
                 }
 
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx)) {
+                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx) && enableMapToggle) {
                     osSyncPrintf("Game_play_demo_mode_check=%d\n", Gameplay_InCsMode(globalCtx));
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
@@ -951,7 +956,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                     Minimap_DrawCompassIcons(globalCtx); // Draw icons for the player spawn and current position
                 }
 
-                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx)) {
+                if (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_L) && !Gameplay_InCsMode(globalCtx) && enableMapToggle) {
                     // clang-format off
                     if (!R_MINIMAP_DISABLED) { Audio_PlaySoundGeneral(NA_SE_SY_CAMERA_ZOOM_UP, &D_801333D4, 4,
                                                                       &D_801333E0, &D_801333E0, &D_801333E8); }

@@ -12,7 +12,7 @@
  8. Build the solution.
  9. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
  10. Run `soh/soh.sln`
- 11. Switch the solution to `Release x86`.
+ 11. Switch the solution to `Release x86` or `Release x64`.
  12. Build the solution.
  13. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  14. Launch `soh.exe`.
@@ -22,7 +22,7 @@
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
-cd ShipWright
+cd Shipwright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
 # Build the docker image
@@ -48,7 +48,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 
 ## macOS
 
-1. Requires `gcc@12, sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
+1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
@@ -59,13 +59,14 @@ cp <path to your ROM> OTRExporter
 cd soh
 # Extract the assets/Compile the exporter/Run the exporter
 # -jX defines number of cores to use for compilation - lower or remove entirely if having issues
-make setup -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+make setup -j8 DEBUG=0
 # Compile the code (watch the -j parameter as above)
-make -j8 DEBUG=0 CC=gcc-12 CXX=g++-12
+make -j8 DEBUG=0
 # Create macOS app bundle
-make filledappbundle
+make appbundle
 ```
-9. Launch soh app in the soh folder!
+9. Copy your OTR file to ~/Library/Application\ Support/com.shipofharkinian.soh
+10. Launch soh app in the soh folder!
 
 # Compatible Roms
 ```

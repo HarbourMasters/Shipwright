@@ -1,3 +1,4 @@
+#include <string.h>
 #include "global.h"
 #include "vt.h"
 
@@ -8,6 +9,9 @@ VisMono sMonoColors;
 ViMode sViMode;
 FaultClient sGameFaultClient;
 u16 sLastButtonPressed;
+
+// Forward declared, because this in a C++ header.
+int gfx_create_framebuffer(uint32_t width, uint32_t height);
 
 void GameState_FaultPrint(void) {
     static char sBtnChars[] = "ABZSuldr*+LRudlr";
@@ -405,7 +409,9 @@ void GameState_Update(GameState* gameState) {
     // Unrestricted Items
     if (CVar_GetS32("gNoRestrictItems", 0) != 0) {
         if (gGlobalCtx) {
+            u8 sunsBackup = gGlobalCtx->interfaceCtx.restrictions.sunsSong;
             memset(&gGlobalCtx->interfaceCtx.restrictions, 0, sizeof(gGlobalCtx->interfaceCtx.restrictions));
+            gGlobalCtx->interfaceCtx.restrictions.sunsSong = sunsBackup;
         }
     }
 

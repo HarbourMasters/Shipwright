@@ -125,6 +125,11 @@ pipeline {
                     agent {
                         label "SoH-Mac-Builders"
                     }
+                    environment {
+                        CC = 'clang -arch arm64 -arch x86_64'
+                        CXX = 'clang++ -arch arm64 -arch x86_64'
+                        MACOSX_DEPLOYMENT_TARGET = 10.15
+                    }
                     steps {
                         checkout([
                             $class: 'GitSCM',
@@ -137,8 +142,8 @@ pipeline {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             cd soh
-                            make setup -j4 DEBUG=0 OPTFLAGS=-O2 CC=gcc-12 CXX=g++-12
-                            make -j4 DEBUG=0 OPTFLAGS=-O2 CC=gcc-12 CXX=g++-12
+                            make setup -j4 OPTFLAGS=-O2 DEBUG=0 LD="ld"
+                            make -j4 DEBUG=0 OPTFLAGS=-O2 LD="ld"
                             make -j4 appbundle
                             mv ../README.md readme.txt
                             7z a soh-mac.7z soh.app readme.txt
