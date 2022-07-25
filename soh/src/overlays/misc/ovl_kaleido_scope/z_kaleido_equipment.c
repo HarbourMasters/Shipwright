@@ -142,7 +142,7 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
         link_kaleido_rot.y = 32300;
     }
 
-    if(AllowStickRotation && input->cur.cam_y>0){ // Zoom in
+    if (AllowStickRotation && input->cur.cam_y>0) { // Zoom in
         scale = scale + input->cur.cam_y*.00005;
         pos.y = pos.y - input->cur.cam_y*.25;
     }

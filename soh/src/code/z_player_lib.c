@@ -763,7 +763,7 @@ void func_8008F470(GlobalContext* globalCtx, void** skeleton, Vec3s* jointTable,
         color->r = CVar_GetS32("gTunic_Zora_R", sTunicColors[PLAYER_TUNIC_ZORA].r);
         color->g = CVar_GetS32("gTunic_Zora_G", sTunicColors[PLAYER_TUNIC_ZORA].g);
         color->b = CVar_GetS32("gTunic_Zora_B", sTunicColors[PLAYER_TUNIC_ZORA].b);
-    } else if (!CVar_GetS32("gUseTunicsCol",0)){
+    } else if (!CVar_GetS32("gUseTunicsCol",0)) {
         if (tunic >= 3) {
             color->r = sOriginalTunicColors[0].r;
             color->g = sOriginalTunicColors[0].g;
@@ -1748,7 +1748,7 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
                 anim = PauseMenuAnimSet[SelectedAnim][EquipedStance];
             }
             FrameCountSinceLastAnim++;
-        }else if(SelectedMode == 17){
+        } else if (SelectedMode == 17) {
             // Apply Random function
             s16 SwitchAtFrame = 0;
             s16 CurAnimDuration = 0;
@@ -1776,50 +1776,50 @@ void func_8009214C(GlobalContext* globalCtx, u8* segment, SkelAnime* skelAnime, 
                 }
                 if (FrameCountSinceLastAnim >= SwitchAtFrame) {
                     LastAnim = SelectedAnim;
-                    if(LastAnim==1){
-                        if((CUR_EQUIP_VALUE(EQUIP_SWORD)!=PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!= PLAYER_SHIELD_NONE)){ // if the player has a sword and shield equipped
-                            if((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)){ // if he's an adult or a kid with the deku shield
+                    if (LastAnim==1) {
+                        if ((CUR_EQUIP_VALUE(EQUIP_SWORD)!=PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!= PLAYER_SHIELD_NONE)) { // if the player has a sword and shield equipped
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) { // if he's an adult or a kid with the deku shield
                                 SelectedAnim = (rand() % (6 - 2 + 1)) + 2; // select any 5 animations that aren't the default standing anim
-                            }else{ //else if he's a child with a shield that isn't the deku shield
+                            } else { //else if he's a child with a shield that isn't the deku shield
                                 s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                                if(randval==4){ //if its the shield anim
+                                if (randval==4) { //if its the shield anim
                                     SelectedAnim==6; // set to yawn anim
-                                }else{
+                                } else {
                                     SelectedAnim=randval;
                                 }
                             }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) != PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)){ // if the player has a sword equipped but no shield
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) != PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has a sword equipped but no shield
                             s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                            if(randval==4){ //if its the shield anim
+                            if (randval==4) { //if its the shield anim
                                 SelectedAnim==6; // set to yawn anim
-                            }else{
+                            } else {
                                 SelectedAnim=randval;
                             }
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!=PLAYER_SHIELD_NONE)){ //if the player has a shield equipped but no sword
-                            if((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)){// if he's an adult or a kid with the deku shield
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)!=PLAYER_SHIELD_NONE)) { //if the player has a shield equipped but no sword
+                            if ((LINK_AGE_IN_YEARS == YEARS_ADULT) || (CUR_EQUIP_VALUE(EQUIP_SHIELD) == PLAYER_SHIELD_DEKU)) {// if he's an adult or a kid with the deku shield
                             s16 randval = (rand() % (5 - 2 + 1)) + 2; // 4 animations
-                            if(randval==5){ //if its the sword anim
+                            if (randval==5) { //if its the sword anim
                                 SelectedAnim==6; // set to yawn anim
-                            }else{
+                            } else {
                                 SelectedAnim=randval;
                             }
-                            }else{
+                            } else {
                                 s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
-                                if(randval==4){ //if its the shield anim
+                                if (randval==4) { //if its the shield anim
                                     SelectedAnim==6; // set to yawn anim
-                                }else{
+                                } else {
                                     SelectedAnim=randval;
                                 }
                             } 
-                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)){ // if the player has no sword or shield equipped
+                        } else if ((CUR_EQUIP_VALUE(EQUIP_SWORD) == PLAYER_SWORD_NONE) && (CUR_EQUIP_VALUE(EQUIP_SHIELD)==PLAYER_SHIELD_NONE)) { // if the player has no sword or shield equipped
                             s16 randval = (rand() % (4 - 2 + 1)) + 2; // 3 animations
-                            if(randval==4){ //if its the shield anim
+                            if (randval==4) { //if its the shield anim
                                 SelectedAnim==6; // set to yawn anim
-                            }else{
+                            } else {
                                 SelectedAnim=randval;
                             }
                         }
-                    } else{
+                    } else {
                         SelectedAnim = 1;
                     }
                     if (SelectedAnim == 0) {
