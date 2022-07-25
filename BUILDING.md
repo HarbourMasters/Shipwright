@@ -48,7 +48,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 
 ## macOS
 
-1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
+1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, pkgconfig, dylibbundler` (can be installed via homebrew, macports, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git
