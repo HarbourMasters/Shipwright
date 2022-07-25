@@ -167,6 +167,8 @@ namespace SohImGui {
                     ImGui_ImplOpenGL3_Init("#version 120");
                 #endif
                     break;
+                default:
+                    break;
             }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -220,6 +222,8 @@ namespace SohImGui {
                 case SDLGfxApi::OpenGL:
                     ImGui_ImplOpenGL3_NewFrame();
                     break;
+                default:
+                    break;
             }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -242,6 +246,8 @@ namespace SohImGui {
 #endif
                 case SDLGfxApi::OpenGL:
                     ImGui_ImplOpenGL3_RenderDrawData(data);
+                    break;
+                default:
                     break;
             }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
