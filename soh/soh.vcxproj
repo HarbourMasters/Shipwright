@@ -238,6 +238,7 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp" />
     <ClCompile Include="soh\frame_interpolation.cpp" />
     <ClCompile Include="soh\Enhancements\bootcommands.c" />
+    <ClCompile Include="soh\Enhancements\applypresets.cpp" />
     <ClCompile Include="soh\Enhancements\debugconsole.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\colViewer.cpp" />
     <ClCompile Include="soh\Enhancements\debugger\debugger.cpp" />
@@ -1032,6 +1033,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="soh\Enhancements\bootcommands.h" />
     <ClInclude Include="soh\Enhancements\cvar.h" />
+    <ClInclude Include="soh\Enhancements\applypresets.h" />
     <ClInclude Include="soh\Enhancements\debugconsole.h" />
     <ClInclude Include="soh\Enhancements\debugger\colViewer.h" />
     <ClInclude Include="soh\Enhancements\savestates.h" />

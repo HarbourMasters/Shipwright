@@ -2373,6 +2373,9 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="soh\Enhancements\applypresets.cpp">
+      <Filter>Source Files\soh\Enhancements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -4060,6 +4063,9 @@
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h">
       <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="soh\Enhancements\applypresets.h">
+      <Filter>Source Files\soh\Enhancements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
