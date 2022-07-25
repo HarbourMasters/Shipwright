@@ -544,17 +544,10 @@ u8 gDefaultShortNoteGateTimeTable[] = {
 };
 
 AdsrEnvelope gDefaultEnvelope[] = {
-#ifdef IS_BIGENDIAN
-    { 1, 32000 },
-    { 1000, 32000 },
-    { -1, 0 },
-    { 0, 0 },
-#else
-    { 0x0100, 0x007D },
-    { 0xE803, 0x007D },
-    { 0xFFFF, 0x0000 },
-    { 0x0000, 0x0000 },
-#endif
+    { BE16SWAP(1),    BE16SWAP(32000) },
+    { BE16SWAP(1000), BE16SWAP(32000) },
+    { BE16SWAP(-1),   BE16SWAP(0) },
+    { BE16SWAP(0),    BE16SWAP(0) },
 };
 
 NoteSubEu gZeroNoteSub = { 0 };

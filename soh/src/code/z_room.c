@@ -217,11 +217,7 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
-#ifdef IS_BIGENDIAN
-#define JPEG_MARKER 0xFFD8FFE0
-#else
-#define JPEG_MARKER 0xE0FFD8FF
-#endif
+#define JPEG_MARKER BE32SWAP(0xFFD8FFE0)
 
 s32 func_80096238(void* data) {
     OSTime time;
