@@ -414,3 +414,12 @@ shipofharkinian.json
 ZAPDTR/ZAPDUtils/lib/*
 !/soh/icon.jpg
 
+# Xcode
+xcuserdata/
+*.xcconfig
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings
