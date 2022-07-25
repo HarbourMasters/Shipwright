@@ -166,8 +166,10 @@ void applyEnhancementPresetDefault(void) {
 
     // Rotate link (0 to 2)
     CVar_SetS32("gPauseLiveLinkRotation", 0);
-    // Pause link animation (0 to 17)
+    // Pause link animation (0 to 16)
     CVar_SetS32("gPauseLiveLink", 0);
+    // Frames to wait
+    CVar_SetS32("gMinFrameCount", 1);
 
     // N64 Mode
     CVar_SetS32("gN64Mode", 0);
@@ -230,8 +232,8 @@ void applyEnhancementPresetVanillaPlus(void) {
     // Count Golden Skulltulas
     CVar_SetS32("gInjectSkulltulaCount", 1);
 
-    // Pause link animation (0 to 17)
-    CVar_SetS32("gPauseLiveLink", 17);
+    // Pause link animation (0 to 16)
+    CVar_SetS32("gPauseLiveLink", 1);
 
     // Dynamic Wallet Icon
     CVar_SetS32("gDynamicWalletIcon", 1);
@@ -312,6 +314,11 @@ void applyEnhancementPresetRandomizer(void) {
     CVar_SetS32("gPauseAnyCursor", 1);
     // Pull grave during the day
     CVar_SetS32("gDayGravePull", 1);
+
+    // Pause link animation (0 to 16)
+    CVar_SetS32("gPauseLiveLink", 16);
+    // Frames to wait
+    CVar_SetS32("gMinFrameCount", 200);
 }
 
 void applyEnhancementPresetIronman(void) {
@@ -353,8 +360,8 @@ void applyEnhancementPresetIronman(void) {
     // Count Golden Skulltulas
     CVar_SetS32("gInjectSkulltulaCount", 1);
 
-    // Pause link animation (0 to 17)
-    CVar_SetS32("gPauseLiveLink", 17);
+    // Pause link animation (0 to 16)
+    CVar_SetS32("gPauseLiveLink", 1);
 
     // Enable 3D Dropped items/projectiles
     CVar_SetS32("gNewDrops", 1);
