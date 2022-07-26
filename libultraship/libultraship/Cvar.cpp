@@ -9,7 +9,7 @@
 
 std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 
-extern "C" CVar* CVar_Get(const char* name) {
+CVar* CVar_Get(const char* name) {
     auto it = cvars.find(name);
     return (it != cvars.end()) ? it->second.get() : nullptr;
 }
