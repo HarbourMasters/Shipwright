@@ -1,6 +1,12 @@
 #pragma once
 #include <string>
 #include <unordered_map>
+
+
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
+
+
 #include <message_data_static.h>
 
 #undef MESSAGE_END
