@@ -12,7 +12,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 4) Launch `soh.exe`
 
 ### Supported Games
-#### Ocarina of Time Debug (not Master Quest)
+#### Ocarina of Time Debug PAL GC (not Master Quest)
 > Currently the recommended option
 ```
 Build team: `zelda@srd022j`

@@ -51,6 +51,10 @@
 #include <SDL2/SDL_scancode.h>
 #endif
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
@@ -105,6 +109,9 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     CustomMessage::Instance = new CustomMessage();
@@ -227,6 +234,7 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+#ifndef __SWITCH__
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -253,19 +261,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
+
                 int samples_left = AudioPlayer_Buffered();
                 u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
 
                 // 3 is the maximum authentic frame divisor.
                 s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
                 for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
                     AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
                 }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
                 audio.processing = false;
@@ -278,8 +283,9 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-    audio.cv_to_thread.notify_one();
+#endif
 
+    audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = CVar_GetS32("gInterpolationFPS", 20);
     static int last_fps;
@@ -320,12 +326,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
+#ifndef __SWITCH__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
+#endif
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -1428,7 +1436,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
             price = 40;
             break;
     }
-    switch (language) { 
+    switch (language) {
     case 0: default:
         scrubText += 0x12; // add the sound
         scrubText += 0x38; // sound id
@@ -1483,7 +1491,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += 0xA3; // message id
         break;
     }
-    
+
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 

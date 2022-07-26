@@ -9,6 +9,7 @@ UNAME := $(shell uname)
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
+X11 ?= 0
 LTO ?= 0
 
 # flag to save whether the compiler being used is clang or gcc by checking CXX --version
@@ -48,6 +49,11 @@ CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIV
 CPPFLAGS := -MMD
 
 MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
+
+ifeq ($(X11), 1)
+CXXFLAGS += -DX11_SUPPORTED
+CFLAGS += -DX11_SUPPORTED
+endif
 
 # if not using clang, ask clang to use gcc standard library
 ifneq ($(CXX_IS_CLANG),1)

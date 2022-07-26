@@ -49,6 +49,8 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
+    if(!CVar_GetS32("gRandomizer", 0)) return;
+
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->LoadData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
@@ -88,6 +90,9 @@ void SaveManager::LoadRandomizerVersion1() {
 }
 
 void SaveManager::SaveRandomizer() {
+
+    if(!gSaveContext.n64ddFlag) return;
+
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
@@ -170,7 +175,7 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
-    
+
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
@@ -906,7 +911,7 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
     }
     currentJsonContext = saveJsonContext;
 }
-   
+
 
 void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     // Create an empty struct and set it as the current load context, then call the function that loads the struct.

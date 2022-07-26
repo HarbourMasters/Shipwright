@@ -38,5 +38,5 @@ namespace Ship {
 		void LoadFont(const std::string& name, const std::string& path, float fontSize);
 	};
 
-	static bool OverlayCommand(const std::vector<std::string>& args);
+	bool OverlayCommand(const std::vector<std::string>& args);
 }

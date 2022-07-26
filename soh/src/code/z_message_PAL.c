@@ -111,7 +111,7 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNoteCEnvR = 10;
     sOcarinaNoteCEnvG = 10;
     sOcarinaNoteCEnvB = 10;
-    if (CVar_GetS32("gHudColors", 1) == 0) { 
+    if (CVar_GetS32("gHudColors", 1) == 0) {
         sOcarinaNoteAPrimR = 80;
         sOcarinaNoteAPrimG = 150;
         sOcarinaNoteAPrimB = 255;
@@ -239,8 +239,6 @@ void Message_DrawTextChar(GlobalContext* globalCtx, void* textureImage, Gfx** p)
     Gfx* gfx = *p;
     s16 x = msgCtx->textPosX;
     s16 y = msgCtx->textPosY;
-
-    gSPInvalidateTexCache(gfx++, textureImage);
 
     gDPPipeSync(gfx++);
 
@@ -1229,6 +1227,8 @@ void Message_Decode(GlobalContext* globalCtx) {
     MessageContext* msgCtx = &globalCtx->msgCtx;
     Font* font = &globalCtx->msgCtx.font;
 
+    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
+
     globalCtx->msgCtx.textDelayTimer = 0;
     globalCtx->msgCtx.textUnskippable = globalCtx->msgCtx.textDelay = globalCtx->msgCtx.textDelayTimer = 0;
     sTextFade = false;
@@ -1624,6 +1624,7 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
     }
 
     sMessageHasSetSfx = D_8014B2F4 = sTextboxSkipped = sTextIsCredits = 0;
+    gSPInvalidateTexCache(globalCtx->state.gfxCtx->polyOpa.p++, NULL);
 
     if (textId >= 0x0500 && textId < 0x0600) { // text ids 0500 to 0600 are reserved for credits
         sTextIsCredits = true;
@@ -1731,7 +1732,7 @@ void Message_StartTextbox(GlobalContext* globalCtx, u16 textId, Actor* actor) {
     // so we need to switch the order of these lines
     if (gSaveContext.n64ddFlag && textId == 0x2053) {
         msgCtx->talkActor = actor;
-        Message_OpenText(globalCtx, textId);        
+        Message_OpenText(globalCtx, textId);
     } else {
         Message_OpenText(globalCtx, textId);
         msgCtx->talkActor = actor;
@@ -2052,7 +2053,7 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
     if(CBtnB_2 > 255){CBtnB_2=255;};
     s16 sOcarinaNoteCPrimColors_CUSTOM[][3] = {
         { CBtnR, CBtnG, CBtnB },    //Unified
-        { CBtnR_2, CBtnG_2, CBtnB_2 }, 
+        { CBtnR_2, CBtnG_2, CBtnB_2 },
         { CBtnRL, CBtnGL, CBtnBL }, //Left
         { CBtnRD, CBtnGD, CBtnBD }, //Down
         { CBtnRR, CBtnGR, CBtnBR }, //Right
@@ -2642,15 +2643,15 @@ void Message_DrawMain(GlobalContext* globalCtx, Gfx** p) {
                 Message_ContinueTextbox(globalCtx, msgCtx->lastPlayedSong + 0x893); // You played [song name]
                 Message_Decode(globalCtx);
                 msgCtx->msgMode = MSGMODE_DISPLAY_SONG_PLAYED_TEXT;
-                
-                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME 
+
+                if (CVar_GetS32("gFastOcarinaPlayback", 0) == 0 || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_TIME
                     || globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_STORMS ||
                     globalCtx->msgCtx.lastPlayedSong == OCARINA_SONG_SUNS) {
                     msgCtx->stateTimer = 20;
                 } else {
                     msgCtx->stateTimer = 1;
                 }
-                
+
                 Message_DrawText(globalCtx, &gfx);
                 break;
             case MSGMODE_DISPLAY_SONG_PLAYED_TEXT:
