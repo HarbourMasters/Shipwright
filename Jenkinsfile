@@ -79,9 +79,9 @@ pipeline {
                             docker exec sohcont scripts/linux/appimage/build.sh
                             
                             mv README.md readme.txt		
-                            mv _packages/*.appimage SoH.AppImage
+                            mv _packages/*.appimage soh.appimage
 
-                            7z a soh-linux.7z SoH.AppImage readme.txt
+                            7z a soh-linux.7z soh.appimage readme.txt
                             
                             '''
                         }

@@ -80,7 +80,7 @@ execute_process(
     $<$<BOOL:$<TARGET_PROPERTY:soh,APPIMAGE_DESKTOP_FILE>>:--desktop-file=$<TARGET_PROPERTY:soh,APPIMAGE_DESKTOP_FILE>>
     $<$<BOOL:$<TARGET_PROPERTY:soh,APPIMAGE_ICON_FILE>>:--icon-file=$<TARGET_PROPERTY:soh,APPIMAGE_ICON_FILE>>
     --output=appimage
-    #    --verbosity=2
+    --verbosity=2
 )
 ]])
 
