@@ -858,9 +858,11 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Controller"))
             {
+
+            #ifndef __SWITCH__
                 EnhancementCheckbox("Use Controller Navigation", "gControlNav");
                 Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
-
+            #endif
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
 
@@ -1303,7 +1305,7 @@ namespace SohImGui {
                         {
                             val = 20;
                         }
-                        
+
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
