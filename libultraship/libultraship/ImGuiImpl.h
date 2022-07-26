@@ -94,4 +94,5 @@ namespace SohImGui {
     ImTextureID GetTextureByName(const std::string& name);
     void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
     void EndGroupPanel(float minHeight = 0.0f);
+    std::string BreakTooltip(const char* text);
 }
