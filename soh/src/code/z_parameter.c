@@ -1557,6 +1557,70 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
+    if (item == ITEM_SINGLE_MAGIC) {
+        gSaveContext.magicAcquired = true;
+        gSaveContext.unk_13F6 = 0x30;
+        Magic_Fill(globalCtx);
+        return ITEM_NONE;
+    } else if (item == ITEM_DOUBLE_MAGIC) {
+        if (!gSaveContext.magicAcquired) {
+            gSaveContext.magicAcquired = true;
+        }
+        gSaveContext.doubleMagic = true;
+        gSaveContext.unk_13F6 = 0x60;
+        gSaveContext.magicLevel = 0;
+        Magic_Fill(globalCtx);
+        return ITEM_NONE;
+    }
+
+    if (item == ITEM_DOUBLE_DEFENSE) {
+        gSaveContext.doubleDefense = true;
+        gSaveContext.inventory.defenseHearts = 20;
+        gSaveContext.healthAccumulator = 0x140;
+        return ITEM_NONE;
+    }
+
+    if (item >= ITEM_BOTTLE_WITH_RED_POTION &&
+        item <= ITEM_BOTTLE_WITH_BIG_POE) {
+        temp = SLOT(ITEM_BOTTLE);
+        for (i = 0; i < 4; i++) {
+            if (gSaveContext.inventory.items[temp + i] == ITEM_NONE) {
+                switch (item) {
+                    case ITEM_BOTTLE_WITH_RED_POTION:
+                        item = ITEM_POTION_RED;
+                        break;
+                    case ITEM_BOTTLE_WITH_GREEN_POTION:
+                        item = ITEM_POTION_GREEN;
+                        break;
+                    case ITEM_BOTTLE_WITH_BLUE_POTION:
+                        item = ITEM_POTION_BLUE;
+                        break;
+                    case ITEM_BOTTLE_WITH_FAIRY:
+                        item = ITEM_FAIRY;
+                        break;
+                    case ITEM_BOTTLE_WITH_FISH:
+                        item = ITEM_FISH;
+                        break;
+                    case ITEM_BOTTLE_WITH_BLUE_FIRE:
+                        item = ITEM_BLUE_FIRE;
+                        break;
+                    case ITEM_BOTTLE_WITH_BUGS:
+                        item = ITEM_BUG;
+                        break;
+                    case ITEM_BOTTLE_WITH_POE:
+                        item = ITEM_POE;
+                        break;
+                    case ITEM_BOTTLE_WITH_BIG_POE:
+                        item = ITEM_BIG_POE;
+                        break;
+                }
+
+                gSaveContext.inventory.items[temp + i] = item;
+                return ITEM_NONE;
+            }
+        }
+    }
+
     if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         gSaveContext.inventory.questItems |= gBitFlags[item - ITEM_MEDALLION_FOREST + QUEST_MEDALLION_FOREST];
 
@@ -1612,13 +1676,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         if (item == ITEM_SWORD_BGS) {
             gSaveContext.swordHealth = 8;
 
-            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF) {
-                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD];
+            if (ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xF 
+                ||(gSaveContext.n64ddFlag && ALL_EQUIP_VALUE(EQUIP_SWORD) == 0xE)) { // In rando, when buying Giant's Knife, also check
+                gSaveContext.inventory.equipment ^= 8 << gEquipShifts[EQUIP_SWORD]; // for 0xE in case we don't have Kokiri Sword
                 if (gSaveContext.equips.buttonItems[0] == ITEM_SWORD_KNIFE) {
                     gSaveContext.equips.buttonItems[0] = ITEM_SWORD_BGS;
                     Interface_LoadItemIcon1(globalCtx, 0);
                 }
             }
+            
         } else if (item == ITEM_SWORD_MASTER) {
             gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
             gSaveContext.equips.equipment &= 0xFFF0;
@@ -1637,9 +1703,43 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         gSaveContext.inventory.equipment |= (gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]);
         return ITEM_NONE;
     } else if ((item == ITEM_KEY_BOSS) || (item == ITEM_COMPASS) || (item == ITEM_DUNGEON_MAP)) {
-        gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+        // Boss Key, Compass, and Dungeon Map exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 13) { // ganon's castle -> ganon's tower
+                gSaveContext.inventory.dungeonItems[10] |= 1;
+            } else if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                gSaveContext.inventory.dungeonItems[6] |= gBitFlags[item - ITEM_KEY_BOSS];
+            } else {
+                gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+            }
+        } else {
+            gSaveContext.inventory.dungeonItems[gSaveContext.mapIndex] |= gBitFlags[item - ITEM_KEY_BOSS];
+        }
         return ITEM_NONE;
     } else if (item == ITEM_KEY_SMALL) {
+        // Small key exceptions for rando.
+        if (gSaveContext.n64ddFlag) {
+            if (globalCtx->sceneNum == 10) { // ganon's tower -> ganon's castle
+                if (gSaveContext.inventory.dungeonKeys[13] < 0) {
+                    gSaveContext.inventory.dungeonKeys[13] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[13]++;
+                    return ITEM_NONE;
+                }
+            }
+
+            if (globalCtx->sceneNum == 92) { // Desert Colossus -> Spirit Temple.
+                if (gSaveContext.inventory.dungeonKeys[6] < 0) {
+                    gSaveContext.inventory.dungeonKeys[6] = 1;
+                    return ITEM_NONE;
+                } else {
+                    gSaveContext.inventory.dungeonKeys[6]++;
+                    return ITEM_NONE;
+                }
+            }
+        }
+
         if (gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] < 0) {
             gSaveContext.inventory.dungeonKeys[gSaveContext.mapIndex] = 1;
             return ITEM_NONE;
@@ -1712,9 +1812,15 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_ADULT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 1);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(200);
+        }
         return ITEM_NONE;
     } else if (item == ITEM_WALLET_GIANT) {
         Inventory_ChangeUpgrade(UPG_WALLET, 2);
+        if (gSaveContext.n64ddFlag && Randomizer_GetSettingValue(RSK_FULL_WALLETS)) {
+            Rupees_ChangeBy(500);
+        }
         return ITEM_NONE;
     } else if (item == ITEM_STICK_UPGRADE_20) {
         if (gSaveContext.inventory.items[slot] == ITEM_NONE) {
@@ -1746,10 +1852,28 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_LONGSHOT) {
         INV_CONTENT(item) = item;
+        // always update "equips" as this is what is currently on the c-buttons
         for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (gSaveContext.equips.buttonItems[i] == ITEM_HOOKSHOT) {
                 gSaveContext.equips.buttonItems[i] = ITEM_LONGSHOT;
                 Interface_LoadItemIcon1(globalCtx, i);
+            }
+        }
+        // update the adult/child equips when rando'd (accounting for equp swapped hookshot as child)
+        if (gSaveContext.n64ddFlag && LINK_IS_CHILD) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
+                if (gSaveContext.adultEquips.buttonItems[i] == ITEM_HOOKSHOT) {
+                    gSaveContext.adultEquips.buttonItems[i] = ITEM_LONGSHOT;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
+            }
+        }
+        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
+                if (gSaveContext.childEquips.buttonItems[i] == ITEM_HOOKSHOT) {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_LONGSHOT;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
             }
         }
         return ITEM_NONE;
@@ -1880,10 +2004,29 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
         return ITEM_NONE;
     } else if (item == ITEM_OCARINA_TIME) {
         INV_CONTENT(ITEM_OCARINA_TIME) = ITEM_OCARINA_TIME;
+        // always update "equips" as this is what is currently on the c-buttons
         for (i = 1; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (gSaveContext.equips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
                 gSaveContext.equips.buttonItems[i] = ITEM_OCARINA_TIME;
                 Interface_LoadItemIcon1(globalCtx, i);
+            }
+        }
+
+        // update the adult/child equips when rando'd
+        if (gSaveContext.n64ddFlag && LINK_IS_CHILD) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.adultEquips.buttonItems); i++) {
+                if (gSaveContext.adultEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
+                    gSaveContext.adultEquips.buttonItems[i] = ITEM_OCARINA_TIME;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
+            }
+        }
+        if (gSaveContext.n64ddFlag && LINK_IS_ADULT) {
+            for (i = 1; i < ARRAY_COUNT(gSaveContext.childEquips.buttonItems); i++) {
+                if (gSaveContext.childEquips.buttonItems[i] == ITEM_OCARINA_FAIRY) {
+                    gSaveContext.childEquips.buttonItems[i] = ITEM_OCARINA_TIME;
+                    Interface_LoadItemIcon1(globalCtx, i);
+                }
             }
         }
         return ITEM_NONE;
@@ -2028,7 +2171,15 @@ u8 Item_CheckObtainability(u8 item) {
     osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
     osSyncPrintf(VT_RST);
 
-    if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
+    if (gSaveContext.n64ddFlag) {
+        if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
+            return ITEM_NONE;
+        }
+    }
+    
+    if ((item >= ITEM_SONG_MINUET) && (item <= ITEM_SONG_STORMS)) {
+        return ITEM_NONE;
+    } else if ((item >= ITEM_MEDALLION_FOREST) && (item <= ITEM_MEDALLION_LIGHT)) {
         return ITEM_NONE;
     } else if ((item >= ITEM_KOKIRI_EMERALD) && (item <= ITEM_SKULL_TOKEN)) {
         return ITEM_NONE;
@@ -2037,25 +2188,25 @@ u8 Item_CheckObtainability(u8 item) {
             return ITEM_NONE;
         } else if ((gBitFlags[item - ITEM_SWORD_KOKIRI] << gEquipShifts[EQUIP_SWORD]) &
                    gSaveContext.inventory.equipment) {
-            return item;
+            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_SHIELD_DEKU) && (item <= ITEM_SHIELD_MIRROR)) {
         if ((gBitFlags[item - ITEM_SHIELD_DEKU] << gEquipShifts[EQUIP_SHIELD]) & gSaveContext.inventory.equipment) {
-            return item;
+            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_TUNIC_KOKIRI) && (item <= ITEM_TUNIC_ZORA)) {
         if ((gBitFlags[item - ITEM_TUNIC_KOKIRI] << gEquipShifts[EQUIP_TUNIC]) & gSaveContext.inventory.equipment) {
-            return item;
+            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
     } else if ((item >= ITEM_BOOTS_KOKIRI) && (item <= ITEM_BOOTS_HOVER)) {
         if ((gBitFlags[item - ITEM_BOOTS_KOKIRI] << gEquipShifts[EQUIP_BOOTS]) & gSaveContext.inventory.equipment) {
-            return item;
+            return gSaveContext.n64ddFlag ? ITEM_NONE : item;
         } else {
             return ITEM_NONE;
         }
@@ -3326,6 +3477,7 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
         if ((globalCtx->pauseCtx.state != 0) || (globalCtx->pauseCtx.debugState != 0)) {
             // Start Button Texture, Color & Label
             gDPPipeSync(OVERLAY_DISP++);
+
             if (CVar_GetS32("gHudColors", 1) == 0) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 200, 0, 0, interfaceCtx->startAlpha);
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
@@ -4646,10 +4798,11 @@ void Interface_Draw(GlobalContext* globalCtx) {
             PosY_BtnA = CVar_GetS32("gABtnPosY", 0)+Y_Margins_BtnA;
             rAIconY = 98.0f - PosY_BtnA;
             if (CVar_GetS32("gABtnPosType", 0) == 1) {//Anchor Left
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Left_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 2) {//Anchor Right
-                X_Margins_BtnA = Right_HUD_Margin;
+                if (CVar_GetS32("gABtnUseMargins", 0) != 0) {X_Margins_BtnA = Right_HUD_Margin;};
                 PosX_BtnA = OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
                 rAIconX= OTRGetDimensionFromRightEdge(CVar_GetS32("gABtnPosX", 0)+X_Margins_BtnA);
             } else if (CVar_GetS32("gABtnPosType", 0) == 3) {//Anchor None

@@ -937,14 +937,22 @@ void EnFr_SetReward(EnFr* this, GlobalContext* globalCtx) {
     } else if (songIndex == FROG_STORMS) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_HEART_PIECE;
+            } else {
+                this->reward = Randomizer_GetItemIdFromKnownCheck(RC_ZR_FROGS_IN_THE_RAIN, GI_HEART_PIECE);
+            }
         } else {
             this->reward = GI_RUPEE_BLUE;
         }
     } else if (songIndex == FROG_CHOIR_SONG) {
         if (!(gSaveContext.eventChkInf[13] & sSongIndex[songIndex])) {
             gSaveContext.eventChkInf[13] |= sSongIndex[songIndex];
-            this->reward = GI_HEART_PIECE;
+            if (!gSaveContext.n64ddFlag) {
+                this->reward = GI_HEART_PIECE;
+            } else {
+                this->reward = Randomizer_GetItemIdFromKnownCheck(RC_ZR_FROGS_OCARINA_GAME, GI_HEART_PIECE);
+            }
         } else {
             this->reward = GI_RUPEE_PURPLE;
         }

@@ -121,6 +121,7 @@ void BossVa_Init(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Destroy(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Update(Actor* thisx, GlobalContext* globalCtx);
 void BossVa_Draw(Actor* thisx, GlobalContext* globalCtx);
+void BossVa_Reset(void);
 
 void BossVa_UpdateEffects(GlobalContext* globalCtx);
 void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx);
@@ -204,7 +205,7 @@ const ActorInit Boss_Va_InitVars = {
     (ActorFunc)BossVa_Destroy,
     (ActorFunc)BossVa_Update,
     (ActorFunc)BossVa_Draw,
-    NULL,
+    (ActorResetFunc)BossVa_Reset,
 };
 
 static ColliderCylinderInit sCylinderInit = {
@@ -593,6 +594,8 @@ void BossVa_Init(Actor* thisx, GlobalContext* globalCtx2) {
 
     switch (this->actor.params) {
         case BOSSVA_BODY:
+            //sFightPhase = 0;
+            //sBodyState = 1;
             SkelAnime_Init(globalCtx, &this->skelAnime, &gBarinadeBodySkel, &gBarinadeBodyAnim, NULL, NULL, 0);
             this->actor.flags |= ACTOR_FLAG_24;
             break;
@@ -4032,6 +4035,8 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
 void BossVa_Reset(void) {
     sKillBari = 0;
     sCsCamera = 0;
@@ -4046,4 +4051,7 @@ void BossVa_Reset(void) {
     sZapperRot.z = 0;    
     sPhase2Timer = 0;
     sPhase4HP = 0;
+    for (u8 i = 0; i < ARRAY_SIZE(sBodyBari); i++) {
+        sBodyBari[i] = 0;
+    }
 }
