@@ -295,13 +295,13 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Zora Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         Table_InitHeader();
         Draw_HelpIcon("Affects Kokiri Tunic color", false);
-        SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
+        SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affects Goron Tunic color", false);
-        SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
+        SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affects Zora Tunic color", false);
-        SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
+        SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");

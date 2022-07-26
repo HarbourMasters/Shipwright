@@ -1009,19 +1009,14 @@ void TitleCard_InitPlaceName(GlobalContext* globalCtx, TitleCardContext* titleCt
 }
 
 void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
-    s16* TitleCard_Colors[3] = {255,255,255};
+    const Color_RGB8 TitleCard_Colors_ori = {255,255,255};
+    Color_RGB8 TitleCard_Colors = {255,255,255};
         if (titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {//Bosses cards.
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_B_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_B_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_B_U_PrimB", 255);
+            TitleCard_Colors = CVar_GetRGB("gCCTC_B_U_Prim", TitleCard_Colors_ori);
         } else if (!titleCtx->isBossCard && CVar_GetS32("gHudColors", 1) == 2) {
-            TitleCard_Colors[0] = CVar_GetS32("gCCTC_OW_U_PrimR", 255);
-            TitleCard_Colors[1] = CVar_GetS32("gCCTC_OW_U_PrimG", 255);
-            TitleCard_Colors[2] = CVar_GetS32("gCCTC_OW_U_PrimB", 255);
+            TitleCard_Colors = CVar_GetRGB("gCCTC_OW_U_Prim", TitleCard_Colors_ori);
         } else {
-            TitleCard_Colors[0] = 255;
-            TitleCard_Colors[1] = 255;
-            TitleCard_Colors[2] = 255;
+            TitleCard_Colors = TitleCard_Colors_ori;
         }
 
     if (DECR(titleCtx->delayTimer) == 0) {
@@ -1032,9 +1027,9 @@ void TitleCard_Update(GlobalContext* globalCtx, TitleCardContext* titleCtx) {
             Math_StepToS(&titleCtx->intensityB, 0, 70);
         } else {
             Math_StepToS(&titleCtx->alpha, 255, 10);
-            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors[0], 20);
-            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors[1], 20);
-            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors[2], 20);
+            Math_StepToS(&titleCtx->intensityR, TitleCard_Colors.r, 20);
+            Math_StepToS(&titleCtx->intensityG, TitleCard_Colors.g, 20);
+            Math_StepToS(&titleCtx->intensityB, TitleCard_Colors.b, 20);
         }
     }
 }

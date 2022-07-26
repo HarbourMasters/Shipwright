@@ -111,9 +111,12 @@ static s16 sHeartsDDEnvFactors[3][3] = {
 };
 
 // Current colors for the double defense hearts
-s16 HeartInner[3] = {HEARTS_PRIM_R,HEARTS_PRIM_G,HEARTS_PRIM_B};
-s16 HeartDDOutline[3] = {HEARTS_DD_PRIM_R,HEARTS_DD_PRIM_G,HEARTS_DD_PRIM_B};
-s16 HeartDDInner[3] = {HEARTS_DD_ENV_R,HEARTS_DD_ENV_G,HEARTS_DD_ENV_B};
+Color_RGB8 HeartInner_ori = {HEARTS_PRIM_R,HEARTS_PRIM_G,HEARTS_PRIM_B};
+Color_RGB8 HeartDDOutline_ori = {HEARTS_DD_PRIM_R,HEARTS_DD_PRIM_G,HEARTS_DD_PRIM_B};
+Color_RGB8 HeartDDInner_ori = {HEARTS_DD_ENV_R,HEARTS_DD_ENV_G,HEARTS_DD_ENV_B};
+Color_RGB8 HeartInner;
+Color_RGB8 HeartDDOutline;
+Color_RGB8 HeartDDInner;
 s16 sBeatingHeartsDDPrim[3];
 s16 sBeatingHeartsDDEnv[3];
 s16 sHeartsDDPrim[2][3];
@@ -122,19 +125,13 @@ s16 sHeartsDDEnv[2][3];
 void HealthMeter_Init(GlobalContext* globalCtx) {
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        HeartInner[0] = CVar_GetS32("gCCHeartsPrimR", 90);
-        HeartInner[1] = CVar_GetS32("gCCHeartsPrimG", 90);
-        HeartInner[2] = CVar_GetS32("gCCHeartsPrimB", 90);
-        HeartDDOutline[0] = CVar_GetS32("gDDCCHeartsPrimR", 90);
-        HeartDDOutline[1] = CVar_GetS32("gDDCCHeartsPrimG", 90);
-        HeartDDOutline[2] = CVar_GetS32("gDDCCHeartsPrimB", 90);
+        HeartInner = CVar_GetRGB("gCCHeartsPrim", HeartInner_ori);
+        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
+        HeartDDOutline = CVar_GetRGB("gDDCCHeartsPrim", HeartDDOutline_ori);
     } else {
-        HeartInner[0] = HEARTS_PRIM_R;
-        HeartInner[1] = HEARTS_PRIM_G;
-        HeartInner[2] = HEARTS_PRIM_B;
-        HeartDDOutline[0] = HEARTS_DD_PRIM_R;
-        HeartDDOutline[1] = HEARTS_DD_PRIM_G;
-        HeartDDOutline[2] = HEARTS_DD_PRIM_B;
+        HeartInner = HeartInner_ori;
+        HeartDDInner = HeartDDInner_ori;
+        HeartDDOutline = HeartDDOutline_ori;
     }
 
     interfaceCtx->unk_228 = 0x140;
@@ -142,33 +139,33 @@ void HealthMeter_Init(GlobalContext* globalCtx) {
     interfaceCtx->unk_22A = interfaceCtx->unk_1FE = 0;
     interfaceCtx->unk_22C = interfaceCtx->unk_200 = 0;
 
-    interfaceCtx->heartsPrimR[0] = HeartInner[0];
-    interfaceCtx->heartsPrimG[0] = HeartInner[1];
-    interfaceCtx->heartsPrimB[0] = HeartInner[2];
+    interfaceCtx->heartsPrimR[0] = HeartInner.r;
+    interfaceCtx->heartsPrimG[0] = HeartInner.g;
+    interfaceCtx->heartsPrimB[0] = HeartInner.b;
 
     interfaceCtx->heartsEnvR[0] = HEARTS_ENV_R;
     interfaceCtx->heartsEnvG[0] = HEARTS_ENV_G;
     interfaceCtx->heartsEnvB[0] = HEARTS_ENV_B;
 
-    interfaceCtx->heartsPrimR[1] = HeartInner[0];
-    interfaceCtx->heartsPrimG[1] = HeartInner[1];
-    interfaceCtx->heartsPrimB[1] = HeartInner[2];
+    interfaceCtx->heartsPrimR[1] = HeartInner.r;
+    interfaceCtx->heartsPrimG[1] = HeartInner.g;
+    interfaceCtx->heartsPrimB[1] = HeartInner.b;
 
     interfaceCtx->heartsEnvR[1] = HEARTS_ENV_R;
     interfaceCtx->heartsEnvG[1] = HEARTS_ENV_G;
     interfaceCtx->heartsEnvB[1] = HEARTS_ENV_B;
 
-    sHeartsDDPrim[0][0] = sHeartsDDPrim[1][0] = HeartDDOutline[0];
-    sHeartsDDPrim[0][1] = sHeartsDDPrim[1][1] = HeartDDOutline[1];
-    sHeartsDDPrim[0][2] = sHeartsDDPrim[1][2] = HeartDDOutline[2];
+    sHeartsDDPrim[0][0] = sHeartsDDPrim[1][0] = HeartDDOutline.r;
+    sHeartsDDPrim[0][1] = sHeartsDDPrim[1][1] = HeartDDOutline.b;
+    sHeartsDDPrim[0][2] = sHeartsDDPrim[1][2] = HeartDDOutline.b;
 
     // sHeartsDDPrim[2][0] = HeartInner[0];
     // sHeartsDDPrim[2][1] = HeartInner[1];
     // sHeartsDDPrim[2][2] = HeartInner[2];
 
-    sHeartsDDEnv[0][0] = sHeartsDDEnv[1][0] = HeartDDInner[0];
-    sHeartsDDEnv[0][1] = sHeartsDDEnv[1][1] = HeartDDInner[1];
-    sHeartsDDEnv[0][2] = sHeartsDDEnv[1][2] = HeartDDInner[2];
+    sHeartsDDEnv[0][0] = sHeartsDDEnv[1][0] = HeartDDInner.r;
+    sHeartsDDEnv[0][1] = sHeartsDDEnv[1][1] = HeartDDInner.g;
+    sHeartsDDEnv[0][2] = sHeartsDDEnv[1][2] = HeartDDInner.b;
 }
 
 void HealthMeter_Update(GlobalContext* globalCtx) {
@@ -187,19 +184,13 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     Bottom_LM_Margin = CVar_GetS32("gHUDMargin_B", 0);
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        HeartInner[0] = CVar_GetS32("gCCHeartsPrimR", sHeartsPrimColors[0][0]);
-        HeartInner[1] = CVar_GetS32("gCCHeartsPrimG", sHeartsPrimColors[0][1]);
-        HeartInner[2] = CVar_GetS32("gCCHeartsPrimB", sHeartsPrimColors[0][2]);
-        HeartDDOutline[0] = CVar_GetS32("gDDCCHeartsPrimR", sHeartsDDPrim[0][0]);
-        HeartDDOutline[1] = CVar_GetS32("gDDCCHeartsPrimG", sHeartsDDPrim[0][1]);
-        HeartDDOutline[2] = CVar_GetS32("gDDCCHeartsPrimB", sHeartsDDPrim[0][2]);
+        HeartInner = CVar_GetRGB("gCCHeartsPrim", HeartInner_ori);
+        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
+        HeartDDOutline = CVar_GetRGB("gDDCCHeartsPrim", HeartDDOutline_ori);
     } else {
-        HeartInner[0] = HEARTS_PRIM_R;
-        HeartInner[1] = HEARTS_PRIM_G;
-        HeartInner[2] = HEARTS_PRIM_B;
-        HeartDDOutline[0] = HEARTS_DD_PRIM_R;
-        HeartDDOutline[1] = HEARTS_DD_PRIM_G;
-        HeartDDOutline[2] = HEARTS_DD_PRIM_B;
+        HeartInner = HeartInner_ori;
+        HeartDDInner = HeartDDInner_ori;
+        HeartDDOutline = HeartDDOutline_ori;
     }
 
     if (interfaceCtx->unk_200 != 0) {
@@ -218,18 +209,18 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
 
     ddFactor = factor;
 
-    interfaceCtx->heartsPrimR[0] = HeartInner[0];
-    interfaceCtx->heartsPrimG[0] = HeartInner[1];
-    interfaceCtx->heartsPrimB[0] = HeartInner[2];
+    interfaceCtx->heartsPrimR[0] = HeartInner.r;
+    interfaceCtx->heartsPrimG[0] = HeartInner.g;
+    interfaceCtx->heartsPrimB[0] = HeartInner.b;
 
     interfaceCtx->heartsEnvR[0] = HEARTS_ENV_R;
     interfaceCtx->heartsEnvG[0] = HEARTS_ENV_G;
     interfaceCtx->heartsEnvB[0] = HEARTS_ENV_B;
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        interfaceCtx->heartsPrimR[1] = HeartInner[0];
-        interfaceCtx->heartsPrimG[1] = HeartInner[1];
-        interfaceCtx->heartsPrimB[1] = HeartInner[2];
+        interfaceCtx->heartsPrimR[1] = HeartInner.r;
+        interfaceCtx->heartsPrimG[1] = HeartInner.g;
+        interfaceCtx->heartsPrimB[1] = HeartInner.b;
     } else {
         interfaceCtx->heartsPrimR[1] = sHeartsPrimColors[type][0];
         interfaceCtx->heartsPrimG[1] = sHeartsPrimColors[type][1];
@@ -244,9 +235,9 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
     gFactor = sHeartsPrimFactors[0][1] * factor;
     bFactor = sHeartsPrimFactors[0][2] * factor;
 
-    interfaceCtx->beatingHeartPrim[0] = (u8)(rFactor + HeartInner[0]) & 0xFF;
-    interfaceCtx->beatingHeartPrim[1] = (u8)(gFactor + HeartInner[1]) & 0xFF;
-    interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + HeartInner[2]) & 0xFF;
+    interfaceCtx->beatingHeartPrim[0] = (u8)(rFactor + HeartInner.r) & 0xFF;
+    interfaceCtx->beatingHeartPrim[1] = (u8)(gFactor + HeartInner.g) & 0xFF;
+    interfaceCtx->beatingHeartPrim[2] = (u8)(bFactor + HeartInner.b) & 0xFF;
 
     rFactor = sHeartsEnvFactors[0][0] * factor;
     gFactor = sHeartsEnvFactors[0][1] * factor;
@@ -258,50 +249,48 @@ void HealthMeter_Update(GlobalContext* globalCtx) {
 
     ddType = type;
 
-    sHeartsDDPrim[0][0] = HeartDDOutline[0];
-    sHeartsDDPrim[0][1] = HeartDDOutline[1];
-    sHeartsDDPrim[0][2] = HeartDDOutline[2];
+    sHeartsDDPrim[0][0] = HeartDDOutline.r;
+    sHeartsDDPrim[0][1] = HeartDDOutline.g;
+    sHeartsDDPrim[0][2] = HeartDDOutline.b;
 
-    sHeartsDDEnv[0][0] = HeartDDInner[0];
-    sHeartsDDEnv[0][1] = HeartDDInner[1];
-    sHeartsDDEnv[0][2] = HeartDDInner[2];
+    sHeartsDDEnv[0][0] = HeartDDInner.r;
+    sHeartsDDEnv[0][1] = HeartDDInner.g;
+    sHeartsDDEnv[0][2] = HeartDDInner.b;
 
     if (CVar_GetS32("gHudColors", 1) == 2) {
-        sHeartsDDPrim[2][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
-        sHeartsDDPrim[2][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
-        sHeartsDDPrim[2][2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
+        sHeartsDDPrim[2][0] = HeartDDInner.r;
+        sHeartsDDPrim[2][1] = HeartDDInner.g;
+        sHeartsDDPrim[2][2] = HeartDDInner.b;
 
-        sHeartsDDPrim[1][0] = HeartDDOutline[0];
-        sHeartsDDPrim[1][1] = HeartDDOutline[1];
-        sHeartsDDPrim[1][2] = HeartDDOutline[2];
+        sHeartsDDPrim[1][0] = HeartDDOutline.r;
+        sHeartsDDPrim[1][1] = HeartDDOutline.g;
+        sHeartsDDPrim[1][2] = HeartDDOutline.b;
 
-        sHeartsDDEnv[1][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
-        sHeartsDDEnv[1][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
-        sHeartsDDEnv[1][2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
+        sHeartsDDEnv[1][0] = HeartDDInner.r;
+        sHeartsDDEnv[1][1] = HeartDDInner.g;
+        sHeartsDDEnv[1][2] = HeartDDInner.b;
 
-        HeartDDInner[0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
-        HeartDDInner[1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
-        HeartDDInner[2] = CVar_GetS32("gCCDDHeartsPrimB", 50);
+        HeartDDInner = CVar_GetRGB("gCCDDHeartsPrim", HeartDDInner_ori);
 
-        sHeartsDDEnv[0][0] = CVar_GetS32("gCCDDHeartsPrimR", 255);
-        sHeartsDDEnv[0][1] = CVar_GetS32("gCCDDHeartsPrimG", 70);
-        sHeartsDDEnv[0][2] = CVar_GetS32("gCCDDHeartsPrimB", 0);
+        sHeartsDDEnv[0][0] = HeartDDInner.r;
+        sHeartsDDEnv[0][1] = HeartDDInner.g;
+        sHeartsDDEnv[0][2] = HeartDDInner.b;
 
         rFactor = sHeartsDDPrimFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDPrimFactors[ddType][1] * ddFactor;
         bFactor = sHeartsDDPrimFactors[ddType][2] * ddFactor;
 
-        sBeatingHeartsDDPrim[0] = (u8)(rFactor + HeartDDOutline[0]) & 0xFF;
-        sBeatingHeartsDDPrim[1] = (u8)(gFactor + HeartDDOutline[1]) & 0xFF;
-        sBeatingHeartsDDPrim[2] = (u8)(bFactor + HeartDDOutline[2]) & 0xFF;
+        sBeatingHeartsDDPrim[0] = (u8)(rFactor + HeartDDOutline.r) & 0xFF;
+        sBeatingHeartsDDPrim[1] = (u8)(gFactor + HeartDDOutline.g) & 0xFF;
+        sBeatingHeartsDDPrim[2] = (u8)(bFactor + HeartDDOutline.b) & 0xFF;
 
         rFactor = sHeartsDDEnvFactors[ddType][0] * ddFactor;
         gFactor = sHeartsDDEnvFactors[ddType][1] * ddFactor;
         bFactor = sHeartsDDEnvFactors[ddType][2] * ddFactor;
 
-        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HeartDDInner[0]) & 0xFF;
-        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HeartDDInner[1]) & 0xFF;
-        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HeartDDInner[2]) & 0xFF;
+        sBeatingHeartsDDEnv[0] = (u8)(rFactor + HeartDDInner.r) & 0xFF;
+        sBeatingHeartsDDEnv[1] = (u8)(gFactor + HeartDDInner.g) & 0xFF;
+        sBeatingHeartsDDEnv[2] = (u8)(bFactor + HeartDDInner.b) & 0xFF;
     } else {    
         sHeartsDDPrim[0][0] = HEARTS_DD_PRIM_R;
         sHeartsDDPrim[0][1] = HEARTS_DD_PRIM_G;

@@ -1872,6 +1872,8 @@ void EnOssan_UpdateItemSelectedProperty(EnOssan* this) {
 
 void EnOssan_UpdateCursorAnim(EnOssan* this) {
     f32 t;
+    Color_RGB8 A_button_ori = {0,255,80};
+    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
 
     t = this->cursorAnimTween;
     if (this->cursorAnimState == 0) {
@@ -1892,13 +1894,13 @@ void EnOssan_UpdateCursorAnim(EnOssan* this) {
         this->cursorColorG = ColChanMix(80, 80.0f, t);
         this->cursorColorB = ColChanMix(255, 0.0f, t);
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-        this->cursorColorR = ColChanMix(0, 0.0f, t);
-        this->cursorColorG = ColChanMix(255, 80.0f, t);
-        this->cursorColorB = ColChanMix(80, 0.0f, t);
+        this->cursorColorR = ColChanMix(A_button_ori.r, 0.0f, t);
+        this->cursorColorG = ColChanMix(A_button_ori.b, 80.0f, t);
+        this->cursorColorB = ColChanMix(A_button_ori.r, 0.0f, t);
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        this->cursorColorR = ColChanMix(CVar_GetS32("gCCABtnPrimR", 90), ((CVar_GetS32("gCCABtnPrimR", 90)/255)*100), t);
-        this->cursorColorG = ColChanMix(CVar_GetS32("gCCABtnPrimG", 90), ((CVar_GetS32("gCCABtnPrimG", 90)/255)*100), t);
-        this->cursorColorB = ColChanMix(CVar_GetS32("gCCABtnPrimB", 90), ((CVar_GetS32("gCCABtnPrimB", 90)/255)*100), t);
+        this->cursorColorR = ColChanMix(A_button.r, ((A_button.r/255)*100), t);
+        this->cursorColorG = ColChanMix(A_button.g, ((A_button.g/255)*100), t);
+        this->cursorColorB = ColChanMix(A_button.b, ((A_button.b/255)*100), t);
     }
     this->cursorColorA = ColChanMix(255, 0.0f, t);
     this->cursorAnimTween = t;
