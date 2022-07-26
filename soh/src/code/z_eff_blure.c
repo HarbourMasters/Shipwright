@@ -968,6 +968,7 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     s32 j;
     s32 phi_t2;
 
+    FrameInterpolation_RecordOpenChild(this, 0);
     OPEN_DISPS(gfxCtx);
 
     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -1080,4 +1081,5 @@ void EffectBlure_Draw(void* thisx, GraphicsContext* gfxCtx) {
     }
 
     CLOSE_DISPS(gfxCtx);
+    FrameInterpolation_RecordCloseChild();
 }

@@ -15,6 +15,7 @@ Mtx* SkyboxDraw_UpdateMatrix(SkyboxContext* skyboxCtx, f32 x, f32 y, f32 z) {
 
 void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyboxId, s16 blend, f32 x, f32 y, f32 z) {
     OPEN_DISPS(gfxCtx);
+    FrameInterpolation_RecordOpenChild(NULL, FrameInterpolation_GetCameraEpoch());
 
     func_800945A0(gfxCtx);
 
@@ -87,6 +88,7 @@ void SkyboxDraw_Draw(SkyboxContext* skyboxCtx, GraphicsContext* gfxCtx, s16 skyb
     gDPPipeSync(POLY_OPA_DISP++);
     //gsSPShaderTest2(POLY_OPA_DISP++);
 
+    FrameInterpolation_RecordCloseChild();
     CLOSE_DISPS(gfxCtx);
 }
 
