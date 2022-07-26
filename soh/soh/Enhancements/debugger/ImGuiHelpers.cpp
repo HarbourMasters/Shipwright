@@ -6,38 +6,25 @@ std::string BreakTooltip(const char* text) {
     const int lineLength = 60;
     std::string newText = std::string(text);
     const int tipLength = newText.length();
-    int currentPointer = 0;
-    while (currentPointer < tipLength) {
-        if ((currentPointer + lineLength - 1) < tipLength) {
-            int newline = -1;
-            for (int i = 0; i < lineLength; i++) {
-                if (newText[currentPointer + i] == '\n') {
-                    newline = i;
-                    break;
-                }
-            }
-            if (newline >= 0) {
-                currentPointer = currentPointer - lineLength + newline + 1;
-            } else if (((currentPointer + lineLength) < tipLength) && (newText[currentPointer + lineLength] == ' ')) {
-                newText[currentPointer + lineLength] = '\n';
-                currentPointer++;
-            } else {
-                int space = -1;
-                for (int j = lineLength - 1; j >= 0; j--) {
-                    if (newText[currentPointer + j] == ' ') {
-                        space = j;
-                        break;
-                    }
-                }
-                if (space >= 0) {
-                    newText[currentPointer + space] = '\n';
-                    currentPointer = currentPointer - lineLength + space + 1;
-                }
-            }
+    int lastSpace = -1;
+    int currentLineLength = 0;
+    for (int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
+        if (newText[currentCharacter] == '\n') {
+            currentLineLength = 0;
+            lastSpace = -1;
+            continue;
+        } 
+        else if (newText[currentCharacter] == ' ') {
+            lastSpace = currentCharacter;
         }
-        currentPointer += lineLength;
+        
+        if ((currentLineLength >= lineLength) && (lastSpace >= 0)) {
+            newText[lastSpace] = '\n';
+            currentLineLength = currentCharacter - lastSpace - 1;
+            lastSpace = -1;
+        }
+        currentLineLength++;
     }
-
     return newText;
 }
 

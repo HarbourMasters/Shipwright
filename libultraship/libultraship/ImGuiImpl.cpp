@@ -1307,7 +1307,7 @@ namespace SohImGui {
 
                     Tooltip("Interpolate extra frames to get smoother graphics\n"
                         "Set to match your monitor's refresh rate, or a divisor of it\n"
-                        "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
+                        "A higher target FPS than your monitor's refresh rate will just waste resources,"
                         "and might give a worse result.\n"
                         "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
                         "Ctrl+Click for keyboard input");
