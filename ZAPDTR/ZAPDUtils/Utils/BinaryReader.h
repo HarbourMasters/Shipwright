@@ -19,8 +19,8 @@ public:
 
 	void Close();
 
-	void SetEndianess(Endianess endianess);
-	Endianess GetEndianess() const;
+	void SetEndianness(Endianness endianness);
+	Endianness GetEndianness() const;
 
 	void Seek(uint32_t offset, SeekOffsetType seekType);
 	uint32_t GetBaseAddress();
@@ -46,5 +46,5 @@ public:
 
 protected:
 	std::shared_ptr<Stream> stream;
-	Endianess endianess = Endianess::Native;
+	Endianness endianness = Endianness::Native;
 };

@@ -15,7 +15,7 @@
 #define BSWAP64 __builtin_bswap64
 #endif
 
-enum class Endianess
+enum class Endianness
 {
 	Little = 0,
 	Big = 1,

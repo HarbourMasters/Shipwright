@@ -84,7 +84,7 @@ namespace Ship
     class ResourceFile
     {
     public:
-        Endianess endianess;    // 0x00 - Endianess of the file
+        Endianness endianness;    // 0x00 - Endianness of the file
         uint32_t resourceType;  // 0x01 - 4 byte MAGIC
         Version version;     // 0x05 - Based on Ship release numbers
         uint64_t id;            // 0x09 - Unique Resource ID

@@ -50,7 +50,7 @@ static inline uint32_t read_CMD_BBH(BinaryReader* reader)
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half word to match endianness
-	if (reader->GetEndianess() != Endianess::Native)
+	if (reader->GetEndianness() != Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[2];
@@ -67,7 +67,7 @@ static inline uint32_t read_CMD_HBB(BinaryReader* reader)
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half word to match endianness
-	if (reader->GetEndianess() != Endianess::Native)
+	if (reader->GetEndianness() != Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[0];
@@ -84,7 +84,7 @@ static inline uint32_t read_CMD_HH(BinaryReader* reader)
 	reader->Read((char*)&v, sizeof(uint32_t));
 
 	// swap the half words to match endianness
-	if (reader->GetEndianess() != Endianess::Native)
+	if (reader->GetEndianness() != Endianness::Native)
 	{
 		uint8_t* b = (uint8_t*)&v;
 		uint8_t tmp = b[0];

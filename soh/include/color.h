@@ -1,7 +1,7 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include "endianess.h"
+#include "endianness.h"
 
 typedef struct {
     u8 r, g, b;

@@ -18,14 +18,14 @@ void BinaryReader::Close()
 	stream->Close();
 }
 
-void BinaryReader::SetEndianess(Endianess endianess)
+void BinaryReader::SetEndianness(Endianness endianness)
 {
-	this->endianess = endianess;
+	this->endianness = endianness;
 }
 
-Endianess BinaryReader::GetEndianess() const
+Endianness BinaryReader::GetEndianness() const
 {
-	return endianess;
+	return endianness;
 }
 
 void BinaryReader::Seek(uint32_t offset, SeekOffsetType seekType)
@@ -69,7 +69,7 @@ int16_t BinaryReader::ReadInt16()
 
 	stream->Read((char*)&result, sizeof(int16_t));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BSWAP16(result);
 
 	return result;
@@ -81,7 +81,7 @@ int32_t BinaryReader::ReadInt32()
 
 	stream->Read((char*)&result, sizeof(int32_t));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BSWAP32(result);
 
 	return result;
@@ -93,7 +93,7 @@ uint16_t BinaryReader::ReadUInt16()
 
 	stream->Read((char*)&result, sizeof(uint16_t));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BSWAP16(result);
 
 	return result;
@@ -105,7 +105,7 @@ uint32_t BinaryReader::ReadUInt32()
 
 	stream->Read((char*)&result, sizeof(uint32_t));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BSWAP32(result);
 
 	return result;
@@ -117,7 +117,7 @@ uint64_t BinaryReader::ReadUInt64()
 
 	stream->Read((char*)&result, sizeof(uint64_t));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BSWAP64(result);
 
 	return result;
@@ -129,7 +129,7 @@ float BinaryReader::ReadSingle()
 
 	stream->Read((char*)&result, sizeof(float));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BitConverter::ToFloatBE((uint8_t*)&result, 0);
 
 	if (std::isnan(result))
@@ -144,7 +144,7 @@ double BinaryReader::ReadDouble()
 
 	stream->Read((char*)&result, sizeof(double));
 
-	if (endianess != Endianess::Native)
+	if (endianness != Endianness::Native)
 		result = BitConverter::ToDoubleBE((uint8_t*)&result, 0);
 
 	if (std::isnan(result))
