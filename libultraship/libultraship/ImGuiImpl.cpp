@@ -27,6 +27,16 @@
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
+#if __APPLE__
+#include <SDL_hints.h>
+#else
+#include <SDL2/SDL_hints.h>
+#endif
+
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
@@ -69,12 +79,21 @@ namespace SohImGui {
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
+    int lastBackendID = 0;
 
     const char* filters[3] = {
         "Three-Point",
         "Linear",
         "None"
     };
+
+    std::pair<const char*, const char*> backends[] = {
+#ifdef _WIN32
+        { "dx11", "DirectX" },
+#endif
+        { "sdl", "OpenGL" }
+    };
+
 
     const char* powers[9] = {
         "Vanilla (1x)",
@@ -92,6 +111,21 @@ namespace SohImGui {
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
 
+    int GetBackendID(std::shared_ptr<Mercury> cfg) {
+        std::string backend = cfg->getString("Window.GfxBackend");
+        if (backend.empty()) {
+            return 0;
+        }
+
+        for (size_t i = 0; i < (sizeof(backends) / sizeof(backends[0])); i++) {
+            if(backend == backends[i].first) {
+				return i;
+			}
+        }
+
+        return 0;
+    }
+
     int ClampFloatToInt(float value, int min, int max) {
         return fmin(fmax(value, min), max);
     }
@@ -104,6 +138,7 @@ namespace SohImGui {
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
+            SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -316,8 +351,17 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
+    #ifdef __SWITCH__
+        Ship::Switch::SetupFont(io->Fonts);
+    #endif
+
+        lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
+            #ifdef __SWITCH__
+            SohImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
+            #else
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+            #endif
         }
 
         auto imguiIniPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui.ini");
@@ -334,6 +378,9 @@ namespace SohImGui {
         detailedControls->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
+    #ifdef __SWITCH__
+        ImGui::GetStyle().ScaleAllSizes(2);
+    #endif
 
         ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
@@ -362,7 +409,10 @@ namespace SohImGui {
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "None");
-        // Game::SaveSettings();
+
+    #ifdef __SWITCH__
+        Switch::ApplyOverclock();
+    #endif
     }
 
     void Update(EventImpl event) {
@@ -453,16 +503,38 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue)
+    void EnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue, bool PlusMinusButton)
     {
         int val = CVar_GetS32(cvarName, defaultValue);
-
         ImGui::Text(text, val);
+        if(PlusMinusButton) {
+            std::string MinusBTNName = " - ##";
+            MinusBTNName += cvarName;
+            if (ImGui::Button(MinusBTNName.c_str())) {
+                val--;
+                CVar_SetS32(cvarName, val);
+                needs_save = true;
+            }
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+        }
 
         if (ImGui::SliderInt(id, &val, min, max, format))
         {
             CVar_SetS32(cvarName, val);
             needs_save = true;
+        }
+
+        if(PlusMinusButton) {
+            std::string PlusBTNName = " + ##";
+            PlusBTNName += cvarName;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            if (ImGui::Button(PlusBTNName.c_str())) {
+                val++;
+                CVar_SetS32(cvarName, val);
+                needs_save = true;
+            }
         }
 
         if (val < min)
@@ -480,7 +552,7 @@ namespace SohImGui {
         }
     }
 
-    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage)
+    void EnhancementSliderFloat(const char* text, const char* id, const char* cvarName, float min, float max, const char* format, float defaultValue, bool isPercentage, bool PlusMinusButton)
     {
         float val = CVar_GetFloat(cvarName, defaultValue);
 
@@ -489,10 +561,34 @@ namespace SohImGui {
         else
             ImGui::Text(text, static_cast<int>(100 * val));
 
+        if(PlusMinusButton) {
+            std::string MinusBTNName = " - ##";
+            MinusBTNName += cvarName;
+            if (ImGui::Button(MinusBTNName.c_str())) {
+                val -= 0.1f;
+                CVar_SetFloat(cvarName, val);
+                needs_save = true;
+            }
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+        }
+
         if (ImGui::SliderFloat(id, &val, min, max, format))
         {
             CVar_SetFloat(cvarName, val);
             needs_save = true;
+        }
+
+        if(PlusMinusButton) {
+            std::string PlusBTNName = " + ##";
+            PlusBTNName += cvarName;
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+            if (ImGui::Button(PlusBTNName.c_str())) {
+                val += 0.1f;
+                CVar_SetFloat(cvarName, val);
+                needs_save = true;
+            }
         }
 
         if (val < min)
@@ -655,6 +751,8 @@ namespace SohImGui {
         ImGui::NewFrame();
 
         const std::shared_ptr<Window> wnd = GlobalCtx2::GetInstance()->GetWindow();
+        const std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
+
         ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoDocking | ImGuiWindowFlags_NoBackground |
             ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove |
             ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoResize;
@@ -662,7 +760,7 @@ namespace SohImGui {
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(ImVec2(wnd->GetCurrentWidth(), wnd->GetCurrentHeight()));
+        ImGui::SetNextWindowSize(ImVec2((int) wnd->GetCurrentWidth(), (int) wnd->GetCurrentHeight()));
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -685,7 +783,7 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_NoDockingInCentralNode);
 
-        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN) || ImGui::IsKeyPressed(TOGGLE_PAD_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -719,8 +817,13 @@ namespace SohImGui {
 
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
+            #ifdef __SWITCH__
+                ImVec2 iconSize = ImVec2(20.0f, 20.0f);
+            #else
+                ImVec2 iconSize = ImVec2(16.0f, 16.0f);
+            #endif
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), iconSize);
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -775,6 +878,8 @@ namespace SohImGui {
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
+                EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+                Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");
@@ -813,6 +918,16 @@ namespace SohImGui {
                         ImGui::Text("Jitter fix: >= %d FPS", fps);
                     }
 
+                    std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
+                    std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
+                    if (ImGui::Button(MinusBTNELT.c_str())) {
+                        val--;
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
                     if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 250, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(cvar, val);
@@ -825,13 +940,31 @@ namespace SohImGui {
                         "to work on one frame while GPU works on the previous frame.\n"
                         "This setting should be used when your computer is too slow\n"
                         "to do CPU + GPU work in time.");
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(PlusBTNELT.c_str())) {
+                        val++;
+                        CVar_SetS32(cvar, val);
+                        needs_save = true;
+                    }
+                }
+
+
+                ImGui::Text("Renderer API (Needs reload)");
+                if (ImGui::BeginCombo("##RApi", backends[lastBackendID].second)) {
+                    for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
+                        if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
+                            pConf->setString("Window.GfxBackend", backends[i].first);
+                            lastBackendID = i;
+                        }
+                    }
+                    ImGui::EndCombo();
                 }
 
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
                 EnhancementCombobox("gTextureFilter", filters, 3, 0);
-                GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
@@ -874,7 +1007,12 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                         Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
-
+                        EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
+                        Tooltip("Prevent dropping inputs when playing the ocarina quickly");
+                        EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
+                        Tooltip("Allow Link to put items away without having to wait around");
+                        EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
+                        Tooltip("After completing the mask trading sub-quest,\npress A and any direction on the mask slot to change masks");
                         ImGui::EndMenu();
                     }
 
@@ -915,59 +1053,61 @@ namespace SohImGui {
                         Tooltip("Disables random drops, except from the Goron Pot, Dampe, and bosses");
                         EnhancementCheckbox("No Heart Drops", "gNoHeartDrops");
                         Tooltip("Disables heart drops, but not heart placements, like from a Deku Scrub running off\nThis simulates Hero Mode from other games in the series");
+                        EnhancementCheckbox("Always Win Goron Pot", "gGoronPot");
+                        Tooltip("Always get the heart piece/purple rupee from the spinning Goron pot");
 
                         if (ImGui::BeginMenu("Potion Values"))
                         {
                             EnhancementCheckbox("Change Red Potion Effect", "gRedPotionEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Red Potions");
-                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "");
+                            EnhancementSliderInt("Red Potion Health: %d", "##REDPOTIONHEALTH", "gRedPotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Red Potions");
                             EnhancementCheckbox("Red Potion Percent Restore", "gRedPercentRestore");
                             Tooltip("Toggles from Red Potions restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Green Potion Effect", "gGreenPotionEffect");
                             Tooltip("Enable the following changes to the amount of mana restored by Green Potions");
-                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "");
+                            EnhancementSliderInt("Green Potion Mana: %d", "##GREENPOTIONMANA", "gGreenPotionMana", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of mana restored by Green Potions, base max mana is 48, max upgraded mana is 96");
                             EnhancementCheckbox("Green Potion Percent Restore", "gGreenPercentRestore");
                             Tooltip("Toggles from Green Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                             EnhancementCheckbox("Change Blue Potion Effects", "gBluePotionEffects");
                             Tooltip("Enable the following changes to the amount of health and mana restored by Blue Potions");
-                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "");
+                            EnhancementSliderInt("Blue Potion Health: %d", "##BLUEPOTIONHEALTH", "gBluePotionHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Blue Potions");
                             EnhancementCheckbox("Blue Potion Health Percent Restore", "gBlueHealthPercentRestore");
                             Tooltip("Toggles from Blue Potions restoring a fixed amount of health to a percent of the player's current max health");
 
-                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "");
+                            EnhancementSliderInt("Blue Potion Mana: %d", "##BLUEPOTIONMANA", "gBluePotionMana", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of mana restored by Blue Potions, base max mana is 48, max upgraded mana is 96");
                             EnhancementCheckbox("Blue Potion Mana Percent Restore", "gBlueManaPercentRestore");
                             Tooltip("Toggles from Blue Potions restoring a fixed amount of mana to a percent of the player's current max mana");
 
                             EnhancementCheckbox("Change Milk Effect", "gMilkEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Milk");
-                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "");
+                            EnhancementSliderInt("Milk Health: %d", "##MILKHEALTH", "gMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Milk");
                             EnhancementCheckbox("Milk Percent Restore", "gMilkPercentRestore");
                             Tooltip("Toggles from Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Separate Half Milk Effect", "gSeparateHalfMilkEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Half Milk\nIf this is disabled, Half Milk will behave the same as Full Milk.");
-                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "");
+                            EnhancementSliderInt("Half Milk Health: %d", "##HALFMILKHEALTH", "gHalfMilkHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Half Milk");
                             EnhancementCheckbox("Half Milk Percent Restore", "gHalfMilkPercentRestore");
                             Tooltip("Toggles from Half Milk restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Effect", "gFairyEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Fairies");
-                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "");
+                            EnhancementSliderInt("Fairy: %d", "##FAIRYHEALTH", "gFairyHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairies");
                             EnhancementCheckbox("Fairy Percent Restore", "gFairyPercentRestore");
                             Tooltip("Toggles from Fairies restoring a fixed amount of health to a percent of the player's current max health");
 
                             EnhancementCheckbox("Change Fairy Revive Effect", "gFairyReviveEffect");
                             Tooltip("Enable the following changes to the amount of health restored by Fairy Revivals");
-                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "");
+                            EnhancementSliderInt("Fairy Revival: %d", "##FAIRYREVIVEHEALTH", "gFairyReviveHealth", 1, 100, "", 0, true);
                             Tooltip("Changes the amount of health restored by Fairy Revivals");
                             EnhancementCheckbox("Fairy Revive Percent Restore", "gFairyRevivePercentRestore");
                             Tooltip("Toggles from Fairy Revivals restoring a fixed amount of health to a percent of the player's current max health");
@@ -1028,6 +1168,8 @@ namespace SohImGui {
                         Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
+                        EnhancementRadioButton("Rotate Link with Right Stick", "gPauseLiveLinkRotation", 3);
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the Right Stick\nYou can zoom in by pointing up and reset Link's rotation by pointing down");
 
                         if (CVar_GetS32("gPauseLiveLinkRotation", 0) != 0) {
                             EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
@@ -1055,8 +1197,10 @@ namespace SohImGui {
                         Tooltip("Randomize the animation played each time you open the menu");
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
                         Tooltip("Randomize the animation played on the menu after a certain time");
+                        EnhancementRadioButton("Random cycle (Idle)", "gPauseLiveLink", 17);
+                        Tooltip("Randomize the animation played on the menu after a certain time (Idle animations only)");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
-                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "");
+                            EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "", 0, true);
                         }
 
                         ImGui::EndMenu();
@@ -1093,6 +1237,14 @@ namespace SohImGui {
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
                     Tooltip("Make Anubis fireballs do fire damage when reflected\nback at them with the Mirror Shield");
+                    EnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix");
+                    Tooltip("Make the Megaton Hammer's crouch stab able to destroy\nrocks without first swinging it normally");
+                    if (CVar_GetS32("gCrouchStabHammerFix", 0) == 0) {
+                        CVar_SetS32("gCrouchStabFix", 0);
+                    } else {
+                        EnhancementCheckbox("Remove power crouch stab", "gCrouchStabFix");
+                        Tooltip("Make crouch stabbing always do the same damage as a regular slash");
+                    }
 
                     ImGui::EndMenu();
                 }
@@ -1115,8 +1267,16 @@ namespace SohImGui {
 
                 const char* fps_cvar = "gInterpolationFPS";
                 {
-                    int val = CVar_GetS32(fps_cvar, 20);
-                    val = MAX(MIN(val, 250), 20);
+                #ifdef __SWITCH__
+                    int minFps = 20;
+                    int maxFps = 60;
+                #else
+                    int minFps = 20;
+                    int maxFps = 250;
+                #endif
+
+                    int val = CVar_GetS32(fps_cvar, minFps);
+                    val = MAX(MIN(val, maxFps), 20);
                     int fps = val;
 
                     if (fps == 20)
@@ -1128,8 +1288,27 @@ namespace SohImGui {
                         ImGui::Text("Frame interpolation: %d FPS", fps);
                     }
 
-                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    std::string MinusBTNFPSI = " - ##FPSInterpolation";
+                    std::string PlusBTNFPSI = " + ##FPSInterpolation";
+                    if (ImGui::Button(MinusBTNFPSI.c_str())) {
+                        val--;
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+                    if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
+                        if (val > 250)
+                        {
+                            val = 250;
+                        }
+                        else if (val < 20)
+                        {
+                            val = 20;
+                        }
+                        
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
@@ -1140,6 +1319,14 @@ namespace SohImGui {
                         "and might give a worse result.\n"
                         "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
                         "Ctrl+Click for keyboard input");
+
+                    ImGui::SameLine();
+                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                    if (ImGui::Button(PlusBTNFPSI.c_str())) {
+                        val++;
+                        CVar_SetS32(fps_cvar, val);
+                        needs_save = true;
+                    }
                 }
                 if (impl.backend == Backend::DX11)
                 {
@@ -1167,6 +1354,24 @@ namespace SohImGui {
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
+                Tooltip("Enables camera control\nNote: You must remap C buttons off of\nthe right stick in the controller\nconfig menu, and map the camera stick\nto the right stick.");
+
+             #ifdef __SWITCH__
+                int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
+                ImGui::Text("Switch performance mode");
+                if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
+                    for (int sId = 0; sId <= SwitchProfiles::POWERSAVINGM3; sId++) {
+                        if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
+                            INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                            CVar_SetS32("gSwitchPerfMode", sId);
+                            Switch::ApplyOverclock();
+                            needs_save = true;
+                        }
+
+                    }
+                    ImGui::EndCombo();
+                }
+             #endif
 
                 ImGui::EndMenu();
             }
@@ -1216,11 +1421,23 @@ namespace SohImGui {
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
+                EnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled");
+                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map\nicons (boss key, compass, map screen locations, etc) will set the GS bits in that\narea. USE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select\n(Does not require the Debug Menu, but you will be unable to save there\nYou can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
+                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
-                    EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
-                }
+                    const char* FastFileSelect[5] = {
+                        "File N.1",
+                        "File N.2",
+                        "File N.3",
+                        "File select",
+                        "Zelda Map Select (require OoT Debug Mode)"
+                    };
+                    ImGui::Text("Loading :");
+                    EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
+                    EnhancementCheckbox("Create a new save if none", "gCreateNewSave");
+                    Tooltip("Enable the creation of a new save file\nif none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text\nelse your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
+                };
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes,\nand the OS you're playing on");
@@ -1270,6 +1487,8 @@ namespace SohImGui {
             ImGui::Text("Platform: Windows");
 #elif __APPLE__
             ImGui::Text("Platform: macOS");
+#elif defined(__SWITCH__)
+            ImGui::Text("Platform: Nintendo Switch");
 #else
             ImGui::Text("Platform: Linux");
 #endif

@@ -51,6 +51,10 @@
 #include <SDL2/SDL_scancode.h>
 #endif
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
@@ -104,6 +108,9 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
@@ -225,6 +232,7 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+#ifndef __SWITCH__
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -251,19 +259,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
+
                 int samples_left = AudioPlayer_Buffered();
                 u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
 
                 // 3 is the maximum authentic frame divisor.
                 s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
                 for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
                     AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
                 }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
                 audio.processing = false;
@@ -276,8 +281,9 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-    audio.cv_to_thread.notify_one();
+#endif
 
+    audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = CVar_GetS32("gInterpolationFPS", 20);
     static int last_fps;
@@ -318,12 +324,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
+#ifndef __SWITCH__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
+#endif
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -1367,23 +1375,23 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
-extern "C" s16 GetItemModelFromId(s16 itemId) {
+extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
 }
 
-extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
 }
 
-extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
 
-extern "C" void LoadHintLocations(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
-extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
+extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
 
@@ -1391,11 +1399,11 @@ extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
 
-extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }
 
-extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
@@ -1412,7 +1420,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
             price = 40;
             break;
     }
-    switch (language) { 
+    switch (language) {
     case 0: default:
         scrubText += 0x12; // add the sound
         scrubText += 0x38; // sound id
@@ -1467,37 +1475,37 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += 0xA3; // message id
         break;
     }
-    
+
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
     const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
                                                    : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
     return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
 }
 
-extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
 
-extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }

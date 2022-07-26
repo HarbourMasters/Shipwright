@@ -1028,7 +1028,7 @@ s8 D_80131870 = 0;
 u8 D_80131874 = 0;
 u8 D_80131878 = 0;
 u8 D_8013187C = 0;
-u8 D_80131880 = 0;
+u8 sOcarinaDropInputTimer = 0;
 
 OcarinaNote sPierresSong[108] = {
     { 0xFF, 0, 0, 0, 0, 0, 0 },
@@ -1604,9 +1604,11 @@ void func_800ED458(s32 arg0) {
     bool dpad = CVar_GetS32("gDpadOcarina", 0);
     bool rStick = CVar_GetS32("gRStickOcarina", 0);
 
-    if (D_80130F3C != 0 && D_80131880 != 0) {
-        D_80131880--;
-        return;
+    if (D_80130F3C != 0 && sOcarinaDropInputTimer != 0) {
+        sOcarinaDropInputTimer--;
+        if (!CVar_GetS32("gDpadNoDropOcarinaInput", 0)) {
+            return;
+        }
     }
 
     if ((D_8016BA10 == 0) ||
@@ -2123,7 +2125,7 @@ void func_800EE6F4(void) {
         }
 
         if ((D_80130F3C != 0) && (sPrevOcarinaNoteVal != sCurOcarinaBtnVal)) {
-            D_80131880 = 1;
+            sOcarinaDropInputTimer = 1;
         }
 
         sPrevOcarinaNoteVal = sCurOcarinaBtnVal;
@@ -2176,7 +2178,7 @@ void func_800EE930(void) {
     sRecordingStaff.noteIdx = OCARINA_NOTE_INVALID;
     sRecordingStaff.state = 0xFF;
     sRecordingStaff.pos = 0;
-    D_80131880 = 0;
+    sOcarinaDropInputTimer = 0;
 }
 
 f32 D_80131C8C = 0.0f;

@@ -783,6 +783,8 @@ typedef struct {
     /* 0x0E */ u8 ttl;        // duration after which the DMA can be discarded
 } SampleDma; // size = 0x10
 
+#include <PR/ultra64/abi.h>
+
 typedef struct {
     /* 0x0000 */ char unk_0000;
     /* 0x0001 */ s8 numSynthesisReverbs;

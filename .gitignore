@@ -406,3 +406,20 @@ oot.otr
 *.sav
 shipofharkinian.ini
 shipofharkinian.json
+
+# Switch Stuff
+
+*.nro
+*.nacp
+ZAPDTR/ZAPDUtils/lib/*
+!/soh/icon.jpg
+
+# Xcode
+xcuserdata/
+*.xcconfig
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcworkspace/contents.xcworkspacedata
+/*.gcno
+**/xcshareddata/WorkspaceSettings.xcsettings

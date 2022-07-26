@@ -227,7 +227,7 @@ void BgSpot06Objects_GateSpawnBubbles(BgSpot06Objects* this, GlobalContext* glob
 void BgSpot06Objects_GateWaitForSwitch(BgSpot06Objects* this, GlobalContext* globalCtx) {
     s32 i;
 
-    if (Flags_GetSwitch(globalCtx, this->switchFlag)) {
+    if ((CVar_GetS32("gWaterTempleGateFix", 0) == 0 || LINK_IS_ADULT) && Flags_GetSwitch(globalCtx, this->switchFlag)) {
         this->timer = 100;
         this->dyna.actor.world.pos.y += 3.0f;
         this->actionFunc = BgSpot06Objects_GateWaitToOpen;

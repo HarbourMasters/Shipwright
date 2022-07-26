@@ -98,8 +98,10 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     f32 scale;
     Input* input = &globalCtx->state.input[0];
     s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
+    u8 AllowStickRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 3) ? true : false;
     u8 AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? true : false;
     u8 AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? true : false;
+
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
@@ -120,21 +122,31 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
 
     link_kaleido_rot.x = link_kaleido_rot.z = 0;
 
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) ||
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) || // rotate
         (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT))) {
         link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
     } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
         link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
+    } else if(AllowStickRotation && input->cur.cam_x != 0){
+        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.cam_x*(((f32)RotationSpeed)/600.0f));
     }
 
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) ||
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) || // reset rotation
         (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         link_kaleido_rot.y = 32300;
     } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
         link_kaleido_rot.y = 32300;
+    } else if (AllowStickRotation && input->cur.cam_y < -1200) {
+        link_kaleido_rot.y = 32300;
     }
+
+    if (AllowStickRotation && input->cur.cam_y>0) { // Zoom in
+        scale = scale + input->cur.cam_y*.00005;
+        pos.y = pos.y - input->cur.cam_y*.25;
+    }
+    
 
     link_kaleido_rot.x = 0;
 
@@ -637,24 +649,23 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
                     gItemIcons[sAdultUpgradeItemBases[i] + CUR_UPG_VALUE(sAdultUpgrades[i]) - 1], 32, 32, 0);
             }
         }
-
+        // Draw inventory screen icons
         for (k = 0, bit = rowStart, point = 4; k < 3; k++, point += 4, temp++, bit++) {
 
+            int itemId = ITEM_SWORD_KOKIRI + temp;
+            bool age_restricted = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            if (age_restricted) {
+                gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
+                gsSPGrayscale(POLY_KAL_DISP++, true);
+            }
             if (((u32)i == 0) && (k == 2) && (gSaveContext.bgsFlag != 0)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBiggoronSwordIconTex, 32, 32, point);
             } else if ((i == 0) && (k == 2) && (gBitFlags[bit + 1] & gSaveContext.inventory.equipment)) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gBrokenGiantsKnifeIconTex, 32, 32, point);
-            }
-            if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
-                int itemId = ITEM_SWORD_KOKIRI + temp;
-                bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
-                if (not_acquired) {
-                    gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
-                    gsSPGrayscale(POLY_KAL_DISP++, true);
-                }
+            } else if (gBitFlags[bit] & gSaveContext.inventory.equipment) {
                 KaleidoScope_DrawQuadTextureRGBA32(globalCtx->state.gfxCtx, gItemIcons[itemId], 32, 32, point);
-                gsSPGrayscale(POLY_KAL_DISP++, false);
             }
+            gsSPGrayscale(POLY_KAL_DISP++, false);
         }
     }
 

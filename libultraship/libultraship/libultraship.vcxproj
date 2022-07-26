@@ -346,6 +346,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DetailedControlEditor.h" />
+    <ClInclude Include="VirtualController.h" />
     <ClInclude Include="Lib\Mercury\Mercury.h" />
     <ClInclude Include="Lib\nlohmann\json.hpp" />
     <ClInclude Include="abi.h" />
@@ -354,7 +355,6 @@
     <ClInclude Include="Blob.h" />
     <ClInclude Include="ControlDeck.h" />
     <ClInclude Include="Cvar.h" />
-    <ClInclude Include="DisconnectedController.h" />
     <ClInclude Include="Environment.h" />
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="InputEditor.h" />
@@ -451,12 +451,6 @@
     <ClInclude Include="UltraController.h" />
     <ClInclude Include="SDLController.h" />
     <ClInclude Include="WindowShim.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
-      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

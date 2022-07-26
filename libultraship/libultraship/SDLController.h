@@ -31,6 +31,7 @@ namespace Ship {
 			void CreateDefaultBinding(int32_t slot) override;
 
 		private:
+			std::string ControllerName = "Unknown";
 			SDL_GameController* Cont;
 			int physicalSlot;
 			bool supportsGyro;
