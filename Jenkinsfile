@@ -129,7 +129,7 @@ pipeline {
 >>>>>>> aaa1da15 (Add distribution of LInux & macOS)
                             '''
                         }
-                        archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
+                        archiveArtifacts artifacts: 'soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
                     }
                     post {
                         always {
