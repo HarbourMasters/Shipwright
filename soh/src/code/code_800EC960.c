@@ -1254,8 +1254,8 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 #define RSTICK_RIGHT 0x800000
 
 // Function originally not called, so repurposing for control mapping
-void Audio_OcaUpdateBtnMap(u8 dpad) {
-    if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+void Audio_OcaUpdateBtnMap(u32 controlScheme, bool dpad, bool rStick) {
+    if (controlScheme == 0) {
         sOcarinaD5BtnMap = BTN_CUP;
         sOcarinaB4BtnMap = BTN_CLEFT;
         sOcarinaA4BtnMap = BTN_CRIGHT;
@@ -1276,7 +1276,7 @@ void Audio_OcaUpdateBtnMap(u8 dpad) {
         sOcarinaF4BtnMap |= BTN_DDOWN;
     }
 
-    if (CVar_GetS32("gRStickOcarina", 0)) {
+    if (rStick) {
         sOcarinaD5BtnMap |= RSTICK_UP;
         sOcarinaB4BtnMap |= RSTICK_LEFT;
         sOcarinaA4BtnMap |= RSTICK_RIGHT;
@@ -1538,7 +1538,7 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+    if (CVar_GetS32("gCustomOcarinaControls", 0) == 0) {
         disableSongBtnMap = BTN_L;
     } else {
         disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
@@ -1600,7 +1600,9 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
+    u32 controlScheme = CVar_GetS32("gCustomOcarinaControls", 0);
     bool dpad = CVar_GetS32("gDpadOcarina", 0);
+    bool rStick = CVar_GetS32("gRStickOcarina", 0);
 
     if (D_80130F3C != 0 && D_80131880 != 0) {
         D_80131880--;
@@ -1619,7 +1621,7 @@ void func_800ED458(s32 arg0) {
             D_8016BA18 &= phi_v1_2;
         }
 
-        Audio_OcaUpdateBtnMap(dpad);
+        Audio_OcaUpdateBtnMap(controlScheme, dpad, rStick);
         if (D_8016BA18 & sOcarinaD4BtnMap) {
             osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
@@ -1643,7 +1645,7 @@ void func_800ED458(s32 arg0) {
         }
 
         u32 noteSharpBtnMap;
-        if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+        if (controlScheme != 0) {
             noteSharpBtnMap = BTN_R;
         } else {
             noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
@@ -1654,7 +1656,7 @@ void func_800ED458(s32 arg0) {
         }
 
         u32 noteFlatBtnMap;
-        if (CVar_GetS32("gOcarinaControls", 0) == 0) {
+        if (controlScheme != 0) {
             noteFlatBtnMap = BTN_Z;
         } else {
             noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);

@@ -200,7 +200,7 @@ void Message_ResetOcarinaNoteState(void) {
             .rightStick = CVar_GetS32("gDpadRStick", 0),
         };
 
-        if (CVar_GetS32("gOcarinaControls", 0) == 1) {
+        if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
             Message_SetCustomOcarinaNoteColor(&sOcarinaNoteD5Prim, CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP), &options);
             Message_SetCustomOcarinaNoteColor(&sOcarinaNoteB4Prim, CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT), &options);
             Message_SetCustomOcarinaNoteColor(&sOcarinaNoteA4Prim, CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT), &options);

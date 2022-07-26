@@ -1,4 +1,4 @@
-#include "OcarinaEditor.h"
+#include "DetailedControlEditor.h"
 #include "Lib/ImGui/imgui.h"
 #include "ImGuiImpl.h"
 #include "Lib/ImGui/imgui_internal.h"
@@ -39,12 +39,12 @@ namespace Ship {
 
 	// Assumes only addition since this is only used to construct the button map
 	// So this does not work like a proper linked hash map's insertion
-	void OcarinaEditor::addButton(uint32_t mask, const char* name) {
+	void DetailedControlEditor::addButton(uint32_t mask, const char* name) {
 		buttons.push_back(std::make_pair(mask, name));
 		buttonmap[mask] = std::prev(buttons.end());
 	}
 
-	void OcarinaEditor::Init() {
+	void DetailedControlEditor::Init() {
 		addButton(BTN_A,		"A");
 		addButton(BTN_CUP,		"C Up");
 		addButton(BTN_CDOWN,	"C Down");
@@ -61,7 +61,7 @@ namespace Ship {
 		addButton(0,			"None");
 	}
 
-	void OcarinaEditor::DrawMapping(const char* label, const char* id, uint32_t n64Btn, float width) {
+	void DetailedControlEditor::DrawOcarinaMapping(const char* label, const char* id, uint32_t n64Btn, float width) {
 		std::string cVar = StringHelper::Sprintf("gOcarina%sBtnMap", id);
 		uint32_t currentButton = CVar_GetS32(cVar.c_str(), n64Btn);
 
@@ -97,16 +97,8 @@ namespace Ship {
 		}
 	}
 
-	void OcarinaEditor::DrawHud() {
-		if (!this->Opened) {
-			return;
-		}
-
-		ImGui::SetNextWindowSizeConstraints(ImVec2(410, 0), ImVec2(1200, 290));
-		if (!ImGui::Begin("Ocarina Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize)) {
-			ImGui::End();
-			return;
-		}
+	void DetailedControlEditor::DrawOcarinaControlPanel() {
+		SohImGui::BeginGroupPanel("Ocarina Controls");
 
 		float column2x;
 		if (ImGui::BeginTable("tableOcarinaScheme", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
@@ -114,24 +106,24 @@ namespace Ship {
 			ImGui::TableSetupColumn("Custom Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
 			Table_InitHeader();
 			Draw_HelpIcon("Play the ocarina with A and the C buttons");
-			SohImGui::EnhancementRadioButton("N64 Controls", "gOcarinaControls", 0);
+			SohImGui::EnhancementRadioButton("N64 Controls", "gCustomOcarinaControls", 0);
 			Table_NextCol();
 			column2x = ImGui::GetCursorPosX();
 			Draw_HelpIcon("Customize the ocarina controls to your liking");
-			SohImGui::EnhancementRadioButton("Custom Controls", "gOcarinaControls", 1);
+			SohImGui::EnhancementRadioButton("Custom Controls", "gCustomOcarinaControls", 1);
 			ImGui::EndTable();
 		}
 
-		if (CVar_GetS32("gOcarinaControls", 0) == 1) {
+		if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
 			float width;
 
 			SohImGui::BeginGroupPanel("Notes", ImVec2(158, 20));
 				width = ImGui::CalcTextSize("D5").x + 10;
-				DrawMapping("D5", "D5", BTN_CUP, width);
-				DrawMapping("B4", "B4", BTN_CLEFT, width);
-				DrawMapping("A4", "A4", BTN_CRIGHT, width);
-				DrawMapping("F4", "F4", BTN_CDOWN, width);
-				DrawMapping("D4", "D4", BTN_A, width);
+				DrawOcarinaMapping("D5", "D5", BTN_CUP, width);
+				DrawOcarinaMapping("B4", "B4", BTN_CLEFT, width);
+				DrawOcarinaMapping("A4", "A4", BTN_CRIGHT, width);
+				DrawOcarinaMapping("F4", "F4", BTN_CDOWN, width);
+				DrawOcarinaMapping("D4", "D4", BTN_A, width);
 				ImGui::Dummy(ImVec2(0, 5));
 			SohImGui::EndGroupPanel(33);
 
@@ -140,9 +132,9 @@ namespace Ship {
 			const ImVec2 cursor = ImGui::GetCursorPos();
 			SohImGui::BeginGroupPanel("Misc.", ImVec2(158, 20));
 				width = ImGui::CalcTextSize("Disable songs").x + 10;
-				DrawMapping("Disable songs", "Disable", BTN_L, width);
-				DrawMapping("Pitch up", "Sharp", BTN_R, width);
-				DrawMapping("Pitch down", "Flat", BTN_Z, width);
+				DrawOcarinaMapping("Disable songs", "Disable", BTN_L, width);
+				DrawOcarinaMapping("Pitch up", "Sharp", BTN_R, width);
+				DrawOcarinaMapping("Pitch down", "Flat", BTN_Z, width);
 				ImGui::Dummy(ImVec2(0, 5));
 			SohImGui::EndGroupPanel();
 
@@ -163,9 +155,21 @@ namespace Ship {
 			ImGui::SetCursorPosX(column2x);
 			SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
 			ImGui::Dummy(ImVec2(0, 5));
-			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the menu at the top.");
+			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the buttons above.");
 		}
 
+		SohImGui::EndGroupPanel(6);
+	}
+
+	void DetailedControlEditor::DrawHud() {
+		if (!this->Opened) {
+			return;
+		}
+
+		ImGui::SetNextWindowSizeConstraints(ImVec2(420, 0), ImVec2(1200, 290));
+		if (ImGui::Begin("Detailed Control Configuration", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize)) {
+			DrawOcarinaControlPanel();
+		}
 		ImGui::End();
 	}
 }

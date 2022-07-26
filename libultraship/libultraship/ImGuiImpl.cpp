@@ -65,7 +65,7 @@ namespace SohImGui {
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
-    OcarinaEditor* ocarina = new OcarinaEditor;
+    DetailedControlEditor* detailedControls = new DetailedControlEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
@@ -331,7 +331,7 @@ namespace SohImGui {
         console->Init();
         overlay->Init();
         controller->Init();
-        ocarina->Init();
+        detailedControls->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
 
@@ -763,8 +763,8 @@ namespace SohImGui {
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
 
-                EnhancementCheckbox("Ocarina Configuration", "gOcarinaConfigurationEnabled");
-                ocarina->Opened = CVar_GetS32("gOcarinaConfigurationEnabled", 0);
+                EnhancementCheckbox("Detailed Controls Settings", "gDetailedControlConfigurationEnabled");
+                detailedControls->Opened = CVar_GetS32("gDetailedControlConfigurationEnabled", 0);
 
                 ImGui::Separator();
 
@@ -1280,7 +1280,7 @@ namespace SohImGui {
 
         console->Draw();
         controller->DrawHud();
-        ocarina->DrawHud();
+        detailedControls->DrawHud();
 
         for (auto& windowIter : customWindows) {
             CustomWindow& window = windowIter.second;

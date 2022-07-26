@@ -9,7 +9,7 @@
 
 namespace Ship {
 
-	class OcarinaEditor {
+	class DetailedControlEditor {
 	private:
 		std::list<std::pair<uint32_t, const char*>> buttons;
 		std::unordered_map<uint32_t, decltype(buttons)::iterator> buttonmap;
@@ -19,6 +19,7 @@ namespace Ship {
 		bool Opened = false;
 		void Init();
 		void DrawHud();
-		void DrawMapping(const char*, const char*, uint32_t, float);
+		void DrawOcarinaMapping(const char*, const char*, uint32_t, float);
+		void DrawOcarinaControlPanel();
 	};
 }

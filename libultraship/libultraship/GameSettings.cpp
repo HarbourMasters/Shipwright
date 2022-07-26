@@ -46,7 +46,7 @@ namespace Game {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode) CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
             SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
             SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
-            SohImGui::ocarina->Opened = CVar_GetS32("gOcarinaConfigurationEnabled", 0);
+            SohImGui::detailedControls->Opened = CVar_GetS32("gDetailedControlConfigurationEnabled", 0);
             UpdateAudio();
         });
     }
