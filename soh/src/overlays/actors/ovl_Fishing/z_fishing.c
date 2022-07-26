@@ -4534,7 +4534,6 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
             }
 
             if (prop->shouldDraw) {
-                FrameInterpolation_RecordOpenChild(prop, 0);
                 Matrix_Translate(prop->pos.x, prop->pos.y, prop->pos.z, MTXMODE_NEW);
                 Matrix_Scale(prop->scale, prop->scale, prop->scale, MTXMODE_APPLY);
                 Matrix_RotateY(prop->rotY, MTXMODE_APPLY);
@@ -4542,7 +4541,6 @@ void Fishing_DrawPondProps(GlobalContext* globalCtx) {
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gFishingRockModelDL);
-                FrameInterpolation_RecordCloseChild();
             }
             CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
