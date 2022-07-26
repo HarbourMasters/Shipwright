@@ -90,7 +90,7 @@ ImVec2 Ship::GameOverlay::CalculateTextSize(const char* text, const char* text_e
 	else
 		text_display_end = text_end;
 
-	GameOverlay* overlay = SohImGui::overlay;
+	GameOverlay* overlay = LusImGui::overlay;
 
 	ImFont* font = overlay->CurrentFont == "Default" ? g.Font : overlay->Fonts[overlay->CurrentFont];
 	const float font_size = font->FontSize;
@@ -122,7 +122,7 @@ void Ship::GameOverlay::Init() {
 			this->CurrentFont = DefaultFont;
 		}
 	}
-	SohImGui::console->Commands["overlay"] = { OverlayCommand, "Draw an overlay using a cvar value" };
+	LusImGui::console->Commands["overlay"] = { OverlayCommand, "Draw an overlay using a cvar value" };
 }
 
 void Ship::GameOverlay::DrawSettings() {
@@ -132,7 +132,7 @@ void Ship::GameOverlay::DrawSettings() {
 			if (ImGui::Selectable(name.c_str(), name == this->CurrentFont)) {
 				this->CurrentFont = name;
 				CVar_SetString("gOverlayFont", ImStrdup(name.c_str()));
-				SohImGui::needs_save = true;
+				LusImGui::needs_save = true;
 			}
 
 		}
@@ -201,7 +201,7 @@ bool Ship::OverlayCommand(const std::vector<std::string>& args) {
 
 	if (CVar_Get(args[2].c_str()) != nullptr) {
 		const char* key = args[2].c_str();
-		GameOverlay* overlay = SohImGui::overlay;
+		GameOverlay* overlay = LusImGui::overlay;
 		if (args[1] == "add") {
 			if (!overlay->RegisteredOverlays.contains(key)) {
 				overlay->RegisteredOverlays[key] = new Overlay({ OverlayType::TEXT, ImStrdup(key), -1.0f });

@@ -15,14 +15,14 @@ std::map<ImGuiKey, std::string> BindingToggle;
 
 static bool HelpCommand(const std::vector<std::string>&) {
 	INFO("SoH Commands:");
-	for(const auto& cmd : SohImGui::console->Commands) {
+	for(const auto& cmd : LusImGui::console->Commands) {
 		INFO("%s", (" - " + cmd.first).c_str());
 	}
 	return CMD_SUCCESS;
 }
 
 static bool ClearCommand(const std::vector<std::string>&) {
-	SohImGui::console->Log[SohImGui::console->selected_channel].clear();
+	LusImGui::console->Log[LusImGui::console->selected_channel].clear();
 	return CMD_SUCCESS;
 }
 

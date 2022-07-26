@@ -62,17 +62,17 @@ void DrawColViewerWindow(bool& open) {
         ImGui::End();
         return;
     }
-    SohImGui::EnhancementCheckbox("Enabled", "gColViewerEnabled");
+    LusImGui::EnhancementCheckbox("Enabled", "gColViewerEnabled");
 
-    SohImGui::EnhancementCombo("Scene", "gColViewerScene", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Bg Actors", "gColViewerBgActors", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Col Check", "gColViewerColCheck", ColRenderSettingNames);
-    SohImGui::EnhancementCombo("Waterbox", "gColViewerWaterbox", ColRenderSettingNames);
+    LusImGui::EnhancementCombo("Scene", "gColViewerScene", ColRenderSettingNames);
+    LusImGui::EnhancementCombo("Bg Actors", "gColViewerBgActors", ColRenderSettingNames);
+    LusImGui::EnhancementCombo("Col Check", "gColViewerColCheck", ColRenderSettingNames);
+    LusImGui::EnhancementCombo("Waterbox", "gColViewerWaterbox", ColRenderSettingNames);
 
-    SohImGui::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
+    LusImGui::EnhancementCheckbox("Apply as decal", "gColViewerDecal");
     InsertHelpHoverText("Applies the collision as a decal display. This can be useful if there is z-fighting occuring "
                         "with the scene geometry, but can cause other artifacts.");
-    SohImGui::EnhancementCheckbox("Shaded", "gColViewerShaded");
+    LusImGui::EnhancementCheckbox("Shaded", "gColViewerShaded");
     InsertHelpHoverText("Applies the scene's shading to the collision display.");
 
     // This has to be duplicated in both code paths due to the nature of ImGui::IsItemHovered()
@@ -80,20 +80,20 @@ void DrawColViewerWindow(bool& open) {
     if (ImGui::TreeNode("Colors")) {
         InsertHelpHoverText(colorHelpText);
 
-        SohImGui::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
-        SohImGui::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
+        LusImGui::EnhancementColor("Normal", "gColViewerColorNormal", scene_col, ImVec4(255, 255, 255, 255), false);
+        LusImGui::EnhancementColor("Hookshot", "gColViewerColorHookshot", hookshot_col, ImVec4(128, 128, 255, 255),
                                    false);
-        SohImGui::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
-        SohImGui::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
+        LusImGui::EnhancementColor("Entrance", "gColViewerColorEntrance", entrance_col, ImVec4(0, 255, 0, 255), false);
+        LusImGui::EnhancementColor("Special Surface (Grass/Sand/Etc)", "gColViewerColorSpecialSurface",
                                    specialSurface_col, ImVec4(192, 255, 192, 255), false);
-        SohImGui::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
+        LusImGui::EnhancementColor("Interactable (Vines/Crawlspace/Etc)", "gColViewerColorInteractable",
                                    interactable_col, ImVec4(192, 0, 192, 255), false);
-        SohImGui::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
-        SohImGui::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
-        SohImGui::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
-        SohImGui::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
-        SohImGui::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
-        SohImGui::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
+        LusImGui::EnhancementColor("Slope", "gColViewerColorSlope", slope_col, ImVec4(255, 255, 128, 255), false);
+        LusImGui::EnhancementColor("Void", "gColViewerColorVoid", void_col, ImVec4(255, 0, 0, 255), false);
+        LusImGui::EnhancementColor("OC", "gColViewerColorOC", oc_col, ImVec4(255, 255, 255, 255), false);
+        LusImGui::EnhancementColor("AC", "gColViewerColorAC", ac_col, ImVec4(0, 0, 255, 255), false);
+        LusImGui::EnhancementColor("AT", "gColViewerColorAT", at_col, ImVec4(255, 0, 0, 255), false);
+        LusImGui::EnhancementColor("Waterbox", "gColViewerColorWaterbox", waterbox_col, ImVec4(0, 0, 255, 255), false);
 
         ImGui::TreePop();
     } else {
@@ -288,7 +288,7 @@ void CreateSphereData() {
 }
 
 void InitColViewer() {
-    SohImGui::AddWindow("Developer Tools", "Collision Viewer", "gCollisionViewerEnabled", DrawColViewerWindow);
+    LusImGui::AddWindow("Developer Tools", "Collision Viewer", "gCollisionViewerEnabled", DrawColViewerWindow);
 
     CreateCylinderData();
     CreateSphereData();

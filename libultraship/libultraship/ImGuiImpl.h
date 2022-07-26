@@ -17,7 +17,7 @@ struct GameAsset {
     ImGui::PopStyleColor(); \
     ImGui::Separator();
 
-namespace SohImGui {
+namespace LusImGui {
     enum class Backend {
         DX11,
         SDL

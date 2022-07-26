@@ -64,7 +64,7 @@ OSContPad* pads;
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
 
-namespace SohImGui {
+namespace LusImGui {
 
     WindowImpl impl;
     ImGuiIO* io;
@@ -305,7 +305,7 @@ namespace SohImGui {
             break;
         default:
             // TODO convert other image types
-            SPDLOG_WARN("SohImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
+            SPDLOG_WARN("LusImGui::LoadResource: Attempting to load unsupporting image type %s", path.c_str());
             return;
         }
 
@@ -340,9 +340,9 @@ namespace SohImGui {
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
             #ifdef __SWITCH__
-            SohImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
+            LusImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
             #else
-            SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+            LusImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
             #endif
         }
 
@@ -1221,7 +1221,7 @@ namespace SohImGui {
     void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc) {
         // TODO fix
         //if (customWindows.contains(name)) {
-        //    SPDLOG_ERROR("SohImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
+        //    SPDLOG_ERROR("LusImGui::AddWindow: Attempting to add duplicate window name %s", name.c_str());
         //    return;
         //}
 

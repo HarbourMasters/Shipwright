@@ -44,8 +44,8 @@ namespace Game {
         ModInternal::RegisterHook<ModInternal::AudioInit>(UpdateAudio);
         ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             gfx_get_current_rendering_api()->set_texture_filter((FilteringMode) CVar_GetS32("gTextureFilter", FILTER_THREE_POINT));
-            SohImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
-            SohImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+            LusImGui::console->opened = CVar_GetS32("gConsoleEnabled", 0);
+            LusImGui::controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
             UpdateAudio();
         });
     }

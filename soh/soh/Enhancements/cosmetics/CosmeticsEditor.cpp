@@ -180,9 +180,9 @@ void LoadRainbowColor(bool& open) {
         }
 
         if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-            CVar_SetS32(Cvar_Red.c_str(), SohImGui::ClampFloatToInt(NewColor.x, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), SohImGui::ClampFloatToInt(NewColor.y, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), SohImGui::ClampFloatToInt(NewColor.z, 0, 255));
+            CVar_SetS32(Cvar_Red.c_str(), LusImGui::ClampFloatToInt(NewColor.x, 0, 255));
+            CVar_SetS32(Cvar_Green.c_str(), LusImGui::ClampFloatToInt(NewColor.y, 0, 255));
+            CVar_SetS32(Cvar_Blue.c_str(), LusImGui::ClampFloatToInt(NewColor.z, 0, 255));
         }
     }
 }
@@ -214,7 +214,7 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x-60);
     ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 15);
     ImGui::SmallButton("?");
-    SohImGui::Tooltip(helptext.c_str());
+    LusImGui::Tooltip(helptext.c_str());
     if (sameline) {
         //I do not use ImGui::SameLine(); because it make some element vanish.
         ImGui::SetCursorPosY(ImGui::GetCursorPosY() - 22);
@@ -222,162 +222,162 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
 void Draw_Npcs(){
-    SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
-    SohImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
+    LusImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
+    LusImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
     if (CVar_GetS32("gUseNaviCol",0) && ImGui::BeginTable("tableNavi", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Inner colors##Navi", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Navi", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Inner color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Primary)", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
+        LusImGui::EnhancementColor("Navi Idle (Primary)", "gNavi_Idle_Inner_", navi_idle_i_col, ImVec4(255, 255, 255, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (idle flying around)");
-        SohImGui::EnhancementColor("Navi Idle (Secondary)", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
+        LusImGui::EnhancementColor("Navi Idle (Secondary)", "gNavi_Idle_Outer_", navi_idle_o_col, ImVec4(0, 0, 255, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Primary)", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
+        LusImGui::EnhancementColor("Navi NPC (Primary)", "gNavi_NPC_Inner_", navi_npc_i_col, ImVec4(150, 150, 255, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around NPCs)");
-        SohImGui::EnhancementColor("Navi NPC (Secondary)", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
+        LusImGui::EnhancementColor("Navi NPC (Secondary)", "gNavi_NPC_Outer_", navi_npc_o_col, ImVec4(150, 150, 255, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy (Primary)", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
+        LusImGui::EnhancementColor("Navi Enemy (Primary)", "gNavi_Enemy_Inner_", navi_enemy_i_col, ImVec4(255, 255, 0, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around Enemies or Bosses)");
-        SohImGui::EnhancementColor("Navi Enemy (Secondary)", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
+        LusImGui::EnhancementColor("Navi Enemy (Secondary)", "gNavi_Enemy_Outer_", navi_enemy_o_col, ImVec4(220, 155, 0, 255), false);
         Table_NextLine();
         Draw_HelpIcon("Inner color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Primary)", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
+        LusImGui::EnhancementColor("Navi Prop (Primary)", "gNavi_Prop_Inner_", navi_prop_i_col, ImVec4(0, 255, 0, 255), false);
         Table_NextCol();
         Draw_HelpIcon("Outer color for Navi (when Navi fly around props (signs etc))");
-        SohImGui::EnhancementColor("Navi Prop (Secondary)", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
+        LusImGui::EnhancementColor("Navi Prop (Secondary)", "gNavi_Prop_Outer_", navi_prop_o_col, ImVec4(0, 255, 0, 255), false);
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
-    SohImGui::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
+    LusImGui::EnhancementCheckbox("Custom colors for Keese", "gUseKeeseCol");
+    LusImGui::Tooltip("Enable/Disable custom Keese element colors\nIf disabled, default element colors will be used\nColors go into effect when Keese respawn (or when the room is reloaded)");
     if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Fire colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Ice colors##Keese", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader(false);
         Draw_HelpIcon("Affects the primary color of the Fire itself of the Keese");
-        SohImGui::EnhancementColor("Fire Primary color", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255));
+        LusImGui::EnhancementColor("Fire Primary color", "gKeese1_Ef_Prim", Keese1_primcol, ImVec4(255, 255, 100, 255));
         Table_NextCol();
         Draw_HelpIcon("Affects the primary color of the Ice itself of the Keese");
-        SohImGui::EnhancementColor("Ice Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
+        LusImGui::EnhancementColor("Ice Primary color", "gKeese2_Ef_Prim", Keese2_primcol, ImVec4(100, 200, 255, 255));
         Table_NextLine();
         Draw_HelpIcon("Affects the secondary color of the Fire itself of the Keese");
-        SohImGui::EnhancementColor("Fire Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
+        LusImGui::EnhancementColor("Fire Secondary color", "gKeese1_Ef_Env", Keese1_envcol, ImVec4(255, 50, 0, 255));
         Table_NextCol();
         Draw_HelpIcon("Affects the secondary color of the Ice itself of the Keese");
-        SohImGui::EnhancementColor("Ice Secondary color", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255));
+        LusImGui::EnhancementColor("Ice Secondary color", "gKeese2_Ef_Env", Keese2_envcol, ImVec4(0, 0, 255, 255));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
-    SohImGui::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
+    LusImGui::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
+    LusImGui::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
     if (CVar_GetS32("gUseDogsCol",0) && ImGui::BeginTable("tableDogs", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Dog N.1 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Dog N.2 color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Affects the colors of the white dog");
-        SohImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true);
+        LusImGui::EnhancementColor("Dog white", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affects the colors of the brown dog");
-        SohImGui::EnhancementColor("Dog brown", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true);
+        LusImGui::EnhancementColor("Dog brown", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true);
         ImGui::EndTable();
     }
 }
 void Draw_ItemsSkills(){
-    SohImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
-    SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+    LusImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
+    LusImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
     if (CVar_GetS32("gUseTunicsCol",0) && ImGui::BeginTable("tableTunics", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Kokiri Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Goron Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Zora Tunic", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/3);
         Table_InitHeader();
         Draw_HelpIcon("Affects Kokiri Tunic color", false);
-        SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
+        LusImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affects Goron Tunic color", false);
-        SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
+        LusImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
         Table_NextCol();
         Draw_HelpIcon("Affects Zora Tunic color", false);
-        SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
+        LusImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
+    LusImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
     if (CVar_GetS32("gUseArrowsCol",0) && ImGui::BeginTable("tableArrows", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Primary colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Arrows", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Fire Arrows (primary)", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255));
+        LusImGui::EnhancementColor("Fire Arrows (primary)", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Fire Arrows", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255));
+        LusImGui::EnhancementColor("Fire Arrows", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255));
         Table_NextLine();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Ice Arrows (primary)", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255));
+        LusImGui::EnhancementColor("Ice Arrows (primary)", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Ice Arrows", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255));
+        LusImGui::EnhancementColor("Ice Arrows", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255));
         Table_NextLine();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Light Arrows (primary)", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255));
+        LusImGui::EnhancementColor("Light Arrows (primary)", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Light Arrows", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255));
+        LusImGui::EnhancementColor("Light Arrows", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
+    LusImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
     if (CVar_GetS32("gUseSpellsCol",0) && ImGui::BeginTable("tableSpells", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Inner colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Spells", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Din's Fire (primary)", "gDF_Col", df_col, ImVec4(255,200,0,255));
+        LusImGui::EnhancementColor("Din's Fire (primary)", "gDF_Col", df_col, ImVec4(255,200,0,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Din's Fire", "gDF_Env", df_colenv, ImVec4(255,0,0,255));
+        LusImGui::EnhancementColor("Din's Fire", "gDF_Env", df_colenv, ImVec4(255,0,0,255));
         Table_NextLine();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond (primary)", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255));
+        LusImGui::EnhancementColor("Nayru's Love Diamond (primary)", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255));
+        LusImGui::EnhancementColor("Nayru's Love Diamond", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255));
         Table_NextLine();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb (primary)", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255));
+        LusImGui::EnhancementColor("Nayru's Love Orb (primary)", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255));
+        LusImGui::EnhancementColor("Nayru's Love Orb", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
+    LusImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
     if (CVar_GetS32("gUseChargedCol",0) && ImGui::BeginTable("tableChargeAtk", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Primary colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Charge", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
         Table_InitHeader();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 1 color (primary)", "gCharged1Col", charged1_col, ImVec4(170,255,255,255));
+        LusImGui::EnhancementColor("Level 1 color (primary)", "gCharged1Col", charged1_col, ImVec4(170,255,255,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 1 color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255));
+        LusImGui::EnhancementColor("Level 1 color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255));
         Table_NextLine();
         Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 2 color (primary)", "gCharged2Col", charged2_col, ImVec4(255,255,170,255));
+        LusImGui::EnhancementColor("Level 2 color (primary)", "gCharged2Col", charged2_col, ImVec4(255,255,170,255));
         Table_NextCol();
         Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
+        LusImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
         ImGui::EndTable();
     }
-    SohImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
+    LusImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
     if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("Custom Trails", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
         Draw_HelpIcon("Affects Swords slash, boomerang and Bombchu trails color");
-        SohImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
-        SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
-        SohImGui::Tooltip("The longer the trails the weirder it become");
+        LusImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
+        LusImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
+        LusImGui::Tooltip("The longer the trails the weirder it become");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -389,10 +389,10 @@ void Draw_Menus(){
             ImGui::TableSetupColumn("Bottom text color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
             Table_InitHeader();
             Draw_HelpIcon("Affects the File Select menu background.");
-            SohImGui::EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, true);
+            LusImGui::EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, true);
             Table_NextCol();
             Draw_HelpIcon("Affects the File Select texts.");
-            SohImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, true);
+            LusImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, true);
             ImGui::EndTable();
         }
         /*
@@ -427,18 +427,18 @@ void Draw_Placements(){
     if (ImGui::BeginTable("tableMargins", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
         ImGui::TableSetupColumn("General margins settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
-        SohImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-        SohImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
-        SohImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        LusImGui::EnhancementSliderInt("Top : %dx", "##UIMARGINT", "gHUDMargin_T", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
+        LusImGui::EnhancementSliderInt("Left: %dx", "##UIMARGINL", "gHUDMargin_L", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
+        LusImGui::EnhancementSliderInt("Right: %dx", "##UIMARGINR", "gHUDMargin_R", (ImGui::GetWindowViewport()->Size.x)*-1, 25, "", 0, true);
+        LusImGui::EnhancementSliderInt("Bottom: %dx", "##UIMARGINB", "gHUDMargin_B", (ImGui::GetWindowViewport()->Size.y/2)*-1, 25, "", 0, true);
         SetMarginAll("All margins on",true);
-        SohImGui::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
+        LusImGui::Tooltip("Set most of the element to use margin\nSome elements with default position will not be affected\nElements without Archor or Hidden will not be turned on");
         ImGui::SameLine();
         SetMarginAll("All margins off",false);
-        SohImGui::Tooltip("Set all of the element to not use margin");
+        LusImGui::Tooltip("Set all of the element to not use margin");
         ImGui::SameLine();
         ResetPositionAll();
-        SohImGui::Tooltip("Revert every element to use their original position and no margins");
+        LusImGui::Tooltip("Revert every element to use their original position and no margins");
         ImGui::NewLine();
         ImGui::EndTable();
     }
@@ -446,22 +446,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableHeartsCounts", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Hearts counts settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Hearts count use margins", "gHeartsUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gHeartsCountPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gHeartsCountPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gHeartsCountPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gHeartsCountPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gHeartsCountPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##HeartCountPosY", "gHeartsPosY", -22, ImGui::GetWindowViewport()->Size.y, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Hearts count use margins", "gHeartsUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gHeartsCountPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gHeartsCountPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gHeartsCountPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gHeartsCountPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gHeartsCountPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##HeartCountPosY", "gHeartsPosY", -22, ImGui::GetWindowViewport()->Size.y, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##HeartCountPosX", "gHeartsPosX", -25, ImGui::GetWindowViewport()->Size.x, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -470,22 +470,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablemmpos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Magic meter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Magic meter use margins", "gMagicBarUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gMagicBarPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gMagicBarPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gMagicBarPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gMagicBarPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gMagicBarPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Magic meter use margins", "gMagicBarUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gMagicBarPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gMagicBarPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gMagicBarPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gMagicBarPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gMagicBarPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##MagicBarPosY", "gMagicBarPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##MagicBarPosX", "gMagicBarPosX", -5, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -494,20 +494,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabledvisualstoneofagony", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Visual stone of agony settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Visual stone of agony use margins", "gVSOAUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gVSOAPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gVSOAPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gVSOAPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gVSOAPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gVSOAPosType", 4); //in case you want only SFX
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("Visual stone of agony use margins", "gVSOAUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gVSOAPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gVSOAPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gVSOAPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gVSOAPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gVSOAPosType", 4); //in case you want only SFX
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##VSOAPosY", "gVSOAPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gVSOAPosType",0) == 2){
@@ -515,8 +515,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gVSOAPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##VSOAPosX", "gVSOAPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -525,22 +525,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablebbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("B Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("B Button use margins", "gBBtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gBBtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gBBtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gBBtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gBBtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gBBtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##BBtnPosY", "gBBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##BBtnPosX", "gBBtnPosX", -1, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("B Button use margins", "gBBtnUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gBBtnPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gBBtnPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gBBtnPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gBBtnPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gBBtnPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##BBtnPosY", "gBBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##BBtnPosX", "gBBtnPosX", -1, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -549,22 +549,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableabtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("A Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("A Button use margins", "gABtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gABtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gABtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gABtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gABtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gABtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ABtnPosY", "gABtnPosY", -10, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ABtnPosX", "gABtnPosX", -20, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("A Button use margins", "gABtnUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gABtnPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gABtnPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gABtnPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gABtnPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gABtnPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##ABtnPosY", "gABtnPosY", -10, ImGui::GetWindowViewport()->Size.y/4+50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##ABtnPosX", "gABtnPosX", -20, ImGui::GetWindowViewport()->Size.x-50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -573,22 +573,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablestartbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Start Button settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Start Button use margins", "gStartBtnUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gStartBtnPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gStartBtnPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gStartBtnPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gStartBtnPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gStartBtnPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##StartBtnPosY", "gStartBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##StartBtnPosX", "gStartBtnPosX", 0, ImGui::GetWindowViewport()->Size.x/2+70, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Start Button use margins", "gStartBtnUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gStartBtnPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gStartBtnPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gStartBtnPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gStartBtnPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gStartBtnPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##StartBtnPosY", "gStartBtnPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##StartBtnPosX", "gStartBtnPosX", 0, ImGui::GetWindowViewport()->Size.x/2+70, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -597,20 +597,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablecubtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("C Button Up settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Up use margins", "gCBtnUUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnUPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnUPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnUPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnUPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnUPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnUPosY", "gCBtnUPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("C Button Up use margins", "gCBtnUUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gCBtnUPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gCBtnUPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gCBtnUPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gCBtnUPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gCBtnUPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnUPosY", "gCBtnUPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CU = 0;
             s16 Max_X_CU = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnUPosType",0) == 2){
@@ -620,8 +620,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnUPosType",0) == 4){
                 Min_X_CU = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", Min_X_CU, Max_X_CU, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnUPosX", "gCBtnUPosX", Min_X_CU, Max_X_CU, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -630,20 +630,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablecdbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("C Button Down settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Down use margins", "gCBtnDUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnDPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnDPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnDPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnDPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnDPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnDPosY", "gCBtnDPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("C Button Down use margins", "gCBtnDUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gCBtnDPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gCBtnDPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gCBtnDPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gCBtnDPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gCBtnDPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnDPosY", "gCBtnDPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CD = 0;
             s16 Max_X_CD = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnDPosType",0) == 2){
@@ -653,8 +653,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
                 Min_X_CD = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnDPosX", "gCBtnDPosX", Min_X_CD, Max_X_CD, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnDPosX", "gCBtnDPosX", Min_X_CD, Max_X_CD, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -663,20 +663,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableclbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("C Button Left settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Left use margins", "gCBtnLUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnLPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnLPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnLPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnLPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnLPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnLPosY", "gCBtnLPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("C Button Left use margins", "gCBtnLUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gCBtnLPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gCBtnLPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gCBtnLPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gCBtnLPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gCBtnLPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnLPosY", "gCBtnLPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CL = 0;
             s16 Max_X_CL = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnDPosType",0) == 2){
@@ -686,8 +686,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnDPosType",0) == 4){
                 Min_X_CL = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnLPosX", "gCBtnLPosX", Min_X_CL, Max_X_CL, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnLPosX", "gCBtnLPosX", Min_X_CL, Max_X_CL, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -696,20 +696,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablecrnbtn", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("C Button Right settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("C Button Right use margins", "gCBtnRUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCBtnRPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCBtnRPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCBtnRPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCBtnRPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCBtnRPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("C Button Right use margins", "gCBtnRUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gCBtnRPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gCBtnRPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gCBtnRPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gCBtnRPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gCBtnRPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##CBtnRPosY", "gCBtnRPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_CR = 0;
             s16 Max_X_CR = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gCBtnRPosType",0) == 2){
@@ -719,8 +719,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gCBtnRPosType",0) == 4){
                 Min_X_CR = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", Min_X_CR, Max_X_CR, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##CBtnRPosX", "gCBtnRPosX", Min_X_CR, Max_X_CR, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -729,20 +729,20 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabledpaditems", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("DPad items settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gDPadPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gDPadPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gDPadPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gDPadPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementCheckbox("DPad items use margins", "gDPadUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gDPadPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gDPadPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gDPadPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gDPadPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gDPadPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##DPadPosY", "gDPadPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
             s16 Min_X_Dpad = 0;
             s16 Max_X_Dpad = ImGui::GetWindowViewport()->Size.x/2;
             if(CVar_GetS32("gDPadPosType",0) == 2){
@@ -750,8 +750,8 @@ void Draw_Placements(){
             } else if(CVar_GetS32("gDPadPosType",0) == 4){
                 Min_X_Dpad = (ImGui::GetWindowViewport()->Size.x/2)*-1;
             }
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##DPadPosX", "gDPadPosX", Min_X_Dpad, Max_X_Dpad, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -760,22 +760,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableminimapspos", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("minimaps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Minimap Button use margins", "gMinimapUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gMinimapPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gMinimapPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gMinimapPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementCheckbox("Minimap Button use margins", "gMinimapUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gMinimapPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gMinimapPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gMinimapPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
             //SohImGui::EnhancementRadioButton("No anchors", "gMinimapPosType", 3); //currently bugged
             //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gMinimapPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##MinimapPosY", "gMinimapPosY", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##MinimapPosX", "gMinimapPosX", ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gMinimapPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##MinimapPosY", "gMinimapPosY", (ImGui::GetWindowViewport()->Size.y/3)*-1, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##MinimapPosX", "gMinimapPosX", ImGui::GetWindowViewport()->Size.x*-1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -784,22 +784,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablesmolekeys", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Small Keys counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Small Keys counter use margins", "gSKCUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gSKCPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gSKCPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gSKCPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gSKCPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gSKCPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##SKCPosY", "gSKCPosY", 0, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##SKCPosX", "gSKCPosX", -1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Small Keys counter use margins", "gSKCUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gSKCPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gSKCPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gSKCPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gSKCPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gSKCPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##SKCPosY", "gSKCPosY", 0, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##SKCPosX", "gSKCPosX", -1, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -808,22 +808,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablerupeecount", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Rupee counter settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Rupee counter use margins", "gRCUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gRCPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gRCPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gRCPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gRCPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gRCPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##RCPosY", "gRCPosY", -2, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##RCPosX", "gRCPosX", -3, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Rupee counter use margins", "gRCUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gRCPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gRCPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gRCPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gRCPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gRCPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##RCPosY", "gRCPosY", -2, ImGui::GetWindowViewport()->Size.y/3, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##RCPosX", "gRCPosX", -3, ImGui::GetWindowViewport()->Size.x/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -832,22 +832,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tableCarrots", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Carrots settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Carrots use margins", "gCarrotsUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gCarrotsPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gCarrotsPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gCarrotsPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gCarrotsPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gCarrotsPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##CarrotsPosY", "gCarrotsPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##CarrotsPosX", "gCarrotsPosX", -50, ImGui::GetWindowViewport()->Size.x/2+25, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Carrots use margins", "gCarrotsUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gCarrotsPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gCarrotsPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gCarrotsPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gCarrotsPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gCarrotsPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##CarrotsPosY", "gCarrotsPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##CarrotsPosX", "gCarrotsPosX", -50, ImGui::GetWindowViewport()->Size.x/2+25, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -856,22 +856,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabletimers", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Timers settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Timers use margins", "gTimersUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTimersPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTimersPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTimersPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTimersPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTimersPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TimersPosY", "gTimersPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TimersPosX", "gTimersPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Timers use margins", "gTimersUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gTimersPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gTimersPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gTimersPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gTimersPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gTimersPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##TimersPosY", "gTimersPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##TimersPosX", "gTimersPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -880,22 +880,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tablearchery", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Archery Scores settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Archery Scores use margins", "gASUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gASPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gASPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gASPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementCheckbox("Archery Scores use margins", "gASUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gASPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gASPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gASPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
             //SohImGui::EnhancementRadioButton("No anchors", "gASPosType", 3); //currently bugged
             //SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gASPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##ASPosX", "gASPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gASPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##ASPosY", "gASPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##ASPosX", "gASPosX", -50, ImGui::GetWindowViewport()->Size.x/2-50, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -904,22 +904,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabletcmaps", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Titlecard maps settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Title cards (Maps) use margins", "gTCMUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTCMPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTCMPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTCMPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTCMPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTCMPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCMPosY", "gTCMPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCMPosX", "gTCMPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, ""), true;
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Title cards (Maps) use margins", "gTCMUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gTCMPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gTCMPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gTCMPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gTCMPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gTCMPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCMPosY", "gTCMPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCMPosX", "gTCMPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, ""), true;
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -928,22 +928,22 @@ void Draw_Placements(){
         if (ImGui::BeginTable("tabletcbosses", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
             ImGui::TableSetupColumn("Title cards (Bosses) settings", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
             Table_InitHeader(false);
-            SohImGui::EnhancementCheckbox("Title cards (Bosses) use margins", "gTCBUseMargins");
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Original position", "gTCBPosType", 0);
-            SohImGui::Tooltip("This will use original intended elements position.");
-            SohImGui::EnhancementRadioButton("Anchor to the left", "gTCBPosType", 1);
-            SohImGui::Tooltip("This will make your elements follow the left side of your game window.");
-            SohImGui::EnhancementRadioButton("Anchor to the right", "gTCBPosType", 2);
-            SohImGui::Tooltip("This will make your elements follow the right side of your game window.");
-            SohImGui::EnhancementRadioButton("No anchors", "gTCBPosType", 3);
-            SohImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
-            SohImGui::EnhancementRadioButton("Hidden", "gTCBPosType", 4);
-            SohImGui::Tooltip("This will make your elements hidden");
-            SohImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCBPosY", "gTCBPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Up and Down your elements.");
-            SohImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCBPosX", "gTCBPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "", 0, true);
-            SohImGui::Tooltip("This slider is used to move Left and Right your elements.");
+            LusImGui::EnhancementCheckbox("Title cards (Bosses) use margins", "gTCBUseMargins");
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Original position", "gTCBPosType", 0);
+            LusImGui::Tooltip("This will use original intended elements position.");
+            LusImGui::EnhancementRadioButton("Anchor to the left", "gTCBPosType", 1);
+            LusImGui::Tooltip("This will make your elements follow the left side of your game window.");
+            LusImGui::EnhancementRadioButton("Anchor to the right", "gTCBPosType", 2);
+            LusImGui::Tooltip("This will make your elements follow the right side of your game window.");
+            LusImGui::EnhancementRadioButton("No anchors", "gTCBPosType", 3);
+            LusImGui::Tooltip("This will make your elements to not follow any side\nBetter used for center elements.");
+            LusImGui::EnhancementRadioButton("Hidden", "gTCBPosType", 4);
+            LusImGui::Tooltip("This will make your elements hidden");
+            LusImGui::EnhancementSliderInt("Up <-> Down : %d", "##TCBPosY", "gTCBPosY", 0, ImGui::GetWindowViewport()->Size.y/2, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Up and Down your elements.");
+            LusImGui::EnhancementSliderInt("Left <-> Right : %d", "##TCBPosX", "gTCBPosX", -50, ImGui::GetWindowViewport()->Size.x/2+10, "", 0, true);
+            LusImGui::Tooltip("This slider is used to move Left and Right your elements.");
             ImGui::NewLine();
             ImGui::EndTable();
         }
@@ -956,7 +956,7 @@ void Draw_HUDButtons(){
                 ImGui::TableSetupColumn("A Button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
                 Draw_HelpIcon("Affects the A button colors (and various cursors that use the same theme)", false);
-                SohImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
+                LusImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
                 ImGui::EndTable();
             }
         }
@@ -965,7 +965,7 @@ void Draw_HUDButtons(){
                 ImGui::TableSetupColumn("B button color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
                 Draw_HelpIcon("Affects the B button color", false);
-                SohImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
+                LusImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
                 ImGui::EndTable();
             }
         }
@@ -974,25 +974,25 @@ void Draw_HUDButtons(){
                 ImGui::TableSetupColumn("Button C colors & C Cursor colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
                 Draw_HelpIcon("Affects the C Buttons' color (if not using separate colors)\nAnd various cursor that use C-Buttons colors", false);
-                SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
+                LusImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
-            SohImGui::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
+            LusImGui::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
             if (CVar_GetS32("gCCparated",0) && ImGui::CollapsingHeader("C Button individual colors")) {
                 if (ImGui::BeginTable("tableBTN_CSep", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("C-Buttons individual colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                     Table_InitHeader(false);
                     Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
+                    LusImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
                     Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
+                    LusImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
                     Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
+                    LusImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
                     Table_NextLine();
                     Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
+                    LusImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
                     ImGui::EndTable();
                 }
             }
@@ -1002,7 +1002,7 @@ void Draw_HUDButtons(){
                 ImGui::TableSetupColumn("Start button colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
                 Draw_HelpIcon("Affects the Start button color", false);
-                SohImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
+                LusImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
                 ImGui::EndTable();
             }
         }
@@ -1011,7 +1011,7 @@ void Draw_HUDButtons(){
                 ImGui::TableSetupColumn("DPad color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader(false);
                 Draw_HelpIcon("DPad background color, White is the default value");
-                SohImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
+                LusImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
                 ImGui::EndTable();
             }
         }
@@ -1026,31 +1026,31 @@ void Draw_General(){
         ImGui::TableSetupColumn("Custom Schemes", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
         Table_InitHeader();
         Draw_HelpIcon("Change interface color to N64 style");
-        SohImGui::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
+        LusImGui::EnhancementRadioButton("N64 Colors", "gHudColors", 0);
         Table_NextCol();
         Draw_HelpIcon("Change interface color to GameCube style");
-        SohImGui::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
+        LusImGui::EnhancementRadioButton("GCN Colors", "gHudColors", 1);
         Table_NextCol();
         Draw_HelpIcon("Lets you change every interface color to your liking");
-        SohImGui::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
+        LusImGui::EnhancementRadioButton("Custom Colors", "gHudColors", 2);
         ImGui::EndTable();
     }
     if (CVar_GetS32("gHudColors",0) ==2 ){
         if (ImGui::CollapsingHeader("Hearts colors")) {
-            SohImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
+            LusImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
             if (ImGui::BeginTable("tableHearts", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("Hearts (normal)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts Outline (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 Table_InitHeader();
                 Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner normal", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, true);
+                LusImGui::EnhancementColor("Inner normal", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, true);
                 Table_NextCol();
                 Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner DD", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, true);
+                LusImGui::EnhancementColor("Inner DD", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, true);
                 Table_NextCol();
                 Draw_HelpIcon("Affects the outline color of hearts when you have Double Defense\nWhite is the default value", false);
-                SohImGui::EnhancementColor("Outline DD", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, true);
+                LusImGui::EnhancementColor("Outline DD", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, true);
                 ImGui::EndTable();
             }
         }
@@ -1060,16 +1060,16 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Magic meter in use", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
                 Table_InitHeader();
                 Draw_HelpIcon("Affects the border of the magic meter\nWhite is the default value, color change only when used one time");
-                SohImGui::EnhancementColor("Borders", "gCCMagicBorderNormPrim", magic_bordern_colors, ImVec4(255,255,255,255), false);
+                LusImGui::EnhancementColor("Borders", "gCCMagicBorderNormPrim", magic_bordern_colors, ImVec4(255,255,255,255), false);
                 Table_NextCol();
                 Draw_HelpIcon("Affects the border of the magic meter when being used\nWhite is the default value");
-                SohImGui::EnhancementColor("Borders in use", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255), false);
+                LusImGui::EnhancementColor("Borders in use", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255), false);
                 Table_NextLine();
                 Draw_HelpIcon("Affects the magic meter color\nGreen is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255));
+                LusImGui::EnhancementColor("Main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255));
                 Table_NextCol();
                 Draw_HelpIcon("Affects the magic meter when being used\nYellow is the default value");
-                SohImGui::EnhancementColor("Main color in use", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255));
+                LusImGui::EnhancementColor("Main color in use", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255));
                 ImGui::EndTable();
             }
         }
@@ -1078,16 +1078,16 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Minimap color", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader();
                 Draw_HelpIcon("Affects the Overworld minimaps");
-                SohImGui::EnhancementColor("Overworlds", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
+                LusImGui::EnhancementColor("Overworlds", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
                 Table_NextLine();
                 Draw_HelpIcon("Affects the Dungeon minimaps");
-                SohImGui::EnhancementColor("Dungeons", "gCCMinimapDGNPrim", dgn_minimap_colors, ImVec4(100, 255, 255, 255));
+                LusImGui::EnhancementColor("Dungeons", "gCCMinimapDGNPrim", dgn_minimap_colors, ImVec4(100, 255, 255, 255));
                 Table_NextLine();
                 Draw_HelpIcon("Affects the current position arrow on the minimap\nYellow is the default value");
-                SohImGui::EnhancementColor("Current position arrow", "gCCMinimapCPPrim", cp_minimap_colors, ImVec4(200, 255, 0, 255));
+                LusImGui::EnhancementColor("Current position arrow", "gCCMinimapCPPrim", cp_minimap_colors, ImVec4(200, 255, 0, 255));
                 Table_NextLine();
                 Draw_HelpIcon("Affects the last entrance position arrow on the minimap\nRed is the default value");
-                SohImGui::EnhancementColor("Last entrance arrow", "gCCMinimapLEPrim", le_minimap_colors, ImVec4(200, 0, 0, 255));
+                LusImGui::EnhancementColor("Last entrance arrow", "gCCMinimapLEPrim", le_minimap_colors, ImVec4(200, 0, 0, 255));
                 ImGui::EndTable();
             }
         }
@@ -1097,10 +1097,10 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Title cards Bosses", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth/2);
                 Table_InitHeader();
                 Draw_HelpIcon("Affects all the overworld title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
+                LusImGui::EnhancementColor("Main color", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
                 Table_NextCol();
                 Draw_HelpIcon("Affects all the bosses title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
+                LusImGui::EnhancementColor("Main color", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
                 ImGui::EndTable();
             }
         }
@@ -1109,13 +1109,13 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Misc HUD colors", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TablesCellsWidth);
                 Table_InitHeader();
                 Draw_HelpIcon("Affects the Rupee icon on interface\nGreen is the default value");
-                SohImGui::EnhancementColor("Rupee icon", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255));
+                LusImGui::EnhancementColor("Rupee icon", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255));
                 Table_NextLine();
                 Draw_HelpIcon("Affects the Small keys icon on interface\nGray is the default value");
-                SohImGui::EnhancementColor("Small Keys icon", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
+                LusImGui::EnhancementColor("Small Keys icon", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
                 Table_NextLine();
                 Draw_HelpIcon("Affects the Stone of Agony icon on interface\nWhite is the default value");
-                SohImGui::EnhancementColor("Stone of agony icon", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255));
+                LusImGui::EnhancementColor("Stone of agony icon", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255));
                 ImGui::EndTable();
             }
         }
@@ -1169,5 +1169,5 @@ void DrawCosmeticsEditor(bool& open) {
 }
 void InitCosmeticsEditor() {
     //Draw the bar in the menu.
-    SohImGui::AddWindow("Cosmetics", "Cosmetics Editor", "gCosmeticsEditorEnabled", DrawCosmeticsEditor);
+    LusImGui::AddWindow("Cosmetics", "Cosmetics Editor", "gCosmeticsEditorEnabled", DrawCosmeticsEditor);
 }

@@ -249,7 +249,7 @@ void DrawEquip(uint32_t itemId) {
     const ItemTrackerMapEntry& entry = equipTrackerMap[itemId];
     bool hasEquip = (entry.bitMask & gSaveContext.inventory.equipment) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+    ImGui::Image(LusImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -276,7 +276,7 @@ void DrawQuest(uint32_t itemId) {
     bool hasQuestItem = (entry.bitMask & gSaveContext.inventory.questItems) != 0;
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+    ImGui::Image(LusImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     ImVec2 p = ImGui::GetCursorScreenPos();
@@ -459,7 +459,7 @@ void DrawItem(uint32_t itemId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
 
     ImGui::BeginGroup();
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+    ImGui::Image(LusImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
     ImVec2 p = ImGui::GetCursorScreenPos();
     int estimatedTextWidth = 10;
@@ -685,7 +685,7 @@ void DrawBottle(uint32_t itemId, uint32_t bottleSlot) {
     bool hasItem = actualItemId != ITEM_NONE;
     const ItemTrackerMapEntry& entry = itemTrackerMap[hasItem ? actualItemId : itemId];
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
-    ImGui::Image(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
+    ImGui::Image(LusImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded), ImVec2(iconSize, iconSize),
                  ImVec2(0, 0), ImVec2(1, 1));
 
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
@@ -731,12 +731,12 @@ void DrawUpgrade(int32_t categoryId) {
     int iconSize = CVar_GetS32("gRandoTrackIconSize", 0);
     if (CUR_UPG_VALUE(categoryId) == 0) {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][0];
-        ImGui::Image(SohImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
+        ImGui::Image(LusImGui::GetTextureByName(entry.nameFaded), ImVec2(iconSize, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     } else {
         const ItemTrackerUpgradeEntry& entry = upgradeTrackerMap[categoryId][CUR_UPG_VALUE(categoryId) - 1];
-        ImGui::Image(SohImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
+        ImGui::Image(LusImGui::GetTextureByName(entry.name), ImVec2(iconSize, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
         SetLastItemHoverText(SohUtils::GetItemName(entry.id));
     }
@@ -802,7 +802,7 @@ void DrawSong(int32_t songId) {
                                         vanillaSongTrackerMap[songId];
     uint32_t bitMask = 1 << entry.id;
     bool hasSong = (bitMask & gSaveContext.inventory.questItems) != 0;
-    ImGui::Image(SohImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
+    ImGui::Image(LusImGui::GetTextureByName(hasSong ? entry.name : entry.nameFaded), ImVec2(iconSize/1.5, iconSize),
             ImVec2(0, 0), ImVec2(1, 1));
     SetLastItemHoverText(SohUtils::GetQuestItemName(entry.id));
 }
@@ -983,12 +983,12 @@ void DrawItemTracker(bool& open) {
             } else {
                 minimalSpacingX = 32;
             }
-            SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
-            SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
-            SohImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
-            SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
+            LusImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
+            LusImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
+            LusImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
+            LusImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
-            SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
+            LusImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
                                            "");
             // SohImGui::EnhancementSliderInt("Y Spacing : %dpx", "##ITEMTRACKERSPACINGY", "gRandoTrackIconSpacingY", 0,
             //                                16, "");
@@ -1015,5 +1015,5 @@ void DrawItemTracker(bool& open) {
 }
 
 void InitItemTracker() {
-    SohImGui::AddWindow("Randomizer", "Item Tracker", "gItemTrackerEnabled", DrawItemTracker);
+    LusImGui::AddWindow("Randomizer", "Item Tracker", "gItemTrackerEnabled", DrawItemTracker);
 }

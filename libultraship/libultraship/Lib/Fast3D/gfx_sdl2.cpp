@@ -191,10 +191,10 @@ static void gfx_sdl_init(const char *game_name, bool start_in_fullscreen, uint32
 
     SDL_GL_SetSwapInterval(1);
 
-    SohImGui::WindowImpl window_impl;
-    window_impl.backend = SohImGui::Backend::SDL;
+    LusImGui::WindowImpl window_impl;
+    window_impl.backend = LusImGui::Backend::SDL;
     window_impl.sdl = { wnd, ctx };
-    SohImGui::Init(window_impl);
+    LusImGui::Init(window_impl);
 
     for (size_t i = 0; i < sizeof(windows_scancode_table) / sizeof(SDL_Scancode); i++) {
         inverted_scancode_table[windows_scancode_table[i]] = i;
@@ -281,9 +281,9 @@ static void gfx_sdl_onkeyup(int scancode) {
 static void gfx_sdl_handle_events(void) {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        SohImGui::EventImpl event_impl;
+        LusImGui::EventImpl event_impl;
         event_impl.sdl = { &event };
-        SohImGui::Update(event_impl);
+        LusImGui::Update(event_impl);
         switch (event.type) {
 #ifndef TARGET_WEB
             // Scancodes are broken in Emscripten SDL2: https://bugzilla.libsdl.org/show_bug.cgi?id=3259

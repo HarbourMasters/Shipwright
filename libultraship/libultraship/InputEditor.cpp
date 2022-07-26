@@ -107,7 +107,7 @@ namespace Ship {
 			Window::ControllerApi->ScanPhysicalDevices();
 		}
 
-		SohImGui::BeginGroupPanel("Buttons", ImVec2(150, 20));
+		LusImGui::BeginGroupPanel("Buttons", ImVec2(150, 20));
 			DrawButton("A", BTN_A);
 			DrawButton("B", BTN_B);
 			DrawButton("L", BTN_L);
@@ -118,10 +118,10 @@ namespace Ship {
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
 	#else
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+		LusImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
 	#endif
 		ImGui::SameLine();
-		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
+		LusImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
 			DrawButton("Down", BTN_DDOWN);
 			DrawButton("Left", BTN_DLEFT);
@@ -130,10 +130,10 @@ namespace Ship {
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
 	#else
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+		LusImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
 	#endif
 		ImGui::SameLine();
-		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
+		LusImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
 			DrawButton("Down", BTN_STICKDOWN);
 			DrawButton("Left", BTN_STICKLEFT);
@@ -158,13 +158,13 @@ namespace Ship {
 		#ifdef __SWITCH__
 			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
 		#else
-			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
 		#endif
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
 			ImGui::SameLine();
-			SohImGui::BeginGroupPanel("Camera Stick", ImVec2(150, 20));
+			LusImGui::BeginGroupPanel("Camera Stick", ImVec2(150, 20));
 				DrawButton("Up", BTN_VSTICKUP);
 				DrawButton("Down", BTN_VSTICKDOWN);
 				DrawButton("Left", BTN_VSTICKLEFT);
@@ -188,14 +188,14 @@ namespace Ship {
 		#ifdef __SWITCH__
 			SohImGui::EndGroupPanel(43.0f);
 		#else
-			SohImGui::EndGroupPanel(14.0f);
+			LusImGui::EndGroupPanel(14.0f);
 		#endif
 		}
 
 		if(Backend->CanGyro()) {
 			ImGui::SameLine();
 
-			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
+			LusImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
 				float cursorX = ImGui::GetCursorPosX() + 5;
 				ImGui::SetCursorPosX(cursorX);
 				ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
@@ -229,7 +229,7 @@ namespace Ship {
 		#ifdef __SWITCH__
 			SohImGui::EndGroupPanel(46.0f);
 		#else
-			SohImGui::EndGroupPanel(14.0f);
+			LusImGui::EndGroupPanel(14.0f);
 		#endif
 		}
 
@@ -237,13 +237,13 @@ namespace Ship {
 
 		const ImVec2 cursor = ImGui::GetCursorPos();
 
-		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
+		LusImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
 			DrawButton("Up", BTN_CUP);
 			DrawButton("Down", BTN_CDOWN);
 			DrawButton("Left", BTN_CLEFT);
 			DrawButton("Right", BTN_CRIGHT);
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel();
+		LusImGui::EndGroupPanel();
 
 		ImGui::SetCursorPosX(cursor.x);
 	#ifdef __SWITCH__
@@ -251,7 +251,7 @@ namespace Ship {
 	#else
 		ImGui::SetCursorPosY(cursor.y + 120);
 	#endif
-		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
+		LusImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
 			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
@@ -264,7 +264,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
+		LusImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
 	}
 
 	void InputEditor::DrawHud() {
