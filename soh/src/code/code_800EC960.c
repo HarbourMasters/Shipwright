@@ -1254,19 +1254,19 @@ s32 Audio_SetGanonDistVol(u8 targetVol);
 #define RSTICK_RIGHT 0x800000
 
 // Function originally not called, so repurposing for control mapping
-void Audio_OcaUpdateBtnMap(u32 controlScheme, bool dpad, bool rStick) {
-    if (controlScheme == 0) {
-        sOcarinaD5BtnMap = BTN_CUP;
-        sOcarinaB4BtnMap = BTN_CLEFT;
-        sOcarinaA4BtnMap = BTN_CRIGHT;
-        sOcarinaF4BtnMap = BTN_CDOWN;
-        sOcarinaD4BtnMap = BTN_A;
-    } else {
+void Audio_OcaUpdateBtnMap(bool customControls, bool dpad, bool rStick) {
+    if (customControls) {
         sOcarinaD5BtnMap = CVar_GetS32("gOcarinaD5BtnMap", BTN_CUP);
         sOcarinaB4BtnMap = CVar_GetS32("gOcarinaB4BtnMap", BTN_CLEFT);
         sOcarinaA4BtnMap = CVar_GetS32("gOcarinaA4BtnMap", BTN_CRIGHT);
         sOcarinaF4BtnMap = CVar_GetS32("gOcarinaF4BtnMap", BTN_CDOWN);
         sOcarinaD4BtnMap = CVar_GetS32("gOcarinaD4BtnMap", BTN_A);
+    } else {
+        sOcarinaD5BtnMap = BTN_CUP;
+        sOcarinaB4BtnMap = BTN_CLEFT;
+        sOcarinaA4BtnMap = BTN_CRIGHT;
+        sOcarinaF4BtnMap = BTN_CDOWN;
+        sOcarinaD4BtnMap = BTN_A;
     }
 
     if (dpad) {
@@ -1538,10 +1538,10 @@ void func_800ED200(void) {
     u8 k;
 
     u32 disableSongBtnMap;
-    if (CVar_GetS32("gCustomOcarinaControls", 0) == 0) {
-        disableSongBtnMap = BTN_L;
-    } else {
+    if (CVar_GetS32("gCustomOcarinaControls", 0)) {
         disableSongBtnMap = CVar_GetS32("gOcarinaDisableBtnMap", BTN_L);
+    } else {
+        disableSongBtnMap = BTN_L;
     }
 
     if (
@@ -1600,7 +1600,7 @@ void func_800ED200(void) {
 
 void func_800ED458(s32 arg0) {
     u32 phi_v1_2;
-    u32 controlScheme = CVar_GetS32("gCustomOcarinaControls", 0);
+    bool customControls = CVar_GetS32("gCustomOcarinaControls", 0);
     bool dpad = CVar_GetS32("gDpadOcarina", 0);
     bool rStick = CVar_GetS32("gRStickOcarina", 0);
 
@@ -1621,7 +1621,7 @@ void func_800ED458(s32 arg0) {
             D_8016BA18 &= phi_v1_2;
         }
 
-        Audio_OcaUpdateBtnMap(controlScheme, dpad, rStick);
+        Audio_OcaUpdateBtnMap(customControls, dpad, rStick);
         if (D_8016BA18 & sOcarinaD4BtnMap) {
             osSyncPrintf("Presss NA_KEY_D4 %08x\n", sOcarinaD4BtnMap);
             sCurOcarinaBtnVal = 2;
@@ -1645,10 +1645,10 @@ void func_800ED458(s32 arg0) {
         }
 
         u32 noteSharpBtnMap;
-        if (controlScheme != 0) {
-            noteSharpBtnMap = BTN_R;
-        } else {
+        if (customControls) {
             noteSharpBtnMap = CVar_GetS32("gOcarinaSharpBtnMap", BTN_R);
+        } else {
+            noteSharpBtnMap = BTN_R;
         }
         if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteSharpBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x80;
@@ -1656,10 +1656,10 @@ void func_800ED458(s32 arg0) {
         }
 
         u32 noteFlatBtnMap;
-        if (controlScheme != 0) {
-            noteFlatBtnMap = BTN_Z;
-        } else {
+        if (customControls) {
             noteFlatBtnMap = CVar_GetS32("gOcarinaFlatBtnMap", BTN_Z);
+        } else {
+            noteFlatBtnMap = BTN_Z;
         }
         if ((sCurOcarinaBtnVal != 0xFF) && (sCurOcarinaBtnPress & noteFlatBtnMap) && (sRecordingState != 2)) {
             sCurOcarinaBtnIdx += 0x40;

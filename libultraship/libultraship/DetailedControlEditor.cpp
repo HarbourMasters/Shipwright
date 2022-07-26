@@ -100,20 +100,8 @@ namespace Ship {
 	void DetailedControlEditor::DrawOcarinaControlPanel() {
 		SohImGui::BeginGroupPanel("Ocarina Controls");
 
-		float column2x;
-		if (ImGui::BeginTable("tableOcarinaScheme", 2, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV | ImGuiTableFlags_Hideable)) {
-			ImGui::TableSetupColumn("N64 Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
-			ImGui::TableSetupColumn("Custom Scheme", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
-			Table_InitHeader();
-			Draw_HelpIcon("Play the ocarina with A and the C buttons");
-			SohImGui::EnhancementRadioButton("N64 Controls", "gCustomOcarinaControls", 0);
-			Table_NextCol();
-			column2x = ImGui::GetCursorPosX();
-			Draw_HelpIcon("Customize the ocarina controls to your liking");
-			SohImGui::EnhancementRadioButton("Custom Controls", "gCustomOcarinaControls", 1);
-			ImGui::EndTable();
-		}
-
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
 		if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
 			float width;
 
@@ -125,7 +113,7 @@ namespace Ship {
 				DrawOcarinaMapping("F4", "F4", BTN_CDOWN, width);
 				DrawOcarinaMapping("D4", "D4", BTN_A, width);
 				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel(33);
+			SohImGui::EndGroupPanel();
 
 			ImGui::SameLine();
 
@@ -136,27 +124,27 @@ namespace Ship {
 				DrawOcarinaMapping("Pitch up", "Sharp", BTN_R, width);
 				DrawOcarinaMapping("Pitch down", "Flat", BTN_Z, width);
 				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel();
-
-			ImGui::SetCursorPosX(cursor.x);
-			ImGui::SetCursorPosY(cursor.y + 100);
-			SohImGui::BeginGroupPanel("Alternate controls", ImVec2(225.5, 20));
-				float cursorX = ImGui::GetCursorPosX() + 10;
-				ImGui::SetCursorPosX(cursorX);
-				SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
-				ImGui::SetCursorPosX(cursorX);
-				SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
-				ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel();
+			SohImGui::EndGroupPanel(48);
 		} else {
 			ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
-			ImGui::SameLine();
-			ImGui::SetCursorPosX(column2x);
-			SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
 			ImGui::Dummy(ImVec2(0, 5));
-			ImGui::TextWrapped("To further modify ocarina controls, select \"Custom Controls\" from the buttons above.");
 		}
+
+		SohImGui::BeginGroupPanel("Alternate controls", ImVec2(391.5, 0));
+		if (ImGui::BeginTable("tableOcarinaAlternateControls", 2)) {
+			ImGui::TableSetupColumn("D-pad", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
+			ImGui::TableSetupColumn("Right stick", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort, TableCellWidth);
+			Table_InitHeader(false);
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+			Table_NextCol();
+			SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+			ImGui::EndTable();
+		}
+		ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel();
 
 		SohImGui::EndGroupPanel(6);
 	}
