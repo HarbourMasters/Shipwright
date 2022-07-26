@@ -1157,7 +1157,7 @@ namespace SohImGui {
                         ImGui::Text("Rotation");
                         EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
                         EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveLinkRotation", 1);
-                        Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the D-pad\nUse D-pad Up or D-pad Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with Right Stick", "gPauseLiveLinkRotation", 3);
@@ -1307,7 +1307,7 @@ namespace SohImGui {
 
                     Tooltip("Interpolate extra frames to get smoother graphics\n"
                         "Set to match your monitor's refresh rate, or a divisor of it\n"
-                        "A higher target FPS than your monitor's refresh rate will just waste resources,"
+                        "A higher target FPS than your monitor's refresh rate will just waste resources, "
                         "and might give a worse result.\n"
                         "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
                         "Ctrl+Click for keyboard input");
