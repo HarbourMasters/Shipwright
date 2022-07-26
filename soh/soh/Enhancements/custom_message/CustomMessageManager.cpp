@@ -71,43 +71,43 @@ void CustomMessageManager::FormatCustomMessage(std::string& message) {
 }
 
 bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
-    auto result = messageTables.find(tableID);
-    if (result == messageTables.end()) {
+    auto foundMessageTable = messageTables.find(tableID);
+    if (foundMessageTable == messageTables.end()) {
         return false;
     }
-    auto& messageTable = result->second;
-    auto success = messageTable.emplace(textID, messages);
-    return success.second;
+    auto& messageTable = foundMessageTable->second;
+    auto messageInsertResult = messageTable.emplace(textID, messages);
+    return messageInsertResult.second;
 }
 
 
 
-bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
-    FormatCustomMessage(messages.english, iid);
-    FormatCustomMessage(messages.german, iid);
-    FormatCustomMessage(messages.french, iid);
+bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messageEntry) {
+    FormatCustomMessage(messageEntry.english, iid);
+    FormatCustomMessage(messageEntry.german, iid);
+    FormatCustomMessage(messageEntry.french, iid);
     const uint16_t textID = giid;
-    return InsertCustomMessage(tableID, textID, messages);
+    return InsertCustomMessage(tableID, textID, messageEntry);
 }
 
-bool CustomMessageManager::CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
-    FormatCustomMessage(messages.english);
-    FormatCustomMessage(messages.german);
-    FormatCustomMessage(messages.french);
-    return InsertCustomMessage(tableID, textID, messages);
+bool CustomMessageManager::CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messageEntry) {
+    FormatCustomMessage(messageEntry.english);
+    FormatCustomMessage(messageEntry.german);
+    FormatCustomMessage(messageEntry.french);
+    return InsertCustomMessage(tableID, textID, messageEntry);
 }
 
 CustomMessageEntry CustomMessageManager::RetrieveMessage(std::string tableID, uint16_t textID) {
-    std::unordered_map<std::string, CustomMessageTable>::const_iterator result = messageTables.find(tableID);
-    if (result == messageTables.end()) {
+    std::unordered_map<std::string, CustomMessageTable>::const_iterator foundMessageTable = messageTables.find(tableID);
+    if (foundMessageTable == messageTables.end()) {
         return NULL_CUSTOM_MESSAGE;
     }
-    CustomMessageTable messageTable = result->second;
-    std::unordered_map<uint16_t, CustomMessageEntry>::const_iterator message_pair = messageTable.find(textID);
-    if (message_pair == messageTable.end()) {
+    CustomMessageTable messageTable = foundMessageTable->second;
+    std::unordered_map<uint16_t, CustomMessageEntry>::const_iterator foundMessage = messageTable.find(textID);
+    if (foundMessage == messageTable.end()) {
         return NULL_CUSTOM_MESSAGE;
     }
-    CustomMessageEntry message = message_pair->second;
+    CustomMessageEntry message = foundMessage->second;
     return message;
 }
 
