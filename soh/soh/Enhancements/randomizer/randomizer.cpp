@@ -3553,7 +3553,7 @@ void DrawRandoEditor(bool& open) {
                             case 0:
                                 InsertHelpHoverText(
                                     "Beating Deku Tree is logically required to leave the forest area "
-                                    "(Kokiri Forest / Loost Woods / Sacred Forest Meadow / Deku Tree) "
+                                    "(Kokiri Forest / Lost Woods / Sacred Forest Meadow / Deku Tree) "
                                     "while the Kokiri Sword and a Deku Shield are required to access the "
                                     "Deku Tree\nItems needed for this will be guaranteed inside the "
                                     "forest area.\nThis setting is incompatible with starting as adult.");
