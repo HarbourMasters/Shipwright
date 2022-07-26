@@ -407,6 +407,13 @@ oot.otr
 shipofharkinian.ini
 shipofharkinian.json
 
+# Switch Stuff
+
+*.nro
+*.nacp
+ZAPDTR/ZAPDUtils/lib/*
+!/soh/icon.jpg
+
 # Xcode
 xcuserdata/
 *.xcconfig

@@ -450,12 +450,6 @@
     <ClInclude Include="SDLController.h" />
     <ClInclude Include="WindowShim.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
-      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
