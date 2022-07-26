@@ -4,13 +4,13 @@
 using namespace std::literals::string_literals;
 
 CustomMessage::CustomMessage() {
-    this->textBoxSpecialCharacters = { { "À", 0x80 }, { "î", 0x81 }, { "Â", 0x82 }, { "Ä", 0x83 }, { "Ç", 0x84 },
-                                       { "È", 0x85 }, { "É", 0x86 }, { "Ê", 0x87 }, { "Ë", 0x88 }, { "Ï", 0x89 },
-                                       { "Ô", 0x8A }, { "Ö", 0x8B }, { "Ù", 0x8C }, { "Û", 0x8D }, { "Ü", 0x8E },
-                                       { "ß", 0x8F }, { "à", 0x90 }, { "á", 0x91 }, { "â", 0x92 }, { "ä", 0x93 },
-                                       { "ç", 0x94 }, { "è", 0x95 }, { "é", 0x96 }, { "ê", 0x97 }, { "ë", 0x98 },
-                                       { "ï", 0x99 }, { "ô", 0x9A }, { "ö", 0x9B }, { "ù", 0x9C }, { "û", 0x9D },
-                                       { "ü", 0x9E } };
+    this->textBoxSpecialCharacters = { { "Ã€", 0x80 }, { "Ã®", 0x81 }, { "Ã‚", 0x82 }, { "Ã„", 0x83 }, { "Ã‡", 0x84 },
+                                       { "Ãˆ", 0x85 }, { "Ã‰", 0x86 }, { "ÃŠ", 0x87 }, { "Ã‹", 0x88 }, { "Ã", 0x89 },
+                                       { "Ã”", 0x8A }, { "Ã–", 0x8B }, { "Ã™", 0x8C }, { "Ã›", 0x8D }, { "Ãœ", 0x8E },
+                                       { "ÃŸ", 0x8F }, { "Ã ", 0x90 }, { "Ã¡", 0x91 }, { "Ã¢", 0x92 }, { "Ã¤", 0x93 },
+                                       { "Ã§", 0x94 }, { "Ã¨", 0x95 }, { "Ã©", 0x96 }, { "Ãª", 0x97 }, { "Ã«", 0x98 },
+                                       { "Ã¯", 0x99 }, { "Ã´", 0x9A }, { "Ã¶", 0x9B }, { "Ã¹", 0x9C }, { "Ã»", 0x9D },
+                                       { "Ã¼", 0x9E } };
     this->colors = { { "w", QM_WHITE }, { "r", QM_RED },  { "g", QM_GREEN },  { "b", QM_BLUE },
                      { "c", QM_LBLUE }, { "p", QM_PINK }, { "y", QM_YELLOW }, { "B", QM_BLACK } };
 }
@@ -23,11 +23,11 @@ CustomMessage::~CustomMessage() {
 
 void CustomMessage::ReplaceSpecialCharacters(std::string& string) {
     // add special characters
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+    for (auto specialCharacterPair : this->textBoxSpecialCharacters) {
         size_t start_pos = 0;
-        std::string textBoxSpecialCharacterString = "";
+        std::string textBoxSpecialCharacterString = ""s;
         textBoxSpecialCharacterString += specialCharacterPair.second;
-        while ((start_pos = string.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
+        while ((start_pos = string.find(specialCharacterPair.first, 0)) != std::string::npos) {
             string.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
             start_pos += textBoxSpecialCharacterString.length();
         }
@@ -63,10 +63,7 @@ void CustomMessage::FormatCustomMessage(std::string& message, ItemID iid) {
 void CustomMessage::FormatCustomMessage(std::string& message) {
     size_t start_pos = 0;
     std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
-    while ((start_pos = message.find('^', start_pos)) != std::string::npos) {
-        message.replace(start_pos, 1, WAIT_FOR_INPUT());
-        start_pos += 3;
-    }
+    std::replace(message.begin(), message.end(), '^', WAIT_FOR_INPUT()[0]);
     std::replace(message.begin(), message.end(), '@', PLAYER_NAME()[0]);
     ReplaceSpecialCharacters(message);
     ReplaceColors(message);

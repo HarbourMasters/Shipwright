@@ -1401,6 +1401,20 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
+extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
+    int price = 0;
+    switch (scrubTextId) {
+        case 0x10A2:
+            price = 10;
+            break;
+        case 0x10DC:
+        case 0x10DD:
+            price = 40;
+            break;
+    }
+    return CustomMessage::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+}
+
 extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
     std::string scrubText("");
     int language = CVar_GetS32("gLanguages", 0);
@@ -1554,6 +1568,8 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 messageEntry = Randomizer_CopyGanonHintText();
             }
+        } else if (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD) {
+            messageEntry = Randomizer_CopyScrubMessage(textId);
         }
     }
     if (textId == 0x00B4 || textId == 0x00B5) {

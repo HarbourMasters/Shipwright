@@ -1675,13 +1675,9 @@ void Message_OpenText(GlobalContext* globalCtx, u16 textId) {
                             //font->msgLength, __FILE__, __LINE__);
     } else {
         Message_FindMessage(globalCtx, textId);
-        if (gSaveContext.n64ddFlag && (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD)) {
-            msgCtx->msgLength = font->msgLength = CopyScrubMessage(textId, font->msgBuf, sizeof(font->msgBuf));
-        } else {
-            msgCtx->msgLength = font->msgLength;
-            char* src = (uintptr_t)font->msgOffset;
-            memcpy(font->msgBuf, src, font->msgLength);
-        }
+        msgCtx->msgLength = font->msgLength;
+        char* src = (uintptr_t)font->msgOffset;
+        memcpy(font->msgBuf, src, font->msgLength);
     }
 
     msgCtx->textBoxProperties = font->charTexBuf[0];

@@ -17,6 +17,7 @@
 #include <soh/Enhancements/custom_message/CustomMessage.h>
 
 using json = nlohmann::json;
+using namespace std::literals::string_literals;
 
 std::unordered_map<uint8_t, Sprite> gSeedTextures;
 
@@ -24,6 +25,7 @@ u8 generated;
 
 const std::string Randomizer::getItemMessageTableID = "Randomizer";
 const std::string Randomizer::hintMessageTableID = "RandomizerHints";
+const std::string Randomizer::scrubMessageTableID = "RandomizerScrubs";
 
 Randomizer::Randomizer() {
     Sprite bowSprite = { dgFairyBowIconTex, 32, 32, G_IM_FMT_RGBA, G_IM_SIZ_32b, 0 };
@@ -1822,6 +1824,25 @@ std::string AltarIconString(char iconChar) {
 
 std::string FormatJsonHintText(std::string jsonHint) {
     std::string formattedHintMessage = jsonHint;
+
+    std::unordered_map<std::string, char> textBoxSpecialCharacters = {
+        { "À", 0x80 }, { "î", 0x81 }, { "Â", 0x82 }, { "Ä", 0x83 }, { "Ç", 0x84 }, { "È", 0x85 }, { "É", 0x86 },
+        { "Ê", 0x87 }, { "Ë", 0x88 }, { "Ï", 0x89 }, { "Ô", 0x8A }, { "Ö", 0x8B }, { "Ù", 0x8C }, { "Û", 0x8D },
+        { "Ü", 0x8E }, { "ß", 0x8F }, { "à", 0x90 }, { "á", 0x91 }, { "â", 0x92 }, { "ä", 0x93 }, { "ç", 0x94 },
+        { "è", 0x95 }, { "é", 0x96 }, { "ê", 0x97 }, { "ë", 0x98 }, { "ï", 0x99 }, { "ô", 0x9A }, { "ö", 0x9B },
+        { "ù", 0x9C }, { "û", 0x9D }, { "ü", 0x9E }
+    };
+
+    // add special characters
+    for (auto specialCharacterPair : textBoxSpecialCharacters) {
+        size_t start_pos = 0;
+        std::string textBoxSpecialCharacterString = "";
+        textBoxSpecialCharacterString += specialCharacterPair.second;
+        while ((start_pos = formattedHintMessage.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
+            formattedHintMessage.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
+            start_pos += textBoxSpecialCharacterString.length();
+        }
+    }
     
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
@@ -4739,6 +4760,23 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     }
 }
 
+void CreateScrubMessages() {
+    CustomMessage* customMessage = CustomMessage::Instance;
+    customMessage->AddCustomMessageTable(Randomizer::scrubMessageTableID);
+    const std::vector<u8> prices = { 10, 40 };
+    for (u8 price : prices) {
+        customMessage->CreateMessage(Randomizer::scrubMessageTableID, price,
+            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
+                  std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+              "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
+                  std::to_string(price) + " Rubis%w!\x07\x10\xA3"
+            });
+    }
+}
+
 #define GIMESSAGE(giid, iid, english, german, french) \
     { giid, iid, english, german, french }
 
@@ -4781,6 +4819,7 @@ void Randomizer::CreateCustomMessages() {
                     "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
     };
     CreateGetItemMessages(getItemMessages);
+    CreateScrubMessages();
 }
 
 void InitRando() {
