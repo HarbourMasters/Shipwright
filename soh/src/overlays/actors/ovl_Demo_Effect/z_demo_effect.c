@@ -1659,6 +1659,7 @@ void DemoEffect_UpdateJewelChild(DemoEffect* this, GlobalContext* globalCtx) {
     } else {
         // Contrary to it's adult conterpart Authenthic doesn't use DemoEffect_SetJewelColor(this, 1.0f); here
     }
+}
 
 /**
  * Update Function for the Dust Actor.
