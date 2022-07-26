@@ -4837,11 +4837,12 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
     GanondorfEffect* eff = globalCtx->specialEffects;
     GanondorfEffect* effFirst = eff;
 
+    OPEN_DISPS(gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, eff++) {
         if (eff->type == GDF_EFF_WINDOW_SHARD) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_OPA_DISP++);
             if (flag == 0) {
                 gSPDisplayList(POLY_OPA_DISP++, gDorfWindowShardMaterialDL);
@@ -4859,7 +4860,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gDorfWindowShardModelDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4868,7 +4869,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_SPARKLE) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             if (flag == 0) {
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
@@ -4883,7 +4884,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4892,7 +4893,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_LIGHT_RAY) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             if (flag == 0) {
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 0, 0);
@@ -4909,7 +4910,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfSquareDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4918,7 +4919,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_SHOCK) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             if (flag == 0) {
                 gDPPipeSync(POLY_XLU_DISP++);
                 if (eff->unk_2E == GDF_SHOCK_PLAYER_PURPLE) {
@@ -4937,7 +4938,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfShockDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4945,7 +4946,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_LIGHTNING) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, sLightningPrimColors[(eff->timer * 3) + 0],
                             sLightningPrimColors[(eff->timer * 3) + 1], sLightningPrimColors[(eff->timer * 3) + 2],
@@ -4961,7 +4962,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sLightningTextures[eff->timer]));
             gSPDisplayList(POLY_XLU_DISP++, gDorfLightningDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4969,7 +4970,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_IMPACT_DUST_DARK) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 0, 0, 0, eff->alpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 100, 70, 0, 128);
@@ -4981,7 +4982,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfImpactDarkDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -4989,7 +4990,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_IMPACT_DUST_LIGHT) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, eff->alpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 200, 100, 0, 128);
@@ -5001,7 +5002,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfImpactLightDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -5009,7 +5010,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_SHOCKWAVE) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 170, eff->alpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 150, 255, 0, 128);
@@ -5022,7 +5023,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfShockwaveDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
@@ -5030,7 +5031,7 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
 
     for (i = 0; i < 150; i++, eff++) {
         if (eff->type == GDF_EFF_BLACK_DOT) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 170, 0, eff->alpha);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 255, 128);
@@ -5043,9 +5044,11 @@ void BossGanon_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gDorfDotDL);
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 #include "overlays/ovl_Boss_Ganon/ovl_Boss_Ganon.h"
