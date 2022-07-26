@@ -921,8 +921,8 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
 
     if (this->requiredObjectLoaded) {
         for (i = 0; i < 6; i++) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (this->effects[i].size > 0.001f) {
-                OPEN_DISPS(globalCtx->state.gfxCtx);
                 Matrix_Translate(beamX[i], beamY[i], beamZ[i], MTXMODE_NEW);
                 Matrix_RotateY(DEG_TO_RAD(beamYaw[i]), MTXMODE_APPLY);
                 Matrix_RotateX(DEG_TO_RAD(beamPitch[i]), MTXMODE_APPLY);
@@ -939,8 +939,8 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                                             globalCtx->state.frames * 10, 32, 64, 1, globalCtx->state.frames * 5,
                                             globalCtx->state.frames * 10, 32, 64));
                 gSPDisplayList(POLY_XLU_DISP++, gDemoKekkaiDL_005FF0);
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
             }
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }

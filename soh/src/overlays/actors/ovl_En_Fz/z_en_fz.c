@@ -862,8 +862,8 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
+        OPEN_DISPS(gfxCtx);
         if (iceSmoke->type > 0) {
-            OPEN_DISPS(gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
 
             if (!texLoaded) {
@@ -881,8 +881,8 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamDL));
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
 
         iceSmoke++;
     }

@@ -97,8 +97,8 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (eff->active != 0) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (gfxSetup == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gDampeEff1DL);
@@ -120,8 +120,8 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTextures[imageIdx]));
 
             gSPDisplayList(POLY_XLU_DISP++, gDampeEff2DL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
         eff++;
     }
 }
