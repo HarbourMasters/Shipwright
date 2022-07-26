@@ -28,6 +28,16 @@
 #include "Utils/StringHelper.h"
 #include "../../soh/soh/Enhancements/debugger/ImGuiHelpers.h"
 
+#if __APPLE__
+#include <SDL_hints.h>
+#else
+#include <SDL2/SDL_hints.h>
+#endif
+
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
@@ -129,6 +139,7 @@ namespace SohImGui {
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
+            SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
             ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -341,10 +352,17 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
+    #ifdef __SWITCH__
+        Ship::Switch::SetupFont(io->Fonts);
+    #endif
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
+            #ifdef __SWITCH__
+            SohImGui::overlay->TextDrawNotification(30.0f, true, "Press - to access enhancements menu");
+            #else
             SohImGui::overlay->TextDrawNotification(30.0f, true, "Press F1 to access enhancements menu");
+            #endif
         }
 
         auto imguiIniPath = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("imgui.ini");
@@ -360,6 +378,9 @@ namespace SohImGui {
         controller->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
+    #ifdef __SWITCH__
+        ImGui::GetStyle().ScaleAllSizes(2);
+    #endif
 
         ModInternal::RegisterHook<ModInternal::GfxInit>([] {
             if (GlobalCtx2::GetInstance()->GetWindow()->IsFullscreen())
@@ -388,7 +409,10 @@ namespace SohImGui {
         CVar_SetS32("gNewSeedGenerated", 0);
         CVar_SetS32("gNewFileDropped", 0);
         CVar_SetString("gDroppedFile", "None");
-        // Game::SaveSettings();
+
+    #ifdef __SWITCH__
+        Switch::ApplyOverclock();
+    #endif
     }
 
     void Update(EventImpl event) {
@@ -736,7 +760,7 @@ namespace SohImGui {
 
         const ImGuiViewport* viewport = ImGui::GetMainViewport();
         ImGui::SetNextWindowPos(viewport->WorkPos);
-        ImGui::SetNextWindowSize(ImVec2(wnd->GetCurrentWidth(), wnd->GetCurrentHeight()));
+        ImGui::SetNextWindowSize(ImVec2((int) wnd->GetCurrentWidth(), (int) wnd->GetCurrentHeight()));
         ImGui::SetNextWindowViewport(viewport->ID);
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -759,7 +783,7 @@ namespace SohImGui {
 
         ImGui::DockSpace(dockId, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_NoDockingInCentralNode);
 
-        if (ImGui::IsKeyPressed(TOGGLE_BTN)) {
+        if (ImGui::IsKeyPressed(TOGGLE_BTN) || ImGui::IsKeyPressed(TOGGLE_PAD_BTN)) {
             bool menu_bar = CVar_GetS32("gOpenMenuBar", 0);
             CVar_SetS32("gOpenMenuBar", !menu_bar);
             needs_save = true;
@@ -793,8 +817,13 @@ namespace SohImGui {
 
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
+            #ifdef __SWITCH__
+                ImVec2 iconSize = ImVec2(20.0f, 20.0f);
+            #else
+                ImVec2 iconSize = ImVec2(16.0f, 16.0f);
+            #endif
                 ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), iconSize);
                 ImGui::SameLine();
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
@@ -928,8 +957,6 @@ namespace SohImGui {
                 EXPERIMENTAL();
                 ImGui::Text("Texture Filter (Needs reload)");
                 EnhancementCombobox("gTextureFilter", filters, 3, 0);
-                GfxRenderingAPI* gapi = gfx_get_current_rendering_api();
-                gapi->set_texture_filter((FilteringMode)CVar_GetS32("gTextureFilter", 0));
                 overlay->DrawSettings();
                 ImGui::EndMenu();
             }
@@ -1133,6 +1160,8 @@ namespace SohImGui {
                         Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
+                        EnhancementRadioButton("Rotate Link with Right Stick", "gPauseLiveLinkRotation", 3);
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the Right Stick\nYou can zoom in by pointing up and reset Link's rotation by pointing down");
 
                         if (CVar_GetS32("gPauseLiveLinkRotation", 0) != 0) {
                             EnhancementSliderInt("Rotation Speed: %d", "##MinRotationSpeed", "gPauseLiveLinkRotationSpeed", 1, 20, "");
@@ -1160,6 +1189,8 @@ namespace SohImGui {
                         Tooltip("Randomize the animation played each time you open the menu");
                         EnhancementRadioButton("Random cycle", "gPauseLiveLink", 16);
                         Tooltip("Randomize the animation played on the menu after a certain time");
+                        EnhancementRadioButton("Random cycle (Idle)", "gPauseLiveLink", 17);
+                        Tooltip("Randomize the animation played on the menu after a certain time (Idle animations only)");
                         if (CVar_GetS32("gPauseLiveLink", 0) >= 16) {
                             EnhancementSliderInt("Frame to wait: %d", "##MinFrameCount", "gMinFrameCount", 1, 1000, "", 0, true);
                         }
@@ -1228,8 +1259,16 @@ namespace SohImGui {
 
                 const char* fps_cvar = "gInterpolationFPS";
                 {
-                    int val = CVar_GetS32(fps_cvar, 20);
-                    val = MAX(MIN(val, 250), 20);
+                #ifdef __SWITCH__
+                    int minFps = 20;
+                    int maxFps = 60;
+                #else
+                    int minFps = 20;
+                    int maxFps = 250;
+                #endif
+
+                    int val = CVar_GetS32(fps_cvar, minFps);
+                    val = MAX(MIN(val, maxFps), 20);
                     int fps = val;
 
                     if (fps == 20)
@@ -1251,7 +1290,7 @@ namespace SohImGui {
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
 
-                    if (ImGui::SliderInt("##FPSInterpolation", &val, 20, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         if (val > 250)
                         {
@@ -1309,6 +1348,23 @@ namespace SohImGui {
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
                 Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
 
+             #ifdef __SWITCH__
+                int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
+                ImGui::Text("Switch performance mode");
+                if (ImGui::BeginCombo("##perf", SWITCH_CPU_PROFILES[slot])) {
+                    for (int sId = 0; sId <= SwitchProfiles::POWERSAVINGM3; sId++) {
+                        if (ImGui::Selectable(SWITCH_CPU_PROFILES[sId], sId == slot)) {
+                            INFO("Profile:: %s", SWITCH_CPU_PROFILES[sId]);
+                            CVar_SetS32("gSwitchPerfMode", sId);
+                            Switch::ApplyOverclock();
+                            needs_save = true;
+                        }
+
+                    }
+                    ImGui::EndCombo();
+                }
+             #endif
+
                 ImGui::EndMenu();
             }
 
@@ -1357,6 +1413,8 @@ namespace SohImGui {
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
+                EnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled");
+                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
                 Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
@@ -1421,6 +1479,8 @@ namespace SohImGui {
             ImGui::Text("Platform: Windows");
 #elif __APPLE__
             ImGui::Text("Platform: macOS");
+#elif defined(__SWITCH__)
+            ImGui::Text("Platform: Nintendo Switch");
 #else
             ImGui::Text("Platform: Linux");
 #endif

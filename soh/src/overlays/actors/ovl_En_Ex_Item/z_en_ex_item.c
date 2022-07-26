@@ -520,7 +520,8 @@ void EnExItem_DrawItems(EnExItem* this, GlobalContext* globalCtx) {
                 break;
         }
 
-        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
+            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
     }
@@ -534,7 +535,8 @@ void EnExItem_DrawHeartPiece(EnExItem* this, GlobalContext* globalCtx) {
     if (gSaveContext.n64ddFlag) {
         s32 randoGetItemId = Randomizer_GetItemIdFromKnownCheck(
                                 RC_MARKET_BOMBCHU_BOWLING_SECOND_PRIZE, GI_HEART_PIECE);
-        if (randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) {
+        if ((randoGetItemId >= GI_MINUET_OF_FOREST && randoGetItemId <= GI_DOUBLE_DEFENSE) ||
+            (randoGetItemId >= GI_STICK_UPGRADE_20 && randoGetItemId <= GI_NUT_UPGRADE_40)) {
             EnItem00_CustomItemsParticles(&this->actor, globalCtx, randoGetItemId);
         }
         GetItem_Draw(globalCtx, Randomizer_GetItemModelFromId(randoGetItemId));
