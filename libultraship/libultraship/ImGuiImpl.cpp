@@ -26,7 +26,6 @@
 #include "Lib/Fast3D/gfx_rendering_api.h"
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
-#include "../../soh/soh/Enhancements/debugger/ImGuiHelpers.h"
 
 #if __APPLE__
 #include <SDL_hints.h>
