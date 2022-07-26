@@ -27,6 +27,11 @@ namespace Ship {
             supportsGyro = true;
         }
 
+        if (SDL_GameControllerHasSensor(NewCont, SDL_SENSOR_ACCEL)) {
+            SDL_GameControllerSetSensorEnabled(NewCont, SDL_SENSOR_ACCEL, SDL_TRUE);
+            supportsAccel = true;
+        }
+
         char GuidBuf[33];
         SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(physicalSlot), GuidBuf, sizeof(GuidBuf));
         Cont = NewCont;
@@ -185,11 +190,14 @@ namespace Ship {
 
             wGyroX = gyroData[0] - gyro_drift_x;
             wGyroY = gyroData[1] - gyro_drift_y;
-            wGyroZ = gyroData[2] - gyro_drift_z;
 
             wGyroX *= gyro_sensitivity;
             wGyroY *= gyro_sensitivity;
-            wGyroZ *= gyro_sensitivity;
+            
+            if (supportsAccel) {
+				float accelData[3];
+				SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_ACCEL, accelData, 3);
+            }
         }
 
         dwPressedButtons[slot] = 0;

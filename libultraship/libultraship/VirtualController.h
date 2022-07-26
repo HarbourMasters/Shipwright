@@ -20,6 +20,7 @@ public:
 	bool Connected() const override { return isConnected; }
 	bool CanRumble() const override { return false; }
 	bool CanGyro()   const override { return false; }
+	bool CanAccel()  const override { return false; }
 
 	void ClearRawPress() override {}
 	int32_t ReadRawPress() override { return -1; }

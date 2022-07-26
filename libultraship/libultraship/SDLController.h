@@ -16,6 +16,7 @@ namespace Ship {
 			void WriteToSource(int32_t slot, ControllerCallback* controller) override;
 			bool Connected() const override { return Cont != nullptr; }
 			bool CanGyro() const override { return supportsGyro; }
+			bool CanAccel() const override { return supportsGyro; }
 			bool CanRumble() const override {
 #if SDL_COMPILEDVERSION >= SDL_VERSIONNUM(2,0,18)
 				return SDL_GameControllerHasRumble(Cont);
@@ -35,6 +36,7 @@ namespace Ship {
 			SDL_GameController* Cont;
 			int physicalSlot;
 			bool supportsGyro;
+			bool supportsAccel;
 			void NormalizeStickAxis(int16_t wAxisValueX, int16_t wAxisValueY, int16_t wAxisThreshold, bool isRightStick, float sensitivity);
 			bool Close();
 	};

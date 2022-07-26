@@ -73,7 +73,6 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
-        pad->gyro_z = 0;
 
         if (!CVar_GetS32("gOpenMenuBar", 0)) {
             Ship::Window::ControllerApi->WriteToPad(pad);

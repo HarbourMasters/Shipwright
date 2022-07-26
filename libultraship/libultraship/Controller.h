@@ -44,6 +44,7 @@ namespace Ship {
 			virtual bool Connected() const = 0;
 			virtual bool CanRumble() const = 0;
 			virtual bool CanGyro() const = 0;
+			virtual bool CanAccel() const = 0;
 			virtual void CreateDefaultBinding(int32_t slot) = 0;
 			bool isRumbling;
 			std::vector<DeviceProfile> profiles;
@@ -61,7 +62,6 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
-			float wGyroZ;
 			float wCamX;
 			float wCamY;
 

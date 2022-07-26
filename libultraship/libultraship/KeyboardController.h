@@ -12,6 +12,7 @@ namespace Ship {
 			bool Connected() const override { return true; }
 			bool CanRumble() const override { return false; }
 			bool CanGyro() const override { return false; }
+			bool CanAccel() const override { return false; }
 			const char* GetControllerName() override;
 			const char* GetButtonName(int slot, int n64Button) override;
 			bool PressButton(int32_t dwScancode);
