@@ -2911,8 +2911,8 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
     Matrix_Push();
 
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
+        OPEN_DISPS(gfxCtx);
         if (effect->type == MO_FX_BIG_RIPPLE) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 func_80094BC4(gfxCtx);
 
@@ -2929,15 +2929,15 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gEffWaterRippleDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 
     effect = effectHead;
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
+        OPEN_DISPS(gfxCtx);
         if (effect->type == MO_FX_SMALL_RIPPLE) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 func_80093D84(globalCtx->state.gfxCtx);
 
@@ -2954,16 +2954,16 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gEffShockwaveDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 
     effect = effectHead;
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
+        OPEN_DISPS(gfxCtx);
         if (((effect->type == MO_FX_DROPLET) || (effect->type == MO_FX_SPLASH)) ||
             (effect->type == MO_FX_SPLASH_TRAIL)) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
 
@@ -2985,15 +2985,15 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gMorphaDropletModelDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 
     effect = effectHead;
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
+        OPEN_DISPS(gfxCtx);
         if (effect->type == MO_FX_WET_SPOT) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 func_80094044(gfxCtx);
 
@@ -3013,15 +3013,15 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gMorphaWetSpotModelDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 
     effect = effectHead;
     flag = 0;
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
+        OPEN_DISPS(gfxCtx);
         if (effect->type == MO_FX_BUBBLE) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 func_80093D18(globalCtx->state.gfxCtx);
 
@@ -3039,8 +3039,8 @@ void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_OPA_DISP++, gMorphaBubbleDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 
     Matrix_Pop();
