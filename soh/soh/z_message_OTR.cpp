@@ -5,7 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include <Text.h>
-#include <soh/Enhancements/custom_message/CustomMessage.h>
+#include <soh/Enhancements/custom_message/CustomMessageManager.h>
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
@@ -95,21 +95,21 @@ extern "C" void OTRMessage_Init()
 		sStaffMessageEntryTablePtr[i].msgSize = file2->messages[i].msg.size();
 	}
 
-    CustomMessage::Instance->AddCustomMessageTable(customMessageTableID);
-    CustomMessage::Instance->CreateGetItemMessage(
+    CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
+    CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)0x00B4, ITEM_SKULL_TOKEN,
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!\x0E\x3C",
-            "Du erh‰lst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!\x0E\x3C",
-            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collectÈ %r\x19\%w symboles en tout!\x0E\x3C"
+            "Du erh√§lst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!\x0E\x3C",
+            "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collect√© %r\x19\%w symboles en tout!\x0E\x3C"
         }
     );
-    CustomMessage::Instance->CreateGetItemMessage(
+    CustomMessageManager::Instance->CreateGetItemMessage(
         customMessageTableID, (GetItemID)0x00B5, ITEM_SKULL_TOKEN,
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
           "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!",
-          "Du erh‰lst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!",
-          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collectÈ %r\x19\%w symboles en tout!" });
+          "Du erh√§lst ein %rGoldene&Skulltula-Symbol%w! Du hast&insgesamt %r\x19%w symbol gesammelt!",
+          "Vous obtenez un %rSymbole de&Skulltula d'or%w! Vous avez&collect√© %r\x19\%w symboles en tout!" });
 }

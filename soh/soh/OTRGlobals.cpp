@@ -43,7 +43,7 @@
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
-#include <soh/Enhancements/custom_message/CustomMessage.h>
+#include <soh/Enhancements/custom_message/CustomMessageManager.h>
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -59,7 +59,7 @@
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
-CustomMessage* CustomMessage::Instance;
+CustomMessageManager* CustomMessageManager::Instance;
 
 OTRGlobals::OTRGlobals() {
     context = Ship::GlobalCtx2::CreateInstance("Ship of Harkinian");
@@ -114,7 +114,7 @@ extern "C" void InitOTR() {
 #endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
-    CustomMessage::Instance = new CustomMessage();
+    CustomMessageManager::Instance = new CustomMessageManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
@@ -1420,7 +1420,7 @@ extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
             price = 40;
             break;
     }
-    return CustomMessage::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
 extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBufferSize) {
@@ -1496,22 +1496,22 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyAltarMessage() {
-    return (LINK_IS_ADULT) ? CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7088)
-                           : CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7040);
+    return (LINK_IS_ADULT) ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7088)
+                           : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7040);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyGanonText() {
-    return CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CD);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CD);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyGanonHintText() {
-    return CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CC);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CC);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyHintFromCheck(RandomizerCheck check) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
-    const CustomMessageEntry hintText = CustomMessage::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
+    const CustomMessageEntry hintText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
     return hintText;
 }
 
@@ -1524,7 +1524,7 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
 }
 
 extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {
-    const CustomMessageEntry getItemText = CustomMessage::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
+    const CustomMessageEntry getItemText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::getItemMessageTableID, giid);
     return getItemText;
 }
 
@@ -1588,7 +1588,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 textId = 0x00B5;
             }
-            messageEntry = CustomMessage::Instance->RetrieveMessage("BaseGameOverrides", textId);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage("BaseGameOverrides", textId);
         }
     }
     if (messageEntry.textBoxType != -1) {

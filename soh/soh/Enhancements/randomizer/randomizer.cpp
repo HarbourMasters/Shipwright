@@ -14,7 +14,7 @@
 #include "3drando/rando_main.hpp"
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
-#include <soh/Enhancements/custom_message/CustomMessage.h>
+#include <soh/Enhancements/custom_message/CustomMessageManager.h>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -1483,22 +1483,22 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
         ParseHintLocationsFile(spoilerFileName);
     }
 
-    CustomMessage::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
-    CustomMessage::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
+    CustomMessageManager::Instance->ClearMessageTable(Randomizer::hintMessageTableID);
+    CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
-    CustomMessage::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, 0x7040,
                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText,
                                              gSaveContext.childAltarText, gSaveContext.childAltarText });
-    CustomMessage::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, 0x7088,
                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText,
                                              gSaveContext.adultAltarText, gSaveContext.adultAltarText });
-    CustomMessage::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, 0x70CC,
                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText,
                                              gSaveContext.ganonHintText, gSaveContext.ganonHintText });
-    CustomMessage::Instance->CreateMessage(
+    CustomMessageManager::Instance->CreateMessage(
         Randomizer::hintMessageTableID, 0x70CD,
                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText,
                                              gSaveContext.ganonText, gSaveContext.ganonText });
@@ -1511,7 +1511,7 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     for (auto hintLocation : gSaveContext.hintLocations) {
         if(hintLocation.check == RC_LINKS_POCKET) break;
         this->hintLocations[hintLocation.check] = hintLocation.hintText;
-        CustomMessage::Instance->CreateMessage(
+        CustomMessageManager::Instance->CreateMessage(
             Randomizer::hintMessageTableID, hintLocation.check, { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, hintLocation.hintText, hintLocation.hintText, hintLocation.hintText });
     }
 }
@@ -4750,7 +4750,7 @@ typedef struct {
 } GetItemMessage;
 
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
-    CustomMessage* customMessage = CustomMessage::Instance;
+    CustomMessageManager* customMessage = CustomMessageManager::Instance;
     customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
         customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
@@ -4761,7 +4761,7 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
 }
 
 void CreateScrubMessages() {
-    CustomMessage* customMessage = CustomMessage::Instance;
+    CustomMessageManager* customMessage = CustomMessageManager::Instance;
     customMessage->AddCustomMessageTable(Randomizer::scrubMessageTableID);
     const std::vector<u8> prices = { 10, 40 };
     for (u8 price : prices) {

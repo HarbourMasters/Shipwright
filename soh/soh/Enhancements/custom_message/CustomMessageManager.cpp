@@ -1,9 +1,9 @@
-#include "CustomMessage.h"
+#include "CustomMessageManager.h"
 #include <algorithm>
 
 using namespace std::literals::string_literals;
 
-CustomMessage::CustomMessage() {
+CustomMessageManager::CustomMessageManager() {
     this->textBoxSpecialCharacters = { { "À", 0x80 }, { "î", 0x81 }, { "Â", 0x82 }, { "Ä", 0x83 }, { "Ç", 0x84 },
                                        { "È", 0x85 }, { "É", 0x86 }, { "Ê", 0x87 }, { "Ë", 0x88 }, { "Ï", 0x89 },
                                        { "Ô", 0x8A }, { "Ö", 0x8B }, { "Ù", 0x8C }, { "Û", 0x8D }, { "Ü", 0x8E },
@@ -15,13 +15,13 @@ CustomMessage::CustomMessage() {
                      { "c", QM_LBLUE }, { "p", QM_PINK }, { "y", QM_YELLOW }, { "B", QM_BLACK } };
 }
 
-CustomMessage::~CustomMessage() {
+CustomMessageManager::~CustomMessageManager() {
     this->textBoxSpecialCharacters.clear();
     this->colors.clear();
     this->messageTables.clear();
 }
 
-void CustomMessage::ReplaceSpecialCharacters(std::string& string) {
+void CustomMessageManager::ReplaceSpecialCharacters(std::string& string) {
     // add special characters
     for (auto specialCharacterPair : this->textBoxSpecialCharacters) {
         size_t start_pos = 0;
@@ -34,7 +34,7 @@ void CustomMessage::ReplaceSpecialCharacters(std::string& string) {
     }
 }
 
-void CustomMessage::ReplaceColors(std::string& string) {
+void CustomMessageManager::ReplaceColors(std::string& string) {
     for (auto colorPair : colors) {
         std::string textToReplace = "%";
         textToReplace += colorPair.first;
@@ -46,7 +46,7 @@ void CustomMessage::ReplaceColors(std::string& string) {
     }
 }
 
-void CustomMessage::FormatCustomMessage(std::string& message, ItemID iid) {
+void CustomMessageManager::FormatCustomMessage(std::string& message, ItemID iid) {
     message.insert(0, ITEM_OBTAINED(iid));
     size_t start_pos = 0;
     std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
@@ -60,7 +60,7 @@ void CustomMessage::FormatCustomMessage(std::string& message, ItemID iid) {
     message += MESSAGE_END();
 }
 
-void CustomMessage::FormatCustomMessage(std::string& message) {
+void CustomMessageManager::FormatCustomMessage(std::string& message) {
     size_t start_pos = 0;
     std::replace(message.begin(), message.end(), '&', NEWLINE()[0]);
     std::replace(message.begin(), message.end(), '^', WAIT_FOR_INPUT()[0]);
@@ -70,7 +70,7 @@ void CustomMessage::FormatCustomMessage(std::string& message) {
     message += MESSAGE_END();
 }
 
-bool CustomMessage::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
+bool CustomMessageManager::InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
     auto result = messageTables.find(tableID);
     if (result == messageTables.end()) {
         return false;
@@ -82,7 +82,7 @@ bool CustomMessage::InsertCustomMessage(std::string tableID, uint16_t textID, Cu
 
 
 
-bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
+bool CustomMessageManager::CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages) {
     FormatCustomMessage(messages.english, iid);
     FormatCustomMessage(messages.german, iid);
     FormatCustomMessage(messages.french, iid);
@@ -90,14 +90,14 @@ bool CustomMessage::CreateGetItemMessage(std::string tableID, GetItemID giid, It
     return InsertCustomMessage(tableID, textID, messages);
 }
 
-bool CustomMessage::CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
+bool CustomMessageManager::CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages) {
     FormatCustomMessage(messages.english);
     FormatCustomMessage(messages.german);
     FormatCustomMessage(messages.french);
     return InsertCustomMessage(tableID, textID, messages);
 }
 
-CustomMessageEntry CustomMessage::RetrieveMessage(std::string tableID, uint16_t textID) {
+CustomMessageEntry CustomMessageManager::RetrieveMessage(std::string tableID, uint16_t textID) {
     std::unordered_map<std::string, CustomMessageTable>::const_iterator result = messageTables.find(tableID);
     if (result == messageTables.end()) {
         return NULL_CUSTOM_MESSAGE;
@@ -111,7 +111,7 @@ CustomMessageEntry CustomMessage::RetrieveMessage(std::string tableID, uint16_t 
     return message;
 }
 
-bool CustomMessage::ClearMessageTable(std::string tableID) {
+bool CustomMessageManager::ClearMessageTable(std::string tableID) {
     auto result = messageTables.find(tableID);
     if (result == messageTables.end()) {
         return false;
@@ -120,31 +120,31 @@ bool CustomMessage::ClearMessageTable(std::string tableID) {
     messageTable.clear();
 }
 
-bool CustomMessage::AddCustomMessageTable(std::string tableID) { 
+bool CustomMessageManager::AddCustomMessageTable(std::string tableID) { 
     CustomMessageTable newMessageTable;
     return messageTables.emplace(tableID, newMessageTable).second;
 }
 
-std::string CustomMessage::MESSAGE_END() {
+std::string CustomMessageManager::MESSAGE_END() {
     return "\x02"s;
 }
 
-std::string CustomMessage::ITEM_OBTAINED(uint8_t x) {
+std::string CustomMessageManager::ITEM_OBTAINED(uint8_t x) {
     return "\x13"s + char(x);
 }
 
-std::string CustomMessage::NEWLINE() {
+std::string CustomMessageManager::NEWLINE() {
     return "\x01"s;
 }
 
-std::string CustomMessage::COLOR(uint8_t x) {
+std::string CustomMessageManager::COLOR(uint8_t x) {
     return "\x05"s + char(x);
 }
 
-std::string CustomMessage::WAIT_FOR_INPUT() {
+std::string CustomMessageManager::WAIT_FOR_INPUT() {
     return "\x04"s;
 }
 
-std::string CustomMessage::PLAYER_NAME() {
+std::string CustomMessageManager::PLAYER_NAME() {
     return "\x0F"s;
 }

@@ -2379,7 +2379,7 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="soh\Enhancements\custom_message\CustomMessage.cpp">
+    <ClCompile Include="soh\Enhancements\custom_message\CustomMessageManager.cpp">
       <Filter>Source Files\soh\Enhancements\custom-message</Filter>
     </ClCompile>
   </ItemGroup>
@@ -4070,7 +4070,7 @@
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="soh\Enhancements\custom_message\CustomMessage.h">
+    <ClInclude Include="soh\Enhancements\custom_message\CustomMessageManager.h">
       <Filter>Header Files\soh\Enhancements\custom-message</Filter>
     </ClInclude>
   </ItemGroup>

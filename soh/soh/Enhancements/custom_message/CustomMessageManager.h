@@ -36,7 +36,7 @@ typedef struct {
 
 typedef std::unordered_map<uint16_t, CustomMessageEntry> CustomMessageTable;
 
-class CustomMessage {
+class CustomMessageManager {
   private: 
     std::unordered_map<std::string, char> textBoxSpecialCharacters;
     std::unordered_map<std::string, char> colors;
@@ -56,10 +56,10 @@ class CustomMessage {
     std::string PLAYER_NAME();
 
   public:
-    static CustomMessage* Instance;
+    static CustomMessageManager* Instance;
 
-    CustomMessage();
-    ~CustomMessage();
+    CustomMessageManager();
+    ~CustomMessageManager();
 
     bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
     bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
