@@ -9,7 +9,6 @@
 
 namespace Ship {
 
-	extern "C" uint8_t __enableGameInput;
 	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
 
 	void InputEditor::Init() {
@@ -116,7 +115,11 @@ namespace Ship {
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
 			SEPARATION();
+	#ifdef __SWITCH__
+		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
+	#else
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
 			DrawButton("Up", BTN_DUP);
@@ -124,7 +127,11 @@ namespace Ship {
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
+	#ifdef __SWITCH__
+		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
+	#else
 		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+	#endif
 		ImGui::SameLine();
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
@@ -148,7 +155,11 @@ namespace Ship {
 			} else {
 				ImGui::Dummy(ImVec2(0, 6));
 			}
-		SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
+		#else
+			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
+		#endif
 		ImGui::SameLine();
 
 		if (!IsKeyboard) {
@@ -174,44 +185,52 @@ namespace Ship {
 					ImGui::InputFloat("##MSensitivity", &profile.Thresholds[SENSITIVITY], 1.0f, 0.0f, "%.0f");
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(43.0f);
+		#else
 			SohImGui::EndGroupPanel(14.0f);
+		#endif
 		}
 
 		if(Backend->CanGyro()) {
 			ImGui::SameLine();
 
 			SohImGui::BeginGroupPanel("Gyro Options", ImVec2(175, 20));
-			float cursorX = ImGui::GetCursorPosX() + 5;
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
-			ImGui::PushItemWidth(135.0f);
-			ImGui::SetCursorPosX(cursorX);
-			ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
-			ImGui::PopItemWidth();
-			ImGui::Dummy(ImVec2(0, 1));
-			ImGui::SetCursorPosX(cursorX);
-			if (ImGui::Button("Recalibrate Gyro##RGyro")) {
-				profile.Thresholds[DRIFT_X] = 0.0f;
-				profile.Thresholds[DRIFT_Y] = 0.0f;
-			}
-			ImGui::SetCursorPosX(cursorX);
-			DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
+				float cursorX = ImGui::GetCursorPosX() + 5;
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::Checkbox("Enable Gyro", &profile.UseGyro);
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::Text("Gyro Sensitivity: %d%%", static_cast<int>(100.0f * profile.Thresholds[GYRO_SENSITIVITY]));
+				ImGui::PushItemWidth(135.0f);
+				ImGui::SetCursorPosX(cursorX);
+				ImGui::SliderFloat("##GSensitivity", &profile.Thresholds[GYRO_SENSITIVITY], 0.0f, 1.0f, "");
+				ImGui::PopItemWidth();
+				ImGui::Dummy(ImVec2(0, 1));
+				ImGui::SetCursorPosX(cursorX);
+				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
+					profile.Thresholds[DRIFT_X] = 0.0f;
+					profile.Thresholds[DRIFT_Y] = 0.0f;
+				}
+				ImGui::SetCursorPosX(cursorX);
+				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
 
-			ImGui::SameLine();
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
-			ImGui::Text("Drift X");
-			ImGui::PushItemWidth(80);
-			ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
-			ImGui::PopItemWidth();
-			ImGui::Text("Drift Y");
-			ImGui::PushItemWidth(80);
-			ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
-			ImGui::PopItemWidth();
-			ImGui::EndChild();
+				ImGui::SameLine();
+				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+				ImGui::Text("Drift X");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::Text("Drift Y");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::EndChild();
+		#ifdef __SWITCH__
+			SohImGui::EndGroupPanel(46.0f);
+		#else
 			SohImGui::EndGroupPanel(14.0f);
+		#endif
 		}
 
 		ImGui::SameLine();
@@ -227,7 +246,11 @@ namespace Ship {
 		SohImGui::EndGroupPanel();
 
 		ImGui::SetCursorPosX(cursor.x);
+	#ifdef __SWITCH__
+		ImGui::SetCursorPosY(cursor.y + 167);
+	#else
 		ImGui::SetCursorPosY(cursor.y + 120);
+	#endif
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
 			float cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
@@ -245,16 +268,21 @@ namespace Ship {
 	}
 
 	void InputEditor::DrawHud() {
-
-		__enableGameInput = true;
-
 		if (!this->Opened) {
 			BtnReading = -1;
 			CVar_SetS32("gControllerConfigurationEnabled", 0);
 			return;
 		}
 
-		ImGui::SetNextWindowSizeConstraints(ImVec2(641, 250), ImVec2(1200, 290));
+#ifdef __SWITCH__
+		ImVec2 minSize = ImVec2(641, 250);
+		ImVec2 maxSize = ImVec2(2200, 505);
+#else
+		ImVec2 minSize = ImVec2(641, 250);
+		ImVec2 maxSize = ImVec2(1200, 290);
+#endif
+
+		ImGui::SetNextWindowSizeConstraints(minSize, maxSize);
 		//OTRTODO: Disable this stupid workaround ( ReadRawPress() only works when the window is on the main viewport )
 		ImGui::SetNextWindowViewport(ImGui::GetMainViewport()->ID);
 		ImGui::Begin("Controller Configuration", &this->Opened, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize);

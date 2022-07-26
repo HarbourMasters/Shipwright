@@ -1,5 +1,6 @@
 #include "global.h"
 
+#ifndef __SWITCH__
 void __assert(const char* exp, const char* file, s32 line) {
     char msg[256];
 
@@ -7,3 +8,4 @@ void __assert(const char* exp, const char* file, s32 line) {
     sprintf(msg, "ASSERT: %s:%d(%d)", file, line, osGetThreadId(NULL));
     Fault_AddHungupAndCrashImpl(msg, exp);
 }
+#endif

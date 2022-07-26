@@ -4,6 +4,10 @@
 #include "Window.h"
 #include <Utils/StringHelper.h>
 
+#ifdef _MSC_VER
+#define strdup _strdup
+#endif
+
 extern "C" uint8_t __osMaxControllers;
 
 namespace Ship {
@@ -25,11 +29,16 @@ namespace Ship {
 
         char GuidBuf[33];
         SDL_JoystickGetGUIDString(SDL_JoystickGetDeviceGUID(physicalSlot), GuidBuf, sizeof(GuidBuf));
-        GUID = std::string(GuidBuf);
         Cont = NewCont;
         wCamX = 0;
         wCamY = 0;
-
+#ifdef __SWITCH__
+        GUID = StringHelper::Sprintf("%s:%d", GuidBuf, physicalSlot);
+        ControllerName = StringHelper::Sprintf("%s #%d", SDL_GameControllerNameForIndex(physicalSlot), physicalSlot + 1);
+#else
+        GUID = std::string(GuidBuf);
+        ControllerName = std::string(SDL_GameControllerNameForIndex(physicalSlot));
+#endif
         return true;
     }
 
@@ -441,7 +450,7 @@ namespace Ship {
     }
 
     const char* SDLController::GetControllerName() {
-        return SDL_GameControllerNameForIndex(physicalSlot);
+        return strdup(ControllerName.c_str());
     }
 
     void SDLController::CreateDefaultBinding(int32_t slot) {

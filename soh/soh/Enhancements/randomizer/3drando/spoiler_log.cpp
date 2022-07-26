@@ -300,7 +300,7 @@ static void WriteLocation(
   //   node->SetAttribute("price", price);
   // }
   // if (!location->IsAddedToPool()) {
-  //   #ifdef ENABLE_DEBUG  
+  //   #ifdef ENABLE_DEBUG
   //     node->SetAttribute("not-added", true);
   //   #endif
   // }
@@ -673,7 +673,7 @@ static void WriteHints(int language) {
 static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
-        
+
         switch (language) {
             case 0:
             default:
@@ -725,7 +725,7 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations(language);
-    
+
     if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
         std::filesystem::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
     }

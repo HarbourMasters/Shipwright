@@ -1,4 +1,4 @@
-#ifdef __linux__
+#if defined(__linux__) && defined(X11_SUPPORTED)
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -156,6 +156,7 @@ static struct {
     Atom atom_wm_delete_window;
 
     bool is_fullscreen;
+    bool is_running = true;
     void (*on_fullscreen_changed)(bool is_now_fullscreen);
 
     int keymap[256];
@@ -399,7 +400,7 @@ static void gfx_glx_set_keyboard_callbacks(bool (*on_key_down)(int scancode), bo
 }
 
 static void gfx_glx_main_loop(void (*run_one_game_iter)(void)) {
-    while (1) {
+    while (glx.is_running) {
         run_one_game_iter();
     }
 }
@@ -440,7 +441,7 @@ static void gfx_glx_handle_events(void) {
             }
         }
         if (xev.type == ClientMessage && (Atom)xev.xclient.data.l[0] == glx.atom_wm_delete_window) {
-            exit(0);
+            glx.is_running = false;
         }
     }
 }

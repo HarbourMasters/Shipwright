@@ -20,6 +20,8 @@
 #include <string>
 #include <iostream>
 
+#include "../../Cvar.h"
+
 #include "gfx_pc.h"
 #include "gfx_cc.h"
 #include "gfx_window_manager_api.h"
@@ -1204,8 +1206,8 @@ static void gfx_sp_tri1(uint8_t vtx1_idx, uint8_t vtx2_idx, uint8_t vtx3_idx, bo
         rdp.viewport_or_scissor_changed = false;
     }
 
-    uint64_t cc_id = rdp.combine_mode;
 
+    uint64_t cc_id = rdp.combine_mode;
     bool use_alpha = (rdp.other_mode_l & (3 << 20)) == (G_BL_CLR_MEM << 20) && (rdp.other_mode_l & (3 << 16)) == (G_BL_1MA << 16);
     bool use_fog = (rdp.other_mode_l >> 30) == G_BL_CLR_FOG;
     bool texture_edge = (rdp.other_mode_l & CVG_X_ALPHA) == CVG_X_ALPHA;
@@ -2649,7 +2651,8 @@ void gfx_init(struct GfxWindowManagerAPI *wapi, struct GfxRenderingAPI *rapi, co
     gfx_wapi->init(game_name, rapi->get_name(), start_in_fullscreen, width, height);
     gfx_rapi->init();
     gfx_rapi->update_framebuffer_parameters(0, width, height, 1, false, true, true, true);
-    gfx_current_dimensions.internal_mul = 1;
+    gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
+    gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
     gfx_current_dimensions.width = width;
     gfx_current_dimensions.height = height;
     game_framebuffer = gfx_rapi->create_framebuffer();
