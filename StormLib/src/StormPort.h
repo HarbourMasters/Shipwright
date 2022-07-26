@@ -95,7 +95,7 @@
 
   #define    PKEXPORT
 
-  #ifndef __SYS_ZLIB 
+  #ifndef __SYS_ZLIB
     #define    __SYS_ZLIB
   #endif
 

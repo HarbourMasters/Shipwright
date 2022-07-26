@@ -98,8 +98,10 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
     f32 scale;
     Input* input = &globalCtx->state.input[0];
     s16 RotationSpeed = 150 * CVar_GetS32("gPauseLiveLinkRotationSpeed", 0);
+    u8 AllowStickRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 3) ? true : false;
     u8 AllowCRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 2) ? true : false;
     u8 AllowDPadRotation = (CVar_GetS32("gPauseLiveLinkRotation", 0) == 1) ? true : false;
+
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
         pos.x = 2.0f;
@@ -120,21 +122,31 @@ void KaleidoScope_DrawPlayerWork(GlobalContext* globalCtx) {
 
     link_kaleido_rot.x = link_kaleido_rot.z = 0;
 
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) ||
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DLEFT)) || // rotate
         (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CLEFT))) {
         link_kaleido_rot.y = link_kaleido_rot.y - RotationSpeed;
     } else if ((AllowDPadRotation && CHECK_BTN_ALL(input->cur.button, BTN_DRIGHT)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->cur.button, BTN_CRIGHT))) {
         link_kaleido_rot.y = link_kaleido_rot.y + RotationSpeed;
+    } else if(AllowStickRotation && input->cur.cam_x != 0){
+        link_kaleido_rot.y = link_kaleido_rot.y + (input->cur.cam_x*(((f32)RotationSpeed)/600.0f));
     }
 
-    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) ||
+    if ((AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DUP)) || // reset rotation
         (AllowDPadRotation && CHECK_BTN_ALL(input->press.button, BTN_DDOWN))) {
         link_kaleido_rot.y = 32300;
     } else if ((AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CUP)) ||
                (AllowCRotation && CHECK_BTN_ALL(input->press.button, BTN_CDOWN))) {
         link_kaleido_rot.y = 32300;
+    } else if (AllowStickRotation && input->cur.cam_y < -1200) {
+        link_kaleido_rot.y = 32300;
     }
+
+    if (AllowStickRotation && input->cur.cam_y>0) { // Zoom in
+        scale = scale + input->cur.cam_y*.00005;
+        pos.y = pos.y - input->cur.cam_y*.25;
+    }
+    
 
     link_kaleido_rot.x = 0;
 

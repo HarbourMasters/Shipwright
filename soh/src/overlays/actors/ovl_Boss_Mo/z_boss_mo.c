@@ -53,6 +53,7 @@ void BossMo_UpdateCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_UpdateTent(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx);
+void BossMo_Reset(void);
 
 void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx);
 void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx);
@@ -131,7 +132,7 @@ const ActorInit Boss_Mo_InitVars = {
     (ActorFunc)BossMo_Destroy,
     (ActorFunc)BossMo_UpdateTent,
     (ActorFunc)BossMo_DrawTent,
-    NULL,
+    (ActorResetFunc)BossMo_Reset,
 };
 
 static BossMo* sMorphaCore = NULL;
