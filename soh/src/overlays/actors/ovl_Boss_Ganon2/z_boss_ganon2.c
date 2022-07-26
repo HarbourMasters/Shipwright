@@ -5,6 +5,7 @@
 #include "objects/object_ganon2/object_ganon2.h"
 #include "objects/object_ganon_anime3/object_ganon_anime3.h"
 #include "objects/object_geff/object_geff.h"
+#include "soh/frame_interpolation.h"
 
 #include <string.h>
 
@@ -2464,6 +2465,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
     f32 sin;
     f32 cos;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Push();
 
     if ((this->unk_330 != 0) || (this->unk_328 != 0)) {
@@ -2477,16 +2479,15 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
             }
         }
 
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        
         Math_ApproachF(&this->unk_32C, 0.13f, 1.0f, 0.065f);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, this->unk_328);
         BossGanon2_InitRand(this->unk_340 + 1, 0x71AC - this->unk_340, 0x263A);
         rand = BossGanon2_RandZeroOne();
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         for (i = 0; i < 5; i++) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordOpenChild(this, i);
             angle = (i * (2 * M_PI / 5)) + (rand * M_PI);
             sin = 5000.0f * sinf(angle);
             cos = 5000.0f * cosf(angle);
@@ -2502,11 +2503,12 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(ovl_Boss_Ganon2_DL_00D798));
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
     }
 
     Matrix_Pop();
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_8090464C(BossGanon2* this, GlobalContext* globalCtx) {

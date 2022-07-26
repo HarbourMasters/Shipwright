@@ -2447,9 +2447,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     sp110.y = globalCtx->envCtx.dirLight1.params.dir.y;
     sp110.z = globalCtx->envCtx.dirLight1.params.dir.z;
 
-    Matrix_Push();
-
     OPEN_DISPS(globalCtx->state.gfxCtx);
+    Matrix_Push();
     gDPPipeSync(POLY_XLU_DISP++);
     gSPSegment(POLY_XLU_DISP++, 0x0C, matrix);
     CLOSE_DISPS(globalCtx->state.gfxCtx);

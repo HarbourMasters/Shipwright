@@ -105,7 +105,7 @@ namespace {
         SkinMatrixMtxFToMtx
     };
 
-    typedef pair<const void*, int> label;
+    typedef pair<const void*, long long> label;
 
     union Data {
         Data() {
@@ -461,7 +461,7 @@ void FrameInterpolation_StopRecord(void) {
     is_recording = false;
 }
 
-void FrameInterpolation_RecordOpenChild(const void* a, int b) {
+void FrameInterpolation_RecordOpenChild(const void* a, long long b) {
     if (!is_recording)
         return;
     label key = { a, b };

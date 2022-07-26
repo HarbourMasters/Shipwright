@@ -690,11 +690,11 @@ void EffectBlure_DrawSmooth(EffectBlure* this2, GraphicsContext* gfxCtx) {
     MtxF sp5C;
     Mtx* mtx;
 
+    OPEN_DISPS(gfxCtx);
+
     if (this->numElements < 2) {
         return;
     }
-
-    OPEN_DISPS(gfxCtx);
 
     this->elements[0].flags &= ~3;
     this->elements[0].flags |= 2;
@@ -780,9 +780,9 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
     Mtx* mtx;
 
     OPEN_DISPS(gfxCtx);
+
     sSetupHandlers[this->drawMode](gfxCtx, this, vtx);
     gDPPipeSync(POLY_XLU_DISP++);
-    CLOSE_DISPS(gfxCtx);
 
     {
         Vec3f sp1B0;
@@ -800,7 +800,6 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
         j = 0;
 
         for (i = 0; i < this->numElements - 1; i++) {
-            OPEN_DISPS(gfxCtx);
             if (this->drawMode == 1) {
                 alphaRatio = (f32)this->elements[i].timer / (f32)this->elemDuration;
                 gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, this->altPrimColor.r, this->altPrimColor.g,
@@ -845,11 +844,12 @@ void EffectBlure_DrawSimpleVertices(GraphicsContext* gfxCtx, EffectBlure* this, 
                     gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 }
             }
-            CLOSE_DISPS(gfxCtx);
 
             j += 4;
         }
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 Vtx_t D_8011578C[] = {

@@ -16,7 +16,7 @@ void FrameInterpolation_StartRecord(void);
 
 void FrameInterpolation_StopRecord(void);
 
-void FrameInterpolation_RecordOpenChild(const void* a, int b);
+void FrameInterpolation_RecordOpenChild(const void* a, long long b);
 
 void FrameInterpolation_RecordCloseChild(void);
 
