@@ -11,6 +11,12 @@ struct GameAsset {
     int height;
 };
 
+#define LUS_IMGUI_EXPERIMENTAL() \
+    ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 50, 50, 255)); \
+    ImGui::Text("Experimental"); \
+    ImGui::PopStyleColor(); \
+    ImGui::Separator();
+
 namespace SohImGui {
     enum class Backend {
         DX11,
@@ -52,15 +58,6 @@ namespace SohImGui {
 
     extern WindowImpl impl;
 
-    using WindowDrawFunc = void(*)(bool& enabled);
-
-    typedef struct {
-        bool enabled;
-        WindowDrawFunc drawFunc;
-        std::string name;
-        std::string cVar;
-    } CustomWindow;
-
     extern Console* console;
     extern Ship::InputEditor* controller;
     extern Ship::GameOverlay* overlay;
@@ -85,7 +82,6 @@ namespace SohImGui {
     void CancelFrame(void);
     void ShowCursor(bool hide, Dialogues w);
     void BindCmd(const std::string& cmd, CommandEntry entry);
-    void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc);
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
     int ClampFloatToInt(float value, int min, int max);
@@ -96,4 +92,26 @@ namespace SohImGui {
     ImTextureID GetTextureByName(const std::string& name);
     void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
     void EndGroupPanel(float minHeight = 0.0f);
+
+    void MarkCVarsNeedSave(void);
+
+    using WindowDrawFunc = void(*)(bool& enabled);
+
+    typedef struct {
+        bool enabled;
+        WindowDrawFunc drawFunc;
+        std::string name;
+        std::string cVar;
+    } CustomWindow;
+
+    void AddWindow(const std::string& category, const std::string& name, const std::string& cVar, WindowDrawFunc drawFunc);
+
+    using TabDrawFunc = void(*)(void);
+
+    typedef struct {
+        TabDrawFunc drawFunc;
+        std::string name;
+    } CustomTab;
+
+    void AddTab(const std::string& name, TabDrawFunc drawFunc);
 }

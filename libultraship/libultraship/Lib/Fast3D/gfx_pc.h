@@ -8,6 +8,7 @@
 #include <list>
 #include <cstddef>
 
+#include "U64/PR/ultra64/gbi.h"
 #include "U64/PR/ultra64/types.h"
 
 // TODO figure out why changing these to 640x480 makes the game only render in a quarter of the window
