@@ -290,7 +290,7 @@ void Metal_SetRenderer(SDL_Renderer* renderer) {
 
 bool Metal_Init() {
     mctx.layer = (__bridge CAMetalLayer*)SDL_RenderGetMetalLayer(mctx.renderer);
-    mctx.layer.pixelFormat = MTLPixelFormatRGBA8Unorm;
+    mctx.layer.pixelFormat = MTLPixelFormatBGRA8Unorm;
 
     mctx.device = mctx.layer.device;
     mctx.command_queue = [mctx.device newCommandQueue];
@@ -589,7 +589,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         pipelineDescriptor.fragmentFunction = [library newFunctionWithName:@"fragmentShader"];
         pipelineDescriptor.vertexDescriptor = vertexDescriptor;
 
-        pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatRGBA8Unorm;
+        pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatBGRA8Unorm;
         pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormatDepth32Float;
         if (cc_features.opt_alpha) {
             pipelineDescriptor.colorAttachments[0].blendingEnabled = YES;
@@ -900,7 +900,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         texDescriptor.height = height;
         texDescriptor.sampleCount = msaa_level;
         texDescriptor.mipmapLevelCount = 1;
-        texDescriptor.pixelFormat = MTLPixelFormatRGBA8Unorm;
+        texDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
         texDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0) | (msaa_level <= 1 ? MTLTextureUsageShaderRead : 0);
 
         tex.texture = [mctx.device newTextureWithDescriptor:texDescriptor];
