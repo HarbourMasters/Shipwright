@@ -765,8 +765,8 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 5; i++, ptr++) {
+        OPEN_DISPS(gfxCtx);
         if (ptr->unk_00 == 1) {
-            OPEN_DISPS(gfxCtx);
             if (flag == 0) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;
@@ -781,7 +781,7 @@ void func_80B13464(EnSyatekiNiw* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
-            CLOSE_DISPS(gfxCtx);
         }
+        CLOSE_DISPS(gfxCtx);
     }
 }

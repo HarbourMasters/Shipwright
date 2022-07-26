@@ -354,8 +354,8 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
         CLOSE_DISPS(gfxCtx);
 
         for (i = 0; i < ARRAY_COUNT(this->particles); particle++, i++) {
+            OPEN_DISPS(gfxCtx);
             if (particle->isAlive) {
-                OPEN_DISPS(gfxCtx);
                 Matrix_Translate(particle->pos.x, particle->pos.y, particle->pos.z, MTXMODE_NEW);
                 Matrix_RotateX(particle->rot.x * (M_PI / 180.0f), MTXMODE_APPLY);
                 Matrix_RotateY(particle->rot.y * (M_PI / 180.0f), MTXMODE_APPLY);
@@ -366,8 +366,8 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, object_efc_star_field_DL_000DE0);
-                CLOSE_DISPS(gfxCtx);
             }
+            CLOSE_DISPS(gfxCtx);
         }
     }
 }

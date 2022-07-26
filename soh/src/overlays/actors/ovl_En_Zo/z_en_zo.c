@@ -207,11 +207,12 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
     s16 i;
     u8 setup;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_BUBBLE) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesMaterialDL);
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -228,10 +229,11 @@ void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gZoraBubblesModelDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
@@ -240,11 +242,12 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
     u8 setup;
 
     effect = this->effects;
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_SPLASH) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesMaterialDL);
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -260,10 +263,11 @@ void EnZo_DrawSplashes(EnZo* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
             gSPDisplayList(POLY_XLU_DISP++, gZoraSplashesModelDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_TreadWaterRipples(EnZo* this, f32 scale, f32 targetScale, u8 alpha) {
