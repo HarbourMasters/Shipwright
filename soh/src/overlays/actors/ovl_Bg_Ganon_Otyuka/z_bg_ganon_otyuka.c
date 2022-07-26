@@ -279,14 +279,13 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
     func_80093D18(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, sPlatformMaterialDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
-
     actor = globalCtx->actorCtx.actorLists[ACTORCAT_PROP].head;
     while (actor != NULL) {
         if (actor->id == ACTOR_BG_GANON_OTYUKA) {
             platform = (BgGanonOtyuka*)actor;
 
             if (platform->dyna.actor.projectedPos.z > spBC) {
+                FrameInterpolation_RecordOpenChild(platform, 0);
                 if (camera->eye.y > platform->dyna.actor.world.pos.y) {
                     phi_s2 = sPlatformTopDL;
                 } else {
@@ -304,7 +303,6 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         phi_s1 = sPlatformTopDL;
                     }
                 }
-                OPEN_DISPS(globalCtx->state.gfxCtx);
                 gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, phi_s2);
@@ -312,10 +310,8 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 if (phi_s1 != NULL) {
                     gSPDisplayList(POLY_OPA_DISP++, phi_s1);
                 }
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
 
                 for (i = 0; i < ARRAY_COUNT(sSides); i++) {
-                    OPEN_DISPS(globalCtx->state.gfxCtx);
                     if ((platform->visibleSides & sSides[i]) || 1) { // || 1 for frame interpolation
                         Matrix_Push();
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
@@ -326,8 +322,8 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         gSPDisplayList(POLY_OPA_DISP++, sPlatformSideDL);
                         Matrix_Pop();
                     }
-                    CLOSE_DISPS(globalCtx->state.gfxCtx);
                 }
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
@@ -341,7 +337,7 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
             platform = (BgGanonOtyuka*)actor;
 
             if ((platform->dyna.actor.projectedPos.z > -30.0f) && (platform->flashState != FLASH_NONE)) {
-                OPEN_DISPS(globalCtx->state.gfxCtx);
+                FrameInterpolation_RecordOpenChild(platform, 0);
                 gSPSegment(POLY_XLU_DISP++, 0x08,
                            Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, platform->flashTimer * 4, 0, 32, 64, 1,
                                             platform->flashTimer * 4, 0, 32, 64));
@@ -351,10 +347,8 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 gDPSetEnvColor(POLY_XLU_DISP++, platform->flashEnvColorR, platform->flashEnvColorG,
                                platform->flashEnvColorB, 128);
                 Matrix_Translate(platform->dyna.actor.world.pos.x, 0.0f, platform->dyna.actor.world.pos.z, MTXMODE_NEW);
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
 
                 for (i = 0; i < ARRAY_COUNT(sSides); i++) {
-                    OPEN_DISPS(globalCtx->state.gfxCtx);
                     if ((platform->unwalledSides & sSides[i]) || 1) { // || 1 for frame interpolation
                         Matrix_Push();
                         Matrix_Translate(sSideCenters[i].x, 0.0f, sSideCenters[i].z, MTXMODE_APPLY);
@@ -366,11 +360,13 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
                         gSPDisplayList(POLY_XLU_DISP++, sFlashDL);
                         Matrix_Pop();
                     }
-                    CLOSE_DISPS(globalCtx->state.gfxCtx);
                 }
+                FrameInterpolation_RecordCloseChild();
             }
         }
 
         actor = actor->next;
     }
+    
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
