@@ -280,50 +280,6 @@ namespace SohImGui {
         stbi_image_free(img_data);
     }
 
-    void LoadRainbowColor() {
-        u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
-        for (u8 s = 0; s < arrayLength; s++) {
-            std::string cvarName = RainbowColorCvarList[s];
-            std::string Cvar_Red = cvarName;
-            Cvar_Red += "R";
-            std::string Cvar_Green = cvarName;
-            Cvar_Green += "G";
-            std::string Cvar_Blue = cvarName;
-            Cvar_Blue += "B";
-            std::string Cvar_RBM = cvarName;
-            Cvar_RBM += "RBM";
-            std::string RBM_HUE = cvarName;
-            RBM_HUE += "Hue";
-            f32 Canon = 10.f * s;
-            ImVec4 NewColor;
-            const f32 deltaTime = 1.0f / ImGui::GetIO().Framerate;
-            f32 hue = CVar_GetFloat(RBM_HUE.c_str(), 0.0f);
-            f32 newHue = hue + CVar_GetS32("gColorRainbowSpeed", 1) * 36.0f * deltaTime;
-            if (newHue >= 360)
-                newHue = 0;
-            CVar_SetFloat(RBM_HUE.c_str(), newHue);
-            f32 current_hue = CVar_GetFloat(RBM_HUE.c_str(), 0);
-            u8 i = current_hue / 60 + 1;
-            u8 a = (-current_hue / 60.0f + i) * 255;
-            u8 b = (current_hue / 60.0f + (1 - i)) * 255;
-
-            switch (i) {
-            case 1: NewColor.x = 255; NewColor.y = b; NewColor.z = 0; break;
-            case 2: NewColor.x = a; NewColor.y = 255; NewColor.z = 0; break;
-            case 3: NewColor.x = 0; NewColor.y = 255; NewColor.z = b; break;
-            case 4: NewColor.x = 0; NewColor.y = a; NewColor.z = 255; break;
-            case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
-            case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
-            }
-
-            if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-                CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(NewColor.x, 0, 255));
-                CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(NewColor.y, 0, 255));
-                CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(NewColor.z, 0, 255));
-            }
-        }
-    }
-
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha)
     {
         Color_RGBA8 defaultColors;

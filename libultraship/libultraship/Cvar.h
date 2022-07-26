@@ -25,7 +25,7 @@ typedef struct CVar {
     } value;
 } CVar;
 
-CVar* CVar_Get(char* name);
+extern "C" CVar * CVar_Get(const char* name);
 #endif
 
 #ifdef __cplusplus
@@ -34,7 +34,6 @@ extern "C"
 #endif
 //#include <ultra64.h>
 
-CVar* CVar_Get(const char* name);
 int32_t CVar_GetS32(const char* name, int32_t defaultValue);
 float CVar_GetFloat(const char* name, float defaultValue);
 const char* CVar_GetString(const char* name, const char* defaultValue);
@@ -60,7 +59,7 @@ void CVar_RegisterRGBA(const char* name, Color_RGBA8 defaultValue);
 #include <functional>
 #include <memory>
 
-extern "C" CVar * CVar_Get(const char* name);
+//extern "C" CVar * CVar_Get(const char* name);
 extern std::map<std::string, std::unique_ptr<CVar>, std::less<>> cvars;
 void CVar_SetFloat(const char* name, float value);
 #endif
