@@ -27,6 +27,16 @@
 #include "Lib/spdlog/include/spdlog/common.h"
 #include "Utils/StringHelper.h"
 
+#if __APPLE__
+#include <SDL_hints.h>
+#else
+#include <SDL2/SDL_hints.h>
+#endif
+
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #ifdef ENABLE_METAL
 #include "Lib/Fast3D/gfx_metal.h"
 #include "Lib/ImGui/backends/imgui_impl_metal.h"
@@ -45,10 +55,6 @@
 
 IMGUI_IMPL_API LRESULT  ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-#endif
-
-#ifdef __SWITCH__
-#include "SwitchImpl.h"
 #endif
 
 using namespace Ship;
