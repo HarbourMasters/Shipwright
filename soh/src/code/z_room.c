@@ -217,12 +217,12 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
-#define JPEG_MARKER BE32SWAP(0xFFD8FFE0)
+#define JPEG_MARKER 0xFFD8FFE0
 
 s32 func_80096238(void* data) {
     OSTime time;
 
-    if (*(u32*)data == JPEG_MARKER)
+    if (BE32SWAP(*(u32*)data) == JPEG_MARKER)
     {
         char* decodedJpeg = ResourceMgr_LoadJPEG(data, 320 * 240 * 2);
         //char* decodedJpeg = ResourceMgr_LoadJPEG(data, 480 * 240 * 2);
