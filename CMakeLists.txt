@@ -125,7 +125,7 @@ string(REGEX REPLACE "x64" "..\\\\\\\\x64" filedata "${filedata}")
 file(WRITE "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" "${filedata}")
 file(CHMOD "${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py" PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_WRITE GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
 
-find_package(Python3 COMPONENTS Interpreter PATHS $ENV{env.PYTHON})
+find_package(Python3 COMPONENTS Interpreter)
 
 add_custom_target(ExtractAssets
     COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
@@ -173,7 +173,7 @@ INSTALL(FILES ${CMAKE_SOURCE_DIR}/README.md DESTINATION . COMPONENT ship RENAME 
 endif()
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux")
-    set(CPACK_GENERATOR "DEB;ZIP")
+	set(CPACK_GENERATOR "External")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Windows")
     set(CPACK_GENERATOR "ZIP")
 elseif(CMAKE_SYSTEM_NAME MATCHES "Darwin")
