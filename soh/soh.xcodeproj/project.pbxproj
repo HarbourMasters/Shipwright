@@ -6689,11 +6689,13 @@
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
 					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
 					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6751,11 +6753,13 @@
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
 					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
 					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6866,7 +6870,6 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-DNDEBUG",
 					"-DENABLE_METAL",
 				);
@@ -7056,7 +7059,6 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-D_DEBUG",
 					"-DENABLE_METAL",
 				);

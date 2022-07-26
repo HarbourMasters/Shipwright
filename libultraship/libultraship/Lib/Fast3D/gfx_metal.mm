@@ -182,7 +182,7 @@ static void pop_buffer_and_wait_to_requeue(id<MTLCommandBuffer> command_buffer) 
     mctx.buffer_pool.pop();
 
     [command_buffer addCompletedHandler:^(id<MTLCommandBuffer>) {
-        SPDLOG_DEBUG("Metal: buffer pool size: {}", mctx.buffer_pool.size());
+        SPDLOG_TRACE("Metal: buffer pool size: {}", mctx.buffer_pool.size());
         if (mctx.buffer_pool.size() <= kMaxBufferPoolSize) {
             mctx.buffer_pool.push(buffer);
         }
@@ -650,10 +650,7 @@ static uint32_t gfx_metal_new_texture(void) {
     return (uint32_t)(mctx.textures.size() - 1);
 }
 
-static void gfx_metal_delete_texture(uint32_t texID) {
-    // TODO: implement
-    SPDLOG_DEBUG("Metal: asked to delete texture");
-}
+static void gfx_metal_delete_texture(uint32_t texID) {}
 
 static void gfx_metal_select_texture(int tile, uint32_t texture_id) {
     mctx.current_tile = tile;
@@ -787,7 +784,7 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 static void gfx_metal_on_resize(void) {}
 
 static void gfx_metal_start_frame(void) {
-    SPDLOG_ERROR("[start frame]");
+    SPDLOG_TRACE("Metal: Start frame");
 
     mctx.frame_uniforms.frameCount++;
     if (mctx.frame_uniforms.frameCount > 150) {
@@ -806,7 +803,7 @@ static void gfx_metal_start_frame(void) {
 }
 
 void gfx_metal_end_frame(void) {
-    SPDLOG_ERROR("[end frame]");
+    SPDLOG_TRACE("Metal: End frame");
     std::set<int>::iterator it = mctx.drawn_framebuffers.begin();
     it++;
 
@@ -814,7 +811,7 @@ void gfx_metal_end_frame(void) {
         auto framebuffer = mctx.framebuffers[*it];
 
         [framebuffer.command_encoder endEncoding];
-        SPDLOG_ERROR("End encoding for framebuffer: {}", *it);
+        SPDLOG_TRACE("End encoding for framebuffer: {}", *it);
         pop_buffer_and_wait_to_requeue(framebuffer.command_buffer);
         [framebuffer.command_buffer commit];
         [framebuffer.command_buffer waitUntilCompleted];
@@ -824,7 +821,7 @@ void gfx_metal_end_frame(void) {
 
     auto screenFramebuffer = mctx.framebuffers[0];
     [screenFramebuffer.command_encoder endEncoding];
-    SPDLOG_ERROR("End encoding for framebuffer: {}", 0);
+    SPDLOG_TRACE("End encoding for framebuffer: {}", 0);
 
     id<CAMetalDrawable> drawable = mctx.layer.nextDrawable;
     id<MTLBlitCommandEncoder> blitEncoder = [screenFramebuffer.command_buffer blitCommandEncoder];
@@ -877,7 +874,7 @@ int gfx_metal_create_framebuffer(void) {
 }
 
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
-    SPDLOG_ERROR("Being asked to update framebuffer params: {}", fb_id);
+    SPDLOG_TRACE("Being asked to update framebuffer params: {}", fb_id);
     // TODO: implement
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
@@ -889,8 +886,6 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 //    }
 
     bool diff = tex.width != width || tex.height != height || fb.msaa_level != msaa_level;
-
-    // TODO: something about diff and creating textures
 
     if (diff || (fb.render_pass_descriptor != nil) != render_target) {
         // create drawable texture
@@ -949,10 +944,9 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 }
 
 void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
-    // TODO: Implement
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     mctx.current_framebuffer = fb_id;
-    SPDLOG_ERROR("Being asked to draw to framebuffer: {}", fb_id);
+    SPDLOG_TRACE("Being asked to draw to framebuffer: {}", fb_id);
 
     if (fb.render_target && fb.command_buffer == nil && fb.command_encoder == nil) {
         fb.command_buffer = [mctx.command_queue commandBuffer];
@@ -992,7 +986,7 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
 void *gfx_metal_get_framebuffer_texture_id(int fb_id) {
     if (fb_id != 0) {
         auto texture = mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
-        SPDLOG_ERROR("Being asked for texture framebuffer: {}", fb_id);
+        SPDLOG_TRACE("Being asked for texture framebuffer: {}", fb_id);
     }
     return (__bridge void*)mctx.textures[mctx.framebuffers[fb_id].texture_id].texture;
 }
