@@ -967,8 +967,8 @@ namespace SohImGui {
                         Tooltip("Wearing the Bunny Hood grants a speed\nincrease like in Majora's Mask");
                         EnhancementCheckbox("Fast Chests", "gFastChests");
                         Tooltip("Kick open every chest");
-                        EnhancementCheckbox("Fast Pickups", "gFastDrops");
-                        Tooltip("Skip pickup messages for bottle swipes\nand new consumable items");
+                        EnhancementCheckbox("Skip Pickup Messages", "gFastDrops");
+                        Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
                         Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
