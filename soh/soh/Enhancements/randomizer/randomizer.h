@@ -43,10 +43,8 @@ class Randomizer {
     std::string GetAdultAltarText() const;
     std::string GetGanonText() const;
     std::string GetGanonHintText() const;
-    //CustomMessageEntry GetHintFromCheck(RandomizerCheck check);
     GetItemID GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
     GetItemID GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
-    //std::string GetCustomGetItemMessage(GlobalContext* globalCtx, GetItemID giid);
     static void CreateCustomMessages();
 };
 
