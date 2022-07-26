@@ -72,12 +72,12 @@ SOURCEFILES_CPP :=	\
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
-ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE
+ARCH	:=	-march=armv8-a+crc+crypto -mtune=cortex-a57 -mtp=soft -fPIE -ffast-math -O3
 
-CFLAGS	:=	-g -Wall -ffunction-sections \
+CFLAGS	:=	-Wall -ffunction-sections \
 			$(ARCH) $(DEFINES) \
             -DSPDLOG_NO_THREAD_ID \
-		    -DSTBI_NO_THREAD_LOCALS -DDEBUG
+		    -DSTBI_NO_THREAD_LOCALS
 
 CFLAGS	+=	$(INCLUDE) -D__SWITCH__ -DENABLE_OPENGL
 
