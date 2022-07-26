@@ -18,11 +18,7 @@
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
 #include "stox.h"
-#if __APPLE__
-#include <SDL.h>
-#else
 #include <SDL2/SDL.h>
-#endif
 #include <map>
 #include <string>
 #include <chrono>

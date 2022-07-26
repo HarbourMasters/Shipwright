@@ -14,7 +14,7 @@
 #define GL_GLEXT_PROTOTYPES 1
 #include "SDL_opengl.h"
 #elif __APPLE__
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #else
 #include <SDL2/SDL.h>
 #define GL_GLEXT_PROTOTYPES 1
