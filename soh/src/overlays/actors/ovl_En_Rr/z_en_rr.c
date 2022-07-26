@@ -860,10 +860,12 @@ void EnRr_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
     Matrix_Pop();
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     zeroVec.x = 0.0f;
     zeroVec.y = 0.0f;
     zeroVec.z = 0.0f;
     for (i = 1; i < 5; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Translate(0.0f, this->bodySegs[i].height + 1000.0f, 0.0f, MTXMODE_APPLY);
 
         Matrix_RotateZYX(this->bodySegs[i].rot.x, this->bodySegs[i].rot.y, this->bodySegs[i].rot.z, MTXMODE_APPLY);
@@ -875,12 +877,14 @@ void EnRr_Draw(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Pop();
         segMtx++;
         Matrix_MultVec3f(&zeroVec, &this->effectPos[i]);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     this->effectPos[0] = this->actor.world.pos;
     Matrix_MultVec3f(&zeroVec, &this->mouthPos);
     gSPDisplayList(POLY_XLU_DISP++, gLikeLikeDL);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
+    
     if (this->effectTimer != 0) {
         Vec3f effectPos;
         s16 effectTimer = this->effectTimer - 1;
@@ -901,4 +905,5 @@ void EnRr_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
         }
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

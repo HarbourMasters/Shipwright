@@ -3977,8 +3977,6 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     entry = &sDoorLocksInfo[type];
     chainRotZ = entry->chainsRotZInit;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     Matrix_Translate(0.0f, entry->yShift, 500.0f, MTXMODE_APPLY);
     Matrix_Get(&baseMtxF);
 
@@ -3986,6 +3984,7 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
     chainsTranslateY = cosf(entry->chainAngle - chainRotZ) * (10 - frame) * 0.1f * entry->chainLength;
 
     for (i = 0; i < 4; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Put(&baseMtxF);
         Matrix_RotateZ(chainRotZ, MTXMODE_APPLY);
         Matrix_Translate(chainsTranslateX, chainsTranslateY, 0.0f, MTXMODE_APPLY);
@@ -4005,15 +4004,16 @@ void Actor_DrawDoorLock(GlobalContext* globalCtx, s32 frame, s32 type) {
         }
 
         chainRotZ += rotZStep;
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
     Matrix_Put(&baseMtxF);
     Matrix_Scale(frame * 0.1f, frame * 0.1f, frame * 0.1f, MTXMODE_APPLY);
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_MODELVIEW | G_MTX_LOAD);
     gSPDisplayList(POLY_OPA_DISP++, entry->lockDL);
-
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 

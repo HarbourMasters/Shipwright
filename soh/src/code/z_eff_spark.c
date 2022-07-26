@@ -154,10 +154,8 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
     u8 sp1C4;
     f32 ratio;
 
-    FrameInterpolation_RecordOpenChild(this, 0);
-    OPEN_DISPS(gfxCtx);
-
     if (this != NULL) {
+        OPEN_DISPS(gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, &gMtxClear, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
@@ -173,6 +171,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
         gSPClearGeometryMode(POLY_XLU_DISP++, G_CULL_BOTH | G_FOG | G_LIGHTING | G_TEXTURE_GEN | G_TEXTURE_GEN_LINEAR);
         gSPSetGeometryMode(POLY_XLU_DISP++, G_ZBUFFER | G_SHADE | G_SHADING_SMOOTH);
         gDPPipeSync(POLY_XLU_DISP++);
+        CLOSE_DISPS(gfxCtx);
 
         vertices = Graph_Alloc(gfxCtx, this->numElements * sizeof(Vtx[4]));
         if (vertices == NULL) {
@@ -202,6 +201,7 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
         sp1C4 = this->colorStart[3].a + ((f32)this->colorEnd[3].a - (f32)this->colorStart[3].a) * ratio;
 
         for (i = 0; i < this->numElements; i++) {
+            OPEN_DISPS(gfxCtx);
             MtxF sp12C;
             MtxF spEC;
             MtxF spAC;
@@ -264,18 +264,19 @@ void EffectSpark_Draw(void* thisx, GraphicsContext* gfxCtx) {
 
             mtx = SkinMatrix_MtxFToNewMtx(gfxCtx, &sp12C);
             if (mtx == NULL) {
-                goto end;
+                break;
             }
 
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPVertex(POLY_XLU_DISP++, &vertices[4 * i], 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 2, 0, 3, 0, 2, 3, 1, 0);
+            CLOSE_DISPS(gfxCtx);
         }
 
+        OPEN_DISPS(gfxCtx);
         gDPPipeSync(POLY_XLU_DISP++);
+        CLOSE_DISPS(gfxCtx);
     }
 
-end:
-    CLOSE_DISPS(gfxCtx);
-    FrameInterpolation_RecordCloseChild();
+    end:;
 }

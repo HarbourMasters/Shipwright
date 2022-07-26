@@ -92,14 +92,13 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
     s16 alpha;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     gfxSetup = 0;
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (gfxSetup == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gDampeEff1DL);
@@ -121,11 +120,10 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTextures[imageIdx]));
 
             gSPDisplayList(POLY_XLU_DISP++, gDampeEff2DL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
         eff++;
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnTkEff_CreateDflt(EnTk* this, Vec3f* pos, u8 duration, f32 size, f32 growth, f32 yAccelMax) {

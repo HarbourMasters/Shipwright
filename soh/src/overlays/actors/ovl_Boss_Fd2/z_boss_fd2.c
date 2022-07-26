@@ -1079,6 +1079,7 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Push();
     gDPPipeSync(POLY_OPA_DISP++);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 10; i++) {
         if (i == 0) {
@@ -1146,6 +1147,7 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     }
 
     for (i = 0; i < 9; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Translate((pos + i)->x, (pos + i)->y, (pos + i)->z, MTXMODE_NEW);
         Matrix_RotateY((rot + i)->y, MTXMODE_APPLY);
         Matrix_RotateX((rot + i)->x, MTXMODE_APPLY);
@@ -1155,9 +1157,9 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gHoleVolvagiaManeModelDL);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
     Matrix_Pop();
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BossFd2_DrawMane(BossFd2* this, GlobalContext* globalCtx) {

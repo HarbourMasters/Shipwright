@@ -164,10 +164,12 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
     gSPDisplayList(dList1++, gCuccoChickSetupBodyDL);
     gSPDisplayList(dList2++, gCuccoChickSetupEyeDL);
     gSPDisplayList(dList3++, gCuccoChickSetupBeakDL);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     chick = this->chicks;
     for (i = 0; i < this->count; i++, chick++) {
         if (chick->type != CHICK_NONE) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             Mtx* mtx;
 
             Matrix_SetTranslateRotateYXZ(chick->pos.x, chick->pos.y + chick->height, chick->pos.z, &chick->rot);
@@ -180,16 +182,20 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
             gSPDisplayList(dList2++, gCuccoChickEyesDL);
             gSPMatrix(dList3++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(dList3++, gCuccoChickBeakDL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     chick = this->chicks;
     POLY_XLU_DISP = dList3;
     func_80094044(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_XLU_DISP++, gCuccoChickSetupShadowDL);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < this->count; i++, chick++) {
         if ((chick->type != CHICK_NONE) && (chick->floorPoly != NULL)) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             func_80038A28(chick->floorPoly, chick->pos.x, chick->floorY, chick->pos.z, &floorMat);
             Matrix_Put(&floorMat);
             Matrix_RotateY(chick->rot.y * (M_PI / 0x8000), MTXMODE_APPLY);
@@ -197,9 +203,9 @@ void EnNwc_DrawChicks(EnNwc* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoChickShadowDL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnNwc_Init(Actor* thisx, GlobalContext* globalCtx) {

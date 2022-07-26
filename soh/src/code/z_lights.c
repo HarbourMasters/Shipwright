@@ -417,13 +417,14 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
     node = globalCtx->lightCtx.listHead;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-
     POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_MAGICSQ);
     gSPDisplayList(POLY_XLU_DISP++, gGlowCircleTextureLoadDL);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     while (node != NULL) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         LightInfo* info;
         LightPoint* params;
         f32 scale;
@@ -435,18 +436,15 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         if ((info->type == LIGHT_POINT_GLOW) && (params->drawGlow)) {
             scale = SQ(params->radius) * 0.0000026f;
 
-            FrameInterpolation_RecordOpenChild(node, 0);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, params->color[0], params->color[1], params->color[2], 50);
             Matrix_Translate(params->x, params->y, params->z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gGlowCircleDL);
-            FrameInterpolation_RecordCloseChild();
         }
 
         node = node->next;
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

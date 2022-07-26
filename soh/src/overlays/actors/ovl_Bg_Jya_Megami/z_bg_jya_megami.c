@@ -320,11 +320,10 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
     BgJyaMegamiPiece* piece;
     u32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     func_80093D18(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         piece = &this->pieces[i];
         Matrix_Translate(piece->pos.x + sPiecesInit[i].unk_00.x, piece->pos.y + sPiecesInit[i].unk_00.y,
                          piece->pos.z + sPiecesInit[i].unk_00.z, MTXMODE_NEW);
@@ -337,9 +336,8 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, sDLists[i]);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgJyaMegami_Draw(Actor* thisx, GlobalContext* globalCtx) {

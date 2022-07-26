@@ -1196,16 +1196,16 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     EnNiwFeather* feather = &this->feathers[0];
 
-    OPEN_DISPS(gfxCtx);
-
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 1) {
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;
             }
+
             Matrix_Translate(feather->pos.x, feather->pos.y, feather->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
@@ -1214,10 +1214,9 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
-
-    CLOSE_DISPS(gfxCtx);
 }
 
 void EnNiw_Reset(void) {

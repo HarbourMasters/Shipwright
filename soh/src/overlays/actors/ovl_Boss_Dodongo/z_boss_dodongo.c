@@ -1692,14 +1692,15 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
 
     eff = (BossDodongoEffect*)globalCtx->specialEffects;
 
-    OPEN_DISPS(gfxCtx);
-
     func_80093D84(globalCtx->state.gfxCtx);
     unkMtx = &globalCtx->billboardMtxF;
 
+    OPEN_DISPS(gfxCtx);
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
+    CLOSE_DISPS(gfxCtx);
 
     for (i = 0; i < 80; i++, eff++) {
+        OPEN_DISPS(gfxCtx);
         if (eff->unk_24 == 1) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -1716,7 +1717,6 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_kingdodongo_DL_009DD0);
         }
+        CLOSE_DISPS(gfxCtx);
     }
-
-    CLOSE_DISPS(gfxCtx);
 }

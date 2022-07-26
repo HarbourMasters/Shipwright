@@ -575,8 +575,10 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
     gDPSetEnvColor(POLY_OPA_DISP++, 0x00, 0x00, 0x00, 0xFF);
     gDPSetRenderMode(POLY_OPA_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_OPA_SURF2);
     gDPPipeSync(POLY_OPA_DISP++);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < 8; i++) {
         if (this->timer < (i + 22)) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             temp = &this->unk_1F8[i];
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));
@@ -584,9 +586,9 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
     if (this->unk_1CA != 0) {
         Vec3f tempVec;
         Vec3f* fireOffset;

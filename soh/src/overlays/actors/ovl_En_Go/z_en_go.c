@@ -1146,9 +1146,9 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                               this->skelAnime.dListCount, EnGo_OverrideLimbDraw, EnGo_PostLimbDraw, &this->actor);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
         EnGo_DrawDust(this, globalCtx);
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnGo_AddDust(EnGo* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 initialTimer, f32 scale, f32 scaleStep) {
@@ -1206,11 +1206,11 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD40);
@@ -1230,7 +1230,7 @@ void EnGo_DrawDust(EnGo* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -810,7 +810,6 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
     EnViewer* this = this2;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->fireEffects); i++) {
         switch (this->fireEffects[i].state) {
             case 0:
@@ -843,6 +842,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                 break;
         }
 
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         func_80093D84(globalCtx->state.gfxCtx);
         Matrix_Translate(this->fireEffects[i].pos.x, this->fireEffects[i].pos.y, this->fireEffects[i].pos.z,
                          MTXMODE_NEW);
@@ -856,8 +856,8 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnViewer_UpdateGanondorfCape(GlobalContext* globalCtx, EnViewer* this) {

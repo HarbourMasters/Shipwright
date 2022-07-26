@@ -225,13 +225,12 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD40);
@@ -250,10 +249,9 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 numDustEffects, f32 radius,

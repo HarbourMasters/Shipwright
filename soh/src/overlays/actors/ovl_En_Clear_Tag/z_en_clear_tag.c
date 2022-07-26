@@ -896,13 +896,13 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     EnClearTagEffect* effect = (EnClearTagEffect*)globalCtx->specialEffects;
     EnClearTagEffect* firstEffect = effect;
 
-    OPEN_DISPS(gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_DEBRIS) {
+            OPEN_DISPS(gfxCtx);
             // Apply the debris effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 isMaterialApplied++;
@@ -917,6 +917,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gArwingDebrisEffectDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
@@ -925,6 +926,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            OPEN_DISPS(gfxCtx);
             // Apply the flash ground effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -941,6 +943,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectGroundDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
@@ -949,6 +952,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_SMOKE) {
+            OPEN_DISPS(gfxCtx);
             // Apply the smoke effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -970,6 +974,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
@@ -978,6 +983,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FIRE) {
+            OPEN_DISPS(gfxCtx);
             // Apply the fire effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectMaterialDL);
@@ -996,6 +1002,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFireEffectDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
@@ -1004,6 +1011,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
+            OPEN_DISPS(gfxCtx);
             // Apply the flash billboard effect material if it has not already been applied.
             if (!isMaterialApplied) {
                 gDPPipeSync(POLY_XLU_DISP++);
@@ -1019,10 +1027,9 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gArwingFlashEffectDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
-
-    CLOSE_DISPS(gfxCtx);
 }
 
 void EnClearTag_Reset(void) {

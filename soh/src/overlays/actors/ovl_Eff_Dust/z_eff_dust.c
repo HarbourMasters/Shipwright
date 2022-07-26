@@ -282,8 +282,11 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
 
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
 
+    CLOSE_DISPS(gfxCtx);
+
     for (i = 0; i < 64; i++) {
         if (*distanceTraveled < 1.0f) {
+            OPEN_DISPS(gfxCtx);
             aux = 1.0f - (*distanceTraveled * *distanceTraveled);
             Matrix_Translate(this->actor.world.pos.x + (initialPositions->x * ((this->dx * aux) + (1.0f - this->dx))),
                              this->actor.world.pos.y + (initialPositions->y * ((this->dy * aux) + (1.0f - this->dy))),
@@ -296,13 +299,12 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
+            CLOSE_DISPS(gfxCtx);
         }
 
         initialPositions++;
         distanceTraveled++;
     }
-
-    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
@@ -331,9 +333,11 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     distanceTraveled = this->distanceTraveled;
 
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
+    CLOSE_DISPS(gfxCtx);
 
     for (i = 0; i < 64; i++) {
         if (*distanceTraveled < 1.0f) {
+            OPEN_DISPS(gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, *distanceTraveled * 255);
 
             // Needed to match.
@@ -355,13 +359,12 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gEffSparklesDL));
+            CLOSE_DISPS(gfxCtx);
         }
 
         initialPositions++;
         distanceTraveled++;
     }
-
-    CLOSE_DISPS(gfxCtx);
 }
 
 void EffDust_Draw(Actor* thisx, GlobalContext* globalCtx) {

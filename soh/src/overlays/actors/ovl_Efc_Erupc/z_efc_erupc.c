@@ -165,9 +165,9 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
     s16 i;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx);
     for (i = 0; i < EFC_ERUPC_NUM_PARTICLES; i++, particles++) {
         if (particles->isActive) {
+            OPEN_DISPS(gfxCtx);
             func_80093D84(globalCtx->state.gfxCtx);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_002760);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, particles->color.r, particles->color.g, particles->color.b,
@@ -180,9 +180,9 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_0027D8);
+            CLOSE_DISPS(gfxCtx);
         }
     }
-    CLOSE_DISPS(gfxCtx);
 }
 
 static Color_RGB8 D_8099D770[] = {

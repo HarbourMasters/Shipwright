@@ -391,8 +391,6 @@ s32 func_800AAA9C(View* view) {
         FrameInterpolation_DontInterpolateCamera();
     }
 
-    FrameInterpolation_RecordOpenChild(NULL, FrameInterpolation_GetCameraEpoch());
-
     if (HREG(80) == 11) {
         if (HREG(94) != 11) {
             HREG(94) = 11;
@@ -458,7 +456,6 @@ s32 func_800AAA9C(View* view) {
     gSPMatrix(POLY_OPA_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_XLU_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
     gSPMatrix(POLY_KAL_DISP++, viewing, G_MTX_NOPUSH | G_MTX_MUL | G_MTX_PROJECTION);
-    FrameInterpolation_RecordCloseChild();
 
     CLOSE_DISPS(gfxCtx);
 

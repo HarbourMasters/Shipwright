@@ -881,11 +881,11 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
     s16 idx;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type == FD_EFFECT_FLAME) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
                 gSPDisplayList(POLY_XLU_DISP++, gFlareDancerDL_7928);
@@ -902,9 +902,9 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
             idx = eff->timer * (8.0f / eff->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
@@ -912,13 +912,12 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
     s16 firstDone;
     EnFdEffect* eff = this->effects;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type == FD_EFFECT_DOT) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (!firstDone) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gFlareDancerDL_79F8);
@@ -933,8 +932,7 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerTriangleParticleDL);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

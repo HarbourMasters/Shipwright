@@ -586,10 +586,10 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
     f32 scale;
     s32 pad;
 
-    OPEN_DISPS(gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     for (i = 0; i < this->numEffects; i++, effect++) {
         if (effect->flag) {
+            OPEN_DISPS(gfxCtx);
             scale = effect->scale / 10000.0f;
             Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
             Matrix_Scale(scale, scale, scale, MTXMODE_APPLY);
@@ -600,7 +600,7 @@ void EnGSwitch_DrawEffects(EnGSwitch* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sRupeeTextures[effect->colorIdx]));
             gSPDisplayList(POLY_OPA_DISP++, gRupeeDL);
+            CLOSE_DISPS(gfxCtx);
         }
     }
-    CLOSE_DISPS(gfxCtx);
 }

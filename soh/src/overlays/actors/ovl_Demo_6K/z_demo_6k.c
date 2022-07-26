@@ -565,12 +565,12 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
     u16 timer1 = this->timer1;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-
     func_80093D84(globalCtx->state.gfxCtx);
     Matrix_RotateX(-M_PI / 2, MTXMODE_APPLY);
     gSPSegment(POLY_XLU_DISP++, 0x08,
                Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 512, 1, 0,
                                 0x7FFF - ((timer1 * 8) & 0x7FFF), 16, 32));
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     {
         s32 i;
@@ -581,9 +581,12 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
             { { 255, 255, 170 }, { 255, 100, 0 } }, { { 170, 255, 255 }, { 0, 100, 255 } },
         };
 
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         for (i = 0; i < 6; i++) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             Matrix_RotateZ(M_PI / 3, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
@@ -591,13 +594,12 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, colors[i][0].r, colors[i][0].g, colors[i][0].b, 255);
             gDPSetEnvColor(POLY_XLU_DISP++, colors[i][1].r, colors[i][1].g, colors[i][1].b, 255);
             gSPDisplayList(POLY_XLU_DISP++, object_demo_6k_DL_0022B0);
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
         // required to avoid optimizing out i
         if ((s16)i) {}
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void func_80968298(Actor* thisx, GlobalContext* globalCtx) {
@@ -697,8 +699,10 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
         func_80093D84(globalCtx->state.gfxCtx);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, 255, 255, 255, 255);
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         for (i = 0; i < 16; i++) {
+            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_274[i]].r, sEnvColors[this->unk_274[i]].g,
                            sEnvColors[this->unk_274[i]].b, 255);
@@ -712,10 +716,11 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
             Matrix_Pop();
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
 
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
-
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

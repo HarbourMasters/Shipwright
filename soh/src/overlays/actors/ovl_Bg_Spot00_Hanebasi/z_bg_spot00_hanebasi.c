@@ -261,8 +261,6 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
     f32 angle;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     func_80093D84(globalCtx->state.gfxCtx);
 
     if (gSaveContext.sceneSetupIndex >= 4) {
@@ -272,10 +270,13 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
     }
 
     angle = (s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 32768.0f);
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     gDPSetPrimColor(POLY_XLU_DISP++, 128, 128, 255, 255, 0, 255);
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 2; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     ((globalCtx->gameplayFrames + i) * -20) & 0x1FF, 32, 128));
@@ -287,9 +288,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void BgSpot00Hanebasi_Draw(Actor* thisx, GlobalContext* globalCtx) {

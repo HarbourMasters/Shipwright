@@ -1408,7 +1408,9 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
         phi_s5 = spE7;
         phi_f20 = this->actor.scale.x * 0.5f;
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < this->unk_198; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (this->actionFunc != func_80ADB17C && this->actionFunc != func_80ADBD38 &&
             this->actionFunc != func_80ADBEE8) {
             phi_s5 = -i * 31 + 248;
@@ -1425,8 +1427,8 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoSisters_Reset(void) {

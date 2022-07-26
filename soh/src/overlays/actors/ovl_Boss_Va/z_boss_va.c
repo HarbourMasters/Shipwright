@@ -3519,11 +3519,9 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
     BossVaEffect* effectHead = effect;
     Camera* camera = Gameplay_GetCamera(globalCtx, sCsCamera);
 
-    OPEN_DISPS(gfxCtx);
-
     for (i = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_LARGE_SPARK) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 130, 130, 30, 0);
@@ -3539,14 +3537,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_SPARK_BALL) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_011738);
@@ -3567,14 +3565,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gDPSetEnvColor(POLY_XLU_DISP++, effect->envColor[0], effect->envColor[1], effect->envColor[2],
                            effect->envColor[3]);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_011768);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_BLOOD) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_009430);
@@ -3599,7 +3597,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_009468);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
@@ -3608,7 +3606,7 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
         if (effect->type == VA_TUMOR) {
             BossVa* parent = effect->parent;
 
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D18(globalCtx->state.gfxCtx);
                 gDPSetEnvColor(POLY_OPA_DISP++, 0, 0, 0, effect->envColor[3]);
@@ -3625,14 +3623,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012948);
             }
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_GORE) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D18(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012BA0);
@@ -3658,14 +3656,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gBarinadeDL_012C50);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_ZAP_CHARGE) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_0135B0);
@@ -3683,14 +3681,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_013638);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_BLAST_SPARK) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093C14(globalCtx->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 130, 130, 30, 0);
@@ -3707,14 +3705,14 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_015710);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
 
     effect = effectHead;
     for (i = 0, flag = 0; i < ARRAY_COUNT(sVaEffects); i++, effect++) {
         if (effect->type == VA_SMALL_SPARK) {
-            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
+            OPEN_DISPS(gfxCtx);
             if (!flag) {
                 func_80093D84(globalCtx->state.gfxCtx);
                 gDPSetEnvColor(POLY_XLU_DISP++, 255, 255, 100, 0);
@@ -3731,11 +3729,9 @@ void BossVa_DrawEffects(BossVaEffect* effect, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gBarinadeDL_008F70);
-            FrameInterpolation_RecordCloseChild();
+            CLOSE_DISPS(gfxCtx);
         }
     }
-
-    CLOSE_DISPS(gfxCtx);
 }
 
 void BossVa_SpawnSpark(GlobalContext* globalCtx, BossVaEffect* effect, BossVa* this, Vec3f* offset, s16 scale,
@@ -4022,7 +4018,10 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
 
     Matrix_Get(&doorMtx);
 
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
+
     for (i = 0; i < 8; i++, segAngle -= M_PI / 4) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Put(&doorMtx);
         Matrix_RotateZ(segAngle, MTXMODE_APPLY);
         Matrix_Translate(0.0f, doorPieceLength[i] * yScale, 0.0f, MTXMODE_APPLY);
@@ -4030,9 +4029,9 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, doorPieceDispList[i]);
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))

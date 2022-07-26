@@ -517,11 +517,10 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
     s32 pad;
     s32 i;
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
-
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 4; i++) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
         s32 idx = this->cagedSouls[i].infoIdx;
 
         gSPSegment(POLY_XLU_DISP++, 0x08,
@@ -548,7 +547,6 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
-
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
