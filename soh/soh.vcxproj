@@ -988,7 +988,6 @@
     <ClInclude Include="soh\frame_interpolation.h" />
     <ClInclude Include="include\alloca.h" />
     <ClInclude Include="include\bgm.h" />
-    <ClInclude Include="include\color.h" />
     <ClInclude Include="include\command_macros_base.h" />
     <ClInclude Include="include\fp.h" />
     <ClInclude Include="include\functions.h" />
