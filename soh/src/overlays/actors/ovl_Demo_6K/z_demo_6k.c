@@ -564,6 +564,8 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
     Demo6K* this = (Demo6K*)thisx;
     s32 pad;
     u16 timer1 = this->timer1;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D84(globalCtx->state.gfxCtx);
@@ -584,8 +586,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
 
         for (i = 0; i < 6; i++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", epoch * i * 25);
     
             Matrix_RotateZ(M_PI / 3, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
@@ -694,6 +695,8 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     u32 frames = globalCtx->state.frames;
     s32 i;
+    static s32 epoch = 0;
+    epoch++;
 
     if ((i = (globalCtx->csCtx.state != CS_STATE_IDLE) && (globalCtx->csCtx.npcActions[1] != NULL)) &&
         (globalCtx->csCtx.npcActions[1]->action != 1)) {
@@ -704,8 +707,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
         for (i = 0; i < 16; i++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Demo6K 809688C4", epoch * i * 25);
 
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_274[i]].r, sEnvColors[this->unk_274[i]].g,
@@ -725,6 +727,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
         }
 
         gSPDisplayList(POLY_XLU_DISP++, gEffFlash1DL);
+
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }

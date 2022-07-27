@@ -522,6 +522,8 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateY;
     f32 translateZ;
     s16 j;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -595,8 +597,7 @@ void DemoKankyo_DrawRain(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_Scale(sRainScale * 0.001f, sRainScale * 0.001f, sRainScale * 0.001f, MTXMODE_APPLY);
 
         for (j = 0; j < 5; j++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, j);
+            FrameInterpolation_RecordOpenChild("Kankyo Rain", epoch * i * j * 25);
 
             s32 pad1;
 
@@ -662,12 +663,13 @@ void DemoKankyo_DrawClouds(Actor* thisx, GlobalContext* globalCtx) {
     f32 dx;
     f32 dy;
     f32 dz;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 30; i++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Kankyo Clouds", epoch * i * 25);
 
         dx = -(Math_SinS(this->unk_150[i].unk_20 - 0x8000) * 120.0f) * (30.0f + (i / 30.0f) * 10.0f);
         dy = Math_CosS(this->unk_150[i].unk_20 - 0x8000) * 5.0f + 1200.0f;
@@ -782,6 +784,8 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 translateZ;
     PosRot posRot;
     u8 linkAge = gSaveContext.linkAge;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -789,8 +793,7 @@ void DemoKankyo_DrawWarpSparkles(Actor* thisx, GlobalContext* globalCtx) {
         this->sparkleCounter += 2;
     }
     for (i = this->sparkleCounter - 1; i >= 0; i--) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Kankyo Warp Sparkles", epoch * i * 25);
 
         temp_f22 = 1.0f - (i / (f32)this->sparkleCounter);
 
@@ -930,6 +933,8 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
     f32 scale;
     s16 i;
     PosRot posRot;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -938,8 +943,7 @@ void DemoKankyo_DrawSparkles(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = this->sparkleCounter - 1; i >= 0; i--) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Kankyo Sparkles", epoch * i * 25);
 
         temp_f20 = 1.0f - (i / (f32)this->sparkleCounter);
 
