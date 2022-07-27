@@ -3489,7 +3489,9 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-        ImGui::SetNextWindowSize(ImVec2(760, 550), ImGuiCond_FirstUseEver);
+        auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+        ImGui::SetNextWindowSize(ImVec2((760 * dpi_scale), (550 * dpi_scale)), ImGuiCond_FirstUseEver);
+
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
             return;

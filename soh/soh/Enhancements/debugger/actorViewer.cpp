@@ -534,8 +534,9 @@ void DrawActorViewer(bool& open) {
         CVar_SetS32("gActorViewerEnabled", 0);
         return;
     }
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2((520 * dpi_scale), (600 * dpi_scale)), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Actor Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;

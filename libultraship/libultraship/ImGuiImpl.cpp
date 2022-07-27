@@ -264,14 +264,8 @@ namespace SohImGui {
 
         api->select_texture(0, asset->textureId);
         api->set_sampler_parameters(0, false, 0, 0);
-     
 
-        int width = ceil(asset->width * dpi_scale);
-        int height = ceil(asset->height * dpi_scale);
-        uint32_t uwidth = *(uint32_t*)&width;
-        uint32_t uheight = *(uint32_t*)&height;
-
-        api->upload_texture(img_data, uwidth, uheight);
+        api->upload_texture(img_data, asset->width, asset->height);
 
         DefaultAssets[name] = asset;
         stbi_image_free(img_data);
@@ -348,34 +342,30 @@ namespace SohImGui {
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         #ifdef _WIN32
 		    ::SetProcessDPIAware();
-            ImFontConfig imConfig;
             UINT dpi = GetDpiForSystem();
-            int points = 12;
-            float size = ceilf(points * dpi / 72.f);
             dpi_scale = ceilf(dpi / 72.f);
-            imConfig.SizePixels = size;
-            io->Fonts->AddFontDefault(&imConfig);
         #elif __linux_
-                std::array<char, 128> buffer;
-                std::string result;
-                std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("xrdb -query |grep dpi", "r"), pclose);
-                if (!pipe) {
-                    throw std::runtime_error("popen() failed!");
-                }
-                while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
-                    result += buffer.data();
-                }
+            std::array<char, 128> buffer;
+            std::string result;
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("xrdb -query |grep dpi", "r"), pclose);
+            if (!pipe) {
+                throw std::runtime_error("popen() failed!");
+            }
+            while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                result += buffer.data();
+            }
 
-                std::string delimiter = '\t';
-                std::string token = result.substr(result.find(delimiter), (result.length - result.find(delimiter)));
-                int points = 12;
-                int dpi = (int)token;
-                float size = ceilf(points * dpi / 72.f);
-                imConfig.SizePixels = size;
-                io->Fonts->AddFontDefault(&imConfig);
-        #else
-                io->Fonts->AddFontDefault();
-        #endif
+            std::string delimiter = '\t';
+            std::string token = result.substr(result.find(delimiter), (result.length - result.find(delimiter)));
+            int dpi = (int)token;
+            dpi_scale = ceilf(dpi / 72.f);
+        #endif            
+        ImFontConfig imConfig;
+        int points = 12;
+        float size = ceilf(points * dpi_scale);
+        imConfig.SizePixels = size;
+        io->Fonts->AddFontDefault(&imConfig);
+        CVar_SetFloat("gDpiScale", dpi_scale);
 
         lastBackendID = GetBackendID(GlobalCtx2::GetInstance()->GetConfig());
         if (CVar_GetS32("gOpenMenuBar", 0) != 1) {
@@ -782,10 +772,11 @@ namespace SohImGui {
 
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
-                ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2(16.0f, 16.0f));
+                ImGui::SetCursorPos(ImVec2(5 , 2.5f));
+                //ImGui::SetCursorPos(ImVec2((5 * dpi_scale), (2.5f * dpi_scale)));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2((16.0f * dpi_scale), (16.0f * dpi_scale)));
                 ImGui::SameLine();
-                ImGui::SetCursorPos(ImVec2(25, 0));
+                ImGui::SetCursorPos(ImVec2((25 + (8 * dpi_scale)), 0));
             }
 
             if (ImGui::BeginMenu("Shipwright")) {

@@ -2,6 +2,7 @@
 #include "../../util.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "ImGuiHelpers.h"
+#include "spdlog/spdlog.h"
 
 #include <array>
 #include <bit>
@@ -160,6 +161,9 @@ std::vector<std::string> gsMapping = {
     "Gerudo Fortress",
     "Desert Colossus, Haunted Wasteland",
 };
+
+float scaled_width = 32.F;
+float scaled_height = 32.F;
 
 extern "C" u8 gAreaGsFlags[];
 
@@ -548,13 +552,14 @@ void DrawInventoryTab() {
             uint8_t item = gSaveContext.inventory.items[index];
             if (item != ITEM_NONE) {
                 const ItemMapEntry& slotEntry = itemMapping.find(item)->second;
-                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(scaled_width, scaled_height),
+                                       ImVec2(0, 0),
                                        ImVec2(1, 1), 0)) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
             } else {
-                if (ImGui::Button("##itemNone", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##itemNone", ImVec2(scaled_width, scaled_height))) {
                     selectedIndex = index;
                     ImGui::OpenPopup(itemPopupPicker);
                 }
@@ -564,7 +569,7 @@ void DrawInventoryTab() {
 
             ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
             if (ImGui::BeginPopup(itemPopupPicker)) {
-                if (ImGui::Button("##itemNonePicker", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##itemNonePicker", ImVec2(scaled_width, scaled_height))) {
                     gSaveContext.inventory.items[selectedIndex] = ITEM_NONE;
                     ImGui::CloseCurrentPopup();
                 }
@@ -593,7 +598,7 @@ void DrawInventoryTab() {
                         ImGui::SameLine();
                     }
                     const ItemMapEntry& slotEntry = possibleItems[pickerIndex];
-                    if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f),
+                    if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(scaled_width, scaled_height),
                                            ImVec2(0, 0), ImVec2(1, 1), 0)) {
                         gSaveContext.inventory.items[selectedIndex] = slotEntry.id;
                         ImGui::CloseCurrentPopup();
@@ -621,10 +626,10 @@ void DrawInventoryTab() {
             drawnAmmoItems++;
 
             ImGui::PushID(ammoIndex);
-            ImGui::PushItemWidth(32.0f);
+            ImGui::PushItemWidth(scaled_width);
             ImGui::BeginGroup();
 
-            ImGui::Image(SohImGui::GetTextureByName(itemMapping[item].name), ImVec2(32.0f, 32.0f));
+            ImGui::Image(SohImGui::GetTextureByName(itemMapping[item].name), ImVec2(scaled_width, scaled_height));
             ImGui::InputScalar("##ammoInput", ImGuiDataType_S8, &AMMO(item));
 
             ImGui::EndGroup();
@@ -1028,12 +1033,13 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
     uint8_t item = items[CUR_UPG_VALUE(categoryId)];
     if (item != ITEM_NONE) {
         const ItemMapEntry& slotEntry = itemMapping[item];
-        if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+        if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(scaled_width, scaled_height),
+                               ImVec2(0, 0),
                                ImVec2(1, 1), 0)) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
     } else {
-        if (ImGui::Button("##itemNone", ImVec2(32.0f, 32.0f))) {
+        if (ImGui::Button("##itemNone", ImVec2(scaled_width, scaled_height))) {
             ImGui::OpenPopup(upgradePopupPicker);
         }
     }
@@ -1049,14 +1055,14 @@ void DrawUpgradeIcon(const std::string& categoryName, int32_t categoryId, const 
             }
 
             if (items[pickerIndex] == ITEM_NONE) {
-                if (ImGui::Button("##upgradePopupPicker", ImVec2(32.0f, 32.0f))) {
+                if (ImGui::Button("##upgradePopupPicker", ImVec2(scaled_width, scaled_height))) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
                     ImGui::CloseCurrentPopup();
                 }
                 SetLastItemHoverText("None");
             } else {
                 const ItemMapEntry& slotEntry = itemMapping[items[pickerIndex]];
-                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(32.0f, 32.0f), ImVec2(0, 0),
+                if (ImGui::ImageButton(SohImGui::GetTextureByName(slotEntry.name), ImVec2(scaled_width, scaled_height), ImVec2(0, 0),
                                        ImVec2(1, 1), 0)) {
                     Inventory_ChangeUpgrade(categoryId, pickerIndex);
                     ImGui::CloseCurrentPopup();
@@ -1094,7 +1100,7 @@ void DrawEquipmentTab() {
         const ItemMapEntry& entry = itemMapping[equipmentValues[i]];
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         if (ImGui::ImageButton(SohImGui::GetTextureByName(hasEquip ? entry.name : entry.nameFaded),
-                               ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                               ImVec2(scaled_width, scaled_height), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasEquip) {
                 gSaveContext.inventory.equipment &= ~bitMask;
             } else {
@@ -1185,7 +1191,7 @@ void DrawQuestItemButton(uint32_t item) {
     bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     if (ImGui::ImageButton(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-                           ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                           ImVec2(scaled_width, scaled_height), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasQuestItem) {
             gSaveContext.inventory.questItems &= ~bitMask;
         } else {
@@ -1198,12 +1204,13 @@ void DrawQuestItemButton(uint32_t item) {
 
 // Draws a toggleable icon for a dungeon item that is faded when disabled
 void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
+
     const ItemMapEntry& entry = itemMapping[item];
     uint32_t bitMask = 1 << (entry.id - ITEM_KEY_BOSS); // Bitset starts at ITEM_KEY_BOSS == 0. the rest are sequential
     bool hasItem = (bitMask & gSaveContext.inventory.dungeonItems[scene]) != 0;
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
     if (ImGui::ImageButton(SohImGui::GetTextureByName(hasItem ? entry.name : entry.nameFaded),
-                           ImVec2(32.0f, 32.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                           ImVec2(scaled_width, scaled_height), ImVec2(0, 0), ImVec2(1, 1), 0)) {
         if (hasItem) {
             gSaveContext.inventory.dungeonItems[scene] &= ~bitMask;
         } else {
@@ -1214,7 +1221,17 @@ void DrawDungeonItemButton(uint32_t item, uint32_t scene) {
     SetLastItemHoverText(SohUtils::GetItemName(entry.id));
 }
 
+void setScaledDimensions() {
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+    auto base_width = 32.0f;
+    auto base_height = 32.0f;
+    scaled_width = base_width * dpi_scale;
+    scaled_height = base_height * dpi_scale;
+}
+
+
 void DrawQuestStatusTab() {
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
     ImGui::PushItemWidth(ImGui::GetFontSize() * 6);
 
     for (int32_t i = QUEST_MEDALLION_FOREST; i < QUEST_MEDALLION_LIGHT + 1; i++) {
@@ -1250,7 +1267,7 @@ void DrawQuestStatusTab() {
         bool hasQuestItem = (bitMask & gSaveContext.inventory.questItems) != 0;
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         if (ImGui::ImageButton(SohImGui::GetTextureByName(hasQuestItem ? entry.name : entry.nameFaded),
-                               ImVec2(16.0f, 24.0f), ImVec2(0, 0), ImVec2(1, 1), 0)) {
+                               ImVec2((16.0f * dpi_scale), (24.0f * dpi_scale)), ImVec2(0, 0), ImVec2(1, 1), 0)) {
             if (hasQuestItem) {
                 gSaveContext.inventory.questItems &= ~bitMask;
             } else {
@@ -1573,8 +1590,8 @@ void DrawSaveEditor(bool& open) {
         CVar_SetS32("gSaveEditorEnabled", 0);
         return;
     }
-
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+    ImGui::SetNextWindowSize(ImVec2((520 * dpi_scale), (600 * dpi_scale)), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Save Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
@@ -1619,6 +1636,7 @@ void DrawSaveEditor(bool& open) {
 
 void InitSaveEditor() {
     SohImGui::AddWindow("Developer Tools", "Save Editor", DrawSaveEditor);
+    setScaledDimensions();
 
     // Load item icons into ImGui
     for (const auto& entry : itemMapping) {

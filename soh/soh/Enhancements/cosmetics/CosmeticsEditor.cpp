@@ -1069,7 +1069,9 @@ void DrawCosmeticsEditor(bool& open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+
+    ImGui::SetNextWindowSize(ImVec2((465 * dpi_scale), (430 * dpi_scale)), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
