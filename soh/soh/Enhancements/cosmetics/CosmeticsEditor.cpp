@@ -1123,6 +1123,177 @@ void Draw_General(){
         ImGui::Text("To modify some generic colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors :\nHearts,\nMagic Meter,\nMinimap & compass,\nTitle card\nKeys & Rupee icons\nStone of Agony (Visual)");
     }
 }
+
+void ResetCosmeticsButton() {
+    bool val = (bool)CVar_GetS32("gCostmeticsReset", 0);
+    if (ImGui::Button("Reset Cosmetics")) {
+        CVar_SetS32("gCostmeticsReset", !val);
+        CVar_SetS32("gCostmeticsReset", !val);
+
+        CVar_SetS32("gHudColors", 1);
+        CVar_SetS32("gUseNaviCol", 0);
+        CVar_SetS32("gUseKeeseCol", 0);
+        CVar_SetS32("gUseDogsCol", 0);
+        CVar_SetS32("gUseTunicsCol", 0);
+        CVar_SetS32("gUseArrowsCol", 0);
+        CVar_SetS32("gUseSpellsCol", 0);
+        CVar_SetS32("gUseChargedCol", 0);
+        CVar_SetS32("gUseTrailsCol", 0);
+        SohImGui::ResetColor("gNavi_Idle_Inner_", &navi_idle_i_col, ImVec4(255, 255, 255, 255));
+        SohImGui::ResetColor("gNavi_Idle_Outer_", &navi_idle_o_col, ImVec4(0, 0, 255, 255));
+        SohImGui::ResetColor("gNavi_NPC_Inner_", &navi_npc_i_col, ImVec4(150, 150, 255, 255));
+        SohImGui::ResetColor("gNavi_NPC_Outer_", &navi_npc_o_col, ImVec4(150, 150, 255, 255));
+        SohImGui::ResetColor("gNavi_Enemy_Inner_", &navi_enemy_i_col, ImVec4(255, 255, 0, 255));
+        SohImGui::ResetColor("gNavi_Enemy_Outer_", &navi_enemy_o_col, ImVec4(220, 155, 0, 255));
+        SohImGui::ResetColor("gNavi_Prop_Inner_", &navi_prop_i_col, ImVec4(0, 255, 0, 255));
+        SohImGui::ResetColor("gNavi_Prop_Outer_", &navi_prop_o_col, ImVec4(0, 255, 0, 255));
+        SohImGui::ResetColor("gKeese1_Ef_Prim", &Keese1_primcol, ImVec4(255, 255, 100, 255));
+        SohImGui::ResetColor("gKeese2_Ef_Prim", &Keese2_primcol, ImVec4(100, 200, 255, 255));
+        SohImGui::ResetColor("gKeese1_Ef_Env", &Keese1_envcol, ImVec4(255, 50, 0, 255));
+        SohImGui::ResetColor("gKeese2_Ef_Env", &Keese2_envcol, ImVec4(0, 0, 255, 255));
+        SohImGui::ResetColor("gDog1Col", &doggo1col, ImVec4(255,255,200,255));
+        SohImGui::ResetColor("gDog2Col", &doggo2col, ImVec4(150,100,50,255));
+        SohImGui::ResetColor("gTunic_Kokiri_", &kokiri_col, ImVec4(30, 105, 27, 255));
+        SohImGui::ResetColor("gTunic_Goron_", &goron_col, ImVec4(100, 20, 0, 255));
+        SohImGui::ResetColor("gTunic_Zora_", &zora_col, ImVec4(0, 60, 100, 255));
+        SohImGui::ResetColor("gFireArrowCol", &firearrow_col, ImVec4(255,200,0,255));
+        SohImGui::ResetColor("gFireArrowColEnv", &firearrow_colenv, ImVec4(255,0,0,255));
+        SohImGui::ResetColor("gIceArrowCol", &icearrow_col, ImVec4(170,255,255,255));
+        SohImGui::ResetColor("gIceArrowColEnv", &icearrow_colenv, ImVec4(0,0,255,255));
+        SohImGui::ResetColor("gLightArrowCol", &lightarrow_col, ImVec4(255,255,170,255));
+        SohImGui::ResetColor("gLightArrowColEnv", &lightarrow_colenv, ImVec4(255,255,0,255));
+        SohImGui::ResetColor("gDF_Col", &df_col, ImVec4(255,200,0,255));
+        SohImGui::ResetColor("gDF_Env", &df_colenv, ImVec4(255,0,0,255));
+        SohImGui::ResetColor("gNL_Diamond_Col", &nl_diam_col, ImVec4(170,255,255,255));
+        SohImGui::ResetColor("gNL_Diamond_Env", &nl_diam_colenv, ImVec4(100,255,128,255));
+        SohImGui::ResetColor("gNL_Orb_Col", &nl_orb_col, ImVec4(170,255,255,255));
+        SohImGui::ResetColor("gNL_Orb_Env", &nl_orb_colenv, ImVec4(150,255,255,255));
+        SohImGui::ResetColor("gCharged1Col", &charged1_col, ImVec4(170,255,255,255));
+        SohImGui::ResetColor("gCharged1ColEnv", &charged1_colenv, ImVec4(0,100,255,255));
+        SohImGui::ResetColor("gCharged2Col", &charged2_col, ImVec4(255,255,170,255));
+        SohImGui::ResetColor("gCharged2ColEnv", &charged2_colenv, ImVec4(255,100,0,255));
+        SohImGui::ResetColor("gTrailCol", &trailscol, ImVec4(255,255,255,255));
+        SohImGui::ResetColor("gCCFileChoosePrim", &fileselect_colors, ImVec4(100, 150, 255, 255));
+        SohImGui::ResetColor("gCCFileChooseTextPrim", &fileselect_text_colors, ImVec4(100, 255, 255, 255));
+        // SohImGui::ResetColor("gCCEquipmentsPrim", &menu_equips_colors, ImVec4(0, 100, 255, 255), true);
+        // SohImGui::ResetColor("gCCItemsPrim", &menu_items_colors, ImVec4(0, 100, 255, 255), true);
+        // SohImGui::ResetColor("gCCMapsPrim", &menu_map_colors, ImVec4(0, 100, 255, 255), true);
+        // SohImGui::ResetColor("gCCQuestsPrim", &menu_quest_colors, ImVec4(0, 100, 255, 255), true);
+        // SohImGui::ResetColor("gCCSavePrim", &menu_save_colors, ImVec4(0, 100, 255, 255), true);
+        // SohImGui::ResetColor("gCCGameoverPrim", &menu_gameover_colors, ImVec4(0, 100, 255, 255), true);
+        SohImGui::ResetColor("gCCABtnPrim", &a_btn_colors, ImVec4(0, 200, 50, 255));
+        SohImGui::ResetColor("gCCBBtnPrim", &b_btn_colors, ImVec4(255, 30, 30, 255));
+        SohImGui::ResetColor("gCCCBtnPrim", &c_btn_colors, ImVec4(255, 160, 0, 255));
+        SohImGui::ResetColor("gCCCUBtnPrim", &c_btn_u_colors, ImVec4(255,160,0,255));
+        SohImGui::ResetColor("gCCCDBtnPrim", &c_btn_d_colors, ImVec4(255,160,0,255));
+        SohImGui::ResetColor("gCCCLBtnPrim", &c_btn_l_colors, ImVec4(255,160,0,255));
+        SohImGui::ResetColor("gCCCRBtnPrim", &c_btn_r_colors, ImVec4(255,160,0,255));
+        SohImGui::ResetColor("gCCStartBtnPrim", &start_btn_colors, ImVec4(200, 0, 0, 255));
+        SohImGui::ResetColor("gCCDpadPrim", &dpad_colors, ImVec4(255, 255, 255, 255));
+        SohImGui::ResetColor("gCCHeartsPrim", &hearts_colors, ImVec4(255,70,50,255));
+        SohImGui::ResetColor("gCCDDHeartsPrim", &hearts_ddi_colors, ImVec4(255,70,50,255));
+        SohImGui::ResetColor("gDDCCHeartsPrim", &hearts_dd_colors, ImVec4(255,255,255,255));
+        SohImGui::ResetColor("gCCMagicBorderNormPrim", &magic_bordern_colors, ImVec4(255,255,255,255));
+        SohImGui::ResetColor("gCCMagicBorderPrim", &magic_border_colors, ImVec4(255,255,255,255));
+        SohImGui::ResetColor("gCCMagicPrim", &magic_remaining_colors, ImVec4(0,200,0,255));
+        SohImGui::ResetColor("gCCMagicUsePrim", &magic_use_colors, ImVec4(250,250,0,255));
+        SohImGui::ResetColor("gCCMinimapPrim", &minimap_colors, ImVec4(0, 255, 255, 255));
+        SohImGui::ResetColor("gCCMinimapDGNPrim", &dgn_minimap_colors, ImVec4(100, 255, 255, 255));
+        SohImGui::ResetColor("gCCMinimapCPPrim", &cp_minimap_colors, ImVec4(200, 255, 0, 255));
+        SohImGui::ResetColor("gCCMinimapLEPrim", &le_minimap_colors, ImVec4(200, 0, 0, 255));
+        SohImGui::ResetColor("gCCTC_OW_U_Prim", &tc_ou_colors, ImVec4(255, 255, 255, 255));
+        SohImGui::ResetColor("gCCTC_B_U_Prim", &tc_bu_colors, ImVec4(255, 255, 255, 255));
+        SohImGui::ResetColor("gCCRupeePrim", &rupee_colors, ImVec4(200, 255, 100, 255));
+        SohImGui::ResetColor("gCCKeysPrim", &smolekey_colors, ImVec4(200, 230, 255, 255));
+        SohImGui::ResetColor("gCCVSOAPrim", &visualagony_colors, ImVec4(255, 255, 255, 255));
+    }
+}
+
+void RandomizeCosmeticsButton() {
+    bool val = (bool)CVar_GetS32("gCostmeticsRandomize", 0);
+    if (ImGui::Button("Randomize Cosmetics")) {
+        CVar_SetS32("gCostmeticsRandomize", !val);
+        CVar_SetS32("gCostmeticsRandomize", !val);
+
+        CVar_SetS32("gHudColors", 2);
+        CVar_SetS32("gUseNaviCol", 1);
+        CVar_SetS32("gUseKeeseCol", 1);
+        CVar_SetS32("gUseDogsCol", 1);
+        CVar_SetS32("gUseTunicsCol", 1);
+        CVar_SetS32("gUseArrowsCol", 1);
+        CVar_SetS32("gUseSpellsCol", 1);
+        CVar_SetS32("gUseChargedCol", 1);
+        CVar_SetS32("gUseTrailsCol", 1);
+        SohImGui::RandomizeColor("gNavi_Idle_Inner_", &navi_idle_i_col);
+        SohImGui::RandomizeColor("gNavi_Idle_Outer_", &navi_idle_o_col);
+        SohImGui::RandomizeColor("gNavi_NPC_Inner_", &navi_npc_i_col);
+        SohImGui::RandomizeColor("gNavi_NPC_Outer_", &navi_npc_o_col);
+        SohImGui::RandomizeColor("gNavi_Enemy_Inner_", &navi_enemy_i_col);
+        SohImGui::RandomizeColor("gNavi_Enemy_Outer_", &navi_enemy_o_col);
+        SohImGui::RandomizeColor("gNavi_Prop_Inner_", &navi_prop_i_col);
+        SohImGui::RandomizeColor("gNavi_Prop_Outer_", &navi_prop_o_col);
+        SohImGui::RandomizeColor("gKeese1_Ef_Prim", &Keese1_primcol);
+        SohImGui::RandomizeColor("gKeese2_Ef_Prim", &Keese2_primcol);
+        SohImGui::RandomizeColor("gKeese1_Ef_Env", &Keese1_envcol);
+        SohImGui::RandomizeColor("gKeese2_Ef_Env", &Keese2_envcol);
+        SohImGui::RandomizeColor("gDog1Col", &doggo1col);
+        SohImGui::RandomizeColor("gDog2Col", &doggo2col);
+        SohImGui::RandomizeColor("gTunic_Kokiri_", &kokiri_col);
+        SohImGui::RandomizeColor("gTunic_Goron_", &goron_col);
+        SohImGui::RandomizeColor("gTunic_Zora_", &zora_col);
+        SohImGui::RandomizeColor("gFireArrowCol", &firearrow_col);
+        SohImGui::RandomizeColor("gFireArrowColEnv", &firearrow_colenv);
+        SohImGui::RandomizeColor("gIceArrowCol", &icearrow_col);
+        SohImGui::RandomizeColor("gIceArrowColEnv", &icearrow_colenv);
+        SohImGui::RandomizeColor("gLightArrowCol", &lightarrow_col);
+        SohImGui::RandomizeColor("gLightArrowColEnv", &lightarrow_colenv);
+        SohImGui::RandomizeColor("gDF_Col", &df_col);
+        SohImGui::RandomizeColor("gDF_Env", &df_colenv);
+        SohImGui::RandomizeColor("gNL_Diamond_Col", &nl_diam_col);
+        SohImGui::RandomizeColor("gNL_Diamond_Env", &nl_diam_colenv);
+        SohImGui::RandomizeColor("gNL_Orb_Col", &nl_orb_col);
+        SohImGui::RandomizeColor("gNL_Orb_Env", &nl_orb_colenv);
+        SohImGui::RandomizeColor("gCharged1Col", &charged1_col);
+        SohImGui::RandomizeColor("gCharged1ColEnv", &charged1_colenv);
+        SohImGui::RandomizeColor("gCharged2Col", &charged2_col);
+        SohImGui::RandomizeColor("gCharged2ColEnv", &charged2_colenv);
+        SohImGui::RandomizeColor("gTrailCol", &trailscol);
+        SohImGui::RandomizeColor("gCCFileChoosePrim", &fileselect_colors);
+        SohImGui::RandomizeColor("gCCFileChooseTextPrim", &fileselect_text_colors);
+        // SohImGui::RandomizeColor("gCCEquipmentsPrim", &menu_equips_colors);
+        // SohImGui::RandomizeColor("gCCItemsPrim", &menu_items_colors);
+        // SohImGui::RandomizeColor"gCCMapsPrim", &menu_map_colors);
+        // SohImGui::RandomizeColor("gCCQuestsPrim", &menu_quest_colors);
+        // SohImGui::RandomizeColor("gCCSavePrim", &menu_save_colors);
+        // SohImGui::RandomizeColor("gCCGameoverPrim", &menu_gameover_colors);
+        SohImGui::RandomizeColor("gCCABtnPrim", &a_btn_colors);
+        SohImGui::RandomizeColor("gCCBBtnPrim", &b_btn_colors);
+        SohImGui::RandomizeColor("gCCCBtnPrim", &c_btn_colors);
+        SohImGui::RandomizeColor("gCCCUBtnPrim", &c_btn_u_colors);
+        SohImGui::RandomizeColor("gCCCDBtnPrim", &c_btn_d_colors);
+        SohImGui::RandomizeColor("gCCCLBtnPrim", &c_btn_l_colors);
+        SohImGui::RandomizeColor("gCCCRBtnPrim", &c_btn_r_colors);
+        SohImGui::RandomizeColor("gCCStartBtnPrim", &start_btn_colors);
+        SohImGui::RandomizeColor("gCCDpadPrim", &dpad_colors);
+        SohImGui::RandomizeColor("gCCHeartsPrim", &hearts_colors);
+        SohImGui::RandomizeColor("gCCDDHeartsPrim", &hearts_ddi_colors);
+        SohImGui::RandomizeColor("gDDCCHeartsPrim", &hearts_dd_colors);
+        SohImGui::RandomizeColor("gCCMagicBorderNormPrim", &magic_bordern_colors);
+        SohImGui::RandomizeColor("gCCMagicBorderPrim", &magic_border_colors);
+        SohImGui::RandomizeColor("gCCMagicPrim", &magic_remaining_colors);
+        SohImGui::RandomizeColor("gCCMagicUsePrim", &magic_use_colors);
+        SohImGui::RandomizeColor("gCCMinimapPrim", &minimap_colors);
+        SohImGui::RandomizeColor("gCCMinimapDGNPrim", &dgn_minimap_colors);
+        SohImGui::RandomizeColor("gCCMinimapCPPrim", &cp_minimap_colors);
+        SohImGui::RandomizeColor("gCCMinimapLEPrim", &le_minimap_colors);
+        SohImGui::RandomizeColor("gCCTC_OW_U_Prim", &tc_ou_colors);
+        SohImGui::RandomizeColor("gCCTC_B_U_Prim", &tc_bu_colors);
+        SohImGui::RandomizeColor("gCCRupeePrim", &rupee_colors);
+        SohImGui::RandomizeColor("gCCKeysPrim", &smolekey_colors);
+        SohImGui::RandomizeColor("gCCVSOAPrim", &visualagony_colors);
+    }
+}
+
 void DrawCosmeticsEditor(bool& open) {
     if (!open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
@@ -1133,6 +1304,10 @@ void DrawCosmeticsEditor(bool& open) {
         ImGui::End();
         return;
     }
+
+    ResetCosmeticsButton();
+    ImGui::SameLine();
+    RandomizeCosmeticsButton();
 
     if (ImGui::BeginTabBar("CosmeticsContextTabBar", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
         if (ImGui::BeginTabItem("General")) {

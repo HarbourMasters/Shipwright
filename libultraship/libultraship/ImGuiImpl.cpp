@@ -627,28 +627,32 @@ namespace SohImGui {
         Cvar_Blue += "B";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
+        s16 RND_R = rand() % (255 - 0);
+        s16 RND_G = rand() % (255 - 0);
+        s16 RND_B = rand() % (255 - 0);
+        colors->x = (float)RND_R / 255;
+        colors->y = (float)RND_G / 255;
+        colors->z = (float)RND_B / 255;
+        CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
+        CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
+        CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+        CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
+        needs_save = true;
+    }
+
+    void RandomizeColorButton(const char* cvarName, ImVec4* colors) {
         std::string MakeInvisible = "##";
         MakeInvisible += cvarName;
         MakeInvisible += "Random";
         std::string FullName = "Random";
         FullName += MakeInvisible;
         if (ImGui::Button(FullName.c_str())) {
-            s16 RND_R = rand() % (255 - 0);
-            s16 RND_G = rand() % (255 - 0);
-            s16 RND_B = rand() % (255 - 0);
-            colors->x = (float)RND_R / 255;
-            colors->y = (float)RND_G / 255;
-            colors->z = (float)RND_B / 255;
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
-            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
-            needs_save = true;
+            RandomizeColor(cvarName, colors);
         }
         Tooltip("Chooses a random color\nOverwrites previously chosen color");
     }
 
-    void RainbowColor(const char* cvarName, ImVec4* colors) {
+    void RainbowColorCheckbox(const char* cvarName, ImVec4* colors) {
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string MakeInvisible = "Rainbow";
@@ -671,21 +675,25 @@ namespace SohImGui {
         Cvar_Alpha += "A";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
+        colors->x = defaultcolors.x / 255;
+        colors->y = defaultcolors.y / 255;
+        colors->z = defaultcolors.z / 255;
+        if (has_alpha) { colors->w = defaultcolors.w / 255; };
+        CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
+        CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
+        CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
+        if (has_alpha) { CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(colors->w * 255, 0, 255)); };
+        CVar_SetS32(Cvar_RBM.c_str(), 0); // On click disable rainbow mode.
+        needs_save = true;
+    }
+
+    void ResetColorButton(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha) {
         std::string MakeInvisible = "Reset";
         MakeInvisible += "##";
         MakeInvisible += cvarName;
         MakeInvisible += "Reset";
         if (ImGui::Button(MakeInvisible.c_str())) {
-            colors->x = defaultcolors.x / 255;
-            colors->y = defaultcolors.y / 255;
-            colors->z = defaultcolors.z / 255;
-            if (has_alpha) { colors->w = defaultcolors.w / 255; };
-            CVar_SetS32(Cvar_Red.c_str(), ClampFloatToInt(colors->x * 255, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), ClampFloatToInt(colors->y * 255, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), ClampFloatToInt(colors->z * 255, 0, 255));
-            if (has_alpha) { CVar_SetS32(Cvar_Alpha.c_str(), ClampFloatToInt(colors->w * 255, 0, 255)); };
-            CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
-            needs_save = true;
+            ResetColor(cvarName, colors, defaultcolors, has_alpha);
         }
         Tooltip("Revert colors to the game's original colors (GameCube version)\nOverwrites previously chosen color");
     }
@@ -729,14 +737,14 @@ namespace SohImGui {
         }
         //ImGui::SameLine(); // Removing that one to gain some width spacing on the HUD editor
         ImGui::PushItemWidth(-FLT_MIN);
-        ResetColor(cvarName, &ColorRGBA, default_colors, has_alpha);
+        ResetColorButton(cvarName, &ColorRGBA, default_colors, has_alpha);
         ImGui::SameLine();
-        RandomizeColor(cvarName, &ColorRGBA);
+        RandomizeColorButton(cvarName, &ColorRGBA);
         if (allow_rainbow) {
             if (ImGui::GetContentRegionAvail().x > 185) {
                 ImGui::SameLine();
             }
-            RainbowColor(cvarName, &ColorRGBA);
+            RainbowColorCheckbox(cvarName, &ColorRGBA);
         }
         ImGui::NewLine();
         ImGui::PopItemWidth();

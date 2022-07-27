@@ -87,9 +87,11 @@ namespace SohImGui {
     void LoadResource(const std::string& name, const std::string& path, const ImVec4& tint = ImVec4(1, 1, 1, 1));
     void LoadPickersColors(ImVec4& ColorArray, const char* cvarname, const ImVec4& default_colors, bool has_alpha=false);
     int ClampFloatToInt(float value, int min, int max);
+    void RandomizeColorButton(const char* cvarName, ImVec4* colors);
     void RandomizeColor(const char* cvarName, ImVec4* colors);
-    void RainbowColor(const char* cvarName, ImVec4* colors);
-    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);
+    void RainbowColorCheckbox(const char* cvarName, ImVec4* colors);
+    void ResetColorButton(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha);
+    void ResetColor(const char* cvarName, ImVec4* colors, ImVec4 defaultcolors, bool has_alpha=false);
     ImTextureID GetTextureByID(int id);
     ImTextureID GetTextureByName(const std::string& name);
     void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
