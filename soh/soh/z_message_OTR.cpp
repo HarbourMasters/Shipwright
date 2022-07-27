@@ -5,6 +5,7 @@
 #include "global.h"
 #include "vt.h"
 #include <Text.h>
+#include <message_data_static.h>
 #include <soh/Enhancements/custom_message/CustomMessageManager.h>
 #include <soh/Enhancements/custom_message/CustomMessageTypes.h>
 

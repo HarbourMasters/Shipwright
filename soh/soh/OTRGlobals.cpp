@@ -57,6 +57,7 @@
 
 #include <Audio.h>
 #include <soh/Enhancements/custom_message/CustomMessageTypes.h>
+#include <functions.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
