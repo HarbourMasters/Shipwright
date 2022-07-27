@@ -118,8 +118,6 @@ void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 		uint32_t commandId = reader->ReadUInt32();
 		cs->commands.push_back(commandId);
 
-		printf("commandId %x\n", commandId);
-
 		switch (commandId)
 		{
 		case (uint32_t)CutsceneCommands::SetCameraPos:
@@ -513,9 +511,9 @@ void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
 			return;
 		}
 		default:
-//#ifdef _DEBUG
+#ifdef _DEBUG
 			printf("CutsceneV0: Unknown command %x\n", commandId);
-//#endif
+#endif
 			// error?
 			break;
 		}
