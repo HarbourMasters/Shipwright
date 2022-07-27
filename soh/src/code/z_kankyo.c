@@ -1459,6 +1459,8 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_RING,    LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -1515,8 +1517,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
-            // todo: figure out what pointer to use here instead of passing in NULL
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Lens Flare", epoch * i * 25);
 
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
@@ -1641,10 +1642,12 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Vec3f unused = { 0.0f, 0.0f, 0.0f };
     Vec3f windDirection = { 0.0f, 0.0f, 0.0f };
     Player* player = GET_PLAYER(globalCtx);
+    static s32 epoch = 0;
+    epoch++;
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
         OPEN_DISPS(gfxCtx);
-        
+
         vec.x = view->lookAt.x - view->eye.x;
         vec.y = view->lookAt.y - view->eye.y;
         vec.z = view->lookAt.z - view->eye.z;
@@ -1670,8 +1673,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-            // todo: figure out what pointer to use here instead of passing in NULL
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Rain Drop", epoch * i * 25);
 
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
@@ -1707,8 +1709,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-                // todo: figure out what pointer to use here instead of passing in NULL
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild("Droplet Ring", epoch * i * 25);
                 
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
@@ -1924,12 +1925,13 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     s32 pad[2];
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
-        // todo: figure out what pointer to use here instead of passing in NULL
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Lightning Bolt", epoch * i * 25);
 
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:

@@ -218,6 +218,7 @@ void BgJyaMegami_SetupExplode(BgJyaMegami* this) {
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         Math_Vec3f_Copy(&this->pieces[i].pos, &this->dyna.actor.world.pos);
         this->pieces[i].vel.x = sPiecesInit[i].velX;
+        this->pieces[i].epoch = 0;
     }
     this->explosionTimer = 0;
 }
@@ -237,6 +238,7 @@ void BgJyaMegami_Explode(BgJyaMegami* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         temp = &this->pieces[i];
+        temp->epoch++;
         temp2 = &sPiecesInit[i];
         if (this->explosionTimer > temp2->delay) {
             temp->vel.y -= 0.6f;
@@ -328,7 +330,7 @@ void BgJyaMegami_DrawExplode(BgJyaMegami* this, GlobalContext* globalCtx) {
     for (i = 0; i < ARRAY_COUNT(this->pieces); i++) {
         piece = &this->pieces[i];
 
-        FrameInterpolation_RecordOpenChild(piece, i);
+        FrameInterpolation_RecordOpenChild(piece, piece->epoch);
 
         Matrix_Translate(piece->pos.x + sPiecesInit[i].unk_00.x, piece->pos.y + sPiecesInit[i].unk_00.y,
                          piece->pos.z + sPiecesInit[i].unk_00.z, MTXMODE_NEW);

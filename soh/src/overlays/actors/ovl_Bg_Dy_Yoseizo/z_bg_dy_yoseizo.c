@@ -961,6 +961,7 @@ void BgDyYoseizo_ParticleInit(BgDyYoseizo* this, Vec3f* initPos, Vec3f* initVelo
             particle->pitch = 0.0f;
             particle->yaw = Rand_CenteredFloat(30000.0f);
             particle->roll = 0.0f;
+            particle->epoch = 0;
             return;
         }
     }
@@ -1014,6 +1015,7 @@ void BgDyYoseizo_ParticleUpdate(BgDyYoseizo* this, GlobalContext* globalCtx) {
 
         // fade up, fade down, vanish and reset
         if (particle->timer != 0) {
+            particle->epoch++;
             particle->timer--;
             particle->alpha += 30;
 
@@ -1040,7 +1042,7 @@ void BgDyYoseizo_ParticleDraw(BgDyYoseizo* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < 200; i++, particle++) {
-        FrameInterpolation_RecordOpenChild(particle, i);
+        FrameInterpolation_RecordOpenChild(particle, particle->epoch);
         
         if (particle->alive == 1) {
             if (phi_s3 == 0) {

@@ -413,6 +413,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     s32 curCombineModeSet = 0;
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -450,8 +452,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < totalHeartCount; i++) {
-        // todo: figure out what pointer to use here instead of passing in NULL
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("HealthMeter Heart", epoch * i * 25);
         
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
             if (i < fullHeartCount) {
