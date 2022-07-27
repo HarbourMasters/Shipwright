@@ -98,11 +98,8 @@ void Console::Update() {
 	}
 }
 
-extern "C" uint8_t __enableGameInput;
-
 void Console::Draw() {
 	bool input_focus = false;
-	__enableGameInput = true;
 	if (!this->opened) return;
 	auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
 
@@ -110,9 +107,6 @@ void Console::Draw() {
 	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
-
-		__enableGameInput = !ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows);
-
 		// SohImGui::ShowCursor(ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows | ImGuiHoveredFlags_RectOnly), SohImGui::Dialogues::dConsole);
 
 		// Renders autocomplete window
@@ -231,8 +225,8 @@ void Console::Draw() {
 		// Renders input textfield
 		constexpr ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackEdit |
 			                                  ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-		ImGui::PushItemWidth(-1);
-		if(ImGui::InputTextWithHint("CMDInput", ">", this->InputBuffer, MAX_BUFFER_SIZE, flags, &Console::CallbackStub, this)) {
+		ImGui::PushItemWidth(-53);
+		if(ImGui::InputTextWithHint("##CMDInput", ">", this->InputBuffer, MAX_BUFFER_SIZE, flags, &Console::CallbackStub, this)) {
 			input_focus = true;
 			if(this->InputBuffer[0] != '\0' && this->InputBuffer[0] != ' ')
 				this->Dispatch(std::string(this->InputBuffer));
@@ -249,6 +243,13 @@ void Console::Draw() {
 				ImGui::PopTextWrapPos();
 				ImGui::EndTooltip();
 			}
+		}
+
+		ImGui::SameLine();
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + ImGui::GetContentRegionAvail().x - 50);
+		if(ImGui::Button("Submit") && !input_focus && this->InputBuffer[0] != '\0' && this->InputBuffer[0] != ' '){
+				this->Dispatch(std::string(this->InputBuffer));
+			memset(this->InputBuffer, 0, MAX_BUFFER_SIZE);
 		}
 
 		ImGui::SetItemDefaultFocus();

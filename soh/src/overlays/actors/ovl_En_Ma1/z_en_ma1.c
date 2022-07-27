@@ -290,7 +290,8 @@ void EnMa1_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 6;
     this->unk_1E8.unk_00 = 0;
 
-    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag)) {
+    if (!(gSaveContext.eventChkInf[1] & 0x10) || (CHECK_QUEST_ITEM(QUEST_SONG_EPONA) && !gSaveContext.n64ddFlag) ||
+        (gSaveContext.n64ddFlag && Flags_GetTreasure(globalCtx, 0x1F))) {
         this->actionFunc = func_80AA0D88;
         EnMa1_ChangeAnim(this, ENMA1_ANIM_2);
     } else {

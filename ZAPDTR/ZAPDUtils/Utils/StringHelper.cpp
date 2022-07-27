@@ -9,22 +9,18 @@
 
 std::vector<std::string> StringHelper::Split(std::string s, const std::string& delimiter)
 {
-	std::vector<std::string> result;
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    std::string token;
+    std::vector<std::string> res;
 
-	size_t pos = 0;
-	std::string token;
+    while ((pos_end = s.find(delimiter, pos_start)) != std::string::npos) {
+        token = s.substr(pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back(token);
+    }
 
-	while ((pos = s.find(delimiter)) != std::string::npos)
-	{
-		token = s.substr(0, pos);
-		result.push_back(token);
-		s.erase(0, pos + delimiter.length());
-	}
-
-	if (s.length() != 0)
-		result.push_back(s);
-
-	return result;
+    res.push_back(s.substr(pos_start));
+    return res;
 }
 
 std::string StringHelper::Strip(std::string s, const std::string& delimiter)

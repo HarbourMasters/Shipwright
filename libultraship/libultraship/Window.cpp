@@ -28,6 +28,7 @@
 #include <chrono>
 #include "Hooks.h"
 #include "Console.h"
+#include "Cvar.h"
 
 #include <iostream>
 
@@ -35,7 +36,6 @@ extern "C" {
     struct OSMesgQueue;
 
     uint8_t __osMaxControllers = MAXCONTROLLERS;
-    uint8_t __enableGameInput = 1;
 
     int32_t osContInit(OSMesgQueue* mq, uint8_t* controllerBits, OSContStatus* status) {
         *controllerBits = 0;
@@ -45,6 +45,7 @@ extern "C" {
             exit(EXIT_FAILURE);
         }
 
+    #ifndef __SWITCH__
         const char* controllerDb = "gamecontrollerdb.txt";
         int mappingsAdded = SDL_GameControllerAddMappingsFromFile(controllerDb);
         if (mappingsAdded >= 0) {
@@ -52,6 +53,7 @@ extern "C" {
         } else {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
         }
+    #endif
 
         Ship::Window::ControllerApi->Init(controllerBits);
 
@@ -72,7 +74,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-        if (__enableGameInput) {
+        if (!CVar_GetS32("gOpenMenuBar", 0)) {
             Ship::Window::ControllerApi->WriteToPad(pad);
         }
 
@@ -212,8 +214,8 @@ namespace Ship {
             pConf->setString("Window.GfxBackend", "");
 
             pConf->setBool("Window.Fullscreen.Enabled", false);
-            pConf->setInt("Window.Fullscreen.Width", 640);
-            pConf->setInt("Window.Fullscreen.Height", 480);
+            pConf->setInt("Window.Fullscreen.Width", 1920);
+            pConf->setInt("Window.Fullscreen.Height", 1080);
 
             pConf->setString("Game.SaveName", "");
             pConf->setString("Game.Main Archive", "");
@@ -233,8 +235,14 @@ namespace Ship {
         SetAudioPlayer();
         bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
 
-        dwWidth = pConf->getInt("Window.Fullscreen.Width", bIsFullscreen ? 1920 : 640);
-        dwHeight = pConf->getInt("Window.Fullscreen.Height", bIsFullscreen ? 1080 : 480);
+        if (bIsFullscreen) {
+            dwWidth = pConf->getInt("Window.Fullscreen.Width", 1920);
+            dwHeight = pConf->getInt("Window.Fullscreen.Height", 1080);
+        } else {
+            dwWidth = pConf->getInt("Window.Width", 640);
+            dwHeight = pConf->getInt("Window.Height", 480);
+        }
+
         dwMenubar = pConf->getBool("Window.Options", false);
         const std::string& gfx_backend = pConf->getString("Window.GfxBackend");
         SetWindowManager(&WmApi, &RenderingApi, gfx_backend);
@@ -296,7 +304,6 @@ namespace Ship {
     void Window::MainLoop(void (*MainFunction)(void)) {
         WmApi->main_loop(MainFunction);
     }
-	
     bool Window::KeyUp(int32_t dwScancode) {
         std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
@@ -308,7 +315,7 @@ namespace Ship {
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
         //}
-		
+
         lastScancode = -1;
 
         bool bIsProcessed = false;

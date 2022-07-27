@@ -4,6 +4,7 @@ pipeline {
     options {
         timestamps() 
         skipDefaultCheckout(true)
+        disableConcurrentBuilds(abortPrevious: true)
     }
     
     stages {
@@ -105,9 +106,9 @@ pipeline {
                             mv OTRGui/build/assets build/
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md readme.txt
-			    
+                            
                             docker exec sohcont appimage/appimage.sh
-			    
+                            
                             7z a soh-linux.7z SOH-Linux.AppImage readme.txt
                             
                             '''
@@ -125,6 +126,11 @@ pipeline {
                     agent {
                         label "SoH-Mac-Builders"
                     }
+                    environment {
+                        CC = 'clang -arch arm64 -arch x86_64'
+                        CXX = 'clang++ -arch arm64 -arch x86_64'
+                        MACOSX_DEPLOYMENT_TARGET = 10.15
+                    }
                     steps {
                         checkout([
                             $class: 'GitSCM',
@@ -137,8 +143,8 @@ pipeline {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             cd soh
-                            export CC="clang -arch arm64 -arch x86_64"; export CXX="clang++ -arch arm64 -arch x86_64"; make setup -j4 OPTFLAGS=-O2 DEBUG=0 LD="ld"
-                            export CC="clang -arch arm64 -arch x86_64"; export CXX="clang++ -arch arm64 -arch x86_64"; make -j4 DEBUG=0 OPTFLAGS=-O2 LD="ld"
+                            make setup -j4 OPTFLAGS=-O2 DEBUG=0 LD="ld"
+                            make -j4 DEBUG=0 OPTFLAGS=-O2 LD="ld"
                             make -j4 appbundle
                             mv ../README.md readme.txt
                             7z a soh-mac.7z soh.app readme.txt
@@ -152,7 +158,47 @@ pipeline {
                         }
                     }
                 }
+                stage ('Build Switch') {
+                    options {
+                        timeout(time: 20)
+                    }
+                    agent {
+                        label "SoH-Linux-Builders"
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            sh '''
+                            
+                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            docker build . -t sohswitch -f Dockerfile.switch
+                            docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
+                            docker exec sohcont .ci/switch/buildswitch.bash
+                            
+                            mv soh/soh.nro .
+                            mv README.md readme.txt
+                            
+                            7z a soh-switch.7z soh.nro readme.txt
+                            
+                            '''
+                        }
+                        sh 'sudo docker container stop sohcont'
+                        archiveArtifacts artifacts: 'soh-switch.7z', followSymlinks: false, onlyIfSuccessful: true
+                    }
+                    post {
+                        always {
+                            step([$class: 'WsCleanup']) // Clean workspace
+                        }
+                    }
+                }
             }
         }
     }
 }
+

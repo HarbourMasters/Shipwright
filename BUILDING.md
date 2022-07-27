@@ -12,7 +12,7 @@
  8. Build the solution.
  9. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
  10. Run `soh/soh.sln`
- 11. Switch the solution to `Release x86`.
+ 11. Switch the solution to `Release x86` or `Release x64`.
  12. Build the solution.
  13. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
  14. Launch `soh.exe`.
@@ -48,7 +48,7 @@ make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 
 ## macOS
 
-1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, dylibbundler` (can be installed via brew, etc)
+1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, cmake, pkgconfig, dylibbundler` (can be installed via homebrew, macports, etc)
 ```bash
 # Clone the repo
 git clone https://github.com/HarbourMasters/Shipwright.git

@@ -867,6 +867,7 @@ void KaleidoScope_SetDefaultCursor(GlobalContext* globalCtx) {
     PauseContext* pauseCtx = &globalCtx->pauseCtx;
     s16 s;
     s16 i;
+    gSelectingMask = false;
 
     switch (pauseCtx->pageIndex) {
         case PAUSE_ITEM:
@@ -900,6 +901,7 @@ void KaleidoScope_SetDefaultCursor(GlobalContext* globalCtx) {
 void KaleidoScope_SwitchPage(PauseContext* pauseCtx, u8 pt) {
     pauseCtx->unk_1E4 = 1;
     pauseCtx->unk_1EA = 0;
+    gSelectingMask = false;
 
     if (!pt) {
         pauseCtx->mode = pauseCtx->pageIndex * 2 + 1;
@@ -1821,7 +1823,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             POLY_KAL_DISP = KaleidoScope_QuadTextureIA4(POLY_KAL_DISP, pauseCtx->nameSegment, 128, 16, 0);
         }
 
-        if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gDebugEnabled", 0) != 0) {
+        if (pauseCtx->pageIndex == PAUSE_MAP && CVar_GetS32("gSkulltulaDebugEnabled", 0) != 0) {
             if (YREG(7) != 0) {
                 osSyncPrintf(VT_FGCOL(YELLOW));
                 osSyncPrintf("キンスタ数(%d) Get_KIN_STA=%x (%x)  (%x)\n", YREG(6), GET_GS_FLAGS(YREG(6)),

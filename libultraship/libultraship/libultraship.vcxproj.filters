@@ -674,14 +674,14 @@
     <ClInclude Include="ControlDeck.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>
-    <ClInclude Include="DisconnectedController.h">
-      <Filter>Source Files\Controller</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\nlohmann\json.hpp">
       <Filter>Source Files\Lib\nlohmann</Filter>
     </ClInclude>
     <ClInclude Include="Lib\Mercury\Mercury.h">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualController.h">
+      <Filter>Source Files\Controller</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

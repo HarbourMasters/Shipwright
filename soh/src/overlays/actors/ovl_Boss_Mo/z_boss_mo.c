@@ -53,6 +53,7 @@ void BossMo_UpdateCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_UpdateTent(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawCore(Actor* thisx, GlobalContext* globalCtx);
 void BossMo_DrawTent(Actor* thisx, GlobalContext* globalCtx);
+void BossMo_Reset(void);
 
 void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx);
 void BossMo_DrawEffects(BossMoEffect* effect, GlobalContext* globalCtx);
@@ -131,7 +132,7 @@ const ActorInit Boss_Mo_InitVars = {
     (ActorFunc)BossMo_Destroy,
     (ActorFunc)BossMo_UpdateTent,
     (ActorFunc)BossMo_DrawTent,
-    NULL,
+    (ActorResetFunc)BossMo_Reset,
 };
 
 static BossMo* sMorphaCore = NULL;
@@ -929,7 +930,7 @@ void BossMo_Tentacle(BossMo* this, GlobalContext* globalCtx) {
                 this->actor.flags &= ~ACTOR_FLAG_0;
                 Math_ApproachF(&this->baseAlpha, 0.0, 1.0f, 5.0f);
                 for (indS1 = 0; indS1 < 40; indS1++) {
-                    if (sMorphaTent2->tentSpawnPos) {}
+                    if (sMorphaTent2 && sMorphaTent2->tentSpawnPos) {}
                     indT5 = Rand_ZeroFloat(20.9f);
                     indS0 = sTentSpawnIndex[indT5];
                     spFC.x = 0;

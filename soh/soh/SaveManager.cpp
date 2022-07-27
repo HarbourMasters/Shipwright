@@ -49,6 +49,8 @@ SaveManager::SaveManager() {
 }
 
 void SaveManager::LoadRandomizerVersion1() {
+    if(!CVar_GetS32("gRandomizer", 0)) return;
+
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->LoadData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->LoadData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
@@ -88,6 +90,9 @@ void SaveManager::LoadRandomizerVersion1() {
 }
 
 void SaveManager::SaveRandomizer() {
+
+    if(!gSaveContext.n64ddFlag) return;
+
     for (int i = 0; i < ARRAY_COUNT(gSaveContext.itemLocations); i++) {
         SaveManager::Instance->SaveData("get" + std::to_string(i), gSaveContext.itemLocations[i].get);
         SaveManager::Instance->SaveData("check" + std::to_string(i), gSaveContext.itemLocations[i].check);
@@ -170,7 +175,7 @@ void SaveManager::Init() {
     } else {
         CreateDefaultGlobal();
     }
-    
+
     // Load files to initialize metadata
     for (int fileNum = 0; fileNum < MaxFiles; fileNum++) {
         if (std::filesystem::exists(GetFileName(fileNum))) {
@@ -515,6 +520,19 @@ void SaveManager::LoadFile(int fileNum) {
             break;
     }
     InitMeta(fileNum);
+}
+
+bool SaveManager::SaveFile_Exist(int fileNum) {
+    
+    try {
+        std::filesystem::exists(GetFileName(fileNum));
+        printf("File[%d] - exist \n",fileNum);
+        return true;
+    }
+    catch(std::filesystem::filesystem_error const& ex) {
+        printf("File[%d] - do not exist \n",fileNum);
+        return false;
+    }
 }
 
 void SaveManager::AddInitFunction(InitFunc func) {
@@ -893,7 +911,7 @@ void SaveManager::LoadArray(const std::string& name, const size_t size, LoadArra
     }
     currentJsonContext = saveJsonContext;
 }
-   
+
 
 void SaveManager::LoadStruct(const std::string& name, LoadStructFunc func) {
     // Create an empty struct and set it as the current load context, then call the function that loads the struct.
@@ -1331,4 +1349,8 @@ extern "C" void Save_CopyFile(int from, int to) {
 
 extern "C" void Save_DeleteFile(int fileNum) {
     SaveManager::Instance->DeleteZeldaFile(fileNum);
+}
+
+extern "C" bool Save_Exist(int fileNum) {
+    return SaveManager::Instance->SaveFile_Exist(fileNum);
 }

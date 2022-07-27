@@ -265,16 +265,14 @@ void* FaultDrawer_FormatStringFunc(void* arg, const char* str, u32 count) {
     return arg;
 }
 
-void FaultDrawer_VPrintf(const char* str, char* args) { // va_list
+void FaultDrawer_VPrintf(const char* str, va_list args) { // va_list
     _Printf(FaultDrawer_FormatStringFunc, (char*)&sFaultDrawerStruct, str, args);
 }
 
 void FaultDrawer_Printf(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-
     FaultDrawer_VPrintf(fmt, args);
-
     va_end(args);
 }
 
@@ -284,7 +282,6 @@ void FaultDrawer_DrawText(s32 x, s32 y, const char* fmt, ...) {
 
     FaultDrawer_SetCursor(x, y);
     FaultDrawer_VPrintf(fmt, args);
-
     va_end(args);
 }
 
