@@ -552,7 +552,7 @@ void EnGb_DrawCagedSouls(EnGb* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, gPoeSellerCagedSoulDL);
 
         Matrix_Pop();
-        FrameInterpolation_RecordClosedChild();
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);
