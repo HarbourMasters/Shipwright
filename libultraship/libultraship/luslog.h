@@ -6,6 +6,7 @@ extern "C" {
 #endif
 	void luslog(const char* file, int32_t line, int32_t logLevel, const char* msg);
 	void lusprintf(const char* file, int32_t line, int32_t logLevel, const char* fmt, ...);
+	void lusprintShutdown(void);
 #ifdef __cplusplus
 }
 #endif

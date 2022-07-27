@@ -19,4 +19,7 @@ extern "C" {
         vsnprintf(buffer, sizeof(buffer), fmt, args);
         luslog(file, line, logLevel, buffer);
     }
+    void lusprintShutdown(void) {
+        spdlog::shutdown();
+    }
 }

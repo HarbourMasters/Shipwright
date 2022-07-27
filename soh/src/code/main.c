@@ -12,7 +12,7 @@
 #include <winnt.h>
 #pragma comment(lib, "Dbghelp.lib")
 #endif
-
+#pragma optimize("", off)
 s32 gScreenWidth = SCREEN_WIDTH;
 s32 gScreenHeight = SCREEN_HEIGHT;
 size_t gSystemHeapSize = 0;
@@ -47,8 +47,7 @@ void Main_LogSystemHeap(void) {
 
 
 
-void Main1(int argc, char** argv)
-{
+__declspec(noinline) void Main1(int argc, char** argv) {
     GameConsole_Init();
     InitOTR();
     BootCommands_Init();
@@ -57,13 +56,13 @@ void Main1(int argc, char** argv)
     Main(0);
 }
 
-void main(int argc, char** argv) {
+ __declspec(noinline) void main(int argc, char** argv) {
     __try {
-        Main1WS(argc, argv);
+        Main1(argc, argv);
     } __except (seh_filter(GetExceptionInformation())) { puts("UH OH"); }
 }
 
-void Main(void* arg) {
+__declspec(noinline) void Main(void* arg) {
     IrqMgrClient irqClient;
     OSMesgQueue irqMgrMsgQ;
     OSMesg irqMgrMsgBuf[60];
@@ -262,11 +261,15 @@ void printStack(CONTEXT* ctx) {
             LUS_PRINT(5, "In %s\n", module);
         }
     }
+    puts("AT SHUTDOWN");
+    lusprintShutdown();
 
 }
 
 int seh_filter(EXCEPTION_POINTERS* ex) {
+    puts("EXCEPTION");
     LUS_PRINT(5, "EXCEPTION 0x%x occured\n", ex->ExceptionRecord->ExceptionCode);
     printStack(ex->ContextRecord);
     return EXCEPTION_EXECUTE_HANDLER;
 }
+#pragma optimize("", on)
