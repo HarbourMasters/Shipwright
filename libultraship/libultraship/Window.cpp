@@ -159,17 +159,29 @@ extern "C" {
 
     uint16_t ResourceMgr_LoadTexWidthByName(char* texPath) {
         const auto res = LOAD_TEX(texPath);
-        return res->width;
+        if (res != nullptr)
+            return res->width;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
     }
 
     uint16_t ResourceMgr_LoadTexHeightByName(char* texPath) {
         const auto res = LOAD_TEX(texPath);
-        return res->height;
+        if (res != nullptr)
+            return res->height;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
     }
 
     uint32_t ResourceMgr_LoadTexSizeByName(char* texPath) {
         const auto res = LOAD_TEX(texPath);
-        return res->imageDataSize;
+        if (res != nullptr)
+            return res->imageDataSize;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
     }
 
     void ResourceMgr_WriteTexS16ByName(char* texPath, size_t index, s16 value) {
