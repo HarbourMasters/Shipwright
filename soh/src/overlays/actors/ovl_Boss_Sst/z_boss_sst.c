@@ -3203,10 +3203,8 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
                                         0, (globalCtx->gameplayFrames * -15) % 256, 0x20, 0x40));
 
             for (i = 0; i < 3; i++, scaleY -= 0.001f) {
-                // todo: epoch
-                FrameInterpolation_RecordOpenChild(NULL, i);
-
                 effect = &this->effects[i];
+                FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
                 if (effect->move != 0) {
                     Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
@@ -3228,8 +3226,7 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
 
             effect = &this->effects[0];
             while (effect->status != -1) {
-                // todo: epoch
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
                 Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
                 Matrix_Scale(effect->scale * 0.001f, 1.0f, effect->scale * 0.001f, MTXMODE_APPLY);
