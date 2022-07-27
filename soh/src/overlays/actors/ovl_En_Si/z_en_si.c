@@ -17,7 +17,7 @@ s32 func_80AFB748(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB768(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB89C(EnSi* this, GlobalContext* globalCtx);
 void func_80AFB950(EnSi* this, GlobalContext* globalCtx);
-void Audio_PlayFanfare_Rando();
+void Audio_PlayFanfare_Rando(ItemID getItemId);
 
 s32 textId = 0xB4;
 s32 giveItemId = ITEM_SKULL_TOKEN;
