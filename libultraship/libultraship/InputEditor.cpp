@@ -116,9 +116,9 @@ namespace Ship {
 			DrawButton("START", BTN_START);
 			SEPARATION();
 	#ifdef __SWITCH__
-		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
 	#else
-		LusImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
 	#endif
 		ImGui::SameLine();
 		LusImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
@@ -128,9 +128,9 @@ namespace Ship {
 			DrawButton("Right", BTN_DRIGHT);
 			SEPARATION();
 	#ifdef __SWITCH__
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
 	#else
-		LusImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
 	#endif
 		ImGui::SameLine();
 		LusImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
@@ -156,7 +156,7 @@ namespace Ship {
 				ImGui::Dummy(ImVec2(0, 6));
 			}
 		#ifdef __SWITCH__
-			SohImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
+			LusImGui::EndGroupPanel(IsKeyboard ? 52.0f : 52.0f);
 		#else
 			LusImGui::EndGroupPanel(IsKeyboard ? 52.0f : 24.0f);
 		#endif
@@ -186,9 +186,9 @@ namespace Ship {
 					ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
-			SohImGui::EndGroupPanel(43.0f);
+				LusImGui::EndGroupPanel(43.0f);
 		#else
-			LusImGui::EndGroupPanel(14.0f);
+				LusImGui::EndGroupPanel(14.0f);
 		#endif
 		}
 
@@ -227,9 +227,9 @@ namespace Ship {
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__
-			SohImGui::EndGroupPanel(46.0f);
+				LusImGui::EndGroupPanel(46.0f);
 		#else
-			LusImGui::EndGroupPanel(14.0f);
+				LusImGui::EndGroupPanel(14.0f);
 		#endif
 		}
 
