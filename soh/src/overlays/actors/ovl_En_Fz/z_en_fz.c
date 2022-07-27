@@ -782,7 +782,7 @@ void EnFz_SpawnIceSmokeFreeze(EnFz* this, Vec3f* pos, Vec3f* velocity, Vec3f* ac
             iceSmoke->primAlpha = primAlpha;
             iceSmoke->timer = 0;
             iceSmoke->isTimerMod8 = isTimerMod8;
-            iceSmoke.epoch = 0;
+            iceSmoke->epoch = 0;
             break;
         }
 
