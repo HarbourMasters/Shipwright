@@ -1042,10 +1042,10 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
             break;
         case 4020:
             if (CVar_GetS32("gFasterBlockPush", 0)) {
-                D_8012368C[0].timerInit *= (1.0f / 3.0f);
-                D_8012368C[1].timerInit *= (1.0f / 3.0f);
-                D_8012368C[2].timerInit *= (1.0f / 3.0f);
-                D_8012368C[3].timerInit *= (1.0f / 3.0f);
+                D_8012368C[0].timerInit *= (1.0f / 5.0f);
+                D_8012368C[1].timerInit *= (1.0f / 5.0f);
+                D_8012368C[2].timerInit *= (1.0f / 5.0f);
+                D_8012368C[3].timerInit *= (1.0f / 5.0f);
             }
             csInfo->keyFrames = D_8012368C;
             csInfo->keyFrameCnt = 4;
@@ -1054,10 +1054,10 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
             break;
         case 4021:
             if (CVar_GetS32("gFasterBlockPush", 0)) {
-                D_8012372C[0].timerInit *= (1.0f / 3.0f);
-                D_8012372C[1].timerInit *= (1.0f / 3.0f);
-                D_8012372C[2].timerInit *= (1.0f / 3.0f);
-                D_8012372C[3].timerInit *= (1.0f / 3.0f);
+                D_8012372C[0].timerInit *= (1.0f / 5.0f);
+                D_8012372C[1].timerInit *= (1.0f / 5.0f);
+                D_8012372C[2].timerInit *= (1.0f / 5.0f);
+                D_8012372C[3].timerInit *= (1.0f / 5.0f);
             }
             csInfo->keyFrames = D_8012372C;
             csInfo->keyFrameCnt = 4;
@@ -1066,11 +1066,11 @@ s32 OnePointCutscene_SetInfo(GlobalContext* globalCtx, s16 camIdx, s16 csId, Act
             break;
         case 4022:
             if (CVar_GetS32("gFasterBlockPush", 0)) {
-                D_801237CC[0].timerInit *= (1.0f / 3.0f);
-                D_801237CC[1].timerInit *= (1.0f / 3.0f);
-                D_801237CC[2].timerInit *= (1.0f / 3.0f);
-                D_801237CC[3].timerInit *= (1.0f / 3.0f);
-                D_801237CC[4].timerInit *= (1.0f / 3.0f);
+                D_801237CC[0].timerInit *= (1.0f / 5.0f);
+                D_801237CC[1].timerInit *= (1.0f / 5.0f);
+                D_801237CC[2].timerInit *= (1.0f / 5.0f);
+                D_801237CC[3].timerInit *= (1.0f / 5.0f);
+                D_801237CC[4].timerInit *= (1.0f / 5.0f);
             }
             csCam->timer = D_801237CC[0].timerInit + D_801237CC[3].timerInit + D_801237CC[1].timerInit +
                            D_801237CC[2].timerInit + D_801237CC[4].timerInit;

@@ -4649,7 +4649,7 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
             }
 
             if (CVar_GetS32("gFasterBlockPush", 0)) {
-                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 5.0f);
             } else {
                 LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
             }
