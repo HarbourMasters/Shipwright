@@ -183,7 +183,7 @@ extern GraphicsContext* __gfxCtx;
 #ifndef NDEBUG
 #define OPEN_DISPS(gfxCtx) \
     { \
-        void FrameInterpolation_RecordOpenChild(const void* a, long long b); \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
         FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         Gfx* dispRefs[4]; \
@@ -193,7 +193,7 @@ extern GraphicsContext* __gfxCtx;
 #else
 #define OPEN_DISPS(gfxCtx) \
     { \
-        void FrameInterpolation_RecordOpenChild(const void* a, long long b); \
+        void FrameInterpolation_RecordOpenChild(const void* a, int b); \
         FrameInterpolation_RecordOpenChild(__FILE__, __LINE__); \
         GraphicsContext* __gfxCtx; \
         __gfxCtx = gfxCtx; \
