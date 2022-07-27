@@ -2615,6 +2615,7 @@ void BossSst_UpdateHand(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     trail = &this->handTrails[this->trailIndex];
+    trail->epoch++;
     Math_Vec3f_Copy(&trail->world.pos, &this->actor.world.pos);
     trail->world.rot = this->actor.shape.rot;
     trail->zPosMod = this->handZPosMod;
@@ -2739,8 +2740,7 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
 
         for (i = 0; i < end; i++) {
             if (Math3D_Vec3fDistSq(&trail2->world.pos, &trail->world.pos) > 900.0f) {
-                // todo: epoch
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild(trail, trail->epoch * i * 25);
 
                 Matrix_SetTranslateRotateYXZ(trail->world.pos.x, trail->world.pos.y, trail->world.pos.z,
                                              &trail->world.rot);
@@ -3101,6 +3101,7 @@ void BossSst_UpdateEffect(Actor* thisx, GlobalContext* globalCtx) {
             if (this->effects[0].status) {
                 for (i = 0; i < 18; i++) {
                     effect = &this->effects[i];
+                    effect->epoch++;
 
                     if (effect->move) {
                         effect->pos.x += effect->vel.x;
@@ -3170,8 +3171,7 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gBongoIceCrystalDL);
 
             for (i = 0; i < 18; i++) {
-                // todo: epoch
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
                 effect = &this->effects[i];
                 if (effect->move) {
