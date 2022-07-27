@@ -4723,12 +4723,14 @@ void Interface_Draw(GlobalContext* globalCtx) {
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
             }
-            gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
-                                G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
-                                    (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
-                                    G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            if (fullUi) {
+                gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
+                                    G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
+                                        (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
+                                        G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            }
 
             // DPad-Up Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {
