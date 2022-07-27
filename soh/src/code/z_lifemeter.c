@@ -1,5 +1,6 @@
 #include "global.h"
 #include "textures/parameter_static/parameter_static.h"
+#include "soh/frame_interpolation.h"
 
 s16 Top_LM_Margin = 0;
 s16 Left_LM_Margin = 0;
