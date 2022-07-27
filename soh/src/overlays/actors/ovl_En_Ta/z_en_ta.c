@@ -460,10 +460,13 @@ void func_80B14AF4(EnTa* this, GlobalContext* globalCtx) {
 
 void func_80B14B6C(EnTa* this, GlobalContext* globalCtx) {
     if (Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) {
-        OnePointCutscene_Init(globalCtx, 4175, -99, &this->actor, MAIN_CAM);
+        s16 csCamIdx = OnePointCutscene_Init(globalCtx, 4175, -99, &this->actor, MAIN_CAM);
         func_80B13AA0(this, func_80B14AF4, func_80B167C0);
         this->unk_2CC = 5;
         gSaveContext.eventChkInf[1] |= 0x10;
+        if (gSaveContext.n64ddFlag) {
+            OnePointCutscene_EndCutscene(globalCtx, csCamIdx);
+        }
         Animation_PlayOnce(&this->skelAnime, &gTalonRunTransitionAnim);
         this->currentAnimation = &gTalonRunAnim;
     }
