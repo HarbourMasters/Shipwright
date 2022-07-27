@@ -421,10 +421,8 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_MAGICSQ);
     gSPDisplayList(POLY_XLU_DISP++, gGlowCircleTextureLoadDL);
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     while (node != NULL) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         LightInfo* info;
         LightPoint* params;
         f32 scale;
@@ -447,6 +445,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
         }
 
         node = node->next;
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

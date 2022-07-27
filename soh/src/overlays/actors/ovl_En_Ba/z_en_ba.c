@@ -6,6 +6,7 @@
 
 #include "z_en_ba.h"
 #include "objects/object_bxa/object_bxa.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
 
@@ -479,18 +480,19 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
     Mtx* mtx = Graph_Alloc(globalCtx->state.gfxCtx, sizeof(Mtx) * 14);
     Vec3f unused = { 0.0f, 0.0f, 448.0f };
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     func_80093D18(globalCtx->state.gfxCtx);
     if (this->actor.params < EN_BA_DEAD_BLOB) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Push();
         gSPSegment(POLY_OPA_DISP++, 0x0C, mtx);
         gSPSegment(POLY_OPA_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809B8118[this->actor.params]));
         gSPSegment(POLY_OPA_DISP++, 0x09,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0,
                                     (globalCtx->gameplayFrames * -10) % 128, 32, 32));
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
         for (i = 0; i < 14; i++, mtx++) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            // todo: epoch
+            FrameInterpolation_RecordOpenChild(NULL, i);
+
             Matrix_Translate(this->unk158[i].x, this->unk158[i].y, this->unk158[i].z, MTXMODE_NEW);
             Matrix_RotateZYX(this->unk2A8[i].x, this->unk2A8[i].y, this->unk2A8[i].z, MTXMODE_APPLY);
             Matrix_Scale(this->unk200[i].x, this->unk200[i].y, this->unk200[i].z, MTXMODE_APPLY);
@@ -506,16 +508,14 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 }
             }
             MATRIX_TOMTX(mtx);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+
+            FrameInterpolation_RecordCloseChild();
         }
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         Matrix_Pop();
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_000890);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
     } else {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         gSPSegment(POLY_OPA_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (globalCtx->gameplayFrames * 2) % 128,
                                     (globalCtx->gameplayFrames * 2) % 128, 32, 32, 1,
@@ -525,6 +525,6 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_001D80);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

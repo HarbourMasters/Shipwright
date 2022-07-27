@@ -1,5 +1,6 @@
 #include "z_en_fz.h"
 #include "objects/object_fz/object_fz.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_10)
 
@@ -859,10 +860,14 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     u8 texLoaded = false;
 
+    OPEN_DISPS(gfxCtx);
+
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->iceSmoke); i++) {
-        OPEN_DISPS(gfxCtx);
+        // todo: epoch
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         if (iceSmoke->type > 0) {
             gDPPipeSync(POLY_XLU_DISP++);
 
@@ -882,8 +887,11 @@ void EnFz_DrawIceSmoke(EnFz* this, GlobalContext* globalCtx) {
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(gFreezardSteamDL));
         }
-        CLOSE_DISPS(gfxCtx);
+
+        FrameInterpolation_RecordCloseChild();
 
         iceSmoke++;
     }
+
+    CLOSE_DISPS(gfxCtx);
 }

@@ -6,6 +6,7 @@
 
 #include "z_en_bx.h"
 #include "objects/object_bxa/object_bxa.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -218,8 +219,6 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
-
     if (this->actor.params & 0x80) {
         func_809D1D0C(&this->actor, globalCtx);
     }
@@ -237,15 +236,18 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 4; i++, mtx++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        // todo: epoch
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         Matrix_Translate(this->unk_154[i].x, this->unk_154[i].y, this->unk_154[i].z, MTXMODE_NEW);
         Matrix_RotateZYX(this->unk_1B4[i].x, this->unk_1B4[i].y, this->unk_1B4[i].z, MTXMODE_APPLY);
         Matrix_Scale(this->unk_184[i].x, this->unk_184[i].y, this->unk_184[i].z, MTXMODE_APPLY);
         MATRIX_TOMTX(mtx);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+
+        FrameInterpolation_RecordCloseChild();
     }
 
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     gSPDisplayList(POLY_OPA_DISP++, object_bxa_DL_0022F0);
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

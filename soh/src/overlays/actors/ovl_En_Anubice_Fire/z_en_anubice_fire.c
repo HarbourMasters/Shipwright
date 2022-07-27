@@ -7,6 +7,7 @@
 #include "z_en_anubice_fire.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_anubice/object_anubice.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -229,9 +230,10 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(D_809B3270[0]));
 
     Matrix_Push();
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
     for (i = this->unk_15E; i < 6; ++i) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        // todo: epoch
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         f32 scale = this->actor.scale.x - (i * 0.2f);
 
         if (scale < 0.0f) {
@@ -249,13 +251,14 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
             gSPDisplayList(POLY_XLU_DISP++, gAnubiceFireAttackDL);
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+
+        FrameInterpolation_RecordCloseChild();
 
         if (this->scale < 0.1f) {
             break;
         }
     }
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Pop();
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
