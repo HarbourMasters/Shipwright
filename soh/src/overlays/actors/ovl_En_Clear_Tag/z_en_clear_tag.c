@@ -280,6 +280,7 @@ void EnClearTag_Init(Actor* thisx, GlobalContext* globalCtx) {
             globalCtx->specialEffects = &sClearTagEffects[0];
             for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++) {
                 sClearTagEffects[i].type = CLEAR_TAG_EFFECT_AVAILABLE;
+                sClearTagEffects[i].epoch = 0;
             }
             this->drawMode = CLEAR_TAG_DRAW_MODE_ALL;
         }
@@ -883,6 +884,7 @@ void EnClearTag_UpdateEffects(GlobalContext* globalCtx) {
                 effect->timer--;
             }
         }
+        effect->epoch++;
     }
 }
 
@@ -904,8 +906,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
 
     // Draw all Debris effects.
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
         if (effect->type == CLEAR_TAG_EFFECT_DEBRIS) {
             // Apply the debris effect material if it has not already been applied.
@@ -932,8 +933,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
             // Apply the flash ground effect material if it has not already been applied.
             if (!isMaterialApplied) {
@@ -961,8 +961,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_SMOKE) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
             // Apply the smoke effect material if it has not already been applied.
             if (!isMaterialApplied) {
@@ -995,8 +994,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FIRE) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
             // Apply the fire effect material if it has not already been applied.
             if (!isMaterialApplied) {
@@ -1026,8 +1024,7 @@ void EnClearTag_DrawEffects(GlobalContext* globalCtx) {
     isMaterialApplied = false;
     for (i = 0; i < CLEAR_TAG_EFFECT_MAX_COUNT; i++, effect++) {
         if (effect->type == CLEAR_TAG_EFFECT_FLASH) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
             // Apply the flash billboard effect material if it has not already been applied.
             if (!isMaterialApplied) {

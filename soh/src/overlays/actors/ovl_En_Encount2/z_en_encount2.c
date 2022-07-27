@@ -304,6 +304,7 @@ void EnEncount2_ParticleInit(EnEncount2* this, Vec3f* particlePos, f32 scale) {
             particle->moveDirection.y = -20.0f;
             particle->moveDirection.z = Rand_CenteredFloat(20.0f);
             particle->isAlive = 1;
+            particle->epoch = 0;
             break;
         }
     }
@@ -336,6 +337,7 @@ void EnEncount2_ParticleUpdate(EnEncount2* this, GlobalContext* globalCtx) {
                 particle->isAlive = 0;
             }
         }
+        particle->epoch++;
     }
 }
 
@@ -350,13 +352,12 @@ void EnEncount2_ParticleDraw(Actor* thisx, GlobalContext* globalCtx) {
 
     objBankIndex = Object_GetIndex(&globalCtx->objectCtx, OBJECT_EFC_STAR_FIELD);
 
-    if (objBankIndex >= 0) {    
+    if (objBankIndex >= 0) {
         gDPPipeSync(POLY_XLU_DISP++);
         gSPSegment(POLY_OPA_DISP++, 0x06, globalCtx->objectCtx.status[objBankIndex].segment);
 
         for (i = 0; i < ARRAY_COUNT(this->particles); particle++, i++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(particle, particle->epoch);
 
             if (particle->isAlive) {
                 Matrix_Translate(particle->pos.x, particle->pos.y, particle->pos.z, MTXMODE_NEW);

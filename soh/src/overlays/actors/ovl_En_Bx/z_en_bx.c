@@ -104,6 +104,7 @@ void EnBx_Init(Actor* thisx, GlobalContext* globalCtx) {
         Actor_Kill(&this->actor);
     }
     thisx->params &= 0xFF;
+    this->epoch = 0;
 }
 
 void EnBx_Destroy(Actor* thisx, GlobalContext* globalCtx) {
@@ -136,6 +137,7 @@ void EnBx_Update(Actor* thisx, GlobalContext* globalCtx) {
     s16 tmp32;
     s32 tmp33;
 
+    this->epoch++;
     if ((thisx->xzDistToPlayer <= 70.0f) || (this->collider.base.atFlags & AT_HIT) ||
         (this->collider.base.acFlags & AC_HIT) || (this->colliderQuad.base.atFlags & AT_HIT)) {
         if ((thisx->xzDistToPlayer <= 70.0f) || (&player->actor == this->collider.base.at) ||
@@ -236,8 +238,7 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 4; i++, mtx++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
 
         Matrix_Translate(this->unk_154[i].x, this->unk_154[i].y, this->unk_154[i].z, MTXMODE_NEW);
         Matrix_RotateZYX(this->unk_1B4[i].x, this->unk_1B4[i].y, this->unk_1B4[i].z, MTXMODE_APPLY);

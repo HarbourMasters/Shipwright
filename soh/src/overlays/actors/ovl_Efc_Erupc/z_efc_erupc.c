@@ -167,10 +167,8 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
     s32 pad;
 
     OPEN_DISPS(gfxCtx);
-
     for (i = 0; i < EFC_ERUPC_NUM_PARTICLES; i++, particles++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild(particles, particles->epoch);
 
         if (particles->isActive) {
             func_80093D84(globalCtx->state.gfxCtx);
@@ -231,6 +229,7 @@ void EfcErupc_UpdateParticles(EfcErupc* this, GlobalContext* globalCtx) {
                 cur->alpha = 0;
                 cur->isActive = false;
             }
+            cur->epoch++;
         }
     }
 }
@@ -257,5 +256,6 @@ void EfcErupc_InitParticles(EfcErupcParticles* particles) {
 
     for (i = 0; i < EFC_ERUPC_NUM_PARTICLES; i++, particles++) {
         particles->isActive = false;
+        particles->epoch = 0;
     }
 }

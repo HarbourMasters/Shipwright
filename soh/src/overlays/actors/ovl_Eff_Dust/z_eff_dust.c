@@ -269,6 +269,8 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     f32* distanceTraveled;
     s32 i;
     f32 aux;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -284,8 +286,7 @@ void EffDust_DrawFunc_8099E4F4(Actor* thisx, GlobalContext* globalCtx2) {
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
 
     for (i = 0; i < 64; i++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Dust 8099E4F4", epoch * i * 25);
 
         if (*distanceTraveled < 1.0f) {
             aux = 1.0f - (*distanceTraveled * *distanceTraveled);
@@ -320,6 +321,8 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     s32 i;
     f32 aux;
     Player* player = GET_PLAYER(globalCtx);
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -339,8 +342,7 @@ void EffDust_DrawFunc_8099E784(Actor* thisx, GlobalContext* globalCtx2) {
     gSPSegment(POLY_XLU_DISP++, 0x08, sEmptyDL);
 
     for (i = 0; i < 64; i++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Dust 8099E784", epoch * i * 25);
 
         if (*distanceTraveled < 1.0f) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 255, *distanceTraveled * 255);

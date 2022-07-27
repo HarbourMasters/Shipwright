@@ -422,6 +422,7 @@ void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* acc
             eff->pos = *initialPos;
             eff->accel = *accel;
             eff->velocity = *initialSpeed;
+            eff->epoch = 0;
             return;
         }
     }
@@ -445,6 +446,7 @@ void EnFw_UpdateDust(EnFw* this) {
             eff->velocity.y += eff->accel.y;
             eff->velocity.z += eff->accel.z;
             eff->scale += eff->scaleStep;
+            eff->epoch++;
         }
     }
 }
@@ -465,8 +467,7 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
 
         if (eff->type != 0) {
             if (!firstDone) {

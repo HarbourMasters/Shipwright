@@ -813,6 +813,7 @@ void EnFd_AddEffect(EnFd* this, u8 type, Vec3f* pos, Vec3f* velocity, Vec3f* acc
             eff->color.a = 255;
             eff->timer = (s16)(Rand_ZeroOne() * 10.0f);
         }
+        eff->epoch = 0;
         return;
     }
 }
@@ -836,6 +837,7 @@ void EnFd_UpdateFlames(EnFd* this) {
             eff->velocity.y += eff->accel.y;
             eff->velocity.z += eff->accel.z;
             eff->scale += eff->scaleStep;
+            eff->epoch++;
         }
     }
 }
@@ -869,6 +871,7 @@ void EnFd_UpdateDots(EnFd* this) {
                 eff->color.a = 0;
                 eff->type = FD_EFFECT_NONE;
             }
+            eff->epoch++;
         }
     }
 }
@@ -883,13 +886,11 @@ void EnFd_DrawFlames(EnFd* this, GlobalContext* globalCtx) {
     EnFdEffect* eff = this->effects;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
-
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type == FD_EFFECT_FLAME) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
 
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
@@ -927,8 +928,7 @@ void EnFd_DrawDots(EnFd* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
         if (eff->type == FD_EFFECT_DOT) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
 
             if (!firstDone) {
                 func_80093D84(globalCtx->state.gfxCtx);

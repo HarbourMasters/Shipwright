@@ -108,6 +108,7 @@ void EnBa_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 4;
     this->upperParams = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
+    this->epoch = 0;
 
     if (this->actor.params < EN_BA_DEAD_BLOB) {
         if (Flags_GetSwitch(globalCtx, this->upperParams)) {
@@ -465,6 +466,7 @@ void EnBa_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->unk14C >= 2) {
         CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
     }
+    this->epoch++;
 }
 
 static void* D_809B8118[] = {
@@ -490,8 +492,7 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0,
                                     (globalCtx->gameplayFrames * -10) % 128, 32, 32));
         for (i = 0; i < 14; i++, mtx++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
 
             Matrix_Translate(this->unk158[i].x, this->unk158[i].y, this->unk158[i].z, MTXMODE_NEW);
             Matrix_RotateZYX(this->unk2A8[i].x, this->unk2A8[i].y, this->unk2A8[i].z, MTXMODE_APPLY);
