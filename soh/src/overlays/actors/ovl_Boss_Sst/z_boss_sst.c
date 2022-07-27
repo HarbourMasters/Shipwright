@@ -2961,6 +2961,8 @@ void BossSst_SpawnHeadShadow(BossSst* this) {
         shadow->scale = 1450;
         shadow->alpha = 254;
         shadow->status = 65;
+
+        shadow->epoch = 0;
     }
 
     this->effects[3].status = -1;
@@ -2974,6 +2976,7 @@ void BossSst_SpawnHandShadow(BossSst* this) {
     this->effects[0].scale = 2300;
     this->effects[0].alpha = 254;
     this->effects[0].status = 5;
+    this->effects[0].epoch - 0;
     this->effects[1].status = -1;
 }
 
@@ -2987,6 +2990,7 @@ void BossSst_SpawnShockwave(BossSst* this) {
 
     for (i = 0; i < 3; i++) {
         BossSstEffect* shockwave = &this->effects[i];
+        shockwave->epoch = 0;
 
         Math_Vec3f_Copy(&shockwave->pos, &this->actor.world.pos);
         shockwave->move = (i + 9) * 2;
@@ -3041,6 +3045,8 @@ void BossSst_SpawnIceCrystal(BossSst* this, s32 index) {
     if ((index % 2) == 0) {
         Audio_PlayActorSound2(&this->actor, NA_SE_PL_FREEZE_S);
     }
+
+    ice->epoch = 0;
 }
 
 void BossSst_SpawnIceShard(BossSst* this) {
@@ -3056,6 +3062,7 @@ void BossSst_SpawnIceShard(BossSst* this) {
 
     for (i = 0; i < 18; i++) {
         BossSstEffect* ice = &this->effects[i];
+        ice->epoch = 0;
 
         Math_Vec3f_Copy(&ice->pos, &spawnPos);
         ice->status = 1;
@@ -3127,6 +3134,7 @@ void BossSst_UpdateEffect(Actor* thisx, GlobalContext* globalCtx) {
                 if (effect2->move != 0) {
                     effect2->move--;
                 }
+                effect2->epoch++;
             }
 
             if (this->effects[0].move == 0) {
@@ -3171,9 +3179,9 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
             gSPDisplayList(POLY_XLU_DISP++, gBongoIceCrystalDL);
 
             for (i = 0; i < 18; i++) {
+                effect = &this->effects[i];
                 FrameInterpolation_RecordOpenChild(effect, effect->epoch);
 
-                effect = &this->effects[i];
                 if (effect->move) {
                     func_8003435C(&effect->pos, globalCtx);
                     if (this->effects[0].status != 0) {
@@ -3234,9 +3242,9 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, sShadowDList);
-                effect++;
                 
                 FrameInterpolation_RecordCloseChild();
+                effect++;
             }
         }
 
