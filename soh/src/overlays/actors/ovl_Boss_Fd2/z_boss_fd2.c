@@ -967,6 +967,7 @@ void BossFd2_Update(Actor* thisx, GlobalContext* globalCtx2) {
     this->actor.flags &= ~ACTOR_FLAG_10;
     this->work[FD2_VAR_TIMER]++;
     this->work[FD2_UNK_TIMER]++;
+    this->epoch++;
 
     this->actionFunc(this, globalCtx);
 
@@ -1147,8 +1148,7 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     }
 
     for (i = 0; i < 9; i++) {
-        // todo: figure out something other than null to put in here
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
 
         Matrix_Translate((pos + i)->x, (pos + i)->y, (pos + i)->z, MTXMODE_NEW);
         Matrix_RotateY((rot + i)->y, MTXMODE_APPLY);

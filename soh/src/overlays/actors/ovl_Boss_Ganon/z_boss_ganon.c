@@ -3356,6 +3356,8 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
     s32 pad;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -3369,8 +3371,7 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
             Player* player = GET_PLAYER(globalCtx);
 
             for (i = 0; i < ARRAY_COUNT(player->bodyPartsPos); i++) {
-                // todo: figure out something other than null to put in here
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild("Ganondorf Shock 0", epoch * i * 25);
 
                 Matrix_Translate(player->bodyPartsPos[i].x, player->bodyPartsPos[i].y, player->bodyPartsPos[i].z,
                                  MTXMODE_NEW);
@@ -3385,8 +3386,7 @@ void BossGanon_DrawShock(BossGanon* this, GlobalContext* globalCtx) {
             }
         } else {
             for (i = 1; i < 15; i++) {
-                // todo: figure out something other than null to put in here
-                FrameInterpolation_RecordOpenChild(NULL, i);
+                FrameInterpolation_RecordOpenChild("Ganondorf Shock 1", epoch * i * 25);
 
                 Matrix_Translate(this->unk_2EC[i].x, this->unk_2EC[i].y, this->unk_2EC[i].z, MTXMODE_NEW);
                 Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
@@ -3463,6 +3463,8 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
     f32 yRot;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     s16 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(gfxCtx);
 
@@ -3523,8 +3525,7 @@ void BossGanon_DrawBigMagicCharge(BossGanon* this, GlobalContext* globalCtx) {
         yRot = BINANG_TO_RAD(this->actor.yawTowardsPlayer);
 
         for (i = 0; i < this->unk_1AC; i++) {
-            // todo: figure out something other than null to put in here
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Ganondorf Big Magic", epoch * i * 25);
 
             f32 xzRot = (BossGanon_RandZeroOne() - 0.5f) * M_PI * 1.5f;
 
@@ -4157,6 +4158,8 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s16 i;
     f32 alpha;
     s32 pad;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -4181,8 +4184,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->unk_1A8 == 1) {
         for (i = 0; i < 8; i++) {
-            // todo: epoch
-            FrameInterpolation_RecordOpenChild(NULL, i);
+            FrameInterpolation_RecordOpenChild("Ganondorf Light Ball 0", epoch * i * 25);
 
             Matrix_Push();
             Matrix_RotateY(i * (M_PI / 8), MTXMODE_APPLY);
@@ -4196,8 +4198,7 @@ void BossGanon_LightBall_Draw(Actor* thisx, GlobalContext* globalCtx) {
             FrameInterpolation_RecordCloseChild();
         }
     } else if (this->unk_1A8 == 0) {
-        // todo: epoch
-        FrameInterpolation_RecordOpenChild(NULL, i);
+        FrameInterpolation_RecordOpenChild("Ganondorf Light Ball 1", epoch * i * 25);
         
         Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
         Matrix_RotateZ((this->actor.shape.rot.z / 32768.0f) * 3.1416f, MTXMODE_APPLY);

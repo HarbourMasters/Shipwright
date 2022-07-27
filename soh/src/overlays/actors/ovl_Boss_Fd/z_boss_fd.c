@@ -1835,6 +1835,8 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     s16 i;
     f32 temp_float;
     Mtx* tempMat = Graph_Alloc(globalCtx->state.gfxCtx, 18 * sizeof(Mtx));
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
     if (this->skinSegments != 0) {
@@ -1876,7 +1878,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
 
     Matrix_Push();
     for (i = 0; i < 18; i++, tempMat++) {
-        FrameInterpolation_RecordOpenChild(tempMat, i);
+        FrameInterpolation_RecordOpenChild(tempMat, epoch * i * 25);
 
         segIndex = (this->work[BFD_LEAD_BODY_SEG] + sBodyIndex[i + 1]) % 100;
         Matrix_Translate(this->bodySegsPos[segIndex].x, this->bodySegsPos[segIndex].y, this->bodySegsPos[segIndex].z,

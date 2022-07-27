@@ -151,6 +151,7 @@ void func_808C17C8(GlobalContext* globalCtx, Vec3f* arg1, Vec3f* arg2, Vec3f* ar
 
     for (i = 0; i < arg5; i++, eff++) {
         if (eff->unk_24 == 0) {
+            eff->epoch = 0;
             eff->unk_24 = 1;
             eff->unk_00 = *arg1;
             eff->unk_0C = *arg2;
