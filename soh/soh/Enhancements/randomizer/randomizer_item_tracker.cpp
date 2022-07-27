@@ -1019,7 +1019,7 @@ void DrawItemTracker(bool& open) {
             SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
             SohImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
             SohImGui::EnhancementCheckbox("Personnal notes space", "gItemTrackerNotes");
-            SohImGui::Tooltip("Adds a personal space under the item list to\n write eyour own notes.");
+            SohImGui::Tooltip("Adds a textbox under the item tracker to keep your own notes in");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
