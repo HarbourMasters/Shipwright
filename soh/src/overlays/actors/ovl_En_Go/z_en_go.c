@@ -1134,11 +1134,9 @@ void EnGo_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     if (this->actionFunc == EnGo_CurledUp) {
         EnGo_DrawCurledUp(this, globalCtx);
-        return; // needed for match?
     } else if (this->actionFunc == EnGo_GoronLinkRolling || this->actionFunc == func_80A3FEB4 ||
                this->actionFunc == EnGo_StopRolling || this->actionFunc == func_80A3FEB4) {
         EnGo_DrawRolling(this, globalCtx);
-        return; // needed for match?
     } else {
         func_800943C8(globalCtx->state.gfxCtx);
 
