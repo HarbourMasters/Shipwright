@@ -47,6 +47,7 @@ void EffectShieldParticle_Init(void* thisx, void* initParamsx) {
             elem->endXChange = elem->initialSpeed;
             elem->yaw = Rand_ZeroOne() * 65534.0f;
             elem->pitch = Rand_ZeroOne() * 65534.0f;
+            elem->epoch = 0;
         }
 
         this->lightDecay = initParams->lightDecay;
@@ -99,6 +100,8 @@ s32 EffectShieldParticle_Update(void* thisx) {
         if ((elem->startXChange == 0.0f) && (this->lengthCutoff < (elem->endX - elem->startX))) {
             elem->startXChange = elem->initialSpeed;
         }
+
+        elem->epoch++;
     }
 
     if (this->lightDecay == true) {
@@ -181,7 +184,7 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
         gDPPipeSync(POLY_XLU_DISP++);
 
         for (elem = &this->elements[0]; elem < &this->elements[this->numElements]; elem++) {
-            FrameInterpolation_RecordOpenChild(elem, 0);
+            FrameInterpolation_RecordOpenChild(elem, elem->epoch);
 
             Mtx* mtx;
             MtxF sp104;

@@ -1680,6 +1680,7 @@ void BossDodongo_UpdateEffects(GlobalContext* globalCtx) {
                     eff->unk_24 = 0;
                 }
             }
+            eff->epoch++;
         }
     }
 }
@@ -1701,7 +1702,7 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
 
     for (i = 0; i < 80; i++, eff++) {
-        FrameInterpolation_RecordOpenChild(eff, i);
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
         if (eff->unk_24 == 1) {
             gDPPipeSync(POLY_XLU_DISP++);
 

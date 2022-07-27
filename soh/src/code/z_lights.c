@@ -417,6 +417,7 @@ void Lights_DrawGlow(GlobalContext* globalCtx) {
     node = globalCtx->lightCtx.listHead;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
+
     POLY_XLU_DISP = func_800947AC(POLY_XLU_DISP++);
     gDPSetAlphaDither(POLY_XLU_DISP++, G_AD_NOISE);
     gDPSetColorDither(POLY_XLU_DISP++, G_CD_MAGICSQ);
