@@ -39,11 +39,13 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE C_SOURCES src/*.c)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${C_SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
-add_custom_target(Assets1 ALL COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
-add_custom_target(Assets2 ALL COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/../OTRExporter/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/game" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
-add_custom_target(Assets3 ALL COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/../soh/assets/xml" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/extractor/xmls" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake")
+add_custom_target(Assets ALL
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake"
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/../OTRExporter/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/game" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake"
+    COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/../soh/assets/xml" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/extractor/xmls" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake"
+    )
  
-add_dependencies(${PROJECT_NAME} Assets1 Assets2 Assets3)
+add_dependencies(OTRGui Assets)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC raylib)
 
