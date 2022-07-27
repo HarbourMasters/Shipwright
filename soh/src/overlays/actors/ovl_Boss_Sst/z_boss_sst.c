@@ -2615,7 +2615,6 @@ void BossSst_UpdateHand(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     trail = &this->handTrails[this->trailIndex];
-    trail->epoch++;
     Math_Vec3f_Copy(&trail->world.pos, &this->actor.world.pos);
     trail->world.rot = this->actor.shape.rot;
     trail->zPosMod = this->handZPosMod;
@@ -2707,6 +2706,8 @@ s32 BossSst_OverrideHandTrailDraw(GlobalContext* globalCtx, s32 limbIndex, Gfx**
 
 void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
     BossSst* this = (BossSst*)thisx;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2740,7 +2741,7 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
 
         for (i = 0; i < end; i++) {
             if (Math3D_Vec3fDistSq(&trail2->world.pos, &trail->world.pos) > 900.0f) {
-                FrameInterpolation_RecordOpenChild(trail, trail->epoch * i * 25);
+                FrameInterpolation_RecordOpenChild(trail, epoch * i * 25);
 
                 Matrix_SetTranslateRotateYXZ(trail->world.pos.x, trail->world.pos.y, trail->world.pos.z,
                                              &trail->world.rot);

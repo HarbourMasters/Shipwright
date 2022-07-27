@@ -24,8 +24,7 @@ typedef struct {
     /* 0x0000 */ PosRot world;
     /* 0x0014 */ f32 zPosMod;
     /* 0x0018 */ s16 yRotMod;
-    /* 0x001C */ s32 epoch;
-} BossSstHandTrail; // size = 0x20
+} BossSstHandTrail; // size = 0x1C
 
 typedef struct BossSst {
     /* 0x0000 */ Actor actor;
