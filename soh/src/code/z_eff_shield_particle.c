@@ -156,8 +156,9 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
     Color_RGBA8 primColor;
     Color_RGBA8 envColor;
 
+    OPEN_DISPS(gfxCtx);
+
     if (this != NULL) {
-        OPEN_DISPS(gfxCtx);
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x26);
 
         gDPSetCycleType(POLY_XLU_DISP++, G_CYC_2CYCLE);
@@ -178,10 +179,10 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
         gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, primColor.r, primColor.g, primColor.b, primColor.a);
         gDPSetEnvColor(POLY_XLU_DISP++, envColor.r, envColor.g, envColor.b, envColor.a);
         gDPPipeSync(POLY_XLU_DISP++);
-        CLOSE_DISPS(gfxCtx);
 
         for (elem = &this->elements[0]; elem < &this->elements[this->numElements]; elem++) {
-            OPEN_DISPS(gfxCtx);
+            FrameInterpolation_RecordOpenChild(elem, 0);
+
             Mtx* mtx;
             MtxF sp104;
             MtxF spC4;
@@ -212,7 +213,10 @@ void EffectShieldParticle_Draw(void* thisx, GraphicsContext* gfxCtx) {
             gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPVertex(POLY_XLU_DISP++, sVertices, 4, 0);
             gSP2Triangles(POLY_XLU_DISP++, 0, 1, 2, 0, 0, 3, 1, 0);
-            CLOSE_DISPS(gfxCtx);
+            
+            FrameInterpolation_RecordCloseChild();
         }
     }
+
+    CLOSE_DISPS(gfxCtx);
 }

@@ -458,11 +458,15 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     s16 i;
     s16 idx;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        // todo: epoch
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         if (eff->type != 0) {
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0U);
@@ -483,6 +487,9 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+
+        FrameInterpolation_RecordCloseChild();
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

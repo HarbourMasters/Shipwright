@@ -3,6 +3,7 @@
 #include "vt.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/gameplay_field_keep/gameplay_field_keep.h"
+#include "soh/frame_interpolation.h"
 
 typedef enum {
     /* 0 */ LENS_FLARE_CIRCLE0,
@@ -1459,6 +1460,8 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1, LENS_FLARE_CIRCLE1,
     };
 
+    OPEN_DISPS(gfxCtx);
+
     dist = Math3D_Vec3f_DistXYZ(&pos, &view->eye) / 12.0f;
 
     // compute a unit vector in the look direction
@@ -1499,9 +1502,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         unk88Target = cosAngle;
     }
 
-    if (cosAngle < 0.0f) {
-
-    } else {
+    if (!(cosAngle < 0.0f)) {
         if (arg9) {
             u32 shrink = ShrinkWindow_GetCurrentVal();
             func_800C016C(globalCtx, &pos, &screenPos);
@@ -1514,7 +1515,8 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
-            OPEN_DISPS(gfxCtx);
+            // todo: figure out what pointer to use here instead of passing in NULL
+            FrameInterpolation_RecordOpenChild(NULL, i);
 
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
@@ -1573,13 +1575,12 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
                     break;
             }
 
-            CLOSE_DISPS(gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
 
         alphaScale = cosAngle - (1.5f - cosAngle);
 
         if (screenFillAlpha != 0) {
-            OPEN_DISPS(gfxCtx);
             if (alphaScale > 0.0f) {
                 POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
 
@@ -1612,9 +1613,10 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
             } else {
                 envCtx->unk_84 = 0.0f;
             }
-            CLOSE_DISPS(gfxCtx);
         }
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 f32 func_800746DC(void) {
@@ -1641,6 +1643,8 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
     Player* player = GET_PLAYER(globalCtx);
 
     if (!(globalCtx->cameraPtrs[0]->unk_14C & 0x100) && (globalCtx->envCtx.unk_EE[2] == 0)) {
+        OPEN_DISPS(gfxCtx);
+        
         vec.x = view->lookAt.x - view->eye.x;
         vec.y = view->lookAt.y - view->eye.y;
         vec.z = view->lookAt.z - view->eye.z;
@@ -1659,16 +1663,16 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
         z280 = view->eye.z + temp3 * 280.0f;
 
         if (globalCtx->envCtx.unk_EE[1]) {
-            OPEN_DISPS(gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 150, 255, 255, 30);
             POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 20);
-            CLOSE_DISPS(gfxCtx);
         }
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-            OPEN_DISPS(gfxCtx);
+            // todo: figure out what pointer to use here instead of passing in NULL
+            FrameInterpolation_RecordOpenChild(NULL, i);
+
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
             temp3 = Rand_ZeroOne();
@@ -1694,7 +1698,8 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gRaindropDL);
-            CLOSE_DISPS(gfxCtx);
+
+            FrameInterpolation_RecordCloseChild();
         }
 
         // draw droplet rings on the ground
@@ -1702,7 +1707,9 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-                OPEN_DISPS(gfxCtx);
+                // todo: figure out what pointer to use here instead of passing in NULL
+                FrameInterpolation_RecordOpenChild(NULL, i);
+                
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
                     gDPSetEnvColor(POLY_XLU_DISP++, 155, 155, 155, 0);
@@ -1723,9 +1730,12 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
                 gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffShockwaveDL);
-                CLOSE_DISPS(gfxCtx);
+
+                FrameInterpolation_RecordCloseChild();
             }
         }
+
+        CLOSE_DISPS(gfxCtx);
     }
 }
 
@@ -1915,8 +1925,12 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     Vec3f unused1 = { 0.0f, 0.0f, 0.0f };
     Vec3f unused2 = { 0.0f, 0.0f, 0.0f };
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        // todo: figure out what pointer to use here instead of passing in NULL
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:
                 dx = globalCtx->view.lookAt.x - globalCtx->view.eye.x;
@@ -1971,8 +1985,11 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
             gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gEffLightningDL);
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        
+        FrameInterpolation_RecordCloseChild();
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void Environment_PlaySceneSequence(GlobalContext* globalCtx) {

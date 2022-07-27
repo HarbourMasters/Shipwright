@@ -413,6 +413,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     u8* curBgImgLoaded = NULL;
     s32 ddHeartCountMinusOne = gSaveContext.inventory.defenseHearts - 1;
 
+    OPEN_DISPS(gfxCtx);
+
     if (!(gSaveContext.health % 0x10)) {
         fullHeartCount--;
     }
@@ -447,7 +449,9 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < totalHeartCount; i++) {
-        OPEN_DISPS(gfxCtx);
+        // todo: figure out what pointer to use here instead of passing in NULL
+        FrameInterpolation_RecordOpenChild(NULL, i);
+        
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
             if (i < fullHeartCount) {
                 if (curColorSet != 0) {
@@ -623,8 +627,11 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
                 offsetX = PosX_original;
             }
         }
-        CLOSE_DISPS(gfxCtx);
+        
+        FrameInterpolation_RecordCloseChild();
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 void HealthMeter_HandleCriticalAlarm(GlobalContext* globalCtx) {

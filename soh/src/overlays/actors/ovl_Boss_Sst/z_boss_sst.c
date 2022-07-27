@@ -9,6 +9,7 @@
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "overlays/actors/ovl_Bg_Sst_Floor/z_bg_sst_floor.h"
 #include "overlays/actors/ovl_Door_Warp1/z_door_warp1.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_5 | ACTOR_FLAG_10)
 
@@ -2718,7 +2719,6 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
         gDPSetEnvColor(POLY_OPA_DISP++, sStaticColor.r, sStaticColor.g, sStaticColor.b, 0);
         gSPSegment(POLY_OPA_DISP++, 0x08, sBodyStaticDList);
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     SkelAnime_DrawFlexOpa(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable, this->skelAnime.dListCount,
                           BossSst_OverrideHandDraw, BossSst_PostHandDraw, this);
@@ -2739,7 +2739,9 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
 
         for (i = 0; i < end; i++) {
             if (Math3D_Vec3fDistSq(&trail2->world.pos, &trail->world.pos) > 900.0f) {
-                OPEN_DISPS(globalCtx->state.gfxCtx);
+                // todo: epoch
+                FrameInterpolation_RecordOpenChild(NULL, i);
+
                 Matrix_SetTranslateRotateYXZ(trail->world.pos.x, trail->world.pos.y, trail->world.pos.z,
                                              &trail->world.rot);
                 Matrix_Scale(0.02f, 0.02f, 0.02f, MTXMODE_APPLY);
@@ -2751,13 +2753,16 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
                 POLY_XLU_DISP = SkelAnime_DrawFlex(globalCtx, this->skelAnime.skeleton, this->skelAnime.jointTable,
                                                    this->skelAnime.dListCount, BossSst_OverrideHandTrailDraw, NULL,
                                                    trail, POLY_XLU_DISP);
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
+                
+                FrameInterpolation_RecordCloseChild();
             }
             idx = (idx + 5) % 7;
             trail2 = trail;
             trail = &this->handTrails[idx];
         }
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     BossSst_DrawEffect(&this->actor, globalCtx);
 }
@@ -3154,21 +3159,22 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
     BossSstEffect* effect;
 
     if (this->effectMode != BONGO_NULL) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
 
         func_80093D84(globalCtx->state.gfxCtx);
         if (this->effectMode == BONGO_ICE) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, globalCtx->gameplayFrames % 256, 0x20, 0x10, 1,
                                         0, (globalCtx->gameplayFrames * 2) % 256, 0x40, 0x20));
             gDPSetEnvColor(POLY_XLU_DISP++, 0, 50, 100, this->effects[0].alpha);
             gSPDisplayList(POLY_XLU_DISP++, gBongoIceCrystalDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
 
             for (i = 0; i < 18; i++) {
+                // todo: epoch
+                FrameInterpolation_RecordOpenChild(NULL, i);
+
                 effect = &this->effects[i];
                 if (effect->move) {
-                    OPEN_DISPS(globalCtx->state.gfxCtx);
                     func_8003435C(&effect->pos, globalCtx);
                     if (this->effects[0].status != 0) {
                         Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
@@ -3184,24 +3190,25 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
                     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPDisplayList(POLY_XLU_DISP++, gBongoIceShardDL);
-                    CLOSE_DISPS(globalCtx->state.gfxCtx);
                 }
+
+                FrameInterpolation_RecordCloseChild();
             }
         } else if (this->effectMode == BONGO_SHOCKWAVE) {
             f32 scaleY = 0.005f;
 
-            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPPipeSync(POLY_XLU_DISP++);
             gSPSegment(POLY_XLU_DISP++, 0x08,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, globalCtx->gameplayFrames % 128, 0, 0x20, 0x40, 1,
                                         0, (globalCtx->gameplayFrames * -15) % 256, 0x20, 0x40));
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
 
             for (i = 0; i < 3; i++, scaleY -= 0.001f) {
+                // todo: epoch
+                FrameInterpolation_RecordOpenChild(NULL, i);
+
                 effect = &this->effects[i];
 
                 if (effect->move != 0) {
-                    OPEN_DISPS(globalCtx->state.gfxCtx);
                     Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
                     Matrix_Scale(effect->scale * 0.001f, scaleY, effect->scale * 0.001f, MTXMODE_APPLY);
 
@@ -3211,18 +3218,19 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
                     gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                               G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                     gSPDisplayList(POLY_XLU_DISP++, gEffFireCircleDL);
-                    CLOSE_DISPS(globalCtx->state.gfxCtx);
                 }
+
+                FrameInterpolation_RecordCloseChild();
             }
         } else if (this->effectMode == BONGO_SHADOW) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0x00, 0x80, 10, 10, 80, 0);
             gDPSetEnvColor(POLY_XLU_DISP++, 10, 10, 10, this->effects[0].alpha);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
 
             effect = &this->effects[0];
             while (effect->status != -1) {
-                OPEN_DISPS(globalCtx->state.gfxCtx);
+                // todo: epoch
+                FrameInterpolation_RecordOpenChild(NULL, i);
+
                 Matrix_Translate(effect->pos.x, effect->pos.y, effect->pos.z, MTXMODE_NEW);
                 Matrix_Scale(effect->scale * 0.001f, 1.0f, effect->scale * 0.001f, MTXMODE_APPLY);
 
@@ -3230,9 +3238,12 @@ void BossSst_DrawEffect(Actor* thisx, GlobalContext* globalCtx) {
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, sShadowDList);
                 effect++;
-                CLOSE_DISPS(globalCtx->state.gfxCtx);
+                
+                FrameInterpolation_RecordCloseChild();
             }
         }
+
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 

@@ -367,6 +367,6 @@ void BgGanonOtyuka_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
         actor = actor->next;
     }
-    
+
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }

@@ -1193,10 +1193,8 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
         this->bodyPartsPos[2].y = this->actor.world.pos.y - spA4;
         this->bodyPartsPos[2].z = this->actor.world.pos.z;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < stemSections; i++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         mtx.yw += 20.0f * Math_SinS(this->stemSectionAngle[i]) * this->size;
         horizontalStepSize = 20.0f * Math_CosS(this->stemSectionAngle[i]) * this->size;
         mtx.xw -= horizontalStepSize * Math_SinS(this->actor.shape.rot.y);
@@ -1230,8 +1228,9 @@ void EnDekubaba_DrawStemExtended(EnDekubaba* this, GlobalContext* globalCtx) {
             this->bodyPartsPos[i].y = mtx.yw - spA4;
             this->bodyPartsPos[i].z = mtx.zw;
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnDekubaba_DrawStemBasePruned(EnDekubaba* this, GlobalContext* globalCtx) {

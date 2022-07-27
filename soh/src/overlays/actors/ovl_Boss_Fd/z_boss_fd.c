@@ -1639,7 +1639,7 @@ void BossFd_DrawEffects(BossFdEffect* effect, GlobalContext* globalCtx) {
             FrameInterpolation_RecordCloseChild();
         }
     }
-    
+
     CLOSE_DISPS(gfxCtx);
 }
 
@@ -1875,9 +1875,9 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
     gSPSegment(POLY_OPA_DISP++, 0x0D, tempMat);
 
     Matrix_Push();
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < 18; i++, tempMat++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        FrameInterpolation_RecordOpenChild(tempMat, i);
+
         segIndex = (this->work[BFD_LEAD_BODY_SEG] + sBodyIndex[i + 1]) % 100;
         Matrix_Translate(this->bodySegsPos[segIndex].x, this->bodySegsPos[segIndex].y, this->bodySegsPos[segIndex].z,
                          MTXMODE_NEW);
@@ -1940,9 +1940,9 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
         if (i > 0) {
             Collider_UpdateSpheres(i + 1, &this->collider);
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        
+        FrameInterpolation_RecordCloseChild();
     }
-    OPEN_DISPS(globalCtx->state.gfxCtx);
     Matrix_Pop();
     osSyncPrintf("BH\n");
 

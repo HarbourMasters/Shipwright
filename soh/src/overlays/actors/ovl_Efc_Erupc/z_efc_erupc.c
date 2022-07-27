@@ -1,5 +1,6 @@
 #include "z_efc_erupc.h"
 #include "objects/object_efc_erupc/object_efc_erupc.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -165,8 +166,12 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
     s16 i;
     s32 pad;
 
+    OPEN_DISPS(gfxCtx);
+
     for (i = 0; i < EFC_ERUPC_NUM_PARTICLES; i++, particles++) {
-        OPEN_DISPS(gfxCtx);
+        // todo: epoch
+        FrameInterpolation_RecordOpenChild(NULL, i);
+
         if (particles->isActive) {
             func_80093D84(globalCtx->state.gfxCtx);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_002760);
@@ -181,8 +186,11 @@ void EfcErupc_DrawParticles(EfcErupcParticles* particles, GlobalContext* globalC
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, object_efc_erupc_DL_0027D8);
         }
-        CLOSE_DISPS(gfxCtx);
+
+        FrameInterpolation_RecordCloseChild();
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 static Color_RGB8 D_8099D770[] = {
