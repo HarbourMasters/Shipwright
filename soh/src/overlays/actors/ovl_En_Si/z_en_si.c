@@ -118,7 +118,7 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                 Message_StartTextbox(globalCtx, textId, NULL);
 
                 if (gSaveContext.n64ddFlag) {
-                    Audio_PlayFanfare_Rando();
+                    Audio_PlayFanfare_Rando(getItemId);
                 } else {
                     Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
                 }
@@ -156,7 +156,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
         }
         Message_StartTextbox(globalCtx, textId, NULL);
         if (gSaveContext.n64ddFlag) {
-            Audio_PlayFanfare_Rando();
+            Audio_PlayFanfare_Rando(getItemId);
         } else {
             Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
         }
@@ -166,7 +166,7 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
 
 // Function to play "get-item" fanfares according to the type of item obtained (used in rando)
 // Longer fanfares for medallions/stones/songs are behind the Cvar
-void Audio_PlayFanfare_Rando() {
+void Audio_PlayFanfare_Rando(ItemID getItemId) {
     s32 temp1;
 
     if (((getItemId >= GI_RUPEE_GREEN) && (getItemId <= GI_RUPEE_RED)) ||

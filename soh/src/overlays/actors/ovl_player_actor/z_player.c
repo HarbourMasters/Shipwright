@@ -12684,6 +12684,11 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
 
+        // In rando the fanfares are handled in z_en_si.c, so we can skip down a bit
+        if (gSaveContext.n64ddFlag) {
+            goto RandoFanfareSkip;
+        }
+
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
             ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
@@ -12699,36 +12704,13 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             else {
                 temp1 = temp2 = (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
-
-            // Restore appropriate item fanfares in rando when we're obtaining items outside of their normal contexts
+          
+            RandoFanfareSkip:
             if (gSaveContext.n64ddFlag) {
-                // If we get a skulltula token (in tokensanity) or the "WINNER" heart, play "get small item"
-                if (this->getItemId == GI_SKULL_TOKEN || this->getItemId == GI_HEART_PIECE_WIN) {
-                    temp1 = NA_BGM_SMALL_ITEM_GET | 0x900;
-                }
-                // But if the "WINNER" heart is the 4th heart piece collected, play "get heart container"
-                if (this->getItemId == GI_HEART_PIECE_WIN &&
-                    ((gSaveContext.inventory.questItems & 0xF0000000) == 0x40000000)) {
-                     temp1 = NA_BGM_HEART_GET | 0x900;
-                }
-                // If the setting is toggled on and we get special quest items (longer fanfares):
-                if (CVar_GetS32("gRandoQuestItemFanfares", 0) != 0) {
-                     // If we get a medallion, play the "get a medallion" fanfare
-                    if ((this->getItemId >= GI_MEDALLION_LIGHT) && (this->getItemId <= GI_MEDALLION_SPIRIT)) {
-                        temp1 = NA_BGM_MEDALLION_GET | 0x900;
-                    }
-                    // If it's a Spiritual Stone, play the "get a spiritual stone" fanfare
-                    if ((this->getItemId >= GI_STONE_KOKIRI) && (this->getItemId <= GI_STONE_ZORA)) {
-                        temp1 = NA_BGM_SPIRITUAL_STONE | 0x900;
-                    }
-                    // If the item we're getting is a song, play the "learned a song" fanfare
-                    if ((this->getItemId >= GI_ZELDAS_LULLABY) && (this->getItemId <= GI_PRELUDE_OF_LIGHT)) {
-                        temp1 = NA_BGM_OCA_FAIRY_GET | 0x900;
-                    }
-                }
+                Audio_PlayFanfare_Rando(this->getItemId);
+            } else {
+                Audio_PlayFanfare(temp1);
             }
-
-            Audio_PlayFanfare(temp1);
         }
     }
     else {
