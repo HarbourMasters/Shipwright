@@ -6,6 +6,7 @@
 #include "vt.h"
 #include <Text.h>
 #include <soh/Enhancements/custom_message/CustomMessageManager.h>
+#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
 
 extern "C" MessageTableEntry* sNesMessageEntryTablePtr;
 extern "C" MessageTableEntry* sGerMessageEntryTablePtr;
@@ -97,7 +98,7 @@ extern "C" void OTRMessage_Init()
 
     CustomMessageManager::Instance->AddCustomMessageTable(customMessageTableID);
     CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)0x00B4, ITEM_SKULL_TOKEN,
+        customMessageTableID, (GetItemID)TEXT_GS_NO_FREEZE, ITEM_SKULL_TOKEN,
         { 
             TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
             "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!\x0E\x3C",
@@ -106,7 +107,7 @@ extern "C" void OTRMessage_Init()
         }
     );
     CustomMessageManager::Instance->CreateGetItemMessage(
-        customMessageTableID, (GetItemID)0x00B5, ITEM_SKULL_TOKEN,
+        customMessageTableID, (GetItemID)TEXT_GS_FREEZE, ITEM_SKULL_TOKEN,
         { 
           TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
           "You got a %rGold Skulltula Token%w!&You've collected %r\x19%w tokens&in total!",

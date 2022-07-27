@@ -4073,6 +4073,9 @@
     <ClInclude Include="soh\Enhancements\custom_message\CustomMessageManager.h">
       <Filter>Header Files\soh\Enhancements\custom-message</Filter>
     </ClInclude>
+    <ClInclude Include="soh\Enhancements\custom_message\CustomMessageTypes.h">
+      <Filter>Source Files\soh\Enhancements\custom-message</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="SHIPOFHARKINIAN.ico" />

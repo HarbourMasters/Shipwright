@@ -946,6 +946,7 @@
   <ItemGroup>
     <ClInclude Include="soh\Enhancements\custom_message\CustomMessageManager.h" />
     <ClInclude Include="soh\Enhancements\cosmetics\CosmeticsEditor.h" />
+    <ClInclude Include="soh\Enhancements\custom_message\CustomMessageTypes.h" />
     <ClInclude Include="soh\Enhancements\debugger\actorViewer.h" />
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h" />
     <ClInclude Include="soh\Enhancements\gfx.h" />

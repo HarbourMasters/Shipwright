@@ -56,6 +56,7 @@
 #endif
 
 #include <Audio.h>
+#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
 
 OTRGlobals* OTRGlobals::Instance;
 SaveManager* SaveManager::Instance;
@@ -1412,11 +1413,11 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
 extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
     int price = 0;
     switch (scrubTextId) {
-        case 0x10A2:
+        case TEXT_SCRUB_POH:
             price = 10;
             break;
-        case 0x10DC:
-        case 0x10DD:
+        case TEXT_SCRUB_STICK_UPGRADE:
+        case TEXT_SCRUB_NUT_UPGRADE:
             price = 40;
             break;
     }
@@ -1424,16 +1425,17 @@ extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyAltarMessage() {
-    return (LINK_IS_ADULT) ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7088)
-                           : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x7040);
+    return (LINK_IS_ADULT)
+               ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
+               : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyGanonText() {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CD);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF + 1);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyGanonHintText() {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, 0x70CC);
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
 }
 
 extern "C" CustomMessageEntry Randomizer_CopyHintFromCheck(RandomizerCheck check) {
@@ -1464,7 +1466,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
-        if (textId == 0xF8) {
+        if (textId == TEXT_RANDOMIZER_GI_ESCAPE_HATCH) {
             messageEntry =
                 Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
         } else if (textId == 0x2053 && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
@@ -1495,26 +1497,25 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
                 Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
 
             messageEntry = Randomizer_CopyHintFromCheck(hintCheck);
-        } else if (textId == 0x7040 || textId == 0x7088) {
+        } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
             // rando hints at altar
             messageEntry = Randomizer_CopyAltarMessage();
-        } else if (gSaveContext.n64ddFlag && textId == 0x70CC) {
+        } else if (textId == TEXT_GANONDORF) {
             if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
                 messageEntry = Randomizer_CopyGanonText();
             } else {
                 messageEntry = Randomizer_CopyGanonHintText();
             }
-        } else if (textId == 0x10A2 || textId == 0x10DC || textId == 0x10DD) {
+        } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
             messageEntry = Randomizer_CopyScrubMessage(textId);
         }
     }
-    if (textId == 0x00B4 || textId == 0x00B5) {
+    if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {
         if (CVar_GetS32("gInjectSkulltulaCount", 0) != 0) {
-            font->charTexBuf[0] = 0x03;
             if (CVar_GetS32("gSkulltulaFreeze", 0) != 0) {
-                textId = 0x00B4;
+                textId = TEXT_GS_NO_FREEZE;
             } else {
-                textId = 0x00B5;
+                textId = TEXT_GS_FREEZE;
             }
             messageEntry = CustomMessageManager::Instance->RetrieveMessage("BaseGameOverrides", textId);
         }
