@@ -14,6 +14,7 @@
 #include "objects/object_gndd/object_gndd.h"
 #include "objects/object_ganon/object_ganon.h"
 #include "objects/object_opening_demo1/object_opening_demo1.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -793,6 +794,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
+        eff->epoch = 0;
     } else {
         eff = &this->fireEffects[i];
         eff->startPos.x = -100.0f;
@@ -802,6 +804,7 @@ void EnViewer_InitFireEffect(EnViewer* this, GlobalContext* globalCtx, s16 i) {
         eff->endPos.y = -420.0f;
         eff->endPos.z = -400.0f;
         eff->scale = (Rand_ZeroOne() * 5.0f + 12.0f) * 0.001f;
+        eff->epoch = 0;
     }
     if (this) {}
 }
@@ -810,6 +813,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
     EnViewer* this = this2;
     s16 i;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->fireEffects); i++) {
         switch (this->fireEffects[i].state) {
             case 0:
@@ -819,6 +823,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                 this->fireEffects[i].state++;
                 break;
             case 1:
+                this->fireEffects[i].epoch++;
                 Math_SmoothStepToF(&this->fireEffects[i].lerpFactor, 1.0f, 1.0f, this->fireEffects[i].lerpFactorSpeed,
                                    this->fireEffects[i].lerpFactorSpeed);
                 this->fireEffects[i].pos.x =
@@ -842,7 +847,7 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                 break;
         }
 
-        OPEN_DISPS(globalCtx->state.gfxCtx);
+        FrameInterpolation_RecordOpenChild(&this->fireEffects[i], this->fireEffects[i].epoch);
         func_80093D84(globalCtx->state.gfxCtx);
         Matrix_Translate(this->fireEffects[i].pos.x, this->fireEffects[i].pos.y, this->fireEffects[i].pos.z,
                          MTXMODE_NEW);
@@ -856,8 +861,9 @@ void EnViewer_DrawFireEffects(EnViewer* this2, GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPMatrix(POLY_XLU_DISP++, SEG_ADDR(1, 0), G_MTX_NOPUSH | G_MTX_MUL | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        FrameInterpolation_RecordCloseChild();
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnViewer_UpdateGanondorfCape(GlobalContext* globalCtx, EnViewer* this) {

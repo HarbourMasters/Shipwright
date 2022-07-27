@@ -7,6 +7,7 @@
 #include "z_en_tk.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_tk/object_tk.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3)
 #define COLLECTFLAG_GRAVEDIGGING_HEART_PIECE 0x19
@@ -43,6 +44,7 @@ void EnTkEff_Create(EnTk* this, Vec3f* pos, Vec3f* speed, Vec3f* accel, u8 durat
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 1) {
+            eff->epoch = 0;
             eff->size = size;
             eff->growth = growth;
             eff->timeTotal = eff->timeLeft = duration;
@@ -63,6 +65,7 @@ void EnTkEff_Update(EnTk* this) {
     eff = this->eff;
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
         if (eff->active != 0) {
+            eff->epoch++;
             eff->timeLeft--;
             if (eff->timeLeft == 0) {
                 eff->active = 0;
@@ -92,12 +95,13 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
     s16 alpha;
     s16 i;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
     gfxSetup = 0;
 
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->eff); i++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (eff->active != 0) {
             if (gfxSetup == 0) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
@@ -106,6 +110,7 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
                 gfxSetup = 1;
             }
 
+            FrameInterpolation_RecordOpenChild(eff, eff->epoch);
             alpha = eff->timeLeft * (255.0f / eff->timeTotal);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 130, 90, alpha);
 
@@ -120,10 +125,12 @@ void EnTkEff_Draw(EnTk* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(dustTextures[imageIdx]));
 
             gSPDisplayList(POLY_XLU_DISP++, gDampeEff2DL);
+            FrameInterpolation_RecordCloseChild();
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
         eff++;
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnTkEff_CreateDflt(EnTk* this, Vec3f* pos, u8 duration, f32 size, f32 growth, f32 yAccelMax) {

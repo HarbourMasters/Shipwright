@@ -503,10 +503,9 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
         POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0x14);
         gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(gSunTex));
         gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteTextureLoadDL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
 
         for (i = 0; i < globalCtx->envCtx.unk_EE[3]; i++) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
             Matrix_Translate(this->effects[i].base.x + this->effects[i].pos.x,
                              this->effects[i].base.y + this->effects[i].pos.y,
                              this->effects[i].base.z + this->effects[i].pos.z, MTXMODE_NEW);
@@ -572,8 +571,9 @@ void ObjectKankyo_DrawFairies(ObjectKankyo* this2, GlobalContext* globalCtx2) {
             Matrix_RotateZ(DEG_TO_RAD(globalCtx->state.frames * 20.0f), MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx), G_MTX_LOAD);
             gSPDisplayList(POLY_XLU_DISP++, gKokiriDustMoteDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 }
 
@@ -919,10 +919,12 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
     f32 beamYaw[] = { 29.9f, 90.0f, 150.0f, 30.0f, 90.0f, -30.1f };
     f32 beamPitch[] = { 103.4f, 103.8f, 103.6f, -103.4f, -103.5f, 103.5f };
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
     if (this->requiredObjectLoaded) {
         for (i = 0; i < 6; i++) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
             if (this->effects[i].size > 0.001f) {
+                FrameInterpolation_RecordOpenChild(&this->effects[i], this->effects[i].epoch);
                 Matrix_Translate(beamX[i], beamY[i], beamZ[i], MTXMODE_NEW);
                 Matrix_RotateY(DEG_TO_RAD(beamYaw[i]), MTXMODE_APPLY);
                 Matrix_RotateX(DEG_TO_RAD(beamPitch[i]), MTXMODE_APPLY);
@@ -939,10 +941,12 @@ void ObjectKankyo_DrawBeams(ObjectKankyo* this2, GlobalContext* globalCtx2) {
                                             globalCtx->state.frames * 10, 32, 64, 1, globalCtx->state.frames * 5,
                                             globalCtx->state.frames * 10, 32, 64));
                 gSPDisplayList(POLY_XLU_DISP++, gDemoKekkaiDL_005FF0);
+                FrameInterpolation_RecordCloseChild();
             }
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void ObjectKankyo_Reset(void) {

@@ -8,6 +8,7 @@
 #include "objects/object_niw/object_niw.h"
 #include "overlays/actors/ovl_En_Attack_Niw/z_en_attack_niw.h"
 #include "vt.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_23)
 
@@ -1145,6 +1146,7 @@ void EnNiw_FeatherSpawn(EnNiw* this, Vec3f* pos, Vec3f* vel, Vec3f* accel, f32 s
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 0) {
+            feather->epoch = 0;
             feather->type = 1;
             feather->pos = *pos;
             feather->vel = *vel;
@@ -1164,6 +1166,7 @@ void EnNiw_FeatherUpdate(EnNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type != 0) {
+            feather->epoch = 0;
             feather->timer++;
             feather->pos.x += feather->vel.x;
             feather->pos.y += feather->vel.y;
@@ -1196,16 +1199,17 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
     EnNiwFeather* feather = &this->feathers[0];
 
+    OPEN_DISPS(gfxCtx);
+
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
-        OPEN_DISPS(gfxCtx);
         if (feather->type == 1) {
             if (!flag) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;
             }
-
+            FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             Matrix_Translate(feather->pos.x, feather->pos.y, feather->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
@@ -1214,10 +1218,11 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAliveDL);
-            
+            FrameInterpolation_RecordCloseChild();
         }
-        CLOSE_DISPS(gfxCtx);
     }
+
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EnNiw_Reset(void) {

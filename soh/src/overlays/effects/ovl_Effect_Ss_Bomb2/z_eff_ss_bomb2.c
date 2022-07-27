@@ -6,6 +6,7 @@
 
 #include "z_eff_ss_bomb2.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define rScale regs[0]
 #define rTexIdx regs[1]
@@ -54,6 +55,7 @@ u32 EffectSsBomb2_Init(GlobalContext* globalCtx, u32 index, EffectSs* this, void
     this->rEnvColorR = 0;
     this->rEnvColorG = 0;
     this->rEnvColorB = 200;
+    this->epoch = 0;
 
     return 1;
 }
@@ -123,16 +125,12 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
     SkinMatrix_MtxFMtxFMult(&mfTrans, &globalCtx->billboardMtxF, &mfTrans11DA0);
     SkinMatrix_MtxFMtxFMult(&mfTrans11DA0, &mfScale, &mfResult);
     mtx = SkinMatrix_MtxFToNewMtx(gfxCtx, &mfResult);
-    CLOSE_DISPS(gfxCtx);
 
     if (mtx != NULL) {
-        OPEN_DISPS(gfxCtx);
         gSPMatrix(POLY_XLU_DISP++, mtx, G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         mtx2 = SkinMatrix_MtxFToNewMtx(gfxCtx, &mfResult);
-        CLOSE_DISPS(gfxCtx);
 
         if (mtx2 != NULL) {
-            OPEN_DISPS(gfxCtx);
             func_80094BC4(gfxCtx);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, this->rPrimColorR, this->rPrimColorG, this->rPrimColorB,
                             this->rPrimColorA);
@@ -143,10 +141,9 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
 
             Matrix_MtxToMtxF(mtx2, &mtx2F);
             Matrix_Put(&mtx2F);
-            CLOSE_DISPS(gfxCtx);
 
             for (i = 1; i >= 0; i--) {
-                OPEN_DISPS(gfxCtx);
+                FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
                 Matrix_Translate(0.0f, 0.0f, depth, MTXMODE_APPLY);
                 Matrix_RotateZ((this->life * 0.02f) + 180.0f, MTXMODE_APPLY);
                 Matrix_Scale(layer2Scale, layer2Scale, layer2Scale, MTXMODE_APPLY);
@@ -154,10 +151,11 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
                           G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
                 gSPDisplayList(POLY_XLU_DISP++, gEffBombExplosion3DL);
                 layer2Scale -= 0.15f;
-                CLOSE_DISPS(gfxCtx);
+                FrameInterpolation_RecordCloseChild();
             }
         }
     }
+    CLOSE_DISPS(gfxCtx);
 }
 
 void EffectSsBomb2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
@@ -191,4 +189,5 @@ void EffectSsBomb2_Update(GlobalContext* globalCtx, u32 index, EffectSs* this) {
         this->rEnvColorG = func_80027DD4(this->rEnvColorG, 10, divisor);
         this->rEnvColorB = func_80027DD4(this->rEnvColorB, 10, divisor);
     }
+    this->epoch++;
 }

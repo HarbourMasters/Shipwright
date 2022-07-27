@@ -7,6 +7,7 @@
 #include "z_en_po_sisters.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_po_sisters/object_po_sisters.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_9 | ACTOR_FLAG_12 | ACTOR_FLAG_14)
 
@@ -178,6 +179,8 @@ static Vec3f D_80ADD7F8 = { 1000.0f, -1700.0f, 0.0f };
 void EnPoSisters_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s32 pad;
+
+    this->epoch = 0;
 
     // Skip Poe Intro Cutscene
     if (gSaveContext.n64ddFlag && thisx->params == 4124) {
@@ -1187,6 +1190,8 @@ void EnPoSisters_Update(Actor* thisx, GlobalContext* globalCtx) {
     EnPoSisters* this = (EnPoSisters*)thisx;
     s16 temp;
 
+    this->epoch++;
+
     if (this->collider.base.atFlags & AT_HIT) {
         this->collider.base.atFlags &= ~AT_HIT;
         func_80AD9568(this);
@@ -1408,13 +1413,12 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
         phi_s5 = spE7;
         phi_f20 = this->actor.scale.x * 0.5f;
     }
-    CLOSE_DISPS(globalCtx->state.gfxCtx);
     for (i = 0; i < this->unk_198; i++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (this->actionFunc != func_80ADB17C && this->actionFunc != func_80ADBD38 &&
             this->actionFunc != func_80ADBEE8) {
             phi_s5 = -i * 31 + 248;
         }
+        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, temp_s7->r, temp_s7->g, temp_s7->b, phi_s5);
         Matrix_Translate(this->unk_234[i].x, this->unk_234[i].y, this->unk_234[i].z, MTXMODE_NEW);
@@ -1427,8 +1431,9 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
+        FrameInterpolation_RecordCloseChild();
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnPoSisters_Reset(void) {

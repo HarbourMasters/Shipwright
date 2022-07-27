@@ -178,11 +178,12 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
     u8 setup;
 
     effect = this->effects;
+    OPEN_DISPS(globalCtx->state.gfxCtx);
     setup = false;
     func_80093D84(globalCtx->state.gfxCtx);
     for (i = 0; i < ARRAY_COUNT(this->effects); i++) {
         if (effect->type == ENZO_EFFECT_RIPPLE) {
-            OPEN_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordOpenChild(effect, effect->epoch);
             if (!setup) {
                 gDPPipeSync(POLY_XLU_DISP++);
                 gSPDisplayList(POLY_XLU_DISP++, gZoraRipplesMaterialDL);
@@ -196,10 +197,11 @@ void EnZo_DrawRipples(EnZo* this, GlobalContext* globalCtx) {
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_XLU_DISP++, gZoraRipplesModelDL);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
+            FrameInterpolation_RecordCloseChild();
         }
         effect++;
     }
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 void EnZo_DrawBubbles(EnZo* this, GlobalContext* globalCtx) {

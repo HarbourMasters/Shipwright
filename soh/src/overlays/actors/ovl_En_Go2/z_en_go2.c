@@ -2,6 +2,7 @@
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
 #include "objects/object_oF1d_map/object_oF1d_map.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_3 | ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -179,6 +180,7 @@ void EnGo2_AddDust(EnGo2* this, Vec3f* pos, Vec3f* velocity, Vec3f* accel, u8 in
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type != 1) {
+            dustEffect->epoch = 0;
             dustEffect->scale = scale;
             dustEffect->scaleStep = scaleStep;
             timer = initialTimer;
@@ -200,6 +202,7 @@ void EnGo2_UpdateDust(EnGo2* this) {
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
         if (dustEffect->type) {
+            dustEffect->epoch++;
             dustEffect->timer--;
             if (dustEffect->timer == 0) {
                 dustEffect->type = 0;
@@ -225,11 +228,12 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
     s16 index;
     s16 i;
 
+    OPEN_DISPS(globalCtx->state.gfxCtx);
+
     firstDone = false;
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->dustEffects); i++, dustEffect++) {
-        OPEN_DISPS(globalCtx->state.gfxCtx);
         if (dustEffect->type) {
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0);
@@ -238,6 +242,7 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
                 firstDone = true;
             }
 
+            FrameInterpolation_RecordOpenChild(dustEffect, dustEffect->epoch);
             alpha = dustEffect->timer * (255.0f / dustEffect->initialTimer);
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 170, 130, 90, alpha);
             gDPPipeSync(POLY_XLU_DISP++);
@@ -249,9 +254,11 @@ void EnGo2_DrawDust(EnGo2* this, GlobalContext* globalCtx) {
             index = dustEffect->timer * (8.0f / dustEffect->initialTimer);
             gSPSegment(POLY_XLU_DISP++, 0x08, SEGMENTED_TO_VIRTUAL(sDustTex[index]));
             gSPDisplayList(POLY_XLU_DISP++, gGoronDL_00FD50);
+            FrameInterpolation_RecordCloseChild();
         }
-        CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
+
+    CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
 s32 EnGo2_SpawnDust(EnGo2* this, u8 initialTimer, f32 scale, f32 scaleStep, s32 numDustEffects, f32 radius,

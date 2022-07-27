@@ -6,6 +6,7 @@
 
 #include "z_mir_ray.h"
 #include "objects/object_mir_ray/object_mir_ray.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_4 | ACTOR_FLAG_5)
 
@@ -498,7 +499,6 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
             MirRay_SetupReflectionPolys(this, globalCtx, reflection);
             MirRay_RemoveSimilarReflections(reflection);
             MirRay_ReflectedBeam(this, globalCtx, reflection);
-            CLOSE_DISPS(globalCtx->state.gfxCtx);
 
             if (reflection[0].reflectionPoly == NULL) {
                 reflection[0].opacity = 0;
@@ -512,7 +512,7 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
             for (i = 0; i < 6; i++) {
                 if (reflection[i].reflectionPoly != NULL) {
-                    OPEN_DISPS(globalCtx->state.gfxCtx);
+                    FrameInterpolation_RecordOpenChild(&reflection[i], i);
                     Matrix_Translate(reflection[i].pos.x, reflection[i].pos.y, reflection[i].pos.z, MTXMODE_NEW);
                     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
                     Matrix_Mult(&reflection[i].mtx, MTXMODE_APPLY);
@@ -521,11 +521,13 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
                     gDPSetRenderMode(POLY_XLU_DISP++, G_RM_FOG_SHADE_A, G_RM_AA_ZB_XLU_DECAL2);
                     gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 255, 255, 150, reflection[0].opacity);
                     gSPDisplayList(POLY_XLU_DISP++, gShieldBeamImageDL);
-                    CLOSE_DISPS(globalCtx->state.gfxCtx);
+                    FrameInterpolation_RecordCloseChild();
                 }
             }
 
             D_80B8E670 = 1;
+
+            CLOSE_DISPS(globalCtx->state.gfxCtx);
         }
     }
 }
