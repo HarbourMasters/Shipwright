@@ -1,7 +1,7 @@
 #include "enhancements.h"
 #include "../libultraship/ImGuiImpl.h"
 #include "../libultraship/Lib/Fast3D/gfx_pc.h"
-#include "CVar.h"
+#include "Cvar.h"
 
 #ifdef __SWITCH__
 #include "../libultraship/SwitchImpl.h"
