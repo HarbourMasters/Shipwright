@@ -101,8 +101,9 @@ void Console::Update() {
 void Console::Draw() {
 	bool input_focus = false;
 	if (!this->opened) return;
+	auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
 
-	ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2((520 * dpi_scale), (600 * dpi_scale)), ImGuiCond_FirstUseEver);
 	ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();

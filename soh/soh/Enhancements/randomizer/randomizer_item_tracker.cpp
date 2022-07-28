@@ -813,7 +813,9 @@ void DrawItemTracker(bool& open) {
         return;
     }
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+    ImGui::SetNextWindowSize(ImVec2((520 * dpi_scale), (600 * dpi_scale)), ImGuiCond_FirstUseEver);
+
     static uint32_t ccc = 0xFF000000;
     ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
 

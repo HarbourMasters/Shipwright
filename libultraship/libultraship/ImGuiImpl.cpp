@@ -72,6 +72,7 @@ namespace SohImGui {
 
     WindowImpl impl;
     ImGuiIO* io;
+    auto dpi_scale = 1.F;
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
@@ -274,6 +275,7 @@ namespace SohImGui {
 
         api->select_texture(0, asset->textureId);
         api->set_sampler_parameters(0, false, 0, 0);
+
         api->upload_texture(img_data, asset->width, asset->height);
 
         DefaultAssets[name] = asset;
@@ -349,6 +351,33 @@ namespace SohImGui {
         ImGui::SetCurrentContext(ctx);
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        #ifdef _WIN32
+		    ::SetProcessDPIAware();
+            UINT dpi = GetDpiForSystem();
+            dpi_scale = ceilf(dpi / 72.f);
+        #elif __linux_
+            std::array<char, 128> buffer;
+            std::string result;
+            std::unique_ptr<FILE, decltype(&pclose)> pipe(popen("xrdb -query |grep dpi", "r"), pclose);
+            if (!pipe) {
+                throw std::runtime_error("popen() failed!");
+            }
+            while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+                result += buffer.data();
+            }
+
+            std::string delimiter = '\t';
+            std::string token = result.substr(result.find(delimiter), (result.length - result.find(delimiter)));
+            int dpi = (int)token;
+            dpi_scale = ceilf(dpi / 72.f);
+        #endif            
+        ImFontConfig imConfig;
+        int points = 12;
+        float size = ceilf(points * dpi_scale);
+        imConfig.SizePixels = size;
+        io->Fonts->AddFontDefault(&imConfig);
+        CVar_SetFloat("gDpiScale", dpi_scale);
+
         io->Fonts->AddFontDefault();
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
@@ -815,15 +844,18 @@ namespace SohImGui {
 
         if (ImGui::BeginMenuBar()) {
             if (DefaultAssets.contains("Game_Icon")) {
+
+      
+
             #ifdef __SWITCH__
                 ImVec2 iconSize = ImVec2(20.0f, 20.0f);
             #else
                 ImVec2 iconSize = ImVec2(16.0f, 16.0f);
             #endif
-                ImGui::SetCursorPos(ImVec2(5, 2.5f));
-                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), iconSize);
+                ImGui::SetCursorPos(ImVec2(5 , 2.5f));
+                ImGui::Image(GetTextureByID(DefaultAssets["Game_Icon"]->textureId), ImVec2((16.0f * dpi_scale), (16.0f * dpi_scale)));
                 ImGui::SameLine();
-                ImGui::SetCursorPos(ImVec2(25, 0));
+                ImGui::SetCursorPos(ImVec2((25 + (8 * dpi_scale)), 0));
             }
 
             if (ImGui::BeginMenu("Shipwright")) {

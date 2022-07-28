@@ -57,7 +57,9 @@ void DrawColViewerWindow(bool& open) {
         return;
     }
 
-    ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+    auto dpi_scale = CVar_GetFloat("gDpiScale", 1.f);
+
+    ImGui::SetNextWindowSize(ImVec2((520 * dpi_scale), (600 * dpi_scale)), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Collision Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;
