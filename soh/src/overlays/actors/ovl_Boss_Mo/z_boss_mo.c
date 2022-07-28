@@ -2465,7 +2465,7 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     BossMo_InitRand(1, 29100, 9786);
 
     for (i = 0; i < 41; i++, matrix++) {
-        FrameInterpolation_RecordOpenChild("Morpha Tentacle", epoch * i * 25);
+        FrameInterpolation_RecordOpenChild("Morpha Tentacle", epoch + i * 25);
 
         s32 pad;
         s32 pad2;

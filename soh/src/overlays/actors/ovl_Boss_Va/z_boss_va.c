@@ -4025,7 +4025,7 @@ void BossVa_DrawDoor(GlobalContext* globalCtx, s16 scale) {
     Matrix_Get(&doorMtx);
 
     for (i = 0; i < 8; i++, segAngle -= M_PI / 4) {
-        FrameInterpolation_RecordOpenChild("Barinade Door", epoch * i * 25);
+        FrameInterpolation_RecordOpenChild("Barinade Door", epoch + i * 25);
 
         Matrix_Put(&doorMtx);
         Matrix_RotateZ(segAngle, MTXMODE_APPLY);

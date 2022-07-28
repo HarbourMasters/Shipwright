@@ -586,7 +586,7 @@ void func_80967FFC(Actor* thisx, GlobalContext* globalCtx) {
         Matrix_RotateZ(-M_PI / 2, MTXMODE_APPLY);
 
         for (i = 0; i < 6; i++) {
-            FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Demo6K 80967FFC", epoch + i * 25);
     
             Matrix_RotateZ(M_PI / 3, MTXMODE_APPLY);
             gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
@@ -707,7 +707,7 @@ void func_809688C4(Actor* thisx, GlobalContext* globalCtx2) {
         Matrix_RotateY((s16)(Camera_GetCamDirYaw(GET_ACTIVE_CAM(globalCtx)) + 0x8000) * (M_PI / 0x8000), MTXMODE_APPLY);
 
         for (i = 0; i < 16; i++) {
-            FrameInterpolation_RecordOpenChild("Demo6K 809688C4", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Demo6K 809688C4", epoch + i * 25);
 
             gDPPipeSync(POLY_XLU_DISP++);
             gDPSetEnvColor(POLY_XLU_DISP++, sEnvColors[this->unk_274[i]].r, sEnvColors[this->unk_274[i]].g,

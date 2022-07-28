@@ -233,7 +233,7 @@ void EnAnubiceFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
 
     Matrix_Push();
     for (i = this->unk_15E; i < 6; ++i) {
-        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
         f32 scale = this->actor.scale.x - (i * 0.2f);
 

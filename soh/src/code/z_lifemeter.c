@@ -452,7 +452,7 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < totalHeartCount; i++) {
-        FrameInterpolation_RecordOpenChild("HealthMeter Heart", epoch * i * 25);
+        FrameInterpolation_RecordOpenChild("HealthMeter Heart", epoch + i * 25);
         
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
             if (i < fullHeartCount) {

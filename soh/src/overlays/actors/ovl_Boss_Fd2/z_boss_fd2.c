@@ -1148,7 +1148,7 @@ void BossFd2_UpdateMane(BossFd2* this, GlobalContext* globalCtx, Vec3f* head, Ve
     }
 
     for (i = 0; i < 9; i++) {
-        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
         Matrix_Translate((pos + i)->x, (pos + i)->y, (pos + i)->z, MTXMODE_NEW);
         Matrix_RotateY((rot + i)->y, MTXMODE_APPLY);

@@ -238,7 +238,7 @@ void EnBx_Draw(Actor* thisx, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 4; i++, mtx++) {
-        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
         Matrix_Translate(this->unk_154[i].x, this->unk_154[i].y, this->unk_154[i].z, MTXMODE_NEW);
         Matrix_RotateZYX(this->unk_1B4[i].x, this->unk_1B4[i].y, this->unk_1B4[i].z, MTXMODE_APPLY);

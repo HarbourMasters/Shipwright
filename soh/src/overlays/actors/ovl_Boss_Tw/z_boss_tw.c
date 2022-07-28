@@ -3364,7 +3364,7 @@ void func_809426F0(BossTw* this, GlobalContext* globalCtx) {
     }
 
     for (i = 0; i < 8; i++) {
-        FrameInterpolation_RecordOpenChild("Twinrova 809426F0", epoch * i * 25);
+        FrameInterpolation_RecordOpenChild("Twinrova 809426F0", epoch + i * 25);
 
         Matrix_Push();
         Matrix_Translate(0.0f, 0.0f, 5000.0f, MTXMODE_APPLY);
@@ -4430,7 +4430,7 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 200, 20, 0, (s8)this->workf[TAIL_ALPHA]);
             gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
             for (i = 9; i >= 0; i--) {
-                FrameInterpolation_RecordOpenChild("Twinrova Fire Blast", epoch * i * 25);
+                FrameInterpolation_RecordOpenChild("Twinrova Fire Blast", epoch + i * 25);
 
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
@@ -4458,7 +4458,7 @@ void BossTw_BlastDraw(Actor* thisx, GlobalContext* globalCtx2) {
             gDPSetPrimColor(POLY_XLU_DISP++, 0, 0, 195, 225, 235, (s8)this->workf[TAIL_ALPHA]);
             gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
             for (i = 9; i >= 0; i--) {
-                FrameInterpolation_RecordOpenChild("Twinrova Ice Blast", epoch * i * 25);
+                FrameInterpolation_RecordOpenChild("Twinrova Ice Blast", epoch + i * 25);
 
                 gSPSegment(POLY_XLU_DISP++, 8,
                            Gfx_TwoTexScroll(
@@ -4504,7 +4504,7 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
         gDPSetEnvColor(POLY_XLU_DISP++, 255, 215, 255, 128);
 
         for (i = 9; i >= 0; i--) {
-            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 0", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 0", epoch + i * 25);
 
             gSPSegment(POLY_XLU_DISP++, 8,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (((this->work[CS_TIMER_1] * 3) + (i * 0xA))) & 0x7F,
@@ -4528,7 +4528,7 @@ void BossTw_DrawDeathBall(Actor* thisx, GlobalContext* globalCtx2) {
         gSPDisplayList(POLY_XLU_DISP++, SEGMENTED_TO_VIRTUAL(object_tw_DL_01A998));
 
         for (i = 9; i >= 0; i--) {
-            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 1", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Twinrova Death Ball 1", epoch + i * 25);
 
             gSPSegment(POLY_XLU_DISP++, 8,
                        Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, (((this->work[CS_TIMER_1] * 3) + (i * 0xA))) & 0x7F,

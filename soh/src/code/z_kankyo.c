@@ -1517,7 +1517,7 @@ void Environment_DrawLensFlare(GlobalContext* globalCtx, EnvironmentContext* env
         }
 
         for (i = 0; i < ARRAY_COUNT(lensFlareTypes); i++) {
-            FrameInterpolation_RecordOpenChild("Lens Flare", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Lens Flare", epoch + i * 25);
 
             Matrix_Translate(pos.x, pos.y, pos.z, MTXMODE_NEW);
 
@@ -1673,7 +1673,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
 
         // draw rain drops
         for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-            FrameInterpolation_RecordOpenChild("Rain Drop", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Rain Drop", epoch + i * 25);
 
             temp2 = Rand_ZeroOne();
             temp1 = Rand_ZeroOne();
@@ -1709,7 +1709,7 @@ void Environment_DrawRain(GlobalContext* globalCtx, View* view, GraphicsContext*
             u8 firstDone = false;
 
             for (i = 0; i < globalCtx->envCtx.unk_EE[1]; i++) {
-                FrameInterpolation_RecordOpenChild("Droplet Ring", epoch * i * 25);
+                FrameInterpolation_RecordOpenChild("Droplet Ring", epoch + i * 25);
                 
                 if (!firstDone) {
                     func_80093D84(gfxCtx);
@@ -1931,7 +1931,7 @@ void Environment_DrawLightning(GlobalContext* globalCtx, s32 unused) {
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(sLightningBolts); i++) {
-        FrameInterpolation_RecordOpenChild("Lightning Bolt", epoch * i * 25);
+        FrameInterpolation_RecordOpenChild("Lightning Bolt", epoch + i * 25);
 
         switch (sLightningBolts[i].state) {
             case LIGHTNING_BOLT_START:

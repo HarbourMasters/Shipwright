@@ -146,7 +146,7 @@ void EffectSsBomb2_DrawLayered(GlobalContext* globalCtx, u32 index, EffectSs* th
             Matrix_Put(&mtx2F);
 
             for (i = 1; i >= 0; i--) {
-                FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+                FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
                 Matrix_Translate(0.0f, 0.0f, depth, MTXMODE_APPLY);
                 Matrix_RotateZ((this->life * 0.02f) + 180.0f, MTXMODE_APPLY);
                 Matrix_Scale(layer2Scale, layer2Scale, layer2Scale, MTXMODE_APPLY);

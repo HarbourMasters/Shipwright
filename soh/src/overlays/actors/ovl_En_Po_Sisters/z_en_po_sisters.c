@@ -1418,7 +1418,7 @@ void EnPoSisters_Draw(Actor* thisx, GlobalContext* globalCtx) {
             this->actionFunc != func_80ADBEE8) {
             phi_s5 = -i * 31 + 248;
         }
-        FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+        FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
         gDPPipeSync(POLY_XLU_DISP++);
         gDPSetPrimColor(POLY_XLU_DISP++, 0x80, 0x80, temp_s7->r, temp_s7->g, temp_s7->b, phi_s5);
         Matrix_Translate(this->unk_234[i].x, this->unk_234[i].y, this->unk_234[i].z, MTXMODE_NEW);

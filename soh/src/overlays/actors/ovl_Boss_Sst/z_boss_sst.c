@@ -2741,7 +2741,7 @@ void BossSst_DrawHand(Actor* thisx, GlobalContext* globalCtx) {
 
         for (i = 0; i < end; i++) {
             if (Math3D_Vec3fDistSq(&trail2->world.pos, &trail->world.pos) > 900.0f) {
-                FrameInterpolation_RecordOpenChild(trail, epoch * i * 25);
+                FrameInterpolation_RecordOpenChild(trail, 0);
 
                 Matrix_SetTranslateRotateYXZ(trail->world.pos.x, trail->world.pos.y, trail->world.pos.z,
                                              &trail->world.rot);

@@ -492,7 +492,7 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0,
                                     (globalCtx->gameplayFrames * -10) % 128, 32, 32));
         for (i = 0; i < 14; i++, mtx++) {
-            FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+            FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
 
             Matrix_Translate(this->unk158[i].x, this->unk158[i].y, this->unk158[i].z, MTXMODE_NEW);
             Matrix_RotateZYX(this->unk2A8[i].x, this->unk2A8[i].y, this->unk2A8[i].z, MTXMODE_APPLY);

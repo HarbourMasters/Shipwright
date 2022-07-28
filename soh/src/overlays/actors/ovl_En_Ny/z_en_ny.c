@@ -580,7 +580,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     for (i = 0; i < 8; i++) {
         if (this->timer < (i + 22)) {
-            FrameInterpolation_RecordOpenChild(this, this->epoch * i * 25);
+            FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
             temp = &this->unk_1F8[i];
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));

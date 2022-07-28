@@ -514,7 +514,7 @@ void MirRay_Draw(Actor* thisx, GlobalContext* globalCtx) {
             }
             for (i = 0; i < 6; i++) {
                 if (reflection[i].reflectionPoly != NULL) {
-                    FrameInterpolation_RecordOpenChild(&reflection[i], epoch * i * 25);
+                    FrameInterpolation_RecordOpenChild(&reflection[i], epoch + i * 25);
                     Matrix_Translate(reflection[i].pos.x, reflection[i].pos.y, reflection[i].pos.z, MTXMODE_NEW);
                     Matrix_Scale(0.01f, 0.01f, 0.01f, MTXMODE_APPLY);
                     Matrix_Mult(&reflection[i].mtx, MTXMODE_APPLY);

@@ -1878,7 +1878,7 @@ void BossFd_DrawBody(GlobalContext* globalCtx, BossFd* this) {
 
     Matrix_Push();
     for (i = 0; i < 18; i++, tempMat++) {
-        FrameInterpolation_RecordOpenChild(tempMat, epoch * i * 25);
+        FrameInterpolation_RecordOpenChild(tempMat, epoch + i * 25);
 
         segIndex = (this->work[BFD_LEAD_BODY_SEG] + sBodyIndex[i + 1]) % 100;
         Matrix_Translate(this->bodySegsPos[segIndex].x, this->bodySegsPos[segIndex].y, this->bodySegsPos[segIndex].z,

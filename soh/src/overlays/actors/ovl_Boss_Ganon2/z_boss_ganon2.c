@@ -2488,7 +2488,7 @@ void func_80904340(BossGanon2* this, GlobalContext* globalCtx) {
         rand = BossGanon2_RandZeroOne();
 
         for (i = 0; i < 5; i++) {
-            FrameInterpolation_RecordOpenChild("Ganon 80904340", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Ganon 80904340", epoch + i * 25);
             angle = (i * (2 * M_PI / 5)) + (rand * M_PI);
             sin = 5000.0f * sinf(angle);
             cos = 5000.0f * cosf(angle);
@@ -2654,7 +2654,7 @@ void func_80904D88(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B308);
 
         for (i = 0; i < 15; i++) {
-            FrameInterpolation_RecordOpenChild("Ganon 80904D88", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Ganon 80904D88", epoch + i * 25);
 
             Matrix_Translate(this->unk_234[i].x, this->unk_234[i].y, this->unk_234[i].z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
@@ -2716,7 +2716,7 @@ void func_8090523C(BossGanon2* this, GlobalContext* globalCtx) {
         gSPDisplayList(POLY_XLU_DISP++, ovl_Boss_Ganon2_DL_00B308);
 
         for (i = 0; i < 11; i++) {
-            FrameInterpolation_RecordOpenChild("Ganon 8090523C", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Ganon 8090523C", epoch + i * 25);
 
             Matrix_Mult(&player->mf_9E0, MTXMODE_NEW);
             Matrix_Translate((i * 250.0f) + 900.0f, 350.0f, 0.0f, MTXMODE_APPLY);
@@ -2944,7 +2944,7 @@ void func_809060E8(GlobalContext* globalCtx) {
 
     for (i = 0; i < 1; i++) {
         if (effect->type == 1) {
-            FrameInterpolation_RecordOpenChild("Ganon 809060E8 0", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Ganon 809060E8 0", epoch + i * 25);
 
             Vec3f spA0;
             f32 temp_f0;
@@ -2988,7 +2988,7 @@ void func_809060E8(GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(sBossGanon2Particles); i++, effect++) {
         if (effect->type == 2) {
-            FrameInterpolation_RecordOpenChild("Ganon 809060E8 1", epoch * i * 25);
+            FrameInterpolation_RecordOpenChild("Ganon 809060E8 1", epoch + i * 25);
 
             if (!usingObjectGEff) {
                 BossGanon2_SetObjectSegment(NULL, globalCtx, OBJECT_GEFF, true);
