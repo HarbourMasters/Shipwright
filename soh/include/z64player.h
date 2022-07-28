@@ -359,12 +359,12 @@ typedef struct {
 } WeaponInfo; // size = 0x1C\
 
 typedef enum {
-    SCENE_FLAG_NONE,
-    SCENE_FLAG_SWITCH,
-    SCENE_FLAG_TREASURE,
-    SCENE_FLAG_CLEAR,
-    SCENE_FLAG_COLLECTIBLE,
-} SceneFlagType;
+    FLAG_NONE,
+    FLAG_SCENE_SWITCH,
+    FLAG_SCENE_TREASURE,
+    FLAG_SCENE_CLEAR,
+    FLAG_SCENE_COLLECTIBLE,
+} FlagType;
 
 #define PLAYER_STATE1_0 (1 << 0)
 #define PLAYER_STATE1_1 (1 << 1)
@@ -620,8 +620,8 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-    /* 0x0A94 */ SceneFlagType sceneFlagType;
-    /* 0x0A96 */ s32        sceneFlagID;
+    /* 0x0A94 */ FlagType   pendingFlagType; // type of flag to set when Player_SetPendingFlag is called
+    /* 0x0A96 */ s32        pendingFlag; // which flag to set when Player_SetPendingFlag is called
 } Player; // size = 0xAA0
 
 #endif

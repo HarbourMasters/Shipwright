@@ -167,7 +167,7 @@ void func_8083CA20(GlobalContext* globalCtx, Player* this);
 void func_8083CA54(GlobalContext* globalCtx, Player* this);
 void func_8083CA9C(GlobalContext* globalCtx, Player* this);
 s32 func_8083E0FC(Player* this, GlobalContext* globalCtx);
-void Player_SetSceneFlag(Player* this, GlobalContext* globalCtx);
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx);
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx);
 s32 func_8083EB44(Player* this, GlobalContext* globalCtx);
 s32 func_8083F7BC(Player* this, GlobalContext* globalCtx);
@@ -6232,26 +6232,28 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
     func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
-void Player_SetSceneFlag(Player* this, GlobalContext* globalCtx) {
-    switch (this->sceneFlagType) {
-        case SCENE_FLAG_CLEAR:
-            Flags_SetClear(globalCtx, this->sceneFlagID);
+// Sets a flag according to which type of flag is specified in player->pendingFlagType
+// and which flag is specified in player->pendingFlag.
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
+    switch (this->pendingFlagType) {
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(globalCtx, this->pendingFlag);
             break;
-        case SCENE_FLAG_COLLECTIBLE:
-            Flags_SetCollectible(globalCtx, this->sceneFlagID);
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(globalCtx, this->pendingFlag);
             break;
-        case SCENE_FLAG_SWITCH:
-            Flags_SetSwitch(globalCtx, this->sceneFlagID);
+        case FLAG_SCENE_SWITCH:
+            Flags_SetSwitch(globalCtx, this->pendingFlag);
             break;
-        case SCENE_FLAG_TREASURE:
-            Flags_SetTreasure(globalCtx, this->sceneFlagID);
+        case FLAG_SCENE_TREASURE:
+            Flags_SetTreasure(globalCtx, this->pendingFlag);
             break;
-        case SCENE_FLAG_NONE:
+        case FLAG_NONE:
         default:
             break;
     }
-    this->sceneFlagType = SCENE_FLAG_NONE;
-    this->sceneFlagID = 0;
+    this->pendingFlagType = FLAG_NONE;
+    this->pendingFlag = 0;
 }
 
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
@@ -6277,7 +6279,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
-                    Player_SetSceneFlag(this, globalCtx);
+                    Player_SetPendingFlag(this, globalCtx);
                     return;
                 }
 
@@ -12684,7 +12686,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
         
-        Player_SetSceneFlag(this, globalCtx);
+        Player_SetPendingFlag(this, globalCtx);
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
