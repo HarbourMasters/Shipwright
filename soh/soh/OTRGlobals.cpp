@@ -117,8 +117,7 @@ extern "C" void InitOTR() {
 
     if (!t->bHasLoadError)
     {
-        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
-        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -801,8 +800,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
-                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
                 }
             }
 
@@ -833,8 +832,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                     for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
-                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
                     }
                 }
                 if (soundFont->instruments[i].lowNotesSound != nullptr)
