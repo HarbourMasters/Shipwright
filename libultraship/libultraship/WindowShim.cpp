@@ -53,7 +53,7 @@ void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI
 #endif
 #if defined(ENABLE_OPENGL) || defined(ENABLE_METAL)
     if (gfx_backend == "sdl") {
-        if (gfx_api == "opengl") {
+        if (gfx_api == "OpenGL") {
             *RenderingApi = &gfx_opengl_api;
         }
 #ifdef ENABLE_METAL

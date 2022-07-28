@@ -95,6 +95,9 @@ namespace SohImGui {
 #ifdef _WIN32
         { "dx11", "DirectX" },
 #endif
+#ifdef ENABLE_METAL
+        { "sdl", "Metal" },
+#endif
         { "sdl", "OpenGL" }
     };
 
@@ -117,14 +120,27 @@ namespace SohImGui {
 
     int GetBackendID(std::shared_ptr<Mercury> cfg) {
         std::string backend = cfg->getString("Window.GfxBackend");
-        if (backend.empty()) {
+        std::string gfxApi = cfg->getString("Window.GfxApi");
+
+        int matchType = 2; // 0 = backend, 1 = gfxApi, 2 = both
+
+        if (backend.empty() && gfxApi.empty()) {
             return 0;
+        } else if (gfxApi.empty()) { // only backend is set
+            matchType = 0;
+        } else if (backend.empty()) { // only gfxApi is set
+            matchType = 1;
         }
 
         for (size_t i = 0; i < (sizeof(backends) / sizeof(backends[0])); i++) {
-            if(backend == backends[i].first) {
-				return i;
-			}
+            if (matchType == 0 && backend == backends[i].first)
+                return i;
+
+            if (matchType == 1 && gfxApi == backends[i].second)
+                return i;
+
+            if (matchType == 2 && backend == backends[i].first && gfxApi == backends[i].second)
+                return i;
         }
 
         return 0;
@@ -991,6 +1007,7 @@ namespace SohImGui {
                     for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
                         if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
                             pConf->setString("Window.GfxBackend", backends[i].first);
+                            pConf->setString("Window.GfxApi", backends[i].second);
                             lastBackendID = i;
                         }
                     }
