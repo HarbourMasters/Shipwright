@@ -21,10 +21,10 @@ namespace Ship {
 		RIGHT_TRIGGER = 4,
 		DRIFT_X = 5,
 		DRIFT_Y = 6,
-		DRIFT_Z = 7,
-		SENSITIVITY = 8,
-		GYRO_SENSITIVITY = 9,
-		ACCEL_X = 10,
+		DRIFT_Z = 9,
+		SENSITIVITY = 7,
+		GYRO_SENSITIVITY = 8,
+		CCEL_X = 10,
 		ACCEL_Y = 11,
 		ACCEL_Z = 12
 	};
