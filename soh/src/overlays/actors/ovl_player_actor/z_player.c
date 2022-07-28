@@ -6254,6 +6254,25 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                    switch (this->sceneFlagType) {
+                        case SCENE_FLAG_CLEAR:
+                            Flags_SetClear(globalCtx, this->sceneFlagID);
+                            break;
+                        case SCENE_FLAG_COLLECTIBLE:
+                            Flags_SetCollectible(globalCtx, this->sceneFlagID);
+                            break;
+                        case SCENE_FLAG_SWITCH:
+                            Flags_SetSwitch(globalCtx, this->sceneFlagID);
+                            break;
+                        case SCENE_FLAG_TREASURE:
+                            Flags_SetTreasure(globalCtx, this->sceneFlagID);
+                            break;
+                        case SCENE_FLAG_NONE:
+                        default:
+                            break;
+                    }
+                    this->sceneFlagType = SCENE_FLAG_NONE;
+                    this->sceneFlagID = 0;
                     return;
                 }
 
