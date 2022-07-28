@@ -866,15 +866,21 @@ namespace SohImGui {
 
                 ImGui::Separator();
 
-                // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
+                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip to the D-pad");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                Tooltip("Allows the D-pad to be used as extra C buttons");
+                Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up\nto equip to the D-pad");
                 EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
                 Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
+                EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
+                Tooltip("Hold the assigned button to limit walking speed");
+                if (CVar_GetS32("gEnableWalkModify", 0)) {
+                    EnhancementSliderFloat("Modifier 1: %d %%", "##WalkMod1", "gWalkModifierOne", 0.0f, 5.0f, "", 1.0f, true);
+                    EnhancementSliderFloat("Modifier 2: %d %%", "##WalkMod2", "gWalkModifierTwo", 0.0f, 5.0f, "", 1.0f, true);
+                }
+
                 ImGui::Separator();
 
                 EnhancementCheckbox("Show Inputs", "gInputEnabled");

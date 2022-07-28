@@ -87,6 +87,8 @@
 #define BTN_CUP         0x0008
 #define BTN_R           0x0010
 #define BTN_L           0x0020
+#define BTN_MODIFIER1   0x0040
+#define BTN_MODIFIER2   0x0080
 #define BTN_DRIGHT      0x0100
 #define BTN_DLEFT       0x0200
 #define BTN_DDOWN       0x0400

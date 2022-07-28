@@ -97,6 +97,8 @@ namespace Ship {
 		profile.Mappings[0x01E] = BTN_STICKLEFT;
 		profile.Mappings[0x01F] = BTN_STICKDOWN;
 		profile.Mappings[0x011] = BTN_STICKUP;
+		profile.Mappings[0x02A] = BTN_MODIFIER1;
+		profile.Mappings[0x036] = BTN_MODIFIER2;
 	}
 
 	const char* KeyboardController::GetControllerName() {

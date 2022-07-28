@@ -9,7 +9,7 @@
 
 namespace Ship {
 
-	#define SEPARATION() ImGui::Dummy(ImVec2(0, 5))
+	extern "C" uint8_t __enableGameInput;
 
 	void InputEditor::Init() {
 		BtnReading = -1;
@@ -114,25 +114,36 @@ namespace Ship {
 			DrawButton("R", BTN_R);
 			DrawButton("Z", BTN_Z);
 			DrawButton("START", BTN_START);
-			SEPARATION();
+			ImGui::Dummy(ImVec2(0, 5));
 	#ifdef __SWITCH__
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 56.0f);
 	#else
 		SohImGui::EndGroupPanel(IsKeyboard ? 7.0f : 48.0f);
 	#endif
 		ImGui::SameLine();
-		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(150, 20));
+
+		ImVec2 cursor = ImGui::GetCursorPos();
+		ImGui::BeginChild("##ExtraButtons", ImVec2(202, 208), false);
+		SohImGui::BeginGroupPanel("Digital Pad", ImVec2(202, 20));
 			DrawButton("Up", BTN_DUP);
 			DrawButton("Down", BTN_DDOWN);
 			DrawButton("Left", BTN_DLEFT);
 			DrawButton("Right", BTN_DRIGHT);
-			SEPARATION();
-	#ifdef __SWITCH__
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 122.0f);
-	#else
-		SohImGui::EndGroupPanel(IsKeyboard ? 53.0f : 94.0f);
-	#endif
+			ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel();
+
+		SohImGui::BeginGroupPanel("Modifiers", ImVec2(202, 20));
+			float cursorX = ImGui::GetCursorPosX() - 24;
+			ImGui::SetCursorPosX(cursorX);
+			DrawButton("Modifier 1", BTN_MODIFIER1);
+			cursorX = ImGui::GetCursorPosX() - 24;
+			ImGui::SetCursorPosX(cursorX);
+			DrawButton("Modifier 2", BTN_MODIFIER2);
+			ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 20.0f);
+		ImGui::EndChild();
 		ImGui::SameLine();
+		
 		SohImGui::BeginGroupPanel("Analog Stick", ImVec2(150, 20));
 			DrawButton("Up", BTN_STICKUP);
 			DrawButton("Down", BTN_STICKDOWN);
@@ -235,7 +246,7 @@ namespace Ship {
 
 		ImGui::SameLine();
 
-		const ImVec2 cursor = ImGui::GetCursorPos();
+		cursor = ImGui::GetCursorPos();
 
 		SohImGui::BeginGroupPanel("C-Buttons", ImVec2(158, 20));
 			DrawButton("Up", BTN_CUP);
@@ -252,7 +263,7 @@ namespace Ship {
 		ImGui::SetCursorPosY(cursor.y + 120);
 	#endif
 		SohImGui::BeginGroupPanel("Options", ImVec2(158, 20));
-			float cursorX = ImGui::GetCursorPosX() + 5;
+			cursorX = ImGui::GetCursorPosX() + 5;
 			ImGui::SetCursorPosX(cursorX);
 			ImGui::Checkbox("Rumble Enabled", &profile.UseRumble);
 			if (Backend->CanRumble()) {
@@ -264,7 +275,7 @@ namespace Ship {
 				ImGui::PopItemWidth();
 			}
 			ImGui::Dummy(ImVec2(0, 5));
-		SohImGui::EndGroupPanel(IsKeyboard ? 0.0f : 2.0f);
+		SohImGui::EndGroupPanel(IsKeyboard ? 25.0f : 3.0f);
 	}
 
 	void InputEditor::DrawHud() {
