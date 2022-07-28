@@ -106,6 +106,13 @@ namespace SohImGui {
         "Hexaquinquagintiducentuple (256x)"
     };
 
+    const char* tunicUpgrades[4] = {
+        "Off",
+        "Auto-Switch",
+        "Permanent Upgrade",
+        "Super Tunic"
+    };
+
     std::map<std::string, std::vector<std::string>> hiddenwindowCategories;
     std::map<std::string, std::vector<std::string>> windowCategories;
     std::map<std::string, CustomWindow> customWindows;
@@ -1392,8 +1399,6 @@ namespace SohImGui {
                 Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
                 Tooltip("Holding L makes you float into the air");
-                EnhancementCheckbox("Super Tunic", "gSuperTunic");
-                Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
                 Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
@@ -1406,6 +1411,13 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                ImGui::Text("Tunic Upgrades");
+                Tooltip("Select a variety of upgrades for tunic behavior.\n"
+                        "Off: No upgrades\n"
+                        "Auto-Switch: Automatically switch to your best tunic for the current situation\n"
+                        "Permanent Upgrade: Treat owned tunics like upgrades that are always active once you have them\n"
+                        "Super Tunic: Makes every tunic have the effects of every other tunic\n");
+                EnhancementCombobox("gAutoTunics", tunicUpgrades, 4, 0);
 
                 ImGui::EndMenu();
             }
