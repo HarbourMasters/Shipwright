@@ -12684,12 +12684,11 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
 
-        // In rando the fanfares are handled in z_en_si.c, so we can skip down a bit
+        // In rando the fanfares are handled by a function in z_en_si.c
         if (gSaveContext.n64ddFlag) {
-            goto RandoFanfareSkip;
-        }
-
-        if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
+            Audio_PlayFanfare_Rando(this->getItemId);
+        } 
+        else if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
             ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
             (this->getItemId == GI_HEART)) {
@@ -12704,13 +12703,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             else {
                 temp1 = temp2 = (this->getItemId == GI_HEART_PIECE) ? NA_BGM_SMALL_ITEM_GET : NA_BGM_ITEM_GET | 0x900;
             }
-          
-            RandoFanfareSkip:
-            if (gSaveContext.n64ddFlag) {
-                Audio_PlayFanfare_Rando(this->getItemId);
-            } else {
-                Audio_PlayFanfare(temp1);
-            }
+            Audio_PlayFanfare(temp1);
         }
     }
     else {
