@@ -1443,7 +1443,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-    time_t day_seconds() {
+time_t day_seconds() {
     time_t t1, t2;
     struct tm* tms;
     time(&t1);
@@ -1501,12 +1501,12 @@ void Gameplay_Main(GameState* thisx) {
     
     if (CVar_GetS32("gTimeSync", 0)) {
         const int maxRealDaySeconds = 86400;
-        const int maxIngameDaySeconds = 65536;
+        const int maxInGameDayTicks = 65536;
 
         int secs = (int)day_seconds();
         float percent = (float)secs / (float)maxRealDaySeconds;
 
-        int newIngameTime = maxIngameDaySeconds * percent;
+        int newIngameTime = maxInGameDayTicks * percent;
 
         gSaveContext.dayTime = newIngameTime;
 
