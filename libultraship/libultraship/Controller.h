@@ -24,7 +24,7 @@ namespace Ship {
 		DRIFT_Z = 9,
 		SENSITIVITY = 7,
 		GYRO_SENSITIVITY = 8,
-		CCEL_X = 10,
+		ACCEL_X = 10,
 		ACCEL_Y = 11,
 		ACCEL_Z = 12
 	};
