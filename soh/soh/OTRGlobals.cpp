@@ -1501,3 +1501,8 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
+
+extern "C" bool Randomizer_ObtainedFreestandingIceTrap(GlobalContext* globalCtx, RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor) {
+    return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
+         Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
