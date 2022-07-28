@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "Window.h"
 #include <Utils/StringHelper.h>
+#include <cmath>
 
 #ifdef _MSC_VER
 #define strdup _strdup
@@ -187,17 +188,63 @@ namespace Ship {
             profile.Thresholds[DRIFT_X] = gyro_drift_x * 100.0f;
             profile.Thresholds[DRIFT_Y] = gyro_drift_y * 100.0f;
             profile.Thresholds[DRIFT_Z] = gyro_drift_z * 100.0f;
-
-            wGyroX = gyroData[0] - gyro_drift_x;
-            wGyroY = gyroData[1] - gyro_drift_y;
-
-            wGyroX *= gyro_sensitivity;
-            wGyroY *= gyro_sensitivity;
             
+            float axis_proportion;
             if (supportsAccel) {
 				float accelData[3];
 				SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_ACCEL, accelData, 3);
+
+                float gravity_accel_x = profile.Thresholds[ACCEL_X];
+                float gravity_accel_y = profile.Thresholds[ACCEL_Y];
+                float gravity_accel_z = profile.Thresholds[ACCEL_Z];
+
+                if (gravity_accel_x == 0 && gravity_accel_y == 0 && gravity_accel_z == 0) {
+                    gravity_accel_x = accelData[0];
+                    gravity_accel_y = accelData[1];
+                    gravity_accel_z = accelData[2];
+
+                    profile.Thresholds[ACCEL_X] = gravity_accel_x;
+                    profile.Thresholds[ACCEL_Y] = gravity_accel_y;
+                    profile.Thresholds[ACCEL_Z] = gravity_accel_z;
+                }
+                
+                float gravity_accel = std::hypot(gravity_accel_y, gravity_accel_z);
+                float curr_accel = std::hypot(accelData[1], accelData[2]);
+
+                // While an acceleration equal to the measured acceleration
+                // due to gravity isn't necessarily countering gravity, it
+                // seems safe to assume that it is for normal play.
+
+                // So if (to this standard) the controller isn't accelerating,
+                // measure its pitch by comparing it with the angle of gravity
+                // on a flat surface. Otherwise, use the gyroscope to estimate
+                // its current angle until it's still again.
+
+                // Even if the estimate drifts away from the actual value for a
+                // bit, it'll be measured for real soon enough. The pitch is
+                // only used to determine which axis to use for aim anyway.
+                if (std::abs(gravity_accel - curr_accel) < 0.1) {
+                    float gravity_direction = std::atan2(gravity_accel_y, gravity_accel_z);
+                    float curr_direction = std::atan2(accelData[1], accelData[2]);
+                    wGyroPitch = curr_direction - gravity_direction;
+                } else {
+                    // From my testing gyro data appears to be in degrees
+                    wGyroPitch += (gyroData[0] - gyro_drift_x) * M_PI / 180;
+                }
+
+                axis_proportion = std::sin(wGyroPitch);
+            } else {
+                axis_proportion = 0;
             }
+
+            float effective_gyro_y = (gyroData[1] - gyro_drift_y) * (1 - axis_proportion);
+            float effective_gyro_z = (gyroData[2] - gyro_drift_z) * axis_proportion;
+
+            wGyroX = gyroData[0] - gyro_drift_x;
+            wGyroY = effective_gyro_y - effective_gyro_z;
+
+            wGyroX *= gyro_sensitivity;
+            wGyroY *= gyro_sensitivity;
         }
 
         dwPressedButtons[slot] = 0;

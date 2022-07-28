@@ -23,7 +23,10 @@ namespace Ship {
 		DRIFT_Y = 6,
 		DRIFT_Z = 7,
 		SENSITIVITY = 8,
-		GYRO_SENSITIVITY = 9
+		GYRO_SENSITIVITY = 9,
+		ACCEL_X = 10,
+		ACCEL_Y = 11,
+		ACCEL_Z = 12
 	};
 
 	struct DeviceProfile {
@@ -62,6 +65,7 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
+			float wGyroPitch;
 			float wCamX;
 			float wCamY;
 

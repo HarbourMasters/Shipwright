@@ -211,6 +211,9 @@ namespace Ship {
 					profile.Thresholds[DRIFT_X] = 0.0f;
 					profile.Thresholds[DRIFT_Y] = 0.0f;
 					profile.Thresholds[DRIFT_Z] = 0.0f;
+					profile.Thresholds[ACCEL_X] = 0.0f;
+					profile.Thresholds[ACCEL_Y] = 0.0f;
+					profile.Thresholds[ACCEL_Z] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
 				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
