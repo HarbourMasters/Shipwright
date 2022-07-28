@@ -115,7 +115,12 @@ void func_80AFB768(EnSi* this, GlobalContext* globalCtx) {
                     player->actor.freezeTimer = 20;
                 }
                 Message_StartTextbox(globalCtx, textId, NULL);
-                Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+
+                if (gSaveContext.n64ddFlag) {
+                    Audio_PlayFanfare_Rando(getItemId);
+                } else {
+                    Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+                }
                 this->actionFunc = func_80AFB950;
             } else {
                 Collider_UpdateCylinder(&this->actor, &this->collider);
@@ -149,7 +154,11 @@ void func_80AFB89C(EnSi* this, GlobalContext* globalCtx) {
             Item_Give(globalCtx, giveItemId);
         }
         Message_StartTextbox(globalCtx, textId, NULL);
-        Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+        if (gSaveContext.n64ddFlag) {
+            Audio_PlayFanfare_Rando(getItemId);
+        } else {
+            Audio_PlayFanfare(NA_BGM_SMALL_ITEM_GET);
+        }
         this->actionFunc = func_80AFB950;
     }
 }
