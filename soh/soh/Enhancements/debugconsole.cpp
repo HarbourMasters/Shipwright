@@ -31,7 +31,7 @@ extern GlobalContext* gGlobalCtx;
 
 #include "Cvar.h"
 
-#define CMD_REGISTER SohImGui::BindCmd
+#define CMD_REGISTER LusImGui::BindCmd
 
 static bool ActorSpawnHandler(const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {

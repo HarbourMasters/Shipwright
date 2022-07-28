@@ -2704,7 +2704,7 @@ struct GfxRenderingAPI *gfx_get_current_rendering_api(void) {
 void gfx_start_frame(void) {
     gfx_wapi->handle_events();
     gfx_wapi->get_dimensions(&gfx_current_window_dimensions.width, &gfx_current_window_dimensions.height);
-    SohImGui::DrawMainMenuAndCalculateGameSize();
+    LusImGui::DrawMainMenuAndCalculateGameSize();
     has_drawn_imgui_menu = true;
     if (gfx_current_dimensions.height == 0) {
         // Avoid division by zero
@@ -2754,8 +2754,8 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     if (!gfx_wapi->start_frame()) {
         dropped_frame = true;
         if (has_drawn_imgui_menu) {
-            SohImGui::DrawFramebufferAndGameInput();
-            SohImGui::CancelFrame();
+            LusImGui::DrawFramebufferAndGameInput();
+            LusImGui::CancelFrame();
             has_drawn_imgui_menu = false;
         }
         return;
@@ -2763,7 +2763,7 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     dropped_frame = false;
 
     if (!has_drawn_imgui_menu) {
-        SohImGui::DrawMainMenuAndCalculateGameSize();
+        LusImGui::DrawMainMenuAndCalculateGameSize();
     }
 
     current_mtx_replacements = &mtx_replacements;
@@ -2796,8 +2796,8 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
             SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer)));
         }
     }
-    SohImGui::DrawFramebufferAndGameInput();
-    SohImGui::Render();
+    LusImGui::DrawFramebufferAndGameInput();
+    LusImGui::Render();
     double t1 = gfx_wapi->get_time();
     //printf("Process %f %f\n", t1, t1 - t0);
     gfx_rapi->end_frame();

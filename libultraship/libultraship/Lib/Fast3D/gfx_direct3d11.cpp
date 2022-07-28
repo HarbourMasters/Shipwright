@@ -388,10 +388,10 @@ void CSMain(uint3 DTid : SV_DispatchThreadID) {
 
     // Create ImGui
 
-    SohImGui::WindowImpl window_impl;
-    window_impl.backend = SohImGui::Backend::DX11;
+    LusImGui::WindowImpl window_impl;
+    window_impl.backend = LusImGui::Backend::DX11;
     window_impl.dx11 = { gfx_dxgi_get_h_wnd(), d3d.context.Get(), d3d.device.Get() };
-    SohImGui::Init(window_impl);
+    LusImGui::Init(window_impl);
 }
 
 

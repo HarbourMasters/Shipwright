@@ -775,5 +775,5 @@ void DrawActorViewer(bool& open) {
 }
 
 void InitActorViewer() {
-    SohImGui::AddWindow("Developer Tools", "Actor Viewer", DrawActorViewer);
+    LusImGui::AddWindow("Developer Tools", "Actor Viewer", "gActorViewerEnabled", DrawActorViewer);
 }

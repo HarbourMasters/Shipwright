@@ -7,10 +7,10 @@
 
 #include "Lib/ImGui/imgui.h"
 
-#define LOG(msg, ...) SohImGui::console->Append("Main", Priority::LOG_LVL, msg, ##__VA_ARGS__)
-#define INFO(msg, ...) SohImGui::console->Append("Main", Priority::INFO_LVL, msg, ##__VA_ARGS__)
-#define WARNING(msg, ...) SohImGui::console->Append("Main", Priority::WARNING_LVL, msg, ##__VA_ARGS__)
-#define ERROR(msg, ...) SohImGui::console->Append("Main", Priority::ERROR_LVL, msg, ##__VA_ARGS__)
+#define LOG(msg, ...) LusImGui::console->Append("Main", Priority::LOG_LVL, msg, ##__VA_ARGS__)
+#define INFO(msg, ...) LusImGui::console->Append("Main", Priority::INFO_LVL, msg, ##__VA_ARGS__)
+#define WARNING(msg, ...) LusImGui::console->Append("Main", Priority::WARNING_LVL, msg, ##__VA_ARGS__)
+#define ERROR(msg, ...) LusImGui::console->Append("Main", Priority::ERROR_LVL, msg, ##__VA_ARGS__)
 #define CMD_SUCCESS true
 #define CMD_FAILED false
 #define MAX_BUFFER_SIZE 255
