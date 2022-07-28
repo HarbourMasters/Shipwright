@@ -184,16 +184,6 @@ static u16 sDgnMinimapTexIndexOffset[10] = {
     0, 13, 32, 49, 76, 114, 158, 190, 217, 227,
 };
 
-static u16 sOwMinimapTexSize[24] = {
-    2920, 2560, 1560, 2784, 2976, 2040, 3240, 2336, 2080, 2600, 1792, 1888,
-    3400, 1792, 1888, 2040, 3120, 2304, 2176, 1888, 1560, 3240, 2600, 3400,
-};
-
-static u16 sOwMinimapTexOffset[24] = {
-    0x0000, 0x0B68, 0x1568, 0x1B80, 0x2660, 0x3200, 0x39F8, 0x46A0, 0x4FC0, 0x57E0, 0x6208, 0x6908,
-    0x7068, 0x7DB0, 0x84B0, 0x8C10, 0x9408, 0xA038, 0xA938, 0xB1B8, 0xB918, 0xBF30, 0xCBD8, 0xD600,
-};
-
 static s16 sOwMinimapPosX[24] = {
     216, 216, 218, 202, 202, 250, 216, 234, 234, 216, 234, 234,
     216, 234, 234, 250, 216, 234, 234, 234, 218, 80,  80,  216,
@@ -319,14 +309,13 @@ static u8 sFloorID[10][8] = {
 static s16 sSkullFloorIconY[10] = { -47, -47, -33, -47, -47, -5, -19, -47, -99, -99 };
 
 MapData gMapDataTable = {
-    sFloorTexIndexOffset, sBossFloor,          sRoomPalette,
-    sMaxPaletteCount,     sPaletteRoom,        sRoomCompassOffsetX,
-    sRoomCompassOffsetY,  sDgnMinimapCount,    sDgnMinimapTexIndexOffset,
-    sOwMinimapTexSize,    sOwMinimapTexOffset, sOwMinimapPosX,
-    sOwMinimapPosY,       sOwCompassInfo,      sDgnMinimapTexIndexBase,
-    sDgnCompassInfo,      sOwMinimapWidth,     sOwMinimapHeight,
-    sOwEntranceIconPosX,  sOwEntranceIconPosY, sOwEntranceFlag,
-    sFloorCoordY,         sSwitchEntryCount,   sSwitchFromRoom,
-    sSwitchFromFloor,     sSwitchToRoom,       sFloorID,
-    sSkullFloorIconY,
+    sFloorTexIndexOffset,       sBossFloor,             sRoomPalette,
+    sMaxPaletteCount,           sPaletteRoom,           sRoomCompassOffsetX,
+    sRoomCompassOffsetY,        sDgnMinimapCount,       sDgnMinimapTexIndexOffset,
+    sOwMinimapPosX,             sOwMinimapPosY,         sOwCompassInfo,
+    sDgnMinimapTexIndexBase,    sDgnCompassInfo,        sOwMinimapWidth,
+    sOwMinimapHeight,           sOwEntranceIconPosX,    sOwEntranceIconPosY,
+    sOwEntranceFlag,            sFloorCoordY,           sSwitchEntryCount,
+    sSwitchFromRoom,            sSwitchFromFloor,       sSwitchToRoom,
+    sFloorID,                   sSkullFloorIconY,
 };
