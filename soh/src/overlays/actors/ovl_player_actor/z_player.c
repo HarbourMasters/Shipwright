@@ -12684,7 +12684,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
 
-        // In rando the fanfares are handled by a function in z_en_si.c
+        // In rando the fanfares are handled by a function in code_800EC960.c
         if (gSaveContext.n64ddFlag) {
             Audio_PlayFanfare_Rando(this->getItemId);
         } 
