@@ -210,13 +210,27 @@ namespace Ship {
 				if (ImGui::Button("Recalibrate Gyro##RGyro")) {
 					profile.Thresholds[DRIFT_X] = 0.0f;
 					profile.Thresholds[DRIFT_Y] = 0.0f;
+					profile.Thresholds[DRIFT_Z] = 0.0f;
+					profile.Thresholds[ACCEL_X] = 0.0f;
+					profile.Thresholds[ACCEL_Y] = 0.0f;
+					profile.Thresholds[ACCEL_Z] = 0.0f;
 				}
 				ImGui::SetCursorPosX(cursorX);
 				DrawVirtualStick("##GyroPreview", ImVec2(-10.0f * Backend->wGyroY, 10.0f * Backend->wGyroX));
 
 				ImGui::SameLine();
 				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				ImGui::BeginChild("##GyInput", ImVec2(90, 85), false);
+				ImGui::BeginChild("##GyInput", ImVec2(120, 85), false);
+				ImGui::Text("Horizontal Axis");
+				if (ImGui::RadioButton("Y-axis", profile.GyroAxis == GYRO_Y)) {
+					profile.GyroAxis = GYRO_Y;
+				}
+				if (ImGui::RadioButton("Z-axis", profile.GyroAxis == GYRO_Z)) {
+					profile.GyroAxis = GYRO_Z;
+				}
+				if (Backend->CanAccel() && ImGui::RadioButton("Automatic", profile.GyroAxis == GYRO_AUTO)) {
+					profile.GyroAxis = GYRO_AUTO;
+				}
 				ImGui::Text("Drift X");
 				ImGui::PushItemWidth(80);
 				ImGui::InputFloat("##GDriftX", &profile.Thresholds[DRIFT_X], 1.0f, 0.0f, "%.1f");
@@ -224,6 +238,10 @@ namespace Ship {
 				ImGui::Text("Drift Y");
 				ImGui::PushItemWidth(80);
 				ImGui::InputFloat("##GDriftY", &profile.Thresholds[DRIFT_Y], 1.0f, 0.0f, "%.1f");
+				ImGui::PopItemWidth();
+				ImGui::Text("Drift Z");
+				ImGui::PushItemWidth(80);
+				ImGui::InputFloat("##GDriftZ", &profile.Thresholds[DRIFT_Z], 1.0f, 0.0f, "%.1f");
 				ImGui::PopItemWidth();
 				ImGui::EndChild();
 		#ifdef __SWITCH__

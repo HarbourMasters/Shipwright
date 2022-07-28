@@ -21,8 +21,18 @@ namespace Ship {
 		RIGHT_TRIGGER = 4,
 		DRIFT_X = 5,
 		DRIFT_Y = 6,
+		DRIFT_Z = 9,
 		SENSITIVITY = 7,
-		GYRO_SENSITIVITY = 8
+		GYRO_SENSITIVITY = 8,
+		ACCEL_X = 10,
+		ACCEL_Y = 11,
+		ACCEL_Z = 12
+	};
+
+	enum GyroMode {
+		GYRO_Y,
+		GYRO_Z,
+		GYRO_AUTO
 	};
 
 	struct DeviceProfile {
@@ -31,6 +41,7 @@ namespace Ship {
 		float RumbleStrength = 1.0f;
 		std::unordered_map<ControllerThresholds, float> Thresholds;
 		std::map<int32_t, int32_t> Mappings;
+		GyroMode GyroAxis = GYRO_Y;
 	};
 
 	class Controller {
@@ -43,6 +54,7 @@ namespace Ship {
 			virtual bool Connected() const = 0;
 			virtual bool CanRumble() const = 0;
 			virtual bool CanGyro() const = 0;
+			virtual bool CanAccel() const = 0;
 			virtual void CreateDefaultBinding(int32_t slot) = 0;
 			bool isRumbling;
 			std::vector<DeviceProfile> profiles;
@@ -60,6 +72,7 @@ namespace Ship {
 			int8_t wStickY;
 			float wGyroX;
 			float wGyroY;
+			float wGyroPitch;
 			float wCamX;
 			float wCamY;
 
