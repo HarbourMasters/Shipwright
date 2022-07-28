@@ -390,10 +390,48 @@ static void* sHeartDDTextures[] = {
     gDefenseHeartThreeQuarterTex,
 };
 
+s16 getHealthMeterXOffset() {
+    s16 X_Margins;
+    if (CVar_GetS32("gHeartsUseMargins", 0) != 0)
+        X_Margins = Left_LM_Margin;
+    else
+        X_Margins = 0;
+
+    if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
+        if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
+            return OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
+            X_Margins = Right_LM_Margin;
+            return OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
+            return CVar_GetS32("gHeartsPosX", 0);
+        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
+            return -9999;
+        }
+    } else {
+        return OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
+    }
+}
+
+s16 getHealthMeterYOffset() {
+    s16 Y_Margins;
+    if (CVar_GetS32("gHeartsUseMargins", 0) != 0)
+        Y_Margins = (Top_LM_Margin*-1);
+    else
+        Y_Margins = 0;
+
+    if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
+        return CVar_GetS32("gHeartsPosY", 0)+Y_Margins;
+    } else {
+        return 0.0f+Y_Margins;
+    }
+}
+
 void HealthMeter_Draw(GlobalContext* globalCtx) {
     s32 pad[5];
     void* heartBgImg;
     u32 curColorSet;
+    f32 PosX_anchor;
     f32 offsetX;
     f32 offsetY;
     s32 i;
@@ -420,33 +458,8 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
     }
 
     curColorSet = -1;
-    s16 X_Margins;
-    s16 Y_Margins;
-    if (CVar_GetS32("gHeartsUseMargins", 0) != 0) {
-        X_Margins = Left_LM_Margin;
-        Y_Margins = (Top_LM_Margin*-1);
-    } else {
-        X_Margins = 0;
-        Y_Margins = 0;
-    }
-    s16 PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
-    s16 PosY_original = 0.0f+Y_Margins;
-    if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-        offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins;
-        if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-            offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
-        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
-            X_Margins = Right_LM_Margin;
-            offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
-        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-            offsetX = CVar_GetS32("gHeartsPosX", 0);
-        } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
-            offsetX = -9999;
-        }
-    } else {
-        offsetY = PosY_original;
-        offsetX = PosX_original;
-    }
+    offsetX = PosX_anchor = getHealthMeterXOffset();
+    offsetY = getHealthMeterYOffset();
 
     for (i = 0; i < totalHeartCount; i++) {
         if ((ddHeartCountMinusOne < 0) || (i > ddHeartCountMinusOne)) {
@@ -604,25 +617,10 @@ void HealthMeter_Draw(GlobalContext* globalCtx) {
         }
 
         offsetX += 10.0f;
-        if (i == 9) {
-            PosX_original = OTRGetDimensionFromLeftEdge(0.0f)+X_Margins;
-            PosY_original = 10.0f+Y_Margins;
-            if (CVar_GetS32("gHeartsCountPosType", 0) != 0) {
-                offsetY = CVar_GetS32("gHeartsPosY", 0)+Y_Margins+10.0f;
-                if (CVar_GetS32("gHeartsCountPosType", 0) == 1) {//Anchor Left
-                    offsetX = OTRGetDimensionFromLeftEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
-                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 2) {//Anchor Right
-                    X_Margins = Right_LM_Margin;
-                    offsetX = OTRGetDimensionFromRightEdge(CVar_GetS32("gHeartsPosX", 0)+X_Margins);
-                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 3) {//Anchor None
-                    offsetX = CVar_GetS32("gHeartsPosX", 0);
-                } else if (CVar_GetS32("gHeartsCountPosType", 0) == 4) {//Hidden
-                    offsetX = -9999;
-                }
-            } else {
-                offsetY = PosY_original;
-                offsetX = PosX_original;
-            }
+        s32 lineLength = CVar_GetS32("gHeartsLineLength", 10);
+        if (lineLength != 0 && (i+1)%lineLength == 0) {
+            offsetX = PosX_anchor;
+            offsetY += 10.0f;
         }
     }
 
