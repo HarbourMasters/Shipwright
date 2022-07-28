@@ -1443,7 +1443,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-    time_t day_seconds() {
+time_t day_seconds() {
     time_t t1, t2;
     struct tm* tms;
     time(&t1);
