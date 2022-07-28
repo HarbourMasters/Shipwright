@@ -4,6 +4,7 @@
 #include "Lib/Fast3D/gfx_dxgi.h"
 #include "Lib/Fast3D/gfx_glx.h"
 #include "Lib/Fast3D/gfx_opengl.h"
+#include "Lib/Fast3D/gfx_metal.h"
 #include "Lib/Fast3D/gfx_direct3d11.h"
 #include "Lib/Fast3D/gfx_direct3d12.h"
 #include "Lib/Fast3D/gfx_window_manager_api.h"
@@ -18,10 +19,14 @@
  * End empty shims
  */
 
-void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI** RenderingApi, const std::string& gfx_backend) {
+void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI** RenderingApi, const std::string& gfx_backend, const std::string& gfx_api) {
     // First set default
-#ifdef ENABLE_OPENGL
+#if defined(ENABLE_OPENGL) || defined(ENABLE_METAL)
+    #ifdef ENABLE_METAL
+    *RenderingApi = &gfx_metal_api;
+    #else
     *RenderingApi = &gfx_opengl_api;
+    #endif
     #if defined(__linux__) && defined(X11_SUPPORTED)
         // LINUX_TODO:
         // *WmApi = &gfx_glx;
@@ -46,9 +51,16 @@ void SetWindowManager(struct GfxWindowManagerAPI** WmApi, struct GfxRenderingAPI
         *WmApi = &gfx_dxgi_api;
     }
 #endif
-#ifdef ENABLE_OPENGL
+#if defined(ENABLE_OPENGL) || defined(ENABLE_METAL)
     if (gfx_backend == "sdl") {
-        *RenderingApi = &gfx_opengl_api;
+        if (gfx_api == "OpenGL") {
+            *RenderingApi = &gfx_opengl_api;
+        }
+#ifdef ENABLE_METAL
+        else {
+            *RenderingApi = &gfx_metal_api;
+        }
+#endif
         *WmApi = &gfx_sdl;
     }
 #if defined(__linux__) && defined(X11_SUPPORTED)

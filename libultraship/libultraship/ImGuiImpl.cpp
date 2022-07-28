@@ -37,10 +37,15 @@
 #include "SwitchImpl.h"
 #endif
 
+#ifdef ENABLE_METAL
+#include "Lib/Fast3D/gfx_metal.h"
+#include "Lib/ImGui/backends/imgui_impl_metal.h"
+#include "Lib/ImGui/backends/imgui_impl_sdl.h"
+#endif
+
 #ifdef ENABLE_OPENGL
 #include "Lib/ImGui/backends/imgui_impl_opengl3.h"
 #include "Lib/ImGui/backends/imgui_impl_sdl.h"
-
 #endif
 
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
@@ -90,6 +95,9 @@ namespace SohImGui {
 #ifdef _WIN32
         { "dx11", "DirectX" },
 #endif
+#ifdef ENABLE_METAL
+        { "sdl", "Metal" },
+#endif
         { "sdl", "OpenGL" }
     };
 
@@ -112,14 +120,27 @@ namespace SohImGui {
 
     int GetBackendID(std::shared_ptr<Mercury> cfg) {
         std::string backend = cfg->getString("Window.GfxBackend");
-        if (backend.empty()) {
+        std::string gfxApi = cfg->getString("Window.GfxApi");
+
+        int matchType = 2; // 0 = backend, 1 = gfxApi, 2 = both
+
+        if (backend.empty() && gfxApi.empty()) {
             return 0;
+        } else if (gfxApi.empty()) { // only backend is set
+            matchType = 0;
+        } else if (backend.empty()) { // only gfxApi is set
+            matchType = 1;
         }
 
         for (size_t i = 0; i < (sizeof(backends) / sizeof(backends[0])); i++) {
-            if(backend == backends[i].first) {
-				return i;
-			}
+            if (matchType == 0 && backend == backends[i].first)
+                return i;
+
+            if (matchType == 1 && gfxApi == backends[i].second)
+                return i;
+
+            if (matchType == 2 && backend == backends[i].first && gfxApi == backends[i].second)
+                return i;
         }
 
         return 0;
@@ -137,9 +158,15 @@ namespace SohImGui {
     void ImGuiWMInit() {
         switch (impl.backend) {
         case Backend::SDL:
-            SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
-            ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
-            break;
+            switch (impl.sdl.gfx_api) {
+                case SDLGfxApi::Metal:
+                    ImGui_ImplSDL2_InitForMetal(static_cast<SDL_Window*>(impl.sdl.window));
+                    break;
+                case SDLGfxApi::OpenGL:
+                    SDL_SetHint(SDL_HINT_TOUCH_MOUSE_EVENTS, "1");
+                    ImGui_ImplSDL2_InitForOpenGL(static_cast<SDL_Window*>(impl.sdl.window), impl.sdl.context);
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplWin32_Init(impl.dx11.window);
@@ -154,13 +181,22 @@ namespace SohImGui {
     void ImGuiBackendInit() {
         switch (impl.backend) {
         case Backend::SDL:
-        #if defined(__APPLE__)
-            ImGui_ImplOpenGL3_Init("#version 410 core");
-        #else
-            ImGui_ImplOpenGL3_Init("#version 120");
-        #endif
-            break;
-
+            switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
+                case SDLGfxApi::Metal:
+                    Metal_Init();
+                    break;
+#endif
+                case SDLGfxApi::OpenGL:
+                #if defined(__APPLE__)
+                    ImGui_ImplOpenGL3_Init("#version 410 core");
+                #else
+                    ImGui_ImplOpenGL3_Init("#version 120");
+                #endif
+                    break;
+                default:
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_Init(static_cast<ID3D11Device*>(impl.dx11.device), static_cast<ID3D11DeviceContext*>(impl.dx11.device_context));
@@ -189,7 +225,7 @@ namespace SohImGui {
     void ImGuiWMNewFrame() {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplSDL2_NewFrame(static_cast<SDL_Window*>(impl.sdl.window));
+            ImGui_ImplSDL2_NewFrame();
             break;
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
@@ -204,8 +240,18 @@ namespace SohImGui {
     void ImGuiBackendNewFrame() {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplOpenGL3_NewFrame();
-            break;
+            switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
+                case SDLGfxApi::Metal:
+                    Metal_NewFrame();
+                    break;
+#endif
+                case SDLGfxApi::OpenGL:
+                    ImGui_ImplOpenGL3_NewFrame();
+                    break;
+                default:
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_NewFrame();
@@ -219,8 +265,18 @@ namespace SohImGui {
     void ImGuiRenderDrawData(ImDrawData* data) {
         switch (impl.backend) {
         case Backend::SDL:
-            ImGui_ImplOpenGL3_RenderDrawData(data);
-            break;
+            switch (impl.sdl.gfx_api) {
+#if defined(ENABLE_METAL)
+                case SDLGfxApi::Metal:
+                    Metal_RenderDrawData(data);
+                    break;
+#endif
+                case SDLGfxApi::OpenGL:
+                    ImGui_ImplOpenGL3_RenderDrawData(data);
+                    break;
+                default:
+                    break;
+            }
 #if defined(ENABLE_DX11) || defined(ENABLE_DX12)
         case Backend::DX11:
             ImGui_ImplDX11_RenderDrawData(data);
@@ -951,6 +1007,7 @@ namespace SohImGui {
                     for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
                         if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
                             pConf->setString("Window.GfxBackend", backends[i].first);
+                            pConf->setString("Window.GfxApi", backends[i].second);
                             lastBackendID = i;
                         }
                     }
@@ -1655,6 +1712,12 @@ namespace SohImGui {
         {
             ImTextureID gfx_d3d11_get_texture_by_id(int id);
             return gfx_d3d11_get_texture_by_id(id);
+        }
+#endif
+#ifdef ENABLE_METAL
+        if (impl.sdl.gfx_api == SDLGfxApi::Metal)
+        {
+            return gfx_metal_get_texture_by_id(id);
         }
 #endif
         return reinterpret_cast<ImTextureID>(id);

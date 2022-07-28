@@ -394,6 +394,9 @@ void CSMain(uint3 DTid : SV_DispatchThreadID) {
     SohImGui::Init(window_impl);
 }
 
+static const char* gfx_d3d11_get_name() {
+    return "DirectX 11";
+}
 
 static struct GfxClipParameters gfx_d3d11_get_clip_parameters(void) {
     return { true, false };
@@ -1015,6 +1018,7 @@ ImTextureID gfx_d3d11_get_texture_by_id(int id) {
 }
 
 struct GfxRenderingAPI gfx_direct3d11_api = {
+    gfx_d3d11_get_name,
     gfx_d3d11_get_clip_parameters,
     gfx_d3d11_unload_shader,
     gfx_d3d11_load_shader,

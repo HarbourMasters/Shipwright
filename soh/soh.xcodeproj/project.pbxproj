@@ -705,6 +705,10 @@
 		9B41FECB287FE48600F03590 /* ControlDeck.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9B41FECA287FE48600F03590 /* ControlDeck.cpp */; };
 		9B41FED1287FE4D100F03590 /* InputEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9B41FECF287FE4D100F03590 /* InputEditor.cpp */; };
 		9B41FEE5288182C800F03590 /* soh.icns in Resources */ = {isa = PBXBuildFile; fileRef = 9B41FEE4288182C800F03590 /* soh.icns */; };
+		9B41FEF12881FE1D00F03590 /* gfx_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B41FEF02881FE1D00F03590 /* gfx_metal.mm */; };
+		9B41FEF42881FE4400F03590 /* imgui_impl_metal.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9B41FEF22881FE4400F03590 /* imgui_impl_metal.mm */; };
+		9B41FEF62881FF2700F03590 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B41FEF52881FF2700F03590 /* Metal.framework */; };
+		9B41FEF82881FF2C00F03590 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B41FEF72881FF2C00F03590 /* QuartzCore.framework */; };
 		9B595E1A7D7340FABD635A54 /* z_bg_gnd_nisekabe.c in Sources */ = {isa = PBXBuildFile; fileRef = 5F564C1E6D92486B93E0EC78 /* z_bg_gnd_nisekabe.c */; };
 		9B9F4B0A286E3C9600DDA2F3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9F4B09286E3C9600DDA2F3 /* Foundation.framework */; };
 		9B9F4B0C286E3C9900DDA2F3 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9F4B0B286E3C9900DDA2F3 /* OpenGL.framework */; };
@@ -2219,6 +2223,12 @@
 		9B41FED0287FE4D100F03590 /* InputEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InputEditor.h; path = ../libultraship/libultraship/InputEditor.h; sourceTree = "<group>"; };
 		9B41FEDD2880EF7E00F03590 /* soh.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = soh.xcconfig; sourceTree = "<group>"; };
 		9B41FEE4288182C800F03590 /* soh.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = soh.icns; path = macosx/soh.icns; sourceTree = "<group>"; };
+		9B41FEEF2881FE1C00F03590 /* gfx_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gfx_metal.h; path = ../libultraship/libultraship/Lib/Fast3D/gfx_metal.h; sourceTree = "<group>"; };
+		9B41FEF02881FE1D00F03590 /* gfx_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = gfx_metal.mm; path = ../libultraship/libultraship/Lib/Fast3D/gfx_metal.mm; sourceTree = "<group>"; };
+		9B41FEF22881FE4400F03590 /* imgui_impl_metal.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = imgui_impl_metal.mm; path = ../libultraship/libultraship/Lib/ImGui/backends/imgui_impl_metal.mm; sourceTree = "<group>"; };
+		9B41FEF32881FE4400F03590 /* imgui_impl_metal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = imgui_impl_metal.h; path = ../libultraship/libultraship/Lib/ImGui/backends/imgui_impl_metal.h; sourceTree = "<group>"; };
+		9B41FEF52881FF2700F03590 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		9B41FEF72881FF2C00F03590 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9B9DFDDECF4E468D9B8BD2BB /* bn_mp_mul.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = bn_mp_mul.c; path = ../StormLib/src/libtommath/bn_mp_mul.c; sourceTree = SOURCE_ROOT; };
 		9B9F4B08286E3C8B00DDA2F3 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		9B9F4B09286E3C9600DDA2F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -2917,6 +2927,8 @@
 			files = (
 				9B9F4B0A286E3C9600DDA2F3 /* Foundation.framework in Frameworks */,
 				9B9F4B0D286E3C9D00DDA2F3 /* libz.tbd in Frameworks */,
+				9B41FEF82881FF2C00F03590 /* QuartzCore.framework in Frameworks */,
+				9B41FEF62881FF2700F03590 /* Metal.framework in Frameworks */,
 				9B9F4B0C286E3C9900DDA2F3 /* OpenGL.framework in Frameworks */,
 				9B9F4B0F286E3D6400DDA2F3 /* libbz2.tbd in Frameworks */,
 			);
@@ -3169,6 +3181,8 @@
 			children = (
 				8C7C30651B5042A5AD04296F /* gfx_cc.cpp */,
 				1BDAF1F3328749EDB48B0DAD /* gfx_cc.h */,
+				9B41FEEF2881FE1C00F03590 /* gfx_metal.h */,
+				9B41FEF02881FE1D00F03590 /* gfx_metal.mm */,
 				69833F890531448A8158E643 /* gfx_opengl.cpp */,
 				C5139DFD9FAF4F9B9F5BA251 /* gfx_opengl.h */,
 				7EEB28AD952F498693840A04 /* gfx_pc.cpp */,
@@ -3389,6 +3403,8 @@
 		64624771709E413E81B4E3C4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9B41FEF72881FF2C00F03590 /* QuartzCore.framework */,
+				9B41FEF52881FF2700F03590 /* Metal.framework */,
 				9B9F4B0E286E3D6000DDA2F3 /* libbz2.tbd */,
 				9B9F4B0B286E3C9900DDA2F3 /* OpenGL.framework */,
 				9B9F4B09286E3C9600DDA2F3 /* Foundation.framework */,
@@ -3667,6 +3683,8 @@
 		97B2A0FAA73649F881B2454D /* ImGui */ = {
 			isa = PBXGroup;
 			children = (
+				9B41FEF32881FE4400F03590 /* imgui_impl_metal.h */,
+				9B41FEF22881FE4400F03590 /* imgui_impl_metal.mm */,
 				70B26967420D447881ED3F6F /* imgui_impl_opengl3.cpp */,
 				4E572F6F41644AD28856BCFA /* imgui_impl_opengl3.h */,
 				2C412BAD5F784508ABA12EF9 /* imgui_impl_sdl.cpp */,
@@ -5752,6 +5770,7 @@
 				C648643AC92C4A17BBD24381 /* imgui_tables.cpp in Sources */,
 				F42AF1EAC40045DD91190827 /* imgui_widgets.cpp in Sources */,
 				67901D1DEFC34DC8ADDCE4C3 /* StrHash64.cpp in Sources */,
+				9B41FEF12881FE1D00F03590 /* gfx_metal.mm in Sources */,
 				4F29D28A6B184711BBECD031 /* stb_impl.c in Sources */,
 				CF3D7CA2478E42E1A398BA65 /* tinyxml2.cpp in Sources */,
 				018B876BCA444ECD80630249 /* Material.cpp in Sources */,
@@ -5771,6 +5790,7 @@
 				DAC3315CEDB0433C9FB3F1EA /* Skeleton.cpp in Sources */,
 				9B41FEC7287FE3C900F03590 /* Mercury.cpp in Sources */,
 				5A39257660A140FD8F900FE1 /* SkeletonLimb.cpp in Sources */,
+				9B41FEF42881FE4400F03590 /* imgui_impl_metal.mm in Sources */,
 				0865055BB3A14AD8B902254C /* Text.cpp in Sources */,
 				40C0C0CD7A45498B809D0D73 /* Texture.cpp in Sources */,
 				07977F5FC96D41289E858AB0 /* TextureMod.cpp in Sources */,
@@ -6668,10 +6688,14 @@
 					"$(inherited)",
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
+					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
+					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6728,10 +6752,14 @@
 					"$(inherited)",
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
+					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
+					"-DENABLE_METAL",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6842,8 +6870,8 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-DNDEBUG",
+					"-DENABLE_METAL",
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",
@@ -7031,8 +7059,8 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-D_DEBUG",
+					"-DENABLE_METAL",
 				);
 				OTHER_LDFLAGS = (
 					"-Wl,-search_paths_first",

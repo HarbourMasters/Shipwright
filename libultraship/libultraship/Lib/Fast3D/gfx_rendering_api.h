@@ -34,6 +34,7 @@ struct hash_pair_ff {
 };
 
 struct GfxRenderingAPI {
+    const char* (*get_name)(void);
     struct GfxClipParameters (*get_clip_parameters)(void);
     void (*unload_shader)(struct ShaderProgram *old_prg);
     void (*load_shader)(struct ShaderProgram *new_prg);
