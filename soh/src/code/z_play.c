@@ -240,8 +240,8 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
         globalCtx->sceneLoadFlag == 0) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
-        player->pendingFlag = 0x1E;
-        player->pendingFlagType = FLAG_SCENE_TREASURE;
+        player->pendingFlag.flagID = 0x1E;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 

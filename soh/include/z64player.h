@@ -366,6 +366,11 @@ typedef enum {
     FLAG_SCENE_COLLECTIBLE,
 } FlagType;
 
+typedef struct {
+    /* 0x00 */ s32 flagID;     // which flag to set when Player_SetPendingFlag is called
+    /* 0x04 */ FlagType flagType;  // type of flag to set when Player_SetPendingFlag is called
+} PendingFlag; // size = 0x06
+
 #define PLAYER_STATE1_0 (1 << 0)
 #define PLAYER_STATE1_1 (1 << 1)
 #define PLAYER_STATE1_2 (1 << 2)
@@ -620,8 +625,7 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-    /* 0x0A94 */ FlagType   pendingFlagType; // type of flag to set when Player_SetPendingFlag is called
-    /* 0x0A96 */ s32        pendingFlag; // which flag to set when Player_SetPendingFlag is called
+    /* 0x0A94 */ PendingFlag pendingFlag;
 } Player; // size = 0xAA0
 
 #endif

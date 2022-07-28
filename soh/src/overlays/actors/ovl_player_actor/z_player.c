@@ -6232,28 +6232,28 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
     func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
-// Sets a flag according to which type of flag is specified in player->pendingFlagType
-// and which flag is specified in player->pendingFlag.
+// Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
+// and which flag is specified in player->pendingFlag.flagID.
 void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
-    switch (this->pendingFlagType) {
+    switch (this->pendingFlag.flagType) {
         case FLAG_SCENE_CLEAR:
-            Flags_SetClear(globalCtx, this->pendingFlag);
+            Flags_SetClear(globalCtx, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_COLLECTIBLE:
-            Flags_SetCollectible(globalCtx, this->pendingFlag);
+            Flags_SetCollectible(globalCtx, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_SWITCH:
-            Flags_SetSwitch(globalCtx, this->pendingFlag);
+            Flags_SetSwitch(globalCtx, this->pendingFlag.flagID);
             break;
         case FLAG_SCENE_TREASURE:
-            Flags_SetTreasure(globalCtx, this->pendingFlag);
+            Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
             break;
         case FLAG_NONE:
         default:
             break;
     }
-    this->pendingFlagType = FLAG_NONE;
-    this->pendingFlag = 0;
+    this->pendingFlag.flagType = FLAG_NONE;
+    this->pendingFlag.flagID = 0;
 }
 
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
