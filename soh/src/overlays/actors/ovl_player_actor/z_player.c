@@ -12659,6 +12659,27 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
+        
+        switch (this->sceneFlagType) {
+            case SCENE_FLAG_CLEAR:
+                Flags_SetClear(globalCtx, this->sceneFlagID);
+                break;
+            case SCENE_FLAG_COLLECTIBLE:
+                Flags_SetCollectible(globalCtx, this->sceneFlagID);
+                break;
+            case SCENE_FLAG_SWITCH:
+                Flags_SetSwitch(globalCtx, this->sceneFlagID);
+                break;
+            case SCENE_FLAG_TREASURE:
+                Flags_SetTreasure(globalCtx, this->sceneFlagID);
+                break;
+            case SCENE_FLAG_NONE:
+            default:
+                break;
+        }
+        this->sceneFlagType = SCENE_FLAG_NONE;
+        this->sceneFlagID = 0;
+
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||

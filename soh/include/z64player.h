@@ -356,7 +356,15 @@ typedef struct {
     /* 0x00 */ s32 active;
     /* 0x04 */ Vec3f tip;
     /* 0x10 */ Vec3f base;
-} WeaponInfo; // size = 0x1C
+} WeaponInfo; // size = 0x1C\
+
+typedef enum {
+    SCENE_FLAG_NONE,
+    SCENE_FLAG_SWITCH,
+    SCENE_FLAG_TREASURE,
+    SCENE_FLAG_CLEAR,
+    SCENE_FLAG_COLLECTIBLE,
+} SceneFlagType;
 
 #define PLAYER_STATE1_0 (1 << 0)
 #define PLAYER_STATE1_1 (1 << 1)
@@ -612,6 +620,8 @@ typedef struct Player {
     /* 0x0A86 */ s8         unk_A86;
     /* 0x0A87 */ u8         unk_A87;
     /* 0x0A88 */ Vec3f      unk_A88; // previous body part 0 position
-} Player; // size = 0xA94
+    /* 0x0A94 */ SceneFlagType sceneFlagType;
+    /* 0x0A96 */ s32        sceneFlagID;
+} Player; // size = 0xAA0
 
 #endif
