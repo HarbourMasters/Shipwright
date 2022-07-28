@@ -790,6 +790,9 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
             gSaveContext.eventChkInf[1] |= (1 << 3);
             gSaveContext.eventChkInf[1] |= (1 << 4);
 
+            // Got Zelda's Letter
+            gSaveContext.eventChkInf[4] |= 1;
+
             // Got item from impa
             gSaveContext.eventChkInf[5] |= 0x200;
 
