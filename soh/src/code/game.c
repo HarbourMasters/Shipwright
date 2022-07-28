@@ -387,6 +387,14 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.nayrusLoveTimer = 0x44B;
     }
 
+    // Inf Hover Boots Timer
+    if (CVar_GetS32("gInfiniteHover", 0)) {
+        if (gGlobalCtx) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+            player->hoverBootsTimer = 19;
+        }
+    }
+
     // Moon Jump On L
     if (CVar_GetS32("gMoonJumpOnL", 0) != 0) {
         if (gGlobalCtx) {
@@ -394,6 +402,17 @@ void GameState_Update(GameState* gameState) {
 
             if (CHECK_BTN_ANY(gGlobalCtx->state.input[0].cur.button, BTN_L)) {
                 player->actor.velocity.y = 6.34375f;
+            }
+        }
+    }
+
+    //Turbo On L
+    if (CVar_GetS32("gTurboOnL", 0) != 0) {
+        if (gGlobalCtx) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+
+            if (CHECK_BTN_ANY(gGlobalCtx->state.input[0].cur.button, BTN_L)) {
+                player->linearVelocity = 27.0f;
             }
         }
     }
@@ -425,6 +444,23 @@ void GameState_Update(GameState* gameState) {
         gSaveContext.dayTime = prevTime;
     } else {
         CVar_SetS32("gPrevTime", -1);
+    }
+
+    // Freeze Enemies
+    if (CVar_GetS32("gFreezeEnemies", 0) != 0) {
+        if (gGlobalCtx) {
+            ActorContext* actx = &gGlobalCtx->actorCtx;
+            Actor* actor;
+            u8 enemy_cats[2] = { ACTORCAT_ENEMY, ACTORCAT_BOSS };
+
+            for (s32 i = 0; i < ARRAY_COUNT(enemy_cats); i++) {
+                actor = actx->actorLists[enemy_cats[i]].head;
+                while (actor != NULL) {
+                    actor->freezeTimer = 5;
+                    actor = actor->next;
+                }
+            }
+        }
     }
 
     //since our CVar is same value and properly default to 0 there is not problems doing this in single line.

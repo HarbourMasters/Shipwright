@@ -563,7 +563,7 @@ s32 EnGirlA_CanBuy_DekuShield(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+    if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && !CVar_GetS32("gNoRestrictAge", 0)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[9] & gSaveContext.inventory.equipment) {
@@ -579,7 +579,7 @@ s32 EnGirlA_CanBuy_GoronTunic(GlobalContext* globalCtx, EnGirlA* this) {
 }
 
 s32 EnGirlA_CanBuy_ZoraTunic(GlobalContext* globalCtx, EnGirlA* this) {
-    if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
+    if ((LINK_AGE_IN_YEARS == YEARS_CHILD) && !CVar_GetS32("gNoRestrictAge", 0)) {
         return CANBUY_RESULT_CANT_GET_NOW;
     }
     if (gBitFlags[10] & gSaveContext.inventory.equipment) {

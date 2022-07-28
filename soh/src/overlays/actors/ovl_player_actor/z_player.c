@@ -2087,8 +2087,14 @@ s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typ
         }
     }
     else {
-        *itemPtr = ITEM_SLINGSHOT;
-        *typePtr = ARROW_SEED;
+        if (this->heldItemActionParam >= PLAYER_AP_BOW_FIRE && this->heldItemActionParam <= PLAYER_AP_BOW_0E) {
+            *itemPtr = ITEM_BOW;
+            *typePtr = this->heldItemActionParam - 6; 
+        }
+        else {
+            *itemPtr = ITEM_SLINGSHOT;
+            *typePtr = ARROW_SEED;
+        }   
     }
 
     if (gSaveContext.minigameState == 1) {
@@ -2840,8 +2846,9 @@ void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item) {
             ((Player_ActionToSword(actionParam) != 0) || (actionParam == PLAYER_AP_NONE)))) {
 
         if ((actionParam == PLAYER_AP_NONE) || !(this->stateFlags1 & PLAYER_STATE1_27) ||
-            ((this->actor.bgCheckFlags & 1) &&
-                ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT))) ||
+                ((this->actor.bgCheckFlags & 1) &&
+                    ((actionParam != PLAYER_AP_HOOKSHOT) && (actionParam != PLAYER_AP_LONGSHOT) && CVar_GetS32("gUnderwaterItems", 0)) ||
+                    ((actionParam == PLAYER_AP_HOOKSHOT) || (actionParam == PLAYER_AP_LONGSHOT))) ||
             ((actionParam >= PLAYER_AP_SHIELD_DEKU) && (actionParam <= PLAYER_AP_BOOTS_HOVER))) {
 
             if ((globalCtx->bombchuBowlingStatus == 0) &&

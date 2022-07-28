@@ -135,17 +135,18 @@ void func_80A90264(EnKakasi2* this, GlobalContext* globalCtx) {
 
         osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ SAVE 終了 ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
         this->actionFunc = func_80A904D8;
-    } else if ((this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
+    } else if (
+        (this->actor.xzDistToPlayer < this->maxSpawnDistance.x) &&
                (fabsf(player->actor.world.pos.y - this->actor.world.pos.y) < this->maxSpawnDistance.y) &&
-               (gSaveContext.eventChkInf[9] & 0x1000)) {
+               ((gSaveContext.eventChkInf[9] & 0x1000) || CVar_GetS32("gFreeScarecrow", 0))) {
 
         this->unk_194 = 0;
-        if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_0B) {
+        if (globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_0B || ((CVar_GetS32("gFreeScarecrow", 0)) && globalCtx->msgCtx.ocarinaMode == OCARINA_MODE_04)) {
             if (this->switchFlag >= 0) {
                 Flags_SetSwitch(globalCtx, this->switchFlag);
             }
             osSyncPrintf(VT_FGCOL(GREEN) "☆☆☆☆☆ SAVE 終了 ☆☆☆☆☆ %d\n" VT_RST, this->switchFlag);
-            globalCtx->msgCtx.ocarinaMode = OCARINA_MODE_04;
+            globalCtx->msgCtx.ocarinaMode = CVar_GetS32("gFreeScarecrow", 0) ? OCARINA_MODE_00 : OCARINA_MODE_04;
             this->actor.draw = func_80A90948;
             Collider_InitCylinder(globalCtx, &this->collider);
             Collider_SetCylinder(globalCtx, &this->collider, &this->actor, &sCylinderInit);

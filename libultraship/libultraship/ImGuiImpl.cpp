@@ -1,5 +1,6 @@
 #include "ImGuiImpl.h"
 
+
 #include <iostream>
 #include <map>
 #include <utility>
@@ -1205,7 +1206,8 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
                     Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
-                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that\nwere covered up by the black bars\nPlease disable this setting before reporting a bug");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
+                    EnhancementCheckbox("Enable 3D Dropped items", "gNewDrops");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
@@ -1381,8 +1383,22 @@ namespace SohImGui {
                     EnhancementCheckbox("Ammo", "gInfiniteAmmo");
                     EnhancementCheckbox("Magic", "gInfiniteMagic");
                     EnhancementCheckbox("Nayru's Love", "gInfiniteNayru");
+                    EnhancementCheckbox("Hover Boots", "gInfiniteHover");
                     EnhancementCheckbox("Epona Boost", "gInfiniteEpona");
+                    ImGui::EndMenu();
+                }
 
+                if (ImGui::BeginMenu("Items...")) {
+                    EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
+                    Tooltip("Allows you to use any item at any location");
+                    EnhancementCheckbox("Underwater Items", "gUnderwaterItems");
+                    Tooltip("Allows you to use any item underwater (as long as you're standing)");
+                    EnhancementCheckbox("No Age Restrictions", "gNoRestrictAge");
+                    Tooltip("Allows you to use any item as either age");
+                    EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
+                    Tooltip("Prevents the Deku Shield from burning on contact with fire");
+                    EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
+                    Tooltip("Allows Link to shield normally with two-handed swords and the Megaton Hammer");
                     ImGui::EndMenu();
                 }
 
@@ -1392,6 +1408,11 @@ namespace SohImGui {
                 Tooltip("Makes every surface in the game climbable");
                 EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
                 Tooltip("Holding L makes you float into the air");
+
+                EnhancementCheckbox("Turbo on L", "gTurboOnL");
+                Tooltip("Holding L makes you super fast");
+                EnhancementCheckbox("Freeze Enemies", "gFreezeEnemies");
+                Tooltip("Causes enemies to freeze in place. Can't be interacted with while this is on");
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
@@ -1400,13 +1421,10 @@ namespace SohImGui {
                 Tooltip("Allows you to use any item at any location");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
+                EnhancementCheckbox("Free Scarecrow's Song", "gFreeScarecrow");
+                Tooltip("Allows you to use Pierre without setting the Scarecrow's song");
                 EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
-                Tooltip("Prevents the Deku Shield from burning on contact with fire");
-                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
-
                 ImGui::EndMenu();
             }
 

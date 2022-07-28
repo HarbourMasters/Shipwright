@@ -312,6 +312,55 @@ static bool EntranceHandler(const std::vector<std::string>& args) {
     gSaveContext.nextTransition = 11;
 }
 
+static bool FileSelectHandler(const std::vector<std::string>& args) {
+    if (gGlobalCtx == nullptr) {
+        ERROR("GlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+
+    SET_NEXT_GAMESTATE(&gGlobalCtx->state, FileChoose_Init, GameState);
+    gGlobalCtx->state.running = false;
+    return CMD_SUCCESS;
+}
+
+static bool VoidOutHandler(const std::vector<std::string>& args) {
+    if (gGlobalCtx == nullptr) {
+        ERROR("GlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+    gSaveContext.respawn[RESPAWN_MODE_DOWN].tempCollectFlags = gGlobalCtx->actorCtx.flags.tempCollect;
+    gSaveContext.respawn[RESPAWN_MODE_DOWN].tempSwchFlags = gGlobalCtx->actorCtx.flags.tempSwch;
+    gSaveContext.respawnFlag = 1;
+    gGlobalCtx->nextEntranceIndex = gSaveContext.respawn[RESPAWN_MODE_DOWN].entranceIndex;
+    SET_NEXT_GAMESTATE(&gGlobalCtx->state, Gameplay_Init, GameState);
+    gGlobalCtx->state.running = false;
+    return CMD_SUCCESS;
+
+}
+
+static bool ReloadHandler(const std::vector<std::string>& args) {
+    if (gGlobalCtx == nullptr) {
+        ERROR("GlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+
+    gGlobalCtx->nextEntranceIndex = gSaveContext.entranceIndex;
+    gGlobalCtx->sceneLoadFlag = 0x14;
+    gGlobalCtx->fadeTransition = 11;
+    gSaveContext.nextTransition = 11;
+    return CMD_SUCCESS;
+}
+
+static bool QuitHandler(const std::vector<std::string>& args) {
+    if (gGlobalCtx == nullptr) {
+        ERROR("GlobalCtx == nullptr");
+        return CMD_FAILED;
+    }
+
+    gGlobalCtx->state.running = false;
+    return CMD_SUCCESS;
+}
+
 static bool SaveStateHandler(const std::vector<std::string>& args) {
     unsigned int slot = OTRGlobals::Instance->gSaveStateMgr->GetCurrentSlot();
     const SaveStateReturn rtn = OTRGlobals::Instance->gSaveStateMgr->AddRequest({ slot, RequestType::SAVE });
@@ -472,6 +521,10 @@ void DebugConsole_Init(void) {
                           { { "varName", ArgumentType::TEXT }, { "varValue", ArgumentType::TEXT } } });
     CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", { { "varName", ArgumentType::TEXT } } });
     CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
+    CMD_REGISTER("file_select", { FileSelectHandler, "Returns to file select." });
+    CMD_REGISTER("void", { VoidOutHandler, "Voids out of the current map." });
+    CMD_REGISTER("reload", { ReloadHandler, "Reloads the current map." });
+    CMD_REGISTER("quit", { QuitHandler, "Quits the game." });
     CMD_REGISTER("ammo", { AmmoHandler, "Changes ammo of an item.",
                             { { "item", ArgumentType::TEXT },
                               { "count", ArgumentType::NUMBER } } });
