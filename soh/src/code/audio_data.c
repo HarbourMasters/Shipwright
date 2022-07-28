@@ -544,10 +544,10 @@ u8 gDefaultShortNoteGateTimeTable[] = {
 };
 
 AdsrEnvelope gDefaultEnvelope[] = {
-    { 0x0100, 0x007D },
-    { 0xE803, 0x007D },
-    { 0xFFFF, 0x0000 },
-    { 0x0000, 0x0000 },
+    { BE16SWAP_CONST(1),    BE16SWAP_CONST(32000) },
+    { BE16SWAP_CONST(1000), BE16SWAP_CONST(32000) },
+    { BE16SWAP_CONST(-1),   BE16SWAP_CONST(0) },
+    { BE16SWAP_CONST(0),    BE16SWAP_CONST(0) },
 };
 
 NoteSubEu gZeroNoteSub = { 0 };
