@@ -1205,11 +1205,11 @@ void EnNiw_FeatherDraw(EnNiw* this, GlobalContext* globalCtx) {
 
     for (i = 0; i < ARRAY_COUNT(this->feathers); i++, feather++) {
         if (feather->type == 1) {
+            FrameInterpolation_RecordOpenChild(feather, 0);
             if (!flag) {
                 gSPDisplayList(POLY_XLU_DISP++, gCuccoParticleAppearDL);
                 flag++;
             }
-            FrameInterpolation_RecordOpenChild(feather, feather->epoch);
             Matrix_Translate(feather->pos.x, feather->pos.y, feather->pos.z, MTXMODE_NEW);
             Matrix_ReplaceRotation(&globalCtx->billboardMtxF);
             Matrix_Scale(feather->scale, feather->scale, 1.0f, MTXMODE_APPLY);
