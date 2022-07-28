@@ -29,12 +29,19 @@ namespace Ship {
 		ACCEL_Z = 12
 	};
 
+	enum GyroMode {
+		GYRO_Y,
+		GYRO_Z,
+		GYRO_AUTO
+	};
+
 	struct DeviceProfile {
 		bool UseRumble = false;
 		bool UseGyro = false;
 		float RumbleStrength = 1.0f;
 		std::unordered_map<ControllerThresholds, float> Thresholds;
 		std::map<int32_t, int32_t> Mappings;
+		GyroMode GyroAxis = GYRO_Y;
 	};
 
 	class Controller {

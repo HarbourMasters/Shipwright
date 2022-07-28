@@ -188,11 +188,11 @@ namespace Ship {
             profile.Thresholds[DRIFT_X] = gyro_drift_x * 100.0f;
             profile.Thresholds[DRIFT_Y] = gyro_drift_y * 100.0f;
             profile.Thresholds[DRIFT_Z] = gyro_drift_z * 100.0f;
-            
+
             float axis_proportion;
-            if (supportsAccel) {
-				float accelData[3];
-				SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_ACCEL, accelData, 3);
+            if (supportsAccel && profile.GyroAxis == GYRO_AUTO) {
+                float accelData[3];
+                SDL_GameControllerGetSensorData(Cont, SDL_SENSOR_ACCEL, accelData, 3);
 
                 float gravity_accel_x = profile.Thresholds[ACCEL_X];
                 float gravity_accel_y = profile.Thresholds[ACCEL_Y];
@@ -207,7 +207,7 @@ namespace Ship {
                     profile.Thresholds[ACCEL_Y] = gravity_accel_y;
                     profile.Thresholds[ACCEL_Z] = gravity_accel_z;
                 }
-                
+
                 float gravity_accel = std::hypot(gravity_accel_y, gravity_accel_z);
                 float curr_accel = std::hypot(accelData[1], accelData[2]);
 
@@ -233,6 +233,8 @@ namespace Ship {
                 }
 
                 axis_proportion = std::sin(wGyroPitch);
+            } else if (profile.GyroAxis == GYRO_Z) {
+                axis_proportion = 1;
             } else {
                 axis_proportion = 0;
             }
