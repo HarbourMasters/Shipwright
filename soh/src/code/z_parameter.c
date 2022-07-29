@@ -1548,14 +1548,16 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     s16 slot;
     s16 temp;
 
-    slot = SLOT(item);
+    slot = (item < sizeof(gItemSlots)/sizeof(gItemSlots[0])) ? SLOT(item) : -1;
     if (item >= ITEM_STICKS_5) {
         slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
     }
 
-    osSyncPrintf(VT_FGCOL(YELLOW));
-    osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
-    osSyncPrintf(VT_RST);
+    if (slot != -1) {
+        osSyncPrintf(VT_FGCOL(YELLOW));
+        osSyncPrintf("item_get_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+        osSyncPrintf(VT_RST);
+    }
 
     if (item == ITEM_SINGLE_MAGIC) {
         gSaveContext.magicAcquired = true;
@@ -2160,16 +2162,18 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
-    s16 slot = SLOT(item);
+    s16 slot = (item < sizeof(gItemSlots)/sizeof(gItemSlots[0])) ? SLOT(item) : -1;
     s32 temp;
 
     if (item >= ITEM_STICKS_5) {
         slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
     }
 
-    osSyncPrintf(VT_FGCOL(GREEN));
-    osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
-    osSyncPrintf(VT_RST);
+    if (slot != -1) {
+        osSyncPrintf(VT_FGCOL(GREEN));
+        osSyncPrintf("item_get_non_setting=%d  pt=%d  z=%x\n", item, slot, gSaveContext.inventory.items[slot]);
+        osSyncPrintf(VT_RST);
+    }
 
     if (gSaveContext.n64ddFlag) {
         if (item == ITEM_SINGLE_MAGIC || item == ITEM_DOUBLE_MAGIC || item == ITEM_DOUBLE_DEFENSE) {
@@ -3102,7 +3106,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 250, 250, 0, interfaceCtx->magicAlpha);
             }
 
-            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
+            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 8, 8, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                  G_TX_NOLOD, G_TX_NOLOD);
 
@@ -3129,7 +3133,7 @@ void Interface_DrawMagicBar(GlobalContext* globalCtx) {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MAGIC_FILL_COLOR(0), R_MAGIC_FILL_COLOR(1), R_MAGIC_FILL_COLOR(2), interfaceCtx->magicAlpha);
             }
 
-            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 16, 16, 0,
+            gDPLoadMultiBlock_4b(OVERLAY_DISP++, gMagicBarFillTex, 0, G_TX_RENDERTILE, G_IM_FMT_I, 8, 8, 0,
                                  G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK,
                                  G_TX_NOLOD, G_TX_NOLOD);
 
