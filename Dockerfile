@@ -3,16 +3,16 @@ FROM ubuntu:20.04 as build
 ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 
+ENV GCCVER=10
 RUN apt-get update && \
 	apt-get upgrade -y && \
 	apt-get install -y \
 		binutils \
-		file \
-		gcc-10 \
-		g++-10 \
+		gcc-${GCCVER} \
+		g++-${GCCVER} \
 		patchelf \
 		p7zip-full \
-		python3.9 \
+		python3 \
 		make \
 		cmake \
 		curl \
@@ -24,8 +24,8 @@ RUN apt-get update && \
 		libbz2-dev \
 		libpng-dev \
 		libgles2-mesa-dev && \    
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
-	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10 && \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCCVER} 10 && \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 && \
 	gcc --version && \
 	g++ --version
 	

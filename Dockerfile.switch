@@ -4,13 +4,12 @@ ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV GCCVER=10
-RUN \
-    apt-get update && \
+RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y \
         binutils \
-        gcc-10 \
-        g++-10 \
+        gcc-${GCCVER} \
+        g++-${GCCVER} \
         p7zip-full \
         python3 \
         make \
@@ -19,6 +18,7 @@ RUN \
         git \
         lld \
         wget \
+        libglew-dev \
         libsdl2-dev \
         zlib1g-dev \
         libbz2-dev \
@@ -37,7 +37,7 @@ RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
     tar -xzf SDL2-${SDL2VER}.tar.gz && \
     cd SDL2-${SDL2VER} && \
     ./configure --build=x86_64-linux-gnu && \
-    make && make install && \
+    make -j$(nproc) && make install && \
     rm ../SDL2-${SDL2VER}.tar.gz
 
 RUN \
