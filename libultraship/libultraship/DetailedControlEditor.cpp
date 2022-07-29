@@ -115,16 +115,15 @@ namespace Ship {
 			SohImGui::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
 
 			if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
-				float labelWidth;
-
 				if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
+					float labelWidth;
+
 					ImGui::TableSetupColumn("Custom Ocarina Notes", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
 					ImGui::TableSetupColumn("Custom Ocarina Modifiers", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
 					Table_InitHeader(false);
 
 					SohImGui::BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
 					labelWidth = ImGui::CalcTextSize("D5").x + 10;
-
 					DrawOcarinaMapping("D5", "D5", BTN_CUP, labelWidth);
 					DrawOcarinaMapping("B4", "B4", BTN_CLEFT, labelWidth);
 					DrawOcarinaMapping("A4", "A4", BTN_CRIGHT, labelWidth);
@@ -177,7 +176,7 @@ namespace Ship {
 		}
 
 		ImGui::SetNextWindowSize(ImVec2(420, 300), ImGuiCond_FirstUseEver);
-		if (ImGui::Begin("Detailed Control Configuration", nullptr)) {
+		if (ImGui::Begin("Detailed Control Configuration", &this->Opened)) {
 			DrawOcarinaControlPanel();
 		}
 		ImGui::End();
