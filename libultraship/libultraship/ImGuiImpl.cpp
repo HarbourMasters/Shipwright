@@ -75,6 +75,7 @@ namespace SohImGui {
     Console* console = new Console;
     GameOverlay* overlay = new GameOverlay;
     InputEditor* controller = new InputEditor;
+    DetailedControlEditor* detailedControls = new DetailedControlEditor;
     static ImVector<ImRect> s_GroupPanelLabelStack;
     bool p_open = false;
     bool needs_save = false;
@@ -374,6 +375,7 @@ namespace SohImGui {
         console->Init();
         overlay->Init();
         controller->Init();
+        detailedControls->Init();
         ImGuiWMInit();
         ImGuiBackendInit();
     #ifdef __SWITCH__
@@ -864,12 +866,15 @@ namespace SohImGui {
                 EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
                 controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
 
+                EnhancementCheckbox("Detailed Controls Settings", "gDetailedControlConfigurationEnabled");
+                detailedControls->Opened = CVar_GetS32("gDetailedControlConfigurationEnabled", 0);
+
                 ImGui::Separator();
 
                 // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
                 Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                EnhancementCheckbox("D-pad Support in Text Choice", "gDpadText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
                 Tooltip("Allows the D-pad to be used as extra C buttons");
@@ -1494,6 +1499,7 @@ namespace SohImGui {
 
         console->Draw();
         controller->DrawHud();
+        detailedControls->DrawHud();
 
         for (auto& windowIter : customWindows) {
             CustomWindow& window = windowIter.second;

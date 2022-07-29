@@ -100,6 +100,9 @@
     <Filter Include="Source Files\Controller\InputEditor">
       <UniqueIdentifier>{010dc29b-d1f6-4793-a4e7-4156aa4fcdd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Controller\DetailedControlEditor">
+      <UniqueIdentifier>{1d1c5826-31e6-4ed1-a821-759aab1e7447}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Factories\MaterialFactory.cpp">
@@ -365,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClCompile>
+    <ClCompile Include="DetailedControlEditor.cpp">
+      <Filter>Source Files\Controller\DetailedControlEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -680,6 +686,8 @@
     <ClInclude Include="Lib\Mercury\Mercury.h">
       <Filter>Source Files\Lib\Mercury</Filter>
     </ClInclude>
+    <ClInclude Include="DetailedControlEditor.h">
+      <Filter>Source Files\Controller\DetailedControlEditor</Filter>
     <ClInclude Include="VirtualController.h">
       <Filter>Source Files\Controller</Filter>
     </ClInclude>

@@ -4,6 +4,7 @@
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
 #include "InputEditor.h"
+#include "DetailedControlEditor.h"
 
 struct GameAsset {
     uint32_t textureId;
@@ -61,6 +62,7 @@ namespace SohImGui {
 
     extern Console* console;
     extern Ship::InputEditor* controller;
+    extern Ship::DetailedControlEditor* detailedControls;
     extern Ship::GameOverlay* overlay;
     extern bool needs_save;
     void Init(WindowImpl window_impl);
