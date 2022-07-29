@@ -27,7 +27,6 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 	fi   
 	cp "$ASSETDIR"/*.*64 "$ASSETDIR"/tmp/rom.z64
 	cp -r "$ASSETDIR"/assets/game/ship_of_harkinian "$ASSETDIR"/Extract/assets/
-	sleep 3
 	cd "$ASSETDIR"
 	export ROMHASH="$(shasum "$ASSETDIR"/tmp/rom.z64 | awk '{ print $1 }')"
 	case "$ROMHASH" in
@@ -51,19 +50,17 @@ while [ ! -e "$DATA_SHARE/oot.otr" ]; do
 
 	osascript -e 'display notification "Processing OTR..." with title "SOH: Generating OTR"'
 	mkdir -p /usr/local/opt/glew/lib/
-	ln -s "$LIBPATH"/libs/libGLEW.2.2.0.dylib /usr/local/opt/glew/lib/libGLEW.2.2.dylib
+	ln -s "$LIBPATH"/libs/libGLEW.2.2.0.dylib /opt/local/lib/libGLEW.2.2.0.dylib
 	assets/extractor/ZAPD.out ed -i assets/extractor/xmls/${ROM} -b tmp/rom.z64 -fl assets/extractor/filelists -o placeholder -osf placeholder -gsf 1 -rconf assets/extractor/Config_${ROM}.xml -se OTR
-	unlink /usr/local/opt/glew/lib/libGLEW.2.2.dylib
+	unlink /opt/local/lib/libGLEW.2.2.0.dylib
 	if [ -e $PWD/oot.otr ]; then
 		osascript -e 'display notification "OTR Successfully Generated" with title "SOH: Generating OTR"'
 		if [ ! -e "$DATA_SHARE" ]; then	mkdir "$DATA_SHARE"; fi
 			cp "$ASSETDIR"/oot.otr "$DATA_SHARE"
-			sleep 3
 			rm -r "$ASSETDIR"
 		fi
 		break
 done
 
-sleep 2
 "$SNAME"/soh
 exit
