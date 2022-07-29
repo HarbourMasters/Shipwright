@@ -131,7 +131,7 @@ namespace SohImGui {
 
     void Tooltip(const char* text) {
         if (ImGui::IsItemHovered()) {
-            ImGui::SetTooltip("%s", BreakTooltip(text).c_str());
+            ImGui::SetTooltip("%s", BreakTooltip(text, 60).c_str());
         }
     }
 
@@ -1778,9 +1778,9 @@ namespace SohImGui {
 
     // Automatically add newlines to break up tooltips longer than a specified number of characters
     // Manually included newlines will still be respected and reset the line length
-    std::string BreakTooltip(const char* text) {
-        const int lineLength = 60;
-        std::string newText = std::string(text);
+    // Default line length is 60 characters
+    std::string BreakTooltip(const char* text, int lineLength) {
+        std::string newText(text);
         const int tipLength = newText.length();
         int lastSpace = -1;
         int currentLineLength = 0;
@@ -1802,5 +1802,9 @@ namespace SohImGui {
             currentLineLength++;
         }
         return newText;
+    }
+
+    std::string BreakTooltip(const std::string& text, int lineLength) {
+        return BreakTooltip(text.c_str(), lineLength);
     }
 }

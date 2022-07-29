@@ -5,7 +5,7 @@
 void SetLastItemHoverText(const std::string& text) {
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text(SohImGui::BreakTooltip(text.c_str()).c_str());
+        ImGui::Text(SohImGui::BreakTooltip(text, 60).c_str());
         ImGui::EndTooltip();
     }
 }
@@ -16,7 +16,7 @@ void InsertHelpHoverText(const std::string& text) {
     ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "?");
     if (ImGui::IsItemHovered()) {
         ImGui::BeginTooltip();
-        ImGui::Text(SohImGui::BreakTooltip(text.c_str()).c_str());
+        ImGui::Text(SohImGui::BreakTooltip(text, 60).c_str());
         ImGui::EndTooltip();
     }
 }
