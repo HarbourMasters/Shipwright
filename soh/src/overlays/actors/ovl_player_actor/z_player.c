@@ -4648,8 +4648,8 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            if (CVar_GetS32("gFasterBlockPush", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
-                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 5.0f);
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
             } else {
                 LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
             }
