@@ -1259,12 +1259,12 @@ int CopyStringToCharBuffer(const std::string& inputStr, char* buffer, const int 
 }
 
 extern "C" void OTRGfxPrint(const char* str, void* printer, void (*printImpl)(void*, char)) {
-    const std::vector<uint32_t> hira1 = {
+    const std::vector<char16_t> hira1 = {
         u'を', u'ぁ', u'ぃ', u'ぅ', u'ぇ', u'ぉ', u'ゃ', u'ゅ', u'ょ', u'っ', u'-',  u'あ', u'い',
         u'う', u'え', u'お', u'か', u'き', u'く', u'け', u'こ', u'さ', u'し', u'す', u'せ', u'そ',
     };
 
-    const std::vector<uint32_t> hira2 = {
+    const std::vector<char16_t> hira2 = {
         u'た', u'ち', u'つ', u'て', u'と', u'な', u'に', u'ぬ', u'ね', u'の', u'は', u'ひ', u'ふ', u'へ', u'ほ', u'ま',
         u'み', u'む', u'め', u'も', u'や', u'ゆ', u'よ', u'ら', u'り', u'る', u'れ', u'ろ', u'わ', u'ん', u'゛', u'゜',
     };
