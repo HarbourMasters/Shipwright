@@ -51,20 +51,13 @@ namespace Ship
         F64 = 10
     };
 
-    enum class Endianess
-    {
-        Little = 0,
-        Big = 1,
-    };
-
     enum class Version
     {
         // BR
         Deckard     = 0,
         Roy         = 1,
         Rachael     = 2,
-        Leon        = 3,
-        Zhora       = 4,
+        Zhora       = 3,
         // ...
     };
 
@@ -91,7 +84,7 @@ namespace Ship
     class ResourceFile
     {
     public:
-        Endianess endianess;    // 0x00 - Endianess of the file
+        Endianness endianness;    // 0x00 - Endianness of the file
         uint32_t resourceType;  // 0x01 - 4 byte MAGIC
         Version version;     // 0x05 - Based on Ship release numbers
         uint64_t id;            // 0x09 - Unique Resource ID

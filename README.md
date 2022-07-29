@@ -12,7 +12,7 @@ The Ship does not include assets and as such requires a prior copy of the game t
 4) Launch `soh.exe`
 
 ### Supported Games
-#### Ocarina of Time Debug (not Master Quest)
+#### Ocarina of Time Debug PAL GC (not Master Quest)
 > Currently the recommended option
 ```
 Build team: `zelda@srd022j`
@@ -64,7 +64,7 @@ Other shortcuts:
 | Alt+Enter | Fullscreen (DirectX) |
 | Ctrl+R | Reset |
 
-Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.ini` configuration file in notepad and add `sdl` to `gfx backend` for OpenGL or leave blank for DirectX.
+Currently, DirectX 11 and OpenGL are supported. Change the renderer by opening the `shipofharkinian.json` configuration file in notepad and add `sdl` to the quotes in `"GfxBackend": ""` for OpenGL or leave blank for DirectX.
 
 ## Take The Survey
 Want to use cartridge readers in tandem with the OTRGui?

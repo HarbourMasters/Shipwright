@@ -11,7 +11,7 @@
 #include "utils.hpp"
 #include "shops.hpp"
 #include "hints.hpp"
-#include "soh/Lib/nlohmann/json.hpp"
+#include "Lib/nlohmann/json.hpp"
 
 #include <cstdio>
 #include <cstdlib>
@@ -26,6 +26,10 @@
 #include <filesystem>
 #include <variables.h>
 
+#define NOGDI
+#define WIN32_LEAN_AND_MEAN
+#include "GlobalCtx2.h"
+
 using json = nlohmann::json;
 
 json jsonData;
@@ -38,7 +42,7 @@ static RandomizerHash randomizerHash;
 static SpoilerData spoilerData;
 
 void GenerateHash() {
-    for (size_t i = 0; i < Settings::seed.size(); i++) {
+    for (size_t i = 0; i < Settings::hashIconIndexes.size(); i++) {
         int number = Settings::seed[i] - '0';
         Settings::hashIconIndexes[i] = number;
     }
@@ -296,7 +300,7 @@ static void WriteLocation(
   //   node->SetAttribute("price", price);
   // }
   // if (!location->IsAddedToPool()) {
-  //   #ifdef ENABLE_DEBUG  
+  //   #ifdef ENABLE_DEBUG
   //     node->SetAttribute("not-added", true);
   //   #endif
   // }
@@ -367,10 +371,11 @@ static void WriteSettings(const bool printAll = false) {
       //   }
       // }
     }
-
-    // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
-    jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
   }
+
+  // 3drando doesn't have a "skip child zelda" setting, manually add it to the spoilerfile
+  jsonData["settings"]["Skip Child Zelda"] = Settings::skipChildZelda;
+
   // spoilerLog.RootElement()->InsertEndChild(parentNode);
 
   //     for (const uint32_t key : allLocations) {
@@ -668,7 +673,7 @@ static void WriteHints(int language) {
 static void WriteAllLocations(int language) {
     for (const uint32_t key : allLocations) {
         ItemLocation* location = Location(key);
-        
+
         switch (language) {
             case 0:
             default:
@@ -720,13 +725,14 @@ const char* SpoilerLog_Write(int language) {
     WriteHints(language);
     //WriteShuffledEntrances(spoilerLog);
     WriteAllLocations(language);
-    
-    if (!std::filesystem::exists("./Randomizer")) {
-        std::filesystem::create_directory("./Randomizer");
+
+    if (!std::filesystem::exists(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"))) {
+        std::filesystem::create_directory(Ship::GlobalCtx2::GetPathRelativeToAppDirectory("Randomizer"));
     }
 
     std::string jsonString = jsonData.dump(4);
-    std::ofstream jsonFile("./Randomizer/" + Settings::seed + ".json");
+    std::ofstream jsonFile(Ship::GlobalCtx2::GetPathRelativeToAppDirectory(
+        (std::string("Randomizer/") + std::string(Settings::seed) + std::string(".json")).c_str()));
     jsonFile << std::setw(4) << jsonString << std::endl;
     jsonFile.close();
 

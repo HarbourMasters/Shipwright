@@ -1176,9 +1176,13 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         if (seqPlayer->defaultFont != 0xFF) 
                         {
                             SequenceData sDat = ResourceMgr_LoadSeqByName(sequenceMap[seqPlayer->seqId]);
-                            int8_t idx = (sDat.numFonts - result - 1);
 
-                            command = sDat.fonts[abs(idx)];
+                            // The game apparantely would sometimes do negative array lookups, the result of which would get rejected by AudioHeap_SearchCaches, never
+                            // changing the actual fontid.
+                            if (result > sDat.numFonts)
+                                break;
+
+                            command = sDat.fonts[(sDat.numFonts - result - 1)];
                         }
 
                         if (AudioHeap_SearchCaches(FONT_TABLE, CACHE_EITHER, command)) 
@@ -1336,13 +1340,13 @@ void AudioSeq_SequenceChannelProcessScript(SequenceChannel* channel) {
                         break;
                     case 0xB2:
                         offset = (u16)parameters[0];
-                        channel->unk_22 = BOMSWAP16(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
+                        channel->unk_22 = BE16SWAP(*(u16*)(seqPlayer->seqData + (uintptr_t)(offset + scriptState->value * 2)));
                         break;
                     case 0xB4:
                         channel->dynTable = (void*)&seqPlayer->seqData[channel->unk_22];
                         break;
                     case 0xB5:
-                        channel->unk_22 = BOMSWAP16(((u16*)(channel->dynTable))[scriptState->value]);
+                        channel->unk_22 = BE16SWAP(((u16*)(channel->dynTable))[scriptState->value]);
                         break;
                     case 0xB6:
                         scriptState->value = (*channel->dynTable)[0][scriptState->value];

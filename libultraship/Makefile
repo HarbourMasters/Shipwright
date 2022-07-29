@@ -9,6 +9,7 @@ UNAME := $(shell uname)
 ASAN ?= 0
 DEBUG ?= 1
 OPTFLAGS ?= -O0
+X11 ?= 0
 LTO ?= 0
 
 # flag to save whether the compiler being used is clang or gcc by checking CXX --version
@@ -48,6 +49,11 @@ CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
 MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
 
+ifeq ($(X11), 1)
+CXXFLAGS += -DX11_SUPPORTED
+CFLAGS += -DX11_SUPPORTED
+endif
+
 # if not using clang, ask clang to use gcc standard library
 ifneq ($(CXX_IS_CLANG),1)
 	STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
@@ -77,6 +83,7 @@ CXX_FILES := \
 	$(shell find libultraship/Lib/Fast3D -name "*.cpp") \
 	$(shell find libultraship -maxdepth 1 -name "*.cpp") \
 	$(shell find libultraship/Lib/ImGui -maxdepth 1 -name "*.cpp") \
+	$(shell find libultraship/Lib/Mercury -maxdepth 1 -name "*.cpp") \
 	libultraship/Lib/ImGui/backends/imgui_impl_opengl3.cpp \
 	libultraship/Lib/ImGui/backends/imgui_impl_sdl.cpp \
 	libultraship/Lib/StrHash64.cpp \
@@ -109,6 +116,7 @@ INC_DIRS := $(addprefix -I, \
 	libultraship/Lib/spdlog \
 	libultraship/Lib/spdlog/include \
 	libultraship/Lib/ImGui \
+	libultraship/Lib/Mercury \
 	libultraship \
 	../StormLib/src \
 )

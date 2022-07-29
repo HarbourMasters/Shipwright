@@ -51,6 +51,10 @@
 #include <SDL2/SDL_scancode.h>
 #endif
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
@@ -104,14 +108,16 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
     {
-        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
-        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -225,6 +231,7 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+#ifndef __SWITCH__
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -251,19 +258,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
+
                 int samples_left = AudioPlayer_Buffered();
                 u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
 
                 // 3 is the maximum authentic frame divisor.
                 s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
                 for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
                     AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
                 }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
                 audio.processing = false;
@@ -276,8 +280,9 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-    audio.cv_to_thread.notify_one();
+#endif
 
+    audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = CVar_GetS32("gInterpolationFPS", 20);
     static int last_fps;
@@ -318,12 +323,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
+#ifndef __SWITCH__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
+#endif
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -787,8 +794,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
-                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
                 }
             }
 
@@ -819,8 +826,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                     for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
-                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
                     }
                 }
                 if (soundFont->instruments[i].lowNotesSound != nullptr)
@@ -1153,34 +1160,27 @@ extern "C" s32* ResourceMgr_LoadCSByName(const char* path)
     return (s32*)res->commands.data();
 }
 
-std::filesystem::path GetSaveFile(Ship::ConfigFile& Conf) {
-    std::string fileName = Conf.get("SAVE").get("Save Filename");
-
-    if (fileName.empty()) {
-        Conf["SAVE"]["Save Filename"] = Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav");
-        Conf.Save();
-    }
+std::filesystem::path GetSaveFile(std::shared_ptr<Mercury> Conf) {
+    const std::string fileName = Conf->getString("Game.SaveName", Ship::GlobalCtx2::GetPathRelativeToAppDirectory("oot_save.sav"));
     std::filesystem::path saveFile = std::filesystem::absolute(fileName);
 
-    if (!std::filesystem::exists(saveFile.parent_path())) {
-        std::filesystem::create_directories(saveFile.parent_path());
+    if (!exists(saveFile.parent_path())) {
+        create_directories(saveFile.parent_path());
     }
 
     return saveFile;
 }
 
 std::filesystem::path GetSaveFile() {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
+    const std::shared_ptr<Mercury> pConf = OTRGlobals::Instance->context->GetConfig();
 
-    return GetSaveFile(Conf);
+    return GetSaveFile(pConf);
 }
 
-void OTRGlobals::CheckSaveFile(size_t sramSize) {
-    std::shared_ptr<Ship::ConfigFile> pConf = context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
+void OTRGlobals::CheckSaveFile(size_t sramSize) const {
+    const std::shared_ptr<Mercury> pConf = Instance->context->GetConfig();
 
-    std::filesystem::path savePath = GetSaveFile(Conf);
+    std::filesystem::path savePath = GetSaveFile(pConf);
     std::fstream saveFile(savePath, std::fstream::in | std::fstream::out | std::fstream::binary);
     if (saveFile.fail()) {
         saveFile.open(savePath, std::fstream::in | std::fstream::out | std::fstream::binary | std::fstream::app);
@@ -1197,25 +1197,6 @@ extern "C" void Ctx_ReadSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
 
 extern "C" void Ctx_WriteSaveFile(uintptr_t addr, void* dramAddr, size_t size) {
     OTRGlobals::Instance->context->WriteSaveFile(GetSaveFile(), addr, dramAddr, size);
-}
-
-/* Remember to free after use of value */
-extern "C" char* Config_getValue(char* category, char* key) {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
-
-    std::string data = Conf.get(std::string(category)).get(std::string(key));
-    char* retval = (char*)malloc(data.length()+1);
-    strcpy(retval, data.c_str());
-
-    return retval;
-}
-
-extern "C" bool Config_setValue(char* category, char* key, char* value)  {
-    std::shared_ptr<Ship::ConfigFile> pConf = OTRGlobals::Instance->context->GetConfig();
-    Ship::ConfigFile& Conf = *pConf.get();
-    Conf[std::string(category)][std::string(key)] = std::string(value);
-    return Conf.Save();
 }
 
 std::wstring StringToU16(const std::string& s) {
@@ -1319,11 +1300,10 @@ extern "C" uint32_t OTRGetCurrentHeight() {
 }
 
 extern "C" void OTRControllerCallback(ControllerCallback* controller) {
-    auto controllers = OTRGlobals::Instance->context->GetWindow()->Controllers;
-    for (size_t i = 0; i < controllers.size(); i++) {
-        for (int j = 0; j < controllers[i].size(); j++) {
-            OTRGlobals::Instance->context->GetWindow()->Controllers[i][j]->WriteToSource(controller);
-        }
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (int i = 0; i < controllers.size(); ++i) {
+        Ship::Window::ControllerApi->physicalDevices[controllers[i]]->WriteToSource(i, controller);
     }
 }
 
@@ -1377,11 +1357,11 @@ extern "C" void AudioPlayer_Play(const uint8_t* buf, uint32_t len) {
 }
 
 extern "C" int Controller_ShouldRumble(size_t i) {
-    for (const auto& controller : Ship::Window::Controllers.at(i))
-    {
-        float rumble_strength = CVar_GetFloat(StringHelper::Sprintf("gCont%i_RumbleStrength", i).c_str(), 1.0f);
 
-        if (controller->CanRumble() && rumble_strength > 0.001f) {
+    const auto controllers = Ship::Window::ControllerApi->virtualDevices;
+
+    for (const auto virtual_entry : controllers) {
+        if (Ship::Window::ControllerApi->physicalDevices[virtual_entry]->CanRumble()) {
             return 1;
         }
     }
@@ -1394,23 +1374,23 @@ extern "C" void* getN64WeirdFrame(s32 i) {
     return &weirdFrameBytes[i + sizeof(n64WeirdFrames)];
 }
 
-extern "C" s16 GetItemModelFromId(s16 itemId) {
+extern "C" s16 Randomizer_GetItemModelFromId(s16 itemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemModelFromId(itemId);
 }
 
-extern "C" s32 GetItemIDFromGetItemID(s32 getItemId) {
+extern "C" s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId) {
     return OTRGlobals::Instance->gRandomizer->GetItemIDFromGetItemID(getItemId);
 }
 
-extern "C" void LoadRandomizerSettings(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadSettings(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadRandomizerSettings(spoilerFileName);
 }
 
-extern "C" void LoadHintLocations(const char* spoilerFileName) {
+extern "C" void Randomizer_LoadHintLocations(const char* spoilerFileName) {
     OTRGlobals::Instance->gRandomizer->LoadHintLocations(spoilerFileName);
 }
 
-extern "C" void LoadItemLocations(const char* spoilerFileName, bool silent) {
+extern "C" void Randomizer_LoadItemLocations(const char* spoilerFileName, bool silent) {
     OTRGlobals::Instance->gRandomizer->LoadItemLocations(spoilerFileName, silent);
 }
 
@@ -1418,11 +1398,11 @@ extern "C" bool SpoilerFileExists(const char* spoilerFileName) {
     return OTRGlobals::Instance->gRandomizer->SpoilerFileExists(spoilerFileName);
 }
 
-extern "C" u8 GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
+extern "C" u8 Randomizer_GetSettingValue(RandomizerSettingKey randoSettingKey) {
     return OTRGlobals::Instance->gRandomizer->GetRandoSettingValue(randoSettingKey);
 }
 
-extern "C" RandomizerCheck GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
+extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorId, s16 actorParams) {
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
@@ -1439,7 +1419,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
             price = 40;
             break;
     }
-    switch (language) { 
+    switch (language) {
     case 0: default:
         scrubText += 0x12; // add the sound
         scrubText += 0x38; // sound id
@@ -1494,37 +1474,37 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += 0xA3; // message id
         break;
     }
-    
+
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyAltarMessage(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyAltarMessage(char* buffer, const int maxBufferSize) {
     const std::string& altarText = (LINK_IS_ADULT) ? OTRGlobals::Instance->gRandomizer->GetAdultAltarText()
                                                    : OTRGlobals::Instance->gRandomizer->GetChildAltarText();
     return CopyStringToCharBuffer(altarText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyGanonHintText(char* buffer, const int maxBufferSize) {
+extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSize) {
     const std::string& ganonText = OTRGlobals::Instance->gRandomizer->GetGanonHintText();
     return CopyStringToCharBuffer(ganonText, buffer, maxBufferSize);
 }
 
-extern "C" int CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);
 }
 
-extern "C" s32 GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
+extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemId(ogId, actorId, actorParams, sceneNum);
 }
 
-extern "C" s32 GetRandomizedItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
+extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
 }
