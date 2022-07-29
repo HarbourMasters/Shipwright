@@ -985,7 +985,7 @@ void DrawItemTracker(bool& open) {
             }
             SohImGui::EnhancementCheckbox("Display \"Ammo/MaxAmo\"", "gItemTrackerAmmoDisplay");
             SohImGui::EnhancementCheckbox("Randomizer colors for Songs", "gItemTrackeSongColor");
-            SohImGui::Tooltip("Will dispaly non-warp songs with randomizer\ncolors instead of pure white");
+            SohImGui::Tooltip("Will display non-warp songs with randomizer colors instead of pure white");
             SohImGui::EnhancementSliderInt("Icon size : %dpx", "##ITEMTRACKERICONSIZE", "gRandoTrackIconSize", 32, 128, "");
 
             SohImGui::EnhancementSliderInt("X spacing : %dpx", "##ITEMTRACKERSPACINGX", "gRandoTrackIconSpacingX", minimalSpacingX, 256,
