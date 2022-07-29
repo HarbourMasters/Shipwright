@@ -1,4 +1,4 @@
-FROM ubuntu:22.10 as build
+FROM ubuntu:20.04 as build
 
 ENV LANG C.UTF-8
 ARG DEBIAN_FRONTEND=noninteractive
@@ -8,8 +8,8 @@ RUN apt-get update && \
 	apt-get install -y \
 		binutils \
 		file \
-		gcc-12 \
-		g++-12 \
+		gcc-10 \
+		g++-10 \
 		patchelf \
 		p7zip-full \
 		python3.9 \
@@ -24,8 +24,8 @@ RUN apt-get update && \
 		libbz2-dev \
 		libpng-dev \
 		libgles2-mesa-dev && \    
-	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 10 && \
-	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 10 && \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+	update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10 && \
 	gcc --version && \
 	g++ --version
 	
