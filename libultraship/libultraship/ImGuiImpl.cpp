@@ -1008,6 +1008,8 @@ namespace SohImGui {
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
                         Tooltip("After completing the mask trading sub-quest,\npress A and any direction on the mask slot to change masks");
+                        EnhancementCheckbox("Remember Save Location", "gRememberSaveLocation");
+                        Tooltip("When loading a save, places Link at the last entrance he went through");
                         ImGui::EndMenu();
                     }
 
