@@ -1697,7 +1697,9 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
     unkMtx = &globalCtx->billboardMtxF;
 
-    // gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
+#ifndef __SWITCH__
+    gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
+#endif
 
     for (i = 0; i < 80; i++, eff++) {
         if (eff->unk_24 == 1) {
