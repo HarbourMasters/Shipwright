@@ -33,6 +33,10 @@ extern GlobalContext* gGlobalCtx;
 
 #define CMD_REGISTER SohImGui::BindCmd
 
+bool IsInGamePlay() {
+    return gGlobalCtx != nullptr;
+}
+
 static bool ActorSpawnHandler(const std::vector<std::string>& args) {
     if ((args.size() != 9) && (args.size() != 3) && (args.size() != 6)) {
         ERROR("Not enough arguments passed to actorspawn");

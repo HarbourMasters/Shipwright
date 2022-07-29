@@ -68,6 +68,8 @@ OSContPad* pads;
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
 
+extern bool IsInGamePlay();
+
 namespace SohImGui {
 
     WindowImpl impl;
@@ -1406,6 +1408,75 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+
+                {
+                    static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
+                    static int32_t lastBetaQuestEnabled = betaQuestEnabled;
+                    static int32_t betaQuestWorld = CVar_GetS32("gBetaQuestWorld", 0xFFEF);
+                    static int32_t lastBetaQuestWorld = betaQuestWorld;
+
+                    bool isDisabled = !IsInGamePlay();
+
+                    if (isDisabled) {
+                        ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                        ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
+                    }
+
+                    EnhancementCheckbox("Enable Beta Quest", "gEnableBetaQuest");
+                    Tooltip("Turns on OoT Beta Quest. *WARNING* This will reset your game.");
+                    betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
+                    if (betaQuestEnabled) {
+                        if (betaQuestEnabled != lastBetaQuestEnabled) {
+                            betaQuestWorld = 0;
+                        }
+
+                        ImGui::Text("Beta Quest World: %d", betaQuestWorld);
+
+                        if (ImGui::Button(" - ##BetaQuest")) {
+                            betaQuestWorld--;
+                        }
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+                        ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 16, "", ImGuiSliderFlags_AlwaysClamp);
+                        Tooltip("Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\nCtrl+Click to type in a value.");
+
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                        if (ImGui::Button(" + ##BetaQuest")) {
+                            betaQuestWorld++;
+                        }
+
+                        if (betaQuestWorld > 16) {
+                            betaQuestWorld = 16;
+                        }
+                        else if (betaQuestWorld < 0) {
+                            betaQuestWorld = 0;
+                        }
+                    }
+                    else {
+                        lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
+                        CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
+                        needs_save = true;
+                    }
+                    if (betaQuestEnabled != lastBetaQuestEnabled || betaQuestWorld != lastBetaQuestWorld)
+                    {
+                        // Reset the game if the beta quest state or world changed because beta quest happens on redirecting the title screen cutscene.
+                        lastBetaQuestEnabled = betaQuestEnabled;
+                        lastBetaQuestWorld = betaQuestWorld;
+                        CVar_SetS32("gEnableBetaQuest", betaQuestEnabled);
+                        CVar_SetS32("gBetaQuestWorld", betaQuestWorld);
+
+                        console->Commands["reset"].handler(emptyArgs);
+
+                        needs_save = true;
+                    }
+
+                    if (isDisabled) {
+                        ImGui::PopItemFlag();
+                        ImGui::PopStyleVar();
+                    }
+                }
 
                 ImGui::EndMenu();
             }
