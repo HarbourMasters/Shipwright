@@ -169,6 +169,7 @@ APPBUNDLECONTENTS=$(APPBUNDLE)/Contents
 APPBUNDLEEXE=$(APPBUNDLECONTENTS)/MacOS
 APPBUNDLERESOURCES=$(APPBUNDLECONTENTS)/Resources
 APPBUNDLEICON=$(APPBUNDLECONTENTS)/Resources
+APPBUNDLEASSETS=$(APPBUNDLEEXE)/assets
 
 # create build directory
 SRC_DIRS := $(shell find . -type d -a -not -path "*build*")
@@ -224,6 +225,11 @@ appbundle: macosx/$(APPNAME).icns
 	cp macosx/Info.plist $(APPBUNDLECONTENTS)/
 	cp macosx/PkgInfo $(APPBUNDLECONTENTS)/
 	cp macosx/$(APPNAME).icns $(APPBUNDLEICON)/
+	cp macosx/$(APPNAME).sh $(APPBUNDLEEXE)/
+    cp -r ../OTRGui/assets $(APPBUNDLEASSETS)
+    cp ../ZAPDTR/ZAPD.out $(APPBUNDLEASSETS)/extractor/
+    cp -r assets/xml $(APPBUNDLEASSETS)/extractor/xmls
+    cp -r ../OTRExporter/assets $(APPBUNDLEASSETS)/game
 	cp $(TARGET) $(APPBUNDLEEXE)/soh
 	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
 
