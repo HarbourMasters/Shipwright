@@ -29,7 +29,6 @@ WARN := -Wall -Wextra -Werror \
 	-Wno-narrowing \
 	-Wno-missing-field-initializers \
 	-Wno-error=multichar \
-	-Wno-unused-command-line-argument \
 	-Wno-delete-non-abstract-non-virtual-dtor \
 	-Wno-unused-private-field \
 	-Wno-deprecated-copy-with-user-provided-copy \
@@ -46,7 +45,7 @@ endif
 
 CXXFLAGS := $(WARN) $(CXXWARN) -std=c++20 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
 CFLAGS := $(WARN) $(CWARN) -std=c99 -D_GNU_SOURCE -DENABLE_OPENGL -DSPDLOG_ACTIVE_LEVEL=0
-CPPFLAGS := -MMD
+CPPFLAGS := -MMD $(shell pkg-config --cflags sdl2 glew)
 
 MMFLAGS := -Wno-deprecated-declarations -ObjC++ -fobjc-weak -fobjc-arc
 
@@ -60,10 +59,6 @@ ifneq ($(CXX_IS_CLANG),1)
 	STD_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | head -n 1)
 	CXX_ISYSTEM=$(shell ${CXX} -xc++ -E -v - < /dev/null 2>&1  | grep "> search starts here" -A2 | tail -n 2 | tail -n 1)
 	MMFLAGS += -stdlib++-isystem ${STD_ISYSTEM} -cxx-isystem ${CXX_ISYSTEM}
-endif
-
-ifeq ($(UNAME), Darwin) #APPLE
-	CPPFLAGS += $(shell pkg-config --cflags sdl2 glew) -framework OpenGL -framework Foundation
 endif
 
 ifneq ($(DEBUG),0)
