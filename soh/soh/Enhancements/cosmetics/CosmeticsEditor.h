@@ -41,6 +41,7 @@ static ImVec4 navi_npc_i_col;      static ImVec4 navi_npc_o_col;
 static ImVec4 navi_enemy_i_col;    static ImVec4 navi_enemy_o_col;
 static ImVec4 navi_prop_i_col;     static ImVec4 navi_prop_o_col;
 static ImVec4 trailscol;
+static ImVec4 crtfilter;
 static ImVec4 firearrow_col;       static ImVec4 icearrow_col;            static ImVec4 lightarrow_col;
 static ImVec4 firearrow_colenv;    static ImVec4 icearrow_colenv;         static ImVec4 lightarrow_colenv;
 static ImVec4 charged1_col;        static ImVec4 charged2_col;
@@ -81,7 +82,79 @@ static CosmeticsColorIndividual Keese2_env = { "Ice Secondary color", "Affects t
 static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of the white dog", "gDog1Col", doggo1col, ImVec4(255,255,200,255), true, false, true };
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
+//Tunics colors
+static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
+static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
+static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
 
+//Arrows (Fire -> Ice -> Light)
+static CosmeticsColorIndividual Fire_Arrow_Prim = { "Fire Arrows (primary)", "Affects Primary color", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255), true, false, false };
+static CosmeticsColorIndividual Fire_Arrow_Env = { "Fire Arrows (Secondary)", "Affects Secondary color", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255), true, false, false };
+static CosmeticsColorIndividual Ice_Arrow_Prim = { "Ice Arrows (Primary)", "Affects Primary color", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255), true, false, false };
+static CosmeticsColorIndividual Ice_Arrow_Env = { "Ice Arrows (Secondary)", "Affects Secondary color", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255), true, false, false };
+static CosmeticsColorIndividual Light_Arrow_Prim = { "Light Arrows (Primary)", "Affects Primary color", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255), true, false, false };
+static CosmeticsColorIndividual Light_Arrow_Env = { "Light Arrows (Secondary)", "Affects Secondary color", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255), true, false, false };
+
+//Spells
+static CosmeticsColorIndividual Din_Fire_Prim = { "Din's Fire (primary)", "Affects Primary color", "gDF_Col", df_col, ImVec4(255,200,0,255), true, false, false };
+static CosmeticsColorIndividual Din_Fire_Env = { "Din's Fire (Secondary)", "Affects Secondary color", "gDF_Env", df_colenv, ImVec4(255,0,0,255), true, false, false };
+static CosmeticsColorIndividual Nayru_Diamond_Prim = { "Nayru's Love Diamond (primary)", "Affects Primary color", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255), true, false, false };
+static CosmeticsColorIndividual Nayru_Diamond_Env = { "Nayru's Love Diamond (Secondary)", "Affects Secondary color", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255), true, false, false };
+static CosmeticsColorIndividual Nayru_Orb_Prim = { "Nayru's Love Orb (primary)", "Affects Primary color", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255), true, false, false };
+static CosmeticsColorIndividual Nayru_Orb_Env = { "Nayru's Love Orb (Secondary)", "Affects Secondary color", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255), true, false, false };
+
+//Spin attacks colors
+static CosmeticsColorIndividual Spin_Lv1_Prim = { "Level 1 (primary)", "Affects Primary color", "gCharged1Col", charged1_col, ImVec4(170,255,255,255), true, false, false };
+static CosmeticsColorIndividual Spin_Lv1_Env = { "Level 1 (Secondary)", "Affects Secondary color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255), true, false, false };
+static CosmeticsColorIndividual Spin_Lv2_Prim = { "Level 2 (primary)", "Affects Primary color", "gCharged2Col", charged2_col, ImVec4(255,255,170,255), true, false, false };
+static CosmeticsColorIndividual Spin_Lv2_Env = { "Level 2 (Secondary)", "Affects Secondary color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255), true, false, false };
+
+//Trails
+static CosmeticsColorIndividual Trails_col = { "Trails color", "Affects Swords slash, boomerang and Bombchu trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255), true, false, false };
+
+//Menus - File Choose
+static CosmeticsColorIndividual FileChoose_Background = { "Main menu color", "Affects the File Select menu background.", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, false };
+static CosmeticsColorIndividual FileChoose_BottomText = { "Bottom texts color", "Affects the File Select texts.", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, false };
+
+//Hud Stuff (Dpad, Buttons etc)
+static CosmeticsColorIndividual A_Btn = { "A Button", "Affects the A button colors (and various cursors that use the same theme)", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, false };
+static CosmeticsColorIndividual B_Btn = { "B Button", "Affects the B button color", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, false };
+static CosmeticsColorIndividual C_Btn = { "C-Buttons", "Affects the C Buttons' color (if not using separate colors)\nAnd various cursor that use C-Buttons colors", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, false };
+static CosmeticsColorIndividual C_Btn_U = { "C-Buttons Up", "Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255), true, false, false };
+static CosmeticsColorIndividual C_Btn_D = { "C-Buttons Down", "Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255), true, false, false };
+static CosmeticsColorIndividual C_Btn_L = { "C-Buttons Left", "Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255), true, false, false };
+static CosmeticsColorIndividual C_Btn_R = { "C-Buttons Right", "Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255), true, false, false };
+static CosmeticsColorIndividual Start_btn = { "Start Button", "Affects the Start button color", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, false };
+static CosmeticsColorIndividual DPad_Items = { "DPad background", "DPad background color, White is the default value", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255), true, false, false };
+
+//Hearts colors
+static CosmeticsColorIndividual Hearts_NInner = { "Inner (Normal)", "Affects the inner color", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, false };
+static CosmeticsColorIndividual Hearts_DDInner = { "Inner (Double defense)", "Affects the inner color", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, false };
+static CosmeticsColorIndividual Hearts_DDOutline = { "Outline (Double defense)", "Affects the outline color of hearts when you have Double Defense\nWhite is the default value", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, false };
+
+//Magic Meter colors
+static CosmeticsColorIndividual Magic_Borders = { "Borders", "Affects the border of the magic meter\nWhite is the default value, color change only when used one time", "gCCMagicBorderNormPrim", magic_bordern_colors, ImVec4(255,255,255,255), false, false, false };
+static CosmeticsColorIndividual Magic_InUse_Borders = { "Borders in use", "Affects the border of the magic meter when being used\nWhite is the default value", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255), false, false, false };
+static CosmeticsColorIndividual Magic_Meter = { "Main color", "Affects the magic meter color\nGreen is the default value", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255), true, false, false };
+static CosmeticsColorIndividual Magic_InUse_Meter = { "Main color in use", "Affects the magic meter when being used\nYellow is the default value", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255), true, false, false };
+
+//Minimap and it's arrow colors
+static CosmeticsColorIndividual Minimap_OW = { "Overworlds", "Affects the Overworld minimaps", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255), true, false, false };
+static CosmeticsColorIndividual Minimap_DG = { "Dungeons", "Affects the Dungeon minimaps", "gCCMinimapDGNPrim", dgn_minimap_colors, ImVec4(100, 255, 255, 255), true, false, false };
+static CosmeticsColorIndividual Minimap_CP = { "Current position arrow", "Affects the current position arrow on the minimap\nYellow is the default value", "gCCMinimapCPPrim", cp_minimap_colors, ImVec4(200, 255, 0, 255), true, false, false };
+static CosmeticsColorIndividual Minimap_LE = { "Last entrance arrow", "Affects the last entrance position arrow on the minimap\nRed is the default value", "gCCMinimapLEPrim", le_minimap_colors, ImVec4(200, 0, 0, 255), true, false, false };
+
+//Title Cards colors
+static CosmeticsColorIndividual TitleCards_OW = { "Main color (Overworld)", "Affects all the overworld title cards color, white is the default value", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false, false, false };
+static CosmeticsColorIndividual TitleCards_DG = { "Main color (Dungeon)", "Affects all the bosses title cards color, white is the default value", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false, false, false };
+
+//Misc. colors, the one I have no clue where to put nor that aren't that important
+static CosmeticsColorIndividual Rupee_Icon = { "Rupee icon", "Affects the Rupee icon on interface\nGreen is the default value", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255), true, false, false };
+static CosmeticsColorIndividual SmallKeys_Icon = { "Small Keys icon", "Affects the Small keys icon on interface\nGray is the default value", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255), true, false, false };
+static CosmeticsColorIndividual VSOA_Icon = { "Visual Stone of agony icon", "Affects the Stone of Agony icon on interface\nWhite is the default value\nRequire room reload or activation", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255), true, false, false };
+static CosmeticsColorIndividual CRTFilter = { "CRT Filter", "Affects the colors and alpha of CRT filter\nWhite is the default value\nRequire room reload or activation", "gCRTFilter", crtfilter, ImVec4(255, 255, 255, 150), true, false, false };
+
+//Sections creation, here I regroup them in some sort of a Theme, all navi stuff together etc. It will be used to create the menu.
 static CosmeticsColorSection Navi_Section[] = {
     { &Navi_Idle_Inner, false, false },
     { &Navi_Idle_Outer, true, false },
@@ -102,6 +175,92 @@ static CosmeticsColorSection Dogs_Section[] = {
     { &DogN1, false, false },
     { &DogN2, true, false }
 };
+static CosmeticsColorSection Tunics_Section[] = {
+    { &KokiriTunic, false, false },
+    { &GoronTunic, true, false },
+    { &ZoraTunic, true, false }
+};
+static CosmeticsColorSection Arrows_section[] = {
+    { &Fire_Arrow_Prim, false, false },
+    { &Fire_Arrow_Env, true, false },
+    { &Ice_Arrow_Prim, false, true },
+    { &Ice_Arrow_Env, true, false },
+    { &Light_Arrow_Prim, false, true },
+    { &Light_Arrow_Env, true, false }
+};
+static CosmeticsColorSection Spells_section[] = {
+    { &Din_Fire_Prim, false, false },
+    { &Din_Fire_Env, true, false },
+    { &Nayru_Diamond_Prim, false, true },
+    { &Nayru_Diamond_Env, true, false },
+    { &Nayru_Orb_Prim, false, true },
+    { &Nayru_Orb_Env, true, false }
+};
+static CosmeticsColorSection SpinAtk_section[] = {
+    { &Spin_Lv1_Prim, false, false },
+    { &Spin_Lv1_Env, true, false },
+    { &Spin_Lv2_Prim, false, true },
+    { &Spin_Lv2_Env, true, false }
+};
+static CosmeticsColorSection Trails_section[] = {
+    { &Trails_col, false, false }
+};
+static CosmeticsColorSection FileChoose_section[] = {
+    { &FileChoose_Background, false, false },
+    { &FileChoose_BottomText, true, false }
+};
+static CosmeticsColorSection A_Btn_section[] = {
+    { &A_Btn, false, false }
+};
+static CosmeticsColorSection B_Btn_section[] = {
+    { &B_Btn, false, false }
+};
+static CosmeticsColorSection C_Btn_Unified_section[] = {
+    { &C_Btn, false, false }
+};
+static CosmeticsColorSection C_Btn_Separated_section[] = {
+    { &C_Btn_U, false, false },
+    { &C_Btn_D, false, true },
+    { &C_Btn_L, false, true },
+    { &C_Btn_R, false, true }
+};
+static CosmeticsColorSection Start_Btn_section[] = {
+    { &Start_btn, false, false }
+};
+static CosmeticsColorSection DPad_section[] = {
+    { &DPad_Items, false, false }
+};
+static CosmeticsColorSection Hearts_section[] = {
+    { &Hearts_NInner, false, false },
+    { &Hearts_DDInner, true, false },
+    { &Hearts_DDOutline, true, false }
+};
+static CosmeticsColorSection Magic_Meter_section[] = {
+    { &Magic_Borders, false, false },
+    { &Magic_InUse_Borders, true, false },
+    { &Magic_Meter, false, true },
+    { &Magic_InUse_Meter, true, false },
+};
+static CosmeticsColorSection Minimap_section[] = {
+    { &Minimap_OW, false, false },
+    { &Minimap_DG, false, true },
+    { &Minimap_CP, false, true },
+    { &Minimap_LE, false, true }
+};
+static CosmeticsColorSection TitleCards_section[] = {
+    { &TitleCards_OW, false, false },
+    { &TitleCards_DG, true, false }
+};
+static CosmeticsColorSection Misc_section[] = {
+    { &Rupee_Icon, false, false },
+    { &SmallKeys_Icon, false, true },
+    { &VSOA_Icon, false, true }
+};
+static CosmeticsColorSection Filters_section[] = {
+    { &CRTFilter, false, true }
+};
+
+
 
 void InitCosmeticsEditor();//Init the menu itself
 void LoadRainbowColor();

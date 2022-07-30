@@ -150,7 +150,6 @@ void Draw_HelpIcon(const std::string& helptext, bool sameline = true, int Pos = 
     }
     ImGui::PushItemWidth(ImGui::GetContentRegionAvail().x);
 }
-
 void DrawUseMarginsSlider(const std::string ElementName, const std::string CvarName){
     std::string CvarLabel = CvarName + "UseMargins";
     std::string Label = ElementName + " use margins";
@@ -210,6 +209,7 @@ void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
         SohImGui::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
     }
 }
+
 void Draw_Npcs(){
     SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
     SohImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
@@ -225,15 +225,15 @@ void Draw_Npcs(){
     if (CVar_GetS32("gUseKeeseCol",0) && ImGui::BeginTable("tableKeese", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Fire colors##Keese", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Ice colors##Keese", FlagsCell, TablesCellsWidth/2);
-        Table_InitHeader(false);
+        Table_InitHeader();
         DrawColorSection(Keese_Section, SECTION_SIZE(Keese_Section));
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom colors for Dogs", "gUseDogsCol");
     SohImGui::Tooltip("Enable/Disable custom colors for the two Dog variants\nIf disabled, default colors will be used");
     if (CVar_GetS32("gUseDogsCol",0) && ImGui::BeginTable("tableDogs", 2, FlagsTable)) {
-        ImGui::TableSetupColumn("Dog N.1 color", FlagsCell, TablesCellsWidth/2);
-        ImGui::TableSetupColumn("Dog N.2 color", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("White Dog color", FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn("Brown Dog color", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
         DrawColorSection(Dogs_Section, SECTION_SIZE(Dogs_Section));
         ImGui::EndTable();
@@ -247,14 +247,7 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Goron Tunic", FlagsCell, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Zora Tunic", FlagsCell, TablesCellsWidth/3);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Kokiri Tunic color", false);
-        SohImGui::EnhancementColor("Kokiri Tunic", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true);
-        Table_NextCol();
-        Draw_HelpIcon("Affects Goron Tunic color", false);
-        SohImGui::EnhancementColor("Goron Tunic", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true);
-        Table_NextCol();
-        Draw_HelpIcon("Affects Zora Tunic color", false);
-        SohImGui::EnhancementColor("Zora Tunic", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true);
+        DrawColorSection(Tunics_Section, SECTION_SIZE(Tunics_Section));
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
@@ -262,23 +255,7 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Primary colors##Arrows", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Arrows", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Fire Arrows (primary)", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Fire Arrows", "gFireArrowColEnv", firearrow_colenv, ImVec4(255,0,0,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Ice Arrows (primary)", "gIceArrowCol", icearrow_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Ice Arrows", "gIceArrowColEnv", icearrow_colenv, ImVec4(0,0,255,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Light Arrows (primary)", "gLightArrowCol", lightarrow_col, ImVec4(255,255,170,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Light Arrows", "gLightArrowColEnv", lightarrow_colenv, ImVec4(255,255,0,255));
+        DrawColorSection(Arrows_section, SECTION_SIZE(Arrows_section));
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
@@ -286,23 +263,7 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Inner colors##Spells", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Spells", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Din's Fire (primary)", "gDF_Col", df_col, ImVec4(255,200,0,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Din's Fire", "gDF_Env", df_colenv, ImVec4(255,0,0,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond (primary)", "gNL_Diamond_Col", nl_diam_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Diamond", "gNL_Diamond_Env", nl_diam_colenv, ImVec4(100,255,128,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb (primary)", "gNL_Orb_Col", nl_orb_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Nayru's Love Orb", "gNL_Orb_Env", nl_orb_colenv, ImVec4(150,255,255,255));
+        DrawColorSection(Spells_section, SECTION_SIZE(Spells_section));
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
@@ -310,25 +271,14 @@ void Draw_ItemsSkills(){
         ImGui::TableSetupColumn("Primary colors##Charge", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Charge", FlagsCell, TablesCellsWidth/2);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 1 color (primary)", "gCharged1Col", charged1_col, ImVec4(170,255,255,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 1 color", "gCharged1ColEnv", charged1_colenv, ImVec4(0,100,255,255));
-        Table_NextLine();
-        Draw_HelpIcon("Affects Primary color");
-        SohImGui::EnhancementColor("Level 2 color (primary)", "gCharged2Col", charged2_col, ImVec4(255,255,170,255));
-        Table_NextCol();
-        Draw_HelpIcon("Affects Secondary color");
-        SohImGui::EnhancementColor("Level 2 color", "gCharged2ColEnv", charged2_colenv, ImVec4(255,100,0,255));
+        DrawColorSection(SpinAtk_section, SECTION_SIZE(SpinAtk_section));
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom trails color", "gUseTrailsCol");
     if (CVar_GetS32("gUseTrailsCol",0) && ImGui::BeginTable("tabletrails", 1, FlagsTable)) {
         ImGui::TableSetupColumn("Custom Trails", FlagsCell, TablesCellsWidth);
         Table_InitHeader();
-        Draw_HelpIcon("Affects Swords slash, boomerang and Bombchu trails color");
-        SohImGui::EnhancementColor("Trails color", "gTrailCol", trailscol, ImVec4(255,255,255,255));
+        DrawColorSection(Trails_section, SECTION_SIZE(Trails_section));
         SohImGui::EnhancementSliderInt("Trails duration: %dx", "##TrailsMul", "gTrailDurantion", 1, 5, "");
         SohImGui::Tooltip("The longer the trails the weirder it become");
         ImGui::NewLine();
@@ -341,37 +291,9 @@ void Draw_Menus(){
             ImGui::TableSetupColumn("File Choose color", FlagsCell, TablesCellsWidth/2);
             ImGui::TableSetupColumn("Bottom text color", FlagsCell, TablesCellsWidth/2);
             Table_InitHeader();
-            Draw_HelpIcon("Affects the File Select menu background.");
-            SohImGui::EnhancementColor("File Choose color", "gCCFileChoosePrim", fileselect_colors, ImVec4(100, 150, 255, 255), true, false, true);
-            Table_NextCol();
-            Draw_HelpIcon("Affects the File Select texts.");
-            SohImGui::EnhancementColor("Bottom text color", "gCCFileChooseTextPrim", fileselect_text_colors, ImVec4(100, 255, 255, 255), true, false, true);
+            DrawColorSection(FileChoose_section, SECTION_SIZE(FileChoose_section));
             ImGui::EndTable();
         }
-        /*
-        if (ImGui::BeginTable("tablePauseMenu", 1, FlagsTable)) {
-            ImGui::TableSetupColumn("Kaleido pages (Non working atm)", FlagsCell, TablesCellsWidth);
-            Table_InitHeader();
-            Draw_HelpIcon("Affect the Equipments menu background.");
-            SohImGui::EnhancementColor("Equipments", "gCCEquipmentsPrim", menu_equips_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Select items menu background.");
-            SohImGui::EnhancementColor("Items", "gCCItemsPrim", menu_items_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Map menu background.");
-            SohImGui::EnhancementColor("Maps", "gCCMapsPrim", menu_map_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Quests statut menu background.");
-            SohImGui::EnhancementColor("Quests", "gCCQuestsPrim", menu_quest_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Save menu background.");
-            SohImGui::EnhancementColor("Save", "gCCSavePrim", menu_save_colors, ImVec4(0, 100, 255, 255), true, true);
-            Table_NextLine();
-            Draw_HelpIcon("Affect the Gameover screen background.");
-            SohImGui::EnhancementColor("Gameover", "gCCGameoverPrim", menu_gameover_colors, ImVec4(0, 100, 255, 255), true, true);
-            ImGui::EndTable();
-        }
-        */
     } else {
         ImGui::Text("To modify menus colors you need \"Custom Colors\" scheme\nto be selected in \"General\" tab.\nOnce enabled you will be able to modify the following colors:\nFile Choose color\nBottom text color");
     }
@@ -680,8 +602,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_A", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("A Button colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the A button colors (and various cursors that use the same theme)", false);
-                SohImGui::EnhancementColor("A Buttons", "gCCABtnPrim", a_btn_colors, ImVec4(0, 200, 50, 255), true, false, true);
+                DrawColorSection(A_Btn_section, SECTION_SIZE(A_Btn_section));
                 ImGui::EndTable();
             }
         }
@@ -689,8 +610,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_B", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("B button color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the B button color", false);
-                SohImGui::EnhancementColor("B Button", "gCCBBtnPrim", b_btn_colors, ImVec4(255, 30, 30, 255), true, false, true);
+                DrawColorSection(B_Btn_section, SECTION_SIZE(B_Btn_section));
                 ImGui::EndTable();
             }
         }
@@ -698,8 +618,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_C", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("Button C colors & C Cursor colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the C Buttons' color (if not using separate colors)\nAnd various cursor that use C-Buttons colors", false);
-                SohImGui::EnhancementColor("C-Buttons", "gCCCBtnPrim", c_btn_colors, ImVec4(255, 160, 0, 255), true, false, true);
+                DrawColorSection(C_Btn_Unified_section, SECTION_SIZE(C_Btn_Unified_section));
                 ImGui::EndTable();
             }
             SohImGui::EnhancementCheckbox("C-Buttons use separate colors", "gCCparated");
@@ -707,17 +626,7 @@ void Draw_HUDButtons(){
                 if (ImGui::BeginTable("tableBTN_CSep", 1, FlagsTable)) {
                     ImGui::TableSetupColumn("C-Buttons individual colors", FlagsCell, TablesCellsWidth);
                     Table_InitHeader(false);
-                    Draw_HelpIcon("Affects C-Buttons Up colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Up", "gCCCUBtnPrim", c_btn_u_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Down colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Down", "gCCCDBtnPrim", c_btn_d_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Left colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Left", "gCCCLBtnPrim", c_btn_l_colors, ImVec4(255,160,0,255));
-                    Table_NextLine();
-                    Draw_HelpIcon("Affects C-Buttons Right colors, but not C cursor colors\nTo edit C Cursor check C-Buttons color on top");
-                    SohImGui::EnhancementColor("C Buttons Right", "gCCCRBtnPrim", c_btn_r_colors, ImVec4(255,160,0,255));
+                    DrawColorSection(C_Btn_Separated_section, SECTION_SIZE(C_Btn_Separated_section));
                     ImGui::EndTable();
                 }
             }
@@ -726,8 +635,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableBTN_Start", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("Start button colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("Affects the Start button color", false);
-                SohImGui::EnhancementColor("Start Buttons", "gCCStartBtnPrim", start_btn_colors, ImVec4(200, 0, 0, 255), true, false, true);
+                DrawColorSection(Start_Btn_section, SECTION_SIZE(Start_Btn_section));
                 ImGui::EndTable();
             }
         }
@@ -735,8 +643,7 @@ void Draw_HUDButtons(){
             if (ImGui::BeginTable("tableDpadHud", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("DPad color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader(false);
-                Draw_HelpIcon("DPad background color, White is the default value");
-                SohImGui::EnhancementColor("DPad background color", "gCCDpadPrim", dpad_colors, ImVec4(255, 255, 255, 255));
+                DrawColorSection(DPad_section, SECTION_SIZE(DPad_section));
                 ImGui::EndTable();
             }
         }
@@ -768,14 +675,7 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Hearts (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 ImGui::TableSetupColumn("Hearts Outline (DD)", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable, TablesCellsWidth/3);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner normal", "gCCHeartsPrim", hearts_colors, ImVec4(255,70,50,255), true, false, true);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the inner color", false);
-                SohImGui::EnhancementColor("Inner DD", "gCCDDHeartsPrim", hearts_ddi_colors, ImVec4(255,70,50,255), true, false, true);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the outline color of hearts when you have Double Defense\nWhite is the default value", false);
-                SohImGui::EnhancementColor("Outline DD", "gDDCCHeartsPrim", hearts_dd_colors, ImVec4(255,255,255,255), true, false, true);
+                DrawColorSection(Hearts_section, SECTION_SIZE(Hearts_section));
                 ImGui::EndTable();
             }
         }
@@ -784,17 +684,7 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Magic meter", FlagsCell, TablesCellsWidth/2);
                 ImGui::TableSetupColumn("Magic meter in use", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the border of the magic meter\nWhite is the default value, color change only when used one time");
-                SohImGui::EnhancementColor("Borders", "gCCMagicBorderNormPrim", magic_bordern_colors, ImVec4(255,255,255,255), false);
-                Table_NextCol();
-                Draw_HelpIcon("Affects the border of the magic meter when being used\nWhite is the default value");
-                SohImGui::EnhancementColor("Borders in use", "gCCMagicBorderPrim", magic_border_colors, ImVec4(255,255,255,255), false);
-                Table_NextLine();
-                Draw_HelpIcon("Affects the magic meter color\nGreen is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCMagicPrim", magic_remaining_colors, ImVec4(0,200,0,255));
-                Table_NextCol();
-                Draw_HelpIcon("Affects the magic meter when being used\nYellow is the default value");
-                SohImGui::EnhancementColor("Main color in use", "gCCMagicUsePrim", magic_use_colors, ImVec4(250,250,0,255));
+                DrawColorSection(Magic_Meter_section, SECTION_SIZE(Magic_Meter_section));
                 ImGui::EndTable();
             }
         }
@@ -802,17 +692,7 @@ void Draw_General(){
             if (ImGui::BeginTable("tableMinimapCol", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("Minimap color", FlagsCell, TablesCellsWidth);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the Overworld minimaps");
-                SohImGui::EnhancementColor("Overworlds", "gCCMinimapPrim", minimap_colors, ImVec4(0, 255, 255, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the Dungeon minimaps");
-                SohImGui::EnhancementColor("Dungeons", "gCCMinimapDGNPrim", dgn_minimap_colors, ImVec4(100, 255, 255, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the current position arrow on the minimap\nYellow is the default value");
-                SohImGui::EnhancementColor("Current position arrow", "gCCMinimapCPPrim", cp_minimap_colors, ImVec4(200, 255, 0, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the last entrance position arrow on the minimap\nRed is the default value");
-                SohImGui::EnhancementColor("Last entrance arrow", "gCCMinimapLEPrim", le_minimap_colors, ImVec4(200, 0, 0, 255));
+                DrawColorSection(Minimap_section, SECTION_SIZE(Minimap_section));
                 ImGui::EndTable();
             }
         }
@@ -821,11 +701,15 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Title cards Overworld", FlagsCell, TablesCellsWidth/2);
                 ImGui::TableSetupColumn("Title cards Bosses", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects all the overworld title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_OW_U_Prim", tc_ou_colors, ImVec4(255, 255, 255, 255), false);
-                Table_NextCol();
-                Draw_HelpIcon("Affects all the bosses title cards color, white is the default value");
-                SohImGui::EnhancementColor("Main color", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false);
+                DrawColorSection(TitleCards_section, SECTION_SIZE(TitleCards_section));
+                ImGui::EndTable();
+            }
+        }
+        if (CVar_GetS32("gCRTFilter",0) && ImGui::CollapsingHeader("Filter interface colors")) {
+            if (ImGui::BeginTable("tableFilterHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("Filter colors", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(Filters_section, SECTION_SIZE(Filters_section));
                 ImGui::EndTable();
             }
         }
@@ -833,14 +717,7 @@ void Draw_General(){
             if (ImGui::BeginTable("tableMiscHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("Misc HUD colors", FlagsCell, TablesCellsWidth);
                 Table_InitHeader();
-                Draw_HelpIcon("Affects the Rupee icon on interface\nGreen is the default value");
-                SohImGui::EnhancementColor("Rupee icon", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the Small keys icon on interface\nGray is the default value");
-                SohImGui::EnhancementColor("Small Keys icon", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255));
-                Table_NextLine();
-                Draw_HelpIcon("Affects the Stone of Agony icon on interface\nWhite is the default value");
-                SohImGui::EnhancementColor("Stone of agony icon", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255));
+                DrawColorSection(Misc_section, SECTION_SIZE(Misc_section));
                 ImGui::EndTable();
             }
         }
@@ -853,7 +730,7 @@ void DrawCosmeticsEditor(bool& open) {
         CVar_SetS32("gCosmeticsEditorEnabled", 0);
         return;
     }
-    ImGui::SetNextWindowSize(ImVec2(470, 430), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(620, 430), ImGuiCond_FirstUseEver);
     if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
         ImGui::End();
         return;

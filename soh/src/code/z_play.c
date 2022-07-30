@@ -507,6 +507,17 @@ void Gameplay_Update(GlobalContext* globalCtx) {
 
     input = globalCtx->state.input;
 
+    if (CVar_GetS32("gCRTFilter",0)) {
+        OPEN_DISPS(globalCtx->state.gfxCtx);
+        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+                      ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
+        gDPPipeSync(OVERLAY_DISP++);
+        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCRTFilterR", 255),
+                        CVar_GetS32("gCRTFilterG", 255), CVar_GetS32("gCRTFilterB", 255),
+                        CVar_GetS32("gCRTFilterA", 255));
+        CLOSE_DISPS(globalCtx->state.gfxCtx);
+    }
+
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
