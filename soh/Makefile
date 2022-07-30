@@ -232,6 +232,7 @@ appbundle: macosx/$(APPNAME).icns
 	cp -r ../OTRExporter/assets $(APPBUNDLEASSETS)/game
 	cp $(TARGET) $(APPBUNDLEEXE)/soh
 	otool -l $(TARGET) | grep -A 2 LC_RPATH  | tail -n 1 | awk '{print $2}' | dylibbundler -od -b -x  $(APPBUNDLEEXE)/soh -d $(APPBUNDLECONTENTS)/libs
+	install_name_tool -change "/opt/local/lib/libGLEW.2.2.0.dylib" "@executable_path/libGLEW.2.2.0.dylib" $(APPBUNDLEASSETS)/extractor/ZAPD.out
 
 macosx/$(APPNAME).icns: macosx/$(APPNAME)Icon.png
 	rm -rf macosx/$(APPNAME).iconset
