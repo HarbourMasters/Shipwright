@@ -152,7 +152,6 @@ static CosmeticsColorIndividual TitleCards_DG = { "Main color (Dungeon)", "Affec
 static CosmeticsColorIndividual Rupee_Icon = { "Rupee icon", "Affects the Rupee icon on interface\nGreen is the default value", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255), true, false, false };
 static CosmeticsColorIndividual SmallKeys_Icon = { "Small Keys icon", "Affects the Small keys icon on interface\nGray is the default value", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255), true, false, false };
 static CosmeticsColorIndividual VSOA_Icon = { "Visual Stone of agony icon", "Affects the Stone of Agony icon on interface\nWhite is the default value\nRequire room reload or activation", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255), true, false, false };
-static CosmeticsColorIndividual CRTFilter = { "CRT Filter", "Affects the colors and alpha of CRT filter\nWhite is the default value\nRequire room reload or activation", "gCRTFilter", crtfilter, ImVec4(255, 255, 255, 150), true, false, false };
 
 //Sections creation, here I regroup them in some sort of a Theme, all navi stuff together etc. It will be used to create the menu.
 static CosmeticsColorSection Navi_Section[] = {
@@ -256,11 +255,6 @@ static CosmeticsColorSection Misc_section[] = {
     { &SmallKeys_Icon, false, true },
     { &VSOA_Icon, false, true }
 };
-static CosmeticsColorSection Filters_section[] = {
-    { &CRTFilter, false, true }
-};
-
-
 
 void InitCosmeticsEditor();//Init the menu itself
 void LoadRainbowColor();

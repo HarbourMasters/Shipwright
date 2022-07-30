@@ -22,7 +22,7 @@ const char* RainbowColorCvarList[] = {
     "gCCMinimapPrim", "gCCMinimapDGNPrim", "gCCMinimapCPPrim", "gCCMinimapLEPrim",
     "gCCRupeePrim", "gCCKeysPrim", "gDog1Col", "gDog2Col", "gCCVSOAPrim",
     "gKeese1_Ef_Prim","gKeese2_Ef_Prim","gKeese1_Ef_Env","gKeese2_Ef_Env",
-    "gDF_Col", "gDF_Env",
+    "gDF_Col", "gDF_Env", 
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
     "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
@@ -702,14 +702,6 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Title cards Bosses", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
                 DrawColorSection(TitleCards_section, SECTION_SIZE(TitleCards_section));
-                ImGui::EndTable();
-            }
-        }
-        if (CVar_GetS32("gCRTFilter",0) && ImGui::CollapsingHeader("Filter interface colors")) {
-            if (ImGui::BeginTable("tableFilterHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
-                ImGui::TableSetupColumn("Filter colors", FlagsCell, TablesCellsWidth);
-                Table_InitHeader();
-                DrawColorSection(Filters_section, SECTION_SIZE(Filters_section));
                 ImGui::EndTable();
             }
         }
