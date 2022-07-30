@@ -68,7 +68,12 @@ OSContPad* pads;
 std::map<std::string, GameAsset*> DefaultAssets;
 std::vector<std::string> emptyArgs;
 
-extern bool IsInGamePlay();
+bool isBetaQuestEnabled = false;
+
+extern "C" {
+    void enableBetaQuest() { isBetaQuestEnabled = true; }
+    void disableBetaQuest() { isBetaQuestEnabled = false; }
+}
 
 namespace SohImGui {
 
@@ -1415,9 +1420,7 @@ namespace SohImGui {
                     static int32_t betaQuestWorld = CVar_GetS32("gBetaQuestWorld", 0xFFEF);
                     static int32_t lastBetaQuestWorld = betaQuestWorld;
 
-                    bool isDisabled = !IsInGamePlay();
-
-                    if (isDisabled) {
+                    if (!isBetaQuestEnabled) {
                         ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                         ImGui::PushStyleVar(ImGuiStyleVar_Alpha, ImGui::GetStyle().Alpha * 0.5f);
                     }
@@ -1472,7 +1475,7 @@ namespace SohImGui {
                         needs_save = true;
                     }
 
-                    if (isDisabled) {
+                    if (!isBetaQuestEnabled) {
                         ImGui::PopItemFlag();
                         ImGui::PopStyleVar();
                     }
