@@ -508,13 +508,20 @@ void Gameplay_Update(GlobalContext* globalCtx) {
     input = globalCtx->state.input;
 
     if (CVar_GetS32("gCRTFilter",0)) {
+        unsigned char crtTex[] = {
+            0x0,0xff,0x41,0xff,0x0,0x0,0x0,0x0,
+        };
         OPEN_DISPS(globalCtx->state.gfxCtx);
-        gDPSetCombineLERP(POLY_OPA_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
+        gDPSetCombineLERP(OVERLAY_DISP++, PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0, PRIMITIVE,
                       ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
         gDPPipeSync(OVERLAY_DISP++);
         gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCRTFilterR", 255),
                         CVar_GetS32("gCRTFilterG", 255), CVar_GetS32("gCRTFilterB", 255),
                         CVar_GetS32("gCRTFilterA", 255));
+        gDPLoadTextureTile(OVERLAY_DISP++, crtTex, G_IM_FMT_IA, G_IM_SIZ_16b, 1, 2, 0, 0, 120 - 1, 24 - 1, 0,
+                       G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, 0, 0, 0, 0);
+        gSPTextureRectangle(OVERLAY_DISP++, 100 << 2, 160 << 2, 220 << 2, 183 << 2, G_TX_RENDERTILE, 0, 0, 1 << 10,
+                    1 << 10);
         CLOSE_DISPS(globalCtx->state.gfxCtx);
     }
 
