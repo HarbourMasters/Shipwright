@@ -7,6 +7,7 @@
 #include "z_bg_spot00_hanebasi.h"
 #include "objects/object_spot00_objects/object_spot00_objects.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS ACTOR_FLAG_4
 
@@ -260,6 +261,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
     GlobalContext* globalCtx = globalCtx2;
     f32 angle;
     s32 i;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -276,6 +279,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
     gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, 0);
 
     for (i = 0; i < 2; i++) {
+        FrameInterpolation_RecordOpenChild("Hanebasi Torch", epoch + i * 25);
+
         gSPSegment(POLY_XLU_DISP++, 0x08,
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 32, 64, 1, 0,
                                     ((globalCtx->gameplayFrames + i) * -20) & 0x1FF, 32, 128));
@@ -287,6 +292,8 @@ void BgSpot00Hanebasi_DrawTorches(Actor* thisx, GlobalContext* globalCtx2) {
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
         gSPDisplayList(POLY_XLU_DISP++, gEffFire1DL);
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

@@ -6,6 +6,7 @@
 
 #include "z_en_ba.h"
 #include "objects/object_bxa/object_bxa.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4)
 
@@ -107,6 +108,7 @@ void EnBa_Init(Actor* thisx, GlobalContext* globalCtx) {
     this->actor.targetMode = 4;
     this->upperParams = (thisx->params >> 8) & 0xFF;
     thisx->params &= 0xFF;
+    this->epoch = 0;
 
     if (this->actor.params < EN_BA_DEAD_BLOB) {
         if (Flags_GetSwitch(globalCtx, this->upperParams)) {
@@ -464,6 +466,7 @@ void EnBa_Update(Actor* thisx, GlobalContext* globalCtx) {
     if (this->unk14C >= 2) {
         CollisionCheck_SetAC(globalCtx, &globalCtx->colChkCtx, &this->collider.base);
     }
+    this->epoch++;
 }
 
 static void* D_809B8118[] = {
@@ -489,6 +492,8 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                    Gfx_TwoTexScroll(globalCtx->state.gfxCtx, 0, 0, 0, 16, 16, 1, 0,
                                     (globalCtx->gameplayFrames * -10) % 128, 32, 32));
         for (i = 0; i < 14; i++, mtx++) {
+            FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
+
             Matrix_Translate(this->unk158[i].x, this->unk158[i].y, this->unk158[i].z, MTXMODE_NEW);
             Matrix_RotateZYX(this->unk2A8[i].x, this->unk2A8[i].y, this->unk2A8[i].z, MTXMODE_APPLY);
             Matrix_Scale(this->unk200[i].x, this->unk200[i].y, this->unk200[i].z, MTXMODE_APPLY);
@@ -504,6 +509,8 @@ void EnBa_Draw(Actor* thisx, GlobalContext* globalCtx) {
                 }
             }
             MATRIX_TOMTX(mtx);
+
+            FrameInterpolation_RecordCloseChild();
         }
         Matrix_Pop();
         gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),

@@ -8,6 +8,7 @@
 #include "objects/object_fw/object_fw.h"
 #include "overlays/actors/ovl_En_Bom/z_en_bom.h"
 #include "objects/gameplay_keep/gameplay_keep.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2 | ACTOR_FLAG_4 | ACTOR_FLAG_9)
 
@@ -421,6 +422,7 @@ void EnFw_AddDust(EnFw* this, Vec3f* initialPos, Vec3f* initialSpeed, Vec3f* acc
             eff->pos = *initialPos;
             eff->accel = *accel;
             eff->velocity = *initialSpeed;
+            eff->epoch = 0;
             return;
         }
     }
@@ -444,6 +446,7 @@ void EnFw_UpdateDust(EnFw* this) {
             eff->velocity.y += eff->accel.y;
             eff->velocity.z += eff->accel.z;
             eff->scale += eff->scaleStep;
+            eff->epoch++;
         }
     }
 }
@@ -464,6 +467,8 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
 
     for (i = 0; i < ARRAY_COUNT(this->effects); i++, eff++) {
+        FrameInterpolation_RecordOpenChild(eff, eff->epoch);
+
         if (eff->type != 0) {
             if (!firstDone) {
                 POLY_XLU_DISP = Gfx_CallSetupDL(POLY_XLU_DISP, 0U);
@@ -484,6 +489,8 @@ void EnFw_DrawDust(EnFw* this, GlobalContext* globalCtx) {
             gSPSegment(POLY_XLU_DISP++, 0x8, SEGMENTED_TO_VIRTUAL(dustTextures[idx]));
             gSPDisplayList(POLY_XLU_DISP++, gFlareDancerSquareParticleDL);
         }
+
+        FrameInterpolation_RecordCloseChild();
     }
 
     CLOSE_DISPS(globalCtx->state.gfxCtx);

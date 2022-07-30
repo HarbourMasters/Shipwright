@@ -55,12 +55,12 @@ void SpeedMeter_DrawTimeEntries(SpeedMeter* this, GraphicsContext* gfxCtx) {
     uly = this->y;
     lry = this->y + 2;
 
-    OPEN_DISPS(gfxCtx);
-
     /*! @bug if gIrqMgrRetraceTime is 0, CLOSE_DISPS will never be reached */
     if (gIrqMgrRetraceTime == 0) {
         return;
     }
+
+    OPEN_DISPS(gfxCtx);
 
     sSpeedMeterTimeEntryPtr = &sSpeedMeterTimeEntryArray[0];
     for (i = 0; i < ARRAY_COUNT(sSpeedMeterTimeEntryArray); i++) {

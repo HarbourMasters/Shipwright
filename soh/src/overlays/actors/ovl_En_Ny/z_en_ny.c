@@ -1,5 +1,6 @@
 #include "z_en_ny.h"
 #include "objects/object_ny/object_ny.h"
+#include "soh/frame_interpolation.h"
 
 #define FLAGS (ACTOR_FLAG_0 | ACTOR_FLAG_2)
 
@@ -107,6 +108,7 @@ static InitChainEntry sInitChain[] = {
 void EnNy_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnNy* this = (EnNy*)thisx;
 
+    this->epoch = 0;
     Actor_ProcessInitChain(&this->actor, sInitChain);
     this->actor.colChkInfo.damageTable = &sDamageTable;
     this->actor.colChkInfo.health = 2;
@@ -370,6 +372,7 @@ void EnNy_Update(Actor* thisx, GlobalContext* globalCtx) {
     f32 temp_f22;
     s32 i;
 
+    this->epoch++;
     this->timer++;
     temp_f20 = this->unk_1E0 - 0.25f;
     if (this->unk_1CA != 0) {
@@ -577,6 +580,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
     gDPPipeSync(POLY_OPA_DISP++);
     for (i = 0; i < 8; i++) {
         if (this->timer < (i + 22)) {
+            FrameInterpolation_RecordOpenChild(this, this->epoch + i * 25);
             temp = &this->unk_1F8[i];
             Matrix_Translate(temp->x, temp->y, temp->z, MTXMODE_NEW);
             scale = this->actor.scale.x * 0.4f * (1.0f + (i * 0.04f));
@@ -584,6 +588,7 @@ void EnNy_DrawDeathEffect(Actor* thisx, GlobalContext* globalCtx) {
             gSPMatrix(POLY_OPA_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),
                       G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
             gSPDisplayList(POLY_OPA_DISP++, gEnNyRockBodyDL);
+            FrameInterpolation_RecordCloseChild();
         }
     }
     CLOSE_DISPS(globalCtx->state.gfxCtx);

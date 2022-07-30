@@ -348,6 +348,7 @@ void BossMo_Init(Actor* thisx, GlobalContext* globalCtx2) {
         globalCtx->specialEffects = sEffects;
         for (i = 0; i < ARRAY_COUNT(sEffects); i++) {
             sEffects[i].type = MO_FX_NONE;
+            sEffects[i].epoch = 0;
         }
         this->actor.world.pos.x = 200.0f;
         this->actor.world.pos.y = MO_WATER_LEVEL(globalCtx) + 50.0f;
@@ -2442,6 +2443,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     f32 phi_f20;
     f32 phi_f22;
     Vec3f sp110;
+    static s32 epoch = 0;
+    epoch++;
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -2462,6 +2465,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
     BossMo_InitRand(1, 29100, 9786);
 
     for (i = 0; i < 41; i++, matrix++) {
+        FrameInterpolation_RecordOpenChild("Morpha Tentacle", epoch + i * 25);
+
         s32 pad;
         s32 pad2;
 
@@ -2559,6 +2564,8 @@ void BossMo_DrawTentacle(BossMo* this, GlobalContext* globalCtx) {
         if ((i < 38) && ((i & 1) == 1)) {
             BossMo_UpdateTentColliders(this, i / 2, &this->tentCollider, &this->tentPos[i]);
         }
+        
+        FrameInterpolation_RecordCloseChild();
     }
 
     Matrix_Pop();
@@ -2760,6 +2767,7 @@ void BossMo_UpdateEffects(BossMo* this, GlobalContext* globalCtx) {
     for (i = 0; i < ARRAY_COUNT(sEffects); i++, effect++) {
         if (effect->type != MO_FX_NONE) {
             effect->timer++;
+            effect->epoch++;
             if (effect->stopTimer == 0) {
                 effect->pos.x += effect->vel.x;
                 effect->pos.y += effect->vel.y;
