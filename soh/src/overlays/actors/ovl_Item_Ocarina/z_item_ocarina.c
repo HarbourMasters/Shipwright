@@ -168,7 +168,8 @@ void ItemOcarina_DoNothing(ItemOcarina* this, GlobalContext* globalCtx) {
 }
 
 void ItemOcarina_StartSoTCutscene(ItemOcarina* this, GlobalContext* globalCtx) {
-    if (Actor_TextboxIsClosing(&this->actor, globalCtx)) {
+    if (Actor_TextboxIsClosing(&this->actor, globalCtx) ||
+        Randomizer_ObtainedFreestandingIceTrap(RC_HF_OCARINA_OF_TIME_ITEM, GI_OCARINA_OOT, &this->actor)) {
         if (!gSaveContext.n64ddFlag) {
             globalCtx->csCtx.segment = SEGMENTED_TO_VIRTUAL(gHyruleFieldZeldaSongOfTimeCs);
             gSaveContext.cutsceneTrigger = 1;
