@@ -25,12 +25,12 @@ namespace Ship
         auto memStream = std::make_shared<MemoryStream>(FileToLoad->buffer.get(), FileToLoad->dwBufferSize);
         auto reader = std::make_shared<BinaryReader>(memStream);
 
-        Endianess endianess = (Endianess)reader->ReadByte();
+        Endianness endianness = (Endianness)reader->ReadByte();
 
         for (int i = 0; i < 3; i++)
             reader->ReadByte();
 
-        // OTRTODO: Setup the binaryreader to use the resource's endianess
+        reader->SetEndianness(endianness);
 
         ResourceType resourceType = (ResourceType)reader->ReadUInt32();
         Resource* result = nullptr;

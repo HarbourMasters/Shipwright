@@ -186,12 +186,6 @@
     <ClCompile Include="Utils\MemoryStream.cpp" />
     <ClCompile Include="Utils\StringHelper.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\OTRGui\build\ZERO_CHECK.vcxproj">
-      <Project>{02d10590-9542-3f55-aaf8-6055677e2a2a}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
