@@ -45,6 +45,18 @@ make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
 # Compile the code
 make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
 ```
+### Using Visual Studio Code to Debug the Ship on Linux
+
+* Build soh.elf in debug mode (follow the steps from above, but for `make setup` and `make` use)
+```
+make setup -j$(nproc) OPTFLAGS=-O0 DEBUG=1
+make -j $(nproc) OPTFLAGS=-O0 DEBUG=1
+``` 
+* Configure [Visual Studio Code](https://code.visualstudio.com/) for debugging by placing a `launch.json` file in the `.vscode` directory
+  * [launch.json documentation](https://code.visualstudio.com/docs/cpp/launch-json-reference)
+  * [example launch.json](https://gist.github.com/briaguya-ai/a107bbb4a0cd87fb1c3428527939321a)  
+
+* Pressing `F5` or selecting `Start Debugging` in the `Run` menu should now launch `soh.elf` and attach the debugger
 
 ## macOS
 
