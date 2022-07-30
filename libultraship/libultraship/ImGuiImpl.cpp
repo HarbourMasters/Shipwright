@@ -1441,8 +1441,11 @@ namespace SohImGui {
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
 
-                        ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 16, "", ImGuiSliderFlags_AlwaysClamp);
+                        ImGui::SliderInt("##BetaQuest", &betaQuestWorld, 0, 8, "", ImGuiSliderFlags_AlwaysClamp);
                         Tooltip("Set the Beta Quest world to explore. *WARNING* Changing this will reset your game.\nCtrl+Click to type in a value.");
+
+                        ImGui::Text("After Slider Beta Quest World: %d", betaQuestWorld);
+
 
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -1450,12 +1453,14 @@ namespace SohImGui {
                             betaQuestWorld++;
                         }
 
-                        if (betaQuestWorld > 16) {
-                            betaQuestWorld = 16;
+                        if (betaQuestWorld > 8) {
+                            betaQuestWorld = 8;
                         }
                         else if (betaQuestWorld < 0) {
                             betaQuestWorld = 0;
                         }
+
+                        ImGui::Text("After Clamp Beta Quest World: %d", betaQuestWorld);
                     }
                     else {
                         lastBetaQuestWorld = betaQuestWorld = 0xFFEF;
