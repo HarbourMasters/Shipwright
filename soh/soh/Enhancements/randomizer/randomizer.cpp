@@ -1843,7 +1843,7 @@ std::string FormatJsonHintText(std::string jsonHint) {
             start_pos += textBoxSpecialCharacterString.length();
         }
     }
-    
+
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
         std::string textToReplace = "$";
@@ -2402,10 +2402,6 @@ std::string Randomizer::GetGanonText() const {
 std::string Randomizer::GetGanonHintText() const {
     return ganonHintText;
 }
-
-//CustomMessageEntry Randomizer::GetHintFromCheck(RandomizerCheck check) {
-//    return CustomMessage::Instance->RetrieveMessage(hintMessageTableID, check);
-//}
 
 u8 Randomizer::GetRandoSettingValue(RandomizerSettingKey randoSettingKey) {
     return this->randoSettings[randoSettingKey];
@@ -4750,10 +4746,10 @@ typedef struct {
 } GetItemMessage;
 
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
-    CustomMessageManager* customMessage = CustomMessageManager::Instance;
-    customMessage->AddCustomMessageTable(Randomizer::getItemMessageTableID);
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
     for (GetItemMessage messageEntry : messageEntries) {
-        customMessage->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
+        customMessageManager->CreateGetItemMessage(Randomizer::getItemMessageTableID, messageEntry.giid, messageEntry.iid,
                                             { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM,
                                               messageEntry.english, messageEntry.german,
                                               messageEntry.french });
@@ -4761,11 +4757,11 @@ void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
 }
 
 void CreateScrubMessages() {
-    CustomMessageManager* customMessage = CustomMessageManager::Instance;
-    customMessage->AddCustomMessageTable(Randomizer::scrubMessageTableID);
+    CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
+    customMessageManager->AddCustomMessageTable(Randomizer::scrubMessageTableID);
     const std::vector<u8> prices = { 10, 40 };
     for (u8 price : prices) {
-        customMessage->CreateMessage(Randomizer::scrubMessageTableID, price,
+        customMessageManager->CreateMessage(Randomizer::scrubMessageTableID, price,
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",

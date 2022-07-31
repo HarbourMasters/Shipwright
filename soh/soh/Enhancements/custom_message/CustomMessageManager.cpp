@@ -112,11 +112,11 @@ CustomMessageEntry CustomMessageManager::RetrieveMessage(std::string tableID, ui
 }
 
 bool CustomMessageManager::ClearMessageTable(std::string tableID) {
-    auto result = messageTables.find(tableID);
-    if (result == messageTables.end()) {
+    auto foundMessageTable = messageTables.find(tableID);
+    if (foundMessageTable == messageTables.end()) {
         return false;
     }
-    auto& messageTable = result->second;
+    auto& messageTable = foundMessageTable->second;
     messageTable.clear();
 }
 
