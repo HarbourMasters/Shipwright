@@ -2463,6 +2463,17 @@ namespace Settings {
   //Function to set flags depending on settings
   void UpdateSettings(std::unordered_map<RandomizerSettingKey, uint8_t> cvarSettings) {
 
+    // RANDTODO: Switch this back once all logic options are implemented
+    // Logic.SetSelectedIndex(cvarSettings[RSK_LOGIC_RULES]);
+    switch (cvarSettings[RSK_LOGIC_RULES]) {
+        case 0:
+            Logic.SetSelectedIndex(0);
+            break;
+        case 1:
+            Logic.SetSelectedIndex(2);
+            break;
+    }
+
     OpenForest.SetSelectedIndex(cvarSettings[RSK_FOREST]);
     OpenKakariko.SetSelectedIndex(cvarSettings[RSK_KAK_GATE]);
     ZorasFountain.SetSelectedIndex(cvarSettings[RSK_ZORAS_FOUNTAIN]);
