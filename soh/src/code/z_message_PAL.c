@@ -71,25 +71,19 @@ s16 gOcarinaSongItemMap[] = {
 s32 sCharTexSize;
 s32 sCharTexScale;
 
-typedef struct {
-    s16 r;
-    s16 b;
-    s16 g;
-} OcarinaNoteColor;
+Color_RGB8 sOcarinaNoteABtnEnv;
+Color_RGB8 sOcarinaNoteCBtnEnv;
+Color_RGB8 sOcarinaNoteCBtnPrim;
 
-OcarinaNoteColor sOcarinaNoteABtnEnv;
-OcarinaNoteColor sOcarinaNoteCBtnEnv;
-OcarinaNoteColor sOcarinaNoteCBtnPrim;
-
-OcarinaNoteColor sOcarinaNoteD5Prim;
-OcarinaNoteColor sOcarinaNoteB4Prim;
-OcarinaNoteColor sOcarinaNoteA4Prim;
-OcarinaNoteColor sOcarinaNoteF4Prim;
-OcarinaNoteColor sOcarinaNoteD4Prim;
+Color_RGB8 sOcarinaNoteD5Prim;
+Color_RGB8 sOcarinaNoteB4Prim;
+Color_RGB8 sOcarinaNoteA4Prim;
+Color_RGB8 sOcarinaNoteF4Prim;
+Color_RGB8 sOcarinaNoteD4Prim;
 
 // If the "separate" bool is set, use the "gCCC<cDirection>BtnPrim<R/G/B> CVars
 // to set the button color. Otherwise, use sOcarinaNoteCBtnPrim.
-void Message_SetCustomOrGeneralCColor(OcarinaNoteColor* color, bool separate, char cDirection) {
+void Message_SetCustomOrGeneralCColor(Color_RGB8* color, bool separate, char cDirection) {
     if (!separate) {
         *color = sOcarinaNoteCBtnPrim;
         return;
@@ -118,7 +112,7 @@ typedef struct {
 // If the assigned button is A, a C button, Start, or the D-pad, then it'll be
 // colored to the corresponding CVar. Otherwise, its color will be equal to
 // sOcarinaNoteCBtnPrim.
-void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, CustomNoteOptions* flags) {
+void Message_SetCustomOcarinaNoteColor(Color_RGB8* color, s32 btnMap, CustomNoteOptions* flags) {
     switch (btnMap) {
         case BTN_A:
             color->r = CVar_GetS32("gCCABtnPrimR", 80);
@@ -138,9 +132,9 @@ void Message_SetCustomOcarinaNoteColor(OcarinaNoteColor* color, s32 btnMap, Cust
             Message_SetCustomOrGeneralCColor(color, flags->separateC, 'R');
             break;
         case BTN_START:
-            color->r = CVar_GetS32("gCCStartBtnPrim", 200);
-            color->g = CVar_GetS32("gCCStartBtnPrim", 0);
-            color->b = CVar_GetS32("gCCStartBtnPrim", 0);
+            color->r = CVar_GetS32("gCCStartBtnPrimR", 200);
+            color->g = CVar_GetS32("gCCStartBtnPrimG", 0);
+            color->b = CVar_GetS32("gCCStartBtnPrimB", 0);
             break;
         case BTN_DUP:
         case BTN_DDOWN:
@@ -174,17 +168,17 @@ void Message_ResetOcarinaNoteState(void) {
     sOcarinaNotesAlphaValues[0] = sOcarinaNotesAlphaValues[1] = sOcarinaNotesAlphaValues[2] =
         sOcarinaNotesAlphaValues[3] = sOcarinaNotesAlphaValues[4] = sOcarinaNotesAlphaValues[5] =
             sOcarinaNotesAlphaValues[6] = sOcarinaNotesAlphaValues[7] = sOcarinaNotesAlphaValues[8] = 0;
-    sOcarinaNoteABtnEnv = (OcarinaNoteColor){ .r = 10, .g = 10, .b = 10 };
-    sOcarinaNoteCBtnEnv = (OcarinaNoteColor){ .r = 10, .g = 10, .b = 10 };
+    sOcarinaNoteABtnEnv = (Color_RGB8){ .r = 10, .g = 10, .b = 10 };
+    sOcarinaNoteCBtnEnv = (Color_RGB8){ .r = 10, .g = 10, .b = 10 };
 
     if (CVar_GetS32("gHudColors", 1) != 2) {  // N64/GameCube
         if (CVar_GetS32("gHudColors", 1) == 0) {
-            sOcarinaNoteD4Prim = (OcarinaNoteColor){ .r = 80, .g = 150, .b = 255 };
+            sOcarinaNoteD4Prim = (Color_RGB8){ .r = 80, .g = 150, .b = 255 };
         } else if (CVar_GetS32("gHudColors", 1) == 1) {
-            sOcarinaNoteD4Prim = (OcarinaNoteColor){ .r = 80, .g = 255, .b = 150 };
+            sOcarinaNoteD4Prim = (Color_RGB8){ .r = 80, .g = 255, .b = 150 };
         }
 
-        sOcarinaNoteCBtnPrim = (OcarinaNoteColor){ .r = 255, .g = 255, .b = 50 };
+        sOcarinaNoteCBtnPrim = (Color_RGB8){ .r = 255, .g = 255, .b = 50 };
         sOcarinaNoteD5Prim = sOcarinaNoteCBtnPrim;
         sOcarinaNoteB4Prim = sOcarinaNoteCBtnPrim;
         sOcarinaNoteA4Prim = sOcarinaNoteCBtnPrim;
