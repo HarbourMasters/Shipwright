@@ -171,6 +171,9 @@ void Ship::GameOverlay::Draw() {
 			case CVarType::String:
 				this->TextDraw(30, textY, true, color, "%s %s", text, var->value.valueStr);
 				break;
+			case CVarType::RGBA:
+				this->TextDraw(30, textY, true, color, "#%08X", text, var->value.valueRGBA);
+				break;
 			}
 
 			free((void*) text);
