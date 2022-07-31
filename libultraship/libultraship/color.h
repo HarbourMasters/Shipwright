@@ -1,7 +1,13 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#include <stdint.h>
 #include "endianness.h"
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
 
 typedef struct {
     uint8_t r, g, b;
@@ -15,9 +21,9 @@ typedef struct {
 typedef union {
     struct {
 #ifdef IS_BIGENDIAN
-        u8 r, g, b, a;
+        uint8_t r, g, b, a;
 #else
-        u8 a, b, g, r;
+        uint8_t a, b, g, r;
 #endif
     };
     uint32_t rgba;
