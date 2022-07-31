@@ -98,7 +98,7 @@ static inline uint32_t read_CMD_HH(BinaryReader* reader)
 	return v;
 }
 
-void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res)
+void Ship::CutsceneV0::ParseFileBinary(BinaryReader* reader, Resource* res, bool readFullHeader)
 {
 	Cutscene* cs = (Cutscene*)res;
 
