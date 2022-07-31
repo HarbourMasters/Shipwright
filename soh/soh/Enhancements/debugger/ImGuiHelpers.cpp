@@ -1,5 +1,4 @@
 #include "ImGuiHelpers.h"
-#include "Lib/ImGui/imgui_internal.h"
 
 // Adds a text tooltip for the previous ImGui item
 void SetLastItemHoverText(const std::string& text) {
@@ -22,7 +21,6 @@ void InsertHelpHoverText(const std::string& text) {
 }
 
 void PaddedSeparator(bool topPadding, bool bottomPadding, float x, float y) {
-    ImGuiWindow* window = ImGui::GetCurrentWindow();
     if (topPadding) {
         ImGui::Dummy(ImVec2(x, y));
     }
