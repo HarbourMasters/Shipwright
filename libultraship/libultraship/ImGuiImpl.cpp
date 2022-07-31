@@ -1258,6 +1258,9 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
+                EnhancementCheckbox("Autosave", "gAutosave");
+                Tooltip("Automatically save the game every time a new area is entered");
+
                 EXPERIMENTAL();
 
                 const char* fps_cvar = "gInterpolationFPS";
