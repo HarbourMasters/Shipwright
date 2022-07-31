@@ -12,8 +12,8 @@
 
 const char* RainbowColorCvarList[] = {
     //This is the list of possible CVars that has rainbow effect.
-    "gTunic_Kokiri_", "gTunic_Goron_", "gTunic_Zora_",
-    "gFireArrowCol", "gIceArrowCol", "gTunic_Zora_",
+    "gTunic_Kokiri", "gTunic_Goron", "gTunic_Zora",
+    "gFireArrowCol", "gIceArrowCol",
     "gFireArrowColEnv", "gIceArrowColEnv", "gLightArrowColEnv",
     "gCCHeartsPrim", "gDDCCHeartsPrim", "gLightArrowCol", "gCCDDHeartsPrim",
     "gCCABtnPrim", "gCCBBtnPrim", "gCCCBtnPrim", "gCCStartBtnPrim",
@@ -76,12 +76,6 @@ void LoadRainbowColor(bool& open) {
     u8 arrayLength = sizeof(RainbowColorCvarList) / sizeof(*RainbowColorCvarList);
     for (u8 s = 0; s < arrayLength; s++) {
         std::string cvarName = RainbowColorCvarList[s];
-        std::string Cvar_Red = cvarName;
-        Cvar_Red += "R";
-        std::string Cvar_Green = cvarName;
-        Cvar_Green += "G";
-        std::string Cvar_Blue = cvarName;
-        Cvar_Blue += "B";
         std::string Cvar_RBM = cvarName;
         Cvar_RBM += "RBM";
         std::string RBM_HUE = cvarName;
@@ -107,11 +101,14 @@ void LoadRainbowColor(bool& open) {
         case 5: NewColor.x = b; NewColor.y = 0; NewColor.z = 255; break;
         case 6: NewColor.x = 255; NewColor.y = 0; NewColor.z = a; break;
         }
-
+        Color_RGBA8 NewColorRGB = {
+            SohImGui::ClampFloatToInt(NewColor.x, 0, 255),
+            SohImGui::ClampFloatToInt(NewColor.y, 0, 255),
+            SohImGui::ClampFloatToInt(NewColor.z, 0, 255),
+            255
+        };
         if (CVar_GetS32(Cvar_RBM.c_str(), 0) != 0) {
-            CVar_SetS32(Cvar_Red.c_str(), SohImGui::ClampFloatToInt(NewColor.x, 0, 255));
-            CVar_SetS32(Cvar_Green.c_str(), SohImGui::ClampFloatToInt(NewColor.y, 0, 255));
-            CVar_SetS32(Cvar_Blue.c_str(), SohImGui::ClampFloatToInt(NewColor.z, 0, 255));
+            CVar_SetRGBA(cvarName.c_str(), NewColorRGB);
         }
     }
 }

@@ -598,6 +598,8 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
     s32 pad;
     Player* player = GET_PLAYER(globalCtx);
     s16 tempX, tempZ;
+    const Color_RGB8 LastEntrance_arrow = { 200, 0, 0 };
+    const Color_RGB8 CurrentPosition_arrow = { 200, 255, 0 };
     s16 X_Margins_Minimap;
     s16 Y_Margins_Minimap;
     if (CVar_GetS32("gMinimapUseMargins", 0) != 0) {
@@ -655,9 +657,9 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetS32("gCCMinimapCPPrimR", 200), CVar_GetS32("gCCMinimapCPPrimG", 255), CVar_GetS32("gCCMinimapCPPrimB", 0), 255);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetRGB("gCCMinimapCPPrim", CurrentPosition_arrow).r, CVar_GetRGB("gCCMinimapCPPrim", CurrentPosition_arrow).g, CVar_GetRGB("gCCMinimapCPPrim", CurrentPosition_arrow).b, 255);       
         } else {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 255, 0, 255);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CurrentPosition_arrow.r, CurrentPosition_arrow.g, CurrentPosition_arrow.b, 255);
         }
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
 
@@ -696,9 +698,9 @@ void Minimap_DrawCompassIcons(GlobalContext* globalCtx) {
                   G_MTX_NOPUSH | G_MTX_LOAD | G_MTX_MODELVIEW);
 
         if (CVar_GetS32("gHudColors", 1) == 2) {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetS32("gCCMinimapLEPrimR", 200), CVar_GetS32("gCCMinimapLEPrimG", 0), CVar_GetS32("gCCMinimapLEPrimB", 0), 255);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, CVar_GetRGB("gCCMinimapLEPrim", LastEntrance_arrow).r,CVar_GetRGB("gCCMinimapLEPrim", LastEntrance_arrow).g,CVar_GetRGB("gCCMinimapLEPrim", LastEntrance_arrow).b, 255);
         } else {
-            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, 200, 0, 0, 255);
+            gDPSetPrimColor(OVERLAY_DISP++, 0, 0xFF, LastEntrance_arrow.r, LastEntrance_arrow.g, LastEntrance_arrow.b, 255);
         }
         gSPDisplayList(OVERLAY_DISP++, gCompassArrowDL);
     }
@@ -710,6 +712,8 @@ void Minimap_Draw(GlobalContext* globalCtx) {
     s32 pad[2];
     InterfaceContext* interfaceCtx = &globalCtx->interfaceCtx;
     s32 mapIndex = gSaveContext.mapIndex;
+    const Color_RGB8 Dungeon_minimap = {100, 255, 255};
+    const Color_RGB8 Overworld_minimap = {R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2)};
 
     OPEN_DISPS(globalCtx->state.gfxCtx);
 
@@ -748,9 +752,9 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
                     if (CHECK_DUNGEON_ITEM(DUNGEON_MAP, mapIndex)) {
                         if (CVar_GetS32("gHudColors", 1) == 2) { //Dungeon minimap
-                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapDGNPrimR", R_MINIMAP_COLOR(0)), CVar_GetS32("gCCMinimapDGNPrimG", R_MINIMAP_COLOR(1)), CVar_GetS32("gCCMinimapDGNPrimB", R_MINIMAP_COLOR(2)), interfaceCtx->minimapAlpha);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCMinimapDGNPrim", Dungeon_minimap).r,CVar_GetRGB("gCCMinimapDGNPrim", Dungeon_minimap).g,CVar_GetRGB("gCCMinimapDGNPrim", Dungeon_minimap).b, interfaceCtx->minimapAlpha);
                         } else {
-                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 100, 255, 255, interfaceCtx->minimapAlpha);
+                            gDPSetPrimColor(OVERLAY_DISP++, 0, 0, Dungeon_minimap.r, Dungeon_minimap.g, Dungeon_minimap.b, interfaceCtx->minimapAlpha);
                         }
 
                         gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->mapSegment);
@@ -823,9 +827,9 @@ void Minimap_Draw(GlobalContext* globalCtx) {
 
                     gDPSetCombineMode(OVERLAY_DISP++, G_CC_MODULATEIA_PRIM, G_CC_MODULATEIA_PRIM);
                     if (CVar_GetS32("gHudColors", 1) == 2) {//Overworld minimap
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetS32("gCCMinimapPrimR", R_MINIMAP_COLOR(0)), CVar_GetS32("gCCMinimapPrimG", R_MINIMAP_COLOR(1)), CVar_GetS32("gCCMinimapPrimB", R_MINIMAP_COLOR(2)), interfaceCtx->minimapAlpha);
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, CVar_GetRGB("gCCMinimapPrim", Overworld_minimap).r,CVar_GetRGB("gCCMinimapPrim", Overworld_minimap).g,CVar_GetRGB("gCCMinimapPrim", Overworld_minimap).b, interfaceCtx->minimapAlpha);
                     } else {
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, Overworld_minimap.r, Overworld_minimap.g, Overworld_minimap.b, interfaceCtx->minimapAlpha);
                     }
 
                     gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->mapSegment, G_IM_FMT_IA,
@@ -855,7 +859,7 @@ void Minimap_Draw(GlobalContext* globalCtx) {
                                             0, 1 << 10, 1 << 10);
 
                     if (CVar_GetS32("gHudColors", 1) != 2) {//This need to be added else it will color dungeon entrance icon too. (it re-init prim color to default color)
-                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, R_MINIMAP_COLOR(0), R_MINIMAP_COLOR(1), R_MINIMAP_COLOR(2), interfaceCtx->minimapAlpha);
+                        gDPSetPrimColor(OVERLAY_DISP++, 0, 0, Overworld_minimap.r, Overworld_minimap.g, Overworld_minimap.b, interfaceCtx->minimapAlpha);
                     }
 
                     if (((globalCtx->sceneNum != SCENE_SPOT01) && (globalCtx->sceneNum != SCENE_SPOT04) &&

@@ -216,7 +216,11 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
     s32 pad2;
     s32 i;
     u8 alpha;
-    
+    Color_RGB8 Spell_env_ori = {255, 0, 0};
+    Color_RGB8 Spell_col_ori = {255, 200, 0};
+    Color_RGB8 Spell_env = CVar_GetRGB("gDF_Env", Spell_env_ori);
+    Color_RGB8 Spell_col = CVar_GetRGB("gDF_Col", Spell_col_ori);
+
     if (this->action > 0) {
         OPEN_DISPS(globalCtx->state.gfxCtx);
         POLY_XLU_DISP = func_800937C0(POLY_XLU_DISP);
@@ -228,11 +232,11 @@ void MagicFire_Draw(Actor* thisx, GlobalContext* globalCtx) {
         gDPFillRectangle(POLY_XLU_DISP++, 0, 0, 319, 239);
         func_80093D84(globalCtx->state.gfxCtx);
         if (CVar_GetS32("gUseSpellsCol",0)) {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, CVar_GetS32("gDF_ColR",255), CVar_GetS32("gDF_ColG",200), CVar_GetS32("gDF_ColB",0), (u8)(this->alphaMultiplier * 255));
-            gDPSetEnvColor(POLY_XLU_DISP++, CVar_GetS32("gDF_EnvR",255), CVar_GetS32("gDF_EnvG",0), CVar_GetS32("gDF_EnvB",0), (u8)(this->alphaMultiplier * 255));
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col.r, Spell_col.g, Spell_col.b, (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env.r, Spell_env.g, Spell_env.b, (u8)(this->alphaMultiplier * 255));
         } else {
-            gDPSetPrimColor(POLY_XLU_DISP++, 0, 128, 255, 200, 0, (u8)(this->alphaMultiplier * 255));
-            gDPSetEnvColor(POLY_XLU_DISP++, 255, 0, 0, (u8)(this->alphaMultiplier * 255));
+            gDPSetPrimColor(POLY_XLU_DISP++, 0, 0x80, Spell_col_ori.r, Spell_col_ori.g, Spell_col_ori.b, (u8)(this->alphaMultiplier * 255));
+            gDPSetEnvColor(POLY_XLU_DISP++, Spell_env_ori.r, Spell_env_ori.g, Spell_env_ori.b, (u8)(this->alphaMultiplier * 255));
         }
         Matrix_Scale(0.15f, 0.15f, 0.15f, MTXMODE_APPLY);
         gSPMatrix(POLY_XLU_DISP++, MATRIX_NEWMTX(globalCtx->state.gfxCtx),

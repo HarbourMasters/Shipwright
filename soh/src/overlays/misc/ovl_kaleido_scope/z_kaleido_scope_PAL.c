@@ -762,6 +762,13 @@ static s16 sCursorColors[][3] = {
     { 0, 255, 50 },
 };
 
+const Color_RGB8 Cursor_ABTN_ori = {0, 255, 50};
+const Color_RGB8 Cursor_ABTNN64_ori = {0, 50, 255};
+const Color_RGB8 Cursor_CBTN_ori = {255, 255, 0};
+const Color_RGB8 Cursor_StartBTN_ori = {255, 255, 255};
+Color_RGB8 Cursor_ABTN;
+Color_RGB8 Cursor_CBTN;
+
 static void* sSavePromptTexs[] = {
     gPauseSavePromptENGTex,
     gPauseSavePromptGERTex,
@@ -988,26 +995,27 @@ void KaleidoScope_DrawCursor(GlobalContext* globalCtx, u16 pageIndex) {
     temp = pauseCtx->unk_1E4;
 
     if (CVar_GetS32("gHudColors", 1) == 0) {
-        sCursorColors[1][0] = 255;
-        sCursorColors[1][1] = 255;
-        sCursorColors[1][2] = 0;
-        sCursorColors[2][0] = 0;
-        sCursorColors[2][1] = 50;
-        sCursorColors[2][2] = 255;
+        //Will be converted to ColorRGB later.
+        sCursorColors[1][0] = Cursor_CBTN_ori.r;
+        sCursorColors[1][1] = Cursor_CBTN_ori.g;
+        sCursorColors[1][2] = Cursor_CBTN_ori.b;
+        sCursorColors[2][0] = Cursor_ABTNN64_ori.r;
+        sCursorColors[2][1] = Cursor_ABTNN64_ori.g;
+        sCursorColors[2][2] = Cursor_ABTNN64_ori.b;
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-        sCursorColors[1][0] = 255;
-        sCursorColors[1][1] = 255;
-        sCursorColors[1][2] = 0;
-        sCursorColors[2][0] = 0;
-        sCursorColors[2][1] = 255;
-        sCursorColors[2][2] = 50;
+        sCursorColors[1][0] = Cursor_CBTN_ori.r;
+        sCursorColors[1][1] = Cursor_CBTN_ori.g;
+        sCursorColors[1][2] = Cursor_CBTN_ori.b;
+        sCursorColors[2][0] = Cursor_ABTN_ori.r;
+        sCursorColors[2][1] = Cursor_ABTN_ori.g;
+        sCursorColors[2][2] = Cursor_ABTN_ori.b;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        sCursorColors[1][0] = CVar_GetS32("gCCCBtnPrimR", 255);
-        sCursorColors[1][1] = CVar_GetS32("gCCCBtnPrimG", 255);
-        sCursorColors[1][2] = CVar_GetS32("gCCCBtnPrimB", 0);
-        sCursorColors[2][0] = CVar_GetS32("gCCABtnPrimR", 0);
-        sCursorColors[2][1] = CVar_GetS32("gCCABtnPrimG", 255);
-        sCursorColors[2][2] = CVar_GetS32("gCCABtnPrimB", 50);
+        sCursorColors[1][0] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).r;
+        sCursorColors[1][1] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).g;
+        sCursorColors[1][2] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).b;
+        sCursorColors[2][0] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).r;
+        sCursorColors[2][1] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).g;
+        sCursorColors[2][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
     }
 
     if ((((pauseCtx->unk_1E4 == 0) || (temp == 8)) && (pauseCtx->state == 6)) ||
@@ -1080,45 +1088,46 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
         { 0, 0, 0 }, { 0, 0, 0 },     { 0, 0, 0 },    { 0, 0, 0 }, { 255, 255, 0 }, { 0, 0, 0 },
         { 0, 0, 0 }, { 255, 255, 0 }, { 0, 255, 50 }, { 0, 0, 0 }, { 0, 0, 0 },     { 0, 255, 50 },
     };
+    const Color_RGB8 A_BTN_ori = {100, 255, 100};
     if (CVar_GetS32("gHudColors", 1) == 0) {
-        D_8082ACF4[4][0] = 255;
-        D_8082ACF4[4][1] = 255;
-        D_8082ACF4[4][2] = 0;
-        D_8082ACF4[7][0] = 255;
-        D_8082ACF4[7][1] = 255;
-        D_8082ACF4[7][2] = 0;
-        D_8082ACF4[8][0] = 0;
-        D_8082ACF4[8][1] = 50;
-        D_8082ACF4[8][2] = 255;
-        D_8082ACF4[11][0] = 0;
-        D_8082ACF4[11][1] = 50;
-        D_8082ACF4[11][2] = 255;
+        D_8082ACF4[4][0] = Cursor_CBTN_ori.r;
+        D_8082ACF4[4][1] = Cursor_CBTN_ori.g;
+        D_8082ACF4[4][2] = Cursor_CBTN_ori.b;
+        D_8082ACF4[7][0] = Cursor_CBTN_ori.r;
+        D_8082ACF4[7][1] = Cursor_CBTN_ori.g;
+        D_8082ACF4[7][2] = Cursor_CBTN_ori.b;
+        D_8082ACF4[8][0] = Cursor_ABTNN64_ori.r;
+        D_8082ACF4[8][1] = Cursor_ABTNN64_ori.g;
+        D_8082ACF4[8][2] = Cursor_ABTNN64_ori.b;
+        D_8082ACF4[11][0] = Cursor_ABTNN64_ori.r;
+        D_8082ACF4[11][1] = Cursor_ABTNN64_ori.g;
+        D_8082ACF4[11][2] = Cursor_ABTNN64_ori.b;
     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-        D_8082ACF4[4][0] = 255;
-        D_8082ACF4[4][1] = 255;
-        D_8082ACF4[4][2] = 0;
-        D_8082ACF4[7][0] = 255;
-        D_8082ACF4[7][1] = 255;
-        D_8082ACF4[7][2] = 0;
-        D_8082ACF4[8][0] = 0;
-        D_8082ACF4[8][1] = 255;
-        D_8082ACF4[8][2] = 50;
-        D_8082ACF4[11][0] = 0;
-        D_8082ACF4[11][1] = 255;
-        D_8082ACF4[11][2] = 50;
+        D_8082ACF4[4][0] = Cursor_CBTN_ori.r;
+        D_8082ACF4[4][1] = Cursor_CBTN_ori.g;
+        D_8082ACF4[4][2] = Cursor_CBTN_ori.b;
+        D_8082ACF4[7][0] = Cursor_CBTN_ori.r;
+        D_8082ACF4[7][1] = Cursor_CBTN_ori.g;
+        D_8082ACF4[7][2] = Cursor_CBTN_ori.b;
+        D_8082ACF4[8][0] = Cursor_ABTN_ori.r;
+        D_8082ACF4[8][1] = Cursor_ABTN_ori.g;
+        D_8082ACF4[8][2] = Cursor_ABTN_ori.b;
+        D_8082ACF4[11][0] = Cursor_ABTN_ori.r;
+        D_8082ACF4[11][1] = Cursor_ABTN_ori.g;
+        D_8082ACF4[11][2] = Cursor_ABTN_ori.b;
     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-        D_8082ACF4[4][0] = CVar_GetS32("gCCCBtnPrimR", 255);
-        D_8082ACF4[4][1] = CVar_GetS32("gCCCBtnPrimG", 255);
-        D_8082ACF4[4][2] = CVar_GetS32("gCCCBtnPrimB", 0);
-        D_8082ACF4[7][0] = CVar_GetS32("gCCCBtnPrimR", 255);
-        D_8082ACF4[7][1] = CVar_GetS32("gCCCBtnPrimG", 255);
-        D_8082ACF4[7][2] = CVar_GetS32("gCCCBtnPrimB", 0);
-        D_8082ACF4[8][0] = CVar_GetS32("gCCABtnPrimR", 0);
-        D_8082ACF4[8][1] = CVar_GetS32("gCCABtnPrimG", 255);
-        D_8082ACF4[8][2] = CVar_GetS32("gCCABtnPrimB", 50);
-        D_8082ACF4[11][0] = CVar_GetS32("gCCABtnPrimR", 0);
-        D_8082ACF4[11][1] = CVar_GetS32("gCCABtnPrimG", 255);
-        D_8082ACF4[11][2] = CVar_GetS32("gCCABtnPrimB", 50);
+        D_8082ACF4[4][0] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).r;
+        D_8082ACF4[4][1] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).g;
+        D_8082ACF4[4][2] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).b;
+        D_8082ACF4[7][0] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).r;
+        D_8082ACF4[7][1] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).g;
+        D_8082ACF4[7][2] = CVar_GetRGB("gCCCBtnPrim", Cursor_CBTN_ori).b;
+        D_8082ACF4[8][0] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).r;
+        D_8082ACF4[8][1] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).g;
+        D_8082ACF4[8][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
+        D_8082ACF4[11][0] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).r;
+        D_8082ACF4[11][1] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).g;
+        D_8082ACF4[11][2] = CVar_GetRGB("gCCABtnPrim", Cursor_ABTN_ori).b;
     }
     static s16 D_8082AD3C = 20;
     static s16 D_8082AD40 = 0;
@@ -1500,7 +1509,7 @@ void KaleidoScope_DrawPages(GlobalContext* globalCtx, GraphicsContext* gfxCtx) {
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
                 gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 255, 100, VREG(61)); 
             } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", 100), CVar_GetS32("gCCABtnPrimG", 255), CVar_GetS32("gCCABtnPrimB", 100), VREG(61)); //Save prompt cursor colour
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).r, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).g, CVar_GetRGB("gCCABtnPrim", A_BTN_ori).b, VREG(61)); //Save prompt cursor colour
             }
 
             if (pauseCtx->promptChoice == 0) {
@@ -1564,6 +1573,14 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
         { 0, 255, 100, 255 },//Gamecube
         { 0, 100, 255, 255 },//Original N64
     };
+    Color_RGB8 A_button_ori = {gABtnTexColour[0][0],gABtnTexColour[0][1],gABtnTexColour[0][2]};
+    Color_RGB8 A_button = CVar_GetRGB("gCCABtnPrim", A_button_ori);
+    Color_RGB8 C_button_ori = {R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2)};
+    Color_RGB8 C_button_uni = CVar_GetRGB("gCCCBtnPrim", C_button_ori);
+    Color_RGB8 C_button_U = CVar_GetRGB("gCCCUBtnPrim", C_button_ori);
+    Color_RGB8 C_button_D = CVar_GetRGB("gCCCDBtnPrim", C_button_ori);
+    Color_RGB8 C_button_L = CVar_GetRGB("gCCCLBtnPrim", C_button_ori);
+    Color_RGB8 C_button_R = CVar_GetRGB("gCCCRBtnPrim", C_button_ori);
     static const void* sToEquipTextures[3] = {
         gPauseToEquipENGTex,
         gPauseToEquipGERTex,
@@ -1890,11 +1907,11 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
             pauseCtx->infoPanelVtx[21].v.tc[0] = pauseCtx->infoPanelVtx[23].v.tc[0] = D_8082ADE0[gSaveContext.language]
                                                                                       << 5;
             if (CVar_GetS32("gHudColors", 1) == 0) {//A icon to decide in save prompt
-              gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2], gABtnTexColour[1][3]);
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[1][0], gABtnTexColour[1][1], gABtnTexColour[1][2], gABtnTexColour[1][3]);
             } else if (CVar_GetS32("gHudColors", 1) == 1) {
-              gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
             } else if (CVar_GetS32("gHudColors", 1) == 2) {
-              gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", gABtnTexColour[0][0]), CVar_GetS32("gCCABtnPrimG", gABtnTexColour[0][1]), CVar_GetS32("gCCABtnPrimB", gABtnTexColour[0][2]), gABtnTexColour[0][3]);
+                gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, gABtnTexColour[0][3]);
             }
             //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);//This is changed to load the texture only so we can prim color it.
             gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
@@ -1963,17 +1980,17 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 int height_factor = (1 << 10) * icon_h / height;
                 int width_factor = (1 << 10) * icon_w / width;
                 if (CVar_GetS32("gHudColors", 1) == 2 && CVar_GetS32("gCCparated", 0)) {
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_uni.r, C_button_uni.g, C_button_uni.b, 255);
                     for (s16 i=0; i < 3; i++) {
                         if (i == 0) {
                             icon_x_offset = width_crop*3-3;
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCRBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCRBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCRBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_R.r, C_button_R.g, C_button_R.b, 255);
                         } else if (i == 1) {
                             icon_x_offset = width_crop*2-3;
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCDBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCDBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCDBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_D.r, C_button_D.g, C_button_D.b, 255);
                         } else if (i == 2) {
                             icon_x_offset = width_crop;
-                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCLBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCLBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCLBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                            gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_L.r, C_button_L.g, C_button_L.b, 255);
                         }
                         gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                         //gSPScisTextureRectangle(POLY_KAL_DISP++,PosX << 2, PosY << 2, (PosX + icon_x_offset) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
@@ -1981,11 +1998,11 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     }
                 } else {
                     if (CVar_GetS32("gHudColors", 1) == 0) {//To equip text C button icon
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, 255);
                     } else if (CVar_GetS32("gHudColors", 1) == 1) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, R_C_BTN_COLOR(0), R_C_BTN_COLOR(1), R_C_BTN_COLOR(2), 255);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_ori.r, C_button_ori.g, C_button_ori.b, 255);
                     } else if (CVar_GetS32("gHudColors", 1) == 2 && !CVar_GetS32("gCCparated", 0)) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCCBtnPrimR", R_C_BTN_COLOR(0)), CVar_GetS32("gCCCBtnPrimG", R_C_BTN_COLOR(1)), CVar_GetS32("gCCCBtnPrimB", R_C_BTN_COLOR(2)), 255);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, C_button_uni.r, C_button_uni.g, C_button_uni.b, 255);
                     }
                     gDPLoadTextureBlock(POLY_KAL_DISP++, gCBtnSymbolsTex, G_IM_FMT_IA, G_IM_SIZ_8b, icon_w, icon_h, 0, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
                     gSPWideTextureRectangle(POLY_KAL_DISP++, PosX << 2, PosY << 2, (PosX + width) << 2, (PosY + height) << 2, G_TX_RENDERTILE, 0, 0, width_factor, height_factor);
@@ -2026,7 +2043,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                     } else if (CVar_GetS32("gHudColors", 1) == 1) {
                         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
                     } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", gABtnTexColour[0][0]), CVar_GetS32("gCCABtnPrimG", gABtnTexColour[0][1]), CVar_GetS32("gCCABtnPrimB", gABtnTexColour[0][2]), gABtnTexColour[0][3]);
+                        gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, gABtnTexColour[0][3]);
                     }
                     //gSPDisplayList(POLY_KAL_DISP++, gAButtonIconDL);
                     gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
@@ -2066,7 +2083,7 @@ void KaleidoScope_DrawInfoPanel(GlobalContext* globalCtx) {
                 } else if (CVar_GetS32("gHudColors", 1) == 1) {
                     gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, gABtnTexColour[0][0], gABtnTexColour[0][1], gABtnTexColour[0][2], gABtnTexColour[0][3]);
                 } else if (CVar_GetS32("gHudColors", 1) == 2) {
-                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, CVar_GetS32("gCCABtnPrimR", gABtnTexColour[0][0]), CVar_GetS32("gCCABtnPrimG", gABtnTexColour[0][1]), CVar_GetS32("gCCABtnPrimB", gABtnTexColour[0][2]), gABtnTexColour[0][3]);
+                    gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, A_button.r, A_button.g, A_button.b, gABtnTexColour[0][3]);
                 }
                 gDPLoadTextureBlock(POLY_KAL_DISP++, gABtnSymbolTex, G_IM_FMT_IA, G_IM_SIZ_8b, 24, 16, 0, G_TX_NOMIRROR | G_TX_CLAMP, G_TX_NOMIRROR | G_TX_CLAMP, 4, 4, G_TX_NOLOD, G_TX_NOLOD);
                 gSP1Quadrangle(POLY_KAL_DISP++, 0, 2, 3, 1, 0);

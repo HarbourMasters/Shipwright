@@ -510,14 +510,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
         SREG(1) = 0;
         ZeldaArena_Display();
-    }
-    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
-        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
-        globalCtx->fadeTransition = gSaveContext.nextTransition;
-    } else {
-        globalCtx->fadeTransition = (gEntranceTable[((void)0, gSaveContext.entranceIndex) + gSaveContext.sceneSetupIndex].field >> 7) & 0x7F; // Fade In
-    }
-    
+    }    
     
     if ((HREG(80) == 18) && (HREG(81) < 0)) {
         HREG(81) = 0;
@@ -1145,6 +1138,12 @@ skip:
         GivePlayerRandoRewardZeldaLightArrowsGift(globalCtx, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(globalCtx, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(globalCtx, RC_SHEIK_AT_COLOSSUS);
+    }
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = gSaveContext.nextTransition;
+    } else {
+        globalCtx->fadeTransition = (gEntranceTable[((void)0, gSaveContext.entranceIndex) + gSaveContext.sceneSetupIndex].field >> 7) & 0x7F; // Fade In
     }
 }
 

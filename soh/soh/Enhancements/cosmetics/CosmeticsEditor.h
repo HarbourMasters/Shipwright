@@ -83,9 +83,9 @@ static CosmeticsColorIndividual DogN1 = { "Dog white", "Affects the colors of th
 static CosmeticsColorIndividual DogN2 = { "Dog brown", "Affects the colors of the brown dog", "gDog2Col", doggo2col, ImVec4(150,100,50,255), true, false, true };
 
 //Tunics colors
-static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri_", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
-static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron_", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
-static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora_", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
+static CosmeticsColorIndividual KokiriTunic = { "Kokiri Tunic", "Affects Kokiri Tunic color", "gTunic_Kokiri", kokiri_col, ImVec4(30, 105, 27, 255), true, false, true };
+static CosmeticsColorIndividual GoronTunic = { "Goron Tunic", "Affects Goron Tunic color", "gTunic_Goron", goron_col, ImVec4(100, 20, 0, 255), true, false, true };
+static CosmeticsColorIndividual ZoraTunic = { "Zora Tunic", "Affects Zora Tunic color", "gTunic_Zora", zora_col, ImVec4(0, 60, 100, 255), true, false, true };
 
 //Arrows (Fire -> Ice -> Light)
 static CosmeticsColorIndividual Fire_Arrow_Prim = { "Fire Arrows (primary)", "Affects Primary color", "gFireArrowCol", firearrow_col, ImVec4(255,200,0,255), true, false, false };
