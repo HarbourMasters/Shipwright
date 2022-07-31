@@ -171,6 +171,63 @@ void DrawPositionsRadioBoxes(const std::string CvarName, bool NoAnchorEnabled = 
     SohImGui::EnhancementRadioButton("Hidden", CvarLabel.c_str(), 4);
     SohImGui::Tooltip("This will make your elements hidden");
 }
+void DrawTransitions(const std::string CvarName){
+    SohImGui::EnhancementRadioButton("Really slow fade (white)", CvarName.c_str(), 8);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Really slow fade (black)", CvarName.c_str(), 7);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Slow fade (white)", CvarName.c_str(), 10);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Slow fade (black)", CvarName.c_str(), 9);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Normal fade (white)", CvarName.c_str(), 3);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Normal fade (black)", CvarName.c_str(), 2);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Fast fade (white)", CvarName.c_str(), 5);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Fast fade (black)", CvarName.c_str(), 4);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Fast circle (white)", CvarName.c_str(), 40);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Normal circle (black)", CvarName.c_str(), 32);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Slow circle (white)", CvarName.c_str(), 41);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Slow circle (black)", CvarName.c_str(), 33);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Fast noise circle (white)", CvarName.c_str(), 42);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Fast noise circle (black)", CvarName.c_str(), 34);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Slow noise circle (white)", CvarName.c_str(), 43);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Slow noise circle (black)", CvarName.c_str(), 35);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Normal waves circle (white)", CvarName.c_str(), 44);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Normal waves circle (black)", CvarName.c_str(), 36);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Slow waves circle (white)", CvarName.c_str(), 45);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Slow waves circle (black)", CvarName.c_str(), 37);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Normal close circle (white)", CvarName.c_str(), 46);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Normal close circle (black)", CvarName.c_str(), 38);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Slow close circle (white)", CvarName.c_str(), 47);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Slow close circle (black)", CvarName.c_str(), 39);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Super fast circle (white)", CvarName.c_str(), 56);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Super fast circle (black)", CvarName.c_str(), 58);
+    Table_NextLine();
+    SohImGui::EnhancementRadioButton("Super fast noise circle (white)", CvarName.c_str(), 57);
+    Table_NextCol();
+    SohImGui::EnhancementRadioButton("Super fast noise circle (black)", CvarName.c_str(), 59);
+}
 void DrawPositionSlider(const std::string CvarName, int MinY, int MaxY, int MinX, int MaxX){
     std::string PosXCvar = CvarName+"PosX";
     std::string PosYCvar = CvarName+"PosY";
@@ -705,6 +762,42 @@ void Draw_General(){
                 ImGui::EndTable();
             }
         }
+        if (ImGui::CollapsingHeader("Scenes transitions")) {
+            if (ImGui::BeginTable("tabletransitionotherCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("transitionother1", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("transitionother2", FlagsCell, TablesCellsWidth/2);
+                Table_InitHeader(false);
+                SohImGui::EnhancementRadioButton("Originals", "gSceneTransitions", 255);
+                SohImGui::Tooltip("This will make the game use original scenes transitions");
+                Table_NextCol();
+                SohImGui::EnhancementRadioButton("None", "gSceneTransitions", 11);
+                SohImGui::Tooltip("This will make the game use no any scenes transitions");
+                Table_NextLine();
+                SohImGui::EnhancementRadioButton("Desert mode (persistant)", "gSceneTransitions", 14);
+                SohImGui::Tooltip("This will make the game use the sand storm scenes transitions that will persist in map");
+                Table_NextCol();
+                SohImGui::EnhancementRadioButton("Desert mode (non persistant)", "gSceneTransitions", 15);
+                SohImGui::Tooltip("This will make the game use the sand storm scenes transitions");
+                Table_NextLine();
+                SohImGui::EnhancementRadioButton("Normal fade (green)", "gSceneTransitions", 18);
+                SohImGui::Tooltip("This will make the game use a greenish fade in/out scenes transitions");
+                Table_NextCol();
+                SohImGui::EnhancementRadioButton("Normal fade (blue)", "gSceneTransitions", 19);
+                SohImGui::Tooltip("This will make the game use a blue fade in/out scenes transitions");
+                Table_NextLine();
+                SohImGui::EnhancementRadioButton("Triforce (black)", "gSceneTransitions", 1);
+                ImGui::EndTable();
+            }
+            if (ImGui::BeginTable("tabletransitionCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("White color", FlagsCell, TablesCellsWidth/2);
+                ImGui::TableSetupColumn("Black color", FlagsCell, TablesCellsWidth/2);
+                Table_InitHeader();
+                DrawTransitions("gSceneTransitions");
+                ImGui::EndTable();
+            }
+        }
+
+        
         if (ImGui::CollapsingHeader("Misc. interface colors")) {
             if (ImGui::BeginTable("tableMiscHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("Misc HUD colors", FlagsCell, TablesCellsWidth);
