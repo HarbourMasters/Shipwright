@@ -671,7 +671,7 @@ namespace SohImGui {
             colorsRGBA.r = defaultcolors.x;
             colorsRGBA.g = defaultcolors.y;
             colorsRGBA.b = defaultcolors.z;
-            if (has_alpha) { colorsRGBA.a = defaultcolors.w ; };
+            if (has_alpha) { colorsRGBA.a = defaultcolors.w; };
 
             CVar_SetRGBA(cvarName, colorsRGBA);
             CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.

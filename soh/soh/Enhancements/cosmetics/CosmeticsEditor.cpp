@@ -34,6 +34,49 @@ const char* MarginCvarList[] {
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
 
+void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+    for (int i = 0; i < SectionSize; i++){
+        CosmeticsColorIndividual* Element = ColorSection[i].Element;
+        ImVec4 colors = Element->ModifiedColor;
+        Color_RGBA8 NewColors = {0,0,0,255};
+        std::string cvarName = Element->CvarName;
+        std::string Cvar_RBM = cvarName + "RBM";
+        s16 RND_R = rand() % (255 - 0);
+        s16 RND_G = rand() % (255 - 0);
+        s16 RND_B = rand() % (255 - 0);
+        colors.x = (float)RND_R / 255;
+        colors.y = (float)RND_G / 255;
+        colors.z = (float)RND_B / 255;
+        NewColors.r = SohImGui::ClampFloatToInt(colors.x * 255, 0, 255);
+        NewColors.g = SohImGui::ClampFloatToInt(colors.y * 255, 0, 255);
+        NewColors.b = SohImGui::ClampFloatToInt(colors.z * 255, 0, 255);
+        Element->ModifiedColor = colors;
+        CVar_SetRGBA(cvarName.c_str(), NewColors);
+        CVar_SetS32(Cvar_RBM.c_str(), 0);
+    }
+}
+void GetDefaultColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+    for (int i = 0; i < SectionSize; i++){
+        CosmeticsColorIndividual* Element = ColorSection[i].Element;
+        ImVec4 colors = Element->ModifiedColor;
+        ImVec4 defaultcolors = Element->DefaultColor;
+        std::string cvarName = Element->CvarName;
+        std::string Cvar_RBM = cvarName + "RBM";
+        colors.x = defaultcolors.x;
+        colors.y = defaultcolors.y;
+        colors.z = defaultcolors.z;
+        if (Element->hasAlpha) { colors.w = defaultcolors.w; };
+        Element->ModifiedColor = colors;
+        Color_RGBA8 colorsRGBA;
+        colorsRGBA.r = defaultcolors.x;
+        colorsRGBA.g = defaultcolors.y;
+        colorsRGBA.b = defaultcolors.z;
+        if (Element->hasAlpha) { colorsRGBA.a = defaultcolors.w; };
+        CVar_SetRGBA(cvarName.c_str(), colorsRGBA);
+        CVar_SetS32(Cvar_RBM.c_str(), 0); //On click disable rainbow mode.
+
+    }
+}
 void SetMarginAll(const char* ButtonName, bool SetActivated) {
     if (ImGui::Button(ButtonName)) {
         u8 arrayLength = sizeof(MarginCvarList) / sizeof(*MarginCvarList);
@@ -263,10 +306,38 @@ void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
         SohImGui::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
     }
 }
+void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize){
+    std::string TableName = Identifier+"_Table";
+    std::string Col1Name = Identifier+"_Col1";
+    std::string Col2Name = Identifier+"_Col2";
+    std::string Tooltip_RNG = "Affect "+Identifier+" colors";
+    std::string RNG_BtnText = "Randomize : "+Identifier;
+    std::string Reset_BtnText = "Reset : "+Identifier;
+    if (ImGui::BeginTable(TableName.c_str(), 2, FlagsTable)) {
+        ImGui::TableSetupColumn(Col1Name.c_str(), FlagsCell, TablesCellsWidth/2);
+        ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
+        Table_InitHeader(false);
+        if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+            GetRandomColorRGB(ColorSection, SectionSize);
+        }
+        SohImGui::Tooltip(Tooltip_RNG.c_str());
+        Table_NextCol();
+        if(ImGui::Button(Reset_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+            GetDefaultColorRGB(ColorSection, SectionSize);
+        }
+        SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+        SohImGui::Tooltip(Tooltip_RNG.c_str());
+        ImGui::EndTable();
+    }
+}
 
 void Draw_Npcs(){
+    DrawRandomizeResetButton("all NPCs", NPCs_section, SECTION_SIZE(NPCs_section));
     SohImGui::EnhancementCheckbox("Custom colors for Navi", "gUseNaviCol");
     SohImGui::Tooltip("Enable/Disable custom Navi colors\nIf disabled, default colors will be used\nColors go into effect when Navi goes back into your pockets");
+    if (CVar_GetS32("gUseNaviCol",0)) { 
+        DrawRandomizeResetButton("Navi's", Navi_Section, SECTION_SIZE(Navi_Section)); 
+    };
     if (CVar_GetS32("gUseNaviCol",0) && ImGui::BeginTable("tableNavi", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Inner colors##Navi", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Navi", FlagsCell, TablesCellsWidth/2);
@@ -294,8 +365,12 @@ void Draw_Npcs(){
     }
 }
 void Draw_ItemsSkills(){
+    DrawRandomizeResetButton("all skills and items", AllItemsSkills_section, SECTION_SIZE(AllItemsSkills_section));
     SohImGui::EnhancementCheckbox("Custom tunics color", "gUseTunicsCol");
     SohImGui::Tooltip("Enable/Disable custom Link's tunics colors\nIf disabled you will have original colors for Link's tunics.");
+    if (CVar_GetS32("gUseTunicsCol",0)) {
+        DrawRandomizeResetButton("Link's tunics", Tunics_Section, SECTION_SIZE(Tunics_Section));
+    };
     if (CVar_GetS32("gUseTunicsCol",0) && ImGui::BeginTable("tableTunics", 3, FlagsTable)) {
         ImGui::TableSetupColumn("Kokiri Tunic", FlagsCell, TablesCellsWidth/3);
         ImGui::TableSetupColumn("Goron Tunic", FlagsCell, TablesCellsWidth/3);
@@ -305,6 +380,9 @@ void Draw_ItemsSkills(){
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom arrows colors", "gUseArrowsCol");
+    if (CVar_GetS32("gUseArrowsCol",0)) {
+        DrawRandomizeResetButton("elemental arrows", Arrows_section, SECTION_SIZE(Arrows_section));
+    }
     if (CVar_GetS32("gUseArrowsCol",0) && ImGui::BeginTable("tableArrows", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Primary colors##Arrows", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Arrows", FlagsCell, TablesCellsWidth/2);
@@ -313,6 +391,9 @@ void Draw_ItemsSkills(){
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom spells colors", "gUseSpellsCol");
+    if (CVar_GetS32("gUseSpellsCol",0)) {
+        DrawRandomizeResetButton("spells", Spells_section, SECTION_SIZE(Spells_section));
+    }
     if (CVar_GetS32("gUseSpellsCol",0) && ImGui::BeginTable("tableSpells", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Inner colors##Spells", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Outer colors##Spells", FlagsCell, TablesCellsWidth/2);
@@ -321,6 +402,9 @@ void Draw_ItemsSkills(){
         ImGui::EndTable();
     }
     SohImGui::EnhancementCheckbox("Custom spin attack colors", "gUseChargedCol");
+    if (CVar_GetS32("gUseChargedCol",0)) {
+        DrawRandomizeResetButton("spins attack", SpinAtk_section, SECTION_SIZE(SpinAtk_section));
+    }
     if (CVar_GetS32("gUseChargedCol",0) && ImGui::BeginTable("tableChargeAtk", 2, FlagsTable)) {
         ImGui::TableSetupColumn("Primary colors##Charge", FlagsCell, TablesCellsWidth/2);
         ImGui::TableSetupColumn("Env colors##Charge", FlagsCell, TablesCellsWidth/2);
@@ -652,6 +736,7 @@ void Draw_Placements(){
 }
 void Draw_HUDButtons(){
     if (CVar_GetS32("gHudColors",0) ==2 ){
+        DrawRandomizeResetButton("every buttons", Buttons_section, SECTION_SIZE(Buttons_section));
         if (ImGui::CollapsingHeader("A Button colors & A Cursors")) {
             if (ImGui::BeginTable("tableBTN_A", 1, FlagsTable)) {
                 ImGui::TableSetupColumn("A Button colors", FlagsCell, TablesCellsWidth);
@@ -722,6 +807,8 @@ void Draw_General(){
         ImGui::EndTable();
     }
     if (CVar_GetS32("gHudColors",0) ==2 ){
+        DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section));
+        DrawRandomizeResetButton("interface (excluding buttons)", Misc_Interface_section, SECTION_SIZE(Misc_Interface_section));
         if (ImGui::CollapsingHeader("Hearts colors")) {
             SohImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
             if (ImGui::BeginTable("tableHearts", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
@@ -759,6 +846,14 @@ void Draw_General(){
                 ImGui::EndTable();
             }
         }
+        if (ImGui::CollapsingHeader("Misc. interface colors")) {
+            if (ImGui::BeginTable("tableMiscHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
+                ImGui::TableSetupColumn("Misc HUD colors", FlagsCell, TablesCellsWidth);
+                Table_InitHeader();
+                DrawColorSection(Misc_section, SECTION_SIZE(Misc_section));
+                ImGui::EndTable();
+            }
+        }
         if (ImGui::CollapsingHeader("Scenes transitions")) {
             if (ImGui::BeginTable("tabletransitionotherCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
                 ImGui::TableSetupColumn("transitionother1", FlagsCell, TablesCellsWidth/2);
@@ -782,7 +877,7 @@ void Draw_General(){
                 SohImGui::EnhancementRadioButton("Normal fade (blue)", "gSceneTransitions", 19);
                 SohImGui::Tooltip("This will make the game use a blue fade in/out scenes transitions");
                 Table_NextLine();
-                SohImGui::EnhancementRadioButton("Triforce (black)", "gSceneTransitions", 1);
+                SohImGui::EnhancementRadioButton("Triforce", "gSceneTransitions", 1);
                 ImGui::EndTable();
             }
             if (ImGui::BeginTable("tabletransitionCol", 2, FlagsTable | ImGuiTableFlags_Hideable)) {
@@ -790,16 +885,6 @@ void Draw_General(){
                 ImGui::TableSetupColumn("Black color", FlagsCell, TablesCellsWidth/2);
                 Table_InitHeader();
                 DrawTransitions("gSceneTransitions");
-                ImGui::EndTable();
-            }
-        }
-
-        
-        if (ImGui::CollapsingHeader("Misc. interface colors")) {
-            if (ImGui::BeginTable("tableMiscHudCol", 1, FlagsTable | ImGuiTableFlags_Hideable)) {
-                ImGui::TableSetupColumn("Misc HUD colors", FlagsCell, TablesCellsWidth);
-                Table_InitHeader();
-                DrawColorSection(Misc_section, SECTION_SIZE(Misc_section));
                 ImGui::EndTable();
             }
         }
