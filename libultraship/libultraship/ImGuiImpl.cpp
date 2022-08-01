@@ -990,6 +990,8 @@ namespace SohImGui {
                         EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                         EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
+                        EnhancementCheckbox("Faster Heavy Block Lift", "gFasterHeavyBlockLift");
+                        Tooltip("Speeds up lifting silver rocks and obelisks");
                         EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
                         Tooltip("Prevent forced Navi conversations");
                         EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
