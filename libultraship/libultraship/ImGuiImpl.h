@@ -81,7 +81,6 @@ namespace SohImGui {
     void applyEnhancementPresetVanillaPlus(void);
     void applyEnhancementPresetEnhanced(void);
     void applyEnhancementPresetRandomizer(void);
-    void applyEnhancementPresetIronman(void);
 
     void DrawMainMenuAndCalculateGameSize(void);
 

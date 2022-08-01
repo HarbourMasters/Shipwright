@@ -951,9 +951,9 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Enhancements"))
             {
 
-                const char* enhancementPresets[5] = { "Default", "Vanilla Plus", "Enhanced", "Randomizer", "Ironman"};
+                const char* enhancementPresets[4] = { "Default", "Vanilla Plus", "Enhanced", "Randomizer"};
                 ImGui::Text("Enhancement Presets");
-                SohImGui::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 5, 0);
+                SohImGui::EnhancementCombobox("gSelectEnhancementPresets", enhancementPresets, 4, 0);
                 Tooltip(
                     "Default - Set all enhancements to their default values. The true vanilla SoH experience.\n"
                     "\n"
@@ -961,9 +961,7 @@ namespace SohImGui {
                     "\n"
                     "Enhanced - The \"Vanilla Plus\" preset, but with more quality of life enhancements that might alter gameplay slightly. Recommended for returning players.\n"
                     "\n"
-                    "Randomizer - The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer.\n"
-                    "\n"
-                    "Ironman - Includes some Quality of Life, but generally makes the game as hard as possible. Everything kills you in one hit. Additionally, random/heart drops and power crouch stabs are disabled."
+                    "Randomizer - The \"Enhanced\" preset, plus any other enhancements that are recommended for playing Randomizer."
                 );
                 if (ImGui::Button("Apply Preset")) {
                     applyEnhancementPresets();
@@ -1570,7 +1568,6 @@ namespace SohImGui {
     void applyEnhancementPresets(void) {
 
         switch (CVar_GetS32("gSelectEnhancementPresets", 0)) {
-
             // Default
         case 0:
             applyEnhancementPresetDefault();
@@ -1595,12 +1592,6 @@ namespace SohImGui {
             applyEnhancementPresetVanillaPlus();
             applyEnhancementPresetEnhanced();
             applyEnhancementPresetRandomizer();
-            break;
-
-            // Ironman
-        case 4:
-            applyEnhancementPresetDefault();
-            applyEnhancementPresetIronman();
             break;
         }
     }
@@ -1886,81 +1877,6 @@ namespace SohImGui {
         // Frames to wait
         CVar_SetS32("gMinFrameCount", 200);
     }
-
-    void applyEnhancementPresetIronman(void) {
-        // Text Speed (1 to 5)
-        CVar_SetS32("gTextSpeed", 5);
-        // No Forced Navi
-        CVar_SetS32("gNoForcedNavi", 1);
-        // No Skulltula Freeze
-        CVar_SetS32("gSkulltulaFreeze", 1);
-        // Fast Chests
-        CVar_SetS32("gFastChests", 1);
-        // Fast Drops
-        CVar_SetS32("gFastDrops", 1);
-        // Better Owl
-        CVar_SetS32("gBetterOwl", 1);
-        // Fast Ocarina Playback
-        CVar_SetS32("gFastOcarinaPlayback", 1);
-        // Prevent Dropped Ocarina Inputs
-        CVar_SetS32("gDpadNoDropOcarinaInput", 1);
-
-        // Damage Multiplier (0 to 8)
-        CVar_SetS32("gDamageMul", 8);
-        // Fall Damage Multiplier (0 to 7)
-        CVar_SetS32("gFallDamageMul", 7);
-        // Void Damage Multiplier (0 to 6)
-        CVar_SetS32("gVoidDamageMul", 6);
-        // No Random Drops
-        CVar_SetS32("gNoRandomDrops", 1);
-        // No Heart Drops
-        CVar_SetS32("gNoHeartDrops", 1);
-
-        // Disable Navi Call Audio
-        CVar_SetS32("gDisableNaviCallAudio", 1);
-
-        // Assignable Tunics and Boots
-        CVar_SetS32("gAssignableTunicsAndBoots", 1);
-        // Enable passage of time on file select
-        CVar_SetS32("gTimeFlowFileSelect", 1);
-        // Count Golden Skulltulas
-        CVar_SetS32("gInjectSkulltulaCount", 1);
-
-        // Pause link animation (0 to 16)
-        CVar_SetS32("gPauseLiveLink", 1);
-
-        // Enable 3D Dropped items/projectiles
-        CVar_SetS32("gNewDrops", 1);
-        // Dynamic Wallet Icon
-        CVar_SetS32("gDynamicWalletIcon", 1);
-        // Always show dungeon entrances
-        CVar_SetS32("gAlwaysShowDungeonMinimapIcon", 1);
-
-        // Fix L&R Pause menu
-        CVar_SetS32("gUniformLR", 1);
-        // Fix Dungeon entrances
-        CVar_SetS32("gFixDungeonMinimapIcon", 1);
-        // Fix Two Handed idle animations
-        CVar_SetS32("gTwoHandedIdle", 1);
-        // Fix the Gravedigging Tour Glitch
-        CVar_SetS32("gGravediggingTourFix", 1);
-        // Fix Deku Nut upgrade
-        CVar_SetS32("gDekuNutUpgradeFix", 1);
-        // Fix Megaton Hammer crouch stab
-        CVar_SetS32("gCrouchStabHammerFix", 1);
-        // Fix all crouch stab
-        CVar_SetS32("gCrouchStabFix", 1);
-
-        // Red Ganon blood
-        CVar_SetS32("gRedGanonBlood", 1);
-        // Fish while hovering
-        CVar_SetS32("gHoverFishing", 1);
-        // N64 Weird Frames
-        CVar_SetS32("gN64WeirdFrames", 1);
-        // Bombchus out of bounds
-        CVar_SetS32("gBombchusOOB", 1);
-    }
-
 
     void Render() {
         ImGui::Render();
