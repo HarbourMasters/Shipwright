@@ -28,6 +28,7 @@
 
 #include "gfx_pc.h"
 #include "spdlog/spdlog.h"
+#include "Cvar.h"
 
 static constexpr size_t kMaxBufferPoolSize = 15;
 static constexpr NSUInteger METAL_MAX_MULTISAMPLE_SAMPLE_COUNT = 8;
@@ -891,7 +892,7 @@ int gfx_metal_create_framebuffer(void) {
 }
 
 static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, uint32_t height, uint32_t msaa_level, bool opengl_invert_y, bool render_target, bool has_depth_buffer, bool can_extract_depth) {
-    SPDLOG_TRACE("Being asked to update framebuffer params: {}", fb_id);
+    SPDLOG_TRACE("Being asked to update framebuffer params: {} - msaa: {} x {}", fb_id, CVar_GetS32("gMSAAValue", 1), msaa_level);
     // TODO: implement
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
@@ -948,7 +949,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
                 renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
             } else {
                 renderPassDescriptor.colorAttachments[0].texture = tex.texture;
-                renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+                renderPassDescriptor.colorAttachments[0].loadAction = fb_id != 3 ? MTLLoadActionLoad : MTLLoadActionClear;
                 renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
                 renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
             }
@@ -1041,6 +1042,12 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 
+    // Reset states
+    mctx.last_depth_test = -1;
+    mctx.last_depth_mask = -1;
+    mctx.last_zmode_decal = -1;
+    mctx.last_shader_program = nullptr;
+
     mctx.current_command_encoder = mctx.framebuffers[mctx.current_framebuffer].command_encoder;
     mctx.drawn_framebuffers.insert(fb_id);
 
@@ -1076,6 +1083,11 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
 std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
     // TODO: implement
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
+    {
+        for (const auto& coord : coordinates) {
+            res.emplace(coord, 0.0f);
+        }
+    }
     return res;
 }
 
