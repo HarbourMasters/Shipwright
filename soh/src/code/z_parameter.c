@@ -1363,12 +1363,6 @@ void Inventory_SwapAgeEquipment(void) {
     u16 temp;
 
     if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-        // When becoming adult, remove swordless flag since we'll get master sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag) {
-            gSaveContext.infTable[29] &= ~1;
-        }
-
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             if (i != 0) {
                 gSaveContext.childEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
@@ -1429,12 +1423,6 @@ void Inventory_SwapAgeEquipment(void) {
             gSaveContext.equips.equipment = gSaveContext.adultEquips.equipment;
         }
     } else {
-        // When becoming child, set swordless flag if player doesn't have kokiri sword
-        // Only in rando to keep swordless link bugs in vanilla
-        if (gSaveContext.n64ddFlag && (1 << 0 & gSaveContext.inventory.equipment) == 0) {
-            gSaveContext.infTable[29] |= 1;
-        }
-
         for (i = 0; i < ARRAY_COUNT(gSaveContext.equips.buttonItems); i++) {
             gSaveContext.adultEquips.buttonItems[i] = gSaveContext.equips.buttonItems[i];
 
