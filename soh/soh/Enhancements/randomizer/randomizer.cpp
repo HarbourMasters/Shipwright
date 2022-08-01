@@ -3723,11 +3723,13 @@ void DrawRandoEditor(bool& open) {
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button("Generate Seed")) {
                 if (CVar_GetS32("gRandoGenerating", 0) == 0) {
                     randoThread = std::thread(&GenerateRandomizerImgui);
                 }
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
             ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -3735,7 +3737,7 @@ void DrawRandoEditor(bool& open) {
             // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
             // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
-        ImGui::Separator();
+        PaddedSeparator();
 
         ImGuiWindow* window = ImGui::GetCurrentWindow();
         static ImVec2 cellPadding(8.0f, 8.0f);
@@ -3860,22 +3862,27 @@ void DrawRandoEditor(bool& open) {
                             case 1:
                                 break;
                             case 2:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
                                 break;
                             case 3:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
                                 break;
                             case 4:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
                                 break;
                             case 5:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
                                 break;
                             case 6:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                "gRandomizeTokenCount", 1, 100, "", 100, true);
                                 break;
