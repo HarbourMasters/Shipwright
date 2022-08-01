@@ -176,7 +176,7 @@ pipeline {
                             sh '''
                             
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-                            docker build . -t sohswitch -f Dockerfile.switch
+                            docker build . -t sohswitch
                             docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
                             docker exec sohcont scripts/switch/build.sh
                             
