@@ -130,8 +130,9 @@ namespace SohImGui {
     }
 
     void Tooltip(const char* text) {
-        if (ImGui::IsItemHovered())
-            ImGui::SetTooltip("%s", text);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("%s", BreakTooltip(text, 60).c_str());
+        }
     }
 
     void ImGuiWMInit() {
@@ -867,7 +868,7 @@ namespace SohImGui {
 
                 // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up\nto equip instead of navigate");
+                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
@@ -890,10 +891,10 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Graphics"))
             {
                 EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
-                Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
+                Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
                 EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
-                Tooltip("Activates multi-sample anti-aliasing when above 1x\nup to 8x for 8 samples for every pixel");
+                Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
                 if (impl.backend == Backend::DX11)
@@ -928,12 +929,7 @@ namespace SohImGui {
                         needs_save = true;
                     }
 
-                    Tooltip("When Interpolation FPS setting is at least this threshold,\n"
-                        "add one frame of input lag (e.g. 16.6 ms for 60 FPS)\n"
-                        "in order to avoid jitter.This setting allows the CPU\n"
-                        "to work on one frame while GPU works on the previous frame.\n"
-                        "This setting should be used when your computer is too slow\n"
-                        "to do CPU + GPU work in time.");
+                    Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
 
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
@@ -983,30 +979,30 @@ namespace SohImGui {
                         EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
                         EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "");
                         EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
-                        Tooltip("Allows you to change the number of days it takes for\nBiggoron to forge the Biggoron Sword");
+                        Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                         EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
 
                         EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                         EnhancementCheckbox("No Forced Navi", "gNoForcedNavi");
                         Tooltip("Prevent forced Navi conversations");
                         EnhancementCheckbox("No Skulltula Freeze", "gSkulltulaFreeze");
-                        Tooltip("Stops the game from freezing the player\nwhen picking up Gold Skulltulas");
+                        Tooltip("Stops the game from freezing the player when picking up Gold Skulltulas");
                         EnhancementCheckbox("MM Bunny Hood", "gMMBunnyHood");
-                        Tooltip("Wearing the Bunny Hood grants a speed\nincrease like in Majora's Mask");
+                        Tooltip("Wearing the Bunny Hood grants a speed increase like in Majora's Mask");
                         EnhancementCheckbox("Fast Chests", "gFastChests");
                         Tooltip("Kick open every chest");
                         EnhancementCheckbox("Skip Pickup Messages", "gFastDrops");
                         Tooltip("Skip pickup messages for new consumable items and bottle swipes");
                         EnhancementCheckbox("Better Owl", "gBetterOwl");
-                        Tooltip("The default response to Kaepora Gaebora is\nalways that you understood what he said");
+                        Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
-                        Tooltip("Skip the part where the Ocarina playback is called when you play\na song");
+                        Tooltip("Skip the part where the Ocarina playback is called when you play a song");
                         EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
                         Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
-                        Tooltip("After completing the mask trading sub-quest,\npress A and any direction on the mask slot to change masks");
+                        Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                         ImGui::EndMenu();
                     }
 
@@ -1137,13 +1133,13 @@ namespace SohImGui {
                     }
 
                     EnhancementCheckbox("Visual Stone of Agony", "gVisualAgony");
-                    Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
+                    Tooltip("Displays an icon and plays a sound when Stone of Agony should be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
                     EnhancementCheckbox("Equipment Toggle", "gEquipmentCanBeRemoved");
                     Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
-                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be\nshared across time periods");
+                    Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
                     EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
@@ -1161,7 +1157,7 @@ namespace SohImGui {
                         ImGui::Text("Rotation");
                         EnhancementRadioButton("Disabled", "gPauseLiveLinkRotation", 0);
                         EnhancementRadioButton("Rotate Link with D-pad", "gPauseLiveLinkRotation", 1);
-                        Tooltip("Allow you to rotate Link on the Equipment menu with the DPAD\nUse DPAD-Up or DPAD-Down to reset Link's rotation");
+                        Tooltip("Allow you to rotate Link on the Equipment menu with the D-pad\nUse D-pad Up or D-pad Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with C-buttons", "gPauseLiveLinkRotation", 2);
                         Tooltip("Allow you to rotate Link on the Equipment menu with the C-buttons\nUse C-Up or C-Down to reset Link's rotation");
                         EnhancementRadioButton("Rotate Link with Right Stick", "gPauseLiveLinkRotation", 3);
@@ -1206,7 +1202,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Enable 3D Dropped items/projectiles", "gNewDrops");
                     Tooltip("Change most 2D items and projectiles on the overworld to their 3D versions");
                     EnhancementCheckbox("Disable Black Bar Letterboxes", "gDisableBlackBars");
-                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that\nwere covered up by the black bars\nPlease disable this setting before reporting a bug");
+                    Tooltip("Disables Black Bar Letterboxes during cutscenes and Z-targeting\nNote: there may be minor visual glitches that were covered up by the black bars\nPlease disable this setting before reporting a bug");
                     EnhancementCheckbox("Dynamic Wallet Icon", "gDynamicWalletIcon");
                     Tooltip("Changes the rupee in the wallet icon to match the wallet size you currently have");
                     EnhancementCheckbox("Always show dungeon entrances", "gAlwaysShowDungeonMinimapIcon");
@@ -1222,19 +1218,19 @@ namespace SohImGui {
                     EnhancementCheckbox("Fix L&Z Page switch in Pause menu", "gNGCKaleidoSwitcher");
                     Tooltip("Makes L and R switch pages like on the GameCube\nZ opens the Debug Menu instead");
                     EnhancementCheckbox("Fix Dungeon entrances", "gFixDungeonMinimapIcon");
-                    Tooltip("Removes the dungeon entrance icon on the top-left corner\nof the screen when no dungeon is present on the current map");
+                    Tooltip("Removes the dungeon entrance icon on the top-left corner of the screen when no dungeon is present on the current map");
                     EnhancementCheckbox("Fix Two Handed idle animations", "gTwoHandedIdle");
-                    Tooltip("Re-enables the two-handed idle animation, a seemingly\nfinished animation that was disabled on accident in the original game");
+                    Tooltip("Re-enables the two-handed idle animation, a seemingly finished animation that was disabled on accident in the original game");
                     EnhancementCheckbox("Fix the Gravedigging Tour Glitch", "gGravediggingTourFix");
-                    Tooltip("Fixes a bug where the Gravedigging Tour Heart\nPiece disappears if the area reloads");
+                    Tooltip("Fixes a bug where the Gravedigging Tour Heart Piece disappears if the area reloads");
                     EnhancementCheckbox("Fix Deku Nut upgrade", "gDekuNutUpgradeFix");
-                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from\nbecoming unobtainable after receiving the Poacher's Saw");
+                    Tooltip("Prevents the Forest Stage Deku Nut upgrade from becoming unobtainable after receiving the Poacher's Saw");
                     EnhancementCheckbox("Fix Navi text HUD position", "gNaviTextFix");
                     Tooltip("Correctly centers the Navi text prompt on the HUD's C-Up button");
                     EnhancementCheckbox("Fix Anubis fireballs", "gAnubisFix");
-                    Tooltip("Make Anubis fireballs do fire damage when reflected\nback at them with the Mirror Shield");
+                    Tooltip("Make Anubis fireballs do fire damage when reflected back at them with the Mirror Shield");
                     EnhancementCheckbox("Fix Megaton Hammer crouch stab", "gCrouchStabHammerFix");
-                    Tooltip("Make the Megaton Hammer's crouch stab able to destroy\nrocks without first swinging it normally");
+                    Tooltip("Make the Megaton Hammer's crouch stab able to destroy rocks without first swinging it normally");
                     if (CVar_GetS32("gCrouchStabHammerFix", 0) == 0) {
                         CVar_SetS32("gCrouchStabFix", 0);
                     } else {
@@ -1250,7 +1246,7 @@ namespace SohImGui {
                     EnhancementCheckbox("Red Ganon blood", "gRedGanonBlood");
                     Tooltip("Restore the original red blood from NTSC 1.0/1.1. Disable for green blood");
                     EnhancementCheckbox("Fish while hovering", "gHoverFishing");
-                    Tooltip("Restore a bug from NTSC 1.0 that allows casting\nthe Fishing Rod while using the Hover Boots");
+                    Tooltip("Restore a bug from NTSC 1.0 that allows casting the Fishing Rod while using the Hover Boots");
                     EnhancementCheckbox("N64 Weird Frames", "gN64WeirdFrames");
                     Tooltip("Restores N64 Weird Frames allowing weirdshots to behave the same as N64");
                     EnhancementCheckbox("Bombchus out of bounds", "gBombchusOOB");
@@ -1311,7 +1307,7 @@ namespace SohImGui {
 
                     Tooltip("Interpolate extra frames to get smoother graphics\n"
                         "Set to match your monitor's refresh rate, or a divisor of it\n"
-                        "A higher target FPS than your monitor's refresh rate will just waste resources,\n"
+                        "A higher target FPS than your monitor's refresh rate will just waste resources, "
                         "and might give a worse result.\n"
                         "For consistent input lag, set this value and your monitor's refresh rate to a multiple of 20\n"
                         "Ctrl+Click for keyboard input");
@@ -1339,7 +1335,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
                 Tooltip("Turns off the Level of Detail setting, making models use their higher-poly variants at any distance");
                 EnhancementCheckbox("Disable Draw Distance", "gDisableDrawDistance");
-                Tooltip("Turns off the objects draw distance,\nmaking objects being visible from a longer range");
+                Tooltip("Turns off the objects draw distance, making objects being visible from a longer range");
                 if (CVar_GetS32("gDisableDrawDistance", 0) == 0) {
                     CVar_SetS32("gDisableKokiriDrawDistance", 0);
                 } else if (CVar_GetS32("gDisableDrawDistance", 0) == 1) {
@@ -1350,7 +1346,7 @@ namespace SohImGui {
                 Tooltip("Holding down B skips text\nKnown to cause a cutscene softlock in Water Temple\nSoftlock can be fixed by pressing D-Right in Debug mode");
 
                 EnhancementCheckbox("Free Camera", "gFreeCamera");
-                Tooltip("Enables camera control\nNote: You must remap C buttons off of\nthe right stick in the controller\nconfig menu, and map the camera stick\nto the right stick.");
+                Tooltip("Enables camera control\nNote: You must remap C buttons off of the right stick in the controller config menu, and map the camera stick to the right stick.");
 
              #ifdef __SWITCH__
                 int slot = CVar_GetS32("gSwitchPerfMode", (int)SwitchProfiles::STOCK);
@@ -1406,7 +1402,7 @@ namespace SohImGui {
                 EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
 
                 ImGui::EndMenu();
             }
@@ -1416,11 +1412,11 @@ namespace SohImGui {
             if (ImGui::BeginMenu("Developer Tools"))
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
-                Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
+                Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right, and open the debug menu with L on the pause screen");
                 EnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled");
-                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map\nicons (boss key, compass, map screen locations, etc) will set the GS bits in that\narea. USE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
+                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map icons (boss key, compass, map screen locations, etc) will set the GS bits in that area.\nUSE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
+                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only if you toggle on \"Create a new save if none ?\" else it will bring you to the File choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
                     const char* FastFileSelect[5] = {
                         "File N.1",
@@ -1432,13 +1428,13 @@ namespace SohImGui {
                     ImGui::Text("Loading :");
                     EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
                     EnhancementCheckbox("Create a new save if none", "gCreateNewSave");
-                    Tooltip("Enable the creation of a new save file\nif none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text\nelse your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
+                    Tooltip("Enable the creation of a new save file if none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text else your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
                 };
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
-                Tooltip("Shows the stats window, with your FPS and frametimes,\nand the OS you're playing on");
+                Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 EnhancementCheckbox("Console", "gConsoleEnabled");
-                Tooltip("Enables the console window, allowing you to input commands,\ntype help for some examples");
+                Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
 
                 ImGui::EndMenu();
@@ -1779,5 +1775,37 @@ namespace SohImGui {
         ImGui::Dummy(ImVec2(0.0f, 0.0f));
 
         ImGui::EndGroup();
+    }
+
+    // Automatically add newlines to break up tooltips longer than a specified number of characters
+    // Manually included newlines will still be respected and reset the line length
+    // Default line length is 60 characters
+    std::string BreakTooltip(const char* text, int lineLength) {
+        std::string newText(text);
+        const int tipLength = newText.length();
+        int lastSpace = -1;
+        int currentLineLength = 0;
+        for (int currentCharacter = 0; currentCharacter < tipLength; currentCharacter++) {
+            if (newText[currentCharacter] == '\n') {
+                currentLineLength = 0;
+                lastSpace = -1;
+                continue;
+            }
+            else if (newText[currentCharacter] == ' ') {
+                lastSpace = currentCharacter;
+            }
+
+            if ((currentLineLength >= lineLength) && (lastSpace >= 0)) {
+                newText[lastSpace] = '\n';
+                currentLineLength = currentCharacter - lastSpace - 1;
+                lastSpace = -1;
+            }
+            currentLineLength++;
+        }
+        return newText;
+    }
+
+    std::string BreakTooltip(const std::string& text, int lineLength) {
+        return BreakTooltip(text.c_str(), lineLength);
     }
 }
