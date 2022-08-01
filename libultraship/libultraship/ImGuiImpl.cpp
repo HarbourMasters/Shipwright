@@ -900,7 +900,7 @@ namespace SohImGui {
                 {
                     const char* cvar = "gExtraLatencyThreshold";
                     int val = CVar_GetS32(cvar, 80);
-                    val = MAX(MIN(val, 250), 0);
+                    val = MAX(MIN(val, 360), 0);
                     int fps = val;
 
                     if (fps == 0)
@@ -922,7 +922,7 @@ namespace SohImGui {
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
 
-                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 250, "", ImGuiSliderFlags_AlwaysClamp))
+                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         CVar_SetS32(cvar, val);
                         needs_save = true;
@@ -1268,7 +1268,7 @@ namespace SohImGui {
                     int maxFps = 60;
                 #else
                     int minFps = 20;
-                    int maxFps = 250;
+                    int maxFps = 360;
                 #endif
 
                     int val = CVar_GetS32(fps_cvar, minFps);
@@ -1296,9 +1296,9 @@ namespace SohImGui {
 
                     if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
-                        if (val > 250)
+                        if (val > 360)
                         {
-                            val = 250;
+                            val = 360;
                         }
                         else if (val < 20)
                         {
@@ -1329,7 +1329,7 @@ namespace SohImGui {
                     if (ImGui::Button("Match Refresh Rate"))
                     {
                         int hz = roundf(gfx_get_detected_hz());
-                        if (hz >= 20 && hz <= 250)
+                        if (hz >= 20 && hz <= 360)
                         {
                             CVar_SetS32(fps_cvar, hz);
                             needs_save = true;
