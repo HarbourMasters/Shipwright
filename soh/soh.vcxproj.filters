@@ -82,6 +82,12 @@
     <Filter Include="Source Files\soh\Enhancements\debugger">
       <UniqueIdentifier>{04fc1c52-49ff-48e2-ae23-2c00867374f8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\soh\Enhancements\item-tables">
+      <UniqueIdentifier>{01811baa-7b90-4452-8ef0-d4cdc5dbdebd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\soh\Enhancements\item-tables">
+      <UniqueIdentifier>{1f217bdc-2227-4079-a077-bcab7f7d1481}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -2373,6 +2379,9 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
+    <ClCompile Include="ItemTableManager.cpp">
+      <Filter>Source Files\soh\Enhancements\item-tables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\overlays\actors\ovl_kaleido_scope\z_kaleido_scope.h">
@@ -4057,6 +4066,9 @@
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h">
       <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemTableManager.h">
+      <Filter>Header Files\soh\Enhancements\item-tables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
