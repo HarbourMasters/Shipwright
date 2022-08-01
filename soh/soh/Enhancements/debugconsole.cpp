@@ -463,50 +463,49 @@ void DebugConsole_Init(void) {
     CMD_REGISTER("kill", { KillPlayerHandler, "Commit suicide." });
     CMD_REGISTER("map",  { LoadSceneHandler, "Load up kak?" });
     CMD_REGISTER("rupee", { RuppeHandler, "Set your rupee counter.", {
-        {"amount", ArgumentType::NUMBER }
+        {"amount", Ship::ArgumentType::NUMBER }
     }});
-    CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", { { "Item ID", ArgumentType::NUMBER } } });
-    CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", {
-        {"health", ArgumentType::NUMBER }
+    CMD_REGISTER("bItem", { BHandler, "Set an item to the B button.", { { "Item ID", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("health", { SetPlayerHealthHandler, "Set the health of the player.", { { "health", Ship::ArgumentType::NUMBER }
     }});
-    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", {
-        { "actor_id", ArgumentType::NUMBER },
-        { "data",     ArgumentType::NUMBER },
-        { "x",        ArgumentType::PLAYER_POS, true },
-        { "y",        ArgumentType::PLAYER_POS, true },
-        { "z",        ArgumentType::PLAYER_POS, true },
-        { "rx",       ArgumentType::PLAYER_ROT, true },
-        { "ry",       ArgumentType::PLAYER_ROT, true },
-        { "rz",       ArgumentType::PLAYER_ROT, true }
+    CMD_REGISTER("spawn", { ActorSpawnHandler, "Spawn an actor.", { { "actor_id", Ship::ArgumentType::NUMBER },
+                              { "data", Ship::ArgumentType::NUMBER },
+                              { "x", Ship::ArgumentType::PLAYER_POS, true },
+                              { "y", Ship::ArgumentType::PLAYER_POS, true },
+                              { "z", Ship::ArgumentType::PLAYER_POS, true },
+                              { "rx", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "ry", Ship::ArgumentType::PLAYER_ROT, true },
+                              { "rz", Ship::ArgumentType::PLAYER_ROT, true }
     }});
-    CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", {
-        { "x",        ArgumentType::PLAYER_POS, true },
-        { "y",        ArgumentType::PLAYER_POS, true },
-        { "z",        ArgumentType::PLAYER_POS, true }
+    CMD_REGISTER("pos", { SetPosHandler, "Sets the position of the player.", { { "x", Ship::ArgumentType::PLAYER_POS, true },
+                            { "y", Ship::ArgumentType::PLAYER_POS, true },
+                            { "z", Ship::ArgumentType::PLAYER_POS, true }
     }});
     CMD_REGISTER("set", { SetCVarHandler,
                           "Sets a console variable.",
-                          { { "varName", ArgumentType::TEXT }, { "varValue", ArgumentType::TEXT } } });
-    CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", { { "varName", ArgumentType::TEXT } } });
+                          { { "varName", Ship::ArgumentType::TEXT }, { "varValue", Ship::ArgumentType::TEXT } } });
+    CMD_REGISTER("get", { GetCVarHandler, "Gets a console variable.", { { "varName", Ship::ArgumentType::TEXT } } });
     CMD_REGISTER("reset", { ResetHandler, "Resets the game." });
     CMD_REGISTER("ammo", { AmmoHandler, "Changes ammo of an item.",
-                            { { "item", ArgumentType::TEXT },
-                              { "count", ArgumentType::NUMBER } } });
+                           { { "item", Ship::ArgumentType::TEXT }, { "count", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("bottle", { BottleHandler,
                        "Changes item in a bottle slot.",
-                       { { "item", ArgumentType::TEXT }, { "slot", ArgumentType::NUMBER } } });
+                             { { "item", Ship::ArgumentType::TEXT }, { "slot", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("item", { ItemHandler,
                              "Sets item ID in arg 1 into slot arg 2. No boundary checks. Use with caution.",
-                             { { "slot", ArgumentType::NUMBER }, { "item id", ArgumentType::NUMBER } } });
-    CMD_REGISTER("entrance",
-                 { EntranceHandler, "Sends player to the entered entrance (hex)", { { "entrance", ArgumentType::NUMBER } } });
+                           { { "slot", Ship::ArgumentType::NUMBER }, { "item id", Ship::ArgumentType::NUMBER } } });
+    CMD_REGISTER("entrance", { EntranceHandler,
+                               "Sends player to the entered entrance (hex)",
+                               { { "entrance", Ship::ArgumentType::NUMBER } } });
 
     CMD_REGISTER("save_state", { SaveStateHandler, "Save a state." });
     CMD_REGISTER("load_state", { LoadStateHandler, "Load a state." });
-    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", {
-        { "Slot number", ArgumentType::NUMBER, }
+    CMD_REGISTER("set_slot", { StateSlotSelectHandler, "Selects a SaveState slot", { {
+                                   "Slot number",
+                                   Ship::ArgumentType::NUMBER,
+                               }
         } });
     DebugConsole_LoadCVars();
 }
