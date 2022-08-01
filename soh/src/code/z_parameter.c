@@ -2162,7 +2162,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
 
 u8 Item_CheckObtainability(u8 item) {
     s16 i;
-    s16 slot = (item < sizeof(gItemSlots)/sizeof(gItemSlots[0])) ? SLOT(item) : -1;
+    s16 slot = (item < ARRAY_COUNT(gItemSlots)) ? SLOT(item) : -1;
     s32 temp;
 
     if (item >= ITEM_STICKS_5) {
