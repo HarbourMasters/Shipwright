@@ -34,7 +34,7 @@ public:
 protected:
     void sink_it_(const details::log_msg &msg) override
     {
-        const Priority priority = convert_to_soh(msg.level);
+        const Ship::Priority priority = convert_to_soh(msg.level);
         memory_buf_t formatted;
         if (use_raw_msg_)
         {
@@ -53,24 +53,25 @@ protected:
     void flush_() override {}
 
 private:
-    static Priority convert_to_soh(spdlog::level::level_enum level) {
+    static Ship::Priority convert_to_soh(spdlog::level::level_enum level)
+    {
         switch (level) {
             case spdlog::level::trace:
-                return Priority::INFO_LVL;
+                return Ship::Priority::INFO_LVL;
             case spdlog::level::debug:
-                return Priority::LOG_LVL;
+                return Ship::Priority::LOG_LVL;
             case spdlog::level::info:
-                return Priority::LOG_LVL;
+                return Ship::Priority::LOG_LVL;
             case spdlog::level::warn:
-                return Priority::WARNING_LVL;
+                return Ship::Priority::WARNING_LVL;
             case spdlog::level::err:
-                return Priority::ERROR_LVL;
+                return Ship::Priority::ERROR_LVL;
             case spdlog::level::critical:
-                return Priority::ERROR_LVL;
+                return Ship::Priority::ERROR_LVL;
             default:
                 break;
         }
-        return Priority::LOG_LVL;
+            return Ship::Priority::LOG_LVL;
     }
 
     std::string tag_;

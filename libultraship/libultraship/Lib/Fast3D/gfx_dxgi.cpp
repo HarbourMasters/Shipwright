@@ -358,7 +358,6 @@ static void gfx_dxgi_show_cursor(bool hide) {
       * @bug When menubar is open in windowed mode and you toggle fullscreen
       * ShowCursor no longer responds. Debugging shows the bool to be correct.
     **/
-    INFO("renderer: %s", hide ? "true" : "false");
     ShowCursor(hide);
 }
 
