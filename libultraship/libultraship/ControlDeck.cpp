@@ -152,3 +152,19 @@ void Ship::ControlDeck::SaveControllerSettings() {
 
 	Config->save();
 }
+
+std::shared_ptr<Ship::Controller> Ship::ControlDeck::GetPhysicalDevice(int deviceSlot) {
+	return physicalDevices[deviceSlot];
+}
+
+size_t Ship::ControlDeck::GetNumPhysicalDevices() {
+	return physicalDevices.size();
+}
+
+int Ship::ControlDeck::GetVirtualDevice(int slot) {
+	return virtualDevices[slot];
+}
+
+size_t Ship::ControlDeck::GetNumVirtualDevices() {
+	return virtualDevices.size();
+}
