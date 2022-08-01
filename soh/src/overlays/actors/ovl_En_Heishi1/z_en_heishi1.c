@@ -115,22 +115,17 @@ void EnHeishi1_Init(Actor* thisx, GlobalContext* globalCtx) {
     // eventChkInf[4] & 1 = Got Zelda's Letter
     // eventChkInf[5] & 0x200 = Got item from impa
     // eventChkInf[8] & 1 = Ocarina thrown in moat
-    
-    // Rando'd but not met Zelda yet
-    bool randoNotMetZelda =
-        (gSaveContext.n64ddFlag) && !(gSaveContext.eventChkInf[5] & 0x200) && !(gSaveContext.eventChkInf[4] & 1);
-    // Rando'd and already met Zelda
-    bool randoMetZelda = (gSaveContext.n64ddFlag) && (gSaveContext.eventChkInf[5] & 0x200) && (gSaveContext.eventChkInf[4] & 1);
+    bool rando = gSaveContext.n64ddFlag;
+    bool metZelda = (gSaveContext.eventChkInf[4] & 1) && (gSaveContext.eventChkInf[5] & 0x200);
 
     if (this->type != 5) {
-        if ((gSaveContext.dayTime < 0xB888 || IS_DAY) && ((!(gSaveContext.eventChkInf[8] & 1) && !gSaveContext.n64ddFlag) || randoNotMetZelda)) {
+        if ((gSaveContext.dayTime < 0xB888 || IS_DAY) && ((!rando && !(gSaveContext.eventChkInf[8] & 1)) || (rando && !metZelda))) {
             this->actionFunc = EnHeishi1_SetupWalk;
         } else {
             Actor_Kill(&this->actor);
         }
     } else {
-        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY ||
-            (gSaveContext.eventChkInf[8] & 1 && !gSaveContext.n64ddFlag) || randoMetZelda) {
+        if ((gSaveContext.dayTime >= 0xB889) || !IS_DAY || (!rando && gSaveContext.eventChkInf[8] & 1) || (rando && metZelda)) {
             this->actionFunc = EnHeishi1_SetupWaitNight;
         } else {
             Actor_Kill(&this->actor);
