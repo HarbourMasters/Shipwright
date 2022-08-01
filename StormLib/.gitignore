@@ -140,6 +140,7 @@ Desktop.ini
 *.egg-info
 dist
 build
+nxbuild
 eggs
 parts
 bin

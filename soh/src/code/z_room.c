@@ -217,13 +217,12 @@ void func_80095D04(GlobalContext* globalCtx, Room* room, u32 flags) {
     CLOSE_DISPS(globalCtx->state.gfxCtx);
 }
 
-//#define JPEG_MARKER 0xFFD8FFE0
-#define JPEG_MARKER 0xE0FFD8FF
+#define JPEG_MARKER 0xFFD8FFE0
 
 s32 func_80096238(void* data) {
     OSTime time;
 
-    if (*(u32*)data == JPEG_MARKER)
+    if (BE32SWAP(*(u32*)data) == JPEG_MARKER)
     {
         char* decodedJpeg = ResourceMgr_LoadJPEG(data, 320 * 240 * 2);
         //char* decodedJpeg = ResourceMgr_LoadJPEG(data, 480 * 240 * 2);
@@ -402,6 +401,12 @@ BgImage* func_80096A74(PolygonType1* polygon1, GlobalContext* globalCtx) {
 
     camera = GET_ACTIVE_CAM(globalCtx);
     camId = camera->camDataIdx;
+    if (camId == -1 && CVar_GetS32("gNoRestrictItems", 0)) {
+        // This prevents a crash when using items that change the
+        // camera (such as din's fire) on scenes with prerendered backgrounds
+        return NULL;
+    }
+    
     // jfifid
     camId2 = func_80041C10(&globalCtx->colCtx, camId, BGCHECK_SCENE)[2].y;
     if (camId2 >= 0) {

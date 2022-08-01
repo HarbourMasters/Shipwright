@@ -51,6 +51,10 @@
 #include <SDL2/SDL_scancode.h>
 #endif
 
+#ifdef __SWITCH__
+#include "SwitchImpl.h"
+#endif
+
 #include <Audio.h>
 
 OTRGlobals* OTRGlobals::Instance;
@@ -104,14 +108,16 @@ extern "C" void OTRExtScanner() {
 }
 
 extern "C" void InitOTR() {
+#ifdef __SWITCH__
+    Ship::Switch::Init(Ship::PreInitPhase);
+#endif
     OTRGlobals::Instance = new OTRGlobals();
     SaveManager::Instance = new SaveManager();
     auto t = OTRGlobals::Instance->context->GetResourceManager()->LoadFile("version");
 
     if (!t->bHasLoadError)
     {
-        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
-        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -225,6 +231,7 @@ extern "C" void Graph_StartFrame() {
 
 // C->C++ Bridge
 extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
+#ifndef __SWITCH__
     if (!audio.initialized) {
         audio.initialized = true;
         std::thread([]() {
@@ -251,19 +258,16 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
 
                 #define AUDIO_FRAMES_PER_UPDATE (R_UPDATE_RATE > 0 ? R_UPDATE_RATE : 1 )
                 #define NUM_AUDIO_CHANNELS 2
+
                 int samples_left = AudioPlayer_Buffered();
                 u32 num_audio_samples = samples_left < AudioPlayer_GetDesiredBuffered() ? SAMPLES_HIGH : SAMPLES_LOW;
-                // printf("Audio samples: %d %u\n", samples_left, num_audio_samples);
 
                 // 3 is the maximum authentic frame divisor.
                 s16 audio_buffer[SAMPLES_HIGH * NUM_AUDIO_CHANNELS * 3];
                 for (int i = 0; i < AUDIO_FRAMES_PER_UPDATE; i++) {
                     AudioMgr_CreateNextAudioBuffer(audio_buffer + i * (num_audio_samples * NUM_AUDIO_CHANNELS), num_audio_samples);
                 }
-                //for (uint32_t i = 0; i < 2 * num_audio_samples; i++) {
-                //    audio_buffer[i] = Rand_Next() & 0xFF;
-                //}
-                // printf("Audio samples before submitting: %d\n", audio_api->buffered());
+
                 AudioPlayer_Play((u8*)audio_buffer, num_audio_samples * (sizeof(int16_t) * NUM_AUDIO_CHANNELS * AUDIO_FRAMES_PER_UPDATE));
 
                 audio.processing = false;
@@ -276,8 +280,9 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         audio.processing = true;
     }
-    audio.cv_to_thread.notify_one();
+#endif
 
+    audio.cv_to_thread.notify_one();
     std::vector<std::unordered_map<Mtx*, MtxF>> mtx_replacements;
     int target_fps = CVar_GetS32("gInterpolationFPS", 20);
     static int last_fps;
@@ -318,12 +323,14 @@ extern "C" void Graph_ProcessGfxCommands(Gfx* commands) {
     last_fps = fps;
     last_update_rate = R_UPDATE_RATE;
 
+#ifndef __SWITCH__
     {
         std::unique_lock<std::mutex> Lock(audio.mutex);
         while (audio.processing) {
             audio.cv_from_thread.wait(Lock);
         }
     }
+#endif
 
     // OTRTODO: FIGURE OUT END FRAME POINT
    /* if (OTRGlobals::Instance->context->GetWindow()->lastScancode != -1)
@@ -444,6 +451,12 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 }
 
 extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
+
+extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
@@ -787,8 +800,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
-                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
                 }
             }
 
@@ -819,8 +832,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                     for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
-                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
                     }
                 }
                 if (soundFont->instruments[i].lowNotesSound != nullptr)
@@ -1412,7 +1425,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
             price = 40;
             break;
     }
-    switch (language) { 
+    switch (language) {
     case 0: default:
         scrubText += 0x12; // add the sound
         scrubText += 0x38; // sound id
@@ -1467,7 +1480,7 @@ extern "C" int CopyScrubMessage(u16 scrubTextId, char* buffer, const int maxBuff
         scrubText += 0xA3; // message id
         break;
     }
-    
+
     return CopyStringToCharBuffer(scrubText, buffer, maxBufferSize);
 }
 
@@ -1488,7 +1501,7 @@ extern "C" int Randomizer_CopyGanonHintText(char* buffer, const int maxBufferSiz
 }
 
 extern "C" int Randomizer_CopyHintFromCheck(RandomizerCheck check, char* buffer, const int maxBufferSize) {
-    // we don't want to make a copy of the std::string returned from GetHintFromCheck 
+    // we don't want to make a copy of the std::string returned from GetHintFromCheck
     // so we're just going to let RVO take care of it
     const std::string& hintText = OTRGlobals::Instance->gRandomizer->GetHintFromCheck(check);
     return CopyStringToCharBuffer(hintText, buffer, maxBufferSize);

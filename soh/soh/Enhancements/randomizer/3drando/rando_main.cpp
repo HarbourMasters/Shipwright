@@ -10,6 +10,7 @@
 #define NOGDI
 #define WIN32_LEAN_AND_MEAN
 #include <GlobalCtx2.h>
+#include <PR/ultra64/types.h>
 
 #define TICKS_PER_SEC 268123480.0
 

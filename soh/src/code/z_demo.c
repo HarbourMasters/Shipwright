@@ -492,9 +492,10 @@ void Cutscene_Command_Terminator(GlobalContext* globalCtx, CutsceneContext* csCt
     s32 temp = 0;
 
     // Automatically skip certain cutscenes when in rando
+    // cmd->base == 8: Traveling back/forward in time cutscene
+    // cmd->base == 24: Dropping a fish for Jabu Jabu
     // cmd->base == 33: Zelda escaping with impa cutscene
-    // cmd->base == 24: Dropping a fish for Jabu Jabu :)
-    bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 33 || cmd->base == 24));
+    bool randoCsSkip = (gSaveContext.n64ddFlag && (cmd->base == 8 || cmd->base == 24 || cmd->base == 33));
     bool debugCsSkip = (CHECK_BTN_ALL(globalCtx->state.input[0].press.button, BTN_START) &&
                         (gSaveContext.fileNum != 0xFEDC) && CVar_GetS32("gDebugEnabled", 0));
 
