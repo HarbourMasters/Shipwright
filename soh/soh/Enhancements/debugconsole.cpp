@@ -529,7 +529,7 @@ void DebugConsole_LoadLegacyCVars() {
             if (cfg[1].find("\"") == std::string::npos && (cfg[1].find("#") != std::string::npos)) 
             {
                 std::string value(cfg[1]);
-                value.erase(std::ranges::remove(value, '#').begin(), value.end());
+                value.erase(std::remove_if(value.begin(), value.end(), [](char c) { return c == '#'; }), value.end());
                 auto splitTest = StringHelper::Split(value, "\r")[0];
 
                 uint32_t val = std::stoul(splitTest, nullptr, 16);
