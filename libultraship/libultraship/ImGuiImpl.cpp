@@ -850,128 +850,112 @@ namespace SohImGui {
 
             ImGui::SetCursorPosY(0.0f);
 
-            if (ImGui::BeginMenu("Audio")) {
-                EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
-
-                BindAudioSlider("Main Music Volume: %d %%", "gMainMusicVolume", 1.0f, SEQ_BGM_MAIN);
-                BindAudioSlider("Sub Music Volume: %d %%", "gSubMusicVolume", 1.0f, SEQ_BGM_SUB);
-                BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
-                BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
-            if (ImGui::BeginMenu("Controller"))
+            if (ImGui::BeginMenu("Settings"))
             {
-                EnhancementCheckbox("Use Controller Navigation", "gControlNav");
-                Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
+                if (ImGui::BeginMenu("Audio")) {
+                    EnhancementSliderFloat("Master Volume: %d %%", "##Master_Vol", "gGameMasterVolume", 0.0f, 1.0f, "", 1.0f, true);
 
-                EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
-                controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+                    BindAudioSlider("Main Music Volume: %d %%", "gMainMusicVolume", 1.0f, SEQ_BGM_MAIN);
+                    BindAudioSlider("Sub Music Volume: %d %%", "gSubMusicVolume", 1.0f, SEQ_BGM_SUB);
+                    BindAudioSlider("Sound Effects Volume: %d %%", "gSFXMusicVolume", 1.0f, SEQ_SFX);
+                    BindAudioSlider("Fanfare Volume: %d %%", "gFanfareVolume", 1.0f, SEQ_FANFARE);
 
-                ImGui::Separator();
-
-                // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
-                EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
-                EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
-                EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
-                EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                Tooltip("Allows the D-pad to be used as extra C buttons");
-                EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
-                Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
-                ImGui::Separator();
-
-                EnhancementCheckbox("Show Inputs", "gInputEnabled");
-                Tooltip("Shows currently pressed inputs on the bottom right of the screen");
-
-                EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
-                Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
-
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
-            if (ImGui::BeginMenu("Graphics"))
-            {
-                EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
-                Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
-                gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
-                EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
-                Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
-                gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
-
-                if (impl.backend == Backend::DX11)
-                {
-                    const char* cvar = "gExtraLatencyThreshold";
-                    int val = CVar_GetS32(cvar, 80);
-                    val = MAX(MIN(val, 360), 0);
-                    int fps = val;
-
-                    if (fps == 0)
-                    {
-                        ImGui::Text("Jitter fix: Off");
-                    }
-                    else
-                    {
-                        ImGui::Text("Jitter fix: >= %d FPS", fps);
-                    }
-
-                    std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
-                    std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
-                    if (ImGui::Button(MinusBTNELT.c_str())) {
-                        val--;
-                        CVar_SetS32(cvar, val);
-                        needs_save = true;
-                    }
-                    ImGui::SameLine();
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
-                    if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
-                    {
-                        CVar_SetS32(cvar, val);
-                        needs_save = true;
-                    }
-
-                    Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
-
-                    ImGui::SameLine();
-                    ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-                    if (ImGui::Button(PlusBTNELT.c_str())) {
-                        val++;
-                        CVar_SetS32(cvar, val);
-                        needs_save = true;
-                    }
+                    ImGui::EndMenu();
                 }
 
+                if (ImGui::BeginMenu("Controller")) {
+                    EnhancementCheckbox("Use Controller Navigation", "gControlNav");
+                    Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
 
-                ImGui::Text("Renderer API (Needs reload)");
-                if (ImGui::BeginCombo("##RApi", backends[lastBackendID].second)) {
-                    for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
-                        if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
-                            pConf->setString("Window.GfxBackend", backends[i].first);
-                            lastBackendID = i;
+                    EnhancementCheckbox("Controller Configuration", "gControllerConfigurationEnabled");
+                    controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
+
+                    ImGui::Separator();
+
+                    EnhancementCheckbox("Show Inputs", "gInputEnabled");
+                    Tooltip("Shows currently pressed inputs on the bottom right of the screen");
+
+                    EnhancementSliderFloat("Input Scale: %.1f", "##Input", "gInputScale", 1.0f, 3.0f, "", 1.0f, false);
+                    Tooltip("Sets the on screen size of the displayed inputs from the Show Inputs setting");
+
+                    ImGui::EndMenu();
+                }
+
+                if (ImGui::BeginMenu("Graphics")) {
+                    EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
+                    Tooltip("Multiplies your output resolution by the value inputted, as a more intensive but effective form of anti-aliasing");
+                    gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
+                    EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
+                    Tooltip("Activates multi-sample anti-aliasing when above 1x up to 8x for 8 samples for every pixel");
+                    gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
+
+                    if (impl.backend == Backend::DX11)
+                    {
+                        const char* cvar = "gExtraLatencyThreshold";
+                        int val = CVar_GetS32(cvar, 80);
+                        val = MAX(MIN(val, 360), 0);
+                        int fps = val;
+
+                        if (fps == 0)
+                        {
+                            ImGui::Text("Jitter fix: Off");
+                        }
+                        else
+                        {
+                            ImGui::Text("Jitter fix: >= %d FPS", fps);
+                        }
+
+                        std::string MinusBTNELT = " - ##ExtraLatencyThreshold";
+                        std::string PlusBTNELT = " + ##ExtraLatencyThreshold";
+                        if (ImGui::Button(MinusBTNELT.c_str())) {
+                            val--;
+                            CVar_SetS32(cvar, val);
+                            needs_save = true;
+                        }
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+
+                        if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
+                        {
+                            CVar_SetS32(cvar, val);
+                            needs_save = true;
+                        }
+
+                        Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
+
+                        ImGui::SameLine();
+                        ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
+                        if (ImGui::Button(PlusBTNELT.c_str())) {
+                            val++;
+                            CVar_SetS32(cvar, val);
+                            needs_save = true;
                         }
                     }
-                    ImGui::EndCombo();
+
+                    ImGui::Text("Renderer API (Needs reload)");
+                    if (ImGui::BeginCombo("##RApi", backends[lastBackendID].second)) {
+                        for (uint8_t i = 0; i < sizeof(backends) / sizeof(backends[0]); i++) {
+                            if (ImGui::Selectable(backends[i].second, i == lastBackendID)) {
+                                pConf->setString("Window.GfxBackend", backends[i].first);
+                                lastBackendID = i;
+                            }
+                        }
+                        ImGui::EndCombo();
+                    }
+
+                    EXPERIMENTAL();
+                    ImGui::Text("Texture Filter (Needs reload)");
+                    EnhancementCombobox("gTextureFilter", filters, 3, 0);
+                    overlay->DrawSettings();
+
+                    ImGui::EndMenu();
                 }
-
-                EXPERIMENTAL();
-                ImGui::Text("Texture Filter (Needs reload)");
-                EnhancementCombobox("gTextureFilter", filters, 3, 0);
-                overlay->DrawSettings();
-                ImGui::EndMenu();
-            }
-
-            ImGui::SetCursorPosY(0.0f);
-
-            if (ImGui::BeginMenu("Languages")) {
-                EnhancementRadioButton("English", "gLanguages", 0);
-                EnhancementRadioButton("German", "gLanguages", 1);
-                EnhancementRadioButton("French", "gLanguages", 2);
+                if (ImGui::BeginMenu("Languages")) {
+                    EnhancementRadioButton("English", "gLanguages", 0);
+                    EnhancementRadioButton("German", "gLanguages", 1);
+                    EnhancementRadioButton("French", "gLanguages", 2);
+                    ImGui::EndMenu();
+                }
                 ImGui::EndMenu();
             }
 
@@ -979,6 +963,22 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Enhancements"))
             {
+                if (ImGui::BeginMenu("Controls")) {
+                    // TODO mutual exclusions -- There should be some system to prevent conclifting enhancements from being selected
+                    EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
+                    Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
+                    EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
+                    EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
+                    EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
+                    Tooltip("Allows the D-pad to be used as extra C buttons");
+                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
+                    Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
+                    EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
+                    Tooltip("Prevent dropping inputs when playing the ocarina quickly");
+                    EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
+                    Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
+                    ImGui::EndMenu();
+                }
                 if (ImGui::BeginMenu("Gameplay"))
                 {
                     if (ImGui::BeginMenu("Time Savers"))
@@ -1006,8 +1006,6 @@ namespace SohImGui {
                         Tooltip("The default response to Kaepora Gaebora is always that you understood what he said");
                         EnhancementCheckbox("Fast Ocarina Playback", "gFastOcarinaPlayback");
                         Tooltip("Skip the part where the Ocarina playback is called when you play a song");
-                        EnhancementCheckbox("Prevent Dropped Ocarina Inputs", "gDpadNoDropOcarinaInput");
-                        Tooltip("Prevent dropping inputs when playing the ocarina quickly");
                         EnhancementCheckbox("Instant Putaway", "gInstantPutaway");
                         Tooltip("Allow Link to put items away without having to wait around");
                         EnhancementCheckbox("Mask Select in Inventory", "gMaskSelect");
@@ -1151,8 +1149,6 @@ namespace SohImGui {
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be shared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
                     EnhancementCheckbox("Enable passage of time on file select", "gTimeFlowFileSelect");
-                    EnhancementCheckbox("Allow the cursor to be on any slot", "gPauseAnyCursor");
-                    Tooltip("Allows the cursor on the pause menu to be over any slot\nSimilar to Rando and Spaceworld 97");
                     EnhancementCheckbox("Count Golden Skulltulas", "gInjectSkulltulaCount");
                     Tooltip("Injects Golden Skulltula total count in pickup messages");
                     EnhancementCheckbox("Pull grave during the day", "gDayGravePull");
@@ -1263,6 +1259,13 @@ namespace SohImGui {
 
                     ImGui::EndMenu();
                 }
+
+                ImGui::Separator();
+
+                EnhancementCheckbox("Cosmetic Editor", "gCosmeticsEditorEnabled");
+                customWindows["Cosmetic Editor"].enabled = CVar_GetS32("gCosmeticsEditorEnabled", 0);
+
+                ImGui::Separator();
 
                 EXPERIMENTAL();
 
@@ -1517,10 +1520,29 @@ namespace SohImGui {
                 EnhancementCheckbox("Console", "gConsoleEnabled");
                 Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
                 console->opened = CVar_GetS32("gConsoleEnabled", 0);
+                EnhancementCheckbox("Save Editor", "gSaveEditorEnabled");
+                customWindows["Save Editor"].enabled = CVar_GetS32("gSaveEditorEnabled", 0);
+                EnhancementCheckbox("Collision Viewer", "gCollisionViewerEnabled");
+                customWindows["Collision Viewer"].enabled = CVar_GetS32("gCollisionViewerEnabled", 0);
+                EnhancementCheckbox("Actor Viewer", "gActorViewerEnabled");
+                customWindows["Actor Viewer"].enabled = CVar_GetS32("gActorViewerEnabled", 0);
 
                 ImGui::EndMenu();
             }
 
+            ImGui::SetCursorPosY(0.0f);
+
+            if (ImGui::BeginMenu("Randomizer"))
+            {
+                EnhancementCheckbox("Randomizer Settings", "gRandomizerSettingsEnabled");
+                customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                EnhancementCheckbox("Item Tracker", "gItemTrackerEnabled");
+                customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+
+                ImGui::EndMenu();
+            }
+
+            /*
             for (const auto& category : windowCategories) {
                 ImGui::SetCursorPosY(0.0f);
                 if (ImGui::BeginMenu(category.first.c_str())) {
@@ -1535,6 +1557,7 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
             }
+            */
 
             ImGui::EndMenuBar();
         }
