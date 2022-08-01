@@ -1435,7 +1435,7 @@ void DrawPlayerTab() {
         InsertHelpHoverText("Link's speed along the Y plane. Caps at -20");
 
         ImGui::InputScalar("Wall Height", ImGuiDataType_Float, &player->wallHeight);
-        InsertHelpHoverText("\"height used to determine whether link can climb or grab a ledge at the top\"");
+        InsertHelpHoverText("Height used to determine whether Link can climb or grab a ledge at the top");
 
         ImGui::InputScalar("Invincibility Timer", ImGuiDataType_S8, &player->invincibilityTimer);
         InsertHelpHoverText("Can't take damage while this is nonzero");

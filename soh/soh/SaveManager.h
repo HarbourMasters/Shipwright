@@ -117,6 +117,7 @@ public:
     static void SaveRandomizer();
 
     static void LoadBaseVersion1();
+    static void LoadBaseVersion2();
     static void SaveBase();
 
     std::vector<InitFunc> initFuncs;

@@ -375,10 +375,15 @@ static bool StateSlotSelectHandler(const std::vector<std::string>& args) {
 #define VARTYPE_INTEGER 0
 #define VARTYPE_FLOAT   1
 #define VARTYPE_STRING  2
+#define VARTYPE_RGBA    3
 
 static int CheckVarType(const std::string& input)
 {
     int result = VARTYPE_STRING;
+
+    if (input[0] == '#') {
+        return VARTYPE_RGBA;
+    }
 
     for (size_t i = 0; i < input.size(); i++)
     {
@@ -407,7 +412,17 @@ static bool SetCVarHandler(const std::vector<std::string>& args) {
     if (vType == VARTYPE_STRING)
         CVar_SetString(args[1].c_str(), args[2].c_str());
     else if (vType == VARTYPE_FLOAT)
-        CVar_SetFloat(args[1].c_str(), std::stof(args[2]));
+        CVar_SetFloat((char*)args[1].c_str(), std::stof(args[2]));
+    else if (vType == VARTYPE_RGBA)
+    {
+        uint32_t val = std::stoul(&args[2].c_str()[1], nullptr, 16);
+        Color_RGBA8 clr;
+        clr.r = val >> 24;
+        clr.g = val >> 16;
+        clr.b = val >> 8;
+        clr.a = val & 0xFF;
+        CVar_SetRGBA((char*)args[1].c_str(), clr);
+    }
     else
         CVar_SetS32(args[1].c_str(), std::stoi(args[2]));
 
@@ -426,12 +441,14 @@ static bool GetCVarHandler(const std::vector<std::string>& args) {
 
     if (cvar != nullptr)
     {
-        if (cvar->type == CVAR_TYPE_S32)
+        if (cvar->type == CVarType::S32)
             INFO("[SOH] Variable %s is %i", args[1].c_str(), cvar->value.valueS32);
-        else if (cvar->type == CVAR_TYPE_FLOAT)
+        else if (cvar->type == CVarType::Float)
             INFO("[SOH] Variable %s is %f", args[1].c_str(), cvar->value.valueFloat);
-        else if (cvar->type == CVAR_TYPE_STRING)
+        else if (cvar->type == CVarType::String)
             INFO("[SOH] Variable %s is %s", args[1].c_str(), cvar->value.valueStr);
+        else if (cvar->type == CVarType::RGBA)
+            INFO("[SOH] Variable %s is %08X", args[1].c_str(), cvar->value.valueRGBA);
     }
     else
     {
@@ -508,6 +525,22 @@ void DebugConsole_LoadLegacyCVars() {
             std::vector<std::string> cfg = StringHelper::Split(line, " = ");
             if (line.empty()) continue;
             if (cfg.size() < 2) continue;
+
+            if (cfg[1].find("\"") == std::string::npos && (cfg[1].find("#") != std::string::npos)) 
+            {
+                std::string value(cfg[1]);
+                value.erase(std::remove_if(value.begin(), value.end(), [](char c) { return c == '#'; }), value.end());
+                auto splitTest = StringHelper::Split(value, "\r")[0];
+
+                uint32_t val = std::stoul(splitTest, nullptr, 16);
+                Color_RGBA8 clr;
+                clr.r = val >> 24;
+                clr.g = val >> 16;
+                clr.b = val >> 8;
+                clr.a = val & 0xFF;
+                CVar_SetRGBA(cfg[0].c_str(), clr);
+            }
+
             if (cfg[1].find("\"") != std::string::npos) {
                 std::string value(cfg[1]);
                 value.erase(std::remove(value.begin(), value.end(), '\"'), value.end());
@@ -536,7 +569,19 @@ void DebugConsole_LoadCVars() {
             case nlohmann::detail::value_t::array:
                 break;
             case nlohmann::detail::value_t::string:
-                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
+                if (StringHelper::StartsWith(value.get<std::string>(), "#")) 
+                {
+                    uint32_t val = std::stoul(&value.get<std::string>().c_str()[1], nullptr, 16);
+                    Color_RGBA8 clr;
+                    clr.r = val >> 24;
+                    clr.g = val >> 16;
+                    clr.b = val >> 8;
+                    clr.a = val & 0xFF;
+
+                    CVar_SetRGBA(item.key().c_str(), clr);
+                }
+                else
+                    CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
                 break;
             case nlohmann::detail::value_t::boolean:
                 CVar_SetS32(item.key().c_str(), value.get<bool>());
@@ -565,12 +610,19 @@ void DebugConsole_SaveCVars()
     for (const auto &cvar : cvars) {
         const std::string key = StringHelper::Sprintf("CVars.%s", cvar.first.c_str());
 
-        if (cvar.second->type == CVAR_TYPE_STRING && cvar.second->value.valueStr != nullptr)
+        if (cvar.second->type == CVarType::String && cvar.second->value.valueStr != nullptr)
             pConf->setString(key, std::string(cvar.second->value.valueStr));
-        else if (cvar.second->type == CVAR_TYPE_S32)
+        else if (cvar.second->type == CVarType::S32)
             pConf->setInt(key, cvar.second->value.valueS32);
-        else if (cvar.second->type == CVAR_TYPE_FLOAT)
+        else if (cvar.second->type == CVarType::Float)
             pConf->setFloat(key, cvar.second->value.valueFloat);
+        else if (cvar.second->type == CVarType::RGBA)
+        {
+            Color_RGBA8 clr = cvar.second->value.valueRGBA;
+            uint32_t val = (clr.r << 24) + (clr.g << 16) + (clr.b << 8) + clr.a;
+            std::string str = StringHelper::Sprintf("#%08X", val);
+            pConf->setString(key, str);
+        }
     }
 
     pConf->save();
