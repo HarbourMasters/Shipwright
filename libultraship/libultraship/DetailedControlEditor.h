@@ -8,6 +8,11 @@
 #include "Lib/ImGui/imgui.h"
 
 namespace Ship {
+	typedef struct {
+		const char* label;
+		const char* cVarName;
+		uint32_t defaultBtn;
+	} CustomButtonMap;
 
 	class DetailedControlEditor {
 	private:
@@ -19,7 +24,7 @@ namespace Ship {
 		bool Opened = false;
 		void Init();
 		void DrawHud();
-		void DrawOcarinaMapping(const char*, const char*, uint32_t, float);
+		void DrawMapping(CustomButtonMap&, float labelWidth = 0, uint32_t removedButtons = 0);
 		void DrawOcarinaControlPanel();
 	};
 }

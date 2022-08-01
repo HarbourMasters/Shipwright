@@ -42,6 +42,16 @@ namespace Ship {
 		}
 	}
 
+	// Ocarina custom button maps
+	static CustomButtonMap ocarinaD5 = {"D5", "gOcarinaD5BtnMap", BTN_CUP};
+	static CustomButtonMap ocarinaB4 = {"B4", "gOcarinaB4BtnMap", BTN_CLEFT};
+	static CustomButtonMap ocarinaA4 = {"A4", "gOcarinaA4BtnMap", BTN_CRIGHT};
+	static CustomButtonMap ocarinaF4 = {"F4", "gOcarinaF4BtnMap", BTN_CDOWN};
+	static CustomButtonMap ocarinaD4 = {"D4", "gOcarinaD4BtnMap", BTN_A};
+	static CustomButtonMap ocarinaSongDisable = {"Disable songs", "gOcarinaD5BtnMap", BTN_L};
+	static CustomButtonMap ocarinaSharp = {"Pitch up", "gOcarinaD5BtnMap", BTN_R};
+	static CustomButtonMap ocarinaFlat = {"Pitch down", "gOcarinaD5BtnMap", BTN_Z};
+
 	// Assumes only addition since this is only used to construct the button map
 	// So this does not work like a proper linked hash map's insertion
 	void DetailedControlEditor::addButton(uint32_t mask, const char* name) {
@@ -51,6 +61,7 @@ namespace Ship {
 
 	void DetailedControlEditor::Init() {
 		addButton(BTN_A,		"A");
+		addButton(BTN_B,		"B");
 		addButton(BTN_CUP,		"C Up");
 		addButton(BTN_CDOWN,	"C Down");
 		addButton(BTN_CLEFT,	"C Left");
@@ -66,36 +77,34 @@ namespace Ship {
 		addButton(0,			"None");
 	}
 
-	void DetailedControlEditor::DrawOcarinaMapping(const char* label, const char* id, uint32_t n64Btn, float width) {
-		std::string cVar = StringHelper::Sprintf("gOcarina%sBtnMap", id);
-		uint32_t currentButton = CVar_GetS32(cVar.c_str(), n64Btn);
+	// Draw a button mapping setting consisting of a padded label and button dropdown.
+	// removedButtons is a mask that indicates which buttons are unavailable to choose from.
+	void DetailedControlEditor::DrawMapping(CustomButtonMap& mapping, float labelWidth, uint32_t removedButtons) {
+		uint32_t currentButton = CVar_GetS32(mapping.cVarName, mapping.defaultBtn);
 
 		const char* preview;
 		if (buttonmap.contains(currentButton)) {
 			preview = buttonmap[currentButton]->second;
 		} else {
-			preview = "";
+			preview = "Unknown";
 		}
 
-		ImVec2 len = ImGui::CalcTextSize(label);
-		ImVec2 pos = ImGui::GetCursorPos();
-		ImGui::SetCursorPosY(pos.y + len.y / 4);
-		ImGui::SetCursorPosX(pos.x + abs(len.x - width));
-		ImGui::Text("%s", label);
+		ImVec2 cursorPos = ImGui::GetCursorPos();
+		ImVec2 textSize = ImGui::CalcTextSize(mapping.label);
+		ImGui::SetCursorPosY(cursorPos.y + textSize.y / 4);
+		ImGui::SetCursorPosX(cursorPos.x + abs(textSize.x - labelWidth));
+		ImGui::Text(mapping.label);
 		ImGui::SameLine();
-		ImGui::SetCursorPosY(pos.y);
-
-		bool dpad = CVar_GetS32("gDpadOcarina", 0);
-		uint32_t dpadMask = BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
+		ImGui::SetCursorPosY(cursorPos.y);
 
 		ImGui::SetNextItemWidth(ImGui::GetFontSize() * 8);
-		if (ImGui::BeginCombo(StringHelper::Sprintf("##OcarinaMap%s", id).c_str(), preview)) {
+		if (ImGui::BeginCombo(mapping.cVarName, preview)) {
 			for (auto i = buttons.begin(); i != buttons.end(); i++) {
-				if (dpad && (i->first & dpadMask) != 0) {  // Hide d-pad options if d-pad check button set
+				if ((i->first & removedButtons) != 0) {
 					continue;
 				}
 				if (ImGui::Selectable(i->second, i->first == currentButton)) {
-					CVar_SetS32(cVar.c_str(), i->first);
+					CVar_SetS32(mapping.cVarName, i->first);
 				}
 			}
 			ImGui::EndCombo();
@@ -107,65 +116,71 @@ namespace Ship {
 			return;
 		}
 
-		if (ImGui::BeginTable("tableCustomOcarinaControls", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-			ImGui::TableSetupColumn("Custom Ocarina Controls", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
-			Table_InitHeader(false);
-			
-			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-			SohImGui::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
+		if (!ImGui::BeginTable("tableCustomOcarinaControls", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+			return;
+		}
 
-			if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
-				if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
-					float labelWidth;
+		ImGui::TableSetupColumn("Custom Ocarina Controls", ImGuiTableColumnFlags_WidthStretch | ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
+		Table_InitHeader(false);
+		
+		ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+		SohImGui::EnhancementCheckbox("Customize Ocarina Controls", "gCustomOcarinaControls");
 
-					ImGui::TableSetupColumn("Custom Ocarina Notes", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
-					ImGui::TableSetupColumn("Custom Ocarina Modifiers", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
-					Table_InitHeader(false);
-
-					SohImGui::BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
-					labelWidth = ImGui::CalcTextSize("D5").x + 10;
-					DrawOcarinaMapping("D5", "D5", BTN_CUP, labelWidth);
-					DrawOcarinaMapping("B4", "B4", BTN_CLEFT, labelWidth);
-					DrawOcarinaMapping("A4", "A4", BTN_CRIGHT, labelWidth);
-					DrawOcarinaMapping("F4", "F4", BTN_CDOWN, labelWidth);
-					DrawOcarinaMapping("D4", "D4", BTN_A, labelWidth);
-					ImGui::Dummy(ImVec2(0, 5));
-					float cursorY = ImGui::GetCursorPosY();
-					SohImGui::EndGroupPanel();
-
-					Table_NextCol();
-
-					SohImGui::BeginGroupPanel("Modifiers", ImGui::GetContentRegionAvail());
-					labelWidth = ImGui::CalcTextSize("Disable songs").x + 10;
-					DrawOcarinaMapping("Disable songs", "Disable", BTN_L, labelWidth);
-					DrawOcarinaMapping("Pitch up", "Sharp", BTN_R, labelWidth);
-					DrawOcarinaMapping("Pitch down", "Flat", BTN_Z, labelWidth);
-					ImGui::Dummy(ImVec2(0, 5));
-					SohImGui::EndGroupPanel(cursorY - ImGui::GetCursorPosY() + 2);
-
-					ImGui::EndTable();
+		if (CVar_GetS32("gCustomOcarinaControls", 0) == 1) {
+			if (ImGui::BeginTable("tableCustomMainOcarinaControls", 2, ImGuiTableFlags_SizingStretchProp)) {
+				float labelWidth;
+				uint32_t disableMask = BTN_B;
+				if (CVar_GetS32("gDpadOcarina", 0)) {
+					disableMask |= BTN_DUP | BTN_DDOWN | BTN_DLEFT | BTN_DRIGHT;
 				}
-			} else {
-				ImGui::Dummy(ImVec2(0, 5));
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
-				ImGui::Dummy(ImVec2(0, 5));
-			}
 
-			SohImGui::BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
-			if (ImGui::BeginTable("tableOcarinaAlternateControls", 2, ImGuiTableFlags_SizingFixedSame)) {
-				ImGui::TableSetupColumn("D-pad", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
-				ImGui::TableSetupColumn("Right stick", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
+				ImGui::TableSetupColumn("Custom Ocarina Notes", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
+				ImGui::TableSetupColumn("Custom Ocarina Modifiers", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
 				Table_InitHeader(false);
-				ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
-				SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+
+				SohImGui::BeginGroupPanel("Notes", ImGui::GetContentRegionAvail());
+				labelWidth = ImGui::CalcTextSize("D5").x + 10;
+				DrawMapping(ocarinaD5, labelWidth, disableMask);
+				DrawMapping(ocarinaB4, labelWidth, disableMask);
+				DrawMapping(ocarinaA4, labelWidth, disableMask);
+				DrawMapping(ocarinaF4, labelWidth, disableMask);
+				DrawMapping(ocarinaD4, labelWidth, disableMask);
+				ImGui::Dummy(ImVec2(0, 5));
+				float cursorY = ImGui::GetCursorPosY();
+				SohImGui::EndGroupPanel();
+
 				Table_NextCol();
-				SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+
+				SohImGui::BeginGroupPanel("Modifiers", ImGui::GetContentRegionAvail());
+				labelWidth = ImGui::CalcTextSize(ocarinaSongDisable.label).x + 10;
+				DrawMapping(ocarinaSongDisable, labelWidth, disableMask);
+				DrawMapping(ocarinaSharp, labelWidth, disableMask);
+				DrawMapping(ocarinaFlat, labelWidth, disableMask);
+				ImGui::Dummy(ImVec2(0, 5));
+				SohImGui::EndGroupPanel(cursorY - ImGui::GetCursorPosY() + 2);
+
 				ImGui::EndTable();
 			}
+		} else {
 			ImGui::Dummy(ImVec2(0, 5));
-			SohImGui::EndGroupPanel();
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			ImGui::TextWrapped("To modify the main ocarina controls, select the \"Customize Ocarina Controls\" checkbox.");
+			ImGui::Dummy(ImVec2(0, 5));
 		}
+
+		SohImGui::BeginGroupPanel("Alternate controls", ImGui::GetContentRegionAvail());
+		if (ImGui::BeginTable("tableOcarinaAlternateControls", 2, ImGuiTableFlags_SizingFixedSame)) {
+			ImGui::TableSetupColumn("D-pad", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
+			ImGui::TableSetupColumn("Right stick", ImGuiTableColumnFlags_IndentEnable | ImGuiTableColumnFlags_NoSort);
+			Table_InitHeader(false);
+			ImGui::SetCursorPosX(ImGui::GetCursorPosX() + 5);
+			SohImGui::EnhancementCheckbox("Play with D-pad", "gDpadOcarina");
+			Table_NextCol();
+			SohImGui::EnhancementCheckbox("Play with camera stick", "gRStickOcarina");
+			ImGui::EndTable();
+		}
+		ImGui::Dummy(ImVec2(0, 5));
+		SohImGui::EndGroupPanel();
 
 		ImGui::EndTable();
 	}
