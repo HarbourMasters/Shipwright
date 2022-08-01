@@ -1443,7 +1443,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
     CLOSE_DISPS(gfxCtx);
 }
 
-time_t day_seconds() {
+time_t Gameplay_GetRealTime() {
     time_t t1, t2;
     struct tm* tms;
     time(&t1);
@@ -1503,7 +1503,7 @@ void Gameplay_Main(GameState* thisx) {
         const int maxRealDaySeconds = 86400;
         const int maxInGameDayTicks = 65536;
 
-        int secs = (int)day_seconds();
+        int secs = (int)Gameplay_GetRealTime();
         float percent = (float)secs / (float)maxRealDaySeconds;
 
         int newIngameTime = maxInGameDayTicks * percent;
