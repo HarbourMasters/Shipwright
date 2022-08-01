@@ -98,6 +98,7 @@ s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
 s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
 bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId, Actor* actor);
+bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId);
 #endif
 
 #endif

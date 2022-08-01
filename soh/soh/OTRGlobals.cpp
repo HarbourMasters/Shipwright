@@ -1506,3 +1506,7 @@ extern "C" bool Randomizer_ObtainedFreestandingIceTrap(RandomizerCheck randomize
     return gSaveContext.n64ddFlag && (actor->parent != NULL) &&
          Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
+
+extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
