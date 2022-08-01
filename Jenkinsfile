@@ -78,8 +78,8 @@ pipeline {
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
                             docker exec sohcont scripts/linux/appimage/build.sh
                             
-                            mv README.md readme.txt		
-                            mv _packages/*.appimage soh.appimage
+                            mv README.md readme.txt
+                            mv build-cmake/*.appimage soh.appimage
 
                             7z a soh-linux.7z soh.appimage readme.txt
                             
