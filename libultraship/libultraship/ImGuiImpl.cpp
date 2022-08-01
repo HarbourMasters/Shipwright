@@ -1140,6 +1140,8 @@ namespace SohImGui {
                     Tooltip("Displays an icon and plays a sound when Stone of Agony\nshould be activated, for those without rumble");
                     EnhancementCheckbox("Assignable Tunics and Boots", "gAssignableTunicsAndBoots");
                     Tooltip("Allows equipping the tunic and boots to c-buttons");
+                    EnhancementCheckbox("Equipment Toggle", "gEquipmentCanBeRemoved");
+                    Tooltip("Allows equipment to be removed by toggling it off on\nthe equipment subscreen.");
                     EnhancementCheckbox("Link's Cow in Both Time Periods", "gCowOfTime");
                     Tooltip("Allows the Lon Lon Ranch obstacle course reward to be\nshared across time periods");
                     EnhancementCheckbox("Enable visible guard vision", "gGuardVision");
