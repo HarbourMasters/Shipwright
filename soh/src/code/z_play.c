@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-
+#include "../libultraship/ImGuiImpl.h"
 #include "soh/frame_interpolation.h"
 
 #include <time.h>
@@ -192,6 +192,7 @@ void Gameplay_Destroy(GameState* thisx) {
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
     Fault_RemoveClient(&D_801614B8);
+    disableBetaQuest();
     gGlobalCtx = NULL;
 }
 
@@ -262,6 +263,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    enableBetaQuest();
     gGlobalCtx = globalCtx;
     //globalCtx->state.gfxCtx = NULL;
     uintptr_t zAlloc;
