@@ -1548,7 +1548,7 @@ u8 Item_Give(GlobalContext* globalCtx, u8 item) {
     s16 slot;
     s16 temp;
 
-    slot = (item < sizeof(gItemSlots)/sizeof(gItemSlots[0])) ? SLOT(item) : -1;
+    slot = (item < ARRAY_COUNT(gItemSlots)) ? SLOT(item) : -1;
     if (item >= ITEM_STICKS_5) {
         slot = SLOT(sExtraItemBases[item - ITEM_STICKS_5]);
     }
