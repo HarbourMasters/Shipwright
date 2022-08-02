@@ -320,6 +320,7 @@ static void gfx_metal_init(void) {
     FramebufferMetal& fb = mctx.framebuffers[gfx_metal_create_framebuffer()];
     fb.msaa_level = 1;
 
+    // Check device for supported msaa levels
     for (uint32_t sample_count = 1; sample_count <= METAL_MAX_MULTISAMPLE_SAMPLE_COUNT; sample_count++) {
         if ([mctx.device supportsTextureSampleCount:sample_count]) {
             mctx.msaa_num_quality_levels[sample_count - 1] = 1;
@@ -466,7 +467,6 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         // end vertex shader
 
         // fragment shader
-
         if (mctx.current_filter_mode == FILTER_THREE_POINT) {
             append_line(buf, &len, "#define TEX_OFFSET(tex, texSmplr, texCoord, off, texSize) tex.sample(texSmplr, texCoord - off / texSize)");
             append_line(buf, &len, "float4 filter3point(thread const texture2d<float> tex, thread const sampler texSmplr, thread const float2& texCoord, thread const float2& texSize) {");
@@ -605,16 +605,6 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
             pipelineDescriptor.colorAttachments[0].blendingEnabled = NO;
             pipelineDescriptor.colorAttachments[0].writeMask = MTLColorWriteMaskAll;
         }
-
-        //        id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
-        //
-        //        if (!pipelineState) {
-        //            // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
-        //            // If the Metal API validation is enabled, we can find out more information about what
-        //            // went wrong.  (Metal API validation is enabled by default when a debug build is run
-        //            // from Xcode)
-        //            NSLog(@"Failed to created pipeline state");
-        //        }
 
         struct ShaderProgramMetal *prg = (struct ShaderProgramMetal *)calloc(1, sizeof(struct ShaderProgramMetal));
         prg->shader_id0 = shader_id0;
@@ -872,6 +862,7 @@ void gfx_metal_end_frame(void) {
 
     for (int fb_id = 0; fb_id < (int)mctx.framebuffers.size(); fb_id++) {
         FramebufferMetal& fb = mctx.framebuffers[fb_id];
+
         fb.command_buffer = nullptr;
         fb.command_encoder = nullptr;
         fb.has_ended_encoding = false;
