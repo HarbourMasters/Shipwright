@@ -10,6 +10,8 @@
 #include "Enhancements/savestates.h"
 #include "Enhancements/randomizer/randomizer.h"
 
+const std::string customMessageTableID = "BaseGameOverrides";
+
 class OTRGlobals
 {
 public:

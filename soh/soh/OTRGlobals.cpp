@@ -1518,7 +1518,7 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             } else {
                 textId = TEXT_GS_FREEZE;
             }
-            messageEntry = CustomMessageManager::Instance->RetrieveMessage("BaseGameOverrides", textId);
+            messageEntry = CustomMessageManager::Instance->RetrieveMessage(customMessageTableID, textId);
         }
     }
     if (messageEntry.textBoxType != -1) {
