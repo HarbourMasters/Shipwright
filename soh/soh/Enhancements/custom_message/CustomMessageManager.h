@@ -69,8 +69,6 @@ class CustomMessageManager {
 
     void ReplaceSpecialCharacters(std::string &string);
     void ReplaceColors(std::string& string);
-    void FormatCustomMessage(std::string& message, ItemID iid);
-    void FormatCustomMessage(std::string& message);
     bool InsertCustomMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
 
     std::string MESSAGE_END();
@@ -91,4 +89,6 @@ class CustomMessageManager {
     CustomMessageEntry RetrieveMessage(std::string tableID, uint16_t textID);
     bool ClearMessageTable(std::string tableID);
     bool AddCustomMessageTable(std::string tableID);
+    void FormatCustomMessage(std::string& message, ItemID iid);
+    void FormatCustomMessage(std::string& message);
 };

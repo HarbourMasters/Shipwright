@@ -1826,24 +1826,7 @@ std::string AltarIconString(char iconChar) {
 std::string FormatJsonHintText(std::string jsonHint) {
     std::string formattedHintMessage = jsonHint;
 
-    std::unordered_map<std::string, char> textBoxSpecialCharacters = {
-        { "À", 0x80 }, { "î", 0x81 }, { "Â", 0x82 }, { "Ä", 0x83 }, { "Ç", 0x84 }, { "È", 0x85 }, { "É", 0x86 },
-        { "Ê", 0x87 }, { "Ë", 0x88 }, { "Ï", 0x89 }, { "Ô", 0x8A }, { "Ö", 0x8B }, { "Ù", 0x8C }, { "Û", 0x8D },
-        { "Ü", 0x8E }, { "ß", 0x8F }, { "à", 0x90 }, { "á", 0x91 }, { "â", 0x92 }, { "ä", 0x93 }, { "ç", 0x94 },
-        { "è", 0x95 }, { "é", 0x96 }, { "ê", 0x97 }, { "ë", 0x98 }, { "ï", 0x99 }, { "ô", 0x9A }, { "ö", 0x9B },
-        { "ù", 0x9C }, { "û", 0x9D }, { "ü", 0x9E }
-    };
-
-    // add special characters
-    for (auto specialCharacterPair : textBoxSpecialCharacters) {
-        size_t start_pos = 0;
-        std::string textBoxSpecialCharacterString = "";
-        textBoxSpecialCharacterString += specialCharacterPair.second;
-        while ((start_pos = formattedHintMessage.find(specialCharacterPair.first, start_pos)) != std::string::npos) {
-            formattedHintMessage.replace(start_pos, specialCharacterPair.first.length(), textBoxSpecialCharacterString);
-            start_pos += textBoxSpecialCharacterString.length();
-        }
-    }
+    CustomMessageManager::Instance->FormatCustomMessage(formattedHintMessage);
 
     // add icons to altar text
     for (char iconChar : {'0', '1', '2', '3', '4', '5', '6', '7', '8', 'o', 'c', 'i', 'l', 'b', 'L', 'k'}) {
