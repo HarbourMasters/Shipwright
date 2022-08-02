@@ -39,7 +39,6 @@ int cantor(uint64_t a, uint64_t b) {
     return (a + b + 1.0) * (a + b) / 2 + b;
 }
 
-// A hash function used to hash a: pair<float, float>
 struct hash_pair_shader_ids {
     size_t operator()(const std::pair<uint64_t, uint32_t> &p ) const {
         auto value1 = p.first;
@@ -66,6 +65,8 @@ struct ShaderProgramMetal {
     uint8_t num_inputs;
     uint8_t num_floats;
     bool used_textures[2];
+
+    MTLRenderPipelineDescriptor* pipeline_descriptor;
 };
 
 struct FrameUniforms {
@@ -105,7 +106,6 @@ static struct {
 
     std::queue<id<MTLBuffer>> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
-    std::unordered_map<std::pair<uint64_t, uint32_t>, MTLRenderPipelineDescriptor*, hash_pair_shader_ids> pipeline_desc_cache;
     std::unordered_map<std::tuple<uint64_t, uint32_t, int>, id<MTLRenderPipelineState>, hash_tuple_pipeline_state> pipeline_state_cache;
 
     std::vector<struct TextureDataMetal> textures;
@@ -623,11 +623,10 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         prg->used_textures[1] = cc_features.used_textures[1];
         prg->num_inputs = cc_features.num_inputs;
         prg->num_floats = num_floats;
+        prg->pipeline_descriptor = pipelineDescriptor;
 
         gfx_metal_load_shader((struct ShaderProgram *)prg);
-
         mctx.shader_program_pool.insert({std::make_pair(shader_id0, shader_id1), *prg});
-        mctx.pipeline_desc_cache.insert({ std::make_pair(shader_id0, shader_id1), pipelineDescriptor });
 
         return (struct ShaderProgram *)prg;
     }
@@ -779,14 +778,11 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
             if (state_location == mctx.pipeline_state_cache.end()) {
                 SPDLOG_DEBUG("Creating new pipeline descriptor for shader program: {} - {} [{}]", mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level);
-                MTLRenderPipelineDescriptor* pipelineDescriptor = mctx.pipeline_desc_cache.find(
-                                                                                                std::make_pair(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1)
-                                                                                                )->second;
-
+                MTLRenderPipelineDescriptor* pipelineDescriptor = mctx.shader_program->pipeline_descriptor;
                 pipelineDescriptor.rasterSampleCount = fb.msaa_level;
 
                 NSError* error = nil;
-                id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
+                id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:mctx.shader_program->pipeline_descriptor error:&error];
 
                 if (!pipelineState) {
                     // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
@@ -797,7 +793,6 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
                 }
 
                 mctx.pipeline_state_cache.insert({ std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level), pipelineState });
-
                 [mctx.current_command_encoder setRenderPipelineState:pipelineState];
             } else {
                 id<MTLRenderPipelineState> pipelineState = state_location->second;
