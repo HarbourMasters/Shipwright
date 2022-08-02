@@ -296,8 +296,7 @@ void Metal_NewFrame() {
     SDL_GetRendererOutputSize(mctx.renderer, &width, &height);
     mctx.layer.drawableSize = CGSizeMake(width, height);
 
-    // this will be more appropriately be called later, but we do it here to setup the font textures
-    MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
+    MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[0].render_pass_descriptor;
     ImGui_ImplMetal_NewFrame(current_render_pass);
 }
 
@@ -631,7 +630,6 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
             mctx.pipeline_state_cache.insert({ std::make_tuple(shader_id0, shader_id1, msaa_level), pipelineState });
         }
 
-        [pipelineDescriptor release];
         gfx_metal_load_shader((struct ShaderProgram *)prg);
         mctx.shader_program_pool.insert({std::make_pair(shader_id0, shader_id1), *prg});
 
@@ -667,23 +665,25 @@ static void gfx_metal_select_texture(int tile, uint32_t texture_id) {
 static void gfx_metal_upload_texture(const uint8_t *rgba32_buf, uint32_t width, uint32_t height) {
     TextureDataMetal *texture_data = &mctx.textures[mctx.current_texture_ids[mctx.current_tile]];
 
-    MTLTextureDescriptor *textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:width height:height mipmapped:YES];
-    textureDescriptor.arrayLength = 1;
-    textureDescriptor.mipmapLevelCount = 1;
-    textureDescriptor.sampleCount = 1;
-    textureDescriptor.storageMode = MTLStorageModeShared;
+    @autoreleasepool {
+        MTLTextureDescriptor *textureDescriptor = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatRGBA8Unorm width:width height:height mipmapped:YES];
+        textureDescriptor.arrayLength = 1;
+        textureDescriptor.mipmapLevelCount = 1;
+        textureDescriptor.sampleCount = 1;
+        textureDescriptor.storageMode = MTLStorageModeShared;
 
-    id<MTLTexture> texture = [mctx.device newTextureWithDescriptor:textureDescriptor];
-    MTLRegion region = MTLRegionMake2D(0, 0, width, height);
-    NSUInteger bytesPerPixel = 4;
-    NSUInteger bytesPerRow = bytesPerPixel * width;
-    [texture replaceRegion:region mipmapLevel:0 withBytes:rgba32_buf bytesPerRow:bytesPerRow];
+        id<MTLTexture> texture = [mctx.device newTextureWithDescriptor:textureDescriptor];
+        MTLRegion region = MTLRegionMake2D(0, 0, width, height);
+        NSUInteger bytesPerPixel = 4;
+        NSUInteger bytesPerRow = bytesPerPixel * width;
+        [texture replaceRegion:region mipmapLevel:0 withBytes:rgba32_buf bytesPerRow:bytesPerRow];
 
 
-    if (texture_data->texture != nil)
-        [texture_data->texture release];
+        if (texture_data->texture != nil)
+            [texture_data->texture release];
 
-    texture_data->texture = texture;
+        texture_data->texture = texture;
+    }
 }
 
 static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint32_t cms, uint32_t cmt) {
@@ -695,15 +695,17 @@ static void gfx_metal_set_sampler_parameters(int tile, bool linear_filter, uint3
     // state before setting the actual one.
     [texture_data->sampler release];
 
-    MTLSamplerDescriptor *samplerDescriptor = [MTLSamplerDescriptor new];
-    MTLSamplerMinMagFilter filter = linear_filter && mctx.current_filter_mode == FILTER_LINEAR ? MTLSamplerMinMagFilterLinear : MTLSamplerMinMagFilterNearest;
-    samplerDescriptor.minFilter = filter;
-    samplerDescriptor.magFilter = filter;
-    samplerDescriptor.sAddressMode = gfx_cm_to_metal(cms);
-    samplerDescriptor.tAddressMode = gfx_cm_to_metal(cmt);
-    samplerDescriptor.rAddressMode = MTLSamplerAddressModeRepeat;
+    @autoreleasepool {
+        MTLSamplerDescriptor *samplerDescriptor = [MTLSamplerDescriptor new];
+        MTLSamplerMinMagFilter filter = linear_filter && mctx.current_filter_mode == FILTER_LINEAR ? MTLSamplerMinMagFilterLinear : MTLSamplerMinMagFilterNearest;
+        samplerDescriptor.minFilter = filter;
+        samplerDescriptor.magFilter = filter;
+        samplerDescriptor.sAddressMode = gfx_cm_to_metal(cms);
+        samplerDescriptor.tAddressMode = gfx_cm_to_metal(cmt);
+        samplerDescriptor.rAddressMode = MTLSamplerAddressModeRepeat;
 
-    texture_data->sampler = [mctx.device newSamplerStateWithDescriptor:samplerDescriptor];
+        texture_data->sampler = [mctx.device newSamplerStateWithDescriptor:samplerDescriptor];
+    }
 }
 
 static void gfx_metal_set_depth_test_and_mask(bool depth_test, bool depth_mask) {
@@ -899,100 +901,104 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 
     bool diff = tex.width != width || tex.height != height || fb.msaa_level != msaa_level;
 
-    if (diff || (fb.render_pass_descriptor != nil) != render_target) {
-        MTLTextureDescriptor *texDescriptor = [MTLTextureDescriptor new];
-        texDescriptor.textureType = MTLTextureType2D;
-        texDescriptor.width = width;
-        texDescriptor.height = height;
-        texDescriptor.sampleCount = 1;
-        texDescriptor.mipmapLevelCount = 1;
-        texDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-        texDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0) | MTLTextureUsageShaderRead;
+    @autoreleasepool {
 
-        if (tex.texture != nil)
-            [tex.texture release];
-        tex.texture = [mctx.device newTextureWithDescriptor:texDescriptor];
+        if (diff || (fb.render_pass_descriptor != nil) != render_target) {
+            MTLTextureDescriptor *texDescriptor = [MTLTextureDescriptor new];
+            texDescriptor.textureType = MTLTextureType2D;
+            texDescriptor.width = width;
+            texDescriptor.height = height;
+            texDescriptor.sampleCount = 1;
+            texDescriptor.mipmapLevelCount = 1;
+            texDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
+            texDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0) | MTLTextureUsageShaderRead;
 
-        if (msaa_level > 1) {
-            MTLTextureDescriptor *msaaTexDescriptor = [MTLTextureDescriptor new];
-            msaaTexDescriptor.textureType = MTLTextureType2DMultisample;
-            msaaTexDescriptor.width = width;
-            msaaTexDescriptor.height = height;
-            msaaTexDescriptor.sampleCount = msaa_level;
-            msaaTexDescriptor.mipmapLevelCount = 1;
-            msaaTexDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
-            msaaTexDescriptor.storageMode = MTLStorageModePrivate;
-            msaaTexDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0);
+            if (tex.texture != nil)
+                [tex.texture release];
+            tex.texture = [mctx.device newTextureWithDescriptor:texDescriptor];
 
-            if (tex.msaaTexture != nil)
-                [tex.msaaTexture release];
-            tex.msaaTexture = [mctx.device newTextureWithDescriptor:msaaTexDescriptor];
-        }
+            if (msaa_level > 1) {
+                MTLTextureDescriptor *msaaTexDescriptor = [MTLTextureDescriptor new];
+                msaaTexDescriptor.textureType = MTLTextureType2DMultisample;
+                msaaTexDescriptor.width = width;
+                msaaTexDescriptor.height = height;
+                msaaTexDescriptor.sampleCount = msaa_level;
+                msaaTexDescriptor.mipmapLevelCount = 1;
+                msaaTexDescriptor.pixelFormat = MTLPixelFormatBGRA8Unorm;
+                msaaTexDescriptor.storageMode = MTLStorageModePrivate;
+                msaaTexDescriptor.usage = (render_target ? MTLTextureUsageRenderTarget : 0);
 
-        if (render_target) {
-            MTLRenderPassDescriptor* renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
-
-            bool msaaEnabled = (msaa_level > 1);
-            MTLClearColor clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
-
-            if (msaaEnabled) {
-                renderPassDescriptor.colorAttachments[0].texture = tex.msaaTexture;
-                renderPassDescriptor.colorAttachments[0].resolveTexture = tex.texture;
-                renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-                renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionMultisampleResolve;
-                renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
-            } else {
-                renderPassDescriptor.colorAttachments[0].texture = tex.texture;
-                renderPassDescriptor.colorAttachments[0].loadAction = fb_id != 3 ? MTLLoadActionLoad : MTLLoadActionClear;
-                renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-                renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
+                if (tex.msaaTexture != nil)
+                    [tex.msaaTexture release];
+                tex.msaaTexture = [mctx.device newTextureWithDescriptor:msaaTexDescriptor];
             }
 
-            if (fb.render_pass_descriptor != nil)
-                [fb.render_pass_descriptor release];
+            if (render_target) {
+                MTLRenderPassDescriptor* renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
 
-            fb.render_pass_descriptor = renderPassDescriptor;
+                bool msaaEnabled = (msaa_level > 1);
+                MTLClearColor clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
+
+                if (msaaEnabled) {
+                    renderPassDescriptor.colorAttachments[0].texture = tex.msaaTexture;
+                    renderPassDescriptor.colorAttachments[0].resolveTexture = tex.texture;
+                    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+                    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionMultisampleResolve;
+                    renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
+                } else {
+                    renderPassDescriptor.colorAttachments[0].texture = tex.texture;
+                    renderPassDescriptor.colorAttachments[0].loadAction = fb_id != 3 ? MTLLoadActionLoad : MTLLoadActionClear;
+                    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+                    renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
+                }
+
+                if (fb.render_pass_descriptor != nil)
+                    [fb.render_pass_descriptor release];
+
+                fb.render_pass_descriptor = renderPassDescriptor;
+                [fb.render_pass_descriptor retain];
+            }
+
+            tex.width = width;
+            tex.height = height;
         }
 
-        tex.width = width;
-        tex.height = height;
-    }
+        if (has_depth_buffer && (diff || !fb.has_depth_buffer || (fb.depth_texture != nil) != can_extract_depth)) {
+            MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
+                                                                                                    width:width
+                                                                                                   height:height
+                                                                                                mipmapped:YES];
 
-    if (has_depth_buffer && (diff || !fb.has_depth_buffer || (fb.depth_texture != nil) != can_extract_depth)) {
-        MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                                width:width
-                                                                                               height:height
-                                                                                            mipmapped:YES];
+            depthTexDesc.textureType = MTLTextureType2D;
+            depthTexDesc.storageMode = MTLStorageModePrivate;
+            depthTexDesc.sampleCount = 1;
+            depthTexDesc.arrayLength = 1;
+            depthTexDesc.mipmapLevelCount = 1;
+            depthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
 
-        depthTexDesc.textureType = MTLTextureType2D;
-        depthTexDesc.storageMode = MTLStorageModePrivate;
-        depthTexDesc.sampleCount = 1;
-        depthTexDesc.arrayLength = 1;
-        depthTexDesc.mipmapLevelCount = 1;
-        depthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+            if (fb.depth_texture != nil)
+                [fb.depth_texture release];
 
-        if (fb.depth_texture != nil)
-            [fb.depth_texture release];
+            fb.depth_texture = [mctx.device newTextureWithDescriptor:depthTexDesc];
 
-        fb.depth_texture = [mctx.device newTextureWithDescriptor:depthTexDesc];
+            if (msaa_level > 1) {
+                MTLTextureDescriptor *msaaDepthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
+                                                                                                            width:width
+                                                                                                           height:height
+                                                                                                        mipmapped:YES];
 
-        if (msaa_level > 1) {
-            MTLTextureDescriptor *msaaDepthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                                        width:width
-                                                                                                       height:height
-                                                                                                    mipmapped:YES];
+                msaaDepthTexDesc.textureType = MTLTextureType2DMultisample;
+                msaaDepthTexDesc.storageMode = MTLStorageModePrivate;
+                msaaDepthTexDesc.sampleCount = msaa_level;
+                msaaDepthTexDesc.arrayLength = 1;
+                msaaDepthTexDesc.mipmapLevelCount = 1;
+                msaaDepthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
 
-            msaaDepthTexDesc.textureType = MTLTextureType2DMultisample;
-            msaaDepthTexDesc.storageMode = MTLStorageModePrivate;
-            msaaDepthTexDesc.sampleCount = msaa_level;
-            msaaDepthTexDesc.arrayLength = 1;
-            msaaDepthTexDesc.mipmapLevelCount = 1;
-            msaaDepthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
+                if (fb.msaa_depth_texture != nil)
+                    [fb.msaa_depth_texture release];
 
-            if (fb.msaa_depth_texture != nil)
-                [fb.msaa_depth_texture release];
-
-            fb.msaa_depth_texture = [mctx.device newTextureWithDescriptor:msaaDepthTexDesc];
+                fb.msaa_depth_texture = [mctx.device newTextureWithDescriptor:msaaDepthTexDesc];
+            }
         }
     }
 
@@ -1032,9 +1038,6 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
         fb.command_encoder = [fb.command_buffer renderCommandEncoderWithDescriptor:fb.render_pass_descriptor];
         fb.command_encoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Render Pass", fb_id];
     }
-
-    MTLRenderPassDescriptor *current_render_pass = mctx.framebuffers[mctx.current_framebuffer].render_pass_descriptor;
-    ImGui_ImplMetal_NewFrame(current_render_pass);
 
     // Reset states
     mctx.last_depth_test = -1;
