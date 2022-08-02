@@ -35,7 +35,7 @@
 static constexpr size_t kMaxBufferPoolSize = 15;
 static constexpr NSUInteger METAL_MAX_MULTISAMPLE_SAMPLE_COUNT = 8;
 
-// Hashing Helpers
+// MARK: - Hashing Helpers
 
 int cantor(uint64_t a, uint64_t b) {
     return (a + b + 1.0) * (a + b) / 2 + b;
@@ -141,7 +141,7 @@ static struct {
     int8_t last_zmode_decal = -1;
 } mctx;
 
-// Shader, Sampler & String Helpers
+// MARK: - Shader, Sampler & String Helpers
 
 static MTLSamplerAddressMode gfx_cm_to_metal(uint32_t val) {
     switch (val) {
@@ -888,6 +888,8 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
         [mctx.current_drawable release];
     
     mctx.current_drawable = mctx.layer.nextDrawable;
+
+    bool msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
     
     FramebufferMetal& fb = mctx.framebuffers[0];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
@@ -901,7 +903,7 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
         MTLRenderPassDescriptor* renderPassDescriptor = [MTLRenderPassDescriptor renderPassDescriptor];
         MTLClearColor clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 1.0);
         renderPassDescriptor.colorAttachments[0].texture = tex.texture;
-        renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionLoad;
+        renderPassDescriptor.colorAttachments[0].loadAction = msaa_enabled ? MTLLoadActionLoad : MTLLoadActionClear;
         renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
         renderPassDescriptor.colorAttachments[0].clearColor = clearColor;
         
@@ -913,21 +915,23 @@ static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) 
         
         tex.width = width;
         tex.height = height;
-        
+
+        if (fb.depth_texture != nil)
+            [fb.depth_texture release];
+
+        // If possible, we eventually we want to disable this when msaa is enabled since we don't need this depth texture
+        // However, problem is if the user switches to msaa during game, we need a way to then generate it before drawing.
         MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float width:width height:height mipmapped:YES];
-        
+
         depthTexDesc.textureType = MTLTextureType2D;
         depthTexDesc.storageMode = MTLStorageModePrivate;
         depthTexDesc.sampleCount = 1;
         depthTexDesc.arrayLength = 1;
         depthTexDesc.mipmapLevelCount = 1;
         depthTexDesc.usage = MTLTextureUsageRenderTarget | MTLTextureUsageShaderRead;
-        
-        if (fb.depth_texture != nil)
-            [fb.depth_texture release];
-        
+
         fb.depth_texture = [mctx.device newTextureWithDescriptor:depthTexDesc];
-        
+
         fb.render_pass_descriptor.depthAttachment.texture = fb.depth_texture;
         fb.render_pass_descriptor.depthAttachment.loadAction = MTLLoadActionClear;
         fb.render_pass_descriptor.depthAttachment.storeAction = MTLStoreActionStore;
@@ -946,7 +950,6 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
     if (fb_id == 0)
         return;
     
-    // TODO: implement
     FramebufferMetal& fb = mctx.framebuffers[fb_id];
     TextureDataMetal& tex = mctx.textures[fb.texture_id];
     
@@ -1021,10 +1024,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
         }
         
         if (has_depth_buffer && (diff || !fb.has_depth_buffer || (fb.depth_texture != nil) != can_extract_depth)) {
-            MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                                    width:width
-                                                                                                   height:height
-                                                                                                mipmapped:YES];
+            MTLTextureDescriptor *depthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float width:width height:height mipmapped:YES];
             
             depthTexDesc.textureType = MTLTextureType2D;
             depthTexDesc.storageMode = MTLStorageModePrivate;
@@ -1039,10 +1039,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
             fb.depth_texture = [mctx.device newTextureWithDescriptor:depthTexDesc];
             
             if (msaa_level > 1) {
-                MTLTextureDescriptor *msaaDepthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                                            width:width
-                                                                                                           height:height
-                                                                                                        mipmapped:YES];
+                MTLTextureDescriptor *msaaDepthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float width:width height:height mipmapped:YES];
                 
                 msaaDepthTexDesc.textureType = MTLTextureType2DMultisample;
                 msaaDepthTexDesc.storageMode = MTLStorageModePrivate;
@@ -1060,9 +1057,7 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
     }
     
     if (has_depth_buffer) {
-        bool msaaEnabled = (msaa_level > 1);
-        
-        if (msaaEnabled) {
+        if (msaa_level > 1) {
             fb.render_pass_descriptor.depthAttachment.texture = fb.msaa_depth_texture;
             fb.render_pass_descriptor.depthAttachment.resolveTexture = fb.depth_texture;
             fb.render_pass_descriptor.depthAttachment.loadAction = MTLLoadActionClear;
@@ -1112,24 +1107,22 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
     memcpy(mctx.frame_uniform_buffer.contents, &mctx.frame_uniforms, sizeof(FrameUniforms));
 }
 
-void gfx_metal_clear_framebuffer(void) {
-    // TODO: implement
-}
+void gfx_metal_clear_framebuffer(void) {}
 
 void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
     auto& source_framebuffer = mctx.framebuffers[fb_id_source];
     [source_framebuffer.command_encoder endEncoding];
     source_framebuffer.has_ended_encoding = true;
     id<MTLBlitCommandEncoder> blitEncoder = [source_framebuffer.command_buffer blitCommandEncoder];
-    [blitEncoder setLabel:@"MSAA Color Buffer"];
+    [blitEncoder setLabel:@"MSAA Copy Encoder"];
     
     // // Copy over the source framebuffer's texture to the target!
     int source_texture_id = mctx.framebuffers[fb_id_source].texture_id;
     id<MTLTexture> source_texture = mctx.textures[source_texture_id].texture;
-    
+
     int target_texture_id = mctx.framebuffers[fb_id_target].texture_id;
     id<MTLTexture> target_texture = target_texture_id == 0 ? mctx.current_drawable.texture : mctx.textures[target_texture_id].texture;
-    
+
     [blitEncoder copyFromTexture:source_texture toTexture:target_texture];
     [blitEncoder endEncoding];
 }
