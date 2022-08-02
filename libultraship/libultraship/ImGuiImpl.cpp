@@ -874,11 +874,11 @@ namespace SohImGui {
                 ImGui::Separator();
 
                 EnhancementCheckbox("D-pad Support on Pause and File Select", "gDpadPauseName");
-                Tooltip("Enables Pause and File Select screen navigation with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
+                Tooltip("Navigate Pause and File Select with the D-pad\nIf used with D-pad as Equip Items, you must hold C-Up to equip instead of navigate");
                 EnhancementCheckbox("D-pad Support in Ocarina and Text Choice", "gDpadOcarinaText");
                 EnhancementCheckbox("D-pad Support for Browsing Shop Items", "gDpadShop");
                 EnhancementCheckbox("D-pad as Equip Items", "gDpadEquips");
-                Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up\nto equip to the D-pad");
+                Tooltip("Equip items and equipment on the D-pad\nIf used with D-pad on Pause and File Select, you must hold C-Up to equip instead of navigate");
                 EnhancementCheckbox("Answer Navi Prompt with L Button", "gNaviOnL");
                 Tooltip("Speak to Navi with L but enter first-person camera with C-Up");
                 EnhancementCheckbox("Enable walk speed modifiers", "gEnableWalkModify");
