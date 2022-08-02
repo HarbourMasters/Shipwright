@@ -859,10 +859,12 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Graphics"))
             {
+#ifndef __APPLE__
                 EnhancementSliderFloat("Internal Resolution: %d %%", "##IMul", "gInternalResolution", 0.5f, 2.0f, "", 1.0f, true);
                 Tooltip("Multiplies your output resolution by the value inputted,\nas a more intensive but effective form of anti-aliasing");
                 gfx_current_dimensions.internal_mul = CVar_GetFloat("gInternalResolution", 1);
-                EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "");
+#endif
+                EnhancementSliderInt("MSAA: %d", "##IMSAA", "gMSAAValue", 1, 8, "", 1, true);
                 Tooltip("Activates multi-sample anti-aliasing when above 1x\nup to 8x for 8 samples for every pixel");
                 gfx_msaa_level = CVar_GetS32("gMSAAValue", 1);
 
@@ -1334,11 +1336,23 @@ namespace SohImGui {
             {
                 EnhancementCheckbox("OoT Debug Mode", "gDebugEnabled");
                 Tooltip("Enables Debug Mode, allowing you to select maps with L + R + Z, noclip with L + D-pad Right,\nand open the debug menu with L on the pause screen");
+                EnhancementCheckbox("OoT Skulltula Debug", "gSkulltulaDebugEnabled");
+                Tooltip("Enables Skulltula Debug, when moving the cursor in the menu above various map\nicons (boss key, compass, map screen locations, etc) will set the GS bits in that\narea. USE WITH CAUTION AS IT DOES NOT UPDATE THE GS COUNT.");
                 EnhancementCheckbox("Fast File Select", "gSkipLogoTitle");
-                Tooltip("Load the game to the selected slot below upon launch\nUse slot number 4 to load directly into the game's internal Map Select\n(Does not require the Debug Menu, but you will be unable to save there\nYou can also load the Map Select with OoT Debug Mode + slot 0)\nWith slot 0 you can directly go to the File Select menu\nAttention: loading an empty save file will result in a crash");
+                Tooltip("Load the game to the selected menu or file\n\"Zelda Map Select\" require debug mode else you will fallback to File choose menu\nUsing a file number that don't have save will create a save file only\nif you toggle on \"Create a new save if none ?\" else it will bring you to the\nFile choose menu");
                 if (CVar_GetS32("gSkipLogoTitle", 0)) {
-                    EnhancementSliderInt("Loading %d", "##SaveFileID", "gSaveFileID", 0, 4, "");
-                }
+                    const char* FastFileSelect[5] = {
+                        "File N.1",
+                        "File N.2",
+                        "File N.3",
+                        "File select",
+                        "Zelda Map Select (require OoT Debug Mode)"
+                    };
+                    ImGui::Text("Loading :");
+                    EnhancementCombobox("gSaveFileID", FastFileSelect, 5, 0);
+                    EnhancementCheckbox("Create a new save if none", "gCreateNewSave");
+                    Tooltip("Enable the creation of a new save file\nif none exist in the File number selected\nNo file name will be assigned please do in Save editor once you see the first text\nelse your save file name will be named \"00000000\"\nIf disabled you will fall back in File select menu");
+                };
                 ImGui::Separator();
                 EnhancementCheckbox("Stats", "gStatsEnabled");
                 Tooltip("Shows the stats window, with your FPS and frametimes,\nand the OS you're playing on");
