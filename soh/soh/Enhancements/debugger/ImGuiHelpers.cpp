@@ -20,12 +20,12 @@ void InsertHelpHoverText(const std::string& text) {
     }
 }
 
-void PaddedSeparator(bool topPadding, bool bottomPadding, float x, float y) {
-    if (topPadding) {
-        ImGui::Dummy(ImVec2(x, y));
+void PaddedSeparator(bool padTop, bool padBottom, float extraVerticalPadding) {
+    if (padTop) {
+        ImGui::Dummy(ImVec2(0.0f, extraVerticalPadding));
     }
     ImGui::Separator();
-    if (bottomPadding) {
-        ImGui::Dummy(ImVec2(x, y));
+    if (padBottom) {
+        ImGui::Dummy(ImVec2(0.0f, extraVerticalPadding));
     }
 }

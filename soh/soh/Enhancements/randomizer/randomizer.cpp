@@ -4249,18 +4249,18 @@ void DrawRandoEditor(bool& open) {
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Location Logic")) {
+            if (ImGui::BeginTabItem("Locations")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoLocationLogic", 2,
+                if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("Exclude Item Checks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
                     ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
-                    // COLUMN 1 - EXCLUDE ITEM CHECKS
+                    // COLUMN 1 - EXCLUDE LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
                     SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
@@ -4278,7 +4278,7 @@ void DrawRandoEditor(bool& open) {
                     // COLUMN 2 - EXCLUDE LOCATIONS
                     ImGui::TableNextColumn();
                     window->DC.CurrLineTextBaseOffset = 0.0f;
-                    ImGui::Text("Coming soon");
+                    
 
                     ImGui::EndTable();
                 }

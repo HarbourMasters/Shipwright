@@ -7,4 +7,4 @@ void SetLastItemHoverText(const std::string& text);
 
 void InsertHelpHoverText(const std::string& text);
 
-void PaddedSeparator(bool topPadding = true, bool bottomPadding = true, float x = 0, float y = 0);
+void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalPadding = 0);
