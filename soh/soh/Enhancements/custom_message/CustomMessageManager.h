@@ -84,11 +84,50 @@ class CustomMessageManager {
     CustomMessageManager();
     ~CustomMessageManager();
 
+    /*
+    Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
+    with the provided giid (getItemID) as its key. This function also inserts the icon corresponding to
+    the provided iid (itemID) at the beginning of each page of the textbox.
+    */
     bool CreateGetItemMessage(std::string tableID, GetItemID giid, ItemID iid, CustomMessageEntry messages);
+
+    /*
+    Formats the provided Custom Message Entry and inserts it into the table with the provided tableID,
+    with the provided textID as its key.
+    */
     bool CreateMessage(std::string tableID, uint16_t textID, CustomMessageEntry messages);
+
+    /*
+    Retrieves a message from the table with id tableID with the provided textID.
+    Returns a NULL_CUSTOM_MESSAGE if the message or table does not exist.
+    */
     CustomMessageEntry RetrieveMessage(std::string tableID, uint16_t textID);
+
+    /*
+    Empties out the message table identified by tableID.
+    Returns true if successful and false if not (for instance
+    if a table with the provided tableID does not exist).
+    */
     bool ClearMessageTable(std::string tableID);
+
+    /*
+    Creates an empty CustomMessageTable accessible at the provided
+    tableID, returns true if creation was successful and false
+    if not.
+    */
     bool AddCustomMessageTable(std::string tableID);
+
+    /*
+    Replaces special characters and certain symbols with control codes
+    & for newline, ^ for wait-for-input, and @ for the player name,
+    as well as %<letter> for colors (i.e. %r for red and %w for white).
+    */
     void FormatCustomMessage(std::string& message, ItemID iid);
+
+    /*
+    Replaces special characters and certain symbols with control codes
+    & for newline, ^ for wait-for-input, and @ for the player name,
+    as well as %<letter> for colors (i.e. %r for red and %w for white).
+    */
     void FormatCustomMessage(std::string& message);
 };
