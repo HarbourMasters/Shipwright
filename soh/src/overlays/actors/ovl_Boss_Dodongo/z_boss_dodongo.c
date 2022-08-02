@@ -1697,7 +1697,10 @@ void BossDodongo_DrawEffects(GlobalContext* globalCtx) {
     func_80093D84(globalCtx->state.gfxCtx);
     unkMtx = &globalCtx->billboardMtxF;
 
+    // OTRTODO: This call causes the whole texture cache to be cleaned up, which causes an important slowdown on switch so we need to find a way to avoid it.
+#ifndef __SWITCH__
     gSPInvalidateTexCache(POLY_XLU_DISP++, 0);
+#endif
 
     for (i = 0; i < 80; i++, eff++) {
         if (eff->unk_24 == 1) {
