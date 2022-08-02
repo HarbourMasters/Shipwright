@@ -3749,20 +3749,6 @@ void DrawRandoEditor(bool& open) {
         if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
-                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    ImGui::PushItemWidth(170.0);
-                    ImGui::Text("Logic Rules");
-                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
-                        "\n"
-                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
-                    ImGui::PopItemWidth();
-                    ImGui::EndTable();
-                }
                 if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
@@ -4302,6 +4288,19 @@ void DrawRandoEditor(bool& open) {
 
             if (ImGui::BeginTabItem("Tricks/Glitches")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::PushItemWidth(170.0);
+                    ImGui::Text("Logic Rules");
+                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
+                                        "\n"
+                                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.");
+                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+                    ImGui::PopItemWidth();
+                    ImGui::EndTable();
+                }
                 if (ImGui::BeginTable("tableRandoTricksGlitches", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Enable Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
