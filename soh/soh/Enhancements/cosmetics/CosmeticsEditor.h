@@ -1,6 +1,7 @@
 #pragma once
 #include "../libultraship/ImGuiImpl.h"
 #define SECTION_SIZE(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+#define RANDOMIZE_32(Max) GetRandomValue(Max);
 #define CATEGORY_NPC 0
 #define CATEGORY_ITEMS 1
 #define CATEGORY_MENU 2

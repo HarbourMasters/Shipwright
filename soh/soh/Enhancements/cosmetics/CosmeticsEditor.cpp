@@ -8,6 +8,8 @@
 #include <map>
 #include <string>
 #include <Cvar.h>
+#include <random>
+#include <algorithm>
 #include <PR/ultra64/types.h>
 
 const char* RainbowColorCvarList[] = {
@@ -34,19 +36,53 @@ const char* MarginCvarList[] {
     "gSKC", "gRC", "gCarrots",  "gTimers", "gAS", "gTCM", "gTCB"
 };
 
+ImVec4 GetRandomValue(int MaximumPossible){
+    ImVec4 NewColor;
+    const int RNG_Multiplier = rand() % (100000 - 0); 
+    const int RGN_Seed_1 = rand() % (100 - 0); 
+    const int RGN_Seed_2 = rand() % (100 - 0); 
+    const int RGN_Seed_3 = rand() % (100 - 0); 
+    const int RGN_Seed_4 = rand() % (100 - 0); 
+    const int RGN_Seed_5 = rand() % (100 - 0); 
+    MaximumPossible = MaximumPossible * RNG_Multiplier;
+    int MyRandomListR[5] = {
+        { rand() % (MaximumPossible - RGN_Seed_1) }, 
+        { rand() % (MaximumPossible - RGN_Seed_2) }, 
+        { rand() % (MaximumPossible - RGN_Seed_3) }, 
+        { rand() % (MaximumPossible - RGN_Seed_4) }, 
+        { rand() % (MaximumPossible - RGN_Seed_5) }
+    };
+    int MyRandomListG[5] = {
+        { rand() % (MaximumPossible - RGN_Seed_1) }, 
+        { rand() % (MaximumPossible - RGN_Seed_2) }, 
+        { rand() % (MaximumPossible - RGN_Seed_3) }, 
+        { rand() % (MaximumPossible - RGN_Seed_4) }, 
+        { rand() % (MaximumPossible - RGN_Seed_5) }
+    };
+    int MyRandomListB[5] = {
+        { rand() % (MaximumPossible - RGN_Seed_1) }, 
+        { rand() % (MaximumPossible - RGN_Seed_2) }, 
+        { rand() % (MaximumPossible - RGN_Seed_3) }, 
+        { rand() % (MaximumPossible - RGN_Seed_4) }, 
+        { rand() % (MaximumPossible - RGN_Seed_5) }
+    };
+    std::random_shuffle(MyRandomListR, MyRandomListR + 5);
+    std::random_shuffle(MyRandomListG, MyRandomListG + 5);
+    std::random_shuffle(MyRandomListB, MyRandomListB + 5);
+    NewColor.x = (float)(MyRandomListR[rand() % (5 - 0)]/RNG_Multiplier) / 255;
+    NewColor.y = (float)(MyRandomListG[rand() % (5 - 0)]/RNG_Multiplier) / 255;
+    NewColor.z = (float)(MyRandomListB[rand() % (5 - 0)]/RNG_Multiplier) / 255;
+    return NewColor;
+}
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
+    std::random_shuffle(ColorSection, ColorSection + SectionSize);
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
-        Color_RGBA8 NewColors = {0,0,0,255};
+        Color_RGBA8 NewColors = { 0, 0, 0, 255 };
         std::string cvarName = Element->CvarName;
         std::string Cvar_RBM = cvarName + "RBM";
-        s16 RND_R = rand() % (255 - 0);
-        s16 RND_G = rand() % (255 - 0);
-        s16 RND_B = rand() % (255 - 0);
-        colors.x = (float)RND_R / 255;
-        colors.y = (float)RND_G / 255;
-        colors.z = (float)RND_B / 255;
+        colors = RANDOMIZE_32(255);
         NewColors.r = SohImGui::ClampFloatToInt(colors.x * 255, 0, 255);
         NewColors.g = SohImGui::ClampFloatToInt(colors.y * 255, 0, 255);
         NewColors.b = SohImGui::ClampFloatToInt(colors.z * 255, 0, 255);
@@ -306,7 +342,7 @@ void DrawColorSection(CosmeticsColorSection* ColorSection, int SectionSize) {
         SohImGui::EnhancementColor(Name.c_str(), Cvar.c_str(), ModifiedColor, DefaultColor, canRainbow, hasAlpha, sameLine);
     }
 }
-void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize){
+void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSection* ColorSection, int SectionSize, bool isAllCosmetics = false){
     std::string TableName = Identifier+"_Table";
     std::string Col1Name = Identifier+"_Col1";
     std::string Col2Name = Identifier+"_Col2";
@@ -318,6 +354,16 @@ void DrawRandomizeResetButton(const std::string Identifier, CosmeticsColorSectio
         ImGui::TableSetupColumn(Col2Name.c_str(), FlagsCell, TablesCellsWidth/2);
         Table_InitHeader(false);
         if(ImGui::Button(RNG_BtnText.c_str(), ImVec2( ImGui::GetContentRegionAvail().x, 20.0f))){
+            CVar_SetS32("gHudColors", 2);
+            CVar_SetS32("gUseNaviCol", 1);
+            CVar_SetS32("gUseKeeseCol", 1);
+            CVar_SetS32("gUseDogsCol", 1);
+            CVar_SetS32("gUseTunicsCol", 1);
+            CVar_SetS32("gUseArrowsCol", 1);
+            CVar_SetS32("gUseSpellsCol", 1);
+            CVar_SetS32("gUseChargedCol", 1);
+            CVar_SetS32("gUseTrailsCol", 1);
+            CVar_SetS32("gCCparated", 1);
             GetRandomColorRGB(ColorSection, SectionSize);
         }
         SohImGui::Tooltip(Tooltip_RNG.c_str());
@@ -791,6 +837,7 @@ void Draw_HUDButtons(){
     }
 }
 void Draw_General(){
+    DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section), true);
     if (ImGui::BeginTable("tableScheme", 3, FlagsTable | ImGuiTableFlags_Hideable)) {
         ImGui::TableSetupColumn("N64 Scheme", FlagsCell, TablesCellsWidth);
         ImGui::TableSetupColumn("GameCube Scheme", FlagsCell, TablesCellsWidth);
@@ -807,7 +854,6 @@ void Draw_General(){
         ImGui::EndTable();
     }
     if (CVar_GetS32("gHudColors",0) ==2 ){
-        DrawRandomizeResetButton("all cosmetics", Everything_Section, SECTION_SIZE(Everything_Section));
         DrawRandomizeResetButton("interface (excluding buttons)", Misc_Interface_section, SECTION_SIZE(Misc_Interface_section));
         if (ImGui::CollapsingHeader("Hearts colors")) {
             SohImGui::Tooltip("Hearts colors in general\nDD stand for Double Defense");
