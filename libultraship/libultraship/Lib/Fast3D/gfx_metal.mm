@@ -1128,13 +1128,47 @@ void gfx_metal_resolve_msaa_color_buffer(int fb_id_target, int fb_id_source) {
 }
 
 std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_get_pixel_depth(int fb_id, const std::set<std::pair<float, float>>& coordinates) {
+    auto framebuffer = mctx.framebuffers[fb_id];
+    auto texture = mctx.textures[framebuffer.texture_id];
+
+    auto command_buffer = [mctx.command_queue commandBuffer];
+    command_buffer.label = @"Depth Copy Command Buffer";
+
+    // Now add a blit to the CPU-accessible buffer
+    size_t pixelCount = texture.width * texture.height;
+    id<MTLBuffer> depthImageBuffer = [mctx.device newBufferWithLength:(4 * pixelCount) options:MTLResourceOptionCPUCacheModeDefault];
+    id<MTLBlitCommandEncoder> blitEncoder = [command_buffer blitCommandEncoder];
+    [blitEncoder copyFromTexture:framebuffer.depth_texture
+                     sourceSlice:0
+                     sourceLevel:0
+                    sourceOrigin:MTLOriginMake(0, 0, 0)
+                      sourceSize:MTLSizeMake(texture.width, texture.height, 1)
+                        toBuffer:depthImageBuffer
+               destinationOffset:0
+          destinationBytesPerRow:(4 * texture.width)
+        destinationBytesPerImage:(4 * pixelCount) options:MTLBlitOptionDepthFromDepthStencil];
+    [blitEncoder endEncoding];
+
+    // Commit and wait for completion of rendering
+    [command_buffer commit];
+    [command_buffer waitUntilCompleted];
+
+    // Now the depth values can be accessed in the buffer.
+    float * depthValues = (float*)[depthImageBuffer contents];
+
     // TODO: implement
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
     {
+        size_t i = 0;
         for (const auto& coord : coordinates) {
-            res.emplace(coord, 0.0f);
+            res.emplace(coord, depthValues[i++] * 65532.0);
         }
     }
+
+    [depthImageBuffer release];
+    [blitEncoder release];
+    [command_buffer release];
+
     return res;
 }
 
