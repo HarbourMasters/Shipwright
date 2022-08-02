@@ -1354,7 +1354,6 @@ std::unordered_map<std::string, RandomizerGet> SpoilerfileGetNameToEnum = {
     { "Buy Deku Seeds (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Acheter: Graines Mojo (30)", RG_BUY_DEKU_SEEDS_30 },
     { "Sold Out", RG_SOLD_OUT },
-    { "Vendu", RG_SOLD_OUT },
     { "Rupture de de stock", RG_SOLD_OUT },
     { "Buy Blue Fire", RG_BUY_BLUE_FIRE },
     { "Acheter: Flamme Bleue", RG_BUY_BLUE_FIRE },
