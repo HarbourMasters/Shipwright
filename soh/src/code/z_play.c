@@ -1408,7 +1408,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                     OVERLAY_DISP = sp70;
                     globalCtx->unk_121C7 = 2;
                     SREG(33) |= 1;
-                } else {
+                } else if (R_PAUSE_MENU_MODE != 3) {
                 Gameplay_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
                         Gameplay_DrawOverlayElements(globalCtx);
