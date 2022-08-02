@@ -1037,6 +1037,7 @@ void gfx_metal_start_draw_to_framebuffer(int fb_id, float noise_scale) {
 
         fb.command_encoder = [fb.command_buffer renderCommandEncoderWithDescriptor:fb.render_pass_descriptor];
         fb.command_encoder.label = [NSString stringWithFormat:@"FrameBuffer (%d) Render Pass", fb_id];
+        [fb.command_encoder setDepthClipMode:MTLDepthClipModeClamp];
     }
 
     // Reset states
