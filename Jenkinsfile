@@ -97,8 +97,7 @@ pipeline {
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
-                            cp ../../buildsoh.bash soh
-                            docker exec sohcont soh/buildsoh.bash
+                            docker exec sohcont scripts/linux/build.sh
                             
                             mkdir build
                             mv soh/soh.elf build/
@@ -107,7 +106,7 @@ pipeline {
                             mv ZAPDTR/ZAPD.out build/assets/extractor/
                             mv README.md readme.txt
 			    
-                            docker exec sohcont appimage/appimage.sh
+                            docker exec sohcont scripts/linux/build-appimage.sh
 			    
                             7z a soh-linux.7z SOH-Linux.AppImage readme.txt
                             
@@ -143,9 +142,9 @@ pipeline {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             cd soh
-                            make setup -j4 OPTFLAGS=-O2 DEBUG=0 LD="ld"
-                            make -j4 DEBUG=0 OPTFLAGS=-O2 LD="ld"
-                            make -j4 appbundle
+                            make setup -j$(sysctl -n hw.physicalcpu) OPTFLAGS=-O2 DEBUG=0 LD="ld"
+                            make -j$(sysctl -n hw.physicalcpu) DEBUG=0 OPTFLAGS=-O2 LD="ld"
+                            make appbundle
                             mv ../README.md readme.txt
                             7z a soh-mac.7z soh.app readme.txt
                             '''
@@ -158,7 +157,47 @@ pipeline {
                         }
                     }
                 }
+                stage ('Build Switch') {
+                    options {
+                        timeout(time: 20)
+                    }
+                    agent {
+                        label "SoH-Linux-Builders"
+                    }
+                    steps {
+                        checkout([
+                            $class: 'GitSCM',
+                            branches: scm.branches,
+                            doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
+                            extensions: scm.extensions,
+                            userRemoteConfigs: scm.userRemoteConfigs
+                        ])
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            sh '''
+                            
+                            cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+                            docker build . -t sohswitch
+                            docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
+                            docker exec sohcont scripts/switch/build.sh
+                            
+                            mv soh/soh.nro .
+                            mv README.md readme.txt
+                            
+                            7z a soh-switch.7z soh.nro readme.txt
+                            
+                            '''
+                        }
+                        sh 'sudo docker container stop sohcont'
+                        archiveArtifacts artifacts: 'soh-switch.7z', followSymlinks: false, onlyIfSuccessful: true
+                    }
+                    post {
+                        always {
+                            step([$class: 'WsCleanup']) // Clean workspace
+                        }
+                    }
+                }
             }
         }
     }
 }
+

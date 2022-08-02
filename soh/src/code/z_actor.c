@@ -355,36 +355,20 @@ void func_8002BF60(TargetContext* targetCtx, Actor* actor, s32 actorCategory, Gl
         }
     } else {
         if (actorCategory == ACTORCAT_PLAYER) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Idle_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Idle_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Idle_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Idle_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Idle_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Idle_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Idle_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Idle_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_NPC) {
-            naviColor->inner.r = CVar_GetS32("gNavi_NPC_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_NPC_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_NPC_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_NPC_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_NPC_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_NPC_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_NPC_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_NPC_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_BOSS || actorCategory == ACTORCAT_ENEMY) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Enemy_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Enemy_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Enemy_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Enemy_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Enemy_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Enemy_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Enemy_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Enemy_Outer", naviColor->outer);
         }
         if (actorCategory == ACTORCAT_PROP) {
-            naviColor->inner.r = CVar_GetS32("gNavi_Prop_Inner_R", naviColor->inner.r);
-            naviColor->inner.g = CVar_GetS32("gNavi_Prop_Inner_G", naviColor->inner.g);
-            naviColor->inner.b = CVar_GetS32("gNavi_Prop_Inner_B", naviColor->inner.b);
-            naviColor->outer.r = CVar_GetS32("gNavi_Prop_Outer_R", naviColor->outer.r);
-            naviColor->outer.g = CVar_GetS32("gNavi_Prop_Outer_G", naviColor->outer.g);
-            naviColor->outer.b = CVar_GetS32("gNavi_Prop_Outer_B", naviColor->outer.b);
+            naviColor->inner = CVar_GetRGBA("gNavi_Prop_Inner", naviColor->inner);
+            naviColor->outer = CVar_GetRGBA("gNavi_Prop_Outer", naviColor->outer);
         }
     }
     

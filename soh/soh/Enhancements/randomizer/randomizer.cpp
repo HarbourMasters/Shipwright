@@ -3767,25 +3767,25 @@ void DrawRandoEditor(bool& open) {
                         // Forest
                         ImGui::Text(Settings::OpenForest.GetName().c_str());
                         InsertHelpHoverText(
-                            "Closed - Kokiri sword & shield are required to access\n"
-                            "the Deku Tree, and completing the Deku Tree is required to\n"
+                            "Closed - Kokiri sword & shield are required to access "
+                            "the Deku Tree, and completing the Deku Tree is required to "
                             "access the Hyrule Field exit.\n"
                             "\n"
-                            "Closed Deku - Kokiri boy no longer blocks the path to Hyrule\n"
-                            "Field but Mido still requires the Kokiri sword and Deku shield\n"
+                            "Closed Deku - Kokiri boy no longer blocks the path to Hyrule "
+                            "Field but Mido still requires the Kokiri sword and Deku shield "
                             "to access the tree.\n"
                             "\n"
-                            "Open - Mido no longer blocks the path to the Deku Tree. Kokiri\n"
+                            "Open - Mido no longer blocks the path to the Deku Tree. Kokiri "
                             "boy no longer blocks the path out of the forest.");
                         SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
                         PaddedSeparator();
                         // Kakariko Gate
                         ImGui::Text(Settings::OpenKakariko.GetName().c_str());
                         InsertHelpHoverText(
-                            "Closed - The gate will remain closed until Zelda's letter\n"
+                            "Closed - The gate will remain closed until Zelda's letter "
                             "is shown to the guard.\n"
                             "\n"
-                            "Open - The gate is always open. The happy mask shop\n"
+                            "Open - The gate is always open. The happy mask shop "
                             "will open immediately after obtaining Zelda's letter."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
@@ -3794,14 +3794,13 @@ void DrawRandoEditor(bool& open) {
                         // Door of Time
                         ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
                         InsertHelpHoverText(
-                            "Closed - The Ocarina of Time, the Song of Time and all\n"
+                            "Closed - The Ocarina of Time, the Song of Time and all "
                             "three spiritual stones are required to open the Door of Time.\n"
                             "\n"
-                            "Song only - Play the Song of Time in front of the Door of\n"
+                            "Song only - Play the Song of Time in front of the Door of "
                             "Time to open it.\n"
                             "\n"
-                            "Open - The Door of Time is permanently open with no\n"
-                            "requirements."
+                            "Open - The Door of Time is permanently open with no requirements."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
                         PaddedSeparator();
@@ -3809,14 +3808,14 @@ void DrawRandoEditor(bool& open) {
                         // Zora's Fountain
                         ImGui::Text(Settings::ZorasFountain.GetName().c_str());
                         InsertHelpHoverText(
-                            "Closed - King Zora obstructs the way to Zora's Fountain.\n"
-                            "Ruto's letter must be shown as child Link in order to move\n"
+                            "Closed - King Zora obstructs the way to Zora's Fountain. "
+                            "Ruto's letter must be shown as child Link in order to move "
                             "him in both time periods.\n"
                             "\n"
-                            "Closed as child - Ruto's Letter is only required to move King Zora\n"
+                            "Closed as child - Ruto's Letter is only required to move King Zora "
                             "as child Link. Zora's Fountain starts open as adult.\n"
                             "\n" 
-                            "Open - King Zora has already mweeped out of the way in both\n"
+                            "Open - King Zora has already mweeped out of the way in both "
                             "time periods. Ruto's Letter is removed from the item pool."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
@@ -3825,7 +3824,7 @@ void DrawRandoEditor(bool& open) {
                         // Gerudo Fortress
                         ImGui::Text(Settings::GerudoFortress.GetName().c_str());
                         InsertHelpHoverText(
-                            "Sets the amount of carpenters required to repair the bridge\n"
+                            "Sets the amount of carpenters required to repair the bridge "
                             "in Gerudo Valley.\n"
                             "\n"
                             "Normal - All 4 carpenters are required to be saved.\n"
@@ -3842,8 +3841,7 @@ void DrawRandoEditor(bool& open) {
                         InsertHelpHoverText(
                             "Alters the requirements to open the bridge to Ganon's Castle.\n"
                             "\n"
-                            "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light\n"
-                            "Arrows.\n"
+                            "Vanilla - Obtain the Shadow Medallion, Spirit Medallion and Light Arrows.\n"
                             "\n"
                             "Always open - No requirements.\n"
                             "\n"
@@ -3851,11 +3849,11 @@ void DrawRandoEditor(bool& open) {
                             "\n"
                             "Medallions - Obtain the specified amount of medallions.\n"
                             "\n"
-                            "Dungeon rewards - Obtain the specified total sum of spiritual\n"
+                            "Dungeon rewards - Obtain the specified total sum of spiritual "
                             "stones or medallions.\n"
                             "\n"
-                            "Dungeons - Complete the specified amount of dungeons. Dungeons\n"
-                            "are considered complete after stepping in to the blue warp after\n"
+                            "Dungeons - Complete the specified amount of dungeons. Dungeons "
+                            "are considered complete after stepping in to the blue warp after "
                             "the boss.\n"
                             "\n"
                             "Tokens - Obtain the specified amount of Skulltula tokens."
@@ -3922,8 +3920,7 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Songs
                         ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
                         InsertHelpHoverText(
-                            "Song locations - Songs will only appear at locations that normally\n"
-                            "teach songs.\n"
+                            "Song locations - Songs will only appear at locations that normally teach songs.\n"
                             "\n"
                             "Dungeon rewards - Songs appear after beating a major dungeon boss.\n"
                             "The 4 remaining songs are located at:\n"
@@ -3941,7 +3938,7 @@ void DrawRandoEditor(bool& open) {
                         // Shuffle Tokens
                         ImGui::Text(Settings::Tokensanity.GetName().c_str());
                         InsertHelpHoverText(
-                            "Shuffles Golden Skulltula Tokens into the item pool. This means\n"
+                            "Shuffles Golden Skulltula Tokens into the item pool. This means "
                             "Golden Skulltulas can contain other items as well.\n"
                             "\n"
                             "Off - GS tokens will not be shuffled.\n"
@@ -3956,7 +3953,7 @@ void DrawRandoEditor(bool& open) {
                         PaddedSeparator();
 
                         SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
-                        InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be\n"
+                        InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
                                             "expected to be collected after getting Sun's Song.");
                         PaddedSeparator();
 
@@ -3966,8 +3963,7 @@ void DrawRandoEditor(bool& open) {
                             InsertHelpHoverText(
                                 "Shuffles the Kokiri Sword into the item pool.\n"
                                 "\n"
-                                "This will require the use of sticks until the Kokiri\n"
-                                "Sword is found."
+                                "This will require the use of sticks until the Kokiri Sword is found."
                             );
                             PaddedSeparator();
                         }
@@ -3976,8 +3972,7 @@ void DrawRandoEditor(bool& open) {
                             // Shuffle Ocarinas
                             SohImGui::EnhancementCheckbox(Settings::ShuffleOcarinas.GetName().c_str(), "gRandomizeShuffleOcarinas");
                             InsertHelpHoverText(
-                                "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time\n"
-                                "into the item pool.\n"
+                                "Enabling this shuffles the Fairy Ocarina and the Ocarina of Time into the item pool.\n"
                                 "\n"
                                 "This will require finding an Ocarina before being able to play songs."
                             );
@@ -4003,7 +3998,7 @@ void DrawRandoEditor(bool& open) {
                             ImGui::PopItemFlag();
                         }
                         InsertHelpHoverText(
-                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling\n"
+                            "Shuffles the Weird Egg from Malon in to the item pool. Enabling "
                             "\"Skip Child Zelda\" disables this feature.\n"
                             "\n"
                             "The Weird Egg is required to unlock several events:\n"
@@ -4020,7 +4015,7 @@ void DrawRandoEditor(bool& open) {
                         InsertHelpHoverText(
                             "Shuffles the Gerudo Membership Card into the item pool.\n"
                             "\n"
-                            "The Gerudo Card is required to enter the Gerudo Training Grounds, opening\n"
+                            "The Gerudo Card is required to enter the Gerudo Training Grounds, opening "
                             "the gate to Haunted Wasteland and the Horseback Archery minigame."
                         );
                     }
@@ -4036,7 +4031,7 @@ void DrawRandoEditor(bool& open) {
                     InsertHelpHoverText(
                         "Shuffles the location of spiritual stones and medallions.\n"
                         "\n"
-                        "End of dungeons - Spiritual stones and medallions will be given as rewards\n"
+                        "End of dungeons - Spiritual stones and medallions will be given as rewards "
                         "for beating major dungeons. Link will always start with one stone or medallion.\n"
                         "\n"
                         "Any dungeon - Spiritual stones and medallions can be found inside any dungeon.\n"
@@ -4121,14 +4116,13 @@ void DrawRandoEditor(bool& open) {
                         }
                         ImGui::PopItemFlag();
                     }
-                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
-                                        "the guards.");
+                    InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping the guards.");
                     PaddedSeparator();
 
                     // Skip child zelda
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
                     InsertHelpHoverText(
-                        "Start with Zelda's Letter in your inventory and skip the sequence up\n"
+                        "Start with Zelda's Letter in your inventory and skip the sequence up "
                         "until after meeting Zelda. Disables the ability to shuffle Weird Egg."
                     );
                     PaddedSeparator();
@@ -4154,8 +4148,8 @@ void DrawRandoEditor(bool& open) {
                     // Gossip Stone Hints
                     ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
                     InsertHelpHoverText(
-                        "Allows Gossip Stones to provide hints on item locations. Hints mentioning\n"
-                        "\"Way of the Hero\" indicate a location that holds an item required to beat\n"
+                        "Allows Gossip Stones to provide hints on item locations. Hints mentioning "
+                        "\"Way of the Hero\" indicate a location that holds an item required to beat "
                         "the seed.\n"
                         "\n"
                         "No hints - No hints will be given at all.\n"
@@ -4238,7 +4232,7 @@ void DrawRandoEditor(bool& open) {
                         "\n"
                         "Mayhem - All added junk items will be Ice Traps.\n"
                         "\n"
-                        "Onslaught - All junk items will be replaced by Ice Traps, even those\n"
+                        "Onslaught - All junk items will be replaced by Ice Traps, even those "
                         "in the base pool."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);

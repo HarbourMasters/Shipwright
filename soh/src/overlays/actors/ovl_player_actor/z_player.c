@@ -4640,7 +4640,11 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            func_80832264(globalCtx, this, anim);
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
+            } else {
+                LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
+            }
         }
     }
     else {
@@ -13129,7 +13133,10 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
     if (LinkAnimation_Update(globalCtx, &this->skelAnime)) {
         if (this->unk_84F != 0) {
             if (this->unk_850 == 0) {
-                Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor);
+                if (CVar_GetS32("gFastDrops", 0))
+                    { this->unk_84F = 0; }
+                else
+                    { Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor); }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 this->unk_850 = 1;
             }
@@ -13165,11 +13172,13 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
                         if (i < 4) {
                             this->unk_84F = i + 1;
                             this->unk_850 = 0;
-                            this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(globalCtx, this, catchInfo->itemId, ABS(catchInfo->actionParam));
-                            func_808322D0(globalCtx, this, sp24->unk_04);
-                            func_80835EA4(globalCtx, 4);
+                            if (!CVar_GetS32("gFastDrops", 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
+                                func_808322D0(globalCtx, this, sp24->unk_04);
+                                func_80835EA4(globalCtx, 4);
+                            }
                         }
                     }
                 }
