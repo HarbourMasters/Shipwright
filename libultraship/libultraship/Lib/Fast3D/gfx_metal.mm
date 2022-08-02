@@ -30,6 +30,8 @@
 #include "spdlog/spdlog.h"
 #include "Cvar.h"
 
+#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+
 static constexpr size_t kMaxBufferPoolSize = 15;
 static constexpr NSUInteger METAL_MAX_MULTISAMPLE_SAMPLE_COUNT = 8;
 
@@ -65,8 +67,6 @@ struct ShaderProgramMetal {
     uint8_t num_inputs;
     uint8_t num_floats;
     bool used_textures[2];
-
-    MTLRenderPipelineDescriptor* pipeline_descriptor;
 };
 
 struct FrameUniforms {
@@ -613,8 +613,25 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         prg->used_textures[1] = cc_features.used_textures[1];
         prg->num_inputs = cc_features.num_inputs;
         prg->num_floats = num_floats;
-        prg->pipeline_descriptor = pipelineDescriptor;
 
+        // Prepoluate pipeline state cache with program and available msaa levels
+        for (int i = 0; i < ARRAY_COUNT(mctx.msaa_num_quality_levels); i++) {
+            int msaa_level = i + 1;
+            pipelineDescriptor.sampleCount = msaa_level;
+            id <MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
+
+            if (!pipelineState || error != nil) {
+                // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
+                // If the Metal API validation is enabled, we can find out more information about what
+                // went wrong.  (Metal API validation is enabled by default when a debug build is run
+                // from Xcode)
+                NSLog(@"Failed to create pipeline state, error %@", error);
+            }
+
+            mctx.pipeline_state_cache.insert({ std::make_tuple(shader_id0, shader_id1, msaa_level), pipelineState });
+        }
+
+        [pipelineDescriptor release];
         gfx_metal_load_shader((struct ShaderProgram *)prg);
         mctx.shader_program_pool.insert({std::make_pair(shader_id0, shader_id1), *prg});
 
@@ -760,34 +777,11 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
             mctx.last_shader_program = mctx.shader_program;
 
             FramebufferMetal fb = mctx.framebuffers[mctx.current_framebuffer];
+            id<MTLRenderPipelineState> pipelineState = mctx.pipeline_state_cache.find(
+                                                                                      std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level)
+                                                                                      )->second;
 
-            // Attempt to find a compiled pipeline state for given program and msaa level
-            auto state_location = mctx.pipeline_state_cache.find(
-                                                                 std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level)
-                                                                 );
-
-            if (state_location == mctx.pipeline_state_cache.end()) {
-                SPDLOG_DEBUG("Creating new pipeline descriptor for shader program: {} - {} [{}]", mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level);
-                MTLRenderPipelineDescriptor* pipelineDescriptor = mctx.shader_program->pipeline_descriptor;
-                pipelineDescriptor.rasterSampleCount = fb.msaa_level;
-
-                NSError* error = nil;
-                id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:mctx.shader_program->pipeline_descriptor error:&error];
-
-                if (!pipelineState) {
-                    // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
-                    // If the Metal API validation is enabled, we can find out more information about what
-                    // went wrong.  (Metal API validation is enabled by default when a debug build is run
-                    // from Xcode)
-                    NSLog(@"Failed to created pipeline state");
-                }
-
-                mctx.pipeline_state_cache.insert({ std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level), pipelineState });
-                [mctx.current_command_encoder setRenderPipelineState:pipelineState];
-            } else {
-                id<MTLRenderPipelineState> pipelineState = state_location->second;
-                [mctx.current_command_encoder setRenderPipelineState:pipelineState];
-            }
+            [mctx.current_command_encoder setRenderPipelineState:pipelineState];
         }
         
         [mctx.current_command_encoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:buf_vbo_num_tris * 3];
