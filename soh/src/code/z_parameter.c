@@ -10,10 +10,31 @@
 #include <assert.h>
 #endif
 
-// TODO extract this information from the texture definitions themselves
-#define DO_ACTION_TEX_WIDTH 48
-#define DO_ACTION_TEX_HEIGHT 16
-#define DO_ACTION_TEX_SIZE ((DO_ACTION_TEX_WIDTH * DO_ACTION_TEX_HEIGHT) / 2) // (sizeof(gCheckDoActionENGTex))
+
+static uint16_t _doActionTexWidth, _doActionTexHeight = -1;
+static uint16_t DO_ACTION_TEX_WIDTH() {
+    return 48;
+
+    // TODO: Figure out why Ship::Texture is not returning a valid width
+    if (_doActionTexWidth == -1)
+        _doActionTexWidth = ResourceMgr_LoadTexWidthByName(gCheckDoActionENGTex);
+    return _doActionTexWidth;
+}
+static uint16_t DO_ACTION_TEX_HEIGHT() {
+    return 16;
+
+    // TODO: Figure out why Ship::Texture is not returning a valid height
+    if (_doActionTexHeight == -1)
+        _doActionTexHeight = ResourceMgr_LoadTexHeightByName(gCheckDoActionENGTex);
+    return _doActionTexHeight;
+}
+
+static uint32_t _doActionTexSize = -1;
+static uint32_t DO_ACTION_TEX_SIZE() {
+    if (_doActionTexSize == -1)
+        _doActionTexSize = ResourceMgr_LoadTexSizeByName(gCheckDoActionENGTex);
+    return _doActionTexSize;
+}
 
 // The button statuses include the A button when most things are only the equip item buttons
 // So, when indexing into it with a item button index, we need to adjust
@@ -2457,8 +2478,8 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
 
     if (action != DO_ACTION_NONE) {
         //osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-        memcpy(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE), ResourceMgr_LoadTexByName(doAction),
-               DO_ACTION_TEX_SIZE);
+        memcpy(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), ResourceMgr_LoadTexByName(doAction),
+               DO_ACTION_TEX_SIZE());
         //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160,
                             //interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE),
                             //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE,
@@ -2467,7 +2488,7 @@ void Interface_LoadActionLabel(InterfaceContext* interfaceCtx, u16 action, s16 l
     } else {
         gSegments[7] = VIRTUAL_TO_PHYSICAL(interfaceCtx->doActionSegment);
         //func_80086D5C(SEGMENTED_TO_VIRTUAL(sDoActionTextures[loadOffset]), DO_ACTION_TEX_SIZE / 4);
-        func_80086D5C(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE / 4);
+        func_80086D5C(interfaceCtx->doActionSegment + (loadOffset * DO_ACTION_TEX_SIZE()), DO_ACTION_TEX_SIZE() / 4);
     }
 }
 
@@ -2545,7 +2566,7 @@ void Interface_LoadActionLabelB(GlobalContext* globalCtx, u16 action) {
 
     // OTRTODO
     osCreateMesgQueue(&interfaceCtx->loadQueue, &interfaceCtx->loadMsg, OS_MESG_BLOCK);
-    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
+    memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE());
     //DmaMgr_SendRequest2(&interfaceCtx->dmaRequest_160, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE,
                         //(uintptr_t)_do_action_staticSegmentRomStart + (action * DO_ACTION_TEX_SIZE), DO_ACTION_TEX_SIZE, 0,
                         //&interfaceCtx->loadQueue, NULL, __FILE__, __LINE__);
@@ -3181,7 +3202,7 @@ void func_80088B34(s16 arg0) {
 void Interface_DrawActionLabel(GraphicsContext* gfxCtx, void* texture) {
     OPEN_DISPS(gfxCtx);
 
-    gDPLoadTextureBlock_4b(OVERLAY_DISP++, texture, G_IM_FMT_IA, DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0,
+    gDPLoadTextureBlock_4b(OVERLAY_DISP++, texture, G_IM_FMT_IA, DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0,
                            G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD,
                            G_TX_NOLOD);
 
@@ -3254,8 +3275,8 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
     const s16 rStartLabelY_ori = R_START_LABEL_Y(gSaveContext.language)+Y_Margins_StartBtn;
     const s16 PosX_StartBtn_ori = OTRGetRectDimensionFromRightEdge(startButtonLeftPos[gSaveContext.language]+X_Margins_StartBtn);
     const s16 PosY_StartBtn_ori = 16+Y_Margins_StartBtn;
-    s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH;
-    s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT;
+    s16 StartBTN_Label_W = DO_ACTION_TEX_WIDTH();
+    s16 StartBTN_Label_H = DO_ACTION_TEX_HEIGHT();
     int StartBTN_Label_H_Scaled = StartBTN_Label_H * 1.0f;
     int StartBTN_Label_W_Scaled = StartBTN_Label_W * 1.0f;
     int StartBTN_Label_W_factor = (1 << 10) * StartBTN_Label_W / StartBTN_Label_W_Scaled;
@@ -3511,10 +3532,11 @@ void Interface_DrawItemButtons(GlobalContext* globalCtx) {
                 }
                 doAction = newName;
             }
-            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE);
 
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE * 2, G_IM_FMT_IA,
-                                   DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,
+            memcpy(interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, ResourceMgr_LoadTexByName(doAction), DO_ACTION_TEX_SIZE());
+
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE() * 2, G_IM_FMT_IA,
+                                   DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             //const s16 rStartLabelX = OTRGetRectDimensionFromRightEdge(R_START_LABEL_X(gSaveContext.language)+Right_HUD_Margin);
@@ -4330,7 +4352,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
 
     // Invalidate Do Action textures as they may have changed
     gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment);
-    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE);
+    gSPInvalidateTexCache(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
 
     gSPSegment(OVERLAY_DISP++, 0x02, interfaceCtx->parameterSegment);
     gSPSegment(OVERLAY_DISP++, 0x07, interfaceCtx->doActionSegment);
@@ -4630,14 +4652,14 @@ void Interface_Draw(GlobalContext* globalCtx) {
                               PRIMITIVE, ENVIRONMENT, TEXEL0, ENVIRONMENT, TEXEL0, 0, PRIMITIVE, 0);
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->bAlpha);
 
-            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE, G_IM_FMT_IA,
-                                   DO_ACTION_TEX_WIDTH, DO_ACTION_TEX_HEIGHT, 0, G_TX_NOMIRROR | G_TX_WRAP,
+            gDPLoadTextureBlock_4b(OVERLAY_DISP++, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE(), G_IM_FMT_IA,
+                                   DO_ACTION_TEX_WIDTH(), DO_ACTION_TEX_HEIGHT(), 0, G_TX_NOMIRROR | G_TX_WRAP,
                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
 
             R_B_LABEL_DD = (1 << 10) / (WREG(37 + gSaveContext.language) / 100.0f);
             gSPWideTextureRectangle(OVERLAY_DISP++, BbtnPosX << 2, BbtnPosY << 2,
-                                (BbtnPosX + DO_ACTION_TEX_WIDTH) << 2,
-                                (BbtnPosY + DO_ACTION_TEX_HEIGHT) << 2, G_TX_RENDERTILE, 0, 0,
+                                (BbtnPosX + DO_ACTION_TEX_WIDTH()) << 2,
+                                (BbtnPosY + DO_ACTION_TEX_HEIGHT()) << 2, G_TX_RENDERTILE, 0, 0,
                                 R_B_LABEL_DD, R_B_LABEL_DD);
         }
 
@@ -4723,12 +4745,14 @@ void Interface_Draw(GlobalContext* globalCtx) {
             } else {
                 gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, dpadAlpha);
             }
-            gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
-                                G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
-                                G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
-            gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
-                                    (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
-                                    G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            if (fullUi) {
+                gDPLoadTextureBlock(OVERLAY_DISP++, ResourceMgr_LoadFileRaw("assets/ship_of_harkinian/buttons/dpad.bin"),
+                                    G_IM_FMT_IA, G_IM_SIZ_16b, 32, 32, 0, G_TX_NOMIRROR | G_TX_WRAP,
+                                    G_TX_NOMIRROR | G_TX_WRAP, G_TX_NOMASK, G_TX_NOMASK, G_TX_NOLOD, G_TX_NOLOD);
+                gSPWideTextureRectangle(OVERLAY_DISP++, DpadPosX << 2, DpadPosY << 2,
+                                        (DpadPosX + 32) << 2, (DpadPosY + 32) << 2,
+                                        G_TX_RENDERTILE, 0, 0, (1 << 10), (1 << 10));
+            }
 
             // DPad-Up Button Icon & Ammo Count
             if (gSaveContext.equips.buttonItems[4] < 0xF0) {
@@ -4846,7 +4870,7 @@ void Interface_Draw(GlobalContext* globalCtx) {
         if ((interfaceCtx->unk_1EC < 2) || (interfaceCtx->unk_1EC == 3)) {
             Interface_DrawActionLabel(globalCtx->state.gfxCtx, interfaceCtx->doActionSegment);
         } else {
-            Interface_DrawActionLabel(globalCtx->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE);
+            Interface_DrawActionLabel(globalCtx->state.gfxCtx, interfaceCtx->doActionSegment + DO_ACTION_TEX_SIZE());
         }
 
         gDPPipeSync(OVERLAY_DISP++);

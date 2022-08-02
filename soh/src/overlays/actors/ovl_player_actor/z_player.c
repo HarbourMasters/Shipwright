@@ -168,6 +168,7 @@ void func_8083CA20(GlobalContext* globalCtx, Player* this);
 void func_8083CA54(GlobalContext* globalCtx, Player* this);
 void func_8083CA9C(GlobalContext* globalCtx, Player* this);
 s32 func_8083E0FC(Player* this, GlobalContext* globalCtx);
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx);
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx);
 s32 func_8083EB44(Player* this, GlobalContext* globalCtx);
 s32 func_8083F7BC(Player* this, GlobalContext* globalCtx);
@@ -4649,7 +4650,11 @@ void func_8083A0F4(GlobalContext* globalCtx, Player* this) {
                 anim = D_80853914[PLAYER_ANIMGROUP_13][this->modelAnimType];
             }
 
-            func_80832264(globalCtx, this, anim);
+            if (CVar_GetS32("gFasterHeavyBlockLift", 0) && interactActorId == ACTOR_BG_HEAVY_BLOCK) {
+                LinkAnimation_PlayOnceSetSpeed(globalCtx, &this->skelAnime, anim, 3.0f);
+            } else {
+                LinkAnimation_PlayOnce(globalCtx, &this->skelAnime, anim);
+            }
         }
     }
     else {
@@ -6233,6 +6238,30 @@ void func_8083E4C4(GlobalContext* globalCtx, Player* this, GetItemEntry* giEntry
     func_80078884((this->getItemId < 0) ? NA_SE_SY_GET_BOXITEM : NA_SE_SY_GET_ITEM);
 }
 
+// Sets a flag according to which type of flag is specified in player->pendingFlag.flagType
+// and which flag is specified in player->pendingFlag.flagID.
+void Player_SetPendingFlag(Player* this, GlobalContext* globalCtx) {
+    switch (this->pendingFlag.flagType) {
+        case FLAG_SCENE_CLEAR:
+            Flags_SetClear(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_COLLECTIBLE:
+            Flags_SetCollectible(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_SWITCH:
+            Flags_SetSwitch(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_SCENE_TREASURE:
+            Flags_SetTreasure(globalCtx, this->pendingFlag.flagID);
+            break;
+        case FLAG_NONE:
+        default:
+            break;
+    }
+    this->pendingFlag.flagType = FLAG_NONE;
+    this->pendingFlag.flagID = 0;
+}
+
 s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
     Actor* interactedActor;
 
@@ -6256,6 +6285,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     this->stateFlags1 &= ~(PLAYER_STATE1_10 | PLAYER_STATE1_11);
                     this->actor.colChkInfo.damage = 0;
                     func_80837C0C(globalCtx, this, 3, 0.0f, 0.0f, 0, 20);
+                    Player_SetPendingFlag(this, globalCtx);
                     return;
                 }
 
@@ -12688,6 +12718,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
 
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
+        
+        Player_SetPendingFlag(this, globalCtx);
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
@@ -13130,7 +13162,10 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
     if (LinkAnimation_Update(globalCtx, &this->skelAnime)) {
         if (this->unk_84F != 0) {
             if (this->unk_850 == 0) {
-                Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor);
+                if (CVar_GetS32("gFastDrops", 0))
+                    { this->unk_84F = 0; }
+                else
+                    { Message_StartTextbox(globalCtx, D_80854A04[this->unk_84F - 1].textId, &this->actor); }
                 Audio_PlayFanfare(NA_BGM_ITEM_GET | 0x900);
                 this->unk_850 = 1;
             }
@@ -13166,11 +13201,13 @@ void func_8084ECA4(Player* this, GlobalContext* globalCtx) {
                         if (i < 4) {
                             this->unk_84F = i + 1;
                             this->unk_850 = 0;
-                            this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
                             this->interactRangeActor->parent = &this->actor;
                             Player_UpdateBottleHeld(globalCtx, this, catchInfo->itemId, ABS(catchInfo->actionParam));
-                            func_808322D0(globalCtx, this, sp24->unk_04);
-                            func_80835EA4(globalCtx, 4);
+                            if (!CVar_GetS32("gFastDrops", 0)) {
+                                this->stateFlags1 |= PLAYER_STATE1_28 | PLAYER_STATE1_29;
+                                func_808322D0(globalCtx, this, sp24->unk_04);
+                                func_80835EA4(globalCtx, 4);
+                            }
                         }
                     }
                 }

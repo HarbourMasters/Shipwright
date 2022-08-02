@@ -121,8 +121,7 @@ extern "C" void InitOTR() {
 
     if (!t->bHasLoadError)
     {
-        //uint32_t gameVersion = BitConverter::ToUInt32BE((uint8_t*)t->buffer.get(), 0);
-        uint32_t gameVersion = *((uint32_t*)t->buffer.get());
+        uint32_t gameVersion = LE32SWAP(*((uint32_t*)t->buffer.get()));
         OTRGlobals::Instance->context->GetResourceManager()->SetGameVersion(gameVersion);
     }
 
@@ -456,6 +455,12 @@ extern "C" char* ResourceMgr_LoadJPEG(char* data, int dataSize)
 }
 
 extern "C" char* ResourceMgr_LoadTexByName(const char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexWidthByName(char* texPath);
+
+extern "C" uint16_t ResourceMgr_LoadTexHeightByName(char* texPath);
+
+extern "C" uint32_t ResourceMgr_LoadTexSizeByName(const char* texPath);
 
 extern "C" char* ResourceMgr_LoadTexOrDListByName(const char* filePath) {
     auto res = OTRGlobals::Instance->context->GetResourceManager()->LoadResource(filePath);
@@ -799,8 +804,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                 for (size_t k = 0; k < soundFont->drums[i].env.size(); k++)
                 {
-                    drum->envelope[k].delay = BOMSWAP16(soundFont->drums[i].env[k]->delay);
-                    drum->envelope[k].arg = BOMSWAP16(soundFont->drums[i].env[k]->arg);
+                    drum->envelope[k].delay = BE16SWAP(soundFont->drums[i].env[k]->delay);
+                    drum->envelope[k].arg = BE16SWAP(soundFont->drums[i].env[k]->arg);
                 }
             }
 
@@ -831,8 +836,8 @@ extern "C" SoundFont* ResourceMgr_LoadAudioSoundFont(const char* path) {
 
                     for (int k = 0; k < soundFont->instruments[i].env.size(); k++)
                     {
-                        inst->envelope[k].delay = BOMSWAP16(soundFont->instruments[i].env[k]->delay);
-                        inst->envelope[k].arg = BOMSWAP16(soundFont->instruments[i].env[k]->arg);
+                        inst->envelope[k].delay = BE16SWAP(soundFont->instruments[i].env[k]->delay);
+                        inst->envelope[k].arg = BE16SWAP(soundFont->instruments[i].env[k]->arg);
                     }
                 }
                 if (soundFont->instruments[i].lowNotesSound != nullptr)
@@ -1452,6 +1457,10 @@ extern "C" s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 a
 
 extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return OTRGlobals::Instance->gRandomizer->GetRandomizedItemIdFromKnownCheck(randomizerCheck, ogId);
+}
+
+extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
+    return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
 }
 
 extern "C" CustomMessageEntry Randomizer_GetCustomGetItemMessage(GetItemID giid, char* buffer, const int maxBufferSize) {

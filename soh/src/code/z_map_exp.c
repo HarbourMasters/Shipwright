@@ -412,8 +412,10 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                 //(uintptr_t)_map_grand_staticSegmentRomStart + gMapData->owMinimapTexOffset[extendedMapIndex],
                                 //gMapData->owMinimapTexSize[mapIndex], __FILE__, __LINE__);
 
-            if (sEntranceIconMapIndex < 24)
-                memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableOW[sEntranceIconMapIndex]), gMapData->owMinimapTexSize[mapIndex]);
+            if (sEntranceIconMapIndex < 24) {
+                const char* textureName = minimapTableOW[sEntranceIconMapIndex];
+                memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
+            }
 
             interfaceCtx->unk_258 = mapIndex;
             break;
@@ -445,7 +447,8 @@ void Map_InitData(GlobalContext* globalCtx, s16 room) {
                                     //((gMapData->dgnMinimapTexIndexOffset[mapIndex] + room) * 0xFF0),
                                 //0xFF0, __FILE__, __LINE__);
 
-            memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room]), 0xFF0);
+            const char* textureName = minimapTableDangeon[gMapData->dgnMinimapTexIndexOffset[mapIndex] + room];
+            memcpy(globalCtx->interfaceCtx.mapSegment, ResourceMgr_LoadTexByName(textureName), ResourceMgr_LoadTexSizeByName(textureName));
 
             R_COMPASS_OFFSET_X = gMapData->roomCompassOffsetX[mapIndex][room];
             R_COMPASS_OFFSET_Y = gMapData->roomCompassOffsetY[mapIndex][room];

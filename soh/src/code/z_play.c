@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "soh/Enhancements/gameconsole.h"
-
+#include "../libultraship/ImGuiImpl.h"
 #include "soh/frame_interpolation.h"
 
 void* D_8012D1F0 = NULL;
@@ -190,6 +190,7 @@ void Gameplay_Destroy(GameState* thisx) {
     KaleidoManager_Destroy();
     ZeldaArena_Cleanup();
     Fault_RemoveClient(&D_801614B8);
+    disableBetaQuest();
     gGlobalCtx = NULL;
 }
 
@@ -237,10 +238,11 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        globalCtx->sceneLoadFlag == 0 && player->getItemId == GI_NONE) {
+        globalCtx->sceneLoadFlag == 0) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
-        Flags_SetTreasure(globalCtx, 0x1E);
+        player->pendingFlag.flagID = 0x1E;
+        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
     }
 }
 
@@ -260,6 +262,7 @@ void GivePlayerRandoRewardSariaGift(GlobalContext* globalCtx, RandomizerCheck ch
 void Gameplay_Init(GameState* thisx) {
     GlobalContext* globalCtx = (GlobalContext*)thisx;
     GraphicsContext* gfxCtx = globalCtx->state.gfxCtx;
+    enableBetaQuest();
     gGlobalCtx = globalCtx;
     //globalCtx->state.gfxCtx = NULL;
     uintptr_t zAlloc;
@@ -1407,7 +1410,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                     OVERLAY_DISP = sp70;
                     globalCtx->unk_121C7 = 2;
                     SREG(33) |= 1;
-                } else {
+                } else if (R_PAUSE_MENU_MODE != 3) {
                 Gameplay_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
                         Gameplay_DrawOverlayElements(globalCtx);

@@ -3,6 +3,7 @@
 
 #include "ultra64.h"
 #include "z64math.h"
+#include "z64audio.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
 typedef struct {
@@ -114,9 +115,9 @@ typedef struct {
     /* 0x0EF8 */ u16 infTable[30]; // "inf_table"
     /* 0x0F38 */ u32 worldMapAreaData; // "area_arrival"
     /* 0x0F40 */ u8 scarecrowCustomSongSet;
-    /* 0x0F41 */ u8 scarecrowCustomSong[0x360];
+    /* 0x0F41 */ OcarinaNote scarecrowCustomSong[108];
     /* 0x12C5 */ u8 scarecrowSpawnSongSet;
-    /* 0x12C6 */ u8 scarecrowSpawnSong[0x80];
+    /* 0x12C6 */ OcarinaNote scarecrowSpawnSong[16];
     /* 0x1346 */ char unk_1346[0x02];
     /* 0x1348 */ HorseData horseData;
     /* 0x1354 */ s32 fileNum; // "file_no"
