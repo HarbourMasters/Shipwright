@@ -694,7 +694,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                             }
 
                             // Don't autosave in grottos or cutscenes
-                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && gSaveContext.cutsceneIndex == 0) {
+                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && (gSaveContext.cutsceneIndex) == 0) {
                                 Gameplay_PerformSave(globalCtx);
                             }
                         }

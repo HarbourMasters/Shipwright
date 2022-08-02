@@ -1259,7 +1259,10 @@ namespace SohImGui {
                 }
 
                 EnhancementCheckbox("Autosave", "gAutosave");
-                Tooltip("Automatically save the game every time a new area is entered");
+                Tooltip("Automatically save the game every time a new area is entered or item is obtained\n"
+                    "To disable saving when obtaining an item, manually set gAutosaveAllItems and gAutosaveMajorItems to 0\n"
+                    "gAutosaveAllItems takes priority over gAutosaveMajorItems if both are set to 1\n"
+                    "gAutosaveMajorItems excludes rupees and health/magic/ammo refills (but includes bombchus)");
 
                 EXPERIMENTAL();
 
