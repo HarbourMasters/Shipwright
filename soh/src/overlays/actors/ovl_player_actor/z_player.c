@@ -146,10 +146,10 @@ s32 func_808353D8(Player* this, GlobalContext* globalCtx);
 s32 func_80835588(Player* this, GlobalContext* globalCtx);
 s32 func_808356E8(Player* this, GlobalContext* globalCtx);
 s32 func_80835800(Player* this, GlobalContext* globalCtx);
-s32 func_80835884(Player* this, GlobalContext* globalCtx);
-s32 func_808358F0(Player* this, GlobalContext* globalCtx);
-s32 func_808359FC(Player* this, GlobalContext* globalCtx);
-s32 func_80835B60(Player* this, GlobalContext* globalCtx);
+s32 func_80835884(Player* this, GlobalContext* globalCtx); // Start aiming boomerang
+s32 func_808358F0(Player* this, GlobalContext* globalCtx); // Aim boomerang
+s32 func_808359FC(Player* this, GlobalContext* globalCtx); // Throw boomerang
+s32 func_80835B60(Player* this, GlobalContext* globalCtx); // Boomerang active
 s32 func_80835C08(Player* this, GlobalContext* globalCtx);
 void func_80835F44(GlobalContext* globalCtx, Player* this, s32 item);
 void func_80839F90(Player* this, GlobalContext* globalCtx);
@@ -487,8 +487,8 @@ static s32 D_80853604 = 0;
 static s32 D_80853608 = 0;
 static s32 D_8085360C = 0;
 static s16 D_80853610 = 0;
-static s32 D_80853614 = 0;
-static s32 D_80853618 = 0;
+static s32 D_80853614 = 0; // Held item button just pressed?
+static s32 D_80853618 = 0; // Held item button currently down?
 
 static u16 D_8085361C[] = {
     NA_SE_VO_LI_SWEAT,
@@ -955,6 +955,7 @@ static s8 sItemActionParams[] = {
 
 static u8 sMaskMemory;
 
+// Used to map action params to update functions
 static s32(*D_80853EDC[])(Player* this, GlobalContext* globalCtx) = {
     func_8083485C, func_8083485C, func_8083485C, func_808349DC, func_808349DC, func_808349DC, func_8083485C,
     func_8083485C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C, func_8083501C,
@@ -2727,6 +2728,10 @@ s32 func_80835B60(Player* this, GlobalContext* globalCtx) {
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
+    }
+
+    if (D_80853614 && CVar_GetS32("gFastBoomerang", 0)) {
+        this->boomerangQuickRecall = true;
     }
 
     return 0;
