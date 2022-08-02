@@ -8,6 +8,7 @@
 #include "../Vec2f.h"
 #include "../Vec3f.h"
 #include "../Vec3s.h"
+#include "BitConverter.h"
 #include "Stream.h"
 
 class BinaryReader
@@ -18,9 +19,13 @@ public:
 
 	void Close();
 
+	void SetEndianness(Endianness endianness);
+	Endianness GetEndianness() const;
+
 	void Seek(uint32_t offset, SeekOffsetType seekType);
 	uint32_t GetBaseAddress();
 
+	void Read(int32_t length);
 	void Read(char* buffer, int32_t length);
 	char ReadChar();
 	int8_t ReadByte();
@@ -41,4 +46,5 @@ public:
 
 protected:
 	std::shared_ptr<Stream> stream;
+	Endianness endianness = Endianness::Native;
 };

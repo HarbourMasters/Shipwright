@@ -653,6 +653,9 @@
     <ClInclude Include="GameVersions.h">
       <Filter>Source Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GameOverlay.h">
       <Filter>Source Files\CustomImpl\Overlay</Filter>
     </ClInclude>

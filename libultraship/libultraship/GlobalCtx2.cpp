@@ -10,6 +10,8 @@
 #include "ModManager.h"
 #ifdef __APPLE__
 #include "OSXFolderManager.h"
+#elif defined(__SWITCH__)
+#include "SwitchImpl.h"
 #endif
 
 namespace Ship {
@@ -72,11 +74,16 @@ namespace Ship {
         {
 #ifdef _WIN32
             MessageBox(nullptr, L"Main OTR file not found!", L"Uh oh", MB_OK);
+#elif defined(__SWITCH__)
+            printf("Main OTR file not found!\n");
 #else
             SPDLOG_ERROR("Main OTR file not found!");
 #endif
             exit(1);
         }
+    #ifdef __SWITCH__
+        Ship::Switch::Init(PostInitPhase);
+    #endif
         INSTANCE = new ModManager(ResMan);
         INSTANCE->Init();
     }

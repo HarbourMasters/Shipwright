@@ -28,14 +28,16 @@
 #include <chrono>
 #include "Hooks.h"
 #include "Console.h"
+#include "Cvar.h"
 
 #include <iostream>
+
+#define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
 
 extern "C" {
     struct OSMesgQueue;
 
     uint8_t __osMaxControllers = MAXCONTROLLERS;
-    uint8_t __enableGameInput = 1;
 
     int32_t osContInit(OSMesgQueue* mq, uint8_t* controllerBits, OSContStatus* status) {
         *controllerBits = 0;
@@ -45,6 +47,7 @@ extern "C" {
             exit(EXIT_FAILURE);
         }
 
+    #ifndef __SWITCH__
         const char* controllerDb = "gamecontrollerdb.txt";
         int mappingsAdded = SDL_GameControllerAddMappingsFromFile(controllerDb);
         if (mappingsAdded >= 0) {
@@ -52,6 +55,7 @@ extern "C" {
         } else {
             SPDLOG_ERROR("Failed add SDL game controller mappings from \"{}\" ({})", controllerDb, SDL_GetError());
         }
+    #endif
 
         Ship::Window::ControllerApi->Init(controllerBits);
 
@@ -72,7 +76,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-        if (__enableGameInput) {
+        if (!CVar_GetS32("gOpenMenuBar", 0)) {
             Ship::Window::ControllerApi->WriteToPad(pad);
         }
 
@@ -121,8 +125,7 @@ extern "C" {
         const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr)  {
-            const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get());
-
+            const auto res = LOAD_TEX(hashStr->c_str());
             ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
@@ -149,13 +152,40 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
+    uint16_t ResourceMgr_LoadTexWidthByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->width;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
+    uint16_t ResourceMgr_LoadTexHeightByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->height;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
+    uint32_t ResourceMgr_LoadTexSizeByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->imageDataSize;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
     void ResourceMgr_WriteTexS16ByName(char* texPath, size_t index, s16 value) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
 
         if (res != nullptr)
         {
@@ -302,7 +332,6 @@ namespace Ship {
     void Window::MainLoop(void (*MainFunction)(void)) {
         WmApi->main_loop(MainFunction);
     }
-	
     bool Window::KeyUp(int32_t dwScancode) {
         std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
@@ -314,7 +343,7 @@ namespace Ship {
         //if (dwScancode == Ship::stoi(Conf["KEYBOARD SHORTCUTS"]["KEY_CONSOLE"])) {
         //    ToggleConsole();
         //}
-		
+
         lastScancode = -1;
 
         bool bIsProcessed = false;
