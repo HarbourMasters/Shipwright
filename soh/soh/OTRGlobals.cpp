@@ -1411,7 +1411,7 @@ extern "C" RandomizerCheck Randomizer_GetCheckFromActor(s16 sceneNum, s16 actorI
     return OTRGlobals::Instance->gRandomizer->GetCheckFromActor(sceneNum, actorId, actorParams);
 }
 
-extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
+extern "C" CustomMessageEntry Randomizer_GetScrubMessage(u16 scrubTextId) {
     int price = 0;
     switch (scrubTextId) {
         case TEXT_SCRUB_POH:
@@ -1425,21 +1425,21 @@ extern "C" CustomMessageEntry Randomizer_CopyScrubMessage(u16 scrubTextId) {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::scrubMessageTableID, price);
 }
 
-extern "C" CustomMessageEntry Randomizer_CopyAltarMessage() {
+extern "C" CustomMessageEntry Randomizer_GetAltarMessage() {
     return (LINK_IS_ADULT)
                ? CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT)
                : CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD);
 }
 
-extern "C" CustomMessageEntry Randomizer_CopyGanonText() {
-    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF + 1);
+extern "C" CustomMessageEntry Randomizer_GetGanonText() {
+    return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT);
 }
 
-extern "C" CustomMessageEntry Randomizer_CopyGanonHintText() {
+extern "C" CustomMessageEntry Randomizer_GetGanonHintText() {
     return CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, TEXT_GANONDORF);
 }
 
-extern "C" CustomMessageEntry Randomizer_CopyHintFromCheck(RandomizerCheck check) {
+extern "C" CustomMessageEntry Randomizer_GetHintFromCheck(RandomizerCheck check) {
     // we don't want to make a copy of the std::string returned from GetHintFromCheck 
     // so we're just going to let RVO take care of it
     const CustomMessageEntry hintText = CustomMessageManager::Instance->RetrieveMessage(Randomizer::hintMessageTableID, check);
@@ -1467,10 +1467,10 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
     const int maxBufferSize = sizeof(font->msgBuf);
     CustomMessageEntry messageEntry;
     if (gSaveContext.n64ddFlag) {
-        if (textId == TEXT_RANDOMIZER_GI_ESCAPE_HATCH) {
+        if (textId == TEXT_RANDOMIZER_CUSTOM_ITEM) {
             messageEntry =
                 Randomizer_GetCustomGetItemMessage((GetItemID)GET_PLAYER(globalCtx)->getItemId, buffer, maxBufferSize);
-        } else if (textId == 0x2053 && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
+        } else if (textId == TEXT_RANDOMIZER_GOSSIP_STONE_HINTS && Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) != 0 &&
             (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 1 ||
              (Randomizer_GetSettingValue(RSK_GOSSIP_STONE_HINTS) == 2 &&
               Player_GetMask(globalCtx) == PLAYER_MASK_TRUTH) ||
@@ -1497,18 +1497,18 @@ extern "C" int CustomMessage_RetrieveIfExists(GlobalContext* globalCtx) {
             RandomizerCheck hintCheck =
                 Randomizer_GetCheckFromActor(globalCtx->sceneNum, msgCtx->talkActor->id, actorParams);
 
-            messageEntry = Randomizer_CopyHintFromCheck(hintCheck);
+            messageEntry = Randomizer_GetHintFromCheck(hintCheck);
         } else if (textId == TEXT_ALTAR_CHILD || textId == TEXT_ALTAR_ADULT) {
             // rando hints at altar
-            messageEntry = Randomizer_CopyAltarMessage();
+            messageEntry = Randomizer_GetAltarMessage();
         } else if (textId == TEXT_GANONDORF) {
             if (INV_CONTENT(ITEM_ARROW_LIGHT) == ITEM_ARROW_LIGHT) {
-                messageEntry = Randomizer_CopyGanonText();
+                messageEntry = Randomizer_GetGanonText();
             } else {
-                messageEntry = Randomizer_CopyGanonHintText();
+                messageEntry = Randomizer_GetGanonHintText();
             }
         } else if (textId == TEXT_SCRUB_POH || textId == TEXT_SCRUB_STICK_UPGRADE || textId == TEXT_SCRUB_NUT_UPGRADE) {
-            messageEntry = Randomizer_CopyScrubMessage(textId);
+            messageEntry = Randomizer_GetScrubMessage(textId);
         }
     }
     if (textId == TEXT_GS_NO_FREEZE || textId == TEXT_GS_FREEZE) {

@@ -15,6 +15,7 @@
 #include <soh/Enhancements/debugger/ImGuiHelpers.h>
 #include "Lib/ImGui/imgui_internal.h"
 #include <soh/Enhancements/custom_message/CustomMessageManager.h>
+#include <soh/Enhancements/custom_message/CustomMessageTypes.h>
 
 using json = nlohmann::json;
 using namespace std::literals::string_literals;
@@ -1487,19 +1488,19 @@ void Randomizer::LoadHintLocations(const char* spoilerFileName) {
     CustomMessageManager::Instance->AddCustomMessageTable(Randomizer::hintMessageTableID);
 
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, 0x7040,
+        Randomizer::hintMessageTableID, TEXT_ALTAR_CHILD,
                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.childAltarText,
                                              gSaveContext.childAltarText, gSaveContext.childAltarText });
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, 0x7088,
+        Randomizer::hintMessageTableID, TEXT_ALTAR_ADULT,
                                            { TEXTBOX_TYPE_BLUE, TEXTBOX_POS_BOTTOM, gSaveContext.adultAltarText,
                                              gSaveContext.adultAltarText, gSaveContext.adultAltarText });
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, 0x70CC,
+        Randomizer::hintMessageTableID, TEXT_GANONDORF,
                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonHintText,
                                              gSaveContext.ganonHintText, gSaveContext.ganonHintText });
     CustomMessageManager::Instance->CreateMessage(
-        Randomizer::hintMessageTableID, 0x70CD,
+        Randomizer::hintMessageTableID, TEXT_GANONDORF_NOHINT,
                                            { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM, gSaveContext.ganonText,
                                              gSaveContext.ganonText, gSaveContext.ganonText });
 
@@ -4737,14 +4738,6 @@ void DrawRandoEditor(bool& open) {
     ImGui::End();
     }*/
 
-typedef struct {
-    GetItemID giid;
-    ItemID iid;
-    std::string english;
-    std::string german;
-    std::string french;
-} GetItemMessage;
-
 void CreateGetItemMessages(std::vector<GetItemMessage> messageEntries) {
     CustomMessageManager* customMessageManager = CustomMessageManager::Instance;
     customMessageManager->AddCustomMessageTable(Randomizer::getItemMessageTableID);
@@ -4765,6 +4758,7 @@ void CreateScrubMessages() {
             { TEXTBOX_TYPE_BLACK, TEXTBOX_POS_BOTTOM,
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
+            // RANDTODO: Translate the below string to German.
               "\x12\x38\x82\All right! You win! In return for&sparing me, I will sell you a&%gmysterious item%w!&%r" +
                   std::to_string(price) + " Rupees%w it is!\x07\x10\xA3",
               "\x12\x38\x82J'abandonne! Tu veux bien m'acheter&un %gobjet mystérieux%w?&Ça fera %r" +
@@ -4773,45 +4767,26 @@ void CreateScrubMessages() {
     }
 }
 
-#define GIMESSAGE(giid, iid, english, german, french) \
-    { giid, iid, english, german, french }
-
 void Randomizer::CreateCustomMessages() {
+    // RANDTODO: Translate into french and german and replace GIMESSAGE_UNTRANSLATED
+    // with GIMESSAGE(getItemID, itemID, english, german, french).
     const std::vector<GetItemMessage> getItemMessages = {
-        GIMESSAGE(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
-                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
-                    "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_FIRE, ITEM_BLUE_FIRE,
                     "You got a %rBottle with Blue &Fire%w! Use it to melt Red Ice!"),
-        GIMESSAGE(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
-                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
-                    "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BIG_POE, ITEM_BIG_POE,
                     "You got a %rBig Poe in a Bottle%w!&Sell it to the Ghost Shop!"),
-        GIMESSAGE(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
-                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
-                    "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BLUE_POTION, ITEM_POTION_BLUE,
                     "You got a %rBottle of Blue Potion%w!&Drink it to replenish your&%ghealth%w and %bmagic%w!"),
-        GIMESSAGE(GI_BOTTLE_WITH_FISH, ITEM_FISH,
-                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
-                    "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FISH, ITEM_FISH,
                     "You got a %rFish in a Bottle%w!&It looks fresh and delicious!&They say Jabu-Jabu loves them!"),
-        GIMESSAGE(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
-                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
-                    "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_BUGS, ITEM_BUG,
                     "You got a %rBug in a Bottle%w!&They love to burrow in&dirt holes!"),
-        GIMESSAGE(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!",
-                    "You got a %rFairy in a Bottle%w!&Use it wisely!",
-                    "You got a %rFairy in a Bottle%w!&Use it wisely!"),
-        GIMESSAGE(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
-                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
-                    "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_FAIRY, ITEM_FAIRY, "You got a %rFairy in a Bottle%w!&Use it wisely!"),
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_RED_POTION, ITEM_POTION_RED,
                     "You got a %rBottle of Red Potion%w!&Drink it to replenish your&%ghealth%w!"),
-        GIMESSAGE(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
-                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
-                    "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_GREEN_POTION, ITEM_POTION_GREEN,
                     "You got a %rBottle of Green Potion%w!&Drink it to replenish your&%bmagic%w!"),
-        GIMESSAGE(GI_BOTTLE_WITH_POE, ITEM_POE,
-                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
-                    "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this...",
+        GIMESSAGE_UNTRANSLATED(GI_BOTTLE_WITH_POE, ITEM_POE,
                     "You got a %rPoe in a Bottle%w!&That creepy Ghost Shop might&be interested in this..."),
     };
     CreateGetItemMessages(getItemMessages);
