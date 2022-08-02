@@ -1,5 +1,15 @@
 #pragma once
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+    void enableBetaQuest();
+    void disableBetaQuest();
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
 #include "GameOverlay.h"
 #include "Lib/ImGui/imgui.h"
 #include "Console.h"
@@ -100,4 +110,8 @@ namespace SohImGui {
     ImTextureID GetTextureByName(const std::string& name);
     void BeginGroupPanel(const char* name, const ImVec2 & size = ImVec2(0.0f, 0.0f));
     void EndGroupPanel(float minHeight = 0.0f);
+    std::string BreakTooltip(const char* text, int lineLength = 60);
+    std::string BreakTooltip(const std::string& text, int lineLength = 60);
 }
+
+#endif
