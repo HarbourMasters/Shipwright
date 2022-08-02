@@ -111,7 +111,7 @@ extern "C" void CVar_SetString(const char* name, const char* value) {
         cvar = std::make_unique<CVar>();
     }
     cvar->type = CVarType::String;
-    cvar->value.valueStr = value;
+    cvar->value.valueStr = ImStrdup(value);
 }
 
 extern "C" void CVar_RegisterRGBA(const char* name, Color_RGBA8 defaultValue) {
