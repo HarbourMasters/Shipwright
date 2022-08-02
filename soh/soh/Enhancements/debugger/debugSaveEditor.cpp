@@ -1001,7 +1001,7 @@ void DrawFlagsTab() {
 
 // Draws a combo that lets you choose and upgrade value from a drop-down of text values
 void DrawUpgrade(const std::string& categoryName, int32_t categoryId, const std::vector<std::string>& names) {
-    ImGui::Text(categoryName.c_str());
+    ImGui::Text("%s", categoryName.c_str());
     ImGui::SameLine();
     ImGui::PushID(categoryName.c_str());
     if (ImGui::BeginCombo("##upgrade", names[CUR_UPG_VALUE(categoryId)].c_str())) {
