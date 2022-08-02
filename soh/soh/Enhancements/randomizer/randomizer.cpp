@@ -3490,7 +3490,7 @@ void DrawRandoEditor(bool& open) {
                                      "Zelda Gasp (Adult)" };
 
         ImGui::SetNextWindowSize(ImVec2(760, 550), ImGuiCond_FirstUseEver);
-        if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+        if (!ImGui::Begin("Randomizer Editor", &open)) {
             ImGui::End();
             return;
         }

@@ -818,7 +818,7 @@ void DrawItemTracker(bool& open) {
     ImVec4 color = ImGui::ColorConvertU32ToFloat4(ccc);
 
     ImGui::PushStyleColor(ImGuiCol_WindowBg, color);
-    if (!ImGui::Begin("Item Tracker", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Item Tracker", &open)) {
         ImGui::PopStyleColor();
         ImGui::End();
         return;
