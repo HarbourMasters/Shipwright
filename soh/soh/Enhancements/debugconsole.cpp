@@ -568,20 +568,18 @@ void DebugConsole_LoadCVars() {
         switch (value.type()) {
             case nlohmann::detail::value_t::array:
                 break;
-            case nlohmann::detail::value_t::string:
-                if (StringHelper::StartsWith(value.get<std::string>(), "#")) 
-                {
-                    uint32_t val = std::stoul(&value.get<std::string>().c_str()[1], nullptr, 16);
+            case nlohmann::detail::value_t::object:
+                if (value["Type"].get<std::string>() == mercuryRGBAObjectType) {
                     Color_RGBA8 clr;
-                    clr.r = val >> 24;
-                    clr.g = val >> 16;
-                    clr.b = val >> 8;
-                    clr.a = val & 0xFF;
-
-                    CVar_SetRGBA(item.key().c_str(), clr);
+                    clr.r = value["R"].get<uint8_t>();
+                    clr.g = value["G"].get<uint8_t>();
+                    clr.b = value["B"].get<uint8_t>();
+                    clr.a = value["A"].get<uint8_t>();
                 }
-                else
-                    CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
+
+                break;
+            case nlohmann::detail::value_t::string:
+                CVar_SetString(item.key().c_str(), value.get<std::string>().c_str());
                 break;
             case nlohmann::detail::value_t::boolean:
                 CVar_SetS32(item.key().c_str(), value.get<bool>());
@@ -618,10 +616,13 @@ void DebugConsole_SaveCVars()
             pConf->setFloat(key, cvar.second->value.valueFloat);
         else if (cvar.second->type == CVarType::RGBA)
         {
+            auto keyStr = key.c_str();
             Color_RGBA8 clr = cvar.second->value.valueRGBA;
-            uint32_t val = (clr.r << 24) + (clr.g << 16) + (clr.b << 8) + clr.a;
-            std::string str = StringHelper::Sprintf("#%08X", val);
-            pConf->setString(key, str);
+            pConf->setUInt(StringHelper::Sprintf("%s.R", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.G", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.B", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.A", keyStr), clr.r);
+            pConf->setString(StringHelper::Sprintf("%s.Type", keyStr), mercuryRGBAObjectType);
         }
     }
 
