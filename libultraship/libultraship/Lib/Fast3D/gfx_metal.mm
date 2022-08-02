@@ -35,14 +35,25 @@ static constexpr NSUInteger METAL_MAX_MULTISAMPLE_SAMPLE_COUNT = 8;
 
 // Hashing Helpers
 
+int cantor(uint64_t a, uint64_t b) {
+    return (a + b + 1.0) * (a + b) / 2 + b;
+}
+
 // A hash function used to hash a: pair<float, float>
 struct hash_pair_shader_ids {
     size_t operator()(const std::pair<uint64_t, uint32_t> &p ) const {
-        auto hash1 = std::hash<uint64_t>{}(p.first);
-        auto hash2 = std::hash<uint32_t>{}(p.second);
+        auto value1 = p.first;
+        auto value2 = p.second;
+        return cantor(value1, value2);
+    }
+};
 
-        // If hash1 == hash2, their XOR is zero.
-        return (hash1 != hash2) ? hash1 ^ hash2 : hash1;
+struct hash_tuple_pipeline_state {
+    size_t operator()(const std::tuple<uint64_t, uint32_t, int> &p ) const {
+        auto value0 = std::get<0>(p);
+        auto value1 = std::get<1>(p);
+        auto value2 = std::get<2>(p);
+        return cantor(value0, cantor(value1, value2));
     }
 };
 
@@ -94,7 +105,8 @@ static struct {
 
     std::queue<id<MTLBuffer>> buffer_pool;
     std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
-    std::unordered_map<std::pair<uint64_t, uint32_t>, id<MTLRenderPipelineState>, hash_pair_shader_ids> pipeline_cache;
+    std::unordered_map<std::pair<uint64_t, uint32_t>, MTLRenderPipelineDescriptor*, hash_pair_shader_ids> pipeline_desc_cache;
+    std::unordered_map<std::tuple<uint64_t, uint32_t, int>, id<MTLRenderPipelineState>, hash_tuple_pipeline_state> pipeline_state_cache;
 
     std::vector<struct TextureDataMetal> textures;
     std::vector<FramebufferMetal> framebuffers;
@@ -115,40 +127,14 @@ static struct {
     size_t current_vertex_buffer_offset;
     FilteringMode current_filter_mode = FILTER_THREE_POINT;
 
-//    SDL_Renderer* renderer = nullptr;
-//    CA::MetalLayer* layer = nullptr;
-//    MTL::Device* device = nullptr;
-//    MTL::CommandQueue* command_queue = nullptr;
-//
-//    std::queue<MTL::Buffer *> buffer_pool;
-//    std::unordered_map<std::pair<uint64_t, uint32_t>, struct ShaderProgramMetal, hash_pair_shader_ids> shader_program_pool;
-//    std::unordered_map<std::pair<uint64_t, uint32_t>, MTL::RenderPipelineState*, hash_pair_shader_ids> pipeline_cache;
-//
-//    std::vector<struct TextureDataMetal> textures;
-//    std::vector<FramebufferMetal> framebuffers;
-//    FrameUniforms frame_uniforms;
-//    MTL::Buffer* frame_uniform_buffer = nullptr;
-//
-//    // Current state
-//    struct ShaderProgramMetal* shader_program = nullptr;
-//    MTL::CommandBuffer* current_command_buffer = nullptr;
-//    MTL::RenderCommandEncoder* current_command_encoder = nullptr;
-//
-//    int current_tile;
-//    uint32_t current_texture_ids[2];
-//    int current_framebuffer;
-//    size_t current_vertex_buffer_offset;
-//    FilteringMode current_filter_mode = NONE;
-//
     int8_t depth_test;
     int8_t depth_mask;
     int8_t zmode_decal;
-//    simd::int2 viewport_size;
 
     // Previous states (to prevent setting states needlessly)
     struct ShaderProgramMetal* last_shader_program = nullptr;
-//    MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
-//    MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
+    //    MTL::Texture* last_bound_textures[2] = { nullptr, nullptr };
+    //    MTL::SamplerState* last_bound_samplers[2] = { nullptr, nullptr };
     int8_t last_depth_test = -1;
     int8_t last_depth_mask = -1;
     int8_t last_zmode_decal = -1;
@@ -620,15 +606,15 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
             pipelineDescriptor.colorAttachments[0].writeMask = MTLColorWriteMaskAll;
         }
 
-        id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
-
-        if (!pipelineState) {
-            // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
-            // If the Metal API validation is enabled, we can find out more information about what
-            // went wrong.  (Metal API validation is enabled by default when a debug build is run
-            // from Xcode)
-            NSLog(@"Failed to created pipeline state");
-        }
+        //        id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
+        //
+        //        if (!pipelineState) {
+        //            // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
+        //            // If the Metal API validation is enabled, we can find out more information about what
+        //            // went wrong.  (Metal API validation is enabled by default when a debug build is run
+        //            // from Xcode)
+        //            NSLog(@"Failed to created pipeline state");
+        //        }
 
         struct ShaderProgramMetal *prg = (struct ShaderProgramMetal *)calloc(1, sizeof(struct ShaderProgramMetal));
         prg->shader_id0 = shader_id0;
@@ -641,7 +627,7 @@ static struct ShaderProgram* gfx_metal_create_and_load_new_shader(uint64_t shade
         gfx_metal_load_shader((struct ShaderProgram *)prg);
 
         mctx.shader_program_pool.insert({std::make_pair(shader_id0, shader_id1), *prg});
-        mctx.pipeline_cache.insert({ std::make_pair(shader_id0, shader_id1), pipelineState });
+        mctx.pipeline_desc_cache.insert({ std::make_pair(shader_id0, shader_id1), pipelineDescriptor });
 
         return (struct ShaderProgram *)prg;
     }
@@ -760,6 +746,9 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
         if (mctx.last_zmode_decal != mctx.zmode_decal) {
             mctx.last_zmode_decal = mctx.zmode_decal;
 
+            [mctx.current_command_encoder setTriangleFillMode:MTLTriangleFillModeFill];
+            [mctx.current_command_encoder setCullMode:MTLCullModeNone];
+            [mctx.current_command_encoder setFrontFacingWinding:MTLWindingCounterClockwise];
             [mctx.current_command_encoder setDepthBias:0 slopeScale:mctx.zmode_decal ? -2 : 0 clamp:0];
         }
 
@@ -780,18 +769,43 @@ static void gfx_metal_draw_triangles(float buf_vbo[], size_t buf_vbo_len, size_t
 
         if (mctx.last_shader_program != mctx.shader_program) {
             mctx.last_shader_program = mctx.shader_program;
-            id<MTLRenderPipelineState> pipelineState = mctx.pipeline_cache.find(
-                                                                                std::make_pair(mctx  .shader_program->shader_id0, mctx.shader_program->shader_id1)
-                                                                                )->second;
 
-            [mctx.current_command_encoder setRenderPipelineState:pipelineState];
-            [mctx.current_command_encoder setTriangleFillMode:MTLTriangleFillModeFill];
-            [mctx.current_command_encoder setCullMode:MTLCullModeNone];
-            [mctx.current_command_encoder setFrontFacingWinding:MTLWindingCounterClockwise];
+            FramebufferMetal fb = mctx.framebuffers[mctx.current_framebuffer];
+
+            // Attempt to find a compiled pipeline state for given program and msaa level
+            auto state_location = mctx.pipeline_state_cache.find(
+                                                                 std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level)
+                                                                 );
+
+            if (state_location == mctx.pipeline_state_cache.end()) {
+                SPDLOG_DEBUG("Creating new pipeline descriptor for shader program: {} - {} [{}]", mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level);
+                MTLRenderPipelineDescriptor* pipelineDescriptor = mctx.pipeline_desc_cache.find(
+                                                                                                std::make_pair(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1)
+                                                                                                )->second;
+
+                pipelineDescriptor.rasterSampleCount = fb.msaa_level;
+
+                NSError* error = nil;
+                id<MTLRenderPipelineState> pipelineState = [mctx.device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
+
+                if (!pipelineState) {
+                    // Pipeline State creation could fail if we haven't properly set up our pipeline descriptor.
+                    // If the Metal API validation is enabled, we can find out more information about what
+                    // went wrong.  (Metal API validation is enabled by default when a debug build is run
+                    // from Xcode)
+                    NSLog(@"Failed to created pipeline state");
+                }
+
+                mctx.pipeline_state_cache.insert({ std::make_tuple(mctx.shader_program->shader_id0, mctx.shader_program->shader_id1, fb.msaa_level), pipelineState });
+
+                [mctx.current_command_encoder setRenderPipelineState:pipelineState];
+            } else {
+                id<MTLRenderPipelineState> pipelineState = state_location->second;
+                [mctx.current_command_encoder setRenderPipelineState:pipelineState];
+            }
         }
         
         [mctx.current_command_encoder drawPrimitives:MTLPrimitiveTypeTriangle vertexStart:0 vertexCount:buf_vbo_num_tris * 3];
-        
         mctx.current_vertex_buffer_offset += sizeof(float) * buf_vbo_len;
     }
 }
@@ -984,9 +998,9 @@ static void gfx_metal_update_framebuffer_parameters(int fb_id, uint32_t width, u
 
         if (msaa_level > 1) {
             MTLTextureDescriptor *msaaDepthTexDesc = [MTLTextureDescriptor texture2DDescriptorWithPixelFormat:MTLPixelFormatDepth32Float
-                                                                                                    width:width
-                                                                                                   height:height
-                                                                                                mipmapped:YES];
+                                                                                                        width:width
+                                                                                                       height:height
+                                                                                                    mipmapped:YES];
 
             msaaDepthTexDesc.textureType = MTLTextureType2DMultisample;
             msaaDepthTexDesc.storageMode = MTLStorageModePrivate;
