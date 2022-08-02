@@ -38,44 +38,44 @@ const char* MarginCvarList[] {
 
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
-    const int RNG_Multiplier = rand() % (100000 - 0); 
+    std::random_device rd;
+    std::mt19937 g(rd());
     const int RGN_Seed_1 = rand() % (100 - 0); 
     const int RGN_Seed_2 = rand() % (100 - 0); 
     const int RGN_Seed_3 = rand() % (100 - 0); 
     const int RGN_Seed_4 = rand() % (100 - 0); 
     const int RGN_Seed_5 = rand() % (100 - 0); 
-    MaximumPossible = MaximumPossible * RNG_Multiplier;
-    int MyRandomListR[5] = {
+    std::vector<int> MyRandomListR = {
         { rand() % (MaximumPossible - RGN_Seed_1) }, 
         { rand() % (MaximumPossible - RGN_Seed_2) }, 
         { rand() % (MaximumPossible - RGN_Seed_3) }, 
         { rand() % (MaximumPossible - RGN_Seed_4) }, 
         { rand() % (MaximumPossible - RGN_Seed_5) }
     };
-    int MyRandomListG[5] = {
+    std::vector<int> MyRandomListG = {
         { rand() % (MaximumPossible - RGN_Seed_1) }, 
         { rand() % (MaximumPossible - RGN_Seed_2) }, 
         { rand() % (MaximumPossible - RGN_Seed_3) }, 
         { rand() % (MaximumPossible - RGN_Seed_4) }, 
         { rand() % (MaximumPossible - RGN_Seed_5) }
     };
-    int MyRandomListB[5] = {
+    std::vector<int> MyRandomListB = {
         { rand() % (MaximumPossible - RGN_Seed_1) }, 
         { rand() % (MaximumPossible - RGN_Seed_2) }, 
         { rand() % (MaximumPossible - RGN_Seed_3) }, 
         { rand() % (MaximumPossible - RGN_Seed_4) }, 
         { rand() % (MaximumPossible - RGN_Seed_5) }
     };
-    std::random_shuffle(MyRandomListR, MyRandomListR + 5);
-    std::random_shuffle(MyRandomListG, MyRandomListG + 5);
-    std::random_shuffle(MyRandomListB, MyRandomListB + 5);
-    NewColor.x = (float)(MyRandomListR[rand() % (5 - 0)]/RNG_Multiplier) / 255;
-    NewColor.y = (float)(MyRandomListG[rand() % (5 - 0)]/RNG_Multiplier) / 255;
-    NewColor.z = (float)(MyRandomListB[rand() % (5 - 0)]/RNG_Multiplier) / 255;
+    std::shuffle(MyRandomListR.begin(), MyRandomListR.end(), g);
+    std::shuffle(MyRandomListG.begin(), MyRandomListG.end(), g);
+    std::shuffle(MyRandomListB.begin(), MyRandomListB.end(), g);
+    NewColor.x = (float)(MyRandomListR[rand() % (5 - 0)]) / 255;
+    NewColor.y = (float)(MyRandomListG[rand() % (5 - 0)]) / 255;
+    NewColor.z = (float)(MyRandomListB[rand() % (5 - 0)]) / 255;
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){
-    std::random_shuffle(ColorSection, ColorSection + SectionSize);
+    //std::random_shuffle(ColorSection, ColorSection + SectionSize);
     for (int i = 0; i < SectionSize; i++){
         CosmeticsColorIndividual* Element = ColorSection[i].Element;
         ImVec4 colors = Element->ModifiedColor;
