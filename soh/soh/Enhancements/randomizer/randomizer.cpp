@@ -3714,7 +3714,7 @@ void DrawRandoEditor(bool& open) {
                                      "Timer",
                                      "Zelda Gasp (Adult)" };
 
-        ImGui::SetNextWindowSize(ImVec2(750, 530), ImGuiCond_FirstUseEver);
+        ImGui::SetNextWindowSize(ImVec2(830, 600), ImGuiCond_FirstUseEver);
         if (!ImGui::Begin("Randomizer Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
             ImGui::End();
             return;
@@ -3727,11 +3727,13 @@ void DrawRandoEditor(bool& open) {
         SohImGui::EnhancementCheckbox("Enable Randomizer", "gRandomizer");
 
         if (CVar_GetS32("gRandomizer", 0) == 1) {
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             if (ImGui::Button("Generate Seed")) {
                 if (CVar_GetS32("gRandoGenerating", 0) == 0) {
                     randoThread = std::thread(&GenerateRandomizerImgui);
                 }
             }
+            ImGui::Dummy(ImVec2(0.0f, 0.0f));
             std::string spoilerfilepath = CVar_GetString("gSpoilerLog", "");
             ImGui::Text("Spoiler File: %s", spoilerfilepath.c_str());
 
@@ -3739,37 +3741,29 @@ void DrawRandoEditor(bool& open) {
             // std::string presetfilepath = CVar_GetString("gLoadedPreset", "");
             // ImGui::Text("Settings File: %s", presetfilepath.c_str());
         }
-        ImGui::Separator();
+        PaddedSeparator();
+
+        ImGuiWindow* window = ImGui::GetCurrentWindow();
+        static ImVec2 cellPadding(8.0f, 8.0f);
 
         if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
-                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
-                    ImGui::PushItemWidth(170.0);
-                    ImGui::Text("Logic Rules");
-                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
-                        "\n"
-                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
-                    );
-                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
-                    ImGui::PopItemWidth();
-                    ImGui::EndTable();
-                }
+                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
                 if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Shuffle Dungeon Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
+                    ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
                     // COLUMN 1 - OPEN SETTINGS
                     ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
 
                     if (CVar_GetS32("gRandomizeAllOpenSettings", 0) != 1) {
-                        ImGui::Separator();
                         // Forest
                         ImGui::Text(Settings::OpenForest.GetName().c_str());
                         InsertHelpHoverText(
@@ -3784,7 +3778,7 @@ void DrawRandoEditor(bool& open) {
                             "Open - Mido no longer blocks the path to the Deku Tree. Kokiri\n"
                             "boy no longer blocks the path out of the forest.");
                         SohImGui::EnhancementCombobox("gRandomizeForest", randoForest, 3, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
                         // Kakariko Gate
                         ImGui::Text(Settings::OpenKakariko.GetName().c_str());
                         InsertHelpHoverText(
@@ -3795,7 +3789,7 @@ void DrawRandoEditor(bool& open) {
                             "will open immediately after obtaining Zelda's letter."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeKakarikoGate", randoKakarikoGate, 2, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Door of Time
                         ImGui::Text(Settings::OpenDoorOfTime.GetName().c_str());
@@ -3810,7 +3804,7 @@ void DrawRandoEditor(bool& open) {
                             "requirements."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeDoorOfTime", randoDoorOfTime, 3, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Zora's Fountain
                         ImGui::Text(Settings::ZorasFountain.GetName().c_str());
@@ -3826,7 +3820,7 @@ void DrawRandoEditor(bool& open) {
                             "time periods. Ruto's Letter is removed from the item pool."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeZorasFountain", randoZorasFountain, 3, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Gerudo Fortress
                         ImGui::Text(Settings::GerudoFortress.GetName().c_str());
@@ -3841,7 +3835,7 @@ void DrawRandoEditor(bool& open) {
                             "Open - The bridge is repaired from the start."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeGerudoFortress", randoGerudoFortress, 3, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Rainbow Bridge
                         ImGui::Text(Settings::Bridge.GetName().c_str());
@@ -3874,27 +3868,32 @@ void DrawRandoEditor(bool& open) {
                             case 1:
                                 break;
                             case 2:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Stone Count: %d", "##RandoStoneCount",
                                                                "gRandomizeStoneCount", 1, 3, "", 3, true);
                                 break;
                             case 3:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Medallion Count: %d", "##RandoMedallionCount",
                                                                "gRandomizeMedallionCount", 1, 6, "", 6, true);
                                 break;
                             case 4:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Reward Count: %d", "##RandoRewardCount",
                                                                "gRandomizeRewardCount", 1, 9, "", 9, true);
                                 break;
                             case 5:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Dungeon Count: %d", "##RandoDungeonCount",
                                                                "gRandomizeDungeonCount", 1, 8, "", 8, true);
                                 break;
                             case 6:
+                                ImGui::Dummy(ImVec2(0.0f, 0.0f));
                                 SohImGui::EnhancementSliderInt("Token Count: %d", "##RandoTokenCount",
                                                                "gRandomizeTokenCount", 1, 100, "", 100, true);
                                 break;
                         }
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Random Ganon's Trials
                         /*
@@ -3912,14 +3911,13 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCheckbox("Skip Ganon's Trials", "gRandomizeGanonTrialCount");
                         InsertHelpHoverText(
                             "Sets whether or not Ganon's Castle Trials are required to enter Ganon's Tower.");
-                        ImGui::Separator();
                     }
                     
                     // COLUMN 2 - Shuffle Settings
                     ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
                     if (CVar_GetS32("gRandomizeAllShuffleSettings", 0) != 1) {
-                        ImGui::Separator();
 
                         // Shuffle Songs
                         ImGui::Text(Settings::ShuffleSongs.GetName().c_str());
@@ -3938,7 +3936,7 @@ void DrawRandoEditor(bool& open) {
                         );
 
                         SohImGui::EnhancementCombobox("gRandomizeShuffleSongs", randoShuffleSongs, 3, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Shuffle Tokens
                         ImGui::Text(Settings::Tokensanity.GetName().c_str());
@@ -3955,7 +3953,12 @@ void DrawRandoEditor(bool& open) {
                             "All Tokens - Shuffle all 100 GS tokens."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
-                        ImGui::Separator();
+                        PaddedSeparator();
+
+                        SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
+                        InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be\n"
+                                            "expected to be collected after getting Sun's Song.");
+                        PaddedSeparator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
                             // Shuffle Kokiri Sword
@@ -3966,7 +3969,7 @@ void DrawRandoEditor(bool& open) {
                                 "This will require the use of sticks until the Kokiri\n"
                                 "Sword is found."
                             );
-                            ImGui::Separator();
+                            PaddedSeparator();
                         }
 
                         if(CVar_GetS32("gRandomizeStartingOcarina", 0) == 0) {
@@ -3978,7 +3981,7 @@ void DrawRandoEditor(bool& open) {
                                 "\n"
                                 "This will require finding an Ocarina before being able to play songs."
                             );
-                            ImGui::Separator();
+                            PaddedSeparator();
                         }
 
                         // Shuffle Weird Egg
@@ -4010,7 +4013,7 @@ void DrawRandoEditor(bool& open) {
                             "  - Zelda's letter for Kakariko gate (if set to closed)\n"
                             "  - Happy Mask Shop sidequest\n"
                         );
-                        ImGui::Separator();
+                        PaddedSeparator();
 
                         // Shuffle Gerudo Membership Card
                         SohImGui::EnhancementCheckbox(Settings::ShuffleGerudoToken.GetName().c_str(), "gRandomizeShuffleGerudoToken");
@@ -4020,15 +4023,12 @@ void DrawRandoEditor(bool& open) {
                             "The Gerudo Card is required to enter the Gerudo Training Grounds, opening\n"
                             "the gate to Haunted Wasteland and the Horseback Archery minigame."
                         );
-                        ImGui::Separator();
                     }
                     ImGui::PopItemWidth();
 
                     // COLUMN 3 - Shuffle Dungeon Items
                     ImGui::TableNextColumn();
-                    ImGui::Separator();
-
-                    // RANDOTODO implement ganon's boss key outside of ganon's castle
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
 
                     // Shuffle Dungeon Rewards
@@ -4046,9 +4046,9 @@ void DrawRandoEditor(bool& open) {
                         "Anywhere - Spiritual stones and medallions can appear anywhere."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleDungeonReward", randoShuffleDungeonRewards, 4, 0);
+                    PaddedSeparator();
 
-                    ImGui::Separator();
-
+                    // RANDOTODO implement ganon's boss key outside of ganon's castle
                     // Ganon's Boss Key
                     ImGui::Text(Settings::GanonsBossKey.GetName().c_str());
                     InsertHelpHoverText(
@@ -4060,29 +4060,32 @@ void DrawRandoEditor(bool& open) {
                     );
                     SohImGui::EnhancementCombobox("gRandomizeShuffleGanonBossKey", randoShuffleGanonsBossKey, 3,
                                                     0);
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Start with Maps & Compasses
                     SohImGui::EnhancementCheckbox(Settings::MapsAndCompasses.GetName().c_str(), "gRandomizeStartingMapsCompasses");
-                    ImGui::Separator();
 
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
+                ImGui::PopStyleVar(1);
                 ImGui::EndTabItem();
             }
 
             if (ImGui::BeginTabItem("Other")) {
+                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
                 if (ImGui::BeginTable("tableRandoOther", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Timesavers", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Hint Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Item Pool Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
+                    ImGui::PopItemFlag();
                     ImGui::TableNextRow();
                     
                     // COLUMN 1 - TIME SAVERS
                     ImGui::TableNextColumn();
-                    ImGui::Separator();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
 
                     // Cuccos to return
                     SohImGui::EnhancementSliderInt("Cuccos to return: %d", "##RandoCuccosToReturn",
@@ -4090,7 +4093,7 @@ void DrawRandoEditor(bool& open) {
                     InsertHelpHoverText(
                         "The amount of cuccos needed to claim the reward from Anju the cucco lady"
                     );
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Big Poe Target Count
                     SohImGui::EnhancementSliderInt("Big Poe Target Count: %d", "##RandoBigPoeTargetCount",
@@ -4098,7 +4101,7 @@ void DrawRandoEditor(bool& open) {
                     InsertHelpHoverText(
                         "The Poe collector will give a reward for turning in this many Big Poes."
                     );
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Skip child stealth
                     // Disabled when Skip Child Zelda is active
@@ -4120,7 +4123,7 @@ void DrawRandoEditor(bool& open) {
                     }
                     InsertHelpHoverText("The crawlspace into Hyrule Castle goes straight to Zelda, skipping\n"
                                         "the guards.");
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Skip child zelda
                     SohImGui::EnhancementCheckbox("Skip Child Zelda", "gRandomizeSkipChildZelda");
@@ -4128,26 +4131,25 @@ void DrawRandoEditor(bool& open) {
                         "Start with Zelda's Letter in your inventory and skip the sequence up\n"
                         "until after meeting Zelda. Disables the ability to shuffle Weird Egg."
                     );
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Skip Epona race
                     SohImGui::EnhancementCheckbox(Settings::SkipEponaRace.GetName().c_str(), "gRandomizeSkipEponaRace");
                     InsertHelpHoverText(
                         "Epona can be summoned with Epona's Song without needing to race Ingo."
                     );
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Skip tower escape
                     SohImGui::EnhancementCheckbox(Settings::SkipTowerEscape.GetName().c_str(), "gRandomizeSkipTowerEscape");
                     InsertHelpHoverText(
                         "The tower escape sequence between Ganondorf and Ganon will be skipped."
                     );
-                    ImGui::Separator();
 
                     // COLUMN 2 - HINT SETTINGS
                     ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
-                    ImGui::Separator();
 
                     // Gossip Stone Hints
                     ImGui::Text(Settings::GossipStoneHints.GetName().c_str());
@@ -4168,6 +4170,7 @@ void DrawRandoEditor(bool& open) {
                     SohImGui::EnhancementCombobox("gRandomizeGossipStoneHints", randoGossipStoneHints, 4, 1);
                     if (CVar_GetS32("gRandomizeGossipStoneHints", 1) != 0) {
                         // Hint Clarity
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         ImGui::Indent();
                         ImGui::Text(Settings::ClearerHints.GetName().c_str());
                         InsertHelpHoverText(
@@ -4185,6 +4188,7 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCombobox("gRandomizeHintClarity", randoHintClarity, 3, 2);
 
                         // Hint Distribution
+                        ImGui::Dummy(ImVec2(0.0f, 0.0f));
                         ImGui::Text(Settings::HintDistribution.GetName().c_str());
                         InsertHelpHoverText(
                             "Sets how many hints will be useful.\n"
@@ -4200,13 +4204,12 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCombobox("gRandomizeHintDistribution", randoHintDistribution, 4, 1);
                         ImGui::Unindent();
                     }
-                    ImGui::Separator();
                     ImGui::PopItemWidth();
 
                     // COLUMN 3 - ITEM POOL SETTINGS
                     ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     ImGui::PushItemWidth(-FLT_MIN);
-                    ImGui::Separator();
                     ImGui::Text(Settings::ItemPoolValue.GetName().c_str());
                     InsertHelpHoverText(
                         "Sets how many major items appear in the item pool.\n"
@@ -4220,7 +4223,7 @@ void DrawRandoEditor(bool& open) {
                         "Minimal - Most excess items are removed."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeItemPool", randoItemPool, 4, 1);
-                    ImGui::Separator();
+                    PaddedSeparator();
 
                     // Ice Traps
                     ImGui::Text(Settings::IceTrapValue.GetName().c_str());
@@ -4239,88 +4242,127 @@ void DrawRandoEditor(bool& open) {
                         "in the base pool."
                     );
                     SohImGui::EnhancementCombobox("gRandomizeIceTraps", randoIceTraps, 5, 1);
-                    ImGui::Separator();
                     ImGui::PopItemWidth();
                     ImGui::EndTable();
                 }
+                ImGui::PopStyleVar(1);
                 ImGui::EndTabItem();
             }
 
-            if (ImGui::BeginTabItem("Detailed Logic")) {
-                if (ImGui::BeginTable("tableRandoDetailedLogic", 3,
+            if (ImGui::BeginTabItem("Locations")) {
+                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (ImGui::BeginTable("tableRandoLocations", 2,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Exclude Locations", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn("Misc Options", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    // Add empty column to keep them 1/3rd of the width
                     ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
+                    ImGui::PopItemFlag();
                     ImGui::TableNextRow();
 
                     // COLUMN 1 - EXCLUDE LOCATIONS
                     ImGui::TableNextColumn();
-                    ImGui::Separator();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     SohImGui::EnhancementCheckbox("Deku Theater Mask of Truth", "gRandomizeExcludeDekuTheaterMaskOfTruth");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("10 Skulltula Reward", "gRandomizeExcludeKak10SkullReward");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("20 Skulltula Reward", "gRandomizeExcludeKak20SkullReward");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("30 Skulltula Reward", "gRandomizeExcludeKak30SkullReward");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("40 Skulltula Reward", "gRandomizeExcludeKak40SkullReward");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("50 Skulltula Reward", "gRandomizeExcludeKak50SkullReward");
-                    ImGui::Separator();
 
-                    // COLUMN 2 - MISC OPTIONS
+                    // COLUMN 2 - EXCLUDE LOCATIONS
                     ImGui::TableNextColumn();
-                    ImGui::Separator();
-                    SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
-                    InsertHelpHoverText(
-                        "All Golden Skulltulas that require nighttime to appear will only be\n"
-                        "expected to be collected after getting Sun's Song."
-                    );
-                    ImGui::Separator();
-
-                    // Add empty column to keep them 1/3rd of the width
-                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    
 
                     ImGui::EndTable();
                 }
+                ImGui::PopStyleVar(1);
+                ImGui::EndTabItem();
+            }
+
+            if (ImGui::BeginTabItem("Tricks/Glitches")) {
+                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::PushItemWidth(170.0);
+                    ImGui::Text("Logic Rules");
+                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
+                                        "\n"
+                                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT.");
+                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+                    ImGui::PopItemWidth();
+                    ImGui::EndTable();
+                }
+                if (ImGui::BeginTable("tableRandoTricksGlitches", 2,
+                                      ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("Enable Tricks", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Enable Glitches", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
+                    ImGui::TableHeadersRow();
+                    ImGui::PopItemFlag();
+                    ImGui::TableNextRow();
+
+                    // COLUMN 1 - ENABLE TRICKS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    ImGui::Text("Coming soon");
+
+                    // COLUMN 2 - ENABLE GLITCHES
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    ImGui::Text("Coming soon");
+
+                    ImGui::EndTable();
+                }
+                ImGui::PopStyleVar(1);
                 ImGui::EndTabItem();
             }
 
             if (ImGui::BeginTabItem("Starting Inventory")) {
+                ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
                 if (ImGui::BeginTable("tableRandoStartingInventory", 3,
                                       ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    // Add empty columns to keep them 1/3rd of the width
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
-                    ImGui::TableSetupColumn(" ", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Starting Equipment", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Starting Items", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableSetupColumn("Starting Songs", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::PushItemFlag(ImGuiItemFlags_Disabled, true);
                     ImGui::TableHeadersRow();
+                    ImGui::PopItemFlag();
                     ImGui::TableNextRow();
-                    ImGui::TableNextColumn();
 
-                    // COLUMN 1 - STARTING INVENTORY
-                    ImGui::Separator();
-                    SohImGui::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
-                    ImGui::Separator();
+                    // COLUMN 1 - STARTING EQUIPMENT
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
                     SohImGui::EnhancementCheckbox(Settings::StartingKokiriSword.GetName().c_str(), "gRandomizeStartingKokiriSword");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox(Settings::StartingDekuShield.GetName().c_str(), "gRandomizeStartingDekuShield");
-                    ImGui::Separator();
+
+                    // COLUMN 2 - STARTING ITEMS
+                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    SohImGui::EnhancementCheckbox(Settings::StartingOcarina.GetName().c_str(), "gRandomizeStartingOcarina");
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox(Settings::StartingConsumables.GetName().c_str(), "gRandomizeStartingConsumables");
-                    ImGui::Separator();
+                    PaddedSeparator();
                     SohImGui::EnhancementCheckbox("Full Wallets", "gRandomizeFullWallets");
                     InsertHelpHoverText("Start with a full wallet. All wallet upgrades come filled with rupees.");
-                    ImGui::Separator();
 
-                    // Add empty columns to keep them 1/3rd of the width
+                    // COLUMN 3 - STARTING SONGS
                     ImGui::TableNextColumn();
-                    ImGui::TableNextColumn();
+                    window->DC.CurrLineTextBaseOffset = 0.0f;
+                    ImGui::Text("Coming soon");
 
                     ImGui::EndTable();
                 }
+                ImGui::PopStyleVar(1);
                 ImGui::EndTabItem();
             }
             
@@ -4330,34 +4372,6 @@ void DrawRandoEditor(bool& open) {
         ImGui::PopStyleVar();
         ImGui::End();
     }
-
-    /*
-    if (ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
-
-        if (ImGui::BeginTabItem("Starting Inventory")) {
-
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Item Usability Settings")) {
-
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Cosmetic Settings")) {
-
-            ImGui::EndTabItem();
-        }
-
-        if (ImGui::BeginTabItem("Settings Presets")) {
-
-            ImGui::EndTabItem();
-        }
-        ImGui::EndTabBar();
-    }
-    ImGui::End();
-    }*/
-
 
 void InitRando() {
     SohImGui::AddWindow("Randomizer", "Randomizer Settings", DrawRandoEditor);

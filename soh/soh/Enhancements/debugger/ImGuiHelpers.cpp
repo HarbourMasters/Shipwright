@@ -19,3 +19,13 @@ void InsertHelpHoverText(const std::string& text) {
         ImGui::EndTooltip();
     }
 }
+
+void PaddedSeparator(bool padTop, bool padBottom, float extraVerticalPadding) {
+    if (padTop) {
+        ImGui::Dummy(ImVec2(0.0f, extraVerticalPadding));
+    }
+    ImGui::Separator();
+    if (padBottom) {
+        ImGui::Dummy(ImVec2(0.0f, extraVerticalPadding));
+    }
+}
