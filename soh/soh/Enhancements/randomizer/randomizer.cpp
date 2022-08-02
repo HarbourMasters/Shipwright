@@ -3414,6 +3414,7 @@ void GenerateRandomizerImgui() {
     Game::SaveSettings();
     
     std::unordered_map<RandomizerSettingKey, u8> cvarSettings;
+    cvarSettings[RSK_LOGIC_RULES] = CVar_GetS32("gRandomizeLogicRules", 0);
     cvarSettings[RSK_FOREST] = CVar_GetS32("gRandomizeForest", 0);
     cvarSettings[RSK_KAK_GATE] = CVar_GetS32("gRandomizeKakarikoGate", 0);
     cvarSettings[RSK_DOOR_OF_TIME] = CVar_GetS32("gRandomizeDoorOfTime", 0);
@@ -3497,6 +3498,9 @@ void DrawRandoEditor(bool& open) {
     }
 
 // Randomizer settings
+    // Logic Settings
+    const char* randoLogicRules[2] = { "Glitchless", "No logic"};
+
     // Open Settings
     const char* randoForest[3] = { "Closed", "Closed Deku", "Open" };
     const char* randoKakarikoGate[2] = { "Closed", "Open" };
@@ -3745,6 +3749,20 @@ void DrawRandoEditor(bool& open) {
         if (CVar_GetS32("gRandomizer", 0) == 1 && ImGui::BeginTabBar("Randomizer Settings", ImGuiTabBarFlags_NoCloseWithMiddleMouseButton)) {
             if (ImGui::BeginTabItem("Main Rules")) {
                 ImGui::PushStyleVar(ImGuiStyleVar_CellPadding, cellPadding);
+                if (ImGui::BeginTable("tableRandoLogic", 1, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
+                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch, 200.0f);
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::PushItemWidth(170.0);
+                    ImGui::Text("Logic Rules");
+                    InsertHelpHoverText("Glitchless - No glitches are required, but may require some minor tricks.\n"
+                        "\n"
+                        "No logic - Item placement is completely random. MAY BE IMPOSSIBLE TO BEAT."
+                    );
+                    SohImGui::EnhancementCombobox("gRandomizeLogicRules", randoLogicRules, 2, 0);
+                    ImGui::PopItemWidth();
+                    ImGui::EndTable();
+                }
                 if (ImGui::BeginTable("tableRandoMainRules", 3, ImGuiTableFlags_BordersH | ImGuiTableFlags_BordersV)) {
                     ImGui::TableSetupColumn("Open Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);
                     ImGui::TableSetupColumn("Shuffle Settings", ImGuiTableColumnFlags_WidthStretch, 200.0f);

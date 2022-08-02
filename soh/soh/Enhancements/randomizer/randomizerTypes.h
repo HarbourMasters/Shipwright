@@ -952,6 +952,7 @@ typedef enum {
 
 typedef enum {
     RSK_NONE,
+    RSK_LOGIC_RULES,
     RSK_FOREST,
     RSK_KAK_GATE,
     RSK_DOOR_OF_TIME,

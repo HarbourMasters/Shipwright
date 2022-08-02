@@ -12684,7 +12684,11 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
         Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
         Item_Give(globalCtx, giEntry->itemId);
 
-        if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
+        // In rando the fanfares are handled by a function in code_800EC960.c
+        if (gSaveContext.n64ddFlag) {
+            Audio_PlayFanfare_Rando(this->getItemId);
+        } 
+        else if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
             ((this->getItemId >= GI_RUPEE_GREEN_LOSE) && (this->getItemId <= GI_RUPEE_PURPLE_LOSE)) ||
             (this->getItemId == GI_HEART)) {
