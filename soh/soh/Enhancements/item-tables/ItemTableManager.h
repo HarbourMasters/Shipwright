@@ -1,7 +1,6 @@
 #pragma once
-#include <unordered_map>
-#include "z64item.h"
-#include "z64object.h"
+
+#include <ultra64/gbi.h>
 
 #define CHEST_ANIM_SHORT 0
 #define CHEST_ANIM_LONG 1
@@ -20,6 +19,12 @@ typedef struct {
 #define GET_ITEM_NONE \
     { ITEM_NONE, 0, 0, 0, OBJECT_INVALID }
 
+#ifdef __cplusplus
+
+#include <unordered_map>
+#include "z64item.h"
+#include "z64object.h"
+
 typedef std::unordered_map<uint8_t, GetItemEntry> ItemTable;
 
 class ItemTableManager {
@@ -28,8 +33,8 @@ class ItemTableManager {
       ItemTableManager();
       ~ItemTableManager();
       bool AddItemTable(std::string tableID);
-      bool AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID, int8_t drawID,
-                        uint8_t textID, uint8_t field, bool chestAnim);
+      bool AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID, int8_t drawID, uint8_t textID, uint8_t field, bool chestAnim);
+      bool AddItemEntry(std::string tableID, uint8_t getItemID, GetItemEntry getItemEntry);
       GetItemEntry RetrieveItemEntry(std::string tableID, uint8_t itemID);
       bool ClearItemTable(std::string tableID);
 
@@ -38,3 +43,5 @@ class ItemTableManager {
 
       ItemTable* RetrieveItemTable(std::string tableID);
 };
+
+#endif

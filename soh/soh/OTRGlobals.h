@@ -5,6 +5,7 @@
 
 #include "GlobalCtx2.h"
 #include "SaveManager.h"
+#include <soh/Enhancements/item-tables/ItemTableManager.h>
 
 #ifdef __cplusplus
 #include "Enhancements/savestates.h"
@@ -28,6 +29,7 @@ private:
 #endif
 
 #ifndef __cplusplus
+void VanillaItemTable_Init();
 void OTRAudio_Init();
 void InitAudio();
 void Graph_StartFrame();
@@ -100,6 +102,7 @@ s16 Randomizer_GetItemModelFromId(s16 itemId);
 s32 Randomizer_GetItemIDFromGetItemID(s32 getItemId);
 s32 Randomizer_GetRandomizedItemId(GetItemID ogId, s16 actorId, s16 actorParams, s16 sceneNum);
 s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerCheck, GetItemID ogId);
+GetItemEntry ItemTable_Retrieve(int16_t getItemID);
 #endif
 
 #endif

@@ -21,13 +21,13 @@
 #include "objects/object_link_child/object_link_child.h"
 #include "textures/icon_item_24_static/icon_item_24_static.h"
 
-typedef struct {
-    /* 0x00 */ u8 itemId;
-    /* 0x01 */ u8 field; // various bit-packed data
-    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
-    /* 0x03 */ u8 textId;
-    /* 0x04 */ u16 objectId;
-} GetItemEntry; // size = 0x06
+//typedef struct {
+//    /* 0x00 */ u8 itemId;
+//    /* 0x01 */ u8 field; // various bit-packed data
+//    /* 0x02 */ s8 gi;    // defines the draw id and chest opening animation
+//    /* 0x03 */ u8 textId;
+//    /* 0x04 */ u16 objectId;
+//} GetItemEntry; // size = 0x06
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \
     { itemId, field, (chestAnim != CHEST_ANIM_SHORT ? 1 : -1) * (drawId + 1), textId, objectId }
@@ -1591,9 +1591,9 @@ s32 func_808332E4(Player* this) {
 }
 
 void func_808332F4(Player* this, GlobalContext* globalCtx) {
-    GetItemEntry* giEntry = &sGetItemTable[this->getItemId - 1];
+    GetItemEntry giEntry = ItemTable_Retrieve(this->getItemId - 1);
 
-    this->unk_862 = ABS(giEntry->gi);
+    this->unk_862 = ABS(giEntry.gi);
 }
 
 static LinkAnimationHeader* func_80833338(Player* this) {
@@ -4994,7 +4994,7 @@ static LinkAnimationHeader* D_80854548[] = {
 s32 func_8083B040(Player* this, GlobalContext* globalCtx) {
     s32 sp2C;
     s32 sp28;
-    GetItemEntry* giEntry;
+    GetItemEntry giEntry;
     Actor* targetActor;
 
     if ((this->unk_6AD != 0) &&
@@ -5031,8 +5031,8 @@ s32 func_8083B040(Player* this, GlobalContext* globalCtx) {
                         func_80835DE4(globalCtx, this, func_8084F104, 0);
 
                         if (sp2C >= 0) {
-                            giEntry = &sGetItemTable[D_80854528[sp2C] - 1];
-                            func_8083AE40(this, giEntry->objectId);
+                            giEntry = ItemTable_Retrieve(D_80854528[sp2C] - 1);
+                            func_8083AE40(this, giEntry.objectId);
                         }
 
                         this->stateFlags1 |= PLAYER_STATE1_6 | PLAYER_STATE1_28 | PLAYER_STATE1_29;
@@ -6243,7 +6243,7 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
             }
 
             if (this->getItemId < GI_MAX) {
-                GetItemEntry* giEntry = &sGetItemTable[this->getItemId - 1];
+                GetItemEntry giEntry = ItemTable_Retrieve(this->getItemId - 1);
 
                 if ((interactedActor != &this->actor) && !iREG(67)) {
                     interactedActor->parent = &this->actor;
@@ -6258,24 +6258,24 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     return;
                 }
 
-                s32 drop = giEntry->objectId;
+                s32 drop = giEntry.objectId;
 
                 if (gSaveContext.n64ddFlag || (globalCtx->sceneNum == SCENE_BOWLING) || !(CVar_GetS32("gFastDrops", 0) &&
                     ((drop == OBJECT_GI_BOMB_1) || (drop == OBJECT_GI_NUTS) || (drop == OBJECT_GI_STICK) ||
                     (drop == OBJECT_GI_SEED) || (drop == OBJECT_GI_MAGICPOT) || (drop == OBJECT_GI_ARROW))) &&
-                    (Item_CheckObtainability(giEntry->itemId) == ITEM_NONE)) {
+                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)) {
 
                     if (gSaveContext.n64ddFlag &&
                         ((interactedActor->id == ACTOR_EN_ITEM00 &&
                           (interactedActor->params != 6 && interactedActor->params != 17)) ||
                          (interactedActor->id == ACTOR_EN_KAREBABA || interactedActor->id == ACTOR_EN_DEKUBABA))) {
-                        func_8083E4C4(globalCtx, this, giEntry);
+                        func_8083E4C4(globalCtx, this, &giEntry);
                         this->getItemId = GI_NONE;
                         return 0;
                     }                    
 
                     func_808323B4(globalCtx, this);
-                    func_8083AE40(this, giEntry->objectId);
+                    func_8083AE40(this, giEntry.objectId);
 
                     if (!(this->stateFlags2 & PLAYER_STATE2_10) || (this->currentBoots == PLAYER_BOOTS_IRON)) {
                         func_80836898(globalCtx, this, func_8083A434);
@@ -6288,29 +6288,29 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                     return 1;
                 }
 
-                func_8083E4C4(globalCtx, this, giEntry);
+                func_8083E4C4(globalCtx, this, &giEntry);
                 this->getItemId = GI_NONE;
             }
         } else if (CHECK_BTN_ALL(sControlInput->press.button, BTN_A) && !(this->stateFlags1 & PLAYER_STATE1_11) &&
                    !(this->stateFlags2 & PLAYER_STATE2_10)) {
             if (this->getItemId != GI_NONE) {
-                GetItemEntry* giEntry = &sGetItemTable[-this->getItemId - 1];
+                GetItemEntry giEntry = ItemTable_Retrieve(-this->getItemId - 1);
                 EnBox* chest = (EnBox*)interactedActor;
                 if (CVar_GetS32("gFastChests", 0) != 0) {
-                    giEntry->gi = -1 * abs(giEntry->gi);
+                    giEntry.gi = -1 * abs(giEntry.gi);
                 }
 
-                if (giEntry->itemId != ITEM_NONE) {
-                    if (((Item_CheckObtainability(giEntry->itemId) == ITEM_NONE) && (giEntry->field & 0x40)) ||
-                        ((Item_CheckObtainability(giEntry->itemId) != ITEM_NONE) && (giEntry->field & 0x20))) {
+                if (giEntry.itemId != ITEM_NONE) {
+                    if (((Item_CheckObtainability(giEntry.itemId) == ITEM_NONE) && (giEntry.field & 0x40)) ||
+                        ((Item_CheckObtainability(giEntry.itemId) != ITEM_NONE) && (giEntry.field & 0x20))) {
                         this->getItemId = -GI_RUPEE_BLUE;
-                        giEntry = &sGetItemTable[GI_RUPEE_BLUE - 1];
+                        giEntry = ItemTable_Retrieve(GI_RUPEE_BLUE - 1);
                     }
                 }
 
                 func_80836898(globalCtx, this, func_8083A434);
                 this->stateFlags1 |= PLAYER_STATE1_10 | PLAYER_STATE1_11 | PLAYER_STATE1_29;
-                func_8083AE40(this, giEntry->objectId);
+                func_8083AE40(this, giEntry.objectId);
                 this->actor.world.pos.x =
                     chest->dyna.actor.world.pos.x - (Math_SinS(chest->dyna.actor.shape.rot.y) * 29.4343f);
                 this->actor.world.pos.z =
@@ -6318,8 +6318,8 @@ s32 func_8083E5A8(Player* this, GlobalContext* globalCtx) {
                 this->currentYaw = this->actor.shape.rot.y = chest->dyna.actor.shape.rot.y;
                 func_80832224(this);
 
-                if ((giEntry->itemId != ITEM_NONE) && (giEntry->gi >= 0) &&
-                    (Item_CheckObtainability(giEntry->itemId) == ITEM_NONE)) {
+                if ((giEntry.itemId != ITEM_NONE) && (giEntry.gi >= 0) &&
+                    (Item_CheckObtainability(giEntry.itemId) == ITEM_NONE)) {
                     func_808322D0(globalCtx, this, this->ageProperties->unk_98);
                     func_80832F54(globalCtx, this, 0x28F);
                     chest->unk_1F4 = 1;
@@ -12667,7 +12667,7 @@ void func_8084DFAC(GlobalContext* globalCtx, Player* this) {
 }
 
 s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
-    GetItemEntry* giEntry;
+    GetItemEntry giEntry;
     s32 temp1;
     s32 temp2;
 
@@ -12676,7 +12676,7 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
     }
 
     if (this->unk_84F == 0) {
-        giEntry = &sGetItemTable[this->getItemId - 1];
+        giEntry = ItemTable_Retrieve(this->getItemId - 1);
         this->unk_84F = 1;
 
         // make sure we get the BGS instead of giant's knife
@@ -12685,8 +12685,8 @@ s32 func_8084DFF4(GlobalContext* globalCtx, Player* this) {
             gSaveContext.swordHealth = 8;       
         }
 
-        Message_StartTextbox(globalCtx, giEntry->textId, &this->actor);
-        Item_Give(globalCtx, giEntry->itemId);
+        Message_StartTextbox(globalCtx, giEntry.textId, &this->actor);
+        Item_Give(globalCtx, giEntry.itemId);
 
         if (((this->getItemId >= GI_RUPEE_GREEN) && (this->getItemId <= GI_RUPEE_RED)) ||
             ((this->getItemId >= GI_RUPEE_PURPLE) && (this->getItemId <= GI_RUPEE_GOLD)) ||
@@ -13273,14 +13273,14 @@ void func_8084F104(Player* this, GlobalContext* globalCtx) {
             func_80853148(globalCtx, targetActor);
         }
         else {
-            GetItemEntry* giEntry = &sGetItemTable[D_80854528[this->exchangeItemId - 1] - 1];
+            GetItemEntry giEntry = ItemTable_Retrieve(D_80854528[this->exchangeItemId - 1] - 1);
 
             if (this->itemActionParam >= PLAYER_AP_LETTER_ZELDA) {
-                if (giEntry->gi >= 0) {
-                    this->unk_862 = giEntry->gi;
+                if (giEntry.gi >= 0) {
+                    this->unk_862 = giEntry.gi;
                 }
                 else {
-                    this->unk_862 = -giEntry->gi;
+                    this->unk_862 = -giEntry.gi;
                 }
             }
 

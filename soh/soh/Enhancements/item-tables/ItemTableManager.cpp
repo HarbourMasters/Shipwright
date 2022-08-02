@@ -12,14 +12,20 @@ bool ItemTableManager::AddItemTable(std::string tableID) {
     return itemTables.emplace(tableID, newItemTable).second;
 }
 
-bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID,
-                                    int8_t drawID,
-                                    uint8_t textID, uint8_t field, bool chestAnim) {
+bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, uint8_t itemID, uint16_t objectID, int8_t drawID, uint8_t textID, uint8_t field, bool chestAnim) {
     ItemTable* itemTable = RetrieveItemTable(tableID);
     if (itemTable == NULL) {
         return false;
     }
     GetItemEntry getItemEntry = GET_ITEM(itemID, objectID, drawID, textID, field, chestAnim);
+    return itemTable->emplace(getItemID, getItemEntry).second;
+}
+
+bool ItemTableManager::AddItemEntry(std::string tableID, uint8_t getItemID, GetItemEntry getItemEntry) {
+    ItemTable* itemTable = RetrieveItemTable(tableID);
+    if (itemTable == NULL) {
+        return false;
+    }
     return itemTable->emplace(getItemID, getItemEntry).second;
 }
 

@@ -2379,7 +2379,7 @@
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp">
       <Filter>Source Files\src</Filter>
     </ClCompile>
-    <ClCompile Include="ItemTableManager.cpp">
+    <ClCompile Include="soh\Enhancements\item-tables\ItemTableManager.cpp">
       <Filter>Source Files\soh\Enhancements\item-tables</Filter>
     </ClCompile>
   </ItemGroup>
@@ -4067,8 +4067,8 @@
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h">
       <Filter>Source Files\src</Filter>
     </ClInclude>
-    <ClInclude Include="ItemTableManager.h">
-      <Filter>Header Files\soh\Enhancements\item-tables</Filter>
+    <ClInclude Include="soh\Enhancements\item-tables\ItemTableManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
