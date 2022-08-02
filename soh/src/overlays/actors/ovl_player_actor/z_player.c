@@ -127,8 +127,8 @@ s32 func_80834A2C(Player* this, PlayState* play);
 s32 func_80834B5C(Player* this, PlayState* play);
 s32 func_80834C74(Player* this, PlayState* play);
 s32 func_8083501C(Player* this, PlayState* play);
-s32 func_808351D4(Player* this, PlayState* play);
-s32 func_808353D8(Player* this, PlayState* play);
+s32 func_808351D4(Player* this, PlayState* play); // Arrow nocked
+s32 func_808353D8(Player* this, PlayState* play); // Aiming in first person
 s32 func_80835588(Player* this, PlayState* play);
 s32 func_808356E8(Player* this, PlayState* play);
 s32 func_80835800(Player* this, PlayState* play);
@@ -2167,6 +2167,7 @@ void func_80834298(Player* this, PlayState* play) {
     }
 }
 
+// Determine projectile type for bow or slingshot
 s32 func_80834380(PlayState* play, Player* this, s32* itemPtr, s32* typePtr) {
     if (LINK_IS_ADULT) {
         *itemPtr = ITEM_BOW;
@@ -2189,6 +2190,7 @@ s32 func_80834380(PlayState* play, Player* this, s32* itemPtr, s32* typePtr) {
     }
 }
 
+// The player has pressed the bow or hookshot button
 s32 func_8083442C(Player* this, PlayState* play) {
     s32 item;
     s32 arrowType;
@@ -2502,6 +2504,7 @@ s32 func_8083501C(Player* this, PlayState* play) {
     return 1;
 }
 
+// Fire the projectile
 s32 func_808350A4(PlayState* play, Player* this) {
     s32 item;
     s32 arrowType;
@@ -3012,7 +3015,10 @@ void func_80835F44(PlayState* play, Player* this, s32 item) {
                 if ((this->heldItemActionParam >= 0) && (Player_ActionToMagicSpell(this, actionParam) < 0) &&
                     (item != this->heldItemId) &&
                     (D_80854164[gPlayerModelTypes[this->modelGroup][PLAYER_MODELGROUPENTRY_ANIM]][nextAnimType] !=
-                     PLAYER_D_808540F4_0)) {
+                     PLAYER_D_808540F4_0) &&
+                    (!CVar_GetS32("gSeparateArrows", 0) ||
+                     actionParam < PLAYER_AP_BOW || actionParam > PLAYER_AP_BOW_0E ||
+                     this->heldItemActionParam < PLAYER_AP_BOW || this->heldItemActionParam > PLAYER_AP_BOW_0E)) {
                     this->heldItemId = item;
                     this->stateFlags1 |= PLAYER_STATE1_8;
                 } else {

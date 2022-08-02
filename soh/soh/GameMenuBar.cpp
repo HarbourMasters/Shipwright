@@ -165,6 +165,11 @@ namespace GameMenuBar {
         CVar_SetS32("gMaskSelect", 0);
         // Remember Save Location
         CVar_SetS32("gRememberSaveLocation", 0);
+        // Skip Magic Arrow Equip Animation
+        CVar_SetS32("gSkipArrowAnimation", 0);
+
+        // Equip arrows on multiple slots
+        CVar_SetS32("gSeparateArrows", 0);
 
         // Damage Multiplier (0 to 8)
         CVar_SetS32("gDamageMul", 0);
@@ -428,6 +433,11 @@ namespace GameMenuBar {
         CVar_SetS32("gGoronPot", 1);
         // Always Win Dampe Digging
         CVar_SetS32("gDampeWin", 1);
+        // Skip Magic Arrow Equip Animation
+        CVar_SetS32("gSkipArrowAnimation", 1);
+
+        // Equip arrows on multiple slots
+        CVar_SetS32("gSeparateArrows", 1);
 
         // Disable Navi Call Audio
         CVar_SetS32("gDisableNaviCallAudio", 1);
@@ -814,6 +824,7 @@ namespace GameMenuBar {
                     UIWidgets::PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                     UIWidgets::Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                             "This doesn't work if the save was made in a grotto.");
+                    UIWidgets::PaddedEnhancementCheckbox("Skip Magic Arrow Equip Animation", "gSkipArrowAnimation", true, false);
                     UIWidgets::PaddedEnhancementCheckbox("Skip save confirmation", "gSkipSaveConfirmation", true, false);
                     UIWidgets::Tooltip("Skip the \"Game saved.\" confirmation screen");
                     ImGui::EndMenu();
@@ -837,6 +848,8 @@ namespace GameMenuBar {
                     UIWidgets::Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
                     UIWidgets::PaddedEnhancementCheckbox("Nuts explode bombs", "gNutsExplodeBombs", true, false);
                     UIWidgets::Tooltip("Makes nuts explode bombs, similar to how they interact with bombchus. This does not affect bombflowers.");
+                    UIWidgets::PaddedEnhancementCheckbox("Equip Multiple Arrows at Once", "gSeparateArrows", true, false);
+                    UIWidgets::Tooltip("Allow the bow and magic arrows to be equipped at the same time on different slots");
                     ImGui::EndMenu();
                 }
 
