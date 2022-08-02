@@ -106,6 +106,7 @@ namespace SohImGui {
     void EndGroupPanel(float minHeight = 0.0f);
     std::string BreakTooltip(const char* text, int lineLength = 60);
     std::string BreakTooltip(const std::string& text, int lineLength = 60);
+    void InsertPadding(float x = 0, float y = 0);
 }
 
 #endif
