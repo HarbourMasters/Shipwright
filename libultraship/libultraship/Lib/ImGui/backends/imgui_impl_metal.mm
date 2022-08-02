@@ -541,7 +541,7 @@ static void ImGui_ImplMetal_InvalidateDeviceObjectsForPlatformWindows()
 {
     if ((self = [super init]))
     {
-        _sampleCount = renderPassDescriptor.colorAttachments[0].texture.sampleCount;
+        _sampleCount = renderPassDescriptor.colorAttachments[0].texture.sampleCount ?: 1;
         _colorPixelFormat = renderPassDescriptor.colorAttachments[0].texture.pixelFormat;
         _depthPixelFormat = renderPassDescriptor.depthAttachment.texture.pixelFormat;
         _stencilPixelFormat = renderPassDescriptor.stencilAttachment.texture.pixelFormat;
