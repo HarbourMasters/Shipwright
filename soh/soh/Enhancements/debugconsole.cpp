@@ -616,12 +616,13 @@ void DebugConsole_SaveCVars()
             pConf->setFloat(key, cvar.second->value.valueFloat);
         else if (cvar.second->type == CVarType::RGBA)
         {
+            auto keyStr = key.c_str();
             Color_RGBA8 clr = cvar.second->value.valueRGBA;
-            pConf->setUInt(StringHelper::Sprintf("%s.R", key.c_str()), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.G", key.c_str()), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.B", key.c_str()), clr.r);
-            pConf->setUInt(StringHelper::Sprintf("%s.A", key.c_str()), clr.r);
-            pConf->setString(StringHelper::Sprintf("%s.Type", key.c_str()), mercuryRGBAObjectType);
+            pConf->setUInt(StringHelper::Sprintf("%s.R", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.G", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.B", keyStr), clr.r);
+            pConf->setUInt(StringHelper::Sprintf("%s.A", keyStr), clr.r);
+            pConf->setString(StringHelper::Sprintf("%s.Type", keyStr), mercuryRGBAObjectType);
         }
     }
 
