@@ -833,8 +833,7 @@ namespace SohImGui {
                 ImGui::SetCursorPos(ImVec2(25, 0));
             }
 
-            ImGuiWindow* window = ImGui::GetCurrentWindow();
-            static ImVec2 windowPadding(12.0f, 10.0f);
+            static ImVec2 windowPadding(8.0f, 8.0f);
 
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, windowPadding);
             if (ImGui::BeginMenu("Shipwright")) {
@@ -871,12 +870,14 @@ namespace SohImGui {
                 InsertPadding();
 
                 if (ImGui::BeginMenu("Controller")) {
-                    if (ImGui::Button("Open Controller Configuration"))
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2 (20.0f, 5.0f));
+                    if (ImGui::Button("Controller Configuration"))
                     {
                         CVar_SetS32("gControllerConfigurationEnabled", 1);
                         needs_save = true;
                         controller->Opened = CVar_GetS32("gControllerConfigurationEnabled", 0);
                     }
+                    ImGui::PopStyleVar(1);
                     InsertPadding();
                     EnhancementCheckbox("Use Controller Navigation", "gControlNav");
                     Tooltip("Allows controller navigation of the menu bar\nD-pad to move between items, A to select, and X to grab focus on the menu bar");
@@ -1379,13 +1380,14 @@ namespace SohImGui {
 
                 InsertPadding();
 
-                InsertPadding();
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(8.0f, 5.0f));
                 if (ImGui::Button("Cosmetics Editor"))
                 {
                     CVar_SetS32("gCosmeticsEditorEnabled", 1);
                     needs_save = true;
                     customWindows["Cosmetics Editor"].enabled = CVar_GetS32("gCosmeticsEditorEnabled", 0);
                 }
+                ImGui::PopStyleVar(1);
 
                 InsertPadding();
 
@@ -1459,6 +1461,7 @@ namespace SohImGui {
                 if (impl.backend == Backend::DX11)
                 {
                     InsertPadding();
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
                     if (ImGui::Button("Match Refresh Rate"))
                     {
                         int hz = roundf(gfx_get_detected_hz());
@@ -1468,6 +1471,7 @@ namespace SohImGui {
                             needs_save = true;
                         }
                     }
+                    ImGui::PopStyleVar(1);
                     InsertPadding();
                 }
                 EnhancementCheckbox("Disable LOD", "gDisableLOD");
@@ -1667,21 +1671,46 @@ namespace SohImGui {
                 InsertPadding();
                 ImGui::Separator();
                 InsertPadding();
-                EnhancementCheckbox("Stats", "gStatsEnabled");
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0,0));
+                static ImVec2 buttonSize(170.0f, 0.0f);
+                if (ImGui::Button("Stats", buttonSize))
+                {
+                    CVar_SetS32("gStatsEnabled", 1);
+                    needs_save = true;
+                    customWindows["Stats"].enabled = CVar_GetS32("gStatsEnabled", 0);
+                }
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 InsertPadding();
-                EnhancementCheckbox("Console", "gConsoleEnabled");
+                if (ImGui::Button("Console", buttonSize))
+                {
+                    CVar_SetS32("gConsoleEnabled", 1);
+                    needs_save = true;
+                    console->opened = CVar_GetS32("gConsoleEnabled", 0);
+                }
                 Tooltip("Enables the console window, allowing you to input commands, type help for some examples");
-                console->opened = CVar_GetS32("gConsoleEnabled", 0);
                 InsertPadding();
-                EnhancementCheckbox("Save Editor", "gSaveEditorEnabled");
-                customWindows["Save Editor"].enabled = CVar_GetS32("gSaveEditorEnabled", 0);
+                if (ImGui::Button("Save Editor", buttonSize))
+                {
+                    CVar_SetS32("gSaveEditorEnabled", 1);
+                    needs_save = true;
+                    customWindows["Save Editor"].enabled = CVar_GetS32("gSaveEditorEnabled", 0);
+                }
                 InsertPadding();
-                EnhancementCheckbox("Collision Viewer", "gCollisionViewerEnabled");
-                customWindows["Collision Viewer"].enabled = CVar_GetS32("gCollisionViewerEnabled", 0);
+                if (ImGui::Button("Collision Viewer", buttonSize))
+                {
+                    CVar_SetS32("gCollisionViewerEnabled", 1);
+                    needs_save = true;
+                    customWindows["Collision Viewer"].enabled = CVar_GetS32("gCollisionViewerEnabled", 0);
+                }
                 InsertPadding();
-                EnhancementCheckbox("Actor Viewer", "gActorViewerEnabled");
-                customWindows["Actor Viewer"].enabled = CVar_GetS32("gActorViewerEnabled", 0);
+                if (ImGui::Button("Actor Viewer", buttonSize))
+                {
+                    CVar_SetS32("gActorViewerEnabled", 1);
+                    needs_save = true;
+                    customWindows["Actor Viewer"].enabled = CVar_GetS32("gActorViewerEnabled", 0);
+                }
+                ImGui::PopStyleVar(2);
 
                 ImGui::EndMenu();
             }
