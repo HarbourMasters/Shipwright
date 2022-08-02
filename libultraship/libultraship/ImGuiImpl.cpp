@@ -1461,7 +1461,7 @@ namespace SohImGui {
                 if (impl.backend == Backend::DX11)
                 {
                     InsertPadding();
-                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(4.0f, 3.0f));
+                    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
                     if (ImGui::Button("Match Refresh Rate"))
                     {
                         int hz = roundf(gfx_get_detected_hz());
@@ -1719,11 +1719,23 @@ namespace SohImGui {
 
             if (ImGui::BeginMenu("Randomizer"))
             {
-                EnhancementCheckbox("Randomizer Settings", "gRandomizerSettingsEnabled");
-                customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(6.0f, 4.0f));
+                ImGui::PushStyleVar(ImGuiStyleVar_ButtonTextAlign, ImVec2(0, 0));
+                static ImVec2 buttonSize(150.0f, 0.0f);
+                if (ImGui::Button("Randomizer Settings", buttonSize))
+                {
+                    CVar_SetS32("gRandomizerSettingsEnabled", 1);
+                    needs_save = true;
+                    customWindows["Randomizer Settings"].enabled = CVar_GetS32("gRandomizerSettingsEnabled", 0);
+                }
                 InsertPadding();
-                EnhancementCheckbox("Item Tracker", "gItemTrackerEnabled");
-                customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+                if (ImGui::Button("Item Tracker", buttonSize))
+                {
+                    CVar_SetS32("gItemTrackerEnabled", 1);
+                    needs_save = true;
+                    customWindows["Item Tracker"].enabled = CVar_GetS32("gItemTrackerEnabled", 0);
+                }
+                ImGui::PopStyleVar(2);
 
                 ImGui::EndMenu();
             }
