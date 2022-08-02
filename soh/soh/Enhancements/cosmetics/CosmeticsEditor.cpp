@@ -28,7 +28,7 @@ const char* RainbowColorCvarList[] = {
     "gNL_Diamond_Col", "gNL_Diamond_Env", "gNL_Orb_Col", "gNL_Orb_Env",
     "gTrailCol", "gCharged1Col", "gCharged1ColEnv", "gCharged2Col", "gCharged2ColEnv",
     "gCCFileChoosePrim", "gCCFileChooseTextPrim", "gCCEquipmentsPrim", "gCCItemsPrim",
-    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim",
+    "gCCMapsPrim", "gCCQuestsPrim", "gCCSavePrim", "gCCGameoverPrim"
 };
 const char* MarginCvarList[] {
     "gHearts", "gMagicBar", "gVSOA", "gBBtn", "gABtn", "gStartBtn", 
@@ -38,40 +38,14 @@ const char* MarginCvarList[] {
 
 ImVec4 GetRandomValue(int MaximumPossible){
     ImVec4 NewColor;
+    unsigned long range = 255 - 0;
     std::random_device rd;
-    std::mt19937 g(rd());
-    const int RGN_Seed_1 = rand() % (100 - 0); 
-    const int RGN_Seed_2 = rand() % (100 - 0); 
-    const int RGN_Seed_3 = rand() % (100 - 0); 
-    const int RGN_Seed_4 = rand() % (100 - 0); 
-    const int RGN_Seed_5 = rand() % (100 - 0); 
-    std::vector<int> MyRandomListR = {
-        { rand() % (MaximumPossible - RGN_Seed_1) }, 
-        { rand() % (MaximumPossible - RGN_Seed_2) }, 
-        { rand() % (MaximumPossible - RGN_Seed_3) }, 
-        { rand() % (MaximumPossible - RGN_Seed_4) }, 
-        { rand() % (MaximumPossible - RGN_Seed_5) }
-    };
-    std::vector<int> MyRandomListG = {
-        { rand() % (MaximumPossible - RGN_Seed_1) }, 
-        { rand() % (MaximumPossible - RGN_Seed_2) }, 
-        { rand() % (MaximumPossible - RGN_Seed_3) }, 
-        { rand() % (MaximumPossible - RGN_Seed_4) }, 
-        { rand() % (MaximumPossible - RGN_Seed_5) }
-    };
-    std::vector<int> MyRandomListB = {
-        { rand() % (MaximumPossible - RGN_Seed_1) }, 
-        { rand() % (MaximumPossible - RGN_Seed_2) }, 
-        { rand() % (MaximumPossible - RGN_Seed_3) }, 
-        { rand() % (MaximumPossible - RGN_Seed_4) }, 
-        { rand() % (MaximumPossible - RGN_Seed_5) }
-    };
-    std::shuffle(MyRandomListR.begin(), MyRandomListR.end(), g);
-    std::shuffle(MyRandomListG.begin(), MyRandomListG.end(), g);
-    std::shuffle(MyRandomListB.begin(), MyRandomListB.end(), g);
-    NewColor.x = (float)(MyRandomListR[rand() % (5 - 0)]) / 255;
-    NewColor.y = (float)(MyRandomListG[rand() % (5 - 0)]) / 255;
-    NewColor.z = (float)(MyRandomListB[rand() % (5 - 0)]) / 255;
+    std::mt19937 rng(rd());
+    std::uniform_int_distribution<int> dist(0, 255 - 1);
+    
+    NewColor.x = (float)(dist(rng)) / 255;
+    NewColor.y = (float)(dist(rng)) / 255;
+    NewColor.z = (float)(dist(rng)) / 255;
     return NewColor;
 }
 void GetRandomColorRGB(CosmeticsColorSection* ColorSection, int SectionSize){

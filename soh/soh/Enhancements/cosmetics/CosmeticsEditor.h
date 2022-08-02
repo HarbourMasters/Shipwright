@@ -56,6 +56,7 @@ static ImVec4 nl_orb_col;          static ImVec4 nl_orb_colenv;
 static ImVec4 tc_ou_colors;        static ImVec4 tc_bu_colors;
 static ImVec4 dpad_colors;
 static ImVec4 visualagony_colors;
+static ImVec4 tc_fire_colors;      static ImVec4 tc_fire_colors_env; 
 /*ImVec4 menu_equips_colors;
 ImVec4 menu_items_colors;
 ImVec4 menu_map_colors;
@@ -150,6 +151,13 @@ static CosmeticsColorIndividual TitleCards_OW = { "Main color (Overworld)", "Aff
 static CosmeticsColorIndividual TitleCards_DG = { "Main color (Dungeon)", "Affects all the bosses title cards color, white is the default value", "gCCTC_B_U_Prim", tc_bu_colors, ImVec4(255, 255, 255, 255), false, false, false };
 
 //Misc. colors, the one I have no clue where to put nor that aren't that important
+#ifdef MASTER_QUEST
+static CosmeticsColorIndividual TitleScreen_fire_Prim = { "Opening logo fire (Primary)", "Affects the fire behind the title screen logo", "gCCTCFirePrim", tc_fire_colors, ImVec4(170, 255, 255, 255), false, false, false };
+static CosmeticsColorIndividual TitleScreen_fire_Env = { "Opening logo fire (Secondary)", "Affects the fire behind the title screen logo", "gCCTCFireEnv", tc_fire_colors_env, ImVec4(200, 255, 0, 255), false, false, false };
+#else
+static CosmeticsColorIndividual TitleScreen_fire_Prim = { "Opening logo fire (Primary)", "Affects the fire behind the title screen logo", "gCCTCFirePrim", tc_fire_colors, ImVec4(255, 255, 170, 255), false, false, false };
+static CosmeticsColorIndividual TitleScreen_fire_Env = { "Opening logo fire (Secondary)", "Affects the fire behind the title screen logo", "gCCTCFireEnv", tc_fire_colors_env, ImVec4(255, 100, 0, 255), false, false, false };
+#endif
 static CosmeticsColorIndividual Rupee_Icon = { "Rupee icon", "Affects the Rupee icon on interface\nGreen is the default value", "gCCRupeePrim", rupee_colors, ImVec4(200, 255, 100, 255), true, false, false };
 static CosmeticsColorIndividual SmallKeys_Icon = { "Small Keys icon", "Affects the Small keys icon on interface\nGray is the default value", "gCCKeysPrim", smolekey_colors, ImVec4(200, 230, 255, 255), true, false, false };
 static CosmeticsColorIndividual VSOA_Icon = { "Visual Stone of agony icon", "Affects the Stone of Agony icon on interface\nWhite is the default value\nRequire room reload or activation", "gCCVSOAPrim", visualagony_colors, ImVec4(255, 255, 255, 255), true, false, false };
@@ -254,11 +262,15 @@ static CosmeticsColorSection TitleCards_section[] = {
 static CosmeticsColorSection Misc_section[] = {
     { &Rupee_Icon, false, false },
     { &SmallKeys_Icon, false, true },
-    { &VSOA_Icon, false, true }
+    { &VSOA_Icon, false, true },
+    { &TitleScreen_fire_Prim, false, true },
+    { &TitleScreen_fire_Env, false, true }
 };
 
 //Randomizer specific stuff (by randomizer I mean within cosmetics, these section are there just for the purpose of randomizing their colors)
 static CosmeticsColorSection Everything_Section[] = {
+    { &TitleScreen_fire_Prim, false, true },
+    { &TitleScreen_fire_Env, false, true },
     { &Navi_Idle_Inner, false, false },
     { &Navi_Idle_Outer, true, false },
     { &Navi_Npc_Inner, false, true },
@@ -348,7 +360,9 @@ static CosmeticsColorSection Misc_Interface_section[]{
     { &TitleCards_DG, true, false },
     { &Rupee_Icon, false, false },
     { &SmallKeys_Icon, false, true },
-    { &VSOA_Icon, false, true }
+    { &VSOA_Icon, false, true },
+    { &TitleScreen_fire_Prim, false, true },
+    { &TitleScreen_fire_Env, false, true }
 };
 static CosmeticsColorSection NPCs_section[]{
     { &Navi_Idle_Inner, false, false },
@@ -388,7 +402,6 @@ static CosmeticsColorSection AllItemsSkills_section[]{
     { &Spin_Lv2_Env, true, false },
     { &Trails_col, false, false }
 };
-
 
 void InitCosmeticsEditor();//Init the menu itself
 void LoadRainbowColor();

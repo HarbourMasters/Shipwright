@@ -406,6 +406,13 @@ void Gameplay_Init(GameState* thisx) {
     PreRender_SetValues(&globalCtx->pauseBgPreRender, SCREEN_WIDTH, SCREEN_HEIGHT, 0, 0);
     gTrnsnUnkState = 0;
     globalCtx->transitionMode = 0;
+    
+    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
+        globalCtx->transitionMode = CVar_GetS32("gSceneTransitions", 0);
+        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
+        globalCtx->fadeTransition = CVar_GetS32("gSceneTransitions", 0);
+    }
+
     FrameAdvance_Init(&globalCtx->frameAdvCtx);
     Rand_Seed((u32)osGetTime());
     Matrix_Init(&globalCtx->state);
@@ -513,7 +520,7 @@ void Gameplay_Update(GlobalContext* globalCtx) {
         SREG(1) = 0;
         ZeldaArena_Display();
     }    
-    
+
     if ((HREG(80) == 18) && (HREG(81) < 0)) {
         HREG(81) = 0;
         osSyncPrintf("object_exchange_rom_address %u\n", gObjectTableSize);
@@ -1140,12 +1147,6 @@ skip:
         GivePlayerRandoRewardZeldaLightArrowsGift(globalCtx, RC_TOT_LIGHT_ARROWS_CUTSCENE);
         GivePlayerRandoRewardNocturne(globalCtx, RC_SHEIK_IN_KAKARIKO);
         GivePlayerRandoRewardRequiem(globalCtx, RC_SHEIK_AT_COLOSSUS);
-    }
-    if (CVar_GetS32("gSceneTransitions", 255)!= 255){
-        gSaveContext.nextTransition = CVar_GetS32("gSceneTransitions", 0);
-        globalCtx->fadeTransition = gSaveContext.nextTransition;
-    } else {
-        globalCtx->fadeTransition = (gEntranceTable[((void)0, gSaveContext.entranceIndex) + gSaveContext.sceneSetupIndex].field >> 7) & 0x7F; // Fade In
     }
 }
 
