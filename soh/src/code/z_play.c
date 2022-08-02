@@ -693,8 +693,8 @@ void Gameplay_Update(GlobalContext* globalCtx) {
                                 R_UPDATE_RATE = 3;
                             }
 
-                            // Same code lives in z_kaleido_scope_PAL.c to save the game manually
-                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA)) {
+                            // Don't autosave in grottos or cutscenes
+                            if (CVar_GetS32("gAutosave", 0) && (globalCtx->sceneNum != SCENE_YOUSEI_IZUMI_TATE) && (globalCtx->sceneNum != SCENE_KAKUSIANA) && gSaveContext.cutsceneIndex == 0) {
                                 Gameplay_PerformSave(globalCtx);
                             }
                         }
