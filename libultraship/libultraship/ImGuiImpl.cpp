@@ -1021,14 +1021,14 @@ namespace SohImGui {
                 {
                     if (ImGui::BeginMenu("Time Savers"))
                     {
-                        EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "");
+                        EnhancementSliderInt("Text Speed: %dx", "##TEXTSPEED", "gTextSpeed", 1, 5, "", 1);
                         InsertPadding();
-                        EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "");
+                        EnhancementSliderInt("King Zora Speed: %dx", "##MWEEPSPEED", "gMweepSpeed", 1, 5, "", 1);
                         InsertPadding();
-                        EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "");
+                        EnhancementSliderInt("Biggoron Forge Time: %d days", "##FORGETIME", "gForgeTime", 0, 3, "", 3);
                         Tooltip("Allows you to change the number of days it takes for Biggoron to forge the Biggoron Sword");
                         InsertPadding();
-                        EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "");
+                        EnhancementSliderInt("Vine/Ladder Climb speed +%d", "##CLIMBSPEED", "gClimbSpeed", 0, 12, "", 0);
                         InsertPadding();
                         EnhancementCheckbox("Faster Block Push", "gFasterBlockPush");
                         InsertPadding();
@@ -1764,7 +1764,7 @@ namespace SohImGui {
         if (CVar_GetS32("gStatsEnabled", 0)) {
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+            ImGui::Begin("Debug Stats", nullptr);
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
