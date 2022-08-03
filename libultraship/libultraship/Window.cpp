@@ -28,6 +28,7 @@
 #include <chrono>
 #include "Hooks.h"
 #include "Console.h"
+#include "ImGuiImpl.h"
 
 #include <iostream>
 
@@ -72,6 +73,8 @@ extern "C" {
         pad->err_no = 0;
         pad->gyro_x = 0;
         pad->gyro_y = 0;
+
+	    if (SohImGui::controller->Opened) return;
 
         Ship::Window::ControllerApi->WriteToPad(pad);
         ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
