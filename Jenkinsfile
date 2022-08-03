@@ -97,7 +97,7 @@ pipeline {
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
-                            docker exec sohcont .ci/linux/build.sh
+                            docker exec sohcont scripts/linux/build.sh
                             
                             mv README.md readme.txt		
                             mv _packages/*.appimage SoH.AppImage
