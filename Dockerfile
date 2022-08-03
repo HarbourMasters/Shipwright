@@ -76,12 +76,16 @@ ENV PATH=$PATH:/opt/devkitpro/portlibs/switch/bin/
 =======
 	tar -xzf SDL2-${SDL2VER}.tar.gz && \
 	cd SDL2-${SDL2VER} && \
-	./configure --prefix=/usr && \
+	./configure --prefix=/usr --libdir=/lib/x86_64-linux-gnu/ && \
 	make && make install && \
+<<<<<<< HEAD
 	rm ../SDL2-${SDL2VER}.tar.gz && \
 	cp -av /lib/libSDL* /lib/x86_64-linux-gnu/ && \
 	cp /usr/lib/cmake/SDL2/sdl2-config.cmake /lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
 >>>>>>> 4cb742d4 (Update Dockerfile)
+=======
+	rm ../SDL2-${SDL2VER}.tar.gz
+>>>>>>> c387e457 (Update Dockerfile)
 
 RUN mkdir /soh
 WORKDIR /soh
