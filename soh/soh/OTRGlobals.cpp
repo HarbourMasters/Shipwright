@@ -1309,7 +1309,7 @@ extern "C" void OTRControllerCallback(ControllerCallback* controller) {
     auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDevice(controlDeck->GetVirtualDevice(i));
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
         physicalDevice->WriteToSource(i, controller);
     }
 }
@@ -1367,7 +1367,7 @@ extern "C" int Controller_ShouldRumble(size_t i) {
     auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
 
     for (int i = 0; i < controlDeck->GetNumVirtualDevices(); ++i) {
-        auto physicalDevice = controlDeck->GetPhysicalDevice(controlDeck->GetVirtualDevice(i));
+        auto physicalDevice = controlDeck->GetPhysicalDeviceFromVirtualSlot(i);
         if (physicalDevice->CanRumble()) {
             return 1;
         }

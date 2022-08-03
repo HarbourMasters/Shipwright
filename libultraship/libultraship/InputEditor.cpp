@@ -17,7 +17,7 @@ namespace Ship {
 
 	std::shared_ptr<Controller> GetControllerPerSlot(int slot) {
 		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
-		return controlDeck->GetPhysicalDevice(controlDeck->GetVirtualDevice(slot));
+		return controlDeck->GetPhysicalDeviceFromVirtualSlot(slot);
 	}
 
 	void InputEditor::DrawButton(const char* label, int n64Btn) {
@@ -83,7 +83,7 @@ namespace Ship {
 
 	void InputEditor::DrawControllerSchema() {
 		auto controlDeck = Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
-		auto Backend = controlDeck->GetPhysicalDevice(controlDeck->GetVirtualDevice(CurrentPort));
+		auto Backend = controlDeck->GetPhysicalDeviceFromVirtualSlot(CurrentPort);
 		DeviceProfile& profile = Backend->profiles[CurrentPort];
 		float sensitivity = profile.Thresholds[SENSITIVITY];
 		bool IsKeyboard = Backend->GetGuid() == "Keyboard"  || Backend->GetGuid() == "Auto" || !Backend->Connected();

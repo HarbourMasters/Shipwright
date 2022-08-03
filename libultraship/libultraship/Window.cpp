@@ -350,7 +350,7 @@ namespace Ship {
         bool bIsProcessed = false;
         auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
         const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
-    	if (pad != nullptr) {
+        if (pad != nullptr) {
             if (pad->ReleaseButton(dwScancode)) {
                 bIsProcessed = true;
             }
@@ -363,7 +363,7 @@ namespace Ship {
         bool bIsProcessed = false;
         auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
         const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
-    	if (pad != nullptr) {
+        if (pad != nullptr) {
             if (pad->PressButton(dwScancode)) {
                 bIsProcessed = true;
             }
