@@ -108,7 +108,7 @@ namespace Ship {
 		bool input_focus = false;
 
 		ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-		ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);
+		ImGui::Begin("Console", &this->opened);
 		const ImVec2 pos = ImGui::GetWindowPos();
 		const ImVec2 size = ImGui::GetWindowSize();
 		// SohImGui::ShowCursor(ImGui::IsWindowHovered(ImGuiHoveredFlags_RootAndChildWindows | ImGuiHoveredFlags_RectOnly), SohImGui::Dialogues::dConsole);
