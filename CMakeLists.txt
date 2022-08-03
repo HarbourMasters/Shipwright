@@ -112,11 +112,11 @@ add_subdirectory(OTRGui)
 endif()
 
 set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE_TERMINAL YES)
-set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/appimage/soh.desktop")
+set_property(TARGET soh PROPERTY APPIMAGE_DESKTOP_FILE "${PROJECT_SOURCE_DIR}/.ci/soh.desktop")
 set_property(TARGET soh PROPERTY APPIMAGE_ICON_FILE "${CMAKE_BINARY_DIR}/sohIcon.png")
 
-if("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-INSTALL(PROGRAMS "${PROJECT_SOURCE_DIR}/appimage/soh.sh" DESTINATION . COMPONENT appimage)
+if(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
+INSTALL(PROGRAMS "${PROJECT_SOURCE_DIR}/.ci/soh.sh" DESTINATION . COMPONENT appimage)
 endif()
 
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets.py filedata)

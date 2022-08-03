@@ -97,18 +97,12 @@ pipeline {
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
                             docker build . -t soh
                             docker run --name sohcont -dit --rm -v $(pwd):/soh soh /bin/bash
-                            docker exec sohcont scripts/linux/build.sh
+                            docker exec sohcont .ci/linux/build.sh
                             
-                            mkdir build
-                            mv soh/soh.elf build/
-                            mv OTRGui/build/OTRGui build/
-                            mv OTRGui/build/assets build/
-                            mv ZAPDTR/ZAPD.out build/assets/extractor/
-                            mv README.md readme.txt
-			    
-                            docker exec sohcont scripts/linux/build-appimage.sh
-			    
-                            7z a soh-linux.7z SOH-Linux.AppImage readme.txt
+                            mv README.md readme.txt		
+                            mv _packages/*.appimage SoH.AppImage
+
+                            7z a soh-linux.7z SoH.AppImage readme.txt
                             
                             '''
                         }
@@ -125,11 +119,6 @@ pipeline {
                     agent {
                         label "SoH-Mac-Builders"
                     }
-                    environment {
-                        CC = 'clang -arch arm64 -arch x86_64'
-                        CXX = 'clang++ -arch arm64 -arch x86_64'
-                        MACOSX_DEPLOYMENT_TARGET = 10.15
-                    }
                     steps {
                         checkout([
                             $class: 'GitSCM',
@@ -141,12 +130,23 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
+<<<<<<< HEAD
                             cd soh
                             make setup -j$(sysctl -n hw.physicalcpu) OPTFLAGS=-O2 DEBUG=0 LD="ld"
                             make -j$(sysctl -n hw.physicalcpu) DEBUG=0 OPTFLAGS=-O2 LD="ld"
                             make appbundle
                             mv ../README.md readme.txt
                             7z a soh-mac.7z soh.app readme.txt
+=======
+
+                            cmake -H. -Bbuild-cmake -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_C_COMPILER=clang -DCMAKE_OBJCXX_COMPILER=clang++ -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+                            (cd build-cmake && cpack)
+
+                            mv README.md readme.txt		
+                            mv _packages/*.dmg SoH.dmg
+                            
+                            7z a soh-mac.7z SoH.dmg readme.txt
+>>>>>>> aaa1da15 (Add distribution of LInux & macOS)
                             '''
                         }
                         archiveArtifacts artifacts: 'soh/soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true

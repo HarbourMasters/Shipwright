@@ -5,28 +5,38 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV GCCVER=10
 RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y \
-        binutils \
-        gcc-${GCCVER} \
-        g++-${GCCVER} \
-        p7zip-full \
-        python3 \
-        make \
-        cmake \
-        curl \
-        git \
-        lld \
-        wget \
-        libglew-dev \
-        libsdl2-dev \
-        zlib1g-dev \
-        libbz2-dev \
-        libpng-dev \
-        libgles2-mesa-dev && \    
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCCVER} 10 && \
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-${GCCVER} 10 
+	apt-get upgrade -y && \
+	apt-get install -y \
+		binutils \
+		gcc-10 \
+		g++-10 \
+		patchelf \
+		p7zip-full \
+		python3.9 \
+		make \
+		curl \
+		git \
+		lld \
+		libsdl2-dev \
+		zlib1g-dev \
+		libbz2-dev \
+		libpng-dev \
+		libgles2-mesa-dev && \    
+	ln -s /usr/bin/g++-10 /usr/bin/g++ && \
+	update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10 && \
+	gcc --version && \
+	g++ --version
+	
+RUN apt-get clean autoclean && apt-get autoremove --yes && rm -rf /var/lib/apt /var/lib/cache /var/lib/log
 
+RUN curl https://github.com/Kitware/CMake/releases/download/v3.23.2/cmake-3.23.2-Linux-x86_64.sh \
+	-s -o /tmp/cmake-install.sh \
+	&& chmod u+x /tmp/cmake-install.sh \
+	&& mkdir /usr/bin/cmake \
+	&& /tmp/cmake-install.sh --skip-license --prefix=/usr/bin/cmake \
+	&& rm /tmp/cmake-install.sh
+ENV PATH="/usr/bin/cmake/bin:${PATH}"
+	
 RUN git clone https://github.com/Perlmint/glew-cmake.git && \
     cmake glew-cmake && \
     make -j$(nproc) && \
