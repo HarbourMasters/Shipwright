@@ -2081,7 +2081,11 @@ s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typ
     }
     else {
         *itemPtr = ITEM_SLINGSHOT;
-        *typePtr = ARROW_SEED;
+        if (this->stateFlags1 & PLAYER_STATE1_23) {
+            *typePtr = ARROW_NORMAL_HORSE;
+        } else {
+            *typePtr = this->heldItemActionParam - 6;
+        }
     }
 
     if (gSaveContext.minigameState == 1) {

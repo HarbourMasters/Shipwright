@@ -1398,14 +1398,24 @@ namespace SohImGui {
                 Tooltip("Allows you to walk through walls");
                 EnhancementCheckbox("Climb Everything", "gClimbEverything");
                 Tooltip("Makes every surface in the game climbable");
-                EnhancementCheckbox("Moon Jump on L", "gMoonJumpOnL");
-                Tooltip("Holding L makes you float into the air");
+
+                if (ImGui::BeginMenu("Hold L...")) {
+                    EnhancementCheckbox("for Moon Jump", "gMoonJumpOnL");
+                    Tooltip("Holding L makes you float into the air");
+                    EnhancementCheckbox("for Turbo", "gTurboOnL");
+                    Tooltip("Holding L makes you run at super speed");
+
+                    ImGui::EndMenu();
+                }
+
                 EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
                 Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
                 EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                 Tooltip("Allows you to use any item at any location");
+                EnhancementCheckbox("Child Gear", "gNoRestrictAge");
+                Tooltip("Allows you to use any item in any era");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
                 EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");

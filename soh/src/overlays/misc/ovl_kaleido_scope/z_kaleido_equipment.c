@@ -475,14 +475,15 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         osSyncPrintf("kscope->select_name[Display_Equipment] = %d\n", pauseCtx->cursorItem[PAUSE_EQUIP]);
 
         if (!((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
+              (CVar_GetS32("gNoRestrictAge", 0)) ||
               (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                ((void)0, gSaveContext.linkAge)))) {
             pauseCtx->nameColorSet = 1;
         }
 
         if (pauseCtx->cursorItem[PAUSE_EQUIP] == ITEM_BRACELET) {
-            if (LINK_AGE_IN_YEARS == YEARS_CHILD) {
-                pauseCtx->nameColorSet = 0;
+            if (LINK_AGE_IN_YEARS == YEARS_CHILD || gSaveContext.n64ddFlag) {
+                pauseCtx->nameColorSet = 0; //Goron Bracelet effects certain Adult-Only Blocks; have it in color to make sure people know this
             } else {
                 pauseCtx->nameColorSet = 1;
             }
@@ -512,6 +513,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
             (pauseCtx->cursorX[PAUSE_EQUIP] != 0)) {
 
             if ((gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] == 9) ||
+                (CVar_GetS32("gNoRestrictAge", 0)) ||
                 (gEquipAgeReqs[pauseCtx->cursorY[PAUSE_EQUIP]][pauseCtx->cursorX[PAUSE_EQUIP]] ==
                  ((void)0, gSaveContext.linkAge))) {
                 if (CHECK_BTN_ALL(input->press.button, BTN_A)) {

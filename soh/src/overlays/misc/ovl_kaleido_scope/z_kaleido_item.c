@@ -27,7 +27,8 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gDPPipeSync(POLY_KAL_DISP++);
 
-    if (!((gSlotAgeReqs[SLOT(item)] == 9) || gSlotAgeReqs[SLOT(item)] == ((void)0, gSaveContext.linkAge))) {
+    if ((!((gSlotAgeReqs[SLOT(item)] == 9) || gSlotAgeReqs[SLOT(item)] == ((void)0, gSaveContext.linkAge))) && 
+         (!CVar_GetS32("gNoRestrictAge", 0))) {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 100, pauseCtx->alpha);
     } else {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
@@ -391,6 +392,7 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
                     }
                     if (CHECK_BTN_ANY(input->press.button, buttonsToCheck)) {
                         if (((gSlotAgeReqs[cursorSlot] == 9) ||
+                             (CVar_GetS32("gNoRestrictAge", 0)) ||
                              (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge))) &&
                             (cursorItem != ITEM_SOLD_OUT) && (cursorItem != ITEM_NONE)) {
                             KaleidoScope_SetupItemEquip(globalCtx, cursorItem, cursorSlot,

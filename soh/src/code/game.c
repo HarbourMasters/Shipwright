@@ -397,6 +397,18 @@ void GameState_Update(GameState* gameState) {
             }
         }
     }
+    
+    // Super Speed On L
+    if (CVar_GetS32("gTurboOnL", 0) != 0) {
+        if (gGlobalCtx) {
+            Player* player = GET_PLAYER(gGlobalCtx);
+
+            if (CHECK_BTN_ANY(gGlobalCtx->state.input[0].cur.button, BTN_L)) {
+                if (player->linearVelocity > 0)
+                    player->linearVelocity = 30;
+            }
+        }
+    }
 
     // Permanent infinite sword glitch (ISG)
     if (CVar_GetS32("gEzISG", 0) != 0) {

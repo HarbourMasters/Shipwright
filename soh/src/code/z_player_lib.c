@@ -62,9 +62,9 @@ Gfx* D_80125CE8[] = {
     gLinkAdultRightHandHoldingHylianShieldFarDL,
     gLinkChildRightHandClosedFarDL,
     gLinkAdultRightHandHoldingMirrorShieldNearDL,
-    gLinkChildRightHandClosedNearDL,
+    gLinkAdultRightHandHoldingMirrorShieldNearDL,
     gLinkAdultRightHandHoldingMirrorShieldFarDL,
-    gLinkChildRightHandClosedFarDL,
+    gLinkAdultRightHandHoldingMirrorShieldFarDL,
 };
 
 Gfx* D_80125D28[] = {
@@ -74,8 +74,8 @@ Gfx* D_80125D28[] = {
     gLinkAdultMasterSwordAndSheathFarDL,        gLinkChildDekuShieldSwordAndSheathFarDL,
     gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkChildHylianShieldSwordAndSheathNearDL,
     gLinkAdultHylianShieldSwordAndSheathFarDL,  gLinkChildHylianShieldSwordAndSheathFarDL,
-    gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkChildSwordAndSheathNearDL,
-    gLinkAdultMirrorShieldSwordAndSheathFarDL,  gLinkChildSwordAndSheathFarDL,
+    gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkAdultMirrorShieldSwordAndSheathNearDL,
+    gLinkAdultMirrorShieldSwordAndSheathFarDL,  gLinkAdultMirrorShieldSwordAndSheathFarDL,
     NULL,                                       NULL,
     NULL,                                       NULL,
     NULL,                                       gLinkChildDekuShieldWithMatrixDL,
@@ -96,9 +96,9 @@ Gfx* D_80125D88[] = {
     gLinkAdultHylianShieldAndSheathFarDL,
     gLinkChildHylianShieldAndSheathFarDL,
     gLinkAdultMirrorShieldAndSheathNearDL,
-    gLinkChildSheathNearDL,
+    gLinkAdultMirrorShieldAndSheathNearDL,
     gLinkAdultMirrorShieldAndSheathFarDL,
-    gLinkChildSheathFarDL,
+    gLinkAdultMirrorShieldAndSheathFarDL,
     NULL,
     NULL,
     NULL,
@@ -194,9 +194,9 @@ Gfx* D_80125EA8[] = {
 };
 
 Gfx* D_80125EB8[] = {
-    gLinkAdultRightHandHoldingOotNearDL,
     gLinkChildRightHandHoldingFairyOcarinaNearDL,
-    gLinkAdultRightHandHoldingOotFarDL,
+    gLinkChildRightHandHoldingFairyOcarinaNearDL,
+    gLinkChildRightHandHoldingFairyOcarinaFarDL,
     gLinkChildRightHandHoldingFairyOcarinaFarDL,
 };
 
@@ -209,22 +209,22 @@ Gfx* D_80125EC8[] = {
 
 Gfx* D_80125ED8[] = {
     gLinkAdultRightHandHoldingHookshotNearDL,
-    gLinkChildRightHandNearDL,
+    gLinkAdultRightHandHoldingHookshotNearDL,
     gLinkAdultRightHandHoldingHookshotNearDL, // The 'far' display list exists but is not used
-    gLinkChildRightHandFarDL,
+    gLinkAdultRightHandHoldingHookshotNearDL, // The 'far' display list exists but is not used
 };
 
 Gfx* D_80125EE8[] = {
     gLinkAdultLeftHandHoldingHammerNearDL,
-    gLinkChildLeftHandNearDL,
+    gLinkAdultLeftHandHoldingHammerNearDL,
     gLinkAdultLeftHandHoldingHammerFarDL,
-    gLinkChildLeftHandFarDL,
+    gLinkAdultLeftHandHoldingHammerFarDL,
 };
 
 Gfx* D_80125EF8[] = {
-    gLinkAdultLeftHandNearDL,
     gLinkChildLeftFistAndBoomerangNearDL,
-    gLinkAdultLeftHandFarDL,
+    gLinkChildLeftFistAndBoomerangNearDL,
+    gLinkChildLeftFistAndBoomerangFarDL,
     gLinkChildLeftFistAndBoomerangFarDL,
 };
 
