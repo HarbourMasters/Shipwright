@@ -442,62 +442,65 @@ void Sram_OpenSave() {
 
     Save_LoadFile();
 
-    switch (gSaveContext.savedSceneNum) {
-        case SCENE_YDAN:
-        case SCENE_DDAN:
-        case SCENE_BDAN:
-        case SCENE_BMORI1:
-        case SCENE_HIDAN:
-        case SCENE_MIZUSIN:
-        case SCENE_JYASINZOU:
-        case SCENE_HAKADAN:
-        case SCENE_HAKADANCH:
-        case SCENE_ICE_DOUKUTO:
-        case SCENE_GANON:
-        case SCENE_MEN:
-        case SCENE_GERUDOWAY:
-        case SCENE_GANONTIKA:
-            gSaveContext.entranceIndex = dungeonEntrances[gSaveContext.savedSceneNum];
-            break;
-        case SCENE_YDAN_BOSS:
-            gSaveContext.entranceIndex = 0;
-            break;
-        case SCENE_DDAN_BOSS:
-            gSaveContext.entranceIndex = 4;
-            break;
-        case SCENE_BDAN_BOSS:
-            gSaveContext.entranceIndex = 0x28;
-            break;
-        case SCENE_MORIBOSSROOM:
-            gSaveContext.entranceIndex = 0x169;
-            break;
-        case SCENE_FIRE_BS:
-            gSaveContext.entranceIndex = 0x165;
-            break;
-        case SCENE_MIZUSIN_BS:
-            gSaveContext.entranceIndex = 0x10;
-            break;
-        case SCENE_JYASINBOSS:
-            gSaveContext.entranceIndex = 0x82;
-            break;
-        case SCENE_HAKADAN_BS:
-            gSaveContext.entranceIndex = 0x37;
-            break;
-        case SCENE_GANON_SONOGO:
-        case SCENE_GANONTIKA_SONOGO:
-        case SCENE_GANON_BOSS:
-        case SCENE_GANON_FINAL:
-        case SCENE_GANON_DEMO:
-            gSaveContext.entranceIndex = 0x41B;
-            break;
+    if (!CVar_GetS32("gRememberSaveLocation", 0) || gSaveContext.savedSceneNum == SCENE_YOUSEI_IZUMI_TATE ||
+        gSaveContext.savedSceneNum == SCENE_KAKUSIANA) {
+        switch (gSaveContext.savedSceneNum) {
+            case SCENE_YDAN:
+            case SCENE_DDAN:
+            case SCENE_BDAN:
+            case SCENE_BMORI1:
+            case SCENE_HIDAN:
+            case SCENE_MIZUSIN:
+            case SCENE_JYASINZOU:
+            case SCENE_HAKADAN:
+            case SCENE_HAKADANCH:
+            case SCENE_ICE_DOUKUTO:
+            case SCENE_GANON:
+            case SCENE_MEN:
+            case SCENE_GERUDOWAY:
+            case SCENE_GANONTIKA:
+                gSaveContext.entranceIndex = dungeonEntrances[gSaveContext.savedSceneNum];
+                break;
+            case SCENE_YDAN_BOSS:
+                gSaveContext.entranceIndex = 0;
+                break;
+            case SCENE_DDAN_BOSS:
+                gSaveContext.entranceIndex = 4;
+                break;
+            case SCENE_BDAN_BOSS:
+                gSaveContext.entranceIndex = 0x28;
+                break;
+            case SCENE_MORIBOSSROOM:
+                gSaveContext.entranceIndex = 0x169;
+                break;
+            case SCENE_FIRE_BS:
+                gSaveContext.entranceIndex = 0x165;
+                break;
+            case SCENE_MIZUSIN_BS:
+                gSaveContext.entranceIndex = 0x10;
+                break;
+            case SCENE_JYASINBOSS:
+                gSaveContext.entranceIndex = 0x82;
+                break;
+            case SCENE_HAKADAN_BS:
+                gSaveContext.entranceIndex = 0x37;
+                break;
+            case SCENE_GANON_SONOGO:
+            case SCENE_GANONTIKA_SONOGO:
+            case SCENE_GANON_BOSS:
+            case SCENE_GANON_FINAL:
+            case SCENE_GANON_DEMO:
+                gSaveContext.entranceIndex = 0x41B;
+                break;
 
-        default:
-            if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
-                gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
-            } else {
-                gSaveContext.entranceIndex = 0xBB;
-            }
-            break;
+            default:
+                if (gSaveContext.savedSceneNum != SCENE_LINK_HOME) {
+                    gSaveContext.entranceIndex = (LINK_AGE_IN_YEARS == YEARS_CHILD) ? 0xBB : 0x5F4;
+                } else {
+                    gSaveContext.entranceIndex = 0xBB;
+                }
+                break;
+        }
     }
 
     osSyncPrintf("scene_no = %d\n", gSaveContext.entranceIndex);

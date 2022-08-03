@@ -258,7 +258,6 @@
     <ClCompile Include="Blob.cpp" />
     <ClCompile Include="ControlDeck.cpp" />
     <ClCompile Include="Cvar.cpp" />
-    <ClCompile Include="Environment.cpp" />
     <ClCompile Include="Factories\AudioFactory.cpp" />
     <ClCompile Include="InputEditor.cpp" />
     <ClCompile Include="GameOverlay.cpp" />
@@ -354,7 +353,6 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="ControlDeck.h" />
     <ClInclude Include="Cvar.h" />
-    <ClInclude Include="Environment.h" />
     <ClInclude Include="Factories\AudioFactory.h" />
     <ClInclude Include="InputEditor.h" />
     <ClInclude Include="GameOverlay.h" />
