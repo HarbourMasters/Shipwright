@@ -44,6 +44,7 @@
 #include "variables.h"
 #include "macros.h"
 #include <Utils/StringHelper.h>
+#include "../libultraship/ImGuiImpl.h"
 
 #ifdef __APPLE__
 #include <SDL_scancode.h>
@@ -1518,4 +1519,13 @@ extern "C" s32 Randomizer_GetItemIdFromKnownCheck(RandomizerCheck randomizerChec
 
 extern "C" bool Randomizer_ItemIsIceTrap(RandomizerCheck randomizerCheck, GetItemID ogId) {
     return gSaveContext.n64ddFlag && Randomizer_GetItemIdFromKnownCheck(randomizerCheck, ogId) == GI_ICE_TRAP;
+}
+
+extern "C" void Console_Info(const char* fmt, ...) {
+    char buf[1024];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    va_end(args);
+    INFO(buf);
 }
