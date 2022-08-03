@@ -112,6 +112,8 @@ static struct {
     std::vector<FramebufferMetal> framebuffers;
     FrameUniforms frame_uniforms;
     id<MTLBuffer> frame_uniform_buffer = nullptr;
+    id<MTLBuffer> coord_buffer;
+    size_t coord_buffer_size;
     
     uint32_t msaa_num_quality_levels[METAL_MAX_MULTISAMPLE_SAMPLE_COUNT];
     
@@ -1131,41 +1133,51 @@ std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> gfx_metal_ge
     auto framebuffer = mctx.framebuffers[fb_id];
     auto texture = mctx.textures[framebuffer.texture_id];
 
+    size_t pixelCount = texture.width * texture.height;
+    if (4 * pixelCount > mctx.coord_buffer_size) {
+        mctx.coord_buffer = [mctx.device newBufferWithLength:(4 * pixelCount) options:MTLResourceOptionCPUCacheModeDefault];
+        mctx.coord_buffer_size = 4 * pixelCount;
+    }
+
     auto command_buffer = [mctx.command_queue commandBuffer];
     command_buffer.label = @"Depth Copy Command Buffer";
 
-    // Now add a blit to the CPU-accessible buffer
-    size_t pixelCount = texture.width * texture.height;
-    id<MTLBuffer> depthImageBuffer = [mctx.device newBufferWithLength:(4 * pixelCount) options:MTLResourceOptionCPUCacheModeDefault];
     id<MTLBlitCommandEncoder> blitEncoder = [command_buffer blitCommandEncoder];
     [blitEncoder copyFromTexture:framebuffer.depth_texture
                      sourceSlice:0
                      sourceLevel:0
                     sourceOrigin:MTLOriginMake(0, 0, 0)
                       sourceSize:MTLSizeMake(texture.width, texture.height, 1)
-                        toBuffer:depthImageBuffer
+                        toBuffer:mctx.coord_buffer
                destinationOffset:0
           destinationBytesPerRow:(4 * texture.width)
         destinationBytesPerImage:(4 * pixelCount) options:MTLBlitOptionDepthFromDepthStencil];
     [blitEncoder endEncoding];
 
-    // Commit and wait for completion of rendering
     [command_buffer commit];
     [command_buffer waitUntilCompleted];
 
     // Now the depth values can be accessed in the buffer.
-    float * depthValues = (float*)[depthImageBuffer contents];
+    float* depth_values = (float*)[mctx.coord_buffer contents];
 
-    // TODO: implement
     std::unordered_map<std::pair<float, float>, uint16_t, hash_pair_ff> res;
-    {
-        size_t i = 0;
-        for (const auto& coord : coordinates) {
-            res.emplace(coord, depthValues[i++] * 65532.0);
+    for (const auto& coord : coordinates) {
+        // bug? coordinates sometimes read from oob
+        if ((coord.first < 0.0f) || (coord.first > (float) texture.width)
+            || (coord.second < 0.0f) || (coord.second > (float) texture.height)) {
+            res.emplace(coord, 0);
+            continue;
         }
+
+        // We invert y because the gfx_pc assumes OpenGL coordinates (bottom-left corner is origin), while Metal's origin is top-left corner
+        auto y = texture.height - 1 - coord.second;
+        auto x = coord.first;
+
+        auto depth_value = depth_values[(int)(y * texture.width + x)];
+        SPDLOG_DEBUG("Depth value at {}, {} is {}", x, y, depth_value);
+        res.emplace(coord, depth_value * 65532.0);
     }
 
-    [depthImageBuffer release];
     [blitEncoder release];
     [command_buffer release];
 
