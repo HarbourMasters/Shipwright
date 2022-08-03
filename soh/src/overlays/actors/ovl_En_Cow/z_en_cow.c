@@ -274,7 +274,7 @@ GetItemID EnCow_GetRandomizerItemFromCow(EnCow* this, GlobalContext* globalCtx, 
     int cowId = EnCow_GetCowId(this, globalCtx);
 
     if (!gSaveContext.cowsMilked[cowId]) {
-        itemId = Randomizer_GetRandomizedItemId(GI_MILK, this->actor.id, this->actor.world.pos.x + this->actor.world.pos.z, globalCtx->sceneNum);
+        itemId = Randomizer_GetRandomizedItemId(GI_MILK, this->actor.id, 4540 + cowId, globalCtx->sceneNum);
 
         if (setFlag) {
             gSaveContext.cowsMilked[cowId] = 1;

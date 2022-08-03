@@ -2970,22 +2970,22 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 52:
             switch (actorParams) {
-                case -161:
+                case 4546:
                     return RC_KF_LINKS_HOUSE_COW;
             }
             break;
         case 54:
             switch (actorParams) {
-                case -376:
+                case 4543:
                     return RC_LLR_STABLES_LEFT_COW;
-                case -138:
+                case 4542:
                     return RC_LLR_STABLES_RIGHT_COW;
             }
         case 55:
             switch (actorParams) {
                 case 262:
                     return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
-                case -115:
+                case 4547:
                     return RC_KAK_IMPAS_HOUSE_COW;
             }
             break;
@@ -3023,9 +3023,9 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_DEKU_SCRUB_GROTTO;
                 case 10:
                     return RC_LW_DEKU_SCRUB_GROTTO_FRONT;
-                case 1973:
+                case 4544:
                     return RC_DMT_COW_GROTTO_COW;
-                case 3194:
+                case 4545:
                     return RC_HF_COW_GROTTO_COW;
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
@@ -3113,9 +3113,9 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 76:
             switch (actorParams) {
-                case -72:
+                case 4540:
                     return RC_LLR_TOWER_LEFT_COW;
-                case -282:
+                case 4541:
                     return RC_LLR_TOWER_RIGHT_COW;
                 case 262:
                     return RC_LLR_FREESTANDING_POH;
@@ -3275,7 +3275,7 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 90:
             switch (actorParams) {
-                case -421:
+                case 4548:
                     return RC_GV_COW;
                 case 23200:
                     return RC_GV_CHEST;
