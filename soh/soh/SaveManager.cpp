@@ -736,6 +736,10 @@ void SaveManager::LoadBaseVersion1() {
 
     SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
+
+    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    });
 }
 
 void SaveManager::LoadBaseVersion2() {
@@ -896,6 +900,10 @@ void SaveManager::LoadBaseVersion2() {
 
     SaveManager::Instance->LoadArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
                                      [](size_t i) { SaveManager::Instance->LoadData("", gSaveContext.trialsDone[i]); });
+
+    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    });
 }
 
 void SaveManager::SaveBase() {
@@ -1052,6 +1060,10 @@ void SaveManager::SaveBase() {
 
     SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
                                      [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
+
+    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
+        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    });
 }
 
 void SaveManager::SaveArray(const std::string& name, const size_t size, SaveArrayFunc func) {

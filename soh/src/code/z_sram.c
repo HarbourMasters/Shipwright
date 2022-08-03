@@ -5,6 +5,7 @@
 
 #define NUM_DUNGEONS 8
 #define NUM_TRIALS 6
+#define NUM_COWS 10
 
 /**
  *  Initialize new save.
@@ -614,6 +615,11 @@ void Sram_InitSave(FileChooseContext* fileChooseCtx) {
         // Sets all Ganon's Trials to incomplete when generating a rando save. Fixes https://github.com/briaguya-ai/rando-issue-tracker/issues/131
         for (u8 i = 0; i < NUM_TRIALS; i++) {
             gSaveContext.trialsDone[i] = 0;
+        }
+
+        // Sets all cows to unmilked when generating a rando save.
+        for (u8 i = 0; i < NUM_COWS; i++) {
+            gSaveContext.cowsMilked[i] = 0;
         }
 
         // Set Cutscene flags to skip them
