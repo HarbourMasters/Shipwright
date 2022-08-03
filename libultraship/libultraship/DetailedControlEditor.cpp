@@ -93,7 +93,7 @@ namespace Ship {
 		ImVec2 textSize = ImGui::CalcTextSize(mapping.label);
 		ImGui::SetCursorPosY(cursorPos.y + textSize.y / 4);
 		ImGui::SetCursorPosX(cursorPos.x + abs(textSize.x - labelWidth));
-		ImGui::Text(mapping.label);
+		ImGui::Text("%s", mapping.label);
 		ImGui::SameLine();
 		ImGui::SetCursorPosY(cursorPos.y);
 
