@@ -1581,7 +1581,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     set_target_properties(${PROJECT_NAME} PROPERTIES
     OUTPUT_NAME "soh-macos"
     )
-else()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	set_target_properties(${PROJECT_NAME} PROPERTIES
 	OUTPUT_NAME "soh.elf"
 	)
@@ -1855,6 +1855,17 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"setupapi"
 		)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+    find_package(SDL2)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "ZAPDUtils;"
+        SDL2::SDL2
+        -lglad
+        Threads::Threads
+    )
 else()
     find_package(SDL2)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -1908,15 +1919,15 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     endif()
 endif()
 
-target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
-
+if(NOT CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
 INSTALL(TARGETS soh DESTINATION . COMPONENT ship)
+endif()
 
 execute_process(COMMAND curl -sSfL https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt -o ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt OUTPUT_VARIABLE RESULT)
 
 if("${CMAKE_SYSTEM_NAME}" STREQUAL "Darwin")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION ../MacOS COMPONENT ship)
-else()
+elseif(NOT "${CMAKE_SYSTEM_NAME}" STREQUAL "NintendoSwitch")
 INSTALL(FILES ${CMAKE_BINARY_DIR}/gamecontrollerdb.txt DESTINATION . COMPONENT ship)
 endif()
 
@@ -1926,4 +1937,27 @@ install(CODE "
     include(BundleUtilities)
     fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/soh-macos\" \"\" \"${dirs}\")
     ")
+endif()
+
+if(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+    if (NOT TARGET pathconf)
+        add_library(pathconf OBJECT switch/pathconf.c)
+    endif()
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
+
+set_target_properties(soh PROPERTIES
+        APP_TITLE "Ship of Harkirian"
+        APP_AUTHOR "Ship"
+        APP_VERSION "3.0.0"
+        ICON "icon.jpg")
+
+nx_create_nro(soh)
+
+INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/soh.nro DESTINATION . COMPONENT ship)
+
 endif()
