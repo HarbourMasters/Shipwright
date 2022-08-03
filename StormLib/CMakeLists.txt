@@ -342,7 +342,9 @@ if(WIN32)
     set_target_properties(${LIBRARY_NAME} PROPERTIES OUTPUT_NAME "StormLib")
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${LIBRARY_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+endif()
 
 ################################################################################
 # Compile definitions

@@ -372,7 +372,10 @@ if (NOT TARGET storm)
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib ${CMAKE_BINARY_DIR}/StormLib EXCLUDE_FROM_ALL)
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+endif()
+
 set(ROOT_NAMESPACE libultraship)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")

@@ -64,7 +64,10 @@ set(ALL_FILES
 ################################################################################
 add_library(${PROJECT_NAME} STATIC ${ALL_FILES})
 
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+endif()
+
 set(ROOT_NAMESPACE OTRExporter)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")

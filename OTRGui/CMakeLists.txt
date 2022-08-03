@@ -39,6 +39,11 @@ file(GLOB_RECURSE SOURCES src/*.cpp)
 file(GLOB_RECURSE C_SOURCES src/*.c)
 
 add_executable(${PROJECT_NAME} ${SOURCES} ${C_SOURCES} ${HEADERS} ${APP_ICON_RESOURCE_WINDOWS})
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+use_props(${PROJECT_NAME} "${CMAKE_CONFIGURATION_TYPES}" "${DEFAULT_CXX_PROPS}")
+endif()
+
 add_custom_target(Assets ALL
     COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake"
     COMMAND ${CMAKE_COMMAND} -Dsrc_dir="${CMAKE_CURRENT_SOURCE_DIR}/../OTRExporter/assets" -Ddst_dir="${CMAKE_CURRENT_BINARY_DIR}/assets/game" -P "${CMAKE_CURRENT_SOURCE_DIR}/Overwrite.cmake"
