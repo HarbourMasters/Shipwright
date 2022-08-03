@@ -32,6 +32,8 @@
 
 #include <iostream>
 
+#define LOAD_TEX(texPath) static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+
 extern "C" {
     struct OSMesgQueue;
 
@@ -55,7 +57,7 @@ extern "C" {
         }
     #endif
 
-        Ship::Window::ControllerApi->Init(controllerBits);
+        Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->Init(controllerBits);
 
         return 0;
     }
@@ -75,7 +77,7 @@ extern "C" {
         pad->gyro_y = 0;
 
         if (!CVar_GetS32("gOpenMenuBar", 0)) {
-            Ship::Window::ControllerApi->WriteToPad(pad);
+            Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
         }
 
         ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
@@ -123,8 +125,7 @@ extern "C" {
         const std::string* hashStr = Ship::GlobalCtx2::GetInstance()->GetResourceManager()->HashToString(crc);
 
         if (hashStr != nullptr)  {
-            const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(hashStr->c_str()).get());
-
+            const auto res = LOAD_TEX(hashStr->c_str());
             ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
@@ -151,13 +152,40 @@ extern "C" {
     }
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
         ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
+    uint16_t ResourceMgr_LoadTexWidthByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->width;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
+    uint16_t ResourceMgr_LoadTexHeightByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->height;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
+    uint32_t ResourceMgr_LoadTexSizeByName(char* texPath) {
+        const auto res = LOAD_TEX(texPath);
+        if (res != nullptr)
+            return res->imageDataSize;
+
+        SPDLOG_ERROR("Given texture path is a non-existent resource");
+        return -1;
+    }
+
     void ResourceMgr_WriteTexS16ByName(char* texPath, size_t index, s16 value) {
-        const auto res = static_cast<Ship::Texture*>(Ship::GlobalCtx2::GetInstance()->GetResourceManager()->LoadResource(texPath).get());
+        const auto res = LOAD_TEX(texPath);
 
         if (res != nullptr)
         {
@@ -193,7 +221,7 @@ namespace Ship {
 
     int32_t Window::lastScancode;
 
-    Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr) {
+    Window::Window(std::shared_ptr<GlobalCtx2> Context) : Context(Context), APlayer(nullptr), ControllerApi(nullptr) {
         WmApi = nullptr;
         RenderingApi = nullptr;
         bIsFullscreen = false;
@@ -231,8 +259,9 @@ namespace Ship {
         std::shared_ptr<Mercury> pConf = GlobalCtx2::GetInstance()->GetConfig();
 
         CreateDefaults();
+        InitializeAudioPlayer();
+        InitializeControlDeck();
 
-        SetAudioPlayer();
         bIsFullscreen = pConf->getBool("Window.Fullscreen.Enabled", false);
 
         if (bIsFullscreen) {
@@ -251,7 +280,7 @@ namespace Ship {
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
 
-        ModInternal::RegisterHook<ModInternal::ExitGame>([]() {
+        ModInternal::RegisterHook<ModInternal::ExitGame>([this]() {
             ControllerApi->SaveControllerSettings();
         });
     }
@@ -319,7 +348,8 @@ namespace Ship {
         lastScancode = -1;
 
         bool bIsProcessed = false;
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->ReleaseButton(dwScancode)) {
                 bIsProcessed = true;
@@ -331,8 +361,8 @@ namespace Ship {
 
     bool Window::KeyDown(int32_t dwScancode) {
         bool bIsProcessed = false;
-
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             if (pad->PressButton(dwScancode)) {
                 bIsProcessed = true;
@@ -346,7 +376,8 @@ namespace Ship {
 
 
     void Window::AllKeysUp(void) {
-        const auto pad = dynamic_cast<KeyboardController*>(ControllerApi->physicalDevices[ControllerApi->physicalDevices.size() - 2].get());
+        auto controlDeck = GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck();
+        const auto pad = dynamic_cast<KeyboardController*>(controlDeck->GetPhysicalDevice(controlDeck->GetNumPhysicalDevices() - 2).get());
         if (pad != nullptr) {
             pad->ReleaseAllButtons();
         }
@@ -372,7 +403,7 @@ namespace Ship {
         return dwHeight;
     }
 
-    void Window::SetAudioPlayer() {
+    void Window::InitializeAudioPlayer() {
 #ifdef _WIN32
         APlayer = std::make_shared<WasapiAudioPlayer>();
 #elif defined(__linux)
@@ -380,5 +411,9 @@ namespace Ship {
 #else
         APlayer = std::make_shared<SDLAudioPlayer>();
 #endif
+    }
+
+    void Window::InitializeControlDeck() {
+        ControllerApi = std::make_shared<ControlDeck>();
     }
 }

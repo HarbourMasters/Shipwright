@@ -6,6 +6,7 @@
 #include <filesystem>
 #include <unordered_map>
 #include <any>
+#include <Utils/StringHelper.h>
 
 namespace fs = std::filesystem;
 using json = nlohmann::json;
@@ -16,18 +17,9 @@ Mercury::Mercury(std::string path) : path_(std::move(path)) {
 	this->reload();
 }
 
-std::vector<std::string> split(const std::string& s, const char delimiter) {
-    std::vector<std::string> result;
-    std::stringstream ss(s);
-    std::string item;
-    while (getline(ss, item, delimiter)) {
-        result.push_back(item);
-    }
-    return result;
-}
-
 std::string Mercury::formatNestedKey(const std::string& key) {
-	const std::vector<std::string> dots = split(key, '.');
+    std::vector<std::string> dots = StringHelper::Split(key, ".");
+
     std::string tmp;
     if (dots.size() > 1)
         for (const auto& dot : dots) {
@@ -40,7 +32,7 @@ std::string Mercury::formatNestedKey(const std::string& key) {
 }
 
 json Mercury::nested(const std::string& key) {
-    std::vector<std::string> dots = split(key, '.');
+    std::vector<std::string> dots = StringHelper::Split(key, ".");
     if (!this->vjson.is_object())
         return this->vjson;
     json gjson = this->vjson.unflatten();
