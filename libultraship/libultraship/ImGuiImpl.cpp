@@ -1416,6 +1416,9 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
+                EnhancementCheckbox("Time Sync", "gTimeSync");
+                Tooltip("This syncs the ingame time with the real world time");
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);
