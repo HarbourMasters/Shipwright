@@ -109,14 +109,6 @@ pipeline {
                         catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
-<<<<<<< HEAD
-                            cd soh
-                            make setup -j$(sysctl -n hw.physicalcpu) OPTFLAGS=-O2 DEBUG=0 LD="ld"
-                            make -j$(sysctl -n hw.physicalcpu) DEBUG=0 OPTFLAGS=-O2 LD="ld"
-                            make appbundle
-                            mv ../README.md readme.txt
-                            7z a soh-mac.7z soh.app readme.txt
-=======
 
                             cmake -H. -Bbuild-cmake -GNinja
                             cmake --build build-cmake
@@ -126,7 +118,6 @@ pipeline {
                             mv _packages/*.dmg SoH.dmg
                             
                             7z a soh-mac.7z SoH.dmg readme.txt
->>>>>>> aaa1da15 (Add distribution of LInux & macOS)
                             '''
                         }
                         archiveArtifacts artifacts: 'soh-mac.7z', followSymlinks: false, onlyIfSuccessful: true
@@ -160,7 +151,7 @@ pipeline {
                             docker run --name sohcont -dit --rm -v $(pwd):/soh sohswitch /bin/bash
                             docker exec sohcont scripts/switch/build.sh
                             
-                            mv soh/soh.nro .
+                            mv build-switch/soh/*.nro soh.nro
                             mv README.md readme.txt
                             
                             7z a soh-switch.7z soh.nro readme.txt
