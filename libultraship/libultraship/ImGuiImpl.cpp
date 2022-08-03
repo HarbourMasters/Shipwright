@@ -1035,7 +1035,7 @@ namespace SohImGui {
                         Tooltip("Allow Link to put items away without having to wait around");
                         PaddedEnhancementCheckbox("Mask Select in Inventory", "gMaskSelect", true, false);
                         Tooltip("After completing the mask trading sub-quest, press A and any direction on the mask slot to change masks");
-                        EnhancementCheckbox("Remember Save Location", "gRememberSaveLocation");
+                        PaddedEnhancementCheckbox("Remember Save Location", "gRememberSaveLocation", true, false);
                         Tooltip("When loading a save, places Link at the last entrance he went through.\n"
                                 "This doesn't work if the save was made in a grotto.");
                         ImGui::EndMenu();
@@ -1479,8 +1479,7 @@ namespace SohImGui {
                 Tooltip("Prevents the Deku Shield from burning on contact with fire");
                 PaddedEnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded", true, false);
                 Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand\nexcept for Deku Sticks");
-                EnhancementCheckbox("Time Sync", "gTimeSync");
+                PaddedEnhancementCheckbox("Time Sync", "gTimeSync", true, false);
                 Tooltip("This syncs the ingame time with the real world time");
 
                 {
