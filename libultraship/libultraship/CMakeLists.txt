@@ -476,7 +476,7 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows|NintendoSwitch")
+if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|NintendoSwitch")
     find_package(SDL2)
     find_package(GLEW)
     find_package(X11)
