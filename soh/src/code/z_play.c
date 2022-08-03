@@ -240,11 +240,10 @@ void GivePlayerRandoRewardZeldaLightArrowsGift(GlobalContext* globalCtx, Randomi
     if (CHECK_QUEST_ITEM(QUEST_MEDALLION_SPIRIT) && CHECK_QUEST_ITEM(QUEST_MEDALLION_SHADOW) && LINK_IS_ADULT &&
         (gEntranceTable[((void)0, gSaveContext.entranceIndex)].scene == SCENE_TOKINOMA) &&
         !Flags_GetTreasure(globalCtx, 0x1E) && player != NULL && !Player_InBlockingCsMode(globalCtx, player) &&
-        globalCtx->sceneLoadFlag == 0) {
+        globalCtx->sceneLoadFlag == 0 && player->getItemId == GI_NONE) {
         GetItemID getItemId = Randomizer_GetItemIdFromKnownCheck(check, GI_ARROW_LIGHT);
         GiveItemWithoutActor(globalCtx, getItemId);
-        player->pendingFlag.flagID = 0x1E;
-        player->pendingFlag.flagType = FLAG_SCENE_TREASURE;
+        Flags_SetTreasure(globalCtx, 0x1E);
     }
 }
 
@@ -1412,7 +1411,7 @@ void Gameplay_Draw(GlobalContext* globalCtx) {
                     OVERLAY_DISP = sp70;
                     globalCtx->unk_121C7 = 2;
                     SREG(33) |= 1;
-                } else if (R_PAUSE_MENU_MODE != 3) {
+                } else {
                 Gameplay_Draw_DrawOverlayElements:
                     if ((HREG(80) != 10) || (HREG(89) != 0)) {
                         Gameplay_DrawOverlayElements(globalCtx);

@@ -48,15 +48,11 @@ endif
 LDFLAGS := -Llib/libgfxd -L../libultraship -L../StormLib/build \
   -pthread -lgfxd -lultraship ZAPDUtils/ZAPDUtils.a -lstorm -lbz2 -lm -ldl
 
-LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs)
-INC += $(shell pkg-config --cflags libpng)
-
 ifeq ($(UNAME), Darwin)
-  LDFLAGS += -framework OpenGL -framework Foundation
-endif
-
-ifeq ($(UNAME), Linux)
-  LDFLAGS += $(shell pkg-config --libs x11 libpulse)
+  LDFLAGS += $(shell pkg-config --libs glew libpng zlib) $(shell sdl2-config --libs) -framework OpenGL -framework Foundation
+  INC += $(shell pkg-config --cflags libpng)
+else
+  LDFLAGS += -lpng -lGL -lGLEW -lX11 -lz -lSDL2 -lpulse
 endif
 
 # Use LLD if available. Set LLD=0 to not use it
@@ -69,12 +65,10 @@ ifneq ($(LLD),0)
 endif
 
 UNAMEM := $(shell uname -m)
-ifeq ($(UNAME), Linux)
+ifneq ($(UNAME), Darwin)
   LDFLAGS += -Wl,-export-dynamic -lstdc++fs
   EXPORTERS := -Wl,--whole-archive ../OTRExporter/OTRExporter/OTRExporter.a -Wl,--no-whole-archive
-endif
-
-ifeq ($(UNAME), Darwin)
+else
   EXPORTERS := -Wl,-force_load ../OTRExporter/OTRExporter/OTRExporter.a
 endif
 

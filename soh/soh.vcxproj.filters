@@ -82,24 +82,6 @@
     <Filter Include="Source Files\soh\Enhancements\debugger">
       <UniqueIdentifier>{04fc1c52-49ff-48e2-ae23-2c00867374f8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\soh\Enhancements\randomizer">
-      <UniqueIdentifier>{fd63976d-64b1-45ee-b3ab-530c636391c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\soh\Enhancements\randomizer\3drando">
-      <UniqueIdentifier>{ff94f63c-a792-49af-869b-42557318a32b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\soh\Enhancements\randomizer\3drando\hint_list">
-      <UniqueIdentifier>{1ba82a8d-b7d9-4f79-b80b-389322e189bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\soh\Enhancements\randomizer\3drando\location_access">
-      <UniqueIdentifier>{9e20d69b-6a26-48ef-9aae-09c149b2c459}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\soh\Enhancements\randomizer">
-      <UniqueIdentifier>{d7b4c12f-3876-40ec-a8ec-db435513156c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\soh\Enhancements\randomizer\3drando">
-      <UniqueIdentifier>{38ae4e39-fade-4f81-bfdb-af83bf641df0}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\boot\assert.c">
@@ -2224,172 +2206,172 @@
       <Filter>Header Files\include</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_dungeon.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\hint_list</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_exclude_overworld.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\hint_list</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list\hint_list_item.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\hint_list</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_bottom_of_the_well.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_castle_town.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_death_mountain.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_deku_tree.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_dodongos_cavern.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_fire_temple.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_forest_temple.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ganons_castle.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_training_grounds.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_gerudo_valley.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_hyrule_field.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_ice_cavern.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_jabujabus_belly.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_kakariko.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_lost_woods.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_shadow_temple.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_spirit_temple.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_water_temple.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access\locacc_zoras_domain.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando\location_access</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\cosmetics.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\custom_messages.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\debug.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\dungeon.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\entrance.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\fill.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\hints.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\hint_list.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\item.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\item_list.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\item_location.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\item_pool.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\location_access.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\logic.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\menu.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\music.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\patch.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\playthrough.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\preset.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\random.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\rando_main.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\settings.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\setting_descriptions.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\shops.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\sound_effects.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\spoiler_log.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\starting_inventory.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\tinyxml2.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\trial.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\3drando\utils.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\randomizer.h">
-      <Filter>Header Files\soh\Enhancements\randomizer</Filter>
+      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\gfx.c">
       <Filter>Header Files\soh\Enhancements</Filter>
     </ClCompile>
     <ClCompile Include="soh\Enhancements\randomizer\randomizer_item_tracker.cpp">
-      <Filter>Source Files\soh\Enhancements\randomizer</Filter>
+      <Filter>Source Files\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -3963,118 +3945,118 @@
       <Filter>Header Files\include</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\category.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\cosmetics.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\custom_messages.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\debug.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\dungeon.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\entrance.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\fill.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\hints.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\hint_list.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\item.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\item_list.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\item_location.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\item_pool.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\keys.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\location_access.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\logic.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\menu.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\music.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\patch.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\playthrough.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\pool_functions.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\preset.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\random.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\randomizer.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\rando_main.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\settings.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\setting_descriptions.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\shops.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\sound_effects.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\spoiler_log.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\starting_inventory.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\text.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\tinyxml2.h">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\trial.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\3drando\utils.hpp">
-      <Filter>Header Files\soh\Enhancements\randomizer\3drando</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\randomizerTypes.h">
-      <Filter>Header Files\soh\Enhancements\randomizer</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\gfx.h">
       <Filter>Header Files\soh\Enhancements</Filter>
     </ClInclude>
     <ClInclude Include="soh\Enhancements\randomizer\randomizer_item_tracker.h">
-      <Filter>Header Files\soh\Enhancements\randomizer</Filter>
+      <Filter>Source Files\src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
