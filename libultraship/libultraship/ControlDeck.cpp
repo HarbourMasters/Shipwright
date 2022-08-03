@@ -6,6 +6,7 @@
 #include "KeyboardController.h"
 #include "SDLController.h"
 #include <Utils/StringHelper.h>
+#include "Cvar.h"
 
 uint8_t* controllerBits;
 
@@ -51,12 +52,25 @@ void Ship::ControlDeck::SetPhysicalDevice(int slot, int deviceSlot) {
 }
 
 void Ship::ControlDeck::WriteToPad(OSContPad* pad) const {
+
+#ifdef __SWITCH__
+	bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0);
+#else
+	bool shouldBlockGameInput = CVar_GetS32("gOpenMenuBar", 0) && CVar_GetS32("gControlNav", 0);
+#endif
+
 	for (size_t i = 0; i < virtualDevices.size(); i++) {
 		const std::shared_ptr<Controller> backend = physicalDevices[virtualDevices[i]];
 		if (backend->GetGuid() == "Auto") {
 			for (const auto& device : physicalDevices) {
+				if(shouldBlockGameInput && device->GetGuid() != "Keyboard") {
+					continue;
+				}
 				device->Read(&pad[i], i);
 			}
+			continue;
+		}
+		if(shouldBlockGameInput && backend->GetGuid() != "Keyboard") {
 			continue;
 		}
 		backend->Read(&pad[i], i);

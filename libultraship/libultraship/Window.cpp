@@ -28,7 +28,6 @@
 #include <chrono>
 #include "Hooks.h"
 #include "Console.h"
-#include "Cvar.h"
 
 #include <iostream>
 
@@ -74,14 +73,7 @@ extern "C" {
         pad->gyro_x = 0;
         pad->gyro_y = 0;
 
-    #ifdef __SWITCH__
-        if(!CVar_GetS32("gOpenMenuBar", 0)) {
-    #else
-        if(!(CVar_GetS32("gControlNav", 0) && CVar_GetS32("gOpenMenuBar", 0))) {
-    #endif
-            Ship::Window::ControllerApi->WriteToPad(pad);
-        }
-
+        Ship::Window::ControllerApi->WriteToPad(pad);
         ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
     }
 
