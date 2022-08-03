@@ -2,7 +2,6 @@
 
 #include "Controller.h"
 #include <vector>
-#include <string>
 
 namespace Ship {
 
