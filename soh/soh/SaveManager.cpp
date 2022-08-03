@@ -1061,8 +1061,8 @@ void SaveManager::SaveBase() {
     SaveManager::Instance->SaveArray("trialsDone", ARRAY_COUNT(gSaveContext.trialsDone),
                                      [](size_t i) { SaveManager::Instance->SaveData("", gSaveContext.trialsDone[i]); });
 
-    SaveManager::Instance->LoadArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
-        SaveManager::Instance->LoadData("", gSaveContext.cowsMilked[i]);
+    SaveManager::Instance->SaveArray("cowsMilked", ARRAY_COUNT(gSaveContext.cowsMilked), [](size_t i) {
+        SaveManager::Instance->SaveData("", gSaveContext.cowsMilked[i]);
     });
 }
 
