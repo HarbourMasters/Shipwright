@@ -240,7 +240,7 @@ static LRESULT CALLBACK gfx_dxgi_wnd_proc(HWND h_wnd, UINT message, WPARAM w_par
             dxgi.current_height = (uint32_t)(l_param >> 16);
             break;
         case WM_DESTROY:
-            ModInternal::ExecuteHooks<ModInternal::ExitGame>();
+            Ship::ExecuteHooks<Ship::ExitGame>();
             exit(0);
         case WM_PAINT:
             if (dxgi.in_paint) {

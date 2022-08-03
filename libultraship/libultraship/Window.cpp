@@ -1,7 +1,6 @@
 #include "Window.h"
 #include "spdlog/spdlog.h"
 #include "KeyboardController.h"
-#include "SDLController.h"
 #include "GlobalCtx2.h"
 #include "DisplayList.h"
 #include "Vertex.h"
@@ -11,22 +10,20 @@
 #include "Blob.h"
 #include "Matrix.h"
 #include "AudioPlayer.h"
+#include "Hooks.h"
+#include "UltraController.h"
 #include "WasapiAudioPlayer.h"
 #include "PulseAudioPlayer.h"
-#include "SDLAudioPlayer.h"
 #include "Lib/Fast3D/gfx_pc.h"
 #include "Lib/Fast3D/gfx_sdl.h"
 #include "Lib/Fast3D/gfx_opengl.h"
-#include "stox.h"
 #if __APPLE__
 #include <SDL.h>
 #else
 #include <SDL2/SDL.h>
 #endif
-#include <map>
 #include <string>
 #include <chrono>
-#include "Hooks.h"
 #include "Console.h"
 #include "Cvar.h"
 
@@ -80,7 +77,7 @@ extern "C" {
             Ship::GlobalCtx2::GetInstance()->GetWindow()->GetControlDeck()->WriteToPad(pad);
         }
 
-        ModInternal::ExecuteHooks<ModInternal::ControllerRead>(pad);
+        Ship::ExecuteHooks<Ship::ControllerRead>(pad);
     }
 
     const char* ResourceMgr_GetNameByCRC(uint64_t crc) {
@@ -126,7 +123,7 @@ extern "C" {
 
         if (hashStr != nullptr)  {
             const auto res = LOAD_TEX(hashStr->c_str());
-            ModInternal::ExecuteHooks<ModInternal::LoadTexture>(hashStr->c_str(), &res->imageData);
+            Ship::ExecuteHooks<Ship::LoadTexture>(hashStr->c_str(), &res->imageData);
 
             return reinterpret_cast<char*>(res->imageData);
         } else {
@@ -153,7 +150,7 @@ extern "C" {
 
     char* ResourceMgr_LoadTexByName(char* texPath) {
         const auto res = LOAD_TEX(texPath);
-        ModInternal::ExecuteHooks<ModInternal::LoadTexture>(texPath, &res->imageData);
+        Ship::ExecuteHooks<Ship::LoadTexture>(texPath, &res->imageData);
         return (char*)res->imageData;
     }
 
@@ -280,7 +277,7 @@ namespace Ship {
         WmApi->set_fullscreen_changed_callback(OnFullscreenChanged);
         WmApi->set_keyboard_callbacks(KeyDown, KeyUp, AllKeysUp);
 
-        ModInternal::RegisterHook<ModInternal::ExitGame>([this]() {
+        Ship::RegisterHook<Ship::ExitGame>([this]() {
             ControllerApi->SaveControllerSettings();
         });
     }

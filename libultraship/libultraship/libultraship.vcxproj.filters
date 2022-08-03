@@ -327,9 +327,6 @@
     <ClCompile Include="ModManager.cpp">
       <Filter>Source Files\ModManager</Filter>
     </ClCompile>
-    <ClCompile Include="Hooks.cpp">
-      <Filter>Source Files\CustomImpl\Hooks</Filter>
-    </ClCompile>
     <ClCompile Include="luslog.cpp">
       <Filter>Source Files\Logging</Filter>
     </ClCompile>

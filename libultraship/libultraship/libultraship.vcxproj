@@ -282,7 +282,6 @@
     <ClCompile Include="Factories\VtxFactory.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="Hooks.cpp" />
     <ClCompile Include="ImGuiImpl.cpp" />
     <ClCompile Include="KeyboardController.cpp" />
     <ClCompile Include="Factories\CollisionHeaderFactory.cpp" />
