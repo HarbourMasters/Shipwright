@@ -133,7 +133,7 @@ add_custom_command(
     OUTPUT ${CMAKE_BINARY_DIR}/assets_created
     COMMAND ${CMAKE_COMMAND} -E rm -f oot.otr
     COMMAND ${Python_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter/extract_assets_cmake2.py
-    COMMAND cmake -E touch ${CMAKE_BINARY_DIR}/assets_created
+    COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_BINARY_DIR}/assets_created
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/OTRExporter
     COMMENT "Running asset extraction..."
     DEPENDS ZAPD
