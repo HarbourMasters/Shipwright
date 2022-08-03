@@ -2045,7 +2045,7 @@ namespace SohImGui {
         if (padTop) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
-        ImGui::Text(text);
+        ImGui::Text("%s", text);
         if (padBottom) {
             ImGui::Dummy(ImVec2(0.0f, 0.0f));
         }
