@@ -53,6 +53,7 @@ RUN git clone https://github.com/Perlmint/glew-cmake.git && \
 
 ENV SDL2VER=2.0.22
 RUN curl -sLO https://libsdl.org/release/SDL2-${SDL2VER}.tar.gz && \
+<<<<<<< HEAD
     tar -xzf SDL2-${SDL2VER}.tar.gz && \
     cd SDL2-${SDL2VER} && \
     ./configure --build=x86_64-linux-gnu && \
@@ -72,6 +73,15 @@ ENV DEVKITPRO=/opt/devkitpro
 ENV DEVKITARM=/opt/devkitpro/devkitARM
 ENV DEVKITPPC=/opt/devkitpro/devkitPPC
 ENV PATH=$PATH:/opt/devkitpro/portlibs/switch/bin/
+=======
+	tar -xzf SDL2-${SDL2VER}.tar.gz && \
+	cd SDL2-${SDL2VER} && \
+	./configure --prefix=/usr && \
+	make && make install && \
+	rm ../SDL2-${SDL2VER}.tar.gz && \
+	cp -av /lib/libSDL* /lib/x86_64-linux-gnu/ && \
+	cp /usr/lib/cmake/SDL2/sdl2-config.cmake /lib/x86_64-linux-gnu/cmake/SDL2/sdl2-config.cmake
+>>>>>>> 4cb742d4 (Update Dockerfile)
 
 RUN mkdir /soh
 WORKDIR /soh
