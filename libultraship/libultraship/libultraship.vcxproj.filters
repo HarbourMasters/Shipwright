@@ -82,9 +82,6 @@
     <Filter Include="Source Files\Logging">
       <UniqueIdentifier>{bd6557f1-9480-413b-b0cd-843f8efc1939}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CustomImpl\Overlay">
-      <UniqueIdentifier>{3285ab8a-06d8-4dac-9af9-efb2a9723ab1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Lib\dr_libs">
       <UniqueIdentifier>{db6e02cc-fc4c-4138-8219-1d281ad93ec2}</UniqueIdentifier>
     </Filter>
@@ -96,6 +93,9 @@
     </Filter>
     <Filter Include="Source Files\Controller\InputEditor">
       <UniqueIdentifier>{010dc29b-d1f6-4793-a4e7-4156aa4fcdd6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GUI">
+      <UniqueIdentifier>{5d68254f-662d-4e8c-a57f-de0d8e1d4a58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -300,12 +300,6 @@
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_sdl.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
-    <ClCompile Include="ImGuiImpl.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
-    <ClCompile Include="Console.cpp">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClCompile>
     <ClCompile Include="Lib\ImGui\backends\imgui_impl_dx11.cpp">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClCompile>
@@ -342,9 +336,6 @@
     <ClCompile Include="GameSettings.cpp">
       <Filter>Source Files\CustomImpl</Filter>
     </ClCompile>
-    <ClCompile Include="GameOverlay.cpp">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
-    </ClCompile>
     <ClCompile Include="Audio.cpp">
       <Filter>Source Files\Resources\Files</Filter>
     </ClCompile>
@@ -359,6 +350,15 @@
     </ClCompile>
     <ClCompile Include="Lib\Mercury\Mercury.cpp">
       <Filter>Source Files\Lib\Mercury</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverlay.cpp">
+      <Filter>Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuiImpl.cpp">
+      <Filter>Source Files\GUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -587,12 +587,6 @@
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_sdl.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="ImGuiImpl.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
-    <ClInclude Include="Console.h">
-      <Filter>Source Files\CustomImpl</Filter>
-    </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_dx11.h">
       <Filter>Source Files\Lib\ImGui</Filter>
     </ClInclude>
@@ -647,9 +641,6 @@
     <ClInclude Include="color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameOverlay.h">
-      <Filter>Source Files\CustomImpl\Overlay</Filter>
-    </ClInclude>
     <ClInclude Include="Audio.h">
       <Filter>Header Files\Resources\Files</Filter>
     </ClInclude>
@@ -676,6 +667,15 @@
     </ClInclude>
     <ClInclude Include="VirtualController.h">
       <Filter>Source Files\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOverlay.h">
+      <Filter>Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiImpl.h">
+      <Filter>Source Files\GUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
