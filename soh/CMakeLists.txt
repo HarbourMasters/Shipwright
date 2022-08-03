@@ -103,7 +103,6 @@ source_group("Header Files" FILES ${Header_Files})
 set(Header_Files__include
     "include/alloca.h"
     #"include/bgm.h"
-    "include/color.h"
     "include/command_macros_base.h"
     "include/fp.h"
     "include/functions.h"
