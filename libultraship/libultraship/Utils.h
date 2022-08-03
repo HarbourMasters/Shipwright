@@ -3,10 +3,11 @@
 #include <string>
 #include <vector>
 
-namespace math {
-	float clamp(float d, float min, float max);
-}
+namespace Ship {
 
-namespace Utils {
+	namespace Math {
+		float clamp(float d, float min, float max);
+	}
+
 	std::vector<std::string> SplitText(const std::string& text, char separator, bool keep_quotes);
 }
