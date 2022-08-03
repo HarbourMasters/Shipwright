@@ -1406,8 +1406,8 @@ namespace SohImGui {
                 if (ImGui::BeginMenu("Items...")) {
                     EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
                     Tooltip("Allows you to use any item at any location");
-                    EnhancementCheckbox("Child Gear", "gNoRestrictAge");
-                    Tooltip("Allows you to use any item in any era. NOTE: SOME ITEMS DO NOT CURRENTLY DISPLAY CORRECTLY");
+                    EnhancementCheckbox("Remove Age Restrictions", "gNoRestrictAge");
+                    Tooltip("Allows you to use any item in any era.\n NOTE: SOME ITEMS DO NOT CURRENTLY DISPLAY CORRECTLY");
                     EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
                     Tooltip("Prevents the Deku Shield from burning on contact with fire");
                     EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
