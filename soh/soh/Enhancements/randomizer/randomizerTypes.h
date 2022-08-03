@@ -806,6 +806,8 @@ typedef enum {
     RG_PROGRESSIVE_STICK_UPGRADE,
     RG_PROGRESSIVE_BOMBCHUS,
     RG_PROGRESSIVE_MAGIC_METER,
+    RG_MAGIC_SINGLE, // Added for refactor of GetItemEntries
+    RG_MAGIC_DOUBLE, // Added for refactor of GetItemEntries
     RG_PROGRESSIVE_OCARINA,
     RG_PROGRESSIVE_GORONSWORD,
     RG_EMPTY_BOTTLE,

@@ -11,6 +11,7 @@ typedef struct {
     /* 0x02 */ int8_t gi;    // defines the draw id and chest opening animation
     /* 0x03 */ uint8_t textId;
     /* 0x04 */ uint16_t objectId;
+    /* 0x06 */ uint16_t modIndex; // 0 = Vanilla, 1 = Randomizer, future mods will increment up?
 } GetItemEntry; // size = 0x06
 
 #define GET_ITEM(itemId, objectId, drawId, textId, field, chestAnim) \

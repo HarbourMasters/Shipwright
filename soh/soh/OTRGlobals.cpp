@@ -96,8 +96,6 @@ extern "C" void OTRAudio_Init()
     ResourceMgr_CacheDirectory("audio");
 }
 
-#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
-
 extern "C" void VanillaItemTable_Init() {
     GetItemEntry getItemTable[] = {
         GET_ITEM(ITEM_BOMBS_5, OBJECT_GI_BOMB_1, GID_BOMB, 0x32, 0x59, CHEST_ANIM_SHORT),
@@ -228,6 +226,7 @@ extern "C" void VanillaItemTable_Init() {
     };
     ItemTableManager::Instance->AddItemTable("Vanilla");
     for (uint8_t i = 0; i < ARRAY_SIZE(getItemTable); i++) {
+        getItemTable[i].modIndex = MOD_VANILLA;
         ItemTableManager::Instance->AddItemEntry("Vanilla", i, getItemTable[i]);
     }
 }

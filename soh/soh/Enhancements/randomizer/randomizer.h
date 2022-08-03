@@ -6,6 +6,10 @@
 #include "../../../include/z64item.h"
 #include "soh/Enhancements/randomizer/randomizerTypes.h"
 
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
+
+typedef enum { MOD_VANILLA, MOD_RANDOMIZER } ModIndex;
+
 class Randomizer {
   private:
     std::unordered_map<RandomizerCheck, RandomizerGet> itemLocations;
