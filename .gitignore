@@ -24,6 +24,10 @@ docs/doxygen/
 *.map
 *.dump
 out.txt
+*.sln
+*.vcxproj
+*.vcxproj.user
+*.vcxproj.filters
 
 # Tool artifacts
 tools/mipspro7.2_compiler/
