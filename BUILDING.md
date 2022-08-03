@@ -2,20 +2,30 @@
 
 ## Windows
 
- 1. Requires [Python](https://www.python.org/downloads/) >= 3.6.
- 2. Install [Visual Studio 2022 Community Edition](https://visualstudio.microsoft.com/vs/community/)
- 3. In the Visual Studio Installer, install `MSVC v142 - VS 2019 C++`.
- 4. Clone the Ship of Harkinian repository.
- 5. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice.
- 6. Run `OTRExporter/OTRExporter.sln`.
- 7. Switch the solution to `Release x64`.
- 8. Build the solution.
- 9. Launching `OTRExporter/extract_assets.py` will generate an `oot.otr` archive file in `OTRExporter/oot.otr`.
- 10. Run `soh/soh.sln`
- 11. Switch the solution to `Release x86` or `Release x64`.
- 12. Build the solution.
- 13. Copy the `OTRExporter/oot.otr` archive file to `soh/Release`.
- 14. Launch `soh.exe`.
+1. Requires Visual Studio 2022 Community Edition && `python3, cmake, git` (can be installed via chocolatey or manually)
+2. Clone the Ship of Harkinian repository
+3. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+
+_Note: Instructions assume using powershell_
+```powershell
+cd Shipwright
+# Setup cmake project
+& 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
+# Compile project
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
+
+# Now you can run the executable in .\build\x64
+# To develop the project you can open the generated Ship.sln (or use VSCode or another editor)
+```
+
+### Generating the distributable
+After compiling the project you can generate the distributable by running:
+```powershell
+# Go to build folder
+cd "build/x64"
+# Generate
+& 'C:\Program Files\CMake\bin\cpack.exe' -G ZIP
+```
 
 ## Linux
 
@@ -25,22 +35,27 @@ git clone https://github.com/HarbourMasters/Shipwright.git
 cd Shipwright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
-# Build the docker image
-sudo docker build . -t soh
-# Run the docker image with the working directory mounted to /soh
-sudo docker run --rm -it -v $(pwd):/soh soh /bin/bash
+# Generate Ninja project
+cmake -H. -Bbuild-cmake -GNinja
+# Compile the project
+cmake --build build-cmake  # --config Release (if you're packaging)
+
+# Now you can run the executable in ./build-cmake/soh/soh.elf
+# To develop the project open the repository in VSCode (or your preferred editor)
 ```
-Inside the Docker container:
+
+### Generating a distributable
+After compiling the project you can generate a distributable by running of the following:
 ```bash
-cd soh
-# Extract the assets/Compile the exporter/Run the exporter
-make setup -j$(nproc) OPTFLAGS=-O2 DEBUG=0
-# Compile the code
-make -j $(nproc) OPTFLAGS=-O2 DEBUG=0
+# Go to build folder
+cd build-cmake
+# Generate
+cpack -G DEB
+cpack -G ZIP
+cpack -G External (creates appimage)
 ```
 
 ## macOS
-
 1. Requires Xcode (or xcode-tools) && `sdl2, libpng, glew, cmake, pkgconfig, dylibbundler` (can be installed via homebrew, macports, etc)
 ```bash
 # Clone the repo
@@ -48,18 +63,44 @@ git clone https://github.com/HarbourMasters/Shipwright.git
 cd ShipWright
 # Copy the baserom to the OTRExporter folder
 cp <path to your ROM> OTRExporter
+# Generate Ninja project
+cmake -H. -Bbuild-cmake -GNinja
+# Compile the project
+cmake --build build-cmake  # --config Release (if you're packaging)
 
-cd soh
-# Extract the assets/Compile the exporter/Run the exporter
-# -jX defines number of cores to use for compilation - lower or remove entirely if having issues
-make setup -j8 DEBUG=0
-# Compile the code (watch the -j parameter as above)
-make -j8 DEBUG=0
-# Create macOS app bundle
-make appbundle
+# Now you can run the executable in ./build-cmake/soh/soh-macos
+# To develop the project open the repository in VSCode (or your preferred editor)
 ```
-9. Copy your OTR file to ~/Library/Application\ Support/com.shipofharkinian.soh
-10. Launch soh app in the soh folder!
+
+### Generating a distributable
+After compiling the project you can generate a distributable by running of the following:
+```bash
+# Go to build folder
+cd build-cmake
+# Generate
+cpack
+```
+
+## Switch
+1. Requires that your build machine is setup with the tools necessary for your platform above
+2. Requires that you have the switch build tools installed 
+3. Clone the Ship of Harkinian repository
+4. Place one or more [compatible](#compatible-roms) roms in the `OTRExporter` directory with namings of your choice
+
+```bash
+cd Shipwright
+# Setup cmake project for your host machine
+cmake -H. -Bbuild-macos -GNinja # Linux: cmake -H. -Bbuild-linux -GNinja
+# Extract necessary assets
+cmake --build build-cmake --target ExtractAssets
+# Setup cmake project for building for Switch
+cmake -H. -Bbuild-switch -GNinja -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake
+# Build project and generate nro
+cmake --build build-switch --target soh_nro
+
+# Now you can run the executable in ./build-switch/soh/soh.nro
+# To develop the project open the repository in VSCode (or your preferred editor)
+```
 
 # Compatible Roms
 ```
