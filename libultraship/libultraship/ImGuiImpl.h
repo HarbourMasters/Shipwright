@@ -106,7 +106,11 @@ namespace SohImGui {
     void EndGroupPanel(float minHeight = 0.0f);
     std::string BreakTooltip(const char* text, int lineLength = 60);
     std::string BreakTooltip(const std::string& text, int lineLength = 60);
-    void InsertPadding(float x = 0, float y = 0);
+    void InsertPadding(float extraVerticalPadding = 0.0f);
+    void PaddedSeparator(bool padTop = true, bool padBottom = true, float extraVerticalTopPadding = 0.0f, float extraVerticalBottomPadding = 0.0f);
+    void PaddedEnhancementSliderInt(const char* text, const char* id, const char* cvarName, int min, int max, const char* format, int defaultValue = 0, bool PlusMinusButton = false, bool padTop = true, bool padBottom = true);
+    void PaddedEnhancementCheckbox(const char* text, const char* cvarName, bool padTop = true, bool padBottom = true);
+    void PaddedText(const char* text, bool padTop = true, bool padBottom = true);
 }
 
 #endif
