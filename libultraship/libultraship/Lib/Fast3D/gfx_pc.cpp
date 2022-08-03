@@ -32,7 +32,6 @@
 #include "../../luslog.h"
 #include "../StrHash64.h"
 #include "../../ImGuiImpl.h"
-#include "../../Environment.h"
 #include "../../GameVersions.h"
 #include "../../ResourceMgr.h"
 #include "../../Utils.h"
@@ -48,6 +47,8 @@ extern "C" {
     char* ResourceMgr_LoadTexByName(char* texPath);
     int ResourceMgr_OTRSigCheck(char* imgData);
 }
+
+std::string gfxFramebuffer;
 
 using namespace std;
 
@@ -2782,7 +2783,7 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
     rendering_state.scissor = {};
     gfx_run_dl(commands);
     gfx_flush();
-    SohUtils::saveEnvironmentVar("framebuffer", string());
+    gfxFramebuffer = string();
     if (game_renders_to_framebuffer) {
         gfx_rapi->start_draw_to_framebuffer(0, 1);
         gfx_rapi->clear_framebuffer();
@@ -2792,12 +2793,12 @@ void gfx_run(Gfx *commands, const std::unordered_map<Mtx *, MtxF>& mtx_replaceme
 
             if (different_size) {
                 gfx_rapi->resolve_msaa_color_buffer(game_framebuffer_msaa_resolved, game_framebuffer);
-                SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved)));
+                gfxFramebuffer = std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer_msaa_resolved));
             } else {
                 gfx_rapi->resolve_msaa_color_buffer(0, game_framebuffer);
             }
         } else {
-            SohUtils::saveEnvironmentVar("framebuffer", std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer)));
+            gfxFramebuffer = std::to_string((uintptr_t)gfx_rapi->get_framebuffer_texture_id(game_framebuffer));
         }
     }
     SohImGui::DrawFramebufferAndGameInput();

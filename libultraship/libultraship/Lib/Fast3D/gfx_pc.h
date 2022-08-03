@@ -14,6 +14,8 @@
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
 
+extern std::string gfxFramebuffer;
+
 struct GfxRenderingAPI;
 struct GfxWindowManagerAPI;
 
