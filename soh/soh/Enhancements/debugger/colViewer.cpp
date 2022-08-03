@@ -58,7 +58,7 @@ void DrawColViewerWindow(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Collision Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Collision Viewer", &open)) {
         ImGui::End();
         return;
     }

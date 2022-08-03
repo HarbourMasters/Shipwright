@@ -1129,7 +1129,7 @@ void DrawCosmeticsEditor(bool& open) {
         return;
     }
     ImGui::SetNextWindowSize(ImVec2(465, 430), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Cosmetics Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Cosmetics Editor", &open)) {
         ImGui::End();
         return;
     }

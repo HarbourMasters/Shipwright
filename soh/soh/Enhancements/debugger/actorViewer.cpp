@@ -536,7 +536,7 @@ void DrawActorViewer(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Actor Viewer", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Actor Viewer", &open)) {
         ImGui::End();
         return;
     }
