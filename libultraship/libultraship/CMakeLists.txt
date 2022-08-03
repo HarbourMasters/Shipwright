@@ -115,12 +115,6 @@ set(Source_Files__CustomImpl
 )
 source_group("Source Files\\CustomImpl" FILES ${Source_Files__CustomImpl})
 
-set(Source_Files__CustomImpl__Environment
-    "Environment.cpp"
-    "Environment.h"
-)
-source_group("Source Files\\CustomImpl\\Environment" FILES ${Source_Files__CustomImpl__Environment})
-
 set(Source_Files__CustomImpl__Hooks
     "Hooks.cpp"
     "Hooks.h"
@@ -346,7 +340,6 @@ set(ALL_FILES
     ${Source_Files__Controller}
     ${Source_Files__Controller__Attachment}
     ${Source_Files__CustomImpl}
-    ${Source_Files__CustomImpl__Environment}
     ${Source_Files__CustomImpl__Hooks}
     ${Source_Files__CustomImpl__Utils}
     ${Source_Files__Globals}
