@@ -279,7 +279,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			INTERPROCEDURAL_OPTIMIZATION_RELEASE "TRUE"
 		)
 	endif()
-else()
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")()
         set_target_properties(${PROJECT_NAME} PROPERTIES
 		OUTPUT_NAME "ZAPD.out"
 	)
@@ -453,6 +453,16 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 		${CMAKE_DL_LIBS}
 		Threads::Threads
 	)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+       set(THREADS_PREFER_PTHREAD_FLAG ON)
+       find_package(Threads REQUIRED)
+       set(ADDITIONAL_LIBRARY_DEPENDENCIES
+               "ZAPDUtils;"
+               -Wl,--whole-archive $<TARGET_LINKER_FILE_DIR:OTRExporter>/$<TARGET_LINKER_FILE_NAME:OTRExporter> -Wl,--no-whole-archive
+               "libultraship;"
+               PNG::PNG
+               Threads::Threads
+       )
 else()
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
 	find_package(Threads REQUIRED)
@@ -466,4 +476,9 @@ else()
 	)
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+add_library(pathconf OBJECT pathconf.c)
+target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}" $<TARGET_OBJECTS:pathconf> )
+else()
 target_link_libraries(${PROJECT_NAME} PRIVATE "${ADDITIONAL_LIBRARY_DEPENDENCIES}")
+endif()

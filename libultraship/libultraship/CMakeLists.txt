@@ -330,6 +330,14 @@ set(Source_Files__Darwin
 source_group("Source Files\\Darwin" FILES ${Source_Files__Darwin})
 endif()
 
+if (CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+set(Source_Files__NintendoSwitch
+       "SwitchImpl.cpp"
+       "SwitchImpl.h"
+)
+source_group("Source Files\\NintendoSwitch" FILES ${Source_Files__NintendoSwitch})
+endif()
+
 set(ALL_FILES
     ${Header_Files__Resources__Factories}
     ${Header_Files__Resources__Files}
@@ -359,6 +367,7 @@ set(ALL_FILES
     ${Source_Files__Resources__Files}
     ${Source_Files__Resources__mpq}
     ${Source_Files__Darwin}
+    ${Source_Files__NintendoSwitch}
 )
 
 ################################################################################
@@ -474,7 +483,7 @@ endif()
 ################################################################################
 # Compile and link options
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows|NintendoSwitch")
     find_package(SDL2)
     find_package(GLEW)
     find_package(X11)
@@ -497,6 +506,8 @@ if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
         set(GLEW-INCLUDE  ${GLEW_INCLUDE_DIRS})
     endif()
     set(SDL2-INCLUDE ${SDL2_INCLUDE_DIRS})
+elseif (CMAKE_SYSTEM_NAME MATCHES "NintendoSwitch")
+    find_package(SDL2)
 else()
     set(GLEW-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/GLEW/)
     set(SDL2-INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/Lib/SDL/)
@@ -508,6 +519,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/Fast3D/U64/PR
 	${SDL2-INCLUDE}
 	${GLEW-INCLUDE}
+	${SWITCH-INCLUDE}
 	${CMAKE_CURRENT_SOURCE_DIR}/Lib/ImGui/
 	${CMAKE_CURRENT_SOURCE_DIR}/../../ZAPDTR/ZAPDUtils
 	${CMAKE_CURRENT_SOURCE_DIR}/../../StormLib/src
@@ -627,6 +639,14 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         ${CMAKE_DL_LIBS}
         Threads::Threads
 	${OSX_FOUNDATION}
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "NintendoSwitch")
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    target_link_libraries(${PROJECT_NAME}
+        storm
+        SDL2::SDL2
+        Threads::Threads
     )
 else()
     target_link_libraries(${PROJECT_NAME}
