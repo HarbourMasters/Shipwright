@@ -1394,11 +1394,6 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
-                EnhancementCheckbox("No Clip", "gNoClip");
-                Tooltip("Allows you to walk through walls");
-                EnhancementCheckbox("Climb Everything", "gClimbEverything");
-                Tooltip("Makes every surface in the game climbable");
-
                 if (ImGui::BeginMenu("Hold L...")) {
                     EnhancementCheckbox("for Moon Jump", "gMoonJumpOnL");
                     Tooltip("Holding L makes you float into the air");
@@ -1408,22 +1403,30 @@ namespace SohImGui {
                     ImGui::EndMenu();
                 }
 
-                EnhancementCheckbox("Super Tunic", "gSuperTunic");
+                if (ImGui::BeginMenu("Items...")) {
+                    EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
+                    Tooltip("Allows you to use any item at any location");
+                    EnhancementCheckbox("Child Gear", "gNoRestrictAge");
+                    Tooltip("Allows you to use any item in any era. NOTE: SOME ITEMS DO NOT CURRENTLY DISPLAY CORRECTLY");
+                    EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
+                    Tooltip("Prevents the Deku Shield from burning on contact with fire");
+                    EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
+                    Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
+
+                    ImGui::EndMenu();
+                }
+
+                EnhancementCheckbox("No Clip", "gNoClip");
+                Tooltip("Allows you to walk through walls");
+                EnhancementCheckbox("Climb Everything", "gClimbEverything");
+                Tooltip("Makes every surface in the game climbable"); EnhancementCheckbox("Super Tunic", "gSuperTunic");
                 Tooltip("Makes every tunic have the effects of every other tunic");
                 EnhancementCheckbox("Easy ISG", "gEzISG");
                 Tooltip("Passive Infinite Sword Glitch\nIt makes your sword's swing effect and hitbox stay active indefinitely");
-                EnhancementCheckbox("Unrestricted Items", "gNoRestrictItems");
-                Tooltip("Allows you to use any item at any location");
-                EnhancementCheckbox("Child Gear", "gNoRestrictAge");
-                Tooltip("Allows you to use any item in any era");
                 EnhancementCheckbox("Freeze Time", "gFreezeTime");
                 Tooltip("Freezes the time of day");
                 EnhancementCheckbox("Drops Don't Despawn", "gDropsDontDie");
                 Tooltip("Drops from enemies, grass, etc. don't disappear after a set amount of time");
-                EnhancementCheckbox("Fireproof Deku Shield", "gFireproofDekuShield");
-                Tooltip("Prevents the Deku Shield from burning on contact with fire");
-                EnhancementCheckbox("Shield with Two-Handed Weapons", "gShieldTwoHanded");
-                Tooltip("This allows you to put up your shield with any two-handed weapon in hand except for Deku Sticks");
 
                 {
                     static int32_t betaQuestEnabled = CVar_GetS32("gEnableBetaQuest", 0);

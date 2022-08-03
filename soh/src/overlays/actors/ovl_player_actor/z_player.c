@@ -2069,23 +2069,19 @@ void func_80834298(Player* this, GlobalContext* globalCtx) {
     }
 }
 
-s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) {
-    if (LINK_IS_ADULT) {
-        *itemPtr = ITEM_BOW;
-        if (this->stateFlags1 & PLAYER_STATE1_23) {
-            *typePtr = ARROW_NORMAL_HORSE;
-        }
-        else {
-            *typePtr = this->heldItemActionParam - 6;
-        }
+s32 func_80834380(GlobalContext* globalCtx, Player* this, s32* itemPtr, s32* typePtr) { //something having to do with setting Link's item and projectile when using slingshot/bow
+
+    *itemPtr = (this->heldItemActionParam == PLAYER_AP_SLINGSHOT) ? ITEM_SLINGSHOT : ITEM_BOW;
+
+    if (this->stateFlags1 & PLAYER_STATE1_23) {
+        *typePtr = ARROW_NORMAL_HORSE;
     }
-    else {
-        *itemPtr = ITEM_SLINGSHOT;
-        if (this->stateFlags1 & PLAYER_STATE1_23) {
-            *typePtr = ARROW_NORMAL_HORSE;
-        } else {
-            *typePtr = this->heldItemActionParam - 6;
-        }
+    else if (!LINK_IS_ADULT && globalCtx->shootingGalleryStatus != 0) {
+        *typePtr = ARROW_SEED; //childgear fix; if this isn't here, child shooting minigame will shoot arrows instead of seeds. 
+    }
+    else
+    {
+        *typePtr = this->heldItemActionParam - 6;
     }
 
     if (gSaveContext.minigameState == 1) {
@@ -2719,7 +2715,7 @@ s32 func_80835B60(Player* this, GlobalContext* globalCtx) {
     if (!(this->stateFlags1 & PLAYER_STATE1_25)) {
         func_80833638(this, func_80835C08);
         LinkAnimation_PlayOnce(globalCtx, &this->skelAnime2, &gPlayerAnim_0025F8);
-        func_808357E8(this, D_80125EF8);
+        func_808357E8(this, D_LeftFistBoomerang);
         func_8002F7DC(&this->actor, NA_SE_PL_CATCH_BOOMERANG);
         func_80832698(this, NA_SE_VO_LI_SWORD_N);
         return 1;
@@ -14632,10 +14628,10 @@ void func_80851A50(GlobalContext* globalCtx, Player* this, CsCmdActorAction* arg
         this->interactRangeActor->parent = &this->actor;
 
         if (!LINK_IS_ADULT) {
-            dLists = D_80125DE8;
+            dLists = D_DrawMasterSword;
         }
         else {
-            dLists = D_80125E18;
+            dLists = D_LeftHandClosed;
         }
         this->leftHandDLists = &dLists[gSaveContext.linkAge];
 
@@ -14953,7 +14949,7 @@ void func_80852648(GlobalContext* globalCtx, Player* this, CsCmdActorAction* arg
         this->heldItemActionParam = this->itemActionParam = PLAYER_AP_NONE;
         this->heldItemId = ITEM_NONE;
         this->modelGroup = this->nextModelGroup = Player_ActionToModelGroup(this, PLAYER_AP_NONE);
-        this->leftHandDLists = D_80125E08;
+        this->leftHandDLists = D_LeftHand;
         Inventory_ChangeEquipment(EQUIP_SWORD, 2);
         gSaveContext.equips.buttonItems[0] = ITEM_SWORD_MASTER;
         Inventory_DeleteEquipment(globalCtx, 0);
