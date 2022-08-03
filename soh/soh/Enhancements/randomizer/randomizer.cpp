@@ -3438,6 +3438,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
+    cvarSettings[RSK_SHUFFLE_SHOPS] = CVar_GetS32("gRandomizeShopsanity", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3525,7 +3526,7 @@ void DrawRandoEditor(bool& open) {
     const char* randoLinksPocket[4] = { "Dungeon Reward", "Advancement", "Anything", "Nothing" };
     const char* randoShuffleSongs[3] = { "Song Locations", "Dungeon Rewards", "Anywhere" };
     const char* randoShuffleTokens[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
-    const char* randoShopsanity[7] = { "Off", "0", "1", "2", "3", "4", "Random" };
+    const char* randoShopsanity[7] = { "Off", "Only Shop Items", "1 Item", "2 Items", "3 Items", "4 Items", "All Random" };
     const char* randoTokensanity[4] = { "Off", "Dungeons", "Overworld", "All Tokens" };
     const char* randoShuffleScrubs[4] = { "Off", "Affordable", "Expensive", "Random Prices" };
     const char* randoShuffleCows[2] = { "Off", "On" };
@@ -3949,6 +3950,12 @@ void DrawRandoEditor(bool& open) {
                             "All Tokens - Shuffle all 100 GS tokens."
                         );
                         SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
+                        PaddedSeparator();
+
+                        // Shuffle Shops
+                        ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                        InsertHelpHoverText("Shuffles Shop Items.");
+                        SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
                         PaddedSeparator();
 
                         SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
