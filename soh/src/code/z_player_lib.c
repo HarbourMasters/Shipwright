@@ -70,8 +70,8 @@ Gfx* D_RightHandClosed[] = {
 Gfx* D_80125D28[] = {
     gLinkAdultMasterSwordAndSheathNearDL,       gLinkChildSwordAndSheathNearDL,
     gLinkAdultMasterSwordAndSheathFarDL,        gLinkChildSwordAndSheathFarDL,
-    gLinkAdultMasterSwordAndSheathNearDL,       gLinkChildDekuShieldSwordAndSheathNearDL,
-    gLinkAdultMasterSwordAndSheathFarDL,        gLinkChildDekuShieldSwordAndSheathFarDL,
+    gLinkChildDekuShieldSwordAndSheathNearDL,   gLinkChildDekuShieldSwordAndSheathNearDL,
+    gLinkChildDekuShieldSwordAndSheathFarDL,    gLinkChildDekuShieldSwordAndSheathFarDL,
     gLinkAdultHylianShieldSwordAndSheathNearDL, gLinkChildHylianShieldSwordAndSheathNearDL,
     gLinkAdultHylianShieldSwordAndSheathFarDL,  gLinkChildHylianShieldSwordAndSheathFarDL,
     gLinkAdultMirrorShieldSwordAndSheathNearDL, gLinkAdultMirrorShieldSwordAndSheathNearDL,
@@ -87,9 +87,9 @@ Gfx* D_80125D88[] = {
     gLinkChildSheathNearDL,
     gLinkAdultSheathFarDL,
     gLinkChildSheathFarDL,
-    gLinkAdultSheathNearDL,
     gLinkChildDekuShieldAndSheathNearDL,
-    gLinkAdultSheathFarDL,
+    gLinkChildDekuShieldAndSheathNearDL,
+    gLinkChildDekuShieldAndSheathFarDL,
     gLinkChildDekuShieldAndSheathFarDL,
     gLinkAdultHylianShieldAndSheathNearDL,
     gLinkChildHylianShieldAndSheathNearDL,
@@ -103,9 +103,9 @@ Gfx* D_80125D88[] = {
     NULL,
     NULL,
     NULL,
-    gLinkAdultSheathNearDL,
     gLinkChildDekuShieldWithMatrixDL,
-    gLinkAdultSheathNearDL,
+    gLinkChildDekuShieldWithMatrixDL,
+    gLinkChildDekuShieldWithMatrixDL,
     gLinkChildDekuShieldWithMatrixDL,
 };
 
@@ -494,7 +494,7 @@ s32 Player_IsBurningStickInRange(GlobalContext* globalCtx, Vec3f* pos, f32 xzRan
 s32 Player_GetStrength(void) {
     s32 strengthUpgrade = CUR_UPG_VALUE(UPG_STRENGTH);
 
-    if (LINK_IS_ADULT) {
+    if (LINK_IS_ADULT || (CVar_GetS32("gNoRestrictAge", 0))) {
         return strengthUpgrade;
     } else if (strengthUpgrade != 0) {
         return PLAYER_STR_BRACELET;

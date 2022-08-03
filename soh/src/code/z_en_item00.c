@@ -1404,15 +1404,18 @@ void EnItem00_DrawHeartPiece(EnItem00* this, GlobalContext* globalCtx) {
  * Returns a new drop type ID or -1 to cancel the drop.
  */
 s16 func_8001F404(s16 dropId) {
-    if (LINK_IS_ADULT) {
-        if (dropId == ITEM00_SEEDS) {
-            dropId = ITEM00_ARROWS_SMALL;
-        } else if (dropId == ITEM00_STICK) {
-            dropId = ITEM00_RUPEE_GREEN;
-        }
-    } else {
-        if (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE) {
-            dropId = ITEM00_SEEDS;
+    if (!CVar_GetS32("gNoRestrictAge", 0)) // Don't redirect these if Child Gear is on
+    {
+        if (LINK_IS_ADULT) {
+            if (dropId == ITEM00_SEEDS) {
+                dropId = ITEM00_ARROWS_SMALL;
+            } else if (dropId == ITEM00_STICK) {
+                dropId = ITEM00_RUPEE_GREEN;
+            }
+        } else {
+            if (dropId == ITEM00_ARROWS_SMALL || dropId == ITEM00_ARROWS_MEDIUM || dropId == ITEM00_ARROWS_LARGE) {
+                dropId = ITEM00_SEEDS;
+            }
         }
     }
 
@@ -1585,11 +1588,11 @@ void Item_DropCollectibleRandom(GlobalContext* globalCtx, Actor* fromActor, Vec3
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_MAGIC_SMALL;
-        } else if (!LINK_IS_ADULT && (AMMO(ITEM_SLINGSHOT) < 6)) {
+        } else if ((!LINK_IS_ADULT || (CVar_GetS32("gNoRestrictAge", 0))) && (AMMO(ITEM_SLINGSHOT) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_SEEDS;
-        } else if (LINK_IS_ADULT && (AMMO(ITEM_BOW) < 6)) {
+        } else if ((LINK_IS_ADULT || (CVar_GetS32("gNoRestrictAge", 0))) && (AMMO(ITEM_BOW) < 6)) {
             params = 0xA * 0x10;
             dropTableIndex = 0x0;
             dropId = ITEM00_ARROWS_MEDIUM;

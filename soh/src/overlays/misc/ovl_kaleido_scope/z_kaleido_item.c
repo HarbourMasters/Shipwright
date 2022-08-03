@@ -27,8 +27,8 @@ void KaleidoScope_DrawAmmoCount(PauseContext* pauseCtx, GraphicsContext* gfxCtx,
 
     gDPPipeSync(POLY_KAL_DISP++);
 
-    if ((!((gSlotAgeReqs[SLOT(item)] == 9) || gSlotAgeReqs[SLOT(item)] == ((void)0, gSaveContext.linkAge))) && 
-         (!CVar_GetS32("gNoRestrictAge", 0))) {
+    if ((!((gSlotAgeReqs[SLOT(item)] == 9) || gSlotAgeReqs[SLOT(item)] == ((void)0, gSaveContext.linkAge) || (CVar_GetS32("gNoRestrictAge", 0)))))
+    {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 100, 100, 100, pauseCtx->alpha);
     } else {
         gDPSetPrimColor(POLY_KAL_DISP++, 0, 0, 255, 255, 255, pauseCtx->alpha);
@@ -343,7 +343,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
             gSlotAgeReqs[SLOT_TRADE_CHILD] = gItemAgeReqs[ITEM_MASK_BUNNY] =
                 (CVar_GetS32("gMMBunnyHood", 0) && INV_CONTENT(ITEM_TRADE_CHILD) == ITEM_MASK_BUNNY) ? 9 : 1;
 
-            if (!((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge)))) {
+            if (!((gSlotAgeReqs[cursorSlot] == 9) || (gSlotAgeReqs[cursorSlot] == ((void)0, gSaveContext.linkAge)) || 
+                (CVar_GetS32("gNoRestrictAge", 0)))) {
                 pauseCtx->nameColorSet = 1;
             }
 
@@ -480,7 +481,8 @@ void KaleidoScope_DrawItemSelect(GlobalContext* globalCtx) {
 
             gSPVertex(POLY_KAL_DISP++, &pauseCtx->itemVtx[j + 0], 4, 0);
             int itemId = gSaveContext.inventory.items[i];
-            bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge);
+            bool not_acquired = (gItemAgeReqs[itemId] != 9) && (gItemAgeReqs[itemId] != gSaveContext.linkAge) &&
+                                (!CVar_GetS32("gNoRestrictAge", 0));
             if (not_acquired) {
                 gsDPSetGrayscaleColor(POLY_KAL_DISP++, 109, 109, 109, 255);
                 gsSPGrayscale(POLY_KAL_DISP++, true);

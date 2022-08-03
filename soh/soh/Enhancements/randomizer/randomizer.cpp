@@ -3952,8 +3952,8 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCombobox("gRandomizeShuffleTokens", randoShuffleTokens, 4, 0);
                         PaddedSeparator();
 
-                        // Shuffle Shops
-                        ImGui::Text(Settings::Shopsanity.GetName().c_str());
+                        // Shuffle Shops, Add later
+                        /*ImGui::Text(Settings::Shopsanity.GetName().c_str());
                         InsertHelpHoverText("Shuffles Shop Items.");
                         SohImGui::EnhancementCombobox("gRandomizeShopsanity", randoShopsanity, 7, 0);
                         PaddedSeparator();
@@ -3961,7 +3961,7 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
                         InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
                                             "expected to be collected after getting Sun's Song.");
-                        PaddedSeparator();
+                        PaddedSeparator();*/
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
                             // Shuffle Kokiri Sword
