@@ -100,8 +100,12 @@ namespace Ship {
 	}
 
 	void Console::Draw() {
+		if (!this->opened) {
+			CVar_SetS32("gConsoleEnabled", 0);
+			return;
+		}
+
 		bool input_focus = false;
-		if (!this->opened) return;
 
 		ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
 		ImGui::Begin("Console", nullptr, ImGuiWindowFlags_NoFocusOnAppearing);

@@ -1587,7 +1587,7 @@ void DrawSaveEditor(bool& open) {
     }
 
     ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-    if (!ImGui::Begin("Save Editor", &open, ImGuiWindowFlags_NoFocusOnAppearing)) {
+    if (!ImGui::Begin("Save Editor", &open)) {
         ImGui::End();
         return;
     }

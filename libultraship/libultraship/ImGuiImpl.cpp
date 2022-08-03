@@ -86,6 +86,7 @@ namespace SohImGui {
     bool p_open = false;
     bool needs_save = false;
     int lastBackendID = 0;
+    bool statsWindowOpen;
 
     const char* filters[3] = {
         "Three-Point",
@@ -356,6 +357,7 @@ namespace SohImGui {
         io = &ImGui::GetIO();
         io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io->Fonts->AddFontDefault();
+        statsWindowOpen = CVar_GetS32("gStatsEnabled", 0);
     #ifdef __SWITCH__
         Ship::Switch::SetupFont(io->Fonts);
     #endif
@@ -926,13 +928,13 @@ namespace SohImGui {
                         }
                         ImGui::SameLine();
                         ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
+                        ImGui::PushItemWidth(ImGui::GetWindowSize().x - 78.0f);
                         if (ImGui::SliderInt("##ExtraLatencyThreshold", &val, 0, 360, "", ImGuiSliderFlags_AlwaysClamp))
                         {
                             CVar_SetS32(cvar, val);
                             needs_save = true;
                         }
-
+                        ImGui::PopItemWidth();
                         Tooltip("When Interpolation FPS setting is at least this threshold, add one frame of input lag (e.g. 16.6 ms for 60 FPS) in order to avoid jitter. This setting allows the CPU to work on one frame while GPU works on the previous frame.\nThis setting should be used when your computer is too slow to do CPU + GPU work in time.");
 
                         ImGui::SameLine();
@@ -1358,7 +1360,7 @@ namespace SohImGui {
                     }
                     ImGui::SameLine();
                     ImGui::SetCursorPosX(ImGui::GetCursorPosX() - 7.0f);
-
+                    ImGui::PushItemWidth(ImGui::GetWindowSize().x - 78.0f);
                     if (ImGui::SliderInt("##FPSInterpolation", &val, minFps, maxFps, "", ImGuiSliderFlags_AlwaysClamp))
                     {
                         if (val > 360)
@@ -1373,7 +1375,7 @@ namespace SohImGui {
                         CVar_SetS32(fps_cvar, val);
                         needs_save = true;
                     }
-
+                    ImGui::PopItemWidth();
                     Tooltip("Interpolate extra frames to get smoother graphics\n"
                         "Set to match your monitor's refresh rate, or a divisor of it\n"
                         "A higher target FPS than your monitor's refresh rate will just waste resources, "
@@ -1585,9 +1587,9 @@ namespace SohImGui {
                 static ImVec2 buttonSize(170.0f, 0.0f);
                 if (ImGui::Button("Stats", buttonSize))
                 {
+                    statsWindowOpen = true;
                     CVar_SetS32("gStatsEnabled", 1);
                     needs_save = true;
-                    customWindows["Stats"].enabled = CVar_GetS32("gStatsEnabled", 0);
                 }
                 Tooltip("Shows the stats window, with your FPS and frametimes, and the OS you're playing on");
                 InsertPadding();
@@ -1665,10 +1667,14 @@ namespace SohImGui {
             ImGui::End();
             ImGui::PopStyleColor();
         }
+
         if (CVar_GetS32("gStatsEnabled", 0)) {
+            if (!statsWindowOpen) {
+                CVar_SetS32("gStatsEnabled", 0);
+            }
             const float framerate = ImGui::GetIO().Framerate;
             ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(0, 0, 0, 0));
-            ImGui::Begin("Debug Stats", nullptr);
+            ImGui::Begin("Debug Stats", &statsWindowOpen);
 
 #ifdef _WIN32
             ImGui::Text("Platform: Windows");
