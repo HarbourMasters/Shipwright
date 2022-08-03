@@ -82,7 +82,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 ################################################################################
 # Sub-projects
 ################################################################################
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
+if (NOT CMAKE_SYSTEM_NAME MATCHES "Windows|Darwin")
 add_subdirectory(../external/glew/build/cmake ${CMAKE_BINARY_DIR}/glew)
 set_target_properties(glew PROPERTIES EXCLUDE_FROM_ALL TRUE)
 endif()
@@ -1624,24 +1624,44 @@ if(MSVC)
     endif()
 endif()
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	target_compile_options(${PROJECT_NAME} PRIVATE
-		-Wall -Wextra -Wno-error
-        	-Wno-unused-parameter
-        	-Wno-unused-function
-        	-Wno-unused-variable
-		-Wno-missing-field-initializers
-        	-Wno-parentheses
-        	-Wno-narrowing
-        	$<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
-                -pthread
-		-msse2 -mfpmath=sse
-	)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Wall -Wextra -Wno-error
+                -Wno-unused-parameter
+                -Wno-unused-function
+                -Wno-unused-variable
+            -Wno-missing-field-initializers
+                -Wno-parentheses
+                -Wno-narrowing
+                -fpermissive
+                $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+                    -pthread
+        )
 
-       target_link_options(${PROJECT_NAME} PRIVATE
+        target_link_options(${PROJECT_NAME} PRIVATE
+                -pthread
+        )
+    else()
+        target_compile_options(${PROJECT_NAME} PRIVATE
+            -Wall -Wextra -Wno-error
+                -Wno-unused-parameter
+                -Wno-unused-function
+                -Wno-unused-variable
+            -Wno-missing-field-initializers
+                -Wno-parentheses
+                -Wno-narrowing
+                -fpermissive
+                $<$<COMPILE_LANGUAGE:CXX>:-Wno-deprecated-enum-enum-conversion>
+                    -pthread
+            -msse2 -mfpmath=sse
+        )
+
+        target_link_options(${PROJECT_NAME} PRIVATE
                 -pthread
                 -Wl,-export-dynamic
         )
+    endif()
 endif()
 ################################################################################
 # Pre build events
@@ -1665,6 +1685,12 @@ add_dependencies(${PROJECT_NAME}
     libultraship
     storm
 )
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+add_dependencies(${PROJECT_NAME}
+    ZAPDUtils
+    libultraship
+    storm
+)
 else()
 add_dependencies(${PROJECT_NAME}
     ZAPDUtils
@@ -1674,7 +1700,11 @@ add_dependencies(${PROJECT_NAME}
 )
 endif()
 
+if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+find_library(SDL2_LIB SDL2 GLEW)
+else()
 find_library(SDL2_LIB SDL2)
+endif()
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if("${CMAKE_VS_PLATFORM_NAME}" STREQUAL "x64")
@@ -1712,11 +1742,26 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			"setupapi"
 		)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    find_package(SDL2)
+    find_package(GLEW)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+ 	set(ADDITIONAL_LIBRARY_DEPENDENCIES
+        "libultraship;"
+        "ZAPDUtils;"
+    	"storm;"
+		SDL2::SDL2
+		GLEW::GLEW
+		${OPENGL_opengl_LIBRARY}
+		${CMAKE_DL_LIBS}
+		Threads::Threads
+	)
 else()
     find_package(SDL2)
     find_package(PulseAudio)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-        find_package(Threads REQUIRED)
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
  	set(ADDITIONAL_LIBRARY_DEPENDENCIES
         "libultraship;"
         "ZAPDUtils;"

@@ -63,3 +63,25 @@ cmake -H. -Bbuild-cmake -GNinja -DOpenGL_GL_PREFERENCE="GLVND" -DCMAKE_BUILD_TYP
 cmake --build build-cmake  
 cp build-cmake/ZAPD/ZAPD.out build-cmake/assets/extractor
 ~~~
+
+macOS (M1):
+
+using native build (not docker)
+(will be built with below cmake commands) - no extra build needed
+
+~~~
+cd OTRExporter
+
+# change the path to ZAPD in extract_assets.py
+sed "s%../ZAPDTR/ZAPD.out%build-cmake/ZAPD/ZAPD.out%" < extract_assets.py > extract_assets_cmake.py
+chmod +x extract_assets_cmake.py
+
+cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE=../soh/CMake/Mac-gnu-toolchain.cmake
+cmake --build build-cmake
+
+./extract_assets_cmake.py
+  
+cd ../soh
+cmake -S . -B build-cmake -DCMAKE_TOOLCHAIN_FILE=CMake/Mac-gnu-toolchain.cmake
+cmake --build build-cmake 
+~~~

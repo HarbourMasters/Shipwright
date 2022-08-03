@@ -409,10 +409,16 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		-pthread
 	)
 	
-	target_link_options(${PROJECT_NAME} PRIVATE
-		-pthread
-		-Wl,-export-dynamic
-	)
+    if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+        target_link_options(${PROJECT_NAME} PRIVATE
+            -pthread
+        )
+    else()
+        target_link_options(${PROJECT_NAME} PRIVATE
+            -pthread
+            -Wl,-export-dynamic
+        )
+    endif()
 
 endif()
 
@@ -438,6 +444,21 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 			PNG::PNG
 		)
 	endif()
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+    find_package(BZip2 REQUIRED)
+	set(THREADS_PREFER_PTHREAD_FLAG ON)
+	find_package(Threads REQUIRED)
+	find_package(SDL2)
+	set(ADDITIONAL_LIBRARY_DEPENDENCIES
+		"ZAPDUtils;"
+		-Wl,-force_load ${PROJECT_BINARY_DIR}/OTRExporter/libOTRExporter.a
+		"libultraship;"
+		storm
+		PNG::PNG
+		BZip2::BZip2
+		${CMAKE_DL_LIBS}
+		Threads::Threads
+	)
 else()
 	find_package(BZip2 REQUIRED)
 	set(THREADS_PREFER_PTHREAD_FLAG ON)
