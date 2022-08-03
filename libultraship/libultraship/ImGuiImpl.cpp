@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "Archive.h"
-#include "Environment.h"
 #include "GameSettings.h"
 #include "Console.h"
 #include "Hooks.h"
@@ -1626,7 +1625,7 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
-        std::string fb_str = SohUtils::getEnvironmentVar("framebuffer");
+        std::string fb_str = gfxFramebuffer;
         if (!fb_str.empty()) {
             uintptr_t fbuf = (uintptr_t)std::stoull(fb_str);
             //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(fbuf), pos, size);

@@ -67,9 +67,6 @@
     <Filter Include="Source Files\Audio">
       <UniqueIdentifier>{ccd6359f-e357-41ca-9b89-5f509dd30649}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CustomImpl\Environment">
-      <UniqueIdentifier>{94ca4b98-cee2-48e6-a88b-68b8d2fed287}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\CustomImpl\Utils">
       <UniqueIdentifier>{0dca2d94-45ba-4916-b03a-1dd5f949114c}</UniqueIdentifier>
     </Filter>
@@ -320,9 +317,6 @@
     </ClCompile>
     <ClCompile Include="SDLAudioPlayer.cpp">
       <Filter>Source Files\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Environment.cpp">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\CustomImpl\Utils</Filter>
@@ -604,9 +598,6 @@
     </ClInclude>
     <ClInclude Include="Lib\ImGui\backends\imgui_impl_win32.h">
       <Filter>Source Files\Lib\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Environment.h">
-      <Filter>Source Files\CustomImpl\Environment</Filter>
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Source Files\CustomImpl\Utils</Filter>
