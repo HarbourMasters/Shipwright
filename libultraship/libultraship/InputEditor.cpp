@@ -95,7 +95,11 @@ namespace Ship {
 
 		if (ControllerName != nullptr && ImGui::BeginCombo("##ControllerEntries", ControllerName)) {
 			for (uint8_t i = 0; i < devices.size(); i++) {
-				if (ImGui::Selectable(devices[i]->GetControllerName(), i == vDevices[CurrentPort])) {
+				std::string DeviceName = devices[i]->GetControllerName();
+				if (DeviceName != "Keyboard" && DeviceName != "Auto") {
+					DeviceName+="##"+std::to_string(i);
+				}
+				if (ImGui::Selectable(DeviceName.c_str(), i == vDevices[CurrentPort])) {
 					Window::ControllerApi->SetPhysicalDevice(CurrentPort, i);
 				}
 			}
