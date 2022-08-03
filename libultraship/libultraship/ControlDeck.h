@@ -15,6 +15,7 @@ namespace Ship {
 		void SaveControllerSettings();
 		void SetPhysicalDevice(int slot, int deviceSlot);
 		std::shared_ptr<Ship::Controller> GetPhysicalDevice(int deviceSlot);
+		std::shared_ptr<Ship::Controller> GetPhysicalDeviceFromVirtualSlot(int slot);
 		size_t GetNumPhysicalDevices();
 		int GetVirtualDevice(int slot);
 		size_t GetNumVirtualDevices();
