@@ -6668,10 +6668,12 @@
 					"$(inherited)",
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-DNDEBUG",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6728,10 +6730,12 @@
 					"$(inherited)",
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"-DENABLE_OPENGL",
 					"-D_DEBUG",
+					"-DSPDLOG_ACTIVE_LEVEL=0",
 				);
 				OTHER_LIBTOOLFLAGS = "";
 				OTHER_REZFLAGS = "";
@@ -6842,7 +6846,6 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-DNDEBUG",
 				);
 				OTHER_LDFLAGS = (
@@ -7031,7 +7034,6 @@
 					"-DENABLE_OPENGL",
 					"-D_CRT_SECURE_NO_WARNINGS",
 					"-D_CONSOLE",
-					"-DSPDLOG_ACTIVE_LEVEL=0",
 					"-D_DEBUG",
 				);
 				OTHER_LDFLAGS = (
