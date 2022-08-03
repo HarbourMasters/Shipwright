@@ -18,6 +18,11 @@ void func_809E0070(Actor* thisx, GlobalContext* globalCtx);
 
 void func_809DF494(EnCow* this, GlobalContext* globalCtx);
 void func_809DF6BC(EnCow* this, GlobalContext* globalCtx);
+bool EnCow_IsSecondCowInTower(EnCow* this, GlobalContext* globalCtx);
+bool EnCow_IsSecondCowInStable(EnCow* this, GlobalContext* globalCtx);
+bool EnCow_IsSecondCowInGrotto(EnCow* this, GlobalContext* globalCtx);
+bool EnCow_IsSecondCow(EnCow* this, GlobalContext* globalCtx);
+GetItemID EnCow_GetItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag);
 void func_809DF778(EnCow* this, GlobalContext* globalCtx);
 void func_809DF7D8(EnCow* this, GlobalContext* globalCtx);
 void func_809DF870(EnCow* this, GlobalContext* globalCtx);
@@ -105,6 +110,18 @@ void func_809DEF94(EnCow* this) {
 void EnCow_Init(Actor* thisx, GlobalContext* globalCtx) {
     EnCow* this = (EnCow*)thisx;
     s32 pad;
+
+    // Move left cow in lon lon tower
+    if (EnCow_IsSecondCowInTower(thisx, globalCtx)) {
+        this->actor.world.pos.x = -229.0f;
+        this->actor.world.pos.z = 157.0f;
+        this->actor.shape.rot.y = 15783.0f;
+    }
+
+    // Move right cow in lon lon stable
+    if (EnCow_IsSecondCowInStable(thisx, globalCtx)) {
+        this->actor.world.pos.x += 119.0f;
+    }
 
     ActorShape_Init(&this->actor.shape, 0.0f, ActorShadow_DrawCircle, 72.0f);
     switch (this->actor.params) {
@@ -209,12 +226,57 @@ void func_809DF730(EnCow* this, GlobalContext* globalCtx) {
     }
 }
 
+bool EnCow_IsSecondCowInTower(EnCow* this, GlobalContext* globalCtx) {
+    return 
+        gSaveContext.n64ddFlag && 
+        globalCtx->sceneNum == SCENE_SOUKO && 
+        (this->actor.world.pos.x + this->actor.world.pos.z == -173 || this->actor.world.pos.x + this->actor.world.pos.z == -72);
+}
+
+bool EnCow_IsSecondCowInStable(EnCow* this, GlobalContext* globalCtx) {
+    return 
+        gSaveContext.n64ddFlag && 
+        globalCtx->sceneNum == SCENE_MALON_STABLE && 
+        (this->actor.world.pos.x + this->actor.world.pos.z == -257 || this->actor.world.pos.x + this->actor.world.pos.z == -138);
+}
+
+bool EnCow_IsSecondCowInGrotto(EnCow* this, GlobalContext* globalCtx) {
+    return gSaveContext.n64ddFlag && globalCtx->sceneNum == SCENE_KAKUSIANA && this->actor.world.pos.x + this->actor.world.pos.z == 3194;
+}
+
+bool EnCow_IsSecondCow(EnCow* this, GlobalContext* globalCtx) {
+    return EnCow_IsSecondCowInTower(this, globalCtx) || EnCow_IsSecondCowInStable(this, globalCtx) || EnCow_IsSecondCowInGrotto(this, globalCtx);
+}
+
+GetItemID EnCow_GetItemFromCow(EnCow* this, GlobalContext* globalCtx, bool setFlag) {
+    GetItemID itemId = ITEM_NONE;
+
+    if (Inventory_HasEmptyBottle()) {
+        return GI_MILK;
+    }
+
+    s32 collectableFlag = 0x1A;
+    if (EnCow_IsSecondCow(this, globalCtx)) {
+        collectableFlag = 0x19;
+    }
+
+    if (gSaveContext.n64ddFlag && !Flags_GetCollectible(globalCtx, collectableFlag)) {
+        itemId = Randomizer_GetRandomizedItemId(GI_MILK, this->actor.id, this->actor.world.pos.x + this->actor.world.pos.z, globalCtx->sceneNum);
+    }
+
+    if (setFlag) {
+        Flags_SetCollectible(globalCtx, collectableFlag);
+    }
+
+    return itemId;
+}
+
 void func_809DF778(EnCow* this, GlobalContext* globalCtx) {
     if (Actor_HasParent(&this->actor, globalCtx)) {
         this->actor.parent = NULL;
         this->actionFunc = func_809DF730;
     } else {
-        func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
+        func_8002F434(&this->actor, globalCtx, EnCow_GetItemFromCow(this, globalCtx, true), 10000.0f, 100.0f);
     }
 }
 
@@ -223,13 +285,13 @@ void func_809DF7D8(EnCow* this, GlobalContext* globalCtx) {
         this->actor.flags &= ~ACTOR_FLAG_16;
         Message_CloseTextbox(globalCtx);
         this->actionFunc = func_809DF778;
-        func_8002F434(&this->actor, globalCtx, GI_MILK, 10000.0f, 100.0f);
+        func_8002F434(&this->actor, globalCtx, EnCow_GetItemFromCow(this, globalCtx, true), 10000.0f, 100.0f);
     }
 }
 
 void func_809DF870(EnCow* this, GlobalContext* globalCtx) {
     if ((Message_GetState(&globalCtx->msgCtx) == TEXT_STATE_EVENT) && Message_ShouldAdvance(globalCtx)) {
-        if (Inventory_HasEmptyBottle()) {
+        if (EnCow_GetItemFromCow(this, globalCtx, false) != ITEM_NONE) {
             Message_ContinueTextbox(globalCtx, 0x2007);
             this->actionFunc = func_809DF7D8;
         } else {

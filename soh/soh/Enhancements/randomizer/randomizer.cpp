@@ -2968,10 +2968,25 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_KF_MIDOS_BOTTOM_RIGHT_CHEST;
             }
             break;
+        case 52:
+            switch (actorParams) {
+                case -161:
+                    return RC_KF_LINKS_HOUSE_COW;
+            }
+            break;
+        case 54:
+            switch (actorParams) {
+                case -376:
+                    return RC_LLR_STABLES_LEFT_COW;
+                case -138:
+                    return RC_LLR_STABLES_RIGHT_COW;
+            }
         case 55:
             switch (actorParams) {
                 case 262:
                     return RC_KAK_IMPAS_HOUSE_FREESTANDING_POH;
+                case -115:
+                    return RC_KAK_IMPAS_HOUSE_COW;
             }
             break;
         case 56:
@@ -3008,6 +3023,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
                     return RC_HF_DEKU_SCRUB_GROTTO;
                 case 10:
                     return RC_LW_DEKU_SCRUB_GROTTO_FRONT;
+                case 1973:
+                    return RC_DMT_COW_GROTTO_COW;
+                case 3194:
+                    return RC_HF_COW_GROTTO_COW;
                 case 22988:
                     return RC_KF_STORMS_GROTTO_CHEST;
                 case -22988:
@@ -3094,6 +3113,10 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 76:
             switch (actorParams) {
+                case -72:
+                    return RC_LLR_TOWER_LEFT_COW;
+                case -282:
+                    return RC_LLR_TOWER_RIGHT_COW;
                 case 262:
                     return RC_LLR_FREESTANDING_POH;
             }
@@ -3252,6 +3275,8 @@ RandomizerCheck Randomizer::GetCheckFromActor(s16 sceneNum, s16 actorId, s16 act
             break;
         case 90:
             switch (actorParams) {
+                case -421:
+                    return RC_GV_COW;
                 case 23200:
                     return RC_GV_CHEST;
                 case 262:
@@ -3438,6 +3463,7 @@ void GenerateRandomizerImgui() {
     cvarSettings[RSK_SHUFFLE_DUNGEON_REWARDS] = CVar_GetS32("gRandomizeShuffleDungeonReward", 0);
     cvarSettings[RSK_SHUFFLE_SONGS] = CVar_GetS32("gRandomizeShuffleSongs", 0);
     cvarSettings[RSK_SHUFFLE_TOKENS] = CVar_GetS32("gRandomizeShuffleTokens", 0);
+    cvarSettings[RSK_SHUFFLE_COWS] = CVar_GetS32("gRandomizeShuffleCows", 0);
     cvarSettings[RSK_SKIP_CHILD_ZELDA] = CVar_GetS32("gRandomizeSkipChildZelda", 0);
 
     // if we skip child zelda, we start with zelda's letter, and malon starts
@@ -3954,6 +3980,14 @@ void DrawRandoEditor(bool& open) {
                         SohImGui::EnhancementCheckbox("Nighttime GS expect Sun's Song", "gRandomizeGsExpectSunsSong");
                         InsertHelpHoverText("All Golden Skulltulas that require nighttime to appear will only be "
                                             "expected to be collected after getting Sun's Song.");
+                        PaddedSeparator();
+
+                        // Shuffle Cows
+                        ImGui::Text(Settings::ShuffleCows.GetName().c_str());
+                        InsertHelpHoverText(
+                            "Enabling this will let cows give you items upon performing Epona's Song in "
+                            "front of them. There are 9 cows.");
+                        SohImGui::EnhancementCombobox("gRandomizeShuffleCows", randoShuffleCows, 2, 0);
                         PaddedSeparator();
 
                         if(CVar_GetS32("gRandomizeStartingKokiriSword", 0) == 0) {
