@@ -1625,7 +1625,7 @@ namespace SohImGui {
             pos = ImVec2(size.x / 2 - sw / 2, 0);
             size = ImVec2(sw, size.y);
         }
-        if (gfxFramebuffer != NULL) {
+        if (gfxFramebuffer) {
             //ImGui::ImageSimple(reinterpret_cast<ImTextureID>(gfxFramebuffer), pos, size);
             ImGui::SetCursorPos(pos);
             ImGui::Image(reinterpret_cast<ImTextureID>(gfxFramebuffer), size);
