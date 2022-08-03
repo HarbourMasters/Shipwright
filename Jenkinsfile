@@ -110,7 +110,7 @@ pipeline {
                             sh '''
                             cp ../../ZELOOTD.z64 OTRExporter/baserom_non_mq.z64
 
-                            cmake -H. -Bbuild-cmake -GNinja
+                            cmake -H. -Bbuild-cmake -GNinja -DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"
                             cmake --build build-cmake
                             (cd build-cmake && cpack)
 
