@@ -2104,6 +2104,7 @@
 		9A42B7BE8F024DC482B71B37 /* z_player.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = z_player.c; path = src/overlays/actors/ovl_player_actor/z_player.c; sourceTree = SOURCE_ROOT; };
 		9A99BCBDA998490980824262 /* gu_pc.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = gu_pc.c; path = soh/gu_pc.c; sourceTree = SOURCE_ROOT; };
 		9AB0744B207C4AE28682C3F8 /* z_demo_sa_cutscene_data.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = z_demo_sa_cutscene_data.c; path = src/overlays/actors/ovl_Demo_Sa/z_demo_sa_cutscene_data.c; sourceTree = SOURCE_ROOT; };
+		9B041349289BD0CE00D6085A /* VirtualController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VirtualController.h; path = ../libultraship/libultraship/VirtualController.h; sourceTree = "<group>"; };
 		9B243AE0E6604C7196976A33 /* Texture.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Texture.h; path = ../libultraship/libultraship/Texture.h; sourceTree = SOURCE_ROOT; };
 		9B35EAFC762040E7B4CEED9D /* z_en_sa.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.c; fileEncoding = 4; name = z_en_sa.c; path = src/overlays/actors/ovl_En_Sa/z_en_sa.c; sourceTree = SOURCE_ROOT; };
 		9B384A51286E308A00761A39 /* Xcode-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Xcode-Info.plist"; path = "macosx/Xcode-Info.plist"; sourceTree = "<group>"; };
@@ -3302,6 +3303,7 @@
 				404C406B5EB7481587A6B1C3 /* SDLController.cpp */,
 				0673CFC8ED0E476589EF5B08 /* SDLController.h */,
 				268D772680D84F349C3FEA7C /* UltraController.h */,
+				9B041349289BD0CE00D6085A /* VirtualController.h */,
 			);
 			name = Controller;
 			sourceTree = "<group>";

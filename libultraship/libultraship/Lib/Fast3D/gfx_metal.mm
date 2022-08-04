@@ -886,9 +886,6 @@ int gfx_metal_create_framebuffer(void) {
 }
 
 static void gfx_metal_setup_screen_framebuffer(uint32_t width, uint32_t height) {
-    if (mctx.current_drawable)
-        [mctx.current_drawable release];
-    
     mctx.current_drawable = mctx.layer.nextDrawable;
 
     bool msaa_enabled = CVar_GetS32("gMSAAValue", 1) > 1;
