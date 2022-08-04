@@ -25,7 +25,7 @@ cd Shipwright
 ```
 
 ### Developing SoH
-With the cmake build system you have two options for woriking on the project:
+With the cmake build system you have two options for working on the project:
 
 #### Visual Studio
 To develop using Visual Studio you only need to use cmake to generate the solution file:
