@@ -15,7 +15,6 @@
 #include "Lib/ImGui/imgui_internal.h"
 #include "GlobalCtx2.h"
 #include "ResourceMgr.h"
-#include "TextureMod.h"
 #include "Window.h"
 #include "Cvar.h"
 #include "GameOverlay.h"
