@@ -12,7 +12,7 @@ cd Shipwright
 # Setup cmake project
 & 'C:\Program Files\CMake\bin\cmake' -S . -B "build/x64" -G "Visual Studio 17 2022" -T v142 -A x64
 # Extract assets & generate OTR (run this anytime you need to regenerate OTR)
-& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets
+& 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 --target ExtractAssets # --config Release (if you're packaging)
 # Compile project
 & 'C:\Program Files\CMake\bin\cmake.exe' --build .\build\x64 # --config Release (if you're packaging)
 
