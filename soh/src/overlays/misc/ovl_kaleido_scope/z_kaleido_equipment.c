@@ -482,7 +482,7 @@ void KaleidoScope_DrawEquipment(GlobalContext* globalCtx) {
         }
 
         if (pauseCtx->cursorItem[PAUSE_EQUIP] == ITEM_BRACELET) {
-            if (LINK_AGE_IN_YEARS == YEARS_CHILD || gSaveContext.n64ddFlag) {
+            if (LINK_AGE_IN_YEARS == YEARS_CHILD || gSaveContext.n64ddFlag || (!CVar_GetS32("gNoRestrictAge", 0))) {
                 pauseCtx->nameColorSet = 0; //Goron Bracelet effects certain Adult-Only Blocks; have it in color to make sure people know this
             } else {
                 pauseCtx->nameColorSet = 1;
