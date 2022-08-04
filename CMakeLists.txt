@@ -15,6 +15,7 @@ set(PROJECT_VERSION_MINOR "0")
 set(PROJECT_VERSION_PATCH "0")
 
 set_property(DIRECTORY ${CMAKE_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT soh)
+add_compile_options($<$<CXX_COMPILER_ID:MSVC>:/MP>)
 
 if (CMAKE_SYSTEM_NAME STREQUAL "Windows")
 include(cmake/automate-vcpkg.cmake)
